@@ -32,6 +32,19 @@ export const ELEMENT_TYPES = [
   "dendro",
 ] as const;
 
+export const ATTACK_ELEMENT_TYPES = [
+  "pyro",
+  "hydro",
+  "electro",
+  "cryo",
+  "geo",
+  "anemo",
+  "dendro",
+  "phys",
+] as const;
+
+export const ATTACK_PATTERN_TYPES = ["NA", "CA", "PA", "ES", "EB"] as const;
+
 export const BASE_STAT_TYPE = ["base_hp", "base_atk", "base_def"] as const;
 
 export const FLAT_STAT_TYPES = ["hp", "atk", "def", "em"] as const;

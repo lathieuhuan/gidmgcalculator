@@ -8,6 +8,7 @@ import {
   PERCENT_STAT_TYPES,
   WEAPON_TYPES,
   ARTIFACT_TYPES,
+  ATTACK_PATTERN_TYPES
 } from "./constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
@@ -32,3 +33,7 @@ export type AttackElementDmgBonus =
 export type RngPercentStat = typeof RNG_PERCENT_STAT_TYPES[number];
 
 export type PercentStat = typeof PERCENT_STAT_TYPES[number];
+
+export type AttackPattern = typeof ATTACK_PATTERN_TYPES[number];
+
+export type AttackElement = "elmt" | "phys";
