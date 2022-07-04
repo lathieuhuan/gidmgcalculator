@@ -1,0 +1,7 @@
+.calculator {
+  width: 95%;
+  height: calc(100vh - 3rem);
+  @media (min-width: 1456px) {
+    width: 1416px;
+  }
+}
