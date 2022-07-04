@@ -1,3 +1,4 @@
+import type { CalculatedCharInfo } from "@Store/calculatorSlice/types";
 import type {
   AttackElement,
   AttackPattern,
@@ -10,7 +11,7 @@ import type {
 } from "@Src/types";
 
 export interface ICharacter {
-  id: number;
+  code: number;
   name: string;
   icon: string;
   sideIcon: string;
@@ -19,15 +20,10 @@ export interface ICharacter {
   vision: Element;
   weapon: Weapon;
   stats: (Record<BaseStat, number> & Partial<Record<RngPercentStat, number>>)[];
-  activeTalents: [NormalAttack, Skill];
-}
-
-interface NormalAttack {
-  name: string;
-  NA: NormalAttackStats;
-  CA: NormalAttackStats;
-  PA: NormalAttackStats;
-  caStamina: number;
+  activeTalents: [NormalAttack, Skill, ElementalBurst];
+  passiveTalents: Ability[];
+  constellation: Ability[];
+  buffs?: Modifier[];
 }
 
 export type NormalAttackStats = {
@@ -35,10 +31,18 @@ export type NormalAttackStats = {
   baseMult: number | number[];
   multType: number;
 }[];
-
-interface Skill {
+interface NormalAttack {
+  name: string;
+  NA: NormalAttackStats;
+  CA: NormalAttackStats;
+  PA: NormalAttackStats;
+  caStamina: number;
+}
+interface Ability {
   name: string;
   image: string;
+}
+interface Skill extends Ability {
   xtraLvAtCons: 3 | 5;
   stats: {
     name: string;
@@ -47,4 +51,20 @@ interface Skill {
     baseMult: number | number[];
     multType: number;
   }[];
+}
+interface ElementalBurst extends Skill {
+  energyCost: number;
+}
+
+type ModifierInput = "select";
+interface Modifier {
+  id: number;
+  src: string;
+  desc: () => JSX.Element;
+  affect: "self" | "teammate" | "party";
+  isGranted: (char: CalculatedCharInfo) => boolean;
+  selfLabels?: string[];
+  inputs?: number[];
+  inputTypes?: ModifierInput[];
+  maxs?: (number | null)[];
 }
