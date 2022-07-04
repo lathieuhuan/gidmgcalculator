@@ -6,6 +6,15 @@ export enum EScreen {
   MY_CHARACTERS = "MyCharacters",
 }
 
+export enum EModifierSrc {
+  A1 = "Ascension 1 Passive Talent",
+  A4 = "Ascension 4 Passive Talent",
+  C1 = "Constellation 1",
+  C2 = "Constellation 2",
+  C4 = "Constellation 4",
+  C6 = "Constellation 6",
+}
+
 export const WEAPON_TYPES = [
   "sword",
   "claymore",
@@ -124,4 +133,4 @@ export const LEVELS = [
   "80/80",
   "80/90",
   "90/90",
-];
+] as const;

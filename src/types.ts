@@ -8,12 +8,15 @@ import {
   PERCENT_STAT_TYPES,
   WEAPON_TYPES,
   ARTIFACT_TYPES,
-  ATTACK_PATTERN_TYPES
+  ATTACK_PATTERN_TYPES,
+  LEVELS
 } from "./constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
 
 export type Rarity = 1 | 2 | 3 | 4 | 5;
+
+export type Level = typeof LEVELS[number];
 
 export type Weapon = typeof WEAPON_TYPES[number];
 
