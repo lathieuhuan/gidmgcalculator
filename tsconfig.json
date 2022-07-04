@@ -19,6 +19,7 @@
     "paths": {
       "@Src/*": ["src/*"],
       "@Components/*": ["src/components/*"],
+      "@Store/*": ["src/store/*"],
     }
   },
   "include": ["src"],
