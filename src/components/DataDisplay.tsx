@@ -1,9 +1,17 @@
 import type { Element } from "@Src/types";
+import cn from "classnames";
+import { InsHTMLAttributes } from "react";
 
 type SpanExtraColor = "gold" | "green" | "orange";
 
-const makeSpan = (color: `text-${Element | SpanExtraColor}`) => (props: React.InsHTMLAttributes<HTMLSpanElement>) => {
-  return <span className={color} {...props} />
+interface SpanProps extends InsHTMLAttributes<HTMLSpanElement> {
+  className?: "string";
+  b?: boolean;
+}
+const makeSpan = (color: `text-${Element | SpanExtraColor}`) => {
+  return ({ className, b, ...rest }: SpanProps) => (
+    <span className={cn(color, b && "font-bold", className)} {...rest} />
+  );
 };
 
 export const Green = makeSpan("text-green");
