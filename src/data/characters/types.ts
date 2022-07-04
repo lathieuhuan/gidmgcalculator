@@ -1,4 +1,4 @@
-import type { CalculatedCharInfo } from "@Store/calculatorSlice/types";
+import type { CalcChar } from "@Store/calculatorSlice/types";
 import type {
   AttackElement,
   AttackPattern,
@@ -62,9 +62,9 @@ interface Modifier {
   src: string;
   desc: () => JSX.Element;
   affect: "self" | "teammate" | "party";
-  isGranted: (char: CalculatedCharInfo) => boolean;
+  isGranted: (char: CalcChar) => boolean;
   selfLabels?: string[];
-  inputs?: number[];
+  inputs?: (number | string)[];
   inputTypes?: ModifierInput[];
   maxs?: (number | null)[];
 }

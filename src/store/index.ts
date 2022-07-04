@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import uiSlice from "./uiSlice";
+import calculatorSlice from "./calculatorSlice";
 
 export const store = configureStore({
   reducer: {
-    ui: uiSlice
+    ui: uiSlice,
+    calculator: calculatorSlice
   }
 })
 
