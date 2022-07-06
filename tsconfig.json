@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@Components/*": ["src/components/*"],
+      "@Data/*": ["src/data/*"],
       "@Styled/*": ["src/styled-components/*"],
       "@Store/*": ["src/store/*"],
       "@Hooks/*": ["src/hooks/*"],
