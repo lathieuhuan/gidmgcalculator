@@ -1,0 +1,29 @@
+.modal {
+  > div:nth-child(2) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+}
+
+.modalContent {
+  width: 90vw;
+  height: 90vh;
+  box-shadow: 0 0 3px white;
+  // #to-check
+  @media (min-width: 440px) {
+    width: 398.45px;
+  }
+  @media (min-width: 610px) {
+    width: 586px;
+  }
+  @media (min-width: 769px) {
+    width: 722px;
+  }
+  @media (min-width: 1025px) {
+    height: 85vh;
+    width: 944px;
+  }
+}
