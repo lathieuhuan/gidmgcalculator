@@ -134,3 +134,21 @@ export const LEVELS = [
   "80/90",
   "90/90",
 ] as const;
+
+export const VISION_ICONS = {
+  pyro: "e/e8/Element_Pyro",
+  cryo: "8/88/Element_Cryo",
+  hydro: "3/35/Element_Hydro",
+  electro: "7/73/Element_Electro",
+  anemo: "a/a4/Element_Anemo",
+  geo: "4/4a/Element_Geo",
+  dendro: "f/f4/Element_Dendro",
+};
+
+export const WEAPON_ICONS: Record<typeof WEAPON_TYPES[number], string> = {
+  bow: "9/97/Weapon-class-bow-icon",
+  catalyst: "0/02/Weapon-class-catalyst-icon",
+  claymore: "5/51/Weapon-class-claymore-icon",
+  polearm: "9/91/Weapon-class-polearm-icon",
+  sword: "9/95/Weapon-class-sword-icon",
+};
