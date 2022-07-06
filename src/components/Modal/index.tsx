@@ -3,7 +3,7 @@ import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
 import styles from "./styles.module.scss";
 
 interface ModalProps {
-  standard: boolean;
+  standard?: boolean;
   className?: string;
   children: JSX.Element | JSX.Element[];
   close: () => void;
