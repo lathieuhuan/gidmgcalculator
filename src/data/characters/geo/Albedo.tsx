@@ -1,4 +1,4 @@
-import { Green } from "@Components/DataDisplay";
+import { Green } from "@Styled/DataDisplay";
 import { EModifierSrc } from "@Src/constants";
 import { mediumPAs } from "../configs";
 import type { ICharacter } from "../types";
