@@ -1,4 +1,5 @@
 import type {
+  Artifact,
   FlatStat,
   Level,
   Rarity,
@@ -21,13 +22,14 @@ export interface CalculatorState {
     buffCtrls: SubWpBuffCtrl[];
     debuffCtrls: [];
   }[];
-  allArts: CalcArt[];
+  allArtInfo: CalcArtInfo[];
   allParties: CalcParty[];
   allElmtModCtrls: ElmtModCtrl[];
   allCustomMCs: CustomModCtrl[];
   target: {};
   monster: Monster | null;
 }
+
 export interface CalcChar {
   level: Level;
   NAs: number;
@@ -35,34 +37,50 @@ export interface CalcChar {
   EB: number;
   cons: number;
 }
+
 export interface CalcCharData {}
+
 export interface CharModCtrl {
   activated: boolean;
   id: number;
   inputs?: (number | string)[];
 }
+
 interface CalcWeapon {
   type: Weapon;
   code: number;
   level: Level;
   refinement: number;
 }
+
 interface SubWpBuffCtrl {
   code: number;
   activated: boolean;
   refinement: number;
   index: number;
 }
-interface CalcArt {
-  sets: { code: number; bonusLv: 0 | 1 }[];
-  pieces: CalcArtPiece[];
-}
-interface CalcArtPiece {
+
+export interface CalcArtPiece {
   code: number;
+  type: Artifact;
   rarity: Rarity;
   mainStatType: FlatStat | RngPercentStat;
 }
+
+export interface CalcArtSet {
+  code: number;
+  bonusLv: number;
+}
+
+interface CalcArtInfo {
+  sets: CalcArtSet[];
+  pieces: CalcArtPiece[];
+}
+
 interface CalcParty {}
+
 interface ElmtModCtrl {}
+
 interface CustomModCtrl {}
+
 interface Monster {}

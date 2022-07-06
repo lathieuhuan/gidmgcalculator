@@ -13,7 +13,7 @@ const initialState: CalculatorState = {
   allSelfModCtrls: [],
   allWps: [],
   allSubWpModCtrl: [],
-  allArts: [],
+  allArtInfo: [],
   allParties: [],
   allElmtModCtrls: [],
   allCustomMCs: [],
