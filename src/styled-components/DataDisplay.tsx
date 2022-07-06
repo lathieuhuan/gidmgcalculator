@@ -1,10 +1,10 @@
-import type { Element } from "@Src/types";
 import cn from "classnames";
-import { InsHTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
+import type { Element } from "@Src/types";
 
 type SpanExtraColor = "gold" | "green" | "orange";
 
-interface SpanProps extends InsHTMLAttributes<HTMLSpanElement> {
+interface SpanProps extends HTMLAttributes<HTMLSpanElement> {
   className?: "string";
   b?: boolean;
 }
@@ -23,3 +23,20 @@ export const Dendro = makeSpan("text-dendro");
 export const Cryo = makeSpan("text-cryo");
 export const Anemo = makeSpan("text-anemo");
 export const Geo = makeSpan("text-geo");
+
+interface CollapseHeadingProps extends HTMLAttributes<HTMLParagraphElement> {
+  active?: boolean;
+}
+export const CollapseHeading = (props: CollapseHeadingProps) => {
+  const { className, active, ...rest } = props;
+  return (
+    <p
+      className={cn(
+        "pt-1 px-4 bg-darkblue-3 font-bold text-lg leading-relaxed",
+        active && "bg-[#f5dc6e] text-black",
+        className
+      )}
+      {...rest}
+    />
+  );
+};
