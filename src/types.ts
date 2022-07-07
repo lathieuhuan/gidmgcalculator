@@ -9,7 +9,7 @@ import {
   WEAPON_TYPES,
   ARTIFACT_TYPES,
   ATTACK_PATTERN_TYPES,
-  LEVELS
+  LEVELS,
 } from "./constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
@@ -40,3 +40,9 @@ export type PercentStat = typeof PERCENT_STAT_TYPES[number];
 export type AttackPattern = typeof ATTACK_PATTERN_TYPES[number];
 
 export type AttackElement = "elmt" | "phys";
+
+export type AllStat = FlatStat | PercentStat;
+
+export interface Tracker {}
+
+export type ModAffect = "self" | "teammate" | "party";

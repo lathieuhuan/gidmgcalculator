@@ -1,5 +1,5 @@
 import cn from "classnames";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 import { FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
@@ -54,5 +54,20 @@ export const Checkbox = (props: InputHTMLAttributes<HTMLInputElement>) => {
   const { className, type, ...rest } = props;
   return (
     <input type="checkbox" className={cn("scale-150", className)} {...rest} />
+  );
+};
+
+export const Select = (props: SelectHTMLAttributes<HTMLSelectElement>) => {
+  const { className, ...rest } = props;
+  return (
+    <div>
+      <select
+        className={cn(
+          "w-full h-full block bg-transparent outline-none",
+          className
+        )}
+        {...rest}
+      />
+    </div>
   );
 };

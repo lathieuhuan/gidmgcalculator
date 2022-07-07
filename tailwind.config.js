@@ -17,10 +17,47 @@ module.exports = {
           "rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px",
       },
       fontSize: {
-        "1.5xl": [
+        "1.5xl": "1.375rem",
+        h1: [
+          "2rem",
+          {
+            lineHeight: "1.167",
+          },
+        ],
+        h2: [
+          "1.75rem",
+          {
+            lineHeight: "1.2",
+          },
+        ],
+        h3: [
+          "1.5rem",
+          {
+            lineHeight: "1.167",
+          },
+        ],
+        h4: [
           "1.375rem",
           {
             lineHeight: "1.235",
+          },
+        ],
+        h5: [
+          "1.25rem",
+          {
+            lineHeight: "1.334",
+          },
+        ],
+        h6: [
+          "1.125rem",
+          {
+            lineHeight: "1.6",
+          },
+        ],
+        "subtitle-1": [
+          "0.875rem",
+          {
+            lineHeight: "1.43",
           },
         ],
       },

@@ -67,3 +67,7 @@ body {
 .zoomin-on-hover:hover img {
   transform: scale(1.2);
 }
+
+.text-last-right {
+  text-align-last: right;
+}

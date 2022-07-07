@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import uiSlice from "./uiSlice";
-import calculatorSlice from "./calculatorSlice";
+import uiReducers from "./uiSlice";
+import calculatorReducers from "./calculatorSlice";
+import databaseReducers from "./databaseSlice";
 
 export const store = configureStore({
   reducer: {
-    ui: uiSlice,
-    calculator: calculatorSlice
+    ui: uiReducers,
+    calculator: calculatorReducers,
+    database: databaseReducers
   }
 })
 

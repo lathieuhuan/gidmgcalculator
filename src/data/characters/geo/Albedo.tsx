@@ -1,6 +1,6 @@
 import { Green } from "@Styled/DataDisplay";
 import { EModifierSrc } from "@Src/constants";
-import { mediumPAs } from "../configs";
+import { mediumPAs } from "../constants";
 import type { ICharacter } from "../types";
 import { checkAscs, checkCons } from "../utils";
 

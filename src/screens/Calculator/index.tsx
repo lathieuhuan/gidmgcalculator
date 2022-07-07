@@ -10,8 +10,9 @@ function Calculator() {
     <div
       className={cn("pb-2 flex items-center overflow-auto", styles.calculator)}
     >
-      <div className="flex"></div>
+      <div className="h-[98%] flex gap-2">
 
+      </div>
     </div>
   );
 }

@@ -1,15 +1,23 @@
-import type { Level } from "@Src/types";
+import type { Level, PercentStat } from "@Src/types";
+import { PERCENT_STAT_TYPES } from "@Src/constants";
 
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 
-export const wikiImg = (src: string) =>
-  `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`;
+export const wikiImg = (src: string) => {
+  return `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`;
+};
 
-export const turnArr = <T>(subject: T | T[]): T[] =>
-  Array.isArray(subject) ? subject : [subject];
+export const pctOf = (stat: string) => {
+  return PERCENT_STAT_TYPES.includes(stat as PercentStat) ? "%" : "";
+};
 
-export const pickOne = <T>(subject: T | T[], index: number): T =>
-  Array.isArray(subject) ? subject[index] : subject;
+export const turnArr = <T>(subject: T | T[]): T[] => {
+  return Array.isArray(subject) ? subject : [subject];
+};
+
+export const pickOne = <T>(subject: T | T[], index: number): T => {
+  return Array.isArray(subject) ? subject[index] : subject;
+};
 
 export function isOne(obj1: any, obj2: any) {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
