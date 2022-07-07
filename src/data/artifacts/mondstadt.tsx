@@ -1,4 +1,6 @@
-import { IArtifact } from "./types";
+import { addMod, addModMaker } from "@Src/calculators/utils";
+import { Green } from "@Styled/DataDisplay";
+import type { IArtifact } from "./types";
 
 const mondstadt: IArtifact[] = [
   {
@@ -25,32 +27,30 @@ const mondstadt: IArtifact[] = [
       name: "Gladiator's Triumphus",
       icon: "9/9b/Item_Gladiator%27s_Triumphus"
     },
-    setBnes: [
-      // {
-      //   type: "2-Piece Set",
-      //   desc: (
-      //     <>
-      //       <Green>ATK</Green> <Green b>+18%</Green>.
-      //     </>
-      //   ),
-      //   addBnes: simpleAnTmaker("ATTRs", "ATK%", 18)
-      // },
-      // {
-      //   type: "4-Piece Set",
-      //   desc: (
-      //     <>
-      //       If the wielder of this artifact set uses a Sword, Claymore or
-      //       Polearm, increases their <Green>Normal Attack DMG</Green> by{" "}
-      //       <Green b>35%</Green>.
-      //     </>
-      //   ),
-      //   addBnes: ({ hitBnes, charData, tkDesc, tracker }) => {
-      //     const supported = ["Sword", "Claymore", "Polearm"];
-      //     if (hitBnes && supported.includes(charData.weapon)) {
-      //       addAndTrack(tkDesc, hitBnes, "NA.pct", 35, tracker);
-      //     }
-      //   }
-      // }
+    setBonuses: [
+      {
+        desc: (
+          <>
+            <Green>ATK</Green> <Green b>+18%</Green>.
+          </>
+        ),
+        addBuff: addModMaker("totalAttrs", "atk", 18)
+      },
+      {
+        desc: (
+          <>
+            If the wielder of this artifact set uses a Sword, Claymore or
+            Polearm, increases their <Green>Normal Attack DMG</Green> by{" "}
+            <Green b>35%</Green>.
+          </>
+        ),
+        addBuff: ({ skillBonuses, charData, tkDesc, tracker }) => {
+          const supported = ["sword", "claymore", "polearm"];
+          if (skillBonuses && supported.includes(charData.weapon)) {
+            addMod(tkDesc, skillBonuses, "NA.pct", 35, tracker);
+          }
+        }
+      }
     ]
   },
 ]

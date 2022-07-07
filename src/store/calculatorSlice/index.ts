@@ -1,24 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CalculatorState } from "./types";
+import { initTarget } from "./initiators";
+import type { CalculatorState } from "./types";
 
 const initialState: CalculatorState = {
+  currentSetup: 0,
   configs: {
     separateCharInfo: false,
-    keepArtStatsWhenSwitching: false,
+    keepArtStatsOnSwitch: false,
   },
-  currentSetup: 0,
   setups: [],
   char: null,
   charData: null,
-  allSelfModCtrls: [],
+  allSelfBuffCtrls: [],
+  allSelfDebuffCtrls: [],
   allWps: [],
-  allSubWpModCtrl: [],
+  allSubWpBuffCtrls: {},
+  allSubWpDebuffCtrls: {},
   allArtInfo: [],
   allParties: [],
   allElmtModCtrls: [],
-  allCustomMCs: [],
-  target: {},
-  monster: null
+  allCustomBuffCtrls: [],
+  allCustomDebuffCtrls: [],
+  target: initTarget(),
+  monster: null,
+  allTotalAttrs: [],
+  allArtAttrs: [],
+  allRxnBonuses: [],
+  allFinalInfusion: [],
+  allDmgResult: [],
 };
 
 export const calculatorSlice = createSlice({

@@ -1,6 +1,6 @@
 import { Green } from "@Styled/DataDisplay";
 import { EModifierSrc } from "@Src/constants";
-import { mediumPAs } from "../constants";
+import { MEDIUM_PA } from "../constants";
 import type { ICharacter } from "../types";
 import { checkAscs, checkCons } from "../utils";
 
@@ -40,7 +40,7 @@ const Albedo: ICharacter = {
         { name: "5-Hit", baseMult: 62.07, multType: 1 },
       ],
       CA: [{ name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 }],
-      PA: mediumPAs,
+      PA: MEDIUM_PA,
       caStamina: 20,
     },
     {
@@ -60,7 +60,7 @@ const Albedo: ICharacter = {
           baseSType: "def",
           baseMult: 133.6,
           multType: 2,
-          // getTlBnes: ({ char, selfMCs }) =>
+          // getTalentBuff: ({ char, selfMCs }) =>
           //   makeTlBnes(
           //     checkCharMC(Albedo.buffs, char, selfMCs.BCs, 0),
           //     "pct",

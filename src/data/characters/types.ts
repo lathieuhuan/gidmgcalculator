@@ -1,13 +1,14 @@
-import type { CalcChar } from "@Store/calculatorSlice/types";
 import type {
   AttackElement,
   AttackPattern,
   BaseStat,
-  Element,
+  Vision,
   Nation,
   Rarity,
   RngPercentStat,
   Weapon,
+  CharInfo,
+  ModAffect,
 } from "@Src/types";
 
 export interface ICharacter {
@@ -17,7 +18,7 @@ export interface ICharacter {
   sideIcon: string;
   rarity: Rarity;
   nation: Nation;
-  vision: Element;
+  vision: Vision;
   weapon: Weapon;
   stats: (Record<BaseStat, number> & Partial<Record<RngPercentStat, number>>)[];
   activeTalents: [NormalAttack, Skill, ElementalBurst];
@@ -56,13 +57,15 @@ interface ElementalBurst extends Skill {
   energyCost: number;
 }
 
-type ModifierInput = "select";
+// #to-do
+type ModifierInput = "select" | "";
+
 interface Modifier {
   id: number;
   src: string;
   desc: () => JSX.Element;
-  affect: "self" | "teammate" | "party";
-  isGranted: (char: CalcChar) => boolean;
+  affect: ModAffect;
+  isGranted: (char: CharInfo) => boolean;
   selfLabels?: string[];
   inputs?: (number | string)[];
   inputTypes?: ModifierInput[];

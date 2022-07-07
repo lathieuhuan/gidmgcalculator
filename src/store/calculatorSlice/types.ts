@@ -1,70 +1,102 @@
 import type {
+  AllStat,
   Artifact,
+  CommonStat,
+  AttackElement,
+  AttackPattern,
   FlatStat,
   Level,
+  Nation,
   Rarity,
   RngPercentStat,
+  Vision,
   Weapon,
+  AmplifyingReaction,
+  TargetResistance,
+  Reaction,
+  NormalAttack,
+  CharInfo,
 } from "@Src/types";
 
 export interface CalculatorState {
   currentSetup: number;
   configs: {
     separateCharInfo: boolean;
-    keepArtStatsWhenSwitching: boolean;
+    keepArtStatsOnSwitch: boolean;
   };
-  setups: number[];
-  char: CalcChar | null;
+  setups: CalcSetup[];
+  char: CharInfo | null;
   charData: CalcCharData | null;
-  allSelfModCtrls: CharModCtrl[];
+  allSelfBuffCtrls: ModifierCtrl[];
+  allSelfDebuffCtrls: ModifierCtrl[];
   allWps: CalcWeapon[];
-  allSubWpModCtrl: {
-    buffCtrls: SubWpBuffCtrl[];
-    debuffCtrls: [];
-  }[];
+  allSubWpBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
+  allSubWpDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];
-  allParties: CalcParty[];
-  allElmtModCtrls: ElmtModCtrl[];
-  allCustomMCs: CustomModCtrl[];
-  target: {};
+  allParties: [Teammate | null, Teammate | null, Teammate | null][];
+  allElmtModCtrls: ElementModCtrl[];
+  allCustomBuffCtrls: CustomBuffCtrl[];
+  allCustomDebuffCtrls: CustomDebuffCtrl[];
+  target: Target;
   monster: Monster | null;
+  allTotalAttrs: TotalAttribute[];
+  allArtAttrs: ArtifactAttribute[];
+  allRxnBonuses: ReactionBonus[];
+  allFinalInfusion: FinalInfusion[];
+  allDmgResult: DamageResult[];
 }
 
-export interface CalcChar {
-  level: Level;
-  NAs: number;
-  ES: number;
-  EB: number;
-  cons: number;
+export type SetupType = "original" | "";
+
+export interface CalcSetup {
+  name: string;
+  ID: number;
+  type: SetupType;
 }
 
-export interface CalcCharData {}
+export interface CalcCharData {
+  code: number;
+  name: string;
+  nation: Nation;
+  vision: Vision;
+  weapon: Weapon;
+  EBcost: number;
+}
 
-export interface CharModCtrl {
+export interface ModifierCtrl {
   activated: boolean;
-  id: number;
+  index: number;
   inputs?: (number | string)[];
 }
 
 interface CalcWeapon {
+  id: number;
   type: Weapon;
   code: number;
   level: Level;
   refinement: number;
+  buffCtrls: ModifierCtrl[];
 }
 
-interface SubWpBuffCtrl {
+interface SubWeaponBuffCtrl {
   code: number;
   activated: boolean;
   refinement: number;
   index: number;
 }
 
+// ARTIFACTS starts
 export interface CalcArtPiece {
+  id: number;
   code: number;
   type: Artifact;
   rarity: Rarity;
-  mainStatType: FlatStat | RngPercentStat;
+  level: number;
+  mainStatType: CommonStat;
+  subStats: {
+    type: CommonStat;
+    value: number;
+  }[];
 }
 
 export interface CalcArtSet {
@@ -73,14 +105,75 @@ export interface CalcArtSet {
 }
 
 interface CalcArtInfo {
+  pieces: (CalcArtPiece | null)[];
   sets: CalcArtSet[];
-  pieces: CalcArtPiece[];
+  buffCtrls: ModifierCtrl[];
+  subBuffCtrls: ModifierCtrl[];
+  subDebuffCtrls: ModifierCtrl[];
+}
+// ARTIFACTS ends
+
+interface Teammate {
+  name: string;
+  buffCtrls: ModifierCtrl[];
+  debuffCtrls: ModifierCtrl[];
 }
 
-interface CalcParty {}
+interface ElementModCtrl {
+  naAmpRxn: AmplifyingReaction | null;
+  ampRxn: AmplifyingReaction | null;
+  superconduct: boolean;
+  resonance: {
+    vision: Vision;
+    activated: boolean;
+  }[];
+}
 
-interface ElmtModCtrl {}
+interface CustomBuffCtrl {
+  // #to-do
+  type: CommonStat | "";
+  value: number;
+  category: number;
+}
 
-interface CustomModCtrl {}
+interface CustomDebuffCtrl {
+  // #to-do
+  type: "";
+  value: number;
+}
 
-interface Monster {}
+export interface Target extends Record<TargetResistance, number> {
+  level: number;
+}
+
+interface Monster {
+  index: number;
+  inputs: (number | string)[];
+}
+
+export type TotalAttribute = Record<AllStat, number>;
+
+export type ArtifactAttribute = Omit<Record<FlatStat, number>, "em"> &
+  Partial<Record<RngPercentStat | "em", number>>;
+
+export type SkillBonusInfoKey = "cRate" | "cDmg" | "pct" | "flat";
+
+type SkillBonusInfo = Record<SkillBonusInfoKey, number>;
+
+export type SkillBonusKey = AttackPattern | AttackElement | "all";
+
+export type SkillBonus = Record<SkillBonusKey, SkillBonusInfo>;
+
+export type ReactionBonusKey = Reaction | "naMelt" | "naVaporize";
+
+export type ReactionBonus = Record<ReactionBonusKey, number>;
+
+type FinalInfusion = Record<NormalAttack, AttackElement>;
+
+type AttackDamage = Record<"nonCrit" | "crit" | "average", number>;
+
+type SkillDamage = {
+  [k: string]: AttackDamage;
+};
+
+type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", SkillDamage>;

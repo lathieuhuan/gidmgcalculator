@@ -11,10 +11,13 @@ export interface IWeapon {
     type: AllStat;
     scale: string;
   };
-  addBonuses: (args: AddBonusesArgs) => void;
+  addBuff: (args: AddBonusesArgs) => void;
   buffs: WeaponBuff[];
   passiveName: string;
-  passiveDescs: (args: DescArgs) => JSX.Element;
+  passiveDesc: (args: DescArgs) => {
+    core: JSX.Element;
+    extra?: JSX.Element[];
+  };
 }
 
 export interface AddBonusesArgs {
@@ -26,7 +29,7 @@ export interface AddBonusesArgs {
 interface WeaponBuff {
   index: number;
   affect: ModAffect;
-  addBonuses: (args: AddBonusesArgs) => void;
+  addBuff: (args: AddBonusesArgs) => void;
   desc: (args: DescArgs) => JSX.Element;
 }
 

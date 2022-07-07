@@ -1,4 +1,4 @@
-import type { Level } from "@Src/types";
+import type { CharInfo, Level } from "@Src/types";
 
 export interface DatabaseState {
   myChars: DatabaseChar[];
@@ -7,13 +7,7 @@ export interface DatabaseState {
   chosenChar: string;
 }
 
-interface DatabaseChar {
-  name: string;
-  level: Level;
-  NAs: number;
-  ES: number;
-  EB: number;
-  cons: number;
+interface DatabaseChar extends CharInfo {
   weaponId: number;
-  artifactIds: (number | null)[]
+  artifactIds: (number | null)[];
 }

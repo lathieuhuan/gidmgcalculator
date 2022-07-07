@@ -1,12 +1,12 @@
+import { CharInfo } from "@Src/types";
 import { ascsFromLv } from "@Src/utils";
-import { CalculatedCharInfo } from "@Store/calculatorSlice/types";
 
-const makeAscsChecker = (value: number) => (char: CalculatedCharInfo) => {
+const makeAscsChecker = (value: number) => (char: CharInfo) => {
   const ascs = ascsFromLv(char.level);
   return ascs >= value;
 };
 
-const makeConsChecker = (value: number) => (char: CalculatedCharInfo) => {
+const makeConsChecker = (value: number) => (char: CharInfo) => {
   return char.cons >= value;
 };
 

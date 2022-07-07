@@ -1,5 +1,5 @@
-import type { IWeapon } from "./types";
+import GoldBows from "./Bows/Gold";
 
-const weapons: IWeapon[] = [];
+const weapons = GoldBows;
 
 export default weapons;

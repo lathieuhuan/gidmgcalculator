@@ -1,3 +1,6 @@
+import type { Tracker } from "@Src/types";
+import type { CalcCharData, SkillBonus } from "@Store/calculatorSlice/types";
+
 interface PieceInfo {
   name: string;
   icon: string;
@@ -13,5 +16,17 @@ export interface IArtifact {
   sands: PieceInfo;
   goblet: PieceInfo;
   circlet: PieceInfo;
-  setBnes: []
+  setBonuses: [SetBonus, SetBonus];
+}
+
+interface SetBonus {
+  desc: JSX.Element;
+  addBuff?: (args: AddBuffArgs) => void;
+}
+
+interface AddBuffArgs {
+  skillBonuses: SkillBonus;
+  charData: CalcCharData;
+  tkDesc: string;
+  tracker: Tracker;
 }
