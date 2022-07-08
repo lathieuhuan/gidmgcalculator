@@ -29,10 +29,7 @@ export type PercentStat = typeof PERCENT_STAT_TYPES[number];
 
 export type AllStat = BaseStat | FlatStat | PercentStat;
 
-export type RngPercentStat = Exclude<
-  PercentStat,
-  "shStr" | "naAtkSpd" | "caAtkSpd"
->;
+export type RngPercentStat = Exclude<PercentStat, "shStr" | "naAtkSpd" | "caAtkSpd">;
 
 export type CommonStat = FlatStat | RngPercentStat | "shStr";
 
@@ -46,9 +43,9 @@ export type Tracker = any;
 
 export type ModAffect = "self" | "teammate" | "party";
 
-export type AmplifyingReaction = "melt" | "vaporize";
-
 export type TargetResistance = typeof TARGET_RESISTANCES_TYPES[number];
+
+export type AmplifyingReaction = "melt" | "vaporize";
 
 export type Reaction = typeof REACTIONS[number];
 
@@ -60,3 +57,6 @@ export interface CharInfo {
   EB: number;
   cons: number;
 }
+
+// #to-do
+export type ModifierInput = string | number;

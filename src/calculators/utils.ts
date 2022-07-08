@@ -6,7 +6,7 @@ import type {
   SkillBonusKey,
   ReactionBonus,
   ReactionBonusKey,
-  TotalAttribute,
+  TotalAttributes,
 } from "@Store/calculatorSlice/types";
 
 export function addOrInit(obj: any, key: string | number, value: number) {
@@ -19,7 +19,7 @@ export function addOrInit(obj: any, key: string | number, value: number) {
 
 export type SkillBonusPath = `${SkillBonusKey}.${SkillBonusInfoKey}`;
 
-export type ModRecipient = TotalAttribute | ReactionBonus | SkillBonus;
+export type ModRecipient = TotalAttributes | ReactionBonus | SkillBonus;
 
 export type Paths =
   | AllStat
@@ -33,7 +33,7 @@ type RootValue = number | number[];
 
 export function addMod(
   trackerDesc: string,
-  recipient: TotalAttribute,
+  recipient: TotalAttributes,
   paths: AllStat | AllStat[],
   rootValue: RootValue,
   tracker: Tracker

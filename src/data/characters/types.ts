@@ -9,7 +9,15 @@ import type {
   Weapon,
   CharInfo,
   ModAffect,
+  Tracker,
+  ModifierInput,
 } from "@Src/types";
+import {
+  ModifierCtrl,
+  SkillBonus,
+  SkillBonusInfoKey,
+  TotalAttributes,
+} from "@Store/calculatorSlice/types";
 
 export interface ICharacter {
   code: number;
@@ -21,10 +29,14 @@ export interface ICharacter {
   vision: Vision;
   weapon: Weapon;
   stats: (Record<BaseStat, number> & Partial<Record<RngPercentStat, number>>)[];
-  activeTalents: [NormalAttack, Skill, ElementalBurst];
+  activeTalents: {
+    NAs: NormalAttack;
+    ES: Skill;
+    EB: ElementalBurst;
+  };
   passiveTalents: Ability[];
   constellation: Ability[];
-  buffs?: Modifier[];
+  buffs?: AbilityModifier[];
 }
 
 export type NormalAttackStats = {
@@ -39,10 +51,22 @@ interface NormalAttack {
   PA: NormalAttackStats;
   caStamina: number;
 }
+
 interface Ability {
   name: string;
   image: string;
 }
+
+interface GetTalentBuffArgs {
+  char: CharInfo;
+  selfBuffCtrls: ModifierCtrl[];
+}
+
+export type TalentBuff = Record<
+  SkillBonusInfoKey,
+  { desc: string; value: number }
+>;
+
 interface Skill extends Ability {
   xtraLvAtCons: 3 | 5;
   stats: {
@@ -51,6 +75,7 @@ interface Skill extends Ability {
     baseSType?: "base_atk" | "atk" | "def" | "hp";
     baseMult: number | number[];
     multType: number;
+    getTalentBuff?: (args: GetTalentBuffArgs) => Partial<TalentBuff> | void;
   }[];
 }
 interface ElementalBurst extends Skill {
@@ -58,16 +83,26 @@ interface ElementalBurst extends Skill {
 }
 
 // #to-do
-type ModifierInput = "select" | "";
+type ModifierInputType = "select" | "";
 
-interface Modifier {
-  id: number;
+interface AddBuffArgs {
+  totalAttrs: TotalAttributes;
+  skillBonus: SkillBonus;
+  selfBuffCtrls: ModifierCtrl[];
+  trackerDesc: string;
+  tracker: Tracker;
+}
+export interface AbilityModifier {
+  index: number;
   src: string;
   desc: () => JSX.Element;
   affect: ModAffect;
   isGranted: (char: CharInfo) => boolean;
   selfLabels?: string[];
-  inputs?: (number | string)[];
-  inputTypes?: ModifierInput[];
+  inputs?: ModifierInput[];
+  inputTypes?: ModifierInputType[];
   maxs?: (number | null)[];
+  // #to-do
+  addBuff?: (args: AddBuffArgs) => void;
+  addFinalBuff?: (args: AddBuffArgs) => void;
 }

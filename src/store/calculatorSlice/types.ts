@@ -27,19 +27,19 @@ export interface CalculatorState {
   setups: CalcSetup[];
   char: CharInfo | null;
   charData: CalcCharData | null;
-  allSelfBuffCtrls: ModifierCtrl[];
-  allSelfDebuffCtrls: ModifierCtrl[];
+  allSelfBuffCtrls: Array<ModifierCtrl[]>;
+  allSelfDebuffCtrls: Array<ModifierCtrl[]>;
   allWps: CalcWeapon[];
   allSubWpBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
   allSubWpDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];
   allParties: [Teammate | null, Teammate | null, Teammate | null][];
   allElmtModCtrls: ElementModCtrl[];
-  allCustomBuffCtrls: CustomBuffCtrl[];
-  allCustomDebuffCtrls: CustomDebuffCtrl[];
+  allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
+  allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
   target: Target;
   monster: Monster | null;
-  allTotalAttrs: TotalAttribute[];
+  allTotalAttrs: TotalAttributes[];
   allArtAttrs: ArtifactAttribute[];
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
@@ -70,7 +70,7 @@ export interface ModifierCtrl {
 }
 
 interface CalcWeapon {
-  id: number;
+  ID: number;
   type: Weapon;
   code: number;
   level: Level;
@@ -87,7 +87,7 @@ interface SubWeaponBuffCtrl {
 
 // ARTIFACTS starts
 export interface CalcArtPiece {
-  id: number;
+  ID: number;
   code: number;
   type: Artifact;
   rarity: Rarity;
@@ -151,7 +151,7 @@ interface Monster {
   inputs: (number | string)[];
 }
 
-export type TotalAttribute = Record<AllStat, number>;
+export type TotalAttributes = Record<AllStat, number>;
 
 export type ArtifactAttribute = Omit<Record<FlatStat, number>, "em"> &
   Partial<Record<RngPercentStat | "em", number>>;
