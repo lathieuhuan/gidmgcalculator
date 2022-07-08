@@ -1,17 +1,19 @@
 import { useState } from "react";
 import Collapse from "@Components/Collapse";
 import ModalHeader from "@Styled/ModalHeader";
-import CharFilter from "./CharFilter";
 import { Checkbox } from "@Src/styled-components/Inputs";
+import CharFilter from "./CharFilter";
 import type { DataType, Filter, FilterFn } from "../types";
+
+const { FilterButton, CloseButton } = ModalHeader;
 
 interface HeaderProps {
   dataType: DataType;
   needMassAdd: boolean;
   massAdd: boolean;
-  toggleMassAdd: () => void;
   count: number;
   filter: Filter;
+  toggleMassAdd: () => void;
   setFilter: FilterFn;
   close: () => void;
 }
@@ -19,9 +21,9 @@ export default function Header({
   dataType,
   needMassAdd,
   massAdd,
-  toggleMassAdd,
   count,
   filter,
+  toggleMassAdd,
   setFilter,
   close,
 }: HeaderProps) {
@@ -31,7 +33,7 @@ export default function Header({
     <ModalHeader>
       {dataType === "character" && (
         <>
-          <ModalHeader.FilterButton
+          <FilterButton
             active={filterOn}
             onClick={() => setFilterOn(!filterOn)}
           />
@@ -57,7 +59,7 @@ export default function Header({
         </div>
       )}
 
-      <ModalHeader.CloseButton onClick={close} />
+      <CloseButton onClick={close} />
     </ModalHeader>
   );
 }
