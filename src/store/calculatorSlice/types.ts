@@ -69,7 +69,7 @@ export interface ModifierCtrl {
   inputs?: (number | string)[];
 }
 
-interface CalcWeapon {
+export interface CalcWeapon {
   ID: number;
   type: Weapon;
   code: number;
@@ -78,7 +78,7 @@ interface CalcWeapon {
   buffCtrls: ModifierCtrl[];
 }
 
-interface SubWeaponBuffCtrl {
+export interface SubWeaponBuffCtrl {
   code: number;
   activated: boolean;
   refinement: number;
@@ -104,7 +104,7 @@ export interface CalcArtSet {
   bonusLv: number;
 }
 
-interface CalcArtInfo {
+export interface CalcArtInfo {
   pieces: (CalcArtPiece | null)[];
   sets: CalcArtSet[];
   buffCtrls: ModifierCtrl[];
@@ -113,13 +113,13 @@ interface CalcArtInfo {
 }
 // ARTIFACTS ends
 
-interface Teammate {
+export interface Teammate {
   name: string;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
 }
 
-interface ElementModCtrl {
+export interface ElementModCtrl {
   naAmpRxn: AmplifyingReaction | null;
   ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
@@ -129,14 +129,14 @@ interface ElementModCtrl {
   }[];
 }
 
-interface CustomBuffCtrl {
+export interface CustomBuffCtrl {
   // #to-do
   type: CommonStat | "";
   value: number;
   category: number;
 }
 
-interface CustomDebuffCtrl {
+export interface CustomDebuffCtrl {
   // #to-do
   type: "";
   value: number;
@@ -146,7 +146,7 @@ export interface Target extends Record<TargetResistance, number> {
   level: number;
 }
 
-interface Monster {
+export interface Monster {
   index: number;
   inputs: (number | string)[];
 }
@@ -168,7 +168,7 @@ export type ReactionBonusKey = Reaction | "naMelt" | "naVaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
-type FinalInfusion = Record<NormalAttack, AttackElement>;
+export type FinalInfusion = Record<NormalAttack, AttackElement>;
 
 type AttackDamage = Record<"nonCrit" | "crit" | "average", number>;
 

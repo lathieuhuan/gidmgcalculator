@@ -1,4 +1,5 @@
-import type { AllStat, Tracker, Rarity, ModAffect } from "@Src/types";
+import { EModAffect } from "@Src/constants";
+import type { AllStat, Tracker, Rarity } from "@Src/types";
 
 export interface IWeapon {
   code: number;
@@ -31,7 +32,7 @@ interface DescArgs {
 }
 interface WeaponBuff {
   index: number;
-  affect: ModAffect;
+  affect: EModAffect;
   applyBuff: (args: ApplyBuffArgs) => void;
   desc: (args: DescArgs) => JSX.Element;
 }

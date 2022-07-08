@@ -41,8 +41,6 @@ export type AttackPattern = NormalAttack | "ES" | "EB";
 
 export type Tracker = any;
 
-export type ModAffect = "self" | "teammate" | "party";
-
 export type TargetResistance = typeof TARGET_RESISTANCES_TYPES[number];
 
 export type AmplifyingReaction = "melt" | "vaporize";

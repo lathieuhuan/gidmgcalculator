@@ -1,3 +1,4 @@
+import { EModAffect } from "@Src/constants";
 import type {
   AttackElement,
   AttackPattern,
@@ -8,7 +9,6 @@ import type {
   RngPercentStat,
   Weapon,
   CharInfo,
-  ModAffect,
   Tracker,
   ModifierInput,
 } from "@Src/types";
@@ -21,6 +21,7 @@ import {
 
 export interface ICharacter {
   code: number;
+  beta?: boolean;
   name: string;
   icon: string;
   sideIcon: string;
@@ -36,7 +37,8 @@ export interface ICharacter {
   };
   passiveTalents: Ability[];
   constellation: Ability[];
-  buffs?: AbilityModifier[];
+  buffs?: AbilityBuff[];
+  debuffs?: AbilityDebuff[];
 }
 
 export type NormalAttackStats = {
@@ -62,10 +64,7 @@ interface GetTalentBuffArgs {
   selfBuffCtrls: ModifierCtrl[];
 }
 
-export type TalentBuff = Record<
-  SkillBonusInfoKey,
-  { desc: string; value: number }
->;
+export type TalentBuff = Record<SkillBonusInfoKey, { desc: string; value: number }>;
 
 interface Skill extends Ability {
   xtraLvAtCons: 3 | 5;
@@ -82,8 +81,17 @@ interface ElementalBurst extends Skill {
   energyCost: number;
 }
 
+interface AbilityModifier {
+  index: number;
+  outdated?: boolean;
+  src: string;
+  isGranted: (char: CharInfo) => boolean;
+}
+
+// BUFFS
+
 // #to-do
-type ModifierInputType = "select" | "";
+type BuffInputRenderType = "select" | "";
 
 interface ApplyBuffArgs {
   totalAttrs: TotalAttribute;
@@ -92,17 +100,40 @@ interface ApplyBuffArgs {
   desc: string;
   tracker: Tracker;
 }
-export interface AbilityModifier {
-  index: number;
-  src: string;
+export interface AbilityBuff extends AbilityModifier {
   desc: () => JSX.Element;
-  affect: ModAffect;
-  isGranted: (char: CharInfo) => boolean;
-  selfLabels?: string[];
-  inputs?: ModifierInput[];
-  inputTypes?: ModifierInputType[];
+  affect: EModAffect;
   maxs?: (number | null)[];
+  inputConfig?: {
+    labels: string[];
+    selfLabels?: string[];
+    initialValues: ModifierInput[]
+    renderTypes: BuffInputRenderType[];
+  };
   // #to-do
   applyBuff?: (args: ApplyBuffArgs) => void;
   applyFinalBuff?: (args: ApplyBuffArgs) => void;
+}
+
+// DEBUFFS
+
+export type DebuffInputRenderType = "absorption" | "text";
+
+// #to-do
+interface ApplyDebuffArgs {
+  selfDebuffCtrls: ModifierCtrl[];
+  desc: string;
+  tracker: Tracker;
+}
+export interface AbilityDebuff extends AbilityModifier {
+  desc: () => JSX.Element;
+  affect?: EModAffect;
+  inputConfig?: {
+    labels: string[];
+    selfLabels?: string[];
+    initialValues: ModifierInput[]
+    renderTypes: DebuffInputRenderType[];
+  };
+  // #to-do
+  applyDebuff?: (args: ApplyDebuffArgs) => void;
 }

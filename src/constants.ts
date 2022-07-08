@@ -15,31 +15,17 @@ export enum EModifierSrc {
   C6 = "Constellation 6",
 }
 
-export const WEAPON_TYPES = [
-  "sword",
-  "claymore",
-  "catalyst",
-  "polearm",
-  "bow",
-] as const;
+export enum EModAffect {
+  SELF = "self",
+  TEAMMATE = "teammate",
+  PARTY = "party",
+}
 
-export const ARTIFACT_TYPES = [
-  "flower",
-  "plume",
-  "sands",
-  "goblet",
-  "circlet",
-] as const;
+export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] as const;
 
-export const VISION_TYPES = [
-  "pyro",
-  "hydro",
-  "electro",
-  "cryo",
-  "geo",
-  "anemo",
-  "dendro",
-] as const;
+export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
+
+export const VISION_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
 
 export const ELEMENTAL_DMG_BONUS_TYPES = [
   "pyro_",
@@ -127,7 +113,7 @@ export const REACTIONS = [
   "overloaded",
   "shattered",
   "melt",
-  "vaporize"
+  "vaporize",
 ] as const;
 
 export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;

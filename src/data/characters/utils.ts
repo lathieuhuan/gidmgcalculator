@@ -1,6 +1,6 @@
 import type { CharInfo, ModifierInput } from "@Src/types";
 import type { ModifierCtrl, SkillBonusInfoKey } from "@Store/calculatorSlice/types";
-import type { AbilityModifier, TalentBuff } from "./types";
+import type { TalentBuff } from "./types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
 const makeAscsChecker = (value: number) => (char: CharInfo) => {
@@ -49,7 +49,10 @@ export function modIsActivated(modCtrls: ModifierCtrl[], index: number) {
 }
 
 export const charModCtrlIsActivated = (
-  mods: AbilityModifier[],
+  mods: {
+    index: number,
+    isGranted: (char: CharInfo) => boolean
+  }[],
   char: CharInfo,
   buffCtrls: ModifierCtrl[],
   index: number
