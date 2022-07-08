@@ -39,7 +39,7 @@ export interface CalculatorState {
   allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
   target: Target;
   monster: Monster | null;
-  allTotalAttrs: TotalAttributes[];
+  allTotalAttrs: TotalAttribute[];
   allArtAttrs: ArtifactAttribute[];
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
@@ -151,7 +151,7 @@ interface Monster {
   inputs: (number | string)[];
 }
 
-export type TotalAttributes = Record<AllStat, number>;
+export type TotalAttribute = Record<AllStat, number>;
 
 export type ArtifactAttribute = Omit<Record<FlatStat, number>, "em"> &
   Partial<Record<RngPercentStat | "em", number>>;

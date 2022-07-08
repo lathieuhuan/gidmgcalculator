@@ -1,7 +1,7 @@
 import { findByCode } from "@Src/utils";
 import { Green } from "@Styled/DataDisplay";
 import { IWeapon } from "../types";
-import { addWpModMaker } from "../utils";
+import { makeWpModApplier } from "../utils";
 
 const GoldBows: IWeapon[] = [
   {
@@ -11,12 +11,12 @@ const GoldBows: IWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg", scale: "19.2%" },
-    addBuff: addWpModMaker("totalAttrs", "hp", 4),
+    applyBuff: makeWpModApplier("totalAttrs", "hp", 4),
     buffs: [
       {
         index: 0,
         affect: "self",
-        addBuff: addWpModMaker("skillBonus", "all.pct", 5),
+        applyBuff: makeWpModApplier("skillBonuses", "all.pct", 5),
         desc: ({ refinement }) =>
           findByCode(GoldBows, 125)!.passiveDesc({ refinement }).extra![0],
       },

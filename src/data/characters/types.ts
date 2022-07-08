@@ -16,7 +16,7 @@ import {
   ModifierCtrl,
   SkillBonus,
   SkillBonusInfoKey,
-  TotalAttributes,
+  TotalAttribute,
 } from "@Store/calculatorSlice/types";
 
 export interface ICharacter {
@@ -85,11 +85,11 @@ interface ElementalBurst extends Skill {
 // #to-do
 type ModifierInputType = "select" | "";
 
-interface AddBuffArgs {
-  totalAttrs: TotalAttributes;
-  skillBonus: SkillBonus;
+interface ApplyBuffArgs {
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
   selfBuffCtrls: ModifierCtrl[];
-  trackerDesc: string;
+  desc: string;
   tracker: Tracker;
 }
 export interface AbilityModifier {
@@ -103,6 +103,6 @@ export interface AbilityModifier {
   inputTypes?: ModifierInputType[];
   maxs?: (number | null)[];
   // #to-do
-  addBuff?: (args: AddBuffArgs) => void;
-  addFinalBuff?: (args: AddBuffArgs) => void;
+  applyBuff?: (args: ApplyBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyBuffArgs) => void;
 }

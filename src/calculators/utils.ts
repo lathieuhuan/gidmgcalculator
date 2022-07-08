@@ -1,4 +1,3 @@
-import { pickOne, turnArr } from "@Src/utils";
 import type { AllStat, Tracker } from "@Src/types";
 import type {
   SkillBonus,
@@ -6,8 +5,9 @@ import type {
   SkillBonusKey,
   ReactionBonus,
   ReactionBonusKey,
-  TotalAttributes,
+  TotalAttribute,
 } from "@Store/calculatorSlice/types";
+import { pickOne, turnArr } from "@Src/utils";
 
 export function addOrInit(obj: any, key: string | number, value: number) {
   turnArr(key).forEach((k) => {
@@ -15,11 +15,13 @@ export function addOrInit(obj: any, key: string | number, value: number) {
   });
 }
 
-/** addMod */
+/**
+ * addMod
+ * */
 
 export type SkillBonusPath = `${SkillBonusKey}.${SkillBonusInfoKey}`;
 
-export type ModRecipient = TotalAttributes | ReactionBonus | SkillBonus;
+export type ModRecipient = TotalAttribute | ReactionBonus | SkillBonus;
 
 export type Paths =
   | AllStat
@@ -31,30 +33,30 @@ export type Paths =
 
 type RootValue = number | number[];
 
-export function addMod(
-  trackerDesc: string,
-  recipient: TotalAttributes,
+export function applyModifier(
+  desc: string,
+  recipient: TotalAttribute,
   paths: AllStat | AllStat[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
-export function addMod(
-  trackerDesc: string,
+export function applyModifier(
+  desc: string,
   recipient: ReactionBonus,
   paths: ReactionBonusKey | ReactionBonusKey[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
-export function addMod(
-  trackerDesc: string,
+export function applyModifier(
+  desc: string,
   recipient: SkillBonus,
   paths: SkillBonusPath | SkillBonusPath[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
 
-export function addMod(
-  trackerDesc: string,
+export function applyModifier(
+  desc: string,
   recipient: ModRecipient,
   paths: Paths,
   rootValue: RootValue,
@@ -64,7 +66,7 @@ export function addMod(
     const routes = path.split(".");
     const value = pickOne(rootValue, i);
     const node = {
-      trackerDesc,
+      desc,
       value
     };
     if (routes[1] === undefined) {
@@ -81,35 +83,45 @@ export function addMod(
   });
 }
 
-/** addModMaker */
+/**
+ * addModMaker
+ * */
 
-export function addModMaker(
-  recipient: "totalAttrs",
+interface ModApplierArgs {
+  totalAttrs: TotalAttribute,
+  skillBonuses: SkillBonus,
+  rxnBonuses: ReactionBonus,
+  desc: string,
+  tracker: Tracker
+}
+
+export function makeModApplier(
+  recipientKey: "totalAttrs",
   paths: AllStat | AllStat[],
   rootValue: RootValue
 ): (args: any) => void;
 
-export function addModMaker(
-  recipient: "reactionBonus",
+export function makeModApplier(
+  recipientKey: "rxnBonuses",
   paths: ReactionBonusKey | ReactionBonusKey[],
   rootValue: RootValue
 ): (args: any) => void;
 
-export function addModMaker(
-  recipient: "skillBonus",
+export function makeModApplier(
+  recipientKey: "skillBonuses",
   paths: SkillBonusPath | SkillBonusPath[],
   rootValue: RootValue
 ): (args: any) => void;
 
-export function addModMaker(
-  recipient: string,
+export function makeModApplier(
+  recipientKey: string,
   paths: Paths,
   rootValue: RootValue
 ) {
-  return (args: any) => {
-    if (args[recipient]) {
-      const { trackerDesc, tracker } = args;
-      addMod(trackerDesc, args[recipient], paths as any, rootValue, tracker);
+  return (args: ModApplierArgs) => {
+    const recipient = (args as any)[recipientKey];
+    if (recipient) {
+      applyModifier(args.desc, recipient, paths as any, rootValue, args.tracker);
     }
   };
 }

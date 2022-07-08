@@ -3,7 +3,7 @@ import { EModifierSrc } from "@Src/constants";
 import { MEDIUM_PA } from "../constants";
 import type { ICharacter } from "../types";
 import { checkAscs, charModCtrlIsActivated, checkCons, findInput, makeTrackerDesc } from "../utils";
-import { addMod, addModMaker } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 
 const Albedo: ICharacter = {
   code: 29,
@@ -156,7 +156,7 @@ const Albedo: ICharacter = {
       ),
       affect: "party",
       isGranted: checkAscs[4],
-      addBuff: addModMaker("totalAttrs", "em", 125),
+      applyBuff: makeModApplier("totalAttrs", "em", 125),
     },
     {
       index: 2,
@@ -175,9 +175,9 @@ const Albedo: ICharacter = {
       inputs: [1],
       inputTypes: ["select"],
       maxs: [4],
-      addFinalBuff: ({ totalAttrs, skillBonus, selfBuffCtrls, trackerDesc, tracker }) => {
+      applyFinalBuff: ({ totalAttrs, skillBonuses, selfBuffCtrls, desc, tracker }) => {
         const bnValue = totalAttrs.def * 0.3 * +findInput(selfBuffCtrls, 2, 0, 0);
-        addMod(trackerDesc, skillBonus, "EB.flat", Math.round(bnValue), tracker);
+        applyModifier(desc, skillBonuses, "EB.flat", Math.round(bnValue), tracker);
       },
     },
     {
@@ -191,7 +191,7 @@ const Albedo: ICharacter = {
       ),
       affect: "party",
       isGranted: checkCons[4],
-      addBuff: addModMaker("skillBonus", "PA.pct", 30),
+      applyBuff: makeModApplier("skillBonuses", "PA.pct", 30),
     },
     {
       index: 4,
@@ -204,7 +204,7 @@ const Albedo: ICharacter = {
       ),
       affect: "party",
       isGranted: checkCons[6],
-      addBuff: addModMaker("skillBonus", "all.pct", 17),
+      applyBuff: makeModApplier("skillBonuses", "all.pct", 17),
     },
   ],
 };

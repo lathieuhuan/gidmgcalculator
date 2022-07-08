@@ -21,12 +21,12 @@ export interface IArtifact {
 
 interface SetBonus {
   desc: JSX.Element;
-  addBuff?: (args: AddBuffArgs) => void;
+  applyBuff?: (args: ApplyBuffArgs) => void;
 }
 
-interface AddBuffArgs {
+interface ApplyBuffArgs {
   skillBonuses: SkillBonus;
   charData: CalcCharData;
-  tkDesc: string;
+  desc: string;
   tracker: Tracker;
 }

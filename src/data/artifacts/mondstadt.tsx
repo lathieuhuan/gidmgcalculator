@@ -1,6 +1,6 @@
-import { addMod, addModMaker } from "@Src/calculators/utils";
-import { Green } from "@Styled/DataDisplay";
 import type { IArtifact } from "./types";
+import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { Green } from "@Styled/DataDisplay";
 
 const mondstadt: IArtifact[] = [
   {
@@ -34,7 +34,7 @@ const mondstadt: IArtifact[] = [
             <Green>ATK</Green> <Green b>+18%</Green>.
           </>
         ),
-        addBuff: addModMaker("totalAttrs", "atk", 18)
+        applyBuff: makeModApplier("totalAttrs", "atk", 18)
       },
       {
         desc: (
@@ -44,10 +44,10 @@ const mondstadt: IArtifact[] = [
             <Green b>35%</Green>.
           </>
         ),
-        addBuff: ({ skillBonuses, charData, tkDesc, tracker }) => {
+        applyBuff: ({ skillBonuses, charData, desc, tracker }) => {
           const supported = ["sword", "claymore", "polearm"];
           if (skillBonuses && supported.includes(charData.weapon)) {
-            addMod(tkDesc, skillBonuses, "NA.pct", 35, tracker);
+            applyModifier(desc, skillBonuses, "NA.pct", 35, tracker);
           }
         }
       }
