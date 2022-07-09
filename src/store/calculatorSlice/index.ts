@@ -1,7 +1,7 @@
+import type { CalculatorState } from "@Src/types";
+import type { InitSessionWithCharAction } from "./reducer-types";
 import { createSlice } from "@reduxjs/toolkit";
 import { initTarget } from "./initiators";
-import { InitSessionWithCharAction } from "./reducer-types";
-import type { CalculatorState } from "./types";
 
 const initialState: CalculatorState = {
   currentSetup: 0,

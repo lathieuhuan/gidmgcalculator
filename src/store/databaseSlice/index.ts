@@ -1,5 +1,5 @@
+import type { DatabaseState } from "@Src/types";
 import { createSlice } from "@reduxjs/toolkit";
-import { DatabaseState } from "./types";
 
 const initialState: DatabaseState = {
   myChars: [],

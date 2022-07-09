@@ -1,4 +1,4 @@
-import { Artifact } from "@Src/types";
+import type { Artifact } from "@Src/types";
 import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";

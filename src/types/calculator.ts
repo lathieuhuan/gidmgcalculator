@@ -16,9 +16,9 @@ import type {
   Reaction,
   NormalAttack,
   CharInfo,
-} from "@Src/types";
+} from "./global";
 
-export interface CalculatorState {
+export type CalculatorState = {
   currentSetup: number;
   configs: {
     separateCharInfo: boolean;
@@ -44,49 +44,49 @@ export interface CalculatorState {
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
   allDmgResult: DamageResult[];
-}
+};
 
 export type SetupType = "original" | "";
 
-export interface CalcSetup {
+export type CalcSetup = {
   name: string;
   ID: number;
   type: SetupType;
-}
+};
 
-export interface CalcCharData {
+export type CalcCharData = {
   code: number;
   name: string;
   nation: Nation;
   vision: Vision;
   weapon: Weapon;
   EBcost: number;
-}
+};
 
-export interface ModifierCtrl {
+export type ModifierCtrl = {
   activated: boolean;
   index: number;
   inputs?: (number | string)[];
-}
+};
 
-export interface CalcWeapon {
+export type CalcWeapon = {
   ID: number;
   type: Weapon;
   code: number;
   level: Level;
   refinement: number;
   buffCtrls: ModifierCtrl[];
-}
+};
 
-export interface SubWeaponBuffCtrl {
+export type SubWeaponBuffCtrl = {
   code: number;
   activated: boolean;
   refinement: number;
   index: number;
-}
+};
 
 // ARTIFACTS starts
-export interface CalcArtPiece {
+export type CalcArtPiece = {
   ID: number;
   code: number;
   type: Artifact;
@@ -97,29 +97,29 @@ export interface CalcArtPiece {
     type: CommonStat;
     value: number;
   }[];
-}
+};
 
-export interface CalcArtSet {
+export type CalcArtSet = {
   code: number;
   bonusLv: number;
-}
+};
 
-export interface CalcArtInfo {
+export type CalcArtInfo = {
   pieces: (CalcArtPiece | null)[];
   sets: CalcArtSet[];
   buffCtrls: ModifierCtrl[];
   subBuffCtrls: ModifierCtrl[];
   subDebuffCtrls: ModifierCtrl[];
-}
+};
 // ARTIFACTS ends
 
-export interface Teammate {
+export type Teammate = {
   name: string;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
-}
+};
 
-export interface ElementModCtrl {
+export type ElementModCtrl = {
   naAmpRxn: AmplifyingReaction | null;
   ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
@@ -127,26 +127,24 @@ export interface ElementModCtrl {
     vision: Vision;
     activated: boolean;
   }[];
-}
+};
 
-export interface CustomBuffCtrl {
+export type CustomBuffCtrl = {
   // #to-do
   type: CommonStat | "";
   value: number;
   category: number;
-}
+};
 
-export interface CustomDebuffCtrl {
+export type CustomDebuffCtrl = {
   // #to-do
   type: "";
   value: number;
-}
+};
 
-export interface Target extends Record<TargetResistance, number> {
-  level: number;
-}
+export type Target = { level: number; } & Record<TargetResistance, number>;
 
-export interface Monster {
+export type Monster = {
   index: number;
   inputs: (number | string)[];
 }

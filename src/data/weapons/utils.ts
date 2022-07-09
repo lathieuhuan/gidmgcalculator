@@ -1,6 +1,5 @@
 import type { Paths, SkillBonusPath } from "@Src/calculators/utils";
-import type { AllStat, Level } from "@Src/types";
-import type { ReactionBonusKey } from "@Store/calculatorSlice/types";
+import type { AllStat, Level, ReactionBonusKey } from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { LEVELS } from "@Src/constants";
 import { bareLv } from "@Src/utils";
@@ -22,11 +21,7 @@ export function makeWpModApplier(
   rootScale: number
 ): (args: any) => void;
 
-export function makeWpModApplier(
-  recipient: string,
-  paths: Paths,
-  rootScale: number
-) {
+export function makeWpModApplier(recipient: string, paths: Paths, rootScale: number) {
   return (args: any) => {
     const { refinement, desc, tracker } = args;
     const rootValue = Array.isArray(rootScale)

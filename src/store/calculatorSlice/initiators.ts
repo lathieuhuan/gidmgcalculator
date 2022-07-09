@@ -1,8 +1,15 @@
-import type { Artifact, CharInfo, ModifierInput, Rarity, Weapon } from "@Src/types";
-import { EModAffect, TARGET_RESISTANCES_TYPES } from "@Src/constants";
-import type { ModifierCtrl, Target } from "./types";
+import type {
+  Artifact,
+  CharInfo,
+  ModifierInput,
+  Rarity,
+  Weapon,
+  DebuffInputRenderType,
+  ModifierCtrl,
+  Target,
+} from "@Src/types";
 import { findCharacter } from "@Data/controllers";
-import { DebuffInputRenderType } from "@Data/characters/types";
+import { EModAffect, TARGET_RESISTANCES_TYPES } from "@Src/constants";
 
 type InitCharInfo = Omit<CharInfo, "name">;
 export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {

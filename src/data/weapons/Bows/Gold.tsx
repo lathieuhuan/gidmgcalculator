@@ -1,9 +1,10 @@
+import type { DataWeapon } from "@Src/types";
+import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { Green } from "@Styled/DataDisplay";
-import { IWeapon } from "../types";
 import { makeWpModApplier } from "../utils";
 
-const GoldBows: IWeapon[] = [
+const GoldBows: DataWeapon[] = [
   {
     code: 125,
     name: "Aqua Simulacra",
@@ -15,7 +16,7 @@ const GoldBows: IWeapon[] = [
     buffs: [
       {
         index: 0,
-        affect: "self",
+        affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("skillBonuses", "all.pct", 5),
         desc: ({ refinement }) =>
           findByCode(GoldBows, 125)!.passiveDesc({ refinement }).extra![0],

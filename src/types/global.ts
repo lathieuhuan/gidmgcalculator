@@ -7,7 +7,7 @@ import {
   TARGET_RESISTANCES_TYPES,
   REACTIONS,
   NORMAL_ATTACKS,
-} from "./constants";
+} from "@Src/constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
 
@@ -47,7 +47,7 @@ export type AmplifyingReaction = "melt" | "vaporize";
 
 export type Reaction = typeof REACTIONS[number];
 
-export interface CharInfo {
+export type CharInfo = {
   name: string;
   level: Level;
   NAs: number;

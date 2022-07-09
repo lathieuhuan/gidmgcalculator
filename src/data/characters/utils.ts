@@ -1,6 +1,4 @@
-import type { CharInfo, ModifierInput } from "@Src/types";
-import type { ModifierCtrl, SkillBonusInfoKey } from "@Store/calculatorSlice/types";
-import type { TalentBuff } from "./types";
+import type { CharInfo, ModifierInput, ModifierCtrl, SkillBonusInfoKey, TalentBuff } from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
 const makeAscsChecker = (value: number) => (char: CharInfo) => {

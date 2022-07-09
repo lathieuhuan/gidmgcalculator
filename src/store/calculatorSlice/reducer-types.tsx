@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { DatabaseChar, MyArts, MyWps } from "@Store/databaseSlice/types";
+import type { DatabaseChar, MyArts, MyWps } from "@Src/types";
 
 export interface PickedChar extends Partial<DatabaseChar> {
   name: string;

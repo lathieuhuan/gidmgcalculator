@@ -1,12 +1,13 @@
-import type { AllStat, Tracker } from "@Src/types";
 import type {
+  AllStat,
+  ReactionBonus,
+  ReactionBonusKey,
   SkillBonus,
   SkillBonusInfoKey,
   SkillBonusKey,
-  ReactionBonus,
-  ReactionBonusKey,
   TotalAttribute,
-} from "@Store/calculatorSlice/types";
+  Tracker,
+} from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
 export function addOrInit(obj: any, key: string | number, value: number) {
@@ -67,7 +68,7 @@ export function applyModifier(
     const value = pickOne(rootValue, i);
     const node = {
       desc,
-      value
+      value,
     };
     if (routes[1] === undefined) {
       (recipient as any)[routes[0]] += value;
@@ -88,11 +89,11 @@ export function applyModifier(
  * */
 
 interface ModApplierArgs {
-  totalAttrs: TotalAttribute,
-  skillBonuses: SkillBonus,
-  rxnBonuses: ReactionBonus,
-  desc: string,
-  tracker: Tracker
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
+  rxnBonuses: ReactionBonus;
+  desc: string;
+  tracker: Tracker;
 }
 
 export function makeModApplier(
@@ -113,11 +114,7 @@ export function makeModApplier(
   rootValue: RootValue
 ): (args: any) => void;
 
-export function makeModApplier(
-  recipientKey: string,
-  paths: Paths,
-  rootValue: RootValue
-) {
+export function makeModApplier(recipientKey: string, paths: Paths, rootValue: RootValue) {
   return (args: ModApplierArgs) => {
     const recipient = (args as any)[recipientKey];
     if (recipient) {

@@ -1,8 +1,8 @@
-import type { IArtifact } from "./types";
+import type { DataArtifact } from "@Src/types";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { Green } from "@Styled/DataDisplay";
 
-const mondstadt: IArtifact[] = [
+const mondstadt: DataArtifact[] = [
   {
     code: 13,
     name: "Gladiator's Finale",

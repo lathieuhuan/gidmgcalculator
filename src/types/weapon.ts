@@ -1,7 +1,7 @@
+import type { AllStat, Tracker, Rarity } from "./global";
 import { EModAffect } from "@Src/constants";
-import type { AllStat, Tracker, Rarity } from "@Src/types";
 
-export interface IWeapon {
+export type DataWeapon = {
   code: number;
   beta?: boolean;
   name: string;
@@ -12,27 +12,28 @@ export interface IWeapon {
     type: AllStat;
     scale: string;
   };
-  applyBuff: (args: ApplyBuffArgs) => void;
+  applyBuff: (args: ApplyWpBuffArgs) => void;
   buffs: WeaponBuff[];
   passiveName: string;
-  passiveDesc: (args: DescArgs) => {
+  passiveDesc: (args: WpDescArgs) => {
     core: JSX.Element;
     extra?: JSX.Element[];
   };
-}
+};
 
-export interface ApplyBuffArgs {
+export type ApplyWpBuffArgs = {
   refinement: number;
   desc: string;
   tracker: Tracker;
-}
+};
 
-interface DescArgs {
+type WpDescArgs = {
   refinement: number;
-}
-interface WeaponBuff {
+};
+
+type WeaponBuff = {
   index: number;
   affect: EModAffect;
-  applyBuff: (args: ApplyBuffArgs) => void;
-  desc: (args: DescArgs) => JSX.Element;
-}
+  applyBuff: (args: ApplyWpBuffArgs) => void;
+  desc: (args: WpDescArgs) => JSX.Element;
+};

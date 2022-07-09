@@ -11,15 +11,10 @@ import type {
   CharInfo,
   Tracker,
   ModifierInput,
-} from "@Src/types";
-import {
-  ModifierCtrl,
-  SkillBonus,
-  SkillBonusInfoKey,
-  TotalAttribute,
-} from "@Store/calculatorSlice/types";
+} from "./global";
+import { ModifierCtrl, SkillBonus, SkillBonusInfoKey, TotalAttribute } from "./calculator";
 
-export interface ICharacter {
+export type DataCharacter = {
   code: number;
   beta?: boolean;
   name: string;
@@ -39,34 +34,34 @@ export interface ICharacter {
   constellation: Ability[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
-}
+};
 
 export type NormalAttackStats = {
   name: string;
   baseMult: number | number[];
   multType: number;
 }[];
-interface NormalAttack {
+type NormalAttack = {
   name: string;
   NA: NormalAttackStats;
   CA: NormalAttackStats;
   PA: NormalAttackStats;
   caStamina: number;
-}
+};
 
-interface Ability {
+type Ability = {
   name: string;
   image: string;
-}
+};
 
-interface GetTalentBuffArgs {
+type GetTalentBuffArgs = {
   char: CharInfo;
   selfBuffCtrls: ModifierCtrl[];
-}
+};
 
 export type TalentBuff = Record<SkillBonusInfoKey, { desc: string; value: number }>;
 
-interface Skill extends Ability {
+type Skill = {
   xtraLvAtCons: 3 | 5;
   stats: {
     name: string;
@@ -76,64 +71,59 @@ interface Skill extends Ability {
     multType: number;
     getTalentBuff?: (args: GetTalentBuffArgs) => Partial<TalentBuff> | void;
   }[];
-}
-interface ElementalBurst extends Skill {
-  energyCost: number;
-}
+} & Ability;
 
-interface AbilityModifier {
+type ElementalBurst = { energyCost: number } & Skill;
+
+type AbilityModifier = {
   index: number;
   outdated?: boolean;
   src: string;
   isGranted: (char: CharInfo) => boolean;
-}
+};
 
 // BUFFS
 
 // #to-do
 type BuffInputRenderType = "select" | "";
 
-interface ApplyBuffArgs {
+type ApplyCharBuffArgs = {
   totalAttrs: TotalAttribute;
   skillBonuses: SkillBonus;
   selfBuffCtrls: ModifierCtrl[];
   desc: string;
   tracker: Tracker;
-}
-export interface AbilityBuff extends AbilityModifier {
+};
+export type AbilityBuff = {
   desc: () => JSX.Element;
   affect: EModAffect;
   maxs?: (number | null)[];
   inputConfig?: {
-    labels: string[];
+    labels?: string[];
     selfLabels?: string[];
-    initialValues: ModifierInput[]
+    initialValues: ModifierInput[];
     renderTypes: BuffInputRenderType[];
+    maxs?: (number | null)[];
   };
   // #to-do
-  applyBuff?: (args: ApplyBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyBuffArgs) => void;
-}
+  applyBuff?: (args: ApplyCharBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
+} & AbilityModifier;
 
 // DEBUFFS
 
 export type DebuffInputRenderType = "absorption" | "text";
 
 // #to-do
-interface ApplyDebuffArgs {
-  selfDebuffCtrls: ModifierCtrl[];
-  desc: string;
-  tracker: Tracker;
-}
-export interface AbilityDebuff extends AbilityModifier {
+export type AbilityDebuff = {
   desc: () => JSX.Element;
   affect?: EModAffect;
   inputConfig?: {
     labels: string[];
     selfLabels?: string[];
-    initialValues: ModifierInput[]
+    initialValues: ModifierInput[];
     renderTypes: DebuffInputRenderType[];
   };
   // #to-do
-  applyDebuff?: (args: ApplyDebuffArgs) => void;
-}
+  applyDebuff?: (args: { selfDebuffCtrls: ModifierCtrl[]; desc: string; tracker: Tracker }) => void;
+} & AbilityModifier;

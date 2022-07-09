@@ -1,11 +1,11 @@
+import type { DataCharacter } from "@Src/types";
 import { Green } from "@Styled/DataDisplay";
-import { EModifierSrc } from "@Src/constants";
-import { MEDIUM_PA } from "../constants";
-import type { ICharacter } from "../types";
-import { checkAscs, charModCtrlIsActivated, checkCons, findInput, makeTrackerDesc } from "../utils";
+import { EModAffect, EModifierSrc } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { MEDIUM_PA } from "../constants";
+import { checkAscs, charModCtrlIsActivated, checkCons, findInput, makeTrackerDesc } from "../utils";
 
-const Albedo: ICharacter = {
+const Albedo: DataCharacter = {
   code: 29,
   name: "Albedo",
   icon: "0/00/Character_Albedo_Thumb",
@@ -142,7 +142,7 @@ const Albedo: ICharacter = {
           opponents whose HP is below 50%.
         </>
       ),
-      affect: "self",
+      affect: EModAffect.SELF,
       isGranted: checkAscs[1],
     },
     {
@@ -154,7 +154,7 @@ const Albedo: ICharacter = {
           nearby party members by <Green b>125</Green> for 10s.
         </>
       ),
-      affect: "party",
+      affect: EModAffect.PARTY,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttrs", "em", 125),
     },
@@ -170,11 +170,13 @@ const Albedo: ICharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: "self",
-      selfLabels: ["Stacks"],
-      inputs: [1],
-      inputTypes: ["select"],
-      maxs: [4],
+      affect: EModAffect.SELF,
+      inputConfig: {
+        selfLabels: ["Stacks"],
+        initialValues: [1],
+        renderTypes: ["select"],
+        maxs: [4],
+      },
       applyFinalBuff: ({ totalAttrs, skillBonuses, selfBuffCtrls, desc, tracker }) => {
         const bnValue = totalAttrs.def * 0.3 * +findInput(selfBuffCtrls, 2, 0, 0);
         applyModifier(desc, skillBonuses, "EB.flat", Math.round(bnValue), tracker);
@@ -189,7 +191,7 @@ const Albedo: ICharacter = {
           <Green>Plunging Attack DMG</Green> increased by <Green b>30%</Green>.
         </>
       ),
-      affect: "party",
+      affect: EModAffect.PARTY,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("skillBonuses", "PA.pct", 30),
     },
@@ -202,7 +204,7 @@ const Albedo: ICharacter = {
           by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
         </>
       ),
-      affect: "party",
+      affect: EModAffect.PARTY,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("skillBonuses", "all.pct", 17),
     },

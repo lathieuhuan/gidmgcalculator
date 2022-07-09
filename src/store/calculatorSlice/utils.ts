@@ -1,9 +1,9 @@
-import type { MyArts, MyWps } from "@Store/databaseSlice/types";
-import { findById } from "@Src/utils";
+import type { MyArts, MyWps } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
+import { findById } from "@Src/utils";
 import { initCharInfo } from "./initiators";
 
-export function parseData(
+export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
   myWps: MyWps,
   myArts: MyArts
