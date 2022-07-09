@@ -57,7 +57,10 @@ export const ascsFromLv = (lv: Level) => {
 };
 
 const find = (key: string) => {
-  return <T>(arr: T[], value: string | number): T | undefined => {
+  return <T>(arr: T[], value?: string | number | null): T | undefined => {
+    if (!value) {
+      return undefined;
+    }
     return arr.find((item) => (item as any)[key] === value);
   };
 };

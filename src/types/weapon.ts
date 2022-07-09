@@ -1,4 +1,4 @@
-import type { AllStat, Tracker, Rarity } from "./global";
+import type { AllStat, Tracker, Rarity, ModifierInput } from "./global";
 import { EModAffect } from "@Src/constants";
 
 export type DataWeapon = {
@@ -33,7 +33,13 @@ type WpDescArgs = {
 
 type WeaponBuff = {
   index: number;
+  outdated?: boolean;
   affect: EModAffect;
+  inputConfig?: {
+    labels: string[];
+    initialValues: ModifierInput[];
+    renderTypes: ("stacks" | "check" | "choices")[];
+  };
   applyBuff: (args: ApplyWpBuffArgs) => void;
   desc: (args: WpDescArgs) => JSX.Element;
 };

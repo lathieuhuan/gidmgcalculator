@@ -33,7 +33,7 @@ export type CalculatorState = {
   allSubWpBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
   allSubWpDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];
-  allParties: [Teammate | null, Teammate | null, Teammate | null][];
+  allParties: Party[];
   allElmtModCtrls: ElementModCtrl[];
   allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
   allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
@@ -104,12 +104,16 @@ export type CalcArtSet = {
   bonusLv: number;
 };
 
+export type SubArtModCtrl = ModifierCtrl & {
+  code: number
+}
+
 export type CalcArtInfo = {
   pieces: (CalcArtPiece | null)[];
   sets: CalcArtSet[];
   buffCtrls: ModifierCtrl[];
-  subBuffCtrls: ModifierCtrl[];
-  subDebuffCtrls: ModifierCtrl[];
+  subBuffCtrls: SubArtModCtrl[];
+  subDebuffCtrls: SubArtModCtrl[];
 };
 // ARTIFACTS ends
 
@@ -118,6 +122,7 @@ export type Teammate = {
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
 };
+export type Party = (Teammate | null)[]
 
 export type ElementModCtrl = {
   naAmpRxn: AmplifyingReaction | null;
@@ -146,7 +151,8 @@ export type Target = { level: number; } & Record<TargetResistance, number>;
 
 export type Monster = {
   index: number;
-  inputs: (number | string)[];
+  variantIndex: number | null;
+  configs: (number | string)[];
 }
 
 export type TotalAttribute = Record<AllStat, number>;

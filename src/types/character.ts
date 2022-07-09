@@ -61,7 +61,7 @@ type GetTalentBuffArgs = {
 
 export type TalentBuff = Record<SkillBonusInfoKey, { desc: string; value: number }>;
 
-type Skill = {
+type Skill = Ability & {
   xtraLvAtCons: 3 | 5;
   stats: {
     name: string;
@@ -71,7 +71,7 @@ type Skill = {
     multType: number;
     getTalentBuff?: (args: GetTalentBuffArgs) => Partial<TalentBuff> | void;
   }[];
-} & Ability;
+};
 
 type ElementalBurst = { energyCost: number } & Skill;
 
@@ -94,7 +94,7 @@ type ApplyCharBuffArgs = {
   desc: string;
   tracker: Tracker;
 };
-export type AbilityBuff = {
+export type AbilityBuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect: EModAffect;
   maxs?: (number | null)[];
@@ -108,14 +108,14 @@ export type AbilityBuff = {
   // #to-do
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
-} & AbilityModifier;
+};
 
 // DEBUFFS
 
 export type DebuffInputRenderType = "absorption" | "text";
 
 // #to-do
-export type AbilityDebuff = {
+export type AbilityDebuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect?: EModAffect;
   inputConfig?: {
@@ -126,4 +126,4 @@ export type AbilityDebuff = {
   };
   // #to-do
   applyDebuff?: (args: { selfDebuffCtrls: ModifierCtrl[]; desc: string; tracker: Tracker }) => void;
-} & AbilityModifier;
+};

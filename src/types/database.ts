@@ -8,19 +8,19 @@ export type DatabaseState = {
   chosenChar: string;
 };
 
-export type DatabaseChar = {
+export type DatabaseChar = CharInfo & {
   weaponID: number;
   artifactIDs: (number | null)[];
-} & CharInfo;
+};
 
-type DatabaseWp = {
+export type DatabaseWp = CalcWeapon & {
   user: string | null;
-} & CalcWeapon;
+};
 
 export type MyWps = DatabaseWp[];
 
-type DatabaseArt = {
+export type DatabaseArt = CalcArtPiece & {
   user: string | null;
-} & CalcArtPiece;
+};
 
 export type MyArts = DatabaseArt[];
