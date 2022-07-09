@@ -1,5 +1,6 @@
 import type { AllStat, Tracker, Rarity, ModifierInput } from "./global";
 import { EModAffect } from "@Src/constants";
+import { PartyData, TotalAttribute } from "./calculator";
 
 export type DataWeapon = {
   code: number;
@@ -12,7 +13,8 @@ export type DataWeapon = {
     type: AllStat;
     scale: string;
   };
-  applyBuff: (args: ApplyWpBuffArgs) => void;
+  applyBuff?: ApplyWpBuff;
+  applyFinalBuff?: ApplyWpBuff;
   buffs: WeaponBuff[];
   passiveName: string;
   passiveDesc: (args: WpDescArgs) => {
@@ -21,14 +23,17 @@ export type DataWeapon = {
   };
 };
 
-export type ApplyWpBuffArgs = {
-  refinement: number;
-  desc: string;
-  tracker: Tracker;
-};
+export type ApplyWpBuff = (args: {
+  totalAttrs: TotalAttribute;
+  refi: number;
+  inputs?: ModifierInput[];
+  partyData?: PartyData;
+  desc?: string;
+  tracker?: Tracker;
+}) => void;
 
 type WpDescArgs = {
-  refinement: number;
+  refi: number;
 };
 
 type WeaponBuff = {
@@ -40,6 +45,7 @@ type WeaponBuff = {
     initialValues: ModifierInput[];
     renderTypes: ("stacks" | "check" | "choices")[];
   };
-  applyBuff: (args: ApplyWpBuffArgs) => void;
+  applyBuff: ApplyWpBuff;
+  applyFinalBuff?: ApplyWpBuff;
   desc: (args: WpDescArgs) => JSX.Element;
 };

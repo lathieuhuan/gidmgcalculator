@@ -38,7 +38,7 @@ export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID" | 
     polearm: 84,
     sword: 108,
   };
-  return { type, code: code || defaultWp[type], level: "1/20", refinement: 1 };
+  return { type, code: code || defaultWp[type], level: "1/20", refi: 1 };
 }
 
 interface InitArtPiece {

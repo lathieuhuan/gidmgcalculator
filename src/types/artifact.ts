@@ -1,4 +1,4 @@
-import type { Tracker } from "./global";
+import type { ModifierInput, Tracker } from "./global";
 import type { CalcCharData, SkillBonus, TotalAttribute } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
@@ -21,15 +21,33 @@ export type DataArtifact = {
   buffs?: ArtifactBuff[];
 };
 
+type ApplyArtSetBuff = (args: {
+  skillBonuses?: SkillBonus;
+  charData: CalcCharData;
+  desc?: string;
+  tracker?: Tracker;
+}) => void;
+
+type ApplyArtSetFinalBuff = (args: {
+  totalAttrs: TotalAttribute;
+  skillBonuses?: SkillBonus;
+  desc?: string;
+  tracker?: Tracker;
+}) => void;
+
 type SetBonus = {
   desc: JSX.Element;
-  applyBuff?: (args: {
-    skillBonuses: SkillBonus;
-    charData: CalcCharData;
-    desc: string;
-    tracker: Tracker;
-  }) => void;
+  applyBuff?: ApplyArtSetBuff;
+  applyFinalBuff?: ApplyArtSetFinalBuff;
 };
+
+type ApplyArtBuff = (args: {
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
+  inputs?: ModifierInput[];
+  desc: string;
+  tracker?: Tracker;
+}) => void;
 
 type ArtifactBuff = {
   desc: () => JSX.Element;
@@ -40,10 +58,6 @@ type ArtifactBuff = {
     renderTypes: ("stacks" | "")[];
     maxs: number[];
   };
-  applyBuff: (args: {
-    totalAttrs: TotalAttribute;
-    skillBonuses: SkillBonus;
-    desc: string;
-    tracker: Tracker;
-  }) => void;
+  applyBuff?: ApplyArtBuff;
+  applyFinalBuff?: ApplyArtBuff;
 };

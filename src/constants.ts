@@ -54,7 +54,41 @@ export const LEVELS = [
   "90/90",
 ] as const;
 
+export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
+
+export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
+
+export const FLAT_STAT_TYPES = ["hp", "atk", "def", "em"] as const;
+
 export const PERCENT_STAT_TYPES = [
+  "hp_",
+  "atk_",
+  "def_",
+  "cRate",
+  "cDmg",
+  "healBn",
+  "er",
+  "shStr",
+  "pyro_",
+  "hydro_",
+  "dendro_",
+  "electro_",
+  "anemo_",
+  "cryo_",
+  "geo_",
+  "phys_",
+  "naAtkSpd",
+  "caAtkSpd",
+] as const;
+
+export const ALL_STAT_TYPES = [
+  "base_hp",
+  "base_atk",
+  "base_def",
+  "hp",
+  "atk",
+  "def",
+  "em",
   "hp_",
   "atk_",
   "def_",
@@ -106,6 +140,16 @@ export const TARGET_RESISTANCES_TYPES = [
   "phys_res",
 ] as const;
 
+export const TRANSFORMATIVE_REACTIONS = [
+  "superconduct",
+  "swirl",
+  "electroCharged",
+  "overloaded",
+  "shattered",
+] as const;
+
+export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
+
 export const REACTIONS = [
   "superconduct",
   "swirl",
@@ -116,4 +160,24 @@ export const REACTIONS = [
   "vaporize",
 ] as const;
 
+export const RESONANCE_INFO = {
+  pyro: {
+    name: "Fervent Flames",
+    key: "atk_",
+    value: 25,
+  },
+  cryo: {
+    name: "Shattering Ice",
+    key: "cRate",
+    value: 15,
+  },
+  geo: {
+    name: "Enduring Rock",
+    key: "shStr",
+    value: 15,
+  },
+} as const;
+
 export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;
+
+export const ATTACK_PATTERNS = ["NA", "CA", "PA", "ES", "EB"] as const;

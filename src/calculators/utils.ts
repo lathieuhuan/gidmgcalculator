@@ -7,13 +7,29 @@ import type {
   SkillBonusKey,
   TotalAttribute,
   Tracker,
+  Vision,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
-export function addOrInit(obj: any, key: string | number, value: number) {
-  turnArr(key).forEach((k) => {
-    obj[k] = (obj[k] || 0) + value;
-  });
+export function addOrInit<T>(obj: Record<string, number | undefined>, key: string, value: number) {
+  obj[key] = (obj[key] || 0) + value;
+}
+
+export function pushOrMergeTrackerRecord(
+  tracker: Tracker,
+  field: string,
+  desc: string,
+  value: number
+) {
+  if (tracker) {
+    // #to-check
+    const existed = tracker[field].find((note: any) => note.desc === desc);
+    if (existed) {
+      existed.value += value;
+    } else {
+      tracker[field].push({ desc, value });
+    }
+  }
 }
 
 /**
@@ -35,21 +51,21 @@ export type Paths =
 type RootValue = number | number[];
 
 export function applyModifier(
-  desc: string,
+  desc: string | undefined,
   recipient: TotalAttribute,
   paths: AllStat | AllStat[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
 export function applyModifier(
-  desc: string,
+  desc: string | undefined,
   recipient: ReactionBonus,
   paths: ReactionBonusKey | ReactionBonusKey[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
 export function applyModifier(
-  desc: string,
+  desc: string | undefined,
   recipient: SkillBonus,
   paths: SkillBonusPath | SkillBonusPath[],
   rootValue: RootValue,
@@ -57,7 +73,7 @@ export function applyModifier(
 ): void;
 
 export function applyModifier(
-  desc: string,
+  desc: string | undefined = "",
   recipient: ModRecipient,
   paths: Paths,
   rootValue: RootValue,
@@ -122,3 +138,16 @@ export function makeModApplier(recipientKey: string, paths: Paths, rootValue: Ro
     }
   };
 }
+
+export function getRxnBonusesFromEM(EM = 0) {
+  return {
+    transformative: Math.round((16000 * EM) / (EM + 2000)) / 10,
+    amplifying: Math.round((2780 * EM) / (EM + 1400)) / 10,
+    shield: Math.round((4440 * EM) / (EM + 1400)) / 10,
+  };
+}
+
+export const ampMultiplier = {
+  melt: (elmt: Vision) => (elmt === "pyro" ? 2 : 1.5),
+  vaporize: (elmt: Vision) => (elmt === "pyro" ? 1.5 : 2),
+};

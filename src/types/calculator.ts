@@ -7,7 +7,6 @@ import type {
   FlatStat,
   Level,
   Nation,
-  Rarity,
   RngPercentStat,
   Vision,
   Weapon,
@@ -16,6 +15,9 @@ import type {
   Reaction,
   NormalAttack,
   CharInfo,
+  BaseStat,
+  ModifierInput,
+  Rarity,
 } from "./global";
 
 export type CalculatorState = {
@@ -30,8 +32,8 @@ export type CalculatorState = {
   allSelfBuffCtrls: Array<ModifierCtrl[]>;
   allSelfDebuffCtrls: Array<ModifierCtrl[]>;
   allWps: CalcWeapon[];
-  allSubWpBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
-  allSubWpDebuffCtrls: {};
+  allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
+  allSubWpComplexDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];
   allParties: Party[];
   allElmtModCtrls: ElementModCtrl[];
@@ -74,16 +76,19 @@ export type CalcWeapon = {
   type: Weapon;
   code: number;
   level: Level;
-  refinement: number;
+  refi: number;
   buffCtrls: ModifierCtrl[];
 };
 
 export type SubWeaponBuffCtrl = {
   code: number;
   activated: boolean;
-  refinement: number;
+  refi: number;
   index: number;
+  inputs?: ModifierInput[]
 };
+
+export type SubWeaponComplexBuffCtrl = Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
 
 // ARTIFACTS starts
 export type CalcArtPiece = {
@@ -105,11 +110,13 @@ export type CalcArtSet = {
 };
 
 export type SubArtModCtrl = ModifierCtrl & {
-  code: number
-}
+  code: number;
+};
+
+export type CalcArtPieces = (CalcArtPiece | null)[];
 
 export type CalcArtInfo = {
-  pieces: (CalcArtPiece | null)[];
+  pieces: CalcArtPieces;
   sets: CalcArtSet[];
   buffCtrls: ModifierCtrl[];
   subBuffCtrls: SubArtModCtrl[];
@@ -122,21 +129,23 @@ export type Teammate = {
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
 };
-export type Party = (Teammate | null)[]
+export type Party = (Teammate | null)[];
+
+export type Resonance = {
+  vision: Extract<Vision, "pyro" | "cryo" | "geo">;
+  activated: boolean;
+}[];
 
 export type ElementModCtrl = {
   naAmpRxn: AmplifyingReaction | null;
   ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
-  resonance: {
-    vision: Vision;
-    activated: boolean;
-  }[];
+  resonance: Resonance;
 };
 
 export type CustomBuffCtrl = {
   // #to-do
-  type: CommonStat | "";
+  type: Omit<AllStat, BaseStat> | SkillBonusKey;
   value: number;
   category: number;
 };
@@ -147,17 +156,18 @@ export type CustomDebuffCtrl = {
   value: number;
 };
 
-export type Target = { level: number; } & Record<TargetResistance, number>;
+export type Target = { level: number } & Record<TargetResistance, number>;
 
 export type Monster = {
   index: number;
   variantIndex: number | null;
   configs: (number | string)[];
-}
+};
 
-export type TotalAttribute = Record<AllStat, number>;
+export type TotalAttribute = Record<string, number> & Record<AllStat, number>;
 
-export type ArtifactAttribute = Omit<Record<FlatStat, number>, "em"> &
+export type ArtifactAttribute = Record<string, number> &
+  Omit<Record<FlatStat, number>, "em"> &
   Partial<Record<RngPercentStat | "em", number>>;
 
 export type SkillBonusInfoKey = "cRate" | "cDmg" | "pct" | "flat";
@@ -172,7 +182,7 @@ export type ReactionBonusKey = Reaction | "naMelt" | "naVaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
-export type FinalInfusion = Record<NormalAttack, AttackElement>;
+export type FinalInfusion = Record<NormalAttack, Vision>;
 
 type AttackDamage = Record<"nonCrit" | "crit" | "average", number>;
 
@@ -181,3 +191,9 @@ type SkillDamage = {
 };
 
 type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", SkillDamage>;
+
+export type PartyData = {
+  name: string;
+  vision: Vision;
+  nation: Nation;
+}[];

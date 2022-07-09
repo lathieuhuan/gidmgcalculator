@@ -7,6 +7,10 @@ import {
   TARGET_RESISTANCES_TYPES,
   REACTIONS,
   NORMAL_ATTACKS,
+  BASE_STAT_TYPES,
+  FLAT_STAT_TYPES,
+  ALL_STAT_TYPES,
+  ATTACK_PATTERNS,
 } from "@Src/constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
@@ -21,13 +25,13 @@ export type Artifact = typeof ARTIFACT_TYPES[number];
 
 export type Vision = typeof VISION_TYPES[number];
 
-export type BaseStat = "base_hp" | "base_atk" | "base_def";
+export type BaseStat = typeof BASE_STAT_TYPES[number];
 
-export type FlatStat = "hp" | "atk" | "def" | "em";
+export type FlatStat = typeof FLAT_STAT_TYPES[number];
 
 export type PercentStat = typeof PERCENT_STAT_TYPES[number];
 
-export type AllStat = BaseStat | FlatStat | PercentStat;
+export type AllStat = typeof ALL_STAT_TYPES[number];
 
 export type RngPercentStat = Exclude<PercentStat, "shStr" | "naAtkSpd" | "caAtkSpd">;
 
@@ -37,7 +41,7 @@ export type NormalAttack = typeof NORMAL_ATTACKS[number];
 
 export type AttackElement = "elmt" | "phys";
 
-export type AttackPattern = NormalAttack | "ES" | "EB";
+export type AttackPattern = typeof ATTACK_PATTERNS[number];
 
 export type Tracker = any;
 
@@ -54,7 +58,7 @@ export type CharInfo = {
   ES: number;
   EB: number;
   cons: number;
-}
+};
 
 // #to-do
 export type ModifierInput = string | number;

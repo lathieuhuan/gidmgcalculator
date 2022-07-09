@@ -7,7 +7,7 @@ export const wikiImg = (src: string) => {
   return `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`;
 };
 
-export const pctOf = (stat: string) => {
+export const percentSign = (stat: string) => {
   return PERCENT_STAT_TYPES.includes(stat as PercentStat) ? "%" : "";
 };
 
@@ -89,9 +89,9 @@ export const round1 = roundMaker(1);
 export const round2 = roundMaker(2);
 export const round3 = roundMaker(3);
 
-export const applyPct = (n: number, pct: number) => Math.round((n * pct) / 100);
+export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 100);
 
-export const toMult = (n: number) => 1 + n / 100;
+export const toMultiplier = (n: number) => 1 + n / 100;
 
 // #to-check
 export const initArtStatFilter = () => ({

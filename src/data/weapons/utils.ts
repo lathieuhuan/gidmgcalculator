@@ -23,10 +23,10 @@ export function makeWpModApplier(
 
 export function makeWpModApplier(recipient: string, paths: Paths, rootScale: number) {
   return (args: any) => {
-    const { refinement, desc, tracker } = args;
+    const { refi, desc, tracker } = args;
     const rootValue = Array.isArray(rootScale)
-      ? rootScale.map((scale) => scale * (refinement + 3))
-      : rootScale * (refinement + 3);
+      ? rootScale.map((scale) => scale * (refi + 3))
+      : rootScale * (refi + 3);
     if (args[recipient]) {
       applyModifier(desc, args[recipient], paths as any, rootValue, tracker);
     }

@@ -12,7 +12,15 @@ import type {
   Tracker,
   ModifierInput,
 } from "./global";
-import { ModifierCtrl, SkillBonus, SkillBonusInfoKey, TotalAttribute } from "./calculator";
+import {
+  FinalInfusion,
+  ModifierCtrl,
+  Party,
+  PartyData,
+  SkillBonus,
+  SkillBonusInfoKey,
+  TotalAttribute,
+} from "./calculator";
 
 export type DataCharacter = {
   code: number;
@@ -87,13 +95,19 @@ type AbilityModifier = {
 // #to-do
 type BuffInputRenderType = "select" | "";
 
-type ApplyCharBuffArgs = {
+type ApplyCharBuff = (args: {
+  char: CharInfo;
+  inputs?: ModifierInput[];
+  infusion: FinalInfusion;
+  party: Party;
+  partyData: PartyData;
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
-  selfBuffCtrls: ModifierCtrl[];
+  skillBonuses?: SkillBonus;
+  toSelf: boolean;
   desc: string;
-  tracker: Tracker;
-};
+  tracker?: Tracker;
+}) => void;
+
 export type AbilityBuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect: EModAffect;
@@ -106,8 +120,8 @@ export type AbilityBuff = AbilityModifier & {
     maxs?: (number | null)[];
   };
   // #to-do
-  applyBuff?: (args: ApplyCharBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
+  applyBuff?: ApplyCharBuff;
+  applyFinalBuff?: ApplyCharBuff;
 };
 
 // DEBUFFS

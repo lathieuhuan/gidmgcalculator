@@ -17,8 +17,8 @@ const initialState: CalculatorState = {
   allSelfBuffCtrls: [],
   allSelfDebuffCtrls: [],
   allWps: [],
-  allSubWpBuffCtrls: {},
-  allSubWpDebuffCtrls: {},
+  allSubWpComplexBuffCtrls: {},
+  allSubWpComplexDebuffCtrls: {},
   allArtInfo: [],
   allParties: [],
   allElmtModCtrls: [],
@@ -49,7 +49,7 @@ export const calculatorSlice = createSlice({
       state.allSelfBuffCtrls = [selfBuffCtrls];
       state.allSelfDebuffCtrls = [selfDebuffCtrls];
       state.allWps = [weapon];
-      state.allSubWpBuffCtrls = {};
+      state.allSubWpComplexBuffCtrls = {};
       state.allArtInfo = [art];
       state.allParties = [[null, null, null]];
       state.allElmtModCtrls = [initElmtModCtrls()];

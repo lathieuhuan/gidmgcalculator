@@ -18,17 +18,17 @@ const GoldBows: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("skillBonuses", "all.pct", 5),
-        desc: ({ refinement }) =>
-          findByCode(GoldBows, 125)!.passiveDesc({ refinement }).extra![0],
+        desc: ({ refi }) =>
+          findByCode(GoldBows, 125)!.passiveDesc({ refi }).extra![0],
       },
     ],
     passiveName: "The Cleansing Form",
-    passiveDesc: ({ refinement }) => ({
+    passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
             <Green>HP</Green> is increased by{" "}
-            <Green>{12 + refinement * 4}%</Green>. {this.extra![0]}
+            <Green>{12 + refi * 4}%</Green>. {this.extra![0]}
           </>
         );
       },
@@ -36,7 +36,7 @@ const GoldBows: DataWeapon[] = [
         <>
           When there are opponents nearby, the <Green>DMG</Green> dealt by the
           wielder of this weapon is increased by{" "}
-          <Green b>{15 + refinement * 5}%</Green>. This will take effect whether
+          <Green b>{15 + refi * 5}%</Green>. This will take effect whether
           the character is on-field or not.
         </>,
       ],
