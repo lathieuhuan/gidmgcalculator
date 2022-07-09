@@ -7,6 +7,10 @@ import type {
   DebuffInputRenderType,
   ModifierCtrl,
   Target,
+  CalcArtPiece,
+  CalcWeapon,
+  ElementModCtrl,
+  Monster,
 } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
 import { EModAffect, TARGET_RESISTANCES_TYPES } from "@Src/constants";
@@ -24,9 +28,9 @@ export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
 
 interface InitWeapon {
   type: Weapon;
-  code: number;
+  code?: number;
 }
-export function initWeapon({ type, code }: InitWeapon) {
+export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID" | "buffCtrls"> {
   const defaultWp = {
     bow: 11,
     catalyst: 36,
@@ -42,14 +46,14 @@ interface InitArtPiece {
   code: number;
   rarity: Rarity;
 }
-export function initArtPiece({ type, code, rarity }: InitArtPiece) {
+export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArtPiece, "ID"> {
   return {
     type,
     code,
     rarity,
     level: 0,
-    mainSType: type === "flower" ? "HP" : type === "plume" ? "ATK" : "ATK%",
-    subS: [
+    mainStatType: type === "flower" ? "hp" : type === "plume" ? "atk" : "atk_",
+    subStats: [
       { type: "def", value: 0 },
       { type: "def_", value: 0 },
       { type: "cRate", value: 0 },
@@ -61,7 +65,7 @@ export function initArtPiece({ type, code, rarity }: InitArtPiece) {
 export function initCharModCtrls(name: string, forSelf: boolean) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs, debuffs } = findCharacter(name)!;
+  const { buffs, debuffs } = findCharacter({ name })!;
 
   if (buffs) {
     for (const buff of buffs) {
@@ -125,22 +129,17 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
   return [buffCtrls, debuffCtrls];
 }
 
-export const initSubWpMCs = () => ({ BCs: {}, DCs: {} });
-
-export const initParty = () => [null, null, null];
-
-export const initElmtMCs = () => ({
+export const initElmtModCtrls = (): ElementModCtrl => ({
   naAmpRxn: null,
   ampRxn: null,
   superconduct: false,
   resonance: [],
 });
 
-export const initCustomMCs = () => ({ BCs: [], DCs: [] });
-
-export const initMonster = () => ({
-  name: monsters[0].name,
-  inputs: [],
+export const initMonster = (): Monster => ({
+  index: 0,
+  variantIndex: null,
+  configs: [],
 });
 
 export function initTarget() {

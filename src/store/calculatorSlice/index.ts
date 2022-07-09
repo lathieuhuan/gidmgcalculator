@@ -1,7 +1,9 @@
-import type { CalculatorState } from "@Src/types";
-import type { InitSessionWithCharAction } from "./reducer-types";
 import { createSlice } from "@reduxjs/toolkit";
-import { initTarget } from "./initiators";
+import type { CalculatorState } from "@Src/types";
+import { getCharData } from "@Data/controllers";
+import type { InitSessionWithCharAction } from "./reducer-types";
+import { initCharModCtrls, initElmtModCtrls, initMonster, initTarget } from "./initiators";
+import { getSetupInfo, parseAndInitData } from "./utils";
 
 const initialState: CalculatorState = {
   currentSetup: 0,
@@ -37,24 +39,28 @@ export const calculatorSlice = createSlice({
   reducers: {
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
-      const [char, wp, art] = parseData(pickedChar, myWps, myArts);
+      const [char, weapon, art] = parseAndInitData(pickedChar, myWps, myArts);
+      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
+
       state.setups = [getSetupInfo({})];
-      state.curSetupI = 0;
+      state.currentSetup = state.setups[0].ID;
       state.char = char;
-      state.charData = getCharacterData(char, charDataSelect);
-      state.selfMCs = [initCharMCs(char.name, true)];
-      state.wpRack = [wp];
-      state.subWpMCs = [initSubWpMCs()];
-      state.artChest = [art];
-      state.parties = [initParty()];
-      state.elmtMCs = [initElmtMCs()];
-      state.customMCs = [initCustomMCs()];
+      state.charData = getCharData(char);
+      state.allSelfBuffCtrls = [selfBuffCtrls];
+      state.allSelfDebuffCtrls = [selfDebuffCtrls];
+      state.allWps = [weapon];
+      state.allSubWpBuffCtrls = {};
+      state.allArtInfo = [art];
+      state.allParties = [[null, null, null]];
+      state.allElmtModCtrls = [initElmtModCtrls()];
+      state.allCustomBuffCtrls = [];
+      state.allCustomDebuffCtrls = [];
       state.monster = initMonster();
-      state.configs.sepCharInfo = false;
-    }
+      state.configs.separateCharInfo = false;
+    },
   },
 });
 
-// export const {} = calculatorSlice.actions;
+export const { initSessionWithChar } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;
