@@ -13,7 +13,7 @@ export default function Modal(props: ModalProps) {
 
   return (
     <div className={cn("fixed full-stretch z-10", styles.modal)}>
-      <div className="w-full h-full bg-" onClick={props.close} />
+      <div className="w-full h-full bg-black/60" onClick={props.close} />
       {props.standard || props.className ? (
         <div
           className={cn(

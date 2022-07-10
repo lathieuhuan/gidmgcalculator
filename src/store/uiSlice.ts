@@ -20,10 +20,16 @@ export const uiSlice = createSlice({
     changeScreen: (state, action: PayloadAction<EScreen>) => {
       state.atScreen = action.payload;
     },
+    resetCalculatorUI: (state) => {
+      state.atScreen = EScreen.CALCULATOR;
+      state.standardSetup = 0;
+      state.comparedSetups = [0];
+      state.settingsOn = false;
+    },
   },
 });
 
-export const { changeScreen } = uiSlice.actions;
+export const { changeScreen, resetCalculatorUI } = uiSlice.actions;
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;
 

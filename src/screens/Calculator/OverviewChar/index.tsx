@@ -1,18 +1,21 @@
-import cn from "classnames";
 import { useState } from "react";
+import cn from "classnames";
 import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
+import { startCalculation } from "@Store/thunks";
 import { Button } from "@Styled/Inputs";
-import styles from "../styles.module.scss";
-import { findByName } from "@Src/utils";
-import Content from "./Content";
 import characters from "@Data/characters";
+import { findByName } from "@Src/utils";
+import Picker from "@Components/Picker";
+import styles from "../styles.module.scss";
+import Content from "./Content";
 
 export default function OverviewChar() {
   const charData = useSelector(selectCharData);
   const [pickerOn, setPickerOn] = useState(false);
+
   return (
-    <div className={cn("px-4 py-3 flex-col bg-darkblue-1", styles.card)}>
+    <div className={cn("px-4 py-3 flex flex-col bg-darkblue-1", styles.card)}>
       {charData ? (
         <Content openPicker={() => setPickerOn(true)} />
       ) : (
@@ -43,9 +46,9 @@ function CharPicker({ close }: { close: () => void }) {
   return (
     <Picker
       data={mixedList}
-      dataType="Character"
+      dataType="character"
       close={close}
-      pick={(pickedChar) => dispatch(initSessionWithChar(pickedChar))}
+      pick={(pickedChar) => dispatch(startCalculation(pickedChar))}
     />
   );
 }

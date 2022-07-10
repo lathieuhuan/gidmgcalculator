@@ -19,7 +19,7 @@ function ModalHeader(props: InsHTMLAttributes<HTMLDivElement>) {
 ModalHeader.CloseButton = (props: CloseButtonProps) => {
   return (
     <CloseButton
-      className={cn("absolute top-2 right-2 bg-black", props.className)}
+      className={cn("absolute top-2 right-2 !bg-black", props.className)}
       onClick={props.onClick}
     />
   );
@@ -34,8 +34,8 @@ ModalHeader.FilterButton = (props: FilterButtonProps) => {
   return (
     <IconButton
       className={cn(
-        "absolute top-1/2 left-5 w-7 h-7 -mt-3.5 text-sm bg-black",
-        props.active && "text-green",
+        "absolute top-1/2 left-5 w-7 h-7 -mt-3.5 text-sm !bg-black !text-white",
+        props.active && "!text-green",
         props.className
       )}
       onClick={props.onClick}
