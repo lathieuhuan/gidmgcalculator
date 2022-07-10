@@ -58,7 +58,7 @@ export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 
 export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
 
-export const FLAT_STAT_TYPES = ["hp", "atk", "def", "em"] as const;
+export const FLAT_STAT_TYPES = [...CORE_STAT_TYPES, "em"] as const;
 
 export const PERCENT_STAT_TYPES = [
   "hp_",
@@ -82,31 +82,9 @@ export const PERCENT_STAT_TYPES = [
 ] as const;
 
 export const ALL_STAT_TYPES = [
-  "base_hp",
-  "base_atk",
-  "base_def",
-  "hp",
-  "atk",
-  "def",
-  "em",
-  "hp_",
-  "atk_",
-  "def_",
-  "cRate",
-  "cDmg",
-  "healBn",
-  "er",
-  "shStr",
-  "pyro_",
-  "hydro_",
-  "dendro_",
-  "electro_",
-  "anemo_",
-  "cryo_",
-  "geo_",
-  "phys_",
-  "naAtkSpd",
-  "caAtkSpd",
+  ...BASE_STAT_TYPES,
+  ...FLAT_STAT_TYPES,
+  ...PERCENT_STAT_TYPES,
 ] as const;
 
 export const VISION_ICONS = {
@@ -150,15 +128,7 @@ export const TRANSFORMATIVE_REACTIONS = [
 
 export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
 
-export const REACTIONS = [
-  "superconduct",
-  "swirl",
-  "electroCharged",
-  "overloaded",
-  "shattered",
-  "melt",
-  "vaporize",
-] as const;
+export const REACTIONS = [...TRANSFORMATIVE_REACTIONS, ...AMPLIFYING_REACTIONS] as const;
 
 export const RESONANCE_INFO = {
   pyro: {
@@ -180,4 +150,23 @@ export const RESONANCE_INFO = {
 
 export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;
 
-export const ATTACK_PATTERNS = ["NA", "CA", "PA", "ES", "EB"] as const;
+export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
+
+export const DEBUFFS_MULTIPLIER_KEYS = [
+  // reduce target's def and resistances
+  "def_rd",
+  "pyro_rd",
+  "hydro_rd",
+  "dendro_rd",
+  "electro_rd",
+  "anemo_rd",
+  "cryo_rd",
+  "geo_rd",
+  "phys_rd",
+  // ignore target's def by ATTACK_PATTERNS
+  "NA_ig",
+  "CA_ig",
+  "PA_ig",
+  "ES_ig",
+  "EB_ig",
+] as const;

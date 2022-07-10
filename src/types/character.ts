@@ -12,11 +12,14 @@ import type {
   Tracker,
   ModifierInput,
 } from "./global";
-import {
+import type {
+  CalcCharData,
+  DebuffMultiplier,
   FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
+  ReactionBonus,
   SkillBonus,
   SkillBonusInfoKey,
   TotalAttribute,
@@ -95,19 +98,6 @@ type AbilityModifier = {
 // #to-do
 type BuffInputRenderType = "select" | "";
 
-type ApplyCharBuff = (args: {
-  char: CharInfo;
-  inputs?: ModifierInput[];
-  infusion: FinalInfusion;
-  party: Party;
-  partyData: PartyData;
-  totalAttrs: TotalAttribute;
-  skillBonuses?: SkillBonus;
-  toSelf: boolean;
-  desc: string;
-  tracker?: Tracker;
-}) => void;
-
 export type AbilityBuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect: EModAffect;
@@ -119,16 +109,30 @@ export type AbilityBuff = AbilityModifier & {
     renderTypes: BuffInputRenderType[];
     maxs?: (number | null)[];
   };
-  // #to-do
-  applyBuff?: ApplyCharBuff;
-  applyFinalBuff?: ApplyCharBuff;
+  applyBuff?: (args: ApplyCharBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
+};
+
+type ApplyCharBuffArgs = {
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
+  rxnBonuses: ReactionBonus;
+  char: CharInfo;
+  charData: CalcCharData;
+  party: Party;
+  partyData: PartyData;
+  inputs?: ModifierInput[];
+  infusion: FinalInfusion;
+  toSelf: boolean;
+  charBuffCtrls: ModifierCtrl[];
+  desc: string;
+  tracker?: Tracker;
 };
 
 // DEBUFFS
 
 export type DebuffInputRenderType = "absorption" | "text";
 
-// #to-do
 export type AbilityDebuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect?: EModAffect;
@@ -138,6 +142,14 @@ export type AbilityDebuff = AbilityModifier & {
     initialValues: ModifierInput[];
     renderTypes: DebuffInputRenderType[];
   };
-  // #to-do
-  applyDebuff?: (args: { selfDebuffCtrls: ModifierCtrl[]; desc: string; tracker: Tracker }) => void;
+  applyDebuff?: (args: {
+    rdMult: DebuffMultiplier;
+    // #to-check
+    // selfDebuffCtrls: ModifierCtrl[];
+    char?: CharInfo;
+    inputs?: ModifierInput[];
+    fromSelf: boolean;
+    desc?: string;
+    tracker?: Tracker;
+  }) => void;
 };

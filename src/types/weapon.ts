@@ -1,6 +1,12 @@
-import type { AllStat, Tracker, Rarity, ModifierInput } from "./global";
 import { EModAffect } from "@Src/constants";
-import { PartyData, TotalAttribute } from "./calculator";
+import type { AllStat, Tracker, Rarity, ModifierInput, PartiallyOptional } from "./global";
+import type {
+  CalcCharData,
+  PartyData,
+  ReactionBonus,
+  SkillBonus,
+  TotalAttribute,
+} from "./calculator";
 
 export type DataWeapon = {
   code: number;
@@ -13,8 +19,8 @@ export type DataWeapon = {
     type: AllStat;
     scale: string;
   };
-  applyBuff?: ApplyWpBuff;
-  applyFinalBuff?: ApplyWpBuff;
+  applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
   buffs: WeaponBuff[];
   passiveName: string;
   passiveDesc: (args: WpDescArgs) => {
@@ -23,14 +29,34 @@ export type DataWeapon = {
   };
 };
 
-export type ApplyWpBuff = (args: {
+type ApplyWpPassiveBuffsArgs = {
   totalAttrs: TotalAttribute;
-  refi: number;
-  inputs?: ModifierInput[];
+  skillBonuses?: SkillBonus;
+  rxnBonuses?: ReactionBonus;
+  charData?: CalcCharData;
   partyData?: PartyData;
+  refi: number;
   desc?: string;
   tracker?: Tracker;
-}) => void;
+};
+
+type ApplyWpBuffArgs = {
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
+  rxnBonuses: ReactionBonus;
+  charData: CalcCharData;
+  inputs?: ModifierInput[];
+  refi: number;
+  desc?: string;
+  tracker?: Tracker;
+};
+
+type ApplyWpFinalBuffArgs = {
+  totalAttrs: TotalAttribute;
+  refi: number;
+  desc?: string;
+  tracker?: Tracker;
+};
 
 type WpDescArgs = {
   refi: number;
@@ -45,7 +71,7 @@ type WeaponBuff = {
     initialValues: ModifierInput[];
     renderTypes: ("stacks" | "check" | "choices")[];
   };
-  applyBuff: ApplyWpBuff;
-  applyFinalBuff?: ApplyWpBuff;
+  applyBuff: (args: ApplyWpBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
   desc: (args: WpDescArgs) => JSX.Element;
 };

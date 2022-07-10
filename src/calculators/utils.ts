@@ -1,5 +1,7 @@
 import type {
   AllStat,
+  DebuffMultiplier,
+  DebuffMultiplierKey,
   ReactionBonus,
   ReactionBonusKey,
   SkillBonus,
@@ -11,7 +13,7 @@ import type {
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
-export function addOrInit<T>(obj: Record<string, number | undefined>, key: string, value: number) {
+export function addOrInit(obj: Record<string, number | undefined>, key: string, value: number) {
   obj[key] = (obj[key] || 0) + value;
 }
 
@@ -38,7 +40,7 @@ export function pushOrMergeTrackerRecord(
 
 export type SkillBonusPath = `${SkillBonusKey}.${SkillBonusInfoKey}`;
 
-export type ModRecipient = TotalAttribute | ReactionBonus | SkillBonus;
+export type ModRecipient = TotalAttribute | ReactionBonus | SkillBonus | DebuffMultiplier;
 
 export type Paths =
   | AllStat
@@ -46,7 +48,9 @@ export type Paths =
   | ReactionBonusKey
   | ReactionBonusKey[]
   | SkillBonusPath
-  | SkillBonusPath[];
+  | SkillBonusPath[]
+  | DebuffMultiplierKey
+  | DebuffMultiplierKey[];
 
 type RootValue = number | number[];
 
@@ -68,6 +72,13 @@ export function applyModifier(
   desc: string | undefined,
   recipient: SkillBonus,
   paths: SkillBonusPath | SkillBonusPath[],
+  rootValue: RootValue,
+  tracker: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: DebuffMultiplier,
+  paths: DebuffMultiplierKey | DebuffMultiplierKey[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;

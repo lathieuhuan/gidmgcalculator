@@ -1,6 +1,12 @@
-import type { ModifierInput, Tracker } from "./global";
-import type { CalcCharData, SkillBonus, TotalAttribute } from "./calculator";
 import { EModAffect } from "@Src/constants";
+import type { ModifierInput, Tracker } from "./global";
+import type {
+  CalcCharData,
+  ReactionBonus,
+  SkillBonus,
+  TotalAttribute,
+  DebuffMultiplier,
+} from "./calculator";
 
 type ArtPieceData = {
   name: string;
@@ -19,35 +25,40 @@ export type DataArtifact = {
   circlet: ArtPieceData;
   setBonuses: [SetBonus, SetBonus];
   buffs?: ArtifactBuff[];
+  debuffs?: ArtifactDebuff[]
 };
 
-type ApplyArtSetBuff = (args: {
+type ApplyArtPassiveBuffArgs = {
+  totalAttrs: TotalAttribute;
   skillBonuses?: SkillBonus;
+  rxnBonuses?: ReactionBonus;
   charData: CalcCharData;
   desc?: string;
   tracker?: Tracker;
-}) => void;
-
-type ApplyArtSetFinalBuff = (args: {
-  totalAttrs: TotalAttribute;
-  skillBonuses?: SkillBonus;
-  desc?: string;
-  tracker?: Tracker;
-}) => void;
+};
 
 type SetBonus = {
   desc: JSX.Element;
-  applyBuff?: ApplyArtSetBuff;
-  applyFinalBuff?: ApplyArtSetFinalBuff;
+  applyBuff?: (args: ApplyArtPassiveBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyArtPassiveBuffArgs) => void;
 };
 
-type ApplyArtBuff = (args: {
+type ApplyArtBuffArgs = {
   totalAttrs: TotalAttribute;
   skillBonuses: SkillBonus;
+  rxnBonuses: ReactionBonus;
+  charData: CalcCharData;
   inputs?: ModifierInput[];
-  desc: string;
+  desc?: string;
   tracker?: Tracker;
-}) => void;
+};
+
+type ApplyArtFinalBuffArgs = {
+  totalAttrs: TotalAttribute;
+  skillBonuses: SkillBonus;
+  desc?: string;
+  tracker?: Tracker;
+};
 
 type ArtifactBuff = {
   desc: () => JSX.Element;
@@ -58,6 +69,18 @@ type ArtifactBuff = {
     renderTypes: ("stacks" | "")[];
     maxs: number[];
   };
-  applyBuff?: ApplyArtBuff;
-  applyFinalBuff?: ApplyArtBuff;
+  applyBuff?: (args: ApplyArtBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
+};
+
+type ArtifactDebuff = {
+  desc: JSX.Element;
+  labels: string[];
+  inputTypes: "swirl"[];
+  addPntes: (args: {
+    rdMult: DebuffMultiplier;
+    inputs?: ModifierInput[];
+    desc: string;
+    tracker: Tracker;
+  }) => void;
 };

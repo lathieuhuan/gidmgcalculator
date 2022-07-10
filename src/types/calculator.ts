@@ -1,3 +1,4 @@
+import { DEBUFFS_MULTIPLIER_KEYS } from "@Src/constants";
 import type {
   AllStat,
   Artifact,
@@ -85,7 +86,7 @@ export type SubWeaponBuffCtrl = {
   activated: boolean;
   refi: number;
   index: number;
-  inputs?: ModifierInput[]
+  inputs?: ModifierInput[];
 };
 
 export type SubWeaponComplexBuffCtrl = Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
@@ -151,8 +152,7 @@ export type CustomBuffCtrl = {
 };
 
 export type CustomDebuffCtrl = {
-  // #to-do
-  type: "";
+  type: DebuffMultiplierKey;
   value: number;
 };
 
@@ -181,6 +181,10 @@ export type SkillBonus = Record<SkillBonusKey, SkillBonusInfo>;
 export type ReactionBonusKey = Reaction | "naMelt" | "naVaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
+
+export type DebuffMultiplierKey = typeof DEBUFFS_MULTIPLIER_KEYS[number];
+
+export type DebuffMultiplier = Record<DebuffMultiplierKey, number>;
 
 export type FinalInfusion = Record<NormalAttack, Vision>;
 
