@@ -1,5 +1,4 @@
 import {
-  CalcCharData,
   CharInfo,
   CustomDebuffCtrl,
   ElementModCtrl,
@@ -21,16 +20,19 @@ import {
   Vision,
   AttackDamageType,
   AttackElement,
+  NormalAttack,
 } from "@Src/types";
 import {
-  AMPLIFYING_ELEMENTS,
   AMPLIFYING_REACTIONS,
   ATTACK_DAMAGE_TYPES,
+  BASE_REACTION_DAMAGE,
   DEBUFFS_MULTIPLIER_KEYS,
   TALENT_TYPES,
+  TRANSFORMATIVE_REACTIONS,
+  TRANSFORMATIVE_REACTION_INFO,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
+import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
 import { applyModifier, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { DamageTypes, TrackerDamageRecord } from "./types";
@@ -146,6 +148,7 @@ function getBaseDamage(
   }
   const pct = finalMult(baseMult);
   record.finalMult = pct;
+
   return [baseDamage(pct), record];
 }
 
@@ -153,7 +156,7 @@ function getDamageBonusMult(
   talentBuff: TalentBuff,
   [attPatt, attElmt]: DamageTypes,
   skillBonuses: SkillBonus,
-  attInfusion: AttackDamageType,
+  attInfusion: AttackDamageType | undefined,
   totalAttrs: TotalAttribute
 ) {
   let normal = (talentBuff.pct?.value || 0) + (skillBonuses[attPatt]?.pct || 0);
@@ -186,7 +189,7 @@ function getReactionMult(
   return 1;
 }
 
-function getReduction(
+function getReductionMult(
   char: CharInfo,
   target: Target,
   debuffMult: DebuffMultiplier,
@@ -212,21 +215,29 @@ function getReduction(
   return [defMult, debuffMult[`${attInfusion}_rd`]];
 }
 
-function getCrit(ATTRs, tlBnes, [attPatt, attElmt], hitBnes) {
-  const total = (type) =>
-    ATTRs[lib[type]] +
-    pickTlBn(tlBnes, type) +
-    (hitBnes[attPatt]?.[type] || 0) +
-    (hitBnes[attElmt]?.[type] || 0);
+function getCrit(
+  totalAttrs: TotalAttribute,
+  talentBuff: TalentBuff,
+  [attPatt, attElmt]: DamageTypes,
+  skillBonuses: SkillBonus
+) {
+  const total = (type: "cRate" | "cDmg") => {
+    return (
+      totalAttrs[type] +
+      (talentBuff[type]?.value || 0) +
+      skillBonuses[attPatt][type] +
+      skillBonuses[attElmt][type] +
+      skillBonuses.all[type]
+    );
+  };
   return {
-    Rate: Math.min(Math.max(hitBnes.All.cRate + total("cRate"), 0), 100) / 100,
+    Rate: Math.min(Math.max(total("cRate"), 0), 100) / 100,
     Dmg: total("cDmg") / 100,
   };
 }
 
-export default function getDmg(
+export default function getDamage(
   char: CharInfo,
-  charData: CalcCharData,
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
@@ -276,8 +287,7 @@ export default function getDmg(
 
       if (base && dmgTypes) {
         // #to-check: assign infusion[dmgTypes[0] not work
-        const attInfusion: AttackDamageType | undefined =
-          infusion[dmgTypes[0] as keyof typeof infusion];
+        const attInfusion: AttackDamageType | undefined = infusion[dmgTypes[0] as NormalAttack];
         const flat =
           (talentBuff.flat?.value || 0) +
           skillBonuses[dmgTypes[0]].flat +
@@ -285,73 +295,96 @@ export default function getDmg(
 
         record.finalFlat = (record.finalFlat || 0) + flat;
 
-        const [normal, special] = getDamageBonusMult(
+        const [normalMult, specialMult] = getDamageBonusMult(
           talentBuff,
           dmgTypes,
           skillBonuses,
           attInfusion,
           totalAttrs
         );
+        const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonuses, vision);
+        const [defMult, resMult] = getReductionMult(
+          char,
+          target,
+          debuffMult,
+          dmgTypes,
+          vision,
+          attInfusion
+        );
+        base = applyToOneOrMany(
+          base,
+          (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
+        );
+        const c = getCrit(totalAttrs, talentBuff, dmgTypes, skillBonuses);
 
-        const rxn = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonuses, vision);
-        const [def, res] = getReduction(char, target, debuffMult, dmgTypes, vision, inf);
-        base = calcDmg(base, dmgFormula(flat, normal, special, rxn, def, res));
-        const c = getCrit(ATTRs, tlBnes, dmgTypes, hitBnes);
-
-        finalResult[type][piece.name] = {
-          "Non-crit": base,
-          Crit: calcDmg(base, (n) => n * (1 + c.Dmg)),
-          Average: calcDmg(base, (n) => n * (1 + c.Rate * c.Dmg)),
+        finalResult[type][stat.name] = {
+          nonCrit: base,
+          crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
+          average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
         };
-        values.push(normal, special, rxn, def, res, c.Rate, c.Dmg);
-      } else {
+        record = {
+          ...record,
+          normalMult,
+          specialMult,
+          rxnMult,
+          defMult,
+          resMult,
+          cRate: c.Rate,
+          cDmg: c.Dmg,
+        };
+      } else if (!Array.isArray(base)) {
         let flat = 0;
-        let normal = 1;
-        if (piece.isHealing) {
-          flat = pickTlBn(tlBnes, "flat");
-          normal += ATTRs["Healing Bonus"] / 100;
+        let normalMult = 1;
+
+        if (stat.isHealing) {
+          flat = talentBuff.flat?.value || 0;
+          normalMult += totalAttrs.healBn / 100;
         }
         base += flat;
-        values[3] += flat;
-        if (normal !== 1) {
-          base *= normal;
-          values.push(normal);
+        record.finalFlat += flat;
+
+        if (normalMult !== 1) {
+          base *= normalMult;
+          record.normalMult = normalMult;
         }
-        if (piece.getLimit) {
-          const limit = piece.getLimit({ ATTRs });
+        if (stat.getLimit) {
+          const limit = stat.getLimit({ totalAttrs });
           if (base > limit) {
             base = limit;
-            values[11] = ` (limited to ${limit})`;
+            record.note = ` (limited to ${limit})`;
           }
         }
-        finalResult[type][piece.name] = {
-          "Non-crit": base,
-          Crit: 0,
-          Average: base,
+        finalResult[type][stat.name] = {
+          nonCrit: base,
+          crit: 0,
+          average: base,
         };
       }
       if (tracker) {
-        tracker[type][piece.name] = { values, tlBnes };
+        tracker[type][stat.name] = { record, talentBuff };
       }
     }
   });
 
-  finalResult["Reactions DMG"] = {};
-  if (tracker) tracker.Reactions = {};
-  for (const rxn in tfmRxns) {
-    let base = baseRxnDmg[bareLv(char.level)];
-    const normal = tfmRxns[rxn].mult;
-    const special = 1 + rxnBnes[rxn] / 100;
-    const { dmgType } = tfmRxns[rxn];
-    const res = dmgType !== "Various" ? debuffMult[`${dmgType}_rd`] : 1;
-    base *= normal * special * res;
-    finalResult["Reactions DMG"][rxn] = {
-      "Non-crit": base,
-      Crit: 0,
-      Average: base,
-    };
+  finalResult.RXN = {};
+  if (tracker) tracker.RXN = {};
+
+  for (const rxn of TRANSFORMATIVE_REACTIONS) {
+    let base = BASE_REACTION_DAMAGE[bareLv(char.level)];
+    const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
+    const specialMult = 1 + rxnBonuses[rxn] / 100;
+    const resMult = dmgType !== "various" ? debuffMult[`${dmgType}_rd`] : 1;
+    base *= normalMult * specialMult * resMult;
+
+    finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
     if (tracker) {
-      tracker.Reactions[rxn] = [normal, special, res];
+      tracker.RXN[rxn] = {
+        record: {
+          normalMult,
+          specialMult,
+          resMult,
+        },
+      };
     }
   }
   return finalResult;

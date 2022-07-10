@@ -11,6 +11,7 @@ import type {
   CharInfo,
   Tracker,
   ModifierInput,
+  NormalAttack,
 } from "./global";
 import type {
   CalcCharData,
@@ -46,15 +47,17 @@ export type DataCharacter = {
 export type TalentStatInfo = {
   name: string;
   noCalc?: boolean;
+  isHealing?: boolean;
   dmgTypes?: [AttackPattern, AttackElement];
   baseStatType?: "base_atk" | "atk" | "def" | "hp";
   baseMult: number | number[];
   multType: number;
   flat?: {
     base: number;
-    type: number
-  }
+    type: number;
+  };
   getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
+  getLimit?: (args: { totalAttrs: TotalAttribute }) => number;
 };
 
 type NormalAttacks = {
@@ -107,6 +110,11 @@ export type AbilityBuff = AbilityModifier & {
     initialValues: ModifierInput[];
     renderTypes: BuffInputRenderType[];
     maxs?: (number | null)[];
+  };
+  infuseConfig?: {
+    range: NormalAttack[];
+    overwritable: boolean;
+    isAppliable?: (charData: DataCharacter) => boolean
   };
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;

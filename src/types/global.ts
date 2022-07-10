@@ -10,7 +10,6 @@ import {
   BASE_STAT_TYPES,
   FLAT_STAT_TYPES,
   ALL_STAT_TYPES,
-  ATTACK_PATTERNS,
 } from "@Src/constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";

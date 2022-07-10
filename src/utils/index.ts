@@ -20,6 +20,10 @@ export const pickOne = <T>(subject: T | T[], index: number): T => {
   return Array.isArray(subject) ? subject[index] : subject;
 };
 
+export const applyToOneOrMany = <T>(base: T | T[], callback: (base: T, index?: number) => T) => {
+  return Array.isArray(base) ? base.map(callback) : callback(base);
+};
+
 export function isOne(obj1: any, obj2: any) {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;

@@ -33,12 +33,12 @@ export type CalculatorState = {
     keepArtStatsOnSwitch: boolean;
   };
   setups: CalcSetup[];
-  char: CharInfo | null;
+  char: CalcChar;
   charData: CalcCharData | null;
   allSelfBuffCtrls: Array<ModifierCtrl[]>;
   allSelfDebuffCtrls: Array<ModifierCtrl[]>;
   allWps: CalcWeapon[];
-  allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
+  allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl[];
   allSubWpComplexDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];
   allParties: Party[];
@@ -52,6 +52,7 @@ export type CalculatorState = {
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
   allDmgResult: DamageResult[];
+  isError: boolean
 };
 
 export type SetupType = "original" | "";
@@ -61,6 +62,17 @@ export type CalcSetup = {
   ID: number;
   type: SetupType;
 };
+
+type ComplexCharInfo = {
+  name: string;
+  level: Level[];
+  NAs: number[];
+  ES: number[];
+  EB: number[];
+  cons: number[];
+}
+
+export type CalcChar = CharInfo | ComplexCharInfo | null;
 
 export type CalcCharData = {
   code: number;
@@ -197,7 +209,7 @@ export type FinalInfusion = Record<NormalAttack, AttackDamageType>;
 
 export type Talent = typeof TALENT_TYPES[number];
 
-type CalculatedStat = Record<"nonCrit" | "crit" | "average", number>;
+type CalculatedStat = Record<"nonCrit" | "crit" | "average", number | number[]>;
 
 type CalculatedStatCluster = {
   [k: string]: CalculatedStat;

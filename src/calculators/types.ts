@@ -28,10 +28,18 @@ export type Wrapper2 = {
 };
 
 export type TrackerDamageRecord = {
-  baseValue: number,
-  baseStatType: "base_atk" | "hp" | "atk" | "def",
-  finalMult: number | number[],
-  finalFlat: number
-}
+  baseValue: number;
+  baseStatType: "base_atk" | "hp" | "atk" | "def";
+  finalMult: number | number[];
+  finalFlat: number;
+  normalMult: number;
+  specialMult?: number;
+  rxnMult?: number;
+  defMult?: number;
+  resMult?: number;
+  cRate?: number;
+  cDmg?: number;
+  note?: string;
+};
 
 export type DamageTypes = [AttackPattern, AttackElement];

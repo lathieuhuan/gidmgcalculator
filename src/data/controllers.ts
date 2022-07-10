@@ -1,4 +1,4 @@
-import type { Artifact, CalcCharData, Weapon } from "@Src/types";
+import type { Artifact, CalcCharData, Party, Weapon } from "@Src/types";
 import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
@@ -32,6 +32,17 @@ export const getCharData = (char: HasName): CalcCharData => {
     vision,
     nation,
     weapon,
-    EBcost: activeTalents.EB.energyCost,
+    EBcost: activeTalents[2].energyCost,
   };
 };
+
+export function getPartyData(party: Party) {
+  const result = [];
+  for (const tm of party) {
+    if (tm) {
+      const { name, nation, vision } = findCharacter(tm)!;
+      result.push({ name, nation, vision });
+    }
+  }
+  return result;
+}

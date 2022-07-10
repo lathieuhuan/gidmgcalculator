@@ -1,3 +1,5 @@
+import { AttackDamageType } from "./types";
+
 export enum EScreen {
   CALCULATOR = "Calculator",
   MY_SETUPS = "MySetups",
@@ -49,6 +51,8 @@ export const NORMAL_ATTACKS = ["NA", "CA", "PA"] as const;
 export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
 
 export const TALENT_TYPES = ["NAs", "ES", "EB"] as const;
+
+// export const CHAR_INFO_FIELDS = ["level", ...TALENT_TYPES, "cons"] as const;
 
 export const ATTACK_DAMAGE_TYPES = [...VISION_TYPES, "phys"] as const;
 
@@ -153,6 +157,28 @@ export const TRANSFORMATIVE_REACTIONS = [
   "overloaded",
   "shattered",
 ] as const;
+
+export const TRANSFORMATIVE_REACTION_INFO: Record<
+  typeof TRANSFORMATIVE_REACTIONS[number],
+  { mult: number; dmgType: AttackDamageType | "various" }
+> = {
+  superconduct: { mult: 1, dmgType: "cryo" },
+  swirl: { mult: 1.2, dmgType: "various" },
+  electroCharged: { mult: 2.4, dmgType: "electro" },
+  overloaded: { mult: 4, dmgType: "pyro" },
+  shattered: { mult: 3, dmgType: "phys" },
+};
+
+export const BASE_REACTION_DAMAGE: Record<number, number> = {
+  1: 9,
+  20: 40,
+  40: 104,
+  50: 162,
+  60: 245,
+  70: 383,
+  80: 540,
+  90: 725,
+};
 
 export const AMPLIFYING_ELEMENTS = ["pyro", "hydro", "cryo"];
 

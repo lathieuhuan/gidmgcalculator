@@ -2,7 +2,9 @@ import type {
   CalcArtInfo,
   CalcArtPiece,
   CalcArtSet,
+  CalcChar,
   CalcSetup,
+  CalculatorState,
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
@@ -13,10 +15,47 @@ import type {
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import { findById } from "@Src/utils";
-import { initCharInfo, initWeapon } from "./initiators";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { EModAffect } from "@Src/constants";
 import artifacts from "@Data/artifacts";
+import calculateAll from "@Src/calculators";
+import { initCharInfo, initWeapon } from "./initiators";
+
+export function calculate(state: CalculatorState, all: boolean) {
+  try {
+    const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentSetup];
+
+    for (const i of indexes) {
+      const char = getCharAtSetup(state.char, i);
+
+      if (!state.charData || !char) {
+        throw new Error("No character's Data / Info");
+      }
+      const __ = calculateAll(
+        char,
+        state.charData,
+        state.allSelfBuffCtrls[i],
+        state.allSelfDebuffCtrls[i],
+        state.allParties[i],
+        state.allWps[i],
+        state.allSubWpComplexBuffCtrls[i],
+        state.allArtInfo[i],
+        state.allElmtModCtrls[i],
+        state.allCustomBuffCtrls[i],
+        state.allCustomDebuffCtrls[i],
+        state.target
+      );
+      state.allFinalInfusion[i] = __[0];
+      state.allTotalAttrs[i] = __[1];
+      state.allRxnBonuses[i] = __[3];
+      state.allArtAttrs[i] = __[4];
+      state.allDmgResult[i] = __[5];
+    }
+  } catch (err) {
+    console.log(err);
+    state.isError = true;
+  }
+}
 
 export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
@@ -164,6 +203,27 @@ export function getAllSubArtBuffCtrls(mainCode: number | null) {
 
 export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
   return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
+}
+
+function isCharInfo(info: CalcChar): info is CharInfo {
+  return !Array.isArray(info?.level);
+}
+
+export function getCharAtSetup(char: CalcChar, index: number) {
+  if (!char) {
+    return null;
+  }
+  if (isCharInfo(char)) {
+    return char;
+  }
+  return {
+    name: char.name,
+    level: char.level[index],
+    NAs: char.NAs[index],
+    ES: char.ES[index],
+    EB: char.EB[index],
+    cons: char.cons[index],
+  };
 }
 
 export const getSetupInfo = ({

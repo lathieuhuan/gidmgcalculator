@@ -265,6 +265,7 @@ export default function getBuffedStats(
   infusion: FinalInfusion,
   tracker: Tracker
 ) {
+  //
   const wpData = findWeapon(weapon)!;
   const totalAttrs = initiateTotalAttrs(char, wpData, weapon, tracker);
   const artAttrs = addArtAttrs(art.pieces, totalAttrs, tracker);
@@ -305,7 +306,7 @@ export default function getBuffedStats(
   skillBonuses.elmt.pct += totalAttrs[`${charData.vision}_`];
   skillBonuses.phys.pct += totalAttrs.phys_;
   calcFinalRxnBonuses(totalAttrs, rxnBonuses, charData.vision, infusion);
-  return [totalAttrs, skillBonuses, rxnBonuses, artAttrs];
+  return [totalAttrs, skillBonuses, rxnBonuses, artAttrs] as const;
 }
 
 function initSkillBonusField() {
