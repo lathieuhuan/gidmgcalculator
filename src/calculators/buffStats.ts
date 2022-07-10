@@ -1,6 +1,4 @@
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
-  AMPLIFYING_ELEMENTS,
   AMPLIFYING_REACTIONS,
   ATTACK_PATTERNS,
   REACTIONS,
@@ -31,8 +29,16 @@ import {
   Weapon,
 } from "@Src/types";
 import { findByIndex, toMultiplier } from "@Src/utils";
-import { addArtAttrs, addWpSubStat, initiateTotalAttrs } from "./baseStats";
-import { Wrapper1, Wrapper2 } from "./types";
+import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import {
+  addArtAttrs,
+  addWpSubStat,
+  applyArtPassiveBuffs,
+  applyWpPassiveBuffs,
+  calcFinalTotalAttrs,
+  initiateTotalAttrs,
+} from "./baseStats";
+import type { Wrapper1, Wrapper2 } from "./types";
 import {
   ampMultiplier,
   applyModifier,
@@ -149,7 +155,7 @@ function applyTeammateBuffs(
       if (activated && applyFn) {
         const desc = `${tm.name} / ${buff.src}`;
         const wrapper2 = { char, inputs, infusion, party, partyData, desc };
-        applyFn({ ...wrapper, ...wrapper2, toSelf: false, selfBuffCtrls: tm.buffCtrls });
+        applyFn({ ...wrapper, ...wrapper2, toSelf: false, charBuffCtrls: tm.buffCtrls });
       }
     }
   }
@@ -217,7 +223,7 @@ function applySelfBuffs(
   }
 }
 
-function calcFinalRxnBnes(
+function calcFinalRxnBonuses(
   totalAttrs: TotalAttribute,
   rxnBonuses: ReactionBonus,
   vision: Vision,
@@ -242,14 +248,12 @@ function calcFinalRxnBnes(
   }
 }
 
-
-
 export default function getBuffedStats(
   char: CharInfo,
   charData: CalcCharData,
   charBuffCtrls: ModifierCtrl[],
   weapon: CalcWeapon,
-  subWpBuffCtrls: ModifierCtrl[],
+  subWpBuffCtrls: SubWeaponComplexBuffCtrl,
   art: CalcArtInfo,
   resonance: Resonance,
   party: Party,
@@ -264,46 +268,43 @@ export default function getBuffedStats(
   addWpSubStat(wpData, totalAttrs, weapon.level, tracker);
 
   const skillBonuses = {} as SkillBonus;
-  
-  for (const pattern of [...ATTACK_PATTERNS]) {
-    skillBonuses[pattern] = {
-      cDmg: 0,
-      cRate: 0,
-      flat: 0,
-      pct: 0,
-    };
+
+  for (const pattern of ATTACK_PATTERNS) {
+    skillBonuses[pattern] = initSkillBonusField();
   }
-  const rxnBnes = {};
+  skillBonuses.all = initSkillBonusField();
+
+  const rxnBonuses = {} as ReactionBonus;
   for (const rxn of REACTIONS) {
-    rxnBnes[rxn] = 0;
+    rxnBonuses[rxn] = 0;
   }
-  const wrapper = { ATTRs, hitBnes, rxnBnes, charData, tracker };
 
-  const wpRfm = weapon.refinement;
-  addWpBonuses(false, wpData, wpRfm, wrapper, partyData);
-  addArtBonuses(false, art.sets, wrapper);
-  // charData is not needed
-  addCustomBuffs(wrapper, customBCs);
-  addResonanceBuffs(ATTRs, hitBnes, resonance, tracker);
-  // rxnBnes is not needed yet
-  addWpBuffs(wrapper, weapon.BCs, wpRfm, subWpBCs, wpData);
-  addArtBuffs({ ATTRs, hitBnes, tracker }, art);
-  addTeammateBuffs(party, partyData, wrapper, char, infusion);
-  const wrapper2 = { char, charBCs, infusion, party };
-  // charData is not needed yet
-  addSelfBuffs(false, wrapper, wrapper2, partyData);
+  const wrapper1 = { totalAttrs, skillBonuses, rxnBonuses, charData, tracker };
+  const wrapper2 = { char, charBuffCtrls, infusion, party };
+  const { refi } = weapon;
 
-  calcFinalATTRs(ATTRs);
-  addArtBonuses(true, art.sets, wrapper);
-  addWpBonuses(true, wpData, wpRfm, wrapper, partyData);
-  addWpFinalBuffs(ATTRs, weapon, wpData, tracker);
-  addSelfBuffs(true, wrapper, wrapper2, partyData);
-  addArtFinalBuffs(ATTRs, hitBnes, art, tracker);
+  applyWpPassiveBuffs(false, wpData, refi, wrapper1, partyData);
+  applyArtPassiveBuffs(false, art.sets, wrapper1);
+  applyCustomBuffs(wrapper1, customBuffCtrls);
+  applyResonanceBuffs(totalAttrs, skillBonuses, resonance, tracker);
+  applyWpBuffs(wrapper1, weapon.buffCtrls, refi, subWpBuffCtrls, wpData);
+  applyArtBuffs(wrapper1, art);
+  applyTeammateBuffs(party, partyData, wrapper1, char, infusion);
+  applySelfBuffs(false, wrapper1, wrapper2, partyData);
 
-  hitBnes.Elemental.pct += ATTRs[charData.vision + " DMG Bonus"];
-  hitBnes.Physical.pct += ATTRs["Physical DMG Bonus"];
-  calcFinalRxnBnes(ATTRs, rxnBnes, charData.vision, infusion);
-  return [ATTRs, hitBnes, rxnBnes, artSBnes];
+  calcFinalTotalAttrs(totalAttrs);
+  applyArtPassiveBuffs(true, art.sets, wrapper1);
+  applyWpPassiveBuffs(true, wpData, refi, wrapper1, partyData);
+  applyWpFinalBuffs(totalAttrs, weapon, wpData, tracker);
+  applySelfBuffs(true, wrapper1, wrapper2, partyData);
+  addArtFinalBuffs(totalAttrs, skillBonuses, art, tracker);
+
+  skillBonuses.elmt.pct += totalAttrs[`${charData.vision}_`];
+  skillBonuses.phys.pct += totalAttrs.phys_;
+  calcFinalRxnBonuses(totalAttrs, rxnBonuses, charData.vision, infusion);
+  return [totalAttrs, skillBonuses, rxnBonuses, artAttrs];
 }
 
-function init
+function initSkillBonusField() {
+  return { cDmg: 0, cRate: 0, flat: 0, pct: 0 };
+}
