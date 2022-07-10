@@ -3,6 +3,7 @@ import {
   ATTACK_PATTERNS,
   REACTIONS,
   RESONANCE_INFO,
+  SKILL_BONUS_INFO_KEYS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import {
@@ -21,6 +22,7 @@ import {
   ReactionBonus,
   Resonance,
   SkillBonus,
+  SkillBonusInfo,
   SkillBonusKey,
   SubWeaponComplexBuffCtrl,
   TotalAttribute,
@@ -40,10 +42,11 @@ import {
 } from "./baseStats";
 import type { Wrapper1, Wrapper2 } from "./types";
 import {
-  ampMultiplier,
   applyModifier,
   getRxnBonusesFromEM,
+  meltMult,
   pushOrMergeTrackerRecord,
+  vaporizeMult,
 } from "./utils";
 
 function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCtrl[]) {
@@ -240,11 +243,11 @@ function calcFinalRxnBonuses(
   const meltBonus = toMultiplier(rxnBonuses.melt);
   const vapBonus = toMultiplier(rxnBonuses.vaporize);
 
-  rxnBonuses.melt = ampMultiplier.melt(vision) * meltBonus;
-  rxnBonuses.vaporize = ampMultiplier.vaporize(vision) * vapBonus;
+  rxnBonuses.melt = meltMult(vision) * meltBonus;
+  rxnBonuses.vaporize = vaporizeMult(vision) * vapBonus;
   if (infusion.NA !== vision) {
-    rxnBonuses.naMelt = ampMultiplier.melt(infusion.NA) * meltBonus;
-    rxnBonuses.naVaporize = ampMultiplier.vaporize(infusion.NA) * vapBonus;
+    rxnBonuses.na_melt = meltMult(infusion.NA) * meltBonus;
+    rxnBonuses.na_vaporize = vaporizeMult(infusion.NA) * vapBonus;
   }
 }
 
@@ -306,5 +309,9 @@ export default function getBuffedStats(
 }
 
 function initSkillBonusField() {
-  return { cDmg: 0, cRate: 0, flat: 0, pct: 0 };
+  let result = {} as SkillBonusInfo;
+  for (const key of SKILL_BONUS_INFO_KEYS) {
+    result[key] = 0;
+  }
+  return result;
 }
