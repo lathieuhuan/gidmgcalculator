@@ -17,7 +17,7 @@ export const MEDIUM_PA = [
   }
 ];
 
-export const TALENT_LV_MULTIPLIERS = {
+export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
   // normal attack && physical
   1: [
     0, 1, 1.08, 1.16, 1.275, 1.35, 1.45, 1.575, 1.7, 1.8373, 1.9768, 2.1264,

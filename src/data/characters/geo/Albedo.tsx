@@ -30,21 +30,21 @@ const Albedo: DataCharacter = {
     { base_hp: 12296, base_atk: 233, base_def: 815, geo_: 28.8 },
     { base_hp: 13226, base_atk: 251, base_def: 876, geo_: 28.8 },
   ],
-  activeTalents: {
-    NAs: {
+  activeTalents: [
+    {
       name: "Favonius Bladework - Weiss",
-      NA: [
+      stats: [
         { name: "1-Hit", baseMult: 36.74, multType: 1 },
         { name: "2-Hit", baseMult: 36.74, multType: 1 },
         { name: "3-Hit", baseMult: 47.45, multType: 1 },
         { name: "4-Hit", baseMult: 49.75, multType: 1 },
         { name: "5-Hit", baseMult: 62.07, multType: 1 },
+        { name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 },
+        ...MEDIUM_PA,
       ],
-      CA: [{ name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 }],
-      PA: MEDIUM_PA,
       caStamina: 20,
     },
-    ES: {
+    {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
@@ -58,7 +58,7 @@ const Albedo: DataCharacter = {
         {
           name: "Transient Blossom",
           dmgTypes: ["ES", "elmt"],
-          baseSType: "def",
+          baseStatType: "def",
           baseMult: 133.6,
           multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
@@ -71,7 +71,7 @@ const Albedo: DataCharacter = {
         },
       ],
     },
-    EB: {
+    {
       name: "Rite of Progeniture: Tectonic Tide",
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
@@ -91,7 +91,7 @@ const Albedo: DataCharacter = {
       ],
       energyCost: 40,
     },
-  },
+  ],
   passiveTalents: [
     {
       name: "Calcite Might",
@@ -177,8 +177,8 @@ const Albedo: DataCharacter = {
         renderTypes: ["select"],
         maxs: [4],
       },
-      applyFinalBuff: ({ totalAttrs, skillBonuses, selfBuffCtrls, desc, tracker }) => {
-        const bnValue = totalAttrs.def * 0.3 * +findInput(selfBuffCtrls, 2, 0, 0);
+      applyFinalBuff: ({ totalAttrs, skillBonuses, charBuffCtrls, desc, tracker }) => {
+        const bnValue = totalAttrs.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
         applyModifier(desc, skillBonuses, "EB.flat", Math.round(bnValue), tracker);
       },
     },

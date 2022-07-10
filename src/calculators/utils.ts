@@ -1,5 +1,6 @@
 import type {
   AllStat,
+  AttackDamageType,
   DebuffMultiplier,
   DebuffMultiplierKey,
   ReactionBonus,
@@ -9,7 +10,6 @@ import type {
   SkillBonusKey,
   TotalAttribute,
   Tracker,
-  Vision,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
@@ -158,7 +158,5 @@ export function getRxnBonusesFromEM(EM = 0) {
   };
 }
 
-export const ampMultiplier = {
-  melt: (elmt: Vision) => (elmt === "pyro" ? 2 : 1.5),
-  vaporize: (elmt: Vision) => (elmt === "pyro" ? 1.5 : 2),
-};
+export const meltMult = (elmt: AttackDamageType) => (elmt === "pyro" ? 2 : 1.5);
+export const vaporizeMult = (elmt: AttackDamageType) => (elmt === "pyro" ? 1.5 : 2);

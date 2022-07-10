@@ -78,7 +78,7 @@ type ArtifactDebuff = {
   labels: string[];
   inputTypes: "swirl"[];
   addPntes: (args: {
-    rdMult: DebuffMultiplier;
+    debuffMult: DebuffMultiplier;
     inputs?: ModifierInput[];
     desc: string;
     tracker: Tracker;

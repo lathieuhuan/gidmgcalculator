@@ -39,9 +39,10 @@ export type CommonStat = FlatStat | RngPercentStat | "shStr";
 
 export type NormalAttack = typeof NORMAL_ATTACKS[number];
 
-export type AttackElement = "elmt" | "phys";
+export type AttackElement = "elmt" | "phys" | "various";
 
-export type AttackPattern = typeof ATTACK_PATTERNS[number];
+// export type AttackPattern = typeof ATTACK_PATTERNS[number];
+export type AttackPattern = NormalAttack | "ES" | "EB" | "";
 
 export type Tracker = any;
 
@@ -62,7 +63,6 @@ export type CharInfo = {
 
 // #to-do
 export type ModifierInput = string | number;
-
 
 /**
  * utility generic

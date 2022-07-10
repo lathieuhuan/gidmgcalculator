@@ -36,27 +36,30 @@ export type DataCharacter = {
   vision: Vision;
   weapon: Weapon;
   stats: (Record<BaseStat, number> & Partial<Record<RngPercentStat, number>>)[];
-  activeTalents: {
-    NAs: NormalAttack;
-    ES: Skill;
-    EB: ElementalBurst;
-  };
+  activeTalents: [NormalAttacks, ElementalSkill, ElementalBurst];
   passiveTalents: Ability[];
   constellation: Ability[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
 
-export type NormalAttackStats = {
+export type TalentStatInfo = {
   name: string;
+  noCalc?: boolean;
+  dmgTypes?: [AttackPattern, AttackElement];
+  baseStatType?: "base_atk" | "atk" | "def" | "hp";
   baseMult: number | number[];
   multType: number;
-}[];
-type NormalAttack = {
+  flat?: {
+    base: number;
+    type: number
+  }
+  getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
+};
+
+type NormalAttacks = {
   name: string;
-  NA: NormalAttackStats;
-  CA: NormalAttackStats;
-  PA: NormalAttackStats;
+  stats: TalentStatInfo[];
   caStamina: number;
 };
 
@@ -67,24 +70,20 @@ type Ability = {
 
 type GetTalentBuffArgs = {
   char: CharInfo;
+  partyData: PartyData;
+  totalAttrs: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
+  selfDebuffCtrls: ModifierCtrl[];
 };
 
-export type TalentBuff = Record<SkillBonusInfoKey, { desc: string; value: number }>;
+export type TalentBuff = Partial<Record<SkillBonusInfoKey, { desc: string; value: number }>>;
 
-type Skill = Ability & {
+type ElementalSkill = Ability & {
   xtraLvAtCons: 3 | 5;
-  stats: {
-    name: string;
-    dmgTypes: [AttackPattern, AttackElement];
-    baseSType?: "base_atk" | "atk" | "def" | "hp";
-    baseMult: number | number[];
-    multType: number;
-    getTalentBuff?: (args: GetTalentBuffArgs) => Partial<TalentBuff> | void;
-  }[];
+  stats: TalentStatInfo[];
 };
 
-type ElementalBurst = { energyCost: number } & Skill;
+type ElementalBurst = ElementalSkill & { energyCost: number };
 
 type AbilityModifier = {
   index: number;
@@ -143,7 +142,7 @@ export type AbilityDebuff = AbilityModifier & {
     renderTypes: DebuffInputRenderType[];
   };
   applyDebuff?: (args: {
-    rdMult: DebuffMultiplier;
+    debuffMult: DebuffMultiplier;
     // #to-check
     // selfDebuffCtrls: ModifierCtrl[];
     char?: CharInfo;

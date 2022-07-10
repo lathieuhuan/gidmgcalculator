@@ -1,5 +1,6 @@
-import type { Level, PercentStat } from "@Src/types";
-import { PERCENT_STAT_TYPES } from "@Src/constants";
+import type { CharInfo, Level, PartyData, PercentStat, Talent } from "@Src/types";
+import { PERCENT_STAT_TYPES, TALENT_TYPES } from "@Src/constants";
+import { findCharacter } from "@Data/controllers";
 
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 
@@ -24,11 +25,7 @@ export function isOne(obj1: any, obj2: any) {
     return false;
   }
   for (const k in obj1) {
-    if (
-      typeof obj1[k] === "object" &&
-      typeof obj2[k] === "object" &&
-      isOne(obj1[k], obj2[k])
-    ) {
+    if (typeof obj1[k] === "object" && typeof obj2[k] === "object" && isOne(obj1[k], obj2[k])) {
       continue;
     } else if (obj1[k] !== obj2[k]) {
       return false;
@@ -99,19 +96,21 @@ export const initArtStatFilter = () => ({
   subs: Array(4).fill("All"),
 });
 
-// export function getTotalXtraTlLv(char, tlData, partyData) {
-//   let result = 0;
-//   const { type, getXtraLv } = tlData;
-//   if (getXtraLv) result += getXtraLv(char);
-//   if (partyData) {
-//     const childe = partyData.some((tm) => tm && tm.name === "Tartaglia");
-//     if (type === "Normal Attack" && (char.name === "Tartaglia" || childe)) {
-//       result++;
-//     }
-//   }
-//   return result;
-// }
+export function totalXtraTalentLv(char: CharInfo, talentIndex: number, partyData?: PartyData) {
+  let result = 0;
+  const talent = findCharacter(char)!.activeTalents[talentIndex];
 
-// export const getFinalTlLv = (char, tlData, partyData) => {
-//   return char[tlData.type] + getTotalXtraTlLv(char, tlData, partyData);
-// };
+  if ("xtraLvAtCons" in talent && char.cons >= talent.xtraLvAtCons) {
+    result += 3;
+  }
+  if (partyData) {
+    if (talentIndex === 0 && (char.name === "Tartaglia" || findByName(partyData, "Tartaglia"))) {
+      result++;
+    }
+  }
+  return result;
+}
+
+export const finalTalentLv = (char: CharInfo, talentType: Talent, partyData?: PartyData) => {
+  return char[talentType] + totalXtraTalentLv(char, TALENT_TYPES.indexOf(talentType), partyData);
+};

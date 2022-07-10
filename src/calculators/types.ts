@@ -1,4 +1,6 @@
 import type {
+  AttackElement,
+  AttackPattern,
   CalcCharData,
   CharInfo,
   FinalInfusion,
@@ -24,3 +26,12 @@ export type Wrapper2 = {
   infusion: FinalInfusion;
   party: Party;
 };
+
+export type TrackerDamageRecord = {
+  baseValue: number,
+  baseStatType: "base_atk" | "hp" | "atk" | "def",
+  finalMult: number | number[],
+  finalFlat: number
+}
+
+export type DamageTypes = [AttackPattern, AttackElement];

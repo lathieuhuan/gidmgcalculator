@@ -1,4 +1,9 @@
-import { DEBUFFS_MULTIPLIER_KEYS } from "@Src/constants";
+import {
+  ATTACK_DAMAGE_TYPES,
+  DEBUFFS_MULTIPLIER_KEYS,
+  SKILL_BONUS_INFO_KEYS,
+  TALENT_TYPES,
+} from "@Src/constants";
 import type {
   AllStat,
   Artifact,
@@ -170,15 +175,15 @@ export type ArtifactAttribute = Record<string, number> &
   Omit<Record<FlatStat, number>, "em"> &
   Partial<Record<RngPercentStat | "em", number>>;
 
-export type SkillBonusInfoKey = "cRate" | "cDmg" | "pct" | "flat";
+export type SkillBonusInfoKey = typeof SKILL_BONUS_INFO_KEYS[number];
 
-type SkillBonusInfo = Record<SkillBonusInfoKey, number>;
+export type SkillBonusInfo = Record<SkillBonusInfoKey, number>;
 
 export type SkillBonusKey = AttackPattern | AttackElement | "all";
 
 export type SkillBonus = Record<SkillBonusKey, SkillBonusInfo>;
 
-export type ReactionBonusKey = Reaction | "naMelt" | "naVaporize";
+export type ReactionBonusKey = Reaction | "na_melt" | "na_vaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
@@ -186,15 +191,19 @@ export type DebuffMultiplierKey = typeof DEBUFFS_MULTIPLIER_KEYS[number];
 
 export type DebuffMultiplier = Record<DebuffMultiplierKey, number>;
 
-export type FinalInfusion = Record<NormalAttack, Vision>;
+export type AttackDamageType = typeof ATTACK_DAMAGE_TYPES[number];
 
-type AttackDamage = Record<"nonCrit" | "crit" | "average", number>;
+export type FinalInfusion = Record<NormalAttack, AttackDamageType>;
 
-type SkillDamage = {
-  [k: string]: AttackDamage;
+export type Talent = typeof TALENT_TYPES[number];
+
+type CalculatedStat = Record<"nonCrit" | "crit" | "average", number>;
+
+type CalculatedStatCluster = {
+  [k: string]: CalculatedStat;
 };
 
-type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", SkillDamage>;
+export type DamageResult = Record<Talent | "RXN", CalculatedStatCluster>;
 
 export type PartyData = {
   name: string;
