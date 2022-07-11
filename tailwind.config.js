@@ -9,6 +9,9 @@ module.exports = {
       lg: "1025px",
     },
     extend: {
+      spacing: {
+        13: "3.25rem",
+      },
       margin: {
         "3px": "3px",
       },
@@ -104,6 +107,9 @@ module.exports = {
         "gradient-2": "linear-gradient(to bottom, #5ca862, #61c370, #63dd7e)",
         "gradient-1": "linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a)",
         "white-arrow": "url(https://www.freeiconspng.com/uploads/white-down-arrow-png-2.png)",
+      },
+      minWidth: {
+        13: "3.25rem",
       },
       maxWidth: {
         95: "95%",

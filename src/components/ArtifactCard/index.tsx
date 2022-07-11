@@ -125,7 +125,7 @@ export default function ArtifactCard({
             <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2">
               <Select
                 className={cn(
-                  "pr-2 pl-10 appearance-none bg-contain bg-no-repeat bg-white-arrow bg-[0.5rem]",
+                  "pr-2 pl-10 appearance-none bg-contain bg-no-repeat bg-white-arrow bg-[position:0.5rem]",
                   statTypeCount[type] === 1 ? "text-white" : "text-darkred"
                 )}
                 value={type}

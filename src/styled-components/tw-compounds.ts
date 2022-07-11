@@ -25,4 +25,24 @@ export const rarityGradients = [
   "bg-gradient-3",
   "bg-gradient-4",
   "bg-gradient-5",
-]
+];
+
+export const colorByVision = {
+  pyro: "text-pyro",
+  hydro: "text-hydro",
+  electro: "text-electro",
+  dendro: "text-dendro",
+  geo: "text-geo",
+  cryo: "text-cryo",
+  anemo: "text-anemo",
+};
+
+export const bgColorByVision = {
+  pyro: "bg-pyro",
+  hydro: "bg-hydro",
+  electro: "bg-electro",
+  dendro: "bg-dendro",
+  geo: "bg-geo",
+  cryo: "bg-cryo",
+  anemo: "bg-anemo",
+};

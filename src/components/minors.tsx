@@ -1,13 +1,12 @@
-import cn from "classnames";
 import type { HTMLAttributes, ReactNode } from "react";
 import { FaInfoCircle } from "react-icons/fa";
+import cn from "classnames";
 import { Button, CloseButton } from "@Styled/Inputs";
+import { findCharacter } from "@Data/controllers";
+import { wikiImg } from "@Src/utils";
 import Modal from "./Modal";
 
-export const BetaMark = ({
-  className,
-  ...rest
-}: HTMLAttributes<HTMLDivElement>) => (
+export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
       "rounded px-1 bg-white text-red-500 border-2 border-red-500 text-xs font-bold",
@@ -20,18 +19,21 @@ export const BetaMark = ({
 );
 
 interface InfoSignProps {
+  className?: string;
   active?: boolean;
   selfHover?: boolean;
 }
 export const InfoSign = (props: InfoSignProps) => {
   if (props.active) {
-    return <CloseButton className="h-6 w-6 text-sm" />;
+    return <CloseButton className={cn("h-6 w-6 text-sm", props.className)} />;
   }
   return (
     <div
-      className={cn("h-6 w-6 text-2xl", {
-        "group-hover:text-lightgold": !props.selfHover,
-      })}
+      className={cn(
+        "h-6 w-6 text-2xl",
+        !props.selfHover && "group-hover:text-lightgold",
+        props.className
+      )}
     >
       <FaInfoCircle />
     </div>
@@ -77,8 +79,7 @@ export const ButtonBar = ({
     <div className={cn("flex justify-center gap-8", className)}>
       {texts.map((text, i) => {
         const variant =
-          variants[i] ||
-          (i ? (i === texts.length - 1 ? "positive" : "neutral") : "negative");
+          variants[i] || (i ? (i === texts.length - 1 ? "positive" : "neutral") : "negative");
         return (
           <Button
             key={i}
@@ -106,10 +107,7 @@ export const StarLine = ({ rarity, className }: StarLineProps) => {
       {Array(rarity).fill(
         <svg
           viewBox="0 0 24 24"
-          className={cn(
-            "w-5 h-5",
-            rarity === 5 ? "fill-rarity-5" : "fill-rarity-4"
-          )}
+          className={cn("w-5 h-5", rarity === 5 ? "fill-rarity-5" : "fill-rarity-4")}
         >
           <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
         </svg>
@@ -117,6 +115,24 @@ export const StarLine = ({ rarity, className }: StarLineProps) => {
     </div>
   );
 };
+
+interface SharedSpaceProps {
+  leftPart: ReactNode;
+  rightPart: ReactNode;
+  atLeft: boolean;
+}
+export function SharedSpace({ leftPart, rightPart, atLeft }: SharedSpaceProps) {
+  const className = cn(
+    "absolute top-0 w-full h-full duration-200 ease-linear",
+    atLeft ? "translate-x-0" : "-translate-x-full"
+  );
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <div className={cn(className, "left-0")}>{leftPart}</div>
+      <div className={cn(className, "left-full")}>{rightPart}</div>
+    </div>
+  );
+}
 
 interface HowToModalProps {
   content: JSX.Element;
@@ -129,5 +145,29 @@ export function HowToModal({ content, close }: HowToModalProps) {
       <p className="mb-2 text-1.5xl text-orange">HOW-TOs</p>
       {content}
     </Modal>
+  );
+}
+
+interface CharFilledSlotProps {
+  name: string;
+  mutable: boolean;
+  onClick: () => void;
+  onRemove: () => void;
+}
+export function CharFilledSlot({ name, mutable, onClick, onRemove }: CharFilledSlotProps) {
+  const { icon } = findCharacter({ name })!;
+  return (
+    <>
+      <div className="zoomin-on-hover overflow-hidden rounded-full bg-darkblue-3">
+        <img
+          className={cn("w-full rounded-[inherit]", mutable && "cursor-pointer")}
+          src={wikiImg(icon)}
+          alt={name}
+          draggable={false}
+          onClick={onClick}
+        />
+      </div>
+      {mutable && <CloseButton className="absolute -bottom-1 -right-2.5" onClick={onRemove} />}
+    </>
   );
 }
