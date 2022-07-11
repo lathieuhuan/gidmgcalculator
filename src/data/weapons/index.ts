@@ -1,4 +1,4 @@
-import GoldBows from "./Bows/Gold";
+import GoldBows from "./bows/gold";
 
 const weapons = {
   bow: GoldBows,

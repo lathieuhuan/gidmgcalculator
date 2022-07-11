@@ -51,16 +51,18 @@ export const SUBSTAT_SCALE: Record<string, number[]> = {
   48: [48, 85, 124, 143, 162, 182, 201, 221],
 };
 
-export const GreenStats = {
-  rarity: 2,
-  mainStatScale: 33,
-  pasvName: "",
-  pasvDescs: () => [],
-};
+export const NCPA_PERCENTS = ["NA.pct", "CA.pct", "PA.pct"] as const;
 
-export const GrayStats = {
+export const GREEN_INFO = {
+  rarity: 2,
+  mainStatScale: "33",
+  passiveName: "",
+  passiveDesc: () => ({}),
+} as const;
+
+export const GRAY_INFO = {
   rarity: 1,
-  mainStatScale: 23,
-  pasvName: "",
-  pasvDescs: () => [],
-};
+  mainStatScale: "23",
+  passiveName: "",
+  passiveDesc: () => ({}),
+} as const;

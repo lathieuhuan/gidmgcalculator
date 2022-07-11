@@ -4,7 +4,7 @@ import { findByCode } from "@Src/utils";
 import { Green } from "@Styled/DataDisplay";
 import { makeWpModApplier } from "../utils";
 
-const GoldBows: DataWeapon[] = [
+const goldBows: DataWeapon[] = [
   {
     code: 125,
     name: "Aqua Simulacra",
@@ -19,7 +19,7 @@ const GoldBows: DataWeapon[] = [
         affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("skillBonuses", "all.pct", 5),
         desc: ({ refi }) =>
-          findByCode(GoldBows, 125)!.passiveDesc({ refi }).extra![0],
+          findByCode(goldBows, 125)!.passiveDesc({ refi }).extra![0],
       },
     ],
     passiveName: "The Cleansing Form",
@@ -44,4 +44,4 @@ const GoldBows: DataWeapon[] = [
   },
 ];
 
-export default GoldBows;
+export default goldBows;

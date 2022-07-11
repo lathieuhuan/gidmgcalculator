@@ -40,8 +40,8 @@ export function getPartyData(party: Party) {
   const result = [];
   for (const tm of party) {
     if (tm) {
-      const { name, nation, vision } = findCharacter(tm)!;
-      result.push({ name, nation, vision });
+      const { name, nation, vision, activeTalents } = findCharacter(tm)!;
+      result.push({ name, nation, vision, EBcost: activeTalents[2].energyCost });
     }
   }
   return result;

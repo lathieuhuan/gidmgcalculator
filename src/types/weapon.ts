@@ -1,5 +1,6 @@
+import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
-import type { AllStat, Tracker, Rarity, ModifierInput, PartiallyOptional } from "./global";
+import type { AllStat, Tracker, Rarity, ModifierInput } from "./global";
 import type {
   CalcCharData,
   PartyData,
@@ -12,28 +13,29 @@ export type DataWeapon = {
   code: number;
   beta?: boolean;
   name: string;
-  icon: string;
   rarity: Rarity;
+  icon: string;
   mainStatScale: string;
-  subStat: {
+  subStat?: {
     type: AllStat;
     scale: string;
   };
   applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
   applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  buffs: WeaponBuff[];
+  stackValues?: (args: { refi: number }) => number[];
   passiveName: string;
   passiveDesc: (args: WpDescArgs) => {
-    core: JSX.Element;
+    core?: JSX.Element;
     extra?: JSX.Element[];
   };
+  buffs?: WeaponBuff[];
 };
 
 type ApplyWpPassiveBuffsArgs = {
   totalAttrs: TotalAttribute;
   skillBonuses?: SkillBonus;
   rxnBonuses?: ReactionBonus;
-  charData?: CalcCharData;
+  charData: CalcCharData;
   partyData?: PartyData;
   refi: number;
   desc?: string;
@@ -73,5 +75,5 @@ type WeaponBuff = {
   };
   applyBuff: (args: ApplyWpBuffArgs) => void;
   applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
-  desc: (args: WpDescArgs) => JSX.Element;
+  desc: (args: WpDescArgs) => ReactNode;
 };

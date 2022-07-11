@@ -221,4 +221,5 @@ export type PartyData = {
   name: string;
   vision: Vision;
   nation: Nation;
+  EBcost: number;
 }[];

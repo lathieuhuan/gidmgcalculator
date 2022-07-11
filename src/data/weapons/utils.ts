@@ -1,5 +1,5 @@
 import type { Paths, SkillBonusPath } from "@Src/calculators/utils";
-import type { AllStat, Level, ReactionBonusKey } from "@Src/types";
+import type { AllStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { LEVELS } from "@Src/constants";
 import { bareLv } from "@Src/utils";
@@ -8,20 +8,20 @@ import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
 export function makeWpModApplier(
   recipient: "totalAttrs",
   paths: AllStat | AllStat[],
-  rootScale: number
+  rootScale: number | number[]
 ): (args: any) => void;
 export function makeWpModApplier(
   recipient: "rxnBonuses",
   paths: ReactionBonusKey | ReactionBonusKey[],
-  rootScale: number
+  rootScale: number | number[]
 ): (args: any) => void;
 export function makeWpModApplier(
   recipient: "skillBonuses",
   paths: SkillBonusPath | SkillBonusPath[],
-  rootScale: number
+  rootScale: number | number[]
 ): (args: any) => void;
 
-export function makeWpModApplier(recipient: string, paths: Paths, rootScale: number) {
+export function makeWpModApplier(recipient: string, paths: Paths, rootScale: number | number[]) {
   return (args: any) => {
     const { refi, desc, tracker } = args;
     const rootValue = Array.isArray(rootScale)
@@ -42,3 +42,24 @@ export const wpSubStatAtLv = (scale: string, lv: Level) => {
   const index = curLv === 1 ? 0 : curLv === 20 ? 1 : (curLv - 20) / 10;
   return SUBSTAT_SCALE[scale][index];
 };
+
+export function getInput(inputs: ModifierInput[] | undefined, index: number): number;
+export function getInput(inputs: ModifierInput[] | undefined, index: number, as: "string"): string;
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  as: "boolean"
+): boolean;
+
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  as?: "string" | "boolean"
+) {
+  if (as === "string") {
+    return inputs![index] as string;
+  } else if (as === "boolean") {
+    return !!inputs?.[index];
+  }
+  return inputs![index] as number;
+}
