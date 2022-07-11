@@ -93,6 +93,19 @@ export const ALL_STAT_TYPES = [
   ...PERCENT_STAT_TYPES,
 ] as const;
 
+export const ARTIFACT_SUBSTAT_TYPES = [
+  "hp",
+  "hp_",
+  "atk",
+  "atk_",
+  "def",
+  "def_%",
+  "em",
+  "em",
+  "cRate",
+  "cDmg",
+] as const;
+
 export const SKILL_BONUS_INFO_KEYS = [
   "cRate",
   "cDmg",

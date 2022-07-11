@@ -117,7 +117,7 @@ export type CalcArtPiece = {
   level: number;
   mainStatType: CommonStat;
   subStats: {
-    type: CommonStat;
+    type: string;
     value: number;
   }[];
 };

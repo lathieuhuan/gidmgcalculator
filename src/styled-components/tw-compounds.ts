@@ -9,6 +9,15 @@ export const rarityColors = [
   "text-rarity-5",
 ];
 
+export const rarityBgColors = [
+  "",
+  "bg-rarity-1",
+  "bg-rarity-2",
+  "bg-rarity-3",
+  "bg-rarity-4",
+  "bg-rarity-5",
+];
+
 export const rarityGradients = [
   "",
   "bg-gradient-1",

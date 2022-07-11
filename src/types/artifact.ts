@@ -77,7 +77,7 @@ type ArtifactDebuff = {
   desc: JSX.Element;
   labels: string[];
   inputTypes: "swirl"[];
-  addPntes: (args: {
+  applyDebuff: (args: {
     debuffMult: DebuffMultiplier;
     inputs?: ModifierInput[];
     desc: string;

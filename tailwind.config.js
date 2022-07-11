@@ -9,6 +9,12 @@ module.exports = {
       lg: "1025px",
     },
     extend: {
+      margin: {
+        "3px": "3px",
+      },
+      padding: {
+        "3px": "3px",
+      },
       borderWidth: {
         3: "3px",
       },
@@ -18,6 +24,7 @@ module.exports = {
       },
       fontSize: {
         "1.5xl": "1.375rem",
+        "3.5xl": "2rem",
         h1: [
           "2rem",
           {
@@ -96,13 +103,14 @@ module.exports = {
         "gradient-3": "linear-gradient(to bottom, #5d8fa8, #72aae3, #8bb6ff)",
         "gradient-2": "linear-gradient(to bottom, #5ca862, #61c370, #63dd7e)",
         "gradient-1": "linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a)",
+        "white-arrow": "url(https://www.freeiconspng.com/uploads/white-down-arrow-png-2.png)",
       },
       maxWidth: {
         95: "95%",
         "1/3": "33.333333%",
         "1/5": "20%",
         "1/6": "16.666666%",
-        "1/8": "12.5%"
+        "1/8": "12.5%",
       },
     },
   },

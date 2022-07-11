@@ -118,3 +118,17 @@ export function totalXtraTalentLv(char: CharInfo, talentIndex: number, partyData
 export const finalTalentLv = (char: CharInfo, talentType: Talent, partyData?: PartyData) => {
   return char[talentType] + totalXtraTalentLv(char, TALENT_TYPES.indexOf(talentType), partyData);
 };
+
+export function processNumInput(input: string, before: number, max: number = 9999) {
+  if (input === "") {
+    return 0;
+  }
+  const numInput = +input;
+  if (typeof numInput === "number" && numInput >= 0 && numInput <= max) {
+    if (input.slice(-1) === ".") {
+      return input as unknown as number;
+    }
+    return Math.round(numInput * 10) / 10;
+  }
+  return before;
+}

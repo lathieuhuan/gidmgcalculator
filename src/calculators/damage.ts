@@ -92,7 +92,7 @@ function applyArtDebuffs(
     if (activated) {
       const { name, debuffs } = findArtifactSet({ code })!;
       const desc = `${name} / 4-Piece activated`;
-      debuffs![index].addPntes({ debuffMult, inputs, desc, tracker });
+      debuffs![index].applyDebuff({ debuffMult, inputs, desc, tracker });
     }
   }
 }

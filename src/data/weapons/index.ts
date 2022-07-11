@@ -1,11 +1,14 @@
-import GoldBows from "./bows/gold";
+import goldBows from "./bows/gold";
+import goldSwords from "./swords/gold";
+import otherSwords from "./swords/others";
+import purpleSwords from "./swords/purple";
 
 const weapons = {
-  bow: GoldBows,
+  bow: goldBows,
   catalyst: [],
   claymore: [],
   polearm: [],
-  sword: [],
+  sword: goldSwords.concat(purpleSwords, otherSwords),
 };
 
 export default weapons;
