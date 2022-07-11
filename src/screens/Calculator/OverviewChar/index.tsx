@@ -48,7 +48,7 @@ function CharPicker({ close }: { close: () => void }) {
       data={mixedList}
       dataType="character"
       close={close}
-      pick={(pickedChar) => dispatch(startCalculation(pickedChar))}
+      onPickItem={(pickedChar) => dispatch(startCalculation(pickedChar))}
     />
   );
 }

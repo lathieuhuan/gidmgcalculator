@@ -8,16 +8,12 @@ export type Filter = {
 }
 
 export type PickerItem = {
-  name: string;
+  code: number,
   beta?: boolean;
+  name: string;
+  vision?: Vision;
+  weapon?: Weapon,
   icon: string;
   constellation?: number;
   rarity: number;
-  vision?: Vision;
 };
-
-export type DataPickerItem = PickerItem & {
-  code: number,
-  vision?: Vision,
-  weapon?: Weapon
-}

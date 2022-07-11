@@ -4,7 +4,7 @@ import Collapse from "@Components/Collapse";
 import { Checkbox } from "@Src/styled-components/Inputs";
 import ModalHeader from "@Styled/ModalHeader";
 import Modal from "../Modal";
-import { DataPickerItem, DataType, Filter, PickerItem } from "./types";
+import { DataType, Filter, PickerItem } from "./types";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 
@@ -13,13 +13,13 @@ const { FilterButton, CloseButton } = ModalHeader;
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
 interface PickerProps {
-  data: DataPickerItem[];
+  data: PickerItem[];
   dataType: DataType;
   needMassAdd?: boolean;
-  pick: (item: PickerItem) => void;
+  onPickItem: (item: PickerItem) => void;
   close: () => void;
 }
-export default function Picker({ data, dataType, needMassAdd, pick, close }: PickerProps) {
+export default function Picker({ data, dataType, needMassAdd, onPickItem, close }: PickerProps) {
   //
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
@@ -86,8 +86,8 @@ export default function Picker({ data, dataType, needMassAdd, pick, close }: Pic
                     item={item}
                     massAdd={massAdd}
                     pickedAmount={amount.each[i]}
-                    pick={() => {
-                      pick(item);
+                    onClickItem={() => {
+                      onPickItem(item);
                       if (!massAdd) {
                         close();
                       } else {

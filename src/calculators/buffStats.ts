@@ -100,19 +100,27 @@ function applyWpBuffs(
     for (const ctrl of ctrls) {
       if (ctrl.activated) {
         const { code, refi, inputs } = ctrl;
-        const { name, buffs } = findWeapon({ type: type as Weapon, code })!;
-        const { applyBuff } = findByIndex(buffs, ctrl.index) || {};
-        if (applyBuff) {
-          const desc = `${name} activated`;
-          applyBuff({ ...wrapper, refi, inputs, desc });
+        const { name, buffs } = findWeapon({ type: type as Weapon, code }) || {};
+        if (buffs) {
+          const { applyBuff } = findByIndex(buffs, ctrl.index) || {};
+          if (applyBuff) {
+            const desc = `${name} activated`;
+            applyBuff({ ...wrapper, refi, inputs, desc });
+          }
+        } else {
+          console.log(`applyWpBuffs: weapon #${code} or weapon buff #${ctrl.index} not found`);
         }
       }
     }
   }
   for (const { activated, index, inputs } of wpBuffCtrls) {
-    const { applyBuff } = findByIndex(wpData.buffs, index) || {};
-    if (activated && applyBuff) {
-      applyBuff({ ...wrapper, refi, inputs, desc: `${wpData.name} activated` });
+    if (wpData.buffs) {
+      const { applyBuff } = findByIndex(wpData.buffs, index) || {};
+      if (activated && applyBuff) {
+        applyBuff({ ...wrapper, refi, inputs, desc: `${wpData.name} activated` });
+      }
+    } else {
+      console.log(`applyWpBuffs: buffs of main weapon not found`);
     }
   }
 }
@@ -172,11 +180,13 @@ function applyWpFinalBuffs(
 ) {
   const { buffCtrls, refi } = weapon;
   for (let ctrl of buffCtrls) {
-    if (ctrl.activated) {
+    if (ctrl.activated && wpData.buffs) {
       const { applyFinalBuff } = findByIndex(wpData.buffs, ctrl.index) || {};
       if (applyFinalBuff) {
         applyFinalBuff({ totalAttrs, refi, desc: `${wpData.name} activated`, tracker });
       }
+    } else if (!wpData.buffs) {
+      console.log(`applyWpFinalBuffs: buffs of main weapon not found`);
     }
   }
 }

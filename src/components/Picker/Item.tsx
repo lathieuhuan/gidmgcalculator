@@ -10,14 +10,12 @@ interface ItemProps {
   massAdd: boolean;
   item: PickerItem;
   pickedAmount: number;
-  pick: () => void;
+  onClickItem: () => void;
 }
-function Item({ item, pickedAmount, pick }: ItemProps) {
-  const hasCons = item.constellation !== undefined;
-
+function Item({ item, pickedAmount, onClickItem }: ItemProps) {
   return (
     <div className={cn("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
-      <div className="cursor-pointer zoomin-on-hover relative" onClick={pick}>
+      <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
         {item.beta && (
           <div className="absolute top-0 left-0 z-10">
             <BetaMark />
@@ -50,10 +48,10 @@ function Item({ item, pickedAmount, pick }: ItemProps) {
         <div
           className={cn(
             "absolute top-0.5 right-0.5 p-1 rounded-full bg-black shadow-[0_0_2px_white]",
-            { "flex rounded-2xl pl-1.5": hasCons }
+            { "flex rounded-2xl pl-1.5": item.constellation }
           )}
         >
-          {hasCons && <p className="mr-0.5 text-green">C{item.constellation}</p>}
+          {item.constellation && <p className="mr-0.5 text-green">C{item.constellation}</p>}
           <img
             className="w-5"
             src={wikiImg(VISION_ICONS[item.vision])}
