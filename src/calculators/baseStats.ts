@@ -1,5 +1,7 @@
 import type {
   ArtifactAttribute,
+  ArtifactPercentStat,
+  AttackElement,
   CalcArtInfo,
   CalcArtPieces,
   CalcArtSet,
@@ -9,32 +11,58 @@ import type {
   DataWeapon,
   Level,
   PartyData,
+  SkillBonus,
+  SkillBonusInfo,
   TotalAttribute,
-  Tracker
+  Tracker,
 } from "@Src/types";
-import { ALL_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
-import { applyPercent, toMultiplier } from "@Src/utils";
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_PATTERNS,
+  ATTRIBUTE_STAT_TYPES,
+  BASE_STAT_TYPES,
+  CORE_STAT_TYPES,
+  LEVELS,
+  SKILL_BONUS_INFO_KEYS,
+} from "@Src/constants";
+import { applyPercent, ascsFromLv, toMultiplier } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
-import { Wrapper1 } from "./types";
+import type { Wrapper1 } from "./types";
 import { addOrInit, pushOrMergeTrackerRecord } from "./utils";
 
 export function initiateTotalAttrs(
   char: CharInfo,
   wpData: DataWeapon,
   weapon: CalcWeapon,
+  skillBonuses: SkillBonus,
   tracker?: Tracker
 ) {
   const totalAttrs = {} as TotalAttribute;
 
-  for (const type of ALL_STAT_TYPES) {
+  for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
     totalAttrs[type] = 0;
   }
   const charData = findCharacter(char)!;
+
   const stats = {
     ...charData.stats[LEVELS.indexOf(char.level)],
   } as TotalAttribute;
+
+  if (charData.bonusStats) {
+    const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
+
+    for (const { type, value } of charData.bonusStats) {
+      const scaledValue = value * scale;
+
+      if (ATTACK_ELEMENTS.includes(type as AttackElement)) {
+        skillBonuses[type as AttackElement].pct += scaledValue;
+      } else {
+        totalAttrs[type as ArtifactPercentStat | "em"] += value * scale;
+      }
+    }
+  }
 
   addOrInit(stats, "cRate", 5);
   addOrInit(stats, "cDmg", 50);
@@ -42,11 +70,12 @@ export function initiateTotalAttrs(
   stats.naAtkSpd = stats.caAtkSpd = 100;
 
   for (const type in stats) {
-    totalAttrs[type] += stats[type];
+    const key = type as keyof typeof stats;
+    totalAttrs[key] += stats[key];
 
     if (tracker) {
       const field = type.slice(0, 4) === "base" ? type.slice(5) : type;
-      tracker[field].push({ desc: "Character Base stat", value: stats[type] });
+      tracker[field].push({ desc: "Character Base stat", value: stats[key] });
     }
   }
   const weaponAtk = wpMainStatAtLv(wpData.mainStatScale, weapon.level);
@@ -56,6 +85,28 @@ export function initiateTotalAttrs(
     tracker.atk.push({ desc: "Weapon Main stat", value: weaponAtk });
   }
   return totalAttrs;
+}
+
+export function initSkillBonuses() {
+  const skillBonuses = {} as SkillBonus;
+
+  const initSkillBonusField = () => {
+    let result = {} as SkillBonusInfo;
+    for (const key of SKILL_BONUS_INFO_KEYS) {
+      result[key] = 0;
+    }
+    return result;
+  };
+
+  for (const pattern of ATTACK_PATTERNS) {
+    skillBonuses[pattern] = initSkillBonusField();
+  }
+  for (const pattern of ATTACK_ELEMENTS) {
+    skillBonuses[pattern] = initSkillBonusField();
+  }
+  skillBonuses.all = initSkillBonusField();
+
+  return skillBonuses;
 }
 
 export function addArtAttrs(
@@ -90,23 +141,34 @@ export function addArtAttrs(
     delete artAttrs[`${statType}_`];
   }
   for (const type in artAttrs) {
-    totalAttrs[type] += artAttrs[type];
+    const key = type as keyof typeof artAttrs;
+    totalAttrs[key] += artAttrs[key] || 0;
   }
   return artAttrs;
 }
 
 export function addWpSubStat(
-  wpData: DataWeapon,
   totalAttrs: TotalAttribute,
+  skillBonuses: SkillBonus,
+  wpData: DataWeapon,
   wpLevel: Level,
   tracker?: Tracker
 ) {
   if (wpData.subStat) {
     const { type, scale } = wpData.subStat;
     const value = wpSubStatAtLv(scale, wpLevel);
-    totalAttrs[type] += value;
+    if (type === "phys") {
+      skillBonuses.phys.pct += value;
+    } else {
+      totalAttrs[type] += value;
+    }
     if (tracker) {
-      tracker[type].push({ desc: `${wpData.name} Sub-stat`, value });
+      const record = { desc: `${wpData.name} Sub-stat`, value };
+      if (type === "phys") {
+        tracker[type].pct.push(record);
+      } else {
+        tracker[type].push(record);
+      }
     }
   }
 }
@@ -154,16 +216,17 @@ export default function getBaseStats(
   char: CharInfo,
   weapon: CalcWeapon,
   artifact: CalcArtInfo
-): [TotalAttribute, ArtifactAttribute] {
-
+) {
+  //
   const wpData = findWeapon(weapon)!;
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon);
+  const skillBonuses = initSkillBonuses();
+  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, skillBonuses);
   const artAttrs = addArtAttrs(artifact.pieces, totalAttrs);
-  addWpSubStat(wpData, totalAttrs, weapon.level);
+  addWpSubStat(totalAttrs, skillBonuses, wpData, weapon.level);
 
-  const wrapper = { totalAttrs, charData };
+  const wrapper = { totalAttrs, skillBonuses, charData };
   applyArtPassiveBuffs(false, artifact.sets, wrapper);
   applyWpPassiveBuffs(false, wpData, weapon.refi, wrapper);
   calcFinalTotalAttrs(totalAttrs);
-  return [totalAttrs, artAttrs];
+  return [totalAttrs, skillBonuses, artAttrs] as const;
 }

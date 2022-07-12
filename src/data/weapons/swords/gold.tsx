@@ -1,8 +1,9 @@
 import type { DataWeapon } from "@Src/types";
-import { ELEMENTAL_DMG_BONUS_TYPES, EModAffect } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { Green } from "@Styled/DataDisplay";
 import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
+import { ELEMENTAL_DMG_BONUSES } from "@Data/constants";
 import { NCPA_PERCENTS } from "../constants";
 import { LiyueSeries } from "../series";
 import { getInput, makeWpModApplier } from "../utils";
@@ -15,7 +16,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
-    applyBuff: makeWpModApplier("totalAttrs", [...ELEMENTAL_DMG_BONUS_TYPES], 3),
+    applyBuff: makeWpModApplier("skillBonuses", [...ELEMENTAL_DMG_BONUSES], 3),
     buffs: [
       {
         index: 1,
@@ -67,7 +68,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg", scale: "9.6%" },
-    applyBuff: makeWpModApplier("totalAttrs", [...ELEMENTAL_DMG_BONUS_TYPES], 3),
+    applyBuff: makeWpModApplier("skillBonuses", [...ELEMENTAL_DMG_BONUSES], 3),
     buffs: [
       {
         index: 0,
@@ -77,10 +78,10 @@ const goldSwords: DataWeapon[] = [
           renderTypes: ["stacks"],
           initialValues: [3],
         },
-        applyBuff: ({ totalAttrs, refi, inputs, charData, desc, tracker }) => {
+        applyBuff: ({ skillBonuses, refi, inputs, charData, desc, tracker }) => {
           const { stackValues } = findByCode(goldSwords, 101)!;
           const bnValue = stackValues!({ refi })[+inputs![0] - 1];
-          applyModifier(desc, totalAttrs, `${charData.vision}_`, bnValue, tracker);
+          applyModifier(desc, skillBonuses, `${charData.vision}.pct`, bnValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
       },
@@ -117,7 +118,7 @@ const goldSwords: DataWeapon[] = [
     icon: "6/6a/Weapon_Aquila_Favonia",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "phys_", scale: "9%" },
+    subStat: { type: "phys", scale: "9%" },
     applyBuff: makeWpModApplier("totalAttrs", "atk_", 5),
     passiveName: "Falcon's Defiance",
     passiveDesc: ({ refi }) => ({

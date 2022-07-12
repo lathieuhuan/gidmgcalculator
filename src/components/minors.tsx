@@ -1,8 +1,9 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import cn from "classnames";
+import { CalcArtSet } from "@Src/types";
 import { Button, CloseButton } from "@Styled/Inputs";
-import { findCharacter } from "@Data/controllers";
+import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { wikiImg } from "@Src/utils";
 import Modal from "./Modal";
 
@@ -99,7 +100,7 @@ export const ButtonBar = ({
 
 interface StarLineProps {
   className?: string;
-  rarity: 4 | 5;
+  rarity: number;
 }
 export const StarLine = ({ rarity, className }: StarLineProps) => {
   return (
@@ -169,5 +170,40 @@ export function CharFilledSlot({ name, mutable, onClick, onRemove }: CharFilledS
       </div>
       {mutable && <CloseButton className="absolute -bottom-1 -right-2.5" onClick={onRemove} />}
     </>
+  );
+}
+
+interface SetBonusProps {
+  sets: CalcArtSet[];
+}
+export function SetBonus({ sets }: SetBonusProps) {
+  return (
+    <div>
+      <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>
+
+      {sets.length > 0 ? (
+        sets.map(({ code, bonusLv }, index) => {
+          const content = [];
+          const artData = findArtifactSet({ code })!;
+
+          for (let i = 0; i <= bonusLv; i++) {
+            const { desc } = artData.setBonuses[i];
+            content.push(
+              <li key={i} className="mt-1">
+                <span className="text-orange">{(i + 1) * 2}-Piece Set:</span> <span>{desc}</span>
+              </li>
+            );
+          }
+          return (
+            <div key={index} className="mt-1">
+              <p className="text-lg leading-relaxed font-bold text-green">{artData.name}</p>
+              <ul className="pl-4">{content}</ul>
+            </div>
+          );
+        })
+      ) : (
+        <p className="text-lesser font-bold">No Set Bonus</p>
+      )}
+    </div>
   );
 }

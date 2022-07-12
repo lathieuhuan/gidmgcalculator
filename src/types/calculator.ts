@@ -1,30 +1,24 @@
-import {
-  ATTACK_DAMAGE_TYPES,
-  DEBUFFS_MULTIPLIER_KEYS,
-  SKILL_BONUS_INFO_KEYS,
-  TALENT_TYPES,
-} from "@Src/constants";
 import type {
-  AllStat,
   Artifact,
-  CommonStat,
   AttackElement,
   AttackPattern,
-  FlatStat,
   Level,
   Nation,
-  RngPercentStat,
   Vision,
   Weapon,
   AmplifyingReaction,
-  TargetResistance,
   Reaction,
-  NormalAttack,
   CharInfo,
-  BaseStat,
   ModifierInput,
   Rarity,
+  ArtifactPercentStat,
+  CoreStat,
+  AttributeStat,
+  PartiallyRequired,
+  NormalAttack,
+  BaseStat,
 } from "./global";
+import { SKILL_BONUS_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
 export type CalculatorState = {
   currentSetup: number;
@@ -52,7 +46,8 @@ export type CalculatorState = {
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
   allDmgResult: DamageResult[];
-  isError: boolean
+  isError: boolean;
+  touched: boolean;
 };
 
 export type SetupType = "original" | "";
@@ -70,9 +65,9 @@ type ComplexCharInfo = {
   ES: number[];
   EB: number[];
   cons: number[];
-}
+};
 
-export type CalcChar = CharInfo | ComplexCharInfo | null;
+export type CalcChar = CharInfo | ComplexCharInfo;
 
 export type CalcCharData = {
   code: number;
@@ -115,12 +110,14 @@ export type CalcArtPiece = {
   type: Artifact;
   rarity: Rarity;
   level: number;
-  mainStatType: CommonStat;
+  mainStatType: Exclude<CoreStat, "def"> | ArtifactPercentStat | "em" | AttackElement | "healBn";
   subStats: {
     type: string;
     value: number;
   }[];
 };
+
+export type CalcArtPieces = (CalcArtPiece | null)[];
 
 export type CalcArtSet = {
   code: number;
@@ -130,8 +127,6 @@ export type CalcArtSet = {
 export type SubArtModCtrl = ModifierCtrl & {
   code: number;
 };
-
-export type CalcArtPieces = (CalcArtPiece | null)[];
 
 export type CalcArtInfo = {
   pieces: CalcArtPieces;
@@ -163,17 +158,17 @@ export type ElementModCtrl = {
 
 export type CustomBuffCtrl = {
   // #to-do
-  type: Omit<AllStat, BaseStat> | SkillBonusKey;
+  type: AttributeStat | SkillBonusKey;
   value: number;
   category: number;
 };
 
 export type CustomDebuffCtrl = {
-  type: DebuffMultiplierKey;
+  type: AttackElement | "def";
   value: number;
 };
 
-export type Target = { level: number } & Record<TargetResistance, number>;
+export type Target = { level: number } & Record<AttackElement, number>;
 
 export type Monster = {
   index: number;
@@ -181,11 +176,9 @@ export type Monster = {
   configs: (number | string)[];
 };
 
-export type TotalAttribute = Record<string, number> & Record<AllStat, number>;
+export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 
-export type ArtifactAttribute = Record<string, number> &
-  Omit<Record<FlatStat, number>, "em"> &
-  Partial<Record<RngPercentStat | "em", number>>;
+export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;
 
 export type SkillBonusInfoKey = typeof SKILL_BONUS_INFO_KEYS[number];
 
@@ -199,13 +192,11 @@ export type ReactionBonusKey = Reaction | "na_melt" | "na_vaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
-export type DebuffMultiplierKey = typeof DEBUFFS_MULTIPLIER_KEYS[number];
+export type ResistanceReduction = Record<AttackElement | "def", number>;
 
-export type DebuffMultiplier = Record<DebuffMultiplierKey, number>;
+export type DefenseIgnore = Record<AttackPattern, number>;
 
-export type AttackDamageType = typeof ATTACK_DAMAGE_TYPES[number];
-
-export type FinalInfusion = Record<NormalAttack, AttackDamageType>;
+export type FinalInfusion = Record<NormalAttack, AttackElement>;
 
 export type Talent = typeof TALENT_TYPES[number];
 

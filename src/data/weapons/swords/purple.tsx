@@ -53,7 +53,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "e/ef/Weapon_Prototype_Rancour",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "phys_", scale: "7.5%" },
+    subStat: { type: "phys", scale: "7.5%" },
     buffs: [
       {
         index: 0,

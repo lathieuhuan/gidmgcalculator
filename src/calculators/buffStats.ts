@@ -1,13 +1,11 @@
 import {
   AMPLIFYING_REACTIONS,
-  ATTACK_PATTERNS,
   REACTIONS,
   RESONANCE_INFO,
-  SKILL_BONUS_INFO_KEYS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import {
-  AllStat,
+  AttributeStat,
   CalcArtInfo,
   CalcCharData,
   CalcWeapon,
@@ -22,7 +20,6 @@ import {
   ReactionBonus,
   Resonance,
   SkillBonus,
-  SkillBonusInfo,
   SkillBonusKey,
   SubWeaponComplexBuffCtrl,
   TotalAttribute,
@@ -39,6 +36,7 @@ import {
   applyWpPassiveBuffs,
   calcFinalTotalAttrs,
   initiateTotalAttrs,
+  initSkillBonuses,
 } from "./baseStats";
 import type { Wrapper1, Wrapper2 } from "./types";
 import {
@@ -59,7 +57,7 @@ function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCt
       pushOrMergeTrackerRecord(wrapper.tracker?.[skillBonusKey], "pct", desc, value);
     } else {
       if (category === 1) {
-        const key = type as AllStat;
+        const key = type as AttributeStat;
         wrapper.totalAttrs[key] += value;
       } else {
         const key = type as Reaction;
@@ -275,18 +273,11 @@ export default function getBuffedStats(
   infusion: FinalInfusion,
   tracker: Tracker
 ) {
-  //
   const wpData = findWeapon(weapon)!;
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, tracker);
+  const skillBonuses = initSkillBonuses();
+  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, skillBonuses, tracker);
   const artAttrs = addArtAttrs(art.pieces, totalAttrs, tracker);
-  addWpSubStat(wpData, totalAttrs, weapon.level, tracker);
-
-  const skillBonuses = {} as SkillBonus;
-
-  for (const pattern of ATTACK_PATTERNS) {
-    skillBonuses[pattern] = initSkillBonusField();
-  }
-  skillBonuses.all = initSkillBonusField();
+  addWpSubStat(totalAttrs, skillBonuses, wpData, weapon.level, tracker);
 
   const rxnBonuses = {} as ReactionBonus;
   for (const rxn of REACTIONS) {
@@ -313,16 +304,6 @@ export default function getBuffedStats(
   applySelfBuffs(true, wrapper1, wrapper2, partyData);
   addArtFinalBuffs(totalAttrs, skillBonuses, art, tracker);
 
-  skillBonuses.elmt.pct += totalAttrs[`${charData.vision}_`];
-  skillBonuses.phys.pct += totalAttrs.phys_;
   calcFinalRxnBonuses(totalAttrs, rxnBonuses, charData.vision, infusion);
   return [totalAttrs, skillBonuses, rxnBonuses, artAttrs] as const;
-}
-
-function initSkillBonusField() {
-  let result = {} as SkillBonusInfo;
-  for (const key of SKILL_BONUS_INFO_KEYS) {
-    result[key] = 0;
-  }
-  return result;
 }

@@ -4,15 +4,15 @@ import { applyVariant, byVariant, changeAllResistances } from "./utils";
 const monsters: DataMonster[] = [
   {
     name: "Hilichurl / Slimes / Spectre",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { base: 10 },
   },
   {
     name: "Mitachurl",
-    resistance: { phys_res: 30, elmt_res: 10 },
+    resistance: { phys: 30, base: 10 },
   },
   {
     name: "Samachurl",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { base: 10 },
     variant: {
       labelIndex: 1,
       options: ["dendro", "anemo", "geo", "hydro", "cryo", "electro"],
@@ -21,7 +21,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Lawachurl",
-    resistance: { phys_res: 50, elmt_res: 10 },
+    resistance: { phys: 50, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["geo", "cryo", "electro"],
@@ -30,19 +30,19 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Ruin Guard / Grader",
-    resistance: { phys_res: 70, elmt_res: 10 },
+    resistance: { phys: 70, base: 10 },
   },
   {
     name: "Ruin Hunter / Defender / Scout",
-    resistance: { phys_res: 50, elmt_res: 10 },
+    resistance: { phys: 50, base: 10 },
   },
   {
     name: "Ruin Cruiser / Destroyer",
-    resistance: { phys_res: 30, elmt_res: 10 },
+    resistance: { phys: 30, base: 10 },
   },
   {
     name: "Perpetual Mechanical Array",
-    resistance: { phys_res: 70, elmt_res: 10 },
+    resistance: { phys: 70, base: 10 },
     config: {
       labels: ["Stunned"],
       renderTypes: ["check"],
@@ -53,7 +53,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Whopperflower",
-    resistance: { phys_res: 35, elmt_res: 35 },
+    resistance: { phys: 35, base: 35 },
     variant: {
       labelIndex: 1,
       options: ["pyro", "cryo", "electro"],
@@ -69,7 +69,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Regisvine",
-    resistance: { phys_res: 130, elmt_res: 110 },
+    resistance: { phys: 130, base: 110 },
     variant: {
       labelIndex: 1,
       options: ["pyro", "cryo"],
@@ -85,23 +85,23 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Hypostasis / Maguu Kenki / Dvalin",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { phys: 10, base: 10 },
   },
   {
     name: "Andrius",
-    resistance: { phys_res: 10, elmt_res: 10, anemo_res: Infinity, cryo_res: Infinity },
+    resistance: { phys: 10, base: 10, anemo: Infinity, cryo: Infinity },
   },
   {
     name: "Treasure Hoarders",
-    resistance: { phys_res: -20, elmt_res: 10 },
+    resistance: { phys: -20, base: 10 },
   },
   {
     name: "Nobushi / Kairagi",
-    resistance: { phys_res: -20, elmt_res: 10 },
+    resistance: { phys: -20, base: 10 },
   },
   {
     name: "Fatui Skirmisher",
-    resistance: { phys_res: -20, elmt_res: 10 },
+    resistance: { phys: -20, base: 10 },
     config: {
       labels: ["Armored"],
       renderTypes: ["check"],
@@ -112,7 +112,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Shadowy Husks",
-    resistance: { phys_res: 30, elmt_res: 10 },
+    resistance: { phys: 30, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["pyro", "hydro", "cryo"],
@@ -121,15 +121,15 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Fatui Pyro Agent",
-    resistance: { phys_res: -20, elmt_res: 10, pyro_res: 50 },
+    resistance: { phys: -20, base: 10, pyro: 50 },
   },
   {
     name: "Fatui Mirror Maiden",
-    resistance: { phys_res: -20, elmt_res: 10, hydro_res: 50 },
+    resistance: { phys: -20, base: 10, hydro: 50 },
   },
   {
     name: "Fatui Cicin Mage",
-    resistance: { phys_res: -20, elmt_res: 10 },
+    resistance: { phys: -20, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["cryo", "electro"],
@@ -138,7 +138,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Childe",
-    resistance: { phys_res: 0, elmt_res: 0 },
+    resistance: { base: 0 },
     variant: {
       labelIndex: 2,
       options: ["1", "2", "3"],
@@ -150,34 +150,34 @@ const monsters: DataMonster[] = [
     changeResistance: ({ target, variant, configs }) => {
       if (variant !== "3") {
         const inPhase1 = variant === "1";
-        target[inPhase1 ? "hydro_res" : "electro_res"] += 50;
+        target[inPhase1 ? "hydro" : "electro"] += 50;
         if (configs[1]) {
           changeAllResistances(target, inPhase1 ? -30 : -50);
         }
       } else {
-        target.hydro_res += 70;
-        target.electro_res += 70;
+        target.hydro += 70;
+        target.electro += 70;
       }
     },
   },
   {
     name: "Signora",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { base: 10 },
     variant: {
       labelIndex: 2,
       options: ["1", "2"],
     },
     changeResistance: ({ target, variant }) => {
       if (variant === "1") {
-        target.cryo_res += 40;
+        target.cryo += 40;
       } else {
-        target.pyro_res += 60;
+        target.pyro += 60;
       }
     },
   },
   {
     name: "Cicin",
-    resistance: { phys_res: -50, elmt_res: 10 },
+    resistance: { phys: -50, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["cryo", "electro", "hydro"],
@@ -186,11 +186,11 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Geovishap Hatchling",
-    resistance: { phys_res: 30, elmt_res: 10, geo_res: 50 },
+    resistance: { phys: 30, base: 10, geo: 50 },
   },
   {
     name: "Geovishap",
-    resistance: { phys_res: 30, elmt_res: 10, geo_res: 50 },
+    resistance: { phys: 30, base: 10, geo: 50 },
     variant: {
       labelIndex: 1,
       options: ["pyro", "hydro", "cryo", "electro"],
@@ -205,7 +205,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Primo Geovishap",
-    resistance: { phys_res: 30, elmt_res: 10, geo_res: 50 },
+    resistance: { phys: 30, base: 10, geo: 50 },
     variant: {
       labelIndex: 1,
       options: ["pyro", "hydro", "cryo", "electro"],
@@ -221,25 +221,25 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Azhdaha",
-    resistance: { phys_res: 40, elmt_res: 10, geo_res: 70 },
+    resistance: { phys: 40, base: 10, geo: 70 },
   },
   {
     name: "Abyss Mage / Herald / Lector",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { base: 10 },
   },
   {
     name: "Hydro Mimic",
-    resistance: { phys_res: 15, elmt_res: 15, hydro_res: Infinity },
+    resistance: { base: 15, hydro: Infinity },
     variant: {
       labelIndex: 3,
       options: ["Boar/Ferret", "Crane/Raptor", "Crab/Mallard", "Finch/Frog"],
     },
     changeResistance: ({ target, variant }) => {
       const elmtWeakRes = {
-        "Boar/Ferret": "pyro_res",
-        "Crane/Raptor": "electro_res",
-        "Crab/Mallard": "cryo_res",
-        "Finch/Frog": "geo_res",
+        "Boar/Ferret": "pyro",
+        "Crane/Raptor": "electro",
+        "Crab/Mallard": "cryo",
+        "Finch/Frog": "geo",
       } as const;
       const resistanceKey = elmtWeakRes[variant as keyof typeof elmtWeakRes];
       if (resistanceKey) {
@@ -249,7 +249,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "The Shogun",
-    resistance: { phys_res: 10, elmt_res: 10 },
+    resistance: { base: 10 },
     variant: {
       labelIndex: 4,
       options: ["Normal", "Shielded", "Stunned"],
@@ -261,7 +261,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Rifthound Whelp",
-    resistance: { phys_res: 20, elmt_res: 20 },
+    resistance: { base: 20 },
     variant: {
       labelIndex: 1,
       options: ["electro", "geo"],
@@ -276,7 +276,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Rifthound",
-    resistance: { phys_res: 25, elmt_res: 25 },
+    resistance: { base: 25 },
     variant: {
       labelIndex: 1,
       options: ["electro", "geo"],
@@ -291,20 +291,20 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Golden Wolflord",
-    resistance: { phys_res: 25, elmt_res: 25 },
+    resistance: { base: 25 },
     config: {
       labels: ["After Shield Phase"],
       renderTypes: ["check"],
     },
     changeResistance: ({ target, configs }) => {
       if (configs[0]) {
-        target.geo_res -= 45;
+        target.geo -= 45;
       }
     },
   },
   {
     name: "Bathysmal Vishap Hatchling",
-    resistance: { phys_res: 30, elmt_res: 10 },
+    resistance: { phys: 30, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["electro", "hydro", "cryo"],
@@ -313,7 +313,7 @@ const monsters: DataMonster[] = [
   },
   {
     name: "Bathysmal Vishaps (boss)",
-    resistance: { phys_res: 30, elmt_res: 10 },
+    resistance: { phys: 30, base: 10 },
     variant: {
       labelIndex: 1,
       options: ["electro", "cryo"],

@@ -1,4 +1,4 @@
-import type { Target, TargetResistance } from "@Src/types";
+import type { AttackElement, Target } from "@Src/types";
 
 type ChangeResistanceArgs = {
   target: Target;
@@ -6,9 +6,8 @@ type ChangeResistanceArgs = {
   configs: (string | boolean)[];
 };
 
-type MonsterResistance = Partial<Record<TargetResistance, number>> & {
-  phys_res: number;
-  elmt_res: number;
+type MonsterResistance = Partial<Record<AttackElement, number>> & {
+  base: number;
 };
 
 export type DataMonster = {

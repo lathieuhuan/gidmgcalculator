@@ -2,10 +2,11 @@ import { EModAffect } from "@Src/constants";
 import type { ModifierInput, Tracker } from "./global";
 import type {
   CalcCharData,
+  DefenseIgnore,
   ReactionBonus,
+  ResistanceReduction,
   SkillBonus,
   TotalAttribute,
-  DebuffMultiplier,
 } from "./calculator";
 
 type ArtPieceData = {
@@ -25,7 +26,7 @@ export type DataArtifact = {
   circlet: ArtPieceData;
   setBonuses: [SetBonus, SetBonus];
   buffs?: ArtifactBuff[];
-  debuffs?: ArtifactDebuff[]
+  debuffs?: ArtifactDebuff[];
 };
 
 type ApplyArtPassiveBuffArgs = {
@@ -78,7 +79,8 @@ type ArtifactDebuff = {
   labels: string[];
   inputTypes: "swirl"[];
   applyDebuff: (args: {
-    debuffMult: DebuffMultiplier;
+    resistReduct: ResistanceReduction;
+    defIgnore: DefenseIgnore;
     inputs?: ModifierInput[];
     desc: string;
     tracker: Tracker;

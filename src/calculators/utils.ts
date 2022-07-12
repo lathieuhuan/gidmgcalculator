@@ -1,10 +1,11 @@
 import type {
-  AllStat,
-  AttackDamageType,
-  DebuffMultiplier,
-  DebuffMultiplierKey,
+  AttributeStat,
+  AttackElement,
+  AttackPattern,
+  DefenseIgnore,
   ReactionBonus,
   ReactionBonusKey,
+  ResistanceReduction,
   SkillBonus,
   SkillBonusInfoKey,
   SkillBonusKey,
@@ -40,24 +41,31 @@ export function pushOrMergeTrackerRecord(
 
 export type SkillBonusPath = `${SkillBonusKey}.${SkillBonusInfoKey}`;
 
-export type ModRecipient = TotalAttribute | ReactionBonus | SkillBonus | DebuffMultiplier;
+export type ModRecipient =
+  | TotalAttribute
+  | ReactionBonus
+  | SkillBonus
+  | ResistanceReduction
+  | DefenseIgnore;
 
 export type Paths =
-  | AllStat
-  | AllStat[]
+  | AttributeStat
+  | AttributeStat[]
   | ReactionBonusKey
   | ReactionBonusKey[]
   | SkillBonusPath
   | SkillBonusPath[]
-  | DebuffMultiplierKey
-  | DebuffMultiplierKey[];
+  | (AttackElement | "def")
+  | (AttackElement | "def")[]
+  | AttackPattern
+  | AttackPattern[];
 
 type RootValue = number | number[];
 
 export function applyModifier(
   desc: string | undefined,
   recipient: TotalAttribute,
-  paths: AllStat | AllStat[],
+  paths: AttributeStat | AttributeStat[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
@@ -77,8 +85,15 @@ export function applyModifier(
 ): void;
 export function applyModifier(
   desc: string | undefined,
-  recipient: DebuffMultiplier,
-  paths: DebuffMultiplierKey | DebuffMultiplierKey[],
+  recipient: ResistanceReduction,
+  paths: (AttackElement | "def") | (AttackElement | "def")[],
+  rootValue: RootValue,
+  tracker: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: DefenseIgnore,
+  paths: AttackPattern | AttackPattern[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
@@ -125,7 +140,7 @@ interface ModApplierArgs {
 
 export function makeModApplier(
   recipientKey: "totalAttrs",
-  paths: AllStat | AllStat[],
+  paths: AttributeStat | AttributeStat[],
   rootValue: RootValue
 ): (args: any) => void;
 
@@ -158,5 +173,5 @@ export function getRxnBonusesFromEM(EM = 0) {
   };
 }
 
-export const meltMult = (elmt: AttackDamageType) => (elmt === "pyro" ? 2 : 1.5);
-export const vaporizeMult = (elmt: AttackDamageType) => (elmt === "pyro" ? 1.5 : 2);
+export const meltMult = (elmt: AttackElement) => (elmt === "pyro" ? 2 : 1.5);
+export const vaporizeMult = (elmt: AttackElement) => (elmt === "pyro" ? 1.5 : 2);

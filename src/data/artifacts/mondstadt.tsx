@@ -1,4 +1,4 @@
-import type { DataArtifact, DebuffMultiplierKey } from "@Src/types";
+import type { AttackElement, DataArtifact } from "@Src/types";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { Green } from "@Styled/DataDisplay";
 import { findByCode } from "@Src/utils";
@@ -133,7 +133,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Anemo DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttrs", "anemo_", 15),
+        applyBuff: makeModApplier("skillBonuses", "anemo.pct", 15),
       },
       {
         desc: (
@@ -156,10 +156,10 @@ const mondstadt: DataArtifact[] = [
         ),
         labels: ["Element swirled"],
         inputTypes: ["swirl"],
-        applyDebuff: ({ debuffMult, inputs, desc, tracker }) => {
-          const key = `${inputs![0]}_rd`;
-          if (key in debuffMult) {
-            applyModifier(desc, debuffMult, key as DebuffMultiplierKey, 40, tracker);
+        applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
+          const key = inputs![0] as AttackElement;
+          if (key in resistReduct) {
+            applyModifier(desc, resistReduct, key, 40, tracker);
           }
         },
       },
@@ -239,7 +239,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Electro DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttrs", "electro_", 15),
+        applyBuff: makeModApplier("skillBonuses", "electro.pct", 15),
       },
       {
         desc: (
@@ -333,7 +333,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Cryo DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttrs", "cryo_", 15),
+        applyBuff: makeModApplier("skillBonuses", "cryo.pct", 15),
       },
       {
         desc: (
@@ -404,7 +404,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Hydro DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttrs", "hydro_", 15),
+        applyBuff: makeModApplier("skillBonuses", "hydro.pct", 15),
       },
       {
         desc: (

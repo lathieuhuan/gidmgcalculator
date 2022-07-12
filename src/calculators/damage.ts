@@ -7,7 +7,6 @@ import {
   Party,
   PartyData,
   ReactionBonus,
-  DebuffMultiplier,
   SkillBonus,
   SubArtModCtrl,
   Target,
@@ -18,39 +17,41 @@ import {
   TalentStatInfo,
   TalentBuff,
   Vision,
-  AttackDamageType,
   AttackElement,
   NormalAttack,
+  ResistanceReduction,
+  DefenseIgnore,
+  DamageTypes,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
-  ATTACK_DAMAGE_TYPES,
+  ATTACK_PATTERNS,
   BASE_REACTION_DAMAGE,
-  DEBUFFS_MULTIPLIER_KEYS,
   TALENT_TYPES,
   TRANSFORMATIVE_REACTIONS,
   TRANSFORMATIVE_REACTION_INFO,
+  VISION_TYPES,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
 import { applyModifier, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-import { DamageTypes, TrackerDamageRecord } from "./types";
+import { TrackerDamageRecord } from "./types";
 
 function applyCustomDebuffs(
-  debuffMult: DebuffMultiplier,
+  resistReduct: ResistanceReduction,
   customDebuffCtrls: CustomDebuffCtrl[],
   tracker: Tracker
 ) {
   for (const { type, value } of customDebuffCtrls) {
-    debuffMult[type] += value;
+    resistReduct[type] += value;
     pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
   }
 }
 
 function applySelfDebuffs(
-  debuffMult: DebuffMultiplier,
-  partyData: PartyData,
+  resistReduct: ResistanceReduction,
+  defIgnore: DefenseIgnore,
   selfDebuffCtrls: ModifierCtrl[],
   debuffs: AbilityDebuff[] | undefined,
   char: CharInfo,
@@ -61,12 +62,17 @@ function applySelfDebuffs(
 
     if (activated && debuff && debuff.isGranted(char) && debuff.applyDebuff) {
       const desc = `Self / ${debuff.src}`;
-      debuff.applyDebuff({ debuffMult, fromSelf: true, char, inputs, desc, tracker });
+      debuff.applyDebuff({ resistReduct, defIgnore, fromSelf: true, char, inputs, desc, tracker });
     }
   }
 }
 
-function applyPartyDebuffs(debuffMult: DebuffMultiplier, party: Party, tracker: Tracker) {
+function applyPartyDebuffs(
+  resistReduct: ResistanceReduction,
+  defIgnore: DefenseIgnore,
+  party: Party,
+  tracker: Tracker
+) {
   for (const tm of party) {
     if (!tm) {
       continue;
@@ -77,14 +83,15 @@ function applyPartyDebuffs(debuffMult: DebuffMultiplier, party: Party, tracker: 
 
       if (activated && debuff && debuff.applyDebuff) {
         const desc = `${tm.name} / ${debuff.src}`;
-        debuff.applyDebuff({ debuffMult, fromSelf: false, inputs, desc });
+        debuff.applyDebuff({ resistReduct, defIgnore, fromSelf: false, inputs, desc, tracker });
       }
     }
   }
 }
 
 function applyArtDebuffs(
-  debuffMult: DebuffMultiplier,
+  resistReduct: ResistanceReduction,
+  defIgnore: DefenseIgnore,
   subArtDebuffCtrls: SubArtModCtrl[],
   tracker: Tracker
 ) {
@@ -92,29 +99,29 @@ function applyArtDebuffs(
     if (activated) {
       const { name, debuffs } = findArtifactSet({ code })!;
       const desc = `${name} / 4-Piece activated`;
-      debuffs![index].applyDebuff({ debuffMult, inputs, desc, tracker });
+      debuffs![index].applyDebuff({ resistReduct, defIgnore, inputs, desc, tracker });
     }
   }
 }
 
 function applyResonanceDebuffs(
-  debuffMult: DebuffMultiplier,
+  resistReduct: ResistanceReduction,
   elmtModCtrls: ElementModCtrl,
   tracker: Tracker
 ) {
   const geoRsn = elmtModCtrls.resonance.find((rsn) => rsn.vision === "geo");
   if (geoRsn && geoRsn.activated) {
-    applyModifier("Geo Resonance", debuffMult, "geo_rd", 20, tracker);
+    applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
   }
   if (elmtModCtrls.superconduct) {
-    applyModifier("Superconduct", debuffMult, "phys_rd", 40, tracker);
+    applyModifier("Superconduct", resistReduct, "phys", 40, tracker);
   }
 }
 
-function calcResistanceDebuffMult(debuffMult: DebuffMultiplier, target: Target) {
-  for (const key of ATTACK_DAMAGE_TYPES) {
-    let RES = (target[`${key}_res`] - debuffMult[`${key}_rd`]) / 100;
-    debuffMult[`${key}_rd`] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
+function calcResistanceReduction(resistReduct: ResistanceReduction, target: Target) {
+  for (const key of [...VISION_TYPES]) {
+    let RES = (target[key] - resistReduct[key]) / 100;
+    resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
 }
 
@@ -156,30 +163,35 @@ function getDamageBonusMult(
   talentBuff: TalentBuff,
   [attPatt, attElmt]: DamageTypes,
   skillBonuses: SkillBonus,
-  attInfusion: AttackDamageType | undefined,
-  totalAttrs: TotalAttribute
+  attInfusion: AttackElement | undefined
 ) {
-  let normal = (talentBuff.pct?.value || 0) + (skillBonuses[attPatt]?.pct || 0);
-  if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion !== "phys") {
-    normal += totalAttrs[`${attInfusion}_`];
-  } else if (attElmt) {
-    normal += skillBonuses[attElmt].pct;
+  let normal = talentBuff.pct?.value || 0;
+  let special = 1;
+
+  if (attPatt) {
+    normal += skillBonuses[attPatt].pct;
+
+    if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
+      normal += skillBonuses[attInfusion].pct;
+    } else if (attElmt !== "various") {
+      normal += skillBonuses[attElmt].pct;
+    }
+    special = toMultiplier(skillBonuses[attPatt].specialMult);
   }
-  let special = attPatt === "" ? 1 : toMultiplier(skillBonuses[attPatt].specialMult);
   return [toMultiplier(normal + skillBonuses.all.pct), special];
 }
 
 function getReactionMult(
   elmtModCtrls: ElementModCtrl,
   attElmt: AttackElement,
-  attInfusion: AttackDamageType,
+  attInfusion: AttackElement,
   rxnBonuses: ReactionBonus,
   vision: Vision
 ) {
   const { ampRxn, naAmpRxn } = elmtModCtrls;
   if (
     ampRxn &&
-    (attElmt === "elmt" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
+    (attElmt !== "phys" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
   ) {
     return rxnBonuses[ampRxn];
   }
@@ -192,27 +204,28 @@ function getReactionMult(
 function getReductionMult(
   char: CharInfo,
   target: Target,
-  debuffMult: DebuffMultiplier,
+  resistReduct: ResistanceReduction,
+  defIgnore: DefenseIgnore,
   [attPatt, attElmt]: DamageTypes,
   vision: Vision,
-  attInfusion: AttackDamageType
+  attInfusion: AttackElement
 ) {
   const charPart = bareLv(char.level) + 100;
-  const defReduction = 1 - debuffMult.def_rd / 100;
-  let defIgnore = 1;
-  if (attPatt !== "" && debuffMult[`${attPatt}_ig`]) {
-    defIgnore = 1 - debuffMult[`${attPatt}_ig`] / 100;
+  const defReduction = 1 - resistReduct.def / 100;
+  let defMult = 1;
+  if (attPatt && defIgnore[attPatt]) {
+    defMult = 1 - defIgnore[attPatt] / 100;
   }
-  const defMult = charPart / (defReduction * defIgnore * (target.level + 100) + charPart);
+  defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
 
-  if (attElmt === "elmt") {
-    return [defMult, debuffMult[`${vision}_rd`]];
-  } else if (attElmt === "phys" && !["NA", "CA", "PA"].includes(attPatt)) {
-    return [defMult, debuffMult.phys_rd];
+  if (attElmt !== "phys" && attElmt !== "various") {
+    return [defMult, resistReduct[vision]];
+  } else if (attElmt === "phys" && attPatt && !["NA", "CA", "PA"].includes(attPatt)) {
+    return [defMult, resistReduct.phys];
   } else if (attElmt === "various") {
     return [defMult, 1];
   }
-  return [defMult, debuffMult[`${attInfusion}_rd`]];
+  return [defMult, resistReduct[attInfusion]];
 }
 
 function getCrit(
@@ -225,8 +238,8 @@ function getCrit(
     return (
       totalAttrs[type] +
       (talentBuff[type]?.value || 0) +
-      skillBonuses[attPatt][type] +
-      skillBonuses[attElmt][type] +
+      (attPatt ? skillBonuses[attPatt][type] : 0) +
+      (attElmt !== "various" ? skillBonuses[attElmt][type] : 0) +
       skillBonuses.all[type]
     );
   };
@@ -252,19 +265,27 @@ export default function getDamage(
   target: Target,
   tracker: Tracker
 ) {
-  const debuffMult = {} as DebuffMultiplier;
-  for (const key of DEBUFFS_MULTIPLIER_KEYS) {
-    debuffMult[key] = 0;
+  const resistReduct = {
+    phys: 0,
+  } as ResistanceReduction;
+  const defIgnore = {} as DefenseIgnore;
+
+  for (const key of VISION_TYPES) {
+    resistReduct[key] = 0;
   }
+  for (const key of ATTACK_PATTERNS) {
+    defIgnore[key] = 0;
+  }
+
   const { activeTalents, vision, debuffs } = findCharacter(char)!;
   const finalResult = {} as DamageResult;
 
-  applyCustomDebuffs(debuffMult, customDebuffCtrls, tracker);
-  applySelfDebuffs(debuffMult, partyData, selfDebuffCtrls, debuffs, char, tracker);
-  applyPartyDebuffs(debuffMult, party, tracker);
-  applyArtDebuffs(debuffMult, subArtDebuffCtrls, tracker);
-  applyResonanceDebuffs(debuffMult, elmtModCtrls, tracker);
-  calcResistanceDebuffMult(debuffMult, target);
+  applyCustomDebuffs(resistReduct, customDebuffCtrls, tracker);
+  applySelfDebuffs(resistReduct, defIgnore, selfDebuffCtrls, debuffs, char, tracker);
+  applyPartyDebuffs(resistReduct, defIgnore, party, tracker);
+  applyArtDebuffs(resistReduct, defIgnore, subArtDebuffCtrls, tracker);
+  applyResonanceDebuffs(resistReduct, elmtModCtrls, tracker);
+  calcResistanceReduction(resistReduct, target);
 
   activeTalents.forEach((talent, i) => {
     const type = TALENT_TYPES[i];
@@ -285,9 +306,9 @@ export default function getDamage(
       }
       let [base, record] = getBaseDamage(totalAttrs, stat, level, talentBuff);
 
-      if (base && dmgTypes) {
+      if (base && dmgTypes && dmgTypes[0] && dmgTypes[1] !== "various") {
         // #to-check: assign infusion[dmgTypes[0] not work
-        const attInfusion: AttackDamageType | undefined = infusion[dmgTypes[0] as NormalAttack];
+        const attInfusion: AttackElement | undefined = infusion[dmgTypes[0] as NormalAttack];
         const flat =
           (talentBuff.flat?.value || 0) +
           skillBonuses[dmgTypes[0]].flat +
@@ -299,14 +320,14 @@ export default function getDamage(
           talentBuff,
           dmgTypes,
           skillBonuses,
-          attInfusion,
-          totalAttrs
+          attInfusion
         );
         const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonuses, vision);
         const [defMult, resMult] = getReductionMult(
           char,
           target,
-          debuffMult,
+          resistReduct,
+          defIgnore,
           dmgTypes,
           vision,
           attInfusion
@@ -372,8 +393,10 @@ export default function getDamage(
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     let base = BASE_REACTION_DAMAGE[bareLv(char.level)];
     const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
+
     const specialMult = 1 + rxnBonuses[rxn] / 100;
-    const resMult = dmgType !== "various" ? debuffMult[`${dmgType}_rd`] : 1;
+    const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
+
     base *= normalMult * specialMult * resMult;
 
     finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };

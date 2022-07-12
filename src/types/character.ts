@@ -2,25 +2,27 @@ import { EModAffect } from "@Src/constants";
 import type {
   AttackElement,
   AttackPattern,
-  BaseStat,
   Vision,
   Nation,
   Rarity,
-  RngPercentStat,
   Weapon,
   CharInfo,
   Tracker,
   ModifierInput,
+  BaseStat,
   NormalAttack,
+  AttributeStat,
+  ArtifactPercentStat,
 } from "./global";
 import type {
   CalcCharData,
-  DebuffMultiplier,
+  DefenseIgnore,
   FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
   ReactionBonus,
+  ResistanceReduction,
   SkillBonus,
   SkillBonusInfoKey,
   TotalAttribute,
@@ -36,7 +38,11 @@ export type DataCharacter = {
   nation: Nation;
   vision: Vision;
   weapon: Weapon;
-  stats: (Record<BaseStat, number> & Partial<Record<RngPercentStat, number>>)[];
+  stats: Record<BaseStat, number>[];
+  bonusStats?: {
+    type: AttackElement | ArtifactPercentStat | "em";
+    value: number;
+  }[];
   activeTalents: [NormalAttacks, ElementalSkill, ElementalBurst];
   passiveTalents: Ability[];
   constellation: Ability[];
@@ -44,11 +50,13 @@ export type DataCharacter = {
   debuffs?: AbilityDebuff[];
 };
 
+export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
+
 export type TalentStatInfo = {
   name: string;
   noCalc?: boolean;
   isHealing?: boolean;
-  dmgTypes?: [AttackPattern, AttackElement];
+  dmgTypes?: DamageTypes;
   baseStatType?: "base_atk" | "atk" | "def" | "hp";
   baseMult: number | number[];
   multType: number;
@@ -103,7 +111,6 @@ type BuffInputRenderType = "select" | "";
 export type AbilityBuff = AbilityModifier & {
   desc: () => JSX.Element;
   affect: EModAffect;
-  maxs?: (number | null)[];
   inputConfig?: {
     labels?: string[];
     selfLabels?: string[];
@@ -114,7 +121,7 @@ export type AbilityBuff = AbilityModifier & {
   infuseConfig?: {
     range: NormalAttack[];
     overwritable: boolean;
-    isAppliable?: (charData: DataCharacter) => boolean
+    isAppliable?: (charData: DataCharacter) => boolean;
   };
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
@@ -150,7 +157,8 @@ export type AbilityDebuff = AbilityModifier & {
     renderTypes: DebuffInputRenderType[];
   };
   applyDebuff?: (args: {
-    debuffMult: DebuffMultiplier;
+    resistReduct: ResistanceReduction;
+    defIgnore: DefenseIgnore;
     // #to-check
     // selfDebuffCtrls: ModifierCtrl[];
     char?: CharInfo;

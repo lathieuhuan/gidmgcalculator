@@ -1,7 +1,7 @@
 import { findCharacter, getPartyData } from "@Data/controllers";
 import { NORMAL_ATTACKS } from "@Src/constants";
 import type {
-  AttackDamageType,
+  AttackElement,
   CalcArtInfo,
   CalcCharData,
   CalcWeapon,
@@ -115,7 +115,7 @@ function getFinalInfusion(
   const result = {} as FinalInfusion;
 
   topLoop: for (const type of NORMAL_ATTACKS) {
-    const contenders: AttackDamageType[] = ["phys"];
+    const contenders: AttackElement[] = ["phys"];
 
     for (const infusion of selfInfusion) {
       if (infusion.range.includes(type)) {

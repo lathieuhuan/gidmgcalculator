@@ -1,4 +1,4 @@
-import { Artifact, CommonStat, Rarity } from "@Src/types";
+import { Artifact, AttackElement, AttributeStat } from "@Src/types";
 
 // ATK and HP and Elemental DMG
 const percent1 = {
@@ -32,7 +32,7 @@ const EM = {
 
 export const ARTIFACT_MAIN_STATS: Record<
   Artifact,
-  Partial<Record<CommonStat, { [k: number]: number[] }>>
+  Partial<Record<AttributeStat | AttackElement, { [k: number]: number[] }>>
 > = {
   flower: {
     hp: {
@@ -76,14 +76,14 @@ export const ARTIFACT_MAIN_STATS: Record<
     atk_: percent1,
     def_: percent2,
     em: EM,
-    pyro_: percent1,
-    hydro_: percent1,
-    dendro_: percent1,
-    electro_: percent1,
-    anemo_: percent1,
-    cryo_: percent1,
-    geo_: percent1,
-    phys_: percent2,
+    pyro: percent1,
+    hydro: percent1,
+    dendro: percent1,
+    electro: percent1,
+    anemo: percent1,
+    cryo: percent1,
+    geo: percent1,
+    phys: percent2,
   },
   circlet: {
     hp_: percent1,

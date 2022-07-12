@@ -1,7 +1,6 @@
 import cn from "classnames";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import type { CalcArtPiece } from "@Src/types";
-import { ARTIFACT_SUBSTAT_TYPES } from "@Src/constants";
 import { percentSign, processNumInput, wikiImg } from "@Src/utils";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { findArtifactPiece } from "@Data/controllers";
@@ -9,6 +8,7 @@ import { rarityBgColors, rarityColors, rarityGradients } from "@Styled/tw-compou
 import { Button, IconButton, Select } from "@Styled/Inputs";
 import { BetaMark } from "@Components/minors";
 import validSubstatValues from "./validSubstatValues";
+import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 
 interface ArtifactCardProps {
   artPiece?: CalcArtPiece;
@@ -131,7 +131,7 @@ export default function ArtifactCard({
                 value={type}
                 onChange={(e) => changeSubStatType(e.target.value, i)}
               >
-                {ARTIFACT_SUBSTAT_TYPES.map((type) => (
+                {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
                   <option key={type}>{type}</option>
                 ))}
               </Select>

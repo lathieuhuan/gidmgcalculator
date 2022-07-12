@@ -1,8 +1,8 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Styled/DataDisplay";
-import { EModAffect, EModifierSrc } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { MEDIUM_PA } from "../constants";
+import { MEDIUM_PA, EModifierSrc } from "../constants";
 import { checkAscs, charModCtrlIsActivated, checkCons, findInput, makeTrackerDesc } from "../utils";
 
 const Albedo: DataCharacter = {
@@ -19,17 +19,18 @@ const Albedo: DataCharacter = {
     { base_hp: 2671, base_atk: 51, base_def: 177 },
     { base_hp: 3554, base_atk: 67, base_def: 235 },
     { base_hp: 5317, base_atk: 101, base_def: 352 },
-    { base_hp: 5944, base_atk: 113, base_def: 394, geo_: 7.2 },
-    { base_hp: 6839, base_atk: 130, base_def: 453, geo_: 7.2 },
-    { base_hp: 7675, base_atk: 146, base_def: 508, geo_: 14.4 },
-    { base_hp: 8579, base_atk: 163, base_def: 568, geo_: 14.4 },
-    { base_hp: 9207, base_atk: 175, base_def: 610, geo_: 14.4 },
-    { base_hp: 10119, base_atk: 192, base_def: 670, geo_: 14.4 },
-    { base_hp: 10746, base_atk: 204, base_def: 712, geo_: 21.6 },
-    { base_hp: 11669, base_atk: 222, base_def: 773, geo_: 21.6 },
-    { base_hp: 12296, base_atk: 233, base_def: 815, geo_: 28.8 },
-    { base_hp: 13226, base_atk: 251, base_def: 876, geo_: 28.8 },
+    { base_hp: 5944, base_atk: 113, base_def: 394 },
+    { base_hp: 6839, base_atk: 130, base_def: 453 },
+    { base_hp: 7675, base_atk: 146, base_def: 508 },
+    { base_hp: 8579, base_atk: 163, base_def: 568 },
+    { base_hp: 9207, base_atk: 175, base_def: 610 },
+    { base_hp: 10119, base_atk: 192, base_def: 670 },
+    { base_hp: 10746, base_atk: 204, base_def: 712 },
+    { base_hp: 11669, base_atk: 222, base_def: 773 },
+    { base_hp: 12296, base_atk: 233, base_def: 815 },
+    { base_hp: 13226, base_atk: 251, base_def: 876 },
   ],
+  bonusStats: [{ type: "geo", value: 7.2 }],
   activeTalents: [
     {
       name: "Favonius Bladework - Weiss",
@@ -51,13 +52,13 @@ const Albedo: DataCharacter = {
       stats: [
         {
           name: "Skill DMG",
-          dmgTypes: ["ES", "elmt"],
+          dmgTypes: ["ES", "geo"],
           baseMult: 130.4,
           multType: 2,
         },
         {
           name: "Transient Blossom",
-          dmgTypes: ["ES", "elmt"],
+          dmgTypes: ["ES", "geo"],
           baseStatType: "def",
           baseMult: 133.6,
           multType: 2,
@@ -78,13 +79,13 @@ const Albedo: DataCharacter = {
       stats: [
         {
           name: "Burst DMG",
-          dmgTypes: ["EB", "elmt"],
+          dmgTypes: ["EB", "geo"],
           baseMult: 367.2,
           multType: 2,
         },
         {
           name: "Fatal Blossom DMG",
-          dmgTypes: ["EB", "elmt"],
+          dmgTypes: ["EB", "geo"],
           baseMult: 72,
           multType: 2,
         },

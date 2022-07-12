@@ -1,5 +1,5 @@
 import type { Paths, SkillBonusPath } from "@Src/calculators/utils";
-import type { AllStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
+import type { AttributeStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { LEVELS } from "@Src/constants";
 import { bareLv } from "@Src/utils";
@@ -7,7 +7,7 @@ import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
 
 export function makeWpModApplier(
   recipient: "totalAttrs",
-  paths: AllStat | AllStat[],
+  paths: AttributeStat | AttributeStat[],
   rootScale: number | number[]
 ): (args: any) => void;
 export function makeWpModApplier(

@@ -41,5 +41,3 @@ export type TrackerDamageRecord = {
   cDmg?: number;
   note?: string;
 };
-
-export type DamageTypes = [AttackPattern, AttackElement];
