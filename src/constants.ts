@@ -43,12 +43,13 @@ export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
 
 export const ATTACK_ELEMENTS = [...VISION_TYPES, "phys"] as const;
 
-export const TALENT_TYPES = ["NAs", "ES", "EB"] as const;
+export const TALENT_TYPES = ["NAs", "ES", "EB", "AltSprint"] as const;
 
 export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 
 export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
 
+// # to-check
 export const ARTIFACT_PERCENT_STAT_TYPES = ["hp_", "atk_", "def_", "cRate", "cDmg", "er"] as const;
 
 export const OTHER_PERCENT_STAT_TYPES = ["healBn", "shStr", "naAtkSpd", "caAtkSpd"] as const;

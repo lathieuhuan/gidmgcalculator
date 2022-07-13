@@ -43,7 +43,13 @@ export type DataCharacter = {
     type: AttackElement | ArtifactPercentStat | "em";
     value: number;
   }[];
-  activeTalents: [NormalAttacks, ElementalSkill, ElementalBurst];
+  activeTalents: {
+    NAs: NormalAttacks;
+    ES: ElementalSkill;
+    EB: ElementalBurst;
+    // #to-do
+    AltSprint?: Ability;
+  };
   passiveTalents: Ability[];
   constellation: Ability[];
   buffs?: AbilityBuff[];
@@ -71,7 +77,7 @@ export type TalentStatInfo = {
 type NormalAttacks = {
   name: string;
   stats: TalentStatInfo[];
-  caStamina: number;
+  caStamina?: number;
 };
 
 type Ability = {

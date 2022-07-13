@@ -291,8 +291,8 @@ export default function getDamage(
   applyResonanceDebuffs(resistReduct, elmtModCtrls, tracker);
   calcResistanceReduction(resistReduct, target);
 
-  activeTalents.forEach((talent, i) => {
-    const type = TALENT_TYPES[i];
+  (["NAs", "ES", "EB"] as const).forEach((type) => {
+    const talent = activeTalents[type];
     const level = finalTalentLv(char, type, partyData);
     finalResult[type] = {};
     if (tracker) tracker[type] = {};

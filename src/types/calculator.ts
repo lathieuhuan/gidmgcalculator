@@ -31,7 +31,7 @@ export type CalculatorState = {
   charData: CalcCharData;
   allSelfBuffCtrls: Array<ModifierCtrl[]>;
   allSelfDebuffCtrls: Array<ModifierCtrl[]>;
-  allWps: CalcWeapon[];
+  allWeapons: CalcWeapon[];
   allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl[];
   allSubWpComplexDebuffCtrls: {};
   allArtInfo: CalcArtInfo[];

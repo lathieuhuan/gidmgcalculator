@@ -27,7 +27,7 @@ const initialState: CalculatorState = {
   charData: getCharData(defaultChar),
   allSelfBuffCtrls: [],
   allSelfDebuffCtrls: [],
-  allWps: [],
+  allWeapons: [],
   allSubWpComplexBuffCtrls: [{}],
   allSubWpComplexDebuffCtrls: [{}],
   allArtInfo: [],
@@ -61,7 +61,7 @@ export const calculatorSlice = createSlice({
       state.charData = getCharData(char);
       state.allSelfBuffCtrls = [selfBuffCtrls];
       state.allSelfDebuffCtrls = [selfDebuffCtrls];
-      state.allWps = [weapon];
+      state.allWeapons = [weapon];
       state.allSubWpComplexBuffCtrls = [{}];
       state.allArtInfo = [art];
       state.allParties = [[null, null, null]];
@@ -74,6 +74,7 @@ export const calculatorSlice = createSlice({
 
       calculate(state, true);
     },
+    // character
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;
       const { char, currentSetup } = state;
@@ -86,9 +87,33 @@ export const calculatorSlice = createSlice({
         calculate(state, true);
       }
     },
+    changeConsLevel: (state, action: PayloadAction<number>) => {
+      const newCons = action.payload;
+      const { char } = state;
+      if (Array.isArray(char.cons)) {
+        char.cons[state.currentSetup] = newCons;
+        calculate(state);
+      } else {
+        char.cons = newCons;
+        calculate(state, true);
+      }
+    },
+    changeTalentLevel: (state, action: PayloadAction<number>) => {
+      //
+    },
+    // weapon
+    upgradeWeapon: (state, action: PayloadAction<Level>) => {
+      state.allWeapons[state.currentSetup].level = action.payload;
+      calculate(state);
+    },
+    refineWeapon: (state, action: PayloadAction<number>) => {
+      state.allWeapons[state.currentSetup].refi = action.payload;
+      calculate(state);
+    },
   },
 });
 
-export const { initSessionWithChar, levelCalcChar } = calculatorSlice.actions;
+export const { initSessionWithChar, levelCalcChar, changeConsLevel, upgradeWeapon, refineWeapon } =
+  calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

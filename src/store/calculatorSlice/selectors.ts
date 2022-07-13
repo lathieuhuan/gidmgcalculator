@@ -13,8 +13,8 @@ export const selectChar = createSelector(
 export const selectTotalAttrs = (state: RootState) =>
   state.calculator.allTotalAttrs[state.calculator.currentSetup];
 
-export const selectAttElmtBonuses = (state: RootState) =>
-  state.calculator.allAttElmtBonuses[state.calculator.currentSetup];
+export const selectArtInfo = (state: RootState) =>
+  state.calculator.allArtInfo[state.calculator.currentSetup];
 
 export const selectWeapon = (state: RootState) =>
-  state.calculator.allWps[state.calculator.currentSetup];
+  state.calculator.allWeapons[state.calculator.currentSetup];

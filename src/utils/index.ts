@@ -121,23 +121,32 @@ export const initArtStatFilter = () => ({
   subs: Array(4).fill("All"),
 });
 
-export function totalXtraTalentLv(char: CharInfo, talentIndex: number, partyData?: PartyData) {
+export function totalXtraTalentLv(
+  char: CharInfo,
+  talentType: Exclude<Talent, "AltSprint">,
+  partyData?: PartyData
+) {
   let result = 0;
-  const talent = findCharacter(char)!.activeTalents[talentIndex];
+
+  const talent = findCharacter(char)!.activeTalents[talentType];
 
   if ("xtraLvAtCons" in talent && char.cons >= talent.xtraLvAtCons) {
     result += 3;
   }
   if (partyData) {
-    if (talentIndex === 0 && (char.name === "Tartaglia" || findByName(partyData, "Tartaglia"))) {
+    if (talentType === "NAs" && (char.name === "Tartaglia" || findByName(partyData, "Tartaglia"))) {
       result++;
     }
   }
   return result;
 }
 
-export const finalTalentLv = (char: CharInfo, talentType: Talent, partyData?: PartyData) => {
-  return char[talentType] + totalXtraTalentLv(char, TALENT_TYPES.indexOf(talentType), partyData);
+export const finalTalentLv = (
+  char: CharInfo,
+  talentType: Exclude<Talent, "AltSprint">,
+  partyData?: PartyData
+) => {
+  return char[talentType] + totalXtraTalentLv(char, talentType, partyData);
 };
 
 export function getCurrentChar(char: CalcChar, index: number): CharInfo {
