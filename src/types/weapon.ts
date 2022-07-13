@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
-import type { AllStat, Tracker, Rarity, ModifierInput } from "./global";
+import type { Tracker, Rarity, ModifierInput, ArtifactPercentStat } from "./global";
 import type {
   CalcCharData,
   PartyData,
@@ -17,7 +17,7 @@ export type DataWeapon = {
   icon: string;
   mainStatScale: string;
   subStat?: {
-    type: AllStat;
+    type: ArtifactPercentStat | "em" | "phys";
     scale: string;
   };
   applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;

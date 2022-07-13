@@ -13,7 +13,7 @@ import type {
   Monster,
 } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
-import { EModAffect, TARGET_RESISTANCES_TYPES } from "@Src/constants";
+import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 
 type InitCharInfo = Omit<CharInfo, "name">;
 export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
@@ -144,7 +144,7 @@ export const initMonster = (): Monster => ({
 
 export function initTarget() {
   const result = { level: 1 } as Target;
-  for (const elmt of TARGET_RESISTANCES_TYPES) {
+  for (const elmt of ATTACK_ELEMENTS) {
     result[elmt] = 10;
   }
   return result;

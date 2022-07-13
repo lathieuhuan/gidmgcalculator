@@ -3,13 +3,13 @@ import {
   WEAPON_TYPES,
   ARTIFACT_TYPES,
   LEVELS,
-  PERCENT_STAT_TYPES,
-  TARGET_RESISTANCES_TYPES,
   REACTIONS,
   NORMAL_ATTACKS,
+  CORE_STAT_TYPES,
+  ARTIFACT_PERCENT_STAT_TYPES,
   BASE_STAT_TYPES,
-  FLAT_STAT_TYPES,
-  ALL_STAT_TYPES,
+  ATTRIBUTE_STAT_TYPES,
+  ATTACK_ELEMENTS,
 } from "@Src/constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
@@ -24,28 +24,21 @@ export type Artifact = typeof ARTIFACT_TYPES[number];
 
 export type Vision = typeof VISION_TYPES[number];
 
-export type BaseStat = typeof BASE_STAT_TYPES[number];
-
-export type FlatStat = typeof FLAT_STAT_TYPES[number];
-
-export type PercentStat = typeof PERCENT_STAT_TYPES[number];
-
-export type AllStat = typeof ALL_STAT_TYPES[number];
-
-export type RngPercentStat = Exclude<PercentStat, "shStr" | "naAtkSpd" | "caAtkSpd">;
-
-export type CommonStat = FlatStat | RngPercentStat | "shStr";
-
 export type NormalAttack = typeof NORMAL_ATTACKS[number];
 
-export type AttackElement = "elmt" | "phys" | "various";
+export type AttackPattern = NormalAttack | "ES" | "EB";
 
-// export type AttackPattern = typeof ATTACK_PATTERNS[number];
-export type AttackPattern = NormalAttack | "ES" | "EB" | "";
+export type AttackElement = typeof ATTACK_ELEMENTS[number];
+
+export type CoreStat = typeof CORE_STAT_TYPES[number];
+
+export type BaseStat = typeof BASE_STAT_TYPES[number];
+
+export type ArtifactPercentStat = typeof ARTIFACT_PERCENT_STAT_TYPES[number];
+
+export type AttributeStat = typeof ATTRIBUTE_STAT_TYPES[number];
 
 export type Tracker = any;
-
-export type TargetResistance = typeof TARGET_RESISTANCES_TYPES[number];
 
 export type AmplifyingReaction = "melt" | "vaporize";
 

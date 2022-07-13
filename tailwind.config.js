@@ -80,6 +80,7 @@ module.exports = {
           3: "#2c315c",
         },
         darkred: "#cd212a",
+        darkerred: "#8a1200",
         lightred: "#ff8d8c",
         gold: "#ffd700",
         lightgold: "#ffdc4e",

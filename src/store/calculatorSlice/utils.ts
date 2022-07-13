@@ -21,7 +21,10 @@ import artifacts from "@Data/artifacts";
 import calculateAll from "@Src/calculators";
 import { initCharInfo, initWeapon } from "./initiators";
 
-export function calculate(state: CalculatorState, all: boolean) {
+export function calculate(state: CalculatorState, all?: boolean) {
+  if (!state.touched) {
+    return;
+  }
   try {
     const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentSetup];
 

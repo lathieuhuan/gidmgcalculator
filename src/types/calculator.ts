@@ -17,6 +17,7 @@ import type {
   PartiallyRequired,
   NormalAttack,
   BaseStat,
+  PartiallyOptional,
 } from "./global";
 import { SKILL_BONUS_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
@@ -28,7 +29,7 @@ export type CalculatorState = {
   };
   setups: CalcSetup[];
   char: CalcChar;
-  charData: CalcCharData | null;
+  charData: CalcCharData;
   allSelfBuffCtrls: Array<ModifierCtrl[]>;
   allSelfDebuffCtrls: Array<ModifierCtrl[]>;
   allWps: CalcWeapon[];
@@ -40,7 +41,7 @@ export type CalculatorState = {
   allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
   allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
   target: Target;
-  monster: Monster | null;
+  monster: Monster;
   allTotalAttrs: TotalAttribute[];
   allArtAttrs: ArtifactAttribute[];
   allRxnBonuses: ReactionBonus[];
@@ -176,6 +177,10 @@ export type Monster = {
   configs: (number | string)[];
 };
 
+// export type TotalAttribute = PartiallyOptional<
+//   Record<BaseStat | AttributeStat, number>,
+//   "hp_" | "atk_" | "def_"
+// >;
 export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;

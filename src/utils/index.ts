@@ -1,5 +1,12 @@
-import type { CharInfo, Level, PartyData, PercentStat, Talent } from "@Src/types";
-import { PERCENT_STAT_TYPES, TALENT_TYPES } from "@Src/constants";
+import type { CharInfo, Level, PartyData, Talent } from "@Src/types";
+import {
+  ARTIFACT_PERCENT_STAT_TYPES,
+  ATTACK_ELEMENTS,
+  CORE_STAT_TYPES,
+  OTHER_PERCENT_STAT_TYPES,
+  TALENT_TYPES,
+  VISION_TYPES,
+} from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
 
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
@@ -9,8 +16,22 @@ export const wikiImg = (src: string) => {
 };
 
 export const percentSign = (stat: string) => {
-  return PERCENT_STAT_TYPES.includes(stat as PercentStat) ? "%" : "";
+  if (
+    ARTIFACT_PERCENT_STAT_TYPES.includes(stat as any) ||
+    OTHER_PERCENT_STAT_TYPES.includes(stat as any) ||
+    ATTACK_ELEMENTS.includes(stat as any)
+  ) {
+    return "%";
+  }
+  return "";
 };
+
+export const getAllStats = () => [
+  ...CORE_STAT_TYPES,
+  "em",
+  ...VISION_TYPES,
+  ...OTHER_PERCENT_STAT_TYPES,
+];
 
 export const turnArr = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];

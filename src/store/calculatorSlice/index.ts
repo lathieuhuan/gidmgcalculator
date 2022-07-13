@@ -1,9 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { CalculatorState } from "@Src/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { CalculatorState, Level } from "@Src/types";
+import { LEVELS } from "@Src/constants";
 import { getCharData } from "@Data/controllers";
 import type { InitSessionWithCharAction } from "./reducer-types";
 import { initCharModCtrls, initElmtModCtrls, initMonster, initTarget } from "./initiators";
-import { getSetupInfo, parseAndInitData } from "./utils";
+import { calculate, getSetupInfo, parseAndInitData } from "./utils";
+
+const defaultChar = {
+  name: "Albedo",
+  level: LEVELS[0],
+  NAs: 1,
+  ES: 1,
+  EB: 1,
+  cons: 1,
+};
 
 const initialState: CalculatorState = {
   currentSetup: 0,
@@ -12,8 +22,8 @@ const initialState: CalculatorState = {
     keepArtStatsOnSwitch: false,
   },
   setups: [],
-  char: null,
-  charData: null,
+  char: defaultChar,
+  charData: getCharData(defaultChar),
   allSelfBuffCtrls: [],
   allSelfDebuffCtrls: [],
   allWps: [],
@@ -25,13 +35,14 @@ const initialState: CalculatorState = {
   allCustomBuffCtrls: [],
   allCustomDebuffCtrls: [],
   target: initTarget(),
-  monster: null,
+  monster: initMonster(),
   allTotalAttrs: [],
   allArtAttrs: [],
   allRxnBonuses: [],
   allFinalInfusion: [],
   allDmgResult: [],
   isError: false,
+  touched: false,
 };
 
 export const calculatorSlice = createSlice({
@@ -59,9 +70,21 @@ export const calculatorSlice = createSlice({
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
     },
+    levelCalcChar: (state, action: PayloadAction<Level>) => {
+      const level = action.payload;
+      const { char, currentSetup } = state;
+
+      if (Array.isArray(char.level)) {
+        char.level[currentSetup] = level;
+        calculate(state);
+      } else {
+        char.level = level;
+        calculate(state, true);
+      }
+    },
   },
 });
 
-export const { initSessionWithChar } = calculatorSlice.actions;
+export const { initSessionWithChar, levelCalcChar } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;
