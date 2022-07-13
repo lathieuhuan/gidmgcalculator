@@ -1,7 +1,7 @@
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import { FaCaretDown } from "react-icons/fa";
 import cn from "classnames";
-import { CORE_STAT_TYPES, VISION_TYPES } from "@Src/constants";
-import type { CoreStat, PartiallyRequired, SkillBonus, TotalAttribute } from "@Src/types";
+import { ATTACK_ELEMENTS, CORE_STAT_TYPES, VISION_TYPES } from "@Src/constants";
+import type { AttackElementBonus, CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { Green } from "@Styled/DataDisplay";
 import StatsTable from "./StatsTable";
 import { useState } from "react";
@@ -10,9 +10,8 @@ import { getRxnBonusesFromEM } from "@Src/calculators/utils";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;
-  skillBonuses: SkillBonus;
 }
-export default function AttributeTable({ attributes, skillBonuses }: AttributeTableProps) {
+export default function AttributeTable({ attributes }: AttributeTableProps) {
   const em = attributes.em || 0;
   const rxnBonusFromEM = getRxnBonusesFromEM(em);
 
@@ -43,11 +42,11 @@ export default function AttributeTable({ attributes, skillBonuses }: AttributeTa
           </StatsTable.Row>
         );
       })}
-      {VISION_TYPES.map((type) => {
+      {ATTACK_ELEMENTS.map((type) => {
         return (
           <StatsTable.Row key={type}>
             <p>{type}</p>
-            <p className="mr-2">{Math.round((skillBonuses[type].pct || 0) * 10) / 10}%</p>
+            <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
       })}

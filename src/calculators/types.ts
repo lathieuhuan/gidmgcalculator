@@ -1,20 +1,20 @@
 import type {
-  AttackElement,
-  AttackPattern,
+  AttackElementBonus,
+  AttackPatternBonus,
   CalcCharData,
   CharInfo,
   FinalInfusion,
   ModifierCtrl,
   Party,
   ReactionBonus,
-  SkillBonus,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
 
 export type Wrapper1 = {
   totalAttrs: TotalAttribute;
-  skillBonuses?: SkillBonus;
+  attPattBonuses?: AttackPatternBonus;
+  attElmtBonuses?: AttackElementBonus;
   rxnBonuses?: ReactionBonus;
   charData: CalcCharData;
   tracker?: Tracker;

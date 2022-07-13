@@ -178,9 +178,9 @@ const Albedo: DataCharacter = {
         renderTypes: ["select"],
         maxs: [4],
       },
-      applyFinalBuff: ({ totalAttrs, skillBonuses, charBuffCtrls, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttrs, attPattBonuses, charBuffCtrls, desc, tracker }) => {
         const bnValue = totalAttrs.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
-        applyModifier(desc, skillBonuses, "EB.flat", Math.round(bnValue), tracker);
+        applyModifier(desc, attPattBonuses, "EB.flat", Math.round(bnValue), tracker);
       },
     },
     {
@@ -194,7 +194,7 @@ const Albedo: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("skillBonuses", "PA.pct", 30),
+      applyBuff: makeModApplier("attPattBonuses", "PA.pct", 30),
     },
     {
       index: 4,
@@ -207,7 +207,7 @@ const Albedo: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("skillBonuses", "all.pct", 17),
+      applyBuff: makeModApplier("attPattBonuses", "all.pct", 17),
     },
   ],
 };

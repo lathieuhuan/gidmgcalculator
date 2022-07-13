@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
 import type { Tracker, Rarity, ModifierInput, ArtifactPercentStat } from "./global";
 import type {
+  AttackPatternBonus,
   CalcCharData,
   PartyData,
   ReactionBonus,
-  SkillBonus,
   TotalAttribute,
 } from "./calculator";
 
@@ -33,7 +33,7 @@ export type DataWeapon = {
 
 type ApplyWpPassiveBuffsArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses?: SkillBonus;
+  attPattBonuses?: AttackPatternBonus;
   rxnBonuses?: ReactionBonus;
   charData: CalcCharData;
   partyData?: PartyData;
@@ -44,7 +44,7 @@ type ApplyWpPassiveBuffsArgs = {
 
 type ApplyWpBuffArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
+  attPattBonuses: AttackPatternBonus;
   rxnBonuses: ReactionBonus;
   charData: CalcCharData;
   inputs?: ModifierInput[];

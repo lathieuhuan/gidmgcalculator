@@ -6,16 +6,20 @@ import type {
   ReactionBonus,
   ReactionBonusKey,
   ResistanceReduction,
-  SkillBonus,
-  SkillBonusInfoKey,
-  SkillBonusKey,
   TotalAttribute,
   Tracker,
+  AttackPatternBonusKey,
+  AttackPatternInfoKey,
+  AttackPatternBonus,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
-export function addOrInit(obj: Record<string, number | undefined>, key: string, value: number) {
-  obj[key] = (obj[key] || 0) + value;
+export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
+  obj: T,
+  key: K,
+  value: number
+) {
+  obj[key] = (((obj[key] as number | undefined) || 0) + value) as T[K];
 }
 
 export function pushOrMergeTrackerRecord(
@@ -39,12 +43,12 @@ export function pushOrMergeTrackerRecord(
  * addMod
  * */
 
-export type SkillBonusPath = `${SkillBonusKey}.${SkillBonusInfoKey}`;
+export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey}`;
 
 export type ModRecipient =
   | TotalAttribute
   | ReactionBonus
-  | SkillBonus
+  | AttackPatternBonus
   | ResistanceReduction
   | DefenseIgnore;
 
@@ -53,8 +57,8 @@ export type Paths =
   | AttributeStat[]
   | ReactionBonusKey
   | ReactionBonusKey[]
-  | SkillBonusPath
-  | SkillBonusPath[]
+  | AttackPatternPath
+  | AttackPatternPath[]
   | (AttackElement | "def")
   | (AttackElement | "def")[]
   | AttackPattern
@@ -78,8 +82,8 @@ export function applyModifier(
 ): void;
 export function applyModifier(
   desc: string | undefined,
-  recipient: SkillBonus,
-  paths: SkillBonusPath | SkillBonusPath[],
+  recipient: AttackPatternBonus,
+  paths: AttackPatternPath | AttackPatternPath[],
   rootValue: RootValue,
   tracker: Tracker
 ): void;
@@ -132,7 +136,7 @@ export function applyModifier(
 
 interface ModApplierArgs {
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
+  attPattBonuses: AttackPatternBonus;
   rxnBonuses: ReactionBonus;
   desc: string;
   tracker: Tracker;
@@ -143,16 +147,14 @@ export function makeModApplier(
   paths: AttributeStat | AttributeStat[],
   rootValue: RootValue
 ): (args: any) => void;
-
+export function makeModApplier(
+  recipientKey: "attPattBonuses",
+  paths: AttackPatternPath | AttackPatternPath[],
+  rootValue: RootValue
+): (args: any) => void;
 export function makeModApplier(
   recipientKey: "rxnBonuses",
   paths: ReactionBonusKey | ReactionBonusKey[],
-  rootValue: RootValue
-): (args: any) => void;
-
-export function makeModApplier(
-  recipientKey: "skillBonuses",
-  paths: SkillBonusPath | SkillBonusPath[],
   rootValue: RootValue
 ): (args: any) => void;
 

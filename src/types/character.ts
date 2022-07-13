@@ -11,7 +11,6 @@ import type {
   ModifierInput,
   BaseStat,
   NormalAttack,
-  AttributeStat,
   ArtifactPercentStat,
 } from "./global";
 import type {
@@ -23,9 +22,10 @@ import type {
   PartyData,
   ReactionBonus,
   ResistanceReduction,
-  SkillBonus,
-  SkillBonusInfoKey,
+  AttackPatternBonus,
+  AttackPatternInfoKey,
   TotalAttribute,
+  AttackElementBonus,
 } from "./calculator";
 
 export type DataCharacter = {
@@ -87,7 +87,7 @@ type GetTalentBuffArgs = {
   selfDebuffCtrls: ModifierCtrl[];
 };
 
-export type TalentBuff = Partial<Record<SkillBonusInfoKey, { desc: string; value: number }>>;
+export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
 type ElementalSkill = Ability & {
   xtraLvAtCons: 3 | 5;
@@ -129,7 +129,8 @@ export type AbilityBuff = AbilityModifier & {
 
 type ApplyCharBuffArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
+  attPattBonuses: AttackPatternBonus;
+  attElmtBonuses: AttackElementBonus;
   rxnBonuses: ReactionBonus;
   char: CharInfo;
   charData: CalcCharData;

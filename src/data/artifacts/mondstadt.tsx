@@ -45,10 +45,10 @@ const mondstadt: DataArtifact[] = [
             <Green>Normal Attack DMG</Green> by <Green b>35%</Green>.
           </>
         ),
-        applyBuff: ({ skillBonuses, charData, desc, tracker }) => {
+        applyBuff: ({ attPattBonuses, charData, desc, tracker }) => {
           const supported = ["sword", "claymore", "polearm"];
-          if (skillBonuses && supported.includes(charData.weapon)) {
-            applyModifier(desc, skillBonuses, "NA.pct", 35, tracker);
+          if (attPattBonuses && supported.includes(charData.weapon)) {
+            applyModifier(desc, attPattBonuses, "NA.pct", 35, tracker);
           }
         },
       },
@@ -94,9 +94,9 @@ const mondstadt: DataArtifact[] = [
             uses a Catalyst or Bow.
           </>
         ),
-        applyBuff: ({ skillBonuses, charData, desc, tracker }) => {
-          if (skillBonuses && ["Catalyst", "Bow"].includes(charData.weapon)) {
-            applyModifier(desc, skillBonuses, "CA.pct", 35, tracker);
+        applyBuff: ({ attPattBonuses, charData, desc, tracker }) => {
+          if (attPattBonuses && ["Catalyst", "Bow"].includes(charData.weapon)) {
+            applyModifier(desc, attPattBonuses, "CA.pct", 35, tracker);
           }
         },
       },
@@ -133,7 +133,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Anemo DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("skillBonuses", "anemo.pct", 15),
+        applyBuff: makeModApplier("totalAttrs", "anemo", 15),
       },
       {
         desc: (
@@ -239,7 +239,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Electro DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("skillBonuses", "electro.pct", 15),
+        applyBuff: makeModApplier("totalAttrs", "electro", 15),
       },
       {
         desc: (
@@ -298,7 +298,7 @@ const mondstadt: DataArtifact[] = [
       {
         desc: () => findByCode(mondstadt, 18)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("skillBonuses", "all.pct", 35),
+        applyBuff: makeModApplier("attPattBonuses", "all.pct", 35),
       },
     ],
   },
@@ -333,7 +333,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Cryo DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("skillBonuses", "cryo.pct", 15),
+        applyBuff: makeModApplier("totalAttrs", "cryo", 15),
       },
       {
         desc: (
@@ -404,7 +404,7 @@ const mondstadt: DataArtifact[] = [
             <Green>Hydro DMG Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("skillBonuses", "hydro.pct", 15),
+        applyBuff: makeModApplier("totalAttrs", "hydro", 15),
       },
       {
         desc: (
@@ -419,7 +419,7 @@ const mondstadt: DataArtifact[] = [
       {
         desc: () => findByCode(mondstadt, 20)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("skillBonuses", ["NA.pct", "CA.pct"], 30),
+        applyBuff: makeModApplier("attPattBonuses", ["NA.pct", "CA.pct"], 30),
       },
     ],
   },

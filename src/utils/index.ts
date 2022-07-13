@@ -1,4 +1,4 @@
-import type { CharInfo, Level, PartyData, Talent } from "@Src/types";
+import type { CalcChar, CharInfo, Level, PartyData, Talent } from "@Src/types";
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -139,6 +139,17 @@ export function totalXtraTalentLv(char: CharInfo, talentIndex: number, partyData
 export const finalTalentLv = (char: CharInfo, talentType: Talent, partyData?: PartyData) => {
   return char[talentType] + totalXtraTalentLv(char, TALENT_TYPES.indexOf(talentType), partyData);
 };
+
+export function getCurrentChar(char: CalcChar, index: number): CharInfo {
+  return {
+    name: char.name,
+    level: pickOne(char.level, index),
+    NAs: pickOne(char.NAs, index),
+    ES: pickOne(char.ES, index),
+    EB: pickOne(char.EB, index),
+    cons: pickOne(char.cons, index),
+  };
+}
 
 export function processNumInput(input: string, before: number, max: number = 9999) {
   if (input === "") {

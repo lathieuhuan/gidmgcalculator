@@ -13,18 +13,15 @@ import type {
   SubArtModCtrl,
   Weapon,
 } from "@Src/types";
-import type { PickedChar } from "./reducer-types";
 import { findById } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { EModAffect } from "@Src/constants";
 import artifacts from "@Data/artifacts";
 import calculateAll from "@Src/calculators";
+import type { PickedChar } from "./reducer-types";
 import { initCharInfo, initWeapon } from "./initiators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
-  if (!state.touched) {
-    return;
-  }
   try {
     const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentSetup];
 
@@ -34,7 +31,7 @@ export function calculate(state: CalculatorState, all?: boolean) {
       if (!state.charData || !char) {
         throw new Error("No character's Data / Info");
       }
-      const __ = calculateAll(
+      const results = calculateAll(
         char,
         state.charData,
         state.allSelfBuffCtrls[i],
@@ -48,11 +45,11 @@ export function calculate(state: CalculatorState, all?: boolean) {
         state.allCustomDebuffCtrls[i],
         state.target
       );
-      state.allFinalInfusion[i] = __[0];
-      state.allTotalAttrs[i] = __[1];
-      state.allRxnBonuses[i] = __[3];
-      state.allArtAttrs[i] = __[4];
-      state.allDmgResult[i] = __[5];
+      state.allFinalInfusion[i] = results[0];
+      state.allTotalAttrs[i] = results[1];
+      state.allRxnBonuses[i] = results[4];
+      state.allArtAttrs[i] = results[5];
+      state.allDmgResult[i] = results[6];
     }
   } catch (err) {
     console.log(err);

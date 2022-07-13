@@ -49,7 +49,7 @@ export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 
 export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
 
-export const ARTIFACT_PERCENT_STAT_TYPES = ["hp_", "atk_", "def_", "er", "cRate", "cDmg"] as const;
+export const ARTIFACT_PERCENT_STAT_TYPES = ["hp_", "atk_", "def_", "cRate", "cDmg", "er"] as const;
 
 export const OTHER_PERCENT_STAT_TYPES = ["healBn", "shStr", "naAtkSpd", "caAtkSpd"] as const;
 
@@ -57,10 +57,11 @@ export const ATTRIBUTE_STAT_TYPES = [
   ...CORE_STAT_TYPES,
   "em",
   ...ARTIFACT_PERCENT_STAT_TYPES,
+  ...ATTACK_ELEMENTS,
   ...OTHER_PERCENT_STAT_TYPES,
 ] as const;
 
-export const SKILL_BONUS_INFO_KEYS = [
+export const ATTACK_PATTERN_INFO_KEYS = [
   "cRate",
   "cDmg",
   "pct",

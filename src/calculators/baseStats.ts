@@ -1,7 +1,5 @@
 import type {
   ArtifactAttribute,
-  ArtifactPercentStat,
-  AttackElement,
   CalcArtInfo,
   CalcArtPieces,
   CalcArtSet,
@@ -11,20 +9,10 @@ import type {
   DataWeapon,
   Level,
   PartyData,
-  SkillBonus,
-  SkillBonusInfo,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
-import {
-  ATTACK_ELEMENTS,
-  ATTACK_PATTERNS,
-  ATTRIBUTE_STAT_TYPES,
-  BASE_STAT_TYPES,
-  CORE_STAT_TYPES,
-  LEVELS,
-  SKILL_BONUS_INFO_KEYS,
-} from "@Src/constants";
+import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 import { applyPercent, ascsFromLv, toMultiplier } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
@@ -36,7 +24,6 @@ export function initiateTotalAttrs(
   char: CharInfo,
   wpData: DataWeapon,
   weapon: CalcWeapon,
-  skillBonuses: SkillBonus,
   tracker?: Tracker
 ) {
   const totalAttrs = {} as TotalAttribute;
@@ -54,13 +41,7 @@ export function initiateTotalAttrs(
     const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
 
     for (const { type, value } of charData.bonusStats) {
-      const scaledValue = value * scale;
-
-      if (ATTACK_ELEMENTS.includes(type as AttackElement)) {
-        skillBonuses[type as AttackElement].pct += scaledValue;
-      } else {
-        totalAttrs[type as ArtifactPercentStat | "em"] += value * scale;
-      }
+      totalAttrs[type] += value * scale;
     }
   }
 
@@ -85,28 +66,6 @@ export function initiateTotalAttrs(
     tracker.atk.push({ desc: "Weapon Main stat", value: weaponAtk });
   }
   return totalAttrs;
-}
-
-export function initSkillBonuses() {
-  const skillBonuses = {} as SkillBonus;
-
-  const initSkillBonusField = () => {
-    let result = {} as SkillBonusInfo;
-    for (const key of SKILL_BONUS_INFO_KEYS) {
-      result[key] = 0;
-    }
-    return result;
-  };
-
-  for (const pattern of ATTACK_PATTERNS) {
-    skillBonuses[pattern] = initSkillBonusField();
-  }
-  for (const pattern of ATTACK_ELEMENTS) {
-    skillBonuses[pattern] = initSkillBonusField();
-  }
-  skillBonuses.all = initSkillBonusField();
-
-  return skillBonuses;
 }
 
 export function addArtAttrs(
@@ -149,7 +108,6 @@ export function addArtAttrs(
 
 export function addWpSubStat(
   totalAttrs: TotalAttribute,
-  skillBonuses: SkillBonus,
   wpData: DataWeapon,
   wpLevel: Level,
   tracker?: Tracker
@@ -157,11 +115,8 @@ export function addWpSubStat(
   if (wpData.subStat) {
     const { type, scale } = wpData.subStat;
     const value = wpSubStatAtLv(scale, wpLevel);
-    if (type === "phys") {
-      skillBonuses.phys.pct += value;
-    } else {
-      totalAttrs[type] += value;
-    }
+    totalAttrs[type] += value;
+
     if (tracker) {
       const record = { desc: `${wpData.name} Sub-stat`, value };
       if (type === "phys") {
@@ -219,14 +174,13 @@ export default function getBaseStats(
 ) {
   //
   const wpData = findWeapon(weapon)!;
-  const skillBonuses = initSkillBonuses();
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, skillBonuses);
+  const totalAttrs = initiateTotalAttrs(char, wpData, weapon);
   const artAttrs = addArtAttrs(artifact.pieces, totalAttrs);
-  addWpSubStat(totalAttrs, skillBonuses, wpData, weapon.level);
+  addWpSubStat(totalAttrs, wpData, weapon.level);
 
-  const wrapper = { totalAttrs, skillBonuses, charData };
+  const wrapper = { totalAttrs, charData };
   applyArtPassiveBuffs(false, artifact.sets, wrapper);
   applyWpPassiveBuffs(false, wpData, weapon.refi, wrapper);
   calcFinalTotalAttrs(totalAttrs);
-  return [totalAttrs, skillBonuses, artAttrs] as const;
+  return [totalAttrs, artAttrs] as const;
 }

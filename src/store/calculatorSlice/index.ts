@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { CalculatorState, Level } from "@Src/types";
-import { LEVELS } from "@Src/constants";
 import { getCharData } from "@Data/controllers";
 import type { InitSessionWithCharAction } from "./reducer-types";
-import { initCharModCtrls, initElmtModCtrls, initMonster, initTarget } from "./initiators";
+import {
+  initCharInfo,
+  initCharModCtrls,
+  initElmtModCtrls,
+  initMonster,
+  initTarget,
+} from "./initiators";
 import { calculate, getSetupInfo, parseAndInitData } from "./utils";
 
 const defaultChar = {
   name: "Albedo",
-  level: LEVELS[0],
-  NAs: 1,
-  ES: 1,
-  EB: 1,
-  cons: 1,
+  ...initCharInfo({}),
 };
 
 const initialState: CalculatorState = {
@@ -69,6 +70,9 @@ export const calculatorSlice = createSlice({
       state.allCustomDebuffCtrls = [];
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
+      state.touched = true;
+
+      calculate(state, true);
     },
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;

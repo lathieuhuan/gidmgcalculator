@@ -1,11 +1,10 @@
-import type { Target, TargetResistance } from "@Src/types";
+import type { Target, Vision } from "@Src/types";
 
 export function applyVariant(target: Target, variant: string | undefined, value: number) {
   if (variant) {
-    const resistanceKey = `${variant}_res` as TargetResistance;
-    target[resistanceKey] += value;
+    target[variant as Vision] += value;
   }
-};
+}
 
 type ByVariantArgs = {
   target: Target;
@@ -19,8 +18,8 @@ export function byVariant(value: number) {
 
 export function changeAllResistances(target: Target, value: number) {
   for (const type in target) {
-    if (type.slice(-3) === "res") {
-      target[type as TargetResistance] += value;
+    if (type !== "level") {
+      target[type as Vision] += value;
     }
   }
 }

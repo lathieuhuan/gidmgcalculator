@@ -1,10 +1,17 @@
 import {
   AMPLIFYING_REACTIONS,
+  ATTACK_ELEMENTS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
   RESONANCE_INFO,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import {
+  AttackElementBonus,
+  AttackPatternBonus,
+  AttackPatternBonusKey,
+  AttackPatternInfo,
   AttributeStat,
   CalcArtInfo,
   CalcCharData,
@@ -19,8 +26,6 @@ import {
   Reaction,
   ReactionBonus,
   Resonance,
-  SkillBonus,
-  SkillBonusKey,
   SubWeaponComplexBuffCtrl,
   TotalAttribute,
   Tracker,
@@ -36,7 +41,6 @@ import {
   applyWpPassiveBuffs,
   calcFinalTotalAttrs,
   initiateTotalAttrs,
-  initSkillBonuses,
 } from "./baseStats";
 import type { Wrapper1, Wrapper2 } from "./types";
 import {
@@ -47,14 +51,37 @@ import {
   vaporizeMult,
 } from "./utils";
 
+export function initDamageBonuses() {
+  const attPattBonuses = {} as AttackPatternBonus;
+  const attElmtBonuses = {} as AttackElementBonus;
+
+  const initAttPattBonusField = () => {
+    let result = {} as AttackPatternInfo;
+    for (const key of ATTACK_PATTERN_INFO_KEYS) {
+      result[key] = 0;
+    }
+    return result;
+  };
+  for (const pattern of ATTACK_PATTERNS) {
+    attPattBonuses[pattern] = initAttPattBonusField();
+  }
+  attPattBonuses.all = initAttPattBonusField();
+
+  for (const element of ATTACK_ELEMENTS) {
+    attElmtBonuses[element] = { cDmg: 0 };
+  }
+
+  return [attPattBonuses, attElmtBonuses] as const;
+}
+
 function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCtrl[]) {
   for (const { category, type, value } of customBuffs) {
     const desc = "Custom Buff";
 
     if (category === 2) {
-      const skillBonusKey = type as SkillBonusKey;
-      wrapper.skillBonuses[skillBonusKey].pct += value;
-      pushOrMergeTrackerRecord(wrapper.tracker?.[skillBonusKey], "pct", desc, value);
+      const key = type as AttackPatternBonusKey;
+      wrapper.attPattBonuses[key].pct += value;
+      pushOrMergeTrackerRecord(wrapper.tracker?.[key], "pct", desc, value);
     } else {
       if (category === 1) {
         const key = type as AttributeStat;
@@ -70,7 +97,7 @@ function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCt
 
 function applyResonanceBuffs(
   totalAttrs: TotalAttribute,
-  skillBonuses: SkillBonus,
+  attPattBonuses: AttackPatternBonus,
   resonance: Resonance,
   tracker: Tracker
 ) {
@@ -81,7 +108,7 @@ function applyResonanceBuffs(
       applyModifier(desc, totalAttrs, key, value, tracker);
 
       if (rsn.vision === "geo") {
-        applyModifier(desc, skillBonuses, "all.pct", 15, tracker);
+        applyModifier(desc, attPattBonuses, "all.pct", 15, tracker);
       }
     }
   }
@@ -191,7 +218,7 @@ function applyWpFinalBuffs(
 
 function addArtFinalBuffs(
   totalAttrs: TotalAttribute,
-  skillBonuses: SkillBonus,
+  attPattBonuses: AttackPatternBonus,
   art: CalcArtInfo,
   tracker: Tracker
 ) {
@@ -201,7 +228,7 @@ function addArtFinalBuffs(
 
     if (ctrl.activated && applyFinalBuff) {
       const desc = `${name} (self) / 4-Piece activated`;
-      applyFinalBuff({ totalAttrs, skillBonuses, desc, tracker });
+      applyFinalBuff({ totalAttrs, attPattBonuses, desc, tracker });
     }
   }
 }
@@ -274,24 +301,25 @@ export default function getBuffedStats(
   tracker: Tracker
 ) {
   const wpData = findWeapon(weapon)!;
-  const skillBonuses = initSkillBonuses();
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, skillBonuses, tracker);
+  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, tracker);
   const artAttrs = addArtAttrs(art.pieces, totalAttrs, tracker);
-  addWpSubStat(totalAttrs, skillBonuses, wpData, weapon.level, tracker);
+  const [attPattBonuses, attElmtBonuses] = initDamageBonuses();
+
+  addWpSubStat(totalAttrs, wpData, weapon.level, tracker);
 
   const rxnBonuses = {} as ReactionBonus;
   for (const rxn of REACTIONS) {
     rxnBonuses[rxn] = 0;
   }
 
-  const wrapper1 = { totalAttrs, skillBonuses, rxnBonuses, charData, tracker };
+  const wrapper1 = { totalAttrs, attPattBonuses, attElmtBonuses, rxnBonuses, charData, tracker };
   const wrapper2 = { char, charBuffCtrls, infusion, party };
   const { refi } = weapon;
 
   applyWpPassiveBuffs(false, wpData, refi, wrapper1, partyData);
   applyArtPassiveBuffs(false, art.sets, wrapper1);
   applyCustomBuffs(wrapper1, customBuffCtrls);
-  applyResonanceBuffs(totalAttrs, skillBonuses, resonance, tracker);
+  applyResonanceBuffs(totalAttrs, attPattBonuses, resonance, tracker);
   applyWpBuffs(wrapper1, weapon.buffCtrls, refi, subWpBuffCtrls, wpData);
   applyArtBuffs(wrapper1, art);
   applyTeammateBuffs(party, partyData, wrapper1, char, infusion);
@@ -302,8 +330,8 @@ export default function getBuffedStats(
   applyWpPassiveBuffs(true, wpData, refi, wrapper1, partyData);
   applyWpFinalBuffs(totalAttrs, weapon, wpData, tracker);
   applySelfBuffs(true, wrapper1, wrapper2, partyData);
-  addArtFinalBuffs(totalAttrs, skillBonuses, art, tracker);
+  addArtFinalBuffs(totalAttrs, attPattBonuses, art, tracker);
 
   calcFinalRxnBonuses(totalAttrs, rxnBonuses, charData.vision, infusion);
-  return [totalAttrs, skillBonuses, rxnBonuses, artAttrs] as const;
+  return [totalAttrs, attPattBonuses, attElmtBonuses, rxnBonuses, artAttrs] as const;
 }

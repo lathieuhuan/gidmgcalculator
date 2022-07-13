@@ -1,11 +1,11 @@
 import { EModAffect } from "@Src/constants";
 import type { ModifierInput, Tracker } from "./global";
 import type {
+  AttackPatternBonus,
   CalcCharData,
   DefenseIgnore,
   ReactionBonus,
   ResistanceReduction,
-  SkillBonus,
   TotalAttribute,
 } from "./calculator";
 
@@ -31,7 +31,7 @@ export type DataArtifact = {
 
 type ApplyArtPassiveBuffArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses?: SkillBonus;
+  attPattBonuses?: AttackPatternBonus;
   rxnBonuses?: ReactionBonus;
   charData: CalcCharData;
   desc?: string;
@@ -46,7 +46,7 @@ type SetBonus = {
 
 type ApplyArtBuffArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
+  attPattBonuses: AttackPatternBonus;
   rxnBonuses: ReactionBonus;
   charData: CalcCharData;
   inputs?: ModifierInput[];
@@ -56,7 +56,7 @@ type ApplyArtBuffArgs = {
 
 type ApplyArtFinalBuffArgs = {
   totalAttrs: TotalAttribute;
-  skillBonuses: SkillBonus;
+  attPattBonuses: AttackPatternBonus;
   desc?: string;
   tracker?: Tracker;
 };

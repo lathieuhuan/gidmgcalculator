@@ -17,9 +17,8 @@ import type {
   PartiallyRequired,
   NormalAttack,
   BaseStat,
-  PartiallyOptional,
 } from "./global";
-import { SKILL_BONUS_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
+import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
 export type CalculatorState = {
   currentSetup: number;
@@ -113,7 +112,7 @@ export type CalcArtPiece = {
   level: number;
   mainStatType: Exclude<CoreStat, "def"> | ArtifactPercentStat | "em" | AttackElement | "healBn";
   subStats: {
-    type: string;
+    type: CoreStat | ArtifactPercentStat | "em";
     value: number;
   }[];
 };
@@ -159,7 +158,7 @@ export type ElementModCtrl = {
 
 export type CustomBuffCtrl = {
   // #to-do
-  type: AttributeStat | SkillBonusKey;
+  type: AttributeStat | AttackPatternBonusKey;
   value: number;
   category: number;
 };
@@ -177,21 +176,19 @@ export type Monster = {
   configs: (number | string)[];
 };
 
-// export type TotalAttribute = PartiallyOptional<
-//   Record<BaseStat | AttributeStat, number>,
-//   "hp_" | "atk_" | "def_"
-// >;
 export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;
 
-export type SkillBonusInfoKey = typeof SKILL_BONUS_INFO_KEYS[number];
+export type AttackPatternInfoKey = typeof ATTACK_PATTERN_INFO_KEYS[number];
 
-export type SkillBonusInfo = Record<SkillBonusInfoKey, number>;
+export type AttackPatternInfo = Record<AttackPatternInfoKey, number>;
 
-export type SkillBonusKey = AttackPattern | AttackElement | "all";
+export type AttackPatternBonusKey = AttackPattern | "all";
 
-export type SkillBonus = Record<SkillBonusKey, SkillBonusInfo>;
+export type AttackPatternBonus = Record<AttackPatternBonusKey, AttackPatternInfo>;
+
+export type AttackElementBonus = Record<AttackElement, Record<"cDmg", number>>;
 
 export type ReactionBonusKey = Reaction | "na_melt" | "na_vaporize";
 

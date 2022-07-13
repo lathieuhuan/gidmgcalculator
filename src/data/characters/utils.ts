@@ -1,4 +1,10 @@
-import type { CharInfo, ModifierInput, ModifierCtrl, SkillBonusInfoKey, TalentBuff } from "@Src/types";
+import type {
+  CharInfo,
+  ModifierInput,
+  ModifierCtrl,
+  TalentBuff,
+  AttackPatternInfoKey,
+} from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
 const makeAscsChecker = (value: number) => (char: CharInfo) => {
@@ -25,7 +31,7 @@ export const makeTrackerDesc = (isAscs: boolean, level: number) => {
   return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;
 };
 
-type TalentBuffConfig = [boolean, SkillBonusInfoKey, string | [boolean, number], number];
+type TalentBuffConfig = [boolean, AttackPatternInfoKey, string | [boolean, number], number];
 
 export function talentBuff(...configs: TalentBuffConfig[]) {
   const result: Partial<TalentBuff> = {};
@@ -48,8 +54,8 @@ export function modIsActivated(modCtrls: ModifierCtrl[], index: number) {
 
 export const charModCtrlIsActivated = (
   mods: {
-    index: number,
-    isGranted: (char: CharInfo) => boolean
+    index: number;
+    isGranted: (char: CharInfo) => boolean;
   }[],
   char: CharInfo,
   buffCtrls: ModifierCtrl[],

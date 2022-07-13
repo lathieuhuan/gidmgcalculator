@@ -7,7 +7,6 @@ import {
   Party,
   PartyData,
   ReactionBonus,
-  SkillBonus,
   SubArtModCtrl,
   Target,
   TotalAttribute,
@@ -22,6 +21,8 @@ import {
   ResistanceReduction,
   DefenseIgnore,
   DamageTypes,
+  AttackPatternBonus,
+  AttackElementBonus,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
@@ -162,23 +163,24 @@ function getBaseDamage(
 function getDamageBonusMult(
   talentBuff: TalentBuff,
   [attPatt, attElmt]: DamageTypes,
-  skillBonuses: SkillBonus,
+  totalAttrs: TotalAttribute,
+  attPattBonuses: AttackPatternBonus,
   attInfusion: AttackElement | undefined
 ) {
   let normal = talentBuff.pct?.value || 0;
   let special = 1;
 
   if (attPatt) {
-    normal += skillBonuses[attPatt].pct;
+    normal += attPattBonuses[attPatt].pct;
 
     if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
-      normal += skillBonuses[attInfusion].pct;
+      normal += totalAttrs[attInfusion];
     } else if (attElmt !== "various") {
-      normal += skillBonuses[attElmt].pct;
+      normal += totalAttrs[attElmt];
     }
-    special = toMultiplier(skillBonuses[attPatt].specialMult);
+    special = toMultiplier(attPattBonuses[attPatt].specialMult);
   }
-  return [toMultiplier(normal + skillBonuses.all.pct), special];
+  return [toMultiplier(normal + attPattBonuses.all.pct), special];
 }
 
 function getReactionMult(
@@ -232,15 +234,16 @@ function getCrit(
   totalAttrs: TotalAttribute,
   talentBuff: TalentBuff,
   [attPatt, attElmt]: DamageTypes,
-  skillBonuses: SkillBonus
+  attPattBonuses: AttackPatternBonus,
+  attElmtBonuses: AttackElementBonus
 ) {
   const total = (type: "cRate" | "cDmg") => {
     return (
       totalAttrs[type] +
       (talentBuff[type]?.value || 0) +
-      (attPatt ? skillBonuses[attPatt][type] : 0) +
-      (attElmt !== "various" ? skillBonuses[attElmt][type] : 0) +
-      skillBonuses.all[type]
+      (attPatt ? attPattBonuses[attPatt][type] : 0) +
+      (attElmt !== "various" && type === "cDmg" ? attElmtBonuses[attElmt][type] : 0) +
+      attPattBonuses.all[type]
     );
   };
   return {
@@ -257,7 +260,8 @@ export default function getDamage(
   partyData: PartyData,
   subArtDebuffCtrls: SubArtModCtrl[],
   totalAttrs: TotalAttribute,
-  skillBonuses: SkillBonus,
+  attPattBonuses: AttackPatternBonus,
+  attElmtBonuses: AttackElementBonus,
   rxnBonuses: ReactionBonus,
   customDebuffCtrls: CustomDebuffCtrl[],
   infusion: FinalInfusion,
@@ -311,15 +315,16 @@ export default function getDamage(
         const attInfusion: AttackElement | undefined = infusion[dmgTypes[0] as NormalAttack];
         const flat =
           (talentBuff.flat?.value || 0) +
-          skillBonuses[dmgTypes[0]].flat +
-          skillBonuses[dmgTypes[1]].flat;
+          attPattBonuses[dmgTypes[0]].flat +
+          totalAttrs[dmgTypes[1]];
 
         record.finalFlat = (record.finalFlat || 0) + flat;
 
         const [normalMult, specialMult] = getDamageBonusMult(
           talentBuff,
           dmgTypes,
-          skillBonuses,
+          totalAttrs,
+          attPattBonuses,
           attInfusion
         );
         const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonuses, vision);
@@ -336,7 +341,7 @@ export default function getDamage(
           base,
           (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
         );
-        const c = getCrit(totalAttrs, talentBuff, dmgTypes, skillBonuses);
+        const c = getCrit(totalAttrs, talentBuff, dmgTypes, attPattBonuses, attElmtBonuses);
 
         finalResult[type][stat.name] = {
           nonCrit: base,
