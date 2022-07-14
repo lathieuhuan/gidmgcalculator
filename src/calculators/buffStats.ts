@@ -52,8 +52,8 @@ import {
 } from "./utils";
 
 export function initDamageBonuses() {
-  const attPattBonuses = {} as AttackPatternBonus;
-  const attElmtBonuses = {} as AttackElementBonus;
+  const attPattBonus = {} as AttackPatternBonus;
+  const attElmtBonus = {} as AttackElementBonus;
 
   const initAttPattBonusField = () => {
     let result = {} as AttackPatternInfo;
@@ -63,15 +63,15 @@ export function initDamageBonuses() {
     return result;
   };
   for (const pattern of ATTACK_PATTERNS) {
-    attPattBonuses[pattern] = initAttPattBonusField();
+    attPattBonus[pattern] = initAttPattBonusField();
   }
-  attPattBonuses.all = initAttPattBonusField();
+  attPattBonus.all = initAttPattBonusField();
 
   for (const element of ATTACK_ELEMENTS) {
-    attElmtBonuses[element] = { cDmg: 0 };
+    attElmtBonus[element] = { cDmg: 0, flat: 0 };
   }
 
-  return [attPattBonuses, attElmtBonuses] as const;
+  return [attPattBonus, attElmtBonus] as const;
 }
 
 function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCtrl[]) {
@@ -80,15 +80,15 @@ function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCt
 
     if (category === 2) {
       const key = type as AttackPatternBonusKey;
-      wrapper.attPattBonuses[key].pct += value;
+      wrapper.attPattBonus[key].pct += value;
       pushOrMergeTrackerRecord(wrapper.tracker?.[key], "pct", desc, value);
     } else {
       if (category === 1) {
         const key = type as AttributeStat;
-        wrapper.totalAttrs[key] += value;
+        wrapper.totalAttr[key] += value;
       } else {
         const key = type as Reaction;
-        wrapper.rxnBonuses[key] += value;
+        wrapper.rxnBonus[key] += value;
       }
       pushOrMergeTrackerRecord(wrapper.tracker, type as string, desc, value);
     }
@@ -96,8 +96,8 @@ function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCt
 }
 
 function applyResonanceBuffs(
-  totalAttrs: TotalAttribute,
-  attPattBonuses: AttackPatternBonus,
+  totalAttr: TotalAttribute,
+  attPattBonus: AttackPatternBonus,
   resonance: Resonance,
   tracker: Tracker
 ) {
@@ -105,10 +105,10 @@ function applyResonanceBuffs(
     if (rsn.activated) {
       const { key, value } = RESONANCE_INFO[rsn.vision];
       const desc = `${rsn.vision} Resonance`;
-      applyModifier(desc, totalAttrs, key, value, tracker);
+      applyModifier(desc, totalAttr, key, value, tracker);
 
       if (rsn.vision === "geo") {
-        applyModifier(desc, attPattBonuses, "all.pct", 15, tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 15, tracker);
       }
     }
   }
@@ -198,7 +198,7 @@ function applyTeammateBuffs(
 }
 
 function applyWpFinalBuffs(
-  totalAttrs: TotalAttribute,
+  totalAttr: TotalAttribute,
   weapon: CalcWeapon,
   wpData: DataWeapon,
   tracker: Tracker
@@ -208,7 +208,7 @@ function applyWpFinalBuffs(
     if (ctrl.activated && wpData.buffs) {
       const { applyFinalBuff } = findByIndex(wpData.buffs, ctrl.index) || {};
       if (applyFinalBuff) {
-        applyFinalBuff({ totalAttrs, refi, desc: `${wpData.name} activated`, tracker });
+        applyFinalBuff({ totalAttr, refi, desc: `${wpData.name} activated`, tracker });
       }
     } else if (!wpData.buffs) {
       console.log(`applyWpFinalBuffs: buffs of main weapon not found`);
@@ -217,8 +217,8 @@ function applyWpFinalBuffs(
 }
 
 function addArtFinalBuffs(
-  totalAttrs: TotalAttribute,
-  attPattBonuses: AttackPatternBonus,
+  totalAttr: TotalAttribute,
+  attPattBonus: AttackPatternBonus,
   art: CalcArtInfo,
   tracker: Tracker
 ) {
@@ -228,7 +228,7 @@ function addArtFinalBuffs(
 
     if (ctrl.activated && applyFinalBuff) {
       const desc = `${name} (self) / 4-Piece activated`;
-      applyFinalBuff({ totalAttrs, attPattBonuses, desc, tracker });
+      applyFinalBuff({ totalAttr, attPattBonus, desc, tracker });
     }
   }
 }
@@ -262,27 +262,27 @@ function applySelfBuffs(
 }
 
 function calcFinalRxnBonuses(
-  totalAttrs: TotalAttribute,
-  rxnBonuses: ReactionBonus,
+  totalAttr: TotalAttribute,
+  rxnBonus: ReactionBonus,
   vision: Vision,
   infusion: FinalInfusion
 ) {
-  const { transformative, amplifying } = getRxnBonusesFromEM(totalAttrs.em);
+  const { transformative, amplifying } = getRxnBonusesFromEM(totalAttr.em);
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
-    rxnBonuses[rxn] += transformative;
+    rxnBonus[rxn] += transformative;
   }
   for (const rxn of AMPLIFYING_REACTIONS) {
-    rxnBonuses[rxn] += amplifying;
+    rxnBonus[rxn] += amplifying;
   }
-  const meltBonus = toMultiplier(rxnBonuses.melt);
-  const vapBonus = toMultiplier(rxnBonuses.vaporize);
+  const meltBonus = toMultiplier(rxnBonus.melt);
+  const vapBonus = toMultiplier(rxnBonus.vaporize);
 
-  rxnBonuses.melt = meltMult(vision) * meltBonus;
-  rxnBonuses.vaporize = vaporizeMult(vision) * vapBonus;
+  rxnBonus.melt = meltMult(vision) * meltBonus;
+  rxnBonus.vaporize = vaporizeMult(vision) * vapBonus;
   if (infusion.NA !== vision) {
-    rxnBonuses.na_melt = meltMult(infusion.NA) * meltBonus;
-    rxnBonuses.na_vaporize = vaporizeMult(infusion.NA) * vapBonus;
+    rxnBonus.na_melt = meltMult(infusion.NA) * meltBonus;
+    rxnBonus.na_vaporize = vaporizeMult(infusion.NA) * vapBonus;
   }
 }
 
@@ -301,37 +301,37 @@ export default function getBuffedStats(
   tracker: Tracker
 ) {
   const wpData = findWeapon(weapon)!;
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon, tracker);
-  const artAttrs = addArtAttrs(art.pieces, totalAttrs, tracker);
-  const [attPattBonuses, attElmtBonuses] = initDamageBonuses();
+  const totalAttr = initiateTotalAttrs(char, wpData, weapon, tracker);
+  const artAttrs = addArtAttrs(art.pieces, totalAttr, tracker);
+  const [attPattBonus, attElmtBonus] = initDamageBonuses();
 
-  addWpSubStat(totalAttrs, wpData, weapon.level, tracker);
+  addWpSubStat(totalAttr, wpData, weapon.level, tracker);
 
-  const rxnBonuses = {} as ReactionBonus;
+  const rxnBonus = {} as ReactionBonus;
   for (const rxn of REACTIONS) {
-    rxnBonuses[rxn] = 0;
+    rxnBonus[rxn] = 0;
   }
 
-  const wrapper1 = { totalAttrs, attPattBonuses, attElmtBonuses, rxnBonuses, charData, tracker };
+  const wrapper1 = { totalAttr, attPattBonus, attElmtBonus, rxnBonus, charData, tracker };
   const wrapper2 = { char, charBuffCtrls, infusion, party };
   const { refi } = weapon;
 
   applyWpPassiveBuffs(false, wpData, refi, wrapper1, partyData);
   applyArtPassiveBuffs(false, art.sets, wrapper1);
   applyCustomBuffs(wrapper1, customBuffCtrls);
-  applyResonanceBuffs(totalAttrs, attPattBonuses, resonance, tracker);
+  applyResonanceBuffs(totalAttr, attPattBonus, resonance, tracker);
   applyWpBuffs(wrapper1, weapon.buffCtrls, refi, subWpBuffCtrls, wpData);
   applyArtBuffs(wrapper1, art);
   applyTeammateBuffs(party, partyData, wrapper1, char, infusion);
   applySelfBuffs(false, wrapper1, wrapper2, partyData);
 
-  calcFinalTotalAttrs(totalAttrs);
+  calcFinalTotalAttrs(totalAttr);
   applyArtPassiveBuffs(true, art.sets, wrapper1);
   applyWpPassiveBuffs(true, wpData, refi, wrapper1, partyData);
-  applyWpFinalBuffs(totalAttrs, weapon, wpData, tracker);
+  applyWpFinalBuffs(totalAttr, weapon, wpData, tracker);
   applySelfBuffs(true, wrapper1, wrapper2, partyData);
-  addArtFinalBuffs(totalAttrs, attPattBonuses, art, tracker);
+  addArtFinalBuffs(totalAttr, attPattBonus, art, tracker);
 
-  calcFinalRxnBonuses(totalAttrs, rxnBonuses, charData.vision, infusion);
-  return [totalAttrs, attPattBonuses, attElmtBonuses, rxnBonuses, artAttrs] as const;
+  calcFinalRxnBonuses(totalAttr, rxnBonus, charData.vision, infusion);
+  return [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] as const;
 }

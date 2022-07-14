@@ -15,7 +15,6 @@ import type {
 } from "./global";
 import type {
   CalcCharData,
-  DefenseIgnore,
   FinalInfusion,
   ModifierCtrl,
   Party,
@@ -71,7 +70,7 @@ export type TalentStatInfo = {
     type: number;
   };
   getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
-  getLimit?: (args: { totalAttrs: TotalAttribute }) => number;
+  getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };
 
 type NormalAttacks = {
@@ -88,7 +87,7 @@ type Ability = {
 type GetTalentBuffArgs = {
   char: CharInfo;
   partyData: PartyData;
-  totalAttrs: TotalAttribute;
+  totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
 };
@@ -134,10 +133,10 @@ export type AbilityBuff = AbilityModifier & {
 };
 
 type ApplyCharBuffArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses: AttackPatternBonus;
-  attElmtBonuses: AttackElementBonus;
-  rxnBonuses: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
   char: CharInfo;
   charData: CalcCharData;
   party: Party;
@@ -165,7 +164,7 @@ export type AbilityDebuff = AbilityModifier & {
   };
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
-    defIgnore: DefenseIgnore;
+    attPattBonus: AttackPatternBonus;
     // #to-check
     // selfDebuffCtrls: ModifierCtrl[];
     char?: CharInfo;

@@ -157,7 +157,7 @@ const Albedo: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       isGranted: checkAscs[4],
-      applyBuff: makeModApplier("totalAttrs", "em", 125),
+      applyBuff: makeModApplier("totalAttr", "em", 125),
     },
     {
       index: 2,
@@ -178,9 +178,9 @@ const Albedo: DataCharacter = {
         renderTypes: ["select"],
         maxs: [4],
       },
-      applyFinalBuff: ({ totalAttrs, attPattBonuses, charBuffCtrls, desc, tracker }) => {
-        const bnValue = totalAttrs.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
-        applyModifier(desc, attPattBonuses, "EB.flat", Math.round(bnValue), tracker);
+      applyFinalBuff: ({ totalAttr, attPattBonus, charBuffCtrls, desc, tracker }) => {
+        const bnValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
+        applyModifier(desc, attPattBonus, "EB.flat", Math.round(bnValue), tracker);
       },
     },
     {
@@ -194,7 +194,7 @@ const Albedo: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonuses", "PA.pct", 30),
+      applyBuff: makeModApplier("attPattBonus", "PA.pct", 30),
     },
     {
       index: 4,
@@ -207,7 +207,7 @@ const Albedo: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonuses", "all.pct", 17),
+      applyBuff: makeModApplier("attPattBonus", "all.pct", 17),
     },
   ],
 };

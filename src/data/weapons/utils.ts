@@ -1,34 +1,46 @@
-import type { Paths, SkillBonusPath } from "@Src/calculators/utils";
-import type { AttributeStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
+import type { AttackElementPath, AttackPatternPath, ModRecipientKey, RecipientName } from "@Src/calculators/utils";
+import type { AttackElement, AttributeStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { LEVELS } from "@Src/constants";
 import { bareLv } from "@Src/utils";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
 
+type RootScale = number | number[];
+
 export function makeWpModApplier(
-  recipient: "totalAttrs",
-  paths: AttributeStat | AttributeStat[],
-  rootScale: number | number[]
+  recipientName: "totalAttr",
+  keys: AttributeStat | AttributeStat[],
+  rootScale: RootScale
 ): (args: any) => void;
 export function makeWpModApplier(
-  recipient: "rxnBonuses",
-  paths: ReactionBonusKey | ReactionBonusKey[],
-  rootScale: number | number[]
+  recipientName: "attPattBonus",
+  keys: AttackPatternPath | AttackPatternPath[],
+  rootScale: RootScale
 ): (args: any) => void;
 export function makeWpModApplier(
-  recipient: "skillBonuses",
-  paths: SkillBonusPath | SkillBonusPath[],
-  rootScale: number | number[]
+  recipientName: "attElmtBonus",
+  keys: AttackElementPath | AttackElementPath[],
+  rootScale: RootScale
+): (args: any) => void;
+export function makeWpModApplier(
+  recipientName: "rxnBonus",
+  keys: ReactionBonusKey | ReactionBonusKey[],
+  rootScale: RootScale
+): (args: any) => void;
+export function makeWpModApplier(
+  recipientName: "resisReduct",
+  keys: (AttackElement | "def") | (AttackElement | "def")[],
+  rootScale: RootScale
 ): (args: any) => void;
 
-export function makeWpModApplier(recipient: string, paths: Paths, rootScale: number | number[]) {
+export function makeWpModApplier(recipientName: RecipientName, keys: ModRecipientKey, rootScale: RootScale) {
   return (args: any) => {
     const { refi, desc, tracker } = args;
     const rootValue = Array.isArray(rootScale)
       ? rootScale.map((scale) => scale * (refi + 3))
       : rootScale * (refi + 3);
-    if (args[recipient]) {
-      applyModifier(desc, args[recipient], paths as any, rootValue, tracker);
+    if (args[recipientName]) {
+      applyModifier(desc, args[recipientName], keys as any, rootValue, tracker);
     }
   };
 }

@@ -10,11 +10,11 @@ export const selectChar = createSelector(
   (char, currentIndex) => getCurrentChar(char, currentIndex)
 );
 
-export const selectTotalAttrs = (state: RootState) =>
+export const selectTotalAttr = (state: RootState) =>
   state.calculator.allTotalAttrs[state.calculator.currentSetup];
 
 export const selectArtInfo = (state: RootState) =>
-  state.calculator.allArtInfo[state.calculator.currentSetup];
+  state.calculator.allArtInfos[state.calculator.currentSetup];
 
 export const selectWeapon = (state: RootState) =>
   state.calculator.allWeapons[state.calculator.currentSetup];

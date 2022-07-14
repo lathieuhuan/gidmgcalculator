@@ -30,7 +30,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttrs", "atk_", 5),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
         desc: ({ refi }) => findByCode(otherSwords, 131)!.passiveDesc({ refi }).core,
       },
     ],
@@ -73,7 +73,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttrs", "cRate", 3.5),
+        applyBuff: makeWpModApplier("totalAttr", "cRate", 3.5),
         desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
       },
     ],
@@ -107,7 +107,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttrs", "atk_", 3),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 3),
         desc: ({ refi }) => findByCode(otherSwords, 100)!.passiveDesc({ refi }).core,
       },
     ],

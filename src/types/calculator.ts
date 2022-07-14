@@ -34,7 +34,7 @@ export type CalculatorState = {
   allWeapons: CalcWeapon[];
   allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl[];
   allSubWpComplexDebuffCtrls: {};
-  allArtInfo: CalcArtInfo[];
+  allArtInfos: CalcArtInfo[];
   allParties: Party[];
   allElmtModCtrls: ElementModCtrl[];
   allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
@@ -181,22 +181,19 @@ export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;
 
 export type AttackPatternInfoKey = typeof ATTACK_PATTERN_INFO_KEYS[number];
-
 export type AttackPatternInfo = Record<AttackPatternInfoKey, number>;
-
 export type AttackPatternBonusKey = AttackPattern | "all";
-
 export type AttackPatternBonus = Record<AttackPatternBonusKey, AttackPatternInfo>;
 
-export type AttackElementBonus = Record<AttackElement, Record<"cDmg", number>>;
+export type AttacklementInfoKey = "cDmg" | "flat";
+export type AttacklementInfo = Record<AttacklementInfoKey, number>;
+export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
 export type ReactionBonusKey = Reaction | "na_melt" | "na_vaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
 export type ResistanceReduction = Record<AttackElement | "def", number>;
-
-export type DefenseIgnore = Record<AttackPattern, number>;
 
 export type FinalInfusion = Record<NormalAttack, AttackElement>;
 

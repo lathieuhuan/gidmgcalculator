@@ -119,7 +119,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "phys", scale: "9%" },
-    applyBuff: makeWpModApplier("totalAttrs", "atk_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
     passiveName: "Falcon's Defiance",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -141,13 +141,13 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er", scale: "12%" },
-    applyBuff: makeWpModApplier("totalAttrs", "cRate", 1),
+    applyBuff: makeWpModApplier("totalAttr", "cRate", 1),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: ({ totalAttrs, desc, tracker }) => {
-          applyModifier(desc, totalAttrs, ["naAtkSpd", "caAtkSpd"], 10, tracker);
+        applyBuff: ({ totalAttr, desc, tracker }) => {
+          applyModifier(desc, totalAttr, ["naAtkSpd", "caAtkSpd"], 10, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
       },
@@ -183,9 +183,9 @@ const goldSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: ({ totalAttrs, skillBonuses, refi, desc, tracker }) => {
+        applyBuff: ({ totalAttr, skillBonuses, refi, desc, tracker }) => {
           applyModifier(desc, skillBonuses, [...NCPA_PERCENTS], 12 + refi * 4, tracker);
-          applyModifier(desc, totalAttrs, "atk_", 15 + refi * 5, tracker);
+          applyModifier(desc, totalAttr, "atk_", 15 + refi * 5, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 104)!.passiveDesc({ refi })!.extra![0],
       },
@@ -234,12 +234,12 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate", scale: "9.6%" },
-    applyBuff: makeWpModApplier("totalAttrs", "hp_", 5),
-    applyFinalBuff: ({ totalAttrs, refi, desc, tracker }) => {
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
+    applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;
-      const bnValue = applyPercent(totalAttrs.hp, bnPct);
-      const xtraDesc = ` / ${bnPct}% of ${totalAttrs.hp} HP`;
-      applyModifier(desc + xtraDesc, totalAttrs, "atk", bnValue, tracker);
+      const bnValue = applyPercent(totalAttr.hp, bnPct);
+      const xtraDesc = ` / ${bnPct}% of ${totalAttr.hp} HP`;
+      applyModifier(desc + xtraDesc, totalAttr, "atk", bnValue, tracker);
     },
     passiveName: "Protector's Virtue",
     passiveDesc: ({ refi }) => ({

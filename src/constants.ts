@@ -68,6 +68,7 @@ export const ATTACK_PATTERN_INFO_KEYS = [
   "pct",
   "flat",
   "mult",
+  "defIgnore",
   "specialMult",
 ] as const;
 

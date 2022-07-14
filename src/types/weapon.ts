@@ -32,9 +32,9 @@ export type DataWeapon = {
 };
 
 type ApplyWpPassiveBuffsArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses?: AttackPatternBonus;
-  rxnBonuses?: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus?: AttackPatternBonus;
+  rxnBonus?: ReactionBonus;
   charData: CalcCharData;
   partyData?: PartyData;
   refi: number;
@@ -43,9 +43,9 @@ type ApplyWpPassiveBuffsArgs = {
 };
 
 type ApplyWpBuffArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses: AttackPatternBonus;
-  rxnBonuses: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  rxnBonus: ReactionBonus;
   charData: CalcCharData;
   inputs?: ModifierInput[];
   refi: number;
@@ -54,7 +54,7 @@ type ApplyWpBuffArgs = {
 };
 
 type ApplyWpFinalBuffArgs = {
-  totalAttrs: TotalAttribute;
+  totalAttr: TotalAttribute;
   refi: number;
   desc?: string;
   tracker?: Tracker;

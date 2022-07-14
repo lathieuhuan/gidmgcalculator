@@ -40,7 +40,7 @@ export default function calculateAll(
 ) {
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
-  const [totalAttrs, attPattBonuses, attElmtBonuses, rxnBonuses, artAttrs] = getBuffedStats(
+  const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
     char,
     charData,
     selfDebuffCtrls,
@@ -61,10 +61,10 @@ export default function calculateAll(
     party,
     partyData,
     art.subDebuffCtrls,
-    totalAttrs,
-    attPattBonuses,
-    attElmtBonuses,
-    rxnBonuses,
+    totalAttr,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
     customDebuffCtrls,
     finalInfusion,
     elmtModCtrls,
@@ -73,10 +73,10 @@ export default function calculateAll(
   );
   return [
     finalInfusion,
-    totalAttrs,
-    attPattBonuses,
-    attElmtBonuses,
-    rxnBonuses,
+    totalAttr,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
     artAttrs,
     damage,
   ] as const;

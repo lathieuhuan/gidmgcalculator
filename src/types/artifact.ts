@@ -1,9 +1,9 @@
 import { EModAffect } from "@Src/constants";
 import type { ModifierInput, Tracker } from "./global";
 import type {
+  AttackElementBonus,
   AttackPatternBonus,
   CalcCharData,
-  DefenseIgnore,
   ReactionBonus,
   ResistanceReduction,
   TotalAttribute,
@@ -30,9 +30,9 @@ export type DataArtifact = {
 };
 
 type ApplyArtPassiveBuffArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses?: AttackPatternBonus;
-  rxnBonuses?: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus?: AttackPatternBonus;
+  rxnBonus?: ReactionBonus;
   charData: CalcCharData;
   desc?: string;
   tracker?: Tracker;
@@ -45,9 +45,9 @@ type SetBonus = {
 };
 
 type ApplyArtBuffArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses: AttackPatternBonus;
-  rxnBonuses: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  rxnBonus: ReactionBonus;
   charData: CalcCharData;
   inputs?: ModifierInput[];
   desc?: string;
@@ -55,8 +55,8 @@ type ApplyArtBuffArgs = {
 };
 
 type ApplyArtFinalBuffArgs = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses: AttackPatternBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
   desc?: string;
   tracker?: Tracker;
 };
@@ -80,7 +80,6 @@ type ArtifactDebuff = {
   inputTypes: "swirl"[];
   applyDebuff: (args: {
     resistReduct: ResistanceReduction;
-    defIgnore: DefenseIgnore;
     inputs?: ModifierInput[];
     desc: string;
     tracker: Tracker;

@@ -2,7 +2,7 @@ import { changeConsLevel, refineWeapon, upgradeWeapon } from "@Store/calculatorS
 import {
   selectArtInfo,
   selectChar,
-  selectTotalAttrs,
+  selectTotalAttr,
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -15,10 +15,10 @@ import WeaponCard from "@Components/WeaponCard";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {
-    const totalAttrs = useSelector(selectTotalAttrs);
+    const totalAttr = useSelector(selectTotalAttr);
     return (
       <div className="h-full custom-scrollbar">
-        <AttributeTable attributes={totalAttrs} />
+        <AttributeTable attributes={totalAttr} />
       </div>
     );
   },

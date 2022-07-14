@@ -12,7 +12,7 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg", scale: "19.2%" },
-    applyBuff: makeWpModApplier("totalAttrs", "hp", 4),
+    applyBuff: makeWpModApplier("totalAttr", "hp", 4),
     buffs: [
       {
         index: 0,

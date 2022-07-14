@@ -7,15 +7,16 @@ import type {
   ModifierCtrl,
   Party,
   ReactionBonus,
+  ResistanceReduction,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
 
 export type Wrapper1 = {
-  totalAttrs: TotalAttribute;
-  attPattBonuses?: AttackPatternBonus;
-  attElmtBonuses?: AttackElementBonus;
-  rxnBonuses?: ReactionBonus;
+  totalAttr: TotalAttribute;
+  attPattBonus?: AttackPatternBonus;
+  attElmtBonus?: AttackElementBonus;
+  rxnBonus?: ReactionBonus;
   charData: CalcCharData;
   tracker?: Tracker;
 };
@@ -26,6 +27,11 @@ export type Wrapper2 = {
   infusion: FinalInfusion;
   party: Party;
 };
+
+export type Wrapper3 = {
+  resistReduct: ResistanceReduction,
+  attPattBonus: AttackPatternBonus;
+}
 
 export type TrackerDamageRecord = {
   baseValue: number;

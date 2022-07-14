@@ -63,9 +63,9 @@ const purpleSwords: DataWeapon[] = [
           renderTypes: ["stacks"],
           initialValues: [4],
         },
-        applyBuff: ({ totalAttrs, refi, inputs, desc, tracker }) => {
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const bnValue = (3 + refi * 1) * (inputs![0] as number);
-          applyModifier(desc, totalAttrs, ["atk_", "def_"], bnValue, tracker);
+          applyModifier(desc, totalAttr, ["atk_", "def_"], bnValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
       },
@@ -234,9 +234,9 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "def_", scale: "15%" },
-    applyFinalBuff: ({ skillBonuses, refi, totalAttrs, desc, tracker }) => {
+    applyFinalBuff: ({ skillBonuses, refi, totalAttr, desc, tracker }) => {
       if (skillBonuses) {
-        const bnValue = applyPercent(totalAttrs.def, 30 + refi * 10);
+        const bnValue = applyPercent(totalAttr.def, 30 + refi * 10);
         applyModifier(desc, skillBonuses, "ES.flat", bnValue, tracker);
       }
     },

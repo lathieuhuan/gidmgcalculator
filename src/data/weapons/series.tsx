@@ -17,9 +17,9 @@ export const RoyalSeries: SeriesInfo = {
         renderTypes: ["stacks"],
         initialValues: [5],
       },
-      applyBuff: ({ totalAttrs, refi, inputs, desc, tracker }) => {
+      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const bnValue = (6 + refi * 2) * getInput(inputs, 0);
-        applyModifier(desc, totalAttrs, "cRate", bnValue, tracker);
+        applyModifier(desc, totalAttr, "cRate", bnValue, tracker);
       },
       desc: ({ refi }) => RoyalSeries.passiveDesc({ refi }).core,
     },
@@ -46,9 +46,9 @@ export const BlackcliffSeries: SeriesInfo = {
         renderTypes: ["stacks"],
         initialValues: [3],
       },
-      applyBuff: ({ totalAttrs, refi, inputs, desc, tracker }) => {
+      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const bnValue = (9 + refi * 3) * (inputs![0] as number);
-        applyModifier(desc, totalAttrs, "atk_", bnValue, tracker);
+        applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
       },
       desc: ({ refi }) => BlackcliffSeries.passiveDesc({ refi }).core,
     },
@@ -122,7 +122,7 @@ export const DragonspineSeries: SeriesInfo = {
 };
 
 export const LiyueSeries: SeriesInfo = {
-  applyBuff: makeWpModApplier("totalAttrs", "shStr", 5),
+  applyBuff: makeWpModApplier("totalAttr", "shStr", 5),
   buffs: [
     {
       index: 0,
@@ -132,12 +132,12 @@ export const LiyueSeries: SeriesInfo = {
         renderTypes: ["stacks", "check"],
         initialValues: [5],
       },
-      applyBuff: ({ totalAttrs, refi, inputs, desc, tracker }) => {
+      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         let bnValue = (3 + refi) * (inputs![0] as number);
         if (inputs![1]) {
           bnValue *= 2;
         }
-        applyModifier(desc, totalAttrs, "atk_", bnValue, tracker);
+        applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
       },
       desc: ({ refi }) => LiyueSeries.passiveDesc!({ refi }).extra![0],
     },
@@ -162,14 +162,14 @@ export const LiyueSeries: SeriesInfo = {
 };
 
 export const LithicSeries: SeriesInfo = {
-  applyBuff: ({ totalAttrs, refi, charData, partyData, desc, tracker }) => {
+  applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
     if (partyData) {
       const stacks = partyData.reduce(
         (result, data) => (data.nation === "liyue" ? result + 1 : result),
         charData.nation === "liyue" ? 1 : 0
       );
       const bnValues = [(6 + refi) * stacks, (2 + refi) * stacks];
-      applyModifier(desc, totalAttrs, ["atk_", "cRate"], bnValues, tracker);
+      applyModifier(desc, totalAttr, ["atk_", "cRate"], bnValues, tracker);
     }
   },
   passiveName: "Lithic Axiom - Unity",

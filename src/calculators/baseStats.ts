@@ -26,10 +26,10 @@ export function initiateTotalAttrs(
   weapon: CalcWeapon,
   tracker?: Tracker
 ) {
-  const totalAttrs = {} as TotalAttribute;
+  const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
-    totalAttrs[type] = 0;
+    totalAttr[type] = 0;
   }
   const charData = findCharacter(char)!;
 
@@ -41,7 +41,7 @@ export function initiateTotalAttrs(
     const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
 
     for (const { type, value } of charData.bonusStats) {
-      totalAttrs[type] += value * scale;
+      totalAttr[type] += value * scale;
     }
   }
 
@@ -52,7 +52,7 @@ export function initiateTotalAttrs(
 
   for (const type in stats) {
     const key = type as keyof typeof stats;
-    totalAttrs[key] += stats[key];
+    totalAttr[key] += stats[key];
 
     if (tracker) {
       const field = type.slice(0, 4) === "base" ? type.slice(5) : type;
@@ -60,17 +60,17 @@ export function initiateTotalAttrs(
     }
   }
   const weaponAtk = wpMainStatAtLv(wpData.mainStatScale, weapon.level);
-  totalAttrs.base_atk += weaponAtk;
+  totalAttr.base_atk += weaponAtk;
 
   if (tracker) {
     tracker.atk.push({ desc: "Weapon Main stat", value: weaponAtk });
   }
-  return totalAttrs;
+  return totalAttr;
 }
 
 export function addArtAttrs(
   pieces: CalcArtPieces,
-  totalAttrs: TotalAttribute,
+  totalAttr: TotalAttribute,
   tracker?: Tracker
 ): ArtifactAttribute {
   const artAttrs = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
@@ -95,19 +95,19 @@ export function addArtAttrs(
   for (const statType of CORE_STAT_TYPES) {
     const percentStatValue = artAttrs[`${statType}_`];
     if (percentStatValue) {
-      artAttrs[statType] += applyPercent(totalAttrs[`base_${statType}`], percentStatValue);
+      artAttrs[statType] += applyPercent(totalAttr[`base_${statType}`], percentStatValue);
     }
     delete artAttrs[`${statType}_`];
   }
   for (const type in artAttrs) {
     const key = type as keyof typeof artAttrs;
-    totalAttrs[key] += artAttrs[key] || 0;
+    totalAttr[key] += artAttrs[key] || 0;
   }
   return artAttrs;
 }
 
 export function addWpSubStat(
-  totalAttrs: TotalAttribute,
+  totalAttr: TotalAttribute,
   wpData: DataWeapon,
   wpLevel: Level,
   tracker?: Tracker
@@ -115,7 +115,7 @@ export function addWpSubStat(
   if (wpData.subStat) {
     const { type, scale } = wpData.subStat;
     const value = wpSubStatAtLv(scale, wpLevel);
-    totalAttrs[type] += value;
+    totalAttr[type] += value;
 
     if (tracker) {
       const record = { desc: `${wpData.name} Sub-stat`, value };
@@ -158,11 +158,11 @@ export function applyWpPassiveBuffs(
   }
 }
 
-export function calcFinalTotalAttrs(totalAttrs: TotalAttribute) {
+export function calcFinalTotalAttrs(totalAttr: TotalAttribute) {
   for (const type of CORE_STAT_TYPES) {
-    totalAttrs[type] +=
-      Math.round(totalAttrs[`base_${type}`]) * toMultiplier(totalAttrs[`${type}_`]);
-    delete totalAttrs[`${type}_`];
+    totalAttr[type] +=
+      Math.round(totalAttr[`base_${type}`]) * toMultiplier(totalAttr[`${type}_`]);
+    delete totalAttr[`${type}_`];
   }
 }
 
@@ -174,13 +174,13 @@ export default function getBaseStats(
 ) {
   //
   const wpData = findWeapon(weapon)!;
-  const totalAttrs = initiateTotalAttrs(char, wpData, weapon);
-  const artAttrs = addArtAttrs(artifact.pieces, totalAttrs);
-  addWpSubStat(totalAttrs, wpData, weapon.level);
+  const totalAttr = initiateTotalAttrs(char, wpData, weapon);
+  const artAttrs = addArtAttrs(artifact.pieces, totalAttr);
+  addWpSubStat(totalAttr, wpData, weapon.level);
 
-  const wrapper = { totalAttrs, charData };
+  const wrapper = { totalAttr, charData };
   applyArtPassiveBuffs(false, artifact.sets, wrapper);
   applyWpPassiveBuffs(false, wpData, weapon.refi, wrapper);
-  calcFinalTotalAttrs(totalAttrs);
-  return [totalAttrs, artAttrs] as const;
+  calcFinalTotalAttrs(totalAttr);
+  return [totalAttr, artAttrs] as const;
 }
