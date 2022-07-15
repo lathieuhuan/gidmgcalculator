@@ -26,37 +26,35 @@ export function initiateTotalAttrs(
   weapon: CalcWeapon,
   tracker?: Tracker
 ) {
+  const charData = findCharacter(char)!;
+  const [base_hp, base_atk, base_def] = charData.stats[LEVELS.indexOf(char.level)];
+
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
     totalAttr[type] = 0;
   }
-  const charData = findCharacter(char)!;
-
-  const stats = {
-    ...charData.stats[LEVELS.indexOf(char.level)],
+  const innerStats = {
+    base_hp,
+    base_atk,
+    base_def,
   } as TotalAttribute;
 
-  if (charData.bonusStats) {
-    const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
+  const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
+  innerStats[charData.bonusStat.type] += charData.bonusStat.value * scale;
 
-    for (const { type, value } of charData.bonusStats) {
-      totalAttr[type] += value * scale;
-    }
-  }
+  addOrInit(innerStats, "cRate", 5);
+  addOrInit(innerStats, "cDmg", 50);
+  addOrInit(innerStats, "er", 50);
+  innerStats.naAtkSpd = innerStats.caAtkSpd = 100;
 
-  addOrInit(stats, "cRate", 5);
-  addOrInit(stats, "cDmg", 50);
-  addOrInit(stats, "er", 50);
-  stats.naAtkSpd = stats.caAtkSpd = 100;
-
-  for (const type in stats) {
-    const key = type as keyof typeof stats;
-    totalAttr[key] += stats[key];
+  for (const type in innerStats) {
+    const key = type as keyof typeof innerStats;
+    totalAttr[key] += innerStats[key];
 
     if (tracker) {
       const field = type.slice(0, 4) === "base" ? type.slice(5) : type;
-      tracker[field].push({ desc: "Character Base stat", value: stats[key] });
+      tracker[field].push({ desc: "Character Base stat", value: innerStats[key] });
     }
   }
   const weaponAtk = wpMainStatAtLv(wpData.mainStatScale, weapon.level);
@@ -160,8 +158,7 @@ export function applyWpPassiveBuffs(
 
 export function calcFinalTotalAttrs(totalAttr: TotalAttribute) {
   for (const type of CORE_STAT_TYPES) {
-    totalAttr[type] +=
-      Math.round(totalAttr[`base_${type}`]) * toMultiplier(totalAttr[`${type}_`]);
+    totalAttr[type] += Math.round(totalAttr[`base_${type}`]) * toMultiplier(totalAttr[`${type}_`]);
     delete totalAttr[`${type}_`];
   }
 }

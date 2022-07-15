@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Styled/DataDisplay";
+import { Green, } from "@Styled/DataDisplay";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { MEDIUM_PA, EModifierSrc } from "../constants";
@@ -15,37 +15,43 @@ const Albedo: DataCharacter = {
   vision: "geo",
   weapon: "sword",
   stats: [
-    { base_hp: 1030, base_atk: 20, base_def: 68 },
-    { base_hp: 2671, base_atk: 51, base_def: 177 },
-    { base_hp: 3554, base_atk: 67, base_def: 235 },
-    { base_hp: 5317, base_atk: 101, base_def: 352 },
-    { base_hp: 5944, base_atk: 113, base_def: 394 },
-    { base_hp: 6839, base_atk: 130, base_def: 453 },
-    { base_hp: 7675, base_atk: 146, base_def: 508 },
-    { base_hp: 8579, base_atk: 163, base_def: 568 },
-    { base_hp: 9207, base_atk: 175, base_def: 610 },
-    { base_hp: 10119, base_atk: 192, base_def: 670 },
-    { base_hp: 10746, base_atk: 204, base_def: 712 },
-    { base_hp: 11669, base_atk: 222, base_def: 773 },
-    { base_hp: 12296, base_atk: 233, base_def: 815 },
-    { base_hp: 13226, base_atk: 251, base_def: 876 },
+    [1030, 20, 68],
+    [2671, 51, 177],
+    [3554, 67, 235],
+    [5317, 101, 352],
+    [5944, 113, 394],
+    [6839, 130, 453],
+    [7675, 146, 508],
+    [8579, 163, 568],
+    [9207, 175, 610],
+    [10119, 192, 670],
+    [10746, 204, 712],
+    [11669, 222, 773],
+    [12296, 233, 815],
+    [13226, 251, 876],
   ],
-  bonusStats: [{ type: "geo", value: 7.2 }],
-  activeTalents: [
-    {
-      name: "Favonius Bladework - Weiss",
+  bonusStat: { type: "geo", value: 7.2 },
+  NAsConfig: {
+    name: "Favonius Bladework - Weiss",
+    caStamina: 20,
+  },
+  activeTalents: {
+    NA: {
       stats: [
         { name: "1-Hit", baseMult: 36.74, multType: 1 },
         { name: "2-Hit", baseMult: 36.74, multType: 1 },
         { name: "3-Hit", baseMult: 47.45, multType: 1 },
         { name: "4-Hit", baseMult: 49.75, multType: 1 },
         { name: "5-Hit", baseMult: 62.07, multType: 1 },
-        { name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 },
-        ...MEDIUM_PA,
       ],
-      caStamina: 20,
     },
-    {
+    CA: {
+      stats: [
+        { name: "Charged Attack", dmgTypes: ["CA", "phys"], baseMult: [47.3, 60.2], multType: 1 },
+      ],
+    },
+    PA: { stats: MEDIUM_PA },
+    ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
@@ -72,7 +78,7 @@ const Albedo: DataCharacter = {
         },
       ],
     },
-    {
+    EB: {
       name: "Rite of Progeniture: Tectonic Tide",
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
@@ -92,7 +98,7 @@ const Albedo: DataCharacter = {
       ],
       energyCost: 40,
     },
-  ],
+  },
   passiveTalents: [
     {
       name: "Calcite Might",
@@ -151,8 +157,8 @@ const Albedo: DataCharacter = {
       src: EModifierSrc.A4,
       desc: () => (
         <>
-          Using Rite of Progeniture: Tectonic Tide increases the <Green>Elemental Mastery</Green> of
-          nearby party members by <Green b>125</Green> for 10s.
+          When Albedo crafts <Green>Weapon Ascension Materials</Green>, he has a{" "}
+          <Green b>10%</Green> <Green>chance</Green> to receive <Green b>double</Green> the product.
         </>
       ),
       affect: EModAffect.PARTY,
@@ -164,10 +170,11 @@ const Albedo: DataCharacter = {
       src: EModifierSrc.C2,
       desc: () => (
         <>
-          Unleashing Rite of Progeniture: Tectonic Tide consumes all stacks of Fatal Reckoning. Each
-          stack consumed increases the DMG dealt by <Green>Fatal Blossoms</Green> and{" "}
+          Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture:
+          Tectonic Tide consumes all stacks of Fatal Reckoning. Each stack consumed increases the
+          DMG dealt by <Green>Fatal Blossoms</Green> and{" "}
           <Green>Rite of Progeniture: Tectonic Tide's burst DMG</Green> by <Green b>30%</Green> of
-          Albedo's <Green>DEF</Green>.
+          Albedo's <Green>DEF</Green>. This effect stacks up to <Green b>4</Green> times.
         </>
       ),
       isGranted: checkCons[2],

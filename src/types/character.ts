@@ -26,6 +26,7 @@ import type {
   TotalAttribute,
   AttackElementBonus,
 } from "./calculator";
+import { ReactNode } from "react";
 
 export type DataCharacter = {
   code: number;
@@ -37,52 +38,31 @@ export type DataCharacter = {
   nation: Nation;
   vision: Vision;
   weapon: Weapon;
-  stats: Record<BaseStat, number>[];
-  bonusStats?: {
+  stats: Array<[number, number, number]>;
+  bonusStat: {
     type: AttackElement | ArtifactPercentStat | "em";
     value: number;
-  }[];
+  };
+  NAsConfig: {
+    name: string;
+    caStamina: number;
+  };
   activeTalents: {
-    NAs: NormalAttacks;
+    NA: { stats: StatInfo[] };
+    CA: { stats: StatInfo[] };
+    PA: { stats: StatInfo[] };
     ES: ElementalSkill;
     EB: ElementalBurst;
-    // #to-do
-    AltSprint?: Ability;
+    // #to-check
+    altSprint?: NoStatsAbility;
   };
-  passiveTalents: Ability[];
-  constellation: Ability[];
+  passiveTalents: NoStatsAbility[];
+  constellation: NoStatsAbility[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
 
 export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
-
-export type TalentStatInfo = {
-  name: string;
-  noCalc?: boolean;
-  isHealing?: boolean;
-  dmgTypes?: DamageTypes;
-  baseStatType?: "base_atk" | "atk" | "def" | "hp";
-  baseMult: number | number[];
-  multType: number;
-  flat?: {
-    base: number;
-    type: number;
-  };
-  getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
-  getLimit?: (args: { totalAttr: TotalAttribute }) => number;
-};
-
-type NormalAttacks = {
-  name: string;
-  stats: TalentStatInfo[];
-  caStamina?: number;
-};
-
-type Ability = {
-  name: string;
-  image: string;
-};
 
 type GetTalentBuffArgs = {
   char: CharInfo;
@@ -94,17 +74,41 @@ type GetTalentBuffArgs = {
 
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
-type ElementalSkill = Ability & {
+export type StatInfo = {
+  name: string;
+  dmgTypes?: DamageTypes;
+  baseMult: number | number[];
+  multType: number;
+  getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
+  // only on ES / EB
+  isHealing?: boolean;
+  baseStatType?: "base_atk" | "atk" | "def" | "hp";
+  flat?: {
+    base: number;
+    type: number;
+  };
+  getLimit?: (args: { totalAttr: TotalAttribute }) => number;
+};
+
+type ElementalSkill = {
+  name: string;
+  image: string;
   xtraLvAtCons: 3 | 5;
-  stats: TalentStatInfo[];
+  stats: StatInfo[];
 };
 
 type ElementalBurst = ElementalSkill & { energyCost: number };
+
+type NoStatsAbility = {
+  name: string;
+  image: string;
+};
 
 type AbilityModifier = {
   index: number;
   outdated?: boolean;
   src: string;
+  desc: () => ReactNode;
   isGranted: (char: CharInfo) => boolean;
 };
 
@@ -113,14 +117,16 @@ type AbilityModifier = {
 // #to-do
 type BuffInputRenderType = "select" | "";
 
+type InputConfig = {
+  labels?: string[];
+  selfLabels?: string[];
+  initialValues: ModifierInput[];
+  renderTypes: BuffInputRenderType[];
+};
+
 export type AbilityBuff = AbilityModifier & {
-  desc: () => JSX.Element;
   affect: EModAffect;
-  inputConfig?: {
-    labels?: string[];
-    selfLabels?: string[];
-    initialValues: ModifierInput[];
-    renderTypes: BuffInputRenderType[];
+  inputConfig?: InputConfig & {
     maxs?: (number | null)[];
   };
   infuseConfig?: {
@@ -154,14 +160,8 @@ type ApplyCharBuffArgs = {
 export type DebuffInputRenderType = "absorption" | "text";
 
 export type AbilityDebuff = AbilityModifier & {
-  desc: () => JSX.Element;
   affect?: EModAffect;
-  inputConfig?: {
-    labels: string[];
-    selfLabels?: string[];
-    initialValues: ModifierInput[];
-    renderTypes: DebuffInputRenderType[];
-  };
+  inputConfig?: InputConfig;
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
     attPattBonus: AttackPatternBonus;
