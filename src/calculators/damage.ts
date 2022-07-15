@@ -13,7 +13,6 @@ import {
   Tracker,
   AbilityDebuff,
   DamageResult,
-  TalentStatInfo,
   TalentBuff,
   Vision,
   AttackElement,
@@ -22,10 +21,13 @@ import {
   DamageTypes,
   AttackPatternBonus,
   AttackElementBonus,
+  StatInfo,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
+  ATTACK_PATTERNS,
   BASE_REACTION_DAMAGE,
+  NORMAL_ATTACKS,
   TRANSFORMATIVE_REACTIONS,
   TRANSFORMATIVE_REACTION_INFO,
   VISION_TYPES,
@@ -118,7 +120,7 @@ function calcResistanceReduction(resistReduct: ResistanceReduction, target: Targ
 
 function getBaseDamage(
   totalAttr: TotalAttribute,
-  statInfo: TalentStatInfo,
+  statInfo: StatInfo,
   level: number,
   talentBuff: TalentBuff
 ): [number | number[], TrackerDamageRecord] {
@@ -242,6 +244,104 @@ function getCrit(
   };
 }
 
+function calcTalentStat(
+  stat: StatInfo,
+  defaultDmgTypes: DamageTypes,
+  base: number | number[],
+  char: CharInfo,
+  vision: Vision,
+  target: Target,
+  elmtModCtrls: ElementModCtrl,
+  talentBuff: TalentBuff,
+  totalAttr: TotalAttribute,
+  attPattBonus: AttackPatternBonus,
+  attElmtBonus: AttackElementBonus,
+  rxnBonus: ReactionBonus,
+  resistReduct: ResistanceReduction,
+  infusion: FinalInfusion
+) {
+  let record = {} as TrackerDamageRecord;
+  const dmgTypes = stat.dmgTypes || defaultDmgTypes;
+
+  if (base !== 0 && dmgTypes && dmgTypes[0] && dmgTypes[1] !== "various") {
+    // #to-check: assign infusion[dmgTypes[0] not work
+    const attInfusion: AttackElement | undefined = infusion[dmgTypes[0] as NormalAttack];
+    const flat =
+      (talentBuff.flat?.value || 0) + attPattBonus[dmgTypes[0]].flat + totalAttr[dmgTypes[1]];
+
+    record.finalFlat = (record.finalFlat || 0) + flat;
+
+    const [normalMult, specialMult] = getDamageBonusMult(
+      talentBuff,
+      dmgTypes,
+      totalAttr,
+      attPattBonus,
+      attInfusion
+    );
+    const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonus, vision);
+    const [defMult, resMult] = getReductionMult(
+      char,
+      target,
+      resistReduct,
+      attPattBonus,
+      dmgTypes,
+      vision,
+      attInfusion
+    );
+    base = applyToOneOrMany(
+      base,
+      (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
+    );
+    const c = getCrit(totalAttr, talentBuff, dmgTypes, attPattBonus, attElmtBonus);
+
+    finalResult[type][stat.name] = {
+      nonCrit: base,
+      crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
+      average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
+    };
+    record = {
+      ...record,
+      normalMult,
+      specialMult,
+      rxnMult,
+      defMult,
+      resMult,
+      cRate: c.Rate,
+      cDmg: c.Dmg,
+    };
+  } else if (!Array.isArray(base)) {
+    let flat = 0;
+    let normalMult = 1;
+
+    if (stat.isHealing) {
+      flat = talentBuff.flat?.value || 0;
+      normalMult += totalAttr.healBn / 100;
+    }
+    base += flat;
+    record.finalFlat += flat;
+
+    if (normalMult !== 1) {
+      base *= normalMult;
+      record.normalMult = normalMult;
+    }
+    if (stat.getLimit) {
+      const limit = stat.getLimit({ totalAttr });
+      if (base > limit) {
+        base = limit;
+        record.note = ` (limited to ${limit})`;
+      }
+    }
+    finalResult[type][stat.name] = {
+      nonCrit: base,
+      crit: 0,
+      average: base,
+    };
+  }
+  if (tracker) {
+    tracker[type][stat.name] = { record, talentBuff };
+  }
+}
+
 export default function getDamage(
   char: CharInfo,
   selfBuffCtrls: ModifierCtrl[],
@@ -276,99 +376,24 @@ export default function getDamage(
   applyResonanceDebuffs(resistReduct, elmtModCtrls, tracker);
   calcResistanceReduction(resistReduct, target);
 
-  (["NAs", "ES", "EB"] as const).forEach((type) => {
+  ATTACK_PATTERNS.forEach((type) => {
     const talent = activeTalents[type];
-    const level = finalTalentLv(char, type, partyData);
-    finalResult[type] = {};
-    if (tracker) tracker[type] = {};
+    const resultKey = type === "ES" || type === "EB" ? type : "NAs";
+    const level = finalTalentLv(char, resultKey, partyData);
+
+    finalResult[resultKey] = {};
+    if (tracker) tracker[resultKey] = {};
 
     for (const stat of talent.stats) {
-      if (stat.noCalc) {
-        continue;
-      }
       let talentBuff: TalentBuff = {};
-      const { dmgTypes, getTalentBuff } = stat;
 
-      if (getTalentBuff) {
+      if (stat.getTalentBuff) {
         talentBuff =
-          getTalentBuff({ char, selfBuffCtrls, selfDebuffCtrls, totalAttr, partyData }) || {};
+          stat.getTalentBuff({ char, selfBuffCtrls, selfDebuffCtrls, totalAttr, partyData }) || {};
       }
       let [base, record] = getBaseDamage(totalAttr, stat, level, talentBuff);
 
-      if (base && dmgTypes && dmgTypes[0] && dmgTypes[1] !== "various") {
-        // #to-check: assign infusion[dmgTypes[0] not work
-        const attInfusion: AttackElement | undefined = infusion[dmgTypes[0] as NormalAttack];
-        const flat =
-          (talentBuff.flat?.value || 0) + attPattBonus[dmgTypes[0]].flat + totalAttr[dmgTypes[1]];
-
-        record.finalFlat = (record.finalFlat || 0) + flat;
-
-        const [normalMult, specialMult] = getDamageBonusMult(
-          talentBuff,
-          dmgTypes,
-          totalAttr,
-          attPattBonus,
-          attInfusion
-        );
-        const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonus, vision);
-        const [defMult, resMult] = getReductionMult(
-          char,
-          target,
-          resistReduct,
-          attPattBonus,
-          dmgTypes,
-          vision,
-          attInfusion
-        );
-        base = applyToOneOrMany(
-          base,
-          (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
-        );
-        const c = getCrit(totalAttr, talentBuff, dmgTypes, attPattBonus, attElmtBonus);
-
-        finalResult[type][stat.name] = {
-          nonCrit: base,
-          crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
-          average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
-        };
-        record = {
-          ...record,
-          normalMult,
-          specialMult,
-          rxnMult,
-          defMult,
-          resMult,
-          cRate: c.Rate,
-          cDmg: c.Dmg,
-        };
-      } else if (!Array.isArray(base)) {
-        let flat = 0;
-        let normalMult = 1;
-
-        if (stat.isHealing) {
-          flat = talentBuff.flat?.value || 0;
-          normalMult += totalAttr.healBn / 100;
-        }
-        base += flat;
-        record.finalFlat += flat;
-
-        if (normalMult !== 1) {
-          base *= normalMult;
-          record.normalMult = normalMult;
-        }
-        if (stat.getLimit) {
-          const limit = stat.getLimit({ totalAttr });
-          if (base > limit) {
-            base = limit;
-            record.note = ` (limited to ${limit})`;
-          }
-        }
-        finalResult[type][stat.name] = {
-          nonCrit: base,
-          crit: 0,
-          average: base,
-        };
-      }
+      calcTalentStat(stat, )
       if (tracker) {
         tracker[type][stat.name] = { record, talentBuff };
       }

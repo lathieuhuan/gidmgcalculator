@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
+import cn from "classnames";
 import type { CharInfo, DataCharacter, Party } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
 import { SharedSpace } from "@Components/minors";
 import { TALENT_TYPES } from "@Src/constants";
-import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { ascsFromLv } from "@Src/utils";
 import SlideShow from "@Components/ability-components/SlideShow";
+import { colorByVision } from "@Styled/tw-compounds";
 import { NORMAL_ATTACK_ICONS } from "./constants";
+import { ActiveTalent, PassiveTalent } from "./talent-overview";
+import { useSwitcher } from "@Hooks/useSwitcher";
+import { CloseButton } from "@Styled/Inputs";
+import { TalentInfo } from "./talent-details";
 
 interface TalentListProps {
   char: CharInfo;
@@ -74,7 +79,12 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
       }
       rightPart={
         position === -1 || position >= numOfActives + passiveTalents.length ? null : (
-          <Details position={position} {...{ vision, weapon, activeTalents, passiveTalents }} />
+          <Details
+            position={position}
+            {...{ vision, weapon, activeTalents, passiveTalents }}
+            changePosition={setPosition}
+            close={() => setAtDetails(false)}
+          />
         )
       }
     />
@@ -85,6 +95,7 @@ interface DetailsProps
   extends Pick<DataCharacter, "weapon" | "vision" | "activeTalents" | "passiveTalents"> {
   position: number;
   changePosition: (position: number) => void;
+  close: () => void;
 }
 function Details({
   position,
@@ -93,16 +104,34 @@ function Details({
   activeTalents,
   passiveTalents,
   changePosition,
+  close,
 }: DetailsProps) {
-  const images = [
-    NORMAL_ATTACK_ICONS[`${weapon}_${vision}`]!,
-    activeTalents.ES.image,
-    activeTalents.EB.image,
-  ];
-  if (activeTalents.AltSprint) {
-    images.push(activeTalents.AltSprint.image);
+  const atActiveTalent = position < Object.keys(activeTalents).length;
+
+  const [switcher, tab, setTab] = useSwitcher([
+    { text: "Talent Info", clickable: true },
+    { text: "Skill Attributes", clickable: atActiveTalent },
+  ]);
+  const { NAs, ES, EB, AltSprint } = activeTalents;
+  const images = [NORMAL_ATTACK_ICONS[`${weapon}_${vision}`]!, ES.image, EB.image];
+
+  if (AltSprint) {
+    images.push(AltSprint.image);
   }
-  images.push(...passiveTalents.map((talent) => talent.image));
+  for (const talent of passiveTalents) {
+    images.push(talent.image);
+  }
+
+  const infoByPosition = [
+    { type: "Normal Attack", name: NAs.name },
+    { type: "Elemental Skill", name: ES.name },
+    { type: "Elemental Burst", name: EB.name },
+    { type: "A1 Passive", name: passiveTalents[0].name },
+    { type: "A4 Passive", name: passiveTalents[1].name },
+  ];
+  if (AltSprint) {
+    infoByPosition.splice(3, 0, { type: "Alternate Sprint", name: AltSprint.name });
+  }
 
   return (
     <div className="h-full flex flex-col relative">
@@ -117,26 +146,23 @@ function Details({
           topLeftNote={
             <div className="absolute w-full top-0">
               <div className=" w-1/4">
-                <p className="text-subtitle-1">
-                  {type}
-                  {!isNaN(type.slice(-1)) && " Passive"}
-                </p>
+                <p className="text-subtitle-1">{infoByPosition[position].type}</p>
               </div>
             </div>
           }
         />
-        <Text variant="h5" color={vision} bold align="center">
-          {name}
-        </Text>
+        <p className={cn("text-h5 font-bold text-center", colorByVision[vision])}>
+          {infoByPosition[position].name}
+        </p>
         <div className="mt-2">{switcher}</div>
         {tab === "Talent Info" ? (
-          <TalentInfo desc={desc} isActv={isActv} />
+          <TalentInfo />
         ) : (
           <SkillAttributes tlData={actvTalents[index]} isActv={isActv} code={code} />
         )}
       </div>
       <div className="mt-3">
-        <CloseBtn className="mx-auto glow-on-hover" onClick={close} />
+        <CloseButton className="mx-auto glow-on-hover" onClick={close} />
       </div>
     </div>
   );
