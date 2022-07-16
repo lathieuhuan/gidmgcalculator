@@ -1,12 +1,12 @@
+import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import cn from "classnames";
-import { ATTACK_ELEMENTS, CORE_STAT_TYPES, VISION_TYPES } from "@Src/constants";
-import type { AttackElementBonus, CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
+import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
+import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
+import { getRxnBonusesFromEM } from "@Src/calculators/utils";
 import { Green } from "@Styled/DataDisplay";
 import StatsTable from "./StatsTable";
-import { useState } from "react";
 import { CollapseSpace } from "./Collapse";
-import { getRxnBonusesFromEM } from "@Src/calculators/utils";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;

@@ -4,7 +4,6 @@ import {
   ATTACK_ELEMENTS,
   CORE_STAT_TYPES,
   OTHER_PERCENT_STAT_TYPES,
-  TALENT_TYPES,
   VISION_TYPES,
 } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
@@ -123,19 +122,19 @@ export const initArtStatFilter = () => ({
 
 export function totalXtraTalentLv(
   char: CharInfo,
-  talentType: Exclude<Talent, "AltSprint">,
+  talentType: Exclude<Talent, "altSprint">,
   partyData?: PartyData
 ) {
   let result = 0;
 
-  const talent = findCharacter(char)!.activeTalents[talentType];
-
-  if ("xtraLvAtCons" in talent && char.cons >= talent.xtraLvAtCons) {
-    result += 3;
-  }
-  if (partyData) {
-    if (talentType === "NAs" && (char.name === "Tartaglia" || findByName(partyData, "Tartaglia"))) {
+  if (talentType === "NAs") {
+    if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
       result++;
+    }
+  } else {
+    const talent = findCharacter(char)!.activeTalents[talentType];
+    if ("xtraLvAtCons" in talent && char.cons >= talent.xtraLvAtCons) {
+      result += 3;
     }
   }
   return result;
@@ -143,7 +142,7 @@ export function totalXtraTalentLv(
 
 export const finalTalentLv = (
   char: CharInfo,
-  talentType: Exclude<Talent, "AltSprint">,
+  talentType: Exclude<Talent, "altSprint">,
   partyData?: PartyData
 ) => {
   return char[talentType] + totalXtraTalentLv(char, talentType, partyData);

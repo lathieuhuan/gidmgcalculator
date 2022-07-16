@@ -9,7 +9,6 @@ import type {
   CharInfo,
   Tracker,
   ModifierInput,
-  BaseStat,
   NormalAttack,
   ArtifactPercentStat,
 } from "./global";
@@ -46,11 +45,12 @@ export type DataCharacter = {
   NAsConfig: {
     name: string;
     caStamina: number;
+    getExtraStats?: GetExtraStatsFn;
   };
   activeTalents: {
-    NA: { stats: StatInfo[] };
-    CA: { stats: StatInfo[] };
-    PA: { stats: StatInfo[] };
+    NA: NormalAttacks;
+    CA: NormalAttacks;
+    PA: NormalAttacks;
     ES: ElementalSkill;
     EB: ElementalBurst;
     // #to-check
@@ -61,6 +61,16 @@ export type DataCharacter = {
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
+
+// extraStats are not calculated into damage results
+export type GetExtraStatsFn = (level: number) => {
+  name: string;
+  value: ReactNode;
+}[];
+
+type NormalAttacks = {
+  stats: StatInfo[]
+}
 
 export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
 
@@ -79,6 +89,8 @@ export type StatInfo = {
   dmgTypes?: DamageTypes;
   baseMult: number | number[];
   multType: number;
+  // if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
+  conditional?: boolean;
   getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
   // only on ES / EB
   isHealing?: boolean;
@@ -95,6 +107,7 @@ type ElementalSkill = {
   image: string;
   xtraLvAtCons: 3 | 5;
   stats: StatInfo[];
+  getExtraStats?: GetExtraStatsFn;
 };
 
 type ElementalBurst = ElementalSkill & { energyCost: number };

@@ -35,7 +35,7 @@ export function ActiveTalent({
   onClickInfoSign,
 }: ActiveTalentProps) {
   const partyData = party ? getPartyData(party) : undefined;
-  const xtraLv = talentType === "AltSprint" ? 0 : totalXtraTalentLv(char, talentType, partyData);
+  const xtraLv = talentType === "altSprint" ? 0 : totalXtraTalentLv(char, talentType, partyData);
 
   return (
     <div className="flex">
@@ -53,7 +53,7 @@ export function ActiveTalent({
           <p className="font-bold">{talentInfo.name}</p>
           <div className="flex align-center">
             <p className="mr-1">Lv.</p>
-            {talentType === "AltSprint" ? (
+            {talentType === "altSprint" ? (
               <p className={cn("ml-1 font-bold", colorByVision[vision])}>1</p>
             ) : (
               <Select
@@ -98,9 +98,9 @@ export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: P
             <p className={cn("font-bold", colorByVision[vision])}>1</p>
           </div>
         </div>
-        <div className="ml-auto" onClick={onClickInfoSign}>
+        {/* <div className="ml-auto" onClick={onClickInfoSign}>
           <InfoSign selfHover={true} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

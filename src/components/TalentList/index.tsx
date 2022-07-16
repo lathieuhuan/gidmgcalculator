@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import cn from "classnames";
-import type { CharInfo, DataCharacter, Party } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
-import { SharedSpace } from "@Components/minors";
+import type { CharInfo, DataCharacter, GetExtraStatsFn, Party, StatInfo, Talent } from "@Src/types";
 import { TALENT_TYPES } from "@Src/constants";
 import { ascsFromLv } from "@Src/utils";
-import SlideShow from "@Components/ability-components/SlideShow";
-import { colorByVision } from "@Styled/tw-compounds";
+import { findCharacter } from "@Data/controllers";
 import { NORMAL_ATTACK_ICONS } from "./constants";
-import { ActiveTalent, PassiveTalent } from "./talent-overview";
-import { useSwitcher } from "@Hooks/useSwitcher";
+
+import { SharedSpace } from "@Components/minors";
+import SlideShow from "@Components/ability-components/SlideShow";
 import { CloseButton } from "@Styled/Inputs";
-import { TalentInfo } from "./talent-details";
+import { ActiveTalent, PassiveTalent } from "./talent-overview";
+import { SkillAttributes } from "./talent-details";
+
+// import { useSwitcher } from "@Hooks/useSwitcher";
+import { colorByVision } from "@Styled/tw-compounds";
 
 interface TalentListProps {
   char: CharInfo;
@@ -22,7 +24,7 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
   const [position, setPosition] = useState(-1);
   const [atDetails, setAtDetails] = useState(false);
 
-  const { code, vision, weapon, activeTalents, passiveTalents } = findCharacter(char)!;
+  const { code, vision, weapon, NAsConfig, activeTalents, passiveTalents } = findCharacter(char)!;
   const numOfActives = Object.keys(activeTalents).length;
 
   useEffect(() => {
@@ -40,27 +42,24 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
       leftPart={
         <div className="h-full hide-scrollbar">
           <div>
-            {TALENT_TYPES.map((talentType, i) => {
-              const talentInfo = activeTalents[talentType];
-              if (talentInfo) {
-                return (
-                  <ActiveTalent
-                    key={i}
-                    char={char}
-                    talentInfo={talentInfo}
-                    talentType={talentType}
-                    talentLv={talentType === "AltSprint" ? 1 : char[talentType]}
-                    party={party}
-                    vision={vision}
-                    weapon={weapon}
-                    onChangeLevel={
-                      talentType !== "AltSprint" ? onChangeLevelOf(talentType) : undefined
-                    }
-                    onClickInfoSign={() => toDetailsAt(TALENT_TYPES.indexOf(talentType))}
-                  />
-                );
-              }
-              return null;
+            {(["NAs", "ES", "EB", "altSprint"] as const).map((talentType, i) => {
+              const talentInfo =
+                talentType === "NAs" ? { name: NAsConfig.name } : activeTalents[talentType];
+
+              return talentInfo ? (
+                <ActiveTalent
+                  key={i}
+                  char={char}
+                  talentInfo={talentInfo}
+                  talentType={talentType}
+                  talentLv={talentType === "altSprint" ? 1 : char[talentType]}
+                  {...{ party, vision, weapon }}
+                  onChangeLevel={
+                    talentType !== "altSprint" ? onChangeLevelOf(talentType) : undefined
+                  }
+                  onClickInfoSign={() => toDetailsAt(TALENT_TYPES.indexOf(talentType))}
+                />
+              ) : null;
             })}
           </div>
           {passiveTalents.map((talent, i) => {
@@ -81,7 +80,7 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
         position === -1 || position >= numOfActives + passiveTalents.length ? null : (
           <Details
             position={position}
-            {...{ vision, weapon, activeTalents, passiveTalents }}
+            {...{ vision, weapon, NAsConfig, activeTalents, passiveTalents }}
             changePosition={setPosition}
             close={() => setAtDetails(false)}
           />
@@ -92,7 +91,10 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
 }
 
 interface DetailsProps
-  extends Pick<DataCharacter, "weapon" | "vision" | "activeTalents" | "passiveTalents"> {
+  extends Pick<
+    DataCharacter,
+    "weapon" | "vision" | "NAsConfig" | "activeTalents" | "passiveTalents"
+  > {
   position: number;
   changePosition: (position: number) => void;
   close: () => void;
@@ -101,37 +103,59 @@ function Details({
   position,
   weapon,
   vision,
+  NAsConfig,
   activeTalents,
   passiveTalents,
   changePosition,
   close,
 }: DetailsProps) {
-  const atActiveTalent = position < Object.keys(activeTalents).length;
-
-  const [switcher, tab, setTab] = useSwitcher([
-    { text: "Talent Info", clickable: true },
-    { text: "Skill Attributes", clickable: atActiveTalent },
-  ]);
-  const { NAs, ES, EB, AltSprint } = activeTalents;
+  // // for when details for passiveTalents are available
+  // const atActiveTalent = position < Object.keys(activeTalents).length;
+  // const [switcher, tab, setTab] = useSwitcher([
+  //   { text: "Talent Info", clickable: true },
+  //   { text: "Skill Attributes", clickable: atActiveTalent },
+  // ]);
+  const { NA, CA, PA, ES, EB, altSprint } = activeTalents;
   const images = [NORMAL_ATTACK_ICONS[`${weapon}_${vision}`]!, ES.image, EB.image];
 
-  if (AltSprint) {
-    images.push(AltSprint.image);
+  if (altSprint) {
+    images.push(altSprint.image);
   }
   for (const talent of passiveTalents) {
     images.push(talent.image);
   }
 
-  const infoByPosition = [
-    { type: "Normal Attack", name: NAs.name },
-    { type: "Elemental Skill", name: ES.name },
-    { type: "Elemental Burst", name: EB.name },
-    { type: "A1 Passive", name: passiveTalents[0].name },
-    { type: "A4 Passive", name: passiveTalents[1].name },
+  const infoByPosition: Array<{
+    type: Talent;
+    name: string;
+    stats: StatInfo[];
+    getExtraStats?: GetExtraStatsFn;
+  }> = [
+    {
+      type: "NAs",
+      name: NAsConfig.name,
+      stats: [...NA.stats, ...CA.stats, ...PA.stats],
+      getExtraStats: NAsConfig.getExtraStats,
+    },
+    {
+      type: "ES",
+      name: ES.name,
+      stats: ES.stats,
+      getExtraStats: ES.getExtraStats,
+    },
+    {
+      type: "EB",
+      name: EB.name,
+      stats: EB.stats,
+      getExtraStats: EB.getExtraStats,
+    },
+    // { type: "A1 Passive", name: passiveTalents[0].name },
+    // { type: "A4 Passive", name: passiveTalents[1].name },
   ];
-  if (AltSprint) {
-    infoByPosition.splice(3, 0, { type: "Alternate Sprint", name: AltSprint.name });
+  if (altSprint) {
+    infoByPosition.splice(3, 0, { type: "altSprint" as const, name: altSprint.name, stats: [] });
   }
+  const { type, name, stats, getExtraStats } = infoByPosition[position];
 
   return (
     <div className="h-full flex flex-col relative">
@@ -141,26 +165,33 @@ function Details({
           currentIndex={position}
           images={images}
           vision={vision}
-          onClickBack={() => changePosition(position - 1)}
-          onClickNext={() => changePosition(position + 1)}
+          onClickBack={() => {
+            if (position >= 1) changePosition(position - 1);
+          }}
+          onClickNext={() => {
+            if (position < Object.keys(activeTalents).length - 1) changePosition(position + 1);
+          }}
           topLeftNote={
             <div className="absolute w-full top-0">
               <div className=" w-1/4">
-                <p className="text-subtitle-1">{infoByPosition[position].type}</p>
+                <p className="text-subtitle-1">{type}</p>
               </div>
             </div>
           }
         />
-        <p className={cn("text-h5 font-bold text-center", colorByVision[vision])}>
-          {infoByPosition[position].name}
-        </p>
-        <div className="mt-2">{switcher}</div>
-        {tab === "Talent Info" ? (
-          <TalentInfo />
-        ) : (
-          <SkillAttributes tlData={actvTalents[index]} isActv={isActv} code={code} />
-        )}
+        <p className={cn("text-h5 font-bold text-center", colorByVision[vision])}>{name}</p>
+        <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
+          <p className="font-bold text-black">Skill Attributes</p>
+        </div>
+
+        <SkillAttributes
+          stats={stats}
+          talentType={type}
+          energyCost={type === "EB" ? EB.energyCost : undefined}
+          getExtraStats={getExtraStats}
+        />
       </div>
+
       <div className="mt-3">
         <CloseButton className="mx-auto glow-on-hover" onClick={close} />
       </div>

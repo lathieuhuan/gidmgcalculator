@@ -294,11 +294,6 @@ function calcTalentStat(
     );
     const c = getCrit(totalAttr, talentBuff, dmgTypes, attPattBonus, attElmtBonus);
 
-    finalResult[type][stat.name] = {
-      nonCrit: base,
-      crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
-      average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
-    };
     record = {
       ...record,
       normalMult,
@@ -308,6 +303,11 @@ function calcTalentStat(
       resMult,
       cRate: c.Rate,
       cDmg: c.Dmg,
+    };
+    return {
+      nonCrit: base,
+      crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
+      average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
     };
   } else if (!Array.isArray(base)) {
     let flat = 0;
@@ -331,14 +331,13 @@ function calcTalentStat(
         record.note = ` (limited to ${limit})`;
       }
     }
-    finalResult[type][stat.name] = {
+    return {
       nonCrit: base,
       crit: 0,
       average: base,
     };
-  }
-  if (tracker) {
-    tracker[type][stat.name] = { record, talentBuff };
+  } else {
+    return { nonCrit: 0, crit: 0, average: 0 };
   }
 }
 
@@ -364,7 +363,7 @@ export default function getDamage(
   for (const key of VISION_TYPES) {
     resistReduct[key] = 0;
   }
-  const { activeTalents, vision, debuffs } = findCharacter(char)!;
+  const { activeTalents, weapon, vision, debuffs } = findCharacter(char)!;
   const wrapper3 = { resistReduct, attPattBonus };
 
   const finalResult = {} as DamageResult;
@@ -376,9 +375,9 @@ export default function getDamage(
   applyResonanceDebuffs(resistReduct, elmtModCtrls, tracker);
   calcResistanceReduction(resistReduct, target);
 
-  ATTACK_PATTERNS.forEach((type) => {
-    const talent = activeTalents[type];
-    const resultKey = type === "ES" || type === "EB" ? type : "NAs";
+  ATTACK_PATTERNS.forEach((attPatt) => {
+    const talent = activeTalents[attPatt];
+    const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
     const level = finalTalentLv(char, resultKey, partyData);
 
     finalResult[resultKey] = {};
@@ -393,9 +392,24 @@ export default function getDamage(
       }
       let [base, record] = getBaseDamage(totalAttr, stat, level, talentBuff);
 
-      calcTalentStat(stat, )
+      finalResult[resultKey][stat.name] = calcTalentStat(
+        stat,
+        [attPatt, weapon === "catalyst" ? vision : "phys"],
+        base,
+        char,
+        vision,
+        target,
+        elmtModCtrls,
+        talentBuff,
+        totalAttr,
+        attPattBonus,
+        attElmtBonus,
+        rxnBonus,
+        resistReduct,
+        infusion
+      );
       if (tracker) {
-        tracker[type][stat.name] = { record, talentBuff };
+        tracker[attPatt][stat.name] = { record, talentBuff };
       }
     }
   });
@@ -406,7 +420,7 @@ export default function getDamage(
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     let base = BASE_REACTION_DAMAGE[bareLv(char.level)];
     const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
-
+    
     const specialMult = 1 + rxnBonus[rxn] / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
 

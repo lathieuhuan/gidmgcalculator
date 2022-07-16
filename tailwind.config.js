@@ -84,6 +84,7 @@ module.exports = {
         lightred: "#ff8d8c",
         gold: "#ffd700",
         lightgold: "#ffdc4e",
+        dullyellow: "#f0e873",
         green: "#62f98e",
         orange: "#fa8a12",
         pyro: "#ff504a",

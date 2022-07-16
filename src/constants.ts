@@ -43,7 +43,7 @@ export const ATTACK_PATTERNS = [...NORMAL_ATTACKS, "ES", "EB"] as const;
 
 export const ATTACK_ELEMENTS = [...VISION_TYPES, "phys"] as const;
 
-export const TALENT_TYPES = ["NAs", "ES", "EB", "AltSprint"] as const;
+export const TALENT_TYPES = ["NAs", "ES", "EB", "altSprint"] as const;
 
 export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 

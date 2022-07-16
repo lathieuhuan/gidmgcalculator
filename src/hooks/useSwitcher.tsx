@@ -11,10 +11,11 @@ export function useSwitcher(TabInfos: TabInfo[]) {
   const cpn = (
     <div className="w-full flex">
       {TabInfos.map(({ text, clickable }, i) => (
-        <div
+        <button
           key={i}
+          type="button"
           className={cn(
-            "py-1 rounded-full flex-center",
+            "py-1 w-1/2 flex-center",
             clickable && "cursor-pointer",
             text === tab ? "bg-default" : "bg-darkblue-3",
             i ? "rounded-l-2xl" : i === TabInfos.length - 1 ? "rounded-r-2xl" : ""
@@ -26,7 +27,7 @@ export function useSwitcher(TabInfos: TabInfo[]) {
           <p className={cn("font-bold", text === tab ? "text-black" : "text-default")}>
             {clickable && text}
           </p>
-        </div>
+        </button>
       ))}
     </div>
   );
