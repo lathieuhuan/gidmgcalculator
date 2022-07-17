@@ -9,3 +9,10 @@ export type InitSessionWithCharAction = PayloadAction<{
   myWps: MyWps;
   myArts: MyArts;
 }>;
+
+export type ArtModCtrlPath = {
+  modCtrlName: "allArtInfos";
+  field: "buffCtrls" | "subBuffCtrls" | "subDebuffCtrls";
+  index: number;
+};
+export type ToggleModCtrlAction = PayloadAction<ArtModCtrlPath>;

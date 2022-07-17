@@ -180,15 +180,15 @@ function getReactionMult(
   rxnBonus: ReactionBonus,
   vision: Vision
 ) {
-  const { ampRxn, naAmpRxn } = elmtModCtrls;
+  const { ampRxn, infusion_ampRxn } = elmtModCtrls;
   if (
     ampRxn &&
     (attElmt !== "phys" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
   ) {
     return rxnBonus[ampRxn];
   }
-  if (naAmpRxn && attInfusion !== vision && AMPLIFYING_REACTIONS.includes(naAmpRxn)) {
-    return rxnBonus[`na_${naAmpRxn}`];
+  if (infusion_ampRxn && attInfusion !== vision && AMPLIFYING_REACTIONS.includes(infusion_ampRxn)) {
+    return rxnBonus[`infusion_${infusion_ampRxn}`];
   }
   return 1;
 }
@@ -418,7 +418,7 @@ export default function getDamage(
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     let base = BASE_REACTION_DAMAGE[bareLv(char.level)];
     const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
-    
+
     const specialMult = 1 + rxnBonus[rxn] / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
 

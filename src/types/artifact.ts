@@ -61,7 +61,7 @@ type ApplyArtFinalBuffArgs = {
   tracker?: Tracker;
 };
 
-type ArtifactBuff = {
+export type ArtifactBuff = {
   desc: () => JSX.Element;
   affect: EModAffect;
   inputConfig?: {

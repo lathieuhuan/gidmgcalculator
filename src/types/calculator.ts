@@ -150,8 +150,8 @@ export type Resonance = {
 }[];
 
 export type ElementModCtrl = {
-  naAmpRxn: AmplifyingReaction | null;
   ampRxn: AmplifyingReaction | null;
+  infusion_ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
   resonance: Resonance;
 };
@@ -189,7 +189,7 @@ export type AttacklementInfoKey = "cDmg" | "flat";
 export type AttacklementInfo = Record<AttacklementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
-export type ReactionBonusKey = Reaction | "na_melt" | "na_vaporize";
+export type ReactionBonusKey = Reaction | "infusion_melt" | "infusion_vaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 

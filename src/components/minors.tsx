@@ -1,11 +1,13 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import cn from "classnames";
-import { CalcArtSet } from "@Src/types";
+import { CalcArtSet, Vision } from "@Src/types";
 import { Button, CloseButton } from "@Styled/Inputs";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { wikiImg } from "@Src/utils";
+import { round3, wikiImg } from "@Src/utils";
 import Modal from "./Modal";
+import { colorByVision } from "@Styled/tw-compounds";
+import { Green } from "@Styled/DataDisplay";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
@@ -209,3 +211,10 @@ export function SetBonus({ sets }: SetBonusProps) {
     </div>
   );
 }
+
+export const renderAmpReactionDesc = (element: Vision, mult: number) => (
+  <>
+    Increases <span className={colorByVision[element]}>{element} DMG</span> by{" "}
+    <Green b>{round3(mult)}</Green> times.
+  </>
+);

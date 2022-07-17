@@ -27,3 +27,6 @@ export const selectElmtModCtrls = (state: RootState) =>
 
 export const selectFinalInfusion = (state: RootState) =>
   state.calculator.allFinalInfusion[state.calculator.currentSetup];
+
+export const selectRxnBonus = (state: RootState) =>
+  state.calculator.allRxnBonuses[state.calculator.currentSetup];

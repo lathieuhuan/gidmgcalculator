@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { CalculatorState, Level } from "@Src/types";
+import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
-import type { InitSessionWithCharAction } from "./reducer-types";
+import type { InitSessionWithCharAction, ToggleModCtrlAction } from "./reducer-types";
 import {
   initCharInfo,
   initCharModCtrls,
@@ -123,6 +123,33 @@ export const calculatorSlice = createSlice({
       state.allWeapons[state.currentSetup].refi = action.payload;
       calculate(state);
     },
+    //
+    toggleResonance: (state, action: PayloadAction<Vision>) => {
+      const resonance = state.allElmtModCtrls[state.currentSetup].resonance.find(
+        ({ vision }) => vision === action.payload
+      );
+      if (resonance) {
+        resonance.activated = !resonance.activated;
+        calculate(state);
+      }
+    },
+    changeElementModCtrl: (
+      state,
+      action: PayloadAction<{
+        field: "ampRxn" | "infusion_ampRxn";
+        value: AmplifyingReaction | null;
+      }>
+    ) => {
+      const { field, value } = action.payload;
+      state.allElmtModCtrls[state.currentSetup][field] = value;
+      calculate(state);
+    },
+    toggleModCtrl: (state, action: ToggleModCtrlAction) => {
+      const { modCtrlName, field, index } = action.payload;
+      const ctrl = state[modCtrlName][state.currentSetup][field][index];
+      ctrl.activated = !ctrl.activated;
+      calculate(state);
+    },
   },
 });
 
@@ -133,6 +160,9 @@ export const {
   changeTalentLevel,
   upgradeWeapon,
   refineWeapon,
+  toggleResonance,
+  changeElementModCtrl,
+  toggleModCtrl,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

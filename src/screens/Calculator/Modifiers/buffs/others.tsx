@@ -1,116 +1,182 @@
-import { AMPLIFYING_ELEMENTS } from "@Src/constants";
+import type { ReactNode } from "react";
+import { AmplifyingReaction, ArtifactBuff, DataArtifact, Vision } from "@Src/types";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { changeElementModCtrl, toggleModCtrl, toggleResonance } from "@Store/calculatorSlice";
 import {
+  selectArtInfo,
   selectCharData,
   selectElmtModCtrls,
   selectFinalInfusion,
+  selectRxnBonus,
 } from "@Store/calculatorSlice/selectors";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { Green, ModifierLayout } from "@Styled/DataDisplay";
 
-const RESONANCE_RENDER_INFO = {
-  pyro: {
-    name: "Fervent Flames",
-    desc: (
-      <>
-        Increases <Green>ATK</Green> by <Green b>25%</Green>.
-      </>
-    ),
-  },
-  cryo: {
-    name: "Shattering Ice",
-    desc: (
-      <>
-        Increases <Green>CRIT Rate</Green> against enemies that are Frozen or affected by Cryo by{" "}
-        <Green b>15%</Green>.
-      </>
-    ),
-  },
-  geo: {
-    name: "Enduring Rock",
-    desc: (
-      <>
-        Increases <Green>Shield Strength</Green> by <Green b>15%</Green>. Increases{" "}
-        <Green>DMG</Green> dealt by characters that protected by a shield by <Green b>15%</Green>.
-      </>
-    ),
-  },
-} as const;
+import { renderAmpReactionDesc } from "@Components/minors";
+import { ModifierLayout } from "@Styled/DataDisplay";
+import { renderNoModifier } from "../../components";
+import { RESONANCE_BUFF_INFO } from "./constants";
+import { findArtifactSet } from "@Data/controllers";
+import { findByIndex } from "@Src/utils";
+import { ArtModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 export function ElmtBuffs() {
   const { vision } = useSelector(selectCharData);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const infusion = useSelector(selectFinalInfusion).NA;
   const dispatch = useDispatch();
-  const content = [];
+  const content: ReactNode[] = [];
 
-  elmtModCtrls.resonance.forEach((rsn, rsnIndex) => {
+  elmtModCtrls.resonance.forEach((rsn) => {
+    const { name, desc } = RESONANCE_BUFF_INFO[rsn.vision];
     content.push(
       <ModifierLayout
         key={rsn.vision}
         checked={rsn.activated}
-        onToggle={() => dispatch(TOGGLE_RESONANCE({ rsnIndex, activated: !rsn.activated }))}
-        heading={RESONANCE_RENDER_INFO[rsn.vision].name}
-        desc={RESONANCE_RENDER_INFO[rsn.vision].desc}
+        onToggle={() => dispatch(toggleResonance(rsn.vision))}
+        heading={name}
+        desc={desc}
       />
     );
   });
-  switch (vision) {
+
+  content.push(...useAmplifyingBuff(vision, false));
+
+  if (infusion !== vision && infusion !== "phys") {
+    content.push(...useAmplifyingBuff(infusion, true));
+  }
+  return content.length ? content : renderNoModifier(true);
+}
+
+function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
+  const field = byInfusion ? "infusion_ampRxn" : "ampRxn";
+  const rxnBonus = useSelector(selectRxnBonus);
+  const ampReaction = useSelector(selectElmtModCtrls)[field];
+  const dispatch = useDispatch();
+
+  const renderBuff = (reaction: AmplifyingReaction) => {
+    const activated = ampReaction === reaction;
+    return (
+      <ModifierLayout
+        key={reaction}
+        checked={activated}
+        onToggle={() =>
+          dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
+        }
+        heading={reaction}
+        desc={renderAmpReactionDesc(element, rxnBonus[reaction])}
+      />
+    );
+  };
+  switch (element) {
     case "pyro":
-      content.push(["Melt", "Vaporize"].map((rxn) => <RxnBuff key={rxn} rxn={rxn} vision={vision} />))
-      break;
+      return (["melt", "vaporize"] as const).map((reaction) => {
+        return renderBuff(reaction);
+      });
+    case "hydro":
+      return [renderBuff("vaporize")];
+    case "cryo":
+      return [renderBuff("melt")];
     default:
+      return [];
   }
-  if (AMPLIFYING_ELEMENTS.includes(vision)) {
-    content.push(
-      {
-        pyro: ["Melt", "Vaporize"].map((rxn) => <RxnBuff key={rxn} rxn={rxn} vision={vision} />),
-        hydro: <RxnBuff key="Vaporize" rxn="Vaporize" vision={vision} />,
-        cryo: <RxnBuff key="Melt" rxn="Melt" vision={vision} />,
-      }[vision]
-    );
-  }
-  if (ampElmts.includes(infusion) && infusion !== vision) {
-    content.push(
-      {
-        Pyro: ["Melt", "Vaporize"].map((rxn) => (
-          <NaRxnBuff key={rxn} rxn={rxn} infusion={infusion} />
-        )),
-        Hydro: <NaRxnBuff key="Vaporize" rxn="Vaporize" infusion={infusion} />,
-        Cryo: <NaRxnBuff key="Melt" rxn="Melt" infusion={infusion} />,
-      }[infusion]
-    );
-  }
-  return content.length ? content : <NoContent type="buffs" />;
 }
 
-function RxnBuff({ rxn, vision }) {
-  const rxnBnes = useSelector(selectRxnBnes);
-  const activated = useSelector(selectElmtMCs).ampRxn === rxn;
+export function ArtifactBuffs() {
+  const { sets, buffCtrls, subBuffCtrls } = useSelector(selectArtInfo);
   const dispatch = useDispatch();
-  return (
-    <Section
-      checked={activated}
-      handleCheck={() =>
-        dispatch(CHANGE_ELMT_MCS({ type: "ampRxn", value: activated ? null : rxn }))
-      }
-      heading={rxn}
-      desc={<AmpRxnDesc elmt={vision} mult={rxnBnes[rxn]} />}
-    />
-  );
+  const content: JSX.Element[] = [];
+
+  const mainCode = sets[0]?.code;
+  buffCtrls.forEach((ctrl, index) => {
+    const { activated } = ctrl;
+    const { name, buffs } = findArtifactSet({ code: mainCode })!;
+    const buff = findByIndex(buffs!, ctrl.index);
+    if (!buff) return;
+
+    const path: ArtModCtrlPath = {
+      modCtrlName: "allArtInfos",
+      field: "buffCtrls",
+      index,
+    };
+
+    content.push(
+      <ModifierLayout
+        key={mainCode.toString() + index}
+        checked={activated}
+        onToggle={() => dispatch(toggleModCtrl(path))}
+        heading={name + " (self)"}
+        desc={buff.desc()}
+        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
+      />
+    );
+  });
+  subBuffCtrls.forEach((ctrl, index) => {
+    const { code, activated } = ctrl;
+    const { name, buffs } = findArtifactSet({ code })!;
+    const buff = findByIndex(buffs!, ctrl.index);
+    if (!buff) return;
+
+    const path: ArtModCtrlPath = {
+      modCtrlName: "allArtInfos",
+      field: "subBuffCtrls",
+      index: index,
+    };
+
+    content.push(
+      <ModifierLayout
+        key={code.toString() + index}
+        checked={activated}
+        handleCheck={() => dispatch(toggleModCtrl(path))}
+        heading={name}
+        desc={buff.desc()}
+        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
+      />
+    );
+  });
+  return content.length ? content : renderNoModifier(true);
 }
 
-function NaRxnBuff({ rxn, infusion }) {
-  const rxnBnes = useSelector(selectRxnBnes);
-  const activated = useSelector(selectElmtMCs).naAmpRxn === rxn;
+interface SetterSectionProps {
+  buff: ArtifactBuff;
+  inputs: number[];
+  path: ArtModCtrlPath;
+}
+function SetterSection({ buff, inputs, path }: SetterSectionProps) {
   const dispatch = useDispatch();
-  return (
-    <Section
-      checked={activated}
-      handleCheck={() =>
-        dispatch(CHANGE_ELMT_MCS({ type: "naAmpRxn", value: activated ? null : rxn }))
-      }
-      heading={rxn + " (external infusion)"}
-      desc={<AmpRxnDesc elmt={infusion} mult={rxnBnes["na" + rxn]} />}
-    />
-  );
+  if (!buff.inputConfig) return null;
+
+  const { labels, initialValues, maxs, renderTypes } = buff.inputConfig;
+
+  return labels.map((label, i) => {
+    let options: string[] | number[] = [];
+
+    if (renderTypes[i] === "stacks") {
+      const increase = initialValues[i] === 0 ? 0 : 1;
+      options = [...Array(maxs[i]).map((_, i) => i + increase)];
+    } else {
+      options = ["pyro", "hydro", "electro", "cryo"];
+    }
+
+    return (
+      <StyledSetter key={i}>
+        <p className="label">{label}</p>
+        <StyledSelect
+          value={inputs[i]}
+          onChange={(e) => {
+            const { value } = e.target;
+            dispatch(
+              CHANGE_MCS_INPUT({
+                ...path,
+                inpIndex: i,
+                value: isNaN(value) ? value : +value,
+              })
+            );
+          }}
+        >
+          {options.map((opt) => (
+            <option key={opt}>{opt}</option>
+          ))}
+        </StyledSelect>
+      </StyledSetter>
+    );
+  });
 }
