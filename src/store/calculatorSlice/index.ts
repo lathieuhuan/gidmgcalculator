@@ -66,8 +66,8 @@ export const calculatorSlice = createSlice({
       state.allArtInfos = [art];
       state.allParties = [[null, null, null]];
       state.allElmtModCtrls = [initElmtModCtrls()];
-      state.allCustomBuffCtrls = [];
-      state.allCustomDebuffCtrls = [];
+      state.allCustomBuffCtrls = [[]];
+      state.allCustomDebuffCtrls = [[]];
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
       state.touched = true;
@@ -98,8 +98,21 @@ export const calculatorSlice = createSlice({
         calculate(state, true);
       }
     },
-    changeTalentLevel: (state, action: PayloadAction<number>) => {
-      //
+    changeTalentLevel: (
+      state,
+      action: PayloadAction<{ type: "NAs" | "ES" | "EB"; level: number }>
+    ) => {
+      const { type, level } = action.payload;
+      const { char } = state;
+      const talentArr = char[type];
+
+      if (Array.isArray(talentArr)) {
+        talentArr[state.currentSetup] = level;
+        calculate(state);
+      } else {
+        char[type] = level;
+        calculate(state, true);
+      }
     },
     // weapon
     upgradeWeapon: (state, action: PayloadAction<Level>) => {
@@ -113,7 +126,13 @@ export const calculatorSlice = createSlice({
   },
 });
 
-export const { initSessionWithChar, levelCalcChar, changeConsLevel, upgradeWeapon, refineWeapon } =
-  calculatorSlice.actions;
+export const {
+  initSessionWithChar,
+  levelCalcChar,
+  changeConsLevel,
+  changeTalentLevel,
+  upgradeWeapon,
+  refineWeapon,
+} = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

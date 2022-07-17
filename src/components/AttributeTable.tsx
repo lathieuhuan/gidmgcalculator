@@ -12,6 +12,9 @@ interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;
 }
 export default function AttributeTable({ attributes }: AttributeTableProps) {
+  if (!attributes) {
+    return null;
+  }
   const em = attributes.em || 0;
   const rxnBonusFromEM = getRxnBonusesFromEM(em);
 

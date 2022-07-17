@@ -30,6 +30,7 @@ export default function OverviewChar() {
   const char = useSelector(selectChar)!;
   const charData = useSelector(selectCharData);
   const touched = useSelector((state) => state.calculator.touched);
+  const dispatch = useDispatch();
 
   if (!touched) {
     return (
@@ -42,7 +43,6 @@ export default function OverviewChar() {
     );
   }
   const Content = contentByTab[tab];
-  const dispatch = useDispatch();
   const { beta, icon, vision, rarity } = findCharacter(charData)!;
 
   return (

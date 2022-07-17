@@ -1,6 +1,6 @@
 import { useState } from "react";
 import classNames from "classnames";
-import Collapse from "@Components/Collapse";
+import { CollapseSpace } from "@Components/Collapse";
 import { Checkbox } from "@Src/styled-components/Inputs";
 import ModalHeader from "@Styled/ModalHeader";
 import Modal from "../Modal";
@@ -46,7 +46,7 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, close 
               <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
               <div className="absolute w-full top-full left-0 z-10">
                 <div className="rounded-b-lg bg-darkblue-3 shadow-common">
-                  <Collapse active={filterOn}>
+                  <CollapseSpace active={filterOn}>
                     <CharFilter
                       {...filter}
                       onClickOption={(isChosen, newFilter) => {
@@ -54,7 +54,7 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, close 
                         setFilterOn(false);
                       }}
                     />
-                  </Collapse>
+                  </CollapseSpace>
                 </div>
               </div>
             </>

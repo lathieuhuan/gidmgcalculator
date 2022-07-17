@@ -40,6 +40,7 @@ export default function calculateAll(
 ) {
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
+  
   const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
     char,
     charData,

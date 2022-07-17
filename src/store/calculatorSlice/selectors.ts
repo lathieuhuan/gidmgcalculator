@@ -18,3 +18,6 @@ export const selectArtInfo = (state: RootState) =>
 
 export const selectWeapon = (state: RootState) =>
   state.calculator.allWeapons[state.calculator.currentSetup];
+
+  export const selectParty = (state: RootState) =>
+  state.calculator.allParties[state.calculator.currentSetup];

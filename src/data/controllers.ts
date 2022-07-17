@@ -32,7 +32,7 @@ export const getCharData = (char: HasName): CalcCharData => {
     vision,
     nation,
     weapon,
-    EBcost: activeTalents[2].energyCost,
+    EBcost: activeTalents.EB.energyCost,
   };
 };
 
@@ -41,7 +41,7 @@ export function getPartyData(party: Party) {
   for (const tm of party) {
     if (tm) {
       const { name, nation, vision, activeTalents } = findCharacter(tm)!;
-      result.push({ name, nation, vision, EBcost: activeTalents[2].energyCost });
+      result.push({ name, nation, vision, EBcost: activeTalents.EB.energyCost });
     }
   }
   return result;

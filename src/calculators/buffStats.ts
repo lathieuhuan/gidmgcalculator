@@ -74,8 +74,8 @@ export function initDamageBonuses() {
   return [attPattBonus, attElmtBonus] as const;
 }
 
-function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffs: CustomBuffCtrl[]) {
-  for (const { category, type, value } of customBuffs) {
+function applyCustomBuffs(wrapper: Required<Wrapper1>, customBuffCtrls: CustomBuffCtrl[]) {
+  for (const { category, type, value } of customBuffCtrls) {
     const desc = "Custom Buff";
 
     if (category === 2) {

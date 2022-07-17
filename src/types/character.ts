@@ -69,8 +69,8 @@ export type GetExtraStatsFn = (level: number) => {
 }[];
 
 type NormalAttacks = {
-  stats: StatInfo[]
-}
+  stats: StatInfo[];
+};
 
 export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
 
@@ -127,21 +127,23 @@ type AbilityModifier = {
 
 // BUFFS
 
-// #to-do
-type BuffInputRenderType = "select" | "";
-
 type InputConfig = {
   labels?: string[];
   selfLabels?: string[];
   initialValues: ModifierInput[];
+};
+
+// #to-do
+type BuffInputRenderType = "select";
+
+type BuffInputConfig = InputConfig & {
   renderTypes: BuffInputRenderType[];
+  maxs?: (number | null)[];
 };
 
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
-  inputConfig?: InputConfig & {
-    maxs?: (number | null)[];
-  };
+  inputConfig?: BuffInputConfig;
   infuseConfig?: {
     range: NormalAttack[];
     overwritable: boolean;
@@ -172,9 +174,13 @@ type ApplyCharBuffArgs = {
 
 export type DebuffInputRenderType = "absorption" | "text";
 
+type DebuffInputConfig = InputConfig & {
+  renderTypes: DebuffInputRenderType[];
+};
+
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
-  inputConfig?: InputConfig;
+  inputConfig?: DebuffInputConfig;
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
     attPattBonus: AttackPatternBonus;
