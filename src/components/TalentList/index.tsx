@@ -192,7 +192,7 @@ function Details({
         />
       </div>
 
-      <div className="mt-3">
+      <div className="mt-4">
         <CloseButton className="mx-auto glow-on-hover" onClick={close} />
       </div>
     </div>

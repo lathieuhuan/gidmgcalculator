@@ -8,7 +8,7 @@ function ModalHeader(props: InsHTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        "relative h-full pl-4 flex items-center rounded-t-lg bg-orange",
+        "relative h-full pl-6 flex items-center rounded-t-lg bg-orange",
         className
       )}
       {...rest}

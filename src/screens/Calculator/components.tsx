@@ -1,20 +1,17 @@
-import cn from "classnames";
 import { Select } from "@Styled/Inputs";
+import { FaCaretDown } from "react-icons/fa";
 
 interface MainSelectProps {
-  className?: string;
   tab: string;
   onChangeTab: (tab: string) => void;
   options: string[];
 }
-export function MainSelect({ tab, onChangeTab, options, className }: MainSelectProps) {
+export function MainSelect({ tab, onChangeTab, options }: MainSelectProps) {
   return (
-    <div className="rounded-full bg-orange">
+    <div className="rounded-full bg-orange text-black relative">
+      <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
       <Select
-        className={cn(
-          "px-3 py-1 appearance-none text-xl font-bold text-center",
-          "bg-contain bg-no-repeat bg-[url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-arrow-down-b-512.png')] bg-origin-content bg-[origin:100%]"
-        )}
+        className="px-6 py-1 appearance-none text-xl font-bold text-center text-last-center relative z-10"
         value={tab}
         onChange={(e) => onChangeTab(e.target.value)}
       >

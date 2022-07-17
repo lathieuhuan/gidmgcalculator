@@ -34,7 +34,7 @@ export default function OverviewChar() {
 
   if (!touched) {
     return (
-      <div className={cn("px-4 py-3 flex flex-col bg-darkblue-1", styles.card)}>
+      <div className={cn("px-6 py-4 flex flex-col bg-darkblue-1", styles.card)}>
         <Button className="mx-auto" variant="positive" onClick={() => setPickerOn(true)}>
           Choose a Character
         </Button>
@@ -46,10 +46,10 @@ export default function OverviewChar() {
   const { beta, icon, vision, rarity } = findCharacter(charData)!;
 
   return (
-    <div className={cn("px-4 py-3 flex flex-col bg-darkblue-1", styles.card)}>
-      <div className="mt-2 pb-4 flex">
-        <div className="mr-3 relative" onClick={() => setPickerOn(true)}>
-          <IconButton className="absolute -top-2.5 left-2.5 z-10 text-xl" variant="positive">
+    <div className={cn("px-6 py-4 flex flex-col bg-darkblue-1", styles.card)}>
+      <div className="mt-2 pb-6 flex">
+        <div className="mr-4 relative" onClick={() => setPickerOn(true)}>
+          <IconButton className="absolute -top-2.5 -left-2.5 z-10 text-xl" variant="positive">
             <FaSyncAlt />
           </IconButton>
 
@@ -63,7 +63,7 @@ export default function OverviewChar() {
         </div>
 
         <div className="overflow-hidden">
-          <p className={cn("text-h1 truncate", colorByVision[vision])}>{char.name}</p>
+          <p className={cn("text-h1 truncate font-black", colorByVision[vision])}>{char.name}</p>
           <StarLine className="mt-1" rarity={rarity} />
           <div className="mt-1 flex">
             <p className="mr-1 text-h6">Level</p>

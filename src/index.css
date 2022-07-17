@@ -71,3 +71,6 @@ body {
 .text-last-right {
   text-align-last: right;
 }
+.text-last-center {
+  text-align-last: center;
+}

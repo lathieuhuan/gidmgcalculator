@@ -39,7 +39,7 @@ export function SkillAttributes({
   return (
     <div className="mt-2">
       <div
-        className={cn("py-2 flex-center bg-darkblue-1 sticky -top-1", isStatic ? "pr-3" : "pl-3")}
+        className={cn("py-2 flex-center bg-darkblue-1 sticky -top-1", isStatic ? "pr-4" : "pl-4")}
       >
         {!isStatic && (
           <>

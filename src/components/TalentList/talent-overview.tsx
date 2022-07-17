@@ -88,7 +88,7 @@ interface PassiveTalentProps {
 }
 export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: PassiveTalentProps) {
   return (
-    <div className="mt-3 flex">
+    <div className="mt-4 flex">
       <AbilityIcon className="my-2 mr-2" active={active} img={talentInfo.image} vision={vision} />
       <div className="grow flex items-center">
         <div className={cn("px-2", !active && "opacity-50")}>

@@ -25,7 +25,7 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
 
   if (!constellation.length) {
     return (
-      <p className="pt-3 px-3 text-h5 text-center">
+      <p className="pt-4 px-4 text-h5 text-center">
         The time has not yet come for this person's corner of the night sky to light up.
       </p>
     );
@@ -84,7 +84,7 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
                 <p className="text-h6">
                   Constellation Lv. <Green b>{consLv}</Green>
                 </p>
-                <p className="mt-3">
+                <p className="mt-4">
                   {consLv === 3 || consLv === 5 ? (
                     <>
                       Increases the Level of <Green>{desc}</Green> by <Green b>3</Green>.<br />{" "}
@@ -96,7 +96,7 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
                 </p>
               </div>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <CloseButton
                 className="mx-auto"
                 onClick={() => {

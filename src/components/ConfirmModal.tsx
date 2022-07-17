@@ -40,12 +40,12 @@ export default function ConfirmModal({
   }
   return (
     <Modal close={close}>
-      <div className="p-3 w-[22.5rem] max-w-95 rounded-2xl bg-darkblue-3">
-        <div className="py-3">
+      <div className="p-4 w-[22.5rem] max-w-95 rounded-2xl bg-darkblue-3">
+        <div className="py-4">
           <p className="text-center text-1.5xl">{message}</p>
         </div>
         <ButtonBar
-          className={cn("mt-3", mid && "gap-4")}
+          className={cn("mt-4", mid && "gap-4")}
           texts={texts}
           handlers={handlers}
           autoFocusIndex={texts.length - 1}

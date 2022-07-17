@@ -16,17 +16,14 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
   return (
     <div className={cn("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
       <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
-        {item.beta && (
-          <div className="absolute top-0 left-0 z-10">
-            <BetaMark />
-          </div>
-        )}
+        {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
+        
         <div className="relative">
           <div
             className={cn(
               "overflow-hidden flex rounded-t-lg",
               rarityGradients[item.rarity],
-              item.vision ? "pt-3" : "p-1"
+              item.vision ? "pt-4" : "p-1"
             )}
           >
             <img

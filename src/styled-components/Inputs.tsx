@@ -9,7 +9,7 @@ export const Button = (props: ButtonProps) => {
     <button
       type="button"
       className={cn(
-        "px-4 py-1 rounded-2xl shadow-common font-bold",
+        "px-6 py-1 rounded-2xl shadow-common font-bold",
         buttonStyles(props),
         className
       )}
@@ -23,11 +23,7 @@ export const IconButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={cn(
-        "rounded-full h-8 w-8 flex-center",
-        buttonStyles(props),
-        className
-      )}
+      className={cn("rounded-full h-8 w-8 flex-center", buttonStyles(props), className)}
       {...rest}
     />
   );
@@ -40,11 +36,7 @@ export interface CloseButtonProps {
 }
 export const CloseButton = ({ className, ...rest }: CloseButtonProps) => {
   return (
-    <IconButton
-      className={cn("w-7 h-7", className)}
-      variant="negative"
-      {...rest}
-    >
+    <IconButton className={cn("w-7 h-7", className)} variant="negative" {...rest}>
       <FaTimes />
     </IconButton>
   );
@@ -52,22 +44,15 @@ export const CloseButton = ({ className, ...rest }: CloseButtonProps) => {
 
 export const Checkbox = (props: InputHTMLAttributes<HTMLInputElement>) => {
   const { className, type, ...rest } = props;
-  return (
-    <input type="checkbox" className={cn("scale-150", className)} {...rest} />
-  );
+  return <input type="checkbox" className={cn("scale-150", className)} {...rest} />;
 };
 
 export const Select = (props: SelectHTMLAttributes<HTMLSelectElement>) => {
   const { className, ...rest } = props;
   return (
-    <div>
-      <select
-        className={cn(
-          "w-full h-full block bg-transparent outline-none",
-          className
-        )}
-        {...rest}
-      />
-    </div>
+    <select
+      className={cn("w-full h-full block bg-transparent outline-none", className)}
+      {...rest}
+    />
   );
 };

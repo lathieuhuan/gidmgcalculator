@@ -198,7 +198,7 @@ export function SetBonus({ sets }: SetBonusProps) {
           return (
             <div key={index} className="mt-1">
               <p className="text-lg leading-relaxed font-bold text-green">{artData.name}</p>
-              <ul className="pl-4">{content}</ul>
+              <ul className="pl-6">{content}</ul>
             </div>
           );
         })

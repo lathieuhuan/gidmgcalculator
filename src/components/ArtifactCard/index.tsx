@@ -42,12 +42,12 @@ export default function ArtifactCard({
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
-      <div className={cn("px-3 pt-1", rarityBgColors[rarity])}>
+      <div className={cn("px-4 pt-1", rarityBgColors[rarity])}>
         <p className="text-h5 font-bold text-black truncate">{name}</p>
       </div>
-      <div className="mt-3 mx-3 flex">
+      <div className="mt-4 mx-4 flex">
         {mutable ? (
-          <div className="mr-4 pr-2 grow flex justify-between">
+          <div className="mr-6 pr-2 grow flex justify-between">
             <div className="rounded-full bg-darkblue-3">
               <Select
                 className={cn(
@@ -71,7 +71,7 @@ export default function ArtifactCard({
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
-                className={cn("mt-4 px-1.5 py-1 rounded font-black", rarityBgColors[rarity])}
+                className={cn("mt-6 px-1.5 py-1 rounded font-black", rarityBgColors[rarity])}
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance(maxLevel)}
               >
@@ -95,13 +95,13 @@ export default function ArtifactCard({
         </div>
       </div>
 
-      <div className="mt-2 ml-4">
+      <div className="mt-2 ml-6">
         {["flower", "plume"].includes(mainStatType) || !mutable ? (
-          <p className={cn("pt-1 text-h6", mutable ? "pl-5" : "pl-2")}>{mainStatType}</p>
+          <p className={cn("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{mainStatType}</p>
         ) : (
           <div className="py-1">
             <Select
-              className="pl-5 text-lg text-white appearance-none bg-contain bg-no-repeat bg-white-arrow"
+              className="pl-8 text-lg text-white appearance-none bg-contain bg-no-repeat bg-white-arrow"
               value={mainStatType}
               onChange={(e) => changeMainStatType(e.target.value)}
             >
@@ -111,7 +111,7 @@ export default function ArtifactCard({
             </Select>
           </div>
         )}
-        <p className={cn("text-h3", mutable ? "pl-5" : "pl-2", rarityColors[rarity])}>
+        <p className={cn("text-h3", mutable ? "pl-8" : "pl-2", rarityColors[rarity])}>
           {possibleMainStatTypes[mainStatType]?.[rarity][artPiece.level]}
           {percentSign(mainStatType)}
         </p>
@@ -138,7 +138,7 @@ export default function ArtifactCard({
               <span>+</span>
               <input
                 className={cn(
-                  "relative ml-3px pr-2 py-3px w-[3.25rem]",
+                  "relative ml-4px pr-2 py-4px w-[3.25rem]",
                   isValid ? "text-white" : "text-darkred"
                 )}
                 value={value}

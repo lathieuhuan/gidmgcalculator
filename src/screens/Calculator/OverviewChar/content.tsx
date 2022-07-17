@@ -68,7 +68,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
             </div>
           }
         />
-        <div className="mt-3">{switcher}</div>
+        <div className="mt-4">{switcher}</div>
       </div>
     );
   },

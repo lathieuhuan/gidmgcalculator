@@ -70,8 +70,8 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, close 
         </ModalHeader>
       </div>
 
-      <div className="px-3 pt-2 pb-3 h-[90%]">
-        <div className="pr-3 full-h overflow-auto custom-sb">
+      <div className="px-4 pt-2 pb-4 h-[90%]">
+        <div className="pr-4 full-h overflow-auto custom-sb">
           <div className="flex-wrap">
             {data.map((item, i) => {
               return (

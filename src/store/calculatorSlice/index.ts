@@ -56,7 +56,7 @@ export const calculatorSlice = createSlice({
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
 
       state.setups = [getSetupInfo({})];
-      state.currentSetup = state.setups[0].ID;
+      state.currentSetup = 0;
       state.char = char;
       state.charData = getCharData(char);
       state.allSelfBuffCtrls = [selfBuffCtrls];
