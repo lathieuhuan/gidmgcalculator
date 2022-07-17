@@ -40,28 +40,25 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
     <SharedSpace
       atLeft={!atDetails}
       leftPart={
-        <div className="h-full hide-scrollbar">
-          <div>
-            {(["NAs", "ES", "EB", "altSprint"] as const).map((talentType, i) => {
-              const talentInfo =
-                talentType === "NAs" ? { name: NAsConfig.name } : activeTalents[talentType];
+        <div className="h-full hide-scrollbar flex flex-col gap-4">
+          {(["NAs", "ES", "EB", "altSprint"] as const).map((talentType, i) => {
+            const talentInfo =
+              talentType === "NAs" ? { name: NAsConfig.name } : activeTalents[talentType];
 
-              return talentInfo ? (
-                <ActiveTalent
-                  key={i}
-                  char={char}
-                  talentInfo={talentInfo}
-                  talentType={talentType}
-                  talentLv={talentType === "altSprint" ? 1 : char[talentType]}
-                  {...{ party, vision, weapon }}
-                  onChangeLevel={
-                    talentType !== "altSprint" ? onChangeLevelOf(talentType) : undefined
-                  }
-                  onClickInfoSign={() => toDetailsAt(TALENT_TYPES.indexOf(talentType))}
-                />
-              ) : null;
-            })}
-          </div>
+            return talentInfo ? (
+              <ActiveTalent
+                key={i}
+                char={char}
+                talentInfo={talentInfo}
+                talentType={talentType}
+                talentLv={talentType === "altSprint" ? 1 : char[talentType]}
+                {...{ party, vision, weapon }}
+                onChangeLevel={talentType !== "altSprint" ? onChangeLevelOf(talentType) : undefined}
+                onClickInfoSign={() => toDetailsAt(TALENT_TYPES.indexOf(talentType))}
+              />
+            ) : null;
+          })}
+          
           {passiveTalents.map((talent, i) => {
             const ascsRequired = i === 0 ? 1 : 4;
             return (
@@ -82,7 +79,10 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
             position={position}
             {...{ vision, weapon, NAsConfig, activeTalents, passiveTalents }}
             changePosition={setPosition}
-            close={() => setAtDetails(false)}
+            close={() => {
+              setAtDetails(false);
+              setTimeout(() => setPosition(-1), 200);
+            }}
           />
         )
       }
@@ -121,9 +121,9 @@ function Details({
   if (altSprint) {
     images.push(altSprint.image);
   }
-  for (const talent of passiveTalents) {
-    images.push(talent.image);
-  }
+  // for (const talent of passiveTalents) {
+  //   images.push(talent.image);
+  // }
 
   const infoByPosition: Array<{
     type: Talent;

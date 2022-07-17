@@ -23,7 +23,7 @@ export default function AbilityIcon({
 
   return img ? (
     <img
-      className={cn(tw, "w-13 h-13", className)}
+      className={cn(tw, "min-w-13 h-13", className)}
       src={wikiImg(img)}
       alt=""
       draggable={false}

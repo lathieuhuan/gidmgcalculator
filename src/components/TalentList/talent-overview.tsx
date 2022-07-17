@@ -48,10 +48,10 @@ export function ActiveTalent({
         }
         vision={vision}
       />
-      <div className="grow-1 flex align-center">
+      <div className="grow flex items-center">
         <div className="px-2">
           <p className="font-bold">{talentInfo.name}</p>
-          <div className="flex align-center">
+          <div className="flex items-center">
             <p className="mr-1">Lv.</p>
             {talentType === "altSprint" ? (
               <p className={cn("ml-1 font-bold", colorByVision[vision])}>1</p>
@@ -62,7 +62,9 @@ export function ActiveTalent({
                 onChange={(e) => onChangeLevel && onChangeLevel(+e.target.value)}
               >
                 {[...Array(10).keys()].map((_, i) => (
-                  <option key={i}>{i + 1}</option>
+                  <option key={i} className="text-black">
+                    {i + 1}
+                  </option>
                 ))}
               </Select>
             )}
@@ -88,7 +90,7 @@ interface PassiveTalentProps {
 }
 export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: PassiveTalentProps) {
   return (
-    <div className="mt-4 flex">
+    <div className="flex">
       <AbilityIcon className="my-2 mr-2" active={active} img={talentInfo.image} vision={vision} />
       <div className="grow flex items-center">
         <div className={cn("px-2", !active && "opacity-50")}>

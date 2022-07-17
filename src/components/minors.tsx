@@ -29,15 +29,15 @@ export const InfoSign = (props: InfoSignProps) => {
     return <CloseButton className={cn("h-6 w-6 text-sm", props.className)} />;
   }
   return (
-    <div
+    <button
       className={cn(
-        "h-6 w-6 text-2xl",
-        !props.selfHover && "group-hover:text-lightgold",
+        "h-6 w-6 text-2xl block",
+        props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold",
         props.className
       )}
     >
       <FaInfoCircle />
-    </div>
+    </button>
   );
 };
 
@@ -119,19 +119,20 @@ export const StarLine = ({ rarity, className }: StarLineProps) => {
 };
 
 interface SharedSpaceProps {
+  className?: string;
   leftPart: ReactNode;
   rightPart: ReactNode;
   atLeft: boolean;
 }
-export function SharedSpace({ leftPart, rightPart, atLeft }: SharedSpaceProps) {
-  const className = cn(
+export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSpaceProps) {
+  const childClassName = cn(
     "absolute top-0 w-full h-full duration-200 ease-linear",
     atLeft ? "translate-x-0" : "-translate-x-full"
   );
   return (
-    <div className="relative w-full h-full overflow-hidden">
-      <div className={cn(className, "left-0")}>{leftPart}</div>
-      <div className={cn(className, "left-full")}>{rightPart}</div>
+    <div className={cn("relative w-full h-full overflow-hidden", className)}>
+      <div className={cn(childClassName, "left-0")}>{leftPart}</div>
+      <div className={cn(childClassName, "left-full")}>{rightPart}</div>
     </div>
   );
 }

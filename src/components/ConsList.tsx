@@ -10,7 +10,7 @@ import AbilityIcon from "./ability-components/Icon";
 import SlideShow from "./ability-components/SlideShow";
 
 interface ConsListProps {
-  char: NonNullable<CalcChar>;
+  char: CalcChar;
   onClickIcon: (index: number) => void;
 }
 export default function ConsList({ char, onClickIcon }: ConsListProps) {
@@ -18,6 +18,11 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
   const [atDetails, setAtDetails] = useState(false);
 
   const { code, vision, constellation } = findCharacter(char)!;
+  let name = "";
+  if (consLv >= 1) {
+    name = constellation[consLv - 1].name;
+  }
+  const desc = "No description yet";
 
   useEffect(() => {
     setAtDetails(false);
@@ -30,12 +35,10 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
       </p>
     );
   }
-  const { name } = constellation[consLv - 1];
-  const desc = "No description yet";
 
   return (
     <SharedSpace
-      atLeft={atDetails}
+      atLeft={!atDetails}
       leftPart={
         <div className="h-full hide-scrollbar flex flex-col gap-4">
           {constellation.map((cons, i) => {
@@ -45,13 +48,13 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
                   <AbilityIcon
                     className="my-1 mr-2 cursor-pointer"
                     img={cons.image}
-                    active={consLv >= i + 1}
+                    active={char.cons >= i + 1}
                     vision={vision}
                     onClick={() => onClickIcon(i)}
                   />
                 </div>
                 <div
-                  className={"grow-1 flex align-center group"}
+                  className={"grow flex items-center group"}
                   onClick={() => {
                     setAtDetails(true);
                     setConsLv(i + 1);

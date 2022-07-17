@@ -32,7 +32,7 @@ export default function SlideShow({
             style={{ transform: `translateX(-${currentIndex * 3.5}rem)` }}
           >
             {images.map((img, i) => (
-              <AbilityIcon key={i} className="!w-14 !h-14" img={img} vision={vision} />
+              <AbilityIcon key={i} className="!min-w-[3.5rem] !w-14 !h-14" img={img} vision={vision} />
             ))}
           </div>
         </div>

@@ -138,7 +138,7 @@ export const LevelButton = ({ levelUp, onMouseDown, onMouseUp }: LevelButtonProp
   return (
     <button
       className={cn(
-        "absolute top-2 flex px-2 rounded border-2 border-darkblue-3 text-darkblue-3 text-1.5xl hover:bg-green hover:text-green",
+        "absolute top-2 flex px-2 rounded border-2 border-darkblue-3 text-darkblue-3 text-1.5xl hover:border-green hover:text-green",
         levelUp ? "right-10" : "left-10"
       )}
       onMouseDown={() => onMouseDown(levelUp)}

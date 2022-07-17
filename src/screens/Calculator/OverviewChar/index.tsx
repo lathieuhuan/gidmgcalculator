@@ -73,7 +73,7 @@ export default function OverviewChar() {
               onChange={(e) => dispatch(levelCalcChar(e.target.value as Level))}
             >
               {LEVELS.map((lv) => (
-                <option key={lv}>{lv}</option>
+                <option key={lv} className="text-black">{lv}</option>
               ))}
             </Select>
           </div>
@@ -84,7 +84,7 @@ export default function OverviewChar() {
         onChangeTab={setTab}
         options={["Attributes", "Weapon", "Artifacts", "Constellation", "Talents"]}
       />
-      {Content && <Content />}
+      <div className="mt-3 grow">{Content && <Content />}</div>
 
       {pickerOn && <CharPicker close={() => setPickerOn(false)} />}
     </div>

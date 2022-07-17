@@ -54,21 +54,23 @@ const contentByTab: Record<string, () => JSX.Element> = {
       { text: "Set Bonus", clickable: true },
     ]);
     return (
-      <div className="h-full flex-col">
-        <SharedSpace
-          atLeft={tab === "Details"}
-          leftPart={
-            <div className="h-full custom-scrollbar">
-              <AttributeTable attributes={artAttrs} />
-            </div>
-          }
-          rightPart={
-            <div className="h-full hide-scrollbar">
-              <SetBonus sets={sets} />
-            </div>
-          }
-        />
-        <div className="mt-4">{switcher}</div>
+      <div className="h-full flex flex-col">
+        <div className="mb-4">{switcher}</div>
+        <div className="grow">
+          <SharedSpace
+            atLeft={tab === "Details"}
+            leftPart={
+              <div className="custom-scrollbar">
+                <AttributeTable attributes={artAttrs} />
+              </div>
+            }
+            rightPart={
+              <div className="hide-scrollbar">
+                <SetBonus sets={sets} />
+              </div>
+            }
+          />
+        </div>
       </div>
     );
   },
@@ -82,7 +84,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
       />
     );
   },
-  Talent() {
+  Talents() {
     const char = useSelector(selectChar);
     const party = useSelector(selectParty);
     const dispatch = useDispatch();

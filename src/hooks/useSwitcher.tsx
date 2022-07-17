@@ -18,7 +18,7 @@ export function useSwitcher(TabInfos: TabInfo[]) {
             "py-1 w-1/2 flex-center",
             clickable && "cursor-pointer",
             text === tab ? "bg-default" : "bg-darkblue-3",
-            i ? "rounded-l-2xl" : i === TabInfos.length - 1 ? "rounded-r-2xl" : ""
+            !i ? "rounded-l-2xl" : i === TabInfos.length - 1 ? "rounded-r-2xl" : ""
           )}
           onClick={() => {
             if (clickable) setTab(text);
