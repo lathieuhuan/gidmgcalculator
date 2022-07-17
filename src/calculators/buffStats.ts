@@ -4,7 +4,6 @@ import {
   ATTACK_PATTERNS,
   ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
-  RESONANCE_INFO,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import {
@@ -50,6 +49,7 @@ import {
   pushOrMergeTrackerRecord,
   vaporizeMult,
 } from "./utils";
+import { RESONANCE_STAT } from "./constants";
 
 export function initDamageBonuses() {
   const attPattBonus = {} as AttackPatternBonus;
@@ -103,7 +103,7 @@ function applyResonanceBuffs(
 ) {
   for (const rsn of resonance) {
     if (rsn.activated) {
-      const { key, value } = RESONANCE_INFO[rsn.vision];
+      const { key, value } = RESONANCE_STAT[rsn.vision];
       const desc = `${rsn.vision} Resonance`;
       applyModifier(desc, totalAttr, key, value, tracker);
 

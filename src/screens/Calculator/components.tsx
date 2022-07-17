@@ -24,3 +24,7 @@ export function MainSelect({ tab, onChangeTab, options }: MainSelectProps) {
     </div>
   );
 }
+
+export const renderNoModifier = (isBuff: boolean) => (
+  <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>
+);

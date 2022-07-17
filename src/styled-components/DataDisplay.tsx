@@ -1,6 +1,7 @@
 import cn from "classnames";
-import type { Vision } from "@Src/types";
 import type { HTMLAttributes } from "react";
+import type { Vision } from "@Src/types";
+import { Checkbox } from "./Inputs";
 
 type SpanExtraColor = "gold" | "lightgold" | "green" | "orange";
 
@@ -24,3 +25,35 @@ export const Dendro = makeSpan("text-dendro");
 export const Cryo = makeSpan("text-cryo");
 export const Anemo = makeSpan("text-anemo");
 export const Geo = makeSpan("text-geo");
+
+interface ModifierLayoutProps {
+  mutable?: boolean;
+  checked: boolean;
+  heading: string;
+  desc: string | JSX.Element;
+  setters?: JSX.Element[];
+  onToggle: () => void;
+}
+export function ModifierLayout({
+  mutable = true,
+  checked,
+  heading,
+  desc,
+  setters,
+  onToggle,
+}: ModifierLayoutProps) {
+  return (
+    <div className="pt-2">
+      <div className="pt-1 mb-1 flex">
+        <label className="flex items-center">
+          {mutable && <Checkbox className="ml-1 mr-2" checked={checked} onChange={onToggle} />}
+          <p className="pl-1 font-bold text-lightgold">{heading}</p>
+        </label>
+      </div>
+      <p>{desc}</p>
+      {setters && !!setters.length && (
+        <div className="pt-2 pr-2 flex flex-col gap-5">{setters}</div>
+      )}
+    </div>
+  );
+}

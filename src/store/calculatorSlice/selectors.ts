@@ -19,5 +19,11 @@ export const selectArtInfo = (state: RootState) =>
 export const selectWeapon = (state: RootState) =>
   state.calculator.allWeapons[state.calculator.currentSetup];
 
-  export const selectParty = (state: RootState) =>
+export const selectParty = (state: RootState) =>
   state.calculator.allParties[state.calculator.currentSetup];
+
+export const selectElmtModCtrls = (state: RootState) =>
+  state.calculator.allElmtModCtrls[state.calculator.currentSetup];
+
+export const selectFinalInfusion = (state: RootState) =>
+  state.calculator.allFinalInfusion[state.calculator.currentSetup];

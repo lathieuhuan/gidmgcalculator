@@ -1,5 +1,3 @@
-import { AttackElement } from "./types";
-
 export enum EScreen {
   CALCULATOR = "Calculator",
   MY_SETUPS = "MySetups",
@@ -98,48 +96,8 @@ export const TRANSFORMATIVE_REACTIONS = [
   "shattered",
 ] as const;
 
-export const TRANSFORMATIVE_REACTION_INFO: Record<
-  typeof TRANSFORMATIVE_REACTIONS[number],
-  { mult: number; dmgType: AttackElement | "various" }
-> = {
-  superconduct: { mult: 1, dmgType: "cryo" },
-  swirl: { mult: 1.2, dmgType: "various" },
-  electroCharged: { mult: 2.4, dmgType: "electro" },
-  overloaded: { mult: 4, dmgType: "pyro" },
-  shattered: { mult: 3, dmgType: "phys" },
-};
-
-export const BASE_REACTION_DAMAGE: Record<number, number> = {
-  1: 9,
-  20: 40,
-  40: 104,
-  50: 162,
-  60: 245,
-  70: 383,
-  80: 540,
-  90: 725,
-};
-
 export const AMPLIFYING_ELEMENTS = ["pyro", "hydro", "cryo"];
 
 export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
 
 export const REACTIONS = [...TRANSFORMATIVE_REACTIONS, ...AMPLIFYING_REACTIONS] as const;
-
-export const RESONANCE_INFO = {
-  pyro: {
-    name: "Fervent Flames",
-    key: "atk_",
-    value: 25,
-  },
-  cryo: {
-    name: "Shattering Ice",
-    key: "cRate",
-    value: 15,
-  },
-  geo: {
-    name: "Enduring Rock",
-    key: "shStr",
-    value: 15,
-  },
-} as const;

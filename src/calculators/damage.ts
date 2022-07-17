@@ -26,9 +26,7 @@ import {
 import {
   AMPLIFYING_REACTIONS,
   ATTACK_PATTERNS,
-  BASE_REACTION_DAMAGE,
   TRANSFORMATIVE_REACTIONS,
-  TRANSFORMATIVE_REACTION_INFO,
   VISION_TYPES,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
@@ -36,6 +34,7 @@ import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } fr
 import { applyModifier, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord, Wrapper3 } from "./types";
+import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function applyCustomDebuffs(
   resistReduct: ResistanceReduction,
