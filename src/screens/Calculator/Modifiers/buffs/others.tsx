@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { AmplifyingReaction, ArtifactBuff, DataArtifact, Vision } from "@Src/types";
+import type { AmplifyingReaction, ArtifactBuff, Vision } from "@Src/types";
+import type { ArtModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeElementModCtrl, toggleModCtrl, toggleResonance } from "@Store/calculatorSlice";
 import {
@@ -9,14 +10,15 @@ import {
   selectFinalInfusion,
   selectRxnBonus,
 } from "@Store/calculatorSlice/selectors";
+import { RESONANCE_BUFF_INFO } from "./constants";
 
 import { renderAmpReactionDesc } from "@Components/minors";
 import { ModifierLayout } from "@Styled/DataDisplay";
-import { renderNoModifier } from "../../components";
-import { RESONANCE_BUFF_INFO } from "./constants";
+import { renderNoModifier, Setter, twStyles } from "../../components";
+
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
-import { ArtModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { Select } from "@Styled/Inputs";
 
 export function ElmtBuffs() {
   const { vision } = useSelector(selectCharData);
@@ -105,7 +107,7 @@ export function ArtifactBuffs() {
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
         desc={buff.desc()}
-        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
+        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> || <></>}
       />
     );
   });
@@ -137,10 +139,10 @@ export function ArtifactBuffs() {
 
 interface SetterSectionProps {
   buff: ArtifactBuff;
-  inputs: number[];
+  inputs?: (string | number)[];
   path: ArtModCtrlPath;
 }
-function SetterSection({ buff, inputs, path }: SetterSectionProps) {
+function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const dispatch = useDispatch();
   if (!buff.inputConfig) return null;
 
@@ -157,26 +159,30 @@ function SetterSection({ buff, inputs, path }: SetterSectionProps) {
     }
 
     return (
-      <StyledSetter key={i}>
-        <p className="label">{label}</p>
-        <StyledSelect
-          value={inputs[i]}
-          onChange={(e) => {
-            const { value } = e.target;
-            dispatch(
-              CHANGE_MCS_INPUT({
-                ...path,
-                inpIndex: i,
-                value: isNaN(value) ? value : +value,
-              })
-            );
-          }}
-        >
-          {options.map((opt) => (
-            <option key={opt}>{opt}</option>
-          ))}
-        </StyledSelect>
-      </StyledSetter>
+      <Setter
+        key={i}
+        label={label}
+        input={
+          <Select
+            className={twStyles.select}
+            value={inputs[i]}
+            onChange={(e) => {
+              const { value } = e.target;
+              // dispatch(
+              //   CHANGE_MCS_INPUT({
+              //     ...path,
+              //     inpIndex: i,
+              //     value: isNaN(value) ? value : +value,
+              //   })
+              // );
+            }}
+          >
+            {options.map((opt) => (
+              <option key={opt}>{opt}</option>
+            ))}
+          </Select>
+        }
+      />
     );
   });
 }

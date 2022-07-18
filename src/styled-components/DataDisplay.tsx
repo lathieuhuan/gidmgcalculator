@@ -1,5 +1,5 @@
 import cn from "classnames";
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import type { Vision } from "@Src/types";
 import { Checkbox } from "./Inputs";
 
@@ -31,7 +31,7 @@ interface ModifierLayoutProps {
   checked: boolean;
   heading: string;
   desc: string | JSX.Element;
-  setters?: JSX.Element[];
+  setters?: JSX.Element[] | null;
   onToggle: () => void;
 }
 export function ModifierLayout({
@@ -51,9 +51,7 @@ export function ModifierLayout({
         </label>
       </div>
       <p>{desc}</p>
-      {setters && !!setters.length && (
-        <div className="pt-2 pr-2 flex flex-col gap-5">{setters}</div>
-      )}
+      {setters && <div className="pt-2 pr-2 flex flex-col gap-5">{setters}</div>}
     </div>
   );
 }

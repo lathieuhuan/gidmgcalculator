@@ -1,4 +1,5 @@
 import { Select } from "@Styled/Inputs";
+import { ReactNode } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
 interface MainSelectProps {
@@ -28,3 +29,20 @@ export function MainSelect({ tab, onChangeTab, options }: MainSelectProps) {
 export const renderNoModifier = (isBuff: boolean) => (
   <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>
 );
+
+interface SetterProps {
+  label: string;
+  input: ReactNode;
+}
+export const Setter = ({ label, input }: SetterProps) => {
+  return (
+    <div className="flex items-center justify-end">
+      <span className="mr-4 text-base leading-6">{label}</span>
+      {input}
+    </div>
+  );
+};
+
+export const twStyles = {
+  select: "px-2 py-1 bg-white rounded font-bold",
+};
