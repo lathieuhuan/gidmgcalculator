@@ -11,7 +11,6 @@ import {
   Target,
   TotalAttribute,
   Tracker,
-  AbilityDebuff,
   DamageResult,
   TalentBuff,
   Vision,
@@ -33,214 +32,8 @@ import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
 import { applyModifier, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-import { TrackerDamageRecord, Wrapper3 } from "./types";
+import { TrackerDamageRecord } from "./types";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
-
-function applyCustomDebuffs(
-  resistReduct: ResistanceReduction,
-  customDebuffCtrls: CustomDebuffCtrl[],
-  tracker: Tracker
-) {
-  for (const { type, value } of customDebuffCtrls) {
-    resistReduct[type] += value;
-    pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
-  }
-}
-
-function applySelfDebuffs(
-  wrapper3: Wrapper3,
-  selfDebuffCtrls: ModifierCtrl[],
-  debuffs: AbilityDebuff[] | undefined,
-  char: CharInfo,
-  tracker: Tracker
-) {
-  for (const { activated, inputs, index } of selfDebuffCtrls) {
-    const debuff = findByIndex(debuffs || [], index);
-
-    if (activated && debuff && debuff.isGranted(char) && debuff.applyDebuff) {
-      const desc = `Self / ${debuff.src}`;
-      debuff.applyDebuff({ ...wrapper3, fromSelf: true, char, inputs, desc, tracker });
-    }
-  }
-}
-
-function applyPartyDebuffs(wrapper3: Wrapper3, party: Party, tracker: Tracker) {
-  for (const tm of party) {
-    if (!tm) {
-      continue;
-    }
-    const { debuffs } = findCharacter(tm)!;
-    for (const { activated, inputs, index } of tm.debuffCtrls) {
-      const debuff = findByIndex(debuffs || [], index);
-
-      if (activated && debuff && debuff.applyDebuff) {
-        const desc = `${tm.name} / ${debuff.src}`;
-        debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc, tracker });
-      }
-    }
-  }
-}
-
-function applyArtDebuffs(
-  resistReduct: ResistanceReduction,
-  subArtDebuffCtrls: SubArtModCtrl[],
-  tracker: Tracker
-) {
-  for (const { activated, code, index, inputs } of subArtDebuffCtrls) {
-    if (activated) {
-      const { name, debuffs } = findArtifactSet({ code })!;
-      const desc = `${name} / 4-Piece activated`;
-      debuffs![index].applyDebuff({ resistReduct, inputs, desc, tracker });
-    }
-  }
-}
-
-function applyResonanceDebuffs(
-  resistReduct: ResistanceReduction,
-  elmtModCtrls: ElementModCtrl,
-  tracker: Tracker
-) {
-  const geoRsn = elmtModCtrls.resonance.find((rsn) => rsn.vision === "geo");
-  if (geoRsn && geoRsn.activated) {
-    applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
-  }
-  if (elmtModCtrls.superconduct) {
-    applyModifier("Superconduct", resistReduct, "phys", 40, tracker);
-  }
-}
-
-function calcResistanceReduction(resistReduct: ResistanceReduction, target: Target) {
-  for (const key of [...VISION_TYPES]) {
-    let RES = (target[key] - resistReduct[key]) / 100;
-    resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
-  }
-}
-
-function getBaseDamage(
-  totalAttr: TotalAttribute,
-  statInfo: StatInfo,
-  level: number,
-  talentBuff: TalentBuff
-): [number | number[], TrackerDamageRecord] {
-  //
-  const { baseStatType = "atk", baseMult, multType, flat } = statInfo;
-  const xtraMult = talentBuff.mult?.value || 0;
-  const record = {
-    baseValue: totalAttr[baseStatType],
-    baseStatType,
-  } as TrackerDamageRecord;
-
-  const finalMult = (base: number) => base * TALENT_LV_MULTIPLIERS[multType][level] + xtraMult;
-
-  const baseDamage = (pct: number) => {
-    const result = (totalAttr[baseStatType] * pct) / 100;
-    const flatBonus = flat ? flat.base * TALENT_LV_MULTIPLIERS[flat.type][level] : 0;
-    record.finalFlat = flatBonus;
-    return result + flatBonus;
-  };
-
-  if (Array.isArray(baseMult)) {
-    const pcts = baseMult.map(finalMult);
-    record.finalMult = pcts;
-    return [pcts.map(baseDamage), record];
-  }
-  const pct = finalMult(baseMult);
-  record.finalMult = pct;
-
-  return [baseDamage(pct), record];
-}
-
-function getDamageBonusMult(
-  talentBuff: TalentBuff,
-  [attPatt, attElmt]: DamageTypes,
-  totalAttr: TotalAttribute,
-  attPattBonus: AttackPatternBonus,
-  attInfusion: AttackElement | undefined
-) {
-  let normal = talentBuff.pct?.value || 0;
-  let special = 1;
-
-  if (attPatt) {
-    normal += attPattBonus[attPatt].pct;
-
-    if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
-      normal += totalAttr[attInfusion];
-    } else if (attElmt !== "various") {
-      normal += totalAttr[attElmt];
-    }
-    special = toMultiplier(attPattBonus[attPatt].specialMult);
-  }
-  return [toMultiplier(normal + attPattBonus.all.pct), special];
-}
-
-function getReactionMult(
-  elmtModCtrls: ElementModCtrl,
-  attElmt: AttackElement,
-  attInfusion: AttackElement,
-  rxnBonus: ReactionBonus,
-  vision: Vision
-) {
-  const { ampRxn, infusion_ampRxn } = elmtModCtrls;
-  if (
-    ampRxn &&
-    (attElmt !== "phys" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
-  ) {
-    return rxnBonus[ampRxn];
-  }
-  if (infusion_ampRxn && attInfusion !== vision && AMPLIFYING_REACTIONS.includes(infusion_ampRxn)) {
-    return rxnBonus[`infusion_${infusion_ampRxn}`];
-  }
-  return 1;
-}
-
-function getReductionMult(
-  char: CharInfo,
-  target: Target,
-  resistReduct: ResistanceReduction,
-  attPattBonus: AttackPatternBonus,
-  [attPatt, attElmt]: DamageTypes,
-  vision: Vision,
-  attInfusion: AttackElement
-) {
-  const charPart = bareLv(char.level) + 100;
-  const defReduction = 1 - resistReduct.def / 100;
-  let defMult = 1;
-  if (attPatt) {
-    defMult = 1 - attPattBonus[attPatt].defIgnore / 100;
-  }
-  defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
-
-  if (attElmt !== "phys" && attElmt !== "various") {
-    return [defMult, resistReduct[vision]];
-  } else if (attElmt === "phys" && attPatt && !["NA", "CA", "PA"].includes(attPatt)) {
-    return [defMult, resistReduct.phys];
-  } else if (attElmt === "various") {
-    return [defMult, 1];
-  }
-  return [defMult, resistReduct[attInfusion]];
-}
-
-function getCrit(
-  totalAttr: TotalAttribute,
-  talentBuff: TalentBuff,
-  [attPatt, attElmt]: DamageTypes,
-  attPattBonus: AttackPatternBonus,
-  attElmtBonus: AttackElementBonus
-) {
-  const subTotal = (type: "cRate" | "cDmg") => {
-    return (
-      totalAttr[type] +
-      (talentBuff[type]?.value || 0) +
-      (attPatt ? attPattBonus[attPatt][type] : 0) +
-      attPattBonus.all[type]
-    );
-  };
-  const xtraCritDmg = attElmt !== "various" ? attElmtBonus[attElmt].cDmg : 0;
-  return {
-    Rate: Math.min(Math.max(subTotal("cRate"), 0), 100) / 100,
-    Dmg: (subTotal("cDmg") + xtraCritDmg) / 100,
-  };
-}
 
 function calcTalentStat(
   stat: StatInfo,
@@ -260,6 +53,7 @@ function calcTalentStat(
 ) {
   let record = {} as TrackerDamageRecord;
   const dmgTypes = stat.dmgTypes || defaultDmgTypes;
+  const [attPatt, attElmt] = dmgTypes;
 
   if (base !== 0 && dmgTypes && dmgTypes[0] && dmgTypes[1] !== "various") {
     // #to-check: assign infusion[dmgTypes[0] not work
@@ -269,28 +63,77 @@ function calcTalentStat(
 
     record.finalFlat = (record.finalFlat || 0) + flat;
 
-    const [normalMult, specialMult] = getDamageBonusMult(
-      talentBuff,
-      dmgTypes,
-      totalAttr,
-      attPattBonus,
-      attInfusion
-    );
-    const rxnMult = getReactionMult(elmtModCtrls, dmgTypes[1], attInfusion, rxnBonus, vision);
-    const [defMult, resMult] = getReductionMult(
-      char,
-      target,
-      resistReduct,
-      attPattBonus,
-      dmgTypes,
-      vision,
-      attInfusion
-    );
+    // CALCULATE DAMAGE BONUS MULTIPLIERS
+    let normalMult = talentBuff.pct?.value || 0;
+    let specialMult = 1;
+
+    if (attPatt) {
+      normalMult += attPattBonus[attPatt].pct;
+
+      if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
+        normalMult += totalAttr[attInfusion];
+      } else if (attElmt !== "various") {
+        normalMult += totalAttr[attElmt];
+      }
+      specialMult = toMultiplier(attPattBonus[attPatt].specialMult);
+    }
+    normalMult = toMultiplier(normalMult + attPattBonus.all.pct);
+
+    // CALCULATE REACTION MULTIPLIER
+    let rxnMult = 1;
+    const { ampRxn, infusion_ampRxn } = elmtModCtrls;
+
+    if (
+      ampRxn &&
+      (attElmt !== "phys" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
+    ) {
+      rxnMult = rxnBonus[ampRxn];
+    } //
+    else if (
+      infusion_ampRxn &&
+      attInfusion !== vision &&
+      AMPLIFYING_REACTIONS.includes(infusion_ampRxn)
+    ) {
+      rxnMult = rxnBonus[`infusion_${infusion_ampRxn}`];
+    }
+
+    // CALCULATE DEFENSE MULTIPLIER
+    let defMult = 1;
+    const charPart = bareLv(char.level) + 100;
+    const defReduction = 1 - resistReduct.def / 100;
+
+    if (attPatt) {
+      defMult = 1 - attPattBonus[attPatt].defIgnore / 100;
+    }
+    defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
+
+    // CALCULATE RESISTANCE MULTIPLIER
+    const resMult =
+      attElmt !== "phys" && attElmt !== "various"
+        ? resistReduct[vision]
+        : attElmt === "phys" && attPatt && !["NA", "CA", "PA"].includes(attPatt)
+        ? resistReduct.phys
+        : attElmt === "various"
+        ? 1
+        : resistReduct[attInfusion];
+
+    // CALCULATE CRITS
+    const totalCrit = (type: "cRate" | "cDmg") => {
+      return (
+        totalAttr[type] +
+        (talentBuff[type]?.value || 0) +
+        (attPatt ? attPattBonus[attPatt][type] : 0) +
+        attPattBonus.all[type]
+      );
+    };
+    const xtraCritDmg = attElmt !== "various" ? attElmtBonus[attElmt].cDmg : 0;
+    const cRate = Math.min(Math.max(totalCrit("cRate"), 0), 100) / 100;
+    const cDmg = (totalCrit("cDmg") + xtraCritDmg) / 100;
+
     base = applyToOneOrMany(
       base,
       (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
     );
-    const c = getCrit(totalAttr, talentBuff, dmgTypes, attPattBonus, attElmtBonus);
 
     record = {
       ...record,
@@ -299,15 +142,16 @@ function calcTalentStat(
       rxnMult,
       defMult,
       resMult,
-      cRate: c.Rate,
-      cDmg: c.Dmg,
+      cRate,
+      cDmg,
     };
     return {
       nonCrit: base,
-      crit: applyToOneOrMany(base, (n) => n * (1 + c.Dmg)),
-      average: applyToOneOrMany(base, (n) => n * (1 + c.Rate * c.Dmg)),
+      crit: applyToOneOrMany(base, (n) => n * (1 + cDmg)),
+      average: applyToOneOrMany(base, (n) => n * (1 + cRate * cDmg)),
     };
-  } else if (!Array.isArray(base)) {
+  } //
+  else if (!Array.isArray(base)) {
     let flat = 0;
     let normalMult = 1;
 
@@ -366,12 +210,60 @@ export default function getDamage(
 
   const finalResult = {} as DamageResult;
 
-  applyCustomDebuffs(resistReduct, customDebuffCtrls, tracker);
-  applySelfDebuffs(wrapper3, selfDebuffCtrls, debuffs, char, tracker);
-  applyPartyDebuffs(wrapper3, party, tracker);
-  applyArtDebuffs(resistReduct, subArtDebuffCtrls, tracker);
-  applyResonanceDebuffs(resistReduct, elmtModCtrls, tracker);
-  calcResistanceReduction(resistReduct, target);
+  // APPLY CUSTOM DEBUFFS
+  for (const { type, value } of customDebuffCtrls) {
+    resistReduct[type] += value;
+    pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
+  }
+
+  // APPLY SELF DEBUFFS
+  for (const { activated, inputs, index } of selfDebuffCtrls) {
+    const debuff = findByIndex(debuffs || [], index);
+
+    if (activated && debuff && debuff.isGranted(char) && debuff.applyDebuff) {
+      const desc = `Self / ${debuff.src}`;
+      debuff.applyDebuff({ ...wrapper3, fromSelf: true, char, inputs, desc, tracker });
+    }
+  }
+
+  // APPLY PARTY DEBUFFS
+  for (const tm of party) {
+    if (tm) {
+      const { debuffs } = findCharacter(tm)!;
+      for (const { activated, inputs, index } of tm.debuffCtrls) {
+        const debuff = findByIndex(debuffs || [], index);
+
+        if (activated && debuff && debuff.applyDebuff) {
+          const desc = `${tm.name} / ${debuff.src}`;
+          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc, tracker });
+        }
+      }
+    }
+  }
+
+  // APPLY ARTIFACT DEBUFFS
+  for (const { activated, code, index, inputs } of subArtDebuffCtrls) {
+    if (activated) {
+      const { name, debuffs } = findArtifactSet({ code })!;
+      const desc = `${name} / 4-Piece activated`;
+      debuffs![index].applyDebuff({ resistReduct, inputs, desc, tracker });
+    }
+  }
+
+  // APPLY RESONANCE DEBUFFS
+  const geoRsn = elmtModCtrls.resonance.find((rsn) => rsn.vision === "geo");
+  if (geoRsn && geoRsn.activated) {
+    applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
+  }
+  if (elmtModCtrls.superconduct) {
+    applyModifier("Superconduct", resistReduct, "phys", 40, tracker);
+  }
+
+  // CALCULATE RESISTANCE REDUCTION
+  for (const key of [...VISION_TYPES]) {
+    let RES = (target[key] - resistReduct[key]) / 100;
+    resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
+  }
 
   ATTACK_PATTERNS.forEach((attPatt) => {
     const talent = activeTalents[attPatt];
@@ -388,7 +280,38 @@ export default function getDamage(
         talentBuff =
           stat.getTalentBuff({ char, selfBuffCtrls, selfDebuffCtrls, totalAttr, partyData }) || {};
       }
-      let [base, record] = getBaseDamage(totalAttr, stat, level, talentBuff);
+
+      // CALCULATE BASE DAMAGE
+      let base;
+      const { baseStatType = "atk", baseMult, multType, flat } = stat;
+      const xtraMult = talentBuff.mult?.value || 0;
+      const record = {
+        baseValue: totalAttr[baseStatType],
+        baseStatType,
+      } as TrackerDamageRecord;
+
+      const finalMult = (base: number) => base * TALENT_LV_MULTIPLIERS[multType][level] + xtraMult;
+
+      const baseDamage = (pct: number) => {
+        const result = (totalAttr[baseStatType] * pct) / 100;
+        const flatBonus = flat ? flat.base * TALENT_LV_MULTIPLIERS[flat.type][level] : 0;
+
+        record.finalFlat = flatBonus;
+        return result + flatBonus;
+      };
+
+      if (Array.isArray(baseMult)) {
+        const pcts = baseMult.map(finalMult);
+
+        record.finalMult = pcts;
+        base = pcts.map(baseDamage);
+      } //
+      else {
+        const pct = finalMult(baseMult);
+
+        record.finalMult = pct;
+        base = baseDamage(pct);
+      }
 
       finalResult[resultKey][stat.name] = calcTalentStat(
         stat,

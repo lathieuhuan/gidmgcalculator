@@ -74,9 +74,8 @@ export function addArtAttrs(
   const artAttrs = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
 
   for (const artPiece of pieces) {
-    if (!artPiece) {
-      continue;
-    }
+    if (!artPiece) continue;
+
     const { type, mainStatType, subStats } = artPiece;
     const mainStat = artifactMainStatValue(artPiece);
 
