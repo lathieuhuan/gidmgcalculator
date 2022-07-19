@@ -1,8 +1,13 @@
-import type { ReactNode } from "react";
-import type { AmplifyingReaction, ArtifactBuff, Vision } from "@Src/types";
-import type { ArtModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { Fragment, ReactNode } from "react";
+import type { AmplifyingReaction, ArtifactBuff, ModifierInput, Vision } from "@Src/types";
+import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeElementModCtrl, toggleModCtrl, toggleResonance } from "@Store/calculatorSlice";
+import {
+  changeElementModCtrl,
+  changeModCtrlInput,
+  toggleModCtrl,
+  toggleResonance,
+} from "@Store/calculatorSlice";
 import {
   selectArtInfo,
   selectCharData,
@@ -14,11 +19,11 @@ import { RESONANCE_BUFF_INFO } from "./constants";
 
 import { renderAmpReactionDesc } from "@Components/minors";
 import { ModifierLayout } from "@Styled/DataDisplay";
-import { renderNoModifier, Setter, twStyles } from "../../components";
+import { Select } from "@Styled/Inputs";
+import { renderNoModifier, Setter, twStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
-import { Select } from "@Styled/Inputs";
 
 export function ElmtBuffs() {
   const { vision } = useSelector(selectCharData);
@@ -83,23 +88,28 @@ function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
 }
 
 export function ArtifactBuffs() {
-  const { sets, buffCtrls, subBuffCtrls } = useSelector(selectArtInfo);
+  const { sets } = useSelector(selectArtInfo);
+  const buffCtrls = useSelector(
+    (state) => state.calculator.allArtBuffCtrls[state.calculator.currentSetup]
+  );
+  const subBuffCtrls = useSelector(
+    (state) => state.calculator.allSubArtBuffCtrls[state.calculator.currentSetup]
+  );
   const dispatch = useDispatch();
-  const content: JSX.Element[] = [];
 
+  const content: JSX.Element[] = [];
   const mainCode = sets[0]?.code;
+
   buffCtrls.forEach((ctrl, index) => {
     const { activated } = ctrl;
     const { name, buffs } = findArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
 
-    const path: ArtModCtrlPath = {
-      modCtrlName: "allArtInfos",
-      field: "buffCtrls",
+    const path: ToggleModCtrlPath = {
+      modCtrlName: "allArtBuffCtrls",
       index,
     };
-
     content.push(
       <ModifierLayout
         key={mainCode.toString() + index}
@@ -107,27 +117,26 @@ export function ArtifactBuffs() {
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
         desc={buff.desc()}
-        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> || <></>}
+        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
       />
     );
   });
+
   subBuffCtrls.forEach((ctrl, index) => {
     const { code, activated } = ctrl;
     const { name, buffs } = findArtifactSet({ code })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
 
-    const path: ArtModCtrlPath = {
-      modCtrlName: "allArtInfos",
-      field: "subBuffCtrls",
+    const path: ToggleModCtrlPath = {
+      modCtrlName: "allSubArtBuffCtrls",
       index: index,
     };
-
     content.push(
       <ModifierLayout
         key={code.toString() + index}
         checked={activated}
-        handleCheck={() => dispatch(toggleModCtrl(path))}
+        onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
         desc={buff.desc()}
         setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
@@ -139,50 +148,56 @@ export function ArtifactBuffs() {
 
 interface SetterSectionProps {
   buff: ArtifactBuff;
-  inputs?: (string | number)[];
-  path: ArtModCtrlPath;
+  inputs?: ModifierInput[];
+  path: ToggleModCtrlPath;
 }
 function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const dispatch = useDispatch();
-  if (!buff.inputConfig) return null;
 
+  if (!buff.inputConfig) return null;
   const { labels, initialValues, maxs, renderTypes } = buff.inputConfig;
 
-  return labels.map((label, i) => {
-    let options: string[] | number[] = [];
+  return (
+    <Fragment>
+      {labels.map((label, i) => {
+        const input = inputs[i];
+        let options: string[] | number[] = [];
 
-    if (renderTypes[i] === "stacks") {
-      const increase = initialValues[i] === 0 ? 0 : 1;
-      options = [...Array(maxs[i]).map((_, i) => i + increase)];
-    } else {
-      options = ["pyro", "hydro", "electro", "cryo"];
-    }
-
-    return (
-      <Setter
-        key={i}
-        label={label}
-        input={
-          <Select
-            className={twStyles.select}
-            value={inputs[i]}
-            onChange={(e) => {
-              const { value } = e.target;
-              // dispatch(
-              //   CHANGE_MCS_INPUT({
-              //     ...path,
-              //     inpIndex: i,
-              //     value: isNaN(value) ? value : +value,
-              //   })
-              // );
-            }}
-          >
-            {options.map((opt) => (
-              <option key={opt}>{opt}</option>
-            ))}
-          </Select>
+        if (renderTypes[i] === "stacks") {
+          const increase = initialValues[i] === 0 ? 0 : 1;
+          options = [...Array(maxs[i]).map((_, i) => i + increase)];
+        } //
+        else if (renderTypes[i] === "swirl") {
+          options = ["pyro", "hydro", "electro", "cryo"];
         }
-      />
-    );
-  });
+
+        return typeof input === "boolean" ? null : (
+          <Setter
+            key={i}
+            label={label}
+            input={
+              <Select
+                className={twStyles.select}
+                value={input}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  dispatch(
+                    changeModCtrlInput({
+                      ...path,
+                      inputIndex: i,
+                      value: isNaN(+value) ? value : +value,
+                    })
+                  );
+                }}
+              >
+                {options.map((opt) => (
+                  <option key={opt}>{opt}</option>
+                ))}
+              </Select>
+            }
+          />
+        );
+      })}
+    </Fragment>
+  );
 }

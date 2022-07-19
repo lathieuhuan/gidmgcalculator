@@ -9,7 +9,6 @@ import type {
   AmplifyingReaction,
   Reaction,
   CharInfo,
-  ModifierInput,
   Rarity,
   ArtifactPercentStat,
   CoreStat,
@@ -27,25 +26,37 @@ export type CalculatorState = {
     keepArtStatsOnSwitch: boolean;
   };
   setups: CalcSetup[];
+
   char: CalcChar;
   charData: CalcCharData;
   allSelfBuffCtrls: Array<ModifierCtrl[]>;
   allSelfDebuffCtrls: Array<ModifierCtrl[]>;
+
   allWeapons: CalcWeapon[];
+  allWpBuffCtrls: Array<ModifierCtrl[]>;
   allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl[];
-  allSubWpComplexDebuffCtrls: {};
+
   allArtInfos: CalcArtInfo[];
+  allArtBuffCtrls: Array<ModifierCtrl[]>;
+  allSubArtBuffCtrls: Array<SubArtModCtrl[]>;
+  allSubArtDebuffCtrls: Array<SubArtModCtrl[]>;
+
   allParties: Party[];
+  allTmBuffCtrls: Array<ModifierCtrl[]>;
+  allTmDebuffCtrls: Array<ModifierCtrl[]>;
+
   allElmtModCtrls: ElementModCtrl[];
   allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
   allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
   target: Target;
   monster: Monster;
+
   allTotalAttrs: TotalAttribute[];
   allArtAttrs: ArtifactAttribute[];
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
   allDmgResult: DamageResult[];
+
   isError: boolean;
   touched: boolean;
 };
@@ -78,10 +89,12 @@ export type CalcCharData = {
   EBcost: number;
 };
 
+export type ModifierInput = string | number | boolean;
+
 export type ModifierCtrl = {
   activated: boolean;
   index: number;
-  inputs?: (number | string)[];
+  inputs?: ModifierInput[];
 };
 
 export type CalcWeapon = {
@@ -90,7 +103,6 @@ export type CalcWeapon = {
   code: number;
   level: Level;
   refi: number;
-  buffCtrls: ModifierCtrl[];
 };
 
 export type SubWeaponBuffCtrl = {
@@ -131,18 +143,10 @@ export type SubArtModCtrl = ModifierCtrl & {
 export type CalcArtInfo = {
   pieces: CalcArtPieces;
   sets: CalcArtSet[];
-  buffCtrls: ModifierCtrl[];
-  subBuffCtrls: SubArtModCtrl[];
-  subDebuffCtrls: SubArtModCtrl[];
 };
 // ARTIFACTS ends
 
-export type Teammate = {
-  name: string;
-  buffCtrls: ModifierCtrl[];
-  debuffCtrls: ModifierCtrl[];
-};
-export type Party = (Teammate | null)[];
+export type Party = (string | null)[];
 
 export type Resonance = {
   vision: Extract<Vision, "pyro" | "cryo" | "geo">;

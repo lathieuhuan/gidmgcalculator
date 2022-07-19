@@ -8,7 +8,6 @@ import type {
   Weapon,
   CharInfo,
   Tracker,
-  ModifierInput,
   NormalAttack,
   ArtifactPercentStat,
 } from "./global";
@@ -23,6 +22,7 @@ import type {
   AttackPatternBonus,
   AttackPatternInfoKey,
   TotalAttribute,
+  ModifierInput,
   AttackElementBonus,
 } from "./calculator";
 import { ReactNode } from "react";
@@ -121,7 +121,15 @@ type AbilityModifier = {
   index: number;
   outdated?: boolean;
   src: string;
-  desc: () => ReactNode;
+  desc: (args: {
+    toSelf: boolean;
+    char: CharInfo;
+    charData: CalcCharData;
+    charBuffCtrls: ModifierCtrl[];
+    partyData: PartyData;
+    totalAttr: TotalAttribute;
+    inputs?: ModifierInput[];
+  }) => ReactNode;
   isGranted: (char: CharInfo) => boolean;
 };
 
@@ -134,11 +142,11 @@ type InputConfig = {
 };
 
 // #to-do
-type BuffInputRenderType = "select";
+export type CharBuffInputRenderType = "text" | "check" | "select" | "anemoable" | "dendroable";
 
 type BuffInputConfig = InputConfig & {
-  renderTypes: BuffInputRenderType[];
-  maxs?: (number | null)[];
+  renderTypes: CharBuffInputRenderType[];
+  maxValues?: (number | null)[];
 };
 
 export type AbilityBuff = AbilityModifier & {

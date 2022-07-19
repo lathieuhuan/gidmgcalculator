@@ -67,7 +67,7 @@ export type ArtifactBuff = {
   inputConfig?: {
     labels: string[];
     initialValues: number[];
-    renderTypes: ("stacks" | "")[];
+    renderTypes: ("stacks" | "swirl")[];
     maxs: number[];
   };
   applyBuff?: (args: ApplyArtBuffArgs) => void;

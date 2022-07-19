@@ -12,6 +12,7 @@ import type {
   FinalInfusion,
   ModifierCtrl,
   Party,
+  SubArtModCtrl,
   SubWeaponComplexBuffCtrl,
   Target,
   Tracker,
@@ -29,27 +30,37 @@ export default function calculateAll(
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
+  tmBuffCtrls: ModifierCtrl[],
+  tmDebuffCtrls: ModifierCtrl[],
   weapon: CalcWeapon,
-  subWpBuffCtrls: SubWeaponComplexBuffCtrl,
-  art: CalcArtInfo,
+  wpBuffCtrls: ModifierCtrl[],
+  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl,
+  artInfo: CalcArtInfo,
+  artBuffCtrls: ModifierCtrl[],
+  subArtBuffCtrls: SubArtModCtrl[],
+  subArtDebuffCtrls: SubArtModCtrl[],
   elmtModCtrls: ElementModCtrl,
   customBuffCtrls: CustomBuffCtrl[],
   customDebuffCtrls: CustomDebuffCtrl[],
   target: Target,
   tracker?: Tracker
 ) {
-  const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
+  const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party, tmBuffCtrls);
   const partyData = getPartyData(party);
-  
+
   const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
     char,
     charData,
     selfDebuffCtrls,
     weapon,
-    subWpBuffCtrls,
-    art,
+    wpBuffCtrls,
+    subWpComplexBuffCtrls,
+    artInfo,
+    artBuffCtrls,
+    subArtBuffCtrls,
     elmtModCtrls.resonance,
     party,
+    tmBuffCtrls,
     partyData,
     customBuffCtrls,
     finalInfusion,
@@ -60,8 +71,9 @@ export default function calculateAll(
     selfBuffCtrls,
     selfDebuffCtrls,
     party,
+    tmDebuffCtrls,
     partyData,
-    art.subDebuffCtrls,
+    subArtDebuffCtrls,
     totalAttr,
     attPattBonus,
     attElmtBonus,
@@ -89,7 +101,8 @@ function getFinalInfusion(
   char: CharInfo,
   selfBuffCtrls: ModifierCtrl[],
   ownVision: Vision,
-  party: Party
+  party: Party,
+  tmBuffCtrls: ModifierCtrl[]
 ) {
   const selfInfusion = [];
   const charData = findCharacter(char)!;
@@ -108,9 +121,9 @@ function getFinalInfusion(
     if (!tm) {
       continue;
     }
-    const { buffs, vision } = findCharacter(tm)!;
+    const { buffs, vision } = findCharacter({ name: tm })!;
 
-    for (const ctrl of tm.buffCtrls) {
+    for (const ctrl of tmBuffCtrls) {
       const buff = findByIndex(buffs || [], ctrl.index);
 
       if (buff && buff.infuseConfig && ctrl.activated) {

@@ -2,6 +2,7 @@ import cn from "classnames";
 import type { HTMLAttributes } from "react";
 import type { Vision } from "@Src/types";
 import { Checkbox } from "./Inputs";
+import { ReactNode } from "react";
 
 type SpanExtraColor = "gold" | "lightgold" | "green" | "orange";
 
@@ -30,8 +31,8 @@ interface ModifierLayoutProps {
   mutable?: boolean;
   checked: boolean;
   heading: string;
-  desc: string | JSX.Element;
-  setters?: JSX.Element[] | null;
+  desc: ReactNode;
+  setters?: JSX.Element | JSX.Element[] | null;
   onToggle: () => void;
 }
 export function ModifierLayout({

@@ -53,9 +53,6 @@ export type CharInfo = {
   cons: number;
 };
 
-// #to-do
-export type ModifierInput = string | number;
-
 /**
  * utility generic
  */

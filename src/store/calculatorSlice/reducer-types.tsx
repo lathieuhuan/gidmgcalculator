@@ -10,9 +10,22 @@ export type InitSessionWithCharAction = PayloadAction<{
   myArts: MyArts;
 }>;
 
-export type ArtModCtrlPath = {
-  modCtrlName: "allArtInfos";
-  field: "buffCtrls" | "subBuffCtrls" | "subDebuffCtrls";
+export type ToggleModCtrlPath = {
+  modCtrlName:
+    | "allSelfBuffCtrls"
+    | "allSelfDebuffCtrls"
+    | "allWpBuffCtrls"
+    | "allArtBuffCtrls"
+    | "allSubArtBuffCtrls"
+    | "allSubArtDebuffCtrls"
+    | "allTmBuffCtrls"
+    | "allTmDebuffCtrls";
   index: number;
 };
-export type ToggleModCtrlAction = PayloadAction<ArtModCtrlPath>;
+export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;
+
+type ChangeModCtrlPath = ToggleModCtrlPath & {
+  inputIndex: number;
+  value: string | number | boolean;
+};
+export type ChangeModCtrlInputAction = PayloadAction<ChangeModCtrlPath>;

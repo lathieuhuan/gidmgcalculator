@@ -38,8 +38,12 @@ export function calculate(state: CalculatorState, all?: boolean) {
         state.allSelfDebuffCtrls[i],
         state.allParties[i],
         state.allWeapons[i],
+        state.allWpBuffCtrls[i],
         state.allSubWpComplexBuffCtrls[i],
         state.allArtInfos[i],
+        state.allArtBuffCtrls[i],
+        state.allSubArtBuffCtrls[i],
+        state.allSubArtDebuffCtrls[i],
         state.allElmtModCtrls[i],
         state.allCustomBuffCtrls[i],
         state.allCustomDebuffCtrls[i],
@@ -61,24 +65,23 @@ export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
   myWps: MyWps,
   myArts: MyArts
-): [CharInfo, CalcWeapon, CalcArtInfo] {
-  //
+) {
   let rootID = Date.now();
-
   const char: CharInfo = { ...initCharInfo(info), name };
 
   let weapon: CalcWeapon;
+  let wpBuffCtrls: ModifierCtrl[];
   const existedWp = findById(myWps, weaponID);
 
   if (existedWp) {
     const { user, ...weaponInfo } = existedWp;
-    weapon = {
-      ...weaponInfo,
-      buffCtrls: getMainWpBuffCtrls(existedWp),
-    };
-  } else {
+    weapon = weaponInfo;
+    wpBuffCtrls = getMainWpBuffCtrls(existedWp);
+  } //
+  else {
     const newWp = initWeapon({ type: findCharacter(char)!.weapon });
-    weapon = { ...newWp, ID: rootID++, buffCtrls: getMainWpBuffCtrls(newWp) };
+    weapon = { ...newWp, ID: rootID++ };
+    wpBuffCtrls = getMainWpBuffCtrls(newWp);
   }
 
   const pieces = artifactIDs.map((id) => {
@@ -91,14 +94,16 @@ export function parseAndInitData(
   });
   const sets = getArtSets(pieces);
   const setCode = sets[0]?.bonusLv === 1 ? sets[0].code : null;
-  const art: CalcArtInfo = {
-    pieces,
-    sets,
-    buffCtrls: getMainArtBuffCtrls(setCode),
-    subBuffCtrls: getAllSubArtBuffCtrls(setCode),
-    subDebuffCtrls: getAllSubArtDebuffCtrls(),
-  };
-  return [char, weapon, art];
+
+  return {
+    char,
+    weapon,
+    wpBuffCtrls,
+    artInfo: { pieces, sets },
+    artBuffCtrls: getMainArtBuffCtrls(setCode),
+    subArtBuffCtrls: getAllSubArtBuffCtrls(setCode),
+    subArtDebuffCtrls: getAllSubArtDebuffCtrls(),
+  } as const;
 }
 
 export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {

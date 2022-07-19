@@ -130,7 +130,7 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
 }
 
 export const initElmtModCtrls = (): ElementModCtrl => ({
-  naAmpRxn: null,
+  infusion_ampRxn: null,
   ampRxn: null,
   superconduct: false,
   resonance: [],

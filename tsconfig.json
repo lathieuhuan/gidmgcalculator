@@ -22,7 +22,8 @@
       "@Styled/*": ["src/styled-components/*"],
       "@Store/*": ["src/store/*"],
       "@Hooks/*": ["src/hooks/*"],
-      "@Src/*": ["src/*"],
+      "@Screens/*": ["src/screens/*"],
+      "@Src/*": ["src/*"]
     }
   },
   "include": ["src"],

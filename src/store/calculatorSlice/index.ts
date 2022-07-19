@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
-import type { InitSessionWithCharAction, ToggleModCtrlAction } from "./reducer-types";
+import type {
+  ChangeModCtrlInputAction,
+  InitSessionWithCharAction,
+  ToggleModCtrlAction,
+} from "./reducer-types";
 import {
   initCharInfo,
   initCharModCtrls,
@@ -28,10 +32,15 @@ const initialState: CalculatorState = {
   allSelfBuffCtrls: [],
   allSelfDebuffCtrls: [],
   allWeapons: [],
+  allWpBuffCtrls: [],
   allSubWpComplexBuffCtrls: [{}],
-  allSubWpComplexDebuffCtrls: [{}],
   allArtInfos: [],
+  allArtBuffCtrls: [],
+  allSubArtBuffCtrls: [],
+  allSubArtDebuffCtrls: [],
   allParties: [],
+  allTmBuffCtrls: [],
+  allTmDebuffCtrls: [],
   allElmtModCtrls: [],
   allCustomBuffCtrls: [],
   allCustomDebuffCtrls: [],
@@ -52,19 +61,26 @@ export const calculatorSlice = createSlice({
   reducers: {
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
-      const [char, weapon, art] = parseAndInitData(pickedChar, myWps, myArts);
-      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
+      const result = parseAndInitData(pickedChar, myWps, myArts);
+
+      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
 
       state.setups = [getSetupInfo({})];
       state.currentSetup = 0;
-      state.char = char;
-      state.charData = getCharData(char);
+      state.char = result.char;
+      state.charData = getCharData(result.char);
       state.allSelfBuffCtrls = [selfBuffCtrls];
       state.allSelfDebuffCtrls = [selfDebuffCtrls];
-      state.allWeapons = [weapon];
+      state.allWeapons = [result.weapon];
+      state.allWpBuffCtrls = [result.wpBuffCtrls];
       state.allSubWpComplexBuffCtrls = [{}];
-      state.allArtInfos = [art];
+      state.allArtInfos = [result.artInfo];
+      state.allArtBuffCtrls = [result.artBuffCtrls];
+      state.allSubArtBuffCtrls = [result.subArtBuffCtrls];
+      state.allSubArtDebuffCtrls = [result.subArtDebuffCtrls];
       state.allParties = [[null, null, null]];
+      state.allTmBuffCtrls = [];
+      state.allTmDebuffCtrls = [];
       state.allElmtModCtrls = [initElmtModCtrls()];
       state.allCustomBuffCtrls = [[]];
       state.allCustomDebuffCtrls = [[]];
@@ -145,10 +161,19 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
-      const { modCtrlName, field, index } = action.payload;
-      const ctrl = state[modCtrlName][state.currentSetup][field][index];
+      const { modCtrlName, index } = action.payload;
+      const ctrl = state[modCtrlName][state.currentSetup][index];
       ctrl.activated = !ctrl.activated;
       calculate(state);
+    },
+    changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
+      const { modCtrlName, index, inputIndex, value } = action.payload;
+      const { inputs } = state[modCtrlName][state.currentSetup][index];
+
+      if (inputs) {
+        inputs[inputIndex] = value;
+        calculate(state);
+      }
     },
   },
 });
@@ -163,6 +188,7 @@ export const {
   toggleResonance,
   changeElementModCtrl,
   toggleModCtrl,
+  changeModCtrlInput,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

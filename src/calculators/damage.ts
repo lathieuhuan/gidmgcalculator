@@ -188,6 +188,7 @@ export default function getDamage(
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
+  tmDebuffCtrls: ModifierCtrl[],
   partyData: PartyData,
   subArtDebuffCtrls: SubArtModCtrl[],
   totalAttr: TotalAttribute,
@@ -229,12 +230,12 @@ export default function getDamage(
   // APPLY PARTY DEBUFFS
   for (const tm of party) {
     if (tm) {
-      const { debuffs } = findCharacter(tm)!;
-      for (const { activated, inputs, index } of tm.debuffCtrls) {
+      const { debuffs } = findCharacter({ name: tm })!;
+      for (const { activated, inputs, index } of tmDebuffCtrls) {
         const debuff = findByIndex(debuffs || [], index);
 
         if (activated && debuff && debuff.applyDebuff) {
-          const desc = `${tm.name} / ${debuff.src}`;
+          const desc = `${tm} / ${debuff.src}`;
           debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc, tracker });
         }
       }
