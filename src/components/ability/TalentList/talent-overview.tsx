@@ -2,12 +2,12 @@ import cn from "classnames";
 import type { CharInfo, Party, Talent, Vision, Weapon } from "@Src/types";
 import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
+import { NORMAL_ATTACK_ICONS } from "./constants";
 
-import AbilityIcon from "@Components/ability-components/Icon";
 import { colorByVision } from "@Styled/tw-compounds";
 import { Select } from "@Styled/Inputs";
-import { NORMAL_ATTACK_ICONS } from "./constants";
 import { InfoSign } from "@Components/minors";
+import { AbilityIcon } from "../components";
 
 interface ActiveTalentProps {
   talentInfo: {

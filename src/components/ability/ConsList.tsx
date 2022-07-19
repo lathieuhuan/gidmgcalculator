@@ -5,9 +5,8 @@ import { CalcChar } from "@Src/types";
 import { Green } from "@Styled/DataDisplay";
 import { CloseButton } from "@Styled/Inputs";
 import { colorByVision } from "@Styled/tw-compounds";
-import { InfoSign, SharedSpace } from "./minors";
-import AbilityIcon from "./ability-components/Icon";
-import SlideShow from "./ability-components/SlideShow";
+import { InfoSign, SharedSpace } from "../minors";
+import { AbilityIcon, SlideShow } from "./components";
 
 interface ConsListProps {
   char: CalcChar;

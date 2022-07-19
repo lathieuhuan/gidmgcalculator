@@ -47,8 +47,7 @@ export const Checkbox = (props: InputHTMLAttributes<HTMLInputElement>) => {
   return <input type="checkbox" className={cn("scale-150", className)} {...rest} />;
 };
 
-export const Select = (props: SelectHTMLAttributes<HTMLSelectElement>) => {
-  const { className, ...rest } = props;
+export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
   return (
     <div>
       <select

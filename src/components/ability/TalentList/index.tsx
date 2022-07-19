@@ -7,7 +7,7 @@ import { findCharacter } from "@Data/controllers";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 import { SharedSpace } from "@Components/minors";
-import SlideShow from "@Components/ability-components/SlideShow";
+import SlideShow from "@Components/ability/SlideShow";
 import { CloseButton } from "@Styled/Inputs";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { SkillAttributes } from "./talent-details";
@@ -58,7 +58,7 @@ export default function TalentList({ char, party, onChangeLevelOf }: TalentListP
               />
             ) : null;
           })}
-          
+
           {passiveTalents.map((talent, i) => {
             const ascsRequired = i === 0 ? 1 : 4;
             return (

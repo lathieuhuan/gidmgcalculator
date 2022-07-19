@@ -15,10 +15,10 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useSwitcher } from "@Hooks/useSwitcher";
 
 import AttributeTable from "@Components/AttributeTable";
-import ConsList from "@Components/ConsList";
-import { SetBonus, SharedSpace } from "@Components/minors";
+import ConsList from "@Components/ability/ConsList";
+import TalentList from "@Components/ability/TalentList";
 import WeaponCard from "@Components/WeaponCard";
-import TalentList from "@Components/TalentList";
+import { SetBonus, SharedSpace } from "@Components/minors";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {

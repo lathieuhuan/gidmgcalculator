@@ -1,13 +1,14 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import { FaInfoCircle } from "react-icons/fa";
 import cn from "classnames";
-import { CalcArtSet, Vision } from "@Src/types";
-import { Button, CloseButton } from "@Styled/Inputs";
+import { FaInfoCircle } from "react-icons/fa";
+
+import type { CalcArtSet, Vision } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, wikiImg } from "@Src/utils";
-import Modal from "./Modal";
-import { colorByVision } from "@Styled/tw-compounds";
 import { Green } from "@Styled/DataDisplay";
+import { Button, CloseButton } from "@Styled/Inputs";
+import { colorByVision } from "@Styled/tw-compounds";
+import { Modal } from "./modals";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div

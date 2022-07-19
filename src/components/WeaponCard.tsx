@@ -1,10 +1,11 @@
 import cn from "classnames";
 import type { CalcWeapon, Level } from "@Src/types";
-import { rarityColors, rarityGradients } from "@Styled/tw-compounds";
-import { Select } from "@Styled/Inputs";
 import { LEVELS } from "@Src/constants";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
+
+import { rarityColors, rarityGradients } from "@Styled/tw-compounds";
+import { Select } from "@Styled/Inputs";
 import { percentSign, wikiImg } from "@Src/utils";
 import { BetaMark } from "./minors";
 

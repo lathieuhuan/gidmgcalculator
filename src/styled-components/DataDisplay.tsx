@@ -1,5 +1,5 @@
 import cn from "classnames";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 import type { Vision } from "@Src/types";
 import { Checkbox } from "./Inputs";
 

@@ -16,7 +16,10 @@ interface RowProps {
 StatsTable.Row = ({ className, children, onClick }: RowProps) => {
   return (
     <div
-      className={cn("flex justify-between pt-1 px-2 font-bold odd:bg-darkblue-2 hover:bg-darkerred", className)}
+      className={cn(
+        "flex justify-between pt-1 px-2 font-bold odd:bg-darkblue-2 hover:bg-darkerred",
+        className
+      )}
       onClick={onClick}
     >
       {children}

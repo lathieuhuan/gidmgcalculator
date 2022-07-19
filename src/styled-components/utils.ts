@@ -8,14 +8,11 @@ const bgColorByVariant = {
   default: "bg-default",
 };
 
-type Variant = "positive" | "neutral" | "negative" | "default";
-
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   noGlow?: boolean;
-  variant?: Variant;
+  variant?: "positive" | "neutral" | "negative" | "default";
 }
-export const buttonStyles = (args: ButtonProps) => {
-  const { noGlow, disabled, variant = "default" } = args;
+export const buttonStyles = ({ noGlow, disabled, variant = "default" }: ButtonProps) => {
   return cn(
     bgColorByVariant[variant],
     variant === "negative" ? "text-white" : "text-black",

@@ -1,6 +1,30 @@
 import cn from "classnames";
-import { ButtonBar } from "./minors";
-import Modal from "./Modal";
+import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
+import { ButtonBar } from "@Components/minors";
+import styles from "./styles.module.scss";
+
+interface ModalProps {
+  standard?: boolean;
+  className?: string;
+  children: JSX.Element | JSX.Element[];
+  close: () => void;
+}
+export function Modal(props: ModalProps) {
+  useCloseWithEsc(props.close);
+
+  return (
+    <div className={cn("fixed full-stretch z-10", styles.modal)}>
+      <div className="w-full h-full bg-black/60" onClick={props.close} />
+      {props.standard || props.className ? (
+        <div className={cn("rounded-lg bg-darkblue-2", styles.modalContent, props.className)}>
+          {props.children}
+        </div>
+      ) : (
+        props.children
+      )}
+    </div>
+  );
+}
 
 interface ButtonInfo {
   text?: string;
@@ -13,13 +37,7 @@ interface ConfirmModalProps {
   right: ButtonInfo;
   close: () => void;
 }
-export default function ConfirmModal({
-  message,
-  left,
-  mid,
-  right,
-  close,
-}: ConfirmModalProps) {
+export function ConfirmModal({ message, left, mid, right, close }: ConfirmModalProps) {
   const texts = [left?.text || "Cancel", right?.text || "Confirm"];
   const handlers = [
     () => {

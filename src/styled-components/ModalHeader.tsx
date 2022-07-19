@@ -3,14 +3,10 @@ import type { InsHTMLAttributes } from "react";
 import { FaFilter } from "react-icons/fa";
 import { CloseButton, IconButton, type CloseButtonProps } from "./Inputs";
 
-function ModalHeader(props: InsHTMLAttributes<HTMLDivElement>) {
-  const { className, ...rest } = props;
+function ModalHeader({ className, ...rest }: InsHTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn(
-        "relative h-full pl-6 flex items-center rounded-t-lg bg-orange",
-        className
-      )}
+      className={cn("relative h-full pl-6 flex items-center rounded-t-lg bg-orange", className)}
       {...rest}
     />
   );
