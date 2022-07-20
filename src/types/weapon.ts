@@ -73,7 +73,8 @@ type WeaponBuff = {
   inputConfig?: {
     labels: string[];
     initialValues: ModifierInput[];
-    renderTypes: ("stacks" | "check" | "choices")[];
+    renderTypes: ("stacks" | "check")[];
+    maxValues?: number[];
   };
   applyBuff: (args: ApplyWpBuffArgs) => void;
   applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;

@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { DatabaseChar, MyArts, MyWps } from "@Src/types";
+import type { DatabaseChar, MyArts, MyWps, Weapon } from "@Src/types";
 
 export interface PickedChar extends Partial<DatabaseChar> {
   name: string;
@@ -37,3 +37,13 @@ export type ToggleTeammateModCtrlPath = {
 export type ToggleTeammateModCtrlAction = PayloadAction<ToggleTeammateModCtrlPath>;
 
 export type ChangeTeammateModCtrlInputAction = PayloadAction<ToggleTeammateModCtrlPath & InputInfo>;
+
+export type ToggleSubWpModCtrlPath = {
+  weaponType: Weapon;
+  ctrlIndex: number;
+};
+export type ToggleSubWpModCtrlAction = PayloadAction<ToggleSubWpModCtrlPath>;
+
+export type RefineSubWeaponAction = PayloadAction<ToggleSubWpModCtrlPath & { value: number }>;
+
+export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath & InputInfo>;

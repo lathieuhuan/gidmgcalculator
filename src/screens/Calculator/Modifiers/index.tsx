@@ -9,6 +9,7 @@ import { MainSelect } from "../components";
 import styles from "../styles.module.scss";
 import { ElememtBuffs } from "./buffs/others";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
+import WeaponBuffs from "./buffs/weapons";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Buffs: () => {
@@ -20,7 +21,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
           <ElememtBuffs />,
           <SelfBuffs partyData={partyData} />,
           <PartyBuffs partyData={partyData} />,
-          <WpBuffs />,
+          <WeaponBuffs />,
           <ArtBuffs />,
           <CustomMods modType="BCs" />,
         ]}

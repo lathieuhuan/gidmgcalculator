@@ -2,6 +2,7 @@ import { Fragment, ReactNode } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { Checkbox, Select } from "@Styled/Inputs";
 import { CharBuffInputRenderType, ModifierInput } from "@Src/types";
+import { genNumberSequence } from "@Src/utils";
 
 interface MainSelectProps {
   tab: string;
@@ -33,26 +34,28 @@ export const renderNoModifier = (isBuff: boolean) => (
 
 interface SetterProps {
   label: string;
-  input: ReactNode;
+  inputComponent: ReactNode;
 }
-export const Setter = ({ label, input }: SetterProps) => {
+export const Setter = ({ label, inputComponent }: SetterProps) => {
   return (
     <div className="flex items-center justify-end">
       <span className="mr-4 text-base leading-6">{label}</span>
-      {input}
+      {inputComponent}
     </div>
   );
 };
 
-export const twStyles = {
+export const twInputStyles = {
+  textInput: "px-2 py-2 w-16 rounded text-right",
   select: "px-2 py-1 bg-white rounded font-bold",
 };
 
 interface CharModSettersProps {
   labels: string[];
   renderTypes: CharBuffInputRenderType[];
+  initialValues: ModifierInput[];
+  maxValues?: number[];
   inputs: ModifierInput[];
-  maxValues?: (number | null)[];
   onTextChange: (text: string, inputIndex: number) => void;
   onToggleCheck: (inputIndex: number) => void;
   onSelect: (text: string, inputIndex: number) => void;
@@ -60,8 +63,9 @@ interface CharModSettersProps {
 export function CharModSetters({
   labels,
   renderTypes,
-  inputs,
+  initialValues,
   maxValues,
+  inputs,
   onTextChange,
   onToggleCheck,
   onSelect,
@@ -75,7 +79,7 @@ export function CharModSetters({
         return typeof input === "boolean" ? null : (
           <input
             type="text"
-            className="px-2 py-2 w-16 rounded text-right"
+            className={twInputStyles.textInput}
             value={input}
             onChange={(e) => onTextChange(e.target.value, index)}
           />
@@ -95,15 +99,18 @@ export function CharModSetters({
 
         switch (renderTypes[index]) {
           case "select":
-            options = Array.from({ length: maxValues?.[index] || 0 }, (_, i) => i + 1);
+            options = genNumberSequence(maxValues?.[index], initialValues[index] === 0);
+            break;
           case "anemoable":
             options = ["pyro", "hydro", "electro", "cryo"];
+            break;
           case "dendroable":
             options = ["pyro", "hydro", "electro"];
+            break;
         }
         return typeof input === "boolean" ? null : (
           <Select
-            className={twStyles.select}
+            className={twInputStyles.select}
             value={input}
             onChange={(e) => onSelect(e.target.value, index)}
           >
@@ -117,7 +124,7 @@ export function CharModSetters({
   return (
     <Fragment>
       {labels.map((label, i) => (
-        <Setter key={i} label={label} input={renderInput(i)} />
+        <Setter key={i} label={label} inputComponent={renderInput(i)} />
       ))}
     </Fragment>
   );

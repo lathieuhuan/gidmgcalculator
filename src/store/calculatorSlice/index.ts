@@ -3,9 +3,12 @@ import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/ty
 import { getCharData } from "@Data/controllers";
 import type {
   ChangeModCtrlInputAction,
+  ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   InitSessionWithCharAction,
+  RefineSubWeaponAction,
   ToggleModCtrlAction,
+  ToggleSubWpModCtrlAction,
   ToggleTeammateModCtrlAction,
 } from "./reducer-types";
 import {
@@ -191,6 +194,37 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
+    toggleSubWpModCtrl: (state, action: ToggleSubWpModCtrlAction) => {
+      const { weaponType, ctrlIndex } = action.payload;
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+
+      if (ctrls && ctrls[ctrlIndex]) {
+        ctrls[ctrlIndex].activated = !ctrls[ctrlIndex].activated;
+        calculate(state);
+      }
+    },
+    refineSubWeapon: (state, action: RefineSubWeaponAction) => {
+      const { weaponType, ctrlIndex, value } = action.payload;
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+
+      if (ctrls && ctrls[ctrlIndex]) {
+        ctrls[ctrlIndex].refi = value;
+        calculate(state);
+      }
+    },
+    changeSubWpModCtrlInput: (state, action: ChangeSubWpModCtrlInputAction) => {
+      const { weaponType, ctrlIndex, inputIndex, value } = action.payload;
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+
+      if (ctrls && ctrls[ctrlIndex]) {
+        const { inputs } = ctrls[ctrlIndex];
+
+        if (inputs) {
+          inputs[inputIndex] = value;
+          calculate(state);
+        }
+      }
+    },
   },
 });
 
@@ -207,6 +241,9 @@ export const {
   changeModCtrlInput,
   toggleTeammateModCtrl,
   changeTeammateModCtrlInput,
+  toggleSubWpModCtrl,
+  refineSubWeapon,
+  changeSubWpModCtrlInput,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

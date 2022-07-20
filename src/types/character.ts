@@ -146,7 +146,7 @@ export type CharBuffInputRenderType = "text" | "check" | "select" | "anemoable" 
 
 type BuffInputConfig = InputConfig & {
   renderTypes: CharBuffInputRenderType[];
-  maxValues?: (number | null)[];
+  maxValues?: number[]; // no max = 0
 };
 
 export type AbilityBuff = AbilityModifier & {

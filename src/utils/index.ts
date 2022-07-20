@@ -58,25 +58,6 @@ export function isOne(obj1: any, obj2: any) {
   return true;
 }
 
-export function extractData(object: any, projection: string): unknown {
-  const result: any = {};
-  for (const field of projection.split(" ")) {
-    result[field] = object[field];
-  }
-  return result;
-}
-
-export const bareLv = (lv: Level) => +lv.split("/")[0];
-
-export const splitLv = (subject: { level: Level }) => {
-  return subject.level.split("/").map((lv) => +lv);
-};
-
-export const ascsFromLv = (lv: Level) => {
-  const maxLv = +lv.slice(-2);
-  return maxLv === 20 ? 0 : maxLv / 10 - 3;
-};
-
 const find = (key: string) => {
   return <T>(arr: T[], value?: string | number | null): T | undefined => {
     if (!value) {
@@ -113,6 +94,44 @@ export const round3 = roundMaker(3);
 export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 100);
 
 export const toMultiplier = (n: number) => 1 + n / 100;
+
+export const genNumberSequence = (
+  max: number | undefined,
+  startsAt0: boolean = false,
+  min: number = 1
+) => {
+  const result = Array.from({ length: max || 0 }, (_, i) => i + min);
+  if (startsAt0) {
+    result.unshift(0);
+  }
+  return result;
+};
+
+export function processNumInput(input: string, before: number, max: number = 9999) {
+  if (input === "") {
+    return 0;
+  }
+  const numInput = +input;
+  if (typeof numInput === "number" && numInput >= 0 && numInput <= max) {
+    if (input.slice(-1) === ".") {
+      return input as unknown as number;
+    }
+    return Math.round(numInput * 10) / 10;
+  }
+  return before;
+}
+
+//
+export const bareLv = (lv: Level) => +lv.split("/")[0];
+
+export const splitLv = (subject: { level: Level }) => {
+  return subject.level.split("/").map((lv) => +lv);
+};
+
+export const ascsFromLv = (lv: Level) => {
+  const maxLv = +lv.slice(-2);
+  return maxLv === 20 ? 0 : maxLv / 10 - 3;
+};
 
 // #to-check
 export const initArtStatFilter = () => ({
@@ -157,18 +176,4 @@ export function getCurrentChar(char: CalcChar, index: number): CharInfo {
     EB: pickOne(char.EB, index),
     cons: pickOne(char.cons, index),
   };
-}
-
-export function processNumInput(input: string, before: number, max: number = 9999) {
-  if (input === "") {
-    return 0;
-  }
-  const numInput = +input;
-  if (typeof numInput === "number" && numInput >= 0 && numInput <= max) {
-    if (input.slice(-1) === ".") {
-      return input as unknown as number;
-    }
-    return Math.round(numInput * 10) / 10;
-  }
-  return before;
 }

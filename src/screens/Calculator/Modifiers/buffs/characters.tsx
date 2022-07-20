@@ -52,14 +52,15 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
       let setters = null;
 
       if (buff.inputConfig) {
-        const { selfLabels = [], renderTypes, maxValues } = buff.inputConfig;
+        const { selfLabels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
 
         setters = (
           <CharModSetters
             labels={selfLabels}
             renderTypes={renderTypes}
-            inputs={inputs}
+            initialValues={initialValues}
             maxValues={maxValues}
+            inputs={inputs}
             onTextChange={(value, i) =>
               dispatch(
                 changeModCtrlInput({
@@ -156,12 +157,13 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     let setters = null;
 
     if (buff.inputConfig) {
-      const { labels = [], renderTypes, maxValues } = buff.inputConfig;
+      const { labels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
 
       setters = (
         <CharModSetters
           labels={labels}
           renderTypes={renderTypes}
+          initialValues={initialValues}
           inputs={inputs}
           onTextChange={(value, i) =>
             dispatch(

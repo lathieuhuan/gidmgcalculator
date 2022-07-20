@@ -19,10 +19,10 @@ import { RESONANCE_BUFF_INFO } from "./constants";
 import { renderAmpReactionDesc } from "@Components/minors";
 import { ModifierLayout } from "@Styled/DataDisplay";
 import { Select } from "@Styled/Inputs";
-import { renderNoModifier, Setter, twStyles } from "@Screens/Calculator/components";
+import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
+import { findByIndex, genNumberSequence } from "@Src/utils";
 
 export function ElememtBuffs() {
   const { vision } = useSelector(selectCharData);
@@ -154,7 +154,7 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const dispatch = useDispatch();
 
   if (!buff.inputConfig) return null;
-  const { labels, initialValues, maxs, renderTypes } = buff.inputConfig;
+  const { labels, initialValues, maxValues, renderTypes } = buff.inputConfig;
 
   return (
     <>
@@ -163,8 +163,7 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
         let options: string[] | number[] = [];
 
         if (renderTypes[i] === "stacks") {
-          const increase = initialValues[i] === 0 ? 0 : 1;
-          options = [...Array(maxs[i]).map((_, i) => i + increase)];
+          options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
         } //
         else if (renderTypes[i] === "swirl") {
           options = ["pyro", "hydro", "electro", "cryo"];
@@ -174,9 +173,9 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
           <Setter
             key={i}
             label={label}
-            input={
+            inputComponent={
               <Select
-                className={twStyles.select}
+                className={twInputStyles.select}
                 value={input}
                 onChange={(e) => {
                   const { value } = e.target;
