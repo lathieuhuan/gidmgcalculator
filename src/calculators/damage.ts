@@ -188,7 +188,6 @@ export default function getDamage(
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
-  tmDebuffCtrls: ModifierCtrl[],
   partyData: PartyData,
   subArtDebuffCtrls: SubArtModCtrl[],
   totalAttr: TotalAttribute,
@@ -228,14 +227,14 @@ export default function getDamage(
   }
 
   // APPLY PARTY DEBUFFS
-  for (const tm of party) {
-    if (tm) {
-      const { debuffs } = findCharacter({ name: tm })!;
-      for (const { activated, inputs, index } of tmDebuffCtrls) {
+  for (const teammate of party) {
+    if (teammate) {
+      const { debuffs } = findCharacter(teammate)!;
+      for (const { activated, inputs, index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs || [], index);
 
         if (activated && debuff && debuff.applyDebuff) {
-          const desc = `${tm} / ${debuff.src}`;
+          const desc = `${teammate} / ${debuff.src}`;
           debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc, tracker });
         }
       }

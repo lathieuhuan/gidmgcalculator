@@ -100,7 +100,7 @@ export function ArtifactBuffs() {
   const content: JSX.Element[] = [];
   const mainCode = sets[0]?.code;
 
-  buffCtrls.forEach((ctrl, index) => {
+  buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated } = ctrl;
     const { name, buffs } = findArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
@@ -108,11 +108,11 @@ export function ArtifactBuffs() {
 
     const path: ToggleModCtrlPath = {
       modCtrlName: "allArtBuffCtrls",
-      index,
+      ctrlIndex,
     };
     content.push(
       <ModifierLayout
-        key={mainCode.toString() + index}
+        key={mainCode.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
@@ -122,7 +122,7 @@ export function ArtifactBuffs() {
     );
   });
 
-  subBuffCtrls.forEach((ctrl, index) => {
+  subBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const { code, activated } = ctrl;
     const { name, buffs } = findArtifactSet({ code })!;
     const buff = findByIndex(buffs!, ctrl.index);
@@ -130,11 +130,11 @@ export function ArtifactBuffs() {
 
     const path: ToggleModCtrlPath = {
       modCtrlName: "allSubArtBuffCtrls",
-      index: index,
+      ctrlIndex,
     };
     content.push(
       <ModifierLayout
-        key={code.toString() + index}
+        key={code.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}

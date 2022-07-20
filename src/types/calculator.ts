@@ -42,9 +42,6 @@ export type CalculatorState = {
   allSubArtDebuffCtrls: Array<SubArtModCtrl[]>;
 
   allParties: Party[];
-  allTmBuffCtrls: Array<ModifierCtrl[]>;
-  allTmDebuffCtrls: Array<ModifierCtrl[]>;
-
   allElmtModCtrls: ElementModCtrl[];
   allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
   allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
@@ -146,7 +143,13 @@ export type CalcArtInfo = {
 };
 // ARTIFACTS ends
 
-export type Party = (string | null)[];
+export type Teammate = {
+  name: string;
+  buffCtrls: ModifierCtrl[];
+  debuffCtrls: ModifierCtrl[];
+};
+
+export type Party = (Teammate | null)[];
 
 export type Resonance = {
   vision: Extract<Vision, "pyro" | "cryo" | "geo">;

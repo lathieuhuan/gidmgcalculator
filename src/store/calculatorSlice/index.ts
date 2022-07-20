@@ -3,8 +3,10 @@ import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/ty
 import { getCharData } from "@Data/controllers";
 import type {
   ChangeModCtrlInputAction,
+  ChangeTeammateModCtrlInputAction,
   InitSessionWithCharAction,
   ToggleModCtrlAction,
+  ToggleTeammateModCtrlAction,
 } from "./reducer-types";
 import {
   initCharInfo,
@@ -39,8 +41,6 @@ const initialState: CalculatorState = {
   allSubArtBuffCtrls: [],
   allSubArtDebuffCtrls: [],
   allParties: [],
-  allTmBuffCtrls: [],
-  allTmDebuffCtrls: [],
   allElmtModCtrls: [],
   allCustomBuffCtrls: [],
   allCustomDebuffCtrls: [],
@@ -79,8 +79,6 @@ export const calculatorSlice = createSlice({
       state.allSubArtBuffCtrls = [result.subArtBuffCtrls];
       state.allSubArtDebuffCtrls = [result.subArtDebuffCtrls];
       state.allParties = [[null, null, null]];
-      state.allTmBuffCtrls = [];
-      state.allTmDebuffCtrls = [];
       state.allElmtModCtrls = [initElmtModCtrls()];
       state.allCustomBuffCtrls = [[]];
       state.allCustomDebuffCtrls = [[]];
@@ -161,17 +159,35 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
-      const { modCtrlName, index } = action.payload;
-      const ctrl = state[modCtrlName][state.currentSetup][index];
+      const { modCtrlName, ctrlIndex } = action.payload;
+      const ctrl = state[modCtrlName][state.currentSetup][ctrlIndex];
       ctrl.activated = !ctrl.activated;
       calculate(state);
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
-      const { modCtrlName, index, inputIndex, value } = action.payload;
-      const { inputs } = state[modCtrlName][state.currentSetup][index];
+      const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
+      const { inputs } = state[modCtrlName][state.currentSetup][ctrlIndex];
 
       if (inputs) {
         inputs[inputIndex] = value;
+        calculate(state);
+      }
+    },
+    toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
+      const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
+      const ctrl = state.allParties[state.currentSetup][teammateIndex]?.[modCtrlName][ctrlIndex];
+
+      if (ctrl) {
+        ctrl.activated = !ctrl.activated;
+        calculate(state);
+      }
+    },
+    changeCharModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
+      const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
+      const ctrl = state.allParties[state.currentSetup][teammateIndex]?.[modCtrlName][ctrlIndex];
+
+      if (ctrl && ctrl.inputs) {
+        ctrl.inputs[inputIndex] = value;
         calculate(state);
       }
     },
@@ -189,6 +205,8 @@ export const {
   changeElementModCtrl,
   toggleModCtrl,
   changeModCtrlInput,
+  toggleTeammateModCtrl,
+  changeCharModCtrlInput,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

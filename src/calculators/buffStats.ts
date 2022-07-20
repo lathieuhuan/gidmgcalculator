@@ -89,7 +89,6 @@ export default function getBuffedStats(
   subArtBuffCtrls: SubArtModCtrl[],
   resonance: Resonance,
   party: Party,
-  tmBuffCtrls: ModifierCtrl[],
   partyData: PartyData,
   customBuffCtrls: CustomBuffCtrl[],
   infusion: FinalInfusion,
@@ -214,21 +213,19 @@ export default function getBuffedStats(
   }
 
   // APPPLY TEAMMATE BUFFS
-  for (const tm of party) {
-    if (!tm) continue;
+  for (const teammate of party) {
+    if (!teammate) continue;
+    const { buffs = [] } = findCharacter(teammate) || {};
 
-    const { buffs } = findCharacter({ name: tm })!;
-    for (const { index, activated, inputs } of tmBuffCtrls) {
-      const buff = findByIndex(buffs!, index);
+    for (const { index, activated, inputs } of teammate.buffCtrls) {
+      const buff = findByIndex(buffs, index);
+      if (!buff) continue;
 
-      if (!buff) {
-        continue;
-      }
       const applyFn = buff.applyBuff || buff.applyFinalBuff;
       if (activated && applyFn) {
-        const desc = `${tm} / ${buff.src}`;
+        const desc = `${teammate} / ${buff.src}`;
         const wrapper3 = { char, inputs, infusion, party, partyData, desc };
-        applyFn({ ...wrapper1, ...wrapper3, toSelf: false, charBuffCtrls: tmBuffCtrls });
+        applyFn({ ...wrapper1, ...wrapper3, toSelf: false, charBuffCtrls: teammate.buffCtrls });
       }
     }
   }

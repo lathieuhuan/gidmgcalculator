@@ -10,6 +10,11 @@ export type InitSessionWithCharAction = PayloadAction<{
   myArts: MyArts;
 }>;
 
+type InputInfo = {
+  inputIndex: number;
+  value: string | number | boolean;
+};
+
 export type ToggleModCtrlPath = {
   modCtrlName:
     | "allSelfBuffCtrls"
@@ -17,15 +22,18 @@ export type ToggleModCtrlPath = {
     | "allWpBuffCtrls"
     | "allArtBuffCtrls"
     | "allSubArtBuffCtrls"
-    | "allSubArtDebuffCtrls"
-    | "allTmBuffCtrls"
-    | "allTmDebuffCtrls";
-  index: number;
+    | "allSubArtDebuffCtrls";
+  ctrlIndex: number;
 };
 export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;
 
-type ChangeModCtrlPath = ToggleModCtrlPath & {
-  inputIndex: number;
-  value: string | number | boolean;
+export type ChangeModCtrlInputAction = PayloadAction<ToggleModCtrlPath & InputInfo>;
+
+type ToggleTeammateModCtrlPath = {
+  teammateIndex: number;
+  modCtrlName: "buffCtrls" | "debuffCtrls";
+  ctrlIndex: number;
 };
-export type ChangeModCtrlInputAction = PayloadAction<ChangeModCtrlPath>;
+export type ToggleTeammateModCtrlAction = PayloadAction<ToggleTeammateModCtrlPath>;
+
+export type ChangeTeammateModCtrlInputAction = PayloadAction<ToggleTeammateModCtrlPath & InputInfo>;

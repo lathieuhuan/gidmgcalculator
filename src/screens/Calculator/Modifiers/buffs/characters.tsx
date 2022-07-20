@@ -5,8 +5,7 @@ import {
   selectParty,
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
-import { changeModCtrlInput, toggleModCtrl } from "@Store/calculatorSlice";
-import { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { changeModCtrlInput, toggleModCtrl, toggleTeammateModCtrl } from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
@@ -33,10 +32,11 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
     const { activated, index, inputs = [] } = ctrl;
     const buff = findByIndex(buffs!, index);
 
-    const path: ToggleModCtrlPath = {
+    const path = {
       modCtrlName: "allSelfBuffCtrls",
-      index: ctrlIndex,
-    };
+      ctrlIndex,
+    } as const;
+
     if (buff && buff.isGranted(char)) {
       let setters = null;
 
@@ -109,8 +109,8 @@ export function PartyBuffs({ partyData, tmBuffCtrls }: PartyBuffsProps) {
       content.push(
         <TeammateBuffs
           key={index}
-          name={teammate}
-          index={index}
+          name={teammate.name}
+          teammateIndex={index}
           buffCtrls={tmBuffCtrls}
           partyData={partyData}
         />
@@ -122,11 +122,11 @@ export function PartyBuffs({ partyData, tmBuffCtrls }: PartyBuffsProps) {
 
 interface TeammateBuffsProps {
   name: string;
-  index: number;
+  teammateIndex: number;
   partyData: PartyData;
   buffCtrls: ModifierCtrl[];
 }
-function TeammateBuffs({ name, index, partyData, buffCtrls }: TeammateBuffsProps) {
+function TeammateBuffs({ name, teammateIndex, partyData, buffCtrls }: TeammateBuffsProps) {
   const char = useSelector(selectChar);
   const charData = useSelector(selectCharData);
   const dispatch = useDispatch();
@@ -138,16 +138,17 @@ function TeammateBuffs({ name, index, partyData, buffCtrls }: TeammateBuffsProps
     const { activated, index, inputs } = ctrl;
     const buff = findByIndex(buffs, index);
 
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "allTmBuffCtrls",
-      index: ctrlIndex,
-    };
+    const path = {
+      teammateIndex,
+      modCtrlName: "buffCtrls",
+      ctrlIndex,
+    } as const;
 
     subContent.push(
       <Section
         key={ctrlIndex}
         checked={activated}
-        handleCheck={() => dispatch(TOGGLE_TM_MCS({ ...path, activated: !activated }))}
+        handleCheck={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
         desc={buff.desc({
           toSelf: false,

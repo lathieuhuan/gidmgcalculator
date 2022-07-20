@@ -30,8 +30,6 @@ export default function calculateAll(
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
-  tmBuffCtrls: ModifierCtrl[],
-  tmDebuffCtrls: ModifierCtrl[],
   weapon: CalcWeapon,
   wpBuffCtrls: ModifierCtrl[],
   subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl,
@@ -45,7 +43,7 @@ export default function calculateAll(
   target: Target,
   tracker?: Tracker
 ) {
-  const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party, tmBuffCtrls);
+  const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
 
   const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
@@ -60,7 +58,6 @@ export default function calculateAll(
     subArtBuffCtrls,
     elmtModCtrls.resonance,
     party,
-    tmBuffCtrls,
     partyData,
     customBuffCtrls,
     finalInfusion,
@@ -71,7 +68,6 @@ export default function calculateAll(
     selfBuffCtrls,
     selfDebuffCtrls,
     party,
-    tmDebuffCtrls,
     partyData,
     subArtDebuffCtrls,
     totalAttr,
@@ -101,8 +97,7 @@ function getFinalInfusion(
   char: CharInfo,
   selfBuffCtrls: ModifierCtrl[],
   ownVision: Vision,
-  party: Party,
-  tmBuffCtrls: ModifierCtrl[]
+  party: Party
 ) {
   const selfInfusion = [];
   const charData = findCharacter(char)!;
@@ -117,13 +112,13 @@ function getFinalInfusion(
   }
   const tmInfusion = [];
 
-  for (const tm of party) {
-    if (!tm) {
+  for (const teammate of party) {
+    if (!teammate) {
       continue;
     }
-    const { buffs, vision } = findCharacter({ name: tm })!;
+    const { buffs, vision } = findCharacter(teammate)!;
 
-    for (const ctrl of tmBuffCtrls) {
+    for (const ctrl of teammate.buffCtrls) {
       const buff = findByIndex(buffs || [], ctrl.index);
 
       if (buff && buff.infuseConfig && ctrl.activated) {
