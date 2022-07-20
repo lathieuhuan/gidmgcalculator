@@ -1,17 +1,28 @@
-import type { ModifierCtrl, PartyData } from "@Src/types";
+import cn from "classnames";
+import type { PartyData, Teammate } from "@Src/types";
+import type {
+  ToggleModCtrlPath,
+  ToggleTeammateModCtrlPath,
+} from "@Store/calculatorSlice/reducer-types";
 import {
   selectChar,
   selectCharData,
   selectParty,
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
-import { changeModCtrlInput, toggleModCtrl, toggleTeammateModCtrl } from "@Store/calculatorSlice";
+import {
+  changeModCtrlInput,
+  changeTeammateModCtrlInput,
+  toggleModCtrl,
+  toggleTeammateModCtrl,
+} from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
 import { ModifierLayout } from "@Styled/DataDisplay";
 import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+import { colorByVision } from "@Styled/tw-compounds";
 
 interface SelfBuffsProps {
   partyData: PartyData;
@@ -32,10 +43,10 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
     const { activated, index, inputs = [] } = ctrl;
     const buff = findByIndex(buffs!, index);
 
-    const path = {
+    const path: ToggleModCtrlPath = {
       modCtrlName: "allSelfBuffCtrls",
       ctrlIndex,
-    } as const;
+    };
 
     if (buff && buff.isGranted(char)) {
       let setters = null;
@@ -93,120 +104,120 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
       );
     }
   });
-  return content.length ? content : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(true);
 }
 
 interface PartyBuffsProps {
   partyData: PartyData;
-  tmBuffCtrls: ModifierCtrl[];
 }
-export function PartyBuffs({ partyData, tmBuffCtrls }: PartyBuffsProps) {
+export function PartyBuffs({ partyData }: PartyBuffsProps) {
   const party = useSelector(selectParty);
   const content: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
-    if (teammate && tmBuffCtrls.length) {
+    if (teammate && teammate.buffCtrls.length) {
       content.push(
         <TeammateBuffs
           key={index}
-          name={teammate.name}
+          teammate={teammate}
           teammateIndex={index}
-          buffCtrls={tmBuffCtrls}
           partyData={partyData}
         />
       );
     }
   });
-  return content.length ? content : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(true);
 }
 
 interface TeammateBuffsProps {
-  name: string;
+  teammate: Teammate;
   teammateIndex: number;
   partyData: PartyData;
-  buffCtrls: ModifierCtrl[];
 }
-function TeammateBuffs({ name, teammateIndex, partyData, buffCtrls }: TeammateBuffsProps) {
+function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProps) {
+  const totalAttr = useSelector(selectTotalAttr);
   const char = useSelector(selectChar);
   const charData = useSelector(selectCharData);
   const dispatch = useDispatch();
 
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findCharacter({ name }) || {};
+  const { buffs = [], vision } = findCharacter(teammate)!;
 
-  buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs } = ctrl;
+  teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
+    const { activated, index, inputs = [] } = ctrl;
     const buff = findByIndex(buffs, index);
+    if (!buff) return;
 
-    const path = {
+    const path: ToggleTeammateModCtrlPath = {
       teammateIndex,
       modCtrlName: "buffCtrls",
       ctrlIndex,
-    } as const;
+    };
+    let setters = null;
 
+    if (buff.inputConfig) {
+      const { labels = [], renderTypes, maxValues } = buff.inputConfig;
+
+      setters = (
+        <CharModSetters
+          labels={labels}
+          renderTypes={renderTypes}
+          inputs={inputs}
+          onTextChange={(value, i) =>
+            dispatch(
+              changeTeammateModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value: processNumInput(value, +inputs[i], maxValues?.[i] || undefined),
+              })
+            )
+          }
+          onToggleCheck={(i) =>
+            dispatch(
+              changeTeammateModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value: !inputs[i],
+              })
+            )
+          }
+          onSelect={(value, i) =>
+            dispatch(
+              changeTeammateModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value: isNaN(+value) ? value : +value,
+              })
+            )
+          }
+        />
+      );
+    }
     subContent.push(
-      <Section
+      <ModifierLayout
         key={ctrlIndex}
         checked={activated}
-        handleCheck={() => dispatch(toggleTeammateModCtrl(path))}
+        onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
         desc={buff.desc({
           toSelf: false,
-          charBCs: teammate.BCs,
-          inputs,
           char,
           charData,
           partyData,
+          inputs,
+          charBuffCtrls: teammate.buffCtrls,
+          totalAttr,
         })}
-        setters={<TmSetterSection buff={buff} inputs={inputs} path={path} />}
+        setters={setters}
       />
     );
   });
   return (
     <>
-      <Text className="pt-2 mb-m1" variant="h6" bold color={vision} align="center">
+      <p className={cn("pt-2 -mb-1 text-h6 font-bold text-center", colorByVision[vision])}>
         {teammate.name.toUpperCase()}
-      </Text>
+      </p>
       {subContent}
     </>
-  );
-}
-
-function TmSetterSection({ buff, inputs, path }) {
-  const dispatch = useDispatch();
-  if (!buff.labels) return null;
-  return (
-    <CharModSetter
-      labels={buff.labels}
-      mod={buff}
-      inputs={inputs}
-      handleText={(value, i) =>
-        dispatch(
-          CHANGE_TM_MCS_INPUT({
-            ...path,
-            inpIndex: i,
-            value: processNumInp(value, inputs[i], buff.maxs[i]),
-          })
-        )
-      }
-      handleCheck={(inpIndex) =>
-        dispatch(
-          CHANGE_TM_MCS_INPUT({
-            ...path,
-            inpIndex,
-            value: !inputs[inpIndex],
-          })
-        )
-      }
-      handleSelect={(value, inpIndex) =>
-        dispatch(
-          CHANGE_TM_MCS_INPUT({
-            ...path,
-            inpIndex,
-            value: isNaN(value) ? value : +value,
-          })
-        )
-      }
-    />
   );
 }

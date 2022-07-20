@@ -182,7 +182,7 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    changeCharModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
+    changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
       const ctrl = state.allParties[state.currentSetup][teammateIndex]?.[modCtrlName][ctrlIndex];
 
@@ -206,7 +206,7 @@ export const {
   toggleModCtrl,
   changeModCtrlInput,
   toggleTeammateModCtrl,
-  changeCharModCtrlInput,
+  changeTeammateModCtrlInput,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

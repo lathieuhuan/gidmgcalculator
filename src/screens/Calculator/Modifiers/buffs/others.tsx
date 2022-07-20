@@ -1,4 +1,3 @@
-import { Fragment, ReactNode } from "react";
 import type { AmplifyingReaction, ArtifactBuff, ModifierInput, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -25,12 +24,12 @@ import { renderNoModifier, Setter, twStyles } from "@Screens/Calculator/componen
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
-export function ElmtBuffs() {
+export function ElememtBuffs() {
   const { vision } = useSelector(selectCharData);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const infusion = useSelector(selectFinalInfusion).NA;
   const dispatch = useDispatch();
-  const content: ReactNode[] = [];
+  const content: JSX.Element[] = [];
 
   elmtModCtrls.resonance.forEach((rsn) => {
     const { name, desc } = RESONANCE_BUFF_INFO[rsn.vision];
@@ -50,7 +49,7 @@ export function ElmtBuffs() {
   if (infusion !== vision && infusion !== "phys") {
     content.push(...useAmplifyingBuff(infusion, true));
   }
-  return content.length ? content : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(true);
 }
 
 function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
@@ -158,7 +157,7 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const { labels, initialValues, maxs, renderTypes } = buff.inputConfig;
 
   return (
-    <Fragment>
+    <>
       {labels.map((label, i) => {
         const input = inputs[i];
         let options: string[] | number[] = [];
@@ -198,6 +197,6 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
           />
         );
       })}
-    </Fragment>
+    </>
   );
 }

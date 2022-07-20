@@ -7,6 +7,8 @@ import { useSelector } from "@Store/hooks";
 import CollapseList from "@Components/Collapse";
 import { MainSelect } from "../components";
 import styles from "../styles.module.scss";
+import { ElememtBuffs } from "./buffs/others";
+import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Buffs: () => {
@@ -15,7 +17,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
       <CollapseList
         headingList={["Resonance & Reactions", "Self", "Party", "Weapons", "Artifacts", "Custom"]}
         contentList={[
-          <ElmtBuffs />,
+          <ElememtBuffs />,
           <SelfBuffs partyData={partyData} />,
           <PartyBuffs partyData={partyData} />,
           <WpBuffs />,

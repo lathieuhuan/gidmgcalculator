@@ -1,9 +1,9 @@
 import { EModAffect } from "@Src/constants";
-import type { ModifierInput, Tracker } from "./global";
+import type { Tracker } from "./global";
 import type {
-  AttackElementBonus,
   AttackPatternBonus,
   CalcCharData,
+  ModifierInput,
   ReactionBonus,
   ResistanceReduction,
   TotalAttribute,

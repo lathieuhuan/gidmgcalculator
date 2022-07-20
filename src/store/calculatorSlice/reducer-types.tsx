@@ -29,7 +29,7 @@ export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;
 
 export type ChangeModCtrlInputAction = PayloadAction<ToggleModCtrlPath & InputInfo>;
 
-type ToggleTeammateModCtrlPath = {
+export type ToggleTeammateModCtrlPath = {
   teammateIndex: number;
   modCtrlName: "buffCtrls" | "debuffCtrls";
   ctrlIndex: number;

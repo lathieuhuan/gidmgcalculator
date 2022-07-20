@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
-import type { Tracker, Rarity, ModifierInput, ArtifactPercentStat } from "./global";
+import type { Tracker, Rarity, ArtifactPercentStat } from "./global";
 import type {
   AttackPatternBonus,
   CalcCharData,
+  ModifierInput,
   PartyData,
   ReactionBonus,
   TotalAttribute,
@@ -62,6 +63,7 @@ type ApplyWpFinalBuffArgs = {
 
 type WpDescArgs = {
   refi: number;
+  totalAttr: TotalAttribute;
 };
 
 type WeaponBuff = {
