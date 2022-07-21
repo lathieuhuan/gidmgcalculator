@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { DatabaseChar, MyArts, MyWps, Weapon } from "@Src/types";
+import type { AmplifyingReaction, DatabaseChar, MyArts, MyWps, Weapon } from "@Src/types";
 
 export interface PickedChar extends Partial<DatabaseChar> {
   name: string;
@@ -8,6 +8,11 @@ export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
   myWps: MyWps;
   myArts: MyArts;
+}>;
+
+export type ChangeElementModCtrlAction = PayloadAction<{
+  field: "ampRxn" | "infusion_ampRxn";
+  value: AmplifyingReaction | null;
 }>;
 
 type InputInfo = {
@@ -47,3 +52,21 @@ export type ToggleSubWpModCtrlAction = PayloadAction<ToggleSubWpModCtrlPath>;
 export type RefineSubWeaponAction = PayloadAction<ToggleSubWpModCtrlPath & { value: number }>;
 
 export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath & InputInfo>;
+
+export type CopyCustomModCtrlsAction = PayloadAction<{
+  isBuffs: boolean;
+  sourceIndex: number;
+}>;
+
+type CustomModCtrlPath = {
+  isBuffs: boolean;
+  ctrlIndex: number;
+};
+
+export type RemoveCustomModCtrlAction = PayloadAction<CustomModCtrlPath>;
+
+export type ChangeCustomModCtrlValueAction = PayloadAction<
+  CustomModCtrlPath & {
+    value: number;
+  }
+>;

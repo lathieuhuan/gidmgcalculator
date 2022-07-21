@@ -33,6 +33,7 @@ export function ElememtBuffs() {
 
   elmtModCtrls.resonance.forEach((rsn) => {
     const { name, desc } = RESONANCE_BUFF_INFO[rsn.vision];
+
     content.push(
       <ModifierLayout
         key={rsn.vision}
@@ -142,7 +143,7 @@ export function ArtifactBuffs() {
       />
     );
   });
-  return content.length ? content : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(true);
 }
 
 interface SetterSectionProps {

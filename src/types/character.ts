@@ -121,15 +121,6 @@ type AbilityModifier = {
   index: number;
   outdated?: boolean;
   src: string;
-  desc: (args: {
-    toSelf: boolean;
-    char: CharInfo;
-    charData: CalcCharData;
-    charBuffCtrls: ModifierCtrl[];
-    partyData: PartyData;
-    totalAttr: TotalAttribute;
-    inputs?: ModifierInput[];
-  }) => ReactNode;
   isGranted: (char: CharInfo) => boolean;
 };
 
@@ -139,6 +130,7 @@ type InputConfig = {
   labels?: string[];
   selfLabels?: string[];
   initialValues: ModifierInput[];
+  maxValues?: number[]; // no max = 0
 };
 
 // #to-do
@@ -146,7 +138,6 @@ export type CharBuffInputRenderType = "text" | "check" | "select" | "anemoable" 
 
 type BuffInputConfig = InputConfig & {
   renderTypes: CharBuffInputRenderType[];
-  maxValues?: number[]; // no max = 0
 };
 
 export type AbilityBuff = AbilityModifier & {
@@ -157,6 +148,15 @@ export type AbilityBuff = AbilityModifier & {
     overwritable: boolean;
     isAppliable?: (charData: DataCharacter) => boolean;
   };
+  desc: (args: {
+    fromSelf: boolean;
+    char: CharInfo;
+    charData: CalcCharData;
+    charBuffCtrls: ModifierCtrl[];
+    partyData: PartyData;
+    totalAttr: TotalAttribute;
+    inputs?: ModifierInput[];
+  }) => ReactNode;
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
@@ -180,7 +180,7 @@ type ApplyCharBuffArgs = {
 
 // DEBUFFS
 
-export type DebuffInputRenderType = "absorption" | "text";
+export type DebuffInputRenderType = "anemoable" | "text";
 
 type DebuffInputConfig = InputConfig & {
   renderTypes: DebuffInputRenderType[];
@@ -189,6 +189,7 @@ type DebuffInputConfig = InputConfig & {
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfig?: DebuffInputConfig;
+  desc: (args: { fromSelf: boolean; char: CharInfo }) => ReactNode;
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
     attPattBonus: AttackPatternBonus;

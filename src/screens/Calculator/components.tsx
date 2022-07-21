@@ -1,6 +1,6 @@
-import { Fragment, ReactNode } from "react";
-import { FaCaretDown } from "react-icons/fa";
-import { Checkbox, Select } from "@Styled/Inputs";
+import { Fragment, ReactNode, useState } from "react";
+import { FaCaretDown, FaCopy } from "react-icons/fa";
+import { Checkbox, IconButton, Select } from "@Styled/Inputs";
 import { CharBuffInputRenderType, ModifierInput } from "@Src/types";
 import { genNumberSequence } from "@Src/utils";
 
@@ -27,6 +27,30 @@ export function MainSelect({ tab, onChangeTab, options }: MainSelectProps) {
     </div>
   );
 }
+
+interface CopySectionProps {
+  options: string[];
+  onClickCopy: (option: string) => void;
+}
+export const CopySection = ({ options, onClickCopy }: CopySectionProps) => {
+  const [chosen, setChosen] = useState(options[0]);
+  return (
+    <div className="mb-4 px-4 flex justify-end">
+      <Select
+        className="px-1 rounded bg-white font-bold"
+        value={chosen}
+        onChange={(e) => setChosen(e.target.value)}
+      >
+        {options.map((opt, i) => (
+          <option key={i}>{opt}</option>
+        ))}
+      </Select>
+      <IconButton className="ml-4" variant="positive" onClick={() => onClickCopy(chosen)}>
+        <FaCopy />
+      </IconButton>
+    </div>
+  );
+};
 
 export const renderNoModifier = (isBuff: boolean) => (
   <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>

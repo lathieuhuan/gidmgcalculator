@@ -1,66 +1,56 @@
 import cn from "classnames";
-import type { PartyData, Teammate } from "@Src/types";
+import type { Teammate } from "@Src/types";
 import type {
   ToggleModCtrlPath,
   ToggleTeammateModCtrlPath,
 } from "@Store/calculatorSlice/reducer-types";
-import {
-  selectChar,
-  selectCharData,
-  selectParty,
-  selectTotalAttr,
-} from "@Store/calculatorSlice/selectors";
+import { useDispatch, useSelector } from "@Store/hooks";
 import {
   changeModCtrlInput,
   changeTeammateModCtrlInput,
   toggleModCtrl,
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { findCharacter } from "@Data/controllers";
-import { findByIndex, processNumInput } from "@Src/utils";
+import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
 import { ModifierLayout } from "@Styled/DataDisplay";
 import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+
+import { findCharacter } from "@Data/controllers";
+import { findByIndex, processNumInput } from "@Src/utils";
 import { colorByVision } from "@Styled/tw-compounds";
 
-interface SelfBuffsProps {
-  partyData: PartyData;
-}
-export function SelfBuffs({ partyData }: SelfBuffsProps) {
+export function SelfDebuffs() {
   const char = useSelector(selectChar);
-  const charData = useSelector(selectCharData);
-  const totalAttr = useSelector(selectTotalAttr);
-  const selfBuffCtrls = useSelector(
-    (state) => state.calculator.allSelfBuffCtrls[state.calculator.currentSetup]
+  const selfDebuffCtrls = useSelector(
+    (state) => state.calculator.allSelfDebuffCtrls[state.calculator.currentSetup]
   );
   const dispatch = useDispatch();
 
-  const { buffs } = findCharacter(char)!;
+  const { debuffs } = findCharacter(char) || {};
+  if (!debuffs) return null;
+
   const content: JSX.Element[] = [];
 
-  selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
-    const buff = findByIndex(buffs!, index);
+  selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
+    const debuff = findByIndex(debuffs, index);
 
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "allSelfBuffCtrls",
-      ctrlIndex,
-    };
-
-    if (buff && buff.isGranted(char)) {
+    if (debuff && debuff.isGranted(char)) {
+      const path: ToggleModCtrlPath = {
+        modCtrlName: "allSelfDebuffCtrls",
+        ctrlIndex,
+      };
       let setters = null;
 
-      if (buff.inputConfig) {
-        const { selfLabels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
+      if (debuff.inputConfig) {
+        const { selfLabels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
 
         setters = (
           <CharModSetters
             labels={selfLabels}
+            inputs={inputs}
             renderTypes={renderTypes}
             initialValues={initialValues}
-            maxValues={maxValues}
-            inputs={inputs}
             onTextChange={(value, i) =>
               dispatch(
                 changeModCtrlInput({
@@ -89,82 +79,64 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
         <ModifierLayout
           key={ctrlIndex}
           checked={activated}
-          onToggle={() => dispatch(toggleModCtrl(path))}
-          heading={buff.src}
-          desc={buff.desc({
-            fromSelf: true,
-            totalAttr,
-            char,
-            charBuffCtrls: selfBuffCtrls,
-            inputs,
-            charData,
-            partyData,
-          })}
+          onToggle={() => {
+            dispatch(toggleModCtrl(path));
+          }}
+          heading={debuff.src}
+          desc={debuff.desc({ fromSelf: true, char })}
           setters={setters}
         />
       );
     }
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(false);
 }
 
-interface PartyBuffsProps {
-  partyData: PartyData;
-}
-export function PartyBuffs({ partyData }: PartyBuffsProps) {
+export function PartyDebuffs() {
   const party = useSelector(selectParty);
   const content: JSX.Element[] = [];
 
-  party.forEach((teammate, index) => {
-    if (teammate && teammate.buffCtrls.length) {
-      content.push(
-        <TeammateBuffs
-          key={index}
-          teammate={teammate}
-          teammateIndex={index}
-          partyData={partyData}
-        />
-      );
-    }
+  party.forEach((teammate, tmIndex) => {
+    if (teammate && teammate.debuffCtrls.length)
+      content.push(<TeammateDebuffs key={tmIndex} teammate={teammate} tmIndex={tmIndex} />);
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return content.length ? <>{content}</> : renderNoModifier(false);
 }
 
-interface TeammateBuffsProps {
+interface TeammateDebuffsProps {
   teammate: Teammate;
-  teammateIndex: number;
-  partyData: PartyData;
+  tmIndex: number;
 }
-function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProps) {
-  const totalAttr = useSelector(selectTotalAttr);
+function TeammateDebuffs({ teammate, tmIndex }: TeammateDebuffsProps) {
   const char = useSelector(selectChar);
-  const charData = useSelector(selectCharData);
   const dispatch = useDispatch();
 
-  const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findCharacter(teammate)!;
+  const tmData = findCharacter(teammate);
+  if (!tmData) return null;
 
-  teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
-    const buff = findByIndex(buffs, index);
-    if (!buff) return;
+  const { vision, debuffs = [] } = tmData;
+  const subContent: JSX.Element[] = [];
+
+  teammate.debuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
+    const debuff = findByIndex(debuffs, index);
+    if (!debuff) return;
 
     const path: ToggleTeammateModCtrlPath = {
-      teammateIndex,
-      modCtrlName: "buffCtrls",
+      teammateIndex: tmIndex,
+      modCtrlName: "debuffCtrls",
       ctrlIndex,
     };
     let setters = null;
 
-    if (buff.inputConfig) {
-      const { labels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
+    if (debuff.inputConfig) {
+      const { labels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
 
       setters = (
         <CharModSetters
           labels={labels}
+          inputs={inputs}
           renderTypes={renderTypes}
           initialValues={initialValues}
-          inputs={inputs}
           onTextChange={(value, i) =>
             dispatch(
               changeTeammateModCtrlInput({
@@ -200,16 +172,8 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
-        heading={buff.src}
-        desc={buff.desc({
-          fromSelf: false,
-          char,
-          charData,
-          partyData,
-          inputs,
-          charBuffCtrls: teammate.buffCtrls,
-          totalAttr,
-        })}
+        heading={debuff.src}
+        desc={debuff.desc({ fromSelf: false, char })}
         setters={setters}
       />
     );

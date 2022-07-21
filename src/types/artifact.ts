@@ -75,7 +75,7 @@ export type ArtifactBuff = {
 };
 
 type ArtifactDebuff = {
-  desc: JSX.Element;
+  desc: () => JSX.Element;
   labels: string[];
   inputTypes: "swirl"[];
   applyDebuff: (args: {

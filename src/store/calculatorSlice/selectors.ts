@@ -10,6 +10,9 @@ export const selectChar = createSelector(
 
 export const selectCharData = (state: RootState) => state.calculator.charData;
 
+export const selectSetup = (state: RootState) =>
+  state.calculator.setups[state.calculator.currentSetup];
+
 export const selectTotalAttr = (state: RootState) =>
   state.calculator.allTotalAttrs[state.calculator.currentSetup];
 

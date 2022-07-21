@@ -2,11 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
 import type {
+  ChangeCustomModCtrlValueAction,
+  ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
+  CopyCustomModCtrlsAction,
   InitSessionWithCharAction,
   RefineSubWeaponAction,
+  RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
   ToggleSubWpModCtrlAction,
   ToggleTeammateModCtrlAction,
@@ -150,13 +154,12 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    changeElementModCtrl: (
-      state,
-      action: PayloadAction<{
-        field: "ampRxn" | "infusion_ampRxn";
-        value: AmplifyingReaction | null;
-      }>
-    ) => {
+    toggleElementModCtrl: (state) => {
+      const currentElmtModCtrls = state.allElmtModCtrls[state.currentSetup];
+      currentElmtModCtrls.superconduct = !currentElmtModCtrls.superconduct;
+      calculate(state);
+    },
+    changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
       state.allElmtModCtrls[state.currentSetup][field] = value;
       calculate(state);
@@ -225,6 +228,29 @@ export const calculatorSlice = createSlice({
         }
       }
     },
+    clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
+      const modCtrlName = action.payload ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      state[modCtrlName][state.currentSetup] = [];
+      calculate(state);
+    },
+    copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
+      const { isBuffs, sourceIndex } = action.payload;
+      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      state[modCtrlName][state.currentSetup] = state[modCtrlName][sourceIndex];
+      calculate(state);
+    },
+    removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
+      const { isBuffs, ctrlIndex } = action.payload;
+      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      state[modCtrlName][state.currentSetup].slice(ctrlIndex, 1);
+      calculate(state);
+    },
+    changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
+      const { isBuffs, ctrlIndex, value } = action.payload;
+      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      state[modCtrlName][state.currentSetup][ctrlIndex].value = value;
+      calculate(state);
+    },
   },
 });
 
@@ -236,6 +262,7 @@ export const {
   upgradeWeapon,
   refineWeapon,
   toggleResonance,
+  toggleElementModCtrl,
   changeElementModCtrl,
   toggleModCtrl,
   changeModCtrlInput,
@@ -244,6 +271,10 @@ export const {
   toggleSubWpModCtrl,
   refineSubWeapon,
   changeSubWpModCtrlInput,
+  clearCustomModCtrls,
+  copyCustomModCtrls,
+  removeCustomModCtrl,
+  changeCustomModCtrlValue,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

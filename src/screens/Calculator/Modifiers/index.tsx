@@ -7,9 +7,12 @@ import { useSelector } from "@Store/hooks";
 import CollapseList from "@Components/Collapse";
 import { MainSelect } from "../components";
 import styles from "../styles.module.scss";
-import { ElememtBuffs } from "./buffs/others";
+import { ArtifactBuffs, ElememtBuffs } from "./buffs/others";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";
+import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
+import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
+import CustomModifiers from "./custom";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Buffs: () => {
@@ -22,8 +25,8 @@ const contentByTab: Record<string, () => JSX.Element> = {
           <SelfBuffs partyData={partyData} />,
           <PartyBuffs partyData={partyData} />,
           <WeaponBuffs />,
-          <ArtBuffs />,
-          <CustomMods modType="BCs" />,
+          <ArtifactBuffs />,
+          <CustomModifiers isBuffs />,
         ]}
       />
     );
@@ -32,11 +35,11 @@ const contentByTab: Record<string, () => JSX.Element> = {
     <CollapseList
       headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
       contentList={[
-        <ElmtDebuffs />,
+        <ElementDebuffs />,
         <SelfDebuffs />,
         <PartyDebuffs />,
-        <ArtDebuffs />,
-        <CustomMods modType="DCs" />,
+        <ArtifactDebuffs />,
+        <CustomModifiers isBuffs={false} />,
       ]}
     />
   ),
