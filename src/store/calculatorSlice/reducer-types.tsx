@@ -1,5 +1,6 @@
+import { MonsterConfig } from "@Data/monsters/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AmplifyingReaction, DatabaseChar, MyArts, MyWps, Weapon } from "@Src/types";
+import type { AmplifyingReaction, DatabaseChar, MyArts, MyWps, Target, Weapon } from "@Src/types";
 
 export interface PickedChar extends Partial<DatabaseChar> {
   name: string;
@@ -70,3 +71,13 @@ export type ChangeCustomModCtrlValueAction = PayloadAction<
     value: number;
   }
 >;
+
+export type ModifyTargetAction = PayloadAction<{
+  key: keyof Target;
+  value: number;
+}>;
+
+export type ChangeMonsterConfigAction = PayloadAction<{
+  inputIndex: number,
+  value: MonsterConfig
+}>;

@@ -18,6 +18,7 @@ import type {
   BaseStat,
 } from "./global";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
+import { MonsterConfig } from "@Data/monsters/types";
 
 export type CalculatorState = {
   currentSetup: number;
@@ -163,15 +164,19 @@ export type ElementModCtrl = {
   resonance: Resonance;
 };
 
+// #to-do
+export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey;
+
 export type CustomBuffCtrl = {
-  // #to-do
-  type: AttributeStat | AttackPatternBonusKey;
-  value: number;
   category: number;
+  type: CustomBuffCtrlType;
+  value: number;
 };
 
+export type CustomDebuffCtrlType = AttackElement | "def";
+
 export type CustomDebuffCtrl = {
-  type: AttackElement | "def";
+  type: CustomDebuffCtrlType;
   value: number;
 };
 
@@ -180,7 +185,7 @@ export type Target = { level: number } & Record<AttackElement, number>;
 export type Monster = {
   index: number;
   variantIndex: number | null;
-  configs: (number | string)[];
+  configs: MonsterConfig[];
 };
 
 export type TotalAttribute = Record<BaseStat | AttributeStat, number>;

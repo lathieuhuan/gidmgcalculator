@@ -2,7 +2,15 @@ import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
 import { FaInfoCircle } from "react-icons/fa";
 
-import type { CalcArtSet, Vision } from "@Src/types";
+import type {
+  AttackElement,
+  AttackPattern,
+  CalcArtSet,
+  DamageTypes,
+  FinalInfusion,
+  Vision,
+  Weapon,
+} from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, wikiImg } from "@Src/utils";
 import { Green } from "@Styled/DataDisplay";
@@ -69,7 +77,7 @@ interface ButtonBarProps {
   availables?: boolean[];
   variants?: ("positive" | "negative" | "neutral")[];
   handlers: (() => void)[];
-  autoFocusIndex: number;
+  autoFocusIndex?: number;
 }
 export const ButtonBar = ({
   className,
@@ -142,11 +150,11 @@ export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSp
 
 interface HowToModalProps {
   content: JSX.Element;
-  close: () => void;
+  onClose: () => void;
 }
-export function HowToModal({ content, close }: HowToModalProps) {
+export function HowToModal({ content, onClose }: HowToModalProps) {
   return (
-    <Modal className="p-4" close={close}>
+    <Modal className="p-4" onClose={onClose}>
       <CloseButton className="absolute top-3 right-3" onClick={close} />
       <p className="mb-2 text-1.5xl text-orange">HOW-TOs</p>
       {content}
@@ -219,3 +227,42 @@ export const renderAmpReactionDesc = (element: Vision, mult: number) => (
     <Green b>{round3(mult)}</Green> times.
   </>
 );
+
+interface InfusionNotesProps {
+  infusion: FinalInfusion;
+  weapon: Weapon;
+  vision: Vision;
+}
+export function InfusionNotes({ infusion, vision, weapon }: InfusionNotesProps) {
+  let notes: [string, AttackElement][] =
+    weapon === "catalyst"
+      ? [
+          ["NA", vision],
+          ["CA", vision],
+          ["PA", vision],
+        ]
+      : Object.entries(infusion);
+
+  if (weapon === "bow") {
+    notes[1][0] = "AS";
+    notes.splice(2, 0, ["CAS", vision]);
+  }
+
+  return (
+    <div className="mt-2 pr-2">
+      <p className="text-h6 text-lightgold">Notes:</p>
+
+      {notes.map(([attPatt, attElmt], i) => {
+        return (
+          <p key={i} className="mt-1">
+            <b>{attPatt}</b> deal{" "}
+            <span className={cn(attElmt === "phys" ? "text-default" : colorByVision[attElmt])}>
+              {attElmt} DMG
+            </span>
+            .
+          </p>
+        );
+      })}
+    </div>
+  );
+}

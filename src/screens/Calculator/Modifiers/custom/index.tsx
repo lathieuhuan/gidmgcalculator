@@ -11,6 +11,9 @@ import { indexByName, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
 import { IconButton } from "@Styled/Inputs";
+import { Modal } from "@Components/modals";
+import BuffCtrlCreator from "./BuffCtrlCreator";
+import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
 interface CustomModifiersProps {
   isBuffs: boolean;
@@ -45,9 +48,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
     );
   };
 
-  const renderCreateModal = () => {
-    return <div></div>;
-  };
+  const closeModal = () => setModalOn(false);
 
   return (
     <div className="flex flex-col">
@@ -102,7 +103,15 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           </div>
         </div>
       ))}
-      {modalOn && renderCreateModal()}
+      {modalOn && (
+        <Modal onClose={closeModal}>
+          {isBuffs ? (
+            <BuffCtrlCreator onClose={closeModal} />
+          ) : (
+            <DebuffCtrlCreator onClose={closeModal} />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

@@ -17,9 +17,9 @@ interface PickerProps {
   dataType: DataType;
   needMassAdd?: boolean;
   onPickItem: (item: PickerItem) => void;
-  close: () => void;
+  onClose: () => void;
 }
-export default function Picker({ data, dataType, needMassAdd, onPickItem, close }: PickerProps) {
+export default function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
   //
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
@@ -38,7 +38,7 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, close 
     }
   }
   return (
-    <Modal standard close={close}>
+    <Modal standard onClose={onClose}>
       <div className="p-2 h-[10%]">
         <ModalHeader>
           {dataType === "character" && (

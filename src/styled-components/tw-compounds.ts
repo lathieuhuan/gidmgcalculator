@@ -1,5 +1,7 @@
 export const tooltipStyles = "py-2 px-4 absolute z-10 rounded bg-black/90";
 
+export const linkStyles = "text-green hover:text-lightred";
+
 export const rarityColors = [
   "",
   "text-rarity-1",

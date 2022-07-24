@@ -1,9 +1,11 @@
 import type { AttackElement, Target } from "@Src/types";
 
+export type MonsterConfig = string | boolean;
+
 type ChangeResistanceArgs = {
   target: Target;
   variant?: string;
-  configs: (string | boolean)[];
+  configs: MonsterConfig[];
 };
 
 type MonsterResistance = Partial<Record<AttackElement, number>> & {
@@ -19,8 +21,7 @@ export type DataMonster = {
   };
   config?: {
     labels: string[];
-    // #to-do
-    renderTypes: ("check" | "")[];
+    renderTypes: "check"[];
   };
   changeResistance?: (args: ChangeResistanceArgs) => void;
 };

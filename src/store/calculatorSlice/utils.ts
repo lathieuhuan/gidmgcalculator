@@ -8,18 +8,21 @@ import type {
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
+  Monster,
   MyArts,
   MyWps,
   SubArtModCtrl,
+  Target,
   Weapon,
 } from "@Src/types";
 import { findById } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
-import { EModAffect } from "@Src/constants";
+import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import artifacts from "@Data/artifacts";
 import calculateAll from "@Src/calculators";
 import type { PickedChar } from "./reducer-types";
 import { initCharInfo, initWeapon } from "./initiators";
+import monsters from "@Data/monsters";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -208,6 +211,24 @@ export function getAllSubArtBuffCtrls(mainCode: number | null) {
 
 export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
   return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
+}
+
+export function autoModifyTarget(target: Target, monster: Monster) {
+  const { index, variantIndex, configs } = monster;
+  const { resistance, variant, changeResistance } = monsters[index];
+  const { base, ...otherResistances } = resistance;
+
+  for (const key of ATTACK_ELEMENTS) {
+    const overwriteValue = otherResistances[key];
+    target[key] = overwriteValue || base;
+  }
+  if (changeResistance) {
+    changeResistance({
+      target,
+      variant: variant && variantIndex ? variant.options[variantIndex] : undefined,
+      configs,
+    });
+  }
 }
 
 function isCharInfo(info: CalcChar): info is CharInfo {
