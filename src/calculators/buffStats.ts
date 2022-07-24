@@ -48,6 +48,7 @@ import {
   vaporizeMult,
 } from "./utils";
 import { RESONANCE_STAT } from "./constants";
+import { current } from "@reduxjs/toolkit";
 
 function applySelfBuffs(
   isFinal: boolean,
@@ -139,7 +140,7 @@ export default function getBuffedStats(
       attPattBonus[key].pct += value;
       pushOrMergeTrackerRecord(tracker?.[key], "pct", "Custom Buff", value);
     } else {
-      if (category === 1) {
+      if (category < 2) {
         const key = type as AttributeStat;
         totalAttr[key] += value;
       } else {

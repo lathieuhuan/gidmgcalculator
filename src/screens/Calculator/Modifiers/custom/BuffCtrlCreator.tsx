@@ -14,7 +14,8 @@ const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"
 
 const OPTIONS_BY_CATEGORY = {
   Attributes: [
-    "hp, hp_",
+    "hp",
+    "hp_",
     "atk",
     "atk_",
     "def",
