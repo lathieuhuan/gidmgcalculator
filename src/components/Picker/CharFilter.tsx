@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { VISION_ICONS, WEAPON_ICONS, WEAPON_TYPES } from "@Src/constants";
+import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { wikiImg } from "@Src/utils";
 import { Filter } from "./types";
 

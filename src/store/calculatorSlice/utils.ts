@@ -1,5 +1,4 @@
 import type {
-  CalcArtInfo,
   CalcArtPiece,
   CalcArtSet,
   CalcChar,

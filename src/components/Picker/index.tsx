@@ -4,7 +4,7 @@ import { CollapseSpace } from "@Components/Collapse";
 import { Checkbox } from "@Src/styled-components/Inputs";
 import ModalHeader from "@Styled/ModalHeader";
 import { Modal } from "../modals";
-import { DataType, Filter, PickerItem } from "./types";
+import type { DataType, Filter, PickerItem } from "./types";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 
@@ -66,7 +66,7 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, onClos
             </div>
           )}
 
-          <CloseButton onClick={close} />
+          <CloseButton onClick={onClose} />
         </ModalHeader>
       </div>
 

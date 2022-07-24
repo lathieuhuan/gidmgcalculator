@@ -60,12 +60,12 @@ const contentByTab: Record<string, () => JSX.Element> = {
           <SharedSpace
             atLeft={tab === "Details"}
             leftPart={
-              <div className="custom-scrollbar">
+              <div className="h-full custom-scrollbar">
                 <AttributeTable attributes={artAttrs} />
               </div>
             }
             rightPart={
-              <div className="hide-scrollbar">
+              <div className="h-full hide-scrollbar">
                 <SetBonus sets={sets} />
               </div>
             }

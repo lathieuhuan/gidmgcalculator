@@ -32,7 +32,9 @@ const testAttrs: PartiallyRequired<Partial<TotalAttribute>, CoreStat> = {
 
 function App() {
   // const atScreen = useSelector((state) => state.ui.atScreen);
-  const [boo, setBoo] = useState(true);
+  const calculator = useSelector(state => state.calculator);
+  // console.log(calculator);
+  
 
   return (
     <div className="App text-default">

@@ -148,7 +148,7 @@ const mondstadt: DataArtifact[] = [
     ],
     debuffs: [
       {
-        desc: (
+        desc: () => (
           <>
             Decreases opponent's <Green>Elemental RES</Green> to the element infused in the Swirl by{" "}
             <Green b>40%</Green> for 10s.

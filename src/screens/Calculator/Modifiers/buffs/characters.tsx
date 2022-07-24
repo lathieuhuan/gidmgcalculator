@@ -21,8 +21,9 @@ import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
 import { ModifierLayout } from "@Styled/DataDisplay";
-import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+import { renderNoModifier } from "@Screens/Calculator/components";
 import { colorByVision } from "@Styled/tw-compounds";
+import { CharModSetters } from "../components";
 
 export function SelfBuffs() {
   const char = useSelector(selectChar);

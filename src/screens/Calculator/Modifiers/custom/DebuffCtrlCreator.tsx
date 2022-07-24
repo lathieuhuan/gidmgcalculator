@@ -38,7 +38,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
 
   return (
     <div className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-width-95">
-      <div className="mx-auto flex align-center mt-4">
+      <div className="mx-auto flex items-center mt-4">
         <Select
           className="pr-2 text-white"
           value={config.type}
@@ -49,7 +49,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
-          className="ml-4 p-2"
+          className="ml-4 p-2 w-16 rounded text-black text-right"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

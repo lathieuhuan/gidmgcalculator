@@ -17,7 +17,7 @@ import { InfusionNotes } from "@Components/minors";
 import { Checkbox, Select } from "@Styled/Inputs";
 import { colorByVision, linkStyles } from "@Styled/tw-compounds";
 
-export default function Target() {
+export default function TargetConfig() {
   const target = useSelector((state) => state.calculator.target);
   const monster = useSelector((state) => state.calculator.monster);
   const infusion = useSelector(selectFinalInfusion);
@@ -94,7 +94,7 @@ export default function Target() {
   return (
     <div>
       <div className="mt-2 px-4">
-        <div className="mb-4 flex justify-between align-center">
+        <div className="mb-4 flex justify-between items-center">
           <p className="text-h6 text-lightgold">Level</p>
           <input value={target.level} onChange={onChangeTargetProp("level")} />
         </div>
@@ -121,7 +121,7 @@ export default function Target() {
           <div className="pt-4 px-4">
             {ATTACK_ELEMENTS.map((attElmt) => {
               return (
-                <div key={attElmt} className="mb-4 flex justify-between align-center">
+                <div key={attElmt} className="mb-4 flex justify-between items-center">
                   <p
                     className={cn(
                       "text-h6",

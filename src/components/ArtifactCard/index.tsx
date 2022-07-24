@@ -62,7 +62,7 @@ export default function ArtifactCard({
                 ))}
               </Select>
             </div>
-            <div className="mt-1 flex-col align-center">
+            <div className="mt-1 flex-col items-center">
               <IconButton
                 className="!bg-black !text-orange text-3.5xl"
                 disabled={artPiece.level === maxLevel}

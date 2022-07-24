@@ -76,7 +76,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       ) : null}
 
       {modCtrls.map(({ type, value }, ctrlIndex) => (
-        <div key={ctrlIndex} className="mt-6 flex align-center">
+        <div key={ctrlIndex} className="mt-6 flex items-center">
           <IconButton
             className="mr-4 text-xl"
             variant="negative"
@@ -85,10 +85,10 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             <FaMinus />
           </IconButton>
 
-          <div className="grow-1 flex align-center">
+          <div className="grow flex items-center">
             <p className="pr-2">{type}</p>
             <input
-              className="ml-auto p-2"
+              className="ml-auto p-2 w-16 rounded text-black text-right"
               value={value}
               onChange={(e) =>
                 dispatch(

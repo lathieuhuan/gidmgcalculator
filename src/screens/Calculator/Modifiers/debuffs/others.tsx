@@ -101,7 +101,7 @@ export function ArtifactDebuffs() {
         checked={ctrl.activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
-        desc={debuffs?.[ctrl.index].desc()}
+        desc={debuffs?.[ctrl.index]?.desc()}
         setters={setters}
       />
     );

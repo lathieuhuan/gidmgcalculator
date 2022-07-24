@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type { CalculatorState, CustomBuffCtrl, CustomDebuffCtrl, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
 import type {
@@ -262,7 +262,7 @@ export const calculatorSlice = createSlice({
       const { isBuffs, ctrlIndex } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
 
-      state[modCtrlName][state.currentSetup].slice(ctrlIndex, 1);
+      state[modCtrlName][state.currentSetup].splice(ctrlIndex, 1);
       calculate(state);
     },
     changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {

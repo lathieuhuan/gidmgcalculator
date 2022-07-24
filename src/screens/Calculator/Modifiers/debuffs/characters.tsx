@@ -14,11 +14,12 @@ import {
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
 import { ModifierLayout } from "@Styled/DataDisplay";
-import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+import { renderNoModifier } from "@Screens/Calculator/components";
 
 import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 import { colorByVision } from "@Styled/tw-compounds";
+import { CharModSetters } from "../components";
 
 export function SelfDebuffs() {
   const char = useSelector(selectChar);

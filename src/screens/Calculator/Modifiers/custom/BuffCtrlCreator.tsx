@@ -8,6 +8,7 @@ import { percentSign, processNumInput } from "@Src/utils";
 
 import { ButtonBar } from "@Components/minors";
 import { Select } from "@Styled/Inputs";
+import { useDispatch } from "@Store/hooks";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
 
@@ -39,6 +40,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
     type: "atk_",
     value: 0,
   });
+  const dispatch = useDispatch();
 
   const onChangeCategory = (categoryName: typeof CUSTOM_BUFF_CATEGORIES[number]) => {
     setConfig((prev) => ({
@@ -62,7 +64,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   };
 
   const onConfirm = () => {
-    createCustomBuffCtrl(config);
+    dispatch(createCustomBuffCtrl(config));
     onClose();
   };
 
@@ -75,7 +77,11 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           return (
             <button
               key={categoryName}
-              className={cn("px-4 py-2 bg-darkblue-3", chosen && "bg-default")}
+              className={cn(
+                "px-4 py-2 bg-darkblue-3 first:rounded-t-lg last:rounded-b-lg",
+                "md1:first:rounded-tr-none md1:last:rounded-bl-none md1:first:rounded-l-lg md1:last:rounded-r-lg",
+                chosen && "bg-default"
+              )}
               onClick={() => {
                 if (!chosen) {
                   onChangeCategory(categoryName);
@@ -83,14 +89,14 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
               }}
             >
               <p className={cn("text-h6 font-bold text-center", chosen && "text-black")}>
-                {config.category}
+                {categoryName}
               </p>
             </button>
           );
         })}
       </div>
 
-      <div className="mx-auto flex align-center mt-4">
+      <div className="mx-auto flex items-center mt-4">
         <Select
           className="pr-2 text-white"
           value={config.type}
@@ -101,7 +107,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
-          className="ml-4 p-2"
+          className="ml-4 p-2 w-16 rounded text-black text-right"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

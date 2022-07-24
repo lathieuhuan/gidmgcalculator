@@ -1,4 +1,3 @@
-import cn from "classnames";
 import { memo, useState } from "react";
 
 import CollapseList from "@Components/Collapse";
@@ -9,17 +8,16 @@ import WeaponBuffs from "./buffs/weapons";
 import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
 import CustomModifiers from "./custom";
-import Target from "./Target";
-
-import styles from "../styles.module.scss";
+import TargetConfig from "./TargetConfig";
 
 function Modifiers() {
   const [tab, setTab] = useState("Buffs");
 
   return (
-    <div className={cn("px-6 py-4 flex flex-col bg-darkblue-1", styles.card)}>
+    <div className="h-full flex flex-col">
       <MainSelect tab={tab} onChangeTab={setTab} options={["Buffs", "Debuffs", "Target"]} />
-      <div className="mt-4 grow-1 custom-sb">
+      
+      <div className="mt-4 grow custom-scrollbar">
         {tab === "Buffs" ? (
           <CollapseList
             headingList={[
@@ -51,7 +49,7 @@ function Modifiers() {
             ]}
           />
         ) : (
-          <Target />
+          <TargetConfig />
         )}
       </div>
     </div>
