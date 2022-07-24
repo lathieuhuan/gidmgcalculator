@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, } from "@Styled/DataDisplay";
+import { Green } from "@Styled/DataDisplay";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { MEDIUM_PA, EModifierSrc } from "../constants";
@@ -183,7 +183,7 @@ const Albedo: DataCharacter = {
         selfLabels: ["Stacks"],
         initialValues: [1],
         renderTypes: ["select"],
-        maxs: [4],
+        maxValues: [4],
       },
       applyFinalBuff: ({ totalAttr, attPattBonus, charBuffCtrls, desc, tracker }) => {
         const bnValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { AmplifyingReaction, CalculatorState, Level, Vision } from "@Src/types";
+import type { CalculatorState, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
 import type {
   ChangeCustomModCtrlValueAction,
