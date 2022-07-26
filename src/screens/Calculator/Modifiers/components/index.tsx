@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import type { CharBuffInputRenderType, ModifierInput } from "@Src/types";
 import { genNumberSequence } from "@Src/utils";
 
-import { Checkbox, Select } from "@Styled/Inputs";
+import { Checkbox, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 interface CharModSettersProps {

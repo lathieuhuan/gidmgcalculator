@@ -24,6 +24,7 @@ import {
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
+  ATTACK_ELEMENTS,
   ATTACK_PATTERNS,
   TRANSFORMATIVE_REACTIONS,
   VISION_TYPES,
@@ -200,9 +201,9 @@ export default function getDamage(
   target: Target,
   tracker: Tracker
 ) {
-  const resistReduct = { phys: 0 } as ResistanceReduction;
+  const resistReduct = { def: 0 } as ResistanceReduction;
 
-  for (const key of VISION_TYPES) {
+  for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
   const { activeTalents, weapon, vision, debuffs } = findCharacter(char)!;
@@ -260,18 +261,23 @@ export default function getDamage(
   }
 
   // CALCULATE RESISTANCE REDUCTION
-  for (const key of [...VISION_TYPES]) {
+  for (const key of [...ATTACK_ELEMENTS]) {
     let RES = (target[key] - resistReduct[key]) / 100;
     resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
+
+  finalResult.NAs = {};
+  if (tracker) tracker.NAs = {};
 
   ATTACK_PATTERNS.forEach((attPatt) => {
     const talent = activeTalents[attPatt];
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
     const level = finalTalentLv(char, resultKey, partyData);
 
-    finalResult[resultKey] = {};
-    if (tracker) tracker[resultKey] = {};
+    if (resultKey !== "NAs") {
+      finalResult[resultKey] = {};
+      if (tracker) tracker[resultKey] = {};
+    }
 
     for (const stat of talent.stats) {
       let talentBuff: TalentBuff = {};
@@ -330,7 +336,7 @@ export default function getDamage(
         infusion
       );
       if (tracker) {
-        tracker[attPatt][stat.name] = { record, talentBuff };
+        tracker[resultKey][stat.name] = { record, talentBuff };
       }
     }
   });

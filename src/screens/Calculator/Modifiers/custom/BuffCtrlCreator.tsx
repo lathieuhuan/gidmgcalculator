@@ -5,10 +5,10 @@ import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
 import { createCustomBuffCtrl } from "@Store/calculatorSlice";
 import { percentSign, processNumInput } from "@Src/utils";
-
-import { ButtonBar } from "@Components/minors";
-import { Select } from "@Styled/Inputs";
 import { useDispatch } from "@Store/hooks";
+
+import { Select } from "@Src/styled-components";
+import { ButtonBar } from "@Components/minors";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
 

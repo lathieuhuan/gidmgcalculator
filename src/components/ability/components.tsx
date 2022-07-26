@@ -4,7 +4,7 @@ import { FaCaretLeft, FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
 import { wikiImg } from "@Src/utils";
-import { bgColorByVision } from "@Styled/tw-compounds";
+import { bgColorByVision } from "@Src/styled-components";
 import styles from "./styles.module.scss";
 
 interface AbilityImgProps {

@@ -1,23 +1,30 @@
-import DamageDisplay, { EStatDamageKey } from "@Components/DamageDisplay";
+import cn from "classnames";
+import { memo, useState } from "react";
+import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
+
 import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedSetups } from "@Store/uiSlice";
-import { IconButton, Select } from "@Src/styled-components";
-import cn from "classnames";
-import { useState } from "react";
-import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
-import styles from "../styles.module.scss";
 
-export default function DmgResults() {
+import { IconButton, Select } from "@Src/styled-components";
+import DamageDisplay from "@Components/DamageDisplay";
+
+enum EStatDamageKey {
+  NON_CRIT = "nonCrit",
+  CRIT = "crit",
+  AVERAGE = "average",
+}
+
+export default function DamageResults() {
   const { name } = useSelector(selectCharData);
   const [enlargedOn, setEnlargedOn] = useState(false);
   const [trackerState, setTrackerState] = useState(0);
 
   return (
-    <div className={cn("px-4 pt-2 pb-6 flex-col relative bg-darkblue-3", styles.card)}>
+    <div className="h-full">
       {window.innerWidth >= 610 && (
         <IconButton
-          className="w-7 h-7 absolute top-3 left-3 hidden md1:block"
+          className="w-7 h-7 absolute top-3 left-3 hidden md1:flex"
           variant="positive"
           onClick={() => setEnlargedOn(true)}
         >
@@ -26,19 +33,20 @@ export default function DmgResults() {
       )}
       <IconButton
         className={cn(
-          "w-7 h-7 absolute top-3 right-3 hover:text-lightgold",
+          "w-7 h-7 absolute top-3 right-3 hover:bg-lightgold",
           trackerState ? "text-green" : "text-default"
         )}
         onClick={() => setTrackerState([0, 2].includes(trackerState) ? 1 : 0)}
       >
         <FaSearch />
       </IconButton>
-      {/* <MemoInner name={name} />
-      {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />}
-      {trackerState > 0 && (
+
+      <MemoResults name={name} />
+      {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
+      {/* {trackerState > 0 && (
         <Tracker trackerState={trackerState} setTrackerState={setTrackerState} />
-      )}
-      {window.innerWidth < 1050 && trackerState > 0 && (
+      )} */}
+      {/* {window.innerWidth < 1050 && trackerState > 0 && (
         <MobileNavBtn
           className={cn({ showing: trackerState > 0 })}
           style={{ position: "fixed", top: 0, right: 0 }}
@@ -51,6 +59,8 @@ export default function DmgResults() {
   );
 }
 
+const MemoResults = memo(Results);
+
 function Results({ name }: { name: string }) {
   const setups = useSelector((state) => state.calculator.setups);
   const comparedSetups = useSelector(selectComparedSetups);
@@ -60,7 +70,7 @@ function Results({ name }: { name: string }) {
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
   return (
-    <>
+    <div className="h-full flex flex-col">
       {comparedSetups.length > 1 ? (
         <div className="mb-4 flex justify-center">
           <p className="mr-2">Choose a focus</p>
@@ -77,14 +87,9 @@ function Results({ name }: { name: string }) {
       ) : (
         <p className="mx-4 my-2 font-bold text-center">{setups[currentSetup].name.toUpperCase()}</p>
       )}
-      <div className="grow-1 hide-sb">
-        <DamageDisplay
-          key={name}
-          charName={name}
-          damageResult={dmgResult}
-          focus={comparedSetups.length > 1 ? focus : undefined}
-        />
+      <div className="grow hide-scrollbar">
+        <DamageDisplay key={name} charName={name} damageResult={dmgResult} />
       </div>
-    </>
+    </div>
   );
 }

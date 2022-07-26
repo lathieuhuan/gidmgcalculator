@@ -3,7 +3,7 @@ import cn from "classnames";
 import { BetaMark } from "@Components/minors";
 import { VISION_ICONS } from "@Src/constants";
 import { wikiImg } from "@Src/utils";
-import { rarityGradients } from "@Styled/tw-compounds";
+import { rarityGradients } from "@Src/styled-components";
 import { PickerItem } from "./types";
 
 interface ItemProps {
@@ -17,7 +17,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
     <div className={cn("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
       <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
         {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
-        
+
         <div className="relative">
           <div
             className={cn(

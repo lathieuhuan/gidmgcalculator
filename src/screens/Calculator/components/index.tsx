@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { FaCaretDown, FaCopy } from "react-icons/fa";
-import { IconButton, Select } from "@Styled/Inputs";
+import { IconButton, Select } from "@Src/styled-components";
 
 interface MainSelectProps {
   tab: string;

@@ -80,13 +80,13 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
   return (
     <div>
       <StatsTable.Row
-        className="cursor-pointer !bg-transparent"
+        className="cursor-pointer !bg-transparent hover:!bg-darkerred"
         onClick={() => setDropped(!dropped)}
       >
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretDown
-            className={cn("relative -bottom-0.5 text-white duration-150 ease-linear", {
+            className={cn("text-white duration-150 ease-linear", {
               "text-green rotate-180": dropped,
             })}
           />

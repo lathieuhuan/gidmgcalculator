@@ -5,12 +5,13 @@ import { startCalculation } from "@Store/thunks";
 import characters from "@Data/characters";
 import { findByName } from "@Src/utils";
 
+import { Button } from "@Src/styled-components";
 import Picker from "@Components/Picker";
-import { Button } from "@Styled/Inputs";
 import OverviewChar from "./OverviewChar";
 
 import styles from "./styles.module.scss";
 import Modifiers from "./Modifiers";
+import DamageResults from "./DamageResults";
 
 function Calculator() {
   const touched = useSelector((state) => state.calculator.touched);
@@ -36,6 +37,11 @@ function Calculator() {
         <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>{touched && <Modifiers />}</div>
 
         {/* Panel 3 */}
+
+        {/* Panel 4 */}
+        <div className={cn("px-4 pt-2 pb-6 flex-col relative bg-darkblue-3", styles.card)}>
+          {touched && <DamageResults />}
+        </div>
       </div>
       {pickerOn && <MainCharPicker onClose={() => setPickerOn(false)} />}
     </div>

@@ -30,8 +30,8 @@ export function calculate(state: CalculatorState, all?: boolean) {
     for (const i of indexes) {
       const char = getCharAtSetup(state.char, i);
 
-      if (!state.charData || !char) {
-        throw new Error("No character's Data / Info");
+      if (!char) {
+        throw new Error(`Character ${state.char.name} not found`);
       }
       const results = calculateAll(
         char,

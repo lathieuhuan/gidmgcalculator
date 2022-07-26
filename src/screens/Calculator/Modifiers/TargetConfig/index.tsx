@@ -14,8 +14,7 @@ import { findMonster } from "@Data/controllers";
 
 import CollapseList from "@Components/Collapse";
 import { InfusionNotes } from "@Components/minors";
-import { Checkbox, Select } from "@Styled/Inputs";
-import { colorByVision, linkStyles } from "@Styled/tw-compounds";
+import { Checkbox, Select, colorByVision, linkStyles } from "@Src/styled-components";
 
 export default function TargetConfig() {
   const target = useSelector((state) => state.calculator.target);

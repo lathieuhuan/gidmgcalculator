@@ -1,47 +1,18 @@
+import cn from "classnames";
 import { useState } from "react";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 
 import type { DamageResult } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
-import { ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
-
 import { CollapseSpace } from "@Components/Collapse";
-import StatsTable from "@Components/StatsTable";
-
-function getKeys(charName: string) {
-  const charData = findCharacter({ name: charName });
-  if (!charData) {
-    return [];
-  }
-  const result = [];
-  for (const attPatt of ATTACK_PATTERNS) {
-    const { stats } = charData.activeTalents[attPatt];
-
-    result.push({
-      main: attPatt,
-      subs: stats.map(({ name }) => name),
-    });
-  }
-  result.push({
-    main: "Reactions DMG",
-    subs: TRANSFORMATIVE_REACTIONS,
-  });
-
-  return result;
-}
-
-export enum EStatDamageKey {
-  NON_CRIT = "nonCrit",
-  CRIT = "crit",
-  AVERAGE = "average",
-}
+import { tableStyles } from "@Src/styled-components";
+import { displayValue, getKeys } from "./utils";
 
 interface DamageDisplayProps {
   charName: string;
   damageResult: DamageResult;
-  focus?: EStatDamageKey;
+  tableBody?: JSX.Element;
 }
-export default function DamageDisplay({ charName, damageResult, focus }: DamageDisplayProps) {
+export default function DamageDisplay({ charName, damageResult, tableBody }: DamageDisplayProps) {
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
   const tableKeys = getKeys(charName);
 
@@ -54,26 +25,57 @@ export default function DamageDisplay({ charName, damageResult, focus }: DamageD
   };
 
   return (
-    <div className="flex flex-coll gap-2">
+    <div className="flex flex-col gap-2">
       {tableKeys.map((key, index) => {
+        const standardValues = damageResult[key.main];
+
         return (
-          <div className="flex-col">
-            <div
+          <div key={key.main} className="flex flex-col">
+            <button
               className="mx-auto px-4 mb-2 flex items-center rounded-2xl bg-orange"
               onClick={() => toggle(index)}
             >
               <p className="text-h5 font-bold text-black">{key.main}</p>
-              <FaChevronLeft className="ml-2 text-subtitle-1 text-black" />
-            </div>
+              <FaChevronDown
+                className={cn(
+                  "ml-2 text-subtitle-1 text-black duration-150 ease-linear",
+                  closedItems[index] && "rotate-90"
+                )}
+              />
+            </button>
             <CollapseSpace active={!closedItems[index]}>
               <div className="custom-scrollbar">
-                <StatsTable>
-                  {/* {focus ? (
-                    <MultiSetup name={name} focus={focus} />
-                  ) : (
-                    <OneSetup subNames={name.subs} stdValues={stdValues} />
-                  )} */}
-                </StatsTable>
+                <table className={cn("mb-2 w-full", tableStyles)}>
+                  <colgroup>
+                    <col className="w-34" />
+                    <col />
+                    <col />
+                    <col />
+                  </colgroup>
+                  {tableBody || (
+                    <tbody>
+                      <tr className={tableStyles.row}>
+                        <th className={tableStyles.th} />
+                        <th className={tableStyles.th}>Non-crit</th>
+                        <th className={tableStyles.th}>Crit</th>
+                        <th className={cn("text-lightgold", tableStyles.th)}>Avg.</th>
+                      </tr>
+                      {key.subs.map((subKey, i) => {
+                        const { nonCrit, crit, average } = standardValues[subKey] || {};
+                        return (
+                          <tr key={subKey} className={tableStyles.row}>
+                            <td className={tableStyles.td}>{subKey}</td>
+                            <td className={tableStyles.td}>{displayValue(nonCrit)}</td>
+                            <td className={tableStyles.td}>{displayValue(crit)}</td>
+                            <td className={cn("text-lightgold", tableStyles.td)}>
+                              {displayValue(average)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  )}
+                </table>
               </div>
             </CollapseSpace>
           </div>

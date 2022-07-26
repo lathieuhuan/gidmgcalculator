@@ -40,8 +40,8 @@ export function initiateTotalAttrs(
     base_def,
   } as TotalAttribute;
 
-  const scale = [1, 2, 2, 3, 4][ascsFromLv(char.level) - 1];
-  innerStats[charData.bonusStat.type] += charData.bonusStat.value * scale;
+  const scale = [0, 1, 2, 2, 3, 4][Math.max(ascsFromLv(char.level) - 1, 0)];
+  innerStats[charData.bonusStat.type] = charData.bonusStat.value * scale;
 
   addOrInit(innerStats, "cRate", 5);
   addOrInit(innerStats, "cDmg", 50);

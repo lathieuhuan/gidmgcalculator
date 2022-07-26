@@ -110,6 +110,9 @@ module.exports = {
         "gradient-2": "linear-gradient(to bottom, #5ca862, #61c370, #63dd7e)",
         "gradient-1": "linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a)",
       },
+      width: {
+        34: "8.5rem",
+      },
       minWidth: {
         13: "3.25rem",
       },

@@ -5,8 +5,8 @@ import { ATTACK_ELEMENTS } from "@Src/constants";
 import { createCustomDebuffCtrl } from "@Store/calculatorSlice";
 import { percentSign, processNumInput } from "@Src/utils";
 
+import { Select } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
-import { Select } from "@Styled/Inputs";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;

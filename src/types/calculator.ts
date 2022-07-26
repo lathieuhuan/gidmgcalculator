@@ -217,7 +217,7 @@ type CalculatedStatCluster = {
   [k: string]: CalculatedStat;
 };
 
-export type DamageResult = Record<Talent | "RXN", CalculatedStatCluster>;
+export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedStatCluster>;
 
 export type PartyData = {
   name: string;
