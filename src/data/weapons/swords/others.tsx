@@ -1,7 +1,7 @@
 import { EModAffect } from "@Src/constants";
 import { DataWeapon } from "@Src/types";
 import { findByCode } from "@Src/utils";
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1 } from "../series";
 import { makeWpModApplier } from "../utils";

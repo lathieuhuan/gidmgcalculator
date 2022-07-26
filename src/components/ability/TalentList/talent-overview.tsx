@@ -4,8 +4,7 @@ import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
-import { colorByVision } from "@Styled/tw-compounds";
-import { Select } from "@Styled/Inputs";
+import { colorByVision, Select } from "@Src/styled-components";
 import { InfoSign } from "@Components/minors";
 import { AbilityIcon } from "../components";
 

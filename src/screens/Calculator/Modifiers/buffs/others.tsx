@@ -17,8 +17,7 @@ import {
 import { RESONANCE_BUFF_INFO } from "./constants";
 
 import { renderAmpReactionDesc } from "@Components/minors";
-import { ModifierLayout } from "@Styled/DataDisplay";
-import { Select } from "@Styled/Inputs";
+import { ModifierLayout, Select } from "@Src/styled-components";
 import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";

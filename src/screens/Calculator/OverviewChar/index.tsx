@@ -12,16 +12,15 @@ import { startCalculation } from "@Store/thunks";
 
 import { BetaMark, StarLine } from "@Components/minors";
 import Picker from "@Components/Picker";
-import { Button, IconButton, Select } from "@Styled/Inputs";
-import { colorByVision } from "@Styled/tw-compounds";
+import { colorByVision, Button, IconButton, Select } from "@Src/styled-components";
+import { MainSelect } from "../components";
+import contentByTab from "./content";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { findByName, wikiImg } from "@Src/utils";
 
-import { MainSelect } from "../components";
 import styles from "../styles.module.scss";
-import contentByTab from "./content";
 
 export default function OverviewChar() {
   const [pickerOn, setPickerOn] = useState(false);
@@ -73,7 +72,9 @@ export default function OverviewChar() {
               onChange={(e) => dispatch(levelCalcChar(e.target.value as Level))}
             >
               {LEVELS.map((lv) => (
-                <option key={lv} className="text-black">{lv}</option>
+                <option key={lv} className="text-black">
+                  {lv}
+                </option>
               ))}
             </Select>
           </div>

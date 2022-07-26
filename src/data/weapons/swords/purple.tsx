@@ -2,7 +2,7 @@ import { applyModifier } from "@Src/calculators/utils";
 import { EModAffect } from "@Src/constants";
 import { DataWeapon } from "@Src/types";
 import { applyPercent, findByCode } from "@Src/utils";
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import {
   BaneSeries2,
   BlackcliffSeries,
@@ -24,7 +24,7 @@ const purpleSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("skillBonuses", "all.pct", 3),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 3),
         desc: ({ refi }) => findByCode(purpleSwords, 109)!.passiveDesc({ refi }).core,
       },
     ],
@@ -88,7 +88,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("skillBonuses", ["ES.pct", "ES.cRate"], [4, 1.5]),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [4, 1.5]),
     passiveName: "Undying Admiration",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -106,7 +106,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate", scale: "6%" },
-    applyBuff: makeWpModApplier("skillBonuses", ["NA.pct", "CA.pct"], 5),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 5),
     passiveName: "Justice",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -171,9 +171,9 @@ const purpleSwords: DataWeapon[] = [
           renderTypes: ["stacks"],
           initialValues: [2],
         },
-        applyBuff: ({ skillBonuses, refi, inputs, desc, tracker }) => {
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const bnValue = (4.5 + refi * 1.5) * getInput(inputs, 0);
-          applyModifier(desc, skillBonuses, "all.pct", bnValue, tracker);
+          applyModifier(desc, attPattBonus, "all.pct", bnValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,
       },
@@ -234,10 +234,10 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "def_", scale: "15%" },
-    applyFinalBuff: ({ skillBonuses, refi, totalAttr, desc, tracker }) => {
-      if (skillBonuses) {
+    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
+      if (attPattBonus) {
         const bnValue = applyPercent(totalAttr.def, 30 + refi * 10);
-        applyModifier(desc, skillBonuses, "ES.flat", bnValue, tracker);
+        applyModifier(desc, attPattBonus, "ES.flat", bnValue, tracker);
       }
     },
     passiveName: "Spotless Heart",

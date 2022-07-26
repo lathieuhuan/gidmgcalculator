@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { EModAffect } from "@Src/constants";
 import { round2 } from "@Src/utils";
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import { getInput, makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
@@ -190,7 +190,7 @@ export const BaneSeries1 = (name: string, elements: string): SeriesInfo => ({
     {
       index: 0,
       affect: EModAffect.SELF,
-      applyBuff: makeWpModApplier("skillBonuses", "all.pct", 3),
+      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 3),
       desc: ({ refi }) => BaneSeries1(name, elements).passiveDesc({ refi }).core,
     },
   ],
@@ -210,8 +210,8 @@ export const BaneSeries2 = (name: string, elements: string): SeriesInfo => ({
     {
       index: 0,
       affect: EModAffect.SELF,
-      applyBuff: ({ skillBonuses, refi, desc, tracker }) => {
-        applyModifier(desc, skillBonuses, "all.pct", 16 + refi * 4, tracker);
+      applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
+        applyModifier(desc, attPattBonus, "all.pct", 16 + refi * 4, tracker);
       },
       desc: ({ refi }) => BaneSeries2(name, elements).passiveDesc({ refi }).core,
     },
@@ -228,11 +228,11 @@ export const BaneSeries2 = (name: string, elements: string): SeriesInfo => ({
 });
 
 export const WatatsumiSeries: SeriesInfo = {
-  applyBuff: ({ skillBonuses, refi, charData, partyData, desc, tracker }) => {
-    if (partyData && skillBonuses) {
+  applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
+    if (partyData && attPattBonus) {
       const maxEnergy = partyData.reduce((result, data) => result + data.EBcost, charData.EBcost);
       const bnValue = round2(maxEnergy * (0.09 + refi * 0.03));
-      applyModifier(desc, skillBonuses, "EB.pct", bnValue, tracker);
+      applyModifier(desc, attPattBonus, "EB.pct", bnValue, tracker);
     }
   },
   passiveName: "Watatsumi Wavewalker",

@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import { findCharacter } from "@Data/controllers";
 import { CalcChar } from "@Src/types";
-import { Green } from "@Styled/DataDisplay";
-import { CloseButton } from "@Styled/Inputs";
-import { colorByVision } from "@Styled/tw-compounds";
+import { colorByVision, Green, CloseButton } from "@Src/styled-components";
 import { InfoSign, SharedSpace } from "../minors";
 import { AbilityIcon, SlideShow } from "./components";
 

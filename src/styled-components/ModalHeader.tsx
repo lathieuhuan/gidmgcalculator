@@ -1,7 +1,7 @@
 import cn from "classnames";
 import type { InsHTMLAttributes } from "react";
 import { FaFilter } from "react-icons/fa";
-import { CloseButton, IconButton, type CloseButtonProps } from "./Inputs";
+import { CloseButton, IconButton, type CloseButtonProps } from "./inputs";
 
 function ModalHeader({ className, ...rest }: InsHTMLAttributes<HTMLDivElement>) {
   return (
@@ -41,4 +41,4 @@ ModalHeader.FilterButton = (props: FilterButtonProps) => {
   );
 };
 
-export default ModalHeader;
+export { ModalHeader };

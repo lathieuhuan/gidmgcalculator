@@ -1,4 +1,4 @@
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 
 export const RESONANCE_BUFF_INFO = {
   pyro: {

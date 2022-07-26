@@ -1,7 +1,7 @@
 import type { DataWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import { makeWpModApplier } from "../utils";
 
 const goldBows: DataWeapon[] = [
@@ -17,9 +17,8 @@ const goldBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("skillBonuses", "all.pct", 5),
-        desc: ({ refi }) =>
-          findByCode(goldBows, 125)!.passiveDesc({ refi }).extra![0],
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 5),
+        desc: ({ refi }) => findByCode(goldBows, 125)!.passiveDesc({ refi }).extra![0],
       },
     ],
     passiveName: "The Cleansing Form",
@@ -27,16 +26,14 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>HP</Green> is increased by{" "}
-            <Green>{12 + refi * 4}%</Green>. {this.extra![0]}
+            <Green>HP</Green> is increased by <Green>{12 + refi * 4}%</Green>. {this.extra![0]}
           </>
         );
       },
       extra: [
         <>
-          When there are opponents nearby, the <Green>DMG</Green> dealt by the
-          wielder of this weapon is increased by{" "}
-          <Green b>{15 + refi * 5}%</Green>. This will take effect whether
+          When there are opponents nearby, the <Green>DMG</Green> dealt by the wielder of this
+          weapon is increased by <Green b>{15 + refi * 5}%</Green>. This will take effect whether
           the character is on-field or not.
         </>,
       ],

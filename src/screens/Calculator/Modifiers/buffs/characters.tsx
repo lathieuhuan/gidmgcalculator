@@ -20,9 +20,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
-import { ModifierLayout } from "@Styled/DataDisplay";
+import { colorByVision, ModifierLayout } from "@Src/styled-components";
 import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
-import { colorByVision } from "@Styled/tw-compounds";
 
 interface SelfBuffsProps {
   partyData: PartyData;

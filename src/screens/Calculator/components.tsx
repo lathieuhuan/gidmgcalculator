@@ -1,6 +1,6 @@
 import { Fragment, ReactNode, useState } from "react";
 import { FaCaretDown, FaCopy } from "react-icons/fa";
-import { Checkbox, IconButton, Select } from "@Styled/Inputs";
+import { Checkbox, IconButton, Select } from "@Src/styled-components";
 import { CharBuffInputRenderType, ModifierInput } from "@Src/types";
 import { genNumberSequence } from "@Src/utils";
 

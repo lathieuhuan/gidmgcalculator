@@ -63,7 +63,6 @@ type ApplyWpFinalBuffArgs = {
 
 type WpDescArgs = {
   refi: number;
-  totalAttr: TotalAttribute;
 };
 
 type WeaponBuff = {

@@ -1,7 +1,7 @@
 import cn from "classnames";
 import type { HTMLAttributes } from "react";
 import type { Vision } from "@Src/types";
-import { Checkbox } from "./Inputs";
+import { Checkbox } from "./inputs";
 import { ReactNode } from "react";
 
 type SpanExtraColor = "gold" | "lightgold" | "green" | "orange";

@@ -5,7 +5,7 @@ import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { getRxnBonusesFromEM } from "@Src/calculators/utils";
 
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import StatsTable from "./StatsTable";
 import { CollapseSpace } from "./Collapse";
 

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import classNames from "classnames";
+import type { DataType, Filter, PickerItem } from "./types";
+
 import { CollapseSpace } from "@Components/Collapse";
-import { Checkbox } from "@Src/styled-components/Inputs";
-import ModalHeader from "@Styled/ModalHeader";
+import { Checkbox, ModalHeader } from "@Src/styled-components";
 import { Modal } from "../modals";
-import { DataType, Filter, PickerItem } from "./types";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 

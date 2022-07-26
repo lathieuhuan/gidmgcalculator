@@ -12,7 +12,7 @@ const arr2 = [
   31.5, 32.1, 32.7, 33.2, 32.6, 33.8, 34.4, 35,
 ];
 
-const validSubstatValues: Record<string, Record<number, number[]>> = {
+const VALID_SUBSTAT_VALUES: Record<string, Record<number, number[]>> = {
   hp: {
     4: [
       167, 191, 215, 239, 335, 359, 382, 406, 430, 454, 478, 502, 526, 550, 574, 598, 621, 645, 669,
@@ -118,4 +118,4 @@ const validSubstatValues: Record<string, Record<number, number[]>> = {
   },
 };
 
-export default validSubstatValues;
+export default VALID_SUBSTAT_VALUES;

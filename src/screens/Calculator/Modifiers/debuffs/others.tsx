@@ -10,8 +10,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactSet } from "@Data/controllers";
 
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
-import { Green, ModifierLayout } from "@Styled/DataDisplay";
-import { Select } from "@Styled/Inputs";
+import { Green, ModifierLayout, Select } from "@Src/styled-components";
 
 export function ElementDebuffs() {
   const { resonance, superconduct } = useSelector(selectElmtModCtrls);

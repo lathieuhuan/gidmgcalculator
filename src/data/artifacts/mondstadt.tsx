@@ -1,6 +1,6 @@
 import type { AttackElement, DataArtifact } from "@Src/types";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { Green } from "@Styled/DataDisplay";
+import { Green } from "@Src/styled-components";
 import { findByCode } from "@Src/utils";
 import { EModAffect } from "@Src/constants";
 
@@ -148,7 +148,7 @@ const mondstadt: DataArtifact[] = [
     ],
     debuffs: [
       {
-        desc: (
+        desc: () => (
           <>
             Decreases opponent's <Green>Elemental RES</Green> to the element infused in the Swirl by{" "}
             <Green b>40%</Green> for 10s.
@@ -249,11 +249,7 @@ const mondstadt: DataArtifact[] = [
             only occur once every 0.8s.
           </>
         ),
-        applyBuff: makeModApplier(
-          "rxnBonus",
-          ["overloaded", "electroCharged", "superconduct"],
-          40
-        ),
+        applyBuff: makeModApplier("rxnBonus", ["overloaded", "electroCharged", "superconduct"], 40),
       },
     ],
   },

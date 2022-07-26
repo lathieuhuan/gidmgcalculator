@@ -6,14 +6,13 @@ import { ascsFromLv } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
+import { colorByVision, CloseButton } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
-import SlideShow from "@Components/ability/SlideShow";
-import { CloseButton } from "@Styled/Inputs";
+import { SlideShow } from "@Components/ability/components";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { SkillAttributes } from "./talent-details";
 
 // import { useSwitcher } from "@Hooks/useSwitcher";
-import { colorByVision } from "@Styled/tw-compounds";
 
 interface TalentListProps {
   char: CharInfo;

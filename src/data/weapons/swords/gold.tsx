@@ -1,10 +1,9 @@
 import type { DataWeapon } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { Green } from "@Styled/DataDisplay";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Green } from "@Src/styled-components";
 import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
-import { ELEMENTAL_DMG_BONUSES } from "@Data/constants";
-import { NCPA_PERCENTS } from "../constants";
+import { NCPA_PERCENTS } from "@Data/constants";
 import { LiyueSeries } from "../series";
 import { getInput, makeWpModApplier } from "../utils";
 
@@ -16,7 +15,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
-    applyBuff: makeWpModApplier("skillBonuses", [...ELEMENTAL_DMG_BONUSES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
     buffs: [
       {
         index: 1,
@@ -26,9 +25,9 @@ const goldSwords: DataWeapon[] = [
           renderTypes: ["stacks"],
           initialValues: [2],
         },
-        applyBuff: ({ skillBonuses, refi, inputs, desc, tracker }) => {
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const bnValue = (15 + refi * 5) * getInput(inputs, 0);
-          applyModifier(desc, skillBonuses, "NA.pct", bnValue, tracker);
+          applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
       },
@@ -68,7 +67,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg", scale: "9.6%" },
-    applyBuff: makeWpModApplier("skillBonuses", [...ELEMENTAL_DMG_BONUSES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
     buffs: [
       {
         index: 0,
@@ -78,10 +77,10 @@ const goldSwords: DataWeapon[] = [
           renderTypes: ["stacks"],
           initialValues: [3],
         },
-        applyBuff: ({ skillBonuses, refi, inputs, charData, desc, tracker }) => {
+        applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { stackValues } = findByCode(goldSwords, 101)!;
           const bnValue = stackValues!({ refi })[+inputs![0] - 1];
-          applyModifier(desc, skillBonuses, `${charData.vision}.pct`, bnValue, tracker);
+          applyModifier(desc, totalAttr, charData.vision, bnValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
       },
@@ -178,13 +177,13 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "em", scale: "43" },
-    applyBuff: makeWpModApplier("skillBonuses", "all.pct", 2.5),
+    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 2.5),
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: ({ totalAttr, skillBonuses, refi, desc, tracker }) => {
-          applyModifier(desc, skillBonuses, [...NCPA_PERCENTS], 12 + refi * 4, tracker);
+        applyBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
+          applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], 12 + refi * 4, tracker);
           applyModifier(desc, totalAttr, "atk_", 15 + refi * 5, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 104)!.passiveDesc({ refi })!.extra![0],

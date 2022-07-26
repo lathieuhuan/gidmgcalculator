@@ -1,14 +1,22 @@
 import cn from "classnames";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 import type { CalcArtPiece } from "@Src/types";
-import { percentSign, processNumInput, wikiImg } from "@Src/utils";
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import { findArtifactPiece } from "@Data/controllers";
-import { rarityBgColors, rarityColors, rarityGradients } from "@Styled/tw-compounds";
-import { Button, IconButton, Select } from "@Styled/Inputs";
-import { BetaMark } from "@Components/minors";
-import validSubstatValues from "./validSubstatValues";
+
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
+import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
+import VALID_SUBSTAT_VALUES from "./validSubstatValues";
+import { percentSign, processNumInput, wikiImg } from "@Src/utils";
+import { findArtifactPiece } from "@Data/controllers";
+
+import {
+  rarityBgColors,
+  rarityColors,
+  rarityGradients,
+  Button,
+  IconButton,
+  Select,
+} from "@Src/styled-components";
+import { BetaMark } from "@Components/minors";
 
 interface ArtifactCardProps {
   artPiece?: CalcArtPiece;
@@ -119,7 +127,7 @@ export default function ArtifactCard({
 
       <div className={cn(mutable && "px-2")}>
         {artPiece.subStats.map(({ type, value }, i) => {
-          const isValid = value === 0 || validSubstatValues[type][rarity].includes(value);
+          const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
           return mutable ? (
             <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2">

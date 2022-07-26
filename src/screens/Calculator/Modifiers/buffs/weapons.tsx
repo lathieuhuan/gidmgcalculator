@@ -12,8 +12,7 @@ import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors"
 import { findWeapon } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 
-import { ModifierLayout } from "@Styled/DataDisplay";
-import { Checkbox, Select } from "@Styled/Inputs";
+import { ModifierLayout, Checkbox, Select } from "@Src/styled-components";
 import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
 
 export default function WeaponBuffs() {

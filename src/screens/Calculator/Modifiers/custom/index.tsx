@@ -10,7 +10,7 @@ import {
 import { indexByName, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
-import { IconButton } from "@Styled/Inputs";
+import { IconButton } from "@Src/styled-components";
 
 interface CustomModifiersProps {
   isBuffs: boolean;
