@@ -45,7 +45,7 @@ export function initiateTotalAttrs(
 
   addOrInit(innerStats, "cRate", 5);
   addOrInit(innerStats, "cDmg", 50);
-  addOrInit(innerStats, "er", 50);
+  addOrInit(innerStats, "er", 100);
   innerStats.naAtkSpd = innerStats.caAtkSpd = 100;
 
   for (const type in innerStats) {

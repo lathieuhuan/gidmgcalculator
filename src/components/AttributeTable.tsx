@@ -83,7 +83,7 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
         className="cursor-pointer !bg-transparent"
         onClick={() => setDropped(!dropped)}
       >
-        <div className="flex align-center">
+        <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretDown
             className={cn("relative -bottom-0.5 text-white duration-150 ease-linear", {

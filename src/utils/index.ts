@@ -60,7 +60,7 @@ export function isOne(obj1: any, obj2: any) {
 
 const find = (key: string) => {
   return <T>(arr: T[], value?: string | number | null): T | undefined => {
-    if (!value) {
+    if (value === undefined) {
       return undefined;
     }
     return arr.find((item) => (item as any)[key] === value);

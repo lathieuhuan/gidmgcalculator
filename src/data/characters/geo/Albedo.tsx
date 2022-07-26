@@ -157,8 +157,8 @@ const Albedo: DataCharacter = {
       src: EModifierSrc.A4,
       desc: () => (
         <>
-          When Albedo crafts <Green>Weapon Ascension Materials</Green>, he has a{" "}
-          <Green b>10%</Green> <Green>chance</Green> to receive <Green b>double</Green> the product.
+          Using Rite of Progeniture: Tectonic Tide increases the <Green>Elemental Mastery</Green> of
+          nearby party members by <Green b>125</Green> for 10s.
         </>
       ),
       affect: EModAffect.PARTY,

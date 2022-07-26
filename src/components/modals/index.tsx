@@ -7,16 +7,16 @@ interface ModalProps {
   standard?: boolean;
   className?: string;
   children: JSX.Element | JSX.Element[];
-  close: () => void;
+  onClose: () => void;
 }
 export function Modal(props: ModalProps) {
-  useCloseWithEsc(props.close);
+  useCloseWithEsc(props.onClose);
 
   return (
     <div className={cn("fixed full-stretch z-10", styles.modal)}>
-      <div className="w-full h-full bg-black/60" onClick={props.close} />
+      <div className="w-full h-full bg-black/60" onClick={props.onClose} />
       {props.standard || props.className ? (
-        <div className={cn("rounded-lg bg-darkblue-2", styles.modalContent, props.className)}>
+        <div className={cn("rounded-lg bg-darkblue-2 shadow-white-glow", styles.modalContent, props.className)}>
           {props.children}
         </div>
       ) : (
@@ -35,9 +35,9 @@ interface ConfirmModalProps {
   left: ButtonInfo;
   mid?: Required<ButtonInfo>;
   right: ButtonInfo;
-  close: () => void;
+  onClose: () => void;
 }
-export function ConfirmModal({ message, left, mid, right, close }: ConfirmModalProps) {
+export function ConfirmModal({ message, left, mid, right, onClose }: ConfirmModalProps) {
   const texts = [left?.text || "Cancel", right?.text || "Confirm"];
   const handlers = [
     () => {
@@ -57,7 +57,7 @@ export function ConfirmModal({ message, left, mid, right, close }: ConfirmModalP
     });
   }
   return (
-    <Modal close={close}>
+    <Modal onClose={onClose}>
       <div className="p-4 w-[22.5rem] max-w-95 rounded-2xl bg-darkblue-3">
         <div className="py-4">
           <p className="text-center text-1.5xl">{message}</p>

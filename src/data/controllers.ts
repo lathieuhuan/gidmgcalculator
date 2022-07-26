@@ -1,5 +1,5 @@
 import type { Artifact, CalcCharData, Party, Weapon } from "@Src/types";
-import { findByCode, findByName } from "@Src/utils";
+import { findByCode, findByIndex, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -22,7 +22,7 @@ export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {
   return findByCode(weapons[type], code);
 };
 
-export const findMonster = (name: string) => findByName(monsters, name);
+export const findMonster = ({ index }: { index: number }) => monsters[index];
 
 export const getCharData = (char: HasName): CalcCharData => {
   const { code, name, vision, nation, weapon, activeTalents } = findCharacter(char)!;

@@ -14,7 +14,8 @@ import {
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
 import { colorByVision, ModifierLayout } from "@Src/styled-components";
-import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+import { renderNoModifier } from "@Screens/Calculator/components";
+import { CharModSetters } from "../components";
 
 import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";

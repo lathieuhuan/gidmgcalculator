@@ -1,5 +1,12 @@
 @tailwind base;
 @tailwind components;
+
+@layer components {
+  option {
+    color: black;
+  }
+}
+
 @tailwind utilities;
 
 @layer utilities {

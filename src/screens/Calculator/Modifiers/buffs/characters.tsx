@@ -17,18 +17,17 @@ import {
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { findCharacter } from "@Data/controllers";
+import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
 import { colorByVision, ModifierLayout } from "@Src/styled-components";
-import { CharModSetters, renderNoModifier } from "@Screens/Calculator/components";
+import { renderNoModifier } from "@Screens/Calculator/components";
+import { CharModSetters } from "../components";
 
-interface SelfBuffsProps {
-  partyData: PartyData;
-}
-export function SelfBuffs({ partyData }: SelfBuffsProps) {
+export function SelfBuffs() {
   const char = useSelector(selectChar);
   const charData = useSelector(selectCharData);
+  const partyData = getPartyData(useSelector(selectParty));
   const totalAttr = useSelector(selectTotalAttr);
   const selfBuffCtrls = useSelector(
     (state) => state.calculator.allSelfBuffCtrls[state.calculator.currentSetup]
@@ -107,11 +106,9 @@ export function SelfBuffs({ partyData }: SelfBuffsProps) {
   return content.length ? <>{content}</> : renderNoModifier(true);
 }
 
-interface PartyBuffsProps {
-  partyData: PartyData;
-}
-export function PartyBuffs({ partyData }: PartyBuffsProps) {
+export function PartyBuffs() {
   const party = useSelector(selectParty);
+  const partyData = getPartyData(useSelector(selectParty));
   const content: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {

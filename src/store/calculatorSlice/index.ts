@@ -1,14 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { CalculatorState, Level, Vision } from "@Src/types";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import type { CalculatorState, CustomBuffCtrl, CustomDebuffCtrl, Level, Vision } from "@Src/types";
 import { getCharData } from "@Data/controllers";
 import type {
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
+  ChangeMonsterConfigAction,
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   CopyCustomModCtrlsAction,
   InitSessionWithCharAction,
+  ModifyTargetAction,
   RefineSubWeaponAction,
   RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
@@ -22,7 +24,9 @@ import {
   initMonster,
   initTarget,
 } from "./initiators";
-import { calculate, getSetupInfo, parseAndInitData } from "./utils";
+import { autoModifyTarget, calculate, getSetupInfo, parseAndInitData } from "./utils";
+import monsters from "@Data/monsters";
+import { MonsterConfig } from "@Data/monsters/types";
 
 const defaultChar = {
   name: "Albedo",
@@ -95,7 +99,7 @@ export const calculatorSlice = createSlice({
 
       calculate(state, true);
     },
-    // character
+    // CHARACTER
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;
       const { char, currentSetup } = state;
@@ -111,6 +115,7 @@ export const calculatorSlice = createSlice({
     changeConsLevel: (state, action: PayloadAction<number>) => {
       const newCons = action.payload;
       const { char } = state;
+
       if (Array.isArray(char.cons)) {
         char.cons[state.currentSetup] = newCons;
         calculate(state);
@@ -135,7 +140,7 @@ export const calculatorSlice = createSlice({
         calculate(state, true);
       }
     },
-    // weapon
+    // WEAPON
     upgradeWeapon: (state, action: PayloadAction<Level>) => {
       state.allWeapons[state.currentSetup].level = action.payload;
       calculate(state);
@@ -144,7 +149,7 @@ export const calculatorSlice = createSlice({
       state.allWeapons[state.currentSetup].refi = action.payload;
       calculate(state);
     },
-    //
+    // MOD CTRLS
     toggleResonance: (state, action: PayloadAction<Vision>) => {
       const resonance = state.allElmtModCtrls[state.currentSetup].resonance.find(
         ({ vision }) => vision === action.payload
@@ -156,17 +161,20 @@ export const calculatorSlice = createSlice({
     },
     toggleElementModCtrl: (state) => {
       const currentElmtModCtrls = state.allElmtModCtrls[state.currentSetup];
+
       currentElmtModCtrls.superconduct = !currentElmtModCtrls.superconduct;
       calculate(state);
     },
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
+
       state.allElmtModCtrls[state.currentSetup][field] = value;
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
       const ctrl = state[modCtrlName][state.currentSetup][ctrlIndex];
+
       ctrl.activated = !ctrl.activated;
       calculate(state);
     },
@@ -228,29 +236,78 @@ export const calculatorSlice = createSlice({
         }
       }
     },
+    //
+    createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
+      state.allCustomBuffCtrls[state.currentSetup].unshift(action.payload);
+      calculate(state);
+    },
+    createCustomDebuffCtrl: (state, action: PayloadAction<CustomDebuffCtrl>) => {
+      state.allCustomDebuffCtrls[state.currentSetup].unshift(action.payload);
+      calculate(state);
+    },
     clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
       const modCtrlName = action.payload ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+
       state[modCtrlName][state.currentSetup] = [];
       calculate(state);
     },
     copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
       const { isBuffs, sourceIndex } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+
       state[modCtrlName][state.currentSetup] = state[modCtrlName][sourceIndex];
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
       const { isBuffs, ctrlIndex } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
-      state[modCtrlName][state.currentSetup].slice(ctrlIndex, 1);
+
+      state[modCtrlName][state.currentSetup].splice(ctrlIndex, 1);
       calculate(state);
     },
     changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
       const { isBuffs, ctrlIndex, value } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+
       state[modCtrlName][state.currentSetup][ctrlIndex].value = value;
       calculate(state);
     },
+    // TARGET
+    modifyTarget: (state, action: ModifyTargetAction) => {
+      const { key, value } = action.payload;
+
+      state.target[key] = value;
+      calculate(state);
+    },
+    changeMonster: (state, action: PayloadAction<number>) => {
+      const monsterData = monsters[action.payload];
+      if (!monsterData) return;
+
+      const { variant, config } = monsterData;
+      const inputs: MonsterConfig[] = [];
+
+      if (config) {
+        for (const type of config.renderTypes) {
+          if (type === "check") {
+            inputs.push(false);
+          }
+        };
+      }
+      state.monster = {
+        index: action.payload,
+        variantIndex: variant ? 0 : null,
+        configs: inputs,
+      };
+      autoModifyTarget(state.target, state.monster);
+      calculate(state, true);
+    },
+    changeMonsterConfig: (state, action: ChangeMonsterConfigAction) => {
+      const { inputIndex, value } = action.payload;
+
+      state.monster.configs[inputIndex] = value;
+      autoModifyTarget(state.target, state.monster);
+      calculate(state, true);
+    }
   },
 });
 
@@ -271,10 +328,15 @@ export const {
   toggleSubWpModCtrl,
   refineSubWeapon,
   changeSubWpModCtrlInput,
+  createCustomBuffCtrl,
+  createCustomDebuffCtrl,
   clearCustomModCtrls,
   copyCustomModCtrls,
   removeCustomModCtrl,
   changeCustomModCtrlValue,
+  modifyTarget,
+  changeMonster,
+  changeMonsterConfig,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

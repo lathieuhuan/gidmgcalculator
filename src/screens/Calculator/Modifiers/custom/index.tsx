@@ -11,6 +11,9 @@ import { indexByName, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
 import { IconButton } from "@Src/styled-components";
+import { Modal } from "@Components/modals";
+import BuffCtrlCreator from "./BuffCtrlCreator";
+import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
 interface CustomModifiersProps {
   isBuffs: boolean;
@@ -45,9 +48,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
     );
   };
 
-  const renderCreateModal = () => {
-    return <div></div>;
-  };
+  const closeModal = () => setModalOn(false);
 
   return (
     <div className="flex flex-col">
@@ -75,7 +76,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       ) : null}
 
       {modCtrls.map(({ type, value }, ctrlIndex) => (
-        <div key={ctrlIndex} className="mt-6 flex align-center">
+        <div key={ctrlIndex} className="mt-6 flex items-center">
           <IconButton
             className="mr-4 text-xl"
             variant="negative"
@@ -84,10 +85,10 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             <FaMinus />
           </IconButton>
 
-          <div className="grow-1 flex align-center">
+          <div className="grow flex items-center">
             <p className="pr-2">{type}</p>
             <input
-              className="ml-auto p-2"
+              className="ml-auto p-2 w-16 rounded text-black text-right"
               value={value}
               onChange={(e) =>
                 dispatch(
@@ -102,7 +103,15 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           </div>
         </div>
       ))}
-      {modalOn && renderCreateModal()}
+      {modalOn && (
+        <Modal onClose={closeModal}>
+          {isBuffs ? (
+            <BuffCtrlCreator onClose={closeModal} />
+          ) : (
+            <DebuffCtrlCreator onClose={closeModal} />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

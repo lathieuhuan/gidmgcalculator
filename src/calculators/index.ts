@@ -49,7 +49,7 @@ export default function calculateAll(
   const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
     char,
     charData,
-    selfDebuffCtrls,
+    selfBuffCtrls,
     weapon,
     wpBuffCtrls,
     subWpComplexBuffCtrls,

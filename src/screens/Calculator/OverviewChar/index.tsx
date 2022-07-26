@@ -2,52 +2,38 @@ import cn from "classnames";
 import { useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 
-import characters from "@Data/characters";
 import { findCharacter } from "@Data/controllers";
 
 import { levelCalcChar } from "@Store/calculatorSlice";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { startCalculation } from "@Store/thunks";
 
 import { BetaMark, StarLine } from "@Components/minors";
-import Picker from "@Components/Picker";
-import { colorByVision, Button, IconButton, Select } from "@Src/styled-components";
+import { colorByVision, IconButton, Select } from "@Src/styled-components";
 import { MainSelect } from "../components";
 import contentByTab from "./content";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { findByName, wikiImg } from "@Src/utils";
+import { wikiImg } from "@Src/utils";
 
-import styles from "../styles.module.scss";
-
-export default function OverviewChar() {
-  const [pickerOn, setPickerOn] = useState(false);
+interface OverviewCharProps {
+  onClickCharImg: () => void;
+}
+export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
   const [tab, setTab] = useState("Attributes");
 
   const char = useSelector(selectChar)!;
   const charData = useSelector(selectCharData);
-  const touched = useSelector((state) => state.calculator.touched);
   const dispatch = useDispatch();
 
-  if (!touched) {
-    return (
-      <div className={cn("px-6 py-4 flex flex-col bg-darkblue-1", styles.card)}>
-        <Button className="mx-auto" variant="positive" onClick={() => setPickerOn(true)}>
-          Choose a Character
-        </Button>
-        {pickerOn && <CharPicker close={() => setPickerOn(false)} />}
-      </div>
-    );
-  }
   const Content = contentByTab[tab];
   const { beta, icon, vision, rarity } = findCharacter(charData)!;
 
   return (
-    <div className={cn("px-6 py-4 flex flex-col bg-darkblue-1", styles.card)}>
+    <div className="h-full flex flex-col">
       <div className="mt-2 pb-6 flex">
-        <div className="mr-4 relative" onClick={() => setPickerOn(true)}>
+        <div className="mr-4 relative" onClick={onClickCharImg}>
           <IconButton className="absolute -top-2.5 -left-2.5 z-10 text-xl" variant="positive">
             <FaSyncAlt />
           </IconButton>
@@ -85,34 +71,7 @@ export default function OverviewChar() {
         onChangeTab={setTab}
         options={["Attributes", "Weapon", "Artifacts", "Constellation", "Talents"]}
       />
-      <div className="mt-3 grow">{Content && <Content />}</div>
-
-      {pickerOn && <CharPicker close={() => setPickerOn(false)} />}
+      <div className="mt-3 grow hide-scrollbar">{Content && <Content />}</div>
     </div>
-  );
-}
-
-function CharPicker({ close }: { close: () => void }) {
-  const myChars = useSelector((state) => state.database.myChars);
-  const dispatch = useDispatch();
-
-  const mixedList = [];
-  for (const { name, code, beta, icon, rarity, vision, weapon } of characters) {
-    const char = { code, beta, icon, rarity, vision, weapon };
-    const existedChar = findByName(myChars, name);
-
-    if (existedChar) {
-      mixedList.push({ ...existedChar, ...char });
-    } else {
-      mixedList.push({ name, ...char });
-    }
-  }
-  return (
-    <Picker
-      data={mixedList}
-      dataType="character"
-      close={close}
-      onPickItem={(pickedChar) => dispatch(startCalculation(pickedChar))}
-    />
   );
 }

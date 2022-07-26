@@ -27,7 +27,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={cn("text-h2", rarityColors[rarity])}>{wpData.name}</p>
+      <p className={cn("text-h2 font-bold", rarityColors[rarity])}>{wpData.name}</p>
       <div className="mt-2 flex">
         {/* left */}
         <div className="flex flex-col grow justify-between">
