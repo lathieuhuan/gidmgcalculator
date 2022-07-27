@@ -30,7 +30,7 @@ interface InitWeapon {
   type: Weapon;
   code?: number;
 }
-export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID" | "buffCtrls"> {
+export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID"> {
   const defaultWp = {
     bow: 11,
     catalyst: 36,

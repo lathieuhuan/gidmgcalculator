@@ -4,7 +4,7 @@ import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
 import { selectCharData, selectCurrentIndex } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
-import { selectComparedSetups } from "@Store/uiSlice";
+import { selectComparedIndexes } from "@Store/uiSlice";
 
 import { IconButton, Select } from "@Src/styled-components";
 import DamageDisplay from "@Components/DamageDisplay";
@@ -63,15 +63,17 @@ const MemoResults = memo(Results);
 
 function Results({ name }: { name: string }) {
   const setups = useSelector((state) => state.calculator.setups);
-  const comparedSetups = useSelector(selectComparedSetups);
+  const comparedIndexes = useSelector(selectComparedIndexes);
   const currentIndex = useSelector(selectCurrentIndex);
   const dmgResult = useSelector((state) => state.calculator.allDmgResult[currentIndex]);
+
+  console.log(comparedIndexes);
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
   return (
     <div className="h-full flex flex-col">
-      {comparedSetups.length > 1 ? (
+      {comparedIndexes.length > 1 ? (
         <div className="mb-4 flex justify-center">
           <p className="mr-2">Choose a focus</p>
           <Select

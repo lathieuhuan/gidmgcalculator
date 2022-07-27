@@ -1,5 +1,5 @@
 import { EModAffect } from "@Src/constants";
-import type { Tracker } from "./global";
+import type { Rarity, Tracker } from "./global";
 import type {
   AttackPatternBonus,
   CalcCharData,
@@ -18,7 +18,7 @@ export type DataArtifact = {
   code: number;
   beta?: boolean;
   name: string;
-  variants: number[];
+  variants: Rarity[];
   flower: ArtPieceData;
   plume: ArtPieceData;
   sands: ArtPieceData;

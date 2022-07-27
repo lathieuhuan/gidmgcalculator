@@ -16,7 +16,7 @@ function Modifiers() {
   return (
     <div className="h-full flex flex-col">
       <MainSelect tab={tab} onChangeTab={setTab} options={["Buffs", "Debuffs", "Target"]} />
-      
+
       <div className="mt-4 grow custom-scrollbar">
         {tab === "Buffs" ? (
           <CollapseList

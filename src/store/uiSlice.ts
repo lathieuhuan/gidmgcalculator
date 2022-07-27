@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "./index";
 import { EScreen } from "../constants";
-import { UIState } from "./types";
+import type { RootState } from "./index";
+import type { UIState } from "./types";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
-  standardSetup: 0,
-  comparedSetups: [0],
+  standardIndex: 0,
+  comparedIndexes: [0],
   importType: 0,
   importInfo: null,
 };
@@ -22,19 +22,30 @@ export const uiSlice = createSlice({
     },
     resetCalculatorUI: (state) => {
       state.atScreen = EScreen.CALCULATOR;
-      state.standardSetup = 0;
-      state.comparedSetups = [0];
+      state.standardIndex = 0;
+      state.comparedIndexes = [0];
       state.settingsOn = false;
+    },
+    changeStandardSetup: (state, action: PayloadAction<number>) => {
+      state.standardIndex = action.payload;
+    },
+    toggleSettings: (state, action: PayloadAction<boolean>) => {
+      const expectedOn = action.payload;
+
+      if ((expectedOn && !state.settingsOn) || (!expectedOn && state.settingsOn)) {
+        state.settingsOn = !state.settingsOn;
+      }
     },
   },
 });
 
-export const { changeScreen, resetCalculatorUI } = uiSlice.actions;
+export const { changeScreen, resetCalculatorUI, changeStandardSetup, toggleSettings } =
+  uiSlice.actions;
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;
 
-export const selectStandardSetup = (state: RootState) => state.ui.standardSetup;
+export const selectStandardIndex = (state: RootState) => state.ui.standardIndex;
 
-export const selectComparedSetups = (state: RootState) => state.ui.comparedSetups;
+export const selectComparedIndexes = (state: RootState) => state.ui.comparedIndexes;
 
 export default uiSlice.reducer;

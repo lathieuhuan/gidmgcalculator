@@ -1,6 +1,7 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalculatorState,
+  CalcWeapon,
   CustomBuffCtrl,
   CustomDebuffCtrl,
   Level,
@@ -35,13 +36,15 @@ import {
 import {
   autoModifyTarget,
   calculate,
+  getMainWpBuffCtrls,
   getSetupInfo,
+  getSubWeaponBuffCtrls,
   getSubWeaponComplexBuffCtrls,
   parseAndInitData,
 } from "./utils";
 import monsters from "@Data/monsters";
 import { MonsterConfig } from "@Data/monsters/types";
-import { countVision, countWeapon, indexByName } from "@Src/utils";
+import { countVision, countWeapon, indexByCode, indexByName } from "@Src/utils";
 import { RESONANCE_VISION_TYPES } from "@Src/constants";
 
 const defaultChar = {
@@ -114,6 +117,9 @@ export const calculatorSlice = createSlice({
       state.touched = true;
 
       calculate(state, true);
+    },
+    changeCurrentSetup: (state, action: PayloadAction<number>) => {
+      state.currentIndex = action.payload;
     },
     // CHARACTER
     levelCalcChar: (state, action: PayloadAction<Level>) => {
@@ -268,6 +274,18 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // WEAPON
+    changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
+      const weapon = action.payload;
+      const subWpBuffCtrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weapon.type];
+
+      state.allWeapons[state.currentIndex] = weapon;
+
+      if (subWpBuffCtrls) {
+        subWpBuffCtrls.splice(indexByCode(subWpBuffCtrls, weapon.code), 1);
+        subWpBuffCtrls.push(...getSubWeaponBuffCtrls(weapon));
+      }
+      calculate(state);
+    },
     upgradeWeapon: (state, action: PayloadAction<Level>) => {
       state.allWeapons[state.currentIndex].level = action.payload;
       calculate(state);
@@ -363,7 +381,7 @@ export const calculatorSlice = createSlice({
         }
       }
     },
-    //
+    // CUSTOM MOD CTRLS
     createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
       state.allCustomBuffCtrls[state.currentIndex].unshift(action.payload);
       calculate(state);
@@ -440,12 +458,14 @@ export const calculatorSlice = createSlice({
 
 export const {
   initSessionWithChar,
+  changeCurrentSetup,
   levelCalcChar,
   changeConsLevel,
   changeTalentLevel,
   addTeammate,
   removeTeammate,
   copyParty,
+  changeWeapon,
   upgradeWeapon,
   refineWeapon,
   toggleResonance,

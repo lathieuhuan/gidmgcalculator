@@ -4,8 +4,8 @@ export interface UIState {
   atScreen: EScreen;
   introOn: boolean;
   settingsOn: boolean;
-  standardSetup: number;
-  comparedSetups: number[];
+  standardIndex: number;
+  comparedIndexes: number[];
   // #todo
   importType: number;
   importInfo: any | null;

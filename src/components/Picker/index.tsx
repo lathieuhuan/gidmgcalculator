@@ -1,6 +1,11 @@
 import { useState } from "react";
 import classNames from "classnames";
+
+import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
+import { Artifact, Weapon } from "@Src/types";
 import type { DataType, Filter, PickerItem } from "./types";
+import weapons from "@Data/weapons";
+import artifacts from "@Data/artifacts";
 
 import { CollapseSpace } from "@Components/Collapse";
 import { Checkbox, ModalHeader } from "@Src/styled-components";
@@ -19,7 +24,7 @@ interface PickerProps {
   onPickItem: (item: PickerItem) => void;
   onClose: () => void;
 }
-export default function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
+function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
   //
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
@@ -71,8 +76,8 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
 
       <div className="px-4 pt-2 pb-4 h-[90%]">
-        <div className="pr-4 full-h overflow-auto custom-sb">
-          <div className="flex-wrap">
+        <div className="pr-4 full-h overflow-auto custom-scrollbar">
+          <div className="flex flex-wrap">
             {data.map((item, i) => {
               return (
                 <div
@@ -110,3 +115,61 @@ export default function Picker({ data, dataType, needMassAdd, onPickItem, onClos
     </Modal>
   );
 }
+
+interface PickerWeaponProps {
+  wpType: Weapon;
+  needMassAdd?: boolean;
+  onPickItem: (info: ReturnType<typeof initWeapon>) => void;
+  onClose: () => void;
+}
+Picker.Weapon = ({ wpType, needMassAdd, onPickItem, onClose }: PickerWeaponProps) => {
+  const data = weapons[wpType].map(({ code, name, beta, icon, rarity }) => ({
+    code,
+    name,
+    beta,
+    icon,
+    rarity,
+  }));
+  return (
+    <Picker
+      needMassAdd={needMassAdd}
+      data={data}
+      dataType="weapon"
+      onPickItem={({ code }) => onPickItem(initWeapon({ type: wpType, code }))}
+      onClose={onClose}
+    />
+  );
+};
+
+interface PickerArtifactProps {
+  artType: Artifact;
+  needMassAdd?: boolean;
+  onPickItem: (info: ReturnType<typeof initArtPiece>) => void;
+  onClose: () => void;
+}
+Picker.Artifact = ({ artType, needMassAdd, onPickItem, onClose }: PickerArtifactProps) => {
+  const gold = [];
+  const purple = [];
+  for (const set of artifacts) {
+    const { code, beta, name } = set;
+    for (const rarity of set.variants) {
+      const { icon } = set[artType];
+      if (rarity === 5) {
+        gold.push({ code, beta, name, icon, rarity });
+      } else {
+        purple.push({ code, beta, name, icon, rarity });
+      }
+    }
+  }
+  return (
+    <Picker
+      needMassAdd={needMassAdd}
+      data={[...gold, ...purple]}
+      dataType="artifact"
+      onPickItem={({ code, rarity }) => onPickItem(initArtPiece({ type: artType, code, rarity }))}
+      onClose={onClose}
+    />
+  );
+};
+
+export default Picker;
