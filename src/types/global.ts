@@ -10,6 +10,7 @@ import {
   BASE_STAT_TYPES,
   ATTRIBUTE_STAT_TYPES,
   ATTACK_ELEMENTS,
+  RESONANCE_VISION_TYPES,
 } from "@Src/constants";
 
 export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
@@ -23,6 +24,8 @@ export type Weapon = typeof WEAPON_TYPES[number];
 export type Artifact = typeof ARTIFACT_TYPES[number];
 
 export type Vision = typeof VISION_TYPES[number];
+
+export type ResonanceVision = typeof RESONANCE_VISION_TYPES[number];
 
 export type NormalAttack = typeof NORMAL_ATTACKS[number];
 

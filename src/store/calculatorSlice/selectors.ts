@@ -4,32 +4,36 @@ import { type RootState } from "../index";
 
 export const selectChar = createSelector(
   (state: RootState) => state.calculator.char,
-  (state: RootState) => state.calculator.currentSetup,
+  (state: RootState) => state.calculator.currentIndex,
   (char, currentIndex) => getCurrentChar(char, currentIndex)
 );
+
+export const selectCurrentIndex = (state: RootState) => state.calculator.currentIndex;
 
 export const selectCharData = (state: RootState) => state.calculator.charData;
 
 export const selectSetup = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentSetup];
+  state.calculator.setups[state.calculator.currentIndex];
+
+export const selectSetups = (state: RootState) => state.calculator.setups;
 
 export const selectTotalAttr = (state: RootState) =>
-  state.calculator.allTotalAttrs[state.calculator.currentSetup];
+  state.calculator.allTotalAttrs[state.calculator.currentIndex];
 
 export const selectArtInfo = (state: RootState) =>
-  state.calculator.allArtInfos[state.calculator.currentSetup];
+  state.calculator.allArtInfos[state.calculator.currentIndex];
 
 export const selectWeapon = (state: RootState) =>
-  state.calculator.allWeapons[state.calculator.currentSetup];
+  state.calculator.allWeapons[state.calculator.currentIndex];
 
 export const selectParty = (state: RootState) =>
-  state.calculator.allParties[state.calculator.currentSetup];
+  state.calculator.allParties[state.calculator.currentIndex];
 
 export const selectElmtModCtrls = (state: RootState) =>
-  state.calculator.allElmtModCtrls[state.calculator.currentSetup];
+  state.calculator.allElmtModCtrls[state.calculator.currentIndex];
 
 export const selectFinalInfusion = (state: RootState) =>
-  state.calculator.allFinalInfusion[state.calculator.currentSetup];
+  state.calculator.allFinalInfusion[state.calculator.currentIndex];
 
 export const selectRxnBonus = (state: RootState) =>
-  state.calculator.allRxnBonuses[state.calculator.currentSetup];
+  state.calculator.allRxnBonuses[state.calculator.currentIndex];

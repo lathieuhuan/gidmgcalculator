@@ -45,7 +45,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
   },
   Artifacts() {
     const artAttrs = useSelector((state) => {
-      return state.calculator.allArtAttrs[state.calculator.currentSetup];
+      return state.calculator.allArtAttrs[state.calculator.currentIndex];
     });
     const sets = useSelector(selectArtInfo).sets;
 

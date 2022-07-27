@@ -2,7 +2,7 @@ import cn from "classnames";
 import { memo, useState } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
-import { selectCharData } from "@Store/calculatorSlice/selectors";
+import { selectCharData, selectCurrentIndex } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedSetups } from "@Store/uiSlice";
 
@@ -64,8 +64,8 @@ const MemoResults = memo(Results);
 function Results({ name }: { name: string }) {
   const setups = useSelector((state) => state.calculator.setups);
   const comparedSetups = useSelector(selectComparedSetups);
-  const currentSetup = useSelector((state) => state.calculator.currentSetup);
-  const dmgResult = useSelector((state) => state.calculator.allDmgResult[currentSetup]);
+  const currentIndex = useSelector(selectCurrentIndex);
+  const dmgResult = useSelector((state) => state.calculator.allDmgResult[currentIndex]);
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
@@ -85,7 +85,7 @@ function Results({ name }: { name: string }) {
           </Select>
         </div>
       ) : (
-        <p className="mx-4 my-2 font-bold text-center">{setups[currentSetup].name.toUpperCase()}</p>
+        <p className="mx-4 my-2 font-bold text-center">{setups[currentIndex].name.toUpperCase()}</p>
       )}
       <div className="grow hide-scrollbar">
         <DamageDisplay key={name} charName={name} damageResult={dmgResult} />

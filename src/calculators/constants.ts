@@ -1,23 +1,17 @@
+import type { AttackElement, AttributeStat, ResonanceVision } from "@Src/types";
 import { TRANSFORMATIVE_REACTIONS } from "@Src/constants";
-import { AttackElement } from "@Src/types";
 
-export const RESONANCE_STAT = {
-  pyro: {
-    name: "Fervent Flames",
-    key: "atk_",
-    value: 25,
-  },
-  cryo: {
-    name: "Shattering Ice",
-    key: "cRate",
-    value: 15,
-  },
-  geo: {
-    name: "Enduring Rock",
-    key: "shStr",
-    value: 15,
-  },
-} as const;
+type ResonanceStat = {
+  key: AttributeStat;
+  value: number;
+};
+
+export const RESONANCE_STAT: Record<ResonanceVision, ResonanceStat> = {
+  pyro: { key: "atk_", value: 25 },
+  cryo: { key: "cRate", value: 15 },
+  geo: { key: "shStr", value: 15 },
+  dendro: { key: "em", value: 50 },
+};
 
 export const BASE_REACTION_DAMAGE: Record<number, number> = {
   1: 9,

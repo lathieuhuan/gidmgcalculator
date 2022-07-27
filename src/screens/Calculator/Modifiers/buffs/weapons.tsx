@@ -18,10 +18,10 @@ import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/com
 export default function WeaponBuffs() {
   const weapon = useSelector(selectWeapon);
   const weaponBuffCtrls = useSelector(
-    (state) => state.calculator.allWpBuffCtrls[state.calculator.currentSetup]
+    (state) => state.calculator.allWpBuffCtrls[state.calculator.currentIndex]
   );
   const subWpComplexBuffCtrls = useSelector(
-    (state) => state.calculator.allSubWpComplexBuffCtrls[state.calculator.currentSetup]
+    (state) => state.calculator.allSubWpComplexBuffCtrls[state.calculator.currentIndex]
   );
   const dispatch = useDispatch();
 

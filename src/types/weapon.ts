@@ -71,8 +71,8 @@ type WeaponBuff = {
   affect: EModAffect;
   inputConfig?: {
     labels: string[];
+    renderTypes: ("stacks" | "check" | "choices")[];
     initialValues: ModifierInput[];
-    renderTypes: ("stacks" | "check")[];
     maxValues?: number[];
   };
   applyBuff: (args: ApplyWpBuffArgs) => void;

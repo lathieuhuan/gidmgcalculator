@@ -1,7 +1,15 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import type { CalculatorState, CustomBuffCtrl, CustomDebuffCtrl, Level, Vision } from "@Src/types";
-import { getCharData } from "@Data/controllers";
 import type {
+  CalculatorState,
+  CustomBuffCtrl,
+  CustomDebuffCtrl,
+  Level,
+  ResonancePair,
+  Vision,
+} from "@Src/types";
+import { findCharacter, getCharData } from "@Data/controllers";
+import type {
+  AddTeammateAction,
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
@@ -24,9 +32,17 @@ import {
   initMonster,
   initTarget,
 } from "./initiators";
-import { autoModifyTarget, calculate, getSetupInfo, parseAndInitData } from "./utils";
+import {
+  autoModifyTarget,
+  calculate,
+  getSetupInfo,
+  getSubWeaponComplexBuffCtrls,
+  parseAndInitData,
+} from "./utils";
 import monsters from "@Data/monsters";
 import { MonsterConfig } from "@Data/monsters/types";
+import { countVision, countWeapon, indexByName } from "@Src/utils";
+import { RESONANCE_VISION_TYPES } from "@Src/constants";
 
 const defaultChar = {
   name: "Albedo",
@@ -34,7 +50,7 @@ const defaultChar = {
 };
 
 const initialState: CalculatorState = {
-  currentSetup: 0,
+  currentIndex: 0,
   configs: {
     separateCharInfo: false,
     keepArtStatsOnSwitch: false,
@@ -77,7 +93,7 @@ export const calculatorSlice = createSlice({
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
 
       state.setups = [getSetupInfo({})];
-      state.currentSetup = 0;
+      state.currentIndex = 0;
       state.char = result.char;
       state.charData = getCharData(result.char);
       state.allSelfBuffCtrls = [selfBuffCtrls];
@@ -102,10 +118,10 @@ export const calculatorSlice = createSlice({
     // CHARACTER
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;
-      const { char, currentSetup } = state;
+      const { char, currentIndex } = state;
 
       if (Array.isArray(char.level)) {
-        char.level[currentSetup] = level;
+        char.level[currentIndex] = level;
         calculate(state);
       } else {
         char.level = level;
@@ -117,7 +133,7 @@ export const calculatorSlice = createSlice({
       const { char } = state;
 
       if (Array.isArray(char.cons)) {
-        char.cons[state.currentSetup] = newCons;
+        char.cons[state.currentIndex] = newCons;
         calculate(state);
       } else {
         char.cons = newCons;
@@ -133,25 +149,136 @@ export const calculatorSlice = createSlice({
       const talentArr = char[type];
 
       if (Array.isArray(talentArr)) {
-        talentArr[state.currentSetup] = level;
+        talentArr[state.currentIndex] = level;
         calculate(state);
       } else {
         char[type] = level;
         calculate(state, true);
       }
     },
+    // PARTY
+    addTeammate: (state, action: AddTeammateAction) => {
+      const { name, vision, weapon, tmIndex } = action.payload;
+      const { char, currentIndex } = state;
+      const party = state.allParties[currentIndex];
+      const elmtModCtrls = state.allElmtModCtrls[currentIndex];
+      const subWpComplexBuffCtrls = state.allSubWpComplexBuffCtrls[currentIndex];
+
+      const oldVisionCount = countVision(char, party);
+      const oldWeaponCount = countWeapon(party);
+      const oldTeammate = party[tmIndex];
+
+      const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
+
+      // assign to party
+      party[tmIndex] = { name, buffCtrls, debuffCtrls };
+
+      const newVisionCount = countVision(char, party);
+      const newWeaponCount = countWeapon(party);
+
+      // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
+      const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
+
+      if (oldTeammate) {
+        const oldTeammateData = findCharacter(oldTeammate);
+
+        // there was an old teammate
+        if (oldTeammateData) {
+          const { vision: oldVision, weapon: oldWeapon } = oldTeammateData;
+
+          // lose a resonance pair
+          if (
+            resonanceVisionTypes.includes(oldVision) &&
+            oldVisionCount[oldVision] === 2 &&
+            newVisionCount[oldVision] === 1
+          ) {
+            const resonanceIndex = elmtModCtrls.resonance.findIndex(
+              (resonance) => resonance.vision === oldVision
+            );
+            elmtModCtrls.resonance.splice(resonanceIndex, 1);
+          }
+          // lose a weapon type in subWpBuffCtrl
+          if (!newWeaponCount[oldWeapon]) {
+            delete subWpComplexBuffCtrls[oldWeapon];
+          }
+        }
+      }
+      // new teammate form new resonance pair
+      if (
+        resonanceVisionTypes.includes(vision) &&
+        oldVisionCount[vision] === 1 &&
+        newVisionCount[vision] === 2
+      ) {
+        const newResonancePair = {
+          vision,
+          activated: ["pyro", "dendro"].includes(vision),
+        } as ResonancePair;
+
+        if (vision === "dendro") {
+          newResonancePair.inputs = [false, false];
+        }
+        elmtModCtrls.resonance.push(newResonancePair);
+      }
+      // add a weapon type in subWpBuffCtrl
+      if (!oldWeaponCount[weapon]) {
+        subWpComplexBuffCtrls[weapon] = getSubWeaponComplexBuffCtrls(
+          weapon,
+          state.allWeapons[currentIndex].code
+        );
+      }
+      calculate(state);
+    },
+    removeTeammate: (state, action: PayloadAction<number>) => {
+      const tmIndex = action.payload;
+      const { currentIndex } = state;
+      const party = state.allParties[currentIndex];
+      const elmtModCtrls = state.allElmtModCtrls[currentIndex];
+      const teammate = party[tmIndex];
+
+      if (teammate) {
+        const { weapon, vision } = findCharacter(teammate)!;
+        party[tmIndex] = null;
+
+        const newVisionCount = countVision(state.char, party);
+        const newWeaponCount = countWeapon(party);
+
+        if (newVisionCount[vision] === 1) {
+          const resonanceIndex = elmtModCtrls.resonance.findIndex(
+            (resonance) => resonance.vision === vision
+          );
+
+          if (resonanceIndex >= 0) {
+            elmtModCtrls.resonance.splice(resonanceIndex, 1);
+          }
+        }
+        if (!newWeaponCount[weapon]) {
+          delete state.allSubWpComplexBuffCtrls[currentIndex][weapon];
+        }
+        calculate(state);
+      }
+    },
+    copyParty: (state, action: PayloadAction<number>) => {
+      const targetIndex = action.payload;
+      const { allParties, allElmtModCtrls, allSubWpComplexBuffCtrls, currentIndex } = state;
+
+      allParties[currentIndex] = allParties[targetIndex];
+      allElmtModCtrls[currentIndex] = allElmtModCtrls[targetIndex];
+      allSubWpComplexBuffCtrls[currentIndex] = allSubWpComplexBuffCtrls[targetIndex];
+
+      calculate(state);
+    },
     // WEAPON
     upgradeWeapon: (state, action: PayloadAction<Level>) => {
-      state.allWeapons[state.currentSetup].level = action.payload;
+      state.allWeapons[state.currentIndex].level = action.payload;
       calculate(state);
     },
     refineWeapon: (state, action: PayloadAction<number>) => {
-      state.allWeapons[state.currentSetup].refi = action.payload;
+      state.allWeapons[state.currentIndex].refi = action.payload;
       calculate(state);
     },
     // MOD CTRLS
     toggleResonance: (state, action: PayloadAction<Vision>) => {
-      const resonance = state.allElmtModCtrls[state.currentSetup].resonance.find(
+      const resonance = state.allElmtModCtrls[state.currentIndex].resonance.find(
         ({ vision }) => vision === action.payload
       );
       if (resonance) {
@@ -160,7 +287,7 @@ export const calculatorSlice = createSlice({
       }
     },
     toggleElementModCtrl: (state) => {
-      const currentElmtModCtrls = state.allElmtModCtrls[state.currentSetup];
+      const currentElmtModCtrls = state.allElmtModCtrls[state.currentIndex];
 
       currentElmtModCtrls.superconduct = !currentElmtModCtrls.superconduct;
       calculate(state);
@@ -168,19 +295,19 @@ export const calculatorSlice = createSlice({
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
 
-      state.allElmtModCtrls[state.currentSetup][field] = value;
+      state.allElmtModCtrls[state.currentIndex][field] = value;
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state[modCtrlName][state.currentSetup][ctrlIndex];
+      const ctrl = state[modCtrlName][state.currentIndex][ctrlIndex];
 
       ctrl.activated = !ctrl.activated;
       calculate(state);
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const { inputs } = state[modCtrlName][state.currentSetup][ctrlIndex];
+      const { inputs } = state[modCtrlName][state.currentIndex][ctrlIndex];
 
       if (inputs) {
         inputs[inputIndex] = value;
@@ -189,7 +316,7 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.allParties[state.currentSetup][teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.allParties[state.currentIndex][teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -198,7 +325,7 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.allParties[state.currentSetup][teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.allParties[state.currentIndex][teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -207,7 +334,7 @@ export const calculatorSlice = createSlice({
     },
     toggleSubWpModCtrl: (state, action: ToggleSubWpModCtrlAction) => {
       const { weaponType, ctrlIndex } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].activated = !ctrls[ctrlIndex].activated;
@@ -216,7 +343,7 @@ export const calculatorSlice = createSlice({
     },
     refineSubWeapon: (state, action: RefineSubWeaponAction) => {
       const { weaponType, ctrlIndex, value } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].refi = value;
@@ -225,7 +352,7 @@ export const calculatorSlice = createSlice({
     },
     changeSubWpModCtrlInput: (state, action: ChangeSubWpModCtrlInputAction) => {
       const { weaponType, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentSetup][weaponType];
+      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         const { inputs } = ctrls[ctrlIndex];
@@ -238,38 +365,38 @@ export const calculatorSlice = createSlice({
     },
     //
     createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
-      state.allCustomBuffCtrls[state.currentSetup].unshift(action.payload);
+      state.allCustomBuffCtrls[state.currentIndex].unshift(action.payload);
       calculate(state);
     },
     createCustomDebuffCtrl: (state, action: PayloadAction<CustomDebuffCtrl>) => {
-      state.allCustomDebuffCtrls[state.currentSetup].unshift(action.payload);
+      state.allCustomDebuffCtrls[state.currentIndex].unshift(action.payload);
       calculate(state);
     },
     clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
       const modCtrlName = action.payload ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
 
-      state[modCtrlName][state.currentSetup] = [];
+      state[modCtrlName][state.currentIndex] = [];
       calculate(state);
     },
     copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
       const { isBuffs, sourceIndex } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
 
-      state[modCtrlName][state.currentSetup] = state[modCtrlName][sourceIndex];
+      state[modCtrlName][state.currentIndex] = state[modCtrlName][sourceIndex];
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
       const { isBuffs, ctrlIndex } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
 
-      state[modCtrlName][state.currentSetup].splice(ctrlIndex, 1);
+      state[modCtrlName][state.currentIndex].splice(ctrlIndex, 1);
       calculate(state);
     },
     changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
       const { isBuffs, ctrlIndex, value } = action.payload;
       const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
 
-      state[modCtrlName][state.currentSetup][ctrlIndex].value = value;
+      state[modCtrlName][state.currentIndex][ctrlIndex].value = value;
       calculate(state);
     },
     // TARGET
@@ -291,7 +418,7 @@ export const calculatorSlice = createSlice({
           if (type === "check") {
             inputs.push(false);
           }
-        };
+        }
       }
       state.monster = {
         index: action.payload,
@@ -307,7 +434,7 @@ export const calculatorSlice = createSlice({
       state.monster.configs[inputIndex] = value;
       autoModifyTarget(state.target, state.monster);
       calculate(state, true);
-    }
+    },
   },
 });
 
@@ -316,6 +443,9 @@ export const {
   levelCalcChar,
   changeConsLevel,
   changeTalentLevel,
+  addTeammate,
+  removeTeammate,
+  copyParty,
   upgradeWeapon,
   refineWeapon,
   toggleResonance,

@@ -1,4 +1,13 @@
-import type { CalcChar, CharInfo, Level, PartyData, Talent } from "@Src/types";
+import type {
+  CalcChar,
+  CharInfo,
+  Level,
+  Party,
+  PartyData,
+  Talent,
+  Vision,
+  Weapon,
+} from "@Src/types";
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -166,6 +175,45 @@ export const finalTalentLv = (
 ) => {
   return char[talentType] + totalXtraTalentLv(char, talentType, partyData);
 };
+
+export function countVision(char: { name: string }, party: Party) {
+  const count = {} as Partial<Record<Vision, number>>;
+  const charData = findCharacter(char);
+
+  if (charData) {
+    count[charData.vision] = 1;
+  }
+  for (const teammate of party) {
+    if (teammate) {
+      const teammateData = findCharacter(teammate);
+
+      if (teammateData) {
+        const { vision } = teammateData;
+        count[vision] = (count[vision] || 0) + 1;
+      } else {
+        console.log(`Teamate name ${teammate.name} not found`);
+      }
+    }
+  }
+  return count;
+}
+
+export function countWeapon(party: Party) {
+  const result = {} as Partial<Record<Weapon, number>>;
+
+  for (const teammate of party) {
+    if (teammate) {
+      const teammateData = findCharacter(teammate);
+
+      if (teammateData) {
+        result[teammateData.weapon] = (result[teammateData.weapon] || 0) + 1;
+      } else {
+        console.log(`Teamate name ${teammate.name} not found`);
+      }
+    }
+  }
+  return result;
+}
 
 export function getCurrentChar(char: CalcChar, index: number): CharInfo {
   return {

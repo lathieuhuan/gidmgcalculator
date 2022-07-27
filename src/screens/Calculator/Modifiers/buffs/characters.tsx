@@ -29,7 +29,7 @@ export function SelfBuffs() {
   const partyData = getPartyData(useSelector(selectParty));
   const totalAttr = useSelector(selectTotalAttr);
   const selfBuffCtrls = useSelector(
-    (state) => state.calculator.allSelfBuffCtrls[state.calculator.currentSetup]
+    (state) => state.calculator.allSelfBuffCtrls[state.calculator.currentIndex]
   );
   const dispatch = useDispatch();
 

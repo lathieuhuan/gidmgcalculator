@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "@Store/hooks";
+import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
 import {
   changeCustomModCtrlValue,
   clearCustomModCtrls,
@@ -19,16 +20,16 @@ interface CustomModifiersProps {
   isBuffs: boolean;
 }
 export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
-  const currentSetup = useSelector((state) => state.calculator.currentSetup);
+  const currentIndex = useSelector(selectCurrentIndex);
   const allCustomBuffCtrls = useSelector((state) => state.calculator.allCustomBuffCtrls);
   const allCustomDebuffCtrls = useSelector((state) => state.calculator.allCustomDebuffCtrls);
-  const setups = useSelector((state) => state.calculator.setups);
+  const setups = useSelector(selectSetups);
   const dispatch = useDispatch();
 
   const [modalOn, setModalOn] = useState(false);
 
   const allModCtrls = isBuffs ? allCustomBuffCtrls : allCustomDebuffCtrls;
-  const modCtrls = isBuffs ? allCustomBuffCtrls[currentSetup] : allCustomDebuffCtrls[currentSetup];
+  const modCtrls = isBuffs ? allCustomBuffCtrls[currentIndex] : allCustomDebuffCtrls[currentIndex];
   const copyOptions = [];
 
   if (!modCtrls.length) {

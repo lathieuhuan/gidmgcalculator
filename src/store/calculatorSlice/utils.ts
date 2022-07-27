@@ -11,6 +11,7 @@ import type {
   MyArts,
   MyWps,
   SubArtModCtrl,
+  SubWeaponBuffCtrl,
   Target,
   Weapon,
 } from "@Src/types";
@@ -22,10 +23,11 @@ import calculateAll from "@Src/calculators";
 import type { PickedChar } from "./reducer-types";
 import { initCharInfo, initWeapon } from "./initiators";
 import monsters from "@Data/monsters";
+import weapons from "@Data/weapons";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
-    const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentSetup];
+    const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentIndex];
 
     for (const i of indexes) {
       const char = getCharAtSetup(state.char, i);
@@ -126,6 +128,47 @@ export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
         node.inputs = [...buff.inputConfig.initialValues];
       }
       result.push(node);
+    }
+  }
+  return result;
+}
+
+export function getSubWeaponBuffCtrls(weapon: { type: Weapon; code: number }) {
+  const buffCtrls: SubWeaponBuffCtrl[] = [];
+  const weaponData = findWeapon(weapon);
+
+  if (weaponData && weaponData.buffs) {
+    for (const buff of weaponData.buffs) {
+      if (buff.outdated || buff.affect === "self") {
+        continue;
+      }
+      const node: SubWeaponBuffCtrl = {
+        code: weapon.code,
+        activated: false,
+        refi: 1,
+        index: buff.index,
+      };
+      if (buff.inputConfig) {
+        const { initialValues, renderTypes } = buff.inputConfig;
+        node.inputs = [];
+
+        renderTypes.forEach((renderType, j) => {
+          if (renderType === "choices") {
+            node.inputs!.push(initialValues[j]);
+          }
+        });
+      }
+      buffCtrls.push(node);
+    }
+  }
+  return buffCtrls;
+}
+
+export function getSubWeaponComplexBuffCtrls(type: Weapon, mainWpCode: number) {
+  const result = [];
+  for (const weapon of weapons[type]) {
+    if (weapon.code !== mainWpCode) {
+      result.push(...getSubWeaponBuffCtrls({ type, code: weapon.code }));
     }
   }
   return result;

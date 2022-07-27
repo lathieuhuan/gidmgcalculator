@@ -16,12 +16,13 @@ import type {
   PartiallyRequired,
   NormalAttack,
   BaseStat,
+  ResonanceVision,
 } from "./global";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 import { MonsterConfig } from "@Data/monsters/types";
 
 export type CalculatorState = {
-  currentSetup: number;
+  currentIndex: number;
   configs: {
     separateCharInfo: boolean;
     keepArtStatsOnSwitch: boolean;
@@ -152,16 +153,17 @@ export type Teammate = {
 
 export type Party = (Teammate | null)[];
 
-export type Resonance = {
-  vision: Extract<Vision, "pyro" | "cryo" | "geo">;
+export type ResonancePair = {
+  vision: ResonanceVision;
   activated: boolean;
-}[];
+  inputs?: boolean[];
+};
 
 export type ElementModCtrl = {
   ampRxn: AmplifyingReaction | null;
   infusion_ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
-  resonance: Resonance;
+  resonance: ResonancePair[];
 };
 
 // #to-do
