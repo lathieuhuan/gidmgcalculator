@@ -1,4 +1,3 @@
-import cn from "classnames";
 import type { PartyData, Teammate } from "@Src/types";
 import type {
   ToggleModCtrlPath,
@@ -20,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
-import { colorByVision, ModifierLayout } from "@Src/styled-components";
+import { ModifierLayout } from "@Src/styled-components";
 import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
@@ -212,9 +211,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   });
   return (
     <>
-      <p
-        className={cn("pt-2 -mb-1 text-h6 font-bold text-center uppercase", colorByVision[vision])}
-      >
+      <p className={`pt-2 -mb-1 text-h6 text-${vision} font-bold text-center uppercase`}>
         {teammate.name}
       </p>
       {subContent}

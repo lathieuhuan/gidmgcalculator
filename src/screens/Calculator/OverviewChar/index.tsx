@@ -1,4 +1,3 @@
-import cn from "classnames";
 import { useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 
@@ -9,7 +8,7 @@ import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import { BetaMark, StarLine } from "@Components/minors";
-import { colorByVision, IconButton, Select } from "@Src/styled-components";
+import { IconButton, Select } from "@Src/styled-components";
 import { MainSelect } from "../components";
 import contentByTab from "./content";
 
@@ -48,12 +47,12 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
         </div>
 
         <div className="overflow-hidden">
-          <p className={cn("text-h1 truncate font-black", colorByVision[vision])}>{char.name}</p>
+          <p className={`text-h1 truncate text-${vision} font-black`}>{char.name}</p>
           <StarLine className="mt-1" rarity={rarity} />
           <div className="mt-1 flex">
             <p className="mr-1 text-h6">Level</p>
             <Select
-              className={cn("text-lg font-bold text-last-right", colorByVision[vision])}
+              className={`text-lg text-${vision} font-bold text-last-right`}
               value={char.level}
               onChange={(e) => dispatch(levelCalcChar(e.target.value as Level))}
             >

@@ -8,14 +8,7 @@ import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 import { percentSign, processNumInput, wikiImg } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
-import {
-  rarityBgColors,
-  rarityColors,
-  rarityGradients,
-  Button,
-  IconButton,
-  Select,
-} from "@Src/styled-components";
+import { Button, IconButton, Select } from "@Src/styled-components";
 import { BetaMark } from "@Components/minors";
 
 interface ArtifactCardProps {
@@ -50,7 +43,7 @@ export default function ArtifactCard({
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
-      <div className={cn("px-4 pt-1", rarityBgColors[rarity])}>
+      <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
         <p className="text-h5 font-bold text-black truncate">{name}</p>
       </div>
       <div className="mt-4 mx-4 flex">
@@ -58,10 +51,7 @@ export default function ArtifactCard({
           <div className="mr-6 pr-2 grow flex justify-between">
             <div className="rounded-full bg-darkblue-3">
               <Select
-                className={cn(
-                  "px-2 pt-2 pb-1 text-lg font-bold appearance-none cursor-pointer",
-                  rarityColors[rarity]
-                )}
+                className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
                 value={"+" + artPiece.level}
                 onChange={(e) => enhance(+e.target.value.slice(1))}
               >
@@ -79,7 +69,7 @@ export default function ArtifactCard({
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
-                className={cn("mt-6 px-1.5 py-1 rounded font-black", rarityBgColors[rarity])}
+                className={`mt-6 px-1.5 py-1 bg-rarity-${rarity} rounded font-black`}
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance(maxLevel)}
               >
@@ -90,14 +80,12 @@ export default function ArtifactCard({
         ) : (
           <div className="w-[9.75rem]">
             <div className="px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-full">
-              <p className={cn("text-h6 font-bold", rarityColors[rarity])}>
-                {"+" + artPiece.level}
-              </p>
+              <p className={`text-h6 text-rarity-${rarity} font-bold`}>{"+" + artPiece.level}</p>
             </div>
           </div>
         )}
 
-        <div className={cn("relative rounded-lg", rarityGradients[rarity])}>
+        <div className={`bg-gradient-${rarity} relative rounded-lg`}>
           <img className="w-28" src={beta ? icon : wikiImg(icon)} alt="" draggable={false} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
@@ -119,7 +107,7 @@ export default function ArtifactCard({
             </Select>
           </div>
         )}
-        <p className={cn("text-h3", mutable ? "pl-8" : "pl-2", rarityColors[rarity])}>
+        <p className={cn(`text-rarity-${rarity} text-h3`, mutable ? "pl-8" : "pl-2")}>
           {possibleMainStatTypes[mainStatType]?.[rarity][artPiece.level]}
           {percentSign(mainStatType)}
         </p>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretLeft } from "react-icons/fa";
 import cn from "classnames";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
@@ -85,9 +85,9 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
       >
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
-          <FaCaretDown
+          <FaCaretLeft
             className={cn("text-white duration-150 ease-linear", {
-              "text-green rotate-180": dropped,
+              "text-green -rotate-90": dropped,
             })}
           />
         </div>

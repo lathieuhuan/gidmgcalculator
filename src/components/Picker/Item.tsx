@@ -3,7 +3,6 @@ import cn from "classnames";
 import { BetaMark } from "@Components/minors";
 import { VISION_ICONS } from "@Src/constants";
 import { wikiImg } from "@Src/utils";
-import { rarityGradients } from "@Src/styled-components";
 import { PickerItem } from "./types";
 
 interface ItemProps {
@@ -21,8 +20,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
         <div className="relative">
           <div
             className={cn(
-              "overflow-hidden flex rounded-t-lg",
-              rarityGradients[item.rarity],
+              `overflow-hidden flex bg-gradient-${item.rarity} rounded-t-lg`,
               item.vision ? "pt-4" : "p-1"
             )}
           >

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import { findCharacter } from "@Data/controllers";
 import { CalcChar } from "@Src/types";
-import { colorByVision, Green, CloseButton } from "@Src/styled-components";
+import { Green, CloseButton } from "@Src/styled-components";
 import { InfoSign, SharedSpace } from "../minors";
 import { AbilityIcon, SlideShow } from "./components";
 
@@ -80,7 +80,7 @@ export default function ConsList({ char, onClickIcon }: ConsListProps) {
                 onClickNext={() => setConsLv(consLv + 1)}
               />
               <div className="py-2 cons_details">
-                <p className={cn("text-h5 font-bold", colorByVision[vision])}>{name}</p>
+                <p className={`text-h5 text-${vision} font-bold`}>{name}</p>
                 <p className="text-h6">
                   Constellation Lv. <Green b>{consLv}</Green>
                 </p>

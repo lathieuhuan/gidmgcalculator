@@ -14,7 +14,7 @@ import { findMonster } from "@Data/controllers";
 
 import CollapseList from "@Components/Collapse";
 import { InfusionNotes } from "@Components/minors";
-import { Checkbox, Select, colorByVision, linkStyles } from "@Src/styled-components";
+import { Checkbox, Select, linkStyles } from "@Src/styled-components";
 
 export default function TargetConfig() {
   const target = useSelector((state) => state.calculator.target);
@@ -122,10 +122,7 @@ export default function TargetConfig() {
               return (
                 <div key={attElmt} className="mb-4 flex justify-between items-center">
                   <p
-                    className={cn(
-                      "text-h6",
-                      attElmt === "phys" ? "text-white" : colorByVision[attElmt]
-                    )}
+                    className={cn("text-h6", attElmt === "phys" ? "text-white" : `text-${attElmt}`)}
                   >
                     {attElmt}
                   </p>

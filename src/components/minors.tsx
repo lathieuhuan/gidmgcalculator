@@ -2,18 +2,10 @@ import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
 import { FaInfoCircle } from "react-icons/fa";
 
-import type {
-  AttackElement,
-  AttackPattern,
-  CalcArtSet,
-  DamageTypes,
-  FinalInfusion,
-  Vision,
-  Weapon,
-} from "@Src/types";
+import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, wikiImg } from "@Src/utils";
-import { colorByVision, Green, Button, CloseButton } from "@Src/styled-components";
+import { Green, Button, CloseButton } from "@Src/styled-components";
 import { Modal } from "./modals";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
@@ -221,7 +213,7 @@ export function SetBonus({ sets }: SetBonusProps) {
 
 export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   <>
-    Increases <span className={colorByVision[element]}>{element} DMG</span> by{" "}
+    Increases <span className={`text-${element}`}>{element} DMG</span> by{" "}
     <Green b>{round3(mult)}</Green> times.
   </>
 );
@@ -254,7 +246,7 @@ export function InfusionNotes({ infusion, vision, weapon }: InfusionNotesProps) 
         return (
           <p key={i} className="mt-1">
             <b>{attPatt}</b> deal{" "}
-            <span className={cn(attElmt === "phys" ? "text-default" : colorByVision[attElmt])}>
+            <span className={cn(attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
               {attElmt} DMG
             </span>
             .

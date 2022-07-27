@@ -4,7 +4,6 @@ import { FaCaretLeft, FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
 import { wikiImg } from "@Src/utils";
-import { bgColorByVision } from "@Src/styled-components";
 import styles from "./styles.module.scss";
 
 interface AbilityImgProps {
@@ -29,8 +28,7 @@ export function AbilityIcon({ className, img, vision, active = true, onClick }: 
     <div
       className={cn(
         tw,
-        "min-w-13 h-13 rounded-full flex-center",
-        bgColorByVision[vision],
+        `min-w-13 h-13 rounded-full bg-${vision} flex-center`,
         styles[vision],
         className
       )}

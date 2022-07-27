@@ -4,7 +4,7 @@ import { LEVELS } from "@Src/constants";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
 
-import { rarityColors, rarityGradients, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
 import { percentSign, wikiImg } from "@Src/utils";
 import { BetaMark } from "./minors";
 
@@ -27,7 +27,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={cn("text-h2 font-bold", rarityColors[rarity])}>{wpData.name}</p>
+      <p className={`text-h2 text-rarity-${rarity} font-bold`}>{wpData.name}</p>
       <div className="mt-2 flex">
         {/* left */}
         <div className="flex flex-col grow justify-between">
@@ -36,7 +36,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
             <p className="mr-2 text-h6 font-bold">Level</p>
             {mutable ? (
               <Select
-                className={cn("text-lg text-bold text-last-right", rarityColors[rarity])}
+                className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
                 value={level}
                 onChange={(e) => upgrade(e.target.value as Level)}
               >
@@ -45,23 +45,23 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
                 ))}
               </Select>
             ) : (
-              <p className={cn("text-h6 font-bold", rarityColors[rarity])}>{level}</p>
+              <p className={`text-h6 text-rarity-${rarity} font-bold`}>{level}</p>
             )}
           </div>
 
           {subStat ? (
-            <div className={cn("grow mt-1 pt-1 flex-col justify-center", groupStyles)}>
+            <div className={cn("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
               <p className="font-bold">{subStat.type}</p>
-              <p className={cn("text-h3", rarityColors[rarity])}>
+              <p className={`text-rarity-${rarity} text-h3`}>
                 {wpSubStatAtLv(subStat.scale, level)}
                 {percentSign(subStat.type)}
               </p>
             </div>
           ) : null}
 
-          <div className={cn("grow mt-1 pt-1 flex-col justify-center", groupStyles)}>
+          <div className={cn("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
             <p className="font-bold">Base ATK</p>
-            <p className={cn("text-h2", rarityColors[rarity])}>
+            <p className={`text-rarity-${rarity} text-h2 font-bold`}>
               {wpMainStatAtLv(wpData.mainStatScale, level)}
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
 
         {/* right */}
         <div className="ml-2">
-          <div className={cn("rounded-lg relative", rarityGradients[rarity])}>
+          <div className={`rounded-lg bg-gradient-${rarity} relative`}>
             <img
               className="w-32"
               src={wpData.beta ? wpData.icon : wikiImg(wpData.icon)}
@@ -80,11 +80,11 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
           </div>
 
           {rarity >= 3 && (
-            <div className={cn("mt-2 py-1 flex-col items-center", groupStyles)}>
+            <div className={cn("mt-2 py-1 flex flex-col items-center", groupStyles)}>
               <p className="text-center font-bold">Refinement</p>
               {mutable ? (
                 <Select
-                  className={cn("text-lg font-bold", rarityColors[rarity])}
+                  className={`text-lg text-rarity-${rarity} font-bold`}
                   value={refi}
                   onChange={(e) => refine(+e.target.value)}
                 >
@@ -93,7 +93,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
                   ))}
                 </Select>
               ) : (
-                <p className={cn("text-h6 font-bold", rarityColors[rarity])}>{refi}</p>
+                <p className={`text-h6 text-rarity-${rarity} font-bold`}>{refi}</p>
               )}
             </div>
           )}

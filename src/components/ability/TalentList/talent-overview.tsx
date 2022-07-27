@@ -4,7 +4,7 @@ import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
-import { colorByVision, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
 import { InfoSign } from "@Components/minors";
 import { AbilityIcon } from "../components";
 
@@ -53,10 +53,10 @@ export function ActiveTalent({
           <div className="flex items-center">
             <p className="mr-1">Lv.</p>
             {talentType === "altSprint" ? (
-              <p className={cn("ml-1 font-bold", colorByVision[vision])}>1</p>
+              <p className={`ml-1 text-${vision} font-bold`}>1</p>
             ) : (
               <Select
-                className={cn("font-bold", colorByVision[vision])}
+                className={`text-${vision} font-bold`}
                 value={talentLv}
                 onChange={(e) => onChangeLevel && onChangeLevel(+e.target.value)}
               >
@@ -96,7 +96,7 @@ export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: P
           <p className="font-bold">{talentInfo.name}</p>
           <div className="flex">
             <p className="mr-2">Lv.</p>
-            <p className={cn("font-bold", colorByVision[vision])}>1</p>
+            <p className={`text-${vision} font-bold`}>1</p>
           </div>
         </div>
         {/* <div className="ml-auto" onClick={onClickInfoSign}>

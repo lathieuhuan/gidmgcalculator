@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import cn from "classnames";
 import type { CharInfo, DataCharacter, GetExtraStatsFn, Party, StatInfo, Talent } from "@Src/types";
 import { TALENT_TYPES } from "@Src/constants";
 import { ascsFromLv } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
-import { colorByVision, CloseButton } from "@Src/styled-components";
+import { CloseButton } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
 import { SlideShow } from "@Components/ability/components";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
@@ -178,7 +177,7 @@ function Details({
             </div>
           }
         />
-        <p className={cn("text-h5 font-bold text-center", colorByVision[vision])}>{name}</p>
+        <p className={`text-h5 font-bold text-${vision} text-center`}>{name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
           <p className="font-bold text-black">Skill Attributes</p>
         </div>
