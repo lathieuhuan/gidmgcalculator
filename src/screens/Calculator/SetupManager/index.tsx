@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FaCog } from "react-icons/fa";
 
 import { changeCurrentSetup } from "@Store/calculatorSlice";
@@ -18,6 +18,7 @@ import { Button, IconButton } from "@Src/styled-components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import { MainSelect } from "../components";
+import SectionArtifacts from "./SectionArtifacts";
 
 export default function () {
   const setups = useSelector(selectSetups);
@@ -29,6 +30,7 @@ export default function () {
   const [modal, setModal] = useState(null);
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [ref, height] = useHeight();
+  const bodyRef = useRef(null);
 
   const onCloseInventory = useCallback(() => setModal(null), []);
 
@@ -39,11 +41,13 @@ export default function () {
         onChangeTab={(name) => dispatch(changeCurrentSetup(indexByName(setups, name)))}
         options={setups.map((st) => st.name)}
       />
-      <div id="setupManager_body" className="mt-4 grow hide-scrollbar scroll-smooth">
+
+      <div ref={bodyRef} className="mt-4 grow hide-scrollbar scroll-smooth">
         <SectionParty />
         <SectionWeapon />
-        {/* <SectionArts /> */}
+        <SectionArtifacts containerRef={bodyRef} />
       </div>
+
       <div className="mt-4 flex align-center">
         {comparedIndexes.length === 1 ? (
           <div style={{ width: "5.425rem" }} />

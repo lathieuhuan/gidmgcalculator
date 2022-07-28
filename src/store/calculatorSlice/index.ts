@@ -1,5 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
+  CalcArtPieceMainStat,
   CalculatorState,
   CalcWeapon,
   CustomBuffCtrl,
@@ -8,7 +9,7 @@ import type {
   ResonancePair,
   Vision,
 } from "@Src/types";
-import { findCharacter, getCharData } from "@Data/controllers";
+import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 import type {
   AddTeammateAction,
   ChangeCustomModCtrlValueAction,
@@ -25,6 +26,7 @@ import type {
   ToggleModCtrlAction,
   ToggleSubWpModCtrlAction,
   ToggleTeammateModCtrlAction,
+  UpdateArtPieceAction,
 } from "./reducer-types";
 import {
   initCharInfo,
@@ -36,8 +38,11 @@ import {
 import {
   autoModifyTarget,
   calculate,
+  getArtifactSets,
+  getMainArtBuffCtrls,
   getMainWpBuffCtrls,
   getSetupInfo,
+  getSubArtBuffCtrls,
   getSubWeaponBuffCtrls,
   getSubWeaponComplexBuffCtrls,
   parseAndInitData,
@@ -294,6 +299,78 @@ export const calculatorSlice = createSlice({
       state.allWeapons[state.currentIndex].refi = action.payload;
       calculate(state);
     },
+    // ARTIFACTS
+    enhanceArtPiece: (state, action: PayloadAction<{ pieceIndex: number; level: number }>) => {
+      const { pieceIndex, level } = action.payload;
+      const pieceInfo = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+
+      if (pieceInfo) {
+        pieceInfo.level = level;
+      }
+      calculate(state);
+    },
+    changeArtPieceMainStatType: (
+      state,
+      action: PayloadAction<{ pieceIndex: number; type: CalcArtPieceMainStat }>
+    ) => {
+      const { pieceIndex, type } = action.payload;
+      const pieceInfo = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+
+      if (pieceInfo) {
+        pieceInfo.mainStatType = type;
+      }
+      calculate(state);
+    },
+    updateArtPiece: (state, action: UpdateArtPieceAction) => {
+      const { pieceIndex, newPiece, isFirstTime } = action.payload;
+      const { currentIndex } = state;
+
+      let { pieces, sets } = state.allArtInfos[currentIndex];
+      const piece = pieces[pieceIndex];
+      const artBuffCtrls = state.allArtBuffCtrls[currentIndex];
+      const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
+
+      if (piece && newPiece && isFirstTime && state.configs.keepArtStatsOnSwitch) {
+        piece.code = newPiece.code;
+        piece.rarity = newPiece.rarity;
+      } //
+      else {
+        pieces[pieceIndex] = newPiece;
+      }
+
+      const oldSets = sets;
+      sets = getArtifactSets(pieces);
+
+      const oldBonusLevel = oldSets[0]?.bonusLv;
+      const newSetBonus = sets[0];
+
+      if (newSetBonus) {
+        if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
+          state.allArtBuffCtrls[currentIndex] = getMainArtBuffCtrls(newSetBonus.code);
+          const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
+          // find ctrl of the same buff in subArtBuffCtrls
+          const position = indexByCode(subArtBuffCtrls, newSetBonus.code);
+
+          // remove if found, no duplicate
+          if (position !== -1) {
+            subArtBuffCtrls.splice(position, 1);
+          }
+        } else if (oldBonusLevel && !newSetBonus.bonusLv) {
+          state.allArtBuffCtrls[currentIndex] = [];
+          const oldSetCode = oldSets[0].code;
+          const { buffs } = findArtifactSet({ code: oldSetCode }) || {};
+
+          if (buffs) {
+            subArtBuffCtrls.push(...getSubArtBuffCtrls(oldSetCode));
+          }
+        }
+      }
+      calculate(state);
+    },
+    copyArtifactInfo: (state, action: PayloadAction<number>) => {
+      state.allArtInfos[state.currentIndex] = state.allArtInfos[action.payload];
+      calculate(state);
+    },
     // MOD CTRLS
     toggleResonance: (state, action: PayloadAction<Vision>) => {
       const resonance = state.allElmtModCtrls[state.currentIndex].resonance.find(
@@ -468,6 +545,10 @@ export const {
   changeWeapon,
   upgradeWeapon,
   refineWeapon,
+  enhanceArtPiece,
+  changeArtPieceMainStatType,
+  updateArtPiece,
+  copyArtifactInfo,
   toggleResonance,
   toggleElementModCtrl,
   changeElementModCtrl,

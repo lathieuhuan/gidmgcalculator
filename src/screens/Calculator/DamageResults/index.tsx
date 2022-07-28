@@ -67,8 +67,6 @@ function Results({ name }: { name: string }) {
   const currentIndex = useSelector(selectCurrentIndex);
   const dmgResult = useSelector((state) => state.calculator.allDmgResult[currentIndex]);
 
-  console.log(comparedIndexes);
-
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
   return (

@@ -2,6 +2,7 @@ import { MonsterConfig } from "@Data/monsters/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   AmplifyingReaction,
+  CalcArtPiece,
   DatabaseChar,
   MyArts,
   MyWps,
@@ -95,4 +96,10 @@ export type ModifyTargetAction = PayloadAction<{
 export type ChangeMonsterConfigAction = PayloadAction<{
   inputIndex: number;
   value: MonsterConfig;
+}>;
+
+export type UpdateArtPieceAction = PayloadAction<{
+  pieceIndex: number;
+  newPiece: CalcArtPiece | null;
+  isFirstTime?: boolean;
 }>;

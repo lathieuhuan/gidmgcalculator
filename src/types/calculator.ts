@@ -115,13 +115,20 @@ export type SubWeaponBuffCtrl = {
 export type SubWeaponComplexBuffCtrl = Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
 
 // ARTIFACTS starts
+export type CalcArtPieceMainStat =
+  | Exclude<CoreStat, "def">
+  | ArtifactPercentStat
+  | "em"
+  | AttackElement
+  | "healBn";
+
 export type CalcArtPiece = {
   ID: number;
   code: number;
   type: Artifact;
   rarity: Rarity;
   level: number;
-  mainStatType: Exclude<CoreStat, "def"> | ArtifactPercentStat | "em" | AttackElement | "healBn";
+  mainStatType: CalcArtPieceMainStat;
   subStats: {
     type: CoreStat | ArtifactPercentStat | "em";
     value: number;

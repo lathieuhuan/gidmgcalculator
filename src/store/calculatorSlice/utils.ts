@@ -96,7 +96,7 @@ export function parseAndInitData(
     }
     return null;
   });
-  const sets = getArtSets(pieces);
+  const sets = getArtifactSets(pieces);
   const setCode = sets[0]?.bonusLv === 1 ? sets[0].code : null;
 
   return {
@@ -174,7 +174,7 @@ export function getSubWeaponComplexBuffCtrls(type: Weapon, mainWpCode: number) {
   return result;
 }
 
-export function getArtSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSet[] {
+export function getArtifactSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSet[] {
   const sets = [];
   const count: Record<number, number> = {};
 

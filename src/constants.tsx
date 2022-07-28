@@ -88,6 +88,14 @@ export const WEAPON_ICONS: Record<typeof WEAPON_TYPES[number], string> = {
   sword: "9/95/Weapon-class-sword-icon",
 };
 
+export const ARTIFACT_ICONS: Record<typeof ARTIFACT_TYPES[number], string> = {
+  flower: "2/2d/Icon_Flower_of_Life",
+  plume: "8/8b/Icon_Plume_of_Death",
+  sands: "9/9f/Icon_Sands_of_Eon",
+  goblet: "3/37/Icon_Goblet_of_Eonothem",
+  circlet: "6/64/Icon_Circlet_of_Logos",
+};
+
 export const TRANSFORMATIVE_REACTIONS = [
   "superconduct",
   "swirl",
