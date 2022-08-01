@@ -8,8 +8,8 @@ import type {
   CharInfo,
   ModifierCtrl,
   Monster,
-  MyArts,
-  MyWps,
+  DatabaseArt,
+  DatabaseWp,
   SubArtModCtrl,
   SubWeaponBuffCtrl,
   Target,
@@ -67,8 +67,8 @@ export function calculate(state: CalculatorState, all?: boolean) {
 
 export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
-  myWps: MyWps,
-  myArts: MyArts
+  myWps: DatabaseWp[],
+  myArts: DatabaseArt[]
 ) {
   let rootID = Date.now();
   const char: CharInfo = { ...initCharInfo(info), name };

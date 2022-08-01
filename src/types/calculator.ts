@@ -122,6 +122,13 @@ export type CalcArtPieceMainStat =
   | AttackElement
   | "healBn";
 
+export type CalcArtPieceSubStat = CoreStat | ArtifactPercentStat | "em";
+
+export type CalcArtPieceSubStatInfo = {
+  type: CalcArtPieceSubStat;
+  value: number;
+};
+
 export type CalcArtPiece = {
   ID: number;
   code: number;
@@ -129,10 +136,7 @@ export type CalcArtPiece = {
   rarity: Rarity;
   level: number;
   mainStatType: CalcArtPieceMainStat;
-  subStats: {
-    type: CoreStat | ArtifactPercentStat | "em";
-    value: number;
-  }[];
+  subStats: CalcArtPieceSubStatInfo[];
 };
 
 export type CalcArtPieces = (CalcArtPiece | null)[];

@@ -94,7 +94,7 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
                     onClickItem={() => {
                       onPickItem(item);
                       if (!massAdd) {
-                        close();
+                        onClose();
                       } else {
                         setAmount((prev) => {
                           const each = [...prev.each];
@@ -154,6 +154,7 @@ Picker.Artifact = ({ artType, needMassAdd, onPickItem, onClose }: PickerArtifact
     const { code, beta, name } = set;
     for (const rarity of set.variants) {
       const { icon } = set[artType];
+
       if (rarity === 5) {
         gold.push({ code, beta, name, icon, rarity });
       } else {

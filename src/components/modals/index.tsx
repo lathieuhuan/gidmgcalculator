@@ -6,21 +6,27 @@ import styles from "./styles.module.scss";
 interface ModalProps {
   standard?: boolean;
   className?: string;
-  children: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[];
   onClose: () => void;
 }
-export function Modal(props: ModalProps) {
-  useCloseWithEsc(props.onClose);
+export function Modal({ standard, className, children, onClose }: ModalProps) {
+  useCloseWithEsc(onClose);
 
   return (
     <div className={cn("fixed full-stretch z-10", styles.modal)}>
-      <div className="w-full h-full bg-black/60" onClick={props.onClose} />
-      {props.standard || props.className ? (
-        <div className={cn("rounded-lg bg-darkblue-2 shadow-white-glow", styles.modalContent, props.className)}>
-          {props.children}
+      <div className="w-full h-full bg-black/60" onClick={onClose} />
+      {standard || className ? (
+        <div
+          className={cn(
+            "rounded-lg bg-darkblue-2 shadow-white-glow",
+            styles.modalContent,
+            className
+          )}
+        >
+          {children}
         </div>
       ) : (
-        props.children
+        children
       )}
     </div>
   );
@@ -32,7 +38,7 @@ interface ButtonInfo {
 }
 interface ConfirmModalProps {
   message: string | JSX.Element;
-  left: ButtonInfo;
+  left?: ButtonInfo;
   mid?: Required<ButtonInfo>;
   right: ButtonInfo;
   onClose: () => void;
@@ -42,18 +48,18 @@ export function ConfirmModal({ message, left, mid, right, onClose }: ConfirmModa
   const handlers = [
     () => {
       if (left?.onClick) left.onClick();
-      close();
+      onClose();
     },
     () => {
-      if (confirm) confirm();
-      close();
+      if (right.onClick) right.onClick();
+      onClose();
     },
   ];
   if (mid) {
     texts.splice(1, 0, mid.text);
     handlers.splice(1, 0, () => {
       mid.onClick();
-      close();
+      onClose();
     });
   }
   return (

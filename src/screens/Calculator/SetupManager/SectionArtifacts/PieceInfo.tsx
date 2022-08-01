@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSave, FaSyncAlt, FaTrashAlt } from "react-icons/fa";
 
 import {
   changeArtPieceMainStatType,
+  changeArtPieceSubStat,
   enhanceArtPiece,
   updateArtPiece,
 } from "@Store/calculatorSlice";
-import { useDispatch } from "@Store/hooks";
+import { addArtifact, overwriteArtifact } from "@Store/databaseSlice";
+import { useDispatch, useSelector } from "@Store/hooks";
 
 import type { CalcArtPiece, CalcArtPieceMainStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import { percentSign } from "@Src/utils";
+import { findById, isOne, percentSign } from "@Src/utils";
 
 import { IconButton, Select } from "@Src/styled-components";
+import { ArtifactSubstats } from "@Components/ArtifactCard";
+import { ConfirmModal, Modal } from "@Components/modals";
 
 interface PieceInfoProps {
   pieceInfo: CalcArtPiece;
@@ -38,9 +42,9 @@ export default function PieceInfo({
     <div className="pt-6" onDoubleClick={() => console.log(pieceInfo)}>
       <div className="pl-6 flex items-start">
         {/*  */}
-        <div className="mb-2 rounded-full bg-darkblue-3">
+        <div className="mb-2 rounded-circle bg-darkblue-3">
           <Select
-            className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
+            className={`px-2 pt-2 pb-1 text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
             value={"+" + level}
             onChange={(e) =>
               dispatch(
@@ -52,7 +56,9 @@ export default function PieceInfo({
             }
           >
             {[...Array(rarity === 5 ? 21 : 17)].map((_, lv) => (
-              <option key={lv}>+{lv}</option>
+              <option key={lv} className="text-base">
+                +{lv}
+              </option>
             ))}
           </Select>
         </div>
@@ -85,20 +91,22 @@ export default function PieceInfo({
           </p>
         </div>
       </div>
+
       <div className="px-2 pb-1">
-        {/* <ArtSubstats
-            mutable={true}
-            substats={artP.subS}
-            changeSSType={(type, ssIndex) =>
-              dispatch(CHANGE_ART_SS_TYPE({ pieceIndex, ssIndex, type }))
-            }
-            changeSSVal={(value, ssIndex) =>
-              dispatch(CHANGE_ART_SS_VAL({ pieceIndex, ssIndex, value }))
-            }
-            msType={mainSType}
-            rarity={rarity}
-          /> */}
+        <ArtifactSubstats
+          mutable={true}
+          rarity={rarity}
+          mainStatType={mainStatType}
+          subStats={pieceInfo.subStats}
+          changeSubStatType={(type, subStatIndex) =>
+            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, type }))
+          }
+          changeSubStatValue={(value, subStatIndex) =>
+            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, value }))
+          }
+        />
       </div>
+
       <div className="mt-4 flex justify-evenly align-center">
         <IconButton
           variant="negative"
@@ -109,21 +117,95 @@ export default function PieceInfo({
         >
           <FaTrashAlt />
         </IconButton>
-        <IconButton className="glow-on-hover" variant="neutral" onClick={() => setSaving(true)}>
+
+        <IconButton variant="neutral" onClick={() => setSaving(true)}>
           <FaSave />
         </IconButton>
+
         <IconButton
+          className="font-bold"
           disabled={pieceInfo.level === maxLevel}
           variant="neutral"
           onClick={() => dispatch(enhanceArtPiece({ pieceIndex, level: maxLevel }))}
         >
           {maxLevel}
         </IconButton>
+
         <IconButton className="text-xl" variant="positive" onClick={onClickChangePiece}>
           <FaSyncAlt />
         </IconButton>
       </div>
-      {/* {saving && <SavingDialog artP={artP} close={() => setSaving(false)} />} */}
+
+      {saving && <SavingModal pieceInfo={pieceInfo} onClose={() => setSaving(false)} />}
     </div>
+  );
+}
+
+interface SavingModalProps {
+  pieceInfo: CalcArtPiece;
+  onClose: () => void;
+}
+function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
+  const [type, setType] = useState(0);
+  const dispatch = useDispatch();
+
+  const existedArtPiece = findById(
+    useSelector((state) => state.database.myArts),
+    pieceInfo.ID
+  );
+
+  useEffect(() => {
+    if (existedArtPiece) {
+      setType(2);
+    } else {
+      dispatch(addArtifact({ user: null, ...pieceInfo }));
+      setType(1);
+    }
+  }, []);
+
+  if (type === 0) return <Modal onClose={() => {}} />;
+
+  const successful = type === 1;
+  let noChange = false;
+
+  if (existedArtPiece) {
+    const { user, ...info } = existedArtPiece;
+    noChange = isOne(pieceInfo, info);
+  }
+
+  const extraInfo = existedArtPiece?.user ? (
+    <>
+      , currently used by <b>{existedArtPiece.user}</b>
+    </>
+  ) : null;
+
+  const message = successful ? (
+    <>Successfully saved to My Artifacts.</>
+  ) : (
+    <>
+      This one is already in My Artifacts{extraInfo}.{" "}
+      {noChange ? "Nothing has changed." : "Do you want to overwrite its Stats?"}
+    </>
+  );
+
+  return (
+    <ConfirmModal
+      message={message}
+      left={successful ? { text: "Close" } : undefined}
+      mid={
+        !successful
+          ? {
+              text: "Duplicate",
+              onClick: () => dispatch(addArtifact({ user: null, ...pieceInfo, ID: Date.now() })),
+            }
+          : undefined
+      }
+      right={{
+        onClick: () => {
+          successful || noChange ? onClose() : dispatch(overwriteArtifact(pieceInfo));
+        },
+      }}
+      onClose={onClose}
+    />
   );
 }

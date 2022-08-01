@@ -1,6 +1,12 @@
 import cn from "classnames";
-import { FaArrowAltCircleUp } from "react-icons/fa";
-import type { CalcArtPiece } from "@Src/types";
+import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
+import type {
+  CalcArtPiece,
+  CalcArtPieceMainStat,
+  CalcArtPieceSubStat,
+  CalcArtPieceSubStatInfo,
+  Rarity,
+} from "@Src/types";
 
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
@@ -10,15 +16,12 @@ import { findArtifactPiece } from "@Data/controllers";
 
 import { Button, IconButton, Select } from "@Src/styled-components";
 import { BetaMark } from "@Components/minors";
+import { Fragment } from "react";
 
-interface ArtifactCardProps {
+interface ArtifactCardProps extends ArtifactCardCommonProps {
   artPiece?: CalcArtPiece;
-  mutable?: boolean;
-  space: 2 | 4;
   enhance: (level: number) => void;
   changeMainStatType: (type: string) => void;
-  changeSubStatType: (type: string, index: number) => void;
-  changeSubStatValue: (value: number, index: number) => void;
 }
 export default function ArtifactCard({
   artPiece,
@@ -35,11 +38,6 @@ export default function ArtifactCard({
   const { rarity = 5, mainStatType } = artPiece;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artPiece.type];
   const maxLevel = rarity === 5 ? 20 : 16;
-
-  const statTypeCount = { [mainStatType]: 1 };
-  for (let { type } of artPiece.subStats) {
-    statTypeCount[type] = (statTypeCount[type] || 0) + 1;
-  }
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
@@ -114,52 +112,95 @@ export default function ArtifactCard({
       </div>
 
       <div className={cn(mutable && "px-2")}>
-        {artPiece.subStats.map(({ type, value }, i) => {
-          const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
-
-          return mutable ? (
-            <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2">
-              <Select
-                className={cn(
-                  "pr-2 pl-10 appearance-none bg-contain bg-no-repeat bg-white-arrow bg-[position:0.5rem]",
-                  statTypeCount[type] === 1 ? "text-white" : "text-darkred"
-                )}
-                value={type}
-                onChange={(e) => changeSubStatType(e.target.value, i)}
-              >
-                {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
-                  <option key={type}>{type}</option>
-                ))}
-              </Select>
-              <span>+</span>
-              <input
-                className={cn(
-                  "relative ml-4px pr-2 py-4px w-[3.25rem]",
-                  isValid ? "text-white" : "text-darkred"
-                )}
-                value={value}
-                onChange={(e) => changeSubStatValue(processNumInput(e.target.value, value), i)}
-              />
-              <span>{percentSign(type)}</span>
-            </div>
-          ) : (
-            <div key={i} className={`mt-2 pl-${space} pt-1 flex items-center bg-darkblue-2`}>
-              <p className={"mr-" + space}>•</p>
-              <p>
-                <span
-                  className={cn("mr-1", statTypeCount[type] === 1 ? "text-white" : "text-darkred")}
-                >
-                  {type}
-                </span>
-                <span className={isValid ? "text-green" : "text-darkred"}>
-                  +{value}
-                  {percentSign(type)}
-                </span>
-              </p>
-            </div>
-          );
-        })}
+        <ArtifactSubstats
+          mutable={mutable}
+          rarity={rarity}
+          mainStatType={mainStatType}
+          subStats={artPiece.subStats}
+          space={space}
+          changeSubStatType={changeSubStatType}
+          changeSubStatValue={changeSubStatValue}
+        />
       </div>
     </div>
+  );
+}
+
+interface ArtifactCardCommonProps {
+  mutable?: boolean;
+  space?: 2 | 4;
+  changeSubStatType: (type: CalcArtPieceSubStat, index: number) => void;
+  changeSubStatValue: (value: number, index: number) => void;
+}
+
+interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
+  rarity: Rarity;
+  mainStatType: CalcArtPieceMainStat;
+  subStats: CalcArtPieceSubStatInfo[];
+}
+export function ArtifactSubstats({
+  mainStatType,
+  subStats,
+  mutable,
+  rarity,
+  space,
+  changeSubStatType,
+  changeSubStatValue,
+}: ArtifactSubstatsProps) {
+  //
+  const statTypeCount = { [mainStatType]: 1 };
+  for (let { type } of subStats) {
+    statTypeCount[type] = (statTypeCount[type] || 0) + 1;
+  }
+
+  return (
+    <Fragment>
+      {subStats.map(({ type, value }, i) => {
+        const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
+
+        return mutable ? (
+          <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2 relative">
+            <FaChevronDown className="absolute left-3 top-3" />
+            <Select
+              className={cn(
+                "pr-2 pl-10 relative z-10 appearance-none",
+                statTypeCount[type] === 1 ? "text-white" : "text-darkred"
+              )}
+              value={type}
+              onChange={(e) => changeSubStatType(e.target.value as CalcArtPieceSubStat, i)}
+            >
+              {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
+                <option key={type}>{type}</option>
+              ))}
+            </Select>
+            <span>+</span>
+            <input
+              className={cn(
+                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent text-base leading-snug text-right text-last-right",
+                isValid ? "text-white" : "text-darkred"
+              )}
+              value={value}
+              onChange={(e) => changeSubStatValue(processNumInput(e.target.value, value), i)}
+            />
+            <span>{percentSign(type)}</span>
+          </div>
+        ) : (
+          <div key={i} className={`mt-2 pl-${space} pt-1 flex items-center bg-darkblue-2`}>
+            <p className={"mr-" + space}>•</p>
+            <p>
+              <span
+                className={cn("mr-1", statTypeCount[type] === 1 ? "text-white" : "text-darkred")}
+              >
+                {type}
+              </span>
+              <span className={isValid ? "text-green" : "text-darkred"}>
+                +{value}
+                {percentSign(type)}
+              </span>
+            </p>
+          </div>
+        );
+      })}
+    </Fragment>
   );
 }

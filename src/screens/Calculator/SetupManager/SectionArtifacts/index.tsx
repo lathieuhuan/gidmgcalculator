@@ -8,9 +8,9 @@ import { findArtifactPiece } from "@Data/controllers";
 import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
+import { CopySection } from "@Screens/Calculator/components";
 import { CollapseSpace } from "@Components/Collapse";
 import Picker from "@Components/Picker";
-import { CopySection } from "@Screens/Calculator/components";
 import { pedestalStyles } from "../tw-compound";
 import PieceInfo from "./PieceInfo";
 
@@ -41,11 +41,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     if (pieces[tabIndex]) {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
-
-      // on change tab
-      if (tabIndex !== activeTabIndex && activeTabIndex !== -1) {
-        scrollContainer();
-      }
+      scrollContainer();
     } else {
       setPendingSlot(tabIndex);
     }
@@ -113,11 +109,11 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
       {pendingSlot !== -1 && (
         <Picker.Artifact
-          artType={ARTIFACT_TYPES[activeTabIndex]}
+          artType={ARTIFACT_TYPES[pendingSlot]}
           onPickItem={(item) => {
             dispatch(
               updateArtPiece({
-                pieceIndex: activeTabIndex,
+                pieceIndex: pendingSlot,
                 newPiece: { ID: Date.now(), ...item },
                 isFirstTime: true,
               })

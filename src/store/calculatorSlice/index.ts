@@ -12,6 +12,7 @@ import type {
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 import type {
   AddTeammateAction,
+  ChangeArtPieceSubStatAction,
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
@@ -321,6 +322,18 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
+    changeArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
+      const { pieceIndex, subStatIndex, ...changeInfo } = action.payload;
+      const artPiece = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+
+      if (artPiece) {
+        artPiece.subStats[subStatIndex] = {
+          ...artPiece.subStats[subStatIndex],
+          ...changeInfo,
+        };
+        calculate(state);
+      }
+    },
     updateArtPiece: (state, action: UpdateArtPieceAction) => {
       const { pieceIndex, newPiece, isFirstTime } = action.payload;
       const { currentIndex } = state;
@@ -547,6 +560,7 @@ export const {
   refineWeapon,
   enhanceArtPiece,
   changeArtPieceMainStatType,
+  changeArtPieceSubStat,
   updateArtPiece,
   copyArtifactInfo,
   toggleResonance,

@@ -3,8 +3,8 @@ import type { CalcArtPiece, CalcWeapon } from "./calculator";
 
 export type DatabaseState = {
   myChars: DatabaseChar[];
-  myWps: MyWps;
-  myArts: MyArts;
+  myWps: DatabaseWp[];
+  myArts: DatabaseArt[];
   chosenChar: string;
 };
 
@@ -17,10 +17,6 @@ export type DatabaseWp = CalcWeapon & {
   user: string | null;
 };
 
-export type MyWps = DatabaseWp[];
-
 export type DatabaseArt = CalcArtPiece & {
   user: string | null;
 };
-
-export type MyArts = DatabaseArt[];

@@ -3,9 +3,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   AmplifyingReaction,
   CalcArtPiece,
+  CalcArtPieceSubStatInfo,
   DatabaseChar,
-  MyArts,
-  MyWps,
+  DatabaseArt,
+  DatabaseWp,
   Target,
   Vision,
   Weapon,
@@ -16,8 +17,8 @@ export interface PickedChar extends Partial<DatabaseChar> {
 }
 export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
-  myWps: MyWps;
-  myArts: MyArts;
+  myWps: DatabaseWp[];
+  myArts: DatabaseArt[];
 }>;
 
 export type AddTeammateAction = PayloadAction<{
@@ -103,3 +104,12 @@ export type UpdateArtPieceAction = PayloadAction<{
   newPiece: CalcArtPiece | null;
   isFirstTime?: boolean;
 }>;
+
+type ArtPieceSubStatPath = {
+  pieceIndex: number;
+  subStatIndex: number;
+};
+
+export type ChangeArtPieceSubStatAction = PayloadAction<
+  ArtPieceSubStatPath & Partial<CalcArtPieceSubStatInfo>
+>;
