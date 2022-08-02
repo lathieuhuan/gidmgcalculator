@@ -13,8 +13,8 @@ const groupStyles = "bg-darkblue-2 px-2";
 interface WeaponCardProps {
   weapon?: CalcWeapon;
   mutable: boolean;
-  upgrade: (newLevel: Level) => void;
-  refine: (newRefi: number) => void;
+  upgrade?: (newLevel: Level) => void;
+  refine?: (newRefi: number) => void;
 }
 export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
   if (!weapon) return null;
@@ -38,7 +38,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
               <Select
                 className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
                 value={level}
-                onChange={(e) => upgrade(e.target.value as Level)}
+                onChange={(e) => upgrade && upgrade(e.target.value as Level)}
               >
                 {selectLevels.map((level) => (
                   <option key={level}>{level}</option>
@@ -86,7 +86,7 @@ export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponC
                 <Select
                   className={`text-lg text-rarity-${rarity} font-bold`}
                   value={refi}
-                  onChange={(e) => refine(+e.target.value)}
+                  onChange={(e) => refine && refine(+e.target.value)}
                 >
                   {[1, 2, 3, 4, 5].map((level) => (
                     <option key={level}>{level}</option>

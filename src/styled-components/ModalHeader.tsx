@@ -1,5 +1,5 @@
 import cn from "classnames";
-import type { InsHTMLAttributes } from "react";
+import type { InsHTMLAttributes, ParamHTMLAttributes } from "react";
 import { FaFilter } from "react-icons/fa";
 import { CloseButton, IconButton, type CloseButtonProps } from "./inputs";
 
@@ -11,6 +11,12 @@ function ModalHeader({ className, ...rest }: InsHTMLAttributes<HTMLDivElement>) 
     />
   );
 }
+
+ModalHeader.Text = ({ className, ...rest }: ParamHTMLAttributes<HTMLParagraphElement>) => {
+  return (
+    <p className={cn("w-full text-1.5xl leading-5 text-black text-center", className)} {...rest} />
+  );
+};
 
 ModalHeader.CloseButton = (props: CloseButtonProps) => {
   return (

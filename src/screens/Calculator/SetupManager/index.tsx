@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { FaCog } from "react-icons/fa";
 
 import { changeCurrentSetup } from "@Store/calculatorSlice";
-import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
+import { selectCharData, selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
 import {
   changeStandardSetup,
   selectComparedIndexes,
@@ -14,28 +14,32 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS } from "@Src/constants";
+import type { Artifact } from "@Src/types";
 
 import PrePicker from "@Components/Picker/PrePicker";
 import { ButtonBar } from "@Components/minors";
+import WeaponInventory from "@Components/inventories/WeaponInventory";
 import { Button, IconButton } from "@Src/styled-components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import { MainSelect } from "../components";
 
-export default function () {
+export default function SetupManager() {
   const setups = useSelector(selectSetups);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const currentIndex = useSelector(selectCurrentIndex);
-  const chosen = useSelector(selectStandardIndex) === currentIndex;
+  const charData = useSelector(selectCharData);
+
+  const isChosenSetup = useSelector(selectStandardIndex) === currentIndex;
   const dispatch = useDispatch();
 
-  const [modal, setModal] = useState("");
+  const [modalType, setModalType] = useState<"weapon" | Artifact | "character" | "">("");
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [ref, height] = useHeight();
   const bodyRef = useRef(null);
 
-  const onCloseInventory = useCallback(() => setModal(""), []);
+  const onCloseModal = useCallback(() => setModalType(""), []);
 
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
@@ -56,10 +60,10 @@ export default function () {
           <div style={{ width: "5.425rem" }} />
         ) : (
           <Button
-            disabled={!chosen}
+            disabled={!isChosenSetup}
             variant="positive"
             onClick={() => {
-              if (!chosen) dispatch(changeStandardSetup(currentIndex));
+              if (!isChosenSetup) dispatch(changeStandardSetup(currentIndex));
             }}
           >
             Choose
@@ -73,7 +77,7 @@ export default function () {
           <FaCog />
         </IconButton>
         <div className="flex">
-          <button onClick={() => setModal("weapon")}>
+          <button onClick={() => setModalType("weapon")}>
             <img
               className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
               src={wikiImg("7/7b/Icon_Inventory_Weapons")}
@@ -97,7 +101,7 @@ export default function () {
         <PrePicker
           choices={ARTIFACT_ICONS}
           onClickChoice={(artifactType) => {
-            setModal(artifactType);
+            setModalType(artifactType as Artifact);
             setPrePickerOn(false);
           }}
           onClose={() => setPrePickerOn(false)}
@@ -108,7 +112,7 @@ export default function () {
               variants={["positive"]}
               handlers={[
                 () => {
-                  setModal("characters");
+                  setModalType("character");
                   setPrePickerOn(false);
                 },
               ]}
@@ -116,14 +120,16 @@ export default function () {
           }
         />
       )}
-      {/* {modal === "weapons" && (
-        <WpInventory
-          wpType={charData.weapon}
-          close={closeInv}
-          btnText="Pick"
-          btnClick={({ user, ...wpInfo }) => dispatch(PICK_WP_IN_DB(wpInfo))}
+      {modalType === "weapon" && (
+        <WeaponInventory
+          weaponType={charData.weapon}
+          buttonText="Pick"
+          onClickButton={({ user, ...wpInfo }) => {
+            // dispatch(PICK_WP_IN_DB(wpInfo));
+          }}
+          onClose={onCloseModal}
         />
-      )} */}
+      )}
       {/* {![null, "weapons", "characters"].includes(modal) && (
         <ArtPicker artType={modal} close={closeInv} />
       )} */}

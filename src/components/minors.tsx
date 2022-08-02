@@ -211,6 +211,12 @@ export function SetBonus({ sets }: SetBonusProps) {
   );
 }
 
+export const renderNoItems = (type: string) => (
+  <div className="pt-8 flex-center">
+    <p className="text-h5 font-bold text-lightred">No {type} to display</p>
+  </div>
+);
+
 export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   <>
     Increases <span className={`text-${element}`}>{element} DMG</span> by{" "}

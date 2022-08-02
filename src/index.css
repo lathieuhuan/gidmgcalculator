@@ -81,3 +81,17 @@ body {
 .text-last-center {
   text-align-last: center;
 }
+
+.glowing {
+  -webkit-animation: glow 0.5s ease-in-out infinite alternate;
+  -moz-animation: glow 0.5s ease-in-out infinite alternate;
+  animation: glow 0.5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from {
+    box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
+  }
+  to {
+    box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
+  }
+}
