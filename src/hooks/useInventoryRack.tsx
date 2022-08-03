@@ -56,8 +56,6 @@ export default function useInventoryRack({
   const [clickedID, setClickedID] = useState<number>(0);
   const [pageNo, setPageNo] = useState(0);
 
-  console.log(items);
-
   const deadEnd = Math.ceil(filteredIds.length / itemLimit) - 1;
   // const getInfo = itemType === "weapon" ? getWeaponInfo : getArtifactInfo;
 

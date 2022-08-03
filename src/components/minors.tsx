@@ -65,7 +65,7 @@ interface ButtonBarProps {
   className?: string;
   texts: string[];
   availables?: boolean[];
-  variants?: ("positive" | "negative" | "neutral")[];
+  variants?: ("positive" | "negative" | "neutral" | "default")[];
   handlers: (() => void)[];
   autoFocusIndex?: number;
 }

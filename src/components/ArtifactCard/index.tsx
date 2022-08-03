@@ -20,8 +20,8 @@ import { Fragment } from "react";
 
 interface ArtifactCardProps extends ArtifactCardCommonProps {
   artPiece?: CalcArtPiece;
-  enhance: (level: number) => void;
-  changeMainStatType: (type: string) => void;
+  enhance?: (level: number) => void;
+  changeMainStatType?: (type: string) => void;
 }
 export default function ArtifactCard({
   artPiece,
@@ -51,7 +51,7 @@ export default function ArtifactCard({
               <Select
                 className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
                 value={"+" + artPiece.level}
-                onChange={(e) => enhance(+e.target.value.slice(1))}
+                onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
               >
                 {[...Array(maxLevel + 1).keys()].map((_, lv) => (
                   <option key={lv}>+{lv}</option>
@@ -62,14 +62,14 @@ export default function ArtifactCard({
               <IconButton
                 className="!bg-black !text-orange text-3.5xl"
                 disabled={artPiece.level === maxLevel}
-                onClick={() => enhance(Math.min(artPiece.level + 4, maxLevel))}
+                onClick={() => enhance && enhance(Math.min(artPiece.level + 4, maxLevel))}
               >
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
                 className={`mt-6 px-1.5 py-1 bg-rarity-${rarity} rounded font-black`}
                 disabled={artPiece.level === maxLevel}
-                onClick={() => enhance(maxLevel)}
+                onClick={() => enhance && enhance(maxLevel)}
               >
                 MAX
               </Button>
@@ -97,7 +97,7 @@ export default function ArtifactCard({
             <Select
               className="pl-8 text-lg text-white appearance-none bg-contain bg-no-repeat bg-white-arrow"
               value={mainStatType}
-              onChange={(e) => changeMainStatType(e.target.value)}
+              onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
               {Object.keys(possibleMainStatTypes).map((type) => (
                 <option key={type}>{type}</option>
@@ -128,9 +128,9 @@ export default function ArtifactCard({
 
 interface ArtifactCardCommonProps {
   mutable?: boolean;
-  space?: 2 | 4;
-  changeSubStatType: (type: CalcArtPieceSubStat, index: number) => void;
-  changeSubStatValue: (value: number, index: number) => void;
+  space?: number;
+  changeSubStatType?: (type: CalcArtPieceSubStat, index: number) => void;
+  changeSubStatValue?: (value: number, index: number) => void;
 }
 
 interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
@@ -167,7 +167,9 @@ export function ArtifactSubstats({
                 statTypeCount[type] === 1 ? "text-white" : "text-darkred"
               )}
               value={type}
-              onChange={(e) => changeSubStatType(e.target.value as CalcArtPieceSubStat, i)}
+              onChange={(e) =>
+                changeSubStatType && changeSubStatType(e.target.value as CalcArtPieceSubStat, i)
+              }
             >
               {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
                 <option key={type}>{type}</option>
@@ -180,7 +182,9 @@ export function ArtifactSubstats({
                 isValid ? "text-white" : "text-darkred"
               )}
               value={value}
-              onChange={(e) => changeSubStatValue(processNumInput(e.target.value, value), i)}
+              onChange={(e) =>
+                changeSubStatValue && changeSubStatValue(processNumInput(e.target.value, value), i)
+              }
             />
             <span>{percentSign(type)}</span>
           </div>

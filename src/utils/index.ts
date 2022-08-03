@@ -225,3 +225,5 @@ export function getCurrentChar(char: CalcChar, index: number): CharInfo {
     cons: pickOne(char.cons, index),
   };
 }
+
+export * from "./items";

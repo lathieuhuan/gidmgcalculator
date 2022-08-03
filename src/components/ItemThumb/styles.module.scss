@@ -1,0 +1,24 @@
+.thumb {
+  .side-icon {
+    > img {
+      transform: translate(-8px, -17px);
+    }
+    &.beta > img {
+      transform: translate(-8px, -7px);
+    }
+  }
+  &:hover:not(.clicked),
+  &.chosen:not(.clicked) {
+    transform: scale(1.04);
+  }
+  &:hover > .side-icon,
+  &.chosen > .side-icon {
+    top: -0.275rem;
+    right: -0.275rem;
+  }
+  &:hover.clicked > .side-icon,
+  &.chosen.clicked > .side-icon {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+}

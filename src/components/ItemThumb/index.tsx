@@ -3,6 +3,7 @@ import { memo } from "react";
 import { Level, Rarity } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
 import { wikiImg } from "@Src/utils";
+import styles from "./styles.module.scss";
 
 interface ItemThumbProps {
   noDecoration?: boolean;
@@ -34,13 +35,15 @@ function ItemThumb({
       <div
         className={cn(
           "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/50 border-2 border-white rounded-circle",
-          clicked ? "group-hover:!top-1 group-hover:!right-1" : "hover:-top-1 hover:-right-1",
-          chosen && "-top-1 -right-1",
-          !sideIcon && "overflow-hidden"
+          styles["side-icon"],
+          !sideIcon && "beta overflow-hidden"
         )}
       >
         <img
-          className={cn("w-10 -translate-x-2 -translate-y-4", !sideIcon && "-translate-y-2")}
+          className={cn(
+            "w-10 max-w-none -translate-x-2 -translate-y-4",
+            !sideIcon && "-translate-y-2"
+          )}
           src={beta ? icon : wikiImg(sideIcon || icon || "")}
           alt=""
           draggable={false}
@@ -54,9 +57,9 @@ function ItemThumb({
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       className={cn(
-        "group",
-        clicked || noDecoration ? "!scale-100" : "hover:scale-105",
-        chosen && "scale-105"
+        styles.thumb,
+        (clicked || noDecoration) && styles.clicked,
+        chosen && styles.chosen
       )}
     >
       {user && !noDecoration && renderSideIcon(user, clicked, chosen)}

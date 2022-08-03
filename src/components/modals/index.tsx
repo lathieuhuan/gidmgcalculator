@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { useEffect, useState } from "react";
 import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
 import { ButtonBar } from "@Components/minors";
 import styles from "./styles.module.scss";
@@ -10,16 +11,33 @@ interface ModalProps {
   onClose: () => void;
 }
 export function Modal({ standard, className, children, onClose }: ModalProps) {
-  useCloseWithEsc(onClose);
+  const [isShown, setIsShown] = useState(false);
+
+  const close = () => {
+    setIsShown(false);
+    setTimeout(onClose, 150);
+  };
+
+  useCloseWithEsc(close);
+
+  useEffect(() => {
+    setIsShown(true);
+  }, []);
 
   return (
-    <div className={cn("fixed full-stretch z-10", styles.modal)}>
-      <div className="w-full h-full bg-black/60" onClick={onClose} />
+    <div
+      className={cn(
+        "fixed full-stretch z-10 transition-all duration-150 ease-linear",
+        isShown ? "opacity-100 scale-100" : "opacity-40 scale-50",
+        styles.modal
+      )}
+    >
+      <div className="w-full h-full bg-black/60" onClick={close} />
       {standard || className ? (
         <div
           className={cn(
             "rounded-lg bg-darkblue-2 shadow-white-glow",
-            styles.modalContent,
+            styles["modal-content"],
             className
           )}
         >

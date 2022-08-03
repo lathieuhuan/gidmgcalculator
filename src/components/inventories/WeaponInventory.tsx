@@ -1,6 +1,6 @@
 import useHeight from "@Hooks/useHeight";
 import useInventoryRack from "@Hooks/useInventoryRack";
-import { DatabaseWp, Weapon } from "@Src/types";
+import type { DatabaseWp, Weapon } from "@Src/types";
 
 import {
   selectFilteredWeaponIDs,
@@ -27,7 +27,15 @@ interface WeaponInventoryProps {
   onClose: () => void;
 }
 
-const ID = Date.now();
+// #to-clean
+// {
+//   ID,
+//   code: 124,
+//   level: "1/20",
+//   refi: 1,
+//   type: "sword",
+//   user: null,
+// }
 
 export default function WeaponInventory({
   weaponType,
@@ -42,27 +50,9 @@ export default function WeaponInventory({
   const [inventoryRack, chosenID] = useInventoryRack({
     rackClassName: styles["inventory-rack"],
     cellClassName: styles.cell,
-    items: [
-      ...useSelector(selectMyWps),
-      {
-        ID,
-        code: 124,
-        level: "1/20",
-        refi: 1,
-        type: "sword",
-        user: null,
-      },
-      {
-        ID: ID + 1,
-        code: 124,
-        level: "1/20",
-        refi: 1,
-        type: "sword",
-        user: "Albedo",
-      },
-    ],
+    items: useSelector(selectMyWps),
     itemType: "weapon",
-    filteredIds: [ID, ID + 1],
+    filteredIds,
   });
   const chosenWp = useSelector((state) => selectWeaponById(state, chosenID));
 
@@ -70,8 +60,7 @@ export default function WeaponInventory({
     <Modal standard onClose={onClose}>
       <div className="p-2" style={{ height: "10%" }}>
         <ModalHeader>
-          {window.innerWidth > 380 && <Text>{weaponType}</Text>}
-
+          <Text className="hidden sm:block">{weaponType}</Text>
           <CloseButton onClick={onClose} />
         </ModalHeader>
       </div>
