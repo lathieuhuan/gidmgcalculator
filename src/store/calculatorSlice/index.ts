@@ -1,5 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
+  CalcArtPiece,
   CalcArtPieceMainStat,
   CalculatorState,
   CalcWeapon,
@@ -280,6 +281,13 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // WEAPON
+    pickWeaponInUserDatabase: (state, action: PayloadAction<CalcWeapon>) => {
+      const wpInfo = action.payload;
+      state.allWeapons[state.currentIndex] = wpInfo;
+      state.allWpBuffCtrls[state.currentIndex] = getMainWpBuffCtrls(wpInfo);
+
+      calculate(state);
+    },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
       const weapon = action.payload;
       const subWpBuffCtrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weapon.type];
@@ -340,7 +348,6 @@ export const calculatorSlice = createSlice({
 
       let { pieces, sets } = state.allArtInfos[currentIndex];
       const piece = pieces[pieceIndex];
-      const artBuffCtrls = state.allArtBuffCtrls[currentIndex];
       const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
 
       if (piece && newPiece && isFirstTime && state.configs.keepArtStatsOnSwitch) {
@@ -360,16 +367,18 @@ export const calculatorSlice = createSlice({
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
           state.allArtBuffCtrls[currentIndex] = getMainArtBuffCtrls(newSetBonus.code);
+
           const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
           // find ctrl of the same buff in subArtBuffCtrls
           const position = indexByCode(subArtBuffCtrls, newSetBonus.code);
 
-          // remove if found, no duplicate
+          // remove if found, coz no duplicate
           if (position !== -1) {
             subArtBuffCtrls.splice(position, 1);
           }
         } else if (oldBonusLevel && !newSetBonus.bonusLv) {
           state.allArtBuffCtrls[currentIndex] = [];
+
           const oldSetCode = oldSets[0].code;
           const { buffs } = findArtifactSet({ code: oldSetCode }) || {};
 
@@ -378,6 +387,22 @@ export const calculatorSlice = createSlice({
           }
         }
       }
+      calculate(state);
+    },
+    updateAllArtPieces: (state, action: PayloadAction<(CalcArtPiece | null)[]>) => {
+      const { currentIndex, allArtInfos, allArtBuffCtrls, allSubArtBuffCtrls } = state;
+      const pieces = action.payload;
+      const sets = getArtifactSets(pieces);
+      const bonusLv = sets[0]?.bonusLv;
+
+      if (bonusLv) {
+        allSubArtBuffCtrls[currentIndex] = allSubArtBuffCtrls[currentIndex].filter(
+          (ctrl) => ctrl.code !== sets[0].code
+        );
+      }
+      allArtInfos[currentIndex] = { pieces, sets };
+      allArtBuffCtrls[currentIndex] = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
+
       calculate(state);
     },
     copyArtifactInfo: (state, action: PayloadAction<number>) => {
@@ -555,6 +580,7 @@ export const {
   addTeammate,
   removeTeammate,
   copyParty,
+  pickWeaponInUserDatabase,
   changeWeapon,
   upgradeWeapon,
   refineWeapon,
@@ -562,6 +588,7 @@ export const {
   changeArtPieceMainStatType,
   changeArtPieceSubStat,
   updateArtPiece,
+  updateAllArtPieces,
   copyArtifactInfo,
   toggleResonance,
   toggleElementModCtrl,

@@ -1,8 +1,17 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaCog } from "react-icons/fa";
 
-import { changeCurrentSetup } from "@Store/calculatorSlice";
-import { selectCharData, selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
+import {
+  changeCurrentSetup,
+  pickWeaponInUserDatabase,
+  updateArtPiece,
+} from "@Store/calculatorSlice";
+import {
+  selectArtInfo,
+  selectCharData,
+  selectCurrentIndex,
+  selectSetups,
+} from "@Store/calculatorSlice/selectors";
 import {
   changeStandardSetup,
   selectComparedIndexes,
@@ -13,7 +22,7 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { indexByName, wikiImg } from "@Src/utils";
-import { ARTIFACT_ICONS } from "@Src/constants";
+import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import type { Artifact } from "@Src/types";
 
 import PrePicker from "@Components/Picker/PrePicker";
@@ -24,12 +33,18 @@ import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import { MainSelect } from "../components";
+import { InventoryArtifact } from "@Screens/item-stores/InventoryArtifact";
+import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
+import { findCharacter } from "@Data/controllers";
+import Picker from "@Components/Picker";
+import { pickEquippedArtSet } from "@Store/thunks";
 
 export default function SetupManager() {
   const setups = useSelector(selectSetups);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const currentIndex = useSelector(selectCurrentIndex);
   const charData = useSelector(selectCharData);
+  const artPieces = useSelector(selectArtInfo).pieces;
 
   const isChosenSetup = useSelector(selectStandardIndex) === currentIndex;
   const dispatch = useDispatch();
@@ -39,7 +54,7 @@ export default function SetupManager() {
   const [ref, height] = useHeight();
   const bodyRef = useRef(null);
 
-  const onCloseModal = useCallback(() => setModalType(""), []);
+  const onCloseModal = () => setModalType("");
 
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
@@ -125,15 +140,54 @@ export default function SetupManager() {
           weaponType={charData.weapon}
           buttonText="Pick"
           onClickButton={({ owner, ...wpInfo }) => {
-            // dispatch(PICK_WP_IN_DB(wpInfo));
+            dispatch(pickWeaponInUserDatabase(wpInfo));
           }}
           onClose={onCloseModal}
         />
       )}
-      {/* {![null, "weapons", "characters"].includes(modal) && (
-        <ArtPicker artType={modal} close={closeInv} />
-      )} */}
-      {/* {modal === "characters" && <CharPicker close={closeInv} />} */}
+      {modalType !== "" && modalType !== "weapon" && modalType !== "character" && (
+        <InventoryArtifact
+          owner={charData.name}
+          artifactType={modalType}
+          currentPieces={artPieces}
+          buttonText="Pick"
+          onClickButton={({ owner, ...pieceInfo }) => {
+            dispatch(
+              updateArtPiece({
+                pieceIndex: ARTIFACT_TYPES.indexOf(modalType),
+                newPiece: pieceInfo,
+              })
+            );
+          }}
+          onClose={onCloseModal}
+        />
+      )}
+      {modalType === "character" && <CharacterPicker onClose={onCloseModal} />}
     </div>
+  );
+}
+
+interface CharacterPickerProps {
+  onClose: () => void;
+}
+function CharacterPicker({ onClose }: CharacterPickerProps) {
+  const myChars = useSelector(selectMyChars);
+  const dispatch = useDispatch();
+
+  const data = myChars.map(({ name, cons, artifactIDs }) => {
+    const { code, icon, rarity, vision, weapon } = findCharacter({ name })!;
+    return { name, cons, artifactIDs, code, icon, rarity, vision, weapon };
+  });
+  return (
+    <Picker
+      data={data}
+      dataType="character"
+      onPickItem={({ artifactIDs }) => {
+        if (artifactIDs) {
+          dispatch(pickEquippedArtSet(artifactIDs));
+        }
+      }}
+      onClose={onClose}
+    />
   );
 }

@@ -27,7 +27,7 @@ export function Modal({ standard, className, children, onClose }: ModalProps) {
   return (
     <div
       className={cn(
-        "fixed full-stretch z-10 transition-all duration-150 ease-linear",
+        "fixed full-stretch z-50 transition-all duration-150 ease-linear",
         isShown ? "opacity-100 scale-100" : "opacity-40 scale-50",
         styles.modal
       )}
@@ -82,12 +82,10 @@ export function ConfirmModal({ message, left, mid, right, onClose }: ConfirmModa
   }
   return (
     <Modal onClose={onClose}>
-      <div className="p-4 w-[22.5rem] max-w-95 rounded-2xl bg-darkblue-3">
-        <div className="py-4">
-          <p className="text-center text-1.5xl">{message}</p>
-        </div>
+      <div className="p-4 sm:max-w-95 rounded-2xl bg-darkblue-3">
+        <p className="py-2 text-center text-1.5xl">{message}</p>
         <ButtonBar
-          className={cn("mt-4", mid && "gap-4")}
+          className={cn("mt-4 flex-wrap", mid && "gap-4")}
           texts={texts}
           handlers={handlers}
           autoFocusIndex={texts.length - 1}

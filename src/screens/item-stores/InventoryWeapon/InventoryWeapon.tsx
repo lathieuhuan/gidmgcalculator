@@ -15,7 +15,7 @@ import { ButtonBar } from "@Components/minors";
 import { ModalHeader } from "@Src/styled-components";
 import { renderEquippedChar } from "../components";
 
-import styles from "./styles.module.scss";
+import styles from "../styles.module.scss";
 
 const { Text, CloseButton } = ModalHeader;
 

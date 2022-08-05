@@ -26,13 +26,13 @@ const selectArtifactsByType = createSelector(
 
 interface ArtifactInventory {
   artifactType: Artifact;
-  currentPieces: CalcArtPiece[];
+  currentPieces: (CalcArtPiece | null)[];
   owner: string;
   buttonText: string;
   onClickButton: (chosen: UsersArtifact) => void;
   onClose: () => void;
 }
-export function ArtInventory({
+export function InventoryArtifact({
   artifactType,
   currentPieces,
   owner,
