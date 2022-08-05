@@ -14,7 +14,7 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import calculatorReducers from "./calculatorSlice";
-import databaseReducers from "./databaseSlice";
+import databaseReducers from "./usersDatabaseSlice";
 import uiReducers from "./uiSlice";
 
 const rootReducer = combineReducers({

@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { CalcArtPiece, DatabaseArt, DatabaseState } from "@Src/types";
+import type { CalcArtPiece, UsersArtifact, UsersDatabaseState } from "@Src/types";
 import { indexById } from "@Src/utils";
 
-const initialState: DatabaseState = {
+const initialState: UsersDatabaseState = {
   myChars: [],
   myWps: [],
   myArts: [],
   chosenChar: "",
 };
 
-export const databaseSlice = createSlice({
-  name: "database",
+export const usersDatabaseSlice = createSlice({
+  name: "users-database",
   initialState,
   reducers: {
-    addArtifact: (state, action: PayloadAction<DatabaseArt>) => {
+    addArtifact: (state, action: PayloadAction<UsersArtifact>) => {
       state.myArts.unshift(action.payload);
     },
     overwriteArtifact: ({ myArts }, action: PayloadAction<CalcArtPiece>) => {
@@ -27,6 +27,6 @@ export const databaseSlice = createSlice({
   },
 });
 
-export const { addArtifact, overwriteArtifact } = databaseSlice.actions;
+export const { addArtifact, overwriteArtifact } = usersDatabaseSlice.actions;
 
-export default databaseSlice.reducer;
+export default usersDatabaseSlice.reducer;

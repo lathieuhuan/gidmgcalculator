@@ -1,19 +1,20 @@
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import type { Artifact, CalcArtPiece, DatabaseArt } from "@Src/types";
+import type { Artifact, CalcArtPiece, UsersArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { selectMyArts } from "@Store/databaseSlice/selectors";
+import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
-import useInventoryRack from "@Hooks/useInventoryRack";
-import { filterArtIdsBySetsAndStats, findById } from "@Src/utils";
-import { initArtifactStatFilter } from "@Src/utils";
+import useInventoryRack from "@Screens/item-stores/hooks/useInventoryRack";
+import { findById } from "@Src/utils";
+import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 
 import { ModalHeader } from "@Src/styled-components";
 import ArtifactCard from "@Components/ArtifactCard";
 import { ButtonBar } from "@Components/minors";
 import { Modal } from "@Components/modals";
-import { renderEquippedChar } from "../minors";
+import { renderEquippedChar } from "../components";
+import { ArtifactFilter } from "../ArtifactFilter";
 
 const { Text, CloseButton, FilterButton } = ModalHeader;
 
@@ -28,10 +29,10 @@ interface ArtifactInventory {
   currentPieces: CalcArtPiece[];
   owner: string;
   buttonText: string;
-  onClickButton: (chosen: DatabaseArt) => void;
+  onClickButton: (chosen: UsersArtifact) => void;
   onClose: () => void;
 }
-export default function ArtInventory({
+export function ArtInventory({
   artifactType,
   currentPieces,
   owner,
@@ -42,19 +43,20 @@ export default function ArtInventory({
   const [filterOn, setFilterOn] = useState(false);
   const [comparing, setComparing] = useState(false);
 
+  const [stats, setStats] = useState(initArtifactStatsFilter());
+  const [codes, setCodes] = useState<number[]>([]);
   const data = useSelector((state) => selectArtifactsByType(state, artifactType));
 
-  const [stats, setStats] = useState(initArtifactStatFilter());
-  const [sets, setSets] = useState([]);
   const filteredIds = useMemo(
-    () => filterArtIdsBySetsAndStats(data, sets, stats),
-    [data, sets, stats]
+    () => filterArtIdsBySetsAndStats(data, codes, stats),
+    [data, codes, stats]
   );
   const [inventoryRack, chosenID] = useInventoryRack({
     items: data,
     itemType: "artifact",
     filteredIds,
   });
+
   const currentArt = currentPieces[ARTIFACT_TYPES.indexOf(artifactType)];
   const chosenArt = findById(data, chosenID);
 
@@ -65,13 +67,14 @@ export default function ArtInventory({
           <Text className="hidden sm:block">{artifactType}</Text>
           <CloseButton onClick={onClose} />
           <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
-          {/* <ArtInvFilter
+
+          <ArtifactFilter
             filterOn={filterOn}
-            arts={data}
-            artType={artType}
-            filter={{ stats, setStats, sets, setSets }}
-            close={() => setFilterOn(false)}
-          /> */}
+            artifactType={artifactType}
+            artifacts={data}
+            filter={{ stats, codes, setStats, setCodes }}
+            onClose={() => setFilterOn(false)}
+          />
         </ModalHeader>
       </div>
       <div className="pt-2 pr-4 pb-4 pl-2" style={{ height: "90%" }}>
@@ -99,7 +102,7 @@ export default function ArtInventory({
                 {chosenArt ? <ArtifactCard artPiece={chosenArt} mutable={false} space={3} /> : null}
               </div>
 
-              {chosenArt && chosenArt.user !== owner ? (
+              {chosenArt && chosenArt.owner !== owner ? (
                 <ButtonBar
                   className="mt-6"
                   variants={[comparing ? "neutral" : "default", "positive"]}
@@ -118,7 +121,7 @@ export default function ArtInventory({
               ) : null}
             </div>
 
-            {chosenArt?.user ? renderEquippedChar(chosenArt.user) : null}
+            {chosenArt?.owner ? renderEquippedChar(chosenArt.owner) : null}
           </div>
         </div>
       </div>

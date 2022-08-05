@@ -1,12 +1,12 @@
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import { Artifact, CalcArtPieceMainStat, CalcArtPieceSubStat, DatabaseArt } from "@Src/types";
+import type { CalcArtPieceMainStat, CalcArtPieceSubStat, UsersArtifact } from "@Src/types";
 
 export interface StatsFilter {
   main: "All" | CalcArtPieceMainStat;
   subs: ("All" | CalcArtPieceSubStat)[];
 }
 
-export function initArtifactStatFilter(): StatsFilter {
+export function initArtifactStatsFilter(): StatsFilter {
   return {
     main: "All",
     subs: Array(4).fill("All"),
@@ -14,14 +14,16 @@ export function initArtifactStatFilter(): StatsFilter {
 }
 
 export function filterArtIdsBySetsAndStats(
-  artifacts: DatabaseArt[],
-  sets: number[],
+  artifacts: UsersArtifact[],
+  setCodes: number[],
   stats: StatsFilter
 ) {
-  let result = sets.length ? artifacts.filter((p) => sets.includes(p.code)) : [...artifacts];
+  let result = setCodes.length
+    ? artifacts.filter((p) => setCodes.includes(p.code))
+    : [...artifacts];
 
-  function compareMainStat(a: DatabaseArt, b: DatabaseArt) {
-    const mainStatValue = (p: DatabaseArt) => {
+  function compareMainStat(a: UsersArtifact, b: UsersArtifact) {
+    const mainStatValue = (p: UsersArtifact) => {
       return ARTIFACT_MAIN_STATS[p.type][p.mainStatType]?.[p.rarity || 5][p.level] || 0;
     };
     return mainStatValue(b) - mainStatValue(a);
@@ -41,7 +43,7 @@ export function filterArtIdsBySetsAndStats(
       requires.every((rq) => p.subStats.map((ss) => ss.type).includes(rq))
     );
 
-    const getValue = (p: DatabaseArt, type: CalcArtPieceSubStat) => {
+    const getValue = (p: UsersArtifact, type: CalcArtPieceSubStat) => {
       return p.subStats.find((s) => s.type === type)?.value || 0;
     };
 
@@ -58,4 +60,20 @@ export function filterArtIdsBySetsAndStats(
     });
   }
   return result.map(({ ID }) => ID);
+}
+
+export function hasDupStat(stats: StatsFilter) {
+  const existed: string[] = [stats.main];
+
+  for (let ss of stats.subs) {
+    if (ss === "All") {
+      continue;
+    }
+    if (existed.includes(ss)) {
+      return true;
+    } else {
+      existed.push(ss);
+    }
+  }
+  return false;
 }

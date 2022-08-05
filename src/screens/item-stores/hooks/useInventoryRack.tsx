@@ -2,7 +2,7 @@ import cn from "classnames";
 import { useEffect, useState } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
-import { Artifact, DatabaseArt, DatabaseWp, Level, Rarity, Weapon } from "@Src/types";
+import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 
 import ItemThumb from "@Components/ItemThumb";
@@ -10,7 +10,7 @@ import { renderNoItems } from "@Components/minors";
 
 interface GetItemInfoArgs {
   code: number;
-  user: string | null;
+  owner: string | null;
   level: Level | number;
 }
 
@@ -18,18 +18,18 @@ interface GetWeaponInfoArgs extends GetItemInfoArgs {
   type: Weapon;
   refi: number;
 }
-function getWeaponInfo({ type, code, user, refi, level }: GetWeaponInfoArgs) {
+function getWeaponInfo({ type, code, owner, refi, level }: GetWeaponInfoArgs) {
   const { beta, name, icon, rarity } = findWeapon({ type, code })!;
-  return { beta, name, icon, rarity, level, user, refi };
+  return { beta, name, icon, rarity, level, owner, refi };
 }
 
 interface GetArtifactInfoArgs extends GetItemInfoArgs {
   type: Artifact;
   rarity: Rarity;
 }
-function getArtifactInfo({ code, type, user, rarity, level }: GetArtifactInfoArgs) {
+function getArtifactInfo({ code, type, owner, rarity, level }: GetArtifactInfoArgs) {
   const { beta, name, icon } = findArtifactPiece({ code, type });
-  return { beta, name, icon, rarity, level, user };
+  return { beta, name, icon, rarity, level, owner };
 }
 
 function isWeapon(item: GetWeaponInfoArgs | GetArtifactInfoArgs): item is GetWeaponInfoArgs {
@@ -41,7 +41,7 @@ const itemLimit = 120;
 interface UseInventoryRackArgs {
   rackClassName?: string;
   cellClassName?: string;
-  items: DatabaseWp[] | DatabaseArt[];
+  items: UsersWeapon[] | UsersArtifact[];
   itemType: "weapon" | "artifact";
   filteredIds: number[];
 }
@@ -108,7 +108,7 @@ export default function useInventoryRack({
     return () => document.removeEventListener("keydown", navigateWithArrow);
   }, [goBack, goNext]);
 
-  return [
+  const rack = (
     <div className="w-full flex flex-col">
       <div className={cn("hide-scrollbar", rackClassName)}>
         {filteredIds.length ? (
@@ -157,8 +157,8 @@ export default function useInventoryRack({
           </button>
         </div>
       ) : null}
-    </div>,
-    chosenID,
-    setChosenID,
-  ] as const;
+    </div>
+  );
+
+  return [rack, chosenID, setChosenID] as const;
 }

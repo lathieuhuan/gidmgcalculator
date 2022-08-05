@@ -13,7 +13,7 @@ interface ItemThumbProps {
     rarity: Rarity;
     level: Level | number;
     refi?: number;
-    user: string | null;
+    owner: string | null;
   };
   clicked: boolean;
   chosen: boolean;
@@ -22,14 +22,14 @@ interface ItemThumbProps {
 }
 function ItemThumb({
   noDecoration,
-  item: { beta, icon, rarity, level, refi, user },
+  item: { beta, icon, rarity, level, refi, owner },
   clicked,
   chosen,
   onMouseUp,
   onMouseDown = () => {},
 }: ItemThumbProps) {
   //
-  const renderSideIcon = (user: string, clicked: boolean, chosen: boolean) => {
+  const renderSideIcon = (user: string) => {
     const { beta, icon, sideIcon } = findCharacter({ name: user }) || {};
     return (
       <div
@@ -62,7 +62,7 @@ function ItemThumb({
         chosen && styles.chosen
       )}
     >
-      {user && !noDecoration && renderSideIcon(user, clicked, chosen)}
+      {owner && !noDecoration && renderSideIcon(owner)}
 
       <div
         className={cn(
@@ -97,7 +97,7 @@ function ItemThumb({
 
 export default memo(ItemThumb, (prev, next) => {
   if (prev.clicked !== next.clicked || prev.chosen !== next.chosen) return false;
-  for (const field of ["icon", "level", "refi", "user"] as const) {
+  for (const field of ["icon", "level", "refi", "owner"] as const) {
     if (prev.item[field] !== next.item[field]) return false;
   }
   return true;

@@ -1,49 +1,38 @@
 import useHeight from "@Hooks/useHeight";
-import useInventoryRack from "@Hooks/useInventoryRack";
-import type { DatabaseWp, Weapon } from "@Src/types";
+import useInventoryRack from "@Screens/item-stores/hooks/useInventoryRack";
+import type { UsersWeapon, Weapon } from "@Src/types";
 
 import {
   selectFilteredWeaponIDs,
   selectMyWps,
   selectWeaponById,
-} from "@Store/databaseSlice/selectors";
+} from "@Store/usersDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
-import { ButtonBar } from "@Components/minors";
 import WeaponCard from "@Components/WeaponCard";
+import { Modal } from "@Components/modals";
+import { ButtonBar } from "@Components/minors";
 import { ModalHeader } from "@Src/styled-components";
-import { Modal } from "../modals";
-import { renderEquippedChar } from "./minors";
+import { renderEquippedChar } from "../components";
 
 import styles from "./styles.module.scss";
 
 const { Text, CloseButton } = ModalHeader;
 
-interface WeaponInventoryProps {
+interface InventoryWeaponProps {
   weaponType: Weapon;
   owner?: string;
   buttonText: string;
-  onClickButton: (chosen: DatabaseWp) => void;
+  onClickButton: (chosen: UsersWeapon) => void;
   onClose: () => void;
 }
-
-// #to-clean
-// {
-//   ID,
-//   code: 124,
-//   level: "1/20",
-//   refi: 1,
-//   type: "sword",
-//   user: null,
-// }
-
-export default function WeaponInventory({
+export function InventoryWeapon({
   weaponType,
   owner = "",
   buttonText,
   onClickButton,
   onClose,
-}: WeaponInventoryProps) {
+}: InventoryWeaponProps) {
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, [weaponType]));
   const [hRef, height] = useHeight();
 
@@ -81,7 +70,7 @@ export default function WeaponInventory({
                 <WeaponCard weapon={chosenWp} mutable={false} />
               </div>
 
-              {chosenWp && chosenWp.user !== owner ? (
+              {chosenWp && chosenWp.owner !== owner ? (
                 <ButtonBar
                   className="mt-4"
                   variants={["positive"]}
@@ -96,7 +85,7 @@ export default function WeaponInventory({
               ) : null}
             </div>
 
-            {chosenWp?.user ? renderEquippedChar(chosenWp.user) : null}
+            {chosenWp?.owner ? renderEquippedChar(chosenWp.owner) : null}
           </div>
         </div>
       </div>

@@ -4,21 +4,21 @@ import type {
   AmplifyingReaction,
   CalcArtPiece,
   CalcArtPieceSubStatInfo,
-  DatabaseChar,
-  DatabaseArt,
-  DatabaseWp,
+  UsersCharacter,
+  UsersArtifact,
+  UsersWeapon,
   Target,
   Vision,
   Weapon,
 } from "@Src/types";
 
-export interface PickedChar extends Partial<DatabaseChar> {
+export interface PickedChar extends Partial<UsersCharacter> {
   name: string;
 }
 export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
-  myWps: DatabaseWp[];
-  myArts: DatabaseArt[];
+  myWps: UsersWeapon[];
+  myArts: UsersArtifact[];
 }>;
 
 export type AddTeammateAction = PayloadAction<{

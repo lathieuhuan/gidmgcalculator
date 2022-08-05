@@ -7,7 +7,7 @@ import {
   enhanceArtPiece,
   updateArtPiece,
 } from "@Store/calculatorSlice";
-import { addArtifact, overwriteArtifact } from "@Store/databaseSlice";
+import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import type { CalcArtPiece, CalcArtPieceMainStat } from "@Src/types";
@@ -158,7 +158,7 @@ function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
     if (existedArtPiece) {
       setType(2);
     } else {
-      dispatch(addArtifact({ user: null, ...pieceInfo }));
+      dispatch(addArtifact({ owner: null, ...pieceInfo }));
       setType(1);
     }
   }, []);
@@ -169,13 +169,13 @@ function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
   let noChange = false;
 
   if (existedArtPiece) {
-    const { user, ...info } = existedArtPiece;
+    const { owner, ...info } = existedArtPiece;
     noChange = isOne(pieceInfo, info);
   }
 
-  const extraInfo = existedArtPiece?.user ? (
+  const extraInfo = existedArtPiece?.owner ? (
     <>
-      , currently used by <b>{existedArtPiece.user}</b>
+      , currently used by <b>{existedArtPiece.owner}</b>
     </>
   ) : null;
 
@@ -196,7 +196,7 @@ function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
         !successful
           ? {
               text: "Duplicate",
-              onClick: () => dispatch(addArtifact({ user: null, ...pieceInfo, ID: Date.now() })),
+              onClick: () => dispatch(addArtifact({ owner: null, ...pieceInfo, ID: Date.now() })),
             }
           : undefined
       }

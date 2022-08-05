@@ -18,7 +18,7 @@ import type { Artifact } from "@Src/types";
 
 import PrePicker from "@Components/Picker/PrePicker";
 import { ButtonBar } from "@Components/minors";
-import WeaponInventory from "@Components/inventories/WeaponInventory";
+import { InventoryWeapon } from "@Screens/item-stores/InventoryWeapon";
 import { Button, IconButton } from "@Src/styled-components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
@@ -121,10 +121,10 @@ export default function SetupManager() {
         />
       )}
       {modalType === "weapon" && (
-        <WeaponInventory
+        <InventoryWeapon
           weaponType={charData.weapon}
           buttonText="Pick"
-          onClickButton={({ user, ...wpInfo }) => {
+          onClickButton={({ owner, ...wpInfo }) => {
             // dispatch(PICK_WP_IN_DB(wpInfo));
           }}
           onClose={onCloseModal}

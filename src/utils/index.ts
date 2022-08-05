@@ -142,12 +142,6 @@ export const ascsFromLv = (lv: Level) => {
   return maxLv === 20 ? 0 : maxLv / 10 - 3;
 };
 
-// #to-check
-export const initArtStatFilter = () => ({
-  main: "All",
-  subs: Array(4).fill("All"),
-});
-
 export function totalXtraTalentLv(
   char: CharInfo,
   talentType: Exclude<Talent, "altSprint">,
@@ -225,5 +219,3 @@ export function getCurrentChar(char: CalcChar, index: number): CharInfo {
     cons: pickOne(char.cons, index),
   };
 }
-
-export * from "./items";
