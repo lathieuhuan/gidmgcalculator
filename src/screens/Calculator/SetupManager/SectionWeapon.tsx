@@ -9,7 +9,7 @@ import { wikiImg } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
 import { findWeapon } from "@Data/controllers";
 
-import Picker from "@Components/Picker";
+import { Picker } from "@Components/Picker";
 import { BetaMark } from "@Components/minors";
 import { Select } from "@Src/styled-components";
 import { pedestalStyles } from "./tw-compound";

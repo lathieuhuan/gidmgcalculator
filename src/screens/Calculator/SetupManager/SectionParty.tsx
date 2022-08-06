@@ -9,7 +9,7 @@ import { indexByName } from "@Src/utils";
 import characters from "@Data/characters";
 
 import { CharFilledSlot } from "@Components/minors";
-import Picker from "@Components/Picker";
+import { Picker } from "@Components/Picker";
 import { IconButton } from "@Src/styled-components";
 import { CopySection } from "../components";
 import { pedestalStyles } from "./tw-compound";

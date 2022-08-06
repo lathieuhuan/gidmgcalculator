@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { RefObject, useState } from "react";
+import { type RefObject, useState } from "react";
 
 import { copyArtifactInfo, updateArtPiece } from "@Store/calculatorSlice";
 import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
@@ -9,8 +9,8 @@ import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { CopySection } from "@Screens/Calculator/components";
-import { CollapseSpace } from "@Components/Collapse";
-import Picker from "@Components/Picker";
+import { CollapseSpace } from "@Components/collapse";
+import { Picker } from "@Components/Picker";
 import { pedestalStyles } from "../tw-compound";
 import PieceInfo from "./PieceInfo";
 

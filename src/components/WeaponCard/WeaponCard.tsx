@@ -6,7 +6,7 @@ import { findWeapon } from "@Data/controllers";
 
 import { Select } from "@Src/styled-components";
 import { percentSign, wikiImg } from "@Src/utils";
-import { BetaMark } from "./minors";
+import { BetaMark } from "../minors";
 
 const groupStyles = "bg-darkblue-2 px-2";
 
@@ -16,7 +16,7 @@ interface WeaponCardProps {
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-export default function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
+export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
   if (!weapon) return null;
 
   const wpData = findWeapon(weapon)!;

@@ -18,7 +18,7 @@ interface TalentListProps {
   party?: Party;
   onChangeLevelOf: (talentType: "NAs" | "ES" | "EB") => (newLevel: number) => void;
 }
-export default function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
+export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
   const [position, setPosition] = useState(-1);
   const [atDetails, setAtDetails] = useState(false);
 

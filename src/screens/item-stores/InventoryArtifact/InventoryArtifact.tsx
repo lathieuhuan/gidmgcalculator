@@ -10,7 +10,7 @@ import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 
 import { ModalHeader } from "@Src/styled-components";
-import ArtifactCard from "@Components/ArtifactCard";
+import { ArtifactCard } from "@Components/ArtifactCard";
 import { ButtonBar } from "@Components/minors";
 import { Modal } from "@Components/modals";
 import { renderEquippedChar } from "../components";
@@ -107,7 +107,7 @@ export function InventoryArtifact({
                   className="mt-6"
                   variants={[comparing ? "neutral" : "default", "positive"]}
                   texts={["Compare", buttonText]}
-                  availables={[Boolean(currentArt), true]}
+                  disabled={[!currentArt]}
                   handlers={[
                     () => {
                       if (currentArt) setComparing(!comparing);

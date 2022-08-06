@@ -7,7 +7,7 @@ import { useSelector } from "@Store/hooks";
 import { selectComparedIndexes } from "@Store/uiSlice";
 
 import { IconButton, Select } from "@Src/styled-components";
-import DamageDisplay from "@Components/DamageDisplay";
+import { DamageDisplay } from "@Components/DamageDisplay";
 
 enum EStatDamageKey {
   NON_CRIT = "nonCrit",

@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 
-import CollapseList from "@Components/Collapse";
+import { CollapseList } from "@Components/collapse";
 import { MainSelect } from "../components";
 import { ArtifactBuffs, ElememtBuffs } from "./buffs/others";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";

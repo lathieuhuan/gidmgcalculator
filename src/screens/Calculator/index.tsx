@@ -6,7 +6,7 @@ import characters from "@Data/characters";
 import { findByName } from "@Src/utils";
 
 import { Button } from "@Src/styled-components";
-import Picker from "@Components/Picker";
+import { Picker } from "@Components/Picker";
 import OverviewChar from "./OverviewChar";
 
 import styles from "./styles.module.scss";

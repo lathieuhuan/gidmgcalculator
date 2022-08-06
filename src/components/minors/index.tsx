@@ -6,7 +6,7 @@ import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, wikiImg } from "@Src/utils";
 import { Green, Button, CloseButton } from "@Src/styled-components";
-import { Modal } from "./modals";
+import { Modal } from "@Components/modals";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
@@ -64,7 +64,7 @@ export const SeeDetails = (props: SeeDetailsProps) => {
 interface ButtonBarProps {
   className?: string;
   texts: string[];
-  availables?: boolean[];
+  disabled?: boolean[];
   variants?: ("positive" | "negative" | "neutral" | "default")[];
   handlers: (() => void)[];
   autoFocusIndex?: number;
@@ -72,7 +72,7 @@ interface ButtonBarProps {
 export const ButtonBar = ({
   className,
   texts,
-  availables,
+  disabled = [],
   variants = [],
   handlers,
   autoFocusIndex,
@@ -86,7 +86,7 @@ export const ButtonBar = ({
           <Button
             key={i}
             className="focus:shadow-[0_0_2px_2px_black,_0_0_2px_4px_white]"
-            disabled={availables && !availables[i]}
+            disabled={disabled[i]}
             variant={variant}
             onClick={handlers[i]}
             autoFocus={i === autoFocusIndex}

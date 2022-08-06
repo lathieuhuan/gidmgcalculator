@@ -1,43 +1,41 @@
 import { useRef, useState } from "react";
 import { FaCog } from "react-icons/fa";
+import type { Artifact } from "@Src/types";
 
+import { pickEquippedArtSet } from "@Store/thunks";
 import {
   changeCurrentSetup,
   pickWeaponInUserDatabase,
   updateArtPiece,
 } from "@Store/calculatorSlice";
 import {
-  selectArtInfo,
-  selectCharData,
-  selectCurrentIndex,
-  selectSetups,
-} from "@Store/calculatorSlice/selectors";
-import {
   changeStandardSetup,
   selectComparedIndexes,
   selectStandardIndex,
   toggleSettings,
 } from "@Store/uiSlice";
+import {
+  selectArtInfo,
+  selectCharData,
+  selectCurrentIndex,
+  selectSetups,
+} from "@Store/calculatorSlice/selectors";
+import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import type { Artifact } from "@Src/types";
+import { findCharacter } from "@Data/controllers";
 
-import PrePicker from "@Components/Picker/PrePicker";
-import { ButtonBar } from "@Components/minors";
+import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon } from "@Screens/item-stores/InventoryWeapon";
 import { Button, IconButton } from "@Src/styled-components";
+import { InventoryArtifact } from "@Screens/item-stores/InventoryArtifact";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import { MainSelect } from "../components";
-import { InventoryArtifact } from "@Screens/item-stores/InventoryArtifact";
-import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
-import { findCharacter } from "@Data/controllers";
-import Picker from "@Components/Picker";
-import { pickEquippedArtSet } from "@Store/thunks";
 
 export default function SetupManager() {
   const setups = useSelector(selectSetups);
@@ -121,17 +119,17 @@ export default function SetupManager() {
           }}
           onClose={() => setPrePickerOn(false)}
           footer={
-            <ButtonBar
-              className="mt-6"
-              texts={["Pick Equipped Set"]}
-              variants={["positive"]}
-              handlers={[
-                () => {
+            <div className="mt-6 flex justify-center">
+              <Button
+                variant="positive"
+                onClick={() => {
                   setModalType("character");
                   setPrePickerOn(false);
-                },
-              ]}
-            />
+                }}
+              >
+                Pick Equipped Set
+              </Button>
+            </div>
           }
         />
       )}

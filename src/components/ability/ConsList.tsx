@@ -3,14 +3,14 @@ import cn from "classnames";
 import { findCharacter } from "@Data/controllers";
 import { CalcChar } from "@Src/types";
 import { Green, CloseButton } from "@Src/styled-components";
-import { InfoSign, SharedSpace } from "../minors";
+import { InfoSign, SharedSpace } from "@Components/minors";
 import { AbilityIcon, SlideShow } from "./components";
 
 interface ConsListProps {
   char: CalcChar;
   onClickIcon: (index: number) => void;
 }
-export default function ConsList({ char, onClickIcon }: ConsListProps) {
+export function ConsList({ char, onClickIcon }: ConsListProps) {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 

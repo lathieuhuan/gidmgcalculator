@@ -8,7 +8,7 @@ interface PrePickerProps {
   onClickChoice: (choice: string) => void;
   onClose: () => void;
 }
-export default function PrePicker({ choices, onClickChoice, onClose, footer }: PrePickerProps) {
+export function PrePicker({ choices, onClickChoice, onClose, footer }: PrePickerProps) {
   return (
     <Modal onClose={onClose}>
       <div className="p-4 shadow-white-glow rounded-2xl bg-darkblue-3">

@@ -27,4 +27,4 @@ StatsTable.Row = ({ className, children, onClick }: RowProps) => {
   );
 };
 
-export default StatsTable;
+export { StatsTable };

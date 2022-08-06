@@ -12,7 +12,7 @@ import { changeMonster, changeMonsterConfig, modifyTarget } from "@Store/calcula
 import monsters from "@Data/monsters";
 import { findMonster } from "@Data/controllers";
 
-import CollapseList from "@Components/Collapse";
+import { CollapseList } from "@Components/collapse";
 import { InfusionNotes } from "@Components/minors";
 import { Checkbox, Select, linkStyles } from "@Src/styled-components";
 

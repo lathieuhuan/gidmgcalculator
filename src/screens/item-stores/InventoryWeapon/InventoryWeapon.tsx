@@ -9,10 +9,9 @@ import {
 } from "@Store/usersDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
-import WeaponCard from "@Components/WeaponCard";
+import { WeaponCard } from "@Components/WeaponCard";
 import { Modal } from "@Components/modals";
-import { ButtonBar } from "@Components/minors";
-import { ModalHeader } from "@Src/styled-components";
+import { Button, ModalHeader } from "@Src/styled-components";
 import { renderEquippedChar } from "../components";
 
 import styles from "../styles.module.scss";
@@ -71,17 +70,17 @@ export function InventoryWeapon({
               </div>
 
               {chosenWp && chosenWp.owner !== owner ? (
-                <ButtonBar
-                  className="mt-4"
-                  variants={["positive"]}
-                  texts={[buttonText]}
-                  handlers={[
-                    () => {
+                <div className="mt-4 flex justify-center">
+                  <Button
+                    variant="positive"
+                    onClick={() => {
                       onClickButton(chosenWp);
                       onClose();
-                    },
-                  ]}
-                />
+                    }}
+                  >
+                    {buttonText}
+                  </Button>
+                </div>
               ) : null}
             </div>
 

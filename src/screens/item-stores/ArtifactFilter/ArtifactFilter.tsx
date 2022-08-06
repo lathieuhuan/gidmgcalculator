@@ -6,7 +6,8 @@ import useArtStatsFilter from "../hooks/useArtifactStatsFilter";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
 import { ButtonBar } from "@Components/minors";
-import { CollapseAndMount } from "@Components/Collapse";
+import { CollapseAndMount } from "@Components/collapse";
+import { Button } from "@Src/styled-components";
 
 interface ArtifactFilterProps extends FilterProps {
   filterOn: boolean;
@@ -47,17 +48,18 @@ function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
     artifacts,
     codes: filter.codes,
   });
-  const resetable = stats.main !== "All" || stats.subs.some((s) => s !== "All");
+  const disabled = stats.main === "All" || stats.subs.every((s) => s === "All");
 
   return (
-    <div className="p-4 flex hide-sb">
-      <div className="flex-col">
-        <ButtonBar
-          className="mb-2"
-          texts={["Reset Stats"]}
-          availables={[resetable]}
-          handlers={[() => filter.setStats(initArtifactStatsFilter())]}
-        />
+    <div className="p-4 flex hide-scrollbar">
+      <div className="flex flex-col">
+        <Button
+          className="mb-2 mx-auto"
+          disabled={disabled}
+          onClick={() => setStats(initArtifactStatsFilter())}
+        >
+          Reset Stats
+        </Button>
         {statsFilter}
         <ButtonBar
           className="mt-4 pb-2"

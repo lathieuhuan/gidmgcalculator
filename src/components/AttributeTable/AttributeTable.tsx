@@ -6,13 +6,13 @@ import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { getRxnBonusesFromEM } from "@Src/calculators/utils";
 
 import { Green } from "@Src/styled-components";
-import StatsTable from "./StatsTable";
-import { CollapseSpace } from "./Collapse";
+import { StatsTable } from "@Components/StatsTable";
+import { CollapseSpace } from "@Components/collapse";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;
 }
-export default function AttributeTable({ attributes }: AttributeTableProps) {
+export function AttributeTable({ attributes }: AttributeTableProps) {
   if (!attributes) {
     return null;
   }

@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import cn from "classnames";
 import type { GetExtraStatsFn, StatInfo, Talent } from "@Src/types";
-import StatsTable from "@Components/StatsTable";
+
+import { StatsTable } from "@Components/StatsTable";
 import { Select } from "@Src/styled-components";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 

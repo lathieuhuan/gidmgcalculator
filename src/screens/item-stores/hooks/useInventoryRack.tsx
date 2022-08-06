@@ -5,7 +5,7 @@ import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 
-import ItemThumb from "@Components/ItemThumb";
+import { ItemThumb } from "@Components/ItemThumb";
 import { renderNoItems } from "@Components/minors";
 
 interface GetItemInfoArgs {
