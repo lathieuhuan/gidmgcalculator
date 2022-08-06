@@ -28,10 +28,10 @@ import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
 
-import { PrePicker, Picker } from "@Components/Picker";
-import { InventoryWeapon } from "@Screens/item-stores/InventoryWeapon";
 import { Button, IconButton } from "@Src/styled-components";
-import { InventoryArtifact } from "@Screens/item-stores/InventoryArtifact";
+import { PrePicker, Picker } from "@Components/Picker";
+import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
+import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";

@@ -5,7 +5,7 @@ import { ARTIFACT_TYPES } from "@Src/constants";
 
 import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
-import useInventoryRack from "@Screens/item-stores/hooks/useInventoryRack";
+import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 

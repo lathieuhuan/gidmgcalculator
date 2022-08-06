@@ -1,5 +1,5 @@
 import useHeight from "@Hooks/useHeight";
-import useInventoryRack from "@Screens/item-stores/hooks/useInventoryRack";
+import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import type { UsersWeapon, Weapon } from "@Src/types";
 
 import {

@@ -1,5 +1,5 @@
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import type { CalcArtPieceMainStat, CalcArtPieceSubStat, UsersArtifact } from "@Src/types";
+import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
 export interface StatsFilter {
   main: "All" | CalcArtPieceMainStat;
