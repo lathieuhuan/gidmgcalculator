@@ -16,6 +16,8 @@ import { Modal } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 import { ArtifactFilter } from "../ArtifactFilter";
 
+import styles from "../styles.module.scss";
+
 const { Text, CloseButton, FilterButton } = ModalHeader;
 
 const selectArtifactsByType = createSelector(
@@ -52,6 +54,8 @@ export function InventoryArtifact({
     [data, codes, stats]
   );
   const [inventoryRack, chosenID] = useInventoryRack({
+    listClassName: styles["inventory-list"],
+    itemClassName: styles.item,
     items: data,
     itemType: "artifact",
     filteredIds,

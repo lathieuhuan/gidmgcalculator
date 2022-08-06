@@ -48,5 +48,5 @@ export default function useTypeFilter(forWeapon: boolean, initialTypes?: string[
     </div>
   );
 
-  return [typeFilter, types, setTypes];
+  return [typeFilter, types, setTypes] as const;
 }

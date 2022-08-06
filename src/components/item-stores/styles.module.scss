@@ -1,4 +1,4 @@
-.cell {
+.item {
   position: relative;
   flex-grow: 0;
   flex-basis: 33.33%;
@@ -10,12 +10,12 @@
   }
 }
 
-.inventory-rack {
+.inventory-list {
   height: 100%;
   flex-grow: 1;
   padding-right: 0.5rem;
   overflow: auto;
-  .cell {
+  .item {
     @media (min-width: 1025px) {
       max-width: 16.66%;
       flex-basis: 16.66%;

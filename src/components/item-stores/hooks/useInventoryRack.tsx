@@ -39,15 +39,15 @@ function isWeapon(item: GetWeaponInfoArgs | GetArtifactInfoArgs): item is GetWea
 const itemLimit = 120;
 
 interface UseInventoryRackArgs {
-  rackClassName?: string;
-  cellClassName?: string;
+  listClassName?: string;
+  itemClassName?: string;
   items: UsersWeapon[] | UsersArtifact[];
   itemType: "weapon" | "artifact";
   filteredIds: number[];
 }
 export default function useInventoryRack({
-  rackClassName,
-  cellClassName,
+  listClassName,
+  itemClassName,
   items,
   itemType,
   filteredIds,
@@ -110,14 +110,14 @@ export default function useInventoryRack({
 
   const rack = (
     <div className="w-full flex flex-col">
-      <div className={cn("hide-scrollbar", rackClassName)}>
+      <div className={cn("hide-scrollbar", listClassName)}>
         {filteredIds.length ? (
           <div className="flex flex-wrap">
             {items.map((item) => {
               return (
                 <div
                   key={item.ID}
-                  className={cn(cellClassName, { hidden: !IDsOnPage.includes(item.ID) })}
+                  className={cn(itemClassName, { hidden: !IDsOnPage.includes(item.ID) })}
                   onDoubleClick={() => console.log(item)}
                 >
                   <ItemThumb

@@ -1,9 +1,9 @@
 export enum EScreen {
   CALCULATOR = "Calculator",
-  MY_SETUPS = "MySetups",
-  MY_WEAPONS = "MyWeapons",
-  MY_ARTIFACTS = "MyArtifacts",
-  MY_CHARACTERS = "MyCharacters",
+  MY_SETUPS = "My Setups",
+  MY_WEAPONS = "My Weapons",
+  MY_ARTIFACTS = "My Artifacts",
+  MY_CHARACTERS = "My Characters",
 }
 
 export enum EModAffect {

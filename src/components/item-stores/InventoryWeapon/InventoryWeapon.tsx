@@ -36,8 +36,8 @@ export function InventoryWeapon({
   const [hRef, height] = useHeight();
 
   const [inventoryRack, chosenID] = useInventoryRack({
-    rackClassName: styles["inventory-rack"],
-    cellClassName: styles.cell,
+    listClassName: styles["inventory-list"],
+    itemClassName: styles.item,
     items: useSelector(selectMyWps),
     itemType: "weapon",
     filteredIds,

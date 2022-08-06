@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EScreen } from "../constants";
+import { EScreen } from "@Src/constants";
 import type { RootState } from "./index";
 import type { UIState } from "./types";
 
@@ -17,6 +17,9 @@ export const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    toggleIntro: (state, action: PayloadAction<boolean>) => {
+      state.introOn = action.payload;
+    },
     changeScreen: (state, action: PayloadAction<EScreen>) => {
       state.atScreen = action.payload;
     },
@@ -39,7 +42,7 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { changeScreen, resetCalculatorUI, changeStandardSetup, toggleSettings } =
+export const { toggleIntro, changeScreen, resetCalculatorUI, changeStandardSetup, toggleSettings } =
   uiSlice.actions;
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;
