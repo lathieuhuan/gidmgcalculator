@@ -1,5 +1,6 @@
 import { NavBar } from "@Components/NavBar";
 import Calculator from "@Screens/Calculator";
+import { MyArtifacts } from "@Screens/MyArtifacts";
 import { MyWeapons } from "@Screens/MyWeapons";
 import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
@@ -12,6 +13,8 @@ function App() {
     switch (atScreen) {
       case EScreen.MY_WEAPONS:
         return <MyWeapons />;
+      case EScreen.MY_ARTIFACTS:
+        return <MyArtifacts />;
       default:
         return null;
     }

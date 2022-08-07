@@ -29,8 +29,7 @@ export function ArtifactCard({
   space,
   enhance,
   changeMainStatType,
-  changeSubStatType,
-  changeSubStatValue,
+  changeSubStat,
 }: ArtifactCardProps) {
   if (!artPiece) return null;
 
@@ -47,18 +46,20 @@ export function ArtifactCard({
       <div className="mt-4 mx-4 flex">
         {mutable ? (
           <div className="mr-6 pr-2 grow flex justify-between">
-            <div className="rounded-full bg-darkblue-3">
-              <Select
-                className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
-                value={"+" + artPiece.level}
-                onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
-              >
-                {[...Array(maxLevel + 1).keys()].map((_, lv) => (
-                  <option key={lv}>+{lv}</option>
-                ))}
-              </Select>
+            <div>
+              <div className="rounded-circle bg-darkblue-3">
+                <Select
+                  className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
+                  value={"+" + artPiece.level}
+                  onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
+                >
+                  {[...Array(maxLevel + 1).keys()].map((_, lv) => (
+                    <option key={lv}>+{lv}</option>
+                  ))}
+                </Select>
+              </div>
             </div>
-            <div className="mt-1 flex-col items-center">
+            <div className="mt-1 flex flex-col items-center">
               <IconButton
                 className="!bg-black !text-orange text-3.5xl"
                 disabled={artPiece.level === maxLevel}
@@ -67,7 +68,7 @@ export function ArtifactCard({
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
-                className={`mt-6 px-1.5 py-1 bg-rarity-${rarity} rounded font-black`}
+                className={`mt-6 px-1.5 py-1 rounded font-black bg-orange`}
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance && enhance(maxLevel)}
               >
@@ -90,12 +91,13 @@ export function ArtifactCard({
       </div>
 
       <div className="mt-2 ml-6">
-        {["flower", "plume"].includes(mainStatType) || !mutable ? (
+        {["flower", "plume"].includes(artPiece.type) || !mutable ? (
           <p className={cn("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{mainStatType}</p>
         ) : (
-          <div className="py-1">
+          <div className="py-1 relative">
+            <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
             <Select
-              className="pl-8 text-lg text-white appearance-none bg-contain bg-no-repeat bg-white-arrow"
+              className="pl-8 text-lg text-white appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
@@ -105,7 +107,7 @@ export function ArtifactCard({
             </Select>
           </div>
         )}
-        <p className={cn(`text-rarity-${rarity} text-h3`, mutable ? "pl-8" : "pl-2")}>
+        <p className={cn(`text-rarity-${rarity} text-h3 font-bold`, mutable ? "pl-8" : "pl-2")}>
           {possibleMainStatTypes[mainStatType]?.[rarity][artPiece.level]}
           {percentSign(mainStatType)}
         </p>
@@ -118,8 +120,7 @@ export function ArtifactCard({
           mainStatType={mainStatType}
           subStats={artPiece.subStats}
           space={space}
-          changeSubStatType={changeSubStatType}
-          changeSubStatValue={changeSubStatValue}
+          changeSubStat={changeSubStat}
         />
       </div>
     </div>
@@ -129,8 +130,7 @@ export function ArtifactCard({
 interface ArtifactCardCommonProps {
   mutable?: boolean;
   space?: number;
-  changeSubStatType?: (type: CalcArtPieceSubStat, index: number) => void;
-  changeSubStatValue?: (value: number, index: number) => void;
+  changeSubStat?: (index: number, changes: Partial<CalcArtPieceSubStatInfo>) => void;
 }
 
 interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
@@ -144,8 +144,7 @@ export function ArtifactSubstats({
   mutable,
   rarity,
   space,
-  changeSubStatType,
-  changeSubStatValue,
+  changeSubStat,
 }: ArtifactSubstatsProps) {
   //
   const statTypeCount = { [mainStatType]: 1 };
@@ -161,6 +160,7 @@ export function ArtifactSubstats({
         return mutable ? (
           <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2 relative">
             <FaChevronDown className="absolute left-3 top-3" />
+
             <Select
               className={cn(
                 "pr-2 pl-10 relative z-10 appearance-none",
@@ -168,22 +168,24 @@ export function ArtifactSubstats({
               )}
               value={type}
               onChange={(e) =>
-                changeSubStatType && changeSubStatType(e.target.value as CalcArtPieceSubStat, i)
+                changeSubStat && changeSubStat(i, { type: e.target.value as CalcArtPieceSubStat })
               }
             >
               {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
                 <option key={type}>{type}</option>
               ))}
             </Select>
+
             <span>+</span>
+
             <input
               className={cn(
-                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent text-base leading-snug text-right text-last-right",
+                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent outline-none text-base leading-tight text-right text-last-right",
                 isValid ? "text-white" : "text-darkred"
               )}
               value={value}
               onChange={(e) =>
-                changeSubStatValue && changeSubStatValue(processNumInput(e.target.value, value), i)
+                changeSubStat && changeSubStat(i, { value: processNumInput(e.target.value, value) })
               }
             />
             <span>{percentSign(type)}</span>

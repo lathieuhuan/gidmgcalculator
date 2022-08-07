@@ -21,3 +21,9 @@ export const selectWeaponById = createSelector(
   (_: unknown, ID: number) => ID,
   (myWps, ID) => findById(myWps, ID)
 );
+
+export const selectArtifactById = createSelector(
+  selectMyArts,
+  (_: unknown, ID: number) => ID,
+  (myArts, ID) => findById(myArts, ID)
+);

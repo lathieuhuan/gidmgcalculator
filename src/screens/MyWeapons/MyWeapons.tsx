@@ -33,12 +33,12 @@ import { IconButton } from "@Src/styled-components";
 
 import styles from "../styles.module.scss";
 
+type ModalType = "preWeaponPicker" | "equipCharPicker" | "removingWeapon";
+
 export function MyWeapons() {
-  const [prePickerOn, setPrePickerOn] = useState(false);
-  const [charPickerOn, setCharPickerOn] = useState(false);
-  const [removing, setRemoving] = useState(false);
+  const [modalType, setModalType] = useState<ModalType | null>(null);
   const [filterDropped, setFilterDropped] = useState(false);
-  const [weaponType, setWeaponType] = useState<Weapon | null>(null);
+  const [pickingWeaponType, setPickingWeaponType] = useState<Weapon | null>(null);
 
   const dispatch = useDispatch();
   const [ref, height] = useHeight();
@@ -55,6 +55,9 @@ export function MyWeapons() {
   });
   const weapon = useSelector((state) => selectWeaponById(state, chosenID));
 
+  const openModal = (type: ModalType) => () => setModalType(type);
+  const closeModal = () => setModalType(null);
+
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
       <div className={styles.warehouse}>
@@ -63,7 +66,7 @@ export function MyWeapons() {
             className="mr-4 gap-4"
             texts={["Add", "Sort"]}
             variants={["positive", "positive"]}
-            handlers={[() => setPrePickerOn(true), () => dispatch(sortWeapons())]}
+            handlers={[openModal("preWeaponPicker"), () => dispatch(sortWeapons())]}
           />
           {window.innerWidth >= 500 ? (
             typeFilter
@@ -89,12 +92,13 @@ export function MyWeapons() {
           {invRack}
 
           <div ref={ref} className="h-full flex flex-col">
+            {/* #to-check: abundant div */}
             <div className="grow flex items-start">
               <div
                 className="p-4 rounded-lg bg-darkblue-1 flex flex-col"
                 style={{ minHeight: "27rem", maxHeight: height / 16 - 3 + "rem" }}
               >
-                <div className="grow hide-scrollbar" style={{ width: "18.75rem" }}>
+                <div className="grow hide-scrollbar w-75">
                   {weapon ? (
                     <WeaponCard
                       weapon={weapon}
@@ -108,54 +112,52 @@ export function MyWeapons() {
                   <ButtonBar
                     className="mt-4"
                     texts={["Remove", "Equip"]}
-                    handlers={[() => setRemoving(true), () => setCharPickerOn(true)]}
+                    handlers={[openModal("removingWeapon"), openModal("equipCharPicker")]}
                   />
                 ) : null}
               </div>
             </div>
 
             {weapon?.owner ? renderEquippedChar(weapon.owner) : null}
-
-            {charPickerOn && weapon && (
-              <CharPicker weapon={weapon} onClose={() => setCharPickerOn(false)} />
-            )}
-
-            {removing && weapon && (
-              <ItemRemoveConfirm
-                item={weapon}
-                itemType="weapon"
-                filteredIds={filteredIds}
-                removeItem={(item) => {
-                  dispatch(removeWeapon({ ...item, type: item.type as Weapon }));
-                }}
-                updateChosenID={setChosenID}
-                onClose={() => setRemoving(false)}
-              />
-            )}
           </div>
         </div>
       </div>
 
-      {prePickerOn && (
+      {modalType === "preWeaponPicker" && (
         <PrePicker
           choices={WEAPON_ICONS}
           onClickChoice={(weaponType) => {
-            setWeaponType(weaponType as Weapon);
-            setPrePickerOn(false);
+            setPickingWeaponType(weaponType as Weapon);
+            closeModal();
           }}
-          onClose={() => setPrePickerOn(false)}
+          onClose={closeModal}
         />
       )}
-      {weaponType && (
+      {pickingWeaponType && (
         <Picker.Weapon
           needMassAdd={true}
-          wpType={weaponType}
+          wpType={pickingWeaponType}
           onPickItem={(item) => {
             const ID = Date.now();
-            dispatch(addWeapon({ ID, ...item }));
+            dispatch(addWeapon({ ID, ...item, owner: null }));
             setChosenID(ID);
           }}
-          onClose={() => setWeaponType(null)}
+          onClose={() => setPickingWeaponType(null)}
+        />
+      )}
+      {modalType === "equipCharPicker" && weapon && (
+        <CharPicker weapon={weapon} onClose={closeModal} />
+      )}
+      {modalType === "removingWeapon" && weapon && (
+        <ItemRemoveConfirm
+          item={weapon}
+          itemType="weapon"
+          filteredIds={filteredIds}
+          removeItem={(item) => {
+            dispatch(removeWeapon({ ...item, type: item.type as Weapon }));
+          }}
+          updateChosenID={setChosenID}
+          onClose={closeModal}
         />
       )}
     </div>
@@ -172,10 +174,8 @@ function CharPicker({ weapon: { ID, owner, type }, onClose }: CharPickerProps) {
   const data = [];
   for (const char of useSelector(selectMyChars)) {
     const character = findCharacter(char);
-
     if (character) {
       const { beta, name, code, icon, rarity, vision, weapon } = character;
-
       if (weapon === type && name !== owner) {
         data.push({ beta, name, code, icon, rarity, vision, weapon, cons: char.cons });
       }
@@ -187,7 +187,7 @@ function CharPicker({ weapon: { ID, owner, type }, onClose }: CharPickerProps) {
       data={data}
       dataType="character"
       onPickItem={({ name }) => {
-        dispatch(swapWeaponOwner({ newOwner: name, targetWeaponID: ID, oldOwner: owner }));
+        dispatch(swapWeaponOwner({ weaponID: ID, newOwner: name }));
       }}
       onClose={onClose}
     />

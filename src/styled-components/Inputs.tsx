@@ -55,11 +55,13 @@ export const Checkbox = (props: InputHTMLAttributes<HTMLInputElement>) => {
 
 export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
   return (
-    <div>
-      <select
-        className={cn("w-full h-full block bg-transparent outline-none", className)}
-        {...rest}
-      />
-    </div>
+    <select
+      className={cn(
+        "leading-base block outline-none",
+        !className?.includes("bg-") && "bg-transparent",
+        className
+      )}
+      {...rest}
+    />
   );
 };

@@ -12,9 +12,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   noGlow?: boolean;
   variant?: "positive" | "neutral" | "negative" | "default";
 }
-export const buttonStyles = ({ noGlow, disabled, variant = "default" }: ButtonProps) => {
+export const buttonStyles = ({ className, noGlow, disabled, variant = "default" }: ButtonProps) => {
   return cn(
-    bgColorByVariant[variant],
+    !className?.includes("bg-") && bgColorByVariant[variant],
     variant === "negative" ? "text-white" : "text-black",
     !noGlow && "glow-on-hover",
     disabled && "!opacity-50 cursor-default"

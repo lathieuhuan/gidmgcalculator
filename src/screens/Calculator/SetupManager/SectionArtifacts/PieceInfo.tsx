@@ -98,12 +98,9 @@ export default function PieceInfo({
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={pieceInfo.subStats}
-          changeSubStatType={(type, subStatIndex) =>
-            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, type }))
-          }
-          changeSubStatValue={(value, subStatIndex) =>
-            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, value }))
-          }
+          changeSubStat={(subStatIndex, changeInfo) => {
+            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, ...changeInfo }));
+          }}
         />
       </div>
 

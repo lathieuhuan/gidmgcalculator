@@ -29,11 +29,10 @@ export default function useTypeFilter(forWeapon: boolean, initialTypes?: string[
           <button
             key={i}
             className={cn(
-              "mr-4 glow-on-hover rounded-circle",
+              "mr-4 glow-on-hover rounded-circle transition duration-150",
               !forWeapon && "p-1",
-              forWeapon && active && "shadow-3px-3px shadow-green"
+              active && (forWeapon ? "shadow-3px-3px shadow-green" : "bg-green")
             )}
-            // boxShadow={forWp && isOn ? "0 0 3px 3px " + colors.green : "none"}
             onClick={() => onClickIcon(active, index, type)}
           >
             <img

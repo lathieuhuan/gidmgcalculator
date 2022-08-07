@@ -6,7 +6,7 @@ import { findArtifactPiece } from "@Data/controllers";
 import { Button } from "@Src/styled-components";
 
 interface UseArtSetFilterArgs {
-  artifactType: Artifact;
+  artifactType?: Artifact;
   artifacts: CalcArtPiece[];
   codes: number[];
 }
@@ -52,9 +52,7 @@ export default function useArtSetFilter({ artifactType, artifacts, codes }: UseA
                 <div
                   className={cn(
                     "p-1 rounded-circle",
-                    set.chosen
-                      ? "shadow-[0_0_3px_2px] shadow-green bg-darkblue-1"
-                      : "bg-transparent"
+                    set.chosen ? "shadow-3px-2px shadow-green bg-darkblue-1" : "bg-transparent"
                   )}
                 >
                   <img
