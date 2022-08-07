@@ -44,7 +44,7 @@ export const usersDatabaseSlice = createSlice({
       });
     },
     chooseCharacter: (state, action: PayloadAction<string>) => {
-      state.chosenChar === action.payload;
+      state.chosenChar = action.payload;
     },
     sortCharacters: (state, action: PayloadAction<number[]>) => {
       state.myChars = action.payload.map((index) => state.myChars[index]);

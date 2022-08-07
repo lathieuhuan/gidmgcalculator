@@ -1,6 +1,8 @@
 import type { StatInfo } from "@Src/types";
 
 export enum EModifierSrc {
+  ES = "Elemental Skill",
+  EB = "Elemental Burst",
   A1 = "Ascension 1 Passive Talent",
   A4 = "Ascension 4 Passive Talent",
   C1 = "Constellation 1",

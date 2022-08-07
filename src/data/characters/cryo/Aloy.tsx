@@ -59,11 +59,31 @@ const Aloy: DataCharacter = {
         { name: "Freeze Bomb", baseMult: 177.6, multType: 2 },
         { name: "Chillwater Bomblets", baseMult: 40, multType: 2 },
       ],
+      // getExtraStats: (lv) => [
+      //   {
+      //     name: "ATK Decrease",
+      //     value: Math.min(11 + Math.ceil(lv / 3), 15) + "%",
+      //   },
+      //   { name: "ATK Decrease Duration", value: "6s" },
+      //   {
+      //     name: "Coil Normal Attack DMG Bonus",
+      //     value: [1, 2, 3]
+      //       .map((stack) => round2(5.846 * TALENT_LV_MULTIPLIERS[5][lv] * stack) + "%")
+      //       .join(" / "),
+      //   },
+      //   {
+      //     name: "Rushing Ice Normal Attack DMG Bonus",
+      //     value: round2(29.23 * TALENT_LV_MULTIPLIERS[5][lv]) + "%",
+      //   },
+      //   { name: "Rushing Ice Duration", value: "10s" },
+      //   { name: "CD", value: "20s" },
+      // ],
     },
     EB: {
       name: "Prophecies of Dawn",
       image: "b/b4/Talent_Prophecies_of_Dawn",
       stats: [{ name: "Skill DMG", baseMult: 359.2, multType: 2 }],
+      // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,
     },
   },

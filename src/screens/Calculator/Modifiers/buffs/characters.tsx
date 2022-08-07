@@ -89,7 +89,7 @@ export function SelfBuffs() {
           onToggle={() => dispatch(toggleModCtrl(path))}
           heading={buff.src}
           desc={buff.desc({
-            fromSelf: true,
+            toSelf: true,
             totalAttr,
             char,
             charBuffCtrls: selfBuffCtrls,
@@ -197,7 +197,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
         desc={buff.desc({
-          fromSelf: false,
+          toSelf: false,
           char,
           charData,
           partyData,

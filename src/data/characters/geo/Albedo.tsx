@@ -71,6 +71,10 @@ const Albedo: DataCharacter = {
             ]),
         },
       ],
+      // getExtraStats: (lv) => [
+      //   { name: "Duration", value: "30s" },
+      //   { name: "CD", value: "4s" }
+      // ]
     },
     EB: {
       name: "Rite of Progeniture: Tectonic Tide",
@@ -88,6 +92,7 @@ const Albedo: DataCharacter = {
           multType: 2,
         },
       ],
+      // getExtraStats: (lv) => [{ name: "CD", value: "12s" }],
       energyCost: 40,
     },
   },

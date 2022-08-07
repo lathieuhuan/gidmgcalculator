@@ -31,6 +31,7 @@ export type DataCharacter = {
   code: number;
   beta?: boolean;
   name: string;
+  GOOD?: string;
   icon: string;
   sideIcon: string;
   rarity: Rarity;
@@ -60,9 +61,12 @@ export type DataCharacter = {
   constellation: NoStatsAbility[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
+  outdatedMods?: OutdatedModifier[];
 };
 
-// extraStats are not calculated into damage results
+/**
+ * extraStats are not calculated into damage results
+ */
 export type GetExtraStatsFn = (level: number) => {
   name: string;
   value: ReactNode;
@@ -84,6 +88,8 @@ type GetTalentBuffArgs = {
 
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
+export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff | void;
+
 export type StatInfo = {
   name: string;
   dmgTypes?: DamageTypes;
@@ -93,7 +99,7 @@ export type StatInfo = {
    * if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
    */
   conditional?: boolean;
-  getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
+  getTalentBuff?: GetTalentBuffFn;
   /**
    * only on ES / EB
    */
@@ -162,7 +168,7 @@ export type AbilityBuff = AbilityModifier & {
     isAppliable?: (charData: DataCharacter) => boolean;
   };
   desc: (args: {
-    fromSelf: boolean;
+    toSelf: boolean;
     char: CharInfo;
     charData: CalcCharData;
     charBuffCtrls: ModifierCtrl[];
@@ -214,4 +220,11 @@ export type AbilityDebuff = AbilityModifier & {
     desc?: string;
     tracker?: Tracker;
   }) => void;
+};
+
+export type OutdatedModifier = {
+  index: number;
+  outdated: true;
+  src: string;
+  desc: () => JSX.Element;
 };
