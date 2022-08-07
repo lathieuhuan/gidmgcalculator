@@ -86,10 +86,10 @@ export function InventoryArtifact({
           {inventoryRack}
 
           <div className="flex flex-col justify-between">
-            <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
+            <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
               {currentArt ? (
                 <div
-                  className="absolute top-0 right z-10 h-full hide-scrollbar transition-all duration-200"
+                  className="absolute top-0 z-10 h-full hide-scrollbar transition-all duration-200"
                   style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { addCharacter, chooseCharacter } from "@Store/usersDatabaseSlice";
 import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selectors";
 import { RefObject, useRef, useState } from "react";
-import { CharacterSort } from "./CharacterSort";
+import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 
 const selectCharacterNames = createSelector(selectMyChars, (myChars) =>

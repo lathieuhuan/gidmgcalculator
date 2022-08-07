@@ -12,8 +12,14 @@ import type {
   UsersWeapon,
   Weapon,
 } from "@Src/types";
-import { findById, findByName, indexById, splitLv } from "@Src/utils";
+import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
+import {
+  ChangeUsersArtifactSubStatAction,
+  ChangeUsersCharTalentLevelAction,
+  RemoveArtifactAction,
+  RemoveWeaponAction,
+} from "./reducer-types";
 
 const initialState: UsersDatabaseState = {
   myChars: [],
@@ -48,6 +54,57 @@ export const usersDatabaseSlice = createSlice({
     },
     sortCharacters: (state, action: PayloadAction<number[]>) => {
       state.myChars = action.payload.map((index) => state.myChars[index]);
+    },
+    levelUsersChar: (state, action: PayloadAction<{ name: string; level: Level }>) => {
+      const { name, level } = action.payload;
+      const char = findByName(state.myChars, name);
+      if (char) {
+        char.level = level;
+      }
+    },
+    changeUsersCharConsLevel: (
+      state,
+      action: PayloadAction<{ name: string; consIndex: number }>
+    ) => {
+      const { name, consIndex } = action.payload;
+      const char = findByName(state.myChars, name);
+      if (char) {
+        char.cons = char.cons === consIndex + 1 ? consIndex : consIndex + 1;
+      }
+    },
+    changeUsersCharTalentLevel: (state, action: ChangeUsersCharTalentLevelAction) => {
+      const { name, type, level } = action.payload;
+      const char = findByName(state.myChars, name);
+      if (char) {
+        char[type] = level;
+      }
+    },
+    removeUsersChar: (state, action: PayloadAction<string>) => {
+      const { myChars, myWps, myArts } = state;
+      const name = action.payload;
+      let charIndex = indexByName(myChars, name);
+      const char = myChars[charIndex];
+
+      if (char) {
+        const { weaponID, artifactIDs } = char;
+        const wpInfo = findById(myWps, weaponID);
+        if (wpInfo) {
+          wpInfo.owner = null;
+        }
+        for (const id of artifactIDs) {
+          if (id) {
+            const artInfo = findById(myArts, id);
+            if (artInfo) {
+              artInfo.owner = null;
+            }
+          }
+        }
+        myChars.splice(charIndex, 1);
+        if (charIndex === myChars.length) {
+          charIndex--;
+        }
+        state.chosenChar = myChars[charIndex]?.name || "";
+      }
     },
     // WEAPON
     addWeapon: (state, action: PayloadAction<UsersWeapon>) => {
@@ -123,10 +180,7 @@ export const usersDatabaseSlice = createSlice({
         return sB - sA;
       });
     },
-    removeWeapon: (
-      { myWps, myChars },
-      action: PayloadAction<{ ID: number; owner: string | null; type: Weapon }>
-    ) => {
+    removeWeapon: ({ myWps, myChars }, action: RemoveWeaponAction) => {
       const { ID, owner, type } = action.payload;
       myWps.splice(indexById(myWps, ID), 1);
 
@@ -165,10 +219,7 @@ export const usersDatabaseSlice = createSlice({
         artifact.mainStatType = type;
       }
     },
-    changeUsersArtifactSubStat: (
-      state,
-      action: PayloadAction<{ ID: number; subStatIndex: number } & Partial<CalcArtPieceSubStatInfo>>
-    ) => {
+    changeUsersArtifactSubStat: (state, action: ChangeUsersArtifactSubStatAction) => {
       const { ID, subStatIndex, ...changeInfo } = action.payload;
       const artifact = findById(state.myArts, ID);
       if (artifact) {
@@ -239,10 +290,7 @@ export const usersDatabaseSlice = createSlice({
         return bName.localeCompare(aName);
       });
     },
-    removeArtifact: (
-      { myArts, myChars },
-      action: PayloadAction<{ ID: number; owner: string | null; type: Artifact }>
-    ) => {
+    removeArtifact: ({ myArts, myChars }, action: RemoveArtifactAction) => {
       const { ID, owner, type } = action.payload;
       myArts.splice(indexById(myArts, ID), 1);
 
@@ -262,6 +310,10 @@ export const {
   addCharacter,
   chooseCharacter,
   sortCharacters,
+  levelUsersChar,
+  changeUsersCharConsLevel,
+  changeUsersCharTalentLevel,
+  removeUsersChar,
   addWeapon,
   refineUsersWeapon,
   swapWeaponOwner,

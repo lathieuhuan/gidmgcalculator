@@ -22,7 +22,7 @@ const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   })
 );
 
-export function CharacterSort({ onClose }: { onClose: () => void }) {
+export default function CharacterSort({ onClose }: { onClose: () => void }) {
   const toBeSorted = useSelector(selectCharacterToBeSorted);
   const dispatch = useDispatch();
 
@@ -53,8 +53,6 @@ export function CharacterSort({ onClose }: { onClose: () => void }) {
     }
     setDropIndex(null);
   };
-
-  console.log(dropIndex);
 
   return (
     <Modal onClose={onClose}>
