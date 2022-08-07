@@ -4,7 +4,7 @@ import type { Vision } from "@Src/types";
 import { Checkbox } from "./inputs";
 import { ReactNode } from "react";
 
-type SpanExtraColor = "gold" | "lightgold" | "green" | "orange";
+type SpanExtraColor = "gold" | "lightgold" | "lightred" | "green" | "orange";
 
 interface SpanProps extends HTMLAttributes<HTMLSpanElement> {
   className?: "string";
@@ -17,6 +17,7 @@ const makeSpan = (color: `text-${Vision | SpanExtraColor}`) => {
 };
 
 export const Green = makeSpan("text-green");
+export const Red = makeSpan("text-lightred");
 export const Lightgold = makeSpan("text-lightgold");
 export const Gold = makeSpan("text-gold");
 export const Pyro = makeSpan("text-pyro");

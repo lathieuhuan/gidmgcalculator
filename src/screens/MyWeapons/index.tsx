@@ -33,9 +33,9 @@ import { IconButton } from "@Src/styled-components";
 
 import styles from "../styles.module.scss";
 
-type ModalType = "preWeaponPicker" | "equipCharPicker" | "removingWeapon";
+type ModalType = "preWeaponPicker" | "equipCharacterPicker" | "removingWeapon";
 
-export function MyWeapons() {
+export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [filterDropped, setFilterDropped] = useState(false);
   const [pickingWeaponType, setPickingWeaponType] = useState<Weapon | null>(null);
@@ -112,7 +112,7 @@ export function MyWeapons() {
                   <ButtonBar
                     className="mt-4"
                     texts={["Remove", "Equip"]}
-                    handlers={[openModal("removingWeapon"), openModal("equipCharPicker")]}
+                    handlers={[openModal("removingWeapon"), openModal("equipCharacterPicker")]}
                   />
                 ) : null}
               </div>
@@ -145,8 +145,8 @@ export function MyWeapons() {
           onClose={() => setPickingWeaponType(null)}
         />
       )}
-      {modalType === "equipCharPicker" && weapon && (
-        <CharPicker weapon={weapon} onClose={closeModal} />
+      {modalType === "equipCharacterPicker" && weapon && (
+        <CharacterPicker weapon={weapon} onClose={closeModal} />
       )}
       {modalType === "removingWeapon" && weapon && (
         <ItemRemoveConfirm
@@ -164,11 +164,11 @@ export function MyWeapons() {
   );
 }
 
-interface CharPickerProps {
+interface CharacterPickerProps {
   weapon: UsersWeapon;
   onClose: () => void;
 }
-function CharPicker({ weapon: { ID, owner, type }, onClose }: CharPickerProps) {
+function CharacterPicker({ weapon: { ID, owner, type }, onClose }: CharacterPickerProps) {
   const dispatch = useDispatch();
 
   const data = [];

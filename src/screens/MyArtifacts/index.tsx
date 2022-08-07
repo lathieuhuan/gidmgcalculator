@@ -50,9 +50,9 @@ const selectFilteredArtifactIds = createSelector(
   }
 );
 
-type ModalType = "preArtifactPicker" | "equipCharPicker" | "removingArtifact" | "filter";
+type ModalType = "preArtifactPicker" | "equipCharacterPicker" | "removingArtifact" | "filter";
 
-export function MyArtifacts() {
+export default function MyArtifacts() {
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [pickingArtifactType, setPickingArtifactType] = useState<Artifact | null>(null);
   const [newOwner, setNewOwner] = useState<string | null>(null);
@@ -168,7 +168,7 @@ export function MyArtifacts() {
                 <ButtonBar
                   className="mt-4"
                   texts={["Remove", "Equip"]}
-                  handlers={[openModal("removingArtifact"), openModal("equipCharPicker")]}
+                  handlers={[openModal("removingArtifact"), openModal("equipCharacterPicker")]}
                 />
               ) : null}
             </div>
@@ -200,8 +200,8 @@ export function MyArtifacts() {
           onClose={() => setPickingArtifactType(null)}
         />
       )}
-      {modalType === "equipCharPicker" && artifact && (
-        <CharPicker
+      {modalType === "equipCharacterPicker" && artifact && (
+        <CharacterPicker
           owner={artifact.owner}
           updateOwner={setNewOwner}
           swapOwner={swapOwner}
@@ -236,13 +236,13 @@ export function MyArtifacts() {
   );
 }
 
-interface CharPickerProps {
+interface CharacterPickerProps {
   owner: string | null;
   updateOwner: (newOwner: string) => void;
   swapOwner: (newOwner: string) => void;
   onClose: () => void;
 }
-function CharPicker({ owner, updateOwner, swapOwner, onClose }: CharPickerProps) {
+function CharacterPicker({ owner, updateOwner, swapOwner, onClose }: CharacterPickerProps) {
   const myChars = useSelector(selectMyChars);
 
   const data = [];

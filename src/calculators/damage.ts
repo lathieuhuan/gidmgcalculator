@@ -321,7 +321,7 @@ export default function getDamage(
 
       finalResult[resultKey][stat.name] = calcTalentStat(
         stat,
-        [attPatt, weapon === "catalyst" ? vision : "phys"],
+        [attPatt, resultKey === "NAs" && weapon !== "catalyst" ? "phys" : vision],
         base,
         char,
         vision,

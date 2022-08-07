@@ -1,7 +1,8 @@
 import { NavBar } from "@Components/NavBar";
 import Calculator from "@Screens/Calculator";
-import { MyArtifacts } from "@Screens/MyArtifacts";
-import { MyWeapons } from "@Screens/MyWeapons";
+import MyArtifacts from "@Screens/MyArtifacts";
+import MyCharacters from "@Screens/MyCharacters";
+import MyWeapons from "@Screens/MyWeapons";
 import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
 import { EScreen } from "./constants";
@@ -11,6 +12,8 @@ function App() {
 
   const renderTabContent = () => {
     switch (atScreen) {
+      case EScreen.MY_CHARACTERS:
+        return <MyCharacters />;
       case EScreen.MY_WEAPONS:
         return <MyWeapons />;
       case EScreen.MY_ARTIFACTS:

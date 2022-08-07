@@ -13,7 +13,7 @@ import type {
   Weapon,
 } from "@Src/types";
 import { findById, findByName, indexById, splitLv } from "@Src/utils";
-import { initWeapon } from "@Store/calculatorSlice/initiators";
+import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
 
 const initialState: UsersDatabaseState = {
   myChars: [],
@@ -26,6 +26,30 @@ export const usersDatabaseSlice = createSlice({
   name: "users-database",
   initialState,
   reducers: {
+    addCharacter: (state, action: PayloadAction<{ name: string; weapon: Weapon }>) => {
+      const { name, weapon } = action.payload;
+      const weaponID = Date.now();
+
+      state.chosenChar = name;
+      state.myChars.unshift({
+        name,
+        ...initCharInfo({}),
+        weaponID,
+        artifactIDs: [null, null, null, null, null],
+      });
+      state.myWps.unshift({
+        ID: weaponID,
+        owner: name,
+        ...initWeapon({ type: weapon }),
+      });
+    },
+    chooseCharacter: (state, action: PayloadAction<string>) => {
+      state.chosenChar === action.payload;
+    },
+    sortCharacters: (state, action: PayloadAction<number[]>) => {
+      state.myChars = action.payload.map((index) => state.myChars[index]);
+    },
+    // WEAPON
     addWeapon: (state, action: PayloadAction<UsersWeapon>) => {
       state.myWps.unshift(action.payload);
     },
@@ -235,6 +259,9 @@ export const usersDatabaseSlice = createSlice({
 });
 
 export const {
+  addCharacter,
+  chooseCharacter,
+  sortCharacters,
   addWeapon,
   refineUsersWeapon,
   swapWeaponOwner,

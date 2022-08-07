@@ -6,6 +6,7 @@ import { RootState } from "..";
 export const selectMyWps = (state: RootState) => state.database.myWps;
 export const selectMyArts = (state: RootState) => state.database.myArts;
 export const selectMyChars = (state: RootState) => state.database.myChars;
+export const selectChosenChar = (state: RootState) => state.database.chosenChar;
 
 export const selectFilteredWeaponIDs = createSelector(
   selectMyWps,

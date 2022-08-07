@@ -117,6 +117,7 @@ module.exports = {
         "gradient-1": "linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a)",
       },
       width: {
+        15: "3.75rem",
         18: "4.5rem",
         34: "8.5rem",
         75: "18.75rem",
@@ -133,6 +134,7 @@ module.exports = {
       },
       height: {
         18: "4.5rem",
+        "98/100": "98%",
       },
     },
   },

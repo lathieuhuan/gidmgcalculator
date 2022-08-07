@@ -44,7 +44,7 @@ export type DataCharacter = {
   };
   NAsConfig: {
     name: string;
-    caStamina: number;
+    caStamina?: number;
     getExtraStats?: GetExtraStatsFn;
   };
   activeTalents: {
@@ -89,23 +89,36 @@ export type StatInfo = {
   dmgTypes?: DamageTypes;
   baseMult: number | number[];
   multType: number;
-  // if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
+  /**
+   * if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
+   */
   conditional?: boolean;
   getTalentBuff?: (args: GetTalentBuffArgs) => TalentBuff | void;
-  // only on ES / EB
+  /**
+   * only on ES / EB
+   */
   isHealing?: boolean;
+  /**
+   * only on ES / EB
+   */
   baseStatType?: "base_atk" | "atk" | "def" | "hp";
+  /**
+   * only on ES / EB
+   */
   flat?: {
     base: number;
     type: number;
   };
+  /**
+   * only on ES / EB
+   */
   getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };
 
 type ElementalSkill = {
   name: string;
   image: string;
-  xtraLvAtCons: 3 | 5;
+  xtraLvAtCons?: 3 | 5;
   stats: StatInfo[];
   getExtraStats?: GetExtraStatsFn;
 };

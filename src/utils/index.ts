@@ -155,7 +155,7 @@ export function totalXtraTalentLv(
     }
   } else {
     const talent = findCharacter(char)!.activeTalents[talentType];
-    if ("xtraLvAtCons" in talent && char.cons >= talent.xtraLvAtCons) {
+    if (talent.xtraLvAtCons && char.cons >= talent.xtraLvAtCons) {
       result += 3;
     }
   }

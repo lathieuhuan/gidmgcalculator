@@ -31,17 +31,23 @@ export const makeTrackerDesc = (isAscs: boolean, level: number) => {
   return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;
 };
 
-type TalentBuffConfig = [boolean, AttackPatternInfoKey, string | [boolean, number], number];
+type TalentBuffConfig = [
+  boolean | undefined,
+  AttackPatternInfoKey,
+  string | readonly [boolean, number],
+  number
+];
 
 export function talentBuff(...configs: TalentBuffConfig[]) {
   const result: Partial<TalentBuff> = {};
-  for (let config of configs) {
-    if (config[0]) {
-      let desc = config[2];
-      if (Array.isArray(desc)) {
-        desc = makeTrackerDesc(...desc);
+
+  for (let [condition, attPattKey, descConfig, value] of configs) {
+    if (condition) {
+      let desc = "";
+      if (Array.isArray(descConfig)) {
+        desc = makeTrackerDesc(descConfig[0], descConfig[1]);
       }
-      result[config[1]] = { desc, value: config[3] };
+      result[attPattKey] = { desc, value };
     }
   }
   if (Object.keys(result)) return result;
@@ -66,7 +72,7 @@ export function findInput(
   modCtrls: ModifierCtrl[],
   ctrlIndex: number,
   inputIndex: number,
-  defaultValue: ModifierInput
+  defaultValue: ModifierInput = 0
 ) {
   const ctrl = findByIndex(modCtrls, ctrlIndex);
   return ctrl && ctrl.inputs ? ctrl.inputs[inputIndex] : defaultValue;

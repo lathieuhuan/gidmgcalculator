@@ -13,7 +13,7 @@ import {
   RESONANCE_VISION_TYPES,
 } from "@Src/constants";
 
-export type Nation = "mondstadt" | "liyue" | "inazuma" | "sumeru";
+export type Nation = "outland" | "mondstadt" | "liyue" | "inazuma" | "sumeru";
 
 export type Rarity = 1 | 2 | 3 | 4 | 5;
 

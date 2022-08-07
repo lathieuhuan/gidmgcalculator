@@ -9,8 +9,19 @@ export enum EModifierSrc {
   C6 = "Constellation 6",
 }
 
+export const BOW_CAs: StatInfo[] = [
+  { name: "Aimed Shot", baseMult: 43.86, multType: 7 },
+  { name: "Fully-charged Aimed Shot", baseMult: 124, multType: 2 },
+];
+
+export const LIGHT_PAs: StatInfo[] = [
+  { name: "Plunge DMG", baseMult: 56.83, multType: 7 },
+  { name: "Low Plunge", baseMult: 113.63, multType: 7 },
+  { name: "High Plunge", baseMult: 141.93, multType: 7 },
+];
+
 // sword & polearm
-export const MEDIUM_PA: StatInfo[] = [
+export const MEDIUM_PAs: StatInfo[] = [
   { name: "Plunge DMG", baseMult: 63.93, multType: 7 },
   { name: "Low Plunge", baseMult: 127.84, multType: 7 },
   { name: "High Plunge", baseMult: 159.68, multType: 7 },

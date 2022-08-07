@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { MEDIUM_PA, EModifierSrc } from "../constants";
-import { checkAscs, charModCtrlIsActivated, checkCons, findInput, makeTrackerDesc } from "../utils";
+import { MEDIUM_PAs, EModifierSrc } from "../constants";
+import { checkAscs, charModCtrlIsActivated, checkCons, findInput, talentBuff } from "../utils";
 
 const Albedo: DataCharacter = {
   code: 29,
@@ -45,12 +45,8 @@ const Albedo: DataCharacter = {
         { name: "5-Hit", baseMult: 62.07, multType: 1 },
       ],
     },
-    CA: {
-      stats: [
-        { name: "Charged Attack", dmgTypes: ["CA", "phys"], baseMult: [47.3, 60.2], multType: 1 },
-      ],
-    },
-    PA: { stats: MEDIUM_PA },
+    CA: { stats: [{ name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 }] },
+    PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
@@ -58,23 +54,21 @@ const Albedo: DataCharacter = {
       stats: [
         {
           name: "Skill DMG",
-          dmgTypes: ["ES", "geo"],
           baseMult: 130.4,
           multType: 2,
         },
         {
           name: "Transient Blossom",
-          dmgTypes: ["ES", "geo"],
           baseStatType: "def",
           baseMult: 133.6,
           multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            if (charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0)) {
-              return {
-                pct: { desc: makeTrackerDesc(true, 1), value: 25 },
-              };
-            }
-          },
+          getTalentBuff: ({ char, selfBuffCtrls }) =>
+            talentBuff([
+              charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0),
+              "pct",
+              [true, 1],
+              25,
+            ]),
         },
       ],
     },
@@ -85,13 +79,11 @@ const Albedo: DataCharacter = {
       stats: [
         {
           name: "Burst DMG",
-          dmgTypes: ["EB", "geo"],
           baseMult: 367.2,
           multType: 2,
         },
         {
           name: "Fatal Blossom DMG",
-          dmgTypes: ["EB", "geo"],
           baseMult: 72,
           multType: 2,
         },
@@ -100,44 +92,17 @@ const Albedo: DataCharacter = {
     },
   },
   passiveTalents: [
-    {
-      name: "Calcite Might",
-      image: "5/56/Talent_Calcite_Might",
-    },
-    {
-      name: "Homuncular Nature",
-      image: "8/80/Talent_Homuncular_Nature",
-    },
-    {
-      name: "Flash of Genius",
-      image: "3/32/Talent_Flash_of_Genius_%28Albedo%29",
-    },
+    { name: "Calcite Might", image: "5/56/Talent_Calcite_Might" },
+    { name: "Homuncular Nature", image: "8/80/Talent_Homuncular_Nature" },
+    { name: "Flash of Genius", image: "3/32/Talent_Flash_of_Genius_%28Albedo%29" },
   ],
   constellation: [
-    {
-      name: "Flower of Eden",
-      image: "2/29/Constellation_Flower_of_Eden",
-    },
-    {
-      name: "Opening of Phanerozoic",
-      image: "d/d8/Constellation_Opening_of_Phanerozoic",
-    },
-    {
-      name: "Grace of Helios",
-      image: "e/e8/Constellation_Grace_of_Helios",
-    },
-    {
-      name: "Descent of Divinity",
-      image: "8/8f/Constellation_Descent_of_Divinity",
-    },
-    {
-      name: "Tide of Hadean",
-      image: "a/a1/Constellation_Tide_of_Hadean",
-    },
-    {
-      name: "Dust of Purification",
-      image: "5/52/Constellation_Dust_of_Purification",
-    },
+    { name: "Flower of Eden", image: "2/29/Constellation_Flower_of_Eden" },
+    { name: "Opening of Phanerozoic", image: "d/d8/Constellation_Opening_of_Phanerozoic" },
+    { name: "Grace of Helios", image: "e/e8/Constellation_Grace_of_Helios" },
+    { name: "Descent of Divinity", image: "8/8f/Constellation_Descent_of_Divinity" },
+    { name: "Tide of Hadean", image: "a/a1/Constellation_Tide_of_Hadean" },
+    { name: "Dust of Purification", image: "5/52/Constellation_Dust_of_Purification" },
   ],
   buffs: [
     {
