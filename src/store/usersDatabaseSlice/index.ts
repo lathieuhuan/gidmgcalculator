@@ -7,8 +7,10 @@ import type {
   UsersArtifact,
   UsersDatabaseState,
   UsersWeapon,
+  Weapon,
 } from "@Src/types";
 import { findById, findByName, indexById, splitLv } from "@Src/utils";
+import { initWeapon } from "@Store/calculatorSlice/initiators";
 
 const initialState: UsersDatabaseState = {
   myChars: [],
@@ -98,6 +100,28 @@ export const usersDatabaseSlice = createSlice({
         return sB - sA;
       });
     },
+    removeWeapon: (
+      { myWps, myChars },
+      action: PayloadAction<{ ID: number; owner: string | null; type: Weapon }>
+    ) => {
+      const { ID, owner, type } = action.payload;
+      myWps.splice(indexById(myWps, ID), 1);
+
+      if (owner) {
+        const newWpID = Date.now();
+        myWps.unshift({
+          ID: newWpID,
+          owner,
+          ...initWeapon({ type }),
+        });
+
+        const ownerInfo = findByName(myChars, owner);
+        if (ownerInfo) {
+          ownerInfo.weaponID = newWpID;
+        }
+      }
+    },
+    // ARTIFACT
     addArtifact: (state, action: PayloadAction<UsersArtifact>) => {
       state.myArts.unshift(action.payload);
     },
@@ -118,6 +142,7 @@ export const {
   swapWeaponOwner,
   upgradeUsersWeapon,
   sortWeapons,
+  removeWeapon,
   addArtifact,
   overwriteArtifact,
 } = usersDatabaseSlice.actions;

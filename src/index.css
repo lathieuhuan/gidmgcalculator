@@ -75,6 +75,10 @@ body {
   transform: scale(1.2);
 }
 
+.shadow-3px-3px {
+  box-shadow: 0 0 3px 3px var(--tw-shadow-color);
+}
+
 .text-last-right {
   text-align-last: right;
 }

@@ -1,11 +1,11 @@
 import cn from "classnames";
 import type { CalcWeapon, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+import { percentSign, wikiImg } from "@Src/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
 
 import { Select } from "@Src/styled-components";
-import { percentSign, wikiImg } from "@Src/utils";
 import { BetaMark } from "../minors";
 
 const groupStyles = "bg-darkblue-2 px-2";
@@ -22,8 +22,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const wpData = findWeapon(weapon)!;
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
-  const selectLevels = [...LEVELS];
-  if (rarity < 3) selectLevels.splice(-4);
+  const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
@@ -50,8 +49,10 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {subStat ? (
-            <div className={cn("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
-              <p className="font-bold">{subStat.type}</p>
+            <div
+              className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}
+            >
+              <p>{subStat.type}</p>
               <p className={`text-rarity-${rarity} text-h3`}>
                 {wpSubStatAtLv(subStat.scale, level)}
                 {percentSign(subStat.type)}
@@ -59,9 +60,9 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             </div>
           ) : null}
 
-          <div className={cn("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
-            <p className="font-bold">Base ATK</p>
-            <p className={`text-rarity-${rarity} text-h2 font-bold`}>
+          <div className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}>
+            <p>Base ATK</p>
+            <p className={`text-rarity-${rarity} text-h2`}>
               {wpMainStatAtLv(wpData.mainStatScale, level)}
             </p>
           </div>

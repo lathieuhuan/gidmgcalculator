@@ -14,7 +14,7 @@ export function PrePicker({ choices, onClickChoice, onClose, footer }: PrePicker
       <div className="p-4 shadow-white-glow rounded-2xl bg-darkblue-3">
         <CloseButton className="absolute top-2 right-2" onClick={onClose} />
 
-        <p className="mt-2 text-h3 text-center">Choose a Type</p>
+        <p className="mt-2 text-h3 text-center font-bold">Choose a Type</p>
         <div className="mt-4 mb-1 flex">
           {Object.entries(choices).map(([title, src], i) => (
             <button

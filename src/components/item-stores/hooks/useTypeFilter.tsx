@@ -31,7 +31,7 @@ export default function useTypeFilter(forWeapon: boolean, initialTypes?: string[
             className={cn(
               "mr-4 glow-on-hover rounded-circle",
               !forWeapon && "p-1",
-              !forWeapon && active && "bg-green"
+              forWeapon && active && "shadow-3px-3px shadow-green"
             )}
             // boxShadow={forWp && isOn ? "0 0 3px 3px " + colors.green : "none"}
             onClick={() => onClickIcon(active, index, type)}

@@ -46,7 +46,7 @@ function MobileNavBar({}: NavBarProps) {
         {active && (
           <Modal onClose={() => setActive(false)}>
             <div className="rounded shadow-white-glow">
-              <IntroButton />
+              <IntroButton clasName="border-b border-white/40" />
               <Tabs
                 className="px-6 py-2 border-b border-white/40"
                 onClick={() => setActive(false)}

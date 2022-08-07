@@ -9,7 +9,7 @@ export const Button = (props: ButtonProps) => {
     <button
       type="button"
       className={cn(
-        "px-6 py-1 rounded-2xl shadow-common font-bold",
+        "px-4 py-1 rounded-2xl shadow-common text-base font-bold leading-base",
         buttonStyles(props),
         className
       )}

@@ -78,7 +78,7 @@ export const ButtonBar = ({
   autoFocusIndex,
 }: ButtonBarProps) => {
   return (
-    <div className={cn("flex justify-center gap-8", className)}>
+    <div className={cn("flex justify-center", !className?.includes("gap-") && "gap-8", className)}>
       {texts.map((text, i) => {
         const variant =
           variants[i] || (i ? (i === texts.length - 1 ? "positive" : "neutral") : "negative");

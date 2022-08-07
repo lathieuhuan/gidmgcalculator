@@ -16,7 +16,7 @@ export function IntroButton({ clasName }: { clasName?: string }) {
 
   return (
     <button
-      className={cn("flex items-center border-b border-white/40 group", clasName)}
+      className={cn("flex items-center group", clasName)}
       onClick={() => dispatch(toggleIntro(true))}
     >
       <FaInfoCircle className="mr-2 group-hover:text-lightgold" size="1.125rem" />

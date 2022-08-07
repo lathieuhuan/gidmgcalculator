@@ -75,6 +75,9 @@ module.exports = {
           },
         ],
       },
+      lineHeight: {
+        base: 1.35,
+      },
       colors: {
         default: "#ebebeb",
         lesser: "#b9b9b9",

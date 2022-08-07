@@ -1,8 +1,17 @@
 import cn from "classnames";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { FaEllipsisH } from "react-icons/fa";
 import type { UsersWeapon, Weapon } from "@Src/types";
 import { WEAPON_ICONS } from "@Src/constants";
 
+import {
+  addWeapon,
+  refineUsersWeapon,
+  removeWeapon,
+  sortWeapons,
+  swapWeaponOwner,
+  upgradeUsersWeapon,
+} from "@Store/usersDatabaseSlice";
 import {
   selectFilteredWeaponIDs,
   selectMyChars,
@@ -12,36 +21,34 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import useTypeFilter from "@Components/item-stores/hooks/useTypeFilter";
+import useHeight from "@Hooks/useHeight";
+import { findCharacter } from "@Data/controllers";
 
 import { Picker, PrePicker } from "@Components/Picker";
-import styles from "../styles.module.scss";
-import { ButtonBar } from "@Components/minors";
-import {
-  addWeapon,
-  refineUsersWeapon,
-  sortWeapons,
-  swapWeaponOwner,
-  upgradeUsersWeapon,
-} from "@Store/usersDatabaseSlice";
-import useHeight from "@Hooks/useHeight";
 import { WeaponCard } from "@Components/WeaponCard";
-import { upgradeWeapon } from "@Store/calculatorSlice";
-import { renderEquippedChar } from "@Components/item-stores/components";
-import { findCharacter } from "@Data/controllers";
+import { ButtonBar } from "@Components/minors";
+import { CollapseSpace } from "@Components/collapse";
+import { ItemRemoveConfirm, renderEquippedChar } from "@Components/item-stores/components";
+import { IconButton } from "@Src/styled-components";
+
+import styles from "../styles.module.scss";
 
 export function MyWeapons() {
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [charPickerOn, setCharPickerOn] = useState(false);
   const [removing, setRemoving] = useState(false);
+  const [filterDropped, setFilterDropped] = useState(false);
   const [weaponType, setWeaponType] = useState<Weapon | null>(null);
 
   const dispatch = useDispatch();
   const [ref, height] = useHeight();
 
+  const [typeFilter, types] = useTypeFilter(true);
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, types as Weapon[]));
 
-  const [typeFilter, types] = useTypeFilter(true);
   const [invRack, chosenID, setChosenID] = useInventoryRack({
+    listClassName: styles.list,
+    itemClassName: styles.item,
     items: useSelector(selectMyWps),
     itemType: "weapon",
     filteredIds,
@@ -58,15 +65,33 @@ export function MyWeapons() {
             variants={["positive", "positive"]}
             handlers={[() => setPrePickerOn(true), () => dispatch(sortWeapons())]}
           />
-          {/* {window.innerWidth >= 500 ? typeFilter : <MobileFilter typeFilter={typeFilter} />} */}
+          {window.innerWidth >= 500 ? (
+            typeFilter
+          ) : (
+            <Fragment>
+              <IconButton
+                className={cn("ml-1", filterDropped ? "bg-green" : "bg-white")}
+                onClick={() => setFilterDropped(!filterDropped)}
+              >
+                <FaEllipsisH />
+              </IconButton>
+
+              <CollapseSpace
+                className="w-full absolute top-full left-0 z-20"
+                active={filterDropped}
+              >
+                <div className="px-4 py-6 shadow-common bg-darkblue-2">{typeFilter}</div>
+              </CollapseSpace>
+            </Fragment>
+          )}
         </div>
-        <div className="body">
+        <div className={styles.body}>
           {invRack}
 
-          <div ref={ref} className="full-h flex-col">
-            <div className="grow-1 flex align-start">
+          <div ref={ref} className="h-full flex flex-col">
+            <div className="grow flex items-start">
               <div
-                className="p-4 rounded-lg bg-darkblue-1 flex-col"
+                className="p-4 rounded-lg bg-darkblue-1 flex flex-col"
                 style={{ minHeight: "27rem", maxHeight: height / 16 - 3 + "rem" }}
               >
                 <div className="grow hide-scrollbar" style={{ width: "18.75rem" }}>
@@ -95,16 +120,18 @@ export function MyWeapons() {
               <CharPicker weapon={weapon} onClose={() => setCharPickerOn(false)} />
             )}
 
-            {/* {removing && (
-              <ItemRemoveDialog
+            {removing && weapon && (
+              <ItemRemoveConfirm
                 item={weapon}
-                itemType="Weapon"
+                itemType="weapon"
                 filteredIds={filteredIds}
-                removeItem={(item) => dispatch(REMOVE_WP(item))}
-                setChosenID={setChosenID}
-                close={() => setRemoving(false)}
+                removeItem={(item) => {
+                  dispatch(removeWeapon({ ...item, type: item.type as Weapon }));
+                }}
+                updateChosenID={setChosenID}
+                onClose={() => setRemoving(false)}
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>

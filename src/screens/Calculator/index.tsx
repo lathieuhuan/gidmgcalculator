@@ -38,17 +38,16 @@ function Calculator() {
         <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>{touched && <Modifiers />}</div>
 
         {/* Panel 3 */}
-        {touched && (
-          <div className={cn("p-4 relative bg-darkblue-3", styles.card)}>
-            <SetupManager />
-          </div>
-        )}
+        <div className={cn("p-4 relative bg-darkblue-3", styles.card)}>
+          {touched && <SetupManager />}
+        </div>
 
         {/* Panel 4 */}
         <div className={cn("px-4 pt-2 pb-6 bg-darkblue-3 relative", styles.card)}>
           {touched && <DamageResults />}
         </div>
       </div>
+
       {pickerOn && <MainCharPicker onClose={() => setPickerOn(false)} />}
     </div>
   );

@@ -1,18 +1,31 @@
 import { NavBar } from "@Components/NavBar";
 import Calculator from "@Screens/Calculator";
+import { MyWeapons } from "@Screens/MyWeapons";
+import { useSelector } from "@Store/hooks";
+import { selectAtScreen } from "@Store/uiSlice";
+import { EScreen } from "./constants";
 
 function App() {
-  // const atScreen = useSelector((state) => state.ui.atScreen);
+  const atScreen = useSelector(selectAtScreen);
+
+  const renderTabContent = () => {
+    switch (atScreen) {
+      case EScreen.MY_WEAPONS:
+        return <MyWeapons />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="App text-default flex flex-col">
+    <div className="App h-screen text-default flex flex-col">
       <NavBar />
       <div className="grow flex-center relative">
         <Calculator />
-        {/* <Button onClick={() => setBoo(!boo)}>Click</Button>
-        <div className="bg-darkblue-3" style={{ width: 300 }}>
-          <AttributeTable attributes={testAttrs} />
-        </div> */}
+
+        {atScreen !== EScreen.CALCULATOR && (
+          <div className="absolute full-stretch z-20">{renderTabContent()}</div>
+        )}
       </div>
     </div>
   );
