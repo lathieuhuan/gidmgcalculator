@@ -9,8 +9,9 @@ import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selec
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import { IconButton } from "@Src/styled-components";
-import styles from "./styles.module.scss";
 import { Picker } from "@Components/Picker";
+
+import styles from "../styles.module.scss";
 
 interface TopBarProps {
   characterNames: string[];

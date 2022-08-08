@@ -18,3 +18,24 @@ export type RemoveArtifactAction = PayloadAction<{
 }>;
 
 export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: Weapon }>;
+
+export type UnequipArtifactAction = PayloadAction<{
+  owner: string | null;
+  artifactID: number;
+  artifactIndex: number;
+}>;
+
+type SwitchArgs = {
+  newOwner: string | null;
+  newID: number;
+  oldOwner: string;
+  oldID: number;
+};
+
+export type SwitchWeaponAction = PayloadAction<SwitchArgs>;
+
+export type SwitchArtifactAction = PayloadAction<
+  SwitchArgs & {
+    artifactIndex: number;
+  }
+>;

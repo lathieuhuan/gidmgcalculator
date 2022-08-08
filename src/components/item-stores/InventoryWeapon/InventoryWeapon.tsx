@@ -20,14 +20,14 @@ const { Text, CloseButton } = ModalHeader;
 
 interface InventoryWeaponProps {
   weaponType: Weapon;
-  owner?: string;
+  owner?: string | null;
   buttonText: string;
   onClickButton: (chosen: UsersWeapon) => void;
   onClose: () => void;
 }
 export function InventoryWeapon({
   weaponType,
-  owner = "",
+  owner,
   buttonText,
   onClickButton,
   onClose,

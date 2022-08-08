@@ -19,6 +19,9 @@ import {
   ChangeUsersCharTalentLevelAction,
   RemoveArtifactAction,
   RemoveWeaponAction,
+  SwitchArtifactAction,
+  SwitchWeaponAction,
+  UnequipArtifactAction,
 } from "./reducer-types";
 
 const initialState: UsersDatabaseState = {
@@ -104,6 +107,44 @@ export const usersDatabaseSlice = createSlice({
           charIndex--;
         }
         state.chosenChar = myChars[charIndex]?.name || "";
+      }
+    },
+    switchWeapon: ({ myWps, myChars }, action: SwitchWeaponAction) => {
+      const { newOwner, newID, oldOwner, oldID } = action.payload;
+      const newWeaponInfo = findById(myWps, newID);
+      const oldWeaponInfo = findById(myWps, oldID);
+      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      const oldOwnerInfo = findByName(myChars, oldOwner);
+
+      if (newWeaponInfo && oldWeaponInfo && oldOwnerInfo && newOwnerInfo) {
+        newWeaponInfo.owner = oldOwner;
+        oldWeaponInfo.owner = newOwner;
+        oldOwnerInfo.weaponID = newID;
+        newOwnerInfo.weaponID = oldID;
+      }
+    },
+    switchArtifact: ({ myArts, myChars }, action: SwitchArtifactAction) => {
+      const { newOwner, newID, oldOwner, oldID, artifactIndex } = action.payload;
+      const newArtInfo = findById(myArts, newID);
+      const oldArtInfo = oldID ? findById(myArts, oldID) : undefined;
+      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      const oldOwnerInfo = oldOwner ? findByName(myChars, oldOwner) : undefined;
+
+      if (newArtInfo && oldArtInfo && newOwnerInfo && oldOwnerInfo) {
+        newArtInfo.owner = oldOwner;
+        oldArtInfo.owner = newOwner;
+        newOwnerInfo.artifactIDs[artifactIndex] = oldID;
+        oldOwnerInfo.artifactIDs[artifactIndex] = newID;
+      }
+    },
+    unequipArtifact: (state, action: UnequipArtifactAction) => {
+      const { owner, artifactID, artifactIndex } = action.payload;
+      const ownerInfo = owner ? findByName(state.myChars, owner) : undefined;
+      const artifactInfo = findById(state.myArts, artifactID);
+
+      if (ownerInfo && artifactInfo) {
+        ownerInfo.artifactIDs[artifactIndex] = null;
+        artifactInfo.owner = null;
       }
     },
     // WEAPON
@@ -314,6 +355,9 @@ export const {
   changeUsersCharConsLevel,
   changeUsersCharTalentLevel,
   removeUsersChar,
+  switchWeapon,
+  switchArtifact,
+  unequipArtifact,
   addWeapon,
   refineUsersWeapon,
   swapWeaponOwner,

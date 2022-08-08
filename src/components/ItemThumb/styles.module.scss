@@ -1,4 +1,7 @@
 .thumb {
+  .hover-shadow-white {
+    box-shadow: 0 0 0 2.5px white;
+  }
   .side-icon {
     > img {
       transform: translate(-8px, -17px);

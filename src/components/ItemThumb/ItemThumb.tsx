@@ -15,7 +15,7 @@ interface ItemThumbProps {
     refi?: number;
     owner: string | null;
   };
-  clicked: boolean;
+  clicked?: boolean;
   chosen: boolean;
   onMouseUp: () => void;
   onMouseDown?: () => void;
@@ -66,8 +66,8 @@ function ItemThumbCore({
 
       <div
         className={cn(
-          "hover:shadow-[0_0_0_2.5px_white] bg-default rounded flex flex-col cursor-pointer relative",
-          chosen ? "glowing" : "shadow-common"
+          "bg-default rounded flex flex-col cursor-pointer relative",
+          chosen ? "glowing" : cn("shadow-common", styles["hover-shadow-white"])
         )}
       >
         {refi !== undefined ? (

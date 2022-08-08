@@ -8,6 +8,7 @@ interface NavBarProps {
   //
 }
 export function NavBar(props: NavBarProps) {
+  const [active, setActive] = useState(false);
   return (
     <div className="bg-black/60">
       {window.innerWidth >= 1050 ? (
@@ -16,47 +17,40 @@ export function NavBar(props: NavBarProps) {
             <Tabs className="px-2 py-1" />
           </div>
           <div className="px-1 flex bg-darkblue-3">
-            <IntroButton clasName="px-2 py-1" />
+            <IntroButton className="px-2 py-1" />
             {/* <Download />
             <Upload loadData={loadData} outdates={outdates} /> */}
           </div>
         </div>
       ) : (
-        <MobileNavBar {...props} />
+        <div className="flex">
+          <div className="mr-auto relative">
+            <button
+              className={cn(
+                "flex-center",
+                mobileNavButtonStyles.base,
+                active ? mobileNavButtonStyles.active : mobileNavButtonStyles.idle
+              )}
+              onClick={() => setActive(!active)}
+            >
+              <FaBars />
+            </button>
+            {active && (
+              <Modal onClose={() => setActive(false)}>
+                <div className="rounded flex flex-col shadow-white-glow">
+                  <IntroButton className="px-6 py-2 rounded-t bg-darkblue-3 border-b border-white/40" />
+                  <Tabs
+                    className="px-6 py-2 border-b border-white/40 last:rounded-b"
+                    onClick={() => setActive(false)}
+                  />
+                  {/* <Download />
+                  <Upload loadData={loadData} closeMenu={close} /> */}
+                </div>
+              </Modal>
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  );
-}
-
-function MobileNavBar({}: NavBarProps) {
-  const [active, setActive] = useState(false);
-
-  return (
-    <div className="flex">
-      <div className="mr-auto relative">
-        <button
-          className={cn(
-            mobileNavButtonStyles.base,
-            active ? mobileNavButtonStyles.active : mobileNavButtonStyles.idle
-          )}
-          onClick={() => setActive(!active)}
-        >
-          <FaBars />
-        </button>
-        {active && (
-          <Modal onClose={() => setActive(false)}>
-            <div className="rounded shadow-white-glow">
-              <IntroButton clasName="border-b border-white/40" />
-              <Tabs
-                className="px-6 py-2 border-b border-white/40"
-                onClick={() => setActive(false)}
-              />
-              {/* <Download />
-              <Upload loadData={loadData} closeMenu={close} /> */}
-            </div>
-          </Modal>
-        )}
-      </div>
     </div>
   );
 }

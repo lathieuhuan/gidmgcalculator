@@ -11,12 +11,12 @@ export const mobileNavButtonStyles = {
   active: "bg-darkblue-1 text-green",
 };
 
-export function IntroButton({ clasName }: { clasName?: string }) {
+export function IntroButton({ className }: { className?: string }) {
   const dispatch = useDispatch();
 
   return (
     <button
-      className={cn("flex items-center group", clasName)}
+      className={cn("flex items-center group", className)}
       onClick={() => dispatch(toggleIntro(true))}
     >
       <FaInfoCircle className="mr-2 group-hover:text-lightgold" size="1.125rem" />

@@ -29,6 +29,7 @@ import { AttributeTable } from "@Components/AttributeTable";
 import { ConfirmModal } from "@Components/modals";
 import { IconButton, Select } from "@Src/styled-components";
 import Gears from "./Gears";
+import { ArtifactInfo } from "./types";
 
 const selectChosenInfo = createSelector(
   selectMyChars,
@@ -38,8 +39,11 @@ const selectChosenInfo = createSelector(
   (myChars, myWps, myArts, chosen) => {
     const { weaponID, artifactIDs, ...char } = findByName(myChars, chosen)!;
     const pieces = artifactIDs.map((ID) => (ID ? findById(myArts, ID)! : null));
-    const art = { pieces, sets: getArtifactSets(pieces) };
-    return [char, findById(myWps, weaponID), art] as const;
+    const artInfo: ArtifactInfo = {
+      pieces,
+      sets: getArtifactSets(pieces),
+    };
+    return [char, findById(myWps, weaponID), artInfo] as const;
   }
 );
 
@@ -54,7 +58,7 @@ export default function Info() {
   }
   const { code, beta, name, rarity, nation, vision, weapon, icon } = dataChar;
 
-  const [totalAttr, artAttrs] = getBaseStats(
+  const [totalAttr, artAttr] = getBaseStats(
     {
       code,
       name,
@@ -83,14 +87,9 @@ export default function Info() {
           <FaUserSlash size="1.125rem" />
         </IconButton>
 
-        <div className="pb-1 flex">
+        <div className="flex">
           {isMobile && (
-            <img
-              className="mr-4 mb-4"
-              width="4.875rem"
-              src={beta ? icon : wikiImg(icon)}
-              alt={name}
-            />
+            <img className="mr-4 mb-4 w-20" src={beta ? icon : wikiImg(icon)} alt={name} />
           )}
           <div>
             {!isMobile && <p className={`text-h1 text-${vision} font-black`}>{name}</p>}
@@ -116,7 +115,7 @@ export default function Info() {
         </div>
       </div>
 
-      {/* <Gears wpInfo={wpInfo} artInfo={artInfo} artAttrs={artAttrs} /> */}
+      <Gears wpInfo={wpInfo} artInfo={artInfo} artAttr={artAttr} />
 
       <div className="ml-2 p-4 rounded-lg bg-darkblue-1">
         <div className="h-full w-75">

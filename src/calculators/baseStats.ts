@@ -20,7 +20,7 @@ import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import type { Wrapper1 } from "./types";
 import { addOrInit, pushOrMergeTrackerRecord } from "./utils";
 
-export function initiateTotalAttrs(
+export function initiateTotalAttr(
   char: CharInfo,
   wpData: DataWeapon,
   weapon: CalcWeapon,
@@ -66,7 +66,7 @@ export function initiateTotalAttrs(
   return totalAttr;
 }
 
-export function addArtAttrs(
+export function addArtAttr(
   pieces: CalcArtPieces,
   totalAttr: TotalAttribute,
   tracker?: Tracker
@@ -170,13 +170,13 @@ export default function getBaseStats(
 ) {
   //
   const wpData = findWeapon(weapon)!;
-  const totalAttr = initiateTotalAttrs(char, wpData, weapon);
-  const artAttrs = addArtAttrs(artifact.pieces, totalAttr);
+  const totalAttr = initiateTotalAttr(char, wpData, weapon);
+  const artAttr = addArtAttr(artifact.pieces, totalAttr);
   addWpSubStat(totalAttr, wpData, weapon.level);
 
   const wrapper = { totalAttr, charData };
   applyArtPassiveBuffs(false, artifact.sets, wrapper);
   applyWpPassiveBuffs(false, wpData, weapon.refi, wrapper);
   calcFinalTotalAttrs(totalAttr);
-  return [totalAttr, artAttrs] as const;
+  return [totalAttr, artAttr] as const;
 }

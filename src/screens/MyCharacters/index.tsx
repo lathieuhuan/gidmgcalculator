@@ -8,6 +8,7 @@ import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selec
 import { RefObject, useRef, useState } from "react";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
+import Info from "./Info";
 
 const selectCharacterNames = createSelector(selectMyChars, (myChars) =>
   myChars.map(({ name }) => name)
@@ -29,7 +30,7 @@ export default function MyCharacters() {
       {window.innerWidth <= 700 ? (
         <div className="py-4 flex bg-darkblue-2">
           {characterNames.length ? (
-            <div className="full-w flex-center relative">
+            <div className="w-full flex-center relative">
               <Select
                 className="px-2 py-1 text-black rounded bg-white text-2xl leading-base text-center text-last-center font-bold"
                 value={chosenChar}
@@ -67,7 +68,7 @@ export default function MyCharacters() {
       )}
       <div className="grow flex-center">
         <div className="w-full h-98/100 flex justify-center">
-          {/* {!!characterNames.length && <Info />} */}
+          {!!characterNames.length && <Info />}
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import { FaSort } from "react-icons/fa";
 
 import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "@Store/hooks";
+import { sortCharacters } from "@Store/usersDatabaseSlice";
 import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
 import { findCharacter } from "@Data/controllers";
 import { splitLv } from "@Src/utils";
@@ -12,8 +13,7 @@ import { Modal } from "@Components/modals";
 import { Button, CloseButton } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
 
-import styles from "./styles.module.scss";
-import { sortCharacters } from "@Store/usersDatabaseSlice";
+import styles from "../styles.module.scss";
 
 const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   myChars.map((char, index) => {

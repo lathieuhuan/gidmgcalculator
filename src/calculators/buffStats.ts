@@ -32,12 +32,12 @@ import {
 import { findByIndex, toMultiplier } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
-  addArtAttrs,
+  addArtAttr,
   addWpSubStat,
   applyArtPassiveBuffs,
   applyWpPassiveBuffs,
   calcFinalTotalAttrs,
-  initiateTotalAttrs,
+  initiateTotalAttr,
 } from "./baseStats";
 import type { Wrapper1, Wrapper2 } from "./types";
 import {
@@ -96,8 +96,8 @@ export default function getBuffedStats(
   tracker: Tracker
 ) {
   const wpData = findWeapon(weapon)!;
-  const totalAttr = initiateTotalAttrs(char, wpData, weapon, tracker);
-  const artAttrs = addArtAttrs(artInfo.pieces, totalAttr, tracker);
+  const totalAttr = initiateTotalAttr(char, wpData, weapon, tracker);
+  const artAttrs = addArtAttr(artInfo.pieces, totalAttr, tracker);
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
