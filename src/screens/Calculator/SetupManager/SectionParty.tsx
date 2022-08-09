@@ -51,10 +51,10 @@ export default function SectionParty() {
                 <CharFilledSlot
                   mutable={isOriginal}
                   name={teammate.name}
-                  onClick={() => {
+                  onClickSlot={() => {
                     if (isOriginal) setPendingSlot(tmIndex);
                   }}
-                  onRemove={() => dispatch(removeTeammate(tmIndex))}
+                  onClickRemove={() => dispatch(removeTeammate(tmIndex))}
                 />
               ) : (
                 <IconButton

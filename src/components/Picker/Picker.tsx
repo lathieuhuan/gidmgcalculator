@@ -66,8 +66,10 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
           )}
           {needMassAdd && (
             <div className="absolute right-16 flex items-center">
-              <Checkbox checked={massAdd} onChange={() => setMassAdd((prev) => !prev)} />
-              <p className="mt-1 ml-2 font-bold text-black">Mass Add ({amount.total})</p>
+              <label className="flex gap-2 font-bold text-black">
+                <Checkbox checked={massAdd} onChange={() => setMassAdd((prev) => !prev)} />
+                Mass Add ({amount.total})
+              </label>
             </div>
           )}
 

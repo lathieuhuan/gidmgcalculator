@@ -14,7 +14,7 @@ export function CollapseSpace({ active, className, children }: CollapseSpaceProp
     <div
       className={cn("hide-scrollbar", className)}
       style={{
-        height: active ? height + 4 : 0,
+        height: active ? Math.ceil(height) + 4 : 0,
         transition: `height ${duration}ms ease-in-out`,
       }}
     >

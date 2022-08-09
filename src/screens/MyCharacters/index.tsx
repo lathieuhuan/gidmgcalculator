@@ -66,7 +66,7 @@ export default function MyCharacters() {
           onClickWish={() => setModalType("addCharacterPicker")}
         />
       )}
-      <div className="grow flex-center">
+      <div className="grow flex-center overflow-y-auto">
         <div className="w-full h-98/100 flex justify-center">
           {!!characterNames.length && <Info />}
         </div>

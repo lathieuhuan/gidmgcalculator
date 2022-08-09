@@ -26,6 +26,9 @@ export type UnequipArtifactAction = PayloadAction<{
 }>;
 
 type SwitchArgs = {
+  /**
+   * Owner of the target item
+   */
   newOwner: string | null;
   newID: number;
   oldOwner: string;

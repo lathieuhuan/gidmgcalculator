@@ -73,7 +73,12 @@ export function GearsOverview({
                 className="p-4 h-full flex-center rounded bg-darkblue-3 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
               >
-                <img className="w-full" src={wikiImg(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])} alt="" />
+                <img
+                  className="w-full"
+                  src={wikiImg(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])}
+                  alt=""
+                  draggable={false}
+                />
               </button>
             </div>
           )

@@ -1,7 +1,16 @@
 import cn from "classnames";
 import { type CSSProperties, useEffect } from "react";
-import type { ArtifactAttribute, UsersWeapon } from "@Src/types";
+import type { ArtifactAttribute, CalcArtPieceMainStat, UsersWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
+
+import { useDispatch } from "@Store/hooks";
+import {
+  changeUsersArtifactMainStatType,
+  changeUsersArtifactSubStat,
+  enhanceUsersArtifact,
+  refineUsersWeapon,
+  upgradeUsersWeapon,
+} from "@Store/usersDatabaseSlice";
 
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { AttributeTable } from "@Components/AttributeTable";
@@ -35,6 +44,7 @@ export default function GearsDetails({
 }: GearsDetailsProps) {
   const { pieces, sets } = artInfo;
   const { owner } = wpInfo;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -53,7 +63,12 @@ export default function GearsDetails({
       return (
         <div className={cn("flex flex-col", className)} style={style}>
           <div className="px-1 grow hide-scrollbar">
-            <WeaponCard weapon={wpInfo} mutable={true} />
+            <WeaponCard
+              weapon={wpInfo}
+              mutable={true}
+              upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: wpInfo.ID, level }))}
+              refine={(refi) => dispatch(refineUsersWeapon({ ID: wpInfo.ID, refi }))}
+            />
           </div>
           <Button className="mt-4 mx-auto" variant="positive" onClick={onClickSwitchWeapon}>
             Switch
@@ -85,7 +100,24 @@ export default function GearsDetails({
         return (
           <div className={className} style={style}>
             <div className="pb-2 hide-scrollbar">
-              <ArtifactCard artPiece={artPiece} mutable={true} />
+              <ArtifactCard
+                artPiece={artPiece}
+                mutable={true}
+                enhance={(level) => dispatch(enhanceUsersArtifact({ ID: artPiece.ID, level }))}
+                changeMainStatType={(type) =>
+                  dispatch(
+                    changeUsersArtifactMainStatType({
+                      ID: artPiece.ID,
+                      type: type as CalcArtPieceMainStat,
+                    })
+                  )
+                }
+                changeSubStat={(subStatIndex, changes) => {
+                  dispatch(
+                    changeUsersArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
+                  );
+                }}
+              />
             </div>
             <ButtonBar
               className="mt-6"

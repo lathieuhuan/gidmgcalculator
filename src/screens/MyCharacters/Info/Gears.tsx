@@ -1,8 +1,8 @@
+import cn from "classnames";
 import { useState } from "react";
 import type { ArtifactAttribute, UsersWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
 
-import useHeight from "@Hooks/useHeight";
 import { useDispatch } from "@Store/hooks";
 import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/usersDatabaseSlice";
 import { ARTIFACT_TYPES } from "@Src/constants";
@@ -20,7 +20,7 @@ interface GearsProps {
   artAttr: ArtifactAttribute;
 }
 export default function Gears(props: GearsProps) {
-  const { wpInfo, artInfo, artAttr } = props;
+  const { wpInfo, artInfo } = props;
 
   const [activeDetails, setActiveDetails] = useState<Details>(-1);
   const [showingDetails, setShowingDetails] = useState(false);
@@ -39,7 +39,6 @@ export default function Gears(props: GearsProps) {
       setActiveDetails(type);
     }
   };
-  const [ref, height] = useHeight();
 
   const overviewComponent = (
     <GearsOverview
@@ -52,73 +51,72 @@ export default function Gears(props: GearsProps) {
   );
 
   const detailsComponent = activeDetails !== -1 && (
-    <div className="py-2">
-      <GearsDetails
-        className={
-          onSmallDevice ? "" : "px-3 py-4 border-l-2 border-darkblue-2 rounded-r-lg bg-darkblue-1"
+    <GearsDetails
+      className={cn(
+        "max-h-full",
+        onSmallDevice ? "" : "px-3 py-4 border-l-2 border-darkblue-2 rounded-r-lg bg-darkblue-1"
+      )}
+      style={{ width: onSmallDevice ? undefined : "20.25rem" }}
+      activeDetails={activeDetails}
+      {...props}
+      onClickSwitchWeapon={() => setInventoryCode(5)}
+      onClickSwitchArtifact={() => {
+        if (typeof activeDetails === "number") {
+          setInventoryCode(activeDetails);
         }
-        style={{
-          maxHeight: height - (onSmallDevice ? 48 : 16),
-          width: onSmallDevice ? undefined : "20.25rem",
-        }}
-        activeDetails={activeDetails}
-        {...props}
-        onClickSwitchWeapon={() => setInventoryCode(5)}
-        onClickSwitchArtifact={() => {
-          if (typeof activeDetails === "number") {
-            setInventoryCode(activeDetails);
-          }
-        }}
-        onClickUnequipArtifact={() => {
-          if (typeof activeDetails === "number") {
-            const artPiece = artInfo.pieces[activeDetails];
+      }}
+      onClickUnequipArtifact={() => {
+        if (typeof activeDetails === "number") {
+          const artPiece = artInfo.pieces[activeDetails];
 
-            if (artPiece) {
-              setShowingDetails(false);
-              setTimeout(() => {
-                setActiveDetails(-1);
-                dispatch(
-                  unequipArtifact({
-                    owner: artPiece.owner,
-                    artifactID: artPiece.ID,
-                    artifactIndex: activeDetails,
-                  })
-                );
-              }, 200);
-            }
+          if (artPiece) {
+            setShowingDetails(false);
+            setTimeout(() => {
+              setActiveDetails(-1);
+              dispatch(
+                unequipArtifact({
+                  owner: artPiece.owner,
+                  artifactID: artPiece.ID,
+                  artifactIndex: activeDetails,
+                })
+              );
+            }, 200);
           }
-        }}
-        onCloseDetails={() => toggleDetails(activeDetails)}
-      />
-    </div>
+        }
+      }}
+      onCloseDetails={() => toggleDetails(activeDetails)}
+    />
   );
 
   return (
-    <div ref={ref} className="ml-2">
+    <>
       {onSmallDevice ? (
-        <div className="h-full w-75 px-4 rounded-lg bg-darkblue-1 box-content">
+        <div className="ml-2 h-full w-75 px-4 rounded-lg bg-darkblue-1 box-content">
           <SharedSpace
             atLeft={!showingDetails}
             leftPart={overviewComponent}
             rightPart={
               <div className="h-full py-4 flex flex-col">
-                <CloseButton className="mx-auto" onClick={() => toggleDetails(activeDetails)} />
-                {detailsComponent}
+                <div className="flex justify-center">
+                  <CloseButton onClick={() => toggleDetails(activeDetails)} />
+                </div>
+                <div className="pt-3 grow hide-scrollbar">{detailsComponent}</div>
               </div>
             }
           />
         </div>
       ) : (
-        <div className="h-full flex">
+        <div className="ml-2 h-full flex">
           <div className="w-75 px-4 rounded-lg bg-darkblue-1 box-content">{overviewComponent}</div>
           <div
-            className="hide-scrollbar transition-all duration-200 ease-in-out"
+            className="py-2 hide-scrollbar transition-all duration-200 ease-in-out"
             style={{ width: showingDetails ? "20.25rem" : 0 }}
           >
             {detailsComponent}
           </div>
         </div>
       )}
+
       {inventoryCode === 5 && (
         <InventoryWeapon
           owner={oldOwner}
@@ -132,6 +130,7 @@ export default function Gears(props: GearsProps) {
           onClose={() => setInventoryCode(-1)}
         />
       )}
+
       {inventoryCode >= 0 && inventoryCode < 5 && (
         <InventoryArtifact
           currentPieces={artInfo.pieces}
@@ -154,6 +153,6 @@ export default function Gears(props: GearsProps) {
           onClose={() => setInventoryCode(-1)}
         />
       )}
-    </div>
+    </>
   );
 }

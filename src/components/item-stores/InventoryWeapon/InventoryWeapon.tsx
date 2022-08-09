@@ -1,4 +1,3 @@
-import useHeight from "@Hooks/useHeight";
 import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import type { UsersWeapon, Weapon } from "@Src/types";
 
@@ -33,7 +32,6 @@ export function InventoryWeapon({
   onClose,
 }: InventoryWeaponProps) {
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, [weaponType]));
-  const [hRef, height] = useHeight();
 
   const [inventoryRack, chosenID] = useInventoryRack({
     listClassName: styles["inventory-list"],
@@ -57,15 +55,9 @@ export function InventoryWeapon({
         <div className="h-full flex hide-scrollbar">
           {inventoryRack}
 
-          <div ref={hRef} className="flex flex-col justify-between">
-            <div
-              className="p-4 rounded-lg bg-darkblue-1 flex flex-col"
-              style={{
-                minHeight: "26rem",
-                maxHeight: height / 16 - 3 + "rem",
-              }}
-            >
-              <div className="grow hide-scrollbar" style={{ width: "17rem" }}>
+          <div className="flex flex-col justify-between">
+            <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
+              <div className="w-68 grow hide-scrollbar">
                 <WeaponCard weapon={chosenWp} mutable={false} />
               </div>
 

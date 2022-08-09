@@ -26,5 +26,5 @@ export default function useHeight(): [Ref<HTMLDivElement>, number] {
     };
   }, []);
 
-  return [ref, Math.ceil(height)];
+  return [ref, height];
 }

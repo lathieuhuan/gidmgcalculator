@@ -28,7 +28,9 @@ const initialState: UsersDatabaseState = {
   myChars: [],
   myWps: [],
   myArts: [],
+  mySetups: [],
   chosenChar: "",
+  chosenSetupID: 0,
 };
 
 export const usersDatabaseSlice = createSlice({
@@ -111,30 +113,48 @@ export const usersDatabaseSlice = createSlice({
     },
     switchWeapon: ({ myWps, myChars }, action: SwitchWeaponAction) => {
       const { newOwner, newID, oldOwner, oldID } = action.payload;
-      const newWeaponInfo = findById(myWps, newID);
-      const oldWeaponInfo = findById(myWps, oldID);
-      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
-      const oldOwnerInfo = findByName(myChars, oldOwner);
 
-      if (newWeaponInfo && oldWeaponInfo && oldOwnerInfo && newOwnerInfo) {
+      const newWeaponInfo = findById(myWps, newID);
+      if (newWeaponInfo) {
         newWeaponInfo.owner = oldOwner;
+      }
+
+      const oldWeaponInfo = findById(myWps, oldID);
+      if (oldWeaponInfo) {
         oldWeaponInfo.owner = newOwner;
+      }
+
+      const oldOwnerInfo = findByName(myChars, oldOwner);
+      if (oldOwnerInfo) {
         oldOwnerInfo.weaponID = newID;
+      }
+
+      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      if (newOwnerInfo) {
         newOwnerInfo.weaponID = oldID;
       }
     },
     switchArtifact: ({ myArts, myChars }, action: SwitchArtifactAction) => {
       const { newOwner, newID, oldOwner, oldID, artifactIndex } = action.payload;
-      const newArtInfo = findById(myArts, newID);
-      const oldArtInfo = oldID ? findById(myArts, oldID) : undefined;
-      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
-      const oldOwnerInfo = oldOwner ? findByName(myChars, oldOwner) : undefined;
 
-      if (newArtInfo && oldArtInfo && newOwnerInfo && oldOwnerInfo) {
+      const newArtInfo = findById(myArts, newID);
+      if (newArtInfo) {
         newArtInfo.owner = oldOwner;
+      }
+
+      const oldArtInfo = findById(myArts, oldID);
+      if (oldArtInfo) {
         oldArtInfo.owner = newOwner;
-        newOwnerInfo.artifactIDs[artifactIndex] = oldID;
+      }
+
+      const oldOwnerInfo = findByName(myChars, oldOwner);
+      if (oldOwnerInfo) {
         oldOwnerInfo.artifactIDs[artifactIndex] = newID;
+      }
+
+      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      if (newOwnerInfo) {
+        newOwnerInfo.artifactIDs[artifactIndex] = oldID;
       }
     },
     unequipArtifact: (state, action: UnequipArtifactAction) => {

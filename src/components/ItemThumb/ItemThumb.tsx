@@ -67,13 +67,14 @@ function ItemThumbCore({
       <div
         className={cn(
           "bg-default rounded flex flex-col cursor-pointer relative",
-          chosen ? "glowing" : cn("shadow-common", styles["hover-shadow-white"])
+          styles["hover-shadow-white"],
+          chosen ? "glowing" : "shadow-common"
         )}
       >
         {refi !== undefined ? (
           <p
             className={cn(
-              "absolute top-0.5 left-0.5 rounded px-1 bg-black/60 text-default/80 text-sm font-bold",
+              "absolute top-1 left-1 rounded px-1 bg-black/60 text-default/80 text-sm font-bold",
               refi === 5 && "bg-black text-orange"
             )}
           >

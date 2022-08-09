@@ -155,23 +155,23 @@ export function HowToModal({ content, onClose }: HowToModalProps) {
 interface CharFilledSlotProps {
   name: string;
   mutable: boolean;
-  onClick: () => void;
-  onRemove: () => void;
+  onClickSlot?: () => void;
+  onClickRemove?: () => void;
 }
-export function CharFilledSlot({ name, mutable, onClick, onRemove }: CharFilledSlotProps) {
+export function CharFilledSlot({ name, mutable, onClickSlot, onClickRemove }: CharFilledSlotProps) {
   const { icon } = findCharacter({ name })!;
   return (
     <>
-      <div className="zoomin-on-hover overflow-hidden rounded-full bg-darkblue-3">
+      <div className="zoomin-on-hover overflow-hidden rounded-circle bg-darkblue-3">
         <img
-          className={cn("w-full rounded-[inherit]", mutable && "cursor-pointer")}
+          className={cn("w-full rounded-circle", mutable && "cursor-pointer")}
           src={wikiImg(icon)}
           alt={name}
           draggable={false}
-          onClick={onClick}
+          onClick={onClickSlot}
         />
       </div>
-      {mutable && <CloseButton className="absolute -bottom-1 -right-2.5" onClick={onRemove} />}
+      {mutable && <CloseButton className="absolute -bottom-1 -right-2.5" onClick={onClickRemove} />}
     </>
   );
 }

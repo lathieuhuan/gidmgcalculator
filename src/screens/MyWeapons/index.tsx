@@ -21,7 +21,6 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import useTypeFilter from "@Components/item-stores/hooks/useTypeFilter";
-import useHeight from "@Hooks/useHeight";
 import { findCharacter } from "@Data/controllers";
 
 import { Picker, PrePicker } from "@Components/Picker";
@@ -41,7 +40,6 @@ export default function MyWeapons() {
   const [pickingWeaponType, setPickingWeaponType] = useState<Weapon | null>(null);
 
   const dispatch = useDispatch();
-  const [ref, height] = useHeight();
 
   const [typeFilter, types] = useTypeFilter(true);
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, types as Weapon[]));
@@ -91,31 +89,25 @@ export default function MyWeapons() {
         <div className={styles.body}>
           {invRack}
 
-          <div ref={ref} className="h-full flex flex-col">
-            {/* #to-check: abundant div */}
-            <div className="grow flex items-start">
-              <div
-                className="p-4 rounded-lg bg-darkblue-1 flex flex-col"
-                style={{ minHeight: "27rem", maxHeight: height / 16 - 3 + "rem" }}
-              >
-                <div className="grow hide-scrollbar w-75">
-                  {weapon ? (
-                    <WeaponCard
-                      weapon={weapon}
-                      mutable={true}
-                      upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: weapon.ID, level }))}
-                      refine={(refi) => dispatch(refineUsersWeapon({ ID: weapon.ID, refi }))}
-                    />
-                  ) : null}
-                </div>
+          <div className="flex flex-col">
+            <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
+              <div className="w-75 grow hide-scrollbar">
                 {weapon ? (
-                  <ButtonBar
-                    className="mt-4"
-                    texts={["Remove", "Equip"]}
-                    handlers={[openModal("removingWeapon"), openModal("equipCharacterPicker")]}
+                  <WeaponCard
+                    weapon={weapon}
+                    mutable={true}
+                    upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: weapon.ID, level }))}
+                    refine={(refi) => dispatch(refineUsersWeapon({ ID: weapon.ID, refi }))}
                   />
                 ) : null}
               </div>
+              {weapon ? (
+                <ButtonBar
+                  className="mt-4"
+                  texts={["Remove", "Equip"]}
+                  handlers={[openModal("removingWeapon"), openModal("equipCharacterPicker")]}
+                />
+              ) : null}
             </div>
 
             {weapon?.owner ? renderEquippedChar(weapon.owner) : null}
@@ -133,6 +125,7 @@ export default function MyWeapons() {
           onClose={closeModal}
         />
       )}
+
       {pickingWeaponType && (
         <Picker.Weapon
           needMassAdd={true}
@@ -145,9 +138,11 @@ export default function MyWeapons() {
           onClose={() => setPickingWeaponType(null)}
         />
       )}
+
       {modalType === "equipCharacterPicker" && weapon && (
         <CharacterPicker weapon={weapon} onClose={closeModal} />
       )}
+
       {modalType === "removingWeapon" && weapon && (
         <ItemRemoveConfirm
           item={weapon}

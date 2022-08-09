@@ -5,7 +5,9 @@ export type UsersDatabaseState = {
   myChars: UsersCharacter[];
   myWps: UsersWeapon[];
   myArts: UsersArtifact[];
+  mySetups: UsersSetup[];
   chosenChar: string;
+  chosenSetupID: number;
 };
 
 export type UsersCharacter = CharInfo & {
@@ -19,4 +21,14 @@ export type UsersWeapon = CalcWeapon & {
 
 export type UsersArtifact = CalcArtPiece & {
   owner: string | null;
+};
+
+export type UsersSetup = {
+  ID: number;
+  type: "original" | "complex" | "combine";
+  party: UsersSetupTeammate[];
+};
+
+type UsersSetupTeammate = {
+  name: string;
 };
