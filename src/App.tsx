@@ -5,7 +5,9 @@ import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
+// import { plainToInstance } from "class-transformer";
 import { EScreen } from "./constants";
+// import { MyCharacter3_0, MyWeapon3_0 } from "./models";
 
 function App() {
   const atScreen = useSelector(selectAtScreen);
@@ -22,6 +24,29 @@ function App() {
         return null;
     }
   };
+
+  // const result = plainToInstance(
+  //   MyWeapon3_0,
+  //   [
+  //     {
+  //       ID: 1637516607859,
+  //       type: "Bow",
+  //       level: "90/90",
+  //       refinement: 3,
+  //       user: "Kujou Sara",
+  //       code: 22,
+  //     },
+  //     {
+  //       ID: 1637516608627,
+  //       type: "Bow",
+  //       level: "90/90",
+  //       refinement: 2,
+  //       user: "Amber",
+  //       code: 23,
+  //     },
+  //   ],
+  //   { excludeExtraneousValues: true }
+  // );
 
   return (
     <div className="App h-screen text-default flex flex-col">
