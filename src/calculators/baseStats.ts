@@ -71,7 +71,7 @@ export function addArtAttr(
   totalAttr: TotalAttribute,
   tracker?: Tracker
 ): ArtifactAttribute {
-  const artAttrs = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
+  const artAttr = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
 
   for (const artPiece of pieces) {
     if (!artPiece) continue;
@@ -79,28 +79,28 @@ export function addArtAttr(
     const { type, mainStatType, subStats } = artPiece;
     const mainStat = artifactMainStatValue(artPiece);
 
-    addOrInit(artAttrs, mainStatType, mainStat);
+    addOrInit(artAttr, mainStatType, mainStat);
 
     if (tracker) {
       tracker[mainStatType].push({ desc: type, value: mainStat });
     }
     for (const subStat of subStats) {
-      addOrInit(artAttrs, subStat.type, subStat.value);
+      addOrInit(artAttr, subStat.type, subStat.value);
       pushOrMergeTrackerRecord(tracker, subStat.type, "Artifact Sub-stat", subStat.value);
     }
   }
   for (const statType of CORE_STAT_TYPES) {
-    const percentStatValue = artAttrs[`${statType}_`];
+    const percentStatValue = artAttr[`${statType}_`];
     if (percentStatValue) {
-      artAttrs[statType] += applyPercent(totalAttr[`base_${statType}`], percentStatValue);
+      artAttr[statType] += applyPercent(totalAttr[`base_${statType}`], percentStatValue);
     }
-    delete artAttrs[`${statType}_`];
+    delete artAttr[`${statType}_`];
   }
-  for (const type in artAttrs) {
-    const key = type as keyof typeof artAttrs;
-    totalAttr[key] += artAttrs[key] || 0;
+  for (const type in artAttr) {
+    const key = type as keyof typeof artAttr;
+    totalAttr[key] += artAttr[key] || 0;
   }
-  return artAttrs;
+  return artAttr;
 }
 
 export function addWpSubStat(

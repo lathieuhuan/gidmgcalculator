@@ -2,10 +2,10 @@ import { ConfirmModal } from "@Components/modals";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { UsersArtifact, UsersWeapon } from "@Src/types";
 
-export function renderEquippedChar(user: string) {
+export function renderEquippedChar(owner: string) {
   return (
     <div className="mt-4 px-6 py-1 flex bg-[#ffe7bb]">
-      <p className="font-bold text-black">Equipped: {user}</p>
+      <p className="font-bold text-black">Equipped: {owner}</p>
     </div>
   );
 }

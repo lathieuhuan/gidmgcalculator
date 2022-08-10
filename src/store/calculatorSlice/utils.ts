@@ -56,7 +56,7 @@ export function calculate(state: CalculatorState, all?: boolean) {
       state.allFinalInfusion[i] = results[0];
       state.allTotalAttrs[i] = results[1];
       state.allRxnBonuses[i] = results[4];
-      state.allArtAttrs[i] = results[5];
+      state.allartAttr[i] = results[5];
       state.allDmgResult[i] = results[6];
     }
   } catch (err) {
@@ -78,7 +78,7 @@ export function parseAndInitData(
   const existedWp = findById(myWps, weaponID);
 
   if (existedWp) {
-    const { user, ...weaponInfo } = existedWp;
+    const { owner, ...weaponInfo } = existedWp;
     weapon = weaponInfo;
     wpBuffCtrls = getMainWpBuffCtrls(existedWp);
   } //
@@ -91,7 +91,7 @@ export function parseAndInitData(
   const pieces = artifactIDs.map((id) => {
     const artPiece = findById(myArts, id);
     if (artPiece) {
-      const { user, ...info } = artPiece;
+      const { owner, ...info } = artPiece;
       return info;
     }
     return null;

@@ -37,6 +37,7 @@ export const usersDatabaseSlice = createSlice({
   name: "users-database",
   initialState,
   reducers: {
+    // CHARACTER
     addCharacter: (state, action: PayloadAction<{ name: string; weapon: Weapon }>) => {
       const { name, weapon } = action.payload;
       const weaponID = Date.now();
@@ -364,6 +365,10 @@ export const usersDatabaseSlice = createSlice({
         }
       }
     },
+    // SETUP
+    chooseUsersSetup: (state, action: PayloadAction<number>) => {
+      state.chosenSetupID = action.payload;
+    },
   },
 });
 
@@ -392,6 +397,7 @@ export const {
   overwriteArtifact,
   sortArtifacts,
   removeArtifact,
+  chooseUsersSetup,
 } = usersDatabaseSlice.actions;
 
 export default usersDatabaseSlice.reducer;

@@ -1,10 +1,8 @@
 import cn from "classnames";
 import { useEffect, useState } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
-
 import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
-
 import { ItemThumb } from "@Components/ItemThumb";
 import { renderNoItems } from "@Components/minors";
 
@@ -57,7 +55,6 @@ export default function useInventoryRack({
   const [pageNo, setPageNo] = useState(0);
 
   const deadEnd = Math.ceil(filteredIds.length / itemLimit) - 1;
-  // const getInfo = itemType === "weapon" ? getWeaponInfo : getArtifactInfo;
 
   let IDsOnPage: number[];
   if (filteredIds.length > itemLimit) {

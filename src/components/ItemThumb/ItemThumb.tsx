@@ -29,8 +29,8 @@ function ItemThumbCore({
   onMouseDown = () => {},
 }: ItemThumbProps) {
   //
-  const renderSideIcon = (user: string) => {
-    const { beta, icon, sideIcon } = findCharacter({ name: user }) || {};
+  const renderSideIcon = (owner: string) => {
+    const { beta, icon, sideIcon } = findCharacter({ name: owner }) || {};
     return (
       <div
         className={cn(

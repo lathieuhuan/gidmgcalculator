@@ -1,11 +1,23 @@
 import type { CharInfo } from "./global";
-import type { CalcArtPiece, CalcWeapon } from "./calculator";
+import type {
+  CalcArtInfo,
+  CalcArtPiece,
+  CalcWeapon,
+  CustomBuffCtrl,
+  CustomDebuffCtrl,
+  ElementModCtrl,
+  ModifierCtrl,
+  Party,
+  SubArtModCtrl,
+  SubWeaponComplexBuffCtrl,
+  Target,
+} from "./calculator";
 
 export type UsersDatabaseState = {
   myChars: UsersCharacter[];
   myWps: UsersWeapon[];
   myArts: UsersArtifact[];
-  mySetups: UsersSetup[];
+  mySetups: (UsersSetup | UsersComplexSetup)[];
   chosenChar: string;
   chosenSetupID: number;
 };
@@ -25,10 +37,30 @@ export type UsersArtifact = CalcArtPiece & {
 
 export type UsersSetup = {
   ID: number;
-  type: "original" | "complex" | "combine";
-  party: UsersSetupTeammate[];
+  type: "original" | "combined";
+  name: string;
+  char: CharInfo;
+  party: Party;
+  weapon: CalcWeapon;
+  artInfo: CalcArtInfo;
+
+  selfBuffCtrls: ModifierCtrl[];
+  selfDebuffCtrls: ModifierCtrl[];
+  wpBuffCtrls: ModifierCtrl[];
+  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
+  artBuffCtrls: ModifierCtrl[];
+  subArtBuffCtrls: SubArtModCtrl[];
+  subArtDebuffCtrls: SubArtModCtrl[];
+  elmtModCtrls: ElementModCtrl;
+  customBuffCtrls: CustomBuffCtrl[];
+  customDebuffCtrls: CustomDebuffCtrl[];
+  target: Target;
 };
 
-type UsersSetupTeammate = {
+export type UsersComplexSetup = {
+  ID: number;
+  type: "complex";
   name: string;
+  shownID: number;
+  allIDs: Record<string, number>;
 };

@@ -84,7 +84,7 @@ const initialState: CalculatorState = {
   target: initTarget(),
   monster: initMonster(),
   allTotalAttrs: [],
-  allArtAttrs: [],
+  allartAttr: [],
   allRxnBonuses: [],
   allFinalInfusion: [],
   allDmgResult: [],

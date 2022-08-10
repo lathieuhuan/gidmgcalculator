@@ -97,7 +97,7 @@ export default function getBuffedStats(
 ) {
   const wpData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr(char, wpData, weapon, tracker);
-  const artAttrs = addArtAttr(artInfo.pieces, totalAttr, tracker);
+  const artAttr = addArtAttr(artInfo.pieces, totalAttr, tracker);
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -282,5 +282,5 @@ export default function getBuffedStats(
     rxnBonus.infusion_vaporize = vaporizeMult(infusion.NA) * vapBonus;
   }
 
-  return [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] as const;
+  return [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] as const;
 }

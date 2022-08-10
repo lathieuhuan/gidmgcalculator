@@ -1,5 +1,3 @@
-import { findCharacter, getPartyData } from "@Data/controllers";
-import { NORMAL_ATTACKS } from "@Src/constants";
 import type {
   AttackElement,
   CalcArtInfo,
@@ -18,11 +16,11 @@ import type {
   Tracker,
   Vision,
 } from "@Src/types";
+import { NORMAL_ATTACKS } from "@Src/constants";
+import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
-
-export const charDataSelect = "code name nation vision weapon";
 
 export default function calculateAll(
   char: CharInfo,
@@ -46,7 +44,7 @@ export default function calculateAll(
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
 
-  const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttrs] = getBuffedStats(
+  const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] = getBuffedStats(
     char,
     charData,
     selfBuffCtrls,
@@ -80,15 +78,7 @@ export default function calculateAll(
     target,
     tracker
   );
-  return [
-    finalInfusion,
-    totalAttr,
-    attPattBonus,
-    attElmtBonus,
-    rxnBonus,
-    artAttrs,
-    damage,
-  ] as const;
+  return [finalInfusion, totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr, damage] as const;
 }
 
 const INFUSE_PRIORITIES = ["pyro", "cryo", "electro", "anemo", "phys"] as const;

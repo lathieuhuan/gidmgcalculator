@@ -43,8 +43,8 @@ const contentByTab: Record<string, () => JSX.Element> = {
     );
   },
   Artifacts() {
-    const artAttrs = useSelector((state) => {
-      return state.calculator.allArtAttrs[state.calculator.currentIndex];
+    const artAttr = useSelector((state) => {
+      return state.calculator.allartAttr[state.calculator.currentIndex];
     });
     const sets = useSelector(selectArtInfo).sets;
 
@@ -60,7 +60,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
             atLeft={tab === "Details"}
             leftPart={
               <div className="h-full custom-scrollbar">
-                <AttributeTable attributes={artAttrs} />
+                <AttributeTable attributes={artAttr} />
               </div>
             }
             rightPart={

@@ -1,5 +1,5 @@
-import type { Artifact, CalcCharData, Party, Weapon } from "@Src/types";
-import { findByCode, findByIndex, findByName } from "@Src/utils";
+import type { Artifact, CalcCharData, Weapon } from "@Src/types";
+import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -36,7 +36,7 @@ export const getCharData = (char: HasName): CalcCharData => {
   };
 };
 
-export function getPartyData(party: Party) {
+export function getPartyData(party: (HasName | null)[]) {
   const result = [];
   for (const tm of party) {
     if (tm) {

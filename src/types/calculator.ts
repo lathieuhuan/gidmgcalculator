@@ -51,7 +51,7 @@ export type CalculatorState = {
   monster: Monster;
 
   allTotalAttrs: TotalAttribute[];
-  allArtAttrs: ArtifactAttribute[];
+  allartAttr: ArtifactAttribute[];
   allRxnBonuses: ReactionBonus[];
   allFinalInfusion: FinalInfusion[];
   allDmgResult: DamageResult[];
