@@ -18,6 +18,7 @@ import { finalTalentLv, wikiImg } from "@Src/utils";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Button, IconButton } from "@Src/styled-components";
+import { useMemo } from "react";
 
 interface SetupLayoutProps {
   ID: number;
@@ -127,25 +128,25 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
     </div>
   );
 
-  const renderGearIcon = (
-    { beta, icon, rarity }: { beta?: boolean; icon: string; rarity?: Rarity },
-    onClick: () => void = () => {},
-    index?: number
-  ) => {
-    return (
-      <div key={index} className="p-1">
-        <button
-          className={cn("p-1 rounded glow-on-hover", `bg-gradient-${rarity}`)}
-          onClick={onClick}
-        >
-          <img style={{ width: "4.25rem" }} src={beta ? icon : wikiImg(icon)} alt="" />
-        </button>
-      </div>
-    );
-  };
-
-  const gearsDisplay = (() => {
+  const gearsDisplay = useMemo(() => {
     const weaponData = findWeapon(setup.weapon);
+
+    const renderGearIcon = (
+      { beta, icon, rarity }: { beta?: boolean; icon: string; rarity?: Rarity },
+      onClick: () => void = () => {},
+      index?: number
+    ) => {
+      return (
+        <div key={index} className="p-1">
+          <button
+            className={cn("p-1 rounded glow-on-hover", `bg-gradient-${rarity}`)}
+            onClick={onClick}
+          >
+            <img style={{ width: "4.25rem" }} src={beta ? icon : wikiImg(icon)} alt="" />
+          </button>
+        </div>
+      );
+    };
 
     return (
       <div className="flex flex-wrap" style={{ width: "15.75rem" }}>
@@ -170,7 +171,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
         })}
       </div>
     );
-  })();
+  }, [setup.ID]);
 
   return (
     <>

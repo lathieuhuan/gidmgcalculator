@@ -1,3 +1,5 @@
+export * from "./statsMap";
+
 export enum EScreen {
   CALCULATOR = "Calculator",
   MY_SETUPS = "My Setups",
