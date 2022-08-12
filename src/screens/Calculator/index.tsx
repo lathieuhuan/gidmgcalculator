@@ -19,7 +19,7 @@ function Calculator() {
   const [pickerOn, setPickerOn] = useState(false);
 
   return (
-    <div className={cn("pb-2 flex items-center overflow-auto", styles.calculator)}>
+    <div className={cn("pb-1 flex items-center overflow-auto", styles.calculator)}>
       <div className="h-98/100 flex gap-2">
         {/* Panel 1 */}
         <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
 import { ButtonBar } from "@Components/minors";
 import styles from "./styles.module.scss";
@@ -7,10 +7,11 @@ import styles from "./styles.module.scss";
 interface ModalProps {
   standard?: boolean;
   className?: string;
+  wrapperStyles?: CSSProperties;
   children?: JSX.Element | JSX.Element[];
   onClose: () => void;
 }
-export function Modal({ standard, className, children, onClose }: ModalProps) {
+export function Modal({ standard, className, wrapperStyles, children, onClose }: ModalProps) {
   const [isShown, setIsShown] = useState(false);
 
   const close = () => {
@@ -33,6 +34,7 @@ export function Modal({ standard, className, children, onClose }: ModalProps) {
       )}
     >
       <div className="w-full h-full bg-black/60" onClick={close} />
+
       {standard || className ? (
         <div
           className={cn(
@@ -40,6 +42,7 @@ export function Modal({ standard, className, children, onClose }: ModalProps) {
             styles["modal-content"],
             className
           )}
+          style={wrapperStyles}
         >
           {children}
         </div>

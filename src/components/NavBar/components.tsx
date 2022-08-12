@@ -1,9 +1,15 @@
 import cn from "classnames";
 import { Fragment } from "react";
-import { FaInfoCircle } from "react-icons/fa";
-import { changeScreen, selectAtScreen, toggleIntro } from "@Store/uiSlice";
-import { useDispatch, useSelector } from "@Store/hooks";
+import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
 import { EScreen } from "@Src/constants";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { changeScreen, selectAtScreen, toggleIntro } from "@Store/uiSlice";
+
+export const navButtonStyles = {
+  base: "flex items-center font-bold",
+  idle: "bg-darkblue-3 hover:text-lightgold",
+  active: "bg-darkblue-1 text-orange",
+};
 
 export const mobileNavButtonStyles = {
   base: "w-10 h-10 text-2xl",
@@ -16,20 +22,32 @@ export function IntroButton({ className }: { className?: string }) {
 
   return (
     <button
-      className={cn("flex items-center group", className)}
+      className={cn("group", navButtonStyles.base, className)}
       onClick={() => dispatch(toggleIntro(true))}
     >
       <FaInfoCircle className="mr-2 group-hover:text-lightgold" size="1.125rem" />
-      <span className="text-base font-bold group-hover:text-lightgold">Introduction</span>
+      <span className="group-hover:text-lightgold">Introduction</span>
     </button>
   );
 }
 
-const navButtonStyles = {
-  base: "flex items-center",
-  idle: "bg-darkblue-3 hover:text-lightgold",
-  active: "bg-darkblue-1 text-orange",
-};
+export function renderDownloadButton(className: string, onClick: () => void) {
+  return (
+    <button className={cn(navButtonStyles.base, navButtonStyles.idle, className)} onClick={onClick}>
+      <FaDownload />
+      <span className="ml-2">Download</span>
+    </button>
+  );
+}
+
+export function renderUploadButton(className: string, onClick: () => void) {
+  return (
+    <button className={cn(navButtonStyles.base, navButtonStyles.idle, className)} onClick={onClick}>
+      <FaUpload />
+      <span className="ml-2">Upload</span>
+    </button>
+  );
+}
 
 interface TabsProps {
   className?: string;
