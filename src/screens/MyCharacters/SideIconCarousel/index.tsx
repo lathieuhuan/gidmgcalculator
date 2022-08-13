@@ -29,6 +29,8 @@ export default function SideIconCarousel({
   const chosenChar = useSelector(selectChosenChar);
   const dispatch = useDispatch();
 
+  console.log(characterNames);
+
   const scrollList = (name: string) => () => {
     if (characterListRef.current) {
       characterListRef.current.scrollLeft = characterNames.indexOf(name) * 84;

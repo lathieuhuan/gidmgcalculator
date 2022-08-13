@@ -17,7 +17,7 @@ class CharacterInfo3_0 {
   name: string;
 
   @Expose()
-  level: string;
+  level: Level;
 
   @Expose({ name: "Normal Attack" })
   NAs: number;
@@ -42,7 +42,7 @@ export class MyCharacter3_0 extends CharacterInfo3_0 {
 
 export class MyWeapon3_0 {
   @Expose()
-  ID: string;
+  ID: number;
 
   @Expose()
   @Transform(({ obj }) => obj.type.toLowerCase())

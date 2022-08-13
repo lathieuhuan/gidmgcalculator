@@ -2,10 +2,8 @@ import { findArtifactSet, findWeapon } from "@Data/controllers";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ARTIFACT_TYPES } from "@Src/constants";
 import type {
-  Artifact,
   CalcArtPiece,
   CalcArtPieceMainStat,
-  CalcArtPieceSubStatInfo,
   Level,
   UsersArtifact,
   UsersDatabaseState,
@@ -15,6 +13,7 @@ import type {
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
 import {
+  AddUsersDatabaseAction,
   ChangeUsersArtifactSubStatAction,
   ChangeUsersCharTalentLevelAction,
   RemoveArtifactAction,
@@ -37,6 +36,28 @@ export const usersDatabaseSlice = createSlice({
   name: "users-database",
   initialState,
   reducers: {
+    addUsersDatabase: (state, action: AddUsersDatabaseAction) => {
+      const { Characters, Weapons, Artifacts, Setups } = action.payload;
+      state.myChars = Characters;
+      state.myWps = Weapons;
+      state.myArts = Artifacts;
+      state.mySetups = Setups;
+
+      if (Characters.length) {
+        state.chosenChar = Characters[0].name;
+      }
+      if (Setups.length) {
+        const firstSetup = Setups.find((setup) => setup.type !== "combined");
+
+        if (firstSetup) {
+          if (firstSetup.type === "original") {
+            state.chosenSetupID = firstSetup.ID;
+          } else if (firstSetup.type === "complex") {
+            state.chosenSetupID = firstSetup.shownID;
+          }
+        }
+      }
+    },
     // CHARACTER
     addCharacter: (state, action: PayloadAction<{ name: string; weapon: Weapon }>) => {
       const { name, weapon } = action.payload;
@@ -373,6 +394,7 @@ export const usersDatabaseSlice = createSlice({
 });
 
 export const {
+  addUsersDatabase,
   addCharacter,
   chooseCharacter,
   sortCharacters,

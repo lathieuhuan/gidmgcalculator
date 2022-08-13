@@ -1,5 +1,21 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Artifact, CalcArtPieceSubStatInfo, Weapon } from "@Src/types";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type {
+  Artifact,
+  CalcArtPieceSubStatInfo,
+  UsersArtifact,
+  UsersCharacter,
+  UsersComplexSetup,
+  UsersSetup,
+  UsersWeapon,
+  Weapon,
+} from "@Src/types";
+
+export type AddUsersDatabaseAction = PayloadAction<{
+  Characters: UsersCharacter[];
+  Weapons: UsersWeapon[];
+  Artifacts: UsersArtifact[];
+  Setups: (UsersSetup | UsersComplexSetup)[];
+}>;
 
 export type ChangeUsersCharTalentLevelAction = PayloadAction<{
   name: string;

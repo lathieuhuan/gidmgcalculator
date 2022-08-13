@@ -16,6 +16,7 @@ import UploadOptions from "@Components/load-options/UploadOptions";
 import { plainToInstance } from "class-transformer";
 import { MyCharacter3_0, MyWeapon3_0, MyArtifact3_0, MySetup3_0 } from "./models";
 import { adjustDatabase } from "./utils/adjustDatabase";
+import { addUsersDatabase } from "@Store/usersDatabaseSlice";
 
 function App() {
   const [loadOptionType, setLoadOptionType] = useState<"up" | "down" | "">("");
@@ -27,10 +28,11 @@ function App() {
 
   const checkAndAddUsersDatabase = useCallback(
     (data: any) => {
-      const [database, outdates] = adjustDatabase(data);
-      // dispatch(addUsersDatabase(rest));
+      const { version, outdates, ...database } = adjustDatabase(data);
+      dispatch(addUsersDatabase(JSON.parse(JSON.stringify(database))));
+      console.log(database);
 
-      if (outdates) {
+      if (outdates.length) {
         setOutdates(outdates);
       }
     },
@@ -45,7 +47,7 @@ function App() {
       } catch (err) {
         console.log(err);
       }
-  }, [checkAndAddUsersDatabase]);
+  }, []);
 
   const renderTabContent = useCallback(() => {
     switch (atScreen) {
