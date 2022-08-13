@@ -11,6 +11,7 @@ import MyWeapons from "@Screens/MyWeapons";
 
 import { NavBar } from "@Components/NavBar";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
+import UploadOptions from "@Components/load-options/UploadOptions";
 
 import { plainToInstance } from "class-transformer";
 import { MyCharacter3_0, MyWeapon3_0, MyArtifact3_0, MySetup3_0 } from "./models";
@@ -18,7 +19,9 @@ import { adjustDatabase } from "./utils/adjustDatabase";
 
 function App() {
   const [loadOptionType, setLoadOptionType] = useState<"up" | "down" | "">("");
-  const [outdates, setOutdates] = useState(null);
+  const [navBarMenuActive, setNavBarMenuActive] = useState(false);
+  const [outdates, setOutdates] = useState([]);
+
   const atScreen = useSelector(selectAtScreen);
   const dispatch = useDispatch();
 
@@ -60,6 +63,8 @@ function App() {
   return (
     <div className="App h-screen text-default flex flex-col">
       <NavBar
+        menuActive={navBarMenuActive}
+        toggleMenu={() => setNavBarMenuActive((prev) => !prev)}
         onClickUpload={() => setLoadOptionType("up")}
         onClickDownload={() => setLoadOptionType("down")}
       />
@@ -71,9 +76,18 @@ function App() {
         )}
       </div>
 
-      {loadOptionType === "down"
+      {loadOptionType !== ""
         ? ReactDOM.createPortal(
-            <DownloadOptions onClose={() => setLoadOptionType("")} />,
+            loadOptionType === "down" ? (
+              <DownloadOptions onClose={() => setLoadOptionType("")} />
+            ) : (
+              <UploadOptions
+                outdates={outdates}
+                uploadUsersDatabase={checkAndAddUsersDatabase}
+                onSuccess={() => setNavBarMenuActive(false)}
+                onClose={() => setLoadOptionType("")}
+              />
+            ),
             document.getElementById("portal")!
           )
         : null}

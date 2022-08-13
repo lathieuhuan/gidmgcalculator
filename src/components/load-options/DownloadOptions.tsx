@@ -44,14 +44,11 @@ export default function DownloadOptions({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal onClose={onClose}>
-      <div
-        className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
-        style={{ width: "90%", maxWidth: "28rem" }}
-      >
+      <div className={styles.wrapper} style={{ width: "90%", maxWidth: "28rem" }}>
         <CloseButton className="ml-auto mr-2 mb-2" onClick={onClose} />
 
         <div className={styles.option} onClick={trySaveToLocalStorage}>
-          <p className={styles.option_title}>Save to Local Storage</p>
+          <p className="mt-1 text-h5 font-bold text-lightgold">Save to Local Storage</p>
           <p className="mt-1 text-default">
             • Your Database stays in this Browser only and will be removed if you clear the Local
             Storage.
@@ -86,7 +83,7 @@ export default function DownloadOptions({ onClose }: { onClose: () => void }) {
 
         <div className="w-full border-b border-default" />
         <div className={styles.option} onClick={() => downloadToDevice(downloadData)}>
-          <p className={styles.option_title}>Download a .TXT file</p>
+          <p className="mt-1 text-h5 font-bold text-lightgold">Download a .TXT file</p>
           <p className="mt-1 text-default">
             • Please DO NOT modify this file if you don't understand how it works.
           </p>
