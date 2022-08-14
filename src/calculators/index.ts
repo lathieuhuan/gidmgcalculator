@@ -95,7 +95,7 @@ function getFinalInfusion(
   for (const ctrl of selfBuffCtrls) {
     const buff = findByIndex(charData.buffs!, ctrl.index);
 
-    if (buff && buff.infuseConfig && ctrl.activated && buff.isGranted(char)) {
+    if (buff && buff.infuseConfig && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
       const { range, overwritable } = buff.infuseConfig;
       selfInfusion.push({ range, overwritable });
     }
@@ -122,33 +122,37 @@ function getFinalInfusion(
   }
   const result = {} as FinalInfusion;
 
-  topLoop: for (const type of NORMAL_ATTACKS) {
+  for (const type of NORMAL_ATTACKS) {
     const contenders: AttackElement[] = ["phys"];
+    let isDone = false;
 
     for (const infusion of selfInfusion) {
       if (infusion.range.includes(type)) {
         if (!infusion.overwritable) {
           result[type] = ownVision;
-          break topLoop;
+          isDone = true;
+          break;
         } else if (!contenders.includes(ownVision)) {
           contenders.unshift(ownVision);
         }
       }
     }
-    const getIndex = (elmt: string) => {
-      return INFUSE_PRIORITIES.indexOf(elmt as typeof INFUSE_PRIORITIES[number]);
-    };
+    if (!isDone) {
+      const getIndex = (elmt: string) => {
+        return INFUSE_PRIORITIES.indexOf(elmt as typeof INFUSE_PRIORITIES[number]);
+      };
 
-    for (const infusion of tmInfusion) {
-      for (const index in contenders) {
-        if (getIndex(infusion.vision) < getIndex(contenders[index])) {
-          // no need infusion.range yet
-          contenders.splice(+index, 0, infusion.vision);
-          break;
+      for (const infusion of tmInfusion) {
+        for (const index in contenders) {
+          if (getIndex(infusion.vision) < getIndex(contenders[index])) {
+            // no need infusion.range yet
+            contenders.splice(+index, 0, infusion.vision);
+            break;
+          }
         }
       }
+      result[type] = contenders[0];
     }
-    result[type] = contenders[0];
   }
   return result;
 }

@@ -40,7 +40,7 @@ export type DataCharacter = {
   weapon: Weapon;
   stats: number[][];
   bonusStat: {
-    type: AttackElement | ArtifactPercentStat | "em";
+    type: AttackElement | ArtifactPercentStat | "em" | "healBn";
     value: number;
   };
   NAsConfig: {
@@ -140,7 +140,7 @@ type AbilityModifier = {
   index: number;
   outdated?: boolean;
   src: string;
-  isGranted: (char: CharInfo) => boolean;
+  isGranted?: (char: CharInfo) => boolean;
 };
 
 // BUFFS
@@ -205,21 +205,23 @@ type DebuffInputConfig = InputConfig & {
   renderTypes: DebuffInputRenderType[];
 };
 
+export type ApplyCharDebuffFn = (args: {
+  resistReduct: ResistanceReduction;
+  attPattBonus: AttackPatternBonus;
+  // #to-check
+  // selfDebuffCtrls: ModifierCtrl[];
+  char?: CharInfo;
+  inputs?: ModifierInput[];
+  fromSelf: boolean;
+  desc?: string;
+  tracker?: Tracker;
+}) => void;
+
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfig?: DebuffInputConfig;
   desc: (args: { fromSelf: boolean; char: CharInfo }) => ReactNode;
-  applyDebuff?: (args: {
-    resistReduct: ResistanceReduction;
-    attPattBonus: AttackPatternBonus;
-    // #to-check
-    // selfDebuffCtrls: ModifierCtrl[];
-    char?: CharInfo;
-    inputs?: ModifierInput[];
-    fromSelf: boolean;
-    desc?: string;
-    tracker?: Tracker;
-  }) => void;
+  applyDebuff?: ApplyCharDebuffFn;
 };
 
 export type OutdatedModifier = {

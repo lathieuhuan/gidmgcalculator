@@ -68,6 +68,6 @@ export const Setter = ({ label, inputComponent }: SetterProps) => {
 };
 
 export const twInputStyles = {
-  textInput: "px-2 py-2 w-16 rounded text-right",
+  textInput: "px-2 py-2 w-16 rounded text-right text-black leading-tighter",
   select: "px-2 py-1 !bg-white text-black rounded font-bold",
 };

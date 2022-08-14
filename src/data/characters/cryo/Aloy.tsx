@@ -103,7 +103,6 @@ const Aloy: DataCharacter = {
           <Red>Total DMG Bonus: {getCoilStacksBuff(char, partyData, charBuffCtrls)}%.</Red>
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       inputConfig: {
         selfLabels: ["Stacks"],
@@ -127,7 +126,6 @@ const Aloy: DataCharacter = {
           <Cryo>Cryo DMG</Cryo>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       infuseConfig: {
         range: ["NA"],

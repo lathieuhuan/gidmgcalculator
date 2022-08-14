@@ -62,7 +62,7 @@ function applySelfBuffs(
   for (const { index, activated, inputs } of charBuffCtrls) {
     const buff = findByIndex(buffs!, index);
 
-    if (buff && buff.isGranted(char) && activated) {
+    if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
       let applyFn: Function | undefined;
 
       if (!isFinal && buff.applyBuff) {

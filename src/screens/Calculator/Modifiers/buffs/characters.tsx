@@ -45,7 +45,7 @@ export function SelfBuffs() {
       ctrlIndex,
     };
 
-    if (buff && buff.isGranted(char)) {
+    if (buff && (!buff.isGranted || buff.isGranted(char))) {
       let setters = null;
 
       if (buff.inputConfig) {

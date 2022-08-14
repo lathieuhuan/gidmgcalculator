@@ -61,12 +61,19 @@ export function modIsActivated(modCtrls: ModifierCtrl[], index: number) {
 export const charModCtrlIsActivated = (
   mods: {
     index: number;
-    isGranted: (char: CharInfo) => boolean;
+    isGranted?: (char: CharInfo) => boolean;
   }[],
   char: CharInfo,
   buffCtrls: ModifierCtrl[],
   index: number
-) => findByIndex(mods, index)?.isGranted(char) && modIsActivated(buffCtrls, index);
+) => {
+  const modifier = findByIndex(mods, index);
+  return (
+    modifier &&
+    (!modifier.isGranted || modifier.isGranted(char)) &&
+    modIsActivated(buffCtrls, index)
+  );
+};
 
 export function findInput(
   modCtrls: ModifierCtrl[],

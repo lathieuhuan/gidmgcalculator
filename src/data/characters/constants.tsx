@@ -29,6 +29,22 @@ export const MEDIUM_PAs: StatInfo[] = [
   { name: "High Plunge", baseMult: 159.68, multType: 7 },
 ];
 
+// claymore
+export const HEAVY_PAs: StatInfo[] = [
+  { name: "Plunge DMG", baseMult: 74.59, multType: 7 },
+  { name: "Low Plunge", baseMult: 149.14, multType: 7 },
+  { name: "High Plunge", baseMult: 186.29, multType: 7 },
+];
+
+// special
+
+// Xiao, Kazuha, Itto
+export const HEAVIER_PAs: StatInfo[] = [
+  { name: "Plunge DMG", baseMult: 81.83, multType: 7 },
+  { name: "Low Plunge", baseMult: 163.63, multType: 7 },
+  { name: "High Plunge", baseMult: 204.39, multType: 7 },
+];
+
 export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
   // normal attack && physical
   1: [

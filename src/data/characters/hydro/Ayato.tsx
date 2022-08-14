@@ -1,5 +1,3 @@
-import { Green, Hydro } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
 import type {
   CharInfo,
   DataCharacter,
@@ -8,10 +6,12 @@ import type {
   ModifierInput,
   PartyData,
 } from "@Src/types";
-import { applyPercent, finalTalentLv } from "@Src/utils";
+import { Green, Hydro } from "@Src/styled-components";
+import { EModAffect } from "@Src/constants";
 import { NORMAL_ATTACKS } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { MEDIUM_PAs, EModifierSrc, TALENT_LV_MULTIPLIERS } from "../constants";
+import { applyPercent, finalTalentLv } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
 const cons1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
@@ -216,7 +216,6 @@ const Ayato: DataCharacter = {
           on Ayato's <Green>current Max HP</Green>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       inputConfig: {
         selfLabels: ["Stacks"],
@@ -238,7 +237,6 @@ const Ayato: DataCharacter = {
           <Green b>{getEBBuff(toSelf, char, partyData, inputs!)}%</Green>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.PARTY,
       inputConfig: {
         labels: ["Elemental Burst Level"],

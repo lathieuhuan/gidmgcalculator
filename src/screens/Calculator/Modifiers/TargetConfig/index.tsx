@@ -15,6 +15,7 @@ import { findMonster } from "@Data/controllers";
 import { CollapseList } from "@Components/collapse";
 import { InfusionNotes } from "@Components/minors";
 import { Checkbox, Select, linkStyles } from "@Src/styled-components";
+import { twInputStyles } from "@Screens/Calculator/components";
 
 export default function TargetConfig() {
   const target = useSelector((state) => state.calculator.target);
@@ -95,12 +96,16 @@ export default function TargetConfig() {
       <div className="mt-2 px-4">
         <div className="mb-4 flex justify-between items-center">
           <p className="text-h6 text-lightgold">Level</p>
-          <input value={target.level} onChange={onChangeTargetProp("level")} />
+          <input
+            className={twInputStyles.textInput}
+            value={target.level}
+            onChange={onChangeTargetProp("level")}
+          />
         </div>
 
         {monsterData && (
           <Select
-            className="mb-4 p-1 rounded bg-white font-bold"
+            className="mb-4 p-1 w-full rounded bg-white text-black font-bold"
             value={monsterData.name}
             onChange={(e) => dispatch(changeMonster(e.target.selectedIndex))}
           >

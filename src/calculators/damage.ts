@@ -56,11 +56,13 @@ function calcTalentStat(
   const dmgTypes = stat.dmgTypes || defaultDmgTypes;
   const [attPatt, attElmt] = dmgTypes;
 
-  if (base !== 0 && dmgTypes && dmgTypes[0] && dmgTypes[1] !== "various") {
-    // #to-check: assign infusion[dmgTypes[0] not work
-    const attInfusion: AttackElement | undefined = infusion[dmgTypes[0] as NormalAttack];
+  if (base !== 0 && dmgTypes && attPatt && dmgTypes[1] !== "various") {
+    const attInfusion: AttackElement | undefined = infusion[attPatt as NormalAttack];
+    console.log(infusion);
+    console.log(attPatt);
+
     const flat =
-      (talentBuff.flat?.value || 0) + attPattBonus[dmgTypes[0]].flat + totalAttr[dmgTypes[1]];
+      (talentBuff.flat?.value || 0) + attPattBonus[attPatt].flat + totalAttr[dmgTypes[1]];
 
     record.finalFlat = (record.finalFlat || 0) + flat;
 
@@ -221,7 +223,12 @@ export default function getDamage(
   for (const { activated, inputs, index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
-    if (activated && debuff && debuff.isGranted(char) && debuff.applyDebuff) {
+    if (
+      activated &&
+      debuff &&
+      (!debuff.isGranted || debuff.isGranted(char)) &&
+      debuff.applyDebuff
+    ) {
       const desc = `Self / ${debuff.src}`;
       debuff.applyDebuff({ ...wrapper3, fromSelf: true, char, inputs, desc, tracker });
     }

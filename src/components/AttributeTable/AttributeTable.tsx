@@ -27,10 +27,12 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           <StatsTable.Row key={type} className="group">
             <p>{type}</p>
             <div className="relative">
-              <p className={cn("mr-2", { "group-hover:hidden": baseAttr })}>{attributes[type]}</p>
+              <p className={cn("mr-2", { "group-hover:hidden": baseAttr })}>
+                {Math.round(attributes[type])}
+              </p>
               {baseAttr && (
                 <p className="mr-2 hidden whitespace-nowrap group-hover:block group-hover:absolute group-hover:top-0 group-hover:right-0">
-                  {baseAttr} + <Green>{attributes[type] - baseAttr}</Green>
+                  {baseAttr} + <Green>{Math.round(attributes[type] - baseAttr)}</Green>
                 </p>
               )}
             </div>

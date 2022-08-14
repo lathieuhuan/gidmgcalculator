@@ -1,5 +1,5 @@
-import { Green } from "@Src/styled-components";
 import type { DataCharacter } from "@Src/types";
+import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, AttackPatternPath, makeModApplier } from "@Src/calculators/utils";
@@ -90,7 +90,6 @@ const Heizou: DataCharacter = {
     {
       index: 0,
       src: EModifierSrc.A4,
-      isGranted: () => true,
       desc: () => (
         <>
           After Shikanoin Heizou's Heartstopper Strike hits an opponent, increases all party

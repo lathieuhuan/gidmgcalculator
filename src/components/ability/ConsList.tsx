@@ -57,7 +57,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                     setConsLv(i + 1);
                   }}
                 >
-                  <p className={cn("px-2 text-h6 font-bold", consLv < i + 1 && "opacity-50")}>
+                  <p className={cn("px-2 text-h6 font-bold", char.cons < i + 1 && "opacity-50")}>
                     {cons.name}
                   </p>
                   <InfoSign className="ml-auto" />
