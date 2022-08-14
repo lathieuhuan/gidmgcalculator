@@ -1,4 +1,6 @@
 import { memo, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectParty } from "@Store/calculatorSlice/selectors";
 
 import { CollapseList } from "@Components/collapse";
 import { MainSelect } from "../components";
@@ -9,9 +11,12 @@ import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
 import CustomModifiers from "./custom";
 import TargetConfig from "./TargetConfig";
+import { getPartyData } from "@Data/controllers";
 
 function Modifiers() {
   const [tab, setTab] = useState("Buffs");
+  const party = useSelector(selectParty);
+  const partyData = getPartyData(party);
 
   return (
     <div className="h-full flex flex-col">
@@ -42,8 +47,8 @@ function Modifiers() {
             headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
             contentList={[
               <ElementDebuffs />,
-              <SelfDebuffs />,
-              <PartyDebuffs />,
+              <SelfDebuffs partyData={partyData} />,
+              <PartyDebuffs partyData={partyData} />,
               <ArtifactDebuffs />,
               <CustomModifiers isBuffs={false} />,
             ]}

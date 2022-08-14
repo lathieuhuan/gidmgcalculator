@@ -5,7 +5,7 @@ import { EModifierSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
-const applyCons2Debuff: ApplyCharDebuffFn = ({ resistReduct, desc, tracker }) => {
+const applyC2Debuff: ApplyCharDebuffFn = ({ resistReduct, desc, tracker }) => {
   applyModifier(desc, resistReduct, ["phys", "anemo"], 12, tracker);
 };
 
@@ -121,7 +121,7 @@ const Venti: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: applyCons2Debuff,
+      applyDebuff: applyC2Debuff,
     },
     {
       index: 1,
@@ -133,7 +133,7 @@ const Venti: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: applyCons2Debuff,
+      applyDebuff: applyC2Debuff,
     },
     {
       index: 2,

@@ -9,7 +9,29 @@ import Sayu from "./anemo/Sayu";
 import Sucrose from "./anemo/Sucrose";
 import Venti from "./anemo/Venti";
 import Xiao from "./anemo/Xiao";
+import Ayaka from "./cryo/Ayaka";
+import Chongyun from "./cryo/Chongyun";
+import Diona from "./cryo/Diona";
+import Eula from "./cryo/Eula";
+import Ganyu from "./cryo/Ganyu";
 
-const characters = [Albedo, Aloy, Ayato, AnemoMC, Heizor, Jean, Kazuha, Sayu, Sucrose, Venti, Xiao];
+const characters = [
+  Albedo,
+  Aloy,
+  Ayato,
+  AnemoMC,
+  Ayaka,
+  Chongyun,
+  Diona,
+  Eula,
+  Ganyu,
+  Heizor,
+  Jean,
+  Kazuha,
+  Sayu,
+  Sucrose,
+  Venti,
+  Xiao,
+];
 
 export default characters;

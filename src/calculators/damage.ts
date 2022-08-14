@@ -58,8 +58,6 @@ function calcTalentStat(
 
   if (base !== 0 && dmgTypes && attPatt && dmgTypes[1] !== "various") {
     const attInfusion: AttackElement | undefined = infusion[attPatt as NormalAttack];
-    console.log(infusion);
-    console.log(attPatt);
 
     const flat =
       (talentBuff.flat?.value || 0) + attPattBonus[attPatt].flat + totalAttr[dmgTypes[1]];
@@ -209,7 +207,7 @@ export default function getDamage(
     resistReduct[key] = 0;
   }
   const { activeTalents, weapon, vision, debuffs } = findCharacter(char)!;
-  const wrapper3 = { resistReduct, attPattBonus };
+  const wrapper3 = { char, resistReduct, attPattBonus, partyData, tracker };
 
   const finalResult = {} as DamageResult;
 
@@ -229,8 +227,7 @@ export default function getDamage(
       (!debuff.isGranted || debuff.isGranted(char)) &&
       debuff.applyDebuff
     ) {
-      const desc = `Self / ${debuff.src}`;
-      debuff.applyDebuff({ ...wrapper3, fromSelf: true, char, inputs, desc, tracker });
+      debuff.applyDebuff({ ...wrapper3, fromSelf: true, inputs, desc: `Self / ${debuff.src}` });
     }
   }
 
@@ -243,7 +240,7 @@ export default function getDamage(
 
         if (activated && debuff && debuff.applyDebuff) {
           const desc = `${teammate} / ${debuff.src}`;
-          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc, tracker });
+          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc });
         }
       }
     }

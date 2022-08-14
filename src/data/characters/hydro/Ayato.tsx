@@ -14,7 +14,7 @@ import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
-const cons1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
+const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
   [charModCtrlIsActivated(Ayato.buffs!, char, charBuffCtrls, 3), "pct", [false, 1], 40] as const;
 
 const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, totalAttr }) => {
@@ -24,12 +24,12 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
     const flat = applyPercent(totalAttr.hp, finalMult);
     return talentBuff(
       [true, "flat", "Elemental Skill", flat],
-      [...cons1TalentBuff(char, selfBuffCtrls)]
+      [...C1TalentBuff(char, selfBuffCtrls)]
     );
   }
 };
 
-const getEBBuff = (
+const getEBBuffValue = (
   toSelf: boolean,
   char: CharInfo,
   partyData: PartyData,
@@ -112,7 +112,7 @@ const Ayato: DataCharacter = {
           conditional: true,
           getTalentBuff: ({ char, selfBuffCtrls }) =>
             talentBuff(
-              [...cons1TalentBuff(char, selfBuffCtrls)],
+              [...C1TalentBuff(char, selfBuffCtrls)],
               [checkCons[6](char), "mult", [false, 6], 450]
             ),
         },
@@ -133,11 +133,7 @@ const Ayato: DataCharacter = {
             };
           },
         },
-        {
-          name: "Water Illusion DMG",
-          baseMult: 101.48,
-          multType: 7,
-        },
+        { name: "Water Illusion DMG", baseMult: 101.48, multType: 7 },
       ],
       // getExtraStats: (lv) => [
       //   {
@@ -173,36 +169,15 @@ const Ayato: DataCharacter = {
       name: "Kamisato Art: Michiyuku Hagetsu",
       image: "b/ba/Talent_Kamisato_Art_Michiyuku_Hagetsu",
     },
-    {
-      name: "Kamisato Art: Daily Cooking",
-      image: "4/43/Talent_Kamisato_Art_Daily_Cooking",
-    },
+    { name: "Kamisato Art: Daily Cooking", image: "4/43/Talent_Kamisato_Art_Daily_Cooking" },
   ],
   constellation: [
-    {
-      name: "Kyouka Fushi",
-      image: "a/ac/Constellation_Kyouka_Fuushi",
-    },
-    {
-      name: "World Source",
-      image: "e/ed/Constellation_World_Source",
-    },
-    {
-      name: "To Admire the Flower",
-      image: "0/06/Constellation_To_Admire_the_Flowers",
-    },
-    {
-      name: "Endles Flow",
-      image: "d/de/Constellation_Endless_Flow",
-    },
-    {
-      name: "Bansui Ichiro",
-      image: "f/f1/Constellation_Bansui_Ichiro",
-    },
-    {
-      name: "Boundless Origin",
-      image: "d/da/Constellation_Boundless_Origin",
-    },
+    { name: "Kyouka Fushi", image: "a/ac/Constellation_Kyouka_Fuushi" },
+    { name: "World Source", image: "e/ed/Constellation_World_Source" },
+    { name: "To Admire the Flower", image: "0/06/Constellation_To_Admire_the_Flowers" },
+    { name: "Endles Flow", image: "d/de/Constellation_Endless_Flow" },
+    { name: "Bansui Ichiro", image: "f/f1/Constellation_Bansui_Ichiro" },
+    { name: "Boundless Origin", image: "d/da/Constellation_Boundless_Origin" },
   ],
   buffs: [
     {
@@ -234,7 +209,7 @@ const Ayato: DataCharacter = {
       desc: ({ toSelf, char, partyData, inputs }) => (
         <>
           Increases the <Green>Normal Attack DMG</Green> of characters within its AoE by{" "}
-          <Green b>{getEBBuff(toSelf, char, partyData, inputs!)}%</Green>.
+          <Green b>{getEBBuffValue(toSelf, char, partyData, inputs!)}%</Green>.
         </>
       ),
       affect: EModAffect.PARTY,
@@ -245,8 +220,8 @@ const Ayato: DataCharacter = {
         maxValues: [15],
       },
       applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
-        const bnValue = getEBBuff(toSelf, char, partyData, inputs!);
-        applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
+        const bonusValue = getEBBuffValue(toSelf, char, partyData, inputs!);
+        applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);
       },
     },
     {

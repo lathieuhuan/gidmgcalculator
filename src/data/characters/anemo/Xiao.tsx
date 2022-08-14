@@ -6,7 +6,7 @@ import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
 
-const getEBbonusValue = (char: CharInfo, partyData: PartyData) => {
+const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv(char, "EB", partyData);
   return round2(58.45 * TALENT_LV_MULTIPLIERS[5][level]);
 };
@@ -122,13 +122,13 @@ const Xiao: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
-          <Green b>{getEBbonusValue(char, partyData)}%</Green> and converts them to{" "}
+          <Green b>{getEBBuffValue(char, partyData)}%</Green> and converts them to{" "}
           <Anemo>Anemo DMG</Anemo>
         </>
       ),
       affect: EModAffect.SELF,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
-        const bnValue = getEBbonusValue(char, partyData);
+        const bnValue = getEBBuffValue(char, partyData);
         applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], bnValue, tracker);
       },
       infuseConfig: {

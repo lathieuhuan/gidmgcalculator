@@ -210,8 +210,9 @@ export type ApplyCharDebuffFn = (args: {
   attPattBonus: AttackPatternBonus;
   // #to-check
   // selfDebuffCtrls: ModifierCtrl[];
-  char?: CharInfo;
+  char: CharInfo;
   inputs?: ModifierInput[];
+  partyData: PartyData;
   fromSelf: boolean;
   desc?: string;
   tracker?: Tracker;
@@ -220,7 +221,12 @@ export type ApplyCharDebuffFn = (args: {
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfig?: DebuffInputConfig;
-  desc: (args: { fromSelf: boolean; char: CharInfo }) => ReactNode;
+  desc: (args: {
+    fromSelf: boolean;
+    char: CharInfo;
+    inputs?: ModifierInput[];
+    partyData: PartyData;
+  }) => ReactNode;
   applyDebuff?: ApplyCharDebuffFn;
 };
 

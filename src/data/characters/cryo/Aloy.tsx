@@ -1,12 +1,16 @@
 import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { EModAffect } from "@Src/constants";
 import { Cryo, Green, Red } from "@Src/styled-components";
+import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, totalXtraTalentLv } from "@Src/utils";
-import { checkAscs, findInput, modIsActivated } from "../utils";
 import { applyModifier } from "@Src/calculators/utils";
+import { checkAscs, findInput, modIsActivated } from "../utils";
 
-const getCoilStacksBuff = (char: CharInfo, partyData: PartyData, charBuffCtrls: ModifierCtrl[]) => {
+const getCoilStacksBuffValue = (
+  char: CharInfo,
+  partyData: PartyData,
+  charBuffCtrls: ModifierCtrl[]
+) => {
   const level = totalXtraTalentLv(char, "ES", partyData);
   const stacks = modIsActivated(charBuffCtrls, 1) ? 5 : findInput(charBuffCtrls, 0, 0);
   return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * +stacks);
@@ -100,7 +104,7 @@ const Aloy: DataCharacter = {
       desc: ({ char, partyData, charBuffCtrls }) => (
         <>
           Each stack increases Aloy's <Green>Normal Attack DMG</Green>{" "}
-          <Red>Total DMG Bonus: {getCoilStacksBuff(char, partyData, charBuffCtrls)}%.</Red>
+          <Red>Total DMG Bonus: {getCoilStacksBuffValue(char, partyData, charBuffCtrls)}%.</Red>
         </>
       ),
       affect: EModAffect.SELF,
@@ -111,8 +115,8 @@ const Aloy: DataCharacter = {
         maxValues: [3],
       },
       applyBuff: ({ attPattBonus, char, charBuffCtrls, partyData, desc, tracker }) => {
-        const bnValue = getCoilStacksBuff(char, partyData, charBuffCtrls);
-        applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
+        const bonusValue = getCoilStacksBuffValue(char, partyData, charBuffCtrls);
+        applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);
       },
     },
     {

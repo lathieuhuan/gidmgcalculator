@@ -1,4 +1,4 @@
-import type { Teammate } from "@Src/types";
+import type { PartyData, Teammate } from "@Src/types";
 import type {
   ToggleModCtrlPath,
   ToggleTeammateModCtrlPath,
@@ -16,10 +16,10 @@ import { ModifierLayout } from "@Src/styled-components";
 import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
-import { findCharacter } from "@Data/controllers";
+import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
-export function SelfDebuffs() {
+export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const char = useSelector(selectChar);
   const selfDebuffCtrls = useSelector(
     (state) => state.calculator.allSelfDebuffCtrls[state.calculator.currentIndex]
@@ -36,7 +36,7 @@ export function SelfDebuffs() {
   selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
     const debuff = findByIndex(debuffs, index);
 
-    if (debuff && debuff.isGranted(char)) {
+    if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
       const path: ToggleModCtrlPath = {
         modCtrlName: "allSelfDebuffCtrls",
         ctrlIndex,
@@ -84,7 +84,7 @@ export function SelfDebuffs() {
             dispatch(toggleModCtrl(path));
           }}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char })}
+          desc={debuff.desc({ fromSelf: true, char, inputs, partyData })}
           setters={setters}
         />
       );
@@ -93,13 +93,20 @@ export function SelfDebuffs() {
   return content.length ? <>{content}</> : renderNoModifier(false);
 }
 
-export function PartyDebuffs() {
+export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
   const party = useSelector(selectParty);
   const content: JSX.Element[] = [];
 
   party.forEach((teammate, tmIndex) => {
     if (teammate && teammate.debuffCtrls.length)
-      content.push(<TeammateDebuffs key={tmIndex} teammate={teammate} tmIndex={tmIndex} />);
+      content.push(
+        <TeammateDebuffs
+          key={tmIndex}
+          teammate={teammate}
+          tmIndex={tmIndex}
+          partyData={partyData}
+        />
+      );
   });
   return content.length ? <>{content}</> : renderNoModifier(false);
 }
@@ -107,8 +114,9 @@ export function PartyDebuffs() {
 interface TeammateDebuffsProps {
   teammate: Teammate;
   tmIndex: number;
+  partyData: PartyData;
 }
-function TeammateDebuffs({ teammate, tmIndex }: TeammateDebuffsProps) {
+function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps) {
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
@@ -174,7 +182,7 @@ function TeammateDebuffs({ teammate, tmIndex }: TeammateDebuffsProps) {
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={debuff.src}
-        desc={debuff.desc({ fromSelf: false, char })}
+        desc={debuff.desc({ fromSelf: false, char, inputs, partyData })}
         setters={setters}
       />
     );

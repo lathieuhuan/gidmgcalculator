@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModifierSrc, HEAVY_PAs } from "../constants";
 import { charModCtrlIsActivated, checkAscs, checkCons, findInput, talentBuff } from "../utils";
 
-const getCons2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
+const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
   talentBuff([
     charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1),
     "pct",
@@ -12,7 +12,7 @@ const getCons2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
     3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5),
   ]);
 
-const getCons6TalentBuff =
+const getC6TalentBuff =
   (index: number): GetTalentBuffFn =>
   ({ char, selfBuffCtrls, totalAttr }) => {
     const EM = Math.min(totalAttr.em, 2000);
@@ -87,12 +87,12 @@ const Sayu: DataCharacter = {
               3.3,
             ]),
         },
-        { name: "Hold Kick", baseMult: 217.6, getTalentBuff: getCons2TalentBuff },
+        { name: "Hold Kick", baseMult: 217.6, getTalentBuff: getC2TalentBuff },
         {
           name: "Kick's Elemental DMG",
           dmgTypes: ["ES", "various"],
           baseMult: 76.16,
-          getTalentBuff: getCons2TalentBuff,
+          getTalentBuff: getC2TalentBuff,
         },
       ],
       // getExtraStats: () => [
@@ -117,7 +117,7 @@ const Sayu: DataCharacter = {
         {
           name: "Daruma DMG",
           baseMult: 52,
-          getTalentBuff: getCons6TalentBuff(0),
+          getTalentBuff: getC6TalentBuff(0),
         },
         {
           name: "Daruma Healing",
@@ -126,7 +126,7 @@ const Sayu: DataCharacter = {
           baseMult: 79.87,
           multType: 2,
           flat: { base: 500, type: 3 },
-          getTalentBuff: getCons6TalentBuff(1),
+          getTalentBuff: getC6TalentBuff(1),
         },
       ],
       // getExtraStats: () => [
