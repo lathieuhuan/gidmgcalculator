@@ -108,7 +108,7 @@ const Sayu: DataCharacter = {
         { name: "Burst DMG", baseMult: 116.8 },
         {
           name: "Activation Healing",
-          isHealing: true,
+          notAttack: "healing",
           baseStatType: "atk",
           baseMult: 92.16,
           multType: 2,
@@ -121,7 +121,7 @@ const Sayu: DataCharacter = {
         },
         {
           name: "Daruma Healing",
-          isHealing: true,
+          notAttack: "healing",
           baseStatType: "atk",
           baseMult: 79.87,
           multType: 2,

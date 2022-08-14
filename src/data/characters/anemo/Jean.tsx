@@ -30,7 +30,7 @@ const Jean: DataCharacter = {
     [13662, 222, 715],
     [14695, 239, 769],
   ],
-  bonusStat: { type: "healBn", value: 11.1 },
+  bonusStat: { type: "healBn", value: 5.5 },
   NAsConfig: {
     name: "Favonius Bladework",
     caStamina: 20,
@@ -67,7 +67,7 @@ const Jean: DataCharacter = {
         { name: "Entering/Exiting DMG", baseMult: 78.4 },
         {
           name: "Activation Healing",
-          isHealing: true,
+          notAttack: "healing",
           baseStatType: "atk",
           baseMult: 251.2,
           multType: 2,
@@ -75,7 +75,7 @@ const Jean: DataCharacter = {
         },
         {
           name: "Continuous Regen.",
-          isHealing: true,
+          notAttack: "healing",
           baseStatType: "atk",
           baseMult: 25.12,
           multType: 2,

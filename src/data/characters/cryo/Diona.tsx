@@ -62,6 +62,7 @@ const Diona: DataCharacter = {
         },
         {
           name: "Base DMG Absorption",
+          notAttack: "shield",
           baseStatType: "hp",
           baseMult: 7.2,
           multType: 2,
@@ -83,7 +84,7 @@ const Diona: DataCharacter = {
         { name: "Continuous DMG", baseMult: 52.64 },
         {
           name: "HP Regen. Over Time",
-          isHealing: true,
+          notAttack: "healing",
           baseStatType: "hp",
           baseMult: 5.34,
           multType: 2,

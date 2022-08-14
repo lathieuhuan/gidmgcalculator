@@ -106,7 +106,7 @@ interface StarLineProps {
 export const StarLine = ({ rarity, className }: StarLineProps) => {
   return (
     <div className={cn("flex items-center", className)}>
-      {Array(rarity).map((_, i) => (
+      {[...Array(rarity)].map((_, i) => (
         <svg
           key={i}
           viewBox="0 0 24 24"

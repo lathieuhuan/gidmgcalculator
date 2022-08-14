@@ -4,8 +4,8 @@ export const linkStyles = "text-green hover:text-lightred";
 
 export const tableStyles = {
   table: "min-w-full border-collapse",
-  th: "px-2 pt-1 text-sm border-x border-darkblue-1 cursor-default",
-  td: "px-2 pt-1 text-sm border-x border-darkblue-1 cursor-default text-right first:text-left first:font-bold",
+  th: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default",
+  td: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default text-right first:text-left first:font-bold",
   row: "odd:bg-darkblue-1 even:bg-darkblue-2 hover:bg-darkerred first:hover:bg-darkblue-1",
 };
 

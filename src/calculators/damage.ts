@@ -27,7 +27,6 @@ import {
   ATTACK_ELEMENTS,
   ATTACK_PATTERNS,
   TRANSFORMATIVE_REACTIONS,
-  VISION_TYPES,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
@@ -53,16 +52,17 @@ function calcTalentStat(
   infusion: FinalInfusion
 ) {
   let record = {} as TrackerDamageRecord;
-  const dmgTypes = stat.dmgTypes || defaultDmgTypes;
-  const [attPatt, attElmt] = dmgTypes;
+  const [attPatt, attElmt] = stat.dmgTypes || defaultDmgTypes;
 
-  if (base !== 0 && dmgTypes && attPatt && dmgTypes[1] !== "various") {
-    const attInfusion: AttackElement | undefined = infusion[attPatt as NormalAttack];
+  if (base !== 0 && !stat.notAttack) {
+    const attInfusion = attPatt ? infusion[attPatt as NormalAttack] : undefined;
 
     const flat =
-      (talentBuff.flat?.value || 0) + attPattBonus[attPatt].flat + totalAttr[dmgTypes[1]];
+      (talentBuff.flat?.value || 0) +
+      (attPatt ? attPattBonus[attPatt].flat : 0) +
+      (attElmt === "various" ? 0 : attElmtBonus[attElmt].flat);
 
-    record.finalFlat = (record.finalFlat || 0) + flat;
+    record.finalFlat = flat;
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
     let normalMult = talentBuff.pct?.value || 0;
@@ -114,7 +114,7 @@ function calcTalentStat(
         ? resistReduct[vision]
         : attElmt === "phys" && attPatt && !["NA", "CA", "PA"].includes(attPatt)
         ? resistReduct.phys
-        : attElmt === "various"
+        : !attInfusion || attElmt === "various"
         ? 1
         : resistReduct[attInfusion];
 
@@ -156,7 +156,7 @@ function calcTalentStat(
     let flat = 0;
     let normalMult = 1;
 
-    if (stat.isHealing) {
+    if (stat.notAttack === "healing") {
       flat = talentBuff.flat?.value || 0;
       normalMult += totalAttr.healBn / 100;
     }

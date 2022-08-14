@@ -14,6 +14,15 @@ import Chongyun from "./cryo/Chongyun";
 import Diona from "./cryo/Diona";
 import Eula from "./cryo/Eula";
 import Ganyu from "./cryo/Ganyu";
+import Kaeya from "./cryo/Kaeya";
+import Qiqi from "./cryo/Qiqi";
+import Rosaria from "./cryo/Rosaria";
+import Shenhe from "./cryo/Shenhe";
+import Beidou from "./electro/Beidou";
+import Dori from "./electro/Dori";
+import ElectroMC from "./electro/ElectroMC";
+import Fischl from "./electro/Fischl";
+import Keqing from "./electro/Keqing";
 
 const characters = [
   Albedo,
@@ -21,14 +30,23 @@ const characters = [
   Ayato,
   AnemoMC,
   Ayaka,
+  Beidou,
   Chongyun,
   Diona,
+  Dori,
+  ElectroMC,
   Eula,
+  Fischl,
   Ganyu,
   Heizor,
   Jean,
   Kazuha,
+  Kaeya,
+  Keqing,
+  Qiqi,
+  Rosaria,
   Sayu,
+  Shenhe,
   Sucrose,
   Venti,
   Xiao,

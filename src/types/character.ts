@@ -103,7 +103,7 @@ export type StatInfo = {
   /**
    * only on ES / EB
    */
-  isHealing?: boolean;
+  notAttack?: "healing" | "shield";
   /**
    * only on ES / EB
    */

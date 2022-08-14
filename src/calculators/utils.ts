@@ -11,6 +11,8 @@ import type {
   AttackPatternBonus,
   AttackElementBonus,
   AttacklementInfoKey,
+  Vision,
+  FinalInfusion,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
@@ -135,7 +137,12 @@ export function applyModifier(
 /**
  * addModMaker
  * */
-export type RecipientName = "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus" | "resisReduct";
+export type RecipientName =
+  | "totalAttr"
+  | "attPattBonus"
+  | "attElmtBonus"
+  | "rxnBonus"
+  | "resisReduct";
 
 interface ModApplierArgs {
   totalAttr: TotalAttribute;
@@ -194,3 +201,35 @@ export function getRxnBonusesFromEM(EM = 0) {
 
 export const meltMult = (elmt: AttackElement) => (elmt === "pyro" ? 2 : 1.5);
 export const vaporizeMult = (elmt: AttackElement) => (elmt === "pyro" ? 1.5 : 2);
+
+export type IncreaseAttackBonusArgs = {
+  element: AttackElement;
+  type: AttacklementInfoKey;
+  value: number;
+  mainCharVision: Vision;
+  infusion: FinalInfusion;
+  attElmtBonus: AttackElementBonus;
+  attPattBonus: AttackPatternBonus;
+  desc: string;
+  tracker?: Tracker;
+};
+export function increaseAttackBonus({
+  element,
+  type,
+  value,
+  mainCharVision,
+  infusion,
+  attElmtBonus,
+  attPattBonus,
+  desc,
+  tracker,
+}: IncreaseAttackBonusArgs) {
+  if (mainCharVision === element) {
+    applyModifier(desc, attElmtBonus, `${element}.${type}`, value, tracker);
+  }
+  for (const patt of ["NA", "CA", "PA"] as const) {
+    if (infusion[patt] === element) {
+      applyModifier(desc, attPattBonus, `${patt}.${type}`, value, tracker);
+    }
+  }
+}

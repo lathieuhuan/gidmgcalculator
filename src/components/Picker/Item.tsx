@@ -25,7 +25,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
             )}
           >
             <img
-              src={item.beta && !item.vision ? item.icon : wikiImg(item.icon)}
+              src={item.beta ? item.icon : wikiImg(item.icon)}
               alt=""
               className="w-full h-full"
               draggable={false}
