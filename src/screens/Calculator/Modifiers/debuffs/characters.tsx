@@ -27,7 +27,9 @@ export function SelfDebuffs() {
   const dispatch = useDispatch();
 
   const { debuffs } = findCharacter(char) || {};
-  if (!debuffs) return null;
+  if (!debuffs) {
+    return renderNoModifier(false);
+  }
 
   const content: JSX.Element[] = [];
 

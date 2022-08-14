@@ -62,3 +62,48 @@ export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
   // diona, venti Full Aim Shot
   8: [0, 1, 1.075, 1.15, 1.25, 1.325, 1.4, 1.5, 1.6, 1.7, 1.8, 1.904, 2.04, 2.176, 2.312, 2.448],
 };
+
+export const TRAVELLER_INFO = {
+  icon: "7/71/Character_Traveler_Thumb",
+  sideIcon: "3/35/Character_Lumine_Side_Icon",
+  rarity: 5 as const,
+  nation: "outland" as const,
+  weapon: "sword" as const,
+  stats: [
+    [912, 18, 57],
+    [2342, 46, 147],
+    [3024, 59, 190],
+    [4529, 88, 284],
+    [5013, 98, 315],
+    [5766, 113, 362],
+    [6411, 125, 402],
+    [7164, 140, 450],
+    [7648, 149, 480],
+    [8401, 164, 527],
+    [8885, 174, 558],
+    [9638, 188, 605],
+    [10122, 198, 635],
+    [10875, 212, 683],
+  ],
+  bonusStat: { type: "atk_" as const, value: 6 },
+};
+
+export const TRAVELLER_NCPAs: {
+  NA: { stats: StatInfo[] };
+  CA: { stats: StatInfo[] };
+  PA: { stats: StatInfo[] };
+} = {
+  NA: {
+    stats: [
+      { name: "1-Hit", baseMult: 44.46 },
+      { name: "2-Hit", baseMult: 43.43 },
+      { name: "3-Hit", baseMult: 52.98 },
+      { name: "4-Hit", baseMult: 58.31 },
+      { name: "5-Hit", baseMult: 70.78 },
+    ],
+  },
+  CA: {
+    stats: [{ name: "Charged Attack", baseMult: [55.9, 72.24] }],
+  },
+  PA: { stats: MEDIUM_PAs },
+};

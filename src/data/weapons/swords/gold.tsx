@@ -66,7 +66,7 @@ const goldSwords: DataWeapon[] = [
     icon: "0/09/Weapon_Mistsplitter_Reforged",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "cDmg", scale: "9.6%" },
+    subStat: { type: "cDmg", scale: "9.6%b" },
     applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
     buffs: [
       {
@@ -232,7 +232,7 @@ const goldSwords: DataWeapon[] = [
     icon: "2/2a/Weapon_Primordial_Jade_Cutter",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cRate", scale: "9.6%" },
+    subStat: { type: "cRate", scale: "9.6%b" },
     applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;

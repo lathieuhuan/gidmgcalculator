@@ -272,6 +272,8 @@ export default function getDamage(
   ATTACK_PATTERNS.forEach((attPatt) => {
     const talent = activeTalents[attPatt];
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
+    const defaultAttElmt = resultKey === "NAs" && weapon !== "catalyst" ? "phys" : vision;
+    const defaultMultType = defaultAttElmt === "phys" ? 1 : 2;
     const level = finalTalentLv(char, resultKey, partyData);
 
     if (resultKey !== "NAs") {
@@ -289,7 +291,7 @@ export default function getDamage(
 
       // CALCULATE BASE DAMAGE
       let base;
-      const { baseStatType = "atk", baseMult, multType, flat } = stat;
+      const { baseStatType = "atk", baseMult, multType = defaultMultType, flat } = stat;
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
         baseValue: totalAttr[baseStatType],
@@ -321,7 +323,7 @@ export default function getDamage(
 
       finalResult[resultKey][stat.name] = calcTalentStat(
         stat,
-        [attPatt, resultKey === "NAs" && weapon !== "catalyst" ? "phys" : vision],
+        [attPatt, defaultAttElmt],
         base,
         char,
         vision,

@@ -38,30 +38,25 @@ const Albedo: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 36.74, multType: 1 },
-        { name: "2-Hit", baseMult: 36.74, multType: 1 },
-        { name: "3-Hit", baseMult: 47.45, multType: 1 },
-        { name: "4-Hit", baseMult: 49.75, multType: 1 },
-        { name: "5-Hit", baseMult: 62.07, multType: 1 },
+        { name: "1-Hit", baseMult: 36.74 },
+        { name: "2-Hit", baseMult: 36.74 },
+        { name: "3-Hit", baseMult: 47.45 },
+        { name: "4-Hit", baseMult: 49.75 },
+        { name: "5-Hit", baseMult: 62.07 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [47.3, 60.2], multType: 1 }] },
+    CA: { stats: [{ name: "Charged Attack", baseMult: [47.3, 60.2] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
       stats: [
-        {
-          name: "Skill DMG",
-          baseMult: 130.4,
-          multType: 2,
-        },
+        { name: "Skill DMG", baseMult: 130.4 },
         {
           name: "Transient Blossom",
           baseStatType: "def",
           baseMult: 133.6,
-          multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) =>
             talentBuff([
               charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0),
@@ -81,16 +76,8 @@ const Albedo: DataCharacter = {
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
       stats: [
-        {
-          name: "Burst DMG",
-          baseMult: 367.2,
-          multType: 2,
-        },
-        {
-          name: "Fatal Blossom DMG",
-          baseMult: 72,
-          multType: 2,
-        },
+        { name: "Burst DMG", baseMult: 367.2 },
+        { name: "Fatal Blossom DMG", baseMult: 72 },
       ],
       // getExtraStats: (lv) => [{ name: "CD", value: "12s" }],
       energyCost: 40,

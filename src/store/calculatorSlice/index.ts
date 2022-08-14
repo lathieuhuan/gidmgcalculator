@@ -128,6 +128,9 @@ export const calculatorSlice = createSlice({
     changeCurrentSetup: (state, action: PayloadAction<number>) => {
       state.currentIndex = action.payload;
     },
+    closeError: (state) => {
+      state.isError = false;
+    },
     // CHARACTER
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;
@@ -574,6 +577,7 @@ export const calculatorSlice = createSlice({
 export const {
   initSessionWithChar,
   changeCurrentSetup,
+  closeError,
   levelCalcChar,
   changeConsLevel,
   changeTalentLevel,

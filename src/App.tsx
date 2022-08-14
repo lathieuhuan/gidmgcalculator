@@ -2,6 +2,7 @@ import ReactDOM from "react-dom";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
+import { closeError } from "@Store/calculatorSlice";
 import { EScreen } from "./constants";
 
 import Calculator from "@Screens/Calculator";
@@ -13,10 +14,10 @@ import { NavBar } from "@Components/NavBar";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
 import UploadOptions from "@Components/load-options/UploadOptions";
 
-import { plainToInstance } from "class-transformer";
-import { MyCharacter3_0, MyWeapon3_0, MyArtifact3_0, MySetup3_0 } from "./models";
 import { adjustDatabase } from "./utils/adjustDatabase";
 import { addUsersDatabase } from "@Store/usersDatabaseSlice";
+import { Modal } from "@Components/modals";
+import { Button } from "./styled-components";
 
 function App() {
   const [loadOptionType, setLoadOptionType] = useState<"up" | "down" | "">("");
@@ -24,6 +25,7 @@ function App() {
   const [outdates, setOutdates] = useState([]);
 
   const atScreen = useSelector(selectAtScreen);
+  const isError = useSelector((state) => state.calculator.isError);
   const dispatch = useDispatch();
 
   const checkAndAddUsersDatabase = useCallback(
@@ -77,6 +79,23 @@ function App() {
           <div className="absolute full-stretch z-20">{renderTabContent()}</div>
         )}
       </div>
+
+      {isError && (
+        <Modal onClose={() => dispatch(closeError())}>
+          <div className="p-4 w-80 rounded-lg flex flex-col shadow-white-glow bg-darkblue-1">
+            <p className="text-h5 text-center text-lightred">
+              An Error has occurred and prevented the calculation process.
+            </p>
+            <Button
+              className="mt-4 mx-auto"
+              variant="positive"
+              onClick={() => dispatch(closeError())}
+            >
+              Confirm
+            </Button>
+          </div>
+        </Modal>
+      )}
 
       {loadOptionType !== ""
         ? ReactDOM.createPortal(

@@ -8,7 +8,7 @@ import {
   toggleModCtrl,
   toggleSubWpModCtrl,
 } from "@Store/calculatorSlice";
-import { selectWeapon } from "@Store/calculatorSlice/selectors";
+import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 import { findWeapon } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 
@@ -17,6 +17,7 @@ import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/com
 
 export default function WeaponBuffs() {
   const weapon = useSelector(selectWeapon);
+  const totalAttr = useSelector(selectTotalAttr);
   const weaponBuffCtrls = useSelector(
     (state) => state.calculator.allWpBuffCtrls[state.calculator.currentIndex]
   );
@@ -103,7 +104,7 @@ export default function WeaponBuffs() {
           )
         }
         heading={name + " (self)"}
-        desc={buff.desc({ refi: weapon.refi })}
+        desc={buff.desc({ refi: weapon.refi, totalAttr })}
         setters={setters}
       />
     );
@@ -153,7 +154,7 @@ export default function WeaponBuffs() {
           checked={activated}
           onToggle={() => dispatch(toggleSubWpModCtrl(path))}
           heading={name}
-          desc={buff.desc({ refi: ctrl.refi })}
+          desc={buff.desc({ refi: ctrl.refi, totalAttr })}
           setters={
             <>
               <Setter

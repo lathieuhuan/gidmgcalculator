@@ -75,7 +75,11 @@ type WeaponBuff = {
     initialValues: ModifierInput[];
     maxValues?: number[];
   };
-  applyBuff: (args: ApplyWpBuffArgs) => void;
+  applyBuff?: (args: ApplyWpBuffArgs) => void;
   applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
-  desc: (args: WpDescArgs) => ReactNode;
+  desc: (
+    args: WpDescArgs & {
+      totalAttr: TotalAttribute;
+    }
+  ) => ReactNode;
 };

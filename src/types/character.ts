@@ -38,7 +38,7 @@ export type DataCharacter = {
   nation: Nation;
   vision: Vision;
   weapon: Weapon;
-  stats: Array<[number, number, number]>;
+  stats: number[][];
   bonusStat: {
     type: AttackElement | ArtifactPercentStat | "em";
     value: number;
@@ -94,7 +94,7 @@ export type StatInfo = {
   name: string;
   dmgTypes?: DamageTypes;
   baseMult: number | number[];
-  multType: number;
+  multType?: number;
   /**
    * if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
    */
