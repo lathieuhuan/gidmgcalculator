@@ -23,6 +23,11 @@ import Dori from "./electro/Dori";
 import ElectroMC from "./electro/ElectroMC";
 import Fischl from "./electro/Fischl";
 import Keqing from "./electro/Keqing";
+import Lisa from "./electro/Lisa";
+import Raiden from "./electro/Raiden";
+import Razor from "./electro/Razor";
+import Sara from "./electro/Sara";
+import Shinobu from "./electro/Shinobu";
 
 const characters = [
   Albedo,
@@ -43,9 +48,14 @@ const characters = [
   Kazuha,
   Kaeya,
   Keqing,
+  Lisa,
   Qiqi,
+  Raiden,
+  Razor,
   Rosaria,
+  Sara,
   Sayu,
+  Shinobu,
   Shenhe,
   Sucrose,
   Venti,

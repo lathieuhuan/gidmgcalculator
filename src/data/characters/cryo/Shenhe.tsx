@@ -70,7 +70,7 @@ const Shenhe: DataCharacter = {
       stats: [
         { name: "Press Skill DMG", baseMult: 139.2 },
         { name: "Hold Skill DMG", baseMult: 188.8 },
-        { name: "DMG Bonus", notAttack: "shield", baseMult: 45.66, multType: 2 },
+        { name: "DMG Bonus", notAttack: "other", baseMult: 45.66, multType: 2 },
       ],
       // getExtraStats: () => [
       //   { name: "Press/Hold Duration", value: "10s/15s" },

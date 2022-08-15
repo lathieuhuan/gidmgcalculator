@@ -37,7 +37,7 @@ export function SelfBuffs() {
   const content: JSX.Element[] = [];
 
   selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
+    const { activated, index, inputs } = ctrl;
     const buff = findByIndex(buffs!, index);
 
     const path: ToggleModCtrlPath = {
@@ -50,6 +50,7 @@ export function SelfBuffs() {
 
       if (buff.inputConfig) {
         const { selfLabels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
+        const validatedInputs = inputs || buff.inputConfig.initialValues;
 
         setters = (
           <CharModSetters
@@ -57,18 +58,18 @@ export function SelfBuffs() {
             renderTypes={renderTypes}
             initialValues={initialValues}
             maxValues={maxValues}
-            inputs={inputs}
+            inputs={validatedInputs}
             onTextChange={(value, i) =>
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
-                  value: processNumInput(value, +inputs[i], maxValues?.[i] || undefined),
+                  value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
                 })
               )
             }
             onToggleCheck={(i) =>
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !inputs[i] }))
+              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }))
             }
             onSelect={(value, i) =>
               dispatch(
@@ -93,7 +94,7 @@ export function SelfBuffs() {
             totalAttr,
             char,
             charBuffCtrls: selfBuffCtrls,
-            inputs,
+            inputs: inputs || [],
             charData,
             partyData,
           })}
@@ -140,7 +141,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const { buffs = [], vision } = findCharacter(teammate)!;
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
+    const { activated, index, inputs } = ctrl;
     const buff = findByIndex(buffs, index);
     if (!buff) return;
 
@@ -153,19 +154,20 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
 
     if (buff.inputConfig) {
       const { labels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
+      const validatedInputs = inputs || initialValues;
 
       setters = (
         <CharModSetters
           labels={labels}
           renderTypes={renderTypes}
           initialValues={initialValues}
-          inputs={inputs}
+          inputs={validatedInputs}
           onTextChange={(value, i) =>
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: processNumInput(value, +inputs[i], maxValues?.[i] || undefined),
+                value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
               })
             )
           }
@@ -174,7 +176,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: !inputs[i],
+                value: !validatedInputs[i],
               })
             )
           }
@@ -201,7 +203,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
           char,
           charData,
           partyData,
-          inputs,
+          inputs: inputs || [],
           charBuffCtrls: teammate.buffCtrls,
           totalAttr,
         })}

@@ -14,7 +14,6 @@ import {
   DamageResult,
   TalentBuff,
   Vision,
-  AttackElement,
   NormalAttack,
   ResistanceReduction,
   DamageTypes,
@@ -227,7 +226,9 @@ export default function getDamage(
       (!debuff.isGranted || debuff.isGranted(char)) &&
       debuff.applyDebuff
     ) {
-      debuff.applyDebuff({ ...wrapper3, fromSelf: true, inputs, desc: `Self / ${debuff.src}` });
+      const desc = `Self / ${debuff.src}`;
+      const validatedInputs = inputs || debuff.inputConfig?.initialValues || [];
+      debuff.applyDebuff({ ...wrapper3, fromSelf: true, inputs: validatedInputs, desc });
     }
   }
 
@@ -240,7 +241,8 @@ export default function getDamage(
 
         if (activated && debuff && debuff.applyDebuff) {
           const desc = `${teammate} / ${debuff.src}`;
-          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs, desc });
+          const validatedInputs = inputs || debuff.inputConfig?.initialValues || [];
+          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs: validatedInputs, desc });
         }
       }
     }

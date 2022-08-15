@@ -73,7 +73,8 @@ function applySelfBuffs(
         continue;
       }
       const desc = `Self / ${buff.src}`;
-      applyFn({ ...wrapper, ...wrapper2, partyData, inputs, toSelf: true, desc });
+      const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+      applyFn({ ...wrapper, ...wrapper2, partyData, inputs: validatedInputs, toSelf: true, desc });
     }
   }
 }
@@ -225,7 +226,8 @@ export default function getBuffedStats(
       const applyFn = buff.applyBuff || buff.applyFinalBuff;
       if (activated && applyFn) {
         const desc = `${teammate} / ${buff.src}`;
-        const wrapper3 = { char, inputs, infusion, party, partyData, desc };
+        const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+        const wrapper3 = { char, inputs: validatedInputs, infusion, party, partyData, desc };
         applyFn({ ...wrapper1, ...wrapper3, toSelf: false, charBuffCtrls: teammate.buffCtrls });
       }
     }

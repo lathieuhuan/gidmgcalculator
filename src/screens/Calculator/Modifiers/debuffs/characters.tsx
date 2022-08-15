@@ -16,7 +16,7 @@ import { ModifierLayout } from "@Src/styled-components";
 import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
-import { findCharacter, getPartyData } from "@Data/controllers";
+import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
@@ -33,7 +33,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
 
   const content: JSX.Element[] = [];
 
-  selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
+  selfDebuffCtrls.forEach(({ index, activated, inputs }, ctrlIndex) => {
     const debuff = findByIndex(debuffs, index);
 
     if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
@@ -45,11 +45,12 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
 
       if (debuff.inputConfig) {
         const { selfLabels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
+        const validatedInputs = inputs || initialValues;
 
         setters = (
           <CharModSetters
             labels={selfLabels}
-            inputs={inputs}
+            inputs={validatedInputs}
             renderTypes={renderTypes}
             initialValues={initialValues}
             onTextChange={(value, i) =>
@@ -57,12 +58,12 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
-                  value: processNumInput(value, +inputs[i], maxValues?.[i] || undefined),
+                  value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
                 })
               )
             }
             onToggleCheck={(i) =>
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !inputs[i] }))
+              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }))
             }
             onSelect={(value, i) =>
               dispatch(
@@ -84,7 +85,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
             dispatch(toggleModCtrl(path));
           }}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char, inputs, partyData })}
+          desc={debuff.desc({ fromSelf: true, char, inputs: inputs || [], partyData })}
           setters={setters}
         />
       );
@@ -126,7 +127,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   const { vision, debuffs = [] } = tmData;
   const subContent: JSX.Element[] = [];
 
-  teammate.debuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
+  teammate.debuffCtrls.forEach(({ activated, index, inputs }, ctrlIndex) => {
     const debuff = findByIndex(debuffs, index);
     if (!debuff) return;
 
@@ -139,11 +140,12 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
 
     if (debuff.inputConfig) {
       const { labels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
+      const validatedInputs = inputs || initialValues;
 
       setters = (
         <CharModSetters
           labels={labels}
-          inputs={inputs}
+          inputs={validatedInputs}
           renderTypes={renderTypes}
           initialValues={initialValues}
           onTextChange={(value, i) =>
@@ -151,7 +153,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: processNumInput(value, +inputs[i], maxValues?.[i] || undefined),
+                value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
               })
             )
           }
@@ -160,7 +162,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: !inputs[i],
+                value: !validatedInputs[i],
               })
             )
           }
@@ -182,7 +184,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={debuff.src}
-        desc={debuff.desc({ fromSelf: false, char, inputs, partyData })}
+        desc={debuff.desc({ fromSelf: false, char, inputs: inputs || [], partyData })}
         setters={setters}
       />
     );
