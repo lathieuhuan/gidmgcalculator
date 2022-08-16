@@ -1,14 +1,14 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELLER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DataCharacter = {
-  ...TRAVELLER_INFO,
   code: 46,
   name: "Electro Traveler",
+  ...TRAVELER_INFO,
   vision: "electro",
   NAsConfig: {
     name: "Foreign Thundershock",

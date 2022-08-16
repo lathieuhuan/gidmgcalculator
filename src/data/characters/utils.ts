@@ -4,6 +4,8 @@ import type {
   ModifierCtrl,
   TalentBuff,
   AttackPatternInfoKey,
+  CalcCharData,
+  PartyData,
 } from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
@@ -26,6 +28,16 @@ export const checkCons = {
   4: makeConsChecker(4),
   6: makeConsChecker(6),
 };
+
+export function countVisionTypes(charData: CalcCharData, partyData: PartyData) {
+  const existed = [charData.vision];
+
+  partyData.forEach(({ vision }) => {
+    if (!existed.includes(vision)) existed.push(vision);
+  });
+
+  return existed.length;
+}
 
 export const makeTrackerDesc = (isAscs: boolean, level: number) => {
   return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;

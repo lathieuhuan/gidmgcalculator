@@ -28,6 +28,12 @@ import Raiden from "./electro/Raiden";
 import Razor from "./electro/Razor";
 import Sara from "./electro/Sara";
 import Shinobu from "./electro/Shinobu";
+import YaeMiko from "./electro/YaeMiko";
+import GeoMC from "./geo/GeoMC";
+import Gorou from "./geo/Gorou";
+import Itto from "./geo/Itto";
+import Ningguang from "./geo/Ningguang";
+import YunJin from "./geo/YunJin";
 
 const characters = [
   Albedo,
@@ -43,12 +49,16 @@ const characters = [
   Eula,
   Fischl,
   Ganyu,
+  GeoMC,
+  Gorou,
   Heizor,
   Jean,
   Kazuha,
   Kaeya,
   Keqing,
+  Itto,
   Lisa,
+  Ningguang,
   Qiqi,
   Raiden,
   Razor,
@@ -60,6 +70,8 @@ const characters = [
   Sucrose,
   Venti,
   Xiao,
+  YaeMiko,
+  YunJin,
 ];
 
 export default characters;

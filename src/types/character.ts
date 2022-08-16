@@ -80,6 +80,7 @@ export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
 
 type GetTalentBuffArgs = {
   char: CharInfo;
+  charData: CalcCharData;
   partyData: PartyData;
   totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];

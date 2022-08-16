@@ -63,6 +63,7 @@ export default function calculateAll(
   );
   const damage = getDamage(
     char,
+    charData,
     selfBuffCtrls,
     selfDebuffCtrls,
     party,

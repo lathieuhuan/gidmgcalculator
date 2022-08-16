@@ -1,14 +1,14 @@
 import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELLER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
 const AnemoMC: DataCharacter = {
-  name: "Anemo Traveler",
   code: 1,
-  ...TRAVELLER_INFO,
+  name: "Anemo Traveler",
+  ...TRAVELER_INFO,
   vision: "anemo",
   NAsConfig: {
     name: "Foreign Ironwind",

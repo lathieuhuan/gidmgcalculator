@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 type SpanExtraColor = "gold" | "lightgold" | "lightred" | "green" | "orange";
 
 interface SpanProps extends HTMLAttributes<HTMLSpanElement> {
-  className?: "string";
+  className?: string;
   b?: boolean;
 }
 const makeSpan = (color: `text-${Vision | SpanExtraColor}`) => {

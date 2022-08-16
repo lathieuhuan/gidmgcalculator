@@ -20,6 +20,7 @@ import {
   AttackPatternBonus,
   AttackElementBonus,
   StatInfo,
+  CalcCharData,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
@@ -185,6 +186,7 @@ function calcTalentStat(
 
 export default function getDamage(
   char: CharInfo,
+  charData: CalcCharData,
   selfBuffCtrls: ModifierCtrl[],
   selfDebuffCtrls: ModifierCtrl[],
   party: Party,
@@ -292,7 +294,14 @@ export default function getDamage(
 
       if (stat.getTalentBuff) {
         talentBuff =
-          stat.getTalentBuff({ char, selfBuffCtrls, selfDebuffCtrls, totalAttr, partyData }) || {};
+          stat.getTalentBuff({
+            char,
+            charData,
+            selfBuffCtrls,
+            selfDebuffCtrls,
+            totalAttr,
+            partyData,
+          }) || {};
       }
 
       // CALCULATE BASE DAMAGE
