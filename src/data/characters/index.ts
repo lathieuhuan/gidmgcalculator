@@ -34,16 +34,31 @@ import Gorou from "./geo/Gorou";
 import Itto from "./geo/Itto";
 import Ningguang from "./geo/Ningguang";
 import YunJin from "./geo/YunJin";
+import Zhongli from "./geo/Zhongli";
+import Barbara from "./hydro/Barbara";
+import Mona from "./hydro/Mona";
+import Tartaglia from "./hydro/Tartaglia";
+import Xingqiu from "./hydro/Xingqiu";
+import Yelan from "./hydro/Yelan";
+import Amber from "./pyro/Amber";
+import Bennett from "./pyro/Bennett";
+import Diluc from "./pyro/Diluc";
+import HuTao from "./pyro/HuTao";
 
 const characters = [
   Albedo,
+  Amber,
   Aloy,
   Ayato,
   AnemoMC,
   Ayaka,
+  Barbara,
   Beidou,
+  Bennett,
   Chongyun,
   Diona,
+  Diluc,
+  HuTao,
   Dori,
   ElectroMC,
   Eula,
@@ -58,6 +73,7 @@ const characters = [
   Keqing,
   Itto,
   Lisa,
+  Mona,
   Ningguang,
   Qiqi,
   Raiden,
@@ -68,10 +84,14 @@ const characters = [
   Shinobu,
   Shenhe,
   Sucrose,
+  Tartaglia,
   Venti,
   Xiao,
+  Xingqiu,
   YaeMiko,
+  Yelan,
   YunJin,
+  Zhongli,
 ];
 
 export default characters;

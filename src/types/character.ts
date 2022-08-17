@@ -181,7 +181,7 @@ export type AbilityBuff = AbilityModifier & {
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
-type ApplyCharBuffArgs = {
+export type ApplyCharBuffArgs = {
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
