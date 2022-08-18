@@ -1,7 +1,7 @@
 import type { ApplyCharDebuffFn, DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -47,12 +47,7 @@ const Venti: DataCharacter = {
         { name: "6-Hit", baseMult: 70.95 },
       ],
     },
-    CA: {
-      stats: [
-        { name: "Aimed Shot", baseMult: 43.86 },
-        { name: "Fully-charged Aimed Shot", dmgTypes: ["CA", "anemo"], baseMult: 124, multType: 8 },
-      ],
-    },
+    CA: { stats: BOW_CAs },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Skyward Sonnet",

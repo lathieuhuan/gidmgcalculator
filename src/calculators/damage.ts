@@ -30,7 +30,7 @@ import {
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
-import { applyModifier, pushOrMergeTrackerRecord } from "./utils";
+import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord } from "./types";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
@@ -280,8 +280,7 @@ export default function getDamage(
   ATTACK_PATTERNS.forEach((attPatt) => {
     const talent = activeTalents[attPatt];
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
-    const defaultAttElmt = resultKey === "NAs" && weapon !== "catalyst" ? "phys" : vision;
-    const defaultMultType = defaultAttElmt === "phys" ? 1 : 2;
+    const defaultInfo = getDefaultStatInfo(resultKey, weapon, vision);
     const level = finalTalentLv(char, resultKey, partyData);
 
     if (resultKey !== "NAs") {
@@ -306,7 +305,7 @@ export default function getDamage(
 
       // CALCULATE BASE DAMAGE
       let base;
-      const { baseStatType = "atk", baseMult, multType = defaultMultType, flat } = stat;
+      const { baseStatType = "atk", baseMult, multType = defaultInfo.multType, flat } = stat;
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
         baseValue: totalAttr[baseStatType],
@@ -338,7 +337,7 @@ export default function getDamage(
 
       finalResult[resultKey][stat.name] = calcTalentStat(
         stat,
-        [attPatt, defaultAttElmt],
+        [attPatt, defaultInfo.attElmt],
         base,
         char,
         vision,

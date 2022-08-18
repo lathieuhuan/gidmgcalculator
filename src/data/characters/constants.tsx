@@ -75,8 +75,6 @@ export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
     0, 1, 1.081, 1.163, 1.279, 1.361, 1.454, 1.581, 1.709, 1.837, 1.977, 2.116, 2.256, 2.395, 2.535,
     2.675,
   ],
-  // diona, venti Full Aim Shot
-  8: [0, 1, 1.075, 1.15, 1.25, 1.325, 1.4, 1.5, 1.6, 1.7, 1.8, 1.904, 2.04, 2.176, 2.312, 2.448],
 };
 
 export const TRAVELER_INFO = {

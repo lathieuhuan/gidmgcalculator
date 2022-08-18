@@ -33,8 +33,8 @@ const goldBows: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         applyBuff: ({ desc, refi, totalAttr, attPattBonus, tracker }) => {
-          const bnValue = totalAttr.em * (1.2 + 0.4 * refi);
-          applyModifier(desc, attPattBonus, "CA.flat", bnValue, tracker);
+          const buffValue = totalAttr.em * (1.2 + 0.4 * refi);
+          applyModifier(desc, attPattBonus, "CA.flat", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 133)!.passiveDesc({ refi }).extra![0],
       },
@@ -133,8 +133,8 @@ const goldBows: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const bnValue = polarStarBuffValuesByStack(refi)[+inputs![0] - 1];
-          applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
+          const buffValue = polarStarBuffValuesByStack(refi)[+inputs![0] - 1];
+          applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 6)!.passiveDesc({ refi }).extra![0],
       },
@@ -182,8 +182,8 @@ const goldBows: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = thunderingPulseBuffValuesByStack(refi)[+inputs![0] - 1];
-          applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
+          const buffValue = thunderingPulseBuffValuesByStack(refi)[+inputs![0] - 1];
+          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 7)!.passiveDesc({ refi }).extra![0],
       },
@@ -231,8 +231,8 @@ const goldBows: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = (6 + refi * 2) * +inputs![0];
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], bnValue, tracker);
+          const buffValue = (6 + refi * 2) * +inputs![0];
+          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 8)!.passiveDesc({ refi }).extra![0],
       },

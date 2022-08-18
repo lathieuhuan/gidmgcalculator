@@ -18,8 +18,8 @@ export const RoyalSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const bnValue = (6 + refi * 2) * getInput(inputs, 0);
-        applyModifier(desc, totalAttr, "cRate", bnValue, tracker);
+        const buffValue = (6 + refi * 2) * getInput(inputs, 0);
+        applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
       desc: ({ refi }) => RoyalSeries.passiveDesc({ refi }).core,
     },
@@ -47,8 +47,8 @@ export const BlackcliffSeries: SeriesInfo = {
         initialValues: [3],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const bnValue = (9 + refi * 3) * (inputs![0] as number);
-        applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
+        const buffValue = (9 + refi * 3) * (inputs![0] as number);
+        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => BlackcliffSeries.passiveDesc({ refi }).core,
     },
@@ -133,11 +133,11 @@ export const LiyueSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        let bnValue = (3 + refi) * (inputs![0] as number);
+        let buffValue = (3 + refi) * (inputs![0] as number);
         if (inputs![1]) {
-          bnValue *= 2;
+          buffValue *= 2;
         }
-        applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
+        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => LiyueSeries.passiveDesc!({ refi }).extra![0],
     },
@@ -231,8 +231,8 @@ export const WatatsumiSeries: SeriesInfo = {
   applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
     if (partyData && attPattBonus) {
       const maxEnergy = partyData.reduce((result, data) => result + data.EBcost, charData.EBcost);
-      const bnValue = round2(maxEnergy * (0.09 + refi * 0.03));
-      applyModifier(desc, attPattBonus, "EB.pct", bnValue, tracker);
+      const buffValue = round2(maxEnergy * (0.09 + refi * 0.03));
+      applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
     }
   },
   passiveName: "Watatsumi Wavewalker",

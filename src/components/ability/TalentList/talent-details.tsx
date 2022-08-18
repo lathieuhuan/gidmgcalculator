@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import cn from "classnames";
-import type { GetExtraStatsFn, StatInfo, Talent } from "@Src/types";
+import type { GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
 
 import { StatsTable } from "@Components/StatsTable";
 import { Select } from "@Src/styled-components";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
+import { getDefaultStatInfo } from "@Src/calculators/utils";
 
 const { Row } = StatsTable;
 const styles = {
@@ -17,14 +18,18 @@ const styles = {
 interface SkillAttributesProps {
   stats: StatInfo[];
   talentType: Talent;
+  vision: Vision;
+  weapon: Weapon;
   energyCost?: number;
   getExtraStats?: GetExtraStatsFn;
 }
 export function SkillAttributes({
-  talentType,
   stats,
-  getExtraStats,
+  talentType,
+  vision,
+  weapon,
   energyCost,
+  getExtraStats,
 }: SkillAttributesProps) {
   const [level, setLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
@@ -72,28 +77,31 @@ export function SkillAttributes({
         )}
       </div>
       <StatsTable>
-        {stats.map((stat, i) => {
-          const { baseMult, multType, baseStatType, flat } = stat;
+        {!isStatic &&
+          stats.map((stat, i) => {
+            const defaultInfo = getDefaultStatInfo(talentType, weapon, vision);
+            const { baseMult, multType = defaultInfo.multType, baseStatType, flat } = stat;
 
-          return stat.conditional ? null : (
-            <Row key={i} className={styles.row}>
-              <p className={styles.leftCol}>{stat.name}</p>
-              <p className={styles.rightCol}>
-                <b>
-                  {Array.isArray(baseMult)
-                    ? baseMult
-                        .map((mult) => getValue(mult, multType, level, true, baseStatType))
-                        .join("+")
-                    : baseMult
-                    ? getValue(baseMult, multType, level, true, baseStatType)
-                    : null}
-                  {baseMult && flat && " + "}
-                  {flat && getValue(flat.base, flat.type, level, false)}
-                </b>
-              </p>
-            </Row>
-          );
-        })}
+            return stat.conditional ? null : (
+              <Row key={i} className={styles.row}>
+                <p className={styles.leftCol}>{stat.name}</p>
+                <p className={styles.rightCol}>
+                  <b>
+                    {Array.isArray(baseMult)
+                      ? baseMult
+                          .map((mult) => getValue(mult, multType, level, true, baseStatType))
+                          .join("+")
+                      : baseMult
+                      ? getValue(baseMult, multType, level, true, baseStatType)
+                      : null}
+                    {baseMult && flat && " + "}
+                    {flat && getValue(flat.base, flat.type, level, false)}
+                  </b>
+                </p>
+              </Row>
+            );
+          })}
+
         {getExtraStats
           ? getExtraStats(level).map((stat, j) => (
               <Row key={"extra-" + j} className={styles.row}>
@@ -126,7 +134,7 @@ function getValue(
   } else {
     result = Math.round(result);
   }
-  return cn(result, isPct && "%", baseStatType);
+  return cn(result + (isPct ? "%" : ""), baseStatType);
 }
 
 interface LevelButtonProps {

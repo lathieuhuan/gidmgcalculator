@@ -68,7 +68,6 @@ const Ayato: DataCharacter = {
   bonusStat: { type: "cDmg", value: 9.6 },
   NAsConfig: {
     name: "Kamisato Art - Marobashi",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

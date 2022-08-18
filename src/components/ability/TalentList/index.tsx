@@ -185,6 +185,7 @@ function Details({
         <SkillAttributes
           stats={stats}
           talentType={type}
+          {...{ weapon, vision }}
           energyCost={type === "EB" ? EB.energyCost : undefined}
           getExtraStats={getExtraStats}
         />

@@ -46,7 +46,6 @@ const Mona: DataCharacter = {
   bonusStat: { type: "er", value: 8 },
   NAsConfig: {
     name: "Ripple of Fate",
-    caStamina: 50,
   },
   activeTalents: {
     NA: {

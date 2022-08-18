@@ -64,8 +64,8 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const bnValue = (3 + refi * 1) * (inputs![0] as number);
-          applyModifier(desc, totalAttr, ["atk_", "def_"], bnValue, tracker);
+          const buffValue = (3 + refi * 1) * (inputs![0] as number);
+          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
       },
@@ -172,8 +172,8 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = (4.5 + refi * 1.5) * getInput(inputs, 0);
-          applyModifier(desc, attPattBonus, "all.pct", bnValue, tracker);
+          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0);
+          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,
       },
@@ -236,8 +236,8 @@ const purpleSwords: DataWeapon[] = [
     subStat: { type: "def_", scale: "15%" },
     applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
       if (attPattBonus) {
-        const bnValue = applyPercent(totalAttr.def, 30 + refi * 10);
-        applyModifier(desc, attPattBonus, "ES.flat", bnValue, tracker);
+        const buffValue = applyPercent(totalAttr.def, 30 + refi * 10);
+        applyModifier(desc, attPattBonus, "ES.flat", buffValue, tracker);
       }
     },
     passiveName: "Spotless Heart",

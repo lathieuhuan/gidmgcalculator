@@ -12,7 +12,6 @@ const GeoMC: DataCharacter = {
   vision: "geo",
   NAsConfig: {
     name: "Foreign Rockblade",
-    caStamina: 20,
   },
   activeTalents: {
     ...TRAVELLER_NCPAs,

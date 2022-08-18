@@ -123,8 +123,8 @@ const goldClaymores: DataWeapon[] = [
     applyBuff: makeWpModApplier("totalAttr", "def_", 7),
     applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
       if (attPattBonus) {
-        const bnValue = applyPercent(totalAttr.def, 30 + refi * 10);
-        applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], bnValue, tracker);
+        const buffValue = applyPercent(totalAttr.def, 30 + refi * 10);
+        applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       }
     },
     passiveName: "Gokadaiou Otogibanashi",

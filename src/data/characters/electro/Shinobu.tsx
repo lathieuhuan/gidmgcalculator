@@ -19,7 +19,7 @@ const Shinobu: DataCharacter = {
   code: 52,
   name: "Shinobu",
   icon: "3/37/Character_Kuki_Shinobu_Thumb",
-  sideIcon: "",
+  sideIcon: "3/38/Character_Kuki_Shinobu_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "electro",
@@ -43,7 +43,6 @@ const Shinobu: DataCharacter = {
   bonusStat: { type: "hp_", value: 6 },
   NAsConfig: {
     name: "Shinobu's Shadowsword",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

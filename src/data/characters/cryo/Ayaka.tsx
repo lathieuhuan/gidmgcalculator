@@ -34,7 +34,6 @@ const Ayaka: DataCharacter = {
   bonusStat: { type: "cDmg", value: 9.6 },
   NAsConfig: {
     name: "Kamisato Art: Kabuki",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

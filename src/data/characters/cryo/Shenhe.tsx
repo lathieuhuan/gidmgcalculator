@@ -126,20 +126,20 @@ const Shenhe: DataCharacter = {
         initialValues: [0, 1],
         maxValues: [9999, 13],
       },
-      applyFinalBuff: (args) => {
-        const { toSelf, inputs } = args;
-        const ATK = toSelf ? args.totalAttr.atk : +inputs![0];
-        const level = toSelf ? finalTalentLv(args.char, "ES", args.partyData) : +inputs![1];
+      applyFinalBuff: (obj) => {
+        const { toSelf, inputs } = obj;
+        const ATK = toSelf ? obj.totalAttr.atk : +inputs![0];
+        const level = toSelf ? finalTalentLv(obj.char, "ES", obj.partyData) : +inputs![1];
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraDesc = ` / Lv. ${level} / ${round2(mult)}% of ${ATK} ATK`;
 
         increaseAttackBonus({
-          ...args,
-          mainCharVision: args.charData.vision,
+          ...obj,
+          mainCharVision: obj.charData.vision,
           element: "cryo",
           type: "flat",
           value: applyPercent(ATK, mult),
-          desc: args.desc + xtraDesc,
+          desc: obj.desc + xtraDesc,
         });
       },
     },
@@ -205,10 +205,10 @@ const Shenhe: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.PARTY,
-      applyBuff: (args) => {
+      applyBuff: (obj) => {
         increaseAttackBonus({
-          ...args,
-          mainCharVision: args.charData.vision,
+          ...obj,
+          mainCharVision: obj.charData.vision,
           element: "cryo",
           type: "cDmg",
           value: 15,

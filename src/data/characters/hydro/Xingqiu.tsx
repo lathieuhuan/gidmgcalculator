@@ -33,7 +33,6 @@ const Xingqiu: DataCharacter = {
   bonusStat: { type: "atk_", value: 6 },
   NAsConfig: {
     name: "Guhua Style",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

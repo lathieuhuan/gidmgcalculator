@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -44,12 +44,7 @@ const Diona: DataCharacter = {
         { name: "5-Hit", baseMult: 53.75 },
       ],
     },
-    CA: {
-      stats: [
-        { name: "Aimed Shot", baseMult: 43.86, multType: 1 },
-        { name: "Fully-charged Aimed Shot", dmgTypes: ["CA", "cryo"], baseMult: 124, multType: 8 },
-      ],
-    },
+    CA: { stats: BOW_CAs },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Icy Paws",

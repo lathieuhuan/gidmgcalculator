@@ -29,8 +29,6 @@ export default function SideIconCarousel({
   const chosenChar = useSelector(selectChosenChar);
   const dispatch = useDispatch();
 
-  console.log(characterNames);
-
   const scrollList = (name: string) => () => {
     if (characterListRef.current) {
       characterListRef.current.scrollLeft = characterNames.indexOf(name) * 84;
@@ -67,47 +65,49 @@ export default function SideIconCarousel({
           </div>
         ) : null}
 
-        <div ref={characterListRef} className="mt-2 flex w-full hide-scrollbar">
-          {characterNames.length ? (
-            characterNames.map((name) => {
-              const databaseChar = findCharacter({ name });
-              if (!databaseChar) {
-                return null;
-              }
-              const { beta, sideIcon, icon } = databaseChar;
+        <div ref={characterListRef} className="mt-2 w-full hide-scrollbar">
+          <div className="flex">
+            {characterNames.length ? (
+              characterNames.map((name) => {
+                const databaseChar = findCharacter({ name });
+                if (!databaseChar) {
+                  return null;
+                }
+                const { beta, sideIcon, icon } = databaseChar;
 
-              return (
-                <div
-                  key={name}
-                  className={cn(
-                    "mx-1 border-b-3 border-transparent cursor-pointer",
-                    name === chosenChar && styles["active-cell"]
-                  )}
-                  onClick={() => dispatch(chooseCharacter(name))}
-                >
+                return (
                   <div
+                    key={name}
                     className={cn(
-                      "rounded-circle border-3 border-lesser/30  bg-black/30",
-                      styles["icon-wrapper"],
-                      sideIcon
-                        ? cn("m-2", styles["side-icon-wrapper"])
-                        : cn("m-1 overflow-hidden", styles["beta-icon-wrapper"])
+                      "mx-1 border-b-3 border-transparent cursor-pointer",
+                      name === chosenChar && styles["active-cell"]
                     )}
+                    onClick={() => dispatch(chooseCharacter(name))}
                   >
-                    <img
-                      src={beta ? icon : wikiImg(sideIcon || icon)}
-                      alt="icon"
-                      draggable={false}
-                    />
+                    <div
+                      className={cn(
+                        "rounded-circle border-3 border-lesser/30  bg-black/30",
+                        styles["icon-wrapper"],
+                        sideIcon
+                          ? cn("m-2", styles["side-icon-wrapper"])
+                          : cn("m-1 overflow-hidden", styles["beta-icon-wrapper"])
+                      )}
+                    >
+                      <img
+                        src={beta ? icon : wikiImg(sideIcon || icon)}
+                        alt="icon"
+                        draggable={false}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="w-full h-20 flex justify-end items-center">
-              <p className="text-h2 font-bold text-lightgold">Add New Characters {">>"}</p>
-            </div>
-          )}
+                );
+              })
+            ) : (
+              <div className="w-full h-20 flex justify-end items-center">
+                <p className="text-h2 font-bold text-lightgold">Add New Characters {">>"}</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <button

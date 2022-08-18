@@ -12,7 +12,6 @@ const ElectroMC: DataCharacter = {
   vision: "electro",
   NAsConfig: {
     name: "Foreign Thundershock",
-    caStamina: 20,
   },
   activeTalents: {
     ...TRAVELLER_NCPAs,

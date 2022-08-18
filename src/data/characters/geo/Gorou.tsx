@@ -243,13 +243,13 @@ const Gorou: DataCharacter = {
       },
       isGranted: checkCons[6],
       affect: EModAffect.PARTY,
-      applyBuff: (args) => {
+      applyBuff: (obj) => {
         increaseAttackBonus({
-          ...args,
+          ...obj,
           element: "geo",
           type: "cDmg",
-          value: [10, 20, 40, 40][countGeo(args.charData, args.partyData) - 1],
-          mainCharVision: args.charData.vision,
+          value: [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1],
+          mainCharVision: obj.charData.vision,
         });
       },
     },

@@ -37,8 +37,8 @@ const purpleBows: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = fadingTwilightBuffValuesByState(refi)[+inputs![0] - 1];
-          applyModifier(desc, attPattBonus, "all.pct", bnValue, tracker);
+          const buffValue = fadingTwilightBuffValuesByState(refi)[+inputs![0] - 1];
+          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleBows, 126)!.passiveDesc({ refi }).extra![0],
       },
@@ -86,8 +86,8 @@ const purpleBows: DataWeapon[] = [
           maxValues: [10],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = (1.5 + refi * 0.5) * +inputs![0];
-          applyModifier(desc, attPattBonus, "all.pct", bnValue, tracker);
+          const buffValue = (1.5 + refi * 0.5) * +inputs![0];
+          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleBows, 12)!.passiveDesc({ refi }).extra![0],
       },

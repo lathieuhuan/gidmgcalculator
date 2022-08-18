@@ -57,8 +57,8 @@ const goldCatalysts: DataWeapon[] = [
     applyBuff: makeWpModApplier("totalAttr", "healBn", 2.5),
     applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
       if (attPattBonus) {
-        const bnValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
-        applyModifier(desc, attPattBonus, "NA.flat", bnValue, tracker);
+        const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
+        applyModifier(desc, attPattBonus, "NA.flat", buffValue, tracker);
       }
     },
     passiveName: "Byakuya Kougetsu",

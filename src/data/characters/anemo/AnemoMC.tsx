@@ -12,7 +12,6 @@ const AnemoMC: DataCharacter = {
   vision: "anemo",
   NAsConfig: {
     name: "Foreign Ironwind",
-    caStamina: 20,
   },
   activeTalents: {
     ...TRAVELLER_NCPAs,

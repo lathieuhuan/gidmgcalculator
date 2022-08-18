@@ -40,7 +40,6 @@ const Kazuha: DataCharacter = {
   bonusStat: { type: "em", value: 28.8 },
   NAsConfig: {
     name: "Garyuu Bladework",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {
@@ -133,8 +132,8 @@ const Kazuha: DataCharacter = {
         maxValues: [0, 9999],
       },
       applyBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
-        const bnValue = ascs4BuffValue(toSelf, totalAttr, inputs);
-        applyModifier(desc, totalAttr, inputs[0] as Vision, bnValue, tracker);
+        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
+        applyModifier(desc, totalAttr, inputs[0] as Vision, buffValue, tracker);
       },
     },
     {

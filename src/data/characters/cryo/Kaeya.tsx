@@ -33,7 +33,6 @@ const Kaeya: DataCharacter = {
   bonusStat: { type: "er", value: 6.7 },
   NAsConfig: {
     name: "Ceremonial Bladework",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

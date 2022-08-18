@@ -78,7 +78,7 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
       </div>
 
       <div className="px-4 pt-2 pb-4 h-[90%]">
-        <div className="pr-4 full-h overflow-auto custom-scrollbar">
+        <div className="pr-4 h-full overflow-auto custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               return (

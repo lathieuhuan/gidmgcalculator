@@ -13,6 +13,8 @@ import type {
   AttacklementInfoKey,
   Vision,
   FinalInfusion,
+  AttackPattern,
+  Weapon,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
@@ -41,10 +43,6 @@ export function pushOrMergeTrackerRecord(
   }
 }
 
-/**
- * addMod
- * */
-
 export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey}`;
 
 export type AttackElementPath = `${AttackElement}.${AttacklementInfoKey}`;
@@ -70,6 +68,9 @@ export type ModRecipientKey =
 
 type RootValue = number | number[];
 
+/**
+ * add modifier
+ * */
 export function applyModifier(
   desc: string | undefined,
   recipient: TotalAttribute,
@@ -134,9 +135,6 @@ export function applyModifier(
   });
 }
 
-/**
- * addModMaker
- * */
 export type RecipientName =
   | "totalAttr"
   | "attPattBonus"
@@ -152,6 +150,9 @@ interface ModApplierArgs {
   tracker: Tracker;
 }
 
+/**
+ * add modifier maker
+ * */
 export function makeModApplier(
   recipientName: "totalAttr",
   keys: AttributeStat | AttributeStat[],
@@ -233,3 +234,19 @@ export function increaseAttackBonus({
     }
   }
 }
+
+export const getDefaultStatInfo = (
+  key: "NAs" | "ES" | "EB",
+  weapon: Weapon,
+  vision: Vision
+): {
+  attElmt: AttackElement;
+  multType: number;
+} => {
+  const attElmt = key === "NAs" && weapon !== "catalyst" ? "phys" : vision;
+
+  return {
+    attElmt,
+    multType: attElmt === "phys" ? 1 : 2,
+  };
+};

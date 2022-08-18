@@ -33,9 +33,12 @@ const Kokomi: DataCharacter = {
     [13471, 234, 657],
   ],
   bonusStat: { type: "hydro", value: 7.2 },
+  innerStats: [
+    { type: "cRate", value: -100 },
+    { type: "healBn", value: 25 },
+  ],
   NAsConfig: {
     name: "The Shape of Water",
-    caStamina: 50,
   },
   activeTalents: {
     NA: {
@@ -130,19 +133,19 @@ const Kokomi: DataCharacter = {
       ),
       isGranted: () => true,
       affect: EModAffect.SELF,
-      applyFinalBuff: (args) => {
-        const { char } = args;
+      applyFinalBuff: (obj) => {
+        const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
-        const level = finalTalentLv(char, "EB", args.partyData);
+        const level = finalTalentLv(char, "EB", obj.partyData);
 
         const bnValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];
-          if (charModCtrlIsActivated(Kokomi.buffs!, char, args.charBuffCtrls, 1) && i !== 2) {
-            finalMult += args.totalAttr.healBn * 0.15;
+          if (charModCtrlIsActivated(Kokomi.buffs!, char, obj.charBuffCtrls, 1) && i !== 2) {
+            finalMult += obj.totalAttr.healBn * 0.15;
           }
-          return applyPercent(args.totalAttr.hp, finalMult);
+          return applyPercent(obj.totalAttr.hp, finalMult);
         });
-        applyModifier(args.desc, args.attPattBonus, fields, bnValues, args.tracker);
+        applyModifier(obj.desc, obj.attPattBonus, fields, bnValues, obj.tracker);
       },
     },
     {

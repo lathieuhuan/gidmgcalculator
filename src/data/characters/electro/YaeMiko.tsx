@@ -33,7 +33,6 @@ const YaeMiko: DataCharacter = {
   bonusStat: { type: "cRate", value: 4.8 },
   NAsConfig: {
     name: "Spiritfox Sin-Eater",
-    caStamina: 50,
   },
   activeTalents: {
     NA: {

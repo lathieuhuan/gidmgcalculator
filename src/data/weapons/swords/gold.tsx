@@ -26,8 +26,8 @@ const goldSwords: DataWeapon[] = [
           initialValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const bnValue = (15 + refi * 5) * getInput(inputs, 0);
-          applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
+          const buffValue = (15 + refi * 5) * getInput(inputs, 0);
+          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
       },
@@ -79,8 +79,8 @@ const goldSwords: DataWeapon[] = [
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { stackValues } = findByCode(goldSwords, 101)!;
-          const bnValue = stackValues!({ refi })[+inputs![0] - 1];
-          applyModifier(desc, totalAttr, charData.vision, bnValue, tracker);
+          const buffValue = stackValues!({ refi })[+inputs![0] - 1];
+          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
       },
@@ -236,9 +236,9 @@ const goldSwords: DataWeapon[] = [
     applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;
-      const bnValue = applyPercent(totalAttr.hp, bnPct);
+      const buffValue = applyPercent(totalAttr.hp, bnPct);
       const xtraDesc = ` / ${bnPct}% of ${totalAttr.hp} HP`;
-      applyModifier(desc + xtraDesc, totalAttr, "atk", bnValue, tracker);
+      applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
     },
     passiveName: "Protector's Virtue",
     passiveDesc: ({ refi }) => ({

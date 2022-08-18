@@ -258,8 +258,8 @@ const Raiden: DataCharacter = {
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, desc, tracker }) => {
-        const bnValue = getBuffValue.A4(totalAttr);
-        applyModifier(desc, totalAttr, "electro", bnValue, tracker);
+        const buffValue = getBuffValue.A4(totalAttr);
+        applyModifier(desc, totalAttr, "electro", buffValue, tracker);
       },
     },
     {

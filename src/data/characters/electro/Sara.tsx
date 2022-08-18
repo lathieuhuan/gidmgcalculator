@@ -115,13 +115,13 @@ const Sara: DataCharacter = {
         renderTypes: ["text", "text"],
         maxValues: [9999, 13],
       },
-      applyBuff: (args) => {
-        const buffValueArgs = args.toSelf
-          ? [args.totalAttr.base_atk, finalTalentLv(args.char, "ES", args.partyData)]
-          : args.inputs!.map((i) => +i);
+      applyBuff: (obj) => {
+        const buffValueArgs = obj.toSelf
+          ? [obj.totalAttr.base_atk, finalTalentLv(obj.char, "ES", obj.partyData)]
+          : obj.inputs!.map((i) => +i);
         const [bonusValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
-        const desc = `${args.desc} / Lv. ${xtraDesc}`;
-        applyModifier(desc, args.totalAttr, "atk", bonusValue, args.tracker);
+        const desc = `${obj.desc} / Lv. ${xtraDesc}`;
+        applyModifier(desc, obj.totalAttr, "atk", bonusValue, obj.tracker);
       },
     },
     {
@@ -135,13 +135,13 @@ const Sara: DataCharacter = {
       ),
       isGranted: checkCons[6],
       affect: EModAffect.PARTY,
-      applyBuff: (args) => {
+      applyBuff: (obj) => {
         increaseAttackBonus({
-          ...args,
+          ...obj,
           element: "electro",
           type: "cDmg",
           value: 60,
-          mainCharVision: args.charData.vision,
+          mainCharVision: obj.charData.vision,
         });
       },
     },

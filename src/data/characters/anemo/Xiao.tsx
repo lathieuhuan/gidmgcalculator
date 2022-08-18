@@ -128,8 +128,8 @@ const Xiao: DataCharacter = {
       ),
       affect: EModAffect.SELF,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
-        const bnValue = getEBBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], bnValue, tracker);
+        const buffValue = getEBBuffValue(char, partyData);
+        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], buffValue, tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

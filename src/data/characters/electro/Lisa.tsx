@@ -32,7 +32,6 @@ const Lisa: DataCharacter = {
   bonusStat: { type: "em", value: 24 },
   NAsConfig: {
     name: "Lightning Touch",
-    caStamina: 50,
   },
   activeTalents: {
     NA: {

@@ -33,7 +33,6 @@ const Albedo: DataCharacter = {
   bonusStat: { type: "geo", value: 7.2 },
   NAsConfig: {
     name: "Favonius Bladework - Weiss",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {
@@ -143,8 +142,8 @@ const Albedo: DataCharacter = {
         maxValues: [4],
       },
       applyFinalBuff: ({ totalAttr, attPattBonus, charBuffCtrls, desc, tracker }) => {
-        const bnValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
-        applyModifier(desc, attPattBonus, "EB.flat", Math.round(bnValue), tracker);
+        const buffValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
+        applyModifier(desc, attPattBonus, "EB.flat", Math.round(buffValue), tracker);
       },
     },
     {

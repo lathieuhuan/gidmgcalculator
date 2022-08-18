@@ -165,9 +165,9 @@ const YunJin: DataCharacter = {
           tlMult += xtraMult;
         }
 
-        const bnValue = applyPercent(DEF, tlMult);
+        const buffValue = applyPercent(DEF, tlMult);
         desc += ` / ${round2(tlMult)}% of ${DEF} DEF`;
-        applyModifier(desc, obj.attPattBonus, "NA.flat", bnValue, obj.tracker);
+        applyModifier(desc, obj.attPattBonus, "NA.flat", buffValue, obj.tracker);
       },
     },
     {

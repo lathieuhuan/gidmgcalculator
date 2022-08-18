@@ -32,7 +32,6 @@ const Sucrose: DataCharacter = {
   bonusStat: { type: "anemo", value: 6 },
   NAsConfig: {
     name: "Wind Spirit Creation",
-    caStamina: 50,
   },
   activeTalents: {
     NA: {

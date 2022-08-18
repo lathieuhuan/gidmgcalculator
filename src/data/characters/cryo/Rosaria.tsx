@@ -115,8 +115,8 @@ const Rosaria: DataCharacter = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const bnValue = Math.round(+inputs![0] * 1.5) / 10;
-        applyModifier(desc, totalAttr, "cRate", bnValue, tracker);
+        const buffValue = Math.round(+inputs![0] * 1.5) / 10;
+        applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
     },
     {

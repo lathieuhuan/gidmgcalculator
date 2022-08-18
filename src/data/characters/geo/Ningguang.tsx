@@ -33,7 +33,6 @@ const Ningguang: DataCharacter = {
   bonusStat: { type: "geo", value: 6 },
   NAsConfig: {
     name: "Sparkling Scatter",
-    caStamina: 50,
   },
   activeTalents: {
     NA: { stats: [{ name: "Normal Attack", baseMult: 28 }] },

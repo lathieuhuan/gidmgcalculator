@@ -151,8 +151,8 @@ const Itto: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv(char, "EB", partyData);
         const fields: AttributeStat[] = ["atk", "naAtkSpd"];
-        const bnValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
-        applyModifier(desc, totalAttr, fields, [bnValue, 10], tracker);
+        const buffValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
+        applyModifier(desc, totalAttr, fields, [buffValue, 10], tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

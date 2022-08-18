@@ -88,16 +88,16 @@ const goldPolearms: DataWeapon[] = [
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const ER = round1(totalAttr.er - 100);
       const mult = 21 + refi * 7;
-      let bnValue = (ER / 100) * mult;
-      let xtraDesc = ` / ${mult}% of ${ER}% Energy Rechare => ${round2(bnValue)}%`;
+      let buffValue = (ER / 100) * mult;
+      let xtraDesc = ` / ${mult}% of ${ER}% Energy Rechare => ${round2(buffValue)}%`;
       const limit = 70 + refi * 10;
-      if (bnValue > limit) {
-        bnValue = limit;
+      if (buffValue > limit) {
+        buffValue = limit;
         xtraDesc += ` (limited to ${limit}%)`;
       }
-      xtraDesc += ` ATK = ${totalAttr.base_atk} * ${roundMaker(4)(bnValue / 100)}`;
-      bnValue = applyPercent(totalAttr.base_atk, bnValue);
-      applyModifier(desc + xtraDesc, totalAttr, "atk", bnValue, tracker);
+      xtraDesc += ` ATK = ${totalAttr.base_atk} * ${roundMaker(4)(buffValue / 100)}`;
+      buffValue = applyPercent(totalAttr.base_atk, buffValue);
+      applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
     },
     buffs: [
       {
@@ -138,17 +138,17 @@ const goldPolearms: DataWeapon[] = [
     applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const mult = 0.6 + refi * 0.2;
-      const bnValue = applyPercent(totalAttr.hp, mult);
+      const buffValue = applyPercent(totalAttr.hp, mult);
       const xtraDesc = ` / ${mult}% of ${totalAttr.hp} HP`;
-      applyModifier(desc + xtraDesc, totalAttr, "atk", bnValue, tracker);
+      applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const [bnValue, xtraDesc] = getStaffOfHomaBuffValue(totalAttr, refi);
-          applyModifier(desc + xtraDesc, totalAttr, "atk", bnValue, tracker);
+          const [buffValue, xtraDesc] = getStaffOfHomaBuffValue(totalAttr, refi);
+          applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
         },
         desc: ({ refi, totalAttr }) => (
           <>
@@ -205,11 +205,11 @@ const goldPolearms: DataWeapon[] = [
           maxValues: [6],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          let bnValue = (2.4 + refi * 0.8) * +inputs![0];
+          let buffValue = (2.4 + refi * 0.8) * +inputs![0];
           if (inputs![1]) {
-            bnValue *= 2;
+            buffValue *= 2;
           }
-          applyModifier(desc, totalAttr, "atk_", bnValue, tracker);
+          applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldPolearms, 82)!.passiveDesc({ refi }).extra![0],
       },

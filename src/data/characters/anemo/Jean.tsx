@@ -33,7 +33,6 @@ const Jean: DataCharacter = {
   bonusStat: { type: "healBn", value: 5.5 },
   NAsConfig: {
     name: "Favonius Bladework",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

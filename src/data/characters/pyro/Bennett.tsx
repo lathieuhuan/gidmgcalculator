@@ -6,7 +6,7 @@ import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
 
-const getEBBuffValue = ([baseATK, level, boosted]: ModifierInput[]): [number, string] => {
+function getEBBuffValue([baseATK, level, boosted]: ModifierInput[]): [number, string] {
   let mult = 56 * TALENT_LV_MULTIPLIERS[2][+level];
   let desc = level;
 
@@ -15,7 +15,7 @@ const getEBBuffValue = ([baseATK, level, boosted]: ModifierInput[]): [number, st
     desc += ` / C1: 20% extra`;
   }
   return [applyPercent(+baseATK, mult), desc + ` / ${round2(mult)}% of ${baseATK} Base ATK`];
-};
+}
 
 const Bennett: DataCharacter = {
   code: 19,
@@ -45,7 +45,6 @@ const Bennett: DataCharacter = {
   bonusStat: { type: "er", value: 6.7 },
   NAsConfig: {
     name: "Strike of Fortune",
-    caStamina: 20,
   },
   activeTalents: {
     NA: {

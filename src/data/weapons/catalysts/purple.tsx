@@ -173,8 +173,8 @@ const purpleCatalysts: DataWeapon[] = [
             applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
           } else {
             const field = inputs![0] === "Recitative" ? "atk_" : "em";
-            const bnValue = inputs![0] === "Recitative" ? 45 + refi * 15 : 180 + refi * 60;
-            applyModifier(desc, totalAttr, field, bnValue, tracker);
+            const buffValue = inputs![0] === "Recitative" ? 45 + refi * 15 : 180 + refi * 60;
+            applyModifier(desc, totalAttr, field, buffValue, tracker);
           }
         },
         desc: ({ refi }) => findByCode(purpleCatalysts, 41)!.passiveDesc({ refi }).core,

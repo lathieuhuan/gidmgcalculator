@@ -43,9 +43,12 @@ export type DataCharacter = {
     type: AttackElement | ArtifactPercentStat | "em" | "healBn";
     value: number;
   };
+  innerStats?: Array<{
+    type: AttackElement | ArtifactPercentStat | "em" | "healBn";
+    value: number;
+  }>;
   NAsConfig: {
     name: string;
-    caStamina?: number;
     getExtraStats?: GetExtraStatsFn;
   };
   activeTalents: {
@@ -135,6 +138,8 @@ type ElementalBurst = ElementalSkill & { energyCost: number };
 type NoStatsAbility = {
   name: string;
   image: string;
+  desc?: JSX.Element;
+  xtraDesc?: JSX.Element[];
 };
 
 type AbilityModifier = {
@@ -209,7 +214,7 @@ type DebuffInputConfig = InputConfig & {
 export type ApplyCharDebuffFn = (args: {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
-  // #to-check
+  // may need in future
   // selfDebuffCtrls: ModifierCtrl[];
   char: CharInfo;
   inputs?: ModifierInput[];
