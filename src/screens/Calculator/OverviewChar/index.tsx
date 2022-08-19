@@ -40,7 +40,7 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
           {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
           <img
             className="w-24 cursor-pointer"
-            src={wikiImg(icon)}
+            src={beta ? icon : wikiImg(icon)}
             alt={char.name}
             draggable={false}
           />

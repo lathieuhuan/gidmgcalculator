@@ -190,7 +190,7 @@ function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
         if (renderTypes[i] === "stacks") {
           options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
         } //
-        else if (renderTypes[i] === "swirl") {
+        else if (renderTypes[i] === "anemoable") {
           options = ["pyro", "hydro", "electro", "cryo"];
         }
 

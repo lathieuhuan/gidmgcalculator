@@ -4,6 +4,7 @@ import type {
   AttackPatternBonus,
   CalcCharData,
   ModifierInput,
+  PartyData,
   ReactionBonus,
   ResistanceReduction,
   TotalAttribute,
@@ -34,12 +35,14 @@ type ApplyArtPassiveBuffArgs = {
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
   charData: CalcCharData;
+  partyData?: PartyData;
   desc?: string;
   tracker?: Tracker;
 };
 
 type SetBonus = {
   desc: JSX.Element;
+  xtraDesc?: JSX.Element[];
   applyBuff?: (args: ApplyArtPassiveBuffArgs) => void;
   applyFinalBuff?: (args: ApplyArtPassiveBuffArgs) => void;
 };
@@ -66,8 +69,8 @@ export type ArtifactBuff = {
   affect: EModAffect;
   inputConfig?: {
     labels: string[];
-    initialValues: number[];
-    renderTypes: ("stacks" | "swirl")[];
+    renderTypes: ("stacks" | "anemoable")[];
+    initialValues: ModifierInput[];
     maxValues?: number[];
   };
   applyBuff?: (args: ApplyArtBuffArgs) => void;
@@ -76,8 +79,10 @@ export type ArtifactBuff = {
 
 type ArtifactDebuff = {
   desc: () => JSX.Element;
-  labels: string[];
-  inputTypes: "swirl"[];
+  inputConfig?: {
+    labels: string[];
+    renderTypes: "anemoable"[];
+  };
   applyDebuff: (args: {
     resistReduct: ResistanceReduction;
     inputs?: ModifierInput[];

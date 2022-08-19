@@ -1,5 +1,8 @@
-import mondstadt from "./mondstadt";
+import mondstadtSets from "./sets-mondstadt";
+import liyueSets from "./sets-liyue";
+import inazumaSets from "./sets-inazuma";
+import sumeruSets from "./sets-sumeru";
 
-const artifacts = mondstadt;
+const artifacts = sumeruSets.concat(liyueSets, mondstadtSets, inazumaSets);
 
 export default artifacts;

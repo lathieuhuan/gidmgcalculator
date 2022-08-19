@@ -1,10 +1,10 @@
 import type { AttackElement, DataArtifact } from "@Src/types";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { Green } from "@Src/styled-components";
-import { findByCode } from "@Src/utils";
 import { EModAffect } from "@Src/constants";
+import { findByCode } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 
-const mondstadt: DataArtifact[] = [
+const mondstadtSets: DataArtifact[] = [
   {
     code: 13,
     name: "Gladiator's Finale",
@@ -154,8 +154,10 @@ const mondstadt: DataArtifact[] = [
             <Green b>40%</Green> for 10s.
           </>
         ),
-        labels: ["Element swirled"],
-        inputTypes: ["swirl"],
+        inputConfig: {
+          labels: ["Element swirled"],
+          renderTypes: ["anemoable"],
+        },
         applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
           const key = inputs![0] as AttackElement;
           if (key in resistReduct) {
@@ -228,10 +230,7 @@ const mondstadt: DataArtifact[] = [
       name: "Omen of Thunderstorm",
       icon: "c/cd/Item_Omen_of_Thunderstorm",
     },
-    circlet: {
-      name: "Thunder Summoner's Crown",
-      icon: "a/a5/Item_Thunder_Summoner%27s_Crown",
-    },
+    circlet: { name: "Thunder Summoner's Crown", icon: "a/a5/Item_Thunder_Summoner%27s_Crown" },
     setBonuses: [
       {
         desc: (
@@ -292,7 +291,7 @@ const mondstadt: DataArtifact[] = [
     ],
     buffs: [
       {
-        desc: () => findByCode(mondstadt, 18)!.setBonuses[1].desc,
+        desc: () => findByCode(mondstadtSets, 18)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", "all.pct", 35),
       },
@@ -413,7 +412,7 @@ const mondstadt: DataArtifact[] = [
     ],
     buffs: [
       {
-        desc: () => findByCode(mondstadt, 20)!.setBonuses[1].desc,
+        desc: () => findByCode(mondstadtSets, 20)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 30),
       },
@@ -421,4 +420,4 @@ const mondstadt: DataArtifact[] = [
   },
 ];
 
-export default mondstadt;
+export default mondstadtSets;

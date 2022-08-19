@@ -1,5 +1,11 @@
-import { MyArtifact3_0, MyCharacter3_0, MyWeapon3_0 } from "@Src/models";
-import { UsersArtifact, UsersCharacter, UsersSetup, UsersWeapon } from "@Src/types";
+import { MyArtifact3_0, MyCharacter3_0, MySetup3_0, MyWeapon3_0 } from "@Src/models";
+import {
+  UsersArtifact,
+  UsersCharacter,
+  UsersComplexSetup,
+  UsersSetup,
+  UsersWeapon,
+} from "@Src/types";
 import { plainToInstance } from "class-transformer";
 
 const ERROR = {
@@ -19,21 +25,26 @@ export function adjustDatabase(data: AdjustDatabaseArgs) {
   }
   const transformConfigs = { excludeExtraneousValues: true };
 
-  const Characters: UsersCharacter[] = plainToInstance(
-    MyCharacter3_0,
-    data.Characters,
+  const Characters: UsersCharacter[] = plainToInstance(MyCharacter3_0, data.Characters, {
+    ...transformConfigs,
+    groups: ["charInfo"],
+  });
+
+  const Weapons: UsersWeapon[] = plainToInstance(MyWeapon3_0, data.Weapons, {
+    ...transformConfigs,
+    groups: ["item"],
+  });
+
+  const Artifacts: UsersArtifact[] = plainToInstance(MyArtifact3_0, data.Artifacts, {
+    ...transformConfigs,
+    groups: ["item"],
+  });
+
+  const Setups: (UsersSetup | UsersComplexSetup)[] = plainToInstance(
+    MySetup3_0,
+    data.Setups,
     transformConfigs
   );
-
-  const Weapons: UsersWeapon[] = plainToInstance(MyWeapon3_0, data.Weapons, transformConfigs);
-
-  const Artifacts: UsersArtifact[] = plainToInstance(
-    MyArtifact3_0,
-    data.Artifacts,
-    transformConfigs
-  );
-
-  const Setups: UsersSetup[] = [];
 
   return {
     version: 3,

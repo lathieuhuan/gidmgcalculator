@@ -132,7 +132,7 @@ export default function getBuffedStats(
 
   addWpSubStat(totalAttr, wpData, weapon.level, tracker);
   applyWpPassiveBuffs(false, wpData, refi, wrapper1, partyData);
-  applyArtPassiveBuffs(false, artInfo.sets, wrapper1);
+  applyArtPassiveBuffs(false, artInfo.sets, wrapper1, partyData);
 
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {

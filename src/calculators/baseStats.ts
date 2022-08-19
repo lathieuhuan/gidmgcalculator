@@ -125,16 +125,21 @@ export function addWpSubStat(
   }
 }
 
-export function applyArtPassiveBuffs(isFinal: boolean, sets: CalcArtSet[], wrapper: Wrapper1) {
+export function applyArtPassiveBuffs(
+  isFinal: boolean,
+  sets: CalcArtSet[],
+  wrapper: Wrapper1,
+  partyData?: PartyData
+) {
   for (const { code, bonusLv } of sets) {
     //
     for (let i = 0; i <= bonusLv; i++) {
       const { applyBuff, applyFinalBuff } = findArtifactSet({ code })!.setBonuses[i];
 
       if (!isFinal && applyBuff) {
-        applyBuff(wrapper);
+        applyBuff({ ...wrapper, partyData });
       } else if (isFinal && applyFinalBuff) {
-        applyFinalBuff(wrapper);
+        applyFinalBuff({ ...wrapper, partyData });
       }
     }
   }

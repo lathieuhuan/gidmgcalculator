@@ -1,4 +1,4 @@
-export * from "./statsMap";
+export * from "./maps";
 
 export enum EScreen {
   CALCULATOR = "Calculator",
