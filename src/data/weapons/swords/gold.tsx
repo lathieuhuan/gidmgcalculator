@@ -31,12 +31,6 @@ const goldSwords: DataWeapon[] = [
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
       },
-      // index: 0,
-      // outdated: true,
-      // - When the character equipping this weapon uses an Elemental Skill, all stacks of
-      // Wavespike will be consumed to gain Ripping Upheaval. <Green>Each stack</Green> of
-      // wavepike consumed will increase <Green>Normal Attack DMG</Green> by <Green b>8%</Green>{" "}
-      // for 8s.
     ],
     passiveName: "Honed Flow",
     passiveDesc: ({ refi }) => ({
@@ -75,7 +69,8 @@ const goldSwords: DataWeapon[] = [
         inputConfig: {
           labels: ["Stacks"],
           renderTypes: ["stacks"],
-          initialValues: [3],
+          initialValues: [1],
+          maxValues: [3],
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { stackValues } = findByCode(goldSwords, 101)!;

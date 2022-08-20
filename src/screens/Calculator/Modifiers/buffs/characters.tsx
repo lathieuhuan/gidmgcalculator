@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
-import { ModifierLayout } from "@Src/styled-components";
+import { ModifierTemplate } from "@Src/styled-components";
 import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
@@ -84,7 +84,7 @@ export function SelfBuffs() {
         );
       }
       content.push(
-        <ModifierLayout
+        <ModifierTemplate
           key={ctrlIndex}
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
@@ -193,7 +193,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
       );
     }
     subContent.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}

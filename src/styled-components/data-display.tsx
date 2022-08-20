@@ -36,7 +36,7 @@ interface ModifierLayoutProps {
   setters?: JSX.Element | JSX.Element[] | null;
   onToggle: () => void;
 }
-export function ModifierLayout({
+export function ModifierTemplate({
   mutable = true,
   checked,
   heading,

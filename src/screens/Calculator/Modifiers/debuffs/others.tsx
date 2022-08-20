@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactSet } from "@Data/controllers";
 
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
-import { Green, ModifierLayout, Select } from "@Src/styled-components";
+import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 
 export function ElementDebuffs() {
   const { resonance, superconduct } = useSelector(selectElmtModCtrls);
@@ -19,7 +19,7 @@ export function ElementDebuffs() {
 
   return (
     <>
-      <ModifierLayout
+      <ModifierTemplate
         checked={superconduct}
         onToggle={() => dispatch(toggleElementModCtrl())}
         heading="Superconduct"
@@ -31,7 +31,7 @@ export function ElementDebuffs() {
         }
       />
       {geoResonance && (
-        <ModifierLayout
+        <ModifierTemplate
           key="rock"
           checked={geoResonance.activated}
           onToggle={() => dispatch(toggleResonance("geo"))}
@@ -95,7 +95,7 @@ export function ArtifactDebuffs() {
       );
     }
     content.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={ctrlIndex}
         checked={ctrl.activated}
         onToggle={() => dispatch(toggleModCtrl(path))}

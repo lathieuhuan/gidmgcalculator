@@ -14,6 +14,7 @@ import goldSwords from "./swords/gold";
 import otherSwords from "./swords/others";
 import purpleSwords from "./swords/purple";
 
+// total 138
 const weapons = {
   bow: goldBows.concat(purpleBows, otherBows),
   catalyst: goldCatalysts.concat(purpleCatalysts, otherCatalysts),

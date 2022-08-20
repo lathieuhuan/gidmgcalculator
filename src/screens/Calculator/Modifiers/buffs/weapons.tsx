@@ -12,7 +12,7 @@ import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors"
 import { findWeapon } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 
-import { ModifierLayout, Checkbox, Select } from "@Src/styled-components";
+import { ModifierTemplate, Checkbox, Select } from "@Src/styled-components";
 import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
 
 export default function WeaponBuffs() {
@@ -26,17 +26,18 @@ export default function WeaponBuffs() {
   );
   const dispatch = useDispatch();
 
-  const mainBuffs = findWeapon(weapon)!.buffs || [];
+  const { name, buffs: mainBuffs = [] } = findWeapon(weapon)!;
   const content: JSX.Element[] = [];
 
   weaponBuffCtrls.forEach(({ activated, index, inputs }, ctrlIndex) => {
     const buff = findByIndex(mainBuffs, index);
+
     if (!buff) return;
     let setters = null;
 
     if (buff.inputConfig) {
       setters = [];
-      const { labels, renderTypes, maxValues } = buff.inputConfig;
+      const { labels, renderTypes, initialValues, maxValues } = buff.inputConfig;
 
       labels.forEach((label, i) => {
         let input = null;
@@ -45,6 +46,7 @@ export default function WeaponBuffs() {
           case "check":
             input = (
               <Checkbox
+                key={i}
                 className="mr-1"
                 checked={!!inputs?.[i]}
                 onChange={() =>
@@ -61,19 +63,20 @@ export default function WeaponBuffs() {
             );
             break;
           case "stacks":
-            const options = genNumberSequence(maxValues?.[i], maxValues?.[i] === 0);
+            const options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
             input = (
               <Select
+                key={i}
                 className={twInputStyles.select}
-                value={inputs?.[index].toString()}
-                onChange={() => {
+                value={inputs?.[i].toString()}
+                onChange={(e) => {
                   if (inputs) {
                     dispatch(
                       changeModCtrlInput({
                         modCtrlName: "allWpBuffCtrls",
                         ctrlIndex,
                         inputIndex: i,
-                        value: +inputs[i],
+                        value: +e.target.value,
                       })
                     );
                   }
@@ -91,8 +94,9 @@ export default function WeaponBuffs() {
         }
       });
     }
+
     content.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={weapon.code.toString() + ctrlIndex}
         checked={activated}
         onToggle={() =>
@@ -149,7 +153,7 @@ export default function WeaponBuffs() {
         );
       }
       content.push(
-        <ModifierLayout
+        <ModifierTemplate
           key={code.toString() + ctrlIndex}
           checked={activated}
           onToggle={() => dispatch(toggleSubWpModCtrl(path))}

@@ -12,7 +12,7 @@ import {
 } from "@Store/calculatorSlice";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
-import { ModifierLayout } from "@Src/styled-components";
+import { ModifierTemplate } from "@Src/styled-components";
 import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
@@ -78,7 +78,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         );
       }
       content.push(
-        <ModifierLayout
+        <ModifierTemplate
           key={ctrlIndex}
           checked={activated}
           onToggle={() => {
@@ -179,7 +179,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
       );
     }
     subContent.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}

@@ -210,8 +210,6 @@ export default function getDamage(
   const { activeTalents, weapon, vision, debuffs } = findCharacter(char)!;
   const wrapper3 = { char, resistReduct, attPattBonus, partyData, tracker };
 
-  const finalResult = {} as DamageResult;
-
   // APPLY CUSTOM DEBUFFS
   for (const { type, value } of customDebuffCtrls) {
     resistReduct[type] += value;
@@ -274,19 +272,25 @@ export default function getDamage(
     resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
 
-  finalResult.NAs = {};
-  if (tracker) tracker.NAs = {};
+  const finalResult = {
+    NAs: {},
+    ES: {},
+    EB: {},
+    RXN: {},
+  } as DamageResult;
+
+  if (tracker) {
+    tracker.NAs = {};
+    tracker.ES = {};
+    tracker.EB = {};
+    tracker.RXN = {};
+  }
 
   ATTACK_PATTERNS.forEach((attPatt) => {
     const talent = activeTalents[attPatt];
     const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
     const defaultInfo = getDefaultStatInfo(resultKey, weapon, vision);
     const level = finalTalentLv(char, resultKey, partyData);
-
-    if (resultKey !== "NAs") {
-      finalResult[resultKey] = {};
-      if (tracker) tracker[resultKey] = {};
-    }
 
     for (const stat of talent.stats) {
       let talentBuff: TalentBuff = {};
@@ -356,9 +360,6 @@ export default function getDamage(
       }
     }
   });
-
-  finalResult.RXN = {};
-  if (tracker) tracker.RXN = {};
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     let base = BASE_REACTION_DAMAGE[bareLv(char.level)];

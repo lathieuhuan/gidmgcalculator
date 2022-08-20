@@ -12,7 +12,48 @@ import {
 } from "../series";
 import { getInput, makeWpModApplier } from "../utils";
 
+import sapwoodBladeImage from "@Src/assets/images/sapwood-blade.png";
+
 const purpleSwords: DataWeapon[] = [
+  {
+    code: 134,
+    beta: true,
+    name: "Sapwood Blade",
+    icon: sapwoodBladeImage,
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "er", scale: "6.7%" },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        applyBuff: makeWpModApplier("totalAttr", "em", 60),
+        desc: ({ refi }) => findByCode(purpleSwords, 134)!.passiveDesc({ refi }).extra![0],
+      },
+    ],
+    passiveName: "Forest Sanctuary",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
+            Leaf of Consciousness will be created around the character for a maximum of 10s.{" "}
+            {this.extra![0]} {this.extra![1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          When picked up, the Leaf will grant the character <Green b>{45 + refi * 15}</Green>{" "}
+          <Green>Elemental Mastery</Green> for 12s.
+        </>,
+        <>
+          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the
+          character is not on the field. The Leaf of Consciousness' effect cannot stack.
+        </>,
+      ],
+    }),
+  },
   {
     code: 109,
     name: "The Alley Flash",

@@ -1,46 +1,75 @@
-import type { AttackElementPath, AttackPatternPath, ModRecipientKey, RecipientName } from "@Src/calculators/utils";
-import type { AttackElement, AttributeStat, Level, ModifierInput, ReactionBonusKey } from "@Src/types";
+import type {
+  AttackElementPath,
+  AttackPatternPath,
+  ModRecipientKey,
+  RecipientName,
+} from "@Src/calculators/utils";
+import type {
+  AttackElement,
+  AttributeStat,
+  Level,
+  ModifierInput,
+  ReactionBonusKey,
+} from "@Src/types";
 import { applyModifier } from "@Src/calculators/utils";
 import { LEVELS } from "@Src/constants";
-import { bareLv } from "@Src/utils";
+import { bareLv, pickOne } from "@Src/utils";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
 
-type RootScale = number | number[];
+type NumOrArrayNum = number | number[];
 
 export function makeWpModApplier(
   recipientName: "totalAttr",
   keys: AttributeStat | AttributeStat[],
-  rootScale: RootScale
+  baseBuffValue: NumOrArrayNum,
+  divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "attPattBonus",
   keys: AttackPatternPath | AttackPatternPath[],
-  rootScale: RootScale
+  baseBuffValue: NumOrArrayNum,
+  divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "attElmtBonus",
   keys: AttackElementPath | AttackElementPath[],
-  rootScale: RootScale
+  baseBuffValue: NumOrArrayNum,
+  divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "rxnBonus",
   keys: ReactionBonusKey | ReactionBonusKey[],
-  rootScale: RootScale
+  baseBuffValue: NumOrArrayNum,
+  divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "resisReduct",
   keys: (AttackElement | "def") | (AttackElement | "def")[],
-  rootScale: RootScale
+  baseBuffValue: NumOrArrayNum,
+  divider?: NumOrArrayNum
 ): (args: any) => void;
 
-export function makeWpModApplier(recipientName: RecipientName, keys: ModRecipientKey, rootScale: RootScale) {
+export function makeWpModApplier(
+  recipientName: RecipientName,
+  keys: ModRecipientKey,
+  baseBuffValue: NumOrArrayNum,
+  divider: NumOrArrayNum = 4
+) {
   return (args: any) => {
-    const { refi, desc, tracker } = args;
-    const rootValue = Array.isArray(rootScale)
-      ? rootScale.map((scale) => scale * (refi + 3))
-      : rootScale * (refi + 3);
     if (args[recipientName]) {
-      applyModifier(desc, args[recipientName], keys as any, rootValue, tracker);
+      const { refi, desc, tracker } = args;
+      let buffValue = baseBuffValue;
+
+      if (refi > 1) {
+        const calcValue = (baseValue: number, divider: number) => {
+          const fraction = baseValue / divider;
+          return fraction * (divider - 1 + refi);
+        };
+        buffValue = Array.isArray(baseBuffValue)
+          ? baseBuffValue.map((value, i) => calcValue(value, pickOne(divider, i)))
+          : calcValue(baseBuffValue, pickOne(divider, 0));
+      }
+      applyModifier(desc, args[recipientName], keys as any, buffValue, tracker);
     }
   };
 }

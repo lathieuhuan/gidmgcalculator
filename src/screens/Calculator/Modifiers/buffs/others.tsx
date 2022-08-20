@@ -22,7 +22,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 import { renderAmpReactionDesc } from "@Components/minors";
-import { Green, ModifierLayout, Select } from "@Src/styled-components";
+import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";
@@ -59,7 +59,7 @@ export function ElememtBuffs() {
 
   elmtModCtrls.resonance.forEach((rsn) => {
     content.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={rsn.vision}
         checked={rsn.activated}
         onToggle={() => dispatch(toggleResonance(rsn.vision))}
@@ -86,7 +86,7 @@ function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
   const renderBuff = (reaction: AmplifyingReaction) => {
     const activated = ampReaction === reaction;
     return (
-      <ModifierLayout
+      <ModifierTemplate
         key={reaction}
         checked={activated}
         onToggle={() =>
@@ -135,7 +135,7 @@ export function ArtifactBuffs() {
       ctrlIndex,
     };
     content.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={mainCode.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
@@ -157,7 +157,7 @@ export function ArtifactBuffs() {
       ctrlIndex,
     };
     content.push(
-      <ModifierLayout
+      <ModifierTemplate
         key={code.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}

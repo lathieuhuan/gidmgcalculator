@@ -292,14 +292,21 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
+      const { currentIndex } = state;
       const weapon = action.payload;
-      const subWpBuffCtrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weapon.type];
+      const subWpBuffCtrls = state.allSubWpComplexBuffCtrls[currentIndex][weapon.type];
 
-      state.allWeapons[state.currentIndex] = weapon;
+      const oldWeapon = { ...state.allWeapons[currentIndex] };
+      state.allWeapons[currentIndex] = weapon;
+      state.allWpBuffCtrls[currentIndex] = getMainWpBuffCtrls(weapon);
 
       if (subWpBuffCtrls) {
-        subWpBuffCtrls.splice(indexByCode(subWpBuffCtrls, weapon.code), 1);
-        subWpBuffCtrls.push(...getSubWeaponBuffCtrls(weapon));
+        const existIndex = indexByCode(subWpBuffCtrls, weapon.code);
+
+        if (existIndex !== -1) {
+          subWpBuffCtrls.splice(existIndex, 1);
+        }
+        subWpBuffCtrls.push(...getSubWeaponBuffCtrls(oldWeapon));
       }
       calculate(state);
     },

@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Tighnari: DataCharacter = {
   code: 54,
@@ -50,6 +50,14 @@ const Tighnari: DataCharacter = {
         { name: "Level 1 Aimed Shot", dmgTypes: ["CA", "dendro"], baseMult: 124, multType: 2 },
         { name: "Wreath Arrow DMG", dmgTypes: ["CA", "dendro"], baseMult: 87.2, multType: 2 },
         { name: "Clusterbloom Arrow DMG", dmgTypes: ["CA", "dendro"], baseMult: 38.6, multType: 2 },
+        {
+          name: "Additional Clusterbloom Arrow DMG",
+          conditional: true,
+          dmgTypes: ["CA", "dendro"],
+          baseMult: 0,
+          multType: 2,
+          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 150]),
+        },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -157,7 +165,8 @@ const Tighnari: DataCharacter = {
       desc: (
         <>
           Wreath Arrow's charging time is decreased by 0.9s, and will produce <Green b>1</Green>{" "}
-          <Green>additional Clusterbloom Arrow</Green> upon hit.
+          <Green>additional Clusterbloom Arrow</Green> upon hit. This arrow deals{" "}
+          <Green b>150%</Green> of Tighnari's <Green>ATK</Green> as DMG.
         </>
       ),
     },
