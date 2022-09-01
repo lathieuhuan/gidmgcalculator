@@ -1,6 +1,6 @@
 import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { makeWpModApplier } from "../utils";
+import { getInput, makeWpModApplier } from "../utils";
 import { findByCode } from "@Src/utils";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { applyModifier } from "@Src/calculators/utils";
@@ -24,7 +24,7 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "er", 6),
+        applyBuff: makeWpModApplier("totalAttr", "er", 24),
         desc: ({ refi }) => findByCode(purpleCatalysts, 123)!.passiveDesc({ refi }).core,
       },
     ],
@@ -49,7 +49,7 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
         desc: ({ refi }) => findByCode(purpleCatalysts, 37)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -90,7 +90,7 @@ const purpleCatalysts: DataWeapon[] = [
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { vision } = charData;
-          if (vision === "electro" || vision === inputs![0]) {
+          if (vision === "electro" || vision === getInput(inputs, 0, "")) {
             applyModifier(desc, totalAttr, vision, 7.5 + refi * 2.5, tracker);
           }
         },
@@ -136,7 +136,8 @@ const purpleCatalysts: DataWeapon[] = [
           maxValues: [2],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, [...VISION_TYPES], (6 + refi * 2) * +inputs![0], tracker);
+          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleCatalysts, 40)!.passiveDesc({ refi }).core,
       },
@@ -169,11 +170,13 @@ const purpleCatalysts: DataWeapon[] = [
           // options: [["Recitative", "Aria", "Interlude"]],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          if (inputs![0] === "Aria") {
+          const buffType = getInput(inputs, 0, "Aria");
+
+          if (buffType === "Aria") {
             applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
           } else {
-            const field = inputs![0] === "Recitative" ? "atk_" : "em";
-            const buffValue = inputs![0] === "Recitative" ? 45 + refi * 15 : 180 + refi * 60;
+            const field = buffType === "Recitative" ? "atk_" : "em";
+            const buffValue = buffType === "Recitative" ? 45 + refi * 15 : 180 + refi * 60;
             applyModifier(desc, totalAttr, field, buffValue, tracker);
           }
         },
@@ -213,13 +216,13 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 5),
+        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 20),
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)!.passiveDesc({ refi }).extra![0],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 5),
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)!.passiveDesc({ refi }).extra![1],
       },
     ],
@@ -291,13 +294,13 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 4),
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 16),
         desc: ({ refi }) => findByCode(purpleCatalysts, 47)!.passiveDesc({ refi }).extra![0],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 2),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 8),
         desc: ({ refi }) => findByCode(purpleCatalysts, 47)!.passiveDesc({ refi }).extra![1],
       },
     ],

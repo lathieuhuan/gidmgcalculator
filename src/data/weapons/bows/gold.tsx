@@ -1,9 +1,9 @@
 import type { DataWeapon } from "@Src/types";
+import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { Green } from "@Src/styled-components";
-import { makeWpModApplier } from "../utils";
 import { applyModifier } from "@Src/calculators/utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const polarStarBuffValuesByStack = (refi: number) => [
   7.5 + refi * 2.5,
@@ -11,7 +11,6 @@ const polarStarBuffValuesByStack = (refi: number) => [
   22.5 + refi * 7.5,
   36 + refi * 12,
 ];
-
 const thunderingPulseBuffValuesByStack = (refi: number) => [
   9 + refi * 3,
   18 + refi * 6,
@@ -27,13 +26,13 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         applyBuff: ({ desc, refi, totalAttr, attPattBonus, tracker }) => {
-          const buffValue = totalAttr.em * (1.2 + 0.4 * refi);
+          const buffValue = totalAttr.em * (1.2 + refi * 0.4);
           applyModifier(desc, attPattBonus, "CA.flat", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 133)!.passiveDesc({ refi }).extra![0],
@@ -67,12 +66,12 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg", scale: "19.2%" },
-    applyBuff: makeWpModApplier("totalAttr", "hp", 4),
+    applyBuff: makeWpModApplier("totalAttr", "hp", 16),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 5),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
         desc: ({ refi }) => findByCode(goldBows, 125)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -101,7 +100,7 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cRate", scale: "4.8%" },
-    applyBuff: makeWpModApplier("totalAttr", "cDmg", 5),
+    applyBuff: makeWpModApplier("totalAttr", "cDmg", 20),
     passiveName: "Echoing Ballad",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -121,7 +120,7 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 3),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 12),
     buffs: [
       {
         index: 0,
@@ -133,7 +132,7 @@ const goldBows: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = polarStarBuffValuesByStack(refi)[+inputs![0] - 1];
+          const buffValue = polarStarBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 6)!.passiveDesc({ refi }).extra![0],
@@ -170,7 +169,7 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg", scale: "14.4%" },
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
     buffs: [
       {
         index: 0,
@@ -182,7 +181,7 @@ const goldBows: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = thunderingPulseBuffValuesByStack(refi)[+inputs![0] - 1];
+          const buffValue = thunderingPulseBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 7)!.passiveDesc({ refi }).extra![0],
@@ -219,7 +218,7 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 3),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 12),
     buffs: [
       {
         index: 0,
@@ -231,7 +230,7 @@ const goldBows: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * +inputs![0];
+          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 8)!.passiveDesc({ refi }).extra![0],
@@ -263,12 +262,12 @@ const goldBows: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er", scale: "12%" },
-    applyBuff: makeWpModApplier("totalAttr", "em", 15),
+    applyBuff: makeWpModApplier("totalAttr", "em", 60),
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [25, 5]),
+        applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [100, 20]),
         desc: ({ refi }) => findByCode(goldBows, 9)!.passiveDesc({ refi }).extra![0],
       },
     ],

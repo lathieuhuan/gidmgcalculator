@@ -31,7 +31,7 @@ const otherCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
         desc: ({ refi }) => findByCode(otherCatalysts, 27)!.passiveDesc({ refi }).core,
       },
     ],
@@ -83,7 +83,7 @@ const otherCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.TEAMMATE,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 6),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
         desc: ({ refi }) => findByCode(otherCatalysts, 29)!.passiveDesc({ refi }).core,
       },
     ],

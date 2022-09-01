@@ -34,7 +34,7 @@ const otherPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 6),
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 24),
         desc: ({ refi }) => findByCode(otherPolearms, 75)!.passiveDesc({ refi }).core,
       },
     ],
@@ -58,7 +58,7 @@ const otherPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 10),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 40),
         desc: ({ refi }) => findByCode(otherPolearms, 76)!.passiveDesc({ refi }).core,
       },
     ],

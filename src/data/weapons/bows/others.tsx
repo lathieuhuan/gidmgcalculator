@@ -54,7 +54,7 @@ const otherBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 6),
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 24),
         desc: ({ refi }) => findByCode(otherBows, 3)!.passiveDesc({ refi }).core,
       },
     ],

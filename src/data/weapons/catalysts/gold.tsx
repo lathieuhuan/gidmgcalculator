@@ -4,7 +4,7 @@ import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
 import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
-import { makeWpModApplier } from "../utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const goldCatalysts: DataWeapon[] = [
   {
@@ -25,8 +25,9 @@ const goldCatalysts: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stack = +inputs![0];
+          const stack = getInput(inputs, 0, 0);
           applyModifier(desc, attPattBonus, "ES.pct", (9 + refi * 3) * stack, tracker);
+
           if (stack === 3) {
             applyModifier(desc, totalAttr, [...VISION_TYPES], 9 + refi * 3, tracker);
           }
@@ -54,7 +55,7 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
-    applyBuff: makeWpModApplier("totalAttr", "healBn", 2.5),
+    applyBuff: makeWpModApplier("totalAttr", "healBn", 10),
     applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
       if (attPattBonus) {
         const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
@@ -81,7 +82,7 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "atk_", scale: "7.2%" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     passiveName: "Wandering Clouds",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -113,7 +114,8 @@ const goldCatalysts: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, [...VISION_TYPES], (6 + refi * 2) * +inputs![0], tracker);
+          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldCatalysts, 32)!.passiveDesc({ refi }).extra![0],
       },

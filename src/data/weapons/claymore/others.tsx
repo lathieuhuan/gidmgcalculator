@@ -5,6 +5,7 @@ import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1, CullTheWeak } from "../series";
 import { applyModifier } from "@Src/calculators/utils";
 import { findByCode } from "@Src/utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const otherClaymores: DataWeapon[] = [
   {
@@ -27,9 +28,7 @@ const otherClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "CA.pct", 25 + refi * 5, tracker);
-        },
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 30, 6),
         desc: ({ refi }) => findByCode(otherClaymores, 129)!.passiveDesc({ refi }).core,
       },
     ],
@@ -61,7 +60,7 @@ const otherClaymores: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", (5 + refi) * +inputs![0], tracker);
+          applyModifier(desc, totalAttr, "atk_", (5 + refi) * getInput(inputs, 0, 0), tracker);
         },
         desc: ({ refi }) => findByCode(otherClaymores, 50)!.passiveDesc({ refi }).core,
       },

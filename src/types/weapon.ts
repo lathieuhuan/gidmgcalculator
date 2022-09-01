@@ -23,7 +23,6 @@ export type DataWeapon = {
   };
   applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
   applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  stackValues?: (args: { refi: number }) => number[];
   passiveName: string;
   passiveDesc: (args: WpDescArgs) => {
     core?: JSX.Element;

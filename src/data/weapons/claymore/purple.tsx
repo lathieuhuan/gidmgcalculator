@@ -13,7 +13,7 @@ import {
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/calculators/utils";
-import { makeWpModApplier } from "../utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const purpleClaymores: DataWeapon[] = [
   {
@@ -79,7 +79,7 @@ const purpleClaymores: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * +inputs![0];
+          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0, 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleClaymores, 64)!.passiveDesc({ refi }).core,
@@ -132,7 +132,8 @@ const purpleClaymores: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "all.pct", (5 + refi) * +inputs![0], tracker);
+          const buffValue = (5 + refi) * getInput(inputs, 0, 0);
+          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => (
           <>{findByCode(purpleClaymores, 67)!.passiveDesc({ refi }).extra![0]}.</>
@@ -177,7 +178,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 1.5),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -202,7 +203,7 @@ const purpleClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 3),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
         desc: ({ refi }) => findByCode(purpleClaymores, 70)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -241,7 +242,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    applyBuff: makeWpModApplier("attPattBonus", "EB.pct", 3),
+    applyBuff: makeWpModApplier("attPattBonus", "EB.pct", 12),
     passiveName: "Oceanic Victory",
     passiveDesc: ({ refi }) => ({
       core: (

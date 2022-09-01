@@ -12,7 +12,7 @@ import {
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/calculators/utils";
-import { makeWpModApplier } from "../utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const purplePolearms: DataWeapon[] = [
   {
@@ -57,7 +57,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 1.5),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -107,7 +107,7 @@ const purplePolearms: DataWeapon[] = [
           maxValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * +inputs![0];
+          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purplePolearms, 91)!.passiveDesc({ refi }).core,
@@ -130,7 +130,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate"], [4, 1.5]),
+    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate"], [16, 6]),
     passiveName: "Shanty",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -176,13 +176,12 @@ const purplePolearms: DataWeapon[] = [
           initialValues: [true],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          let fields: AttributeStat[] = ["atk_"];
-          let bnValues = [18 + refi * 6];
-          if (!inputs![0]) {
-            fields.push("def_");
-            bnValues.push(12 + refi * 4);
+          if (getInput(inputs, 0, false)) {
+            applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);
+          } else {
+            const buffValue = 12 + refi * 4;
+            applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
           }
-          applyModifier(desc, totalAttr, fields, bnValues, tracker);
         },
         desc: ({ refi }) => findByCode(purplePolearms, 95)!.passiveDesc({ refi }).core,
       },
@@ -192,9 +191,9 @@ const purplePolearms: DataWeapon[] = [
       core: (
         <>
           If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
-          <Green b>{12 + refi * 4}%</Green> and DEF is increased by {12 + refi * 4}%. If there are
-          fewer than 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
-          <Green b>{18 + refi * 6}%</Green>.
+          <Green b>{12 + refi * 4}%</Green> and <Green>DEF</Green> is increased by{" "}
+          <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents nearby,{" "}
+          <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
         </>
       ),
     }),

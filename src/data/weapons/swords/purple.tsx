@@ -65,7 +65,7 @@ const purpleSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 3),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
         desc: ({ refi }) => findByCode(purpleSwords, 109)!.passiveDesc({ refi }).core,
       },
     ],
@@ -105,7 +105,7 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * (inputs![0] as number);
+          const buffValue = (3 + refi * 1) * getInput(inputs, 0, 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
@@ -129,7 +129,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [4, 1.5]),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [16, 6]),
     passiveName: "Undying Admiration",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -147,7 +147,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate", scale: "6%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 5),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 20),
     passiveName: "Justice",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -213,7 +213,7 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0);
+          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0, 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,

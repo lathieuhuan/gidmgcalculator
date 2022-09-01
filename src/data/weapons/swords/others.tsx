@@ -1,9 +1,9 @@
-import { EModAffect } from "@Src/constants";
-import { DataWeapon } from "@Src/types";
-import { findByCode } from "@Src/utils";
+import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
+import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1 } from "../series";
+import { findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
 const otherSwords: DataWeapon[] = [
@@ -30,7 +30,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
         desc: ({ refi }) => findByCode(otherSwords, 131)!.passiveDesc({ refi }).core,
       },
     ],
@@ -73,7 +73,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "cRate", 3.5),
+        applyBuff: makeWpModApplier("totalAttr", "cRate", 14),
         desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
       },
     ],
@@ -107,7 +107,7 @@ const otherSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 3),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
         desc: ({ refi }) => findByCode(otherSwords, 100)!.passiveDesc({ refi }).core,
       },
     ],

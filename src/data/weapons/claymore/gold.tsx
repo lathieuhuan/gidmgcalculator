@@ -14,12 +14,12 @@ const goldClaymores: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "49",
     subStat: { type: "phys", scale: "4.5%" },
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 4),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd", "atk_"], [3, 5]),
+        applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd", "atk_"], [12, 20]),
         desc: ({ refi }) => findByCode(goldClaymores, 53)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -57,7 +57,7 @@ const goldClaymores: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "er", scale: "8%" },
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 2),
+    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 8),
     passiveName: "Sky-ripping Dragon Spine",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -86,12 +86,12 @@ const goldClaymores: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 10),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 40),
         desc: ({ refi }) => findByCode(goldClaymores, 56)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -120,7 +120,7 @@ const goldClaymores: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg", scale: "19.2%" },
-    applyBuff: makeWpModApplier("totalAttr", "def_", 7),
+    applyBuff: makeWpModApplier("totalAttr", "def_", 28),
     applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
       if (attPattBonus) {
         const buffValue = applyPercent(totalAttr.def, 30 + refi * 10);

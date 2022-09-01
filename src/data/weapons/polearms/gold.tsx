@@ -4,7 +4,7 @@ import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
 import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils";
-import { makeWpModApplier } from "../utils";
+import { getInput, makeWpModApplier } from "../utils";
 
 const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
   const mult = 0.8 + refi * 0.2;
@@ -56,9 +56,10 @@ const goldPolearms: DataWeapon[] = [
           maxValues: [7],
         },
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stacks = +inputs![0];
+          const stacks = getInput(inputs, 0, 0);
           const bnValue1 = (2.5 + refi * 0.7) * stacks;
           applyModifier(desc, totalAttr, "atk_", bnValue1, tracker);
+
           if (stacks === 7) {
             applyModifier(desc, attPattBonus, "all.pct", 9 + refi * 3, tracker);
           }
@@ -89,8 +90,9 @@ const goldPolearms: DataWeapon[] = [
       const ER = round1(totalAttr.er - 100);
       const mult = 21 + refi * 7;
       let buffValue = (ER / 100) * mult;
-      let xtraDesc = ` / ${mult}% of ${ER}% Energy Rechare => ${round2(buffValue)}%`;
+      let xtraDesc = ` / ${mult}% of ${ER}% Energy Recharge => ${round2(buffValue)}%`;
       const limit = 70 + refi * 10;
+
       if (buffValue > limit) {
         buffValue = limit;
         xtraDesc += ` (limited to ${limit}%)`;
@@ -103,9 +105,7 @@ const goldPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "er", 25 + refi * 5, tracker);
-        },
+        applyBuff: makeWpModApplier("totalAttr", "er", 30, 6),
         desc: ({ refi }) => findByCode(goldPolearms, 79)!.passiveDesc({ refi }).extra![0],
       },
     ],
@@ -135,12 +135,11 @@ const goldPolearms: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg", scale: "14.4%" },
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const mult = 0.6 + refi * 0.2;
-      const buffValue = applyPercent(totalAttr.hp, mult);
       const xtraDesc = ` / ${mult}% of ${totalAttr.hp} HP`;
-      applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
+      applyModifier(desc + xtraDesc, totalAttr, "atk", applyPercent(totalAttr.hp, mult), tracker);
     },
     buffs: [
       {
@@ -193,7 +192,7 @@ const goldPolearms: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "49",
     subStat: { type: "atk_", scale: "3.6%" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     buffs: [
       {
         index: 0,
@@ -205,8 +204,9 @@ const goldPolearms: DataWeapon[] = [
           maxValues: [6],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          let buffValue = (2.4 + refi * 0.8) * +inputs![0];
-          if (inputs![1]) {
+          let buffValue = (2.4 + refi * 0.8) * getInput(inputs, 0, 0);
+
+          if (getInput(inputs, 1, false)) {
             buffValue *= 2;
           }
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);

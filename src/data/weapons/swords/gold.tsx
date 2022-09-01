@@ -1,11 +1,17 @@
 import type { DataWeapon } from "@Src/types";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { Green } from "@Src/styled-components";
+import { NCPA_PERCENTS } from "@Data/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { LiyueSeries } from "../series";
 import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
-import { NCPA_PERCENTS } from "@Data/constants";
-import { LiyueSeries } from "../series";
 import { getInput, makeWpModApplier } from "../utils";
+
+const mistsplitterBuffValuesByStack = (refi: number) => [
+  6 + refi * 2,
+  12 + refi * 4,
+  21 + refi * 7,
+];
 
 const goldSwords: DataWeapon[] = [
   {
@@ -15,7 +21,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     buffs: [
       {
         index: 1,
@@ -26,7 +32,7 @@ const goldSwords: DataWeapon[] = [
           initialValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (15 + refi * 5) * getInput(inputs, 0);
+          const buffValue = (15 + refi * 5) * getInput(inputs, 0, 0);
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
@@ -61,7 +67,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 3),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     buffs: [
       {
         index: 0,
@@ -73,14 +79,12 @@ const goldSwords: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const { stackValues } = findByCode(goldSwords, 101)!;
-          const buffValue = stackValues!({ refi })[+inputs![0] - 1];
+          const buffValue = mistsplitterBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
           applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
       },
     ],
-    stackValues: ({ refi }) => [6 + refi * 2, 12 + refi * 4, 21 + refi * 7],
     passiveName: "Mistsplitter's Edge",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -94,8 +98,8 @@ const goldSwords: DataWeapon[] = [
       extra: [
         <>
           At stack levels 1/2/3, Mistsplitter's Emblem provides a{" "}
-          <Green b>{findByCode(goldSwords, 101)!.stackValues!({ refi }).join("/")}%</Green>{" "}
-          Elemental DMG Bonus for the <Green>character's Elemental Type</Green>.
+          <Green b>{mistsplitterBuffValuesByStack(refi).join("/")}%</Green> Elemental DMG Bonus for
+          the <Green>character's Elemental Type</Green>.
         </>,
         <>
           The character will obtain 1 stack of Mistsplitter's Emblem in each of the following
@@ -113,7 +117,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "phys", scale: "9%" },
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
     passiveName: "Falcon's Defiance",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -135,7 +139,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er", scale: "12%" },
-    applyBuff: makeWpModApplier("totalAttr", "cRate", 1),
+    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
     buffs: [
       {
         index: 0,
@@ -172,7 +176,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "em", scale: "43" },
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 2.5),
+    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 10),
     buffs: [
       {
         index: 0,
@@ -228,12 +232,11 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 5),
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;
-      const buffValue = applyPercent(totalAttr.hp, bnPct);
       const xtraDesc = ` / ${bnPct}% of ${totalAttr.hp} HP`;
-      applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
+      applyModifier(desc + xtraDesc, totalAttr, "atk", applyPercent(totalAttr.hp, bnPct), tracker);
     },
     passiveName: "Protector's Virtue",
     passiveDesc: ({ refi }) => ({
