@@ -2,7 +2,7 @@ import type { AttributeStat, DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Diluc: DataCharacter = {
@@ -163,10 +163,9 @@ const Diluc: DataCharacter = {
         maxValues: [3],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const buffValue1 = 10 * +inputs![0];
-        const buffValue2 = 5 * +inputs![0];
+        const buffValue = 5 * getInput(inputs, 0, 0);
         const keys: AttributeStat[] = ["atk_", "naAtkSpd", "caAtkSpd"];
-        applyModifier(desc, totalAttr, keys, [buffValue1, buffValue2, buffValue2], tracker);
+        applyModifier(desc, totalAttr, keys, [buffValue * 2, buffValue, buffValue], tracker);
       },
     },
     {

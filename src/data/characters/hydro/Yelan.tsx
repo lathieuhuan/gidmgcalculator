@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
-import { applyModifier } from "@Src/calculators/utils";
+import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs, checkCons, countVisionTypes, talentBuff } from "../utils";
 
 const Yelan: DataCharacter = {
@@ -169,7 +169,7 @@ const Yelan: DataCharacter = {
         maxValues: [14],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * +inputs![0], tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * getInput(inputs, 0, 0), tracker);
       },
     },
     {
@@ -192,7 +192,7 @@ const Yelan: DataCharacter = {
         maxValues: [4],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "hp_", 10 * +inputs![0], tracker);
+        applyModifier(desc, totalAttr, "hp_", 10 * getInput(inputs, 0, 0), tracker);
       },
     },
   ],

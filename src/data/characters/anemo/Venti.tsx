@@ -2,7 +2,7 @@ import type { ApplyCharDebuffFn, DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
 const applyC2Debuff: ApplyCharDebuffFn = ({ resistReduct, desc, tracker }) => {
@@ -147,7 +147,8 @@ const Venti: DataCharacter = {
         initialValues: ["pyro"],
       },
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        applyModifier(desc, resistReduct, ["anemo", inputs![0] as Vision], 20, tracker);
+        const paths: Vision[] = ["anemo", getInput(inputs, 0, "pyro") as Vision];
+        applyModifier(desc, resistReduct, paths, 20, tracker);
       },
     },
   ],

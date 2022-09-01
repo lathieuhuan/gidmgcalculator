@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DataCharacter = {
@@ -82,10 +82,10 @@ const ElectroMC: DataCharacter = {
         let bonusValue = 20;
         const boosted = toSelf
           ? charModCtrlIsActivated(ElectroMC.buffs!, char, charBuffCtrls, 1)
-          : inputs![0];
+          : getInput(inputs, 0, false);
 
         if (boosted) {
-          const ER = toSelf ? totalAttr.er : +inputs![1];
+          const ER = toSelf ? totalAttr.er : getInput(inputs, 0, 0);
           bonusValue += Math.round(ER) / 10;
         }
         applyModifier(desc, totalAttr, "er", bonusValue, tracker);

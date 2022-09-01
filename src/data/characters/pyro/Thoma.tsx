@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
 
 const Thoma: DataCharacter = {
@@ -34,7 +34,6 @@ const Thoma: DataCharacter = {
   bonusStat: { type: "atk_", value: 6 },
   NAsConfig: {
     name: "Swiftshatter Spear",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -145,7 +144,7 @@ const Thoma: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 5 * +inputs![0], tracker);
+        applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
       },
     },
     {

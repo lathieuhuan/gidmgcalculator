@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, AttackPatternPath } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, getInput } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
 
 const Zhongli: DataCharacter = {
@@ -34,7 +34,6 @@ const Zhongli: DataCharacter = {
   bonusStat: { type: "geo", value: 7.2 },
   NAsConfig: {
     name: "Rain of Stone",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -133,7 +132,7 @@ const Zhongli: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", +inputs![0] * 5, tracker);
+        applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
       },
     },
     {

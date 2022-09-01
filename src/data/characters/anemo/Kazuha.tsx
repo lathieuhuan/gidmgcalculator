@@ -3,7 +3,7 @@ import { Anemo, Green, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs } from "../constants";
 import { round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
@@ -118,7 +118,7 @@ const Kazuha: DataCharacter = {
           <Green>Elemental DMG Bonus</Green> to the element absorbed by Swirl for every point of{" "}
           <Green>Elemental Mastery</Green> he has for 8s.{" "}
           <Red>
-            {inputs![0]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs || [])}%.
+            {inputs?.[0]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs || [])}%.
           </Red>
         </>
       ),
@@ -131,9 +131,9 @@ const Kazuha: DataCharacter = {
         initialValues: ["pyro", 0],
         maxValues: [0, 9999],
       },
-      applyBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
-        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
-        applyModifier(desc, totalAttr, inputs[0] as Vision, buffValue, tracker);
+      applyBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
+        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs || []);
+        applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, buffValue, tracker);
       },
     },
     {

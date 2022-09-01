@@ -12,7 +12,7 @@ import { Electro, Green, Red } from "@Src/styled-components";
 import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
 export const isshinBonusMults = [
@@ -44,10 +44,10 @@ const getBuffValue = {
     toSelf: boolean,
     char: CharInfo,
     { EBcost }: CalcCharData,
-    inputs: ModifierInput[],
+    inputs: ModifierInput[] | undefined,
     partyData: PartyData
   ) => {
-    const level = toSelf ? finalTalentLv(char, "ES", partyData) : +inputs[0];
+    const level = toSelf ? finalTalentLv(char, "ES", partyData) : getInput(inputs, 0, 0);
     const mult = Math.min(0.21 + level / 100, 0.3);
     return [round1(EBcost * mult), `${level} / ${round2(mult)}% * ${EBcost} Energy Cost`] as const;
   },
@@ -107,7 +107,6 @@ const Raiden: DataCharacter = {
   bonusStat: { type: "er", value: 8 },
   NAsConfig: {
     name: "Origin",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -198,7 +197,7 @@ const Raiden: DataCharacter = {
           <Green>Energy Cost</Green> of the Elemental Burst during the Eye's duration.{" "}
           <Red>
             Elemental Burst DMG Bonus:{" "}
-            {getBuffValue.ES(toSelf, char, charData, inputs!, partyData)[0]}
+            {getBuffValue.ES(toSelf, char, charData, inputs, partyData)[0]}
             %.
           </Red>
         </>
@@ -212,7 +211,7 @@ const Raiden: DataCharacter = {
       },
       applyBuff: (obj) => {
         const { toSelf, char, charData, inputs, partyData } = obj;
-        const result = getBuffValue.ES(toSelf, char, charData, inputs!, partyData);
+        const result = getBuffValue.ES(toSelf, char, charData, inputs, partyData);
         const desc = `${obj.desc} / Lv. ${result[1]}`;
         applyModifier(desc, obj.attPattBonus, "EB.pct", result[0], obj.tracker);
       },

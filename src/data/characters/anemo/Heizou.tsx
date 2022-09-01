@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
 const Heizou: DataCharacter = {
@@ -33,7 +33,6 @@ const Heizou: DataCharacter = {
   bonusStat: { type: "anemo", value: 6 },
   NAsConfig: {
     name: "Fudou Style Martial Arts",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -132,14 +131,15 @@ const Heizou: DataCharacter = {
         maxValues: [4],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        const fields: AttackPatternPath[] = ["ES.cRate"];
-        const bnValues = [4 * +inputs![0]];
+        const stacks = getInput(inputs, 0, 0);
+        const paths: AttackPatternPath[] = ["ES.cRate"];
+        const buffValues = [4 * stacks];
 
-        if (inputs![0] === 4) {
-          fields.push("ES.cDmg");
-          bnValues.push(32);
+        if (stacks === 4) {
+          paths.push("ES.cDmg");
+          buffValues.push(32);
         }
-        applyModifier(desc, attPattBonus, fields, bnValues, tracker);
+        applyModifier(desc, attPattBonus, paths, buffValues, tracker);
       },
     },
   ],

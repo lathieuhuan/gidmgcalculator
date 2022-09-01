@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import {
   charModCtrlIsActivated,
   checkAscs,
@@ -64,7 +64,6 @@ const YunJin: DataCharacter = {
   bonusStat: { type: "er", value: 6.7 },
   NAsConfig: {
     name: "Cloud-Grazing Strike",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -154,8 +153,8 @@ const YunJin: DataCharacter = {
       },
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, char, partyData } = obj;
-        const DEF = toSelf ? obj.totalAttr.def : +inputs![0];
-        const level = toSelf ? finalTalentLv(char, "EB", partyData) : +inputs![1];
+        const DEF = toSelf ? obj.totalAttr.def : getInput(inputs, 0, 0);
+        const level = toSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 1, 0);
         let desc = `${obj.desc} / Lv. ${level}`;
         let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraMult = getA4BuffValue(toSelf, char, obj.charBuffCtrls, obj.charData, partyData);

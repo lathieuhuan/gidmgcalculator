@@ -3,12 +3,15 @@ import { Green, Pyro, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
 
-function getEBBuffValue([baseATK, level, boosted]: ModifierInput[]): [number, string] {
+function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
+  const baseATK = getInput(inputs, 0, 0);
+  const level = getInput(inputs, 1, 0);
+  const boosted = getInput(inputs, 2, false);
   let mult = 56 * TALENT_LV_MULTIPLIERS[2][+level];
-  let desc = level;
+  let desc = level.toString();
 
   if (boosted) {
     mult += 20;
@@ -122,7 +125,7 @@ const Bennett: DataCharacter = {
       desc: ({ toSelf, inputs }) => (
         <>
           The character within its AoE gains an <Green>ATK Bonus</Green> that is based on Bennett's{" "}
-          <Green>Base ATK</Green>. {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs!)[0]}.</Red>}
+          <Green>Base ATK</Green>. {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
         </>
       ),
       affect: EModAffect.PARTY,
@@ -140,7 +143,7 @@ const Bennett: DataCharacter = {
               finalTalentLv(obj.char, "EB", obj.partyData),
               !!charModCtrlIsActivated(Bennett.buffs!, char, obj.charBuffCtrls, 1),
             ]
-          : obj.inputs!;
+          : obj.inputs;
         const [buffValue, xtraDesc] = getEBBuffValue(args);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);

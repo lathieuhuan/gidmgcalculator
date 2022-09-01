@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Keqing: DataCharacter = {
@@ -33,7 +33,6 @@ const Keqing: DataCharacter = {
   bonusStat: { type: "cDmg", value: 9.6 },
   NAsConfig: {
     name: "Yunlai Swordsmanship",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -147,7 +146,7 @@ const Keqing: DataCharacter = {
         maxValues: [4],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "electro", 6 * +inputs![0], tracker);
+        applyModifier(desc, totalAttr, "electro", 6 * getInput(inputs, 0, 0), tracker);
       },
     },
   ],

@@ -3,7 +3,7 @@ import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
@@ -12,7 +12,7 @@ const getEBBuffValue = ({
   partyData,
   inputs,
 }: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : +inputs![0];
+  const level = toSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 0, 0);
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
 
@@ -183,7 +183,7 @@ const Mona: DataCharacter = {
         maxValues: [3],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.pct", 60 * +inputs![0], tracker);
+        applyModifier(desc, attPattBonus, "CA.pct", 60 * getInput(inputs, 0, 0), tracker);
       },
     },
   ],

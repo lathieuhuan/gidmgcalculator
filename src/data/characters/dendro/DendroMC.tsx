@@ -2,7 +2,7 @@ import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier } from "@Src/calculators/utils";
+import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const DendroMC: DataCharacter = {
@@ -124,7 +124,7 @@ const DendroMC: DataCharacter = {
         maxValues: [10],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 6 * +inputs![0], tracker);
+        applyModifier(desc, totalAttr, "em", 6 * getInput(inputs, 0, 0), tracker);
       },
     },
     {
@@ -152,7 +152,8 @@ const DendroMC: DataCharacter = {
         initialValues: ["Pyro"],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, ["dendro", inputs![0] as Vision], 12, tracker);
+        const paths: Vision[] = ["dendro", getInput(inputs, 0, "pyro") as Vision];
+        applyModifier(desc, totalAttr, paths, 12, tracker);
       },
     },
   ],

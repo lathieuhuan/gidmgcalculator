@@ -11,7 +11,7 @@ import { EModAffect } from "@Src/constants";
 import { NORMAL_ATTACKS } from "@Src/constants";
 import { MEDIUM_PAs, EModifierSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
 const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
@@ -33,9 +33,9 @@ const getEBBuffValue = (
   toSelf: boolean,
   char: CharInfo,
   partyData: PartyData,
-  inputs: ModifierInput[]
+  inputs: ModifierInput[] | undefined
 ) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : +inputs[0];
+  const level = toSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 0, 0);
   return level ? Math.min(level + 10, 20) : 0;
 };
 
@@ -208,7 +208,7 @@ const Ayato: DataCharacter = {
       desc: ({ toSelf, char, partyData, inputs }) => (
         <>
           Increases the <Green>Normal Attack DMG</Green> of characters within its AoE by{" "}
-          <Green b>{getEBBuffValue(toSelf, char, partyData, inputs!)}%</Green>.
+          <Green b>{getEBBuffValue(toSelf, char, partyData, inputs)}%</Green>.
         </>
       ),
       affect: EModAffect.PARTY,
@@ -219,7 +219,7 @@ const Ayato: DataCharacter = {
         maxValues: [15],
       },
       applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
-        const bonusValue = getEBBuffValue(toSelf, char, partyData, inputs!);
+        const bonusValue = getEBBuffValue(toSelf, char, partyData, inputs);
         applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);
       },
     },

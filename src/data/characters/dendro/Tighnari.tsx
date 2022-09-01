@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Tighnari: DataCharacter = {
@@ -220,8 +220,7 @@ const Tighnari: DataCharacter = {
         initialValues: [false],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        const buffValue = 60 + (inputs?.[0] ? 60 : 0);
-        applyModifier(desc, totalAttr, "em", buffValue, tracker);
+        applyModifier(desc, totalAttr, "em", 60 + (getInput(inputs, 0, false) ? 60 : 0), tracker);
       },
     },
   ],

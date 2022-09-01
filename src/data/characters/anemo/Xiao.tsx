@@ -3,7 +3,7 @@ import { Anemo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModifierSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier } from "@Src/calculators/utils";
+import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
@@ -39,7 +39,6 @@ const Xiao: DataCharacter = {
   bonusStat: { type: "cRate", value: 4.8 },
   NAsConfig: {
     name: "Whirlwind Thrust",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -155,7 +154,7 @@ const Xiao: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 5 * +inputs![0], tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 5 * getInput(inputs, 0, 0), tracker);
       },
     },
     {
@@ -177,7 +176,7 @@ const Xiao: DataCharacter = {
         maxValues: [3],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 15 * +inputs![0], tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 15 * getInput(inputs, 0, 0), tracker);
       },
     },
   ],

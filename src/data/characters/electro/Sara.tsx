@@ -1,12 +1,14 @@
-import type { DataCharacter } from "@Src/types";
+import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Electro, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, increaseAttackBonus } from "@Src/calculators/utils";
+import { applyModifier, getInput, increaseAttackBonus } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
-const getAttackBuffValue = ([baseATK, level]: number[]): [number, string] => {
+const getAttackBuffValue = (inputs: ModifierInput[] | undefined): [number, string] => {
+  const baseATK = getInput(inputs, 0, 0);
+  const level = getInput(inputs, 1, 0);
   const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];
   return [applyPercent(baseATK, mult), `${level} / ${round2(mult)}% of ${baseATK} Base ATK`];
 };
@@ -105,7 +107,7 @@ const Sara: DataCharacter = {
         <>
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
           Sara's <Green>Base ATK</Green>.{" "}
-          {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs!.map((i) => +i))[0]}.</Red>}
+          {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
         </>
       ),
       affect: EModAffect.PARTY,
@@ -118,7 +120,7 @@ const Sara: DataCharacter = {
       applyBuff: (obj) => {
         const buffValueArgs = obj.toSelf
           ? [obj.totalAttr.base_atk, finalTalentLv(obj.char, "ES", obj.partyData)]
-          : obj.inputs!.map((i) => +i);
+          : obj.inputs;
         const [bonusValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, obj.totalAttr, "atk", bonusValue, obj.tracker);

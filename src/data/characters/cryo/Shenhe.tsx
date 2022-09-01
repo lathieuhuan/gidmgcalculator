@@ -6,6 +6,7 @@ import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import {
   applyModifier,
   AttackPatternPath,
+  getInput,
   increaseAttackBonus,
   makeModApplier,
 } from "@Src/calculators/utils";
@@ -14,10 +15,10 @@ import { checkAscs, checkCons } from "../utils";
 const getEBDebuffValue = (
   fromSelf: boolean,
   char: CharInfo,
-  inputs: ModifierInput[],
+  inputs: ModifierInput[] | undefined,
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : +(inputs[0] || 0);
+  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 0, 0);
   return level ? Math.min(5 + level, 15) : 0;
 };
 
@@ -49,7 +50,6 @@ const Shenhe: DataCharacter = {
   bonusStat: { type: "atk_", value: 7.2 },
   NAsConfig: {
     name: "Dawnstar Shooter",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -128,8 +128,10 @@ const Shenhe: DataCharacter = {
       },
       applyFinalBuff: (obj) => {
         const { toSelf, inputs } = obj;
-        const ATK = toSelf ? obj.totalAttr.atk : +inputs![0];
-        const level = toSelf ? finalTalentLv(obj.char, "ES", obj.partyData) : +inputs![1];
+        const ATK = toSelf ? obj.totalAttr.atk : getInput(inputs, 0, 0);
+        const level = toSelf
+          ? finalTalentLv(obj.char, "ES", obj.partyData)
+          : getInput(inputs, 1, 0);
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraDesc = ` / Lv. ${level} / ${round2(mult)}% of ${ATK} ATK`;
 
@@ -164,12 +166,12 @@ const Shenhe: DataCharacter = {
           After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the
           following effects:
           <br />
-          <span className={inputs![0] ? "" : "opacity-50"}>
+          <span className={inputs?.[0] ? "" : "opacity-50"}>
             • Press: <Green>Elemental Skill and Elemental Burst DMG</Green> increased by{" "}
             <Green b>15%</Green> for 10s.
           </span>
           <br />
-          <span className={inputs![1] ? "" : "opacity-50"}>
+          <span className={inputs?.[1] ? "" : "opacity-50"}>
             • Hold: <Green>Normal, Charged and Plunging Attack DMG</Green> increased by{" "}
             <Green b>15%</Green> for 15s.
           </span>
@@ -184,10 +186,10 @@ const Shenhe: DataCharacter = {
         initialValues: [true, false],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        if (inputs![0]) {
+        if (getInput(inputs, 0, false)) {
           applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
         }
-        if (inputs![1]) {
+        if (getInput(inputs, 1, false)) {
           const paths: AttackPatternPath[] = ["NA.pct", "CA.pct", "PA.pct"];
           applyModifier(desc + " / Hold", attPattBonus, paths, 15, tracker);
         }
@@ -235,7 +237,7 @@ const Shenhe: DataCharacter = {
         maxValues: [50],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 5 * +inputs![0], tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 5 * getInput(inputs, 0, 0), tracker);
       },
     },
   ],
@@ -243,7 +245,7 @@ const Shenhe: DataCharacter = {
     {
       index: 0,
       src: EModifierSrc.EB,
-      desc: ({ fromSelf, char, inputs = [], partyData }) => (
+      desc: ({ fromSelf, char, inputs, partyData }) => (
         <>
           The field decreases the <Green>Cryo RES</Green> and <Green>Physical RES</Green> of
           opponents within it by{" "}
@@ -256,7 +258,7 @@ const Shenhe: DataCharacter = {
         initialValues: [1],
       },
       applyDebuff: ({ fromSelf, resistReduct, inputs, char, partyData, desc, tracker }) => {
-        const pntValue = getEBDebuffValue(fromSelf, char, inputs!, partyData);
+        const pntValue = getEBDebuffValue(fromSelf, char, inputs, partyData);
         applyModifier(desc, resistReduct, ["phys", "cryo"], pntValue, tracker);
       },
     },

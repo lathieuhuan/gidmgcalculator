@@ -2,7 +2,7 @@ import type { DataCharacter, Vision } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 
 const Sucrose: DataCharacter = {
   code: 3,
@@ -100,7 +100,7 @@ const Sucrose: DataCharacter = {
           When Astable Anemohypostasis Creation - 6308 or Forbidden Creation - Isomer 75 / Type II
           hits an opponent, increases all party members' <Green>Elemental Mastery</Green> based on{" "}
           <Green b>20%</Green> of Sucrose's <Green>Elemental Mastery</Green> for 8s.{" "}
-          <Red>Elemental Mastery Bonus: {Math.round(+inputs![0] * 0.2)}.</Red>
+          <Red>Elemental Mastery Bonus: {Math.round(getInput(inputs, 0, 0) * 0.2)}.</Red>
         </>
       ),
       affect: EModAffect.TEAMMATE,
@@ -111,7 +111,7 @@ const Sucrose: DataCharacter = {
         maxValues: [9999],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", Math.round(+inputs![0] * 0.2), tracker);
+        applyModifier(desc, totalAttr, "em", Math.round(getInput(inputs, 0, 0) * 0.2), tracker);
       },
     },
     {
@@ -131,7 +131,7 @@ const Sucrose: DataCharacter = {
         initialValues: ["pyro"],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, inputs![0] as Vision, 20, tracker);
+        applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, 20, tracker);
       },
     },
   ],

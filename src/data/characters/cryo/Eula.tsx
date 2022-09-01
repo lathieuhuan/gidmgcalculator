@@ -9,7 +9,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, HEAVIER_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
 
 const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
@@ -24,10 +24,10 @@ const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
 const getESDebuffValue = (
   fromSelf: boolean,
   char: CharInfo,
-  inputs: ModifierInput[],
+  inputs: ModifierInput[] | undefined,
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "ES", partyData) : +inputs[0];
+  const level = fromSelf ? finalTalentLv(char, "ES", partyData) : getInput(inputs, 0, 0);
   return level ? Math.min(15 + level, 25) : 0;
 };
 
@@ -176,7 +176,7 @@ const Eula: DataCharacter = {
         <>
           If Grimheart stacks are consumed, surrounding opponents will have their{" "}
           <Green>Physical RES</Green> and <Green>Cryo RES</Green> decreased by{" "}
-          <Green b>{getESDebuffValue(fromSelf, char, inputs!, partyData)}%</Green>.
+          <Green b>{getESDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
         </>
       ),
       inputConfig: {
@@ -185,7 +185,7 @@ const Eula: DataCharacter = {
         initialValues: [1],
       },
       applyDebuff: ({ fromSelf, resistReduct, char, inputs, partyData, desc, tracker }) => {
-        const penaltyValue = getESDebuffValue(fromSelf, char, inputs!, partyData);
+        const penaltyValue = getESDebuffValue(fromSelf, char, inputs, partyData);
         applyModifier(desc, resistReduct, ["phys", "cryo"], penaltyValue, tracker);
       },
     },
