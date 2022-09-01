@@ -13,8 +13,8 @@ import type {
   AttacklementInfoKey,
   Vision,
   FinalInfusion,
-  AttackPattern,
   Weapon,
+  ModifierInput,
 } from "@Src/types";
 import { pickOne, turnArr } from "@Src/utils";
 
@@ -250,3 +250,27 @@ export const getDefaultStatInfo = (
     multType: attElmt === "phys" ? 1 : 2,
   };
 };
+
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  fallback: number
+): number;
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  fallback: string
+): string;
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  fallback: boolean
+): boolean;
+
+export function getInput(
+  inputs: ModifierInput[] | undefined,
+  index: number,
+  fallback: number | string | boolean
+): number | string | boolean {
+  return inputs?.[index] !== undefined ? inputs[index] : fallback;
+}

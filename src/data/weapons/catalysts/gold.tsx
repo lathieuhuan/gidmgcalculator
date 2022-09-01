@@ -2,9 +2,9 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
-import { applyModifier } from "@Src/calculators/utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
-import { getInput, makeWpModApplier } from "../utils";
+import { makeWpModApplier } from "../utils";
 
 const goldCatalysts: DataWeapon[] = [
   {

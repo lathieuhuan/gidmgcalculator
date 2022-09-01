@@ -3,9 +3,9 @@ import { Green } from "@Src/styled-components";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
-import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
-import { getInput, makeWpModApplier } from "../utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 const mistsplitterBuffValuesByStack = (refi: number) => [
   6 + refi * 2,

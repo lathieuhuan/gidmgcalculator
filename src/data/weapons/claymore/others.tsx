@@ -3,9 +3,9 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1, CullTheWeak } from "../series";
-import { applyModifier } from "@Src/calculators/utils";
 import { findByCode } from "@Src/utils";
-import { getInput, makeWpModApplier } from "../utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 const otherClaymores: DataWeapon[] = [
   {

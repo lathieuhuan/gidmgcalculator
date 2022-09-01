@@ -83,27 +83,3 @@ export const wpSubStatAtLv = (scale: string, lv: Level) => {
   const index = curLv === 1 ? 0 : curLv === 20 ? 1 : (curLv - 20) / 10;
   return SUBSTAT_SCALE[scale][index];
 };
-
-export function getInput(
-  inputs: ModifierInput[] | undefined,
-  index: number,
-  fallback: number
-): number;
-export function getInput(
-  inputs: ModifierInput[] | undefined,
-  index: number,
-  fallback: string
-): string;
-export function getInput(
-  inputs: ModifierInput[] | undefined,
-  index: number,
-  fallback: boolean
-): boolean;
-
-export function getInput(
-  inputs: ModifierInput[] | undefined,
-  index: number,
-  fallback: number | string | boolean
-): number | string | boolean {
-  return inputs?.[index] !== undefined ? inputs[index] : fallback;
-}

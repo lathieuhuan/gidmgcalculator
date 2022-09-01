@@ -9,8 +9,8 @@ import {
   WatatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/calculators/utils";
-import { getInput, makeWpModApplier } from "../utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 const fadingTwilightBuffValuesByState = (refi: number) => [
   4.5 + refi * 1.5,

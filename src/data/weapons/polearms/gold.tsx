@@ -2,9 +2,9 @@ import type { DataWeapon, TotalAttribute } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
-import { applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils";
-import { getInput, makeWpModApplier } from "../utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
   const mult = 0.8 + refi * 0.2;

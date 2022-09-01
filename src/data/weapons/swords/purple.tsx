@@ -1,8 +1,6 @@
-import { applyModifier } from "@Src/calculators/utils";
-import { EModAffect } from "@Src/constants";
-import { DataWeapon } from "@Src/types";
-import { applyPercent, findByCode } from "@Src/utils";
+import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
+import { EModAffect } from "@Src/constants";
 import {
   BaneSeries2,
   BlackcliffSeries,
@@ -10,7 +8,9 @@ import {
   RoyalSeries,
   SacrificialSeries,
 } from "../series";
-import { getInput, makeWpModApplier } from "../utils";
+import { applyPercent, findByCode } from "@Src/utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 import sapwoodBladeImage from "@Src/assets/images/sapwood-blade.png";
 

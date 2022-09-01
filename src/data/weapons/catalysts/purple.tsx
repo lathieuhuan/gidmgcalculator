@@ -1,9 +1,6 @@
 import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { getInput, makeWpModApplier } from "../utils";
-import { findByCode } from "@Src/utils";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { applyModifier } from "@Src/calculators/utils";
 import {
   BlackcliffSeries,
   DragonspineSeries,
@@ -11,6 +8,9 @@ import {
   RoyalSeries,
   SacrificialSeries,
 } from "../series";
+import { findByCode } from "@Src/utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: DataWeapon[] = [
   {

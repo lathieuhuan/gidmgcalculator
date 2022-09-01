@@ -1,9 +1,9 @@
 import type { DataWeapon } from "@Src/types";
-import { applyModifier } from "@Src/calculators/utils";
+import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { round2 } from "@Src/utils";
-import { Green } from "@Src/styled-components";
-import { getInput, makeWpModApplier } from "./utils";
+import { getInput, applyModifier } from "@Src/calculators/utils";
+import { makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
 
@@ -18,7 +18,7 @@ export const RoyalSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (6 + refi * 2) * getInput(inputs, 0);
+        const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
       desc: ({ refi }) => RoyalSeries.passiveDesc({ refi }).core,
@@ -47,7 +47,7 @@ export const BlackcliffSeries: SeriesInfo = {
         initialValues: [3],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (9 + refi * 3) * (inputs![0] as number);
+        const buffValue = (9 + refi * 3) * getInput(inputs, 0, 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => BlackcliffSeries.passiveDesc({ refi }).core,
@@ -122,7 +122,7 @@ export const DragonspineSeries: SeriesInfo = {
 };
 
 export const LiyueSeries: SeriesInfo = {
-  applyBuff: makeWpModApplier("totalAttr", "shStr", 5),
+  applyBuff: makeWpModApplier("totalAttr", "shStr", 20),
   buffs: [
     {
       index: 0,
@@ -133,8 +133,9 @@ export const LiyueSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        let buffValue = (3 + refi) * (inputs![0] as number);
-        if (inputs![1]) {
+        let buffValue = (3 + refi) * getInput(inputs, 0, 0);
+
+        if (getInput(inputs, 1, false)) {
           buffValue *= 2;
         }
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
@@ -190,7 +191,7 @@ export const BaneSeries1 = (name: string, elements: string): SeriesInfo => ({
     {
       index: 0,
       affect: EModAffect.SELF,
-      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 3),
+      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
       desc: ({ refi }) => BaneSeries1(name, elements).passiveDesc({ refi }).core,
     },
   ],
@@ -210,9 +211,7 @@ export const BaneSeries2 = (name: string, elements: string): SeriesInfo => ({
     {
       index: 0,
       affect: EModAffect.SELF,
-      applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 16 + refi * 4, tracker);
-      },
+      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
       desc: ({ refi }) => BaneSeries2(name, elements).passiveDesc({ refi }).core,
     },
   ],
