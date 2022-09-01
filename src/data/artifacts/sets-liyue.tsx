@@ -2,7 +2,7 @@ import type { DataArtifact, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 
 const liyueSets: DataArtifact[] = [
   {
@@ -168,7 +168,7 @@ const liyueSets: DataArtifact[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "pyro", 7.5 * +inputs![0], tracker);
+          applyModifier(desc, totalAttr, "pyro", 7.5 * getInput(inputs, 0, 0), tracker);
         },
       },
     ],
@@ -271,7 +271,7 @@ const liyueSets: DataArtifact[] = [
           initialValues: ["pyro"],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, inputs![0] as Vision, 35, tracker);
+          applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, 35, tracker);
         },
       },
     ],
@@ -381,9 +381,10 @@ const liyueSets: DataArtifact[] = [
           maxValues: [2],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 9 * +inputs![0], tracker);
+          const stacks = getInput(inputs, 0, 0);
+          applyModifier(desc, totalAttr, "atk_", 9 * stacks, tracker);
 
-          if (+inputs![0] === 2) {
+          if (stacks === 2) {
             applyModifier(desc, totalAttr, "phys", 25, tracker);
           }
         },

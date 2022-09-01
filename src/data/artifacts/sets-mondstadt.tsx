@@ -1,8 +1,8 @@
-import type { AttackElement, DataArtifact } from "@Src/types";
+import type { DataArtifact, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 
 const mondstadtSets: DataArtifact[] = [
   {
@@ -159,7 +159,7 @@ const mondstadtSets: DataArtifact[] = [
           renderTypes: ["anemoable"],
         },
         applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-          const key = inputs![0] as AttackElement;
+          const key = getInput(inputs, 0, "pyro") as Vision;
           if (key in resistReduct) {
             applyModifier(desc, resistReduct, key, 40, tracker);
           }

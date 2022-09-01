@@ -2,7 +2,7 @@ import type { DataArtifact } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 
 const inazumaSets: DataArtifact[] = [
   {
@@ -141,7 +141,7 @@ const inazumaSets: DataArtifact[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 10 * +inputs![0] + 8, tracker);
+          applyModifier(desc, totalAttr, "atk_", 10 * getInput(inputs, 0, 0) + 8, tracker);
         },
       },
     ],
@@ -314,7 +314,7 @@ const inazumaSets: DataArtifact[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, ["def_", "geo"], 6 * +inputs![0], tracker);
+          applyModifier(desc, totalAttr, ["def_", "geo"], 6 * getInput(inputs, 0, 0), tracker);
         },
       },
     ],
