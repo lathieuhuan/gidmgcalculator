@@ -13,11 +13,11 @@ const navMobileMenuOptionStyles = "px-6 py-2 border-b border-white/40 last:round
 
 interface NavBarProps {
   menuActive: boolean;
-  toggleMenu: () => void;
+  setMenuActive: (active: boolean) => void;
   onClickUpload: () => void;
   onClickDownload: () => void;
 }
-export function NavBar({ menuActive, toggleMenu, onClickUpload, onClickDownload }: NavBarProps) {
+export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownload }: NavBarProps) {
   return (
     <div className="bg-black/60">
       <div className="hidden lg:flex justify-between">
@@ -40,20 +40,22 @@ export function NavBar({ menuActive, toggleMenu, onClickUpload, onClickDownload 
               mobileNavButtonStyles.base,
               menuActive ? mobileNavButtonStyles.active : mobileNavButtonStyles.idle
             )}
-            onClick={toggleMenu}
+            onClick={() => setMenuActive(true)}
           >
             <FaBars />
           </button>
-          {menuActive && (
-            <Modal onClose={toggleMenu}>
-              <div className="rounded flex flex-col shadow-white-glow">
-                <IntroButton className={cn(navMobileMenuOptionStyles, "rounded-t bg-darkblue-3")} />
-                <Tabs className={navMobileMenuOptionStyles} onClick={toggleMenu} />
-                {renderUploadButton(navMobileMenuOptionStyles, onClickUpload)}
-                {renderDownloadButton(navMobileMenuOptionStyles, onClickDownload)}
-              </div>
-            </Modal>
-          )}
+
+          <Modal
+            active={menuActive}
+            isCustom
+            className="rounded flex flex-col shadow-white-glow"
+            onClose={() => setMenuActive(false)}
+          >
+            <IntroButton className={cn(navMobileMenuOptionStyles, "rounded-t bg-darkblue-3")} />
+            <Tabs className={navMobileMenuOptionStyles} onClick={() => setMenuActive(false)} />
+            {renderUploadButton(navMobileMenuOptionStyles, onClickUpload)}
+            {renderDownloadButton(navMobileMenuOptionStyles, onClickDownload)}
+          </Modal>
         </div>
       </div>
     </div>

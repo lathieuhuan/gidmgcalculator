@@ -1,19 +1,13 @@
-import { useState } from "react";
 import classNames from "classnames";
-
-import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
-import { Artifact, Weapon } from "@Src/types";
+import { useState } from "react";
 import type { DataType, Filter, PickerItem } from "./types";
-import weapons from "@Data/weapons";
-import artifacts from "@Data/artifacts";
 
 import { CollapseSpace } from "@Components/collapse";
-import { Modal } from "@Components/modals";
 import { Checkbox, ModalHeader } from "@Src/styled-components";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 
-const { FilterButton, CloseButton } = ModalHeader;
+const { FilterButton, CloseButton, Text } = ModalHeader;
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
@@ -24,8 +18,7 @@ interface PickerProps {
   onPickItem: (item: PickerItem) => void;
   onClose: () => void;
 }
-function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
-  //
+export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
   const [massAdd, setMassAdd] = useState(false);
@@ -43,8 +36,8 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
     }
   }
   return (
-    <Modal standard onClose={onClose}>
-      <div className="p-2 h-[10%]">
+    <div className="h-full flex flex-col">
+      <div className="p-2">
         <ModalHeader>
           {dataType === "character" && (
             <>
@@ -64,11 +57,14 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
               </div>
             </>
           )}
+
+          <Text>{dataType}s</Text>
+
           {needMassAdd && (
             <div className="absolute right-16 flex items-center">
               <label className="flex gap-2 font-bold text-black">
                 <Checkbox checked={massAdd} onChange={() => setMassAdd((prev) => !prev)} />
-                Mass Add ({amount.total})
+                <span className="pt-1">Mass Add ({amount.total})</span>
               </label>
             </div>
           )}
@@ -77,8 +73,8 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
         </ModalHeader>
       </div>
 
-      <div className="px-4 pt-2 pb-4 h-[90%]">
-        <div className="pr-4 h-full overflow-auto custom-scrollbar">
+      <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
+        <div className="pr-4 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               return (
@@ -114,65 +110,6 @@ function Picker({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProp
           </div>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 }
-
-interface PickerWeaponProps {
-  wpType: Weapon;
-  needMassAdd?: boolean;
-  onPickItem: (info: ReturnType<typeof initWeapon>) => void;
-  onClose: () => void;
-}
-Picker.Weapon = ({ wpType, needMassAdd, onPickItem, onClose }: PickerWeaponProps) => {
-  const data = weapons[wpType].map(({ code, name, beta, icon, rarity }) => ({
-    code,
-    name,
-    beta,
-    icon,
-    rarity,
-  }));
-  return (
-    <Picker
-      needMassAdd={needMassAdd}
-      data={data}
-      dataType="weapon"
-      onPickItem={({ code }) => onPickItem(initWeapon({ type: wpType, code }))}
-      onClose={onClose}
-    />
-  );
-};
-
-interface PickerArtifactProps {
-  artType: Artifact;
-  needMassAdd?: boolean;
-  onPickItem: (info: ReturnType<typeof initArtPiece>) => void;
-  onClose: () => void;
-}
-Picker.Artifact = ({ artType, needMassAdd, onPickItem, onClose }: PickerArtifactProps) => {
-  const gold = [];
-  const purple = [];
-  for (const set of artifacts) {
-    const { code, beta, name } = set;
-    for (const rarity of set.variants) {
-      const { icon } = set[artType];
-
-      if (rarity === 5) {
-        gold.push({ code, beta, name, icon, rarity });
-      } else {
-        purple.push({ code, beta, name, icon, rarity });
-      }
-    }
-  }
-  return (
-    <Picker
-      needMassAdd={needMassAdd}
-      data={[...gold, ...purple]}
-      dataType="artifact"
-      onPickItem={({ code, rarity }) => onPickItem(initArtPiece({ type: artType, code, rarity }))}
-      onClose={onClose}
-    />
-  );
-};
-
-export { Picker };

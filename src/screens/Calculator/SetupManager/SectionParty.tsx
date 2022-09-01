@@ -3,10 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { addTeammate, copyParty, removeTeammate } from "@Store/calculatorSlice";
 import { selectCharData, selectCurrentIndex } from "@Store/calculatorSlice/selectors";
-
-import { Party } from "@Src/types";
 import { indexByName } from "@Src/utils";
-import characters from "@Data/characters";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Picker } from "@Components/Picker";
@@ -68,44 +65,20 @@ export default function SectionParty() {
           );
         })}
       </div>
-      {pendingSlot !== null && (
-        <TeammatePicker
-          charName={charData.name}
-          party={party}
-          pendingSlot={pendingSlot}
-          onClose={() => setPendingSlot(null)}
-        />
-      )}
+
+      <Picker.Character
+        active={pendingSlot !== null}
+        sourceType="appData"
+        filter={({ name }) => {
+          return name !== charData.name && party.every((tm) => name !== tm?.name);
+        }}
+        onPickCharacter={({ name, vision, weapon }) => {
+          if (vision && weapon && pendingSlot !== null) {
+            dispatch(addTeammate({ name, vision, weapon, tmIndex: pendingSlot }));
+          }
+        }}
+        onClose={() => setPendingSlot(null)}
+      />
     </div>
-  );
-}
-
-interface TeammatePickerProps {
-  charName: string;
-  party: Party;
-  pendingSlot: number;
-  onClose: () => void;
-}
-function TeammatePicker({ charName, party, pendingSlot, onClose }: TeammatePickerProps) {
-  const dispatch = useDispatch();
-  const remains = [];
-
-  for (const { code, beta, name, icon, rarity, vision, weapon } of characters) {
-    // not main char and not in party
-    if (name !== charName && !party.find((tm) => tm?.name === name)) {
-      remains.push({ code, beta, name, icon, rarity, vision, weapon });
-    }
-  }
-  return (
-    <Picker
-      data={remains}
-      dataType="character"
-      onPickItem={({ name, vision, weapon }) => {
-        if (vision && weapon) {
-          dispatch(addTeammate({ name, vision, weapon, tmIndex: pendingSlot }));
-        }
-      }}
-      onClose={onClose}
-    />
   );
 }

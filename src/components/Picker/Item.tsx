@@ -35,7 +35,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
           )}
         </div>
-        <p className="px-2 rounded-b-lg truncate bg-default text-black font-bold text-center">
+        <p className="px-1 rounded-b-lg truncate bg-default text-black font-bold text-center">
           {item.name}
         </p>
       </div>
@@ -43,10 +43,10 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
         <div
           className={cn(
             "absolute top-0.5 right-0.5 p-1 rounded-full bg-black shadow-[0_0_2px_white]",
-            { "flex rounded-2xl pl-1.5": item.constellation }
+            { "flex rounded-2xl pl-1.5": item.cons !== undefined }
           )}
         >
-          {item.constellation && <p className="mr-0.5 text-green">C{item.constellation}</p>}
+          {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
           <img
             className="w-5"
             src={wikiImg(VISION_ICONS[item.vision])}

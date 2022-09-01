@@ -88,9 +88,10 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretLeft
-            className={cn("text-white duration-150 ease-linear", {
-              "text-green -rotate-90": dropped,
-            })}
+            className={cn(
+              "duration-150 ease-linear",
+              dropped ? "text-green -rotate-90" : "text-white"
+            )}
           />
         </div>
         <p className="mr-2">{em}</p>

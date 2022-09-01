@@ -12,7 +12,7 @@ import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 import { ModalHeader } from "@Src/styled-components";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { ButtonBar } from "@Components/minors";
-import { Modal } from "@Components/modals";
+import { Modal, ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 import { ArtifactFilter } from "../ArtifactFilter";
 
@@ -26,7 +26,7 @@ const selectArtifactsByType = createSelector(
   (myArts, type) => myArts.filter((p) => p.type === type)
 );
 
-interface ArtifactInventory {
+interface ArtifactInventoryProps {
   artifactType: Artifact;
   currentPieces: (CalcArtPiece | null)[];
   owner: string | null;
@@ -34,14 +34,14 @@ interface ArtifactInventory {
   onClickButton: (chosen: UsersArtifact) => void;
   onClose: () => void;
 }
-export function InventoryArtifact({
+function ArtifactInventory({
   artifactType,
   currentPieces,
   owner,
   buttonText,
   onClickButton,
   onClose,
-}: ArtifactInventory) {
+}: ArtifactInventoryProps) {
   const [filterOn, setFilterOn] = useState(false);
   const [comparing, setComparing] = useState(false);
 
@@ -65,12 +65,12 @@ export function InventoryArtifact({
   const chosenArt = findById(data, chosenID);
 
   return (
-    <Modal standard onClose={onClose}>
-      <div className="p-2" style={{ height: "10%" }}>
+    <div className="h-full flex flex-col">
+      <div className="p-2">
         <ModalHeader>
-          <Text className="hidden sm:block">{artifactType}</Text>
-          <CloseButton onClick={onClose} />
           <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
+          <Text>{artifactType}</Text>
+          <CloseButton onClick={onClose} />
 
           <ArtifactFilter
             filterOn={filterOn}
@@ -81,7 +81,8 @@ export function InventoryArtifact({
           />
         </ModalHeader>
       </div>
-      <div className="pt-2 pr-4 pb-4 pl-2" style={{ height: "90%" }}>
+
+      <div className="pt-2 pr-4 pb-4 pl-2 flex-grow">
         <div className="h-full flex hide-scrollbar">
           {inventoryRack}
 
@@ -93,7 +94,7 @@ export function InventoryArtifact({
                   style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
-                    <ArtifactCard artPiece={currentArt} mutable={false} space={3} />
+                    <ArtifactCard artPiece={currentArt} mutable={false} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
                       <p className="text-orange text-center">Current equipment</p>
@@ -103,7 +104,9 @@ export function InventoryArtifact({
               ) : null}
 
               <div className="w-64 h-96 hide-scrollbar">
-                {chosenArt ? <ArtifactCard artPiece={chosenArt} mutable={false} space={3} /> : null}
+                {chosenArt ? (
+                  <ArtifactCard artPiece={chosenArt} mutable={false} space="mx-3" />
+                ) : null}
               </div>
 
               {chosenArt && chosenArt.owner !== owner ? (
@@ -129,6 +132,18 @@ export function InventoryArtifact({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function InventoryArtifact({
+  active,
+  onClose,
+  ...rest
+}: ModalControl & ArtifactInventoryProps) {
+  return (
+    <Modal active={active} onClose={onClose}>
+      <ArtifactInventory {...rest} onClose={onClose} />
     </Modal>
   );
 }

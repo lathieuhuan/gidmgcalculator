@@ -9,7 +9,7 @@ import {
 import { useSelector } from "@Store/hooks";
 
 import { WeaponCard } from "@Components/WeaponCard";
-import { Modal } from "@Components/modals";
+import { Modal, ModalControl } from "@Components/modals";
 import { Button, ModalHeader } from "@Src/styled-components";
 import { renderEquippedChar } from "../components";
 
@@ -17,20 +17,20 @@ import styles from "../styles.module.scss";
 
 const { Text, CloseButton } = ModalHeader;
 
-interface InventoryWeaponProps {
+interface WeaponInventoryProps {
   weaponType: Weapon;
   owner?: string | null;
   buttonText: string;
   onClickButton: (chosen: UsersWeapon) => void;
   onClose: () => void;
 }
-export function InventoryWeapon({
+function WeaponInventory({
   weaponType,
   owner,
   buttonText,
   onClickButton,
   onClose,
-}: InventoryWeaponProps) {
+}: WeaponInventoryProps) {
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, [weaponType]));
 
   const [inventoryRack, chosenID] = useInventoryRack({
@@ -43,15 +43,15 @@ export function InventoryWeapon({
   const chosenWp = useSelector((state) => selectWeaponById(state, chosenID));
 
   return (
-    <Modal standard onClose={onClose}>
-      <div className="p-2" style={{ height: "10%" }}>
+    <div className="h-full flex flex-col">
+      <div className="p-2">
         <ModalHeader>
-          <Text className="hidden sm:block">{weaponType}</Text>
+          <Text>{weaponType}</Text>
           <CloseButton onClick={onClose} />
         </ModalHeader>
       </div>
 
-      <div className="pt-2 pr-4 pb-4 pl-2" style={{ height: "90%" }}>
+      <div className="pt-2 pr-4 pb-4 pl-2 flex-grow">
         <div className="h-full flex hide-scrollbar">
           {inventoryRack}
 
@@ -80,6 +80,14 @@ export function InventoryWeapon({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function InventoryWeapon({ active, onClose, ...rest }: ModalControl & WeaponInventoryProps) {
+  return (
+    <Modal active={active} onClose={onClose}>
+      <WeaponInventory {...rest} onClose={onClose} />
     </Modal>
   );
 }

@@ -117,42 +117,40 @@ export default function Gears(props: GearsProps) {
         </div>
       )}
 
-      {inventoryCode === 5 && (
-        <InventoryWeapon
-          owner={oldOwner}
-          weaponType={wpInfo.type}
-          buttonText="Switch"
-          onClickButton={({ owner, ID }) => {
-            if (oldOwner) {
-              dispatch(switchWeapon({ newOwner: owner, newID: ID, oldOwner, oldID: wpInfo.ID }));
-            }
-          }}
-          onClose={() => setInventoryCode(-1)}
-        />
-      )}
+      <InventoryWeapon
+        active={inventoryCode === 5}
+        owner={oldOwner}
+        weaponType={wpInfo.type}
+        buttonText="Switch"
+        onClickButton={({ owner, ID }) => {
+          if (oldOwner) {
+            dispatch(switchWeapon({ newOwner: owner, newID: ID, oldOwner, oldID: wpInfo.ID }));
+          }
+        }}
+        onClose={() => setInventoryCode(-1)}
+      />
 
-      {inventoryCode >= 0 && inventoryCode < 5 && (
-        <InventoryArtifact
-          currentPieces={artInfo.pieces}
-          artifactType={ARTIFACT_TYPES[inventoryCode]}
-          owner={oldOwner}
-          buttonText="Switch"
-          onClickButton={({ owner, ID }) => {
-            if (oldOwner) {
-              dispatch(
-                switchArtifact({
-                  newOwner: owner,
-                  newID: ID,
-                  oldOwner,
-                  oldID: artInfo.pieces[inventoryCode]?.ID || 0,
-                  artifactIndex: inventoryCode,
-                })
-              );
-            }
-          }}
-          onClose={() => setInventoryCode(-1)}
-        />
-      )}
+      <InventoryArtifact
+        active={inventoryCode >= 0 && inventoryCode < 5}
+        currentPieces={artInfo.pieces}
+        artifactType={ARTIFACT_TYPES[inventoryCode]}
+        owner={oldOwner}
+        buttonText="Switch"
+        onClickButton={({ owner, ID }) => {
+          if (oldOwner) {
+            dispatch(
+              switchArtifact({
+                newOwner: owner,
+                newID: ID,
+                oldOwner,
+                oldID: artInfo.pieces[inventoryCode]?.ID || 0,
+                artifactIndex: inventoryCode,
+              })
+            );
+          }
+        }}
+        onClose={() => setInventoryCode(-1)}
+      />
     </>
   );
 }

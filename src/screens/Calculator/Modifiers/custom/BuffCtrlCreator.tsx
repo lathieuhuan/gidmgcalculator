@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
@@ -70,7 +70,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   };
 
   return (
-    <div className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-width-95">
+    <Fragment>
       <div className="flex flex-col md1:flex-row">
         {CUSTOM_BUFF_CATEGORIES.map((categoryName, index) => {
           const chosen = config.category === index;
@@ -79,9 +79,9 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
             <button
               key={categoryName}
               className={cn(
-                "px-4 py-2 bg-darkblue-3 first:rounded-t-lg last:rounded-b-lg",
+                "px-4 py-2 first:rounded-t-lg last:rounded-b-lg",
                 "md1:first:rounded-tr-none md1:last:rounded-bl-none md1:first:rounded-l-lg md1:last:rounded-r-lg",
-                chosen && "bg-default"
+                chosen ? "bg-default" : "bg-darkblue-3"
               )}
               onClick={() => {
                 if (!chosen) {
@@ -97,7 +97,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
         })}
       </div>
 
-      <div className="mx-auto flex items-center mt-4">
+      <div className="mx-auto mt-8 flex items-center">
         <Select
           className="pr-2 text-white"
           value={config.type}
@@ -115,6 +115,6 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
         <span className="ml-2">{percentSign(config.type)}</span>
       </div>
       <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
-    </div>
+    </Fragment>
   );
 }

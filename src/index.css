@@ -19,6 +19,11 @@
   .glow-on-hover {
     @apply opacity-90 hover:opacity-100;
   }
+  .custom-modal {
+    @apply rounded-lg shadow-white-glow;
+    width: 95%;
+    max-width: 22rem;
+  }
 }
 
 body {

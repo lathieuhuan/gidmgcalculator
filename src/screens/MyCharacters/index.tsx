@@ -1,11 +1,12 @@
-import { Picker } from "@Components/Picker";
-import characters from "@Data/characters";
+import { useRef, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import { Button, Select } from "@Src/styled-components";
-import { useDispatch, useSelector } from "@Store/hooks";
+
 import { addCharacter, chooseCharacter } from "@Store/usersDatabaseSlice";
 import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selectors";
-import { RefObject, useRef, useState } from "react";
+import { useDispatch, useSelector } from "@Store/hooks";
+
+import { Button, Select } from "@Src/styled-components";
+import { Picker } from "@Components/Picker";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 import Info from "./Info";
@@ -14,7 +15,7 @@ const selectCharacterNames = createSelector(selectMyChars, (myChars) =>
   myChars.map(({ name }) => name)
 );
 
-type ModalType = "addCharacterPicker" | "sortingCharacter" | null;
+type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
 
 export default function MyCharacters() {
   const [modalType, setModalType] = useState<ModalType>(null);
@@ -43,7 +44,7 @@ export default function MyCharacters() {
               <Button
                 className="ml-6"
                 variant="positive"
-                onClick={() => setModalType("addCharacterPicker")}
+                onClick={() => setModalType("ADD_CHARACTER")}
               >
                 Add
               </Button>
@@ -52,7 +53,7 @@ export default function MyCharacters() {
             <Button
               className="mx-auto"
               variant="positive"
-              onClick={() => setModalType("addCharacterPicker")}
+              onClick={() => setModalType("ADD_CHARACTER")}
             >
               Add New Characters
             </Button>
@@ -62,8 +63,8 @@ export default function MyCharacters() {
         <SideIconCarousel
           characterNames={characterNames}
           characterListRef={characterListRef}
-          onCliceSort={() => setModalType("sortingCharacter")}
-          onClickWish={() => setModalType("addCharacterPicker")}
+          onCliceSort={() => setModalType("SORT_CHARACTERS")}
+          onClickWish={() => setModalType("ADD_CHARACTER")}
         />
       )}
       <div className="grow flex-center overflow-y-auto">
@@ -72,46 +73,21 @@ export default function MyCharacters() {
         </div>
       </div>
 
-      {modalType === "addCharacterPicker" && (
-        <CharacterPicker
-          characterNames={characterNames}
-          characterListRef={characterListRef}
-          onClose={() => setModalType(null)}
-        />
-      )}
+      <Picker.Character
+        active={modalType === "ADD_CHARACTER"}
+        sourceType="appData"
+        needMassAdd
+        filter={({ name }) => !characterNames.includes(name)}
+        onPickCharacter={({ name, weapon }) => {
+          if (weapon) {
+            dispatch(addCharacter({ name, weapon }));
+          }
+          if (characterListRef.current) characterListRef.current.scrollLeft = 0;
+        }}
+        onClose={() => setModalType(null)}
+      />
 
-      {modalType === "sortingCharacter" && <CharacterSort onClose={() => setModalType(null)} />}
+      <CharacterSort active={modalType === "SORT_CHARACTERS"} onClose={() => setModalType(null)} />
     </div>
-  );
-}
-
-interface CharacterPickerProps {
-  characterListRef: RefObject<HTMLDivElement>;
-  characterNames: string[];
-  onClose: () => void;
-}
-function CharacterPicker({ characterListRef, characterNames, onClose }: CharacterPickerProps) {
-  const dispatch = useDispatch();
-
-  const wishlist = [];
-  for (const databaseChar of characters) {
-    if (!characterNames.includes(databaseChar.name)) {
-      const { name, code, beta, icon, rarity, vision, weapon } = databaseChar;
-      wishlist.push({ name, code, beta, icon, rarity, vision, weapon });
-    }
-  }
-  return (
-    <Picker
-      needMassAdd={true}
-      data={wishlist}
-      dataType="character"
-      onPickItem={({ name, weapon }) => {
-        if (weapon) {
-          dispatch(addCharacter({ name, weapon }));
-        }
-        if (characterListRef.current) characterListRef.current.scrollLeft = 0;
-      }}
-      onClose={onClose}
-    />
   );
 }

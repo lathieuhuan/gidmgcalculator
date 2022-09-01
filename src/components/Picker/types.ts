@@ -15,6 +15,6 @@ export type PickerItem = {
   rarity: Rarity;
   vision?: Vision;
   weapon?: Weapon;
-  constellation?: number;
+  cons?: number;
   artifactIDs?: (number | null)[];
 };

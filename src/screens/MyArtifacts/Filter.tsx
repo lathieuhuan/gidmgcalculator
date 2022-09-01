@@ -10,7 +10,7 @@ import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 import { hasDupStat, StatsFilter } from "@Components/item-stores/utils";
 
 import { ButtonBar } from "@Components/minors";
-import { Modal } from "@Components/modals";
+import { Modal, ModalControl } from "@Components/modals";
 
 interface FilterProps {
   types: Artifact[];
@@ -21,15 +21,7 @@ interface FilterProps {
   setStats: (newStats: StatsFilter) => void;
   onClose: () => void;
 }
-export function Filter({
-  types,
-  codes,
-  stats,
-  setTypes,
-  setCodes,
-  setStats,
-  onClose,
-}: FilterProps) {
+function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClose }: FilterProps) {
   const [isError, setIsError] = useState(false);
   const myArts = useSelector(selectMyArts);
 
@@ -40,34 +32,40 @@ export function Filter({
   useEffect(() => setIsError(false), [stats]);
 
   return (
-    <Modal onClose={onClose}>
-      <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow max-width-95">
-        <div className="pb-2 flex custom-scrollbar">
-          <div className="flex flex-col">
-            <div className="pt-2 pb-4 flex justify-center">{typeFilter}</div>
-            {statsFilter}
-          </div>
-          {setsFilter}
+    <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow max-width-95">
+      <div className="pb-2 flex custom-scrollbar">
+        <div className="flex flex-col">
+          <div className="pt-2 pb-4 flex justify-center">{typeFilter}</div>
+          {statsFilter}
         </div>
-
-        <ButtonBar
-          className="mt-4"
-          texts={["Cancel", "Confirm"]}
-          handlers={[
-            onClose,
-            () => {
-              if (hasDupStat(tempStats)) {
-                setIsError(true);
-                return;
-              }
-              setTypes(tempTypes as Artifact[]);
-              setCodes(tempCodes);
-              setStats(tempStats);
-              onClose();
-            },
-          ]}
-        />
+        {setsFilter}
       </div>
+
+      <ButtonBar
+        className="mt-4"
+        texts={["Cancel", "Confirm"]}
+        handlers={[
+          onClose,
+          () => {
+            if (hasDupStat(tempStats)) {
+              setIsError(true);
+              return;
+            }
+            setTypes(tempTypes as Artifact[]);
+            setCodes(tempCodes);
+            setStats(tempStats);
+            onClose();
+          },
+        ]}
+      />
+    </div>
+  );
+}
+
+export function Filter({ active, onClose, ...rest }: ModalControl & FilterProps) {
+  return (
+    <Modal active={active} onClose={onClose}>
+      <FilterInner {...rest} onClose={onClose} />
     </Modal>
   );
 }

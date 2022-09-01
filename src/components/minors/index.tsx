@@ -6,7 +6,7 @@ import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, wikiImg } from "@Src/utils";
 import { Green, Button, CloseButton } from "@Src/styled-components";
-import { Modal } from "@Components/modals";
+import { Modal, ModalControl } from "@Components/modals";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
@@ -138,13 +138,12 @@ export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSp
   );
 }
 
-interface HowToModalProps {
+interface HowToModalProps extends ModalControl {
   content: JSX.Element;
-  onClose: () => void;
 }
-export function HowToModal({ content, onClose }: HowToModalProps) {
+export function HowToModal({ active, content, onClose }: HowToModalProps) {
   return (
-    <Modal className="p-4" onClose={onClose}>
+    <Modal active={active} className="p-4" onClose={onClose}>
       <CloseButton className="absolute top-3 right-3" onClick={close} />
       <p className="mb-2 text-1.5xl text-orange">HOW-TOs</p>
       {content}
@@ -262,3 +261,57 @@ export function InfusionNotes({ infusion, vision, weapon }: InfusionNotesProps) 
     </div>
   );
 }
+
+interface ButtonInfo {
+  text?: string;
+  onClick?: () => void;
+}
+interface ConfirmTemplateProps {
+  message: string | JSX.Element;
+  left?: ButtonInfo;
+  mid?: Required<ButtonInfo>;
+  right: ButtonInfo;
+  onClose: () => void;
+}
+function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmTemplateProps) {
+  const texts = [left?.text || "Cancel", right?.text || "Confirm"];
+  const handlers = [
+    () => {
+      if (left?.onClick) left.onClick();
+      onClose();
+    },
+    () => {
+      if (right.onClick) right.onClick();
+      onClose();
+    },
+  ];
+  if (mid) {
+    texts.splice(1, 0, mid.text);
+    handlers.splice(1, 0, () => {
+      mid.onClick();
+      onClose();
+    });
+  }
+
+  return (
+    <div className="p-4 rounded-lg bg-darkblue-3">
+      <p className="py-2 text-center text-1.5xl">{message}</p>
+      <ButtonBar
+        className={cn("mt-4 flex-wrap", mid && "gap-4")}
+        texts={texts}
+        handlers={handlers}
+        autoFocusIndex={texts.length - 1}
+      />
+    </div>
+  );
+}
+
+export function ConfirmModal({ active, onClose, ...rest }: ModalControl & ConfirmTemplateProps) {
+  return (
+    <Modal active={active} isCustom className="custom-modal" onClose={onClose}>
+      <ConfirmTemplate {...rest} onClose={onClose} />
+    </Modal>
+  );
+}
+
+export { ConfirmTemplate };

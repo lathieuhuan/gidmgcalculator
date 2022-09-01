@@ -2,20 +2,20 @@ import cn from "classnames";
 import { memo, useState } from "react";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { startCalculation } from "@Store/thunks";
-import characters from "@Data/characters";
-import { findByName } from "@Src/utils";
 
 import { Button } from "@Src/styled-components";
 import { Picker } from "@Components/Picker";
-import OverviewChar from "./OverviewChar";
 
-import styles from "./styles.module.scss";
+import OverviewChar from "./OverviewChar";
 import Modifiers from "./Modifiers";
 import DamageResults from "./DamageResults";
 import SetupManager from "./SetupManager";
 
+import styles from "./styles.module.scss";
+
 function Calculator() {
   const touched = useSelector((state) => state.calculator.touched);
+  const dispatch = useDispatch();
   const [pickerOn, setPickerOn] = useState(false);
 
   return (
@@ -48,36 +48,13 @@ function Calculator() {
         </div>
       </div>
 
-      {pickerOn && <MainCharPicker onClose={() => setPickerOn(false)} />}
+      <Picker.Character
+        active={pickerOn}
+        sourceType="mixed"
+        onPickCharacter={(pickedChar) => dispatch(startCalculation(pickedChar))}
+        onClose={() => setPickerOn(false)}
+      />
     </div>
-  );
-}
-
-function MainCharPicker({ onClose }: { onClose: () => void }) {
-  const myChars = useSelector((state) => state.database.myChars);
-  const dispatch = useDispatch();
-
-  const mixedList = [];
-  for (const { name, code, beta, icon, rarity, vision, weapon } of characters) {
-    const char = { code, beta, icon, rarity, vision, weapon };
-    const existedChar = findByName(myChars, name);
-
-    if (existedChar) {
-      mixedList.push({ ...existedChar, ...char });
-    } else {
-      mixedList.push({ name, ...char });
-    }
-  }
-  return (
-    <Picker
-      data={mixedList}
-      dataType="character"
-      onClose={onClose}
-      onPickItem={(pickedChar) => {
-        dispatch(startCalculation(pickedChar));
-        onClose();
-      }}
-    />
   );
 }
 

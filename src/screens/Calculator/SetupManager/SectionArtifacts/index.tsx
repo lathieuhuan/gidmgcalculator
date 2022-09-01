@@ -24,7 +24,10 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
   const dispatch = useDispatch();
 
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
-  const [pendingSlot, setPendingSlot] = useState(-1);
+  const [artifactPicker, setArtifactPicker] = useState({
+    active: false,
+    slot: 0,
+  });
 
   const { pieces } = allArtInfos[currentIndex];
   const pieceInfo = pieces[activeTabIndex];
@@ -43,7 +46,10 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
       scrollContainer();
     } else {
-      setPendingSlot(tabIndex);
+      setArtifactPicker({
+        active: true,
+        slot: tabIndex,
+      });
     }
   };
 
@@ -102,28 +108,32 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             pieceInfo={pieceInfo}
             pieceIndex={activeTabIndex}
             onClickRemovePiece={() => setActiveTabIndex(-1)}
-            onClickChangePiece={() => setPendingSlot(activeTabIndex)}
+            onClickChangePiece={() =>
+              setArtifactPicker({
+                active: true,
+                slot: activeTabIndex,
+              })
+            }
           />
         )}
       </CollapseSpace>
 
-      {pendingSlot !== -1 && (
-        <Picker.Artifact
-          artType={ARTIFACT_TYPES[pendingSlot]}
-          onPickItem={(item) => {
-            dispatch(
-              updateArtPiece({
-                pieceIndex: pendingSlot,
-                newPiece: { ID: Date.now(), ...item },
-                isFirstTime: true,
-              })
-            );
-            setActiveTabIndex(pendingSlot);
-            scrollContainer();
-          }}
-          onClose={() => setPendingSlot(-1)}
-        />
-      )}
+      <Picker.Artifact
+        active={artifactPicker.active}
+        artifactType={ARTIFACT_TYPES[artifactPicker.slot]}
+        onPickArtifact={(item) => {
+          dispatch(
+            updateArtPiece({
+              pieceIndex: artifactPicker.slot,
+              newPiece: { ID: Date.now(), ...item },
+              isFirstTime: true,
+            })
+          );
+          setActiveTabIndex(artifactPicker.slot);
+          scrollContainer();
+        }}
+        onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
+      />
     </div>
   );
 }

@@ -16,7 +16,8 @@ import { findById, isOne, percentSign } from "@Src/utils";
 
 import { IconButton, Select } from "@Src/styled-components";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
-import { ConfirmModal, Modal } from "@Components/modals";
+import { Modal } from "@Components/modals";
+import { ConfirmTemplate } from "@Components/minors";
 
 interface PieceInfoProps {
   pieceInfo: CalcArtPiece;
@@ -104,7 +105,7 @@ export default function PieceInfo({
         />
       </div>
 
-      <div className="mt-4 flex justify-evenly align-center">
+      <div className="pt-4 pb-1 flex justify-evenly align-center">
         <IconButton
           variant="negative"
           onClick={() => {
@@ -133,16 +134,18 @@ export default function PieceInfo({
         </IconButton>
       </div>
 
-      {saving && <SavingModal pieceInfo={pieceInfo} onClose={() => setSaving(false)} />}
+      <Modal active={saving} isCustom className="custom-modal" onClose={() => setSaving(false)}>
+        <ConfirmSaving pieceInfo={pieceInfo} onClose={() => setSaving(false)} />
+      </Modal>
     </div>
   );
 }
 
-interface SavingModalProps {
+interface ConfirmSavingProps {
   pieceInfo: CalcArtPiece;
   onClose: () => void;
 }
-function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
+function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
   const [type, setType] = useState(0);
   const dispatch = useDispatch();
 
@@ -160,7 +163,9 @@ function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
     }
   }, []);
 
-  if (type === 0) return <Modal onClose={() => {}} />;
+  if (type === 0) {
+    return null;
+  }
 
   const successful = type === 1;
   let noChange = false;
@@ -186,16 +191,16 @@ function SavingModal({ pieceInfo, onClose }: SavingModalProps) {
   );
 
   return (
-    <ConfirmModal
+    <ConfirmTemplate
       message={message}
       left={successful ? { text: "Close" } : undefined}
       mid={
-        !successful
-          ? {
+        successful
+          ? undefined
+          : {
               text: "Duplicate",
               onClick: () => dispatch(addArtifact({ owner: null, ...pieceInfo, ID: Date.now() })),
             }
-          : undefined
       }
       right={{
         onClick: () => {

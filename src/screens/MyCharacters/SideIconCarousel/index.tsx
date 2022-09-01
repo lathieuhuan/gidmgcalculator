@@ -5,7 +5,7 @@ import { FaSort, FaTh } from "react-icons/fa";
 import { findCharacter } from "@Data/controllers";
 import { wikiImg } from "@Src/utils";
 import { chooseCharacter } from "@Store/usersDatabaseSlice";
-import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selectors";
+import { selectChosenChar } from "@Store/usersDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import { IconButton } from "@Src/styled-components";
@@ -118,40 +118,15 @@ export default function SideIconCarousel({
         </button>
       </div>
 
-      {gridviewOn && (
-        <CharacterPicker scrollList={scrollList} onClose={() => setGridviewOn(false)} />
-      )}
+      <Picker.Character
+        active={gridviewOn}
+        sourceType="usersData"
+        onPickCharacter={({ name }) => {
+          dispatch(chooseCharacter(name));
+          scrollList(name);
+        }}
+        onClose={() => setGridviewOn(false)}
+      />
     </div>
-  );
-}
-
-interface CharacterPickerProps {
-  scrollList: (name: string) => void;
-  onClose: () => void;
-}
-function CharacterPicker({ scrollList, onClose }: CharacterPickerProps) {
-  const myChars = useSelector(selectMyChars);
-  const dispatch = useDispatch();
-
-  const data: any[] = [];
-  myChars.forEach(({ name, cons }) => {
-    const databaseChar = findCharacter({ name });
-
-    if (databaseChar) {
-      const { code, icon, rarity, vision, weapon } = databaseChar;
-      data.push({ name, cons, code, icon, rarity, vision, weapon });
-    }
-  });
-
-  return (
-    <Picker
-      data={data}
-      dataType="character"
-      onPickItem={({ name }) => {
-        dispatch(chooseCharacter(name));
-        scrollList(name);
-      }}
-      onClose={onClose}
-    />
   );
 }

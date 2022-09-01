@@ -1,6 +1,6 @@
 import cn from "classnames";
-import { useEffect, useRef, useState } from "react";
-import { Modal } from "@Components/modals";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { Modal, ModalControl } from "@Components/modals";
 import { Button, CloseButton } from "@Src/styled-components";
 import { downloadToDevice, styles } from "./common";
 
@@ -14,12 +14,7 @@ interface UploadOptionsProps {
   onSuccess: () => void;
   onClose: () => void;
 }
-export default function UploadOptions({
-  outdates,
-  uploadUsersDatabase,
-  onSuccess,
-  onClose,
-}: UploadOptionsProps) {
+function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOptionsProps) {
   const [message, setMessage] = useState<MessageState | null>(null);
 
   useEffect(() => {
@@ -101,64 +96,80 @@ export default function UploadOptions({
   const uploadFromLocalStorageFailed = message?.uploadCase === "auto" && message?.result === "fail";
 
   return (
-    <Modal onClose={onClose}>
-      <div className={styles.wrapper} style={{ width: "90%", maxWidth: "28rem" }}>
-        <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
+    <Fragment>
+      <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
 
-        <div className={cn("flex flex-col items-center", styles.option)}>
-          <p className="px-4 py-2 text-h5 text-default text-center">Load from Local Storage</p>
+      <div className={cn("flex flex-col items-center", styles.option)}>
+        <p className="px-4 py-2 text-h5 text-default text-center">Load from Local Storage</p>
 
-          {message?.uploadCase === "auto" && (
-            <p className={cn("mb-2 text-h6 font-bold text-center", messageColor)}>
+        {message?.uploadCase === "auto" && (
+          <p className={cn("mb-2 text-h6 font-bold text-center", messageColor)}>
+            {
               {
-                {
-                  success: "Successfully loaded data from Local Storage",
-                  no_data: "! There's no data in your Local Storage !",
-                  fail: failMessage,
-                }[message.result]
-              }
-            </p>
-          )}
-
-          <Button
-            className="my-1"
-            variant="positive"
-            onClick={() => {
-              if (uploadFromLocalStorageFailed) {
-                downloadFromLocalStorageToDevice();
-              } else {
-                tryToLoadFromLocalStorage();
-              }
-            }}
-          >
-            {uploadFromLocalStorageFailed ? "Download Database" : "Load"}
-          </Button>
-        </div>
-
-        <div className="w-full border-b border-default" />
-        <div className={cn("flex flex-col items-center", styles.option)}>
-          <p className="px-4 py-2 text-h5 text-default text-center">
-            Upload a .TXT file or a .JSON file in GOOD format
+                success: "Successfully loaded data from Local Storage",
+                no_data: "! There's no data in your Local Storage !",
+                fail: failMessage,
+              }[message.result]
+            }
           </p>
+        )}
 
-          {message?.uploadCase === "manual" && (
-            <p className={cn("mb-2 font-bold text-center", messageColor)}>
-              {message.result === "success" ? "Successfully uploaded your File" : failMessage}
-            </p>
-          )}
-
-          <input
-            ref={inputRef}
-            hidden
-            type="file"
-            accept="text/*,application/json"
-            onChange={manuallyUpload}
-          />
-          <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>
-            Choose File
-          </Button>
-        </div>
+        <Button
+          className="my-1"
+          variant="positive"
+          onClick={() => {
+            if (uploadFromLocalStorageFailed) {
+              downloadFromLocalStorageToDevice();
+            } else {
+              tryToLoadFromLocalStorage();
+            }
+          }}
+        >
+          {uploadFromLocalStorageFailed ? "Download Database" : "Load"}
+        </Button>
       </div>
+
+      <div className="w-full border-b border-default" />
+      <div className={cn("flex flex-col items-center", styles.option)}>
+        <p className="px-4 py-2 text-h5 text-default text-center">
+          Upload a .TXT file or a .JSON file in GOOD format
+        </p>
+
+        {message?.uploadCase === "manual" && (
+          <p className={cn("mb-2 font-bold text-center", messageColor)}>
+            {message.result === "success" ? "Successfully uploaded your File" : failMessage}
+          </p>
+        )}
+
+        <input
+          ref={inputRef}
+          hidden
+          type="file"
+          accept="text/*,application/json"
+          onChange={manuallyUpload}
+        />
+        <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>
+          Choose File
+        </Button>
+      </div>
+    </Fragment>
+  );
+}
+
+export default function UploadOptions({
+  active,
+  onClose,
+  ...rest
+}: ModalControl & UploadOptionsProps) {
+  return (
+    <Modal
+      active={active}
+      isCustom
+      className={styles.wrapper}
+      style={{ width: "90%", maxWidth: "28rem" }}
+      onClose={onClose}
+    >
+      <Options {...rest} onClose={onClose} />
     </Modal>
   );
 }

@@ -20,7 +20,7 @@ import { Modal } from "@Components/modals";
 import { Button } from "./styled-components";
 
 function App() {
-  const [loadOptionType, setLoadOptionType] = useState<"up" | "down" | "">("");
+  const [loadOptionType, setLoadOptionType] = useState<"UP" | "DOWN" | "">("");
   const [navBarMenuActive, setNavBarMenuActive] = useState(false);
   const [outdates, setOutdates] = useState([]);
 
@@ -68,9 +68,9 @@ function App() {
     <div className="App h-screen text-default flex flex-col">
       <NavBar
         menuActive={navBarMenuActive}
-        toggleMenu={() => setNavBarMenuActive((prev) => !prev)}
-        onClickUpload={() => setLoadOptionType("up")}
-        onClickDownload={() => setLoadOptionType("down")}
+        setMenuActive={setNavBarMenuActive}
+        onClickUpload={() => setLoadOptionType("UP")}
+        onClickDownload={() => setLoadOptionType("DOWN")}
       />
       <div className="grow flex-center relative">
         <Calculator />
@@ -80,38 +80,30 @@ function App() {
         )}
       </div>
 
-      {isError && (
-        <Modal onClose={() => dispatch(closeError())}>
-          <div className="p-4 w-80 rounded-lg flex flex-col shadow-white-glow bg-darkblue-1">
-            <p className="text-h5 text-center text-lightred">
-              An Error has occurred and prevented the calculation process.
-            </p>
-            <Button
-              className="mt-4 mx-auto"
-              variant="positive"
-              onClick={() => dispatch(closeError())}
-            >
-              Confirm
-            </Button>
-          </div>
-        </Modal>
-      )}
+      <Modal active={isError} onClose={() => dispatch(closeError())}>
+        <div className="p-4 w-80 rounded-lg flex flex-col shadow-white-glow bg-darkblue-1">
+          <p className="text-h5 text-center text-lightred">
+            An Error has occurred and prevented the calculation process.
+          </p>
+          <Button
+            className="mt-4 mx-auto"
+            variant="positive"
+            onClick={() => dispatch(closeError())}
+          >
+            Confirm
+          </Button>
+        </div>
+      </Modal>
 
-      {loadOptionType !== ""
-        ? ReactDOM.createPortal(
-            loadOptionType === "down" ? (
-              <DownloadOptions onClose={() => setLoadOptionType("")} />
-            ) : (
-              <UploadOptions
-                outdates={outdates}
-                uploadUsersDatabase={checkAndAddUsersDatabase}
-                onSuccess={() => setNavBarMenuActive(false)}
-                onClose={() => setLoadOptionType("")}
-              />
-            ),
-            document.getElementById("portal")!
-          )
-        : null}
+      <DownloadOptions active={loadOptionType === "DOWN"} onClose={() => setLoadOptionType("")} />
+
+      <UploadOptions
+        active={loadOptionType === "UP"}
+        outdates={outdates}
+        uploadUsersDatabase={checkAndAddUsersDatabase}
+        onSuccess={() => setNavBarMenuActive(false)}
+        onClose={() => setLoadOptionType("")}
+      />
     </div>
   );
 }

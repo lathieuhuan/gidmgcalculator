@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { useState } from "react";
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -53,7 +54,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
   return (
     <div className="flex flex-col">
-      <div className="mx-auto mt-4 flex">
+      <div className={cn("mx-auto mt-4 flex", !modCtrls.length && "pb-2")}>
         {modCtrls.length > 0 && (
           <IconButton
             className="mr-8 glow-on-hover"
@@ -63,7 +64,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             <FaTrashAlt />
           </IconButton>
         )}
-        {modCtrls.length <= 10 && (
+        {modCtrls.length < 10 && (
           <IconButton variant="positive" onClick={() => setModalOn(true)}>
             <FaPlus />
           </IconButton>
@@ -104,15 +105,18 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           </div>
         </div>
       ))}
-      {modalOn && (
-        <Modal onClose={closeModal}>
-          {isBuffs ? (
-            <BuffCtrlCreator onClose={closeModal} />
-          ) : (
-            <DebuffCtrlCreator onClose={closeModal} />
-          )}
-        </Modal>
-      )}
+
+      <Modal
+        active={modalOn}
+        className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-width-95"
+        onClose={closeModal}
+      >
+        {isBuffs ? (
+          <BuffCtrlCreator onClose={closeModal} />
+        ) : (
+          <DebuffCtrlCreator onClose={closeModal} />
+        )}
+      </Modal>
     </div>
   );
 }

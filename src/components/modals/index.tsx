@@ -1,99 +1,67 @@
 import cn from "classnames";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, ReactNode, useCallback, useEffect, useState } from "react";
 import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
 import { ButtonBar } from "@Components/minors";
 import styles from "./styles.module.scss";
 
-interface ModalProps {
-  standard?: boolean;
-  className?: string;
-  wrapperStyles?: CSSProperties;
-  children?: JSX.Element | JSX.Element[];
+export interface ModalControl {
+  active: boolean;
   onClose: () => void;
 }
-export function Modal({ standard, className, wrapperStyles, children, onClose }: ModalProps) {
-  const [isShown, setIsShown] = useState(false);
 
-  const close = () => {
-    setIsShown(false);
-    setTimeout(onClose, 150);
-  };
+interface ModalProps extends ModalControl {
+  className?: string;
+  style?: CSSProperties;
+  isCustom?: boolean;
+  children: ReactNode;
+}
+export function Modal({ active, className, style, isCustom, children, onClose }: ModalProps) {
+  const [state, setState] = useState({
+    active: false,
+    animate: false,
+  });
 
-  useCloseWithEsc(close);
+  const closeModal = useCallback(() => {
+    setState((prev) => ({ ...prev, animate: false }));
+    setTimeout(() => {
+      setState((prev) => ({ ...prev, active: false }));
+      onClose();
+    }, 160);
+  }, [onClose]);
 
   useEffect(() => {
-    setIsShown(true);
-  }, []);
+    if (active && !state.active) {
+      setState((prev) => ({ ...prev, active: true }));
+      setTimeout(() => {
+        setState((prev) => ({ ...prev, animate: true }));
+      }, 50);
+    } else if (active === false && state.active) {
+      closeModal();
+    }
+  }, [active, state.active]);
 
-  return (
-    <div
-      className={cn(
-        "fixed full-stretch z-50 transition-all duration-150 ease-linear",
-        isShown ? "opacity-100 scale-100" : "opacity-40 scale-50",
-        styles.modal
-      )}
-    >
-      <div className="w-full h-full bg-black/60" onClick={close} />
+  useCloseWithEsc(closeModal);
 
-      {standard || className ? (
-        <div
-          className={cn(
-            "rounded-lg bg-darkblue-2 shadow-white-glow",
-            styles["modal-content"],
-            className
-          )}
-          style={wrapperStyles}
-        >
-          {children}
-        </div>
-      ) : (
-        children
-      )}
-    </div>
-  );
-}
-
-interface ButtonInfo {
-  text?: string;
-  onClick?: () => void;
-}
-interface ConfirmModalProps {
-  message: string | JSX.Element;
-  left?: ButtonInfo;
-  mid?: Required<ButtonInfo>;
-  right: ButtonInfo;
-  onClose: () => void;
-}
-export function ConfirmModal({ message, left, mid, right, onClose }: ConfirmModalProps) {
-  const texts = [left?.text || "Cancel", right?.text || "Confirm"];
-  const handlers = [
-    () => {
-      if (left?.onClick) left.onClick();
-      onClose();
-    },
-    () => {
-      if (right.onClick) right.onClick();
-      onClose();
-    },
-  ];
-  if (mid) {
-    texts.splice(1, 0, mid.text);
-    handlers.splice(1, 0, () => {
-      mid.onClick();
-      onClose();
-    });
-  }
-  return (
-    <Modal onClose={onClose}>
-      <div className="p-4 sm:max-w-95 rounded-2xl bg-darkblue-3">
-        <p className="py-2 text-center text-1.5xl">{message}</p>
-        <ButtonBar
-          className={cn("mt-4 flex-wrap", mid && "gap-4")}
-          texts={texts}
-          handlers={handlers}
-          autoFocusIndex={texts.length - 1}
-        />
+  return state.active ? (
+    <div className="fixed full-stretch z-50">
+      <div
+        className={cn(
+          "w-full h-full bg-black transition duration-150 ease-linear",
+          state.animate ? "opacity-60" : "opacity-20"
+        )}
+        onClick={closeModal}
+      />
+      <div
+        className={cn(
+          "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 shadow-white-glow transition duration-150 ease-linear",
+          state.animate ? "opacity-100 scale-100" : "opacity-0 scale-95",
+          !isCustom && cn("rounded-lg bg-darkblue-2", styles["content-wrapper"]),
+          className
+        )}
+        style={style}
+      >
+        {children}
       </div>
-    </Modal>
-  );
+    </div>
+  ) : null;
 }

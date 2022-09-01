@@ -9,11 +9,9 @@ import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
 import { findCharacter } from "@Data/controllers";
 import { splitLv } from "@Src/utils";
 
-import { Modal } from "@Components/modals";
+import { Modal, ModalControl } from "@Components/modals";
 import { Button, CloseButton } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
-
-import styles from "../styles.module.scss";
 
 const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   myChars.map((char, index) => {
@@ -22,7 +20,7 @@ const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   })
 );
 
-export default function CharacterSort({ onClose }: { onClose: () => void }) {
+function SortInner({ onClose }: { onClose: () => void }) {
   const toBeSorted = useSelector(selectCharacterToBeSorted);
   const dispatch = useDispatch();
 
@@ -55,87 +53,88 @@ export default function CharacterSort({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <Modal onClose={onClose}>
-      <div
-        className={cn(
-          "px-2 py-4 rounded-lg bg-darkblue-2 shadow-white-glow",
-          styles["character-sort"]
-        )}
-      >
-        <CloseButton className="absolute top-2 right-2" onClick={onClose} />
-        <p className="text-h4 text-orange text-center">Sort by</p>
-        <ButtonBar
-          className="mt-4 gap-4"
-          texts={["Name", "Level", "Rarity"]}
-          variants={["neutral", "neutral", "neutral"]}
-          handlers={[
-            () =>
-              setList((prev) => {
-                const newList = [...prev];
-                newList.sort((a, b) => a.name.localeCompare(b.name));
-                return newList;
-              }),
-            () =>
-              setList((prev) => {
-                const newList = [...prev];
-                return newList.sort((a, b) => {
-                  const [fA, sA] = splitLv(a);
-                  const [fB, sB] = splitLv(b);
-                  if (fA !== fB) {
-                    return fB - fA;
-                  }
-                  return sB - sA;
-                });
-              }),
-            () =>
-              setList((prev) => {
-                const newList = [...prev];
-                return newList.sort((a, b) => {
-                  return b.rarity - a.rarity;
-                });
-              }),
-          ]}
-        />
+    <div className="px-2 py-4 rounded-lg bg-darkblue-2">
+      <CloseButton className="absolute top-2 right-2" onClick={onClose} />
+      <p className="text-h4 text-orange text-center">Sort by</p>
+      <ButtonBar
+        className="mt-4 gap-4"
+        texts={["Name", "Level", "Rarity"]}
+        variants={["neutral", "neutral", "neutral"]}
+        handlers={[
+          () =>
+            setList((prev) => {
+              const newList = [...prev];
+              newList.sort((a, b) => a.name.localeCompare(b.name));
+              return newList;
+            }),
+          () =>
+            setList((prev) => {
+              const newList = [...prev];
+              return newList.sort((a, b) => {
+                const [fA, sA] = splitLv(a);
+                const [fB, sB] = splitLv(b);
+                if (fA !== fB) {
+                  return fB - fA;
+                }
+                return sB - sA;
+              });
+            }),
+          () =>
+            setList((prev) => {
+              const newList = [...prev];
+              return newList.sort((a, b) => {
+                return b.rarity - a.rarity;
+              });
+            }),
+        ]}
+      />
 
-        <div className={cn("mt-4 custom-scrollbar", styles["list-wrapper"])}>
-          <div>
-            {list.map((char, i) => (
-              <div
-                key={i}
-                id={i.toString()}
-                className={cn(
-                  "px-2 py-1 flex items-center cursor-default select-none hover:bg-darkblue-1",
-                  i === dropIndex && "border-t border-white"
-                )}
-                draggable="true"
-                onDragStart={onDragStart}
-                onDragOver={onDragOver}
-                onDragEnter={onDragEnter}
-                onDrop={onDrop}
-              >
-                <button className="w-8 h-8 mr-2 text-default  pointer-events-none ">
-                  <FaSort size="1.25rem" />
-                </button>
-                <p className="pointer-events-none">
-                  <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
-                  {char.level})
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-4 flex justify-center">
-          <Button
-            variant="positive"
-            onClick={() => {
-              dispatch(sortCharacters(list.map(({ index }) => index)));
-              onClose();
-            }}
-          >
-            Confirm
-          </Button>
+      <div className="mt-4 custom-scrollbar" style={{ height: "60vh" }}>
+        <div>
+          {list.map((char, i) => (
+            <div
+              key={i}
+              id={i.toString()}
+              className={cn(
+                "px-2 py-1 flex items-center cursor-default select-none hover:bg-darkblue-1",
+                i === dropIndex && "border-t border-white"
+              )}
+              draggable="true"
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDragEnter={onDragEnter}
+              onDrop={onDrop}
+            >
+              <button className="w-8 h-8 mr-2 text-default  pointer-events-none ">
+                <FaSort size="1.25rem" />
+              </button>
+              <p className="pointer-events-none">
+                <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
+                {char.level})
+              </p>
+            </div>
+          ))}
         </div>
       </div>
+      <div className="mt-4 flex justify-center">
+        <Button
+          variant="positive"
+          onClick={() => {
+            dispatch(sortCharacters(list.map(({ index }) => index)));
+            onClose();
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default function CharacterSort({ active, onClose }: ModalControl) {
+  return (
+    <Modal active={active} isCustom className="custom-modal" onClose={onClose}>
+      <SortInner onClose={onClose} />
     </Modal>
   );
 }

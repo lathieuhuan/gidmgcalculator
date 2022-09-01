@@ -1,4 +1,5 @@
-import { ConfirmModal } from "@Components/modals";
+import { ConfirmModal } from "@Components/minors";
+import { ModalControl } from "@Components/modals";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { UsersArtifact, UsersWeapon } from "@Src/types";
 
@@ -17,27 +18,28 @@ const isWeapon = (
   return itemType === "weapon";
 };
 
-interface ItemRemoveConfirmProps {
+interface ItemConfirmRemoveProps extends ModalControl {
   itemType: "weapon" | "artifact";
   item: UsersWeapon | UsersArtifact;
   filteredIds: number[];
   removeItem: (args: { ID: number; owner: string | null; type: string }) => void;
   updateChosenID: (newID: number) => void;
-  onClose: () => void;
 }
-export function ItemRemoveConfirm({
+export function ItemConfirmRemove({
+  active,
   item,
   itemType,
   filteredIds,
   removeItem,
   updateChosenID,
   onClose,
-}: ItemRemoveConfirmProps) {
+}: ItemConfirmRemoveProps) {
   const { ID, owner, code, type } = item;
   const itemData = isWeapon(item, itemType) ? findWeapon(item) : findArtifactPiece(item);
 
   return (
     <ConfirmModal
+      active={active}
       message={
         <>
           Remove "<b>{itemData?.name}</b>"?{" "}

@@ -84,7 +84,7 @@ export function ArtifactCard({
           </div>
         )}
 
-        <div className={`bg-gradient-${rarity} relative rounded-lg`}>
+        <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
           <img className="w-28" src={beta ? icon : wikiImg(icon)} alt="" draggable={false} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
@@ -129,7 +129,7 @@ export function ArtifactCard({
 
 interface ArtifactCardCommonProps {
   mutable?: boolean;
-  space?: number;
+  space?: string;
   changeSubStat?: (index: number, changes: Partial<CalcArtPieceSubStatInfo>) => void;
 }
 
@@ -191,8 +191,8 @@ export function ArtifactSubstats({
             <span>{percentSign(type)}</span>
           </div>
         ) : (
-          <div key={i} className={`mt-2 pl-${space} pt-1 flex items-center bg-darkblue-2`}>
-            <p className={"mr-" + space}>•</p>
+          <div key={i} className={`mt-2 pt-1 flex items-center bg-darkblue-2`}>
+            <p className={space}>•</p>
             <p>
               <span
                 className={cn("mr-1", statTypeCount[type] === 1 ? "text-white" : "text-darkred")}

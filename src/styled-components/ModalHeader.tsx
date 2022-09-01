@@ -14,7 +14,15 @@ function ModalHeader({ className, ...rest }: InsHTMLAttributes<HTMLDivElement>) 
 
 ModalHeader.Text = ({ className, ...rest }: ParamHTMLAttributes<HTMLParagraphElement>) => {
   return (
-    <p className={cn("w-full text-1.5xl leading-5 text-black text-center", className)} {...rest} />
+    <div className="w-full h-11 flex-center">
+      <p
+        className={cn(
+          "pt-1 pr-10 hidden md1:block capitalize text-h4 text-center font-bold text-black",
+          className
+        )}
+        {...rest}
+      />
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 
@@ -37,8 +37,8 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   };
 
   return (
-    <div className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-width-95">
-      <div className="mx-auto flex items-center mt-4">
+    <Fragment>
+      <div className="mx-auto mt-4 px-2 flex items-center">
         <Select
           className="pr-2 text-white"
           value={config.type}
@@ -56,6 +56,6 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
         <span className="ml-2">{percentSign(config.type)}</span>
       </div>
       <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
-    </div>
+    </Fragment>
   );
 }

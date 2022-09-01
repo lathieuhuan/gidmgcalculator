@@ -25,6 +25,7 @@ function Modifiers() {
       <div className="mt-4 grow custom-scrollbar">
         {tab === "Buffs" ? (
           <CollapseList
+            key="buff"
             headingList={[
               "Resonance & Reactions",
               "Self",
@@ -44,6 +45,7 @@ function Modifiers() {
           />
         ) : tab === "Debuffs" ? (
           <CollapseList
+            key="debuff"
             headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
             contentList={[
               <ElementDebuffs />,

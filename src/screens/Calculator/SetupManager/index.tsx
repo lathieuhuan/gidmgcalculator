@@ -20,13 +20,11 @@ import {
   selectCurrentIndex,
   selectSetups,
 } from "@Store/calculatorSlice/selectors";
-import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { indexByName, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import { findCharacter } from "@Data/controllers";
 
 import { Button, IconButton } from "@Src/styled-components";
 import { PrePicker, Picker } from "@Components/Picker";
@@ -90,102 +88,82 @@ export default function SetupManager() {
           <FaCog />
         </IconButton>
         <div className="flex">
-          <button onClick={() => setModalType("weapon")}>
-            <img
-              className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
-              src={wikiImg("7/7b/Icon_Inventory_Weapons")}
-              alt="weapon"
-              draggable={false}
-            />
+          <button
+            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
+            onClick={() => setModalType("weapon")}
+          >
+            <img src={wikiImg("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
-          <button onClick={() => setPrePickerOn(true)}>
-            <img
-              className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
-              src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
-              alt="artifact"
-              draggable={false}
-            />
+          <button
+            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
+            onClick={() => setPrePickerOn(true)}
+          >
+            <img src={wikiImg("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
       </div>
       {/* <Settings height={height} /> */}
 
-      {prePickerOn && (
-        <PrePicker
-          choices={ARTIFACT_ICONS}
-          onClickChoice={(artifactType) => {
-            setModalType(artifactType as Artifact);
-            setPrePickerOn(false);
-          }}
-          onClose={() => setPrePickerOn(false)}
-          footer={
-            <div className="mt-6 flex justify-center">
-              <Button
-                variant="positive"
-                onClick={() => {
-                  setModalType("character");
-                  setPrePickerOn(false);
-                }}
-              >
-                Pick Equipped Set
-              </Button>
-            </div>
-          }
-        />
-      )}
-      {modalType === "weapon" && (
-        <InventoryWeapon
-          weaponType={charData.weapon}
-          buttonText="Pick"
-          onClickButton={({ owner, ...wpInfo }) => {
-            dispatch(pickWeaponInUserDatabase(wpInfo));
-          }}
-          onClose={onCloseModal}
-        />
-      )}
-      {modalType !== "" && modalType !== "weapon" && modalType !== "character" && (
-        <InventoryArtifact
-          owner={charData.name}
-          artifactType={modalType}
-          currentPieces={artPieces}
-          buttonText="Pick"
-          onClickButton={({ owner, ...pieceInfo }) => {
-            dispatch(
-              updateArtPiece({
-                pieceIndex: ARTIFACT_TYPES.indexOf(modalType),
-                newPiece: pieceInfo,
-              })
-            );
-          }}
-          onClose={onCloseModal}
-        />
-      )}
-      {modalType === "character" && <CharacterPicker onClose={onCloseModal} />}
-    </div>
-  );
-}
-
-interface CharacterPickerProps {
-  onClose: () => void;
-}
-function CharacterPicker({ onClose }: CharacterPickerProps) {
-  const myChars = useSelector(selectMyChars);
-  const dispatch = useDispatch();
-
-  const data = myChars.map(({ name, cons, artifactIDs }) => {
-    const { code, icon, rarity, vision, weapon } = findCharacter({ name })!;
-    return { name, cons, artifactIDs, code, icon, rarity, vision, weapon };
-  });
-  return (
-    <Picker
-      data={data}
-      dataType="character"
-      onPickItem={({ artifactIDs }) => {
-        if (artifactIDs) {
-          dispatch(pickEquippedArtSet(artifactIDs));
+      <PrePicker
+        active={prePickerOn}
+        choices={ARTIFACT_ICONS}
+        onClickChoice={(artifactType) => {
+          setModalType(artifactType as Artifact);
+          setPrePickerOn(false);
+        }}
+        onClose={() => setPrePickerOn(false)}
+        footer={
+          <div className="mt-6 flex justify-center">
+            <Button
+              variant="positive"
+              onClick={() => {
+                setModalType("character");
+                setPrePickerOn(false);
+              }}
+            >
+              Pick Equipped Set
+            </Button>
+          </div>
         }
-      }}
-      onClose={onClose}
-    />
+      />
+
+      <InventoryWeapon
+        active={modalType === "weapon"}
+        weaponType={charData.weapon}
+        buttonText="Pick"
+        onClickButton={({ owner, ...wpInfo }) => {
+          dispatch(pickWeaponInUserDatabase(wpInfo));
+        }}
+        onClose={onCloseModal}
+      />
+
+      <InventoryArtifact
+        active={modalType !== "" && modalType !== "weapon" && modalType !== "character"}
+        owner={charData.name}
+        artifactType={modalType as Artifact}
+        currentPieces={artPieces}
+        buttonText="Pick"
+        onClickButton={({ owner, ...pieceInfo }) => {
+          dispatch(
+            updateArtPiece({
+              pieceIndex: ARTIFACT_TYPES.indexOf(modalType as Artifact),
+              newPiece: pieceInfo,
+            })
+          );
+        }}
+        onClose={onCloseModal}
+      />
+
+      <Picker.Character
+        active={modalType === "character"}
+        sourceType="usersData"
+        onPickCharacter={({ artifactIDs }) => {
+          if (artifactIDs) {
+            dispatch(pickEquippedArtSet(artifactIDs));
+          }
+        }}
+        onClose={onCloseModal}
+      />
+    </div>
   );
 }

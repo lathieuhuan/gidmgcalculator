@@ -1,14 +1,4 @@
-.modal {
-  > div:nth-child(2) {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-  }
-}
-
-.modal-content {
+.content-wrapper {
   width: 90vw;
   height: 90vh;
   box-shadow: 0 0 3px white;

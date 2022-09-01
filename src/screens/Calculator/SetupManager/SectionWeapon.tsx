@@ -70,15 +70,13 @@ export default function SectionWeapon() {
           )}
         </div>
       </div>
-      {pickerOn && (
-        <Picker.Weapon
-          wpType={weapon.type}
-          onPickItem={(item) => {
-            dispatch(changeWeapon({ ID: Date.now(), ...item }));
-          }}
-          onClose={() => setPickerOn(false)}
-        />
-      )}
+
+      <Picker.Weapon
+        active={pickerOn}
+        weaponType={weapon.type}
+        onPickWeapon={(item) => dispatch(changeWeapon({ ID: Date.now(), ...item }))}
+        onClose={() => setPickerOn(false)}
+      />
     </div>
   );
 }

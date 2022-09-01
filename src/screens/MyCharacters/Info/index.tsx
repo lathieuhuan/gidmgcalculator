@@ -24,9 +24,9 @@ import {
 import { getArtifactSets } from "@Store/calculatorSlice/utils";
 
 import { ConsList, TalentList } from "@Components/ability";
-import { StarLine } from "@Components/minors";
+import { ConfirmTemplate, StarLine } from "@Components/minors";
 import { AttributeTable } from "@Components/AttributeTable";
-import { ConfirmModal } from "@Components/modals";
+import { Modal } from "@Components/modals";
 import { IconButton, Select } from "@Src/styled-components";
 import Gears from "./Gears";
 import { ArtifactInfo } from "./types";
@@ -139,8 +139,8 @@ export default function Info() {
         </div>
       </div>
 
-      {removing && (
-        <ConfirmModal
+      <Modal active={removing} isCustom className="custom-modal" onClose={() => setRemoving(false)}>
+        <ConfirmTemplate
           message={
             <>
               Remove <b>{name}</b>?
@@ -149,7 +149,7 @@ export default function Info() {
           right={{ onClick: () => dispatch(removeUsersChar(name)) }}
           onClose={() => setRemoving(false)}
         />
-      )}
+      </Modal>
     </div>
   );
 }
