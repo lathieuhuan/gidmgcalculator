@@ -16,6 +16,8 @@ import { SetupControl } from "./SetupControl";
 
 import styles from "../styles.module.scss";
 import { applySettings } from "@Store/thunks";
+import { Modal } from "@Components/modals";
+import { SaveSetup } from "./modal-content";
 
 const CONFIG_OPTIONS: Array<{
   field: keyof CalcConfigurations;
@@ -230,7 +232,16 @@ function HiddenSettings() {
         </span>
         <span>Apply</span>
       </Button>
-      {/* {settingsUtils[util.type]} */}
+
+      <Modal
+        active={modal.index !== null}
+        isCustom
+        className="rounded-lg max-width-95"
+        style={{ width: "30rem" }}
+        onClose={closeModal}
+      >
+        <SaveSetup setup={tempoSetups[modal.index || 0]} onClose={closeModal} />
+      </Modal>
 
       <HowToModal
         active={modal.type === "HOW_TO_CONFIG"}

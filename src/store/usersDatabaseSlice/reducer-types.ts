@@ -58,3 +58,9 @@ export type SwitchArtifactAction = PayloadAction<
     artifactIndex: number;
   }
 >;
+
+export type SaveSetupAction = PayloadAction<{
+  ID: number;
+  name: string;
+  data: Omit<UsersSetup, "ID" | "type" | "name">;
+}>;

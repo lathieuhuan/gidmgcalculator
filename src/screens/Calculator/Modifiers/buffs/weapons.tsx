@@ -90,7 +90,7 @@ export default function WeaponBuffs() {
             break;
         }
         if (input) {
-          setters.push(<Setter label={label} inputComponent={input} />);
+          setters.push(<Setter key={index} label={label} inputComponent={input} />);
         }
       });
     }
@@ -118,7 +118,7 @@ export default function WeaponBuffs() {
     const weaponType = weapon as Weapon;
 
     subWpBuffCtrls.forEach((ctrl, ctrlIndex) => {
-      const { activated, code, inputs } = ctrl;
+      const { activated, code, inputs, index } = ctrl;
       const { name, buffs = [] } = findWeapon({ type: weaponType, code })!;
       const buff = findByIndex(buffs, ctrl.index);
       if (!buff) return;

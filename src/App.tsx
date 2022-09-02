@@ -9,6 +9,7 @@ import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
+import MySetups from "@Screens/MySetups";
 
 import { NavBar } from "@Components/NavBar";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
@@ -59,6 +60,8 @@ function App() {
         return <MyWeapons />;
       case EScreen.MY_ARTIFACTS:
         return <MyArtifacts />;
+      case EScreen.MY_SETUPS:
+        return <MySetups />;
       default:
         return null;
     }

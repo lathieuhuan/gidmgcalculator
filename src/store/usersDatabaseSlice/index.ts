@@ -18,6 +18,7 @@ import {
   ChangeUsersCharTalentLevelAction,
   RemoveArtifactAction,
   RemoveWeaponAction,
+  SaveSetupAction,
   SwitchArtifactAction,
   SwitchWeaponAction,
   UnequipArtifactAction,
@@ -390,6 +391,37 @@ export const usersDatabaseSlice = createSlice({
     chooseUsersSetup: (state, action: PayloadAction<number>) => {
       state.chosenSetupID = action.payload;
     },
+    saveSetup: (state, action: SaveSetupAction) => {
+      const { mySetups } = state;
+      const { ID, name, data } = action.payload;
+      const existed = findById(mySetups, ID);
+      let newChosenID;
+
+      if (existed?.type === "combined") {
+        for (const setup of mySetups) {
+          if (setup.type === "complex" && setup.allIDs[existed.char.name] === ID) {
+            newChosenID = setup.ID;
+            setup.shownID = ID;
+            break;
+          }
+        }
+      }
+
+      const newSetup = {
+        ID,
+        type: existed ? (existed.type as "original" | "combined") : "original",
+        name,
+        ...data,
+      };
+
+      if (existed) {
+        mySetups[indexById(mySetups, ID)] = newSetup;
+      } else {
+        mySetups.unshift(newSetup);
+      }
+
+      state.chosenSetupID = newChosenID || ID;
+    },
   },
 });
 
@@ -420,6 +452,7 @@ export const {
   sortArtifacts,
   removeArtifact,
   chooseUsersSetup,
+  saveSetup,
 } = usersDatabaseSlice.actions;
 
 export default usersDatabaseSlice.reducer;

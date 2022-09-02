@@ -28,12 +28,11 @@ import { findArtifactPiece } from "@Data/controllers";
 
 import { Picker, PrePicker } from "@Components/Picker";
 import { ArtifactCard } from "@Components/ArtifactCard";
-import { ButtonBar, ConfirmModal, ConfirmTemplate } from "@Components/minors";
+import { ButtonBar, ConfirmModal } from "@Components/minors";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
-import { Modal } from "@Components/modals";
 
 const selectFilteredArtifactIds = createSelector(
   selectMyArts,

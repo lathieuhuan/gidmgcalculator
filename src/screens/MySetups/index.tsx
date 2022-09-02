@@ -135,9 +135,10 @@ export default function MySetups() {
 
     return (
       <div
+        key={ID}
         className={cn(
           "mb-4 px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
-          setup.ID === chosenSetupID ? "shadow-3px-3px shadow-green" : "shadow-common"
+          ID === chosenSetupID ? "ring-2 ring-white/50" : "shadow-common"
         )}
         onClick={() => dispatch(chooseUsersSetup(ID))}
       >
@@ -151,7 +152,7 @@ export default function MySetups() {
       <div className={styles.warehouse}>
         <div className={cn("h-10", styles["button-bar"])}>
           <IconButton
-            className="mr-4 w-6 h-6 text-sm"
+            className="mr-4 w-7 h-7"
             variant="positive"
             onClick={() => setModalInfo({ type: "intro" })}
           >
@@ -162,10 +163,13 @@ export default function MySetups() {
           </Button>
         </div>
 
-        <div className={styles.body} style={{ height: "35rem" }}>
+        <div className={styles.body}>
           <div
             ref={ref}
-            className="pl-2 pt-2 flex flex-col items-start overflow-auto scroll-smooth"
+            className={cn(
+              mySetups.length && "pl-2 pt-2",
+              "flex flex-col items-start overflow-auto scroll-smooth"
+            )}
             style={{ width: "40.5rem", minWidth: "40.5rem" }}
           >
             {mySetups.length ? mySetups.map(renderSetup) : renderNoItems("setups")}
@@ -180,7 +184,7 @@ export default function MySetups() {
                 <div>
                   <p className="text-center truncate">{chosenSetup.name}</p>
                 </div>
-                <div className="mt-2 grow hide-scollbar">
+                <div className="mt-2 grow hide-scrollbar">
                   <DamageDisplay charName={chosenSetup.char.name} damageResult={damage} />
                 </div>
               </>

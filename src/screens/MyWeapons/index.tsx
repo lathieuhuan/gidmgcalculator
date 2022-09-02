@@ -29,7 +29,6 @@ import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/c
 import { IconButton } from "@Src/styled-components";
 
 import styles from "../styles.module.scss";
-import { Modal } from "@Components/modals";
 
 type ModalType = "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 

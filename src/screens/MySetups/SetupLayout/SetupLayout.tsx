@@ -178,7 +178,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
       <div className="px-2 flex justify-between">
         <div className="flex items-center" style={{ width: "24.5rem" }}>
           {!isOriginal && renderLinkButton(ID, setup.ID)}
-          <p className="text-h3 text-orange truncate">{setupName || setup.name}</p>
+          <p className="text-h3 text-orange font-bold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="pb-4 flex gap-6">
@@ -222,7 +222,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
           {teammatesDisplay}
         </div>
 
-        <div className="w-0.5 h-full mx-4 bg-darkblue-3" />
+        <div className="w-0.5 mx-4 bg-darkblue-3" />
 
         <div>
           <div className="mb-2 flex justify-center gap-4">
