@@ -1,18 +1,21 @@
 import cn from "classnames";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-
 import type { DamageResult } from "@Src/types";
+
+import { EStatDamageKey } from "@Src/constants";
+import { displayValue, getKeys } from "./utils";
+
 import { CollapseSpace } from "@Components/collapse";
 import { tableStyles } from "@Src/styled-components";
-import { displayValue, getKeys } from "./utils";
+import { CompareTable } from "./CompareTable";
 
 interface DamageDisplayProps {
   charName: string;
   damageResult: DamageResult;
-  tableBody?: JSX.Element;
+  focus?: EStatDamageKey;
 }
-export function DamageDisplay({ charName, damageResult, tableBody }: DamageDisplayProps) {
+export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayProps) {
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
   const tableKeys = getKeys(charName);
 
@@ -55,7 +58,9 @@ export function DamageDisplay({ charName, damageResult, tableBody }: DamageDispl
                       <col />
                       <col />
                     </colgroup>
-                    {tableBody || (
+                    {focus ? (
+                      <CompareTable focus={focus} tableKey={key} />
+                    ) : (
                       <tbody>
                         <tr className={tableStyles.row}>
                           <th className={tableStyles.th} />

@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
 export const Button = (props: ButtonProps) => {
-  const { className, variant, noGlow, disabled, ...rest } = props;
+  const { className, variant, noGlow, ...rest } = props;
   return (
     <button
       type="button"
@@ -19,13 +19,13 @@ export const Button = (props: ButtonProps) => {
 };
 
 export const IconButton = (props: ButtonProps) => {
-  const { className, variant, noGlow, disabled, ...rest } = props;
+  const { className, variant, noGlow, ...rest } = props;
   const withDefaultSize = !className || !className.includes("w-") || !className.includes("h-");
   return (
     <button
       type="button"
       className={cn(
-        "rounded-full flex-center",
+        "rounded-circle flex-center",
         withDefaultSize && "h-8 w-8",
         buttonStyles(props),
         className

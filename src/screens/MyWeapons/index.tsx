@@ -97,7 +97,7 @@ export default function MyWeapons() {
                 {weapon ? (
                   <WeaponCard
                     weapon={weapon}
-                    mutable={true}
+                    mutable
                     upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: weapon.ID, level }))}
                     refine={(refi) => dispatch(refineUsersWeapon({ ID: weapon.ID, refi }))}
                   />
@@ -132,7 +132,7 @@ export default function MyWeapons() {
 
       <Picker.Weapon
         active={weaponPicker.active}
-        needMassAdd={true}
+        needMassAdd
         weaponType={weaponPicker.type}
         onPickWeapon={(item) => {
           const ID = Date.now();

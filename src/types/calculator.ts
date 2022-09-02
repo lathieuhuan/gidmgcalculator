@@ -23,10 +23,7 @@ import { MonsterConfig } from "@Data/monsters/types";
 
 export type CalculatorState = {
   currentIndex: number;
-  configs: {
-    separateCharInfo: boolean;
-    keepArtStatsOnSwitch: boolean;
-  };
+  configs: CalcConfigurations;
   setups: CalcSetup[];
 
   char: CalcChar;
@@ -58,6 +55,11 @@ export type CalculatorState = {
 
   isError: boolean;
   touched: boolean;
+};
+
+export type CalcConfigurations = {
+  separateCharInfo: boolean;
+  keepArtStatsOnSwitch: boolean;
 };
 
 export type SetupType = "original" | "";

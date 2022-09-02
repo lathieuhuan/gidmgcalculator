@@ -24,6 +24,7 @@ interface InfoSignProps {
   className?: string;
   active?: boolean;
   selfHover?: boolean;
+  onClick?: () => void;
 }
 export const InfoSign = (props: InfoSignProps) => {
   if (props.active) {
@@ -32,10 +33,11 @@ export const InfoSign = (props: InfoSignProps) => {
   return (
     <button
       className={cn(
-        "h-6 w-6 text-2xl block",
+        "h-6 w-6 text-2xl block rounded-circle",
         props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold",
         props.className
       )}
+      onClick={props.onClick}
     >
       <FaInfoCircle />
     </button>
@@ -144,7 +146,7 @@ interface HowToModalProps extends ModalControl {
 export function HowToModal({ active, content, onClose }: HowToModalProps) {
   return (
     <Modal active={active} className="p-4" onClose={onClose}>
-      <CloseButton className="absolute top-3 right-3" onClick={close} />
+      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="mb-2 text-1.5xl text-orange">HOW-TOs</p>
       {content}
     </Modal>

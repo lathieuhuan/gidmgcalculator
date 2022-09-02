@@ -11,7 +11,7 @@ type ReactionKey = {
   subs: Array<typeof TRANSFORMATIVE_REACTIONS[number]>;
 };
 
-type TableKeys = Array<AttackPatternKey | ReactionKey>;
+export type TableKey = AttackPatternKey | ReactionKey;
 
 export function getKeys(charName: string) {
   const charData = findCharacter({ name: charName });
@@ -26,7 +26,7 @@ export function getKeys(charName: string) {
     NAs.subs = NAs.subs.concat(charData.activeTalents[na].stats.map(({ name }) => name));
   }
 
-  const result: TableKeys = [NAs];
+  const result: TableKey[] = [NAs];
 
   for (const attPatt of ["ES", "EB"] as const) {
     const { stats } = charData.activeTalents[attPatt];

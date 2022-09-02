@@ -38,7 +38,7 @@ function Calculator() {
         <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>{touched && <Modifiers />}</div>
 
         {/* Panel 3 */}
-        <div className={cn("p-4 relative bg-darkblue-3", styles.card)}>
+        <div className={cn("p-4 relative bg-darkblue-3 overflow-hidden", styles.card)}>
           {touched && <SetupManager />}
         </div>
 

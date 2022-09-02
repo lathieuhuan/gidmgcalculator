@@ -298,4 +298,21 @@ export const getSetupInfo = ({
   name = "Setup 1",
   ID = Date.now(),
   type = "original",
-}: Partial<CalcSetup>): CalcSetup => ({ name, ID, type });
+}: Partial<CalcSetup>): CalcSetup => ({ name: name.trim(), ID, type });
+
+export function getNewSetupName(setups: Array<{ name: string }>) {
+  const existedIndexes = [1, 2, 3, 4];
+
+  for (const { name } of setups) {
+    const parts = name.split(" ");
+
+    if (parts.length === 2 && parts[0] === "Setup" && !isNaN(+parts[1])) {
+      const i = existedIndexes.indexOf(+parts[1]);
+
+      if (i !== -1) {
+        existedIndexes.splice(i, 1);
+      }
+    }
+  }
+  return "Setup " + existedIndexes[0];
+}

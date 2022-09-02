@@ -14,6 +14,12 @@ export enum EModAffect {
   PARTY = "party",
 }
 
+export enum EStatDamageKey {
+  NON_CRIT = "nonCrit",
+  CRIT = "crit",
+  AVERAGE = "average",
+}
+
 export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] as const;
 
 export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;

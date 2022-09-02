@@ -65,7 +65,7 @@ export default function GearsDetails({
           <div className="px-1 grow hide-scrollbar">
             <WeaponCard
               weapon={wpInfo}
-              mutable={true}
+              mutable
               upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: wpInfo.ID, level }))}
               refine={(refi) => dispatch(refineUsersWeapon({ ID: wpInfo.ID, refi }))}
             />
@@ -102,7 +102,7 @@ export default function GearsDetails({
             <div className="pb-2 hide-scrollbar">
               <ArtifactCard
                 artPiece={artPiece}
-                mutable={true}
+                mutable
                 enhance={(level) => dispatch(enhanceUsersArtifact({ ID: artPiece.ID, level }))}
                 changeMainStatType={(type) =>
                   dispatch(

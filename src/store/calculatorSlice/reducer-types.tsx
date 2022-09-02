@@ -10,6 +10,8 @@ import type {
   Target,
   Vision,
   Weapon,
+  CalcSetup,
+  CalcConfigurations,
 } from "@Src/types";
 
 export interface PickedChar extends Partial<UsersCharacter> {
@@ -113,3 +115,11 @@ type ArtPieceSubStatPath = {
 export type ChangeArtPieceSubStatAction = PayloadAction<
   ArtPieceSubStatPath & Partial<CalcArtPieceSubStatInfo>
 >;
+
+export type ApplySettingsOnCalculatorAction = PayloadAction<{
+  setups: CalcSetup[];
+  indexes: (number | null)[];
+  tempoConfigs: CalcConfigurations;
+  standardIndex: number;
+  currentIndex: number;
+}>;

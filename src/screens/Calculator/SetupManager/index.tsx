@@ -34,6 +34,7 @@ import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import { MainSelect } from "../components";
+import Settings from "../Settings";
 
 export default function SetupManager() {
   const setups = useSelector(selectSetups);
@@ -71,15 +72,14 @@ export default function SetupManager() {
           <div style={{ width: "5.425rem" }} />
         ) : (
           <Button
-            disabled={!isChosenSetup}
             variant="positive"
-            onClick={() => {
-              if (!isChosenSetup) dispatch(changeStandardSetup(currentIndex));
-            }}
+            disabled={isChosenSetup}
+            onClick={() => dispatch(changeStandardSetup(currentIndex))}
           >
             Choose
           </Button>
         )}
+
         <IconButton
           className="mx-auto text-lg"
           variant="positive"
@@ -87,6 +87,7 @@ export default function SetupManager() {
         >
           <FaCog />
         </IconButton>
+
         <div className="flex">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
@@ -102,7 +103,7 @@ export default function SetupManager() {
           </button>
         </div>
       </div>
-      {/* <Settings height={height} /> */}
+      <Settings height={height} />
 
       <PrePicker
         active={prePickerOn}

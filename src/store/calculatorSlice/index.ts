@@ -13,6 +13,7 @@ import type {
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 import type {
   AddTeammateAction,
+  ApplySettingsOnCalculatorAction,
   ChangeArtPieceSubStatAction,
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
@@ -32,6 +33,7 @@ import type {
 } from "./reducer-types";
 import {
   initCharInfo,
+  initWeapon,
   initCharModCtrls,
   initElmtModCtrls,
   initMonster,
@@ -40,6 +42,8 @@ import {
 import {
   autoModifyTarget,
   calculate,
+  getAllSubArtBuffCtrls,
+  getAllSubArtDebuffCtrls,
   getArtifactSets,
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
@@ -51,7 +55,7 @@ import {
 } from "./utils";
 import monsters from "@Data/monsters";
 import { MonsterConfig } from "@Data/monsters/types";
-import { countVision, countWeapon, indexByCode, indexByName } from "@Src/utils";
+import { countVision, countWeapon, indexByCode } from "@Src/utils";
 import { RESONANCE_VISION_TYPES } from "@Src/constants";
 
 const defaultChar = {
@@ -578,6 +582,96 @@ export const calculatorSlice = createSlice({
       autoModifyTarget(state.target, state.monster);
       calculate(state, true);
     },
+    //
+    applySettingsOnCalculator: (state, action: ApplySettingsOnCalculatorAction) => {
+      const { setups, indexes, tempoConfigs, standardIndex, currentIndex } = action.payload;
+      const { char, configs } = state;
+      const dataChar = findCharacter(char);
+
+      function getResult<T>(prev: T[], newElmt: T) {
+        const result = [];
+        for (const index of indexes) {
+          result.push(index === null ? newElmt : prev[index]);
+        }
+        return result;
+      }
+
+      if (dataChar) {
+        state.setups = setups;
+
+        const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
+        state.allSelfBuffCtrls = getResult(state.allSelfBuffCtrls, selfBuffCtrls);
+        state.allSelfDebuffCtrls = getResult(state.allSelfDebuffCtrls, selfDebuffCtrls);
+
+        const newWeapon = initWeapon({ type: dataChar.weapon });
+        state.allWeapons = getResult(state.allWeapons, {
+          ID: Date.now(),
+          ...newWeapon,
+        });
+        state.allWpBuffCtrls = getResult(state.allWpBuffCtrls, getMainWpBuffCtrls(newWeapon));
+        state.allSubWpComplexBuffCtrls = getResult(state.allSubWpComplexBuffCtrls, {});
+
+        state.allArtInfos = getResult(state.allArtInfos, {
+          pieces: [null, null, null, null, null],
+          sets: [],
+        });
+        state.allArtBuffCtrls = getResult(state.allArtBuffCtrls, []);
+        state.allSubArtBuffCtrls = getResult(state.allSubArtBuffCtrls, getAllSubArtBuffCtrls(null));
+        state.allSubArtDebuffCtrls = getResult(
+          state.allSubArtDebuffCtrls,
+          getAllSubArtDebuffCtrls()
+        );
+
+        state.allParties = getResult(state.allParties, [null, null, null]);
+        state.allElmtModCtrls = getResult(state.allElmtModCtrls, initElmtModCtrls());
+        state.allCustomBuffCtrls = getResult(state.allCustomBuffCtrls, []);
+        state.allCustomDebuffCtrls = getResult(state.allCustomDebuffCtrls, []);
+        state.currentIndex = currentIndex > -1 ? currentIndex : standardIndex;
+
+        if (configs.separateCharInfo || tempoConfigs.separateCharInfo) {
+          let { name, level, NAs, ES, EB, cons } = state.char;
+
+          if (tempoConfigs.separateCharInfo) {
+            if (configs.separateCharInfo) {
+              level = level as Level[];
+              NAs = NAs as number[];
+              ES = ES as number[];
+              EB = EB as number[];
+              cons = cons as number[];
+
+              state.char = {
+                name,
+                level: getResult(level, level[standardIndex]),
+                NAs: getResult(NAs, NAs[standardIndex]),
+                ES: getResult(ES, ES[standardIndex]),
+                EB: getResult(EB, EB[standardIndex]),
+                cons: getResult(cons, cons[standardIndex]),
+              };
+            } else {
+              state.char = {
+                name,
+                level: Array(indexes.length).fill(level),
+                NAs: Array(indexes.length).fill(NAs),
+                ES: Array(indexes.length).fill(ES),
+                EB: Array(indexes.length).fill(EB),
+                cons: Array(indexes.length).fill(cons),
+              };
+            }
+          } else {
+            state.char = {
+              name,
+              level: (level as Level[])[standardIndex],
+              NAs: (NAs as number[])[standardIndex],
+              ES: (ES as number[])[standardIndex],
+              EB: (EB as number[])[standardIndex],
+              cons: (cons as number[])[standardIndex],
+            };
+          }
+        }
+        state.configs = tempoConfigs;
+        calculate(state, true);
+      }
+    },
   },
 });
 
@@ -620,6 +714,7 @@ export const {
   modifyTarget,
   changeMonster,
   changeMonsterConfig,
+  applySettingsOnCalculator,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

@@ -71,7 +71,7 @@ export function ActiveTalent({
           </div>
         </div>
         <div className="ml-auto" onClick={onClickInfoSign}>
-          <InfoSign selfHover={true} />
+          <InfoSign selfHover />
         </div>
       </div>
     </div>
@@ -100,7 +100,7 @@ export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: P
           </div>
         </div>
         {/* <div className="ml-auto" onClick={onClickInfoSign}>
-          <InfoSign selfHover={true} />
+          <InfoSign selfHover />
         </div> */}
       </div>
     </div>

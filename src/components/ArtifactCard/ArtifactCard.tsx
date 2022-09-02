@@ -68,7 +68,7 @@ export function ArtifactCard({
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
-                className={`mt-6 px-1.5 py-1 rounded font-black bg-orange`}
+                className="mt-6 px-1.5 py-1 rounded font-black bg-orange"
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance && enhance(maxLevel)}
               >
@@ -148,7 +148,7 @@ export function ArtifactSubstats({
 }: ArtifactSubstatsProps) {
   //
   const statTypeCount = { [mainStatType]: 1 };
-  for (let { type } of subStats) {
+  for (const { type } of subStats) {
     statTypeCount[type] = (statTypeCount[type] || 0) + 1;
   }
 

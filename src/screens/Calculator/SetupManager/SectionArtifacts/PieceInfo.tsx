@@ -95,7 +95,7 @@ export default function PieceInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
-          mutable={true}
+          mutable
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={pieceInfo.subStats}

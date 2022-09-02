@@ -131,7 +131,7 @@ export default function MyArtifacts() {
                 {artifact ? (
                   <ArtifactCard
                     artPiece={artifact}
-                    mutable={true}
+                    mutable
                     enhance={(level) => dispatch(enhanceUsersArtifact({ ID: artifact.ID, level }))}
                     changeMainStatType={(type) =>
                       dispatch(
@@ -186,7 +186,7 @@ export default function MyArtifacts() {
 
       <Picker.Artifact
         active={!!pickingArtifactType}
-        needMassAdd={true}
+        needMassAdd
         artifactType={pickingArtifactType || "flower"}
         onPickArtifact={(newItem) => {
           const ID = Date.now();

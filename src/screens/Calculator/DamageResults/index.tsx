@@ -1,19 +1,14 @@
 import cn from "classnames";
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
 import { selectCharData, selectCurrentIndex } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedIndexes } from "@Store/uiSlice";
+import { EStatDamageKey } from "@Src/constants";
 
 import { IconButton, Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
-
-enum EStatDamageKey {
-  NON_CRIT = "nonCrit",
-  CRIT = "crit",
-  AVERAGE = "average",
-}
 
 export default function DamageResults() {
   const { name } = useSelector(selectCharData);
@@ -67,11 +62,17 @@ function Results({ name }: { name: string }) {
   const currentIndex = useSelector(selectCurrentIndex);
   const dmgResult = useSelector((state) => state.calculator.allDmgResult[currentIndex]);
 
-  const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
+  const [focus, setFocus] = useState<EStatDamageKey | undefined>();
+
+  const comparing = comparedIndexes.length > 1;
+
+  useEffect(() => {
+    setFocus(comparing ? EStatDamageKey.AVERAGE : undefined);
+  }, [comparing]);
 
   return (
     <div className="h-full flex flex-col">
-      {comparedIndexes.length > 1 ? (
+      {focus ? (
         <div className="mb-4 flex justify-center">
           <p className="mr-2">Choose a focus</p>
           <Select
@@ -88,7 +89,7 @@ function Results({ name }: { name: string }) {
         <p className="mx-4 my-2 font-bold text-center">{setups[currentIndex].name.toUpperCase()}</p>
       )}
       <div className="grow hide-scrollbar">
-        <DamageDisplay key={name} charName={name} damageResult={dmgResult} />
+        <DamageDisplay key={name} charName={name} damageResult={dmgResult} focus={focus} />
       </div>
     </div>
   );

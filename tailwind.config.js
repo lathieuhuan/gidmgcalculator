@@ -136,9 +136,10 @@ module.exports = {
       },
       height: {
         18: "4.5rem",
-        "1/10": "10%",
-        "9/10": "90%",
         "98/100": "98%",
+      },
+      transformOrigin: {
+        "bottom-center": "bottom center",
       },
     },
   },
