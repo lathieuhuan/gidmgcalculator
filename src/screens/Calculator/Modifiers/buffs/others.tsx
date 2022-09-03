@@ -87,7 +87,7 @@ function AmplifyingBuff(props: { element: Vision; byInfusion: boolean }) {
     case "cryo":
       return renderBuff("melt");
     default:
-      return <></>;
+      return null;
   }
 }
 

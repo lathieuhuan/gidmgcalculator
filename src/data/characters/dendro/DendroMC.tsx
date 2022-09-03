@@ -17,14 +17,14 @@ const DendroMC: DataCharacter = {
     ...TRAVELLER_NCPAs,
     ES: {
       name: "Razorgrass Blade",
-      image: "",
+      image: "2/24/Talent_Razorgrass_Blade",
       xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", baseMult: 230.4 }],
       // getExtraStats: () => [{ name: "CD", value: "8s" }],
     },
     EB: {
       name: "Surgent Manifestation",
-      image: "",
+      image: "a/af/Talent_Surgent_Manifestation",
       xtraLvAtCons: 5,
       stats: [
         { name: "Lea Lotus Lamp Attack DMG", baseMult: 80.16 },
@@ -40,7 +40,7 @@ const DendroMC: DataCharacter = {
   passiveTalents: [
     {
       name: "Verdant Overgrowth",
-      image: "",
+      image: "5/55/Talent_Verdant_Overgrowth",
       desc: (
         <>
           Lea Lotus Lamp will obtain one level of Overflowing Lotuslight every second it is on the
@@ -52,7 +52,7 @@ const DendroMC: DataCharacter = {
     },
     {
       name: "Verdant Luxury",
-      image: "",
+      image: "5/55/Talent_Verdant_Luxury",
       desc: (
         <>
           Every point of Elemental Mastery the Traveler possesses increases the DMG dealt by{" "}
@@ -64,8 +64,8 @@ const DendroMC: DataCharacter = {
   ],
   constellation: [
     {
-      name: "Parasitic Creeper",
-      image: "",
+      name: "Symbiotic Creeper",
+      image: "1/16/Constellation_Symbiotic_Creeper",
       desc: (
         <>
           After Razorgrass Blade hits an opponent, it will regenerate <Green b>3.5</Green>{" "}
@@ -75,17 +75,17 @@ const DendroMC: DataCharacter = {
     },
     {
       name: "Green Resilience",
-      image: "",
+      image: "f/f4/Constellation_Green_Resilience",
       desc: (
         <>
           Lea Lotus Lamp's <Green>duration</Green> is increased by <Green>3s</Green>.
         </>
       ),
     },
-    { name: "Whirling Weeds", image: "" },
+    { name: "Whirling Weeds", image: "3/3c/Constellation_Whirling_Weeds" },
     {
       name: "Treacle Grass",
-      image: "",
+      image: "f/f5/Constellation_Treacle_Grass",
       desc: (
         <>
           After the Lea Lotus Lamp triggers a Lotuslight Transfiguration, it will obtain 5 stacks of
@@ -95,10 +95,10 @@ const DendroMC: DataCharacter = {
         </>
       ),
     },
-    { name: "Viridian Transience", image: "" },
+    { name: "Viridian Transience", image: "8/8f/Constellation_Viridian_Transience" },
     {
       name: "Withering Aggregation",
-      image: "",
+      image: "d/dc/Constellation_Withering_Aggregation",
       desc: (
         <>
           The <Green>Dendro DMG Bonus</Green> of the character under the effect of Overflowing

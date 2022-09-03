@@ -64,7 +64,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
                 key={i}
                 vision={vision}
                 talentInfo={talent}
-                active={i < 2 && ascsFromLv(char.level) >= ascsRequired}
+                active={i === 2 || ascsFromLv(char.level) >= ascsRequired}
                 onClickInfoSign={() => toDetailsAt(numOfActives + i)}
               />
             );
@@ -150,14 +150,16 @@ function Details({
     // { type: "A1 Passive", name: passiveTalents[0].name },
     // { type: "A4 Passive", name: passiveTalents[1].name },
   ];
+
   if (altSprint) {
     infoByPosition.splice(3, 0, { type: "altSprint" as const, name: altSprint.name, stats: [] });
   }
+
   const { type, name, stats, getExtraStats } = infoByPosition[position];
 
   return (
     <div className="h-full flex flex-col relative">
-      <div className="hide-scrollbar">
+      <div className="flex-grow hide-scrollbar">
         <SlideShow
           forTalent
           currentIndex={position}
@@ -179,7 +181,7 @@ function Details({
         />
         <p className={`text-h5 font-bold text-${vision} text-center`}>{name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
-          <p className="font-bold text-black">Skill Attributes</p>
+          <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div>
 
         <SkillAttributes

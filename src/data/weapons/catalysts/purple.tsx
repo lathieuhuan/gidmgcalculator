@@ -14,6 +14,51 @@ import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: DataWeapon[] = [
   {
+    code: 137,
+    name: "Fruit of Fulfillment",
+    icon: "9/98/Weapon_Fruit_of_Fulfillment",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "er", scale: "10%" },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfig: {
+          labels: ["Stacks"],
+          renderTypes: ["stacks"],
+          initialValues: [1],
+          maxValues: [5],
+        },
+        applyBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
+          const stacks = getInput(inputs, 0, 0);
+          const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
+          applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
+        },
+        desc: ({ refi }) => findByCode(purpleCatalysts, 137)!.passiveDesc({ refi }).core,
+      },
+    ],
+    passiveName: "Full Circle",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
+            <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK.
+            For every 0.3s, 1 stack of Wax and Wane can be gained. Max <Green b>5</Green>{" "}
+            <Green>stacks</Green>. {this.extra![0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          For every 6s that go by without an Elemental Reaction being triggered, 1 stack will be
+          lost. This effect can be triggered even when the character is off-field.
+        </>,
+      ],
+    }),
+  },
+  {
     code: 123,
     name: "Oathsworn Eye",
     icon: "a/af/Weapon_Oathsworn_Eye",

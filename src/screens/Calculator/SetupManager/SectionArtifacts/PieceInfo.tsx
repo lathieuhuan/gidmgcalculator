@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaSave, FaSyncAlt, FaTrashAlt } from "react-icons/fa";
+import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 
 import {
   changeArtPieceMainStatType,
@@ -14,9 +14,9 @@ import type { CalcArtPiece, CalcArtPieceMainStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { findById, isEqual, percentSign } from "@Src/utils";
 
-import { IconButton, Select } from "@Src/styled-components";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
 import { Modal } from "@Components/modals";
+import { IconButton, Select } from "@Src/styled-components";
 import { ConfirmTemplate } from "@Components/minors";
 
 interface PieceInfoProps {
@@ -65,10 +65,11 @@ export default function PieceInfo({
         </div>
 
         <div className="ml-4">
-          {["flower", "plume"].includes(type) ? (
+          {type === "flower" || type === "plume" ? (
             <p className="pl-8 pt-1 text-h6">{mainStatType}</p>
           ) : (
-            <div className="py-1">
+            <div className="py-1 relative">
+              <FaChevronDown className="absolute top-2 left-1 scale-110" />
               <Select
                 className="pl-8 text-lg text-white appearance-none"
                 value={mainStatType}

@@ -12,14 +12,11 @@ import { applyPercent, findByCode } from "@Src/utils";
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
-import sapwoodBladeImage from "@Src/assets/images/sapwood-blade.png";
-
 const purpleSwords: DataWeapon[] = [
   {
     code: 134,
-    beta: true,
     name: "Sapwood Blade",
-    icon: sapwoodBladeImage,
+    icon: "0/00/Weapon_Sapwood_Blade",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
@@ -28,7 +25,7 @@ const purpleSwords: DataWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         applyBuff: makeWpModApplier("totalAttr", "em", 60),
-        desc: ({ refi }) => findByCode(purpleSwords, 134)!.passiveDesc({ refi }).extra![0],
+        desc: ({ refi }) => findByCode(purpleSwords, 134)!.passiveDesc({ refi }).extra?.[0],
       },
     ],
     passiveName: "Forest Sanctuary",

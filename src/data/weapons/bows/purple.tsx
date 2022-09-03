@@ -20,6 +20,41 @@ const fadingTwilightBuffValuesByState = (refi: number) => [
 
 const purpleBows: DataWeapon[] = [
   {
+    code: 138,
+    name: "King's Squire",
+    icon: "a/a2/Weapon_King%27s_Squire",
+    rarity: 4,
+    mainStatScale: "41",
+    subStat: { type: "er", scale: "12%" },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        applyBuff: makeWpModApplier("totalAttr", "em", 60, 3),
+        desc: ({ refi }) => findByCode(purpleBows, 138)!.passiveDesc({ refi }).core,
+      },
+    ],
+    passiveName: "Labyrinth Lord's Instruction",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts,
+            increasing <Green>Elemental Mastery</Green> by <Green b>{40 + refi * 20}</Green> for
+            12s. {this.extra![0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          This effect will be removed when switching characters. When the Teachings of the Forest
+          effect ends or is removed, it will deal 100% of ATK as DMG to 1 nearby opponent. The
+          Teachings of the Forest effect can be triggered once every 20s.
+        </>,
+      ],
+    }),
+  },
+  {
     code: 126,
     name: "Fading Twilight",
     icon: "2/2b/Weapon_Fading_Twilight",

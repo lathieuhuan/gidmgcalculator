@@ -67,7 +67,7 @@ const Dori: DataCharacter = {
     PA: { stats: HEAVY_PAs },
     ES: {
       name: "Spirit-Warding Lamp: Troubleshooter Cannon",
-      image: "",
+      image: "c/c8/Talent_Spirit-Warding_Lamp_Troubleshooter_Cannon",
       xtraLvAtCons: 5,
       stats: [
         { name: "Troubleshooter Shot DMG", baseMult: 156.24 },
@@ -77,7 +77,7 @@ const Dori: DataCharacter = {
     },
     EB: {
       name: "Alcazarzaray's Exactitude",
-      image: "",
+      image: "7/77/Talent_Alcazarzaray%27s_Exactitude",
       xtraLvAtCons: 3,
       stats: [
         { name: "Connector DMG", baseMult: 15.88 },
@@ -102,90 +102,90 @@ const Dori: DataCharacter = {
     {
       name: "An Eye for Gold",
       image: "",
-      // desc: (
-      //   <>
-      //     After a character connected to the Lamp Spirit triggers an Electro-Charged, Superconduct,
-      //     Overloaded, Quicken, Aggravate, or Spread reaction, the <Green>CD</Green> of
-      //     Spirit-Warding Lamp: Troubleshooter Cannon is decreased by <Green b>1s</Green>.
-      //     <br />
-      //     This effect can be triggered once every 3s.
-      //   </>
-      // ),
+      desc: (
+        <>
+          After a character connected to the Jinni triggers an Electro-Charged, Superconduct,
+          Overloaded, Quicken, Aggravate, Hyperbloom, or an Electro Swirl or Crystallize reaction,
+          the <Green>CD</Green> of Spirit-Warding Lamp: Troubleshooter Cannon is decreased by{" "}
+          <Green b>1s</Green>. <br />
+          This effect can be triggered once every 3s.
+        </>
+      ),
     },
     {
       name: "Compound Interest",
       image: "",
-      // desc: (
-      //   <>
-      //     When the Troubleshooter Shots or After-Sales Service Rounds from Spirit-Warding Lamp:
-      //     Troubleshooter Cannon hit opponents, Dori will restore <Green b>5</Green>{" "}
-      //     <Green>Elemental Energy</Green> for every 100% Energy Recharge possessed.
-      //     <br />A maximum of <Green b>15</Green> <Green>Energy</Green> can be restored this way per
-      //     Spirit-Warding Lamp: Troubleshooter Cannon.
-      //   </>
-      // ),
+      desc: (
+        <>
+          When the Troubleshooter Shots or After-Sales Service Rounds from Spirit-Warding Lamp:
+          Troubleshooter Cannon hit opponents, Dori will restore 5 Elemental Energy for every 100%
+          Energy Recharge possessed. <br />
+          Per Spirit-Warding Lamp: Troubleshooter Cannon, only one instance of Energy restoration
+          can be triggered and a maximum of 15 Energy can be restored this way.
+        </>
+      ),
     },
-    { name: "Unexpected Order", image: "" },
+    {
+      name: "Unexpected Order",
+      image: "d/dc/Talent_Unexpected_Order",
+    },
   ],
   constellation: [
     {
       name: "Additional Investment",
       image: "",
-      // desc: (
-      //   <>
-      //     The number of After-Sales Service Rounds created by Troubleshooter Shots is increased by{" "}
-      //     <Green b>1</Green>.
-      //   </>
-      // ),
+      desc: (
+        <>
+          The number of After-Sales Service Rounds created by Troubleshooter Shots is increased by
+          1.
+        </>
+      ),
     },
     {
       name: "Special Franchise",
       image: "",
-      // desc: (
-      //   <>
-      //     When the Lamp Spirit heals the character it is connected to, it will fire a Jinni Toop
-      //     from that character's position that deals <Green b>20%</Green> of{" "}
-      //     <Green>Troubleshooter Shot's DMG</Green>.
-      //   </>
-      // ),
+      desc: (
+        <>
+          When you are in combat and the Jinni heals the character it is connected to, it will fire
+          a Jinni Toop from that character's position that deals 50% of Dori's ATK DMG.
+        </>
+      ),
     },
-    { name: "Value for Mora", image: "" },
+    { name: "Wonders Never Cease", image: "" },
     {
       name: "Discretionary Supplement",
       image: "",
-      // get desc() {
-      //   return (
-      //     <>
-      //       The character connected to the Lamp Spirit will obtain the following buffs based on
-      //       their current HP and Energy:
-      //       <br />
-      //       When their HP is lower than 50%, they gain <Green b>50%</Green>{" "}
-      //       <Green>Incoming Healing</Green> Bonus.
-      //       <br />
-      //       When their Energy {this.buff}.
-      //     </>
-      //   );
-      // },
-      // buff: (
-      //   <>
-      //     is less than 50%, they gain <Green b>30%</Green> <Green>Energy Recharge</Green>.
-      //   </>
-      // ),
+      get desc() {
+        return (
+          <>
+            The character connected to the Lamp Spirit will obtain the following buffs based on
+            their current HP and Energy: <br />
+            When their HP is lower than 50%, they gain <Green b>50%</Green>{" "}
+            <Green>Incoming Healing Bonus</Green>. <br />
+            When their Energy {this.xtraDesc?.[0]}.
+          </>
+        );
+      },
+      xtraDesc: [
+        <>
+          is less than 50%, they gain <Green b>30%</Green> <Green>Energy Recharge</Green>.
+        </>,
+      ],
     },
     { name: "Wonders Never Cease", image: "" },
     {
       name: "Sprinkling Weight",
       image: "",
-      // desc: (
-      //   <>
-      //     Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter
-      //     Cannon:
-      //     <br />• <Electro>Electro</Electro> Infusion.
-      //     <br />• When Normal Attacks hit opponents, all party members will heal HP equivalent to{" "}
-      //     <Green b>4%</Green> of Dori's <Green>Max HP</Green>. This type of healing can occur once
-      //     every 0.1s.
-      //   </>
-      // ),
+      desc: (
+        <>
+          Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter
+          Cannon:
+          <br />• <Electro>Electro Infusion</Electro>.
+          <br />• When Normal Attacks hit opponents, all party members will heal HP equivalent to{" "}
+          <Green b>4%</Green> of Dori's <Green>Max HP</Green>. This type of healing can occur once
+          every 0.1s.
+        </>
+      ),
     },
   ],
   buffs: [
@@ -194,8 +194,8 @@ const Dori: DataCharacter = {
       src: EModifierSrc.C4,
       desc: () => (
         <>
-          When Energy of the character connected to the Lamp Spirit is less than 50%, they gain{" "}
-          <Green b>30%</Green> <Green>Energy Recharge</Green>.
+          When Energy of the character connected to the Lamp Spirit{" "}
+          {Dori.constellation[3].xtraDesc?.[0]}
         </>
       ),
       isGranted: checkCons[4],
@@ -205,16 +205,7 @@ const Dori: DataCharacter = {
     {
       index: 1,
       src: EModifierSrc.C6,
-      desc: () => (
-        <>
-          Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter
-          Cannon:
-          <br />• <Electro>Electro</Electro> Infusion.
-          <br />• When Normal Attacks hit opponents, all party members will heal HP equivalent to{" "}
-          <Green b>4%</Green> of Dori's <Green>Max HP</Green>. This type of healing can occur once
-          every 0.1s.
-        </>
-      ),
+      desc: () => Dori.constellation[5].desc,
       isGranted: checkCons[6],
       affect: EModAffect.SELF,
       infuseConfig: {

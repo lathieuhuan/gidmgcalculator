@@ -29,7 +29,7 @@ export default function SectionWeapon() {
     <div className={pedestalStyles}>
       <div className="px-2 flex-center">
         <div
-          className={`relative bg-gradient-${rarity} cursor-pointer rounded-md`}
+          className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
           onClick={() => setPickerOn(true)}
         >
           <img

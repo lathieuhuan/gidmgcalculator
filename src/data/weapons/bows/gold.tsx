@@ -20,9 +20,8 @@ const thunderingPulseBuffValuesByStack = (refi: number) => [
 const goldBows: DataWeapon[] = [
   {
     code: 133,
-    beta: true,
     name: "Hunter's Path",
-    icon: "https://i.ibb.co/pWz3DfR/hunters-path.png",
+    icon: "d/dd/Weapon_Hunter%27s_Path",
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate", scale: "9.6%b" },

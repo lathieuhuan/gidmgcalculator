@@ -7,10 +7,9 @@ import { checkCons } from "../utils";
 
 const Collei: DataCharacter = {
   code: 55,
-  beta: true,
   name: "Collei",
-  icon: "https://i.ibb.co/wQb7kY4/collei.png",
-  sideIcon: "",
+  icon: "9/9e/Character_Collei_Thumb",
+  sideIcon: "a/a8/Character_Collei_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "dendro",
@@ -48,14 +47,14 @@ const Collei: DataCharacter = {
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Floral Brush",
-      image: "",
+      image: "8/88/Talent_Floral_Brush",
       xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", baseMult: 151.2 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
     EB: {
       name: "Trump-Card Kitty",
-      image: "",
+      image: "2/2e/Talent_Trump-Card_Kitty",
       xtraLvAtCons: 5,
       stats: [
         { name: "Explosion DMG", baseMult: 201.82 },
@@ -71,7 +70,7 @@ const Collei: DataCharacter = {
   passiveTalents: [
     {
       name: "Floral Sidewinder",
-      image: "",
+      image: "c/cf/Talent_Floral_Sidewinder",
       desc: (
         <>
           If one of your party members has triggered Burning, Quicken, Aggravate, Spread, Bloom,
@@ -87,7 +86,7 @@ const Collei: DataCharacter = {
     },
     {
       name: "The Languid Wood",
-      image: "",
+      image: "c/cb/Talent_The_Languid_Wood",
       desc: (
         <>
           When a character within the Cuilein-Anbar Zone triggers Burning, Quicken, Aggravate,
@@ -97,12 +96,12 @@ const Collei: DataCharacter = {
         </>
       ),
     },
-    { name: "Gliding Champion of Sumeru", image: "" },
+    { name: "Gliding Champion of Sumeru", image: "d/d3/Talent_Gliding_Champion_of_Sumeru" },
   ],
   constellation: [
     {
       name: "Beginnings Determined at the Roots",
-      image: "",
+      image: "b/b7/Constellation_Deepwood_Patrol",
       desc: (
         <>
           When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is
@@ -112,7 +111,7 @@ const Collei: DataCharacter = {
     },
     {
       name: "Through Hill and Copse",
-      image: "",
+      image: "d/d8/Constellation_Through_Hill_and_Copse",
       get desc() {
         return (
           <>
@@ -135,10 +134,10 @@ const Collei: DataCharacter = {
         </>,
       ],
     },
-    { name: "Scent of Summer", image: "" },
+    { name: "Scent of Summer", image: "a/ac/Constellation_Scent_of_Summer" },
     {
       name: "Gift of the Woods",
-      image: "",
+      image: "8/85/Constellation_Gift_of_the_Woods",
       desc: (
         <>
           Using Trump-Card Kitty will increase all nearby characters'{" "}
@@ -147,10 +146,10 @@ const Collei: DataCharacter = {
         </>
       ),
     },
-    { name: "All Embers", image: "" },
+    { name: "All Embers", image: "7/77/Constellation_All_Embers" },
     {
       name: "Forest of Falling Arrows",
-      image: "",
+      image: "b/b8/Constellation_Forest_of_Falling_Arrows",
       desc: (
         <>
           When the Floral Ring hits opponents, it will create a miniature Cuilein-Anbar that will

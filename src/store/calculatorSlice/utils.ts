@@ -153,7 +153,7 @@ export function getSubWeaponBuffCtrls(weapon: { type: Weapon; code: number }) {
         node.inputs = [];
 
         renderTypes.forEach((renderType, j) => {
-          if (renderType === "choices") {
+          if (renderType === "choices" || renderType === "text") {
             node.inputs!.push(initialValues[j]);
           }
         });

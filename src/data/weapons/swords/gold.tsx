@@ -7,6 +7,8 @@ import { applyPercent, findByCode } from "@Src/utils";
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
+import keyOfHierophanyImg from "@Src/assets/images/key-of-hierophany.png";
+
 const mistsplitterBuffValuesByStack = (refi: number) => [
   6 + refi * 2,
   12 + refi * 4,
@@ -14,6 +16,75 @@ const mistsplitterBuffValuesByStack = (refi: number) => [
 ];
 
 const goldSwords: DataWeapon[] = [
+  {
+    code: 140,
+    beta: true,
+    name: "Key of Hierophany",
+    icon: keyOfHierophanyImg,
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "hp_", scale: "14.4%" },
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfig: {
+          labels: ["Stacks"],
+          renderTypes: ["stacks"],
+          initialValues: [1],
+          maxValues: [3],
+        },
+        applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const stacks = getInput(inputs, 0, 0);
+          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * stacks;
+          applyModifier(desc, totalAttr, "em", buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
+      },
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        inputConfig: {
+          labels: ["Max HP"],
+          renderTypes: ["text"],
+          initialValues: [0],
+          maxValues: [99999],
+        },
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const maxHP = getInput(inputs, 0, 0);
+          const buffValue = applyPercent(maxHP, 0.15 + refi * 0.05);
+          applyModifier(desc, totalAttr, "em", buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
+      },
+    ],
+    passiveName: "Sunken Song of the Sands",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. {this.extra![0]}{" "}
+            {this.extra![1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This
+          effect increases the equipping character's <Green>Elemental Mastery</Green> by{" "}
+          <Green b>{0.09 + refi * 0.03}%</Green> of their <Green>Max HP</Green>. This effect can
+          trigger once every 0.3s. Max <Green b>3</Green> <Green>stacks</Green>.
+        </>,
+        <>
+          When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed,
+          the <Green>Elemental Mastery</Green> of all nearby party members will be increased by{" "}
+          <Green b>{0.15 + refi * 0.05}%</Green> of the equipping character's <Green>Max HP</Green>{" "}
+          for 20s.
+        </>,
+      ],
+    }),
+  },
   {
     code: 124,
     name: "Haran Geppaku Futsu",

@@ -6,28 +6,27 @@ import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 const sumeruSets: DataArtifact[] = [
   {
     code: 33,
-    beta: true,
     name: "Deepwood Memories",
     variants: [4, 5],
     flower: {
       name: "Labyrinth Wayfarer",
-      icon: "https://i.ibb.co/kyRvxjF/deepwood-memories-flower.png",
+      icon: "a/ab/Item_Labyrinth_Wayfarer",
     },
     plume: {
       name: "Scholar of Vines",
-      icon: "https://i.ibb.co/ZhZsDr7/deepwood-memories-plume.png",
+      icon: "0/0f/Item_Scholar_of_Vines",
     },
     sands: {
       name: "A Time of Insight",
-      icon: "https://i.ibb.co/hD4rDVM/deepwood-memories-sands.png",
+      icon: "7/7c/Item_A_Time_of_Insight",
     },
     goblet: {
       name: "Lamp of the Lost",
-      icon: "https://i.ibb.co/JHQhwd8/deepwood-memories-goblet.png",
+      icon: "c/cd/Item_Lamp_of_the_Lost",
     },
     circlet: {
       name: "Laurel Coronet",
-      icon: "https://i.ibb.co/jzBH3CH/deepwood-memories-circlet.png",
+      icon: "b/b8/Item_Laurel_Coronet",
     },
     setBonuses: [
       {
@@ -57,28 +56,27 @@ const sumeruSets: DataArtifact[] = [
   },
   {
     code: 34,
-    beta: true,
     name: "Gilded Dreams",
     variants: [4, 5],
     flower: {
       name: "Dreaming Steelbloom",
-      icon: "https://i.ibb.co/GHWrzz6/gilded-dreams-flower.png",
+      icon: "0/0c/Item_Dreaming_Steelbloom",
     },
     plume: {
       name: "Feather of Judgment",
-      icon: "https://i.ibb.co/Rpsd1xb/gilded-dreams-plume.png",
+      icon: "1/1b/Item_Feather_of_Judgment",
     },
     sands: {
       name: "The Sunken Years",
-      icon: "https://i.ibb.co/Ch9wNYb/gilded-dreams-sands.png",
+      icon: "9/92/Item_The_Sunken_Years",
     },
     goblet: {
       name: "Honeyed Final Feast",
-      icon: "https://i.ibb.co/0tNRvbg/gilded-dreams-goblet.png",
+      icon: "f/fa/Item_Honeyed_Final_Feast",
     },
     circlet: {
       name: "Shadow of the Sand King",
-      icon: "https://i.ibb.co/yWmmy7g/gilded-dreams-circlet.png",
+      icon: "2/2b/Item_Shadow_of_the_Sand_King",
     },
     setBonuses: [
       {
@@ -112,14 +110,14 @@ const sumeruSets: DataArtifact[] = [
         applyBuff: ({ desc, totalAttr, charData, partyData, tracker }) => {
           if (partyData) {
             const atkBuff = partyData.reduce(
-              (result, data) => result + (data.vision === charData.vision ? 1 : 0),
+              (result, data) => result + (data.vision === charData.vision ? 14 : 0),
               0
             );
             const emBuff = partyData.reduce(
-              (result, data) => result + (data.vision !== charData.vision ? 1 : 0),
+              (result, data) => result + (data.vision !== charData.vision ? 50 : 0),
               0
             );
-            applyModifier(desc, totalAttr, ["atk_", "em"], [atkBuff * 14, emBuff * 50], tracker);
+            applyModifier(desc, totalAttr, ["atk_", "em"], [atkBuff, emBuff], tracker);
           }
         },
       },

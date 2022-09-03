@@ -7,10 +7,9 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Tighnari: DataCharacter = {
   code: 54,
-  beta: true,
   name: "Tighnari",
-  icon: "https://i.ibb.co/VpczyBc/tighnari.png",
-  sideIcon: "",
+  icon: "9/91/Character_Tighnari_Thumb",
+  sideIcon: "a/a4/Character_Tighnari_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",
@@ -63,7 +62,7 @@ const Tighnari: DataCharacter = {
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Vijnana-Phala Mine",
-      image: "",
+      image: "f/f9/Talent_Vijnana-Phala_Mine",
       xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", baseMult: 149.6 }],
       // getExtraStats: () => [
@@ -74,7 +73,7 @@ const Tighnari: DataCharacter = {
     },
     EB: {
       name: "Fashioner's Tanglevine Shaft",
-      image: "",
+      image: "3/30/Talent_Fashioner%27s_Tanglevine_Shaft",
       xtraLvAtCons: 3,
       stats: [
         { name: "Tanglevine Shaft DMG", baseMult: 55.62 },
@@ -87,7 +86,7 @@ const Tighnari: DataCharacter = {
   passiveTalents: [
     {
       name: "Keen Sight",
-      image: "",
+      image: "7/77/Talent_Keen_Sight",
       desc: (
         <>
           After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by{" "}
@@ -97,7 +96,7 @@ const Tighnari: DataCharacter = {
     },
     {
       name: "Scholarly Blade",
-      image: "",
+      image: "e/e6/Talent_Scholarly_Blade",
       desc: (
         <>
           For every point of Elemental Mastery Tighnari possesses, his{" "}
@@ -108,12 +107,12 @@ const Tighnari: DataCharacter = {
         </>
       ),
     },
-    { name: "Encyclopedic Knowledge", image: "" },
+    { name: "Encyclopedic Knowledge", image: "e/ee/Talent_Encyclopedic_Knowledge" },
   ],
   constellation: [
     {
       name: "Beginnings Determined at the Roots",
-      image: "",
+      image: "2/2e/Constellation_Beginnings_Determined_at_the_Roots",
       desc: (
         <>
           Tighnari's <Green>Charged Attack CRIT Rate</Green> is increased by <Green b>15%</Green>.
@@ -122,7 +121,7 @@ const Tighnari: DataCharacter = {
     },
     {
       name: "Origins Known From the Stem",
-      image: "",
+      image: "3/30/Constellation_Origins_Known_From_the_Stem",
       get desc() {
         return (
           <>
@@ -140,10 +139,13 @@ const Tighnari: DataCharacter = {
         </>,
       ],
     },
-    { name: "Fortunes Read Amongst the Branches", image: "" },
+    {
+      name: "Fortunes Read Amongst the Branches",
+      image: "3/3a/Constellation_Fortunes_Read_Amongst_the_Branches",
+    },
     {
       name: "Withering Glimpsed in the Leaves",
-      image: "",
+      image: "8/8b/Constellation_Withering_Glimpsed_in_the_Leaves",
       get desc() {
         return (
           <>{this.xtraDesc![0]} This latter case will also refresh the buff state's duration.</>
@@ -158,10 +160,13 @@ const Tighnari: DataCharacter = {
         </>,
       ],
     },
-    { name: "Comprehension Amidst the Flowers", image: "" },
+    {
+      name: "Comprehension Amidst the Flowers",
+      image: "1/10/Constellation_Comprehension_Amidst_the_Flowers",
+    },
     {
       name: "Karma Adjudged From the Leaden Fruit",
-      image: "",
+      image: "f/f5/Constellation_Karma_Adjudged_From_the_Leaden_Fruit",
       desc: (
         <>
           Wreath Arrow's charging time is decreased by 0.9s, and will produce <Green b>1</Green>{" "}

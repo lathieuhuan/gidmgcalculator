@@ -6,6 +6,8 @@ import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
+import staffOfTheScarletSandsImg from "@Src/assets/images/staff-of-the-scarlet-sands.png";
+
 const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
   const mult = 0.8 + refi * 0.2;
   return [
@@ -15,6 +17,61 @@ const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
 };
 
 const goldPolearms: DataWeapon[] = [
+  {
+    code: 139,
+    beta: true,
+    name: "Staff of the Scarlet Sands",
+    icon: staffOfTheScarletSandsImg,
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "cRate", scale: "9.6%b" },
+    applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
+      const buffValue = applyPercent(totalAttr.em, 39 + refi * 13);
+      applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+    },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfig: {
+          labels: ["Stacks"],
+          renderTypes: ["stacks"],
+          initialValues: [1],
+          maxValues: [3],
+        },
+        applyFinalBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
+          const mult = 21 + refi * 7;
+          const stacks = getInput(inputs, 0, 0);
+          const buffValue = applyPercent(totalAttr.em, mult) * stacks;
+          const xtraDesc = ` / ${stacks} stacks / (each) ${round1(mult)}% of ${
+            totalAttr.em
+          } Elemental Mastery`;
+
+          applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldPolearms, 139)!.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+    passiveName: "Heat Haze at Horizon's End",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            The equipping character gains <Green b>{39 + refi * 13}%</Green> of their{" "}
+            <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. {this.extra![0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be
+          gained for 10s: the equipping character will gain <Green b>{21 + refi * 7}%</Green> of
+          their <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. Max <Green b>3</Green>{" "}
+          <Green>stacks</Green>.
+        </>,
+      ],
+    }),
+  },
   {
     code: 77,
     name: "Skyward Spine",

@@ -240,11 +240,11 @@ export default function getBuffedStats(
   applyWpPassiveBuffs(true, wpData, refi, wrapper1, partyData);
 
   // APPLY WEAPON FINAL BUFFS
-  for (let ctrl of wpBuffCtrls) {
-    if (ctrl.activated && wpData.buffs) {
-      const { applyFinalBuff } = findByIndex(wpData.buffs, ctrl.index) || {};
+  for (const { activated, index, inputs } of wpBuffCtrls) {
+    if (activated && wpData.buffs) {
+      const { applyFinalBuff } = findByIndex(wpData.buffs, index) || {};
       if (applyFinalBuff) {
-        applyFinalBuff({ totalAttr, refi, desc: `${wpData.name} activated`, tracker });
+        applyFinalBuff({ totalAttr, refi, desc: `${wpData.name} activated`, inputs, tracker });
       }
     } else if (!wpData.buffs) {
       console.log(`final buffs of main weapon not found`);

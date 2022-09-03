@@ -70,7 +70,7 @@ export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
     0, 1, 1.108, 1.216, 1.351, 1.473, 1.595, 1.757, 1.919, 2.081, 2.243, 2.405, 2.568, 2.703, 2.838,
     2.973,
   ],
-  // plunge, most Aim Shot, razor CA, ayato NA+CA+PA+ES
+  // plunge, most Aim Shot, razor CA, ayato NA+CA+PA+ES, cyno NA+CA+PA while EB
   7: [
     0, 1, 1.081, 1.163, 1.279, 1.361, 1.454, 1.581, 1.709, 1.837, 1.977, 2.116, 2.256, 2.395, 2.535,
     2.675,

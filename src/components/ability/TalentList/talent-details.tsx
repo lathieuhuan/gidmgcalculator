@@ -12,7 +12,7 @@ const { Row } = StatsTable;
 const styles = {
   row: "pb-1 text-subtitle-1",
   leftCol: "pr-8 text-dullyellow",
-  rightCol: "align-right",
+  rightCol: "align-right font-bold",
 };
 
 interface SkillAttributesProps {
@@ -35,8 +35,10 @@ export function SkillAttributes({
   const intervalRef = useRef<NodeJS.Timer>();
 
   const adjustLevel = (goUp: boolean) => {
-    const adjust = () =>
+    const adjust = () => {
       setLevel((prev) => (goUp ? Math.min(prev + 1, 15) : Math.max(prev - 1, 1)));
+    };
+
     adjust();
     intervalRef.current = setInterval(adjust, 200);
   };
@@ -61,12 +63,13 @@ export function SkillAttributes({
             />
           </>
         )}
-        <p className="mr-1 text-h6">Lv.</p>
+
+        <p className="text-h6">Lv.</p>
         {isStatic ? (
           <p className="px-1 text-h6 font-bold">1</p>
         ) : (
           <Select
-            className="pr-2 text-lg font-bold text-white"
+            className="pr-2 text-lg font-bold text-white text-right text-last-right"
             value={level}
             onChange={(e) => setLevel(+e.target.value)}
           >
@@ -76,6 +79,7 @@ export function SkillAttributes({
           </Select>
         )}
       </div>
+
       <StatsTable>
         {!isStatic &&
           stats.map((stat, i) => {
@@ -86,17 +90,15 @@ export function SkillAttributes({
               <Row key={i} className={styles.row}>
                 <p className={styles.leftCol}>{stat.name}</p>
                 <p className={styles.rightCol}>
-                  <b>
-                    {Array.isArray(baseMult)
-                      ? baseMult
-                          .map((mult) => getValue(mult, multType, level, true, baseStatType))
-                          .join("+")
-                      : baseMult
-                      ? getValue(baseMult, multType, level, true, baseStatType)
-                      : null}
-                    {baseMult && flat && " + "}
-                    {flat && getValue(flat.base, flat.type, level, false)}
-                  </b>
+                  {Array.isArray(baseMult)
+                    ? baseMult
+                        .map((mult) => getValue(mult, multType, level, true, baseStatType))
+                        .join("+")
+                    : baseMult
+                    ? getValue(baseMult, multType, level, true, baseStatType)
+                    : null}
+                  {baseMult && flat && " + "}
+                  {flat && getValue(flat.base, flat.type, level, false)}
                 </p>
               </Row>
             );

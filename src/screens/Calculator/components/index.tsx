@@ -35,7 +35,7 @@ export const CopySection = ({ options, onClickCopy }: CopySectionProps) => {
   return (
     <div className="mb-4 px-4 flex justify-end">
       <Select
-        className="px-1 rounded bg-white font-bold"
+        className="px-1 rounded bg-default font-bold text-black"
         value={chosen}
         onChange={(e) => setChosen(e.target.value)}
       >
@@ -64,6 +64,7 @@ export const Setter = ({ label, inputComponent }: SetterProps) => {
 };
 
 export const twInputStyles = {
-  textInput: "px-2 py-2 w-16 rounded text-right text-black leading-tighter",
+  textInput:
+    "px-2 py-2 w-16 rounded text-right text-black leading-tighter outline-none focus:bg-green",
   select: "px-2 py-1 !bg-white text-black rounded font-bold",
 };

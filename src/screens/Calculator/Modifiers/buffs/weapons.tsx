@@ -10,7 +10,7 @@ import {
 } from "@Store/calculatorSlice";
 import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 import { findWeapon } from "@Data/controllers";
-import { findByIndex, genNumberSequence } from "@Src/utils";
+import { findByIndex, genNumberSequence, processNumInput } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate, Checkbox, Select } from "@Src/styled-components";
@@ -41,11 +41,11 @@ export default function WeaponBuffs() {
       const { labels, renderTypes, initialValues, maxValues } = buff.inputConfig;
 
       labels.forEach((label, i) => {
-        let input = null;
+        let inputCpn = null;
 
         switch (renderTypes[i]) {
           case "check":
-            input = (
+            inputCpn = (
               <Checkbox
                 key={i}
                 className="mr-1"
@@ -65,7 +65,7 @@ export default function WeaponBuffs() {
             break;
           case "stacks":
             const options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
-            input = (
+            inputCpn = (
               <Select
                 key={i}
                 className={twInputStyles.select}
@@ -90,8 +90,8 @@ export default function WeaponBuffs() {
             );
             break;
         }
-        if (input) {
-          setters.push(<Setter key={index} label={label} inputComponent={input} />);
+        if (inputCpn) {
+          setters.push(<Setter key={index} label={label} inputComponent={inputCpn} />);
         }
       });
     }
@@ -119,7 +119,7 @@ export default function WeaponBuffs() {
     const weaponType = weapon as Weapon;
 
     subWpBuffCtrls.forEach((ctrl, ctrlIndex) => {
-      const { activated, code, inputs, index } = ctrl;
+      const { activated, code, inputs = [], index } = ctrl;
       const { name, buffs = [] } = findWeapon({ type: weaponType, code })!;
       const buff = findByIndex(buffs, ctrl.index);
       if (!buff) return;
@@ -131,27 +131,51 @@ export default function WeaponBuffs() {
       let setters = null;
 
       if (buff.inputConfig) {
-        // Hakushin Ring
-        setters = (
-          <Setter
-            label={buff.inputConfig.labels[0]}
-            inputComponent={
-              <Select
-                className={twInputStyles.select}
-                value={inputs![0] as string}
-                onChange={(e) =>
-                  dispatch(
-                    changeSubWpModCtrlInput({ ...path, inputIndex: 0, value: e.target.value })
-                  )
-                }
-              >
-                {["pyro", "hydro", "cryo", "anemo"].map((opt) => (
-                  <option key={opt}>{opt}</option>
-                ))}
-              </Select>
-            }
-          />
-        );
+        setters = [];
+        const { labels, renderTypes, initialValues, maxValues } = buff.inputConfig;
+
+        labels.forEach((label, inputIndex) => {
+          let inputCpn = null;
+
+          switch (renderTypes[inputIndex]) {
+            // Hakushin Ring
+            case "choices":
+              inputCpn = (
+                <Select
+                  className={twInputStyles.select}
+                  value={inputs[inputIndex] as string}
+                  onChange={(e) =>
+                    dispatch(
+                      changeSubWpModCtrlInput({ ...path, inputIndex, value: e.target.value })
+                    )
+                  }
+                >
+                  {["pyro", "hydro", "cryo", "anemo"].map((opt) => (
+                    <option key={opt}>{opt}</option>
+                  ))}
+                </Select>
+              );
+              break;
+            case "text":
+              inputCpn = (
+                <input
+                  type="text"
+                  className={twInputStyles.textInput}
+                  value={inputs[inputIndex] as string}
+                  onChange={(e) => {
+                    const value = processNumInput(
+                      e.target.value,
+                      +inputs[inputIndex],
+                      maxValues?.[inputIndex]
+                    );
+                    dispatch(changeSubWpModCtrlInput({ ...path, inputIndex, value }));
+                  }}
+                />
+              );
+              break;
+          }
+          setters.push(<Setter key={inputIndex} label={label} inputComponent={inputCpn} />);
+        });
       }
       content.push(
         <ModifierTemplate

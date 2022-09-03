@@ -58,6 +58,7 @@ type ApplyWpFinalBuffArgs = {
   refi: number;
   desc?: string;
   tracker?: Tracker;
+  inputs?: ModifierInput[];
 };
 
 type WpDescArgs = {
@@ -70,7 +71,7 @@ type WeaponBuff = {
   affect: EModAffect;
   inputConfig?: {
     labels: string[];
-    renderTypes: ("stacks" | "check" | "choices")[];
+    renderTypes: ("stacks" | "check" | "choices" | "text")[];
     initialValues: ModifierInput[];
     maxValues?: number[];
   };

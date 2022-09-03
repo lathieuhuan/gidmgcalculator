@@ -83,19 +83,18 @@ function App() {
         )}
       </div>
 
-      <Modal active={isError} onClose={() => dispatch(closeError())}>
-        <div className="p-4 w-80 rounded-lg flex flex-col shadow-white-glow bg-darkblue-1">
-          <p className="text-h5 text-center text-lightred">
-            An Error has occurred and prevented the calculation process.
-          </p>
-          <Button
-            className="mt-4 mx-auto"
-            variant="positive"
-            onClick={() => dispatch(closeError())}
-          >
-            Confirm
-          </Button>
-        </div>
+      <Modal
+        active={isError}
+        isCustom
+        className="p-4 w-80 rounded-lg flex flex-col bg-darkblue-1"
+        onClose={() => dispatch(closeError())}
+      >
+        <p className="text-h5 text-center text-lightred">
+          An Error has occurred and prevented the calculation process.
+        </p>
+        <Button className="mt-4 mx-auto" variant="positive" onClick={() => dispatch(closeError())}>
+          Confirm
+        </Button>
       </Modal>
 
       <DownloadOptions active={loadOptionType === "DOWN"} onClose={() => setLoadOptionType("")} />

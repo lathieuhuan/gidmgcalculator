@@ -1,4 +1,4 @@
-import type { AttributeStat, DataWeapon } from "@Src/types";
+import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import {
@@ -15,6 +15,44 @@ import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purplePolearms: DataWeapon[] = [
+  {
+    code: 135,
+    name: "Moonpiercer",
+    icon: "a/a4/Weapon_Moonpiercer",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "em", scale: "24" },
+    passiveName: "Stillwood Moonshadow",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
+            Leaf of Revival will be created around the character for a maximum of 10s.{" "}
+            {this.extra![0]} {this.extra![1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green>{" "}
+          <Green>ATK</Green> for 12s.
+        </>,
+        <>
+          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the
+          character is not on the field.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
+        desc: ({ refi }) => findByCode(purplePolearms, 135)!.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+  },
   {
     code: 85,
     name: "Wavebreaker's Fin",

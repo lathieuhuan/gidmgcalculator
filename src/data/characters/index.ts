@@ -9,6 +9,7 @@ import Beidou from "./electro/Beidou";
 import Bennett from "./pyro/Bennett";
 import Collei from "./dendro/Collei";
 import Chongyun from "./cryo/Chongyun";
+import Cyno from "./electro/Cyno";
 import DendroMC from "./dendro/DendroMC";
 import Diluc from "./pyro/Diluc";
 import Diona from "./cryo/Diona";
@@ -68,6 +69,7 @@ const characters = [
   Bennett,
   Collei,
   Chongyun,
+  Cyno,
   DendroMC,
   Diluc,
   Diona,
