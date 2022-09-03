@@ -9,7 +9,7 @@ import {
   FaWrench,
 } from "react-icons/fa";
 import type { Rarity, UsersSetup } from "@Src/types";
-import type { SetupModal } from "../types";
+import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
@@ -25,9 +25,9 @@ interface SetupLayoutProps {
   setup: UsersSetup;
   setupName?: string;
   allIDs?: Record<string, number>;
-  onClickOpenModal: (args: SetupModal) => void;
+  openModal: (type: MySetupModalType, ID?: number) => () => void;
 }
-export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: SetupLayoutProps) {
+export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLayoutProps) {
   const { type, char, party } = setup;
   const dispatch = useDispatch();
 
@@ -150,7 +150,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
 
     return (
       <div className="flex flex-wrap" style={{ width: "15.75rem" }}>
-        {weaponData ? renderGearIcon(weaponData, () => onClickOpenModal({ type: "weapon" })) : null}
+        {weaponData ? renderGearIcon(weaponData, openModal("WEAPON")) : null}
 
         {setup.artInfo.pieces.map((artP, i) => {
           if (artP) {
@@ -162,7 +162,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
                     beta: artifactData.beta,
                     rarity: artP.rarity || 5,
                   },
-                  () => onClickOpenModal({ type: "artifacts" }),
+                  openModal("ARTIFACTS"),
                   i
                 )
               : null;
@@ -195,20 +195,20 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
           <IconButton
             className="p-2 glow-on-hover"
             variant="neutral"
-            onClick={() => onClickOpenModal({ type: "share", ID: setup.ID })}
+            onClick={openModal("SHARE", setup.ID)}
           >
             <FaShareAlt />
           </IconButton>
 
           {isOriginal ? (
-            <IconButton variant="negative" onClick={() => onClickOpenModal({ type: "remove", ID })}>
+            <IconButton variant="negative" onClick={openModal("REMOVE", setup.ID)}>
               <FaTrashAlt />
             </IconButton>
           ) : (
             <IconButton
               variant="neutral"
               disabled={!allIDs || Object.keys(allIDs).length < 4}
-              onClick={() => onClickOpenModal({ type: "add", ID })}
+              onClick={openModal("ADD", ID)}
             >
               <FaPlus />
             </IconButton>
@@ -226,11 +226,11 @@ export function SetupLayout({ ID, setup, setupName, allIDs, onClickOpenModal }: 
 
         <div>
           <div className="mb-2 flex justify-center gap-4">
-            <Button variant="default" onClick={() => onClickOpenModal({ type: "stats" })}>
+            <Button variant="default" onClick={openModal("STATS")}>
               Stats
             </Button>
 
-            <Button variant="default" onClick={() => onClickOpenModal({ type: "modifiers" })}>
+            <Button variant="default" onClick={openModal("MODIFIERS")}>
               Modifiers
             </Button>
           </div>

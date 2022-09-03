@@ -34,7 +34,7 @@ export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
           if (value.length <= 34) setInput(value);
         }}
         onKeyDown={(e) => {
-          if (index && e.key === "Enter") {
+          if (index !== null && e.key === "Enter") {
             dispatch(saveSetupThunk(index, ID, input));
             onClose();
           }
@@ -45,7 +45,7 @@ export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
         handlers={[
           onClose,
           () => {
-            if (index) {
+            if (index !== null) {
               dispatch(saveSetupThunk(index, ID, input));
               onClose();
             }

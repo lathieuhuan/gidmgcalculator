@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 import type { CalcArtPiece, CalcArtPieceMainStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import { findById, isOne, percentSign } from "@Src/utils";
+import { findById, isEqual, percentSign } from "@Src/utils";
 
 import { IconButton, Select } from "@Src/styled-components";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
@@ -172,7 +172,7 @@ function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
 
   if (existedArtPiece) {
     const { owner, ...info } = existedArtPiece;
-    noChange = isOne(pieceInfo, info);
+    noChange = isEqual(pieceInfo, info);
   }
 
   const extraInfo = existedArtPiece?.owner ? (

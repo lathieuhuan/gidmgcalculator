@@ -12,8 +12,9 @@ import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors"
 import { findWeapon } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 
+import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate, Checkbox, Select } from "@Src/styled-components";
-import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
+import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 export default function WeaponBuffs() {
   const weapon = useSelector(selectWeapon);
@@ -182,5 +183,5 @@ export default function WeaponBuffs() {
       );
     });
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return renderModifiers(content, true);
 }

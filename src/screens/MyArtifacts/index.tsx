@@ -49,7 +49,12 @@ type ModalType = "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFACT" | 
 
 export default function MyArtifacts() {
   const [modalType, setModalType] = useState<ModalType | null>(null);
-  const [pickingArtifactType, setPickingArtifactType] = useState<Artifact | null>(null);
+  const [pickArtifactModal, setPickArtifactModal] = useState<{ isActive: boolean; type: Artifact }>(
+    {
+      isActive: false,
+      type: "flower",
+    }
+  );
   const [newOwner, setNewOwner] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -177,22 +182,25 @@ export default function MyArtifacts() {
         active={modalType === "PICK_ARTIFACT_TYPE"}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artType) => {
-          setPickingArtifactType(artType as Artifact);
+          setPickArtifactModal({
+            isActive: true,
+            type: artType as Artifact,
+          });
           closeModal();
         }}
         onClose={closeModal}
       />
 
       <Picker.Artifact
-        active={!!pickingArtifactType}
+        active={pickArtifactModal.isActive}
         needMassAdd
-        artifactType={pickingArtifactType || "flower"}
+        artifactType={pickArtifactModal.type}
         onPickArtifact={(newItem) => {
           const ID = Date.now();
           dispatch(addArtifact({ ID, ...newItem, owner: null }));
           setChosenID(ID);
         }}
-        onClose={() => setPickingArtifactType(null)}
+        onClose={() => setPickArtifactModal((prev) => ({ ...prev, isActive: false }))}
       />
 
       <Picker.Character

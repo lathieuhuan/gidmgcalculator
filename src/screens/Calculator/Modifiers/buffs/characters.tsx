@@ -19,8 +19,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
+import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate } from "@Src/styled-components";
-import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
 export function SelfBuffs() {
@@ -103,7 +103,7 @@ export function SelfBuffs() {
       );
     }
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return renderModifiers(content, true);
 }
 
 export function PartyBuffs() {
@@ -123,7 +123,7 @@ export function PartyBuffs() {
       );
     }
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return renderModifiers(content, true);
 }
 
 interface TeammateBuffsProps {

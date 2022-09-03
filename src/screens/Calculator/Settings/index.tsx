@@ -236,7 +236,7 @@ function HiddenSettings() {
       <Modal
         active={modal.index !== null}
         isCustom
-        className="rounded-lg max-width-95"
+        className="rounded-lg max-w-95"
         style={{ width: "30rem" }}
         onClose={closeModal}
       >

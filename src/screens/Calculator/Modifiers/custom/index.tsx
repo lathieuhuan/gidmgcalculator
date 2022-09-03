@@ -108,7 +108,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
       <Modal
         active={modalOn}
-        className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-width-95"
+        className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-w-95"
         onClose={closeModal}
       >
         {isBuffs ? (

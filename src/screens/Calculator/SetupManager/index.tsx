@@ -103,6 +103,7 @@ export default function SetupManager() {
           </button>
         </div>
       </div>
+
       <Settings height={height} />
 
       <PrePicker

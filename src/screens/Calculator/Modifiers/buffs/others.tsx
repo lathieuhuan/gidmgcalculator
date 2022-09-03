@@ -1,10 +1,4 @@
-import type {
-  AmplifyingReaction,
-  ArtifactBuff,
-  ModifierInput,
-  ResonanceVision,
-  Vision,
-} from "@Src/types";
+import type { AmplifyingReaction, ArtifactBuff, ModifierInput, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -21,34 +15,13 @@ import {
   selectRxnBonus,
 } from "@Store/calculatorSlice/selectors";
 
-import { renderAmpReactionDesc } from "@Components/minors";
-import { Green, ModifierTemplate, Select } from "@Src/styled-components";
-import { renderNoModifier, Setter, twInputStyles } from "@Screens/Calculator/components";
+import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
+import { ModifierTemplate, Select } from "@Src/styled-components";
+import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
-import { resonanceName } from "@Src/constants";
-
-const RESONANCE_DESCRIPTION: Record<ResonanceVision, JSX.Element> = {
-  pyro: (
-    <>
-      Increases <Green>ATK</Green> by <Green b>25%</Green>.
-    </>
-  ),
-  cryo: (
-    <>
-      Increases <Green>CRIT Rate</Green> against enemies that are Frozen or affected by Cryo by{" "}
-      <Green b>15%</Green>.
-    </>
-  ),
-  geo: (
-    <>
-      Increases <Green>Shield Strength</Green> by <Green b>15%</Green>. Increases <Green>DMG</Green>{" "}
-      dealt by characters that protected by a shield by <Green b>15%</Green>.
-    </>
-  ),
-  dendro: <></>,
-};
+import { resonanceRenderInfo } from "@Src/constants";
 
 export function ElememtBuffs() {
   const { vision } = useSelector(selectCharData);
@@ -58,13 +31,15 @@ export function ElememtBuffs() {
   const content: JSX.Element[] = [];
 
   elmtModCtrls.resonance.forEach((rsn) => {
+    const { name, desc } = resonanceRenderInfo[rsn.vision];
+
     content.push(
       <ModifierTemplate
         key={rsn.vision}
         checked={rsn.activated}
         onToggle={() => dispatch(toggleResonance(rsn.vision))}
-        heading={resonanceName[rsn.vision]}
-        desc={RESONANCE_DESCRIPTION[rsn.vision]}
+        heading={name}
+        desc={desc}
       />
     );
   });
@@ -74,7 +49,7 @@ export function ElememtBuffs() {
   if (infusion !== vision && infusion !== "phys") {
     content.push(...useAmplifyingBuff(infusion, true));
   }
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return renderModifiers(content, true);
 }
 
 function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
@@ -167,7 +142,7 @@ export function ArtifactBuffs() {
       />
     );
   });
-  return content.length ? <>{content}</> : renderNoModifier(true);
+  return renderModifiers(content, true);
 }
 
 interface SetterSectionProps {

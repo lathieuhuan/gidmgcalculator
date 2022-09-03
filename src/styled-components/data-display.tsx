@@ -30,11 +30,11 @@ export const Geo = makeSpan("text-geo");
 
 interface ModifierLayoutProps {
   mutable?: boolean;
-  checked: boolean;
+  checked?: boolean;
   heading: string;
   desc: ReactNode;
   setters?: JSX.Element | JSX.Element[] | null;
-  onToggle: () => void;
+  onToggle?: () => void;
 }
 export function ModifierTemplate({
   mutable = true,
@@ -49,11 +49,11 @@ export function ModifierTemplate({
       <div className="pt-1 mb-1 flex">
         <label className="flex items-center">
           {mutable && <Checkbox className="ml-1 mr-2" checked={checked} onChange={onToggle} />}
-          <p className="pl-1 font-bold text-lightgold">{heading}</p>
+          <span className="pl-1 font-bold text-lightgold">{(mutable ? "" : "+ ") + heading}</span>
         </label>
       </div>
       <p>{desc}</p>
-      {setters && <div className="pt-2 pr-2 flex flex-col gap-5">{setters}</div>}
+      {setters && <div className="pt-2 pr-2 flex flex-col space-y-5">{setters}</div>}
     </div>
   );
 }

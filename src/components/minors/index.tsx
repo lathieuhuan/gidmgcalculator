@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { Fragment, HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
 import { FaInfoCircle } from "react-icons/fa";
 
@@ -211,6 +211,14 @@ export function SetBonus({ sets }: SetBonusProps) {
     </div>
   );
 }
+
+export const renderModifiers = (modifiers: JSX.Element[], isBuff: boolean) => {
+  return modifiers.length ? (
+    <Fragment>{modifiers}</Fragment>
+  ) : (
+    <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>
+  );
+};
 
 export const renderNoItems = (type: string) => (
   <div className="w-full pt-8 flex-center">

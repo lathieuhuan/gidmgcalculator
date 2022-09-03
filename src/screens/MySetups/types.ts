@@ -1,14 +1,16 @@
-export type SetupModal = {
-  type:
-    | "share"
-    | "remove"
-    | "add"
-    | "combine"
-    | "stats"
-    | "modifiers"
-    | "weapon"
-    | "artifacts"
-    | "intro"
-    | "";
+export type MySetupModalType =
+  | "SHARE"
+  | "REMOVE"
+  | "ADD"
+  | "COMBINE"
+  | "STATS"
+  | "MODIFIERS"
+  | "WEAPON"
+  | "ARTIFACTS"
+  | "TIPS"
+  | "";
+
+export type MySetupModal = {
+  type: MySetupModalType;
   ID?: number;
 };

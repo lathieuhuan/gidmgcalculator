@@ -12,8 +12,8 @@ import {
 } from "@Store/calculatorSlice";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
+import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate } from "@Src/styled-components";
-import { renderNoModifier } from "@Screens/Calculator/components";
 import { CharModSetters } from "../components";
 
 import { findCharacter } from "@Data/controllers";
@@ -28,7 +28,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
 
   const { debuffs } = findCharacter(char) || {};
   if (!debuffs) {
-    return renderNoModifier(false);
+    return renderModifiers([], false);
   }
 
   const content: JSX.Element[] = [];
@@ -91,7 +91,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
       );
     }
   });
-  return content.length ? <>{content}</> : renderNoModifier(false);
+  return renderModifiers(content, false);
 }
 
 export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
@@ -109,7 +109,7 @@ export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
         />
       );
   });
-  return content.length ? <>{content}</> : renderNoModifier(false);
+  return renderModifiers(content, false);
 }
 
 interface TeammateDebuffsProps {

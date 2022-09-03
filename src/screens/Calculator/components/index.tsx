@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { FaCaretDown, FaCopy } from "react-icons/fa";
 import { IconButton, Select } from "@Src/styled-components";
 
@@ -49,10 +49,6 @@ export const CopySection = ({ options, onClickCopy }: CopySectionProps) => {
     </div>
   );
 };
-
-export const renderNoModifier = (isBuff: boolean) => (
-  <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>
-);
 
 interface SetterProps {
   label: string;
