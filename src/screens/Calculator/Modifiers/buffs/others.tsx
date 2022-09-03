@@ -22,6 +22,7 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
+import { Fragment } from "react";
 
 export function ElememtBuffs() {
   const { vision } = useSelector(selectCharData);
@@ -44,16 +45,16 @@ export function ElememtBuffs() {
     );
   });
 
-  content.push(...useAmplifyingBuff(vision, false));
+  content.push(<AmplifyingBuff key="inner" element={vision} byInfusion={false} />);
 
   if (infusion !== vision && infusion !== "phys") {
-    content.push(...useAmplifyingBuff(infusion, true));
+    content.push(<AmplifyingBuff key="infusion" element={infusion} byInfusion />);
   }
   return renderModifiers(content, true);
 }
 
-function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
-  const field = byInfusion ? "infusion_ampRxn" : "ampRxn";
+function AmplifyingBuff(props: { element: Vision; byInfusion: boolean }) {
+  const field = props.byInfusion ? "infusion_ampRxn" : "ampRxn";
   const rxnBonus = useSelector(selectRxnBonus);
   const ampReaction = useSelector(selectElmtModCtrls)[field];
   const dispatch = useDispatch();
@@ -68,21 +69,25 @@ function useAmplifyingBuff(element: Vision, byInfusion: boolean) {
           dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
         }
         heading={reaction}
-        desc={renderAmpReactionDesc(element, rxnBonus[reaction])}
+        desc={renderAmpReactionDesc(props.element, rxnBonus[reaction])}
       />
     );
   };
-  switch (element) {
+  switch (props.element) {
     case "pyro":
-      return (["melt", "vaporize"] as const).map((reaction) => {
-        return renderBuff(reaction);
-      });
+      return (
+        <Fragment>
+          {(["melt", "vaporize"] as const).map((reaction) => {
+            return renderBuff(reaction);
+          })}
+        </Fragment>
+      );
     case "hydro":
-      return [renderBuff("vaporize")];
+      return renderBuff("vaporize");
     case "cryo":
-      return [renderBuff("melt")];
+      return renderBuff("melt");
     default:
-      return [];
+      return <></>;
   }
 }
 

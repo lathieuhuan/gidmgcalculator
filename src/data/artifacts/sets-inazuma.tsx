@@ -62,6 +62,7 @@ const inazumaSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => {
           const { xtraDesc } = findByCode(inazumaSets, 32)!.setBonuses[1];
           return (
@@ -132,6 +133,7 @@ const inazumaSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(inazumaSets, 31)!.setBonuses[1].xtraDesc![0],
         affect: EModAffect.SELF,
         inputConfig: {
@@ -242,6 +244,7 @@ const inazumaSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(inazumaSets, 2)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: ({ attPattBonus, desc, tracker }) => {
@@ -299,6 +302,7 @@ const inazumaSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => (
           <>
             Curiosity can stack up to <Green b>4</Green> <Green>times</Green>, each providing{" "}

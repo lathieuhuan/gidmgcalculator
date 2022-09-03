@@ -49,6 +49,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 5)!.setBonuses[1].desc,
         affect: EModAffect.PARTY,
         applyBuff: makeModApplier("totalAttr", "atk_", 20),
@@ -99,6 +100,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 6)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", "CA.pct", 50),
@@ -159,6 +161,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 7)!.setBonuses[1].xtraDesc![0],
         affect: EModAffect.SELF,
         inputConfig: {
@@ -211,6 +214,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 8)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", "all.pct", 35),
@@ -263,6 +267,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 9)!.setBonuses[1].desc,
         affect: EModAffect.PARTY,
         inputConfig: {
@@ -320,6 +325,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 10)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 40),
@@ -372,6 +378,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 11)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         inputConfig: {
@@ -438,6 +445,7 @@ const liyueSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(liyueSets, 12)!.setBonuses[1].desc,
         affect: EModAffect.PARTY,
         applyBuff: makeModApplier("totalAttr", ["atk_", "shStr"], [20, 30]),

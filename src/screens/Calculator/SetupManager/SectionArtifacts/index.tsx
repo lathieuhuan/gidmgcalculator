@@ -126,7 +126,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             updateArtPiece({
               pieceIndex: artifactPicker.slot,
               newPiece: { ID: Date.now(), ...item },
-              isFirstTime: true,
+              isFresh: true,
             })
           );
           setActiveTabIndex(artifactPicker.slot);

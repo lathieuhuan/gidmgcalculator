@@ -34,7 +34,7 @@ export function Modal({ active, className, style, isCustom, children, onClose }:
       setState((prev) => ({ ...prev, active: true }));
       setTimeout(() => {
         setState((prev) => ({ ...prev, animate: true }));
-      }, 50);
+      }, 30);
     } else if (active === false && state.active) {
       closeModal();
     }

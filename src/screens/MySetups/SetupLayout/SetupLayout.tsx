@@ -94,7 +94,10 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
         return (
           <div
             key={tmIndex}
-            className={clickable ? "shadow-3px-3px shadow-lightgold cursor-pointer" : ""}
+            className={cn(
+              "w-20",
+              clickable ? "shadow-3px-3px shadow-lightgold cursor-pointer" : "group relative"
+            )}
           >
             <CharFilledSlot
               mutable={false}
@@ -111,7 +114,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
               }}
             />
             {!clickable && (
-              <div className="calc-btn">
+              <div className="absolute -bottom-1 -right-1 z-10 hidden group-hover:block">
                 <IconButton
                   variant="positive"
                   onClick={() => {
@@ -139,7 +142,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
       return (
         <div key={index} className="p-1">
           <button
-            className={cn("p-1 rounded glow-on-hover", `bg-gradient-${rarity}`)}
+            className={`p-1 rounded flex glow-on-hover bg-gradient-${rarity}`}
             onClick={onClick}
           >
             <img style={{ width: "4.25rem" }} src={beta ? icon : wikiImg(icon)} alt="" />
@@ -195,20 +198,20 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
           <IconButton
             className="p-2 glow-on-hover"
             variant="neutral"
-            onClick={openModal("SHARE", setup.ID)}
+            onClick={openModal("SHARE_SETUP", setup.ID)}
           >
             <FaShareAlt />
           </IconButton>
 
           {isOriginal ? (
-            <IconButton variant="negative" onClick={openModal("REMOVE", setup.ID)}>
+            <IconButton variant="negative" onClick={openModal("REMOVE_SETUP", setup.ID)}>
               <FaTrashAlt />
             </IconButton>
           ) : (
             <IconButton
               variant="neutral"
               disabled={!allIDs || Object.keys(allIDs).length < 4}
-              onClick={openModal("ADD", ID)}
+              onClick={openModal("ADD_TO_COMPLEX", ID)}
             >
               <FaPlus />
             </IconButton>

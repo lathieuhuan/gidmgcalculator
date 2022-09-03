@@ -7,6 +7,7 @@ import type {
   Level,
   UsersArtifact,
   UsersDatabaseState,
+  UsersSetup,
   UsersWeapon,
   Weapon,
 } from "@Src/types";
@@ -422,6 +423,27 @@ export const usersDatabaseSlice = createSlice({
 
       state.chosenSetupID = newChosenID || ID;
     },
+    removeSetup: (state, action: PayloadAction<number>) => {
+      const removedID = action.payload;
+      const { mySetups } = state;
+
+      const visibleIDs = mySetups.reduce((result, setup) => {
+        if (setup.type !== "combined") {
+          result.push(setup.ID);
+        }
+        return result;
+      }, [] as number[]);
+
+      mySetups.splice(indexById(mySetups, removedID), 1);
+
+      const removedIndexInVisible = visibleIDs.indexOf(removedID);
+      const lastIndex = visibleIDs.length - 1;
+      const newID =
+        removedIndexInVisible === lastIndex
+          ? visibleIDs[lastIndex - 1] || 0
+          : visibleIDs[removedIndexInVisible + 1];
+      state.chosenSetupID = newID;
+    },
   },
 });
 
@@ -453,6 +475,7 @@ export const {
   removeArtifact,
   chooseUsersSetup,
   saveSetup,
+  removeSetup,
 } = usersDatabaseSlice.actions;
 
 export default usersDatabaseSlice.reducer;

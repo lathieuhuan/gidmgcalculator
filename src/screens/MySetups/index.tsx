@@ -12,24 +12,46 @@ import {
   UsersComplexSetup,
   UsersSetup,
 } from "@Src/types";
-import type { SetupModal } from "./types";
+import type { MySetupModalType, MySetupModal } from "./types";
 
-import { findCharacter } from "@Data/controllers";
+import { findCharacter, getPartyData } from "@Data/controllers";
 import calculateAll from "@Src/calculators";
 import { findById } from "@Src/utils";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { chooseUsersSetup } from "@Store/usersDatabaseSlice";
+import { chooseUsersSetup, removeSetup } from "@Store/usersDatabaseSlice";
 import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/selectors";
 
-import { Button, IconButton } from "@Src/styled-components";
+import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
-import { renderNoItems } from "@Components/minors";
+import { CollapseList } from "@Components/collapse";
+import { Modal } from "@Components/modals";
+import { ConfirmTemplate, InfusionNotes, renderNoItems, SetBonus } from "@Components/minors";
+import { Button, IconButton } from "@Src/styled-components";
 import { SetupLayout } from "./SetupLayout";
+import { ModifierWrapper } from "./components";
+import {
+  MySetupArtifactPieces,
+  MySetupWeapon,
+  ArtifactBuffs,
+  CustomBuffs,
+  PartyBuffs,
+  RsnRxnBuffs,
+  SelfBuffs,
+  WeaponBuffs,
+  RsnRxnDebuffs,
+  SelfDebuffs,
+  PartyDebuffs,
+  ArtifactDebuffs,
+  CustomDebuffs,
+} from "./modals";
 
 import styles from "../styles.module.scss";
 
 export default function MySetups() {
-  const [modalInfo, setModalInfo] = useState<SetupModal>({ type: "", ID: 0 });
+  const [modal, setModal] = useState<MySetupModal>({
+    type: "",
+    ID: 0,
+  });
   const ref = useRef<HTMLDivElement>(null);
 
   const mySetups = useSelector(selectMySetups);
@@ -43,7 +65,20 @@ export default function MySetups() {
       : setup;
   })();
 
-  const closeModal = () => setModalInfo({ type: "", ID: 0 });
+  const openModal = (type: MySetupModalType, ID?: number) => () => {
+    setModal((prev) => {
+      const newModal = { ...prev, type };
+
+      if (ID) {
+        newModal.ID = ID;
+      }
+      return newModal;
+    });
+  };
+
+  const closeModal = () => {
+    setModal((prev) => ({ ...prev, type: "" }));
+  };
 
   let charData = {} as CalcCharData;
   let finalInfusion: FinalInfusion;
@@ -73,7 +108,7 @@ export default function MySetups() {
 
     const databaseChar = findCharacter(char);
     if (!databaseChar) return null;
-
+    artInfo.pieces;
     charData = {
       code: databaseChar.code,
       name: databaseChar.name,
@@ -126,11 +161,11 @@ export default function MySetups() {
           setupName={setup.name}
           setup={actualSetup}
           allIDs={setup.allIDs}
-          onClickOpenModal={setModalInfo}
+          openModal={openModal}
         />
       );
     } else {
-      setupDisplay = <SetupLayout ID={ID} setup={setup} onClickOpenModal={setModalInfo} />;
+      setupDisplay = <SetupLayout ID={ID} setup={setup} openModal={openModal} />;
     }
 
     return (
@@ -147,18 +182,198 @@ export default function MySetups() {
     );
   };
 
+  const modalClassName: Record<MySetupModalType, string> = {
+    WEAPON: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+    ARTIFACTS: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+    STATS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+    MODIFIERS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+    ADD_TO_COMPLEX: "",
+    COMBINE: "",
+    SHARE_SETUP: "",
+    REMOVE_SETUP: "w-80 rounded-lg",
+    TIPS: "",
+    "": "",
+  };
+
+  const renderModalContent = () => {
+    if (!chosenSetup) {
+      return null;
+    }
+
+    const {
+      char,
+      weapon,
+      artInfo,
+      party,
+      selfBuffCtrls,
+      selfDebuffCtrls,
+      wpBuffCtrls,
+      subWpComplexBuffCtrls,
+      artBuffCtrls,
+      subArtBuffCtrls,
+      subArtDebuffCtrls,
+      elmtModCtrls,
+      customBuffCtrls,
+      customDebuffCtrls,
+      target,
+    } = chosenSetup;
+
+    switch (modal.type) {
+      case "WEAPON":
+        return <MySetupWeapon weapon={weapon} />;
+
+      case "ARTIFACTS":
+        return <MySetupArtifactPieces pieces={artInfo.pieces} />;
+
+      case "STATS":
+        return (
+          <div className="h-full flex divide-x-2 divide-darkblue-2">
+            <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
+              <p className="text-h6 text-orange font-bold">Final Attributes</p>
+              <div className="mt-1 hide-scrollbar">
+                <AttributeTable attributes={totalAttr} />
+              </div>
+            </div>
+
+            <div className="w-80 pt-2 px-4 pb-4 flex flex-col" style={{ minWidth: "20rem" }}>
+              <p className="text-h6 text-orange font-bold">Artifact Stats</p>
+              <div className="mt-1 hide-scrollbar">
+                <AttributeTable attributes={artAttr} />
+              </div>
+            </div>
+
+            <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
+              <div className="h-full hide-scrollbar">
+                <SetBonus sets={artInfo.sets} />
+              </div>
+            </div>
+          </div>
+        );
+
+      case "MODIFIERS":
+        const partyData = getPartyData(party);
+        const { buffs = [], debuffs = [] } = findCharacter(char) || {};
+
+        return (
+          <div className="h-full px-4 flex space-x-4">
+            <ModifierWrapper title="Buffs used" className="w-75 flex flex-col">
+              <CollapseList
+                headingList={[
+                  "Resonance & Reactions",
+                  "Self",
+                  "Party",
+                  "Weapons",
+                  "Artifacts",
+                  "Custom",
+                ]}
+                contentList={[
+                  <RsnRxnBuffs
+                    char={char}
+                    elmtModCtrls={elmtModCtrls}
+                    rxnBonus={rxnBonus}
+                    finalInfusion={finalInfusion}
+                  />,
+                  <SelfBuffs
+                    char={char}
+                    charData={charData}
+                    totalAttr={totalAttr}
+                    selfBuffCtrls={selfBuffCtrls}
+                    partyData={partyData}
+                    buffs={buffs}
+                  />,
+                  <PartyBuffs
+                    char={char}
+                    charData={charData}
+                    party={party}
+                    partyData={partyData}
+                    totalAttr={totalAttr}
+                  />,
+                  <WeaponBuffs
+                    weapon={weapon}
+                    wpBuffCtrls={wpBuffCtrls}
+                    subWpComplexBuffCtrls={subWpComplexBuffCtrls}
+                    totalAttr={totalAttr}
+                  />,
+                  <ArtifactBuffs
+                    sets={artInfo.sets}
+                    artBuffCtrls={artBuffCtrls}
+                    subArtBuffCtrls={subArtBuffCtrls}
+                  />,
+                  <CustomBuffs customBuffCtrls={customBuffCtrls} />,
+                ]}
+              />
+            </ModifierWrapper>
+
+            <ModifierWrapper title="Debuffs used" className="w-75 flex flex-col">
+              <CollapseList
+                headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
+                contentList={[
+                  <RsnRxnDebuffs
+                    superconduct={elmtModCtrls.superconduct}
+                    resonance={elmtModCtrls.resonance}
+                  />,
+                  <SelfDebuffs
+                    char={char}
+                    selfDebuffCtrls={selfDebuffCtrls}
+                    debuffs={debuffs}
+                    partyData={partyData}
+                  />,
+                  <PartyDebuffs char={char} party={party} partyData={partyData} />,
+                  <ArtifactDebuffs subArtDebuffCtrls={subArtDebuffCtrls} />,
+                  <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
+                ]}
+              />
+            </ModifierWrapper>
+
+            <ModifierWrapper title="Target" className="w-68">
+              <div className="h-full px-2">
+                {Object.entries(target).map(([key, value], i) => (
+                  <p key={i} className="mb-1 text-h6">
+                    <span
+                      className={cn("mr-2", key === "level" ? "text-lightgold" : `text-${key}`)}
+                    >
+                      {key}:
+                    </span>
+                    <b>{value}</b>
+                  </p>
+                ))}
+                <div className="mt-6">
+                  <InfusionNotes infusion={finalInfusion} {...charData} />
+                </div>
+              </div>
+            </ModifierWrapper>
+          </div>
+        );
+      case "REMOVE_SETUP":
+        const removedSetup = findById(mySetups, modal.ID);
+
+        if (!removedSetup) {
+          return null;
+        }
+        return (
+          <ConfirmTemplate
+            message={
+              <>
+                Remove "<b>{removedSetup.name}</b>"?
+              </>
+            }
+            right={{ onClick: () => modal.ID && dispatch(removeSetup(modal.ID)) }}
+            onClose={closeModal}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
       <div className={styles.warehouse}>
         <div className={cn("h-10", styles["button-bar"])}>
-          <IconButton
-            className="mr-4 w-7 h-7"
-            variant="positive"
-            onClick={() => setModalInfo({ type: "intro" })}
-          >
+          <IconButton className="mr-4 w-7 h-7" variant="positive" onClick={openModal("TIPS")}>
             <FaInfo />
           </IconButton>
-          <Button variant="positive" onClick={() => setModalInfo({ type: "combine" })}>
+          <Button variant="positive" onClick={openModal("COMBINE")}>
             Combine
           </Button>
         </div>
@@ -193,15 +408,17 @@ export default function MySetups() {
         </div>
       </div>
 
-      {/* {modalType && chosenSetup && (
-        <SetupModal
-          type={modalType}
-          result={{ charData, infusion, ATTRs, artSBnes, rxnBnes }}
-          setup={chosenSetup}
-          close={() => setModalType(null)}
-        />
-      )} */}
-      {/* {mySetupUtils[util.type]} */}
+      <Modal
+        active={modal.type !== ""}
+        isCustom
+        className={cn("", modalClassName[modal.type])}
+        style={{
+          height: ["STATS", "MODIFIERS"].includes(modal.type) ? "85%" : "auto",
+        }}
+        onClose={closeModal}
+      >
+        {renderModalContent()}
+      </Modal>
     </div>
   );
 }

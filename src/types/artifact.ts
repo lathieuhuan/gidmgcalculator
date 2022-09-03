@@ -65,6 +65,7 @@ type ApplyArtFinalBuffArgs = {
 };
 
 export type ArtifactBuff = {
+  index: number;
   desc: () => JSX.Element;
   affect: EModAffect;
   inputConfig?: {

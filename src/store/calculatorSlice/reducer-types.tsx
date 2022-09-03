@@ -104,7 +104,7 @@ export type ChangeMonsterConfigAction = PayloadAction<{
 export type UpdateArtPieceAction = PayloadAction<{
   pieceIndex: number;
   newPiece: CalcArtPiece | null;
-  isFirstTime?: boolean;
+  isFresh?: boolean;
 }>;
 
 type ArtPieceSubStatPath = {

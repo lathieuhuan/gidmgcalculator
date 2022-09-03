@@ -1,7 +1,7 @@
 export type MySetupModalType =
-  | "SHARE"
-  | "REMOVE"
-  | "ADD"
+  | "SHARE_SETUP"
+  | "REMOVE_SETUP"
+  | "ADD_TO_COMPLEX"
   | "COMBINE"
   | "STATS"
   | "MODIFIERS"

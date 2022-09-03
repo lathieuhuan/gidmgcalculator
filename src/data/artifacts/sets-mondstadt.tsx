@@ -291,6 +291,7 @@ const mondstadtSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(mondstadtSets, 18)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", "all.pct", 35),
@@ -342,6 +343,7 @@ const mondstadtSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => (
           <>
             When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is
@@ -355,6 +357,7 @@ const mondstadtSets: DataArtifact[] = [
         },
       },
       {
+        index: 1,
         desc: () => (
           <>
             If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional{" "}
@@ -412,6 +415,7 @@ const mondstadtSets: DataArtifact[] = [
     ],
     buffs: [
       {
+        index: 0,
         desc: () => findByCode(mondstadtSets, 20)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 30),

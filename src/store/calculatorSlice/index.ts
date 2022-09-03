@@ -357,26 +357,26 @@ export const calculatorSlice = createSlice({
       }
     },
     updateArtPiece: (state, action: UpdateArtPieceAction) => {
-      const { pieceIndex, newPiece, isFirstTime } = action.payload;
+      const { pieceIndex, newPiece, isFresh } = action.payload;
       const { currentIndex } = state;
 
-      let { pieces, sets } = state.allArtInfos[currentIndex];
-      const piece = pieces[pieceIndex];
+      let artInfo = state.allArtInfos[currentIndex];
+      const piece = artInfo.pieces[pieceIndex];
       const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
 
-      if (piece && newPiece && isFirstTime && state.configs.keepArtStatsOnSwitch) {
+      if (piece && newPiece && isFresh && state.configs.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } //
       else {
-        pieces[pieceIndex] = newPiece;
+        artInfo.pieces[pieceIndex] = newPiece;
       }
 
-      const oldSets = sets;
-      sets = getArtifactSets(pieces);
+      const oldSets = artInfo.sets;
+      artInfo.sets = getArtifactSets(artInfo.pieces);
 
       const oldBonusLevel = oldSets[0]?.bonusLv;
-      const newSetBonus = sets[0];
+      const newSetBonus = artInfo.sets[0];
 
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
