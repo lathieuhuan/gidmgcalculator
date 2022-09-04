@@ -93,8 +93,9 @@ const Bennett: DataCharacter = {
           baseMult: 56,
           multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const condition = charModCtrlIsActivated(Bennett.buffs!, char, selfBuffCtrls, 1);
-            return talentBuff([condition, "mult", [false, 1], 20]);
+            const isActivated = charModCtrlIsActivated(Bennett.buffs!, char, selfBuffCtrls, 1);
+
+            return talentBuff([isActivated, "mult", [false, 1], 20]);
           },
         },
       ],
@@ -176,7 +177,7 @@ const Bennett: DataCharacter = {
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: true,
-        isAppliable: (charData) => ["sword", "claymore", "polearm"].includes(charData.weapon),
+        appliable: (charData) => ["sword", "claymore", "polearm"].includes(charData.weapon),
       },
       applyBuff: makeModApplier("totalAttr", "pyro", 15),
     },

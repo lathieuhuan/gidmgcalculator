@@ -56,13 +56,11 @@ const Albedo: DataCharacter = {
           name: "Transient Blossom",
           baseStatType: "def",
           baseMult: 133.6,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0),
-              "pct",
-              [true, 1],
-              25,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0);
+
+            return talentBuff([isActivated, "pct", [true, 1], 25]);
+          },
         },
       ],
       // getExtraStats: (lv) => [

@@ -5,6 +5,7 @@ import { EModifierSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
+import { NCPA_PERCENTS } from "@Data/constants";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv(char, "EB", partyData);
@@ -128,7 +129,7 @@ const Xiao: DataCharacter = {
       affect: EModAffect.SELF,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
         const buffValue = getEBBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], buffValue, tracker);
+        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

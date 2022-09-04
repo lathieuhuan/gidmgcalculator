@@ -3,6 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { NCPA_PERCENTS } from "@Data/constants";
 
 const inazumaSets: DataArtifact[] = [
   {
@@ -248,7 +249,7 @@ const inazumaSets: DataArtifact[] = [
         desc: () => findByCode(inazumaSets, 2)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: ({ attPattBonus, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], 50, tracker);
+          applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], 50, tracker);
         },
       },
     ],

@@ -6,13 +6,11 @@ import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) =>
-  talentBuff([
-    charModCtrlIsActivated(Itto.buffs!, char, selfBuffCtrls, 1),
-    "flat",
-    [true, 4],
-    applyPercent(totalAttr.def, 35),
-  ]);
+const getA4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
+  const isActivated = charModCtrlIsActivated(Itto.buffs!, char, selfBuffCtrls, 1);
+
+  return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
+};
 
 const Itto: DataCharacter = {
   code: 45,

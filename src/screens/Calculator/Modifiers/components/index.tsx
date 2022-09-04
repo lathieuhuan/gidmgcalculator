@@ -34,7 +34,7 @@ export function CharModSetters({
         return typeof input === "boolean" ? null : (
           <input
             type="text"
-            className={twInputStyles.textInput}
+            className={"w-16 " + twInputStyles.textInput}
             value={input}
             onChange={(e) => onTextChange(e.target.value, index)}
           />

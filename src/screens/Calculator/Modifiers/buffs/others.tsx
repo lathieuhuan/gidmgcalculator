@@ -22,13 +22,15 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex, genNumberSequence } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
-import { Fragment } from "react";
 
 export function ElememtBuffs() {
+  const dispatch = useDispatch();
+
   const { vision } = useSelector(selectCharData);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
+  const rxnBonus = useSelector(selectRxnBonus);
   const infusion = useSelector(selectFinalInfusion).NA;
-  const dispatch = useDispatch();
+
   const content: JSX.Element[] = [];
 
   elmtModCtrls.resonance.forEach((rsn) => {
@@ -45,50 +47,37 @@ export function ElememtBuffs() {
     );
   });
 
-  content.push(<AmplifyingBuff key="inner" element={vision} byInfusion={false} />);
+  function addAmpReactionBuff(element: Vision, field: "ampRxn" | "infusion_ampRxn") {
+    const renderBuff = (reaction: AmplifyingReaction) => {
+      const activated = elmtModCtrls[field] === reaction;
+      return (
+        <ModifierTemplate
+          key={reaction}
+          checked={activated}
+          onToggle={() =>
+            dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
+          }
+          heading={reaction + (field === "infusion_ampRxn" ? " (external infusion)" : "")}
+          desc={renderAmpReactionDesc(element, rxnBonus[reaction])}
+        />
+      );
+    };
+
+    if (element === "pyro" || element === "cryo") {
+      content.push(renderBuff("melt"));
+    }
+    if (element === "pyro" || element === "hydro") {
+      content.push(renderBuff("vaporize"));
+    }
+  }
+
+  addAmpReactionBuff(vision, "ampRxn");
 
   if (infusion !== vision && infusion !== "phys") {
-    content.push(<AmplifyingBuff key="infusion" element={infusion} byInfusion />);
+    addAmpReactionBuff(infusion, "infusion_ampRxn");
   }
+
   return renderModifiers(content, true);
-}
-
-function AmplifyingBuff(props: { element: Vision; byInfusion: boolean }) {
-  const field = props.byInfusion ? "infusion_ampRxn" : "ampRxn";
-  const rxnBonus = useSelector(selectRxnBonus);
-  const ampReaction = useSelector(selectElmtModCtrls)[field];
-  const dispatch = useDispatch();
-
-  const renderBuff = (reaction: AmplifyingReaction) => {
-    const activated = ampReaction === reaction;
-    return (
-      <ModifierTemplate
-        key={reaction}
-        checked={activated}
-        onToggle={() =>
-          dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
-        }
-        heading={reaction}
-        desc={renderAmpReactionDesc(props.element, rxnBonus[reaction])}
-      />
-    );
-  };
-  switch (props.element) {
-    case "pyro":
-      return (
-        <Fragment>
-          {(["melt", "vaporize"] as const).map((reaction) => {
-            return renderBuff(reaction);
-          })}
-        </Fragment>
-      );
-    case "hydro":
-      return renderBuff("vaporize");
-    case "cryo":
-      return renderBuff("melt");
-    default:
-      return null;
-  }
 }
 
 export function ArtifactBuffs() {

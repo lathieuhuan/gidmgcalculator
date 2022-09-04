@@ -48,13 +48,11 @@ const Dori: DataCharacter = {
           baseStatType: "hp",
           baseMult: 0,
           multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Dori.buffs!, char, selfBuffCtrls, 1),
-              "mult",
-              [false, 6],
-              4,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Dori.buffs!, char, selfBuffCtrls, 1);
+
+            return talentBuff([isActivated, "mult", [false, 6], 4]);
+          },
         },
       ],
     },

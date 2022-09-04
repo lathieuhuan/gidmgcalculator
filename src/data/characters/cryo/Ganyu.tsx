@@ -5,13 +5,11 @@ import { EModifierSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
-  talentBuff([
-    charModCtrlIsActivated(Ganyu.buffs!, char, selfBuffCtrls, 0),
-    "cRate",
-    [true, 1],
-    20,
-  ]);
+const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
+  const isActivated = charModCtrlIsActivated(Ganyu.buffs!, char, selfBuffCtrls, 0);
+
+  return talentBuff([isActivated, "cRate", [true, 1], 20]);
+};
 
 const Ganyu: DataCharacter = {
   code: 28,

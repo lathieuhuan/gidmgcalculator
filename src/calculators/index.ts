@@ -113,9 +113,9 @@ function getFinalInfusion(
       const buff = findByIndex(buffs || [], ctrl.index);
 
       if (buff && buff.infuseConfig && ctrl.activated) {
-        const { range, isAppliable } = buff.infuseConfig;
+        const { range, appliable } = buff.infuseConfig;
 
-        if (!isAppliable || isAppliable(charData)) {
+        if (!appliable || appliable(charData)) {
           tmInfusion.push({ vision, range });
         }
       }

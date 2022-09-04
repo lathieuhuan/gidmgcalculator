@@ -11,6 +11,7 @@ import {
   makeModApplier,
 } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
+import { NCPA_PERCENTS } from "@Data/constants";
 
 const getEBDebuffValue = (
   fromSelf: boolean,
@@ -190,8 +191,7 @@ const Shenhe: DataCharacter = {
           applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
         }
         if (getInput(inputs, 1, false)) {
-          const paths: AttackPatternPath[] = ["NA.pct", "CA.pct", "PA.pct"];
-          applyModifier(desc + " / Hold", attPattBonus, paths, 15, tracker);
+          applyModifier(desc + " / Hold", attPattBonus, [...NCPA_PERCENTS], 15, tracker);
         }
       },
     },

@@ -160,7 +160,7 @@ export default function WeaponBuffs() {
               inputCpn = (
                 <input
                   type="text"
-                  className={twInputStyles.textInput}
+                  className={"w-16" + twInputStyles.textInput}
                   value={inputs[inputIndex] as string}
                   onChange={(e) => {
                     const value = processNumInput(

@@ -29,7 +29,14 @@ import {
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
+import {
+  applyToOneOrMany,
+  ascsFromLv,
+  bareLv,
+  finalTalentLv,
+  findByIndex,
+  toMultiplier,
+} from "@Src/utils";
 import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord } from "./types";
@@ -361,16 +368,17 @@ export default function getDamage(
     }
   });
 
+  const baseRxnDmg = BASE_REACTION_DAMAGE[bareLv(char.level)];
+
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
-    let base = BASE_REACTION_DAMAGE[bareLv(char.level)];
     const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
 
     const specialMult = 1 + rxnBonus[rxn] / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
-
-    base *= normalMult * specialMult * resMult;
+    const base = baseRxnDmg * normalMult * specialMult * resMult;
 
     finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
+
     if (tracker) {
       tracker.RXN[rxn] = {
         record: {
@@ -381,5 +389,31 @@ export default function getDamage(
       };
     }
   }
+
+  // Nilou
+  if (charData.code === 60) {
+    let buffValue = 0;
+    if (ascsFromLv(char.level) >= 4 && selfBuffCtrls[1].activated && totalAttr.hp > 30000) {
+      buffValue = Math.min(7 * (totalAttr.hp / 1000 - 30), 300);
+    }
+    const { mult: normalMult } = TRANSFORMATIVE_REACTION_INFO.rupture;
+
+    const specialMult = 1 + (rxnBonus.rupture + buffValue) / 100;
+    const resMult = resistReduct.dendro;
+    const base = baseRxnDmg * normalMult * specialMult * resMult;
+
+    finalResult.RXN.bountifulCore = { nonCrit: base, crit: 0, average: base };
+
+    if (tracker) {
+      tracker.RXN.bountifulCore = {
+        record: {
+          normalMult,
+          specialMult,
+          resMult,
+        },
+      };
+    }
+  }
+
   return finalResult;
 }

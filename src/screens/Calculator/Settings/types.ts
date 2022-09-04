@@ -8,7 +8,7 @@ export type TemporarySetup = CalcSetup & {
 };
 
 export type SettingsModalType =
-  | "HOW_TO_CONFIG"
+  | "CONFIG_TIPS"
   | "SAVE_SETUP"
   | "SHARE_SETUP"
   | "UPDATE_USERS_DATA"

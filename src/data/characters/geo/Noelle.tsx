@@ -91,13 +91,11 @@ const Noelle: DataCharacter = {
           baseStatType: "def",
           baseMult: 40,
           multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Noelle.buffs!, char, selfBuffCtrls, 2),
-              "mult",
-              [false, 6],
-              50,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Noelle.buffs!, char, selfBuffCtrls, 2);
+
+            return talentBuff([isActivated, "mult", [false, 6], 50]);
+          },
         },
       ],
       // getExtraStats: () => [

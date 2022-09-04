@@ -96,7 +96,7 @@ const Chongyun: DataCharacter = {
       ),
       affect: EModAffect.PARTY,
       infuseConfig: {
-        isAppliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
+        appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
         range: [...NORMAL_ATTACKS],
         overwritable: true,
       },

@@ -93,13 +93,11 @@ const Xinyan: DataCharacter = {
           name: "Physical Burst DMG",
           dmgTypes: ["EB", "phys"],
           baseMult: 340.8,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Xinyan.buffs!, char, selfBuffCtrls, 2),
-              "cRate",
-              [false, 2],
-              100,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Xinyan.buffs!, char, selfBuffCtrls, 2);
+
+            return talentBuff([isActivated, "cRate", [false, 2], 100]);
+          },
         },
         { name: "Pyro DoT", baseMult: 40 },
       ],

@@ -108,8 +108,9 @@ const YunJin: DataCharacter = {
           baseStatType: "def",
           baseMult: 32.16,
           getTalentBuff: ({ char, selfBuffCtrls, charData, partyData }) => {
-            const bonusValue = getA4BuffValue(true, char, selfBuffCtrls, charData, partyData);
-            return talentBuff([true, "mult", [true, 4], bonusValue]);
+            const buffValue = getA4BuffValue(true, char, selfBuffCtrls, charData, partyData);
+
+            return talentBuff([true, "mult", [true, 4], buffValue]);
           },
         },
       ],

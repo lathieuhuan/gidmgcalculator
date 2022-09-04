@@ -43,10 +43,6 @@ export type DataCharacter = {
     type: AttackElement | ArtifactPercentStat | "em" | "healBn";
     value: number;
   };
-  innerStats?: Array<{
-    type: AttackElement | ArtifactPercentStat | "em" | "healBn";
-    value: number;
-  }>;
   NAsConfig: {
     name: string;
     getExtraStats?: GetExtraStatsFn;
@@ -171,7 +167,7 @@ export type AbilityBuff = AbilityModifier & {
   infuseConfig?: {
     range: NormalAttack[];
     overwritable: boolean;
-    isAppliable?: (charData: DataCharacter) => boolean;
+    appliable?: (charData: DataCharacter) => boolean;
   };
   desc: (args: {
     toSelf: boolean;

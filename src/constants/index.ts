@@ -110,9 +110,11 @@ export const TRANSFORMATIVE_REACTIONS = [
   "electroCharged",
   "overloaded",
   "shattered",
+  "burning",
+  "rupture",
+  "burgeon",
+  "hyperbloom",
 ] as const;
-
-export const AMPLIFYING_ELEMENTS = ["pyro", "hydro", "cryo"];
 
 export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
 

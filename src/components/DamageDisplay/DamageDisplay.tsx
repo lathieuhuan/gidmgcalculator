@@ -19,6 +19,10 @@ export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayPr
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
   const tableKeys = getKeys(charName);
 
+  if (charName === "Nilou") {
+    tableKeys[tableKeys.length - 1].subs.unshift("bountifulCore" as any);
+  }
+
   const toggle = (index: number) => {
     setClosedItems((prev) => {
       const newC = [...prev];

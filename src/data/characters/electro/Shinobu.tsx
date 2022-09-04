@@ -7,13 +7,12 @@ import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../uti
 
 const getA4TAlentBuff =
   (index: number): GetTalentBuffFn =>
-  ({ totalAttr, char, selfBuffCtrls }) =>
-    talentBuff([
-      charModCtrlIsActivated(Shinobu.buffs!, char, selfBuffCtrls, 1),
-      "flat",
-      [true, 4],
-      Math.round(totalAttr.em * (index ? 0.25 : 0.75)),
-    ]);
+  ({ totalAttr, char, selfBuffCtrls }) => {
+    const isActivated = charModCtrlIsActivated(Shinobu.buffs!, char, selfBuffCtrls, 1);
+    const buffValue = Math.round(totalAttr.em * (index ? 0.25 : 0.75));
+
+    return talentBuff([isActivated, "flat", [true, 4], buffValue]);
+  };
 
 const Shinobu: DataCharacter = {
   code: 52,

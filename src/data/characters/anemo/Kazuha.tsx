@@ -5,6 +5,7 @@ import { EModifierSrc, MEDIUM_PAs } from "../constants";
 import { round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
+import { NCPA_PERCENTS } from "@Data/constants";
 
 const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
   const EM = toSelf ? totalAttr.em : inputs[1] || 0;
@@ -165,7 +166,7 @@ const Kazuha: DataCharacter = {
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const bonusValue = Math.round(totalAttr.em * 0.2);
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], bonusValue, tracker);
+        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], bonusValue, tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

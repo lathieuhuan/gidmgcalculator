@@ -18,12 +18,11 @@ import { Checkbox, Select, linkStyles } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
 
 export default function TargetConfig() {
+  const dispatch = useDispatch();
   const target = useSelector((state) => state.calculator.target);
   const monster = useSelector((state) => state.calculator.monster);
   const infusion = useSelector(selectFinalInfusion);
   const { weapon, vision } = useSelector(selectCharData);
-
-  const dispatch = useDispatch();
 
   const monsterData = findMonster(monster);
 
@@ -97,7 +96,7 @@ export default function TargetConfig() {
         <div className="mb-4 flex justify-between items-center">
           <p className="text-h6 text-lightgold">Level</p>
           <input
-            className={twInputStyles.textInput}
+            className={"w-20 " + twInputStyles.textInput}
             value={target.level}
             onChange={onChangeTargetProp("level")}
           />
@@ -122,7 +121,7 @@ export default function TargetConfig() {
       <CollapseList
         headingList={["Resistances"]}
         contentList={[
-          <div className="pt-4 px-4">
+          <div className="pl-2 pt-2">
             {ATTACK_ELEMENTS.map((attElmt) => {
               return (
                 <div key={attElmt} className="mb-4 flex justify-between items-center">
@@ -131,7 +130,11 @@ export default function TargetConfig() {
                   >
                     {attElmt}
                   </p>
-                  <input value={target[attElmt]} onChange={onChangeTargetProp(attElmt)} />
+                  <input
+                    className={"w-20 " + twInputStyles.textInput}
+                    value={target[attElmt]}
+                    onChange={onChangeTargetProp(attElmt)}
+                  />
                 </div>
               );
             })}

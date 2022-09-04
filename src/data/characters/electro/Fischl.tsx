@@ -74,13 +74,11 @@ const Fischl: DataCharacter = {
         {
           name: "Summoning DMG",
           baseMult: 115.44,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Fischl.buffs!, char, selfBuffCtrls, 2),
-              "mult",
-              [false, 2],
-              200,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Fischl.buffs!, char, selfBuffCtrls, 2);
+
+            return talentBuff([isActivated, "mult", [false, 2], 200]);
+          },
         },
         {
           name: "Thundering Retribution (A4)",

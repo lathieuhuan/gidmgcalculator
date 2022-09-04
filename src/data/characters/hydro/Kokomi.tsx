@@ -33,10 +33,6 @@ const Kokomi: DataCharacter = {
     [13471, 234, 657],
   ],
   bonusStat: { type: "hydro", value: 7.2 },
-  innerStats: [
-    { type: "cRate", value: -100 },
-    { type: "healBn", value: 25 },
-  ],
   NAsConfig: {
     name: "The Shape of Water",
   },

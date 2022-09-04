@@ -7,6 +7,7 @@ import Ayaka from "./cryo/Ayaka";
 import Barbara from "./hydro/Barbara";
 import Beidou from "./electro/Beidou";
 import Bennett from "./pyro/Bennett";
+import Candace from "./hydro/Candace";
 import Collei from "./dendro/Collei";
 import Chongyun from "./cryo/Chongyun";
 import Cyno from "./electro/Cyno";
@@ -31,6 +32,7 @@ import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
 import Lisa from "./electro/Lisa";
 import Mona from "./hydro/Mona";
+import Nilou from "./hydro/Nilou";
 import Ningguang from "./geo/Ningguang";
 import Noelle from "./geo/Noelle";
 import Qiqi from "./cryo/Qiqi";
@@ -67,6 +69,7 @@ const characters = [
   Barbara,
   Beidou,
   Bennett,
+  Candace,
   Collei,
   Chongyun,
   Cyno,
@@ -91,6 +94,7 @@ const characters = [
   Kokomi,
   Lisa,
   Mona,
+  Nilou,
   Ningguang,
   Noelle,
   Qiqi,

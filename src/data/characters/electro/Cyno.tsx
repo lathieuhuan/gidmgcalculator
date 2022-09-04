@@ -11,12 +11,9 @@ const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
   talentBuff([charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 1), "pct", [true, 1], 35]);
 
 const getA4talentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
-  return talentBuff([
-    charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2),
-    "flat",
-    [true, 4],
-    Math.round(totalAttr.em * 1.25),
-  ]);
+  const isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
+
+  return talentBuff([isActivated, "flat", [true, 4], Math.round(totalAttr.em * 1.25)]);
 };
 
 const Cyno: DataCharacter = {
@@ -80,14 +77,11 @@ const Cyno: DataCharacter = {
           baseMult: 0,
           conditional: true,
           getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
+            const A4isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
+
             return talentBuff(
               [checkAscs[1](char), "mult", [true, 1], 50],
-              [
-                charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2),
-                "flat",
-                [true, 4],
-                totalAttr.em * 2.5,
-              ]
+              [A4isActivated, "flat", [true, 4], totalAttr.em * 2.5]
             );
           },
         },

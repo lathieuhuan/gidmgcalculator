@@ -5,6 +5,7 @@ import { EModifierSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { NCPA_PERCENTS } from "@Data/constants";
 
 const Thoma: DataCharacter = {
   code: 43,
@@ -83,13 +84,11 @@ const Thoma: DataCharacter = {
         {
           name: "Fiery Collapse DMG",
           baseMult: 58,
-          getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) =>
-            talentBuff([
-              charModCtrlIsActivated(Thoma.buffs!, char, selfBuffCtrls, 1),
-              "flat",
-              [true, 4],
-              applyPercent(totalAttr.hp, 2.2),
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
+            const isActivated = charModCtrlIsActivated(Thoma.buffs!, char, selfBuffCtrls, 1);
+
+            return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.hp, 2.2)]);
+          },
         },
         {
           name: "Shield DMG Absorption",
@@ -171,7 +170,7 @@ const Thoma: DataCharacter = {
       ),
       isGranted: checkCons[6],
       affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct", "PA.pct"], 15),
+      applyBuff: makeModApplier("attPattBonus", [...NCPA_PERCENTS], 15),
     },
   ],
 };

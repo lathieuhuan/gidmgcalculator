@@ -14,23 +14,27 @@ export const RESONANCE_STAT: Record<ResonanceVision, ResonanceStat> = {
 };
 
 export const BASE_REACTION_DAMAGE: Record<number, number> = {
-  1: 9,
-  20: 40,
-  40: 104,
-  50: 162,
-  60: 245,
-  70: 383,
-  80: 540,
-  90: 725,
+  1: 17.17,
+  20: 80.58,
+  40: 207.38,
+  50: 323.6,
+  60: 492.88,
+  70: 765.64,
+  80: 1077.44,
+  90: 1446.85,
 };
 
 export const TRANSFORMATIVE_REACTION_INFO: Record<
   typeof TRANSFORMATIVE_REACTIONS[number],
   { mult: number; dmgType: AttackElement | "various" }
 > = {
-  superconduct: { mult: 1, dmgType: "cryo" },
-  swirl: { mult: 1.2, dmgType: "various" },
-  electroCharged: { mult: 2.4, dmgType: "electro" },
-  overloaded: { mult: 4, dmgType: "pyro" },
-  shattered: { mult: 3, dmgType: "phys" },
+  swirl: { mult: 0.6, dmgType: "various" },
+  superconduct: { mult: 0.5, dmgType: "cryo" },
+  electroCharged: { mult: 1.2, dmgType: "electro" },
+  overloaded: { mult: 2, dmgType: "pyro" },
+  shattered: { mult: 1.5, dmgType: "phys" },
+  burning: { mult: 0.25, dmgType: "pyro" },
+  rupture: { mult: 2, dmgType: "dendro" },
+  burgeon: { mult: 3, dmgType: "dendro" },
+  hyperbloom: { mult: 3, dmgType: "dendro" },
 };

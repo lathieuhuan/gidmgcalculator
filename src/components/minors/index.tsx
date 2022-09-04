@@ -140,14 +140,14 @@ export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSp
   );
 }
 
-interface HowToModalProps extends ModalControl {
+interface TipsModalProps extends ModalControl {
   content: JSX.Element;
 }
-export function HowToModal({ active, content, onClose }: HowToModalProps) {
+export function TipsModal({ active, content, onClose }: TipsModalProps) {
   return (
     <Modal active={active} className="p-4" onClose={onClose}>
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="mb-2 text-1.5xl text-orange">HOW-TOs</p>
+      <p className="mb-2 text-1.5xl text-orange font-bold">TIPs</p>
       {content}
     </Modal>
   );

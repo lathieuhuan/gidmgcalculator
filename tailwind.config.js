@@ -141,6 +141,9 @@ module.exports = {
       transformOrigin: {
         "bottom-center": "bottom center",
       },
+      scale: {
+        180: "1.8",
+      },
     },
   },
   plugins: [],

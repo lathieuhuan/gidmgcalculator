@@ -48,6 +48,12 @@ export function initiateTotalAttr(
   addOrInit(innerStats, "er", 100);
   innerStats.naAtkSpd = innerStats.caAtkSpd = 100;
 
+  // Kokomi
+  if (charData.code === 42) {
+    innerStats.cRate -= 100;
+    innerStats.healBn = 25;
+  }
+
   for (const type in innerStats) {
     const key = type as keyof typeof innerStats;
     totalAttr[key] += innerStats[key];

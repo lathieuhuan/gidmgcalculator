@@ -4,24 +4,20 @@ import { EModAffect } from "@Src/constants";
 import { EModifierSrc, HEAVY_PAs } from "../constants";
 import { charModCtrlIsActivated, checkAscs, checkCons, findInput, talentBuff } from "../utils";
 
-const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
-  talentBuff([
-    charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1),
-    "pct",
-    [false, 2],
-    3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5),
-  ]);
+const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
+  const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1);
+  const buffValue = 3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5);
+
+  return talentBuff([isActivated, "pct", [false, 2], buffValue]);
+};
 
 const getC6TalentBuff =
   (index: number): GetTalentBuffFn =>
   ({ char, selfBuffCtrls, totalAttr }) => {
-    const EM = Math.min(totalAttr.em, 2000);
-    return talentBuff([
-      charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 2),
-      index ? "flat" : "mult",
-      [false, 6],
-      EM * (index ? 3 : 0.2),
-    ]);
+    const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 2);
+    const buffValue = Math.min(totalAttr.em, 2000) * (index ? 3 : 0.2);
+
+    return talentBuff([isActivated, index ? "flat" : "mult", [false, 6], buffValue]);
   };
 
 const Sayu: DataCharacter = {
@@ -79,13 +75,11 @@ const Sayu: DataCharacter = {
         {
           name: "Press Kick",
           baseMult: 158.4,
-          getTalentBuff: ({ char, selfBuffCtrls }) =>
-            talentBuff([
-              charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1),
-              "pct",
-              [false, 2],
-              3.3,
-            ]),
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1);
+
+            return talentBuff([isActivated, "pct", [false, 2], 3.3]);
+          },
         },
         { name: "Hold Kick", baseMult: 217.6, getTalentBuff: getC2TalentBuff },
         {

@@ -9,7 +9,7 @@ import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selecto
 import { getNewSetupName, getSetupInfo } from "@Store/calculatorSlice/utils";
 import { selectComparedIndexes, selectStandardIndex, toggleSettings } from "@Store/uiSlice";
 
-import { HowToModal, InfoSign } from "@Components/minors";
+import { TipsModal, InfoSign } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { SetupControl } from "./SetupControl";
@@ -198,7 +198,7 @@ function HiddenSettings() {
             selfHover
             onClick={() =>
               setModal({
-                type: "HOW_TO_CONFIG",
+                type: "CONFIG_TIPS",
                 index: null,
               })
             }
@@ -209,10 +209,9 @@ function HiddenSettings() {
             {CONFIG_OPTIONS.map(({ field, desc }, i) => (
               <label key={i} className="flex items-center group">
                 <Checkbox
-                  className="ml-1 mr-4"
+                  className="ml-1 mr-4 scale-180"
                   checked={tempoConfigs[field]}
                   onChange={() => setTempoConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
-                  style={{ transform: "scale(1.8)" }}
                 />
                 <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
               </label>
@@ -243,8 +242,8 @@ function HiddenSettings() {
         <SaveSetup setup={tempoSetups[modal.index || 0]} onClose={closeModal} />
       </Modal>
 
-      <HowToModal
-        active={modal.type === "HOW_TO_CONFIG"}
+      <TipsModal
+        active={modal.type === "CONFIG_TIPS"}
         content={
           <div className="space-y-2">
             <p>

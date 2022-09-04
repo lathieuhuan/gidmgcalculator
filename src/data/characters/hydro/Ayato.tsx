@@ -22,6 +22,7 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
     const level = finalTalentLv(char, "ES", partyData);
     const finalMult = 0.56 * +findInput(selfBuffCtrls, 0, 0) * TALENT_LV_MULTIPLIERS[7][level];
     const flat = applyPercent(totalAttr.hp, finalMult);
+
     return talentBuff(
       [true, "flat", "Elemental Skill", flat],
       [...C1TalentBuff(char, selfBuffCtrls)]
