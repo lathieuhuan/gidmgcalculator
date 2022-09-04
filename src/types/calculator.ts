@@ -65,9 +65,9 @@ export type CalcConfigurations = {
 export type SetupType = "original" | "";
 
 export type CalcSetup = {
-  name: string;
   ID: number;
   type: SetupType;
+  name: string;
 };
 
 type ComplexCharInfo = {

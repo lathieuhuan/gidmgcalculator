@@ -8,6 +8,7 @@ import type {
   CustomDebuffCtrl,
   Level,
   ResonancePair,
+  UsersSetup,
   Vision,
 } from "@Src/types";
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
@@ -22,6 +23,7 @@ import type {
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   CopyCustomModCtrlsAction,
+  ImportSetupAction,
   InitSessionWithCharAction,
   ModifyTargetAction,
   RefineSubWeaponAction,
@@ -47,6 +49,7 @@ import {
   getArtifactSets,
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
+  getNewSetupName,
   getSetupInfo,
   getSubArtBuffCtrls,
   getSubWeaponBuffCtrls,
@@ -129,8 +132,77 @@ export const calculatorSlice = createSlice({
 
       calculate(state, true);
     },
+    initSessionWithSetup: (state, action: PayloadAction<UsersSetup>) => {
+      const setup = action.payload;
+
+      state.setups = [getSetupInfo({ ID: setup.ID, type: setup.type })];
+      state.char = setup.char;
+      state.charData = getCharData(setup.char);
+      state.allSelfBuffCtrls = [setup.selfBuffCtrls];
+      state.allSelfDebuffCtrls = [setup.selfDebuffCtrls];
+      state.allWeapons = [setup.weapon];
+      state.allWpBuffCtrls = [setup.wpBuffCtrls];
+      state.allSubWpComplexBuffCtrls = [setup.subWpComplexBuffCtrls];
+      state.allArtInfos = [setup.artInfo];
+      state.allArtBuffCtrls = [setup.artBuffCtrls];
+      state.allSubArtBuffCtrls = [setup.subArtBuffCtrls];
+      state.allSubArtDebuffCtrls = [setup.subArtDebuffCtrls];
+      state.allParties = [setup.party];
+      state.allElmtModCtrls = [setup.elmtModCtrls];
+      state.allCustomBuffCtrls = [setup.customBuffCtrls];
+      state.allCustomDebuffCtrls = [setup.customDebuffCtrls];
+      state.target = setup.target;
+      state.monster = initMonster();
+
+      state.configs.separateCharInfo = false;
+      state.currentIndex = 0;
+
+      calculate(state);
+    },
     changeCurrentSetup: (state, action: PayloadAction<number>) => {
       state.currentIndex = action.payload;
+    },
+    importSetup: (state, action: ImportSetupAction) => {
+      const { data } = action.payload;
+      const { char, setups } = state;
+      const { separateCharInfo } = state.configs;
+      const { ID, type } = data;
+
+      state.setups.push(getSetupInfo({ name: getNewSetupName(setups), ID, type }));
+
+      const charInfoKeys = ["NAs", "ES", "EB", "cons"] as const;
+
+      for (const key of charInfoKeys) {
+        if (action.payload.shouldOverwriteChar) {
+          if (separateCharInfo) {
+            char[key] = Array(setups.length).fill(data.char[key]);
+          } else {
+            char[key] = data.char[key];
+          }
+        } else if (separateCharInfo && Array.isArray(char[key])) {
+          (char[key] as number[]).push(data.char[key]);
+        }
+      }
+      if (action.payload.shouldOverwriteTarget) {
+        state.target = data.target;
+      }
+
+      state.allSelfBuffCtrls.push(data.selfBuffCtrls);
+      state.allSelfDebuffCtrls.push(data.selfDebuffCtrls);
+      state.allWeapons.push(data.weapon);
+      state.allWpBuffCtrls.push(data.wpBuffCtrls);
+      state.allSubWpComplexBuffCtrls.push(data.subWpComplexBuffCtrls);
+      state.allArtInfos.push(data.artInfo);
+      state.allArtBuffCtrls.push(data.artBuffCtrls);
+      state.allSubArtBuffCtrls.push(data.subArtBuffCtrls);
+      state.allSubArtDebuffCtrls.push(data.subArtDebuffCtrls);
+      state.allParties.push(data.party);
+      state.allElmtModCtrls.push(data.elmtModCtrls);
+      state.allCustomBuffCtrls.push(data.customBuffCtrls);
+      state.allCustomDebuffCtrls.push(data.customDebuffCtrls);
+
+      state.currentIndex = state.allWeapons.length - 1;
+      calculate(state, true);
     },
     closeError: (state) => {
       state.isError = false;
@@ -231,7 +303,7 @@ export const calculatorSlice = createSlice({
       ) {
         const newResonancePair = {
           vision,
-          activated: ["pyro", "dendro"].includes(vision),
+          activated: ["pyro", "hydro", "dendro"].includes(vision),
         } as ResonancePair;
 
         if (vision === "dendro") {
@@ -430,6 +502,17 @@ export const calculatorSlice = createSlice({
       );
       if (resonance) {
         resonance.activated = !resonance.activated;
+        calculate(state);
+      }
+    },
+    changeResonanceInput: (state, action: PayloadAction<number>) => {
+      // for now only dendro has inputs
+      const rsn = state.allElmtModCtrls[state.currentIndex].resonance.find(({ vision }) => {
+        return vision === "dendro";
+      });
+
+      if (rsn && rsn.inputs) {
+        rsn.inputs[action.payload] = !rsn.inputs[action.payload];
         calculate(state);
       }
     },
@@ -677,7 +760,9 @@ export const calculatorSlice = createSlice({
 
 export const {
   initSessionWithChar,
+  initSessionWithSetup,
   changeCurrentSetup,
+  importSetup,
   closeError,
   levelCalcChar,
   changeConsLevel,
@@ -696,6 +781,7 @@ export const {
   updateAllArtPieces,
   copyArtifactInfo,
   toggleResonance,
+  changeResonanceInput,
   toggleElementModCtrl,
   changeElementModCtrl,
   toggleModCtrl,

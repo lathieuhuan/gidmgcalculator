@@ -120,4 +120,4 @@ export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
 
 export const REACTIONS = [...TRANSFORMATIVE_REACTIONS, ...AMPLIFYING_REACTIONS] as const;
 
-export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "dendro"] as const;
+export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;

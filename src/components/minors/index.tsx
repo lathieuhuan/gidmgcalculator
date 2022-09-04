@@ -1,5 +1,6 @@
-import { Fragment, HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
+import { Fragment } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 
 import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@Src/types";
@@ -160,13 +161,25 @@ interface CharFilledSlotProps {
   onClickRemove?: () => void;
 }
 export function CharFilledSlot({ name, mutable, onClickSlot, onClickRemove }: CharFilledSlotProps) {
-  const { icon } = findCharacter({ name })!;
+  const { code, icon } = findCharacter({ name })!;
+  // for the traveler
+  const bgColorByCode: Record<number, string> = {
+    1: "bg-anemo",
+    12: "bg-geo",
+    46: "bg-electro",
+    57: "bg-dendro",
+  };
+
   return (
     <>
-      <div className="zoomin-on-hover overflow-hidden rounded-circle bg-darkblue-3">
+      <div
+        className={`zoomin-on-hover overflow-hidden rounded-circle ${
+          bgColorByCode[code] || "bg-darkblue-3"
+        }`}
+      >
         <img
           className={cn("w-full rounded-circle", mutable && "cursor-pointer")}
-          src={wikiImg(icon)}
+          src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
           alt={name}
           draggable={false}
           onClick={onClickSlot}
@@ -283,7 +296,7 @@ interface ConfirmTemplateProps {
   right: ButtonInfo;
   onClose: () => void;
 }
-function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmTemplateProps) {
+export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmTemplateProps) {
   const texts = [left?.text || "Cancel", right?.text || "Confirm"];
   const handlers = [
     () => {
@@ -323,5 +336,3 @@ export function ConfirmModal({ active, onClose, ...rest }: ModalControl & Confir
     </Modal>
   );
 }
-
-export { ConfirmTemplate };

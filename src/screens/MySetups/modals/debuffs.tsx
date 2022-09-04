@@ -15,11 +15,11 @@ import {
 import { findByIndex } from "@Src/utils";
 import { renderSetters } from "../components";
 
-interface RsnRxnDebuffsProps {
+interface ElementDebuffsProps {
   superconduct: boolean;
   resonance: ResonancePair[];
 }
-export function RsnRxnDebuffs({ superconduct, resonance }: RsnRxnDebuffsProps) {
+export function ElementDebuffs({ superconduct, resonance }: ElementDebuffsProps) {
   const content = [];
 
   if (superconduct) {

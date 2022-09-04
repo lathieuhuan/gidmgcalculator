@@ -6,6 +6,7 @@ import type {
   UsersCharacter,
   UsersComplexSetup,
   UsersSetup,
+  UsersSetupCalcInfo,
   UsersWeapon,
   Weapon,
 } from "@Src/types";
@@ -62,5 +63,5 @@ export type SwitchArtifactAction = PayloadAction<
 export type SaveSetupAction = PayloadAction<{
   ID: number;
   name: string;
-  data: Omit<UsersSetup, "ID" | "type" | "name">;
+  data: UsersSetupCalcInfo;
 }>;

@@ -12,6 +12,7 @@ import type {
   Weapon,
   CalcSetup,
   CalcConfigurations,
+  UsersSetup,
 } from "@Src/types";
 
 export interface PickedChar extends Partial<UsersCharacter> {
@@ -122,4 +123,10 @@ export type ApplySettingsOnCalculatorAction = PayloadAction<{
   tempoConfigs: CalcConfigurations;
   standardIndex: number;
   currentIndex: number;
+}>;
+
+export type ImportSetupAction = PayloadAction<{
+  data: UsersSetup;
+  shouldOverwriteChar: boolean;
+  shouldOverwriteTarget: boolean;
 }>;

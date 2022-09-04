@@ -19,6 +19,7 @@ import { finalTalentLv, wikiImg } from "@Src/utils";
 import { CharFilledSlot } from "@Components/minors";
 import { Button, IconButton } from "@Src/styled-components";
 import { useMemo } from "react";
+import { updateImportInfo } from "@Store/uiSlice";
 
 interface SetupLayoutProps {
   ID: number;
@@ -189,7 +190,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
             className="p-2"
             variant="positive"
             onClick={() => {
-              // dispatch(startImportSetup({ importInfo: setup, type: 1 }));
+              dispatch(updateImportInfo({ type: "EDIT_SETUP", data: setup }));
             }}
           >
             <FaWrench />

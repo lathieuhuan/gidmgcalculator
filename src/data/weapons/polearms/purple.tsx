@@ -38,7 +38,7 @@ const purplePolearms: DataWeapon[] = [
     buffs: [
       {
         index: 0,
-        affect: EModAffect.PARTY,
+        affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [10, 40]),
         desc: ({ refi }) => findByCode(purplePolearms, 141)!.passiveDesc({ refi }).core,
       },

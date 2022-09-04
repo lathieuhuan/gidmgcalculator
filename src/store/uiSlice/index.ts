@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EScreen } from "@Src/constants";
 import type { RootState } from "../index";
-import type { UIState } from "./types";
+import type { ApplySettingsOnUIAction, ImportInfo, UIState } from "./types";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
@@ -9,7 +9,6 @@ const initialState: UIState = {
   settingsOn: false,
   standardIndex: 0,
   comparedIndexes: [0],
-  importType: 0,
   importInfo: null,
 };
 
@@ -35,14 +34,14 @@ export const uiSlice = createSlice({
     toggleSettings: (state, action: PayloadAction<boolean>) => {
       state.settingsOn = action.payload;
     },
-    applySettingsOnUI: (
-      state,
-      action: PayloadAction<{ comparedIndexes: number[]; standardIndex: number }>
-    ) => {
+    applySettingsOnUI: (state, action: ApplySettingsOnUIAction) => {
       const { comparedIndexes, standardIndex } = action.payload;
       state.comparedIndexes = comparedIndexes;
       state.standardIndex = standardIndex;
       state.settingsOn = false;
+    },
+    updateImportInfo: (state, action: PayloadAction<ImportInfo>) => {
+      state.importInfo = action.payload;
     },
   },
 });
@@ -54,6 +53,7 @@ export const {
   changeStandardSetup,
   toggleSettings,
   applySettingsOnUI,
+  updateImportInfo,
 } = uiSlice.actions;
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;

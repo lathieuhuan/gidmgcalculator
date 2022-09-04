@@ -3,17 +3,20 @@ import { batch } from "react-redux";
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 import type { TemporarySetup } from "@Screens/Calculator/Settings/types";
-import type { CalcConfigurations, CalcSetup } from "@Src/types";
+import type { CalcConfigurations, CalcSetup, UsersSetup } from "@Src/types";
 
 import {
   applySettingsOnCalculator,
+  importSetup,
   initSessionWithChar,
   updateAllArtPieces,
 } from "./calculatorSlice";
 import { applySettingsOnUI, resetCalculatorUI, changeScreen, toggleSettings } from "./uiSlice";
 import { saveSetup } from "./usersDatabaseSlice";
-import { findById, getCurrentChar } from "@Src/utils";
+
 import { EScreen } from "@Src/constants";
+import { findById } from "@Src/utils";
+import { cleanCalcSetup } from "@Src/utils/setup";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
@@ -79,55 +82,20 @@ export const applySettings =
     });
   };
 
-export const saveSetupThunk =
-  (index: number, ID: number, name: string): AppThunk =>
-  (dispatch, getState) => {
-    const {
-      char,
-      allSelfBuffCtrls,
-      allSelfDebuffCtrls,
-
-      allWeapons,
-      allWpBuffCtrls,
-      allSubWpComplexBuffCtrls,
-
-      allArtInfos,
-      allArtBuffCtrls,
-      allSubArtBuffCtrls,
-      allSubArtDebuffCtrls,
-
-      allParties,
-      allElmtModCtrls,
-      allCustomBuffCtrls,
-      allCustomDebuffCtrls,
-      target,
-    } = getState().calculator;
+export const saveSetupThunk = (index: number, ID: number, name: string): AppThunk => {
+  return (dispatch, getState) => {
+    const { calculator } = getState();
 
     batch(() => {
       dispatch(
         saveSetup({
           ID,
           name,
-          data: {
-            char: getCurrentChar(char, index),
-            selfBuffCtrls: allSelfBuffCtrls[index],
-            selfDebuffCtrls: allSelfDebuffCtrls[index],
-            weapon: allWeapons[index],
-            wpBuffCtrls: allWpBuffCtrls[index],
-            subWpComplexBuffCtrls: allSubWpComplexBuffCtrls[index],
-            artInfo: allArtInfos[index],
-            artBuffCtrls: allArtBuffCtrls[index],
-            subArtBuffCtrls: allSubArtBuffCtrls[index],
-            subArtDebuffCtrls: allSubArtDebuffCtrls[index],
-            party: allParties[index],
-            elmtModCtrls: allElmtModCtrls[index],
-            customBuffCtrls: allCustomBuffCtrls[index],
-            customDebuffCtrls: allCustomDebuffCtrls[index],
-            target,
-          },
+          data: cleanCalcSetup(calculator, index),
         })
       );
       dispatch(changeScreen(EScreen.MY_SETUPS));
       dispatch(toggleSettings(false));
     });
   };
+};

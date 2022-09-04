@@ -8,6 +8,7 @@ import type {
   ElementModCtrl,
   ModifierCtrl,
   Party,
+  SetupType,
   SubArtModCtrl,
   SubWeaponComplexBuffCtrl,
   Target,
@@ -35,10 +36,7 @@ export type UsersArtifact = CalcArtPiece & {
   owner: string | null;
 };
 
-export type UsersSetup = {
-  ID: number;
-  type: "original" | "combined";
-  name: string;
+export type UsersSetupCalcInfo = {
   char: CharInfo;
   party: Party;
   weapon: CalcWeapon;
@@ -55,6 +53,12 @@ export type UsersSetup = {
   customBuffCtrls: CustomBuffCtrl[];
   customDebuffCtrls: CustomDebuffCtrl[];
   target: Target;
+};
+
+export type UsersSetup = UsersSetupCalcInfo & {
+  ID: number;
+  type: Exclude<SetupType, "complex">;
+  name: string;
 };
 
 export type UsersComplexSetup = {

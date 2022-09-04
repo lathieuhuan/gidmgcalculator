@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import {
   changeElementModCtrl,
   changeModCtrlInput,
+  changeResonanceInput,
   toggleModCtrl,
   toggleResonance,
 } from "@Store/calculatorSlice";
@@ -16,7 +17,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { ModifierTemplate, Select } from "@Src/styled-components";
+import { Checkbox, ModifierTemplate, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { findArtifactSet } from "@Data/controllers";
@@ -35,6 +36,29 @@ export function ElememtBuffs() {
 
   elmtModCtrls.resonance.forEach((rsn) => {
     const { name, desc } = resonanceRenderInfo[rsn.vision];
+    let setters;
+
+    if (rsn.vision === "dendro") {
+      const renderBuff = (index: number) => {
+        return (
+          <Setter
+            key={index}
+            label={
+              index
+                ? "Trigger Aggravate, Spread, Hyperbloom, Burgeon"
+                : "Trigger Burning, Quicken, Bloom"
+            }
+            inputComponent={
+              <Checkbox
+                checked={rsn.inputs?.[index]}
+                onChange={() => dispatch(changeResonanceInput(index))}
+              />
+            }
+          />
+        );
+      };
+      setters = [renderBuff(0), renderBuff(1)];
+    }
 
     content.push(
       <ModifierTemplate
@@ -43,6 +67,7 @@ export function ElememtBuffs() {
         onToggle={() => dispatch(toggleResonance(rsn.vision))}
         heading={name}
         desc={desc}
+        setters={setters}
       />
     );
   });

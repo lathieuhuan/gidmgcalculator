@@ -49,8 +49,25 @@ export const resonanceRenderInfo = {
       </>
     ),
   },
+  hydro: {
+    name: "Soothing Water",
+    desc: (
+      <>
+        Increases <Green>Max HP</Green> by <Green b>25%</Green>.
+      </>
+    ),
+  },
   dendro: {
-    name: "Dendro Resonance",
-    desc: <></>,
+    name: "Sprawling Greenery",
+    desc: (
+      <>
+        Increases <Green>Elemental Mastery</Green> by <Green b>50</Green>. After triggering Burning,
+        Quicken, or Bloom reactions, all nearby party members gain <Green>30</Green>{" "}
+        <Green>Elemental Mastery</Green> for 6s. After triggering Aggravate, Spread, Hyperbloom, or
+        Burgeon reactions, all nearby party members gain <Green>20</Green>{" "}
+        <Green>Elemental Mastery</Green> for 6s. The durations of the aforementioned effects will be
+        counted independently.
+      </>
+    ),
   },
 };

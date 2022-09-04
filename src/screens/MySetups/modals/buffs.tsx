@@ -25,18 +25,13 @@ import { renderSetters } from "../components";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { findByIndex, percentSign } from "@Src/utils";
 
-interface ResonanceAndReactionsProps {
+interface ElementBuffsProps {
   elmtModCtrls: ElementModCtrl;
   char: CharInfo;
   finalInfusion: FinalInfusion;
   rxnBonus: ReactionBonus;
 }
-export function RsnRxnBuffs({
-  elmtModCtrls,
-  char,
-  finalInfusion,
-  rxnBonus,
-}: ResonanceAndReactionsProps) {
+export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: ElementBuffsProps) {
   const content = [];
   const { resonance, ampRxn, infusion_ampRxn } = elmtModCtrls;
 

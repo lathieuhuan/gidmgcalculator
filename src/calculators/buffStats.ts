@@ -156,8 +156,19 @@ export default function getBuffedStats(
   for (const rsn of resonance) {
     if (rsn.activated) {
       const { key, value } = RESONANCE_STAT[rsn.vision];
+      let xtraValue = 0;
       const desc = `${rsn.vision} Resonance`;
-      applyModifier(desc, totalAttr, key, value, tracker);
+
+      if (rsn.vision === "dendro" && rsn.inputs) {
+        if (rsn.inputs[0]) {
+          xtraValue += 30;
+        }
+        if (rsn.inputs[1]) {
+          xtraValue += 20;
+        }
+      }
+
+      applyModifier(desc, totalAttr, key, value + xtraValue, tracker);
 
       if (rsn.vision === "geo") {
         applyModifier(desc, attPattBonus, "all.pct", 15, tracker);

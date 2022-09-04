@@ -35,10 +35,10 @@ import {
   ArtifactBuffs,
   CustomBuffs,
   PartyBuffs,
-  RsnRxnBuffs,
+  ElementBuffs,
   SelfBuffs,
   WeaponBuffs,
-  RsnRxnDebuffs,
+  ElementDebuffs,
   SelfDebuffs,
   PartyDebuffs,
   ArtifactDebuffs,
@@ -267,7 +267,7 @@ export default function MySetups() {
                   "Custom",
                 ]}
                 contentList={[
-                  <RsnRxnBuffs
+                  <ElementBuffs
                     char={char}
                     elmtModCtrls={elmtModCtrls}
                     rxnBonus={rxnBonus}
@@ -308,7 +308,7 @@ export default function MySetups() {
               <CollapseList
                 headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
                 contentList={[
-                  <RsnRxnDebuffs
+                  <ElementDebuffs
                     superconduct={elmtModCtrls.superconduct}
                     resonance={elmtModCtrls.resonance}
                   />,
