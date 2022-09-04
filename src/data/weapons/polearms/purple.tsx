@@ -14,7 +14,36 @@ import { findByCode } from "@Src/utils";
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
+import shiftingWindbladeImg from "@Src/assets/images/shifting-windblade.png";
+
 const purplePolearms: DataWeapon[] = [
+  {
+    code: 141,
+    beta: true,
+    name: "Shifting Windblade",
+    icon: shiftingWindbladeImg,
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "atk_", scale: "9%" },
+    passiveName: "The Wind Unattained",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Within 10s after an Elemental Reaction is triggered, <Green>ATK</Green> is increased by{" "}
+          <Green b>{7.5 + refi * 2.5}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
+          <Green b>{30 + refi * 10}</Green>.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [10, 40]),
+        desc: ({ refi }) => findByCode(purplePolearms, 141)!.passiveDesc({ refi }).core,
+      },
+    ],
+  },
   {
     code: 135,
     name: "Moonpiercer",

@@ -14,6 +14,34 @@ import { makeWpModApplier } from "../utils";
 
 const purpleSwords: DataWeapon[] = [
   {
+    code: 142,
+    name: "Kagotsurube Isshin",
+    icon: "9/96/Weapon_Kagotsurube_Isshin",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "atk_", scale: "9%" },
+    passiveName: "Isshin Art Clarity",
+    passiveDesc: () => ({
+      core: (
+        <>
+          When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing
+          Gale, dealing AoE DMG equal to 180% of ATK and increasing <Green>ATK</Green> by{" "}
+          <Green b>15%</Green> for 8s. This effect can be triggered once every 8s.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        applyBuff: ({ totalAttr, desc, tracker }) => {
+          applyModifier(desc, totalAttr, "atk_", 15, tracker);
+        },
+        desc: ({ refi }) => findByCode(purpleSwords, 142)!.passiveDesc({ refi }).core,
+      },
+    ],
+  },
+  {
     code: 134,
     name: "Sapwood Blade",
     icon: "0/00/Weapon_Sapwood_Blade",

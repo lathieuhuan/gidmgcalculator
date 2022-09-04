@@ -19,7 +19,7 @@ type AdjustDatabaseArgs = {
   Artifacts: any[];
   Setups: any[];
 };
-export function adjustDatabase(data: AdjustDatabaseArgs) {
+export function adjustUsersData(data: AdjustDatabaseArgs) {
   if (!data.version && data.version < 2.1) {
     throw new Error(ERROR.databaseTooOld);
   }

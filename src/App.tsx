@@ -15,7 +15,7 @@ import { NavBar } from "@Components/NavBar";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
 import UploadOptions from "@Components/load-options/UploadOptions";
 
-import { adjustDatabase } from "./utils/adjustDatabase";
+import { adjustUsersData } from "./utils/adjustUsersData";
 import { addUsersDatabase } from "@Store/usersDatabaseSlice";
 import { Modal } from "@Components/modals";
 import { Button } from "./styled-components";
@@ -29,9 +29,9 @@ function App() {
   const isError = useSelector((state) => state.calculator.isError);
   const dispatch = useDispatch();
 
-  const checkAndAddUsersDatabase = useCallback(
+  const checkAndAddUsersData = useCallback(
     (data: any) => {
-      const { version, outdates, ...database } = adjustDatabase(data);
+      const { version, outdates, ...database } = adjustUsersData(data);
       // dispatch(addUsersDatabase(JSON.parse(JSON.stringify(database))));
       console.log(JSON.parse(JSON.stringify(database)));
 
@@ -46,7 +46,7 @@ function App() {
     const data = localStorage.getItem("GDC_Data");
     if (data)
       try {
-        checkAndAddUsersDatabase(JSON.parse(data));
+        checkAndAddUsersData(JSON.parse(data));
       } catch (err) {
         console.log(err);
       }
@@ -102,7 +102,7 @@ function App() {
       <UploadOptions
         active={loadOptionType === "UP"}
         outdates={outdates}
-        uploadUsersDatabase={checkAndAddUsersDatabase}
+        uploadUsersDatabase={checkAndAddUsersData}
         onSuccess={() => setNavBarMenuActive(false)}
         onClose={() => setLoadOptionType("")}
       />
