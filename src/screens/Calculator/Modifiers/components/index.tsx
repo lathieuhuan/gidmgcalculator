@@ -1,9 +1,13 @@
 import { Fragment } from "react";
-import type { CharBuffInputRenderType, ModifierInput } from "@Src/types";
+import type { ArtifactBuff, CharBuffInputRenderType, ModifierInput } from "@Src/types";
 import { genNumberSequence } from "@Src/utils";
 
 import { Checkbox, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
+
+import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { useDispatch } from "@Store/hooks";
+import { changeModCtrlInput } from "@Store/calculatorSlice";
 
 interface CharModSettersProps {
   labels: string[];
@@ -82,5 +86,60 @@ export function CharModSetters({
         <Setter key={i} label={label} inputComponent={renderInput(i)} />
       ))}
     </Fragment>
+  );
+}
+
+interface SetterSectionProps {
+  buff: ArtifactBuff;
+  inputs?: ModifierInput[];
+  path: ToggleModCtrlPath;
+}
+export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
+  const dispatch = useDispatch();
+
+  if (!buff.inputConfig) return null;
+  const { labels, initialValues, maxValues, renderTypes } = buff.inputConfig;
+
+  return (
+    <>
+      {labels.map((label, i) => {
+        const input = inputs[i];
+        let options: string[] | number[] = [];
+
+        if (renderTypes[i] === "stacks") {
+          options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
+        } //
+        else if (renderTypes[i] === "anemoable") {
+          options = ["pyro", "hydro", "electro", "cryo"];
+        }
+
+        return typeof input === "boolean" ? null : (
+          <Setter
+            key={i}
+            label={label}
+            inputComponent={
+              <Select
+                className={twInputStyles.select}
+                value={input}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  dispatch(
+                    changeModCtrlInput({
+                      ...path,
+                      inputIndex: i,
+                      value: isNaN(+value) ? value : +value,
+                    })
+                  );
+                }}
+              >
+                {options.map((opt) => (
+                  <option key={opt}>{opt}</option>
+                ))}
+              </Select>
+            }
+          />
+        );
+      })}
+    </>
   );
 }

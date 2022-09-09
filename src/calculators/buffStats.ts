@@ -17,13 +17,13 @@ import {
   CalcWeapon,
   CharInfo,
   CustomBuffCtrl,
+  ElementModCtrl,
   FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
   Reaction,
   ReactionBonus,
-  ResonancePair,
   SubArtModCtrl,
   SubWeaponComplexBuffCtrl,
   Tracker,
@@ -42,6 +42,7 @@ import {
 import type { Wrapper1, Wrapper2 } from "./types";
 import {
   applyModifier,
+  getQuickenBuffDamage,
   getRxnBonusesFromEM,
   meltMult,
   pushOrMergeTrackerRecord,
@@ -89,7 +90,7 @@ export default function getBuffedStats(
   artInfo: CalcArtInfo,
   artBuffCtrls: ModifierCtrl[],
   subArtBuffCtrls: SubArtModCtrl[],
-  resonance: ResonancePair[],
+  elmtModCtrls: ElementModCtrl,
   party: Party,
   partyData: PartyData,
   customBuffCtrls: CustomBuffCtrl[],
@@ -153,7 +154,7 @@ export default function getBuffedStats(
   }
 
   // APPLY RESONANCE BUFFS
-  for (const rsn of resonance) {
+  for (const rsn of elmtModCtrls.resonance) {
     if (rsn.activated) {
       const { key, value } = RESONANCE_STAT[rsn.vision];
       let xtraValue = 0;
@@ -290,9 +291,19 @@ export default function getBuffedStats(
 
   rxnBonus.melt = meltMult(vision) * meltBonus;
   rxnBonus.vaporize = vaporizeMult(vision) * vapBonus;
+
   if (infusion.NA !== vision) {
     rxnBonus.infusion_melt = meltMult(infusion.NA) * meltBonus;
     rxnBonus.infusion_vaporize = vaporizeMult(infusion.NA) * vapBonus;
+  }
+
+  const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
+
+  if (elmtModCtrls.spread) {
+    applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
+  }
+  if (elmtModCtrls.aggravate && charData.vision === "electro") {
+    applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
   return [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] as const;

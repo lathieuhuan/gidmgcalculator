@@ -1,28 +1,32 @@
-import type { AmplifyingReaction, ArtifactBuff, ModifierInput, Vision } from "@Src/types";
+import type { AmplifyingReaction, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
   changeElementModCtrl,
-  changeModCtrlInput,
   changeResonanceInput,
+  toggleElementModCtrl,
   toggleModCtrl,
   toggleResonance,
 } from "@Store/calculatorSlice";
 import {
   selectArtInfo,
+  selectChar,
   selectCharData,
   selectElmtModCtrls,
   selectFinalInfusion,
   selectRxnBonus,
+  selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
 
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { Checkbox, ModifierTemplate, Select } from "@Src/styled-components";
-import { Setter, twInputStyles } from "@Screens/Calculator/components";
+import { Checkbox, Green, ModifierTemplate } from "@Src/styled-components";
+import { Setter } from "@Screens/Calculator/components";
+import { SetterSection } from "../components";
 
 import { findArtifactSet } from "@Data/controllers";
-import { findByIndex, genNumberSequence } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
+import { getQuickenBuffDamage } from "@Src/calculators/utils";
 
 export function ElememtBuffs() {
   const dispatch = useDispatch();
@@ -102,7 +106,40 @@ export function ElememtBuffs() {
     addAmpReactionBuff(infusion, "infusion_ampRxn");
   }
 
+  if (vision === "electro" || vision === "dendro") {
+    content.push(<QuickenBuff key="quicken" vision={vision} />);
+  }
+
   return renderModifiers(content, true);
+}
+
+function QuickenBuff({ vision }: { vision: Vision }) {
+  const reaction = vision === "electro" ? "aggravate" : "spread";
+  const dispatch = useDispatch();
+
+  const char = useSelector(selectChar);
+  const totalAttr = useSelector(selectTotalAttr);
+  const rxnBonus = useSelector(selectRxnBonus);
+  const activated = useSelector(selectElmtModCtrls)[reaction];
+
+  const buffValue = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus)[reaction];
+
+  const heading =
+    reaction === "spread" ? "Spread (Dendro on Quicken)" : "Aggravate (Electro on Quicken)";
+
+  return (
+    <ModifierTemplate
+      heading={heading}
+      checked={activated}
+      onToggle={() => dispatch(toggleElementModCtrl(reaction))}
+      desc={
+        <>
+          Increase base <span className={`text-${vision}`}>{vision} DMG</span> by{" "}
+          <Green b>{buffValue}</Green>.
+        </>
+      }
+    />
+  );
 }
 
 export function ArtifactBuffs() {
@@ -162,59 +199,4 @@ export function ArtifactBuffs() {
     );
   });
   return renderModifiers(content, true);
-}
-
-interface SetterSectionProps {
-  buff: ArtifactBuff;
-  inputs?: ModifierInput[];
-  path: ToggleModCtrlPath;
-}
-function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
-  const dispatch = useDispatch();
-
-  if (!buff.inputConfig) return null;
-  const { labels, initialValues, maxValues, renderTypes } = buff.inputConfig;
-
-  return (
-    <>
-      {labels.map((label, i) => {
-        const input = inputs[i];
-        let options: string[] | number[] = [];
-
-        if (renderTypes[i] === "stacks") {
-          options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
-        } //
-        else if (renderTypes[i] === "anemoable") {
-          options = ["pyro", "hydro", "electro", "cryo"];
-        }
-
-        return typeof input === "boolean" ? null : (
-          <Setter
-            key={i}
-            label={label}
-            inputComponent={
-              <Select
-                className={twInputStyles.select}
-                value={input}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  dispatch(
-                    changeModCtrlInput({
-                      ...path,
-                      inputIndex: i,
-                      value: isNaN(+value) ? value : +value,
-                    })
-                  );
-                }}
-              >
-                {options.map((opt) => (
-                  <option key={opt}>{opt}</option>
-                ))}
-              </Select>
-            }
-          />
-        );
-      })}
-    </>
-  );
 }

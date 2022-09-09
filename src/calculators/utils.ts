@@ -15,8 +15,10 @@ import type {
   FinalInfusion,
   Weapon,
   ModifierInput,
+  Level,
 } from "@Src/types";
-import { pickOne, turnArr } from "@Src/utils";
+import { bareLv, pickOne, turnArr } from "@Src/utils";
+import { BASE_REACTION_DAMAGE } from "./constants";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
   obj: T,
@@ -189,6 +191,16 @@ export function makeModApplier(
     if (recipient) {
       applyModifier(args.desc, recipient, keys as any, rootValue, args.tracker);
     }
+  };
+}
+
+export function getQuickenBuffDamage(charLv: Level, EM: number, rxnBnes: ReactionBonus) {
+  const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
+  const bonus = 1 + (5 * EM) / (EM + 1200);
+
+  return {
+    aggravate: Math.round(base * 1.15 * (bonus + rxnBnes.aggravate / 100)),
+    spread: Math.round(base * 1.25 * (bonus + rxnBnes.spread / 100)),
   };
 }
 

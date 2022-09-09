@@ -54,7 +54,7 @@ export default function calculateAll(
     artInfo,
     artBuffCtrls,
     subArtBuffCtrls,
-    elmtModCtrls.resonance,
+    elmtModCtrls,
     party,
     partyData,
     customBuffCtrls,

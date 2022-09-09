@@ -394,7 +394,7 @@ export default function getDamage(
   if (charData.code === 60) {
     let buffValue = 0;
     if (ascsFromLv(char.level) >= 4 && selfBuffCtrls[1].activated && totalAttr.hp > 30000) {
-      buffValue = Math.min(7 * (totalAttr.hp / 1000 - 30), 300);
+      buffValue = Math.min(9 * (totalAttr.hp / 1000 - 30), 400);
     }
     const { mult: normalMult } = TRANSFORMATIVE_REACTION_INFO.rupture;
 

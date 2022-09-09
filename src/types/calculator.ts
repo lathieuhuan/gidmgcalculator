@@ -176,6 +176,8 @@ export type ElementModCtrl = {
   ampRxn: AmplifyingReaction | null;
   infusion_ampRxn: AmplifyingReaction | null;
   superconduct: boolean;
+  aggravate: boolean;
+  spread: boolean;
   resonance: ResonancePair[];
 };
 

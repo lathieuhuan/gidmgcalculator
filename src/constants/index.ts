@@ -116,8 +116,14 @@ export const TRANSFORMATIVE_REACTIONS = [
   "hyperbloom",
 ] as const;
 
+export const QUICKEN_REACTIONS = ["spread", "aggravate"] as const;
+
 export const AMPLIFYING_REACTIONS = ["melt", "vaporize"] as const;
 
-export const REACTIONS = [...TRANSFORMATIVE_REACTIONS, ...AMPLIFYING_REACTIONS] as const;
+export const REACTIONS = [
+  ...TRANSFORMATIVE_REACTIONS,
+  ...QUICKEN_REACTIONS,
+  ...AMPLIFYING_REACTIONS,
+] as const;
 
 export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;

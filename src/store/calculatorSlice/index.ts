@@ -58,7 +58,7 @@ import {
 } from "./utils";
 import monsters from "@Data/monsters";
 import { MonsterConfig } from "@Data/monsters/types";
-import { countVision, countWeapon, indexByCode } from "@Src/utils";
+import { bareLv, countVision, countWeapon, indexByCode } from "@Src/utils";
 import { RESONANCE_VISION_TYPES } from "@Src/constants";
 
 const defaultChar = {
@@ -212,6 +212,9 @@ export const calculatorSlice = createSlice({
       const level = action.payload;
       const { char, currentIndex } = state;
 
+      if (state.target.level === 1) {
+        state.target.level = bareLv(level);
+      }
       if (Array.isArray(char.level)) {
         char.level[currentIndex] = level;
         calculate(state);
@@ -516,10 +519,14 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    toggleElementModCtrl: (state) => {
+    toggleElementModCtrl: (
+      state,
+      action: PayloadAction<"superconduct" | "aggravate" | "spread">
+    ) => {
+      const key = action.payload;
       const currentElmtModCtrls = state.allElmtModCtrls[state.currentIndex];
 
-      currentElmtModCtrls.superconduct = !currentElmtModCtrls.superconduct;
+      currentElmtModCtrls[key] = !currentElmtModCtrls[key];
       calculate(state);
     },
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {

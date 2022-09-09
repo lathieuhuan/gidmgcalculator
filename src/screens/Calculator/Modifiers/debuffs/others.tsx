@@ -21,7 +21,7 @@ export function ElementDebuffs() {
     <>
       <ModifierTemplate
         checked={superconduct}
-        onToggle={() => dispatch(toggleElementModCtrl())}
+        onToggle={() => dispatch(toggleElementModCtrl("superconduct"))}
         heading="Superconduct"
         desc={
           <>

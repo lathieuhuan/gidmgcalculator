@@ -133,6 +133,8 @@ export const initElmtModCtrls = (): ElementModCtrl => ({
   infusion_ampRxn: null,
   ampRxn: null,
   superconduct: false,
+  aggravate: false,
+  spread: false,
   resonance: [],
 });
 
