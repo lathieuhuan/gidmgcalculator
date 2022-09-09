@@ -13,7 +13,7 @@ const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
 const getA4talentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
   const isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
 
-  return talentBuff([isActivated, "flat", [true, 4], Math.round(totalAttr.em * 1.25)]);
+  return talentBuff([isActivated, "flat", [true, 4], Math.round(totalAttr.em * 1.5)]);
 };
 
 const Cyno: DataCharacter = {
@@ -55,7 +55,7 @@ const Cyno: DataCharacter = {
         { name: "4-Hit", baseMult: 75.89 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", baseMult: 116.1 }] },
+    CA: { stats: [{ name: "Charged Attack DMG", baseMult: 122.38 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Secret Rite: Chasmic Soulfarer",
@@ -80,7 +80,7 @@ const Cyno: DataCharacter = {
             const A4isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
 
             return talentBuff(
-              [checkAscs[1](char), "mult", [true, 1], 50],
+              [checkAscs[1](char), "mult", [true, 1], 100],
               [A4isActivated, "flat", [true, 4], totalAttr.em * 2.5]
             );
           },
@@ -152,7 +152,7 @@ const Cyno: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc![0]}, and firing off 3 Duststalker Bolts that deal 50% of Cyno's ATK as
+            {this.xtraDesc![0]}, and firing off 3 Duststalker Bolts that deal 100% of Cyno's ATK as
             Electro DMG.
             <br />
             Duststalker Bolt DMG is considered Elemental Skill DMG.
@@ -176,7 +176,7 @@ const Cyno: DataCharacter = {
         <>
           Cyno's DMG values will be increased based on his Elemental Mastery as follows:
           <br />• Pactsworn Pathclearer's <Green>Normal Attack DMG</Green> is increased by{" "}
-          <Green b>125%</Green> of his <Green>Elemental Mastery</Green>.
+          <Green b>150%</Green> of his <Green>Elemental Mastery</Green>.
           <br />• <Green>Duststalker Bolt DMG</Green> from his Ascension Talent Featherfall Judgment
           is increased by <Green b>250%</Green> of his <Green>Elemental Mastery</Green>.
         </>

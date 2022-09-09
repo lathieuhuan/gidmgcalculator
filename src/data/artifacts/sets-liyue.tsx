@@ -144,8 +144,9 @@ const liyueSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              Increases <Green>Overloaded and Burning DMG</Green> by <Green b>40%</Green>. Increases{" "}
-              <Green>Vaporize and Melt DMG</Green> by <Green b>15%</Green>. {this.xtraDesc![0]}
+              Increases <Green>Overloaded, Burning, and Burngeon DMG</Green> by <Green b>40%</Green>
+              . Increases <Green>Vaporize and Melt DMG</Green> by <Green b>15%</Green>{" "}
+              {this.xtraDesc![0]}
             </>
           );
         },
@@ -156,7 +157,11 @@ const liyueSets: DataArtifact[] = [
             <Green>stacks</Green>.
           </>,
         ],
-        applyBuff: makeModApplier("rxnBonus", ["overloaded", "melt", "vaporize"], [40, 15, 15]),
+        applyBuff: makeModApplier(
+          "rxnBonus",
+          ["overloaded", "burning", "burgeon", "melt", "vaporize"],
+          [40, 40, 40, 15, 15]
+        ),
       },
     ],
     buffs: [

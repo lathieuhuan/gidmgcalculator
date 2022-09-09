@@ -38,9 +38,9 @@ const Dori: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 71.21 },
-        { name: "2-Hit", baseMult: [33.94, 35.64] },
-        { name: "3-Hit", baseMult: 95.29 },
+        { name: "1-Hit", baseMult: 90.21 },
+        { name: "2-Hit", baseMult: [41.07, 43.12] },
+        { name: "3-Hit", baseMult: 128.4 },
         {
           name: "Heal on Normal Attacks hit (C6)",
           notAttack: "healing",
@@ -68,8 +68,8 @@ const Dori: DataCharacter = {
       image: "c/c8/Talent_Spirit-Warding_Lamp_Troubleshooter_Cannon",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Troubleshooter Shot DMG", baseMult: 156.24 },
-        { name: "After-Sales Service Round DMG", baseMult: 33.48 },
+        { name: "Troubleshooter Shot DMG", baseMult: 147.28 },
+        { name: "After-Sales Service Round DMG", baseMult: 31.56 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
@@ -83,9 +83,9 @@ const Dori: DataCharacter = {
           name: "Continuous Healing",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 5.34,
+          baseMult: 6.67,
           multType: 2,
-          flat: { base: 514, type: 3 },
+          flat: { base: 642, type: 3 },
         },
       ],
       // getExtraStats: (lv) => [
@@ -157,10 +157,9 @@ const Dori: DataCharacter = {
         return (
           <>
             The character connected to the Lamp Spirit will obtain the following buffs based on
-            their current HP and Energy: <br />
-            When their HP is lower than 50%, they gain <Green b>50%</Green>{" "}
-            <Green>Incoming Healing Bonus</Green>. <br />
-            When their Energy {this.xtraDesc?.[0]}.
+            their current HP and Energy:
+            <br />• When their HP is lower than 50%, they gain 50% Incoming Healing Bonus.
+            <br />• When their Energy {this.xtraDesc?.[0]}.
           </>
         );
       },

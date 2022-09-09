@@ -81,8 +81,8 @@ const Nilou: DataCharacter = {
       image: "",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", baseMult: 24.58 },
-        { name: "Lingering Aeon DMG", baseStatType: "hp", baseMult: 30.04 },
+        { name: "Skill DMG", baseStatType: "hp", baseMult: 18.43 },
+        { name: "Lingering Aeon DMG", baseStatType: "hp", baseMult: 22.53 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "18s" }],
       energyCost: 70,
@@ -111,7 +111,7 @@ const Nilou: DataCharacter = {
       xtraDesc: [
         <>
           Characters under the effect of Golden Chalice's Bounty will have their{" "}
-          <Green>Elemental Mastery</Green> increased by <Green b>60</Green> for 10s whenever they
+          <Green>Elemental Mastery</Green> increased by <Green b>100</Green> for 10s whenever they
           are hit by Dendro attacks.
         </>,
       ],
@@ -123,10 +123,10 @@ const Nilou: DataCharacter = {
         <>
           Each 1,000 points of Max HP above 30,000 will cause the <Green>DMG</Green> dealt by{" "}
           <Green>Bountiful Cores</Green> created by characters affected by Golden Chalice's Bounty
-          to increase by <Green b>7%</Green>.
+          to increase by <Green b>9%</Green>.
           <br />
           The <Green>maximum</Green> increase in Bountiful Core DMG that can be achieved this way is{" "}
-          <Green b>300%</Green>.
+          <Green b>400%</Green>.
         </>
       ),
     },
@@ -217,7 +217,7 @@ const Nilou: DataCharacter = {
       desc: () => Nilou.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("totalAttr", "em", 60),
+      applyBuff: makeModApplier("totalAttr", "em", 100),
     },
     {
       index: 1,
@@ -229,7 +229,7 @@ const Nilou: DataCharacter = {
             {Nilou.passiveTalents[1].desc}{" "}
             <Red>
               Bonus DMG:{" "}
-              {totalAttr.hp > 30000 ? round1(Math.min((totalAttr.hp / 1000 - 30) * 7, 300)) : 0}%
+              {totalAttr.hp > 30000 ? round1(Math.min((totalAttr.hp / 1000 - 30) * 9, 400)) : 0}%
             </Red>
           </>
         );

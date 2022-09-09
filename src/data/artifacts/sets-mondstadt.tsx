@@ -243,12 +243,21 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases damage caused by <Green>Overloaded, Electro-Charged and Superconduct</Green>{" "}
-            by <Green b>40%</Green>. Triggering such effects decreases Elemental Skill CD by 1s. Can
-            only occur once every 0.8s.
+            Increases damage caused by{" "}
+            <Green>Overloaded, Electro-Charged, Superconduct and Hyperbloom</Green> by{" "}
+            <Green b>40%</Green>, and the DMG Bonus conferred by <Green>Aggravate</Green> is
+            increased by <Green b>20%</Green>. When Quicken or the aforementioned Elemental
+            Reactions are triggered, Elemental Skill CD is decreased by 1s. Can only occur once
+            every 0.8s.
           </>
         ),
-        applyBuff: makeModApplier("rxnBonus", ["overloaded", "electroCharged", "superconduct"], 40),
+        applyBuff: ({ rxnBonus, desc, tracker }) => {
+          if (rxnBonus) {
+            const keys = ["overloaded", "electroCharged", "superconduct", "hyperbloom"] as const;
+            applyModifier(desc, rxnBonus, [...keys], 40, tracker);
+            applyModifier(desc, rxnBonus, "aggravate", 20, tracker);
+          }
+        },
       },
     ],
   },
