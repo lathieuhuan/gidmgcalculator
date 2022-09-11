@@ -28,9 +28,9 @@ export function SelfBuffs() {
   const charData = useSelector(selectCharData);
   const partyData = getPartyData(useSelector(selectParty));
   const totalAttr = useSelector(selectTotalAttr);
-  const selfBuffCtrls = useSelector(
-    (state) => state.calculator.allSelfBuffCtrls[state.calculator.currentIndex]
-  );
+  const selfBuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].selfBuffCtrls;
+  });
   const dispatch = useDispatch();
 
   const { buffs } = findCharacter(char)!;
@@ -41,7 +41,7 @@ export function SelfBuffs() {
     const buff = findByIndex(buffs!, index);
 
     const path: ToggleModCtrlPath = {
-      modCtrlName: "allSelfBuffCtrls",
+      modCtrlName: "selfBuffCtrls",
       ctrlIndex,
     };
 

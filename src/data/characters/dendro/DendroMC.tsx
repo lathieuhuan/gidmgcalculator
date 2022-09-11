@@ -28,7 +28,7 @@ const DendroMC: DataCharacter = {
       xtraLvAtCons: 5,
       stats: [
         { name: "Lea Lotus Lamp Attack DMG", baseMult: 80.16 },
-        { name: "Explosion DMG", dmgTypes: ["EB", "various"], baseMult: 400.8 },
+        { name: "Explosion DMG", baseMult: 400.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Lea Lotus Lamp Duration", value: "12s" },

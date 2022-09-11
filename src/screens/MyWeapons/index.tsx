@@ -62,7 +62,7 @@ export default function MyWeapons() {
       <div className={styles.warehouse}>
         <div className={cn("w-full", styles["button-bar"])}>
           <ButtonBar
-            className="mr-4 gap-4"
+            className="mr-4 space-x-4"
             texts={["Add", "Sort"]}
             variants={["positive", "positive"]}
             handlers={[openModal("PICK_WEAPON_TYPE"), () => dispatch(sortWeapons())]}

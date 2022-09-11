@@ -211,10 +211,9 @@ const Cyno: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Cyno's Normal Attacks hit opponents, his <Green>Normal Attack CRIT Rate</Green> and{" "}
-          <Green>CRIT DMG</Green> will be increased by <Green b>3%</Green> and <Green b>6%</Green>{" "}
-          respectively for 4s. This effect can be triggered once every 0.1s. Max <Green>5</Green>{" "}
-          <Green>stacks</Green>. Each stack's duration is counted independently.
+          When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will
+          increase by <Green b>10%</Green> for 4s. This effect can be triggered once every 0.1s. Max{" "}
+          <Green b>5</Green> <Green>stacks</Green>.
         </>
       ),
     },
@@ -307,8 +306,7 @@ const Cyno: DataCharacter = {
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const stacks = getInput(inputs, 0, 0);
-        const buffValue = [stacks * 3, stacks * 6];
-        applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValue, tracker);
+        applyModifier(desc, totalAttr, "electro", stacks * 10, tracker);
       },
     },
   ],

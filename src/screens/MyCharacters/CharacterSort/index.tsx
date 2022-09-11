@@ -57,7 +57,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
       <CloseButton className="absolute top-2 right-2" onClick={onClose} />
       <p className="text-h4 text-orange text-center">Sort by</p>
       <ButtonBar
-        className="mt-4 gap-4"
+        className="mt-4 space-x-4"
         texts={["Name", "Level", "Rarity"]}
         variants={["neutral", "neutral", "neutral"]}
         handlers={[

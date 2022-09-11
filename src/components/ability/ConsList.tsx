@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import cn from "classnames";
+import type { CharInfo } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
-import { CalcChar } from "@Src/types";
 import { Green, CloseButton } from "@Src/styled-components";
 import { InfoSign, SharedSpace } from "@Components/minors";
 import { AbilityIcon, SlideShow } from "./components";
 
 interface ConsListProps {
-  char: CalcChar;
+  char: CharInfo;
   onClickIcon: (index: number) => void;
 }
 export function ConsList({ char, onClickIcon }: ConsListProps) {
@@ -37,7 +37,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
     <SharedSpace
       atLeft={!atDetails}
       leftPart={
-        <div className="h-full hide-scrollbar flex flex-col gap-4">
+        <div className="h-full hide-scrollbar flex flex-col space-y-4">
           {constellation.map((cons, i) => {
             return (
               <div key={i} className="flex">

@@ -1,8 +1,14 @@
 import cn from "classnames";
 import { useState } from "react";
 import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { createSelector } from "@reduxjs/toolkit";
+
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
+import {
+  selectCurrentIndex,
+  selectSetupManageInfos,
+  selectCalcSetups,
+} from "@Store/calculatorSlice/selectors";
 import {
   changeCustomModCtrlValue,
   clearCustomModCtrls,
@@ -17,14 +23,21 @@ import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
+const selectAllCustomBuffCtrls = createSelector(selectCalcSetups, (setups) =>
+  setups.map(({ customBuffCtrls }) => customBuffCtrls)
+);
+const selectAllCustomDebuffCtrls = createSelector(selectCalcSetups, (setups) =>
+  setups.map(({ customDebuffCtrls }) => customDebuffCtrls)
+);
+
 interface CustomModifiersProps {
   isBuffs: boolean;
 }
 export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   const currentIndex = useSelector(selectCurrentIndex);
-  const allCustomBuffCtrls = useSelector((state) => state.calculator.allCustomBuffCtrls);
-  const allCustomDebuffCtrls = useSelector((state) => state.calculator.allCustomDebuffCtrls);
-  const setups = useSelector(selectSetups);
+  const allCustomBuffCtrls = useSelector(selectAllCustomBuffCtrls);
+  const allCustomDebuffCtrls = useSelector(selectAllCustomDebuffCtrls);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
   const dispatch = useDispatch();
 
   const [modalOn, setModalOn] = useState(false);
@@ -36,7 +49,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   if (!modCtrls.length) {
     for (const index in allModCtrls) {
       if (allModCtrls[index].length) {
-        copyOptions.push(setups[index].name);
+        copyOptions.push(setupManageInfos[index].name);
       }
     }
   }
@@ -45,7 +58,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
     dispatch(
       copyCustomModCtrls({
         isBuffs,
-        sourceIndex: indexByName(setups, sourceName),
+        sourceIndex: indexByName(setupManageInfos, sourceName),
       })
     );
   };

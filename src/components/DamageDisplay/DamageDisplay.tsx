@@ -32,7 +32,7 @@ export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayPr
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col space-y-2">
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
         const withDamage = key.subs.length !== 0;

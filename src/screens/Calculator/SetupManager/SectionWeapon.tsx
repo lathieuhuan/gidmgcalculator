@@ -5,9 +5,9 @@ import { LEVELS } from "@Src/constants";
 
 import { changeWeapon, refineWeapon, upgradeWeapon } from "@Store/calculatorSlice";
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
-import { wikiImg } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
 import { findWeapon } from "@Data/controllers";
+import { wikiImg } from "@Src/utils";
 
 import { Picker } from "@Components/Picker";
 import { BetaMark } from "@Components/minors";
@@ -27,7 +27,7 @@ export default function SectionWeapon() {
 
   return (
     <div className={pedestalStyles}>
-      <div className="px-2 flex-center">
+      <div className="px-2 flex items-center">
         <div
           className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
           onClick={() => setPickerOn(true)}

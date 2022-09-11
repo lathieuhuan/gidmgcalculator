@@ -2,7 +2,7 @@ import cn from "classnames";
 import { useRef, useState } from "react";
 import { FaInfo } from "react-icons/fa";
 
-import {
+import type {
   ArtifactAttribute,
   CalcCharData,
   DamageResult,
@@ -14,12 +14,12 @@ import {
 } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
 
-import { findCharacter, getPartyData } from "@Data/controllers";
-import calculateAll from "@Src/calculators";
-import { findById } from "@Src/utils";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { chooseUsersSetup, removeSetup } from "@Store/usersDatabaseSlice";
 import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/selectors";
+import { findCharacter, getPartyData } from "@Data/controllers";
+import calculateAll from "@Src/calculators";
+import { findById } from "@Src/utils";
 
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
@@ -88,27 +88,11 @@ export default function MySetups() {
   let damage = {} as DamageResult;
 
   if (chosenSetup) {
-    const {
-      char,
-      weapon,
-      artInfo,
-      party,
-      selfBuffCtrls,
-      selfDebuffCtrls,
-      wpBuffCtrls,
-      subWpComplexBuffCtrls,
-      artBuffCtrls,
-      subArtBuffCtrls,
-      subArtDebuffCtrls,
-      elmtModCtrls,
-      customBuffCtrls,
-      customDebuffCtrls,
-      target,
-    } = chosenSetup;
+    const databaseChar = findCharacter(chosenSetup.char);
+    if (!databaseChar) {
+      return null;
+    }
 
-    const databaseChar = findCharacter(char);
-    if (!databaseChar) return null;
-    artInfo.pieces;
     charData = {
       code: databaseChar.code,
       name: databaseChar.name,
@@ -118,24 +102,7 @@ export default function MySetups() {
       EBcost: databaseChar.activeTalents.EB.energyCost,
     };
 
-    [finalInfusion, totalAttr, , , rxnBonus, artAttr, damage] = calculateAll(
-      { ...char },
-      charData,
-      selfBuffCtrls,
-      selfDebuffCtrls,
-      party,
-      weapon,
-      wpBuffCtrls,
-      subWpComplexBuffCtrls,
-      artInfo,
-      artBuffCtrls,
-      subArtBuffCtrls,
-      subArtDebuffCtrls,
-      elmtModCtrls,
-      customBuffCtrls,
-      customDebuffCtrls,
-      target
-    );
+    [finalInfusion, totalAttr, , , rxnBonus, artAttr, damage] = calculateAll(chosenSetup, charData);
   }
 
   // const mySetupUtils = {

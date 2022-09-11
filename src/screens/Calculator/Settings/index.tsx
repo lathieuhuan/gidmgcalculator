@@ -1,23 +1,28 @@
 import cn from "classnames";
 import { useCallback, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import type { CalcConfigurations } from "@Src/types";
+import type { CalcConfigurations, CalcSetupManageInfo } from "@Src/types";
 import type { SettingsModalInfo, SettingsModalType, TemporarySetup } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
-import { getNewSetupName, getSetupInfo } from "@Store/calculatorSlice/utils";
-import { selectComparedIndexes, selectStandardIndex, toggleSettings } from "@Store/uiSlice";
+import { selectCurrentIndex, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
+import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
+import {
+  applySettingsOnUI,
+  selectComparedIndexes,
+  selectStandardIndex,
+  toggleSettings,
+} from "@Store/uiSlice";
 
 import { TipsModal, InfoSign } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
+import { Modal } from "@Components/modals";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { SetupControl } from "./SetupControl";
+import { SaveSetup } from "./modal-content";
 
 import styles from "../styles.module.scss";
-import { applySettings } from "@Store/thunks";
-import { Modal } from "@Components/modals";
-import { SaveSetup } from "./modal-content";
+import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 
 const CONFIG_OPTIONS: Array<{
   field: keyof CalcConfigurations;
@@ -38,19 +43,20 @@ const SETUP_LIMIT = 4;
 function HiddenSettings() {
   const dispatch = useDispatch();
 
-  const setups = useSelector(selectSetups);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
   const currentIndex = useSelector(selectCurrentIndex);
   const standardIndex = useSelector(selectStandardIndex);
   const configs = useSelector((state) => state.calculator.configs);
   const comparedIndexes = useSelector(selectComparedIndexes);
 
   const [tempoSetups, setTempoSetups] = useState<TemporarySetup[]>(
-    setups.map((st, index) => {
+    setupManageInfos.map((manageInfos, index) => {
       return {
-        ...st,
+        ID: manageInfos.ID,
+        name: manageInfos.name,
+        type: manageInfos.type,
         index,
         checked: comparedIndexes.includes(index),
-        expanded: false,
         isStandard: index === standardIndex,
         isCurrent: index === currentIndex,
       };
@@ -95,7 +101,7 @@ function HiddenSettings() {
         return [
           ...prev,
           {
-            ...getSetupInfo({ name }),
+            ...getSetupManageInfo({ name }),
             index: prev[index].index,
             checked: false,
             isStandard: false,
@@ -111,7 +117,7 @@ function HiddenSettings() {
       return [
         ...prev,
         {
-          ...getSetupInfo({ name: getNewSetupName(prev) }),
+          ...getSetupManageInfo({ name: getNewSetupName(prev) }),
           index: null,
           checked: false,
           isCurrent: false,
@@ -144,7 +150,33 @@ function HiddenSettings() {
       }
     }
     if (appliable) {
-      dispatch(applySettings(tempoSetups, tempoConfigs));
+      const setupManageInfos: CalcSetupManageInfo[] = [];
+      const comparedIndexes: number[] = [];
+      const indexes: (number | null)[] = [];
+      let standardIndex = 0;
+      let currentIndex = -1;
+
+      for (const i in tempoSetups) {
+        const tempoSetup = tempoSetups[i];
+        const { name, ID, type } = tempoSetups[i];
+
+        setupManageInfos.push({ name, ID, type });
+        indexes.push(tempoSetup.index);
+
+        if (tempoSetup.checked) comparedIndexes.push(+i);
+        if (tempoSetup.isStandard) standardIndex = +i;
+        if (tempoSetup.isCurrent) currentIndex = +i;
+      }
+      dispatch(
+        applySettingsOnCalculator({
+          setupManageInfos,
+          indexes,
+          tempoConfigs,
+          standardIndex,
+          currentIndex,
+        })
+      );
+      dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
     } else {
       setIsError(true);
     }

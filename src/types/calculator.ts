@@ -18,32 +18,44 @@ import type {
   BaseStat,
   ResonanceVision,
 } from "./global";
+import type { MonsterConfig } from "@Data/monsters/types";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
-import { MonsterConfig } from "@Data/monsters/types";
+
+export type SetupType = "original" | "combined" | "complex";
+
+export type CalcSetupManageInfo = {
+  ID: number;
+  type: SetupType;
+  name: string;
+};
+
+export type CalcSetup = {
+  char: CharInfo;
+  selfBuffCtrls: ModifierCtrl[];
+  selfDebuffCtrls: ModifierCtrl[];
+
+  weapon: CalcWeapon;
+  wpBuffCtrls: ModifierCtrl[];
+  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
+
+  artInfo: CalcArtInfo;
+  artBuffCtrls: ModifierCtrl[];
+  subArtBuffCtrls: SubArtModCtrl[];
+  subArtDebuffCtrls: SubArtModCtrl[];
+
+  party: Party;
+  elmtModCtrls: ElementModCtrl;
+  customBuffCtrls: CustomBuffCtrl[];
+  customDebuffCtrls: CustomDebuffCtrl[];
+};
 
 export type CalculatorState = {
   currentIndex: number;
   configs: CalcConfigurations;
-  setups: CalcSetup[];
 
-  char: CalcChar;
   charData: CalcCharData;
-  allSelfBuffCtrls: Array<ModifierCtrl[]>;
-  allSelfDebuffCtrls: Array<ModifierCtrl[]>;
-
-  allWeapons: CalcWeapon[];
-  allWpBuffCtrls: Array<ModifierCtrl[]>;
-  allSubWpComplexBuffCtrls: SubWeaponComplexBuffCtrl[];
-
-  allArtInfos: CalcArtInfo[];
-  allArtBuffCtrls: Array<ModifierCtrl[]>;
-  allSubArtBuffCtrls: Array<SubArtModCtrl[]>;
-  allSubArtDebuffCtrls: Array<SubArtModCtrl[]>;
-
-  allParties: Party[];
-  allElmtModCtrls: ElementModCtrl[];
-  allCustomBuffCtrls: Array<CustomBuffCtrl[]>;
-  allCustomDebuffCtrls: Array<CustomDebuffCtrl[]>;
+  setupManageInfos: CalcSetupManageInfo[];
+  setups: CalcSetup[];
   target: Target;
   monster: Monster;
 
@@ -61,25 +73,6 @@ export type CalcConfigurations = {
   separateCharInfo: boolean;
   keepArtStatsOnSwitch: boolean;
 };
-
-export type SetupType = "original" | "";
-
-export type CalcSetup = {
-  ID: number;
-  type: SetupType;
-  name: string;
-};
-
-type ComplexCharInfo = {
-  name: string;
-  level: Level[];
-  NAs: number[];
-  ES: number[];
-  EB: number[];
-  cons: number[];
-};
-
-export type CalcChar = CharInfo | ComplexCharInfo;
 
 export type CalcCharData = {
   code: number;

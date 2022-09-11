@@ -10,9 +10,9 @@ import type {
   Target,
   Vision,
   Weapon,
-  CalcSetup,
   CalcConfigurations,
   UsersSetup,
+  CalcSetupManageInfo,
 } from "@Src/types";
 
 export interface PickedChar extends Partial<UsersCharacter> {
@@ -43,12 +43,12 @@ type InputInfo = {
 
 export type ToggleModCtrlPath = {
   modCtrlName:
-    | "allSelfBuffCtrls"
-    | "allSelfDebuffCtrls"
-    | "allWpBuffCtrls"
-    | "allArtBuffCtrls"
-    | "allSubArtBuffCtrls"
-    | "allSubArtDebuffCtrls";
+    | "selfBuffCtrls"
+    | "selfDebuffCtrls"
+    | "wpBuffCtrls"
+    | "artBuffCtrls"
+    | "subArtBuffCtrls"
+    | "subArtDebuffCtrls";
   ctrlIndex: number;
 };
 export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;
@@ -118,7 +118,7 @@ export type ChangeArtPieceSubStatAction = PayloadAction<
 >;
 
 export type ApplySettingsOnCalculatorAction = PayloadAction<{
-  setups: CalcSetup[];
+  setupManageInfos: CalcSetupManageInfo[];
   indexes: (number | null)[];
   tempoConfigs: CalcConfigurations;
   standardIndex: number;

@@ -97,7 +97,7 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
         <p className="mr-2">{em}</p>
       </StatsTable.Row>
       <CollapseSpace active={dropped}>
-        <div className="px-2 py-1 flex flex-col gap-1">
+        <div className="px-2 py-1 flex flex-col space-y-1">
           <p className="text-subtitle-1">
             Increases damage caused by Vaporize and Melt by{" "}
             <Green>{rxnBonusFromEM.amplifying}%</Green>.

@@ -86,7 +86,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
   })();
 
   const teammatesDisplay = (
-    <div className="mt-6 w-68 flex">
+    <div className="mt-6 w-68 flex justify-between">
       {party.map((tm, tmIndex) => {
         if (!tm) return null;
         const memberID = allIDs?.[tm.name];
@@ -137,13 +137,16 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
     const renderGearIcon = (
       { beta, icon, rarity }: { beta?: boolean; icon: string; rarity?: Rarity },
-      onClick: () => void = () => {},
-      index?: number
+      onClick?: () => void,
+      key?: number | string
     ) => {
       return (
-        <div key={index} className="p-1">
+        <div key={key} className="p-1">
           <button
-            className={`p-1 rounded flex glow-on-hover bg-gradient-${rarity}`}
+            className={cn(
+              `p-1 rounded flex glow-on-hover bg-gradient-${rarity}`,
+              !onClick && "cursor-default"
+            )}
             onClick={onClick}
           >
             <img style={{ width: "4.25rem" }} src={beta ? icon : wikiImg(icon)} alt="" />
@@ -154,7 +157,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
     return (
       <div className="flex flex-wrap" style={{ width: "15.75rem" }}>
-        {weaponData ? renderGearIcon(weaponData, openModal("WEAPON")) : null}
+        {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
 
         {setup.artInfo.pieces.map((artP, i) => {
           if (artP) {
@@ -185,7 +188,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
           <p className="text-h3 text-orange font-bold truncate">{setupName || setup.name}</p>
         </div>
 
-        <div className="pb-4 flex gap-6">
+        <div className="pb-4 flex space-x-6">
           <IconButton
             className="p-2"
             variant="positive"
@@ -229,7 +232,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
         <div className="w-0.5 mx-4 bg-darkblue-3" />
 
         <div>
-          <div className="mb-2 flex justify-center gap-4">
+          <div className="mb-2 flex justify-center space-x-4">
             <Button variant="default" onClick={openModal("STATS")}>
               Stats
             </Button>

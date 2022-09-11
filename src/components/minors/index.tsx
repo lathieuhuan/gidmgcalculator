@@ -81,7 +81,13 @@ export const ButtonBar = ({
   autoFocusIndex,
 }: ButtonBarProps) => {
   return (
-    <div className={cn("flex justify-center", !className?.includes("gap-") && "gap-8", className)}>
+    <div
+      className={cn(
+        "flex justify-center",
+        !className?.includes("space-x-") && "space-x-8",
+        className
+      )}
+    >
       {texts.map((text, i) => {
         const variant =
           variants[i] || (i ? (i === texts.length - 1 ? "positive" : "neutral") : "negative");
@@ -320,7 +326,7 @@ export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmT
     <div className="p-4 rounded-lg bg-darkblue-3">
       <p className="py-2 text-center text-1.5xl">{message}</p>
       <ButtonBar
-        className={cn("mt-4 flex-wrap", mid && "gap-4")}
+        className={cn("mt-4 flex-wrap", mid && "space-x-4")}
         texts={texts}
         handlers={handlers}
         autoFocusIndex={texts.length - 1}

@@ -1,18 +1,5 @@
+import type { CalcArtPiece, CalcSetup, CalcWeapon, SetupType, Target } from "./calculator";
 import type { CharInfo } from "./global";
-import type {
-  CalcArtInfo,
-  CalcArtPiece,
-  CalcWeapon,
-  CustomBuffCtrl,
-  CustomDebuffCtrl,
-  ElementModCtrl,
-  ModifierCtrl,
-  Party,
-  SetupType,
-  SubArtModCtrl,
-  SubWeaponComplexBuffCtrl,
-  Target,
-} from "./calculator";
 
 export type UsersDatabaseState = {
   myChars: UsersCharacter[];
@@ -36,22 +23,7 @@ export type UsersArtifact = CalcArtPiece & {
   owner: string | null;
 };
 
-export type UsersSetupCalcInfo = {
-  char: CharInfo;
-  party: Party;
-  weapon: CalcWeapon;
-  artInfo: CalcArtInfo;
-
-  selfBuffCtrls: ModifierCtrl[];
-  selfDebuffCtrls: ModifierCtrl[];
-  wpBuffCtrls: ModifierCtrl[];
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
-  artBuffCtrls: ModifierCtrl[];
-  subArtBuffCtrls: SubArtModCtrl[];
-  subArtDebuffCtrls: SubArtModCtrl[];
-  elmtModCtrls: ElementModCtrl;
-  customBuffCtrls: CustomBuffCtrl[];
-  customDebuffCtrls: CustomDebuffCtrl[];
+export type UsersSetupCalcInfo = CalcSetup & {
   target: Target;
 };
 

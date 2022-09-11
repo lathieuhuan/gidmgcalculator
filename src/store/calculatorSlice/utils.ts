@@ -1,8 +1,6 @@
 import type {
   CalcArtPiece,
   CalcArtSet,
-  CalcChar,
-  CalcSetup,
   CalculatorState,
   CalcWeapon,
   CharInfo,
@@ -14,44 +12,30 @@ import type {
   SubWeaponBuffCtrl,
   Target,
   Weapon,
+  SetupType,
 } from "@Src/types";
 import { findById } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
+import weapons from "@Data/weapons";
 import artifacts from "@Data/artifacts";
+import monsters from "@Data/monsters";
 import calculateAll from "@Src/calculators";
 import type { PickedChar } from "./reducer-types";
 import { initCharInfo, initWeapon } from "./initiators";
-import monsters from "@Data/monsters";
-import weapons from "@Data/weapons";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
-    const indexes = all ? [...Array(state.setups.length).keys()] : [state.currentIndex];
+    const { currentIndex, setups, charData, target } = state;
+    const indexes = all ? [...Array(setups.length).keys()] : [currentIndex];
 
     for (const i of indexes) {
-      const char = getCharAtSetup(state.char, i);
-
-      if (!char) {
-        throw new Error(`Character ${state.char.name} not found`);
-      }
       const results = calculateAll(
-        char,
-        state.charData,
-        state.allSelfBuffCtrls[i],
-        state.allSelfDebuffCtrls[i],
-        state.allParties[i],
-        state.allWeapons[i],
-        state.allWpBuffCtrls[i],
-        state.allSubWpComplexBuffCtrls[i],
-        state.allArtInfos[i],
-        state.allArtBuffCtrls[i],
-        state.allSubArtBuffCtrls[i],
-        state.allSubArtDebuffCtrls[i],
-        state.allElmtModCtrls[i],
-        state.allCustomBuffCtrls[i],
-        state.allCustomDebuffCtrls[i],
-        state.target
+        {
+          ...setups[i],
+          target,
+        },
+        charData
       );
       state.allFinalInfusion[i] = results[0];
       state.allTotalAttrs[i] = results[1];
@@ -273,32 +257,22 @@ export function autoModifyTarget(target: Target, monster: Monster) {
   }
 }
 
-function isCharInfo(info: CalcChar): info is CharInfo {
-  return !Array.isArray(info?.level);
-}
-
-export function getCharAtSetup(char: CalcChar, index: number) {
-  if (!char) {
-    return null;
-  }
-  if (isCharInfo(char)) {
-    return char;
-  }
-  return {
-    name: char.name,
-    level: char.level[index],
-    NAs: char.NAs[index],
-    ES: char.ES[index],
-    EB: char.EB[index],
-    cons: char.cons[index],
-  };
-}
-
-export const getSetupInfo = ({
+type CalcSetupManageInfo = {
+  name: string;
+  ID: number;
+  type: SetupType;
+};
+export const getSetupManageInfo = ({
   name = "Setup 1",
   ID = Date.now(),
   type = "original",
-}: Partial<CalcSetup>): CalcSetup => ({ name: name.trim(), ID, type });
+}: Partial<CalcSetupManageInfo>): CalcSetupManageInfo => {
+  return {
+    name: name.trim(),
+    ID,
+    type,
+  };
+};
 
 export function getNewSetupName(setups: Array<{ name: string }>) {
   const existedIndexes = [1, 2, 3, 4];

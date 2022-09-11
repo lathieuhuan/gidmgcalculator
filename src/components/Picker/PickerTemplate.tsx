@@ -62,9 +62,9 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
 
           {needMassAdd && (
             <div className="absolute right-16 flex items-center">
-              <label className="flex gap-2 font-bold text-black">
+              <label className="flex font-bold text-black">
                 <Checkbox checked={massAdd} onChange={() => setMassAdd((prev) => !prev)} />
-                <span className="pt-1">Mass Add ({amount.total})</span>
+                <span className="ml-2 pt-1">Mass Add ({amount.total})</span>
               </label>
             </div>
           )}

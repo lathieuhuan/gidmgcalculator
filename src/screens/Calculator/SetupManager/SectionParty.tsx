@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import { createSelector } from "@reduxjs/toolkit";
+
 import { useDispatch, useSelector } from "@Store/hooks";
 import { addTeammate, copyParty, removeTeammate } from "@Store/calculatorSlice";
-import { selectCharData, selectCurrentIndex } from "@Store/calculatorSlice/selectors";
+import {
+  selectCalcSetups,
+  selectCharData,
+  selectCurrentIndex,
+  selectSetupManageInfos,
+} from "@Store/calculatorSlice/selectors";
 import { indexByName } from "@Src/utils";
 
 import { CharFilledSlot } from "@Components/minors";
@@ -11,22 +18,26 @@ import { IconButton } from "@Src/styled-components";
 import { CopySection } from "../components";
 import { pedestalStyles } from "./tw-compound";
 
+const selectAllParties = createSelector(selectCalcSetups, (setups) =>
+  setups.map(({ party }) => party)
+);
+
 export default function SectionParty() {
   const charData = useSelector(selectCharData);
-  const allParties = useSelector((state) => state.calculator.allParties);
-  const setups = useSelector((state) => state.calculator.setups);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
+  const allParties = useSelector(selectAllParties);
   const currentIndex = useSelector(selectCurrentIndex);
   const dispatch = useDispatch();
 
   const [pendingSlot, setPendingSlot] = useState<number | null>(null);
   const party = allParties[currentIndex];
-  const isOriginal = setups[currentIndex].type === "original";
+  const isOriginal = setupManageInfos[currentIndex].type === "original";
 
   const copyOptions = [];
   if (party.every((teammate) => !teammate)) {
     for (const partyIndex in allParties) {
       if (allParties[partyIndex].some((tm) => tm)) {
-        copyOptions.push(setups[partyIndex].name);
+        copyOptions.push(setupManageInfos[partyIndex].name);
       }
     }
   }
@@ -36,7 +47,7 @@ export default function SectionParty() {
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}
-          onClickCopy={(name) => dispatch(copyParty(indexByName(setups, name)))}
+          onClickCopy={(name) => dispatch(copyParty(indexByName(setupManageInfos, name)))}
         />
       ) : null}
 

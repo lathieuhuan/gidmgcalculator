@@ -38,7 +38,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
     <SharedSpace
       atLeft={!atDetails}
       leftPart={
-        <div className="h-full hide-scrollbar flex flex-col gap-4">
+        <div className="h-full hide-scrollbar flex flex-col space-y-4">
           {(["NAs", "ES", "EB", "altSprint"] as const).map((talentType, i) => {
             const talentInfo =
               talentType === "NAs" ? { name: NAsConfig.name } : activeTalents[talentType];

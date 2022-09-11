@@ -19,12 +19,12 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 export default function WeaponBuffs() {
   const weapon = useSelector(selectWeapon);
   const totalAttr = useSelector(selectTotalAttr);
-  const weaponBuffCtrls = useSelector(
-    (state) => state.calculator.allWpBuffCtrls[state.calculator.currentIndex]
-  );
-  const subWpComplexBuffCtrls = useSelector(
-    (state) => state.calculator.allSubWpComplexBuffCtrls[state.calculator.currentIndex]
-  );
+  const weaponBuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].wpBuffCtrls;
+  });
+  const subWpComplexBuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].subWpComplexBuffCtrls;
+  });
   const dispatch = useDispatch();
 
   const { name, buffs: mainBuffs = [] } = findWeapon(weapon)!;
@@ -53,7 +53,7 @@ export default function WeaponBuffs() {
                 onChange={() =>
                   dispatch(
                     changeModCtrlInput({
-                      modCtrlName: "allWpBuffCtrls",
+                      modCtrlName: "wpBuffCtrls",
                       ctrlIndex,
                       inputIndex: i,
                       value: !inputs?.[i],
@@ -74,7 +74,7 @@ export default function WeaponBuffs() {
                   if (inputs) {
                     dispatch(
                       changeModCtrlInput({
-                        modCtrlName: "allWpBuffCtrls",
+                        modCtrlName: "wpBuffCtrls",
                         ctrlIndex,
                         inputIndex: i,
                         value: +e.target.value,
@@ -103,7 +103,7 @@ export default function WeaponBuffs() {
         onToggle={() =>
           dispatch(
             toggleModCtrl({
-              modCtrlName: "allWpBuffCtrls",
+              modCtrlName: "wpBuffCtrls",
               ctrlIndex,
             })
           )

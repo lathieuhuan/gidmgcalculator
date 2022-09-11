@@ -12,7 +12,7 @@ import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
 import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
 import { CloseButton } from "@Src/styled-components";
 import { GearsOverview } from "./GearsOverview";
-import GearsDetails from "./GearsDetails";
+import { GearsDetails } from "./GearsDetails";
 
 interface GearsProps {
   wpInfo: UsersWeapon;
@@ -53,7 +53,7 @@ export default function Gears(props: GearsProps) {
   const detailsComponent = activeDetails !== -1 && (
     <GearsDetails
       className={cn(
-        "max-h-full",
+        "h-full",
         onSmallDevice ? "" : "px-3 py-4 border-l-2 border-darkblue-2 rounded-r-lg bg-darkblue-1"
       )}
       style={{ width: onSmallDevice ? undefined : "20.25rem" }}

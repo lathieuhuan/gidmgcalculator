@@ -1,6 +1,6 @@
-import type { CalcSetup } from "@Src/types";
+import type { CalcSetupManageInfo } from "@Src/types";
 
-export type TemporarySetup = CalcSetup & {
+export type TemporarySetup = CalcSetupManageInfo & {
   index: number | null;
   checked: boolean;
   isStandard: boolean;

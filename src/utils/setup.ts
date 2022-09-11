@@ -1,6 +1,7 @@
 import type {
-  CalculatorState,
+  CalcSetup,
   ModifierInput,
+  Party,
   SubArtModCtrl,
   SubWeaponBuffCtrl,
   SubWeaponComplexBuffCtrl,
@@ -17,51 +18,17 @@ import {
   getMainWpBuffCtrls,
   getSubWeaponComplexBuffCtrls,
 } from "@Store/calculatorSlice/utils";
-import { getCurrentChar } from "./index";
+import { findCharacter } from "@Data/controllers";
+import { findByIndex } from ".";
 
-export type DirtyCalcSetupData = Pick<
-  CalculatorState,
-  | "char"
-  | "allSelfBuffCtrls"
-  | "allSelfDebuffCtrls"
-  | "allWeapons"
-  | "allWpBuffCtrls"
-  | "allSubWpComplexBuffCtrls"
-  | "allArtInfos"
-  | "allArtBuffCtrls"
-  | "allSubArtBuffCtrls"
-  | "allSubArtDebuffCtrls"
-  | "allParties"
-  | "allElmtModCtrls"
-  | "allCustomBuffCtrls"
-  | "allCustomDebuffCtrls"
-  | "target"
->;
-
-export function cleanCalcSetup(data: DirtyCalcSetupData, index: number): UsersSetupCalcInfo {
-  const {
-    char,
-    allSelfBuffCtrls,
-    allSelfDebuffCtrls,
-    allWeapons,
-    allWpBuffCtrls,
-    allSubWpComplexBuffCtrls,
-    allArtInfos,
-    allArtBuffCtrls,
-    allSubArtBuffCtrls,
-    allSubArtDebuffCtrls,
-    allParties,
-    allElmtModCtrls,
-    allCustomBuffCtrls,
-    allCustomDebuffCtrls,
-    target,
-  } = data;
-
+export function cleanCalcSetup(data: CalcSetup): CalcSetup {
+  const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
+  const party: Party = [];
   const subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl = {};
 
   for (const weaponType of WEAPON_TYPES) {
-    if (weaponType in allSubWpComplexBuffCtrls[index]) {
-      const ctrls = allSubWpComplexBuffCtrls[index][weaponType] || [];
+    if (weaponType in data.subWpComplexBuffCtrls) {
+      const ctrls = data.subWpComplexBuffCtrls[weaponType] || [];
 
       if (ctrls.length) {
         subWpComplexBuffCtrls[weaponType] = ctrls.filter((ctrl) => ctrl.activated);
@@ -69,22 +36,34 @@ export function cleanCalcSetup(data: DirtyCalcSetupData, index: number): UsersSe
     }
   }
 
+  for (const teammate of data.party) {
+    if (teammate) {
+      party.push({
+        name: teammate.name,
+        buffCtrls: teammate.buffCtrls.filter((ctrl) => ctrl.activated),
+        debuffCtrls: teammate.debuffCtrls.filter((ctrl) => ctrl.activated),
+      });
+    }
+  }
+
   return {
-    char: getCurrentChar(char, index),
-    party: allParties[index],
-    weapon: allWeapons[index],
-    artInfo: allArtInfos[index],
-    selfBuffCtrls: allSelfBuffCtrls[index].filter((ctrl) => ctrl.activated),
-    selfDebuffCtrls: allSelfDebuffCtrls[index].filter((ctrl) => ctrl.activated),
-    wpBuffCtrls: allWpBuffCtrls[index].filter((ctrl) => ctrl.activated),
+    ...data,
+    selfBuffCtrls: data.selfBuffCtrls.filter((ctrl) => {
+      const buff = findByIndex(buffs, ctrl.index);
+      return buff ? ctrl.activated && (!buff.isGranted || buff.isGranted(data.char)) : false;
+    }),
+    selfDebuffCtrls: data.selfDebuffCtrls.filter((ctrl) => {
+      const debuff = findByIndex(debuffs, ctrl.index);
+      return debuff ? ctrl.activated && (!debuff.isGranted || debuff.isGranted(data.char)) : false;
+    }),
+    wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
     subWpComplexBuffCtrls,
-    artBuffCtrls: allArtBuffCtrls[index].filter((ctrl) => ctrl.activated),
-    subArtBuffCtrls: allSubArtBuffCtrls[index].filter((ctrl) => ctrl.activated),
-    subArtDebuffCtrls: allSubArtDebuffCtrls[index].filter((ctrl) => ctrl.activated),
-    elmtModCtrls: allElmtModCtrls[index],
-    customBuffCtrls: allCustomBuffCtrls[index].filter((ctrl) => ctrl.value),
-    customDebuffCtrls: allCustomDebuffCtrls[index].filter((ctrl) => ctrl.value),
-    target,
+    party,
+    artBuffCtrls: data.artBuffCtrls.filter((ctrl) => ctrl.activated),
+    subArtBuffCtrls: data.subArtBuffCtrls.filter((ctrl) => ctrl.activated),
+    subArtDebuffCtrls: data.subArtDebuffCtrls.filter((ctrl) => ctrl.activated),
+    customBuffCtrls: data.customBuffCtrls.filter((ctrl) => ctrl.value),
+    customDebuffCtrls: data.customDebuffCtrls.filter((ctrl) => ctrl.value),
   };
 }
 

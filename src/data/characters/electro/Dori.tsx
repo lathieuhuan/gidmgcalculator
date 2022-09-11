@@ -7,10 +7,9 @@ import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
 
 const Dori: DataCharacter = {
   code: 56,
-  beta: true,
   name: "Dori",
-  icon: "https://i.ibb.co/BfrvTMM/dori.png",
-  sideIcon: "",
+  icon: "9/90/Character_Dori_Thumb",
+  sideIcon: "0/0f/Character_Dori_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "electro",
@@ -99,7 +98,7 @@ const Dori: DataCharacter = {
   passiveTalents: [
     {
       name: "An Eye for Gold",
-      image: "",
+      image: "a/ae/Talent_An_Eye_for_Gold",
       desc: (
         <>
           After a character connected to the Jinni triggers an Electro-Charged, Superconduct,
@@ -112,7 +111,7 @@ const Dori: DataCharacter = {
     },
     {
       name: "Compound Interest",
-      image: "",
+      image: "6/6e/Talent_Compound_Interest",
       desc: (
         <>
           When the Troubleshooter Shots or After-Sales Service Rounds from Spirit-Warding Lamp:
@@ -131,7 +130,7 @@ const Dori: DataCharacter = {
   constellation: [
     {
       name: "Additional Investment",
-      image: "",
+      image: "e/e1/Constellation_Additional_Investment",
       desc: (
         <>
           The number of After-Sales Service Rounds created by Troubleshooter Shots is increased by
@@ -141,7 +140,7 @@ const Dori: DataCharacter = {
     },
     {
       name: "Special Franchise",
-      image: "",
+      image: "9/92/Constellation_Special_Franchise",
       desc: (
         <>
           When you are in combat and the Jinni heals the character it is connected to, it will fire
@@ -149,10 +148,10 @@ const Dori: DataCharacter = {
         </>
       ),
     },
-    { name: "Wonders Never Cease", image: "" },
+    { name: "Wonders Never Cease", image: "6/6f/Constellation_Wonders_Never_Cease" },
     {
       name: "Discretionary Supplement",
-      image: "",
+      image: "d/d7/Constellation_Discretionary_Supplement",
       get desc() {
         return (
           <>
@@ -169,10 +168,10 @@ const Dori: DataCharacter = {
         </>,
       ],
     },
-    { name: "Wonders Never Cease", image: "" },
+    { name: "Value for Mora", image: "a/ab/Constellation_Value_for_Mora" },
     {
       name: "Sprinkling Weight",
-      image: "",
+      image: "a/ab/Constellation_Sprinkling_Weight",
       desc: (
         <>
           Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter

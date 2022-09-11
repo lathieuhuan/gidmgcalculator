@@ -2,7 +2,7 @@ import { EScreen } from "@Src/constants";
 import { UsersSetup } from "@Src/types";
 import { isEqual } from "@Src/utils";
 import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
-import { selectChar, selectSetups } from "@Store/calculatorSlice/selectors";
+import { selectChar } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeScreen, resetCalculatorUI, toggleSettings, updateImportInfo } from "@Store/uiSlice";
 import { ImportInfo } from "@Store/uiSlice/types";

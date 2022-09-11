@@ -106,7 +106,7 @@ export default function useInventoryRack({
   }, [goBack, goNext]);
 
   const rack = (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col" style={{ minWidth: "22rem" }}>
       <div className={cn("hide-scrollbar", listClassName)}>
         {filteredIds.length ? (
           <div className="flex flex-wrap">
@@ -137,7 +137,7 @@ export default function useInventoryRack({
       </div>
 
       {IDsOnPage.length ? (
-        <div className="pt-2 flex-center gap-2">
+        <div className="pt-2 pb-1 flex-center space-x-2">
           <button onClick={goBack}>
             <FaCaretLeft className={pageNo > 0 ? "glow-on-hover" : "opacity-50"} size="1.75rem" />
           </button>

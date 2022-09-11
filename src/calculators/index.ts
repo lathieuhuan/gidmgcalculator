@@ -1,44 +1,39 @@
+import { findCharacter, getPartyData } from "@Data/controllers";
+import { NORMAL_ATTACKS } from "@Src/constants";
 import type {
   AttackElement,
-  CalcArtInfo,
   CalcCharData,
-  CalcWeapon,
   CharInfo,
-  CustomBuffCtrl,
-  CustomDebuffCtrl,
-  ElementModCtrl,
   FinalInfusion,
   ModifierCtrl,
   Party,
-  SubArtModCtrl,
-  SubWeaponComplexBuffCtrl,
-  Target,
   Tracker,
+  UsersSetupCalcInfo,
   Vision,
 } from "@Src/types";
-import { NORMAL_ATTACKS } from "@Src/constants";
-import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
 
 export default function calculateAll(
-  char: CharInfo,
+  {
+    char,
+    selfBuffCtrls,
+    selfDebuffCtrls,
+    party,
+    weapon,
+    wpBuffCtrls,
+    subWpComplexBuffCtrls,
+    artInfo,
+    artBuffCtrls,
+    subArtBuffCtrls,
+    subArtDebuffCtrls,
+    elmtModCtrls,
+    customBuffCtrls,
+    customDebuffCtrls,
+    target,
+  }: UsersSetupCalcInfo,
   charData: CalcCharData,
-  selfBuffCtrls: ModifierCtrl[],
-  selfDebuffCtrls: ModifierCtrl[],
-  party: Party,
-  weapon: CalcWeapon,
-  wpBuffCtrls: ModifierCtrl[],
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl,
-  artInfo: CalcArtInfo,
-  artBuffCtrls: ModifierCtrl[],
-  subArtBuffCtrls: SubArtModCtrl[],
-  subArtDebuffCtrls: SubArtModCtrl[],
-  elmtModCtrls: ElementModCtrl,
-  customBuffCtrls: CustomBuffCtrl[],
-  customDebuffCtrls: CustomDebuffCtrl[],
-  target: Target,
   tracker?: Tracker
 ) {
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);

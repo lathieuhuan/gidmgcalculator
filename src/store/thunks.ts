@@ -2,16 +2,9 @@ import { batch } from "react-redux";
 
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
-import type { TemporarySetup } from "@Screens/Calculator/Settings/types";
-import type { CalcConfigurations, CalcSetup, UsersSetup } from "@Src/types";
 
-import {
-  applySettingsOnCalculator,
-  importSetup,
-  initSessionWithChar,
-  updateAllArtPieces,
-} from "./calculatorSlice";
-import { applySettingsOnUI, resetCalculatorUI, changeScreen, toggleSettings } from "./uiSlice";
+import { initSessionWithChar, updateAllArtPieces } from "./calculatorSlice";
+import { resetCalculatorUI, changeScreen, toggleSettings } from "./uiSlice";
 import { saveSetup } from "./usersDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
@@ -48,50 +41,21 @@ export const pickEquippedArtSet =
     dispatch(updateAllArtPieces(artPieces));
   };
 
-export const applySettings =
-  (tempoSetups: TemporarySetup[], tempoConfigs: CalcConfigurations): AppThunk =>
-  (dispatch) => {
-    const setups: CalcSetup[] = [];
-    const comparedIndexes: number[] = [];
-    const indexes: (number | null)[] = [];
-    let standardIndex = 0;
-    let currentIndex = -1;
-
-    for (const i in tempoSetups) {
-      const tempoSetup = tempoSetups[i];
-      const { name, ID, type } = tempoSetups[i];
-
-      setups.push({ name, ID, type });
-      indexes.push(tempoSetup.index);
-
-      if (tempoSetup.checked) comparedIndexes.push(+i);
-      if (tempoSetup.isStandard) standardIndex = +i;
-      if (tempoSetup.isCurrent) currentIndex = +i;
-    }
-    batch(() => {
-      dispatch(
-        applySettingsOnCalculator({
-          setups,
-          indexes,
-          tempoConfigs,
-          standardIndex,
-          currentIndex,
-        })
-      );
-      dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
-    });
-  };
-
 export const saveSetupThunk = (index: number, ID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const { calculator } = getState();
+
+    console.log(cleanCalcSetup(calculator.setups[index]));
 
     batch(() => {
       dispatch(
         saveSetup({
           ID,
           name,
-          data: cleanCalcSetup(calculator, index),
+          data: {
+            ...cleanCalcSetup(calculator.setups[index]),
+            target: calculator.target,
+          },
         })
       );
       dispatch(changeScreen(EScreen.MY_SETUPS));

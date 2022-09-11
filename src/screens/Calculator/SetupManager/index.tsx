@@ -18,7 +18,7 @@ import {
   selectArtInfo,
   selectCharData,
   selectCurrentIndex,
-  selectSetups,
+  selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -37,7 +37,7 @@ import { MainSelect } from "../components";
 import Settings from "../Settings";
 
 export default function SetupManager() {
-  const setups = useSelector(selectSetups);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const currentIndex = useSelector(selectCurrentIndex);
   const charData = useSelector(selectCharData);
@@ -56,9 +56,9 @@ export default function SetupManager() {
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
       <MainSelect
-        tab={setups[currentIndex].name}
-        onChangeTab={(name) => dispatch(changeCurrentSetup(indexByName(setups, name)))}
-        options={setups.map((st) => st.name)}
+        tab={setupManageInfos[currentIndex].name}
+        onChangeTab={(name) => dispatch(changeCurrentSetup(indexByName(setupManageInfos, name)))}
+        options={setupManageInfos.map((info) => info.name)}
       />
 
       <div ref={bodyRef} className="mt-4 grow hide-scrollbar scroll-smooth">

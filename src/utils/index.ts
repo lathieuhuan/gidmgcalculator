@@ -1,13 +1,4 @@
-import type {
-  CalcChar,
-  CharInfo,
-  Level,
-  Party,
-  PartyData,
-  Talent,
-  Vision,
-  Weapon,
-} from "@Src/types";
+import type { CharInfo, Level, Party, PartyData, Talent, Vision, Weapon } from "@Src/types";
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -207,15 +198,4 @@ export function countWeapon(party: Party) {
     }
   }
   return result;
-}
-
-export function getCurrentChar(char: CalcChar, index: number): CharInfo {
-  return {
-    name: char.name,
-    level: pickOne(char.level, index),
-    NAs: pickOne(char.NAs, index),
-    ES: pickOne(char.ES, index),
-    EB: pickOne(char.EB, index),
-    cons: pickOne(char.cons, index),
-  };
 }

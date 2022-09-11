@@ -3,7 +3,7 @@ import { FaLongArrowAltUp } from "react-icons/fa";
 import { EStatDamageKey } from "@Src/constants";
 
 import { selectComparedIndexes, selectStandardIndex } from "@Store/uiSlice";
-import { selectSetups } from "@Store/calculatorSlice/selectors";
+import { selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 import { tableStyles } from "@Src/styled-components";
@@ -14,7 +14,7 @@ interface CompareTableProps {
   tableKey: TableKey;
 }
 export function CompareTable({ focus, tableKey: { main, subs } }: CompareTableProps) {
-  const setups = useSelector(selectSetups);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
   const allDmgResult = useSelector((state) => state.calculator.allDmgResult);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const standardIndex = useSelector(selectStandardIndex);
@@ -24,11 +24,11 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
     <tbody>
       <tr className={tableStyles.row}>
         <th className={tableStyles.th} />
-        <th className={tableStyles.th}>{setups[standardIndex].name}</th>
+        <th className={tableStyles.th}>{setupManageInfos[standardIndex].name}</th>
 
         {otherSetupIs.map((index, i) => (
           <th key={i} className={tableStyles.th}>
-            {setups[index].name}
+            {setupManageInfos[index].name}
           </th>
         ))}
       </tr>

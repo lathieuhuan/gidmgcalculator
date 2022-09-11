@@ -50,9 +50,9 @@ export function ElementDebuffs() {
 
 export function ArtifactDebuffs() {
   const dispatch = useDispatch();
-  const subDebuffCtrls = useSelector(
-    (state) => state.calculator.allSubArtDebuffCtrls[state.calculator.currentIndex]
-  );
+  const subDebuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].subArtDebuffCtrls;
+  });
   const content: JSX.Element[] = [];
 
   subDebuffCtrls.forEach((ctrl, ctrlIndex) => {
@@ -63,7 +63,7 @@ export function ArtifactDebuffs() {
     const { name, debuffs } = artSetData;
 
     const path: ToggleModCtrlPath = {
-      modCtrlName: "allSubArtDebuffCtrls",
+      modCtrlName: "subArtDebuffCtrls",
       ctrlIndex,
     };
     let setters;

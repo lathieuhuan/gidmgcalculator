@@ -2,6 +2,7 @@ import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
   CalcArtPieceMainStat,
+  CalcSetup,
   CalculatorState,
   CalcWeapon,
   CustomBuffCtrl,
@@ -50,7 +51,7 @@ import {
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
   getNewSetupName,
-  getSetupInfo,
+  getSetupManageInfo,
   getSubArtBuffCtrls,
   getSubWeaponBuffCtrls,
   getSubWeaponComplexBuffCtrls,
@@ -72,22 +73,9 @@ const initialState: CalculatorState = {
     separateCharInfo: false,
     keepArtStatsOnSwitch: false,
   },
-  setups: [],
-  char: defaultChar,
   charData: getCharData(defaultChar),
-  allSelfBuffCtrls: [],
-  allSelfDebuffCtrls: [],
-  allWeapons: [],
-  allWpBuffCtrls: [],
-  allSubWpComplexBuffCtrls: [{}],
-  allArtInfos: [],
-  allArtBuffCtrls: [],
-  allSubArtBuffCtrls: [],
-  allSubArtDebuffCtrls: [],
-  allParties: [],
-  allElmtModCtrls: [],
-  allCustomBuffCtrls: [],
-  allCustomDebuffCtrls: [],
+  setupManageInfos: [],
+  setups: [],
   target: initTarget(),
   monster: initMonster(),
   allTotalAttrs: [],
@@ -106,52 +94,43 @@ export const calculatorSlice = createSlice({
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
       const result = parseAndInitData(pickedChar, myWps, myArts);
-
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
 
-      state.setups = [getSetupInfo({})];
       state.currentIndex = 0;
-      state.char = result.char;
-      state.charData = getCharData(result.char);
-      state.allSelfBuffCtrls = [selfBuffCtrls];
-      state.allSelfDebuffCtrls = [selfDebuffCtrls];
-      state.allWeapons = [result.weapon];
-      state.allWpBuffCtrls = [result.wpBuffCtrls];
-      state.allSubWpComplexBuffCtrls = [{}];
-      state.allArtInfos = [result.artInfo];
-      state.allArtBuffCtrls = [result.artBuffCtrls];
-      state.allSubArtBuffCtrls = [result.subArtBuffCtrls];
-      state.allSubArtDebuffCtrls = [result.subArtDebuffCtrls];
-      state.allParties = [[null, null, null]];
-      state.allElmtModCtrls = [initElmtModCtrls()];
-      state.allCustomBuffCtrls = [[]];
-      state.allCustomDebuffCtrls = [[]];
-      state.monster = initMonster();
       state.configs.separateCharInfo = false;
       state.touched = true;
+
+      state.charData = getCharData(result.char);
+      state.setupManageInfos = [getSetupManageInfo({})];
+      state.setups = [
+        {
+          char: result.char,
+          selfBuffCtrls: selfBuffCtrls,
+          selfDebuffCtrls: selfDebuffCtrls,
+          weapon: result.weapon,
+          wpBuffCtrls: result.wpBuffCtrls,
+          subWpComplexBuffCtrls: {},
+          artInfo: result.artInfo,
+          artBuffCtrls: result.artBuffCtrls,
+          subArtBuffCtrls: result.subArtBuffCtrls,
+          subArtDebuffCtrls: result.subArtDebuffCtrls,
+          party: [null, null, null],
+          elmtModCtrls: initElmtModCtrls(),
+          customBuffCtrls: [],
+          customDebuffCtrls: [],
+        },
+      ];
+      state.monster = initMonster();
 
       calculate(state, true);
     },
     initSessionWithSetup: (state, action: PayloadAction<UsersSetup>) => {
-      const setup = action.payload;
+      const { ID, type, target, ...setupInfo } = action.payload;
 
-      state.setups = [getSetupInfo({ ID: setup.ID, type: setup.type })];
-      state.char = setup.char;
-      state.charData = getCharData(setup.char);
-      state.allSelfBuffCtrls = [setup.selfBuffCtrls];
-      state.allSelfDebuffCtrls = [setup.selfDebuffCtrls];
-      state.allWeapons = [setup.weapon];
-      state.allWpBuffCtrls = [setup.wpBuffCtrls];
-      state.allSubWpComplexBuffCtrls = [setup.subWpComplexBuffCtrls];
-      state.allArtInfos = [setup.artInfo];
-      state.allArtBuffCtrls = [setup.artBuffCtrls];
-      state.allSubArtBuffCtrls = [setup.subArtBuffCtrls];
-      state.allSubArtDebuffCtrls = [setup.subArtDebuffCtrls];
-      state.allParties = [setup.party];
-      state.allElmtModCtrls = [setup.elmtModCtrls];
-      state.allCustomBuffCtrls = [setup.customBuffCtrls];
-      state.allCustomDebuffCtrls = [setup.customDebuffCtrls];
-      state.target = setup.target;
+      state.charData = getCharData(setupInfo.char);
+      state.setupManageInfos = [getSetupManageInfo({ ID, type })];
+      state.setups = [setupInfo];
+      state.target = target;
       state.monster = initMonster();
 
       state.configs.separateCharInfo = false;
@@ -163,46 +142,27 @@ export const calculatorSlice = createSlice({
       state.currentIndex = action.payload;
     },
     importSetup: (state, action: ImportSetupAction) => {
-      const { data } = action.payload;
-      const { char, setups } = state;
+      const { data, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
+      const { ID, type, name, target, ...importedsetup } = data;
+      const { setupManageInfos, setups } = state;
       const { separateCharInfo } = state.configs;
-      const { ID, type } = data;
 
-      state.setups.push(getSetupInfo({ name: getNewSetupName(setups), ID, type }));
-
-      const charInfoKeys = ["NAs", "ES", "EB", "cons"] as const;
-
-      for (const key of charInfoKeys) {
-        if (action.payload.shouldOverwriteChar) {
-          if (separateCharInfo) {
-            char[key] = Array(setups.length).fill(data.char[key]);
-          } else {
-            char[key] = data.char[key];
-          }
-        } else if (separateCharInfo && Array.isArray(char[key])) {
-          (char[key] as number[]).push(data.char[key]);
+      if (shouldOverwriteChar && separateCharInfo) {
+        for (const setup of setups) {
+          setup.char = importedsetup.char;
         }
       }
-      if (action.payload.shouldOverwriteTarget) {
-        state.target = data.target;
+      if (shouldOverwriteTarget) {
+        state.target = target;
       }
 
-      state.allSelfBuffCtrls.push(data.selfBuffCtrls);
-      state.allSelfDebuffCtrls.push(data.selfDebuffCtrls);
-      state.allWeapons.push(data.weapon);
-      state.allWpBuffCtrls.push(data.wpBuffCtrls);
-      state.allSubWpComplexBuffCtrls.push(data.subWpComplexBuffCtrls);
-      state.allArtInfos.push(data.artInfo);
-      state.allArtBuffCtrls.push(data.artBuffCtrls);
-      state.allSubArtBuffCtrls.push(data.subArtBuffCtrls);
-      state.allSubArtDebuffCtrls.push(data.subArtDebuffCtrls);
-      state.allParties.push(data.party);
-      state.allElmtModCtrls.push(data.elmtModCtrls);
-      state.allCustomBuffCtrls.push(data.customBuffCtrls);
-      state.allCustomDebuffCtrls.push(data.customDebuffCtrls);
+      state.setupManageInfos.push(
+        getSetupManageInfo({ name: getNewSetupName(setupManageInfos), ID, type })
+      );
+      state.setups.push(importedsetup);
 
-      state.currentIndex = state.allWeapons.length - 1;
-      calculate(state, true);
+      state.currentIndex = state.setups.length - 1;
+      calculate(state, shouldOverwriteChar || shouldOverwriteTarget);
     },
     closeError: (state) => {
       state.isError = false;
@@ -210,54 +170,54 @@ export const calculatorSlice = createSlice({
     // CHARACTER
     levelCalcChar: (state, action: PayloadAction<Level>) => {
       const level = action.payload;
-      const { char, currentIndex } = state;
+      const { currentIndex, configs } = state;
 
       if (state.target.level === 1) {
         state.target.level = bareLv(level);
       }
-      if (Array.isArray(char.level)) {
-        char.level[currentIndex] = level;
-        calculate(state);
+      if (configs.separateCharInfo) {
+        state.setups[currentIndex].char.level = level;
       } else {
-        char.level = level;
-        calculate(state, true);
+        for (const setup of state.setups) {
+          setup.char.level = level;
+        }
       }
+      calculate(state, configs.separateCharInfo);
     },
     changeConsLevel: (state, action: PayloadAction<number>) => {
       const newCons = action.payload;
-      const { char } = state;
+      const { configs, setups } = state;
 
-      if (Array.isArray(char.cons)) {
-        char.cons[state.currentIndex] = newCons;
-        calculate(state);
+      if (configs.separateCharInfo) {
+        setups[state.currentIndex].char.cons = newCons;
       } else {
-        char.cons = newCons;
-        calculate(state, true);
+        for (const setup of setups) {
+          setup.char.cons = newCons;
+        }
       }
+      calculate(state, configs.separateCharInfo);
     },
     changeTalentLevel: (
       state,
       action: PayloadAction<{ type: "NAs" | "ES" | "EB"; level: number }>
     ) => {
       const { type, level } = action.payload;
-      const { char } = state;
-      const talentArr = char[type];
+      const { configs, setups } = state;
 
-      if (Array.isArray(talentArr)) {
-        talentArr[state.currentIndex] = level;
-        calculate(state);
+      if (configs.separateCharInfo) {
+        setups[state.currentIndex].char[type] = level;
       } else {
-        char[type] = level;
-        calculate(state, true);
+        for (const setup of setups) {
+          setup.char[type] = level;
+        }
       }
+      calculate(state, configs.separateCharInfo);
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
-      const { name, vision, weapon, tmIndex } = action.payload;
-      const { char, currentIndex } = state;
-      const party = state.allParties[currentIndex];
-      const elmtModCtrls = state.allElmtModCtrls[currentIndex];
-      const subWpComplexBuffCtrls = state.allSubWpComplexBuffCtrls[currentIndex];
+      const { name, vision, weapon: weaponType, tmIndex } = action.payload;
+      const setup = state.setups[state.currentIndex];
+      const { char, weapon, party, elmtModCtrls, subWpComplexBuffCtrls } = setup;
 
       const oldVisionCount = countVision(char, party);
       const oldWeaponCount = countWeapon(party);
@@ -315,26 +275,22 @@ export const calculatorSlice = createSlice({
         elmtModCtrls.resonance.push(newResonancePair);
       }
       // add a weapon type in subWpBuffCtrl
-      if (!oldWeaponCount[weapon]) {
-        subWpComplexBuffCtrls[weapon] = getSubWeaponComplexBuffCtrls(
-          weapon,
-          state.allWeapons[currentIndex].code
-        );
+      if (!oldWeaponCount[weaponType]) {
+        subWpComplexBuffCtrls[weaponType] = getSubWeaponComplexBuffCtrls(weaponType, weapon.code);
       }
       calculate(state);
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const tmIndex = action.payload;
-      const { currentIndex } = state;
-      const party = state.allParties[currentIndex];
-      const elmtModCtrls = state.allElmtModCtrls[currentIndex];
+      const setup = state.setups[state.currentIndex];
+      const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = setup;
       const teammate = party[tmIndex];
 
       if (teammate) {
         const { weapon, vision } = findCharacter(teammate)!;
         party[tmIndex] = null;
 
-        const newVisionCount = countVision(state.char, party);
+        const newVisionCount = countVision(char, party);
         const newWeaponCount = countWeapon(party);
 
         if (newVisionCount[vision] === 1) {
@@ -347,37 +303,38 @@ export const calculatorSlice = createSlice({
           }
         }
         if (!newWeaponCount[weapon]) {
-          delete state.allSubWpComplexBuffCtrls[currentIndex][weapon];
+          delete subWpComplexBuffCtrls[weapon];
         }
         calculate(state);
       }
     },
     copyParty: (state, action: PayloadAction<number>) => {
-      const targetIndex = action.payload;
-      const { allParties, allElmtModCtrls, allSubWpComplexBuffCtrls, currentIndex } = state;
+      const sourceIndex = action.payload;
+      const { currentIndex, setups } = state;
 
-      allParties[currentIndex] = allParties[targetIndex];
-      allElmtModCtrls[currentIndex] = allElmtModCtrls[targetIndex];
-      allSubWpComplexBuffCtrls[currentIndex] = allSubWpComplexBuffCtrls[targetIndex];
+      setups[currentIndex].party = setups[sourceIndex].party;
+      setups[currentIndex].elmtModCtrls = setups[sourceIndex].elmtModCtrls;
+      setups[currentIndex].subWpComplexBuffCtrls = setups[sourceIndex].subWpComplexBuffCtrls;
 
       calculate(state);
     },
     // WEAPON
     pickWeaponInUserDatabase: (state, action: PayloadAction<CalcWeapon>) => {
       const wpInfo = action.payload;
-      state.allWeapons[state.currentIndex] = wpInfo;
-      state.allWpBuffCtrls[state.currentIndex] = getMainWpBuffCtrls(wpInfo);
+      const setup = state.setups[state.currentIndex];
+      setup.weapon = wpInfo;
+      setup.wpBuffCtrls = getMainWpBuffCtrls(wpInfo);
 
       calculate(state);
     },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
-      const { currentIndex } = state;
+      const setup = state.setups[state.currentIndex];
       const weapon = action.payload;
-      const subWpBuffCtrls = state.allSubWpComplexBuffCtrls[currentIndex][weapon.type];
+      const subWpBuffCtrls = setup.subWpComplexBuffCtrls[weapon.type];
 
-      const oldWeapon = { ...state.allWeapons[currentIndex] };
-      state.allWeapons[currentIndex] = weapon;
-      state.allWpBuffCtrls[currentIndex] = getMainWpBuffCtrls(weapon);
+      const oldWeapon = { ...setup.weapon };
+      setup.weapon = weapon;
+      setup.wpBuffCtrls = getMainWpBuffCtrls(weapon);
 
       if (subWpBuffCtrls) {
         const existIndex = indexByCode(subWpBuffCtrls, weapon.code);
@@ -390,17 +347,17 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     upgradeWeapon: (state, action: PayloadAction<Level>) => {
-      state.allWeapons[state.currentIndex].level = action.payload;
+      state.setups[state.currentIndex].weapon.level = action.payload;
       calculate(state);
     },
     refineWeapon: (state, action: PayloadAction<number>) => {
-      state.allWeapons[state.currentIndex].refi = action.payload;
+      state.setups[state.currentIndex].weapon.refi = action.payload;
       calculate(state);
     },
     // ARTIFACTS
     enhanceArtPiece: (state, action: PayloadAction<{ pieceIndex: number; level: number }>) => {
       const { pieceIndex, level } = action.payload;
-      const pieceInfo = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
       if (pieceInfo) {
         pieceInfo.level = level;
@@ -412,7 +369,7 @@ export const calculatorSlice = createSlice({
       action: PayloadAction<{ pieceIndex: number; type: CalcArtPieceMainStat }>
     ) => {
       const { pieceIndex, type } = action.payload;
-      const pieceInfo = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
       if (pieceInfo) {
         pieceInfo.mainStatType = type;
@@ -421,11 +378,11 @@ export const calculatorSlice = createSlice({
     },
     changeArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
       const { pieceIndex, subStatIndex, ...changeInfo } = action.payload;
-      const artPiece = state.allArtInfos[state.currentIndex].pieces[pieceIndex];
+      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
-      if (artPiece) {
-        artPiece.subStats[subStatIndex] = {
-          ...artPiece.subStats[subStatIndex],
+      if (pieceInfo) {
+        pieceInfo.subStats[subStatIndex] = {
+          ...pieceInfo.subStats[subStatIndex],
           ...changeInfo,
         };
         calculate(state);
@@ -433,17 +390,15 @@ export const calculatorSlice = createSlice({
     },
     updateArtPiece: (state, action: UpdateArtPieceAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
-      const { currentIndex } = state;
+      const setup = state.setups[state.currentIndex];
+      const { artInfo, subArtBuffCtrls } = setup;
 
-      let artInfo = state.allArtInfos[currentIndex];
       const piece = artInfo.pieces[pieceIndex];
-      const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
 
       if (piece && newPiece && isFresh && state.configs.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
-      } //
-      else {
+      } else {
         artInfo.pieces[pieceIndex] = newPiece;
       }
 
@@ -455,9 +410,8 @@ export const calculatorSlice = createSlice({
 
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
-          state.allArtBuffCtrls[currentIndex] = getMainArtBuffCtrls(newSetBonus.code);
+          setup.artBuffCtrls = getMainArtBuffCtrls(newSetBonus.code);
 
-          const subArtBuffCtrls = state.allSubArtBuffCtrls[currentIndex];
           // find ctrl of the same buff in subArtBuffCtrls
           const position = indexByCode(subArtBuffCtrls, newSetBonus.code);
 
@@ -466,7 +420,7 @@ export const calculatorSlice = createSlice({
             subArtBuffCtrls.splice(position, 1);
           }
         } else if (oldBonusLevel && !newSetBonus.bonusLv) {
-          state.allArtBuffCtrls[currentIndex] = [];
+          setup.artBuffCtrls = [];
 
           const oldSetCode = oldSets[0].code;
           const { buffs } = findArtifactSet({ code: oldSetCode }) || {};
@@ -479,38 +433,43 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateAllArtPieces: (state, action: PayloadAction<(CalcArtPiece | null)[]>) => {
-      const { currentIndex, allArtInfos, allArtBuffCtrls, allSubArtBuffCtrls } = state;
       const pieces = action.payload;
       const sets = getArtifactSets(pieces);
       const bonusLv = sets[0]?.bonusLv;
+      const setup = state.setups[state.currentIndex];
 
       if (bonusLv) {
-        allSubArtBuffCtrls[currentIndex] = allSubArtBuffCtrls[currentIndex].filter(
-          (ctrl) => ctrl.code !== sets[0].code
-        );
+        setup.subArtBuffCtrls = setup.subArtBuffCtrls.filter((ctrl) => ctrl.code !== sets[0].code);
       }
-      allArtInfos[currentIndex] = { pieces, sets };
-      allArtBuffCtrls[currentIndex] = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
+      setup.artInfo = { pieces, sets };
+      setup.artBuffCtrls = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
 
       calculate(state);
     },
-    copyArtifactInfo: (state, action: PayloadAction<number>) => {
-      state.allArtInfos[state.currentIndex] = state.allArtInfos[action.payload];
+    copyAllArtifacts: (state, action: PayloadAction<number>) => {
+      const { setups, currentIndex } = state;
+
+      setups[currentIndex].artInfo = setups[action.payload].artInfo;
+      setups[currentIndex].artBuffCtrls = setups[action.payload].artBuffCtrls;
+      setups[currentIndex].subArtBuffCtrls = setups[action.payload].subArtBuffCtrls;
+      setups[currentIndex].subArtDebuffCtrls = setups[action.payload].subArtDebuffCtrls;
+
       calculate(state);
     },
     // MOD CTRLS
     toggleResonance: (state, action: PayloadAction<Vision>) => {
-      const resonance = state.allElmtModCtrls[state.currentIndex].resonance.find(
-        ({ vision }) => vision === action.payload
-      );
-      if (resonance) {
-        resonance.activated = !resonance.activated;
+      const rsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(({ vision }) => {
+        return vision === action.payload;
+      });
+
+      if (rsn) {
+        rsn.activated = !rsn.activated;
         calculate(state);
       }
     },
     changeResonanceInput: (state, action: PayloadAction<number>) => {
       // for now only dendro has inputs
-      const rsn = state.allElmtModCtrls[state.currentIndex].resonance.find(({ vision }) => {
+      const rsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(({ vision }) => {
         return vision === "dendro";
       });
 
@@ -524,27 +483,27 @@ export const calculatorSlice = createSlice({
       action: PayloadAction<"superconduct" | "aggravate" | "spread">
     ) => {
       const key = action.payload;
-      const currentElmtModCtrls = state.allElmtModCtrls[state.currentIndex];
+      const { elmtModCtrls } = state.setups[state.currentIndex];
 
-      currentElmtModCtrls[key] = !currentElmtModCtrls[key];
+      elmtModCtrls[key] = !elmtModCtrls[key];
       calculate(state);
     },
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
 
-      state.allElmtModCtrls[state.currentIndex][field] = value;
+      state.setups[state.currentIndex].elmtModCtrls[field] = value;
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state[modCtrlName][state.currentIndex][ctrlIndex];
+      const ctrl = state.setups[state.currentIndex][modCtrlName][ctrlIndex];
 
       ctrl.activated = !ctrl.activated;
       calculate(state);
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const { inputs } = state[modCtrlName][state.currentIndex][ctrlIndex];
+      const { inputs } = state.setups[state.currentIndex][modCtrlName][ctrlIndex];
 
       if (inputs) {
         inputs[inputIndex] = value;
@@ -553,7 +512,7 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.allParties[state.currentIndex][teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.setups[state.currentIndex].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -562,7 +521,7 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.allParties[state.currentIndex][teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.setups[state.currentIndex].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -571,7 +530,7 @@ export const calculatorSlice = createSlice({
     },
     toggleSubWpModCtrl: (state, action: ToggleSubWpModCtrlAction) => {
       const { weaponType, ctrlIndex } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
+      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].activated = !ctrls[ctrlIndex].activated;
@@ -580,7 +539,7 @@ export const calculatorSlice = createSlice({
     },
     refineSubWeapon: (state, action: RefineSubWeaponAction) => {
       const { weaponType, ctrlIndex, value } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
+      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].refi = value;
@@ -589,7 +548,7 @@ export const calculatorSlice = createSlice({
     },
     changeSubWpModCtrlInput: (state, action: ChangeSubWpModCtrlInputAction) => {
       const { weaponType, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrls = state.allSubWpComplexBuffCtrls[state.currentIndex][weaponType];
+      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         const { inputs } = ctrls[ctrlIndex];
@@ -602,38 +561,43 @@ export const calculatorSlice = createSlice({
     },
     // CUSTOM MOD CTRLS
     createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
-      state.allCustomBuffCtrls[state.currentIndex].unshift(action.payload);
+      state.setups[state.currentIndex].customBuffCtrls.unshift(action.payload);
       calculate(state);
     },
     createCustomDebuffCtrl: (state, action: PayloadAction<CustomDebuffCtrl>) => {
-      state.allCustomDebuffCtrls[state.currentIndex].unshift(action.payload);
+      state.setups[state.currentIndex].customDebuffCtrls.unshift(action.payload);
       calculate(state);
     },
     clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
-      const modCtrlName = action.payload ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      const modCtrlName = action.payload ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state[modCtrlName][state.currentIndex] = [];
+      state.setups[state.currentIndex][modCtrlName] = [];
       calculate(state);
     },
     copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
       const { isBuffs, sourceIndex } = action.payload;
-      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      const { setups, currentIndex } = state;
 
-      state[modCtrlName][state.currentIndex] = state[modCtrlName][sourceIndex];
+      if (isBuffs) {
+        setups[currentIndex].customBuffCtrls = setups[sourceIndex].customBuffCtrls;
+      } else {
+        setups[currentIndex].customDebuffCtrls = setups[sourceIndex].customDebuffCtrls;
+      }
+
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
       const { isBuffs, ctrlIndex } = action.payload;
-      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state[modCtrlName][state.currentIndex].splice(ctrlIndex, 1);
+      state.setups[state.currentIndex][modCtrlName].splice(ctrlIndex, 1);
       calculate(state);
     },
     changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
       const { isBuffs, ctrlIndex, value } = action.payload;
-      const modCtrlName = isBuffs ? "allCustomBuffCtrls" : "allCustomDebuffCtrls";
+      const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state[modCtrlName][state.currentIndex][ctrlIndex].value = value;
+      state.setups[state.currentIndex][modCtrlName][ctrlIndex].value = value;
       calculate(state);
     },
     // TARGET
@@ -674,93 +638,61 @@ export const calculatorSlice = createSlice({
     },
     //
     applySettingsOnCalculator: (state, action: ApplySettingsOnCalculatorAction) => {
-      const { setups, indexes, tempoConfigs, standardIndex, currentIndex } = action.payload;
-      const { char, configs } = state;
-      const dataChar = findCharacter(char);
+      const { setupManageInfos, tempoConfigs, standardIndex, currentIndex } = action.payload;
+      const { charData, setups } = state;
 
-      function getResult<T>(prev: T[], newElmt: T) {
-        const result = [];
-        for (const index of indexes) {
-          result.push(index === null ? newElmt : prev[index]);
+      let ID = Date.now();
+      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
+      const newWeapon = initWeapon({ type: charData.weapon });
+      const wpBuffCtrls = getMainWpBuffCtrls(newWeapon);
+      const subArtBuffCtrls = getAllSubArtBuffCtrls(null);
+      const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
+      const elmtModCtrls = initElmtModCtrls();
+      const newSetups: CalcSetup[] = [];
+
+      action.payload.indexes.forEach((index, i) => {
+        if (index === null) {
+          newSetups[i] = {
+            char: setups[standardIndex].char,
+            selfBuffCtrls,
+            selfDebuffCtrls,
+            weapon: {
+              ID: ++ID,
+              ...newWeapon,
+            },
+            wpBuffCtrls,
+            subWpComplexBuffCtrls: {},
+            artInfo: {
+              pieces: [null, null, null, null, null],
+              sets: [],
+            },
+            artBuffCtrls: [],
+            subArtBuffCtrls,
+            subArtDebuffCtrls,
+            party: [null, null, null],
+            elmtModCtrls,
+            customBuffCtrls: [],
+            customDebuffCtrls: [],
+          };
+        } else {
+          const char =
+            state.configs.separateCharInfo && !tempoConfigs.separateCharInfo
+              ? setups[standardIndex].char
+              : setups[index].char;
+
+          newSetups[i] = {
+            ...setups[index],
+            char,
+          };
         }
-        return result;
-      }
+      });
 
-      if (dataChar) {
-        state.setups = setups;
+      state.currentIndex = currentIndex > -1 ? currentIndex : standardIndex;
+      state.configs = tempoConfigs;
+      state.setupManageInfos = setupManageInfos;
+      state.setups = newSetups;
 
-        const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
-        state.allSelfBuffCtrls = getResult(state.allSelfBuffCtrls, selfBuffCtrls);
-        state.allSelfDebuffCtrls = getResult(state.allSelfDebuffCtrls, selfDebuffCtrls);
-
-        const newWeapon = initWeapon({ type: dataChar.weapon });
-        state.allWeapons = getResult(state.allWeapons, {
-          ID: Date.now(),
-          ...newWeapon,
-        });
-        state.allWpBuffCtrls = getResult(state.allWpBuffCtrls, getMainWpBuffCtrls(newWeapon));
-        state.allSubWpComplexBuffCtrls = getResult(state.allSubWpComplexBuffCtrls, {});
-
-        state.allArtInfos = getResult(state.allArtInfos, {
-          pieces: [null, null, null, null, null],
-          sets: [],
-        });
-        state.allArtBuffCtrls = getResult(state.allArtBuffCtrls, []);
-        state.allSubArtBuffCtrls = getResult(state.allSubArtBuffCtrls, getAllSubArtBuffCtrls(null));
-        state.allSubArtDebuffCtrls = getResult(
-          state.allSubArtDebuffCtrls,
-          getAllSubArtDebuffCtrls()
-        );
-
-        state.allParties = getResult(state.allParties, [null, null, null]);
-        state.allElmtModCtrls = getResult(state.allElmtModCtrls, initElmtModCtrls());
-        state.allCustomBuffCtrls = getResult(state.allCustomBuffCtrls, []);
-        state.allCustomDebuffCtrls = getResult(state.allCustomDebuffCtrls, []);
-        state.currentIndex = currentIndex > -1 ? currentIndex : standardIndex;
-
-        if (configs.separateCharInfo || tempoConfigs.separateCharInfo) {
-          let { name, level, NAs, ES, EB, cons } = state.char;
-
-          if (tempoConfigs.separateCharInfo) {
-            if (configs.separateCharInfo) {
-              level = level as Level[];
-              NAs = NAs as number[];
-              ES = ES as number[];
-              EB = EB as number[];
-              cons = cons as number[];
-
-              state.char = {
-                name,
-                level: getResult(level, level[standardIndex]),
-                NAs: getResult(NAs, NAs[standardIndex]),
-                ES: getResult(ES, ES[standardIndex]),
-                EB: getResult(EB, EB[standardIndex]),
-                cons: getResult(cons, cons[standardIndex]),
-              };
-            } else {
-              state.char = {
-                name,
-                level: Array(indexes.length).fill(level),
-                NAs: Array(indexes.length).fill(NAs),
-                ES: Array(indexes.length).fill(ES),
-                EB: Array(indexes.length).fill(EB),
-                cons: Array(indexes.length).fill(cons),
-              };
-            }
-          } else {
-            state.char = {
-              name,
-              level: (level as Level[])[standardIndex],
-              NAs: (NAs as number[])[standardIndex],
-              ES: (ES as number[])[standardIndex],
-              EB: (EB as number[])[standardIndex],
-              cons: (cons as number[])[standardIndex],
-            };
-          }
-        }
-        state.configs = tempoConfigs;
-        calculate(state, true);
-      }
+      calculate(state, true);
     },
   },
 });
@@ -786,7 +718,7 @@ export const {
   changeArtPieceSubStat,
   updateArtPiece,
   updateAllArtPieces,
-  copyArtifactInfo,
+  copyAllArtifacts,
   toggleResonance,
   changeResonanceInput,
   toggleElementModCtrl,

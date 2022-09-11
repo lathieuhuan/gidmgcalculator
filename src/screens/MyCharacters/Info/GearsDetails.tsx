@@ -30,7 +30,7 @@ interface GearsDetailsProps {
   onClickUnequipArtifact: () => void;
   onCloseDetails: () => void;
 }
-export default function GearsDetails({
+export function GearsDetails({
   className,
   style,
   activeDetails,

@@ -1,8 +1,13 @@
 import cn from "classnames";
 import { type RefObject, useState } from "react";
+import { createSelector } from "@reduxjs/toolkit";
 
-import { copyArtifactInfo, updateArtPiece } from "@Store/calculatorSlice";
-import { selectCurrentIndex, selectSetups } from "@Store/calculatorSlice/selectors";
+import { copyAllArtifacts, updateArtPiece } from "@Store/calculatorSlice";
+import {
+  selectCalcSetups,
+  selectCurrentIndex,
+  selectSetupManageInfos,
+} from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactPiece } from "@Data/controllers";
 import { indexByName, wikiImg } from "@Src/utils";
@@ -14,12 +19,16 @@ import { Picker } from "@Components/Picker";
 import { pedestalStyles } from "../tw-compound";
 import PieceInfo from "./PieceInfo";
 
+const selectAllArtInfos = createSelector(selectCalcSetups, (setups) =>
+  setups.map(({ artInfo }) => artInfo)
+);
+
 interface SectionArtifactsProps {
   containerRef: RefObject<HTMLDivElement>;
 }
 export default function SectionArtifacts({ containerRef }: SectionArtifactsProps) {
-  const setups = useSelector(selectSetups);
-  const allArtInfos = useSelector((state) => state.calculator.allArtInfos);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
+  const allArtInfos = useSelector(selectAllArtInfos);
   const currentIndex = useSelector(selectCurrentIndex);
   const dispatch = useDispatch();
 
@@ -55,9 +64,9 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
   const copyOptions = [];
   if (pieces.every((piece) => piece === null)) {
-    for (let index in allArtInfos) {
+    for (const index in allArtInfos) {
       if (allArtInfos[index].pieces.some((piece) => piece !== null)) {
-        copyOptions.push(setups[index].name);
+        copyOptions.push(setupManageInfos[index].name);
       }
     }
   }
@@ -66,7 +75,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}
-          onClickCopy={(name) => dispatch(copyArtifactInfo(indexByName(setups, name)))}
+          onClickCopy={(name) => dispatch(copyAllArtifacts(indexByName(setupManageInfos, name)))}
         />
       ) : null}
 

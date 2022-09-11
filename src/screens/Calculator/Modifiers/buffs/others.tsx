@@ -79,6 +79,7 @@ export function ElememtBuffs() {
   function addAmpReactionBuff(element: Vision, field: "ampRxn" | "infusion_ampRxn") {
     const renderBuff = (reaction: AmplifyingReaction) => {
       const activated = elmtModCtrls[field] === reaction;
+
       return (
         <ModifierTemplate
           key={reaction}
@@ -144,12 +145,12 @@ function QuickenBuff({ vision }: { vision: Vision }) {
 
 export function ArtifactBuffs() {
   const { sets } = useSelector(selectArtInfo);
-  const buffCtrls = useSelector(
-    (state) => state.calculator.allArtBuffCtrls[state.calculator.currentIndex]
-  );
-  const subBuffCtrls = useSelector(
-    (state) => state.calculator.allSubArtBuffCtrls[state.calculator.currentIndex]
-  );
+  const buffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].artBuffCtrls;
+  });
+  const subBuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].subArtBuffCtrls;
+  });
   const dispatch = useDispatch();
 
   const content: JSX.Element[] = [];
@@ -162,7 +163,7 @@ export function ArtifactBuffs() {
     if (!buff) return;
 
     const path: ToggleModCtrlPath = {
-      modCtrlName: "allArtBuffCtrls",
+      modCtrlName: "artBuffCtrls",
       ctrlIndex,
     };
     content.push(
@@ -184,7 +185,7 @@ export function ArtifactBuffs() {
     if (!buff) return;
 
     const path: ToggleModCtrlPath = {
-      modCtrlName: "allSubArtBuffCtrls",
+      modCtrlName: "subArtBuffCtrls",
       ctrlIndex,
     };
     content.push(

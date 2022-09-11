@@ -21,9 +21,9 @@ import { findByIndex, processNumInput } from "@Src/utils";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const char = useSelector(selectChar);
-  const selfDebuffCtrls = useSelector(
-    (state) => state.calculator.allSelfDebuffCtrls[state.calculator.currentIndex]
-  );
+  const selfDebuffCtrls = useSelector((state) => {
+    return state.calculator.setups[state.calculator.currentIndex].selfDebuffCtrls;
+  });
   const dispatch = useDispatch();
 
   const { debuffs } = findCharacter(char) || {};
@@ -38,7 +38,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
 
     if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
       const path: ToggleModCtrlPath = {
-        modCtrlName: "allSelfDebuffCtrls",
+        modCtrlName: "selfDebuffCtrls",
         ctrlIndex,
       };
       let setters = null;
