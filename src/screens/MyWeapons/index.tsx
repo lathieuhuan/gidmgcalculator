@@ -6,11 +6,10 @@ import { WEAPON_ICONS } from "@Src/constants";
 
 import {
   addWeapon,
-  refineUsersWeapon,
   removeWeapon,
   sortWeapons,
   swapWeaponOwner,
-  upgradeUsersWeapon,
+  updateUsersWeapon,
 } from "@Store/usersDatabaseSlice";
 import {
   selectFilteredWeaponIDs,
@@ -97,8 +96,8 @@ export default function MyWeapons() {
                   <WeaponCard
                     weapon={weapon}
                     mutable
-                    upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: weapon.ID, level }))}
-                    refine={(refi) => dispatch(refineUsersWeapon({ ID: weapon.ID, refi }))}
+                    upgrade={(level) => dispatch(updateUsersWeapon({ ID: weapon.ID, level }))}
+                    refine={(refi) => dispatch(updateUsersWeapon({ ID: weapon.ID, refi }))}
                   />
                 ) : null}
               </div>

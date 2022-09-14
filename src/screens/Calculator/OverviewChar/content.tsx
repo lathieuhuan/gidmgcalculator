@@ -1,9 +1,4 @@
-import {
-  changeConsLevel,
-  changeTalentLevel,
-  refineWeapon,
-  upgradeWeapon,
-} from "@Store/calculatorSlice";
+import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 import {
   selectArtInfo,
   selectChar,
@@ -36,8 +31,8 @@ const contentByTab: Record<string, () => JSX.Element> = {
         <WeaponCard
           weapon={weapon}
           mutable
-          upgrade={(level) => dispatch(upgradeWeapon(level))}
-          refine={(refi) => dispatch(refineWeapon(refi))}
+          upgrade={(level) => dispatch(updateWeapon({ level }))}
+          refine={(refi) => dispatch(updateWeapon({ refi }))}
         />
       </div>
     );
@@ -79,7 +74,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
     return (
       <ConsList
         char={char}
-        onClickIcon={(i) => dispatch(changeConsLevel(char.cons === i + 1 ? i : i + 1))}
+        onClickIcon={(i) => dispatch(updateCharacter({ cons: char.cons === i + 1 ? i : i + 1 }))}
       />
     );
   },
@@ -92,7 +87,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
       <TalentList
         char={char}
         onChangeLevelOf={(type) => (level) => {
-          dispatch(changeTalentLevel({ type, level }));
+          dispatch(updateCharacter({ [type]: level }));
         }}
         party={party}
       />

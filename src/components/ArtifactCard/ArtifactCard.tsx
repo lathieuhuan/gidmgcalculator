@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type {
   CalcArtPiece,
-  CalcArtPieceMainStat,
+  ArtPieceMainStat,
   CalcArtPieceSubStat,
   CalcArtPieceSubStatInfo,
   Rarity,
@@ -135,7 +135,7 @@ interface ArtifactCardCommonProps {
 
 interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
   rarity: Rarity;
-  mainStatType: CalcArtPieceMainStat;
+  mainStatType: ArtPieceMainStat;
   subStats: CalcArtPieceSubStatInfo[];
 }
 export function ArtifactSubstats({

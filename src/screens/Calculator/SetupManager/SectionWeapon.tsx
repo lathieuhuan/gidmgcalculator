@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
-import { changeWeapon, refineWeapon, upgradeWeapon } from "@Store/calculatorSlice";
+import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { findWeapon } from "@Data/controllers";
@@ -47,7 +47,7 @@ export default function SectionWeapon() {
             <Select
               className={`text-rarity-${rarity} text-right`}
               value={weapon.level}
-              onChange={(e) => dispatch(upgradeWeapon(e.target.value as Level))}
+              onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
             >
               {(rarity < 3 ? LEVELS.slice(0, -4) : LEVELS).map((level) => (
                 <option key={level}>{level}</option>
@@ -60,7 +60,7 @@ export default function SectionWeapon() {
               <Select
                 className={`text-rarity-${rarity}`}
                 value={weapon.refi}
-                onChange={(e) => dispatch(refineWeapon(+e.target.value))}
+                onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
               >
                 {[1, 2, 3, 4, 5].map((level) => (
                   <option key={level}>{level}</option>

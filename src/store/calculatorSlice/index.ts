@@ -1,21 +1,20 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
-  CalcArtPieceMainStat,
   CalcSetup,
   CalculatorState,
   CalcWeapon,
+  CharInfo,
   CustomBuffCtrl,
   CustomDebuffCtrl,
-  Level,
   ResonancePair,
   UsersSetup,
   Vision,
 } from "@Src/types";
-import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 import type {
   AddTeammateAction,
   ApplySettingsOnCalculatorAction,
+  ChangeArtPieceAction,
   ChangeArtPieceSubStatAction,
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
@@ -34,14 +33,13 @@ import type {
   ToggleTeammateModCtrlAction,
   UpdateArtPieceAction,
 } from "./reducer-types";
-import {
-  initCharInfo,
-  initWeapon,
-  initCharModCtrls,
-  initElmtModCtrls,
-  initMonster,
-  initTarget,
-} from "./initiators";
+import type { MonsterConfig } from "@Data/monsters/types";
+
+import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
+
+import monsters from "@Data/monsters";
+import { RESONANCE_VISION_TYPES } from "@Src/constants";
+import { bareLv, countVision, countWeapon, indexByCode } from "@Src/utils";
 import {
   autoModifyTarget,
   calculate,
@@ -57,10 +55,14 @@ import {
   getSubWeaponComplexBuffCtrls,
   parseAndInitData,
 } from "./utils";
-import monsters from "@Data/monsters";
-import { MonsterConfig } from "@Data/monsters/types";
-import { bareLv, countVision, countWeapon, indexByCode } from "@Src/utils";
-import { RESONANCE_VISION_TYPES } from "@Src/constants";
+import {
+  initCharInfo,
+  initWeapon,
+  initCharModCtrls,
+  initElmtModCtrls,
+  initMonster,
+  initTarget,
+} from "./initiators";
 
 const defaultChar = {
   name: "Albedo",
@@ -132,7 +134,6 @@ export const calculatorSlice = createSlice({
       state.setups = [setupInfo];
       state.target = target;
       state.monster = initMonster();
-
       state.configs.separateCharInfo = false;
       state.currentIndex = 0;
 
@@ -160,55 +161,33 @@ export const calculatorSlice = createSlice({
         getSetupManageInfo({ name: getNewSetupName(setupManageInfos), ID, type })
       );
       state.setups.push(importedsetup);
-
       state.currentIndex = state.setups.length - 1;
+
       calculate(state, shouldOverwriteChar || shouldOverwriteTarget);
     },
     closeError: (state) => {
       state.isError = false;
     },
     // CHARACTER
-    levelCalcChar: (state, action: PayloadAction<Level>) => {
-      const level = action.payload;
-      const { currentIndex, configs } = state;
+    updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
+      const { configs, setups, target } = state;
+      const { level } = action.payload;
 
-      if (state.target.level === 1) {
-        state.target.level = bareLv(level);
+      if (level && target.level === 1) {
+        target.level = bareLv(level);
       }
       if (configs.separateCharInfo) {
-        state.setups[currentIndex].char.level = level;
-      } else {
-        for (const setup of state.setups) {
-          setup.char.level = level;
-        }
-      }
-      calculate(state, configs.separateCharInfo);
-    },
-    changeConsLevel: (state, action: PayloadAction<number>) => {
-      const newCons = action.payload;
-      const { configs, setups } = state;
-
-      if (configs.separateCharInfo) {
-        setups[state.currentIndex].char.cons = newCons;
+        const currentSetup = setups[state.currentIndex];
+        currentSetup.char = {
+          ...currentSetup.char,
+          ...action.payload,
+        };
       } else {
         for (const setup of setups) {
-          setup.char.cons = newCons;
-        }
-      }
-      calculate(state, configs.separateCharInfo);
-    },
-    changeTalentLevel: (
-      state,
-      action: PayloadAction<{ type: "NAs" | "ES" | "EB"; level: number }>
-    ) => {
-      const { type, level } = action.payload;
-      const { configs, setups } = state;
-
-      if (configs.separateCharInfo) {
-        setups[state.currentIndex].char[type] = level;
-      } else {
-        for (const setup of setups) {
-          setup.char[type] = level;
+          setup.char = {
+            ...setup.char,
+            ...action.payload,
+          };
         }
       }
       calculate(state, configs.separateCharInfo);
@@ -282,8 +261,7 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const tmIndex = action.payload;
-      const setup = state.setups[state.currentIndex];
-      const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = setup;
+      const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = state.setups[state.currentIndex];
       const teammate = party[tmIndex];
 
       if (teammate) {
@@ -311,7 +289,6 @@ export const calculatorSlice = createSlice({
     copyParty: (state, action: PayloadAction<number>) => {
       const sourceIndex = action.payload;
       const { currentIndex, setups } = state;
-
       setups[currentIndex].party = setups[sourceIndex].party;
       setups[currentIndex].elmtModCtrls = setups[sourceIndex].elmtModCtrls;
       setups[currentIndex].subWpComplexBuffCtrls = setups[sourceIndex].subWpComplexBuffCtrls;
@@ -319,7 +296,7 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // WEAPON
-    pickWeaponInUserDatabase: (state, action: PayloadAction<CalcWeapon>) => {
+    pickWeaponInUsersDatabase: (state, action: PayloadAction<CalcWeapon>) => {
       const wpInfo = action.payload;
       const setup = state.setups[state.currentIndex];
       setup.weapon = wpInfo;
@@ -328,8 +305,8 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
-      const setup = state.setups[state.currentIndex];
       const weapon = action.payload;
+      const setup = state.setups[state.currentIndex];
       const subWpBuffCtrls = setup.subWpComplexBuffCtrls[weapon.type];
 
       const oldWeapon = { ...setup.weapon };
@@ -346,37 +323,30 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
-    upgradeWeapon: (state, action: PayloadAction<Level>) => {
-      state.setups[state.currentIndex].weapon.level = action.payload;
-      calculate(state);
-    },
-    refineWeapon: (state, action: PayloadAction<number>) => {
-      state.setups[state.currentIndex].weapon.refi = action.payload;
+    updateWeapon: (state, action: PayloadAction<Partial<CalcWeapon>>) => {
+      const currentSetup = state.setups[state.currentIndex];
+      currentSetup.weapon = {
+        ...currentSetup.weapon,
+        ...action.payload,
+      };
       calculate(state);
     },
     // ARTIFACTS
-    enhanceArtPiece: (state, action: PayloadAction<{ pieceIndex: number; level: number }>) => {
-      const { pieceIndex, level } = action.payload;
-      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
+    updateArtPiece: (state, action: UpdateArtPieceAction) => {
+      const { pieceIndex, level, mainStatType } = action.payload;
+      const piece = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
-      if (pieceInfo) {
-        pieceInfo.level = level;
+      if (piece) {
+        if (level) {
+          piece.level = level;
+        }
+        if (mainStatType) {
+          piece.mainStatType = mainStatType;
+        }
       }
       calculate(state);
     },
-    changeArtPieceMainStatType: (
-      state,
-      action: PayloadAction<{ pieceIndex: number; type: CalcArtPieceMainStat }>
-    ) => {
-      const { pieceIndex, type } = action.payload;
-      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
-
-      if (pieceInfo) {
-        pieceInfo.mainStatType = type;
-      }
-      calculate(state);
-    },
-    changeArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
+    updateArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
       const { pieceIndex, subStatIndex, ...changeInfo } = action.payload;
       const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
@@ -388,7 +358,7 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    updateArtPiece: (state, action: UpdateArtPieceAction) => {
+    changeArtPiece: (state, action: ChangeArtPieceAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
       const setup = state.setups[state.currentIndex];
       const { artInfo, subArtBuffCtrls } = setup;
@@ -448,7 +418,6 @@ export const calculatorSlice = createSlice({
     },
     copyAllArtifacts: (state, action: PayloadAction<number>) => {
       const { setups, currentIndex } = state;
-
       setups[currentIndex].artInfo = setups[action.payload].artInfo;
       setups[currentIndex].artBuffCtrls = setups[action.payload].artBuffCtrls;
       setups[currentIndex].subArtBuffCtrls = setups[action.payload].subArtBuffCtrls;
@@ -469,12 +438,14 @@ export const calculatorSlice = createSlice({
     },
     changeResonanceInput: (state, action: PayloadAction<number>) => {
       // for now only dendro has inputs
-      const rsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(({ vision }) => {
-        return vision === "dendro";
-      });
+      const dendroRsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(
+        ({ vision }) => {
+          return vision === "dendro";
+        }
+      );
 
-      if (rsn && rsn.inputs) {
-        rsn.inputs[action.payload] = !rsn.inputs[action.payload];
+      if (dendroRsn && dendroRsn.inputs) {
+        dendroRsn.inputs[action.payload] = !dendroRsn.inputs[action.payload];
         calculate(state);
       }
     },
@@ -583,7 +554,6 @@ export const calculatorSlice = createSlice({
       } else {
         setups[currentIndex].customDebuffCtrls = setups[sourceIndex].customDebuffCtrls;
       }
-
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
@@ -703,20 +673,16 @@ export const {
   changeCurrentSetup,
   importSetup,
   closeError,
-  levelCalcChar,
-  changeConsLevel,
-  changeTalentLevel,
+  updateCharacter,
   addTeammate,
   removeTeammate,
   copyParty,
-  pickWeaponInUserDatabase,
+  pickWeaponInUsersDatabase,
   changeWeapon,
-  upgradeWeapon,
-  refineWeapon,
-  enhanceArtPiece,
-  changeArtPieceMainStatType,
-  changeArtPieceSubStat,
+  updateWeapon,
   updateArtPiece,
+  updateArtPieceSubStat,
+  changeArtPiece,
   updateAllArtPieces,
   copyAllArtifacts,
   toggleResonance,

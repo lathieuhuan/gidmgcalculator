@@ -1,15 +1,13 @@
 import cn from "classnames";
 import { type CSSProperties, useEffect } from "react";
-import type { ArtifactAttribute, CalcArtPieceMainStat, UsersWeapon } from "@Src/types";
+import type { ArtifactAttribute, ArtPieceMainStat, UsersWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
 
 import { useDispatch } from "@Store/hooks";
 import {
-  changeUsersArtifactMainStatType,
-  changeUsersArtifactSubStat,
-  enhanceUsersArtifact,
-  refineUsersWeapon,
-  upgradeUsersWeapon,
+  updateUsersArtifactSubStat,
+  updateUsersArtifact,
+  updateUsersWeapon,
 } from "@Store/usersDatabaseSlice";
 
 import { ArtifactCard } from "@Components/ArtifactCard";
@@ -66,8 +64,8 @@ export function GearsDetails({
             <WeaponCard
               weapon={wpInfo}
               mutable
-              upgrade={(level) => dispatch(upgradeUsersWeapon({ ID: wpInfo.ID, level }))}
-              refine={(refi) => dispatch(refineUsersWeapon({ ID: wpInfo.ID, refi }))}
+              upgrade={(level) => dispatch(updateUsersWeapon({ ID: wpInfo.ID, level }))}
+              refine={(refi) => dispatch(updateUsersWeapon({ ID: wpInfo.ID, refi }))}
             />
           </div>
           <Button className="mt-4 mx-auto" variant="positive" onClick={onClickSwitchWeapon}>
@@ -103,18 +101,18 @@ export function GearsDetails({
               <ArtifactCard
                 artPiece={artPiece}
                 mutable
-                enhance={(level) => dispatch(enhanceUsersArtifact({ ID: artPiece.ID, level }))}
+                enhance={(level) => dispatch(updateUsersArtifact({ ID: artPiece.ID, level }))}
                 changeMainStatType={(type) =>
                   dispatch(
-                    changeUsersArtifactMainStatType({
+                    updateUsersArtifact({
                       ID: artPiece.ID,
-                      type: type as CalcArtPieceMainStat,
+                      mainStatType: type as ArtPieceMainStat,
                     })
                   )
                 }
                 changeSubStat={(subStatIndex, changes) => {
                   dispatch(
-                    changeUsersArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
+                    updateUsersArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
                   );
                 }}
               />

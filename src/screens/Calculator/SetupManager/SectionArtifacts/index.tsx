@@ -2,7 +2,7 @@ import cn from "classnames";
 import { type RefObject, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 
-import { copyAllArtifacts, updateArtPiece } from "@Store/calculatorSlice";
+import { copyAllArtifacts, changeArtPiece } from "@Store/calculatorSlice";
 import {
   selectCalcSetups,
   selectCurrentIndex,
@@ -132,7 +132,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
         artifactType={ARTIFACT_TYPES[artifactPicker.slot]}
         onPickArtifact={(item) => {
           dispatch(
-            updateArtPiece({
+            changeArtPiece({
               pieceIndex: artifactPicker.slot,
               newPiece: { ID: Date.now(), ...item },
               isFresh: true,

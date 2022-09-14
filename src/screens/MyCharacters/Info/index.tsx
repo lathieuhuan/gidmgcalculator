@@ -9,12 +9,7 @@ import { findById, findByName, wikiImg } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import {
-  changeUsersCharConsLevel,
-  changeUsersCharTalentLevel,
-  levelUsersChar,
-  removeUsersChar,
-} from "@Store/usersDatabaseSlice";
+import { removeUsersCharacter, updateUsersCharacter } from "@Store/usersDatabaseSlice";
 import {
   selectChosenChar,
   selectMyArts,
@@ -100,7 +95,9 @@ export default function Info() {
               <Select
                 className={`text-right text-last-right text-xl text-${vision} font-bold`}
                 value={char.level}
-                onChange={(e) => dispatch(levelUsersChar({ name, level: e.target.value as Level }))}
+                onChange={(e) =>
+                  dispatch(updateUsersCharacter({ name, level: e.target.value as Level }))
+                }
               >
                 {LEVELS.map((lv, i) => (
                   <option key={i}>{lv}</option>
@@ -121,8 +118,13 @@ export default function Info() {
         <div className="h-full w-75">
           <ConsList
             char={char}
-            onClickIcon={(consIndex) => {
-              dispatch(changeUsersCharConsLevel({ name: char.name, consIndex }));
+            onClickIcon={(i) => {
+              dispatch(
+                updateUsersCharacter({
+                  name: char.name,
+                  cons: char.cons === i + 1 ? i : i + 1,
+                })
+              );
             }}
           />
         </div>
@@ -133,7 +135,7 @@ export default function Info() {
           <TalentList
             char={char}
             onChangeLevelOf={(type) => (level) => {
-              dispatch(changeUsersCharTalentLevel({ name: char.name, type, level }));
+              dispatch(updateUsersCharacter({ name: char.name, [type]: level }));
             }}
           />
         </div>
@@ -146,7 +148,7 @@ export default function Info() {
               Remove <b>{name}</b>?
             </>
           }
-          right={{ onClick: () => dispatch(removeUsersChar(name)) }}
+          right={{ onClick: () => dispatch(removeUsersCharacter(name)) }}
           onClose={() => setRemoving(false)}
         />
       </Modal>

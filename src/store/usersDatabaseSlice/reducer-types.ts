@@ -1,7 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   Artifact,
+  ArtPieceMainStat,
   CalcArtPieceSubStatInfo,
+  Level,
+  PartiallyRequired,
   UsersArtifact,
   UsersCharacter,
   UsersComplexSetup,
@@ -18,13 +21,11 @@ export type AddUsersDatabaseAction = PayloadAction<{
   Setups: (UsersSetup | UsersComplexSetup)[];
 }>;
 
-export type ChangeUsersCharTalentLevelAction = PayloadAction<{
-  name: string;
-  type: "NAs" | "ES" | "EB";
-  level: number;
-}>;
+export type UpdateUsersCharacterAction = PayloadAction<
+  PartiallyRequired<Partial<UsersCharacter>, "name">
+>;
 
-export type ChangeUsersArtifactSubStatAction = PayloadAction<
+export type UpdateUsersArtifactSubStatAction = PayloadAction<
   { ID: number; subStatIndex: number } & Partial<CalcArtPieceSubStatInfo>
 >;
 
@@ -32,6 +33,18 @@ export type RemoveArtifactAction = PayloadAction<{
   ID: number;
   owner: string | null;
   type: Artifact;
+}>;
+
+export type UpdateUsersWeaponAction = PayloadAction<{
+  ID: number;
+  level?: Level;
+  refi?: number;
+}>;
+
+export type UpdateUsersArtifactAction = PayloadAction<{
+  ID: number;
+  level?: number;
+  mainStatType?: ArtPieceMainStat;
 }>;
 
 export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: Weapon }>;

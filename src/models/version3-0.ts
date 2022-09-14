@@ -2,7 +2,7 @@ import { statsMap } from "@Src/constants";
 import {
   Artifact,
   CalcArtInfo,
-  CalcArtPieceMainStat,
+  ArtPieceMainStat,
   CalcArtPieceSubStat,
   CalcArtPieceSubStatInfo,
   CalcWeapon,
@@ -96,7 +96,7 @@ export class MyArtifact3_0 {
 
   @Expose({ name: "mainSType" })
   @Transform(({ obj }) => statsMap[obj.mainSType])
-  mainStatType: CalcArtPieceMainStat;
+  mainStatType: ArtPieceMainStat;
 
   @Expose({ name: "subS" })
   @Transform(({ obj }) => plainToInstance(ArtifactSubstat, obj.subS))

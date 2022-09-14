@@ -3,7 +3,7 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import { findCharacter } from "@Data/controllers";
 
-import { levelCalcChar } from "@Store/calculatorSlice";
+import { updateCharacter } from "@Store/calculatorSlice";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
@@ -54,7 +54,7 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
             <Select
               className={`text-lg text-${vision} font-bold text-last-right`}
               value={char.level}
-              onChange={(e) => dispatch(levelCalcChar(e.target.value as Level))}
+              onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
             >
               {LEVELS.map((lv) => (
                 <option key={lv} className="text-black">

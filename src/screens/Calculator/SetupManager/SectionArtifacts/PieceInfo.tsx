@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 
-import {
-  changeArtPieceMainStatType,
-  changeArtPieceSubStat,
-  enhanceArtPiece,
-  updateArtPiece,
-} from "@Store/calculatorSlice";
+import { updateArtPieceSubStat, changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
 import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 
-import type { CalcArtPiece, CalcArtPieceMainStat } from "@Src/types";
+import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { findById, isEqual, percentSign } from "@Src/utils";
 
@@ -49,7 +44,7 @@ export default function PieceInfo({
             value={"+" + level}
             onChange={(e) =>
               dispatch(
-                enhanceArtPiece({
+                updateArtPiece({
                   pieceIndex,
                   level: +e.target.value.slice(1),
                 })
@@ -75,9 +70,9 @@ export default function PieceInfo({
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(
-                    changeArtPieceMainStatType({
+                    updateArtPiece({
                       pieceIndex,
-                      type: e.target.value as CalcArtPieceMainStat,
+                      mainStatType: e.target.value as ArtPieceMainStat,
                     })
                   )
                 }
@@ -101,7 +96,7 @@ export default function PieceInfo({
           mainStatType={mainStatType}
           subStats={pieceInfo.subStats}
           changeSubStat={(subStatIndex, changeInfo) => {
-            dispatch(changeArtPieceSubStat({ pieceIndex, subStatIndex, ...changeInfo }));
+            dispatch(updateArtPieceSubStat({ pieceIndex, subStatIndex, ...changeInfo }));
           }}
         />
       </div>
@@ -110,7 +105,7 @@ export default function PieceInfo({
         <IconButton
           variant="negative"
           onClick={() => {
-            dispatch(updateArtPiece({ pieceIndex, newPiece: null }));
+            dispatch(changeArtPiece({ pieceIndex, newPiece: null }));
             onClickRemovePiece();
           }}
         >
@@ -125,7 +120,7 @@ export default function PieceInfo({
           className="font-bold"
           disabled={pieceInfo.level === maxLevel}
           variant="neutral"
-          onClick={() => dispatch(enhanceArtPiece({ pieceIndex, level: maxLevel }))}
+          onClick={() => dispatch(updateArtPiece({ pieceIndex, level: maxLevel }))}
         >
           {maxLevel}
         </IconButton>

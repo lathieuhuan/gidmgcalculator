@@ -3,17 +3,16 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import { ARTIFACT_ICONS } from "@Src/constants";
-import { Artifact, CalcArtPieceMainStat, UsersArtifact } from "@Src/types";
+import { Artifact, ArtPieceMainStat, UsersArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
   addArtifact,
-  changeUsersArtifactMainStatType,
-  changeUsersArtifactSubStat,
-  enhanceUsersArtifact,
+  updateUsersArtifactSubStat,
   removeArtifact,
   sortArtifacts,
   swapArtifactOwner,
+  updateUsersArtifact,
 } from "@Store/usersDatabaseSlice";
 import { selectArtifactById, selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 
@@ -136,18 +135,18 @@ export default function MyArtifacts() {
                   <ArtifactCard
                     artPiece={artifact}
                     mutable
-                    enhance={(level) => dispatch(enhanceUsersArtifact({ ID: artifact.ID, level }))}
+                    enhance={(level) => dispatch(updateUsersArtifact({ ID: artifact.ID, level }))}
                     changeMainStatType={(type) =>
                       dispatch(
-                        changeUsersArtifactMainStatType({
+                        updateUsersArtifact({
                           ID: artifact.ID,
-                          type: type as CalcArtPieceMainStat,
+                          mainStatType: type as ArtPieceMainStat,
                         })
                       )
                     }
                     changeSubStat={(subStatIndex, changes) => {
                       dispatch(
-                        changeUsersArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
+                        updateUsersArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
                       );
                     }}
                   />

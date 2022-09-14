@@ -2,7 +2,7 @@ import cn from "classnames";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
 
-import type { Artifact, CalcArtPieceMainStat, CalcArtPieceSubStat } from "@Src/types";
+import type { Artifact, ArtPieceMainStat, CalcArtPieceSubStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import { StatsFilter } from "../utils";
@@ -36,7 +36,7 @@ export default function useArtStatsFilter({ artifactType, stats, isError }: UseA
   const subStatOptions = ["All", ...CORE_STAT_TYPES, ...ARTIFACT_PERCENT_STAT_TYPES, "em"];
 
   const onChangeMainStat: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | CalcArtPieceMainStat }));
+    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | ArtPieceMainStat }));
   };
 
   const onChangeSubStat = (newStat: string, index: number) => {

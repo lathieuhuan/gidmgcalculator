@@ -5,8 +5,6 @@ import type {
   SubArtModCtrl,
   SubWeaponBuffCtrl,
   SubWeaponComplexBuffCtrl,
-  UsersSetup,
-  UsersSetupCalcInfo,
   Weapon,
 } from "@Src/types";
 import { WEAPON_TYPES } from "@Src/constants";
@@ -23,8 +21,8 @@ import { findByIndex } from ".";
 
 export function cleanCalcSetup(data: CalcSetup): CalcSetup {
   const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
-  const party: Party = [];
   const subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl = {};
+  const party: Party = [];
 
   for (const weaponType of WEAPON_TYPES) {
     if (weaponType in data.subWpComplexBuffCtrls) {
@@ -75,7 +73,7 @@ type Restorable = {
   refi?: number;
 };
 
-export function restoreCalcSetup(data: UsersSetup) {
+export function restoreCalcSetup(data: CalcSetup) {
   function restoreModCtrls(newCtrls: Restorable[], refCtrls: Restorable[]) {
     for (const refCtrl of refCtrls) {
       const i = newCtrls.findIndex(({ code, index }) => {
@@ -97,6 +95,7 @@ export function restoreCalcSetup(data: UsersSetup) {
   const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
   const wpBuffCtrls = getMainWpBuffCtrls(weapon);
   const subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl = {};
+  const party: Party = [];
 
   for (const key in data.subWpComplexBuffCtrls) {
     const weaponType = key as Weapon;
@@ -106,30 +105,35 @@ export function restoreCalcSetup(data: UsersSetup) {
     subWpComplexBuffCtrls[weaponType] = restoreModCtrls(newCtrls, refCtrls) as SubWeaponBuffCtrl[];
   }
 
+  for (const teammate of data.party) {
+    if (teammate) {
+      const [buffCtrls, debuffCtrls] = initCharModCtrls(teammate.name, false);
+      party.push({
+        name: teammate.name,
+        buffCtrls,
+        debuffCtrls,
+      });
+    }
+  }
+
   const setCode = artInfo.sets[0]?.bonusLv === 1 ? artInfo.sets[0].code : null;
   const artBuffCtrls = getMainArtBuffCtrls(setCode);
   const subArtBuffCtrls = getAllSubArtBuffCtrls(setCode);
   const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
 
-  const output: UsersSetupCalcInfo = {
-    char,
-    party: data.party,
-    weapon,
-    artInfo,
+  const output: CalcSetup = {
+    ...data,
     selfBuffCtrls: restoreModCtrls(selfBuffCtrls, data.selfBuffCtrls),
     selfDebuffCtrls: restoreModCtrls(selfDebuffCtrls, data.selfDebuffCtrls),
     wpBuffCtrls: restoreModCtrls(wpBuffCtrls, data.wpBuffCtrls),
     subWpComplexBuffCtrls,
+    party,
     artBuffCtrls: restoreModCtrls(artBuffCtrls, data.artBuffCtrls),
     subArtBuffCtrls: restoreModCtrls(subArtBuffCtrls, data.subArtBuffCtrls) as SubArtModCtrl[],
     subArtDebuffCtrls: restoreModCtrls(
       subArtDebuffCtrls,
       data.subArtDebuffCtrls
     ) as SubArtModCtrl[],
-    elmtModCtrls: data.elmtModCtrls,
-    customBuffCtrls: data.customBuffCtrls,
-    customDebuffCtrls: data.customDebuffCtrls,
-    target: data.target,
   };
 
   return output;

@@ -3,11 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ARTIFACT_TYPES } from "@Src/constants";
 import type {
   CalcArtPiece,
-  CalcArtPieceMainStat,
-  Level,
   UsersArtifact,
   UsersDatabaseState,
-  UsersSetup,
   UsersWeapon,
   Weapon,
 } from "@Src/types";
@@ -15,14 +12,16 @@ import { findById, findByName, indexById, indexByName, splitLv } from "@Src/util
 import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
 import {
   AddUsersDatabaseAction,
-  ChangeUsersArtifactSubStatAction,
-  ChangeUsersCharTalentLevelAction,
+  UpdateUsersArtifactSubStatAction,
   RemoveArtifactAction,
   RemoveWeaponAction,
   SaveSetupAction,
   SwitchArtifactAction,
   SwitchWeaponAction,
   UnequipArtifactAction,
+  UpdateUsersArtifactAction,
+  UpdateUsersCharacterAction,
+  UpdateUsersWeaponAction,
 } from "./reducer-types";
 
 const initialState: UsersDatabaseState = {
@@ -84,31 +83,18 @@ export const usersDatabaseSlice = createSlice({
     sortCharacters: (state, action: PayloadAction<number[]>) => {
       state.myChars = action.payload.map((index) => state.myChars[index]);
     },
-    levelUsersChar: (state, action: PayloadAction<{ name: string; level: Level }>) => {
-      const { name, level } = action.payload;
-      const char = findByName(state.myChars, name);
-      if (char) {
-        char.level = level;
+    updateUsersCharacter: (state, action: UpdateUsersCharacterAction) => {
+      const { name, ...newInfo } = action.payload;
+      const charIndex = indexByName(state.myChars, name);
+
+      if (charIndex !== -1) {
+        state.myChars[charIndex] = {
+          ...state.myChars[charIndex],
+          ...newInfo,
+        };
       }
     },
-    changeUsersCharConsLevel: (
-      state,
-      action: PayloadAction<{ name: string; consIndex: number }>
-    ) => {
-      const { name, consIndex } = action.payload;
-      const char = findByName(state.myChars, name);
-      if (char) {
-        char.cons = char.cons === consIndex + 1 ? consIndex : consIndex + 1;
-      }
-    },
-    changeUsersCharTalentLevel: (state, action: ChangeUsersCharTalentLevelAction) => {
-      const { name, type, level } = action.payload;
-      const char = findByName(state.myChars, name);
-      if (char) {
-        char[type] = level;
-      }
-    },
-    removeUsersChar: (state, action: PayloadAction<string>) => {
+    removeUsersCharacter: (state, action: PayloadAction<string>) => {
       const { myChars, myWps, myArts } = state;
       const name = action.payload;
       let charIndex = indexByName(myChars, name);
@@ -195,18 +181,15 @@ export const usersDatabaseSlice = createSlice({
     addWeapon: (state, action: PayloadAction<UsersWeapon>) => {
       state.myWps.unshift(action.payload);
     },
-    upgradeUsersWeapon: (state, action: PayloadAction<{ ID: number; level: Level }>) => {
-      const { ID, level } = action.payload;
-      const weapon = findById(state.myWps, ID);
-      if (weapon) {
-        weapon.level = level;
-      }
-    },
-    refineUsersWeapon: (state, action: PayloadAction<{ ID: number; refi: number }>) => {
-      const { ID, refi } = action.payload;
-      const weapon = findById(state.myWps, ID);
-      if (weapon) {
-        weapon.refi = refi;
+    updateUsersWeapon: (state, action: UpdateUsersWeaponAction) => {
+      const { ID, ...newInfo } = action.payload;
+      const weaponIndex = indexById(state.myWps, ID);
+
+      if (weaponIndex !== -1) {
+        state.myWps[weaponIndex] = {
+          ...state.myWps[weaponIndex],
+          ...newInfo,
+        };
       }
     },
     swapWeaponOwner: (
@@ -287,24 +270,18 @@ export const usersDatabaseSlice = createSlice({
     addArtifact: (state, action: PayloadAction<UsersArtifact>) => {
       state.myArts.unshift(action.payload);
     },
-    enhanceUsersArtifact: (state, action: PayloadAction<{ ID: number; level: number }>) => {
-      const { ID, level } = action.payload;
-      const artifact = findById(state.myArts, ID);
-      if (artifact) {
-        artifact.level = level;
+    updateUsersArtifact: (state, action: UpdateUsersArtifactAction) => {
+      const { ID, ...newInfo } = action.payload;
+      const artifactIndex = indexById(state.myArts, ID);
+
+      if (artifactIndex !== -1) {
+        state.myArts[artifactIndex] = {
+          ...state.myArts[artifactIndex],
+          ...newInfo,
+        };
       }
     },
-    changeUsersArtifactMainStatType: (
-      state,
-      action: PayloadAction<{ ID: number; type: CalcArtPieceMainStat }>
-    ) => {
-      const { ID, type } = action.payload;
-      const artifact = findById(state.myArts, ID);
-      if (artifact) {
-        artifact.mainStatType = type;
-      }
-    },
-    changeUsersArtifactSubStat: (state, action: ChangeUsersArtifactSubStatAction) => {
+    updateUsersArtifactSubStat: (state, action: UpdateUsersArtifactSubStatAction) => {
       const { ID, subStatIndex, ...changeInfo } = action.payload;
       const artifact = findById(state.myArts, ID);
       if (artifact) {
@@ -452,23 +429,19 @@ export const {
   addCharacter,
   chooseCharacter,
   sortCharacters,
-  levelUsersChar,
-  changeUsersCharConsLevel,
-  changeUsersCharTalentLevel,
-  removeUsersChar,
+  updateUsersCharacter,
+  removeUsersCharacter,
   switchWeapon,
   switchArtifact,
   unequipArtifact,
   addWeapon,
-  refineUsersWeapon,
   swapWeaponOwner,
-  upgradeUsersWeapon,
+  updateUsersWeapon,
   sortWeapons,
   removeWeapon,
   addArtifact,
-  enhanceUsersArtifact,
-  changeUsersArtifactMainStatType,
-  changeUsersArtifactSubStat,
+  updateUsersArtifact,
+  updateUsersArtifactSubStat,
   swapArtifactOwner,
   overwriteArtifact,
   sortArtifacts,

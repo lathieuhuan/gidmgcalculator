@@ -1,4 +1,4 @@
-import { MonsterConfig } from "@Data/monsters/types";
+import type { MonsterConfig } from "@Data/monsters/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   AmplifyingReaction,
@@ -13,15 +13,22 @@ import type {
   CalcConfigurations,
   UsersSetup,
   CalcSetupManageInfo,
+  ArtPieceMainStat,
 } from "@Src/types";
 
-export interface PickedChar extends Partial<UsersCharacter> {
+export type PickedChar = Partial<UsersCharacter> & {
   name: string;
-}
+};
 export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
   myWps: UsersWeapon[];
   myArts: UsersArtifact[];
+}>;
+
+export type UpdateArtPieceAction = PayloadAction<{
+  pieceIndex: number;
+  level?: number;
+  mainStatType?: ArtPieceMainStat;
 }>;
 
 export type AddTeammateAction = PayloadAction<{
@@ -102,7 +109,7 @@ export type ChangeMonsterConfigAction = PayloadAction<{
   value: MonsterConfig;
 }>;
 
-export type UpdateArtPieceAction = PayloadAction<{
+export type ChangeArtPieceAction = PayloadAction<{
   pieceIndex: number;
   newPiece: CalcArtPiece | null;
   isFresh?: boolean;

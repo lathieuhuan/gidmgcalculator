@@ -5,8 +5,8 @@ import type { Artifact } from "@Src/types";
 import { pickEquippedArtSet } from "@Store/thunks";
 import {
   changeCurrentSetup,
-  pickWeaponInUserDatabase,
-  updateArtPiece,
+  pickWeaponInUsersDatabase,
+  changeArtPiece,
 } from "@Store/calculatorSlice";
 import {
   changeStandardSetup,
@@ -134,7 +134,7 @@ export default function SetupManager() {
         weaponType={charData.weapon}
         buttonText="Pick"
         onClickButton={({ owner, ...wpInfo }) => {
-          dispatch(pickWeaponInUserDatabase(wpInfo));
+          dispatch(pickWeaponInUsersDatabase(wpInfo));
         }}
         onClose={onCloseModal}
       />
@@ -147,7 +147,7 @@ export default function SetupManager() {
         buttonText="Pick"
         onClickButton={({ owner, ...pieceInfo }) => {
           dispatch(
-            updateArtPiece({
+            changeArtPiece({
               pieceIndex: ARTIFACT_TYPES.indexOf(modalType as Artifact),
               newPiece: pieceInfo,
             })
