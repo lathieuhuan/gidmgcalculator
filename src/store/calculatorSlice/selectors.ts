@@ -42,3 +42,5 @@ export const selectRxnBonus = (state: RootState) =>
 
 export const selectDamageResult = (state: RootState) =>
   state.calculator.allDmgResult[state.calculator.currentIndex];
+
+export const selectTarget = (state: RootState) => state.calculator.target;

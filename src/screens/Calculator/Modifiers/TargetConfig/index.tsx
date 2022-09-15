@@ -5,7 +5,11 @@ import type { Target } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 import { MONSTER_VARIANT_LABELS } from "@Data/monsters/constants";
 
-import { selectCharData, selectFinalInfusion } from "@Store/calculatorSlice/selectors";
+import {
+  selectCharData,
+  selectFinalInfusion,
+  selectTarget,
+} from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeMonster, changeMonsterConfig, modifyTarget } from "@Store/calculatorSlice";
 
@@ -19,7 +23,7 @@ import { twInputStyles } from "@Screens/Calculator/components";
 
 export default function TargetConfig() {
   const dispatch = useDispatch();
-  const target = useSelector((state) => state.calculator.target);
+  const target = useSelector(selectTarget);
   const monster = useSelector((state) => state.calculator.monster);
   const infusion = useSelector(selectFinalInfusion);
   const { weapon, vision } = useSelector(selectCharData);

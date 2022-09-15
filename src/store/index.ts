@@ -1,4 +1,3 @@
-/// <reference types="redux-persist" />
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {

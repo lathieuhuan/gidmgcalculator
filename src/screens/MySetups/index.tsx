@@ -122,6 +122,7 @@ export default function MySetups() {
 
     if (setup.type === "complex") {
       const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UsersSetup;
+
       setupDisplay = (
         <SetupLayout
           ID={ID}
@@ -140,7 +141,7 @@ export default function MySetups() {
         key={ID}
         className={cn(
           "mb-4 px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
-          ID === chosenSetupID ? "ring-2 ring-white/50" : "shadow-common"
+          ID === chosenSetupID ? "shadow-white/50 shadow-5px-2px" : "shadow-common"
         )}
         onClick={() => dispatch(chooseUsersSetup(ID))}
       >
@@ -359,7 +360,7 @@ export default function MySetups() {
 
           <div
             className="ml-4 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3 flex flex-col"
-            style={{ minWidth: "21.75rem" }}
+            style={{ width: "21.75rem" }}
           >
             {chosenSetup && (
               <>

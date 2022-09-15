@@ -21,13 +21,14 @@ import { Modal } from "@Components/modals";
 import { Button } from "./styled-components";
 
 function App() {
+  const dispatch = useDispatch();
+
   const [loadOptionType, setLoadOptionType] = useState<"UP" | "DOWN" | "">("");
   const [navBarMenuActive, setNavBarMenuActive] = useState(false);
   const [outdates, setOutdates] = useState([]);
 
   const atScreen = useSelector(selectAtScreen);
   const isError = useSelector((state) => state.calculator.isError);
-  const dispatch = useDispatch();
 
   const checkAndAddUsersData = useCallback(
     (data: any) => {

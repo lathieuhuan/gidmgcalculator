@@ -55,7 +55,7 @@ export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayPr
             <CollapseSpace active={!closedItems[index]}>
               {withDamage ? (
                 <div className="custom-scrollbar">
-                  <table className={cn("mb-2 w-full", tableStyles)}>
+                  <table className={cn("mb-2 w-full", tableStyles.table)}>
                     <colgroup>
                       <col className="w-34" />
                       <col />

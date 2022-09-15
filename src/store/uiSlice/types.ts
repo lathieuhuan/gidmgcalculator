@@ -8,13 +8,12 @@ export interface UIState {
   settingsOn: boolean;
   standardIndex: number;
   comparedIndexes: number[];
-  // #todo
-  importInfo: ImportInfo | null;
+  importInfo: ImportInfo;
 }
 
 export type ImportInfo = {
   type: "" | "EDIT_SETUP" | "IMPORT_OUTSIDE";
-  data: UsersSetup | null;
+  data?: UsersSetup;
 };
 
 export type ApplySettingsOnUIAction = PayloadAction<{
