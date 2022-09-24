@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { useMemo } from "react";
 import {
   FaCalculator,
   FaLink,
@@ -14,12 +15,12 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 import { useDispatch } from "@Store/hooks";
+import { updateImportInfo } from "@Store/uiSlice";
 import { finalTalentLv, wikiImg } from "@Src/utils";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Button, IconButton } from "@Src/styled-components";
-import { useMemo } from "react";
-import { updateImportInfo } from "@Store/uiSlice";
+import { chooseUsersSetup, uncombineSetups } from "@Store/usersDatabaseSlice";
 
 interface SetupLayoutProps {
   ID: number;
@@ -36,15 +37,22 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
   const renderLinkButton = (ID: number, displayedID: number) => {
     const uncombine = () => {
-      // dispatch(unCombineComplexSetup(ID));
-      // setTimeout(() => {
-      //   dispatch(chooseUsersSetup(shownID));
-      // }, 10);
+      dispatch(uncombineSetups(ID));
+
+      setTimeout(() => {
+        console.log(ID);
+        console.log(displayedID);
+        dispatch(chooseUsersSetup(displayedID));
+      }, 10);
     };
 
     return window.innerWidth > 1050 ? (
-      <button className="w-8 h-8 rounded-circle text-white hover:bg-darkred" onClick={uncombine}>
-        <FaLink />
+      <button
+        className="w-8 h-8 mr-2 rounded-circle text-white hover:bg-darkred flex-center group"
+        onClick={uncombine}
+      >
+        <FaUnlink className="hidden group-hover:block" />
+        <FaLink className="block group-hover:hidden" />
       </button>
     ) : (
       <IconButton className="mr-2" variant="negative" onClick={uncombine}>
@@ -97,7 +105,9 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
             key={tmIndex}
             className={cn(
               "w-20",
-              clickable ? "shadow-3px-3px shadow-lightgold cursor-pointer" : "group relative"
+              clickable
+                ? "rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
+                : "group relative"
             )}
           >
             <CharFilledSlot
@@ -182,7 +192,10 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
   return (
     <>
-      <div className="px-2 flex justify-between flex-col lg:flex-row">
+      <div
+        className="px-2 flex justify-between flex-col lg:flex-row"
+        onDoubleClick={() => console.log(setup)}
+      >
         <div className="w-68 lg:w-96 flex items-center">
           {!isOriginal && renderLinkButton(ID, setup.ID)}
           <p className="text-h3 text-orange font-bold truncate">{setupName || setup.name}</p>

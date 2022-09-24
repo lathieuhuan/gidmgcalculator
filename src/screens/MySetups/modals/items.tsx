@@ -1,13 +1,15 @@
-import { renderEquippedChar } from "@Components/item-stores/components";
 import cn from "classnames";
-import { WeaponCard } from "@Components/WeaponCard";
-import { CalcArtPieces, CalcWeapon } from "@Src/types";
+import { Fragment } from "react";
+import { FaCircle } from "react-icons/fa";
+
+import type { CalcArtPieces, CalcWeapon } from "@Src/types";
 import { findById, isEqual } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
 import { selectMyArts, selectMyWps } from "@Store/usersDatabaseSlice/selectors";
-import { FaCircle } from "react-icons/fa";
+
+import { WeaponCard } from "@Components/WeaponCard";
 import { ArtifactCard } from "@Components/ArtifactCard";
-import { Fragment } from "react";
+import { renderEquippedChar } from "@Components/item-stores/components";
 
 interface OutdateWarnProps {
   className?: string;

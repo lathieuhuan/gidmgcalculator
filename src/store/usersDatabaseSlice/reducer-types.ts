@@ -78,3 +78,8 @@ export type SaveSetupAction = PayloadAction<{
   name: string;
   data: UsersSetupCalcInfo;
 }>;
+
+export type CombineSetupsAction = PayloadAction<{
+  name: string;
+  pickedIDs: number[];
+}>;

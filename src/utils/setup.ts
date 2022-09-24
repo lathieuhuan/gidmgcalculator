@@ -43,6 +43,9 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
       });
     }
   }
+  if (party.length < 3) {
+    party.push(...Array(3 - party.length).fill(null));
+  }
 
   return {
     ...data,

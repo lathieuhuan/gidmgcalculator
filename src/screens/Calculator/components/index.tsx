@@ -35,7 +35,7 @@ export const CopySection = ({ options, onClickCopy }: CopySectionProps) => {
   return (
     <div className="mb-4 px-4 flex justify-end">
       <Select
-        className="px-1 rounded bg-default font-bold text-black"
+        className="px-1 rounded-l bg-default font-bold text-black"
         value={chosen}
         onChange={(e) => setChosen(e.target.value)}
       >
@@ -43,9 +43,12 @@ export const CopySection = ({ options, onClickCopy }: CopySectionProps) => {
           <option key={i}>{opt}</option>
         ))}
       </Select>
-      <IconButton className="ml-4" variant="positive" onClick={() => onClickCopy(chosen)}>
+      <button
+        className="w-8 h-8 bg-lightgold text-black rounded-r flex-center glow-on-hover"
+        onClick={() => onClickCopy(chosen)}
+      >
         <FaCopy />
-      </IconButton>
+      </button>
     </div>
   );
 };

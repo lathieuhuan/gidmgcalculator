@@ -12,7 +12,7 @@ import { Modal, ModalControl } from "@Components/modals";
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "rounded px-1 bg-white text-red-500 border-2 border-red-500 text-xs font-bold",
+      "rounded px-1 bg-white text-red-500 border-2 border-red-500 text-xs font-bold cursor-default",
       className
     )}
     {...rest}
@@ -53,8 +53,8 @@ export const SeeDetails = (props: SeeDetailsProps) => {
   return (
     <p
       className={cn(
-        "text-white cursor-pointer hover:text-lightgold",
-        active && "text-green",
+        "cursor-pointer",
+        active ? "text-green" : "text-white hover:text-lightgold",
         className
       )}
       {...rest}

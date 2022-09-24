@@ -1,6 +1,4 @@
-import { findArtifactSet, findWeapon } from "@Data/controllers";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ARTIFACT_TYPES } from "@Src/constants";
 import type {
   CalcArtPiece,
   UsersArtifact,
@@ -8,9 +6,7 @@ import type {
   UsersWeapon,
   Weapon,
 } from "@Src/types";
-import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
-import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
-import {
+import type {
   AddUsersDatabaseAction,
   UpdateUsersArtifactSubStatAction,
   RemoveArtifactAction,
@@ -22,7 +18,14 @@ import {
   UpdateUsersArtifactAction,
   UpdateUsersCharacterAction,
   UpdateUsersWeaponAction,
+  CombineSetupsAction,
 } from "./reducer-types";
+import { ARTIFACT_TYPES } from "@Src/constants";
+
+import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
+import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
+import { findArtifactSet, findWeapon } from "@Data/controllers";
+import { isUsersSetup } from "./utils";
 
 const initialState: UsersDatabaseState = {
   myChars: [],
@@ -421,6 +424,48 @@ export const usersDatabaseSlice = createSlice({
           : visibleIDs[removedIndexInVisible + 1];
       state.chosenSetupID = newID;
     },
+    combineSetups: (state, action: CombineSetupsAction) => {
+      const { pickedIDs, name } = action.payload;
+      const { mySetups } = state;
+      const allIDs: Record<string, number> = {};
+      const ID = Date.now();
+
+      for (const ID of pickedIDs) {
+        const setup = findById(mySetups, ID);
+
+        if (setup) {
+          setup.type = "combined";
+
+          if (isUsersSetup(setup)) {
+            allIDs[setup.char.name] = ID;
+          }
+        }
+      }
+
+      mySetups.unshift({
+        name,
+        ID,
+        type: "complex",
+        shownID: pickedIDs[0],
+        allIDs,
+      });
+      state.chosenSetupID = ID;
+    },
+    uncombineSetups: ({ mySetups }, action: PayloadAction<number>) => {
+      const index = indexById(mySetups, action.payload);
+      const targetSetup = mySetups[index];
+
+      if (targetSetup && !isUsersSetup(targetSetup)) {
+        for (const ID of Object.values(targetSetup.allIDs)) {
+          const combinedSetup = findById(mySetups, ID);
+
+          if (combinedSetup) {
+            combinedSetup.type = "original";
+          }
+        }
+        mySetups.splice(index, 1);
+      }
+    },
   },
 });
 
@@ -449,6 +494,8 @@ export const {
   chooseUsersSetup,
   saveSetup,
   removeSetup,
+  combineSetups,
+  uncombineSetups,
 } = usersDatabaseSlice.actions;
 
 export default usersDatabaseSlice.reducer;
