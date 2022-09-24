@@ -78,20 +78,21 @@ export function OverrideOptions({
                               <th className={cn("text-lightgold", tableStyles.th)}>New</th>
                             </tr>
                             {Object.keys(object1).map((type, i) => (
-                              <tr key={i}>
+                              <tr key={i} className={tableStyles.row}>
                                 <td
-                                  className={cn("capitalize", {
-                                    warning: object1[type] !== object2[type],
-                                  })}
+                                  className={cn(
+                                    "capitalize " + tableStyles.td,
+                                    object1[type] !== object2[type] && "text-lightred"
+                                  )}
                                 >
                                   {type}
                                 </td>
-                                <td>
+                                <td className={tableStyles.td}>
                                   {separateCharInfo
                                     ? `[${object1[type].join(", ")}]`
                                     : object2[type]}
                                 </td>
-                                <td>{object2[type]}</td>
+                                <td className={tableStyles.td}>{object2[type]}</td>
                               </tr>
                             ))}
                           </tbody>

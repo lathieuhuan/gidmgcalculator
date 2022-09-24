@@ -17,7 +17,7 @@ import {
   getSubWeaponComplexBuffCtrls,
 } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
-import { findByIndex } from ".";
+import { findByIndex } from "./index";
 
 export function cleanCalcSetup(data: CalcSetup): CalcSetup {
   const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
@@ -105,14 +105,19 @@ export function restoreCalcSetup(data: CalcSetup) {
     subWpComplexBuffCtrls[weaponType] = restoreModCtrls(newCtrls, refCtrls) as SubWeaponBuffCtrl[];
   }
 
-  for (const teammate of data.party) {
+  for (const index of [0, 1, 2]) {
+    const teammate = data.party[index];
+
     if (teammate) {
       const [buffCtrls, debuffCtrls] = initCharModCtrls(teammate.name, false);
+
       party.push({
         name: teammate.name,
-        buffCtrls,
-        debuffCtrls,
+        buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),
+        debuffCtrls: restoreModCtrls(debuffCtrls, teammate.debuffCtrls),
       });
+    } else {
+      party.push(null);
     }
   }
 

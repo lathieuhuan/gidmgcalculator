@@ -34,7 +34,7 @@ export function renderSetters(
   const labels = (useSelfLabels ? inputConfig.selfLabels : inputConfig.labels) || [];
 
   return labels.map((label, i) => (
-    <div key={i} className="mt-1 flex justify-end align-center">
+    <div key={i} className="flex justify-end align-center">
       <p className={cn(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
 
       {renderTypes[i] === "check" ? (

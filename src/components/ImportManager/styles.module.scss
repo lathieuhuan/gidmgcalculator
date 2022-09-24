@@ -1,0 +1,12 @@
+.loading-inner {
+  animation: loading 90ms ease-in 50ms forwards;
+}
+
+@keyframes loading {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}

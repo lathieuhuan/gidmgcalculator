@@ -17,6 +17,7 @@ import UploadOptions from "@Components/load-options/UploadOptions";
 
 import { adjustUsersData } from "./utils/adjustUsersData";
 import { addUsersDatabase } from "@Store/usersDatabaseSlice";
+import { ImportManager } from "@Components/ImportManager";
 import { Modal } from "@Components/modals";
 import { Button } from "./styled-components";
 
@@ -107,6 +108,8 @@ function App() {
         onSuccess={() => setNavBarMenuActive(false)}
         onClose={() => setLoadOptionType("")}
       />
+
+      <ImportManager />
     </div>
   );
 }

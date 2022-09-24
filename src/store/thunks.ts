@@ -45,8 +45,6 @@ export const saveSetupThunk = (index: number, ID: number, name: string): AppThun
   return (dispatch, getState) => {
     const { calculator } = getState();
 
-    console.log(cleanCalcSetup(calculator.setups[index]));
-
     batch(() => {
       dispatch(
         saveSetup({

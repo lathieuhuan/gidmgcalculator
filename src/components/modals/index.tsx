@@ -53,9 +53,9 @@ export function Modal({ active, className, style, isCustom, children, onClose }:
       />
       <div
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 shadow-white-glow transition duration-150 ease-linear",
+          "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-150 ease-linear",
           state.animate ? "opacity-100 scale-100" : "opacity-0 scale-95",
-          !isCustom && cn("rounded-lg bg-darkblue-2", styles["content-wrapper"]),
+          !isCustom && "shadow-white-glow rounded-lg bg-darkblue-2 " + styles["content-wrapper"],
           className
         )}
         style={style}

@@ -9,7 +9,9 @@ const initialState: UIState = {
   settingsOn: false,
   standardIndex: 0,
   comparedIndexes: [0],
-  importInfo: null,
+  importInfo: {
+    type: "",
+  },
 };
 
 export const uiSlice = createSlice({

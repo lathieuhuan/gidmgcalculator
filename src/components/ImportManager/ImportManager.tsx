@@ -14,13 +14,18 @@ import { Modal } from "@Components/modals";
 import { ConfirmTemplate } from "@Components/minors";
 import { OverrideOptions } from "./OverwriteOptions";
 
-function Importing({ type, data }: Required<ImportInfo>) {
+import styles from "./styles.module.scss";
+
+interface ImportingProps extends Required<ImportInfo> {
+  pendingCode: number;
+  setPendingCode: (code: number) => void;
+  onClose: () => void;
+}
+function Importing({ type, data, pendingCode, setPendingCode, onClose }: ImportingProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const target = useSelector((state) => state.calculator.target);
   const { myChars, myWps, myArts, mySetups } = useSelector((state) => state.database);
-
-  const [pendingCode, setPendingCode] = useState(0);
 
   let importedSetup: UsersSetup;
 
@@ -39,26 +44,17 @@ function Importing({ type, data }: Required<ImportInfo>) {
       importedSetup = data;
   }
 
-  const endImport = () => {
-    dispatch(
-      updateImportInfo({
-        type: "",
-        data: undefined,
-      })
-    );
-  };
-
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
     dispatch(importSetup({ data: importedSetup, shouldOverwriteChar, shouldOverwriteTarget }));
     dispatch(changeScreen(EScreen.CALCULATOR));
     dispatch(toggleSettings(false));
-    endImport();
+    onClose();
   };
 
   const startNewSession = () => {
     dispatch(initSessionWithSetup(importedSetup));
     dispatch(resetCalculatorUI());
-    endImport();
+    onClose();
   };
 
   useEffect(() => {
@@ -97,10 +93,9 @@ function Importing({ type, data }: Required<ImportInfo>) {
   switch (pendingCode) {
     case 0:
       return (
-        <Modal active onClose={() => {}}>
-          {/* <LoadingBar></LoadingBar> */}
-          <div />
-        </Modal>
+        <div className="w-80 h-8 border-2 border-white rounded-lg">
+          <div className={"w-0 h-full bg-green rounded-lg " + styles["loading-inner"]} />
+        </div>
       );
     case 1:
     case 2:
@@ -112,28 +107,50 @@ function Importing({ type, data }: Required<ImportInfo>) {
               : "The number of Setups on Calculator has reach the limit of 4.") +
             " Start a new session?"
           }
-          onClose={endImport}
+          onClose={onClose}
           right={{ onClick: startNewSession }}
         />
       );
     default:
+      if (!importedSetup) {
+        return null;
+      }
+
       return (
         <OverrideOptions
           pendingCode={pendingCode}
           importedSetup={importedSetup}
           addImportedSetup={addImportedSetup}
-          endImport={endImport}
+          endImport={onClose}
         />
       );
   }
 }
 
 export function ImportManager() {
+  const dispatch = useDispatch();
   const { type, data } = useSelector((state) => state.ui.importInfo);
+  const [pendingCode, setPendingCode] = useState(0);
+
+  let className;
+  const onClose = () => {
+    dispatch(updateImportInfo({ type: "" }));
+    setPendingCode(0);
+  };
+
+  if (pendingCode === 1 || pendingCode === 2) {
+    className = "custom-modal";
+  }
 
   return (
-    <Modal active={!!type && !!data} onClose={() => {}}>
-      <Importing type={type} data={data!} />
+    <Modal active={!!type && !!data} isCustom className={className} onClose={onClose}>
+      <Importing
+        type={type}
+        data={data!}
+        pendingCode={pendingCode}
+        setPendingCode={setPendingCode}
+        onClose={onClose}
+      />
     </Modal>
   );
 }
