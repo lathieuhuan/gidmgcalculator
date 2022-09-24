@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import type { DamageResult } from "@Src/types";
+import type { CharInfo, DamageResult, Party } from "@Src/types";
 
 import { EStatDamageKey } from "@Src/constants";
 import { displayValue, getKeys } from "./utils";
@@ -9,18 +9,16 @@ import { displayValue, getKeys } from "./utils";
 import { CollapseSpace } from "@Components/collapse";
 import { tableStyles } from "@Src/styled-components";
 import { CompareTable } from "./CompareTable";
+import { finalTalentLv } from "@Src/utils";
+import { getPartyData } from "@Data/controllers";
 
 interface DamageDisplayProps {
-  char: {
-    name: string;
-    NAs: number;
-    ES: number;
-    EB: number;
-  };
+  char: CharInfo;
+  party: Party;
   damageResult: DamageResult;
   focus?: EStatDamageKey;
 }
-export function DamageDisplay({ char, damageResult, focus }: DamageDisplayProps) {
+export function DamageDisplay({ char, party, damageResult, focus }: DamageDisplayProps) {
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
   const tableKeys = getKeys(char.name);
 
@@ -41,7 +39,8 @@ export function DamageDisplay({ char, damageResult, focus }: DamageDisplayProps)
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
         const withDamage = key.subs.length !== 0;
-        const talentLevel = key.main !== "RXN" ? char[key.main] : 0;
+        const talentLevel =
+          key.main !== "RXN" ? finalTalentLv(char, key.main, getPartyData(party)) : 0;
 
         return (
           <div key={key.main} className="flex flex-col">

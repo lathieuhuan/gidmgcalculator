@@ -5,6 +5,7 @@ import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 import {
   selectChar,
   selectDamageResult,
+  selectParty,
   selectSetupManageInfo,
 } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
@@ -61,6 +62,7 @@ const MemoResults = memo(Results);
 
 function Results() {
   const char = useSelector(selectChar);
+  const party = useSelector(selectParty);
   const setupManageInfo = useSelector(selectSetupManageInfo);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const dmgResult = useSelector(selectDamageResult);
@@ -92,7 +94,13 @@ function Results() {
         <p className="mx-4 my-2 font-bold text-center">{setupManageInfo.name.toUpperCase()}</p>
       )}
       <div className="grow hide-scrollbar">
-        <DamageDisplay key={char.name} char={char} damageResult={dmgResult} focus={focus} />
+        <DamageDisplay
+          key={char.name}
+          char={char}
+          party={party}
+          damageResult={dmgResult}
+          focus={focus}
+        />
       </div>
     </div>
   );

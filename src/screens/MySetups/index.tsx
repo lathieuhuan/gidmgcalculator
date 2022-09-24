@@ -367,7 +367,11 @@ export default function MySetups() {
                   <p className="text-center truncate">{chosenSetup.name}</p>
                 </div>
                 <div className="mt-2 grow hide-scrollbar">
-                  <DamageDisplay char={chosenSetup.char} damageResult={damage} />
+                  <DamageDisplay
+                    char={chosenSetup.char}
+                    party={chosenSetup.party}
+                    damageResult={damage}
+                  />
                 </div>
               </>
             )}
