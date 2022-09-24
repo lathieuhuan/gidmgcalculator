@@ -3,7 +3,7 @@ import { memo, useState, useEffect } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
 import {
-  selectCharData,
+  selectChar,
   selectDamageResult,
   selectSetupManageInfo,
 } from "@Store/calculatorSlice/selectors";
@@ -15,7 +15,6 @@ import { IconButton, Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
 
 export default function DamageResults() {
-  const { name } = useSelector(selectCharData);
   const [enlargedOn, setEnlargedOn] = useState(false);
   const [trackerState, setTrackerState] = useState(0);
 
@@ -40,7 +39,7 @@ export default function DamageResults() {
         <FaSearch />
       </IconButton>
 
-      <MemoResults name={name} />
+      <MemoResults />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
       {/* {trackerState > 0 && (
         <Tracker trackerState={trackerState} setTrackerState={setTrackerState} />
@@ -60,7 +59,8 @@ export default function DamageResults() {
 
 const MemoResults = memo(Results);
 
-function Results({ name }: { name: string }) {
+function Results() {
+  const char = useSelector(selectChar);
   const setupManageInfo = useSelector(selectSetupManageInfo);
   const comparedIndexes = useSelector(selectComparedIndexes);
   const dmgResult = useSelector(selectDamageResult);
@@ -92,7 +92,7 @@ function Results({ name }: { name: string }) {
         <p className="mx-4 my-2 font-bold text-center">{setupManageInfo.name.toUpperCase()}</p>
       )}
       <div className="grow hide-scrollbar">
-        <DamageDisplay key={name} charName={name} damageResult={dmgResult} focus={focus} />
+        <DamageDisplay key={char.name} char={char} damageResult={dmgResult} focus={focus} />
       </div>
     </div>
   );

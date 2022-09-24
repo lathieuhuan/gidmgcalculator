@@ -140,7 +140,7 @@ export default function MySetups() {
       <div
         key={ID}
         className={cn(
-          "mb-4 px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
+          "px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
           ID === chosenSetupID ? "shadow-white/50 shadow-5px-2px" : "shadow-common"
         )}
         onClick={() => dispatch(chooseUsersSetup(ID))}
@@ -350,16 +350,15 @@ export default function MySetups() {
           <div
             ref={ref}
             className={cn(
-              mySetups.length && "pl-2 pt-2",
-              "flex flex-col items-start overflow-auto scroll-smooth"
+              mySetups.length && "px-2 pt-2",
+              "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
-            style={{ width: "40.5rem", minWidth: "40.5rem" }}
           >
             {mySetups.length ? mySetups.map(renderSetup) : renderNoItems("setups")}
           </div>
 
           <div
-            className="ml-4 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3 flex flex-col"
+            className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3 flex flex-col"
             style={{ width: "21.75rem" }}
           >
             {chosenSetup && (
@@ -368,7 +367,7 @@ export default function MySetups() {
                   <p className="text-center truncate">{chosenSetup.name}</p>
                 </div>
                 <div className="mt-2 grow hide-scrollbar">
-                  <DamageDisplay charName={chosenSetup.char.name} damageResult={damage} />
+                  <DamageDisplay char={chosenSetup.char} damageResult={damage} />
                 </div>
               </>
             )}

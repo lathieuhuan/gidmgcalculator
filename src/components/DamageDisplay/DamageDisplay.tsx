@@ -11,15 +11,20 @@ import { tableStyles } from "@Src/styled-components";
 import { CompareTable } from "./CompareTable";
 
 interface DamageDisplayProps {
-  charName: string;
+  char: {
+    name: string;
+    NAs: number;
+    ES: number;
+    EB: number;
+  };
   damageResult: DamageResult;
   focus?: EStatDamageKey;
 }
-export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayProps) {
+export function DamageDisplay({ char, damageResult, focus }: DamageDisplayProps) {
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const tableKeys = getKeys(charName);
+  const tableKeys = getKeys(char.name);
 
-  if (charName === "Nilou") {
+  if (char.name === "Nilou") {
     tableKeys[tableKeys.length - 1].subs.unshift("bountifulCore" as any);
   }
 
@@ -36,14 +41,18 @@ export function DamageDisplay({ charName, damageResult, focus }: DamageDisplayPr
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
         const withDamage = key.subs.length !== 0;
+        const talentLevel = key.main !== "RXN" ? char[key.main] : 0;
 
         return (
           <div key={key.main} className="flex flex-col">
             <button
-              className="mx-auto mb-2 pt-0.5 px-4 flex items-center rounded-2xl bg-orange"
+              className="mx-auto mb-2 pt-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
               onClick={() => toggle(index)}
             >
-              <span className="text-h5 font-bold text-black">{key.main}</span>
+              <span className="text-h5">{key.main}</span>
+              {talentLevel ? (
+                <span className="ml-1 text-subtitle-1 self-start">[{talentLevel}]</span>
+              ) : null}
               <FaChevronDown
                 className={cn(
                   "ml-2 text-subtitle-1 text-black duration-150 ease-linear",

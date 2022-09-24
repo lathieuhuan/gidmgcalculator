@@ -156,7 +156,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
     };
 
     return (
-      <div className="flex flex-wrap" style={{ width: "15.75rem" }}>
+      <div className="flex flex-wrap mx-auto" style={{ width: "15.75rem" }}>
         {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
 
         {setup.artInfo.pieces.map((artP, i) => {
@@ -182,13 +182,13 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
   return (
     <>
-      <div className="px-2 flex justify-between">
-        <div className="flex items-center" style={{ width: "24.5rem" }}>
+      <div className="px-2 flex justify-between flex-col lg:flex-row">
+        <div className="w-68 lg:w-96 flex items-center">
           {!isOriginal && renderLinkButton(ID, setup.ID)}
           <p className="text-h3 text-orange font-bold truncate">{setupName || setup.name}</p>
         </div>
 
-        <div className="pb-4 flex space-x-6">
+        <div className="mt-4 lg:mt-0 pb-4 flex space-x-6 justify-end">
           <IconButton
             className="p-2"
             variant="positive"
@@ -223,15 +223,15 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
         </div>
       </div>
 
-      <div className="p-4 rounded-lg bg-darkblue-1 flex">
+      <div className="px-4 pt-4 pb-3 rounded-lg bg-darkblue-1 flex flex-col lg:flex-row">
         <div>
           {mainCharacterDisplay}
           {teammatesDisplay}
         </div>
 
-        <div className="w-0.5 mx-4 bg-darkblue-3" />
+        <div className="hidden lg:block w-0.5 mx-4 bg-darkblue-3" />
 
-        <div>
+        <div className="mt-4 lg:mt-0">
           <div className="mb-2 flex justify-center space-x-4">
             <Button variant="default" onClick={openModal("STATS")}>
               Stats
