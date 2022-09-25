@@ -48,13 +48,14 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
               key={ID}
               className={cn(
                 "mb-2 p-4 rounded-lg bg-darkblue-1 flex flex-col md1:flex-row md1:items-center",
-                !picked && !notFull && "opacity-50"
+                !picked && !notFull && "opacity-50",
+                picked && "shadow-green"
               )}
-              style={{ boxShadow: picked ? "0 0 10px 3px green inset" : undefined }}
+              style={{ boxShadow: picked ? "0 0 5px 1px var(--tw-shadow-color) inset" : undefined }}
               onClick={() => onClickOption(ID, picked)}
             >
               <div className="md1:w-40 md1:mr-4">
-                <p className="text-h6 font-bold text-orange">{setup.name}</p>
+                <p className="text-h6 font-bold text-orange cursor-default">{setup.name}</p>
               </div>
               <div className="mt-2 md1:mt-0 flex space-x-4">
                 <div className="w-16 rounded-circle shadow-3px-2px shadow-orange">

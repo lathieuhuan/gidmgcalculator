@@ -13,14 +13,18 @@ import type { Rarity, UsersSetup } from "@Src/types";
 import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
-import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 import { useDispatch } from "@Store/hooks";
-import { updateImportInfo } from "@Store/uiSlice";
 import { finalTalentLv, wikiImg } from "@Src/utils";
+import { updateImportInfo } from "@Store/uiSlice";
+import {
+  chooseUsersSetup,
+  switchShownSetupInComplex,
+  uncombineSetups,
+} from "@Store/usersDatabaseSlice";
+import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Button, IconButton } from "@Src/styled-components";
-import { chooseUsersSetup, uncombineSetups } from "@Store/usersDatabaseSlice";
 
 interface SetupLayoutProps {
   ID: number;
@@ -93,14 +97,16 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
   const teammatesDisplay = (
     <div className="mt-6 w-68 flex justify-between">
-      {party.map((tm, tmIndex) => {
-        if (!tm) return null;
-        const memberID = allIDs?.[tm.name];
-        const clickable = !isOriginal && memberID;
+      {party.map((teammate, teammateIndex) => {
+        if (!teammate) {
+          return null;
+        }
+        const teammateSetupID = allIDs?.[teammate.name];
+        const clickable = !isOriginal && teammateSetupID;
 
         return (
           <div
-            key={tmIndex}
+            key={teammateIndex}
             className={cn(
               "w-20",
               clickable
@@ -110,15 +116,10 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
           >
             <CharFilledSlot
               mutable={false}
-              name={tm.name}
+              name={teammate.name}
               onClickSlot={() => {
                 if (clickable) {
-                  // dispatch(
-                  //   switchActiveSetupInComplexSetup({
-                  //     complexID: ID,
-                  //     newID: memberID,
-                  //   })
-                  // );
+                  dispatch(switchShownSetupInComplex({ complexID: ID, shownID: teammateSetupID }));
                 }
               }}
             />
@@ -152,8 +153,8 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
         <div key={key} className="p-1">
           <button
             className={cn(
-              `p-1 rounded flex glow-on-hover bg-gradient-${rarity}`,
-              !onClick && "cursor-default"
+              `p-1 rounded flex bg-gradient-${rarity}`,
+              onClick ? "glow-on-hover" : "cursor-default !opacity-50"
             )}
             onClick={onClick}
           >

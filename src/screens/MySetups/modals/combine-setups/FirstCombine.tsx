@@ -100,7 +100,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
       <div className="mt-6 pr-4">
         <input
           type="text"
-          className="px-4 py-2 w-full text-xl text-center textinput-common"
+          className="px-4 py-2 w-full text-xl text-center textinput-common font-bold"
           value={input}
           onChange={onChangeInput}
           onKeyDown={onKeydownInput}

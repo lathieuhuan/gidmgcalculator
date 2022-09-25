@@ -84,6 +84,11 @@ export type CombineSetupsAction = PayloadAction<{
   pickedIDs: number[];
 }>;
 
+export type SwitchShownSetupInComplexAction = PayloadAction<{
+  complexID: number;
+  shownID: number;
+}>;
+
 export type AddSetupToComplexAction = PayloadAction<{
   complexID: number;
   pickedIDs: number[];

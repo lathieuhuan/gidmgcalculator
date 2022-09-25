@@ -159,7 +159,7 @@ export default function MySetups() {
         key={ID}
         className={cn(
           "px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
-          ID === chosenSetupID ? "shadow-white/50 shadow-5px-2px" : "shadow-common"
+          ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
         )}
         onClick={() => dispatch(chooseUsersSetup(ID))}
       >
@@ -412,7 +412,7 @@ export default function MySetups() {
       <div className={styles.warehouse}>
         <div className={cn("h-10", styles["button-bar"])}>
           <IconButton className="mr-4 w-7 h-7" variant="positive" onClick={openModal("TIPS")}>
-            <FaInfo />
+            <FaInfo className="text-sm" />
           </IconButton>
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
             Combine

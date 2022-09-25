@@ -215,7 +215,7 @@ function HiddenSettings() {
         {tempoSetups.length < 4 && (
           <div className="mt-6">
             <button
-              className="h-8 w-full flex-center rounded-2xl bg-blue-600 hover:bg-blue-500"
+              className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
               onClick={addNewSetup}
             >
               <FaPlus />
@@ -289,7 +289,7 @@ function HiddenSettings() {
             </p>
             <p>
               - Separate Character's Info will be reset to not activated at the start of every
-              session.
+              calculating session.
             </p>
           </div>
         }

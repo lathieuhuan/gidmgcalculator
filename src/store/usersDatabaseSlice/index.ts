@@ -21,6 +21,7 @@ import type {
   UpdateUsersWeaponAction,
   CombineSetupsAction,
   AddSetupToComplexAction,
+  SwitchShownSetupInComplexAction,
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
@@ -453,6 +454,14 @@ export const usersDatabaseSlice = createSlice({
       });
       state.chosenSetupID = ID;
     },
+    switchShownSetupInComplex: (state, action: SwitchShownSetupInComplexAction) => {
+      const { complexID, shownID } = action.payload;
+      const complexSetup = findById(state.mySetups, complexID);
+
+      if (complexSetup && !isUsersSetup(complexSetup)) {
+        complexSetup.shownID = shownID;
+      }
+    },
     addSetupToComplex: ({ mySetups }, action: AddSetupToComplexAction) => {
       const { complexID, pickedIDs } = action.payload;
       const complexSetup = mySetups.find(
@@ -514,6 +523,7 @@ export const {
   saveSetup,
   removeSetup,
   combineSetups,
+  switchShownSetupInComplex,
   addSetupToComplex,
   uncombineSetups,
 } = usersDatabaseSlice.actions;
