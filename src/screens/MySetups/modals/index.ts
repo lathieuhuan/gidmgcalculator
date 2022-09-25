@@ -1,4 +1,4 @@
 export * from "./items";
 export * from "./buffs";
 export * from "./debuffs";
-export * from "./CombineManager";
+export * from "./combine-setups";

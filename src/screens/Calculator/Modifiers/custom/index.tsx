@@ -103,7 +103,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           <div className="grow flex items-center">
             <p className="pr-2">{type}</p>
             <input
-              className="ml-auto p-2 w-16 rounded text-black text-right"
+              className="ml-auto p-2 w-16 text-right textinput-common"
               value={value}
               onChange={(e) =>
                 dispatch(
@@ -121,6 +121,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
       <Modal
         active={modalOn}
+        isCustom
         className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow max-w-95"
         onClose={closeModal}
       >

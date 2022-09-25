@@ -1,6 +1,6 @@
-import { Fragment, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { FaCaretDown, FaCopy } from "react-icons/fa";
-import { IconButton, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
 
 interface MainSelectProps {
   tab: string;
@@ -67,6 +67,5 @@ export const Setter = ({ label, inputComponent }: SetterProps) => {
 };
 
 export const twInputStyles = {
-  textInput: "px-2 py-2 rounded text-right text-black leading-tighter outline-none focus:bg-green",
   select: "px-2 py-1 !bg-white text-black rounded font-bold",
 };

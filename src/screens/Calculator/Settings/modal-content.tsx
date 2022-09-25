@@ -27,7 +27,7 @@ export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
       </p>
       <input
         type="text"
-        className="mt-1 mb-8 px-4 pt-4 pb-2 rounded text-2xl text-center text-black focus:bg-green outline-none"
+        className="mt-1 mb-8 px-4 pt-4 pb-2 text-2xl text-center textinput-common"
         value={input}
         onChange={(e) => {
           const { value } = e.target;

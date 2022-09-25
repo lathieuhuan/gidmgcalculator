@@ -17,6 +17,7 @@ import type { MySetupModalType, MySetupModal } from "./types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { chooseUsersSetup, removeSetup } from "@Store/usersDatabaseSlice";
 import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/selectors";
+import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
 import { findCharacter, getPartyData } from "@Data/controllers";
@@ -49,10 +50,11 @@ import {
   PartyDebuffs,
   ArtifactDebuffs,
   CustomDebuffs,
-  CombineManager,
+  FirstCombine,
 } from "./modals";
 
 import styles from "../styles.module.scss";
+import { CombineMore } from "./modals/combine-setups/CombineMore";
 
 export default function MySetups() {
   const [modal, setModal] = useState<MySetupModal>({
@@ -375,8 +377,31 @@ export default function MySetups() {
             onClose={closeModal}
           />
         );
-      case "COMBINE":
-        return <CombineManager onClose={closeModal} />;
+      case "FIRST_COMBINE":
+        return <FirstCombine onClose={closeModal} />;
+      case "COMBINE_MORE": {
+        const targetSetup = findById(mySetups, modal.ID);
+        if (!targetSetup || isUsersSetup(targetSetup)) {
+          return null;
+        }
+
+        const shownSetup = findById(mySetups, targetSetup.shownID);
+        if (!shownSetup || !isUsersSetup(shownSetup)) {
+          return null;
+        }
+
+        const allChars = shownSetup.party.reduce(
+          (result, teammate) => {
+            if (teammate) {
+              result.push(teammate.name);
+            }
+            return result;
+          },
+          [shownSetup.char.name]
+        );
+
+        return <CombineMore targetSetup={targetSetup} allChars={allChars} onClose={closeModal} />;
+      }
       default:
         return null;
     }
@@ -389,7 +414,7 @@ export default function MySetups() {
           <IconButton className="mr-4 w-7 h-7" variant="positive" onClick={openModal("TIPS")}>
             <FaInfo />
           </IconButton>
-          <Button variant="positive" onClick={openModal("COMBINE")}>
+          <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
             Combine
           </Button>
         </div>
@@ -432,7 +457,9 @@ export default function MySetups() {
         isCustom
         className={modalClassName[modal.type]}
         style={{
-          height: ["STATS", "MODIFIERS", "COMBINE"].includes(modal.type) ? "85%" : "auto",
+          height: ["STATS", "MODIFIERS", "FIRST_COMBINE", "COMBINE_MORE"].includes(modal.type)
+            ? "85%"
+            : "auto",
         }}
         onClose={closeModal}
       >

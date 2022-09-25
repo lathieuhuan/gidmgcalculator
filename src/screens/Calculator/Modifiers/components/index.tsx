@@ -1,13 +1,13 @@
 import { Fragment } from "react";
 import type { ArtifactBuff, CharBuffInputRenderType, ModifierInput } from "@Src/types";
-import { genNumberSequence } from "@Src/utils";
+import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 import { Checkbox, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
-import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch } from "@Store/hooks";
 import { changeModCtrlInput } from "@Store/calculatorSlice";
+import { genNumberSequence } from "@Src/utils";
 
 interface CharModSettersProps {
   labels: string[];
@@ -38,7 +38,7 @@ export function CharModSetters({
         return typeof input === "boolean" ? null : (
           <input
             type="text"
-            className={"w-16 " + twInputStyles.textInput}
+            className="w-16 p-2 text-right textinput-common"
             value={input}
             onChange={(e) => onTextChange(e.target.value, index)}
           />
@@ -101,7 +101,7 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const { labels, initialValues, maxValues, renderTypes } = buff.inputConfig;
 
   return (
-    <>
+    <Fragment>
       {labels.map((label, i) => {
         const input = inputs[i];
         let options: string[] | number[] = [];
@@ -140,6 +140,6 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
           />
         );
       })}
-    </>
+    </Fragment>
   );
 }

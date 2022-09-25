@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
   UsersArtifact,
+  UsersComplexSetup,
   UsersDatabaseState,
   UsersWeapon,
   Weapon,
@@ -19,6 +20,7 @@ import type {
   UpdateUsersCharacterAction,
   UpdateUsersWeaponAction,
   CombineSetupsAction,
+  AddSetupToComplexAction,
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
@@ -451,6 +453,23 @@ export const usersDatabaseSlice = createSlice({
       });
       state.chosenSetupID = ID;
     },
+    addSetupToComplex: ({ mySetups }, action: AddSetupToComplexAction) => {
+      const { complexID, pickedIDs } = action.payload;
+      const complexSetup = mySetups.find(
+        (setup) => setup.ID === complexID && setup.type === "complex"
+      ) as UsersComplexSetup;
+
+      if (complexSetup) {
+        pickedIDs.forEach((ID) => {
+          const setup = findById(mySetups, ID);
+
+          if (setup && isUsersSetup(setup)) {
+            setup.type = "combined";
+            complexSetup.allIDs[setup.char.name] = ID;
+          }
+        });
+      }
+    },
     uncombineSetups: ({ mySetups }, action: PayloadAction<number>) => {
       const index = indexById(mySetups, action.payload);
       const targetSetup = mySetups[index];
@@ -495,6 +514,7 @@ export const {
   saveSetup,
   removeSetup,
   combineSetups,
+  addSetupToComplex,
   uncombineSetups,
 } = usersDatabaseSlice.actions;
 

@@ -1,31 +1,33 @@
 import cn from "classnames";
-import { useState, useEffect, ChangeEventHandler, KeyboardEventHandler } from "react";
-
+import { useState, ChangeEventHandler, KeyboardEventHandler } from "react";
 import type { UsersSetup } from "@Src/types";
-import { findById } from "@Src/utils";
+
 import { useDispatch, useSelector } from "@Store/hooks";
-import { combineSetups } from "@Store/usersDatabaseSlice";
 import { selectMySetups } from "@Store/usersDatabaseSlice/selectors";
-import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
+import { combineSetups } from "@Store/usersDatabaseSlice";
+import { findById } from "@Src/utils";
+import { useCombineManager } from "./hook";
 
 import { ButtonBar } from "@Components/minors";
-import { CombineMenu } from "../components";
 
-export function CombineManager({ onClose }: { onClose: () => void }) {
+export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
   const mySetups = useSelector(selectMySetups);
 
-  const [pickedIDs, setPickedIDs] = useState<number[]>([]);
   const [input, setInput] = useState("Team Setup");
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => setIsError(false), [pickedIDs]);
 
   const setupOptions = mySetups.filter((setup) => {
     return (
-      isUsersSetup(setup) && setup.party.length === 3 && setup.party.every((teammate) => teammate)
+      setup.type === "original" &&
+      setup.party.length === 3 &&
+      setup.party.every((teammate) => teammate)
     );
   }) as UsersSetup[];
+
+  const { isError, pickedIDs, combineMenu, setIsError } = useCombineManager({
+    options: setupOptions,
+    limit: 4,
+  });
 
   const tryCombine = () => {
     if (pickedIDs.length < 2) {
@@ -43,6 +45,7 @@ export function CombineManager({ onClose }: { onClose: () => void }) {
       const { char, party } = findById(setupOptions, ID)!;
 
       if (mains.includes(char.name)) {
+        setIsError(true);
         return;
       } else {
         mains.push(char.name);
@@ -50,6 +53,7 @@ export function CombineManager({ onClose }: { onClose: () => void }) {
 
       if (!all.includes(char.name)) {
         if (all.length === 4) {
+          setIsError(true);
           return;
         } else {
           all.push(char.name);
@@ -59,7 +63,7 @@ export function CombineManager({ onClose }: { onClose: () => void }) {
       for (const teammate of party) {
         if (teammate && !all.includes(teammate.name)) {
           if (all.length === 4) {
-            console.log(all);
+            setIsError(true);
             return;
           } else {
             all.push(teammate.name);
@@ -69,18 +73,6 @@ export function CombineManager({ onClose }: { onClose: () => void }) {
     }
     dispatch(combineSetups({ pickedIDs, name: input }));
     onClose();
-  };
-
-  const onClickOption = (ID: number) => {
-    if (pickedIDs.includes(ID)) {
-      setPickedIDs((prev) => {
-        const IDs = [...prev];
-        IDs.splice(IDs.indexOf(ID), 1);
-        return IDs;
-      });
-    } else if (pickedIDs.length < 4) {
-      setPickedIDs((prev) => [...prev, ID]);
-    }
   };
 
   const onChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -103,17 +95,12 @@ export function CombineManager({ onClose }: { onClose: () => void }) {
           : "Choose at least 2 setups with the same party members."}
       </p>
 
-      <CombineMenu
-        options={setupOptions}
-        notFull={pickedIDs.length < 4}
-        pickedIDs={pickedIDs}
-        onClickOption={onClickOption}
-      />
+      {combineMenu}
 
       <div className="mt-6 pr-4">
         <input
           type="text"
-          className="px-4 py-2 w-full text-xl text-center text-black rounded outline-none focus:bg-green"
+          className="px-4 py-2 w-full text-xl text-center textinput-common"
           value={input}
           onChange={onChangeInput}
           onKeyDown={onKeydownInput}

@@ -99,7 +99,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
 
       <div className="mx-auto mt-8 flex items-center">
         <Select
-          className="pr-2 text-white"
+          className="text-white"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
@@ -108,7 +108,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
-          className="ml-4 p-2 w-16 rounded text-black text-right"
+          className="ml-4 p-2 w-16 text-right textinput-common"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

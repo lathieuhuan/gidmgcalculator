@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 
+import { useDispatch } from "@Store/hooks";
 import { createCustomDebuffCtrl } from "@Store/calculatorSlice";
 import { percentSign, processNumInput } from "@Src/utils";
 
@@ -12,6 +13,7 @@ interface DebuffCtrlCreatorProps {
   onClose: () => void;
 }
 export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
+  const dispatch = useDispatch();
   const [config, setConfig] = useState<CustomDebuffCtrl>({
     type: "def",
     value: 0,
@@ -32,7 +34,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   };
 
   const onConfirm = () => {
-    createCustomDebuffCtrl(config);
+    dispatch(createCustomDebuffCtrl(config));
     onClose();
   };
 
@@ -40,7 +42,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
     <Fragment>
       <div className="mx-auto mt-4 px-2 flex items-center">
         <Select
-          className="pr-2 text-white"
+          className="text-white"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
@@ -49,7 +51,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
-          className="ml-4 p-2 w-16 rounded text-black text-right"
+          className="ml-4 p-2 w-16 text-right textinput-common"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

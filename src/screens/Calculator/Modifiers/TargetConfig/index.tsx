@@ -19,7 +19,6 @@ import { findMonster } from "@Data/controllers";
 import { CollapseList } from "@Components/collapse";
 import { InfusionNotes } from "@Components/minors";
 import { Checkbox, Select, linkStyles } from "@Src/styled-components";
-import { twInputStyles } from "@Screens/Calculator/components";
 
 export default function TargetConfig() {
   const dispatch = useDispatch();
@@ -100,7 +99,7 @@ export default function TargetConfig() {
         <div className="mb-4 flex justify-between items-center">
           <p className="text-h6 text-lightgold">Level</p>
           <input
-            className={"w-20 " + twInputStyles.textInput}
+            className="w-20 p-2 text-right textinput-common"
             value={target.level}
             onChange={onChangeTargetProp("level")}
           />
@@ -135,7 +134,7 @@ export default function TargetConfig() {
                     {attElmt}
                   </p>
                   <input
-                    className={"w-20 " + twInputStyles.textInput}
+                    className="w-20 p-2 text-right textinput-common"
                     value={target[attElmt]}
                     onChange={onChangeTargetProp(attElmt)}
                   />

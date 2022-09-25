@@ -45,7 +45,7 @@ export function SetupControl({
       <input
         type="text"
         placeholder="Enter Setup's name"
-        className="w-full px-4 pt-2 pb-1 rounded-md text-lg leading-tight text-center text-black bg-default focus:bg-green outline-none"
+        className="w-full px-4 pt-2 pb-1 text-lg text-center textinput-common rounded-md"
         value={setup.name}
         onChange={(e) => {
           const { value } = e.target;

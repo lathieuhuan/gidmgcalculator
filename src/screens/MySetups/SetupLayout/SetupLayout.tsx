@@ -40,8 +40,6 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
       dispatch(uncombineSetups(ID));
 
       setTimeout(() => {
-        console.log(ID);
-        console.log(displayedID);
         dispatch(chooseUsersSetup(displayedID));
       }, 10);
     };
@@ -227,8 +225,8 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
           ) : (
             <IconButton
               variant="neutral"
-              disabled={!allIDs || Object.keys(allIDs).length < 4}
-              onClick={openModal("ADD_TO_COMPLEX", ID)}
+              disabled={!allIDs || Object.keys(allIDs).length >= 4}
+              onClick={openModal("COMBINE_MORE", ID)}
             >
               <FaPlus />
             </IconButton>
