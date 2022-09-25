@@ -55,6 +55,7 @@ import {
 
 import styles from "../styles.module.scss";
 import { CombineMore } from "./modals/combine-setups/CombineMore";
+import { SetupExporter } from "@Components/SetupExporter";
 
 export default function MySetups() {
   const [modal, setModal] = useState<MySetupModal>({
@@ -401,6 +402,14 @@ export default function MySetups() {
         );
 
         return <CombineMore targetSetup={targetSetup} allChars={allChars} onClose={closeModal} />;
+      }
+      case "SHARE_SETUP": {
+        const targetSetup = findById(mySetups, modal.ID);
+
+        if (targetSetup && isUsersSetup(targetSetup)) {
+          return <SetupExporter data={targetSetup} onClose={closeModal} />;
+        }
+        return null;
       }
       default:
         return null;

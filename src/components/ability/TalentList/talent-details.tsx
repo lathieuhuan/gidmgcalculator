@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import cn from "classnames";
+import { useRef, useState } from "react";
+import { FaCaretDown } from "react-icons/fa";
 import type { GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
 
 import { StatsTable } from "@Components/StatsTable";
@@ -145,7 +145,6 @@ interface LevelButtonProps {
   onMouseUp: () => void;
 }
 export const LevelButton = ({ levelUp, onMouseDown, onMouseUp }: LevelButtonProps) => {
-  const Icon = levelUp ? FaCaretUp : FaCaretDown;
   return (
     <button
       className={cn(
@@ -156,7 +155,7 @@ export const LevelButton = ({ levelUp, onMouseDown, onMouseUp }: LevelButtonProp
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
     >
-      <Icon />
+      <FaCaretDown className={cn(levelUp && "rotate-180")} />
     </button>
   );
 };

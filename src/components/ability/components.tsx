@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import cn from "classnames";
-import { FaCaretLeft, FaCaretRight, FaQuestion } from "react-icons/fa";
+import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
 import { wikiImg } from "@Src/utils";
@@ -88,7 +88,6 @@ interface CaretProps {
   onClick: () => void;
 }
 function Caret({ toRight, onClick }: CaretProps) {
-  const Icon = toRight ? FaCaretRight : FaCaretLeft;
   return (
     <button
       className={cn(
@@ -97,7 +96,7 @@ function Caret({ toRight, onClick }: CaretProps) {
       )}
       onClick={onClick}
     >
-      <Icon />
+      <FaCaretRight className={cn(!toRight && "rotate-180")} />
     </button>
   );
 }

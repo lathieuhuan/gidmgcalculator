@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { RefObject, useEffect, useState } from "react";
-import { FaSort, FaTh } from "react-icons/fa";
+import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { findCharacter } from "@Data/controllers";
 import { wikiImg } from "@Src/utils";
@@ -104,7 +104,10 @@ export default function SideIconCarousel({
               })
             ) : (
               <div className="w-full h-20 flex justify-end items-center">
-                <p className="text-h2 font-bold text-lightgold">Add New Characters {">>"}</p>
+                <p className="text-h2 font-bold text-lightgold flex">
+                  <span className="mr-2">Add New Characters</span>{" "}
+                  <FaArrowAltCircleUp className="rotate-90" />
+                </p>
               </div>
             )}
           </div>

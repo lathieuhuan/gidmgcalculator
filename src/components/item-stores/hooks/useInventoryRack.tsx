@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useEffect, useState } from "react";
-import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { FaCaretRight } from "react-icons/fa";
 import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { ItemThumb } from "@Components/ItemThumb";
@@ -139,7 +139,10 @@ export default function useInventoryRack({
       {IDsOnPage.length ? (
         <div className="pt-2 pb-1 flex-center space-x-2">
           <button onClick={goBack}>
-            <FaCaretLeft className={pageNo > 0 ? "glow-on-hover" : "opacity-50"} size="1.75rem" />
+            <FaCaretRight
+              className={cn("rotate-180", pageNo > 0 ? "glow-on-hover" : "opacity-50")}
+              size="1.75rem"
+            />
           </button>
 
           <p className="font-bold">
