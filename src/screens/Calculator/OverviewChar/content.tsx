@@ -7,7 +7,7 @@ import {
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useSwitcher } from "@Hooks/useSwitcher";
+import { useTabs } from "@Hooks/useTabs";
 
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
@@ -43,16 +43,16 @@ const contentByTab: Record<string, () => JSX.Element> = {
     });
     const sets = useSelector(selectArtInfo).sets;
 
-    const [switcher, tab] = useSwitcher([
-      { text: "Details", clickable: true },
-      { text: "Set Bonus", clickable: true },
-    ]);
+    const { activeIndex, tabs } = useTabs({
+      configs: [{ text: "Details" }, { text: "Set Bonus" }],
+    });
+
     return (
-      <div className="h-full flex flex-col">
-        <div className="mb-4">{switcher}</div>
+      <div className="pt-1 h-full flex flex-col">
+        <div className="mb-4">{tabs}</div>
         <div className="grow">
           <SharedSpace
-            atLeft={tab === "Details"}
+            atLeft={activeIndex === 0}
             leftPart={
               <div className="h-full custom-scrollbar">
                 <AttributeTable attributes={artAttr} />
@@ -60,7 +60,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
             }
             rightPart={
               <div className="h-full hide-scrollbar">
-                <SetBonus sets={sets} />
+                <SetBonus noTitle sets={sets} />
               </div>
             }
           />

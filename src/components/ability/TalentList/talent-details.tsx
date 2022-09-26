@@ -3,10 +3,11 @@ import { useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import type { GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
 
-import { StatsTable } from "@Components/StatsTable";
-import { Select } from "@Src/styled-components";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { getDefaultStatInfo } from "@Src/calculators/utils";
+
+import { StatsTable } from "@Components/StatsTable";
+import { Select } from "@Src/styled-components";
 
 const { Row } = StatsTable;
 const styles = {

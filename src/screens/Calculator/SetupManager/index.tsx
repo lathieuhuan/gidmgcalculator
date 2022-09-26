@@ -33,6 +33,7 @@ import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
+import SectionTarget from "./SectionTarget";
 import { MainSelect } from "../components";
 import Settings from "../Settings";
 
@@ -61,10 +62,11 @@ export default function SetupManager() {
         options={setupManageInfos.map((info) => info.name)}
       />
 
-      <div ref={bodyRef} className="mt-4 grow hide-scrollbar scroll-smooth">
+      <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
         <SectionParty />
         <SectionWeapon />
         <SectionArtifacts containerRef={bodyRef} />
+        <SectionTarget />
       </div>
 
       <div className="mt-4 flex items-center">

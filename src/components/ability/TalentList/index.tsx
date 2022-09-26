@@ -11,7 +11,7 @@ import { SlideShow } from "@Components/ability/components";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { SkillAttributes } from "./talent-details";
 
-// import { useSwitcher } from "@Hooks/useSwitcher";
+// import { useTabs } from "@Hooks/useTabs";
 
 interface TalentListProps {
   char: CharInfo;
@@ -171,13 +171,7 @@ function Details({
           onClickNext={() => {
             if (position < Object.keys(activeTalents).length - 1) changePosition(position + 1);
           }}
-          topLeftNote={
-            <div className="absolute w-full top-0">
-              <div className=" w-1/4">
-                <p className="text-subtitle-1">{type}</p>
-              </div>
-            </div>
-          }
+          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-subtitle-1">{type}</p>}
         />
         <p className={`text-h5 font-bold text-${vision} text-center`}>{name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">

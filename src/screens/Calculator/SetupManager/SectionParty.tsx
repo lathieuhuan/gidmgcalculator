@@ -66,7 +66,7 @@ export default function SectionParty() {
                 />
               ) : (
                 <IconButton
-                  className="w-full h-full text-2xl leading-6 !bg-darkblue-3 text-white/70"
+                  className="w-full h-full text-2xl leading-6 !bg-darkblue-3 text-white/70 outline-none"
                   onClick={() => setPendingSlot(tmIndex)}
                 >
                   <FaPlus />

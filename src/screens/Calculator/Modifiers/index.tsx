@@ -1,29 +1,33 @@
-import { memo, useState } from "react";
-import { useSelector } from "react-redux";
+import { memo } from "react";
+
+import { useSelector } from "@Store/hooks";
+import { useTabs } from "@Hooks/useTabs";
 import { selectParty } from "@Store/calculatorSlice/selectors";
+import { getPartyData } from "@Data/controllers";
 
 import { CollapseList } from "@Components/collapse";
-import { MainSelect } from "../components";
 import { ArtifactBuffs, ElememtBuffs } from "./buffs/others";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";
 import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
 import CustomModifiers from "./custom";
-import TargetConfig from "./TargetConfig";
-import { getPartyData } from "@Data/controllers";
 
 function Modifiers() {
-  const [tab, setTab] = useState("Buffs");
   const party = useSelector(selectParty);
   const partyData = getPartyData(party);
 
+  const { activeIndex, tabs } = useTabs({
+    className: "text-lg",
+    configs: [{ text: "Debuffs" }, { text: "Buffs" }],
+  });
+
   return (
     <div className="h-full flex flex-col">
-      <MainSelect tab={tab} onChangeTab={setTab} options={["Buffs", "Debuffs", "Target"]} />
+      {tabs}
 
       <div className="mt-4 grow custom-scrollbar">
-        {tab === "Buffs" ? (
+        {activeIndex ? (
           <CollapseList
             key="buff"
             headingList={[
@@ -43,7 +47,7 @@ function Modifiers() {
               <CustomModifiers isBuffs />,
             ]}
           />
-        ) : tab === "Debuffs" ? (
+        ) : (
           <CollapseList
             key="debuff"
             headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
@@ -55,8 +59,6 @@ function Modifiers() {
               <CustomModifiers isBuffs={false} />,
             ]}
           />
-        ) : (
-          <TargetConfig />
         )}
       </div>
     </div>

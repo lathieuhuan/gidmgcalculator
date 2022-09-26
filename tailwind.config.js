@@ -80,7 +80,7 @@ module.exports = {
         base: 1.35,
       },
       colors: {
-        default: "#ebebeb",
+        default: "#e6e6e6",
         lesser: "#b9b9b9",
         darkblue: {
           1: "#050926",

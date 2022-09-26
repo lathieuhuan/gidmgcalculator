@@ -100,11 +100,16 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             >
               <div
                 className={cn(`bg-gradient-${artPiece ? artPiece.rarity || 5 : 1} cursor-pointer`, {
-                  "p-2": !artPiece,
+                  "p-2 opacity-80": !artPiece,
                 })}
                 onClick={() => onClickTab(index)}
               >
-                <img className="full-w" src={src} alt={type} draggable={false} />
+                <img
+                  className={cn("full-w", !artPiece && "")}
+                  src={src}
+                  alt={type}
+                  draggable={false}
+                />
               </div>
             </div>
           );

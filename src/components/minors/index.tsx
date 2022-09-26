@@ -197,12 +197,13 @@ export function CharFilledSlot({ name, mutable, onClickSlot, onClickRemove }: Ch
 }
 
 interface SetBonusProps {
+  noTitle?: boolean;
   sets: CalcArtSet[];
 }
-export function SetBonus({ sets }: SetBonusProps) {
+export function SetBonus({ noTitle, sets }: SetBonusProps) {
   return (
     <div>
-      <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>
+      {noTitle ? null : <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>}
 
       {sets.length > 0 ? (
         sets.map(({ code, bonusLv }, index) => {
@@ -220,7 +221,7 @@ export function SetBonus({ sets }: SetBonusProps) {
           return (
             <div key={index} className="mt-1">
               <p className="text-lg leading-relaxed font-bold text-green">{artData.name}</p>
-              <ul className="pl-6">{content}</ul>
+              <ul className="pl-6 list-disc">{content}</ul>
             </div>
           );
         })

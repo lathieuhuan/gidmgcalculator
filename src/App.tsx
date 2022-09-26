@@ -70,7 +70,7 @@ function App() {
   }, [atScreen]);
 
   return (
-    <div className="App h-screen text-default flex flex-col">
+    <div className="App h-screen text-default bg-default flex flex-col">
       <NavBar
         menuActive={navBarMenuActive}
         setMenuActive={setNavBarMenuActive}
