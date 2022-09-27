@@ -231,6 +231,7 @@ export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedStatClu
 
 export type PartyData = {
   name: string;
+  code: number;
   vision: Vision;
   nation: Nation;
   EBcost: number;

@@ -1,5 +1,9 @@
-import type { AttackElement, AttributeStat, ResonanceVision } from "@Src/types";
-import { TRANSFORMATIVE_REACTIONS } from "@Src/constants";
+import type {
+  AttackElement,
+  AttributeStat,
+  ResonanceVision,
+  TransformativeReaction,
+} from "@Src/types";
 
 type ResonanceStat = {
   key: AttributeStat;
@@ -26,7 +30,7 @@ export const BASE_REACTION_DAMAGE: Record<number, number> = {
 };
 
 export const TRANSFORMATIVE_REACTION_INFO: Record<
-  typeof TRANSFORMATIVE_REACTIONS[number],
+  TransformativeReaction,
   { mult: number; dmgType: AttackElement | "various" }
 > = {
   swirl: { mult: 0.6, dmgType: "various" },

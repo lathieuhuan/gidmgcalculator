@@ -19,6 +19,7 @@ function Modifiers() {
 
   const { activeIndex, tabs } = useTabs({
     className: "text-lg",
+    defaultIndex: 1,
     configs: [{ text: "Debuffs" }, { text: "Buffs" }],
   });
 

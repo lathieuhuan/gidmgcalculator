@@ -80,9 +80,11 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                           <th className={tableStyles.th}>Crit</th>
                           <th className={cn("text-lightgold", tableStyles.th)}>Avg.</th>
                         </tr>
+
                         {key.subs.map((subKey, i) => {
                           const { nonCrit, crit, average } = standardValues[subKey] || {};
-                          return (
+
+                          return nonCrit === undefined ? null : (
                             <tr key={subKey} className={tableStyles.row}>
                               <td className={tableStyles.td}>{subKey}</td>
                               <td className={tableStyles.td}>{displayValue(nonCrit)}</td>

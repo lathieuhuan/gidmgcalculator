@@ -7,10 +7,11 @@ interface TabInfo {
 }
 interface UseTabArgs {
   className?: string;
+  defaultIndex?: number;
   configs: TabInfo[];
 }
-export function useTabs({ className, configs }: UseTabArgs) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export function useTabs({ className, defaultIndex = 0, configs }: UseTabArgs) {
+  const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
   const tabs = (
     <div

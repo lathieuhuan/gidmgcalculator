@@ -11,6 +11,7 @@ import {
   ATTRIBUTE_STAT_TYPES,
   ATTACK_ELEMENTS,
   RESONANCE_VISION_TYPES,
+  TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 
 export type Nation =
@@ -54,6 +55,8 @@ export type Tracker = any;
 export type AmplifyingReaction = "melt" | "vaporize";
 
 export type Reaction = typeof REACTIONS[number];
+
+export type TransformativeReaction = typeof TRANSFORMATIVE_REACTIONS[number];
 
 export type CharInfo = {
   name: string;

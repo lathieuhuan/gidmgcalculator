@@ -3,7 +3,7 @@ import { FaCaretDown } from "react-icons/fa";
 import cn from "classnames";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
-import { getRxnBonusesFromEM } from "@Src/calculators/utils";
+import { getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/calculators/utils";
 
 import { Green } from "@Src/styled-components";
 import { StatsTable } from "@Components/StatsTable";
@@ -17,7 +17,6 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
     return null;
   }
   const em = attributes.em || 0;
-  const rxnBonusFromEM = getRxnBonusesFromEM(em);
 
   return (
     <StatsTable>
@@ -39,7 +38,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           </StatsTable.Row>
         );
       })}
-      <EmSection em={em} rxnBonusFromEM={rxnBonusFromEM} />
+      <EmSection em={em} />
       {(["cRate", "cDmg", "healBn", "er", "shStr"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
@@ -70,14 +69,10 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
 
 interface EmSectionProps {
   em: number;
-  rxnBonusFromEM: {
-    amplifying: number;
-    transformative: number;
-    shield: number;
-  };
 }
-function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
+function EmSection({ em }: EmSectionProps) {
   const [dropped, setDropped] = useState(false);
+  const rxnBonusFromEM = getRxnBonusesFromEM(em);
 
   return (
     <div>
@@ -97,20 +92,24 @@ function EmSection({ em, rxnBonusFromEM }: EmSectionProps) {
         <p className="mr-2">{em}</p>
       </StatsTable.Row>
       <CollapseSpace active={dropped}>
-        <div className="px-2 py-1 flex flex-col space-y-1">
-          <p className="text-subtitle-1">
-            Increases damage caused by Vaporize and Melt by{" "}
+        <ul className="px-2 pb-1 text-subtitle-1 flex flex-col space-y-1">
+          <li>
+            - Increases damage dealt by Vaporize and Melt by{" "}
             <Green>{rxnBonusFromEM.amplifying}%</Green>.
-          </p>
-          <p className="text-subtitle-1">
-            Increases damage caused by Overloaded, Superconduct, Electro-Charged, Shattered, and
-            Swirl by <Green>{rxnBonusFromEM.transformative}%</Green>.
-          </p>
-          <p className="text-subtitle-1">
-            Increases damage absorption power of shields created through Crystallize by{" "}
+          </li>
+          <li>
+            - Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
+            Shattered, Swirl, Bloom, Hyperbloom, and Burgeon by{" "}
+            <Green>{rxnBonusFromEM.transformative}%</Green>.
+          </li>
+          <li>
+            - Increases the DMG Bonus provided by Aggravate and Spread by <Green>{"?"}%</Green>.
+          </li>
+          <li>
+            - Increases the damage absorption power of shields created through Crystallize by{" "}
             <Green>{rxnBonusFromEM.shield}%</Green>.
-          </p>
-        </div>
+          </li>
+        </ul>
       </CollapseSpace>
     </div>
   );

@@ -1,4 +1,4 @@
-import type { Artifact, CalcCharData, Weapon } from "@Src/types";
+import type { Artifact, CalcCharData, PartyData, Weapon } from "@Src/types";
 import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
@@ -36,12 +36,12 @@ export const getCharData = (char: HasName): CalcCharData => {
   };
 };
 
-export function getPartyData(party: (HasName | null)[]) {
+export function getPartyData(party: (HasName | null)[]): PartyData {
   const result = [];
   for (const tm of party) {
     if (tm) {
-      const { name, nation, vision, activeTalents } = findCharacter(tm)!;
-      result.push({ name, nation, vision, EBcost: activeTalents.EB.energyCost });
+      const { code, name, nation, vision, activeTalents } = findCharacter(tm)!;
+      result.push({ code, name, nation, vision, EBcost: activeTalents.EB.energyCost });
     }
   }
   return result;

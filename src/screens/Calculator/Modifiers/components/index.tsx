@@ -38,7 +38,7 @@ export function CharModSetters({
         return typeof input === "boolean" ? null : (
           <input
             type="text"
-            className="w-16 p-2 text-right textinput-common"
+            className="w-20 p-2 text-right textinput-common"
             value={input}
             onChange={(e) => onTextChange(e.target.value, index)}
           />

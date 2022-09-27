@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModifierSrc, MEDIUM_PAs } from "../constants";
-import { round1 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { countVision, round1 } from "@Src/utils";
+import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
 
 import nilouImg from "@Src/assets/images/nilou.png";
@@ -98,13 +98,14 @@ const Nilou: DataCharacter = {
             When all characters in the party are either Dendro or Hydro, and there is at least one
             Dendro and Hydro character, the flowery steps of Nilou's Dance of the Seven Realms will
             grant all nearby characters the Golden Chalice's Bounty for 30s.
-            <br /> {this.xtraDesc![0]} Also, triggering the Bloom reaction will create Bountiful
-            Cores instead of Dendro Cores.
-            <br /> Such Cores will burst very quickly after being created, and they have larger
-            AoEs.
-            <br /> Bountiful Cores cannot trigger Hyperbloom or Burgeon, and they share a upper
-            numerical limit with Dendro Cores. Bountiful Core DMG is considered DMG dealt by Dendro
-            Cores produced by Bloom (Rupture).
+            <br />
+            {this.xtraDesc![0]}
+            <br />
+            Such Cores will burst very quickly after being created, and they have larger AoEs.
+            <br />
+            Bountiful Cores cannot trigger Hyperbloom or Burgeon, and they share a upper numerical
+            limit with Dendro Cores. Bountiful Core DMG is considered DMG dealt by Dendro Cores
+            produced by Bloom (Rupture).
           </>
         );
       },
@@ -112,7 +113,8 @@ const Nilou: DataCharacter = {
         <>
           Characters under the effect of Golden Chalice's Bounty will have their{" "}
           <Green>Elemental Mastery</Green> increased by <Green b>100</Green> for 10s whenever they
-          are hit by Dendro attacks.
+          are hit by Dendro attacks. Also, triggering the Bloom reaction will create Bountiful Cores
+          instead of Dendro Cores.
         </>,
       ],
     },
@@ -217,19 +219,33 @@ const Nilou: DataCharacter = {
       desc: () => Nilou.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("totalAttr", "em", 100),
+      applyBuff: ({ totalAttr, char, party, desc, tracker }) => {
+        const visionCount = countVision(char, party);
+        const { dendro = 0, hydro = 0 } = visionCount;
+
+        if (dendro > 0 && hydro > 0 && Object.keys(visionCount).length === 2) {
+          applyModifier(desc, totalAttr, "em", 100, tracker);
+        }
+      },
     },
     {
       index: 1,
       src: EModifierSrc.A4,
-      affect: EModAffect.SELF,
-      desc: ({ totalAttr }) => {
+      affect: EModAffect.PARTY,
+      inputConfig: {
+        labels: ["Nilou's Max HP"],
+        renderTypes: ["text"],
+        initialValues: [0],
+        maxValues: [100000],
+      },
+      desc: ({ totalAttr, toSelf, inputs }) => {
+        const maxHP = toSelf ? totalAttr.hp : getInput(inputs, 0, 0);
+
         return (
           <>
             {Nilou.passiveTalents[1].desc}{" "}
             <Red>
-              Bonus DMG:{" "}
-              {totalAttr.hp > 30000 ? round1(Math.min((totalAttr.hp / 1000 - 30) * 9, 400)) : 0}%
+              Bonus DMG: {maxHP > 30000 ? round1(Math.min((maxHP / 1000 - 30) * 9, 400)) : 0}%
             </Red>
           </>
         );
