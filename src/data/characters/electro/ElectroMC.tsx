@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons } from "../utils";
+import { charModIsInUse, checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DataCharacter = {
   code: 46,
@@ -65,7 +65,7 @@ const ElectroMC: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
@@ -81,7 +81,7 @@ const ElectroMC: DataCharacter = {
       applyBuff: ({ totalAttr, char, inputs, toSelf, charBuffCtrls, desc, tracker }) => {
         let bonusValue = 20;
         const boosted = toSelf
-          ? charModCtrlIsActivated(ElectroMC.buffs!, char, charBuffCtrls, 1)
+          ? charModIsInUse(ElectroMC.buffs!, char, charBuffCtrls, 1)
           : getInput(inputs, 0, false);
 
         if (boosted) {
@@ -93,7 +93,7 @@ const ElectroMC: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Increases the <Green>Energy Recharge</Green> effect granted by Lightning Blade's Abundance
@@ -107,7 +107,7 @@ const ElectroMC: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When Falling Thunder created by Bellowing Thunder hits an opponent, it will decrease their{" "}

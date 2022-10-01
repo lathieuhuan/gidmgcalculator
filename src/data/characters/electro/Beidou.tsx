@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -116,7 +116,7 @@ const Beidou: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           After unleashing Tidecaller with its maximum DMG Bonus, Beidou's{" "}
@@ -135,7 +135,7 @@ const Beidou: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           During the duration of Stormbreaker, the <Green>Electro RES</Green> of surrounding

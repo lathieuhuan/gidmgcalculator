@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { MEDIUM_PAs, EModifierSrc } from "../constants";
-import { checkAscs, charModCtrlIsActivated, checkCons, findInput, talentBuff } from "../utils";
+import { MEDIUM_PAs, EModSrc } from "../constants";
+import { checkAscs, charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
 
 const Albedo: DataCharacter = {
   code: 29,
@@ -57,7 +57,7 @@ const Albedo: DataCharacter = {
           baseStatType: "def",
           baseMult: 133.6,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Albedo.buffs!, char, selfBuffCtrls, 0);
+            const isActivated = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
 
             return talentBuff([isActivated, "pct", [true, 1], 25]);
           },
@@ -96,7 +96,7 @@ const Albedo: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           <Green>Transient Blossoms</Green> deal <Green b>25%</Green> <Green>more DMG</Green> to
@@ -108,7 +108,7 @@ const Albedo: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Using Rite of Progeniture: Tectonic Tide increases the <Green>Elemental Mastery</Green> of
@@ -121,7 +121,7 @@ const Albedo: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture:
@@ -146,7 +146,7 @@ const Albedo: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Active party members within the Solar Isotoma field have their{" "}
@@ -159,7 +159,7 @@ const Albedo: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Active party members within the Solar Isotoma field who are protected by a shield created

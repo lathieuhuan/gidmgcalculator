@@ -105,13 +105,13 @@ export const ARTIFACT_ICONS: Record<typeof ARTIFACT_TYPES[number], string> = {
 };
 
 export const TRANSFORMATIVE_REACTIONS = [
+  "bloom",
   "superconduct",
   "swirl",
   "electroCharged",
   "overloaded",
   "shattered",
   "burning",
-  "rupture",
   "burgeon",
   "hyperbloom",
 ] as const;

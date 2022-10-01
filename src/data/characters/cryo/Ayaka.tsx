@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -109,7 +109,7 @@ const Ayaka: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           After using Kamisato Art: Hyouka, Ayaka's <Green>Normal and Charged attacks</Green> deal{" "}
@@ -122,7 +122,7 @@ const Ayaka: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains{" "}
@@ -135,7 +135,7 @@ const Ayaka: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Ayaka gains Usurahi Butou every 10s, increasing her <Green>Charged Attack DMG</Green> by{" "}
@@ -150,7 +150,7 @@ const Ayaka: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Opponents damaged by Kamisato Art: Soumetsu's Frostflake Seki no To will have their{" "}

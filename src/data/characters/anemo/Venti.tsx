@@ -1,7 +1,7 @@
 import type { ApplyCharDebuffFn, DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -93,7 +93,7 @@ const Venti: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When Venti picks up an Elemental Orb or Particle, he receives a <Green b>25%</Green>{" "}
@@ -108,7 +108,7 @@ const Venti: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Skyward Sonnet decreases opponents' <Green>Anemo RES</Green> and{" "}
@@ -120,7 +120,7 @@ const Venti: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Opponents launched by Skyward Sonnet suffer an additional <Green b>12%</Green>{" "}
@@ -132,7 +132,7 @@ const Venti: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Wind's Grand Ode decreases opponents' <Green>Anemo RES</Green> and <Green>RES</Green>{" "}

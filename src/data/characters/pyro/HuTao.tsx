@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -113,7 +113,7 @@ const HuTao: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           Increases Hu Tao's <Green>ATK</Green> based on her <Green>Max HP</Green>, and convert her{" "}
@@ -135,7 +135,7 @@ const HuTao: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When a Paramita Papilio state ends, all allies in the party will have their{" "}
@@ -148,7 +148,7 @@ const HuTao: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           When Hu Tao's HP is equal to or less than 50%, her <Green>Pyro DMG Bonus</Green> is
@@ -161,7 +161,7 @@ const HuTao: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Increases the <Green>Blood Blossom DMG</Green> by an amount equal to <Green b>10%</Green>{" "}
@@ -176,7 +176,7 @@ const HuTao: DataCharacter = {
     },
     {
       index: 5,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all
@@ -190,7 +190,7 @@ const HuTao: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her{" "}

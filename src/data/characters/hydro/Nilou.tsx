@@ -1,10 +1,10 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { countVision, round1 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 import nilouImg from "@Src/assets/images/nilou.png";
 
@@ -61,7 +61,7 @@ const Nilou: DataCharacter = {
           baseStatType: "hp",
           baseMult: 7.17,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Nilou.buffs!, char, selfBuffCtrls, 2);
+            const isActivated = charModIsInUse(Nilou.buffs!, char, selfBuffCtrls, 2);
             talentBuff([isActivated, "pct", [false, 1], 65]);
           },
         },
@@ -215,7 +215,7 @@ const Nilou: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => Nilou.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
@@ -230,7 +230,7 @@ const Nilou: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       affect: EModAffect.PARTY,
       inputConfig: {
         labels: ["Nilou's Max HP"],
@@ -254,14 +254,14 @@ const Nilou: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       affect: EModAffect.SELF,
       isGranted: checkCons[1],
       desc: () => Nilou.constellation[0].xtraDesc?.[0],
     },
     {
       index: 3,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       affect: EModAffect.SELF,
       desc: () => Nilou.constellation[3].xtraDesc?.[0],
       isGranted: checkCons[4],
@@ -269,7 +269,7 @@ const Nilou: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       affect: EModAffect.SELF,
       desc: () => Nilou.constellation[5].desc,
       isGranted: checkCons[6],
@@ -283,14 +283,14 @@ const Nilou: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => Nilou.constellation[1].xtraDesc?.[0],
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resisReduct", "hydro", 35),
     },
     {
       index: 1,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => Nilou.constellation[1].xtraDesc?.[1],
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resisReduct", "dendro", 35),

@@ -212,11 +212,9 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     );
   });
   return (
-    <>
-      <p className={`pt-2 -mb-1 text-h6 text-${vision} font-bold text-center uppercase`}>
-        {teammate.name}
-      </p>
+    <div>
+      <p className={`text-h6 text-${vision} font-bold text-center uppercase`}>{teammate.name}</p>
       {subContent}
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -113,7 +113,7 @@ const Qiqi: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Qiqi's <Green>Normal and Charged Attack DMG</Green> against opponents affected by Cryo is

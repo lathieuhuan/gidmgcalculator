@@ -1,7 +1,7 @@
 import type { AttributeStat, DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc } from "../constants";
+import { EModSrc } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -105,7 +105,7 @@ const Diluc: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           The searing flames that run down his blade cause it to be <Green>infused</Green> with{" "}
@@ -120,7 +120,7 @@ const Diluc: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during the duration of the
@@ -133,7 +133,7 @@ const Diluc: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Diluc deals <Green b>15%</Green> <Green>more DMG</Green> to opponents whose HP is above
@@ -146,7 +146,7 @@ const Diluc: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and{" "}
@@ -170,7 +170,7 @@ const Diluc: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           2s after casting Searing Onslaught, casting the next <Green>Searing Onslaught</Green> in
@@ -184,7 +184,7 @@ const Diluc: DataCharacter = {
     },
     {
       index: 5,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           After casting Searing Onslaught, the next <Green b>2</Green> <Green>Normal Attacks</Green>{" "}

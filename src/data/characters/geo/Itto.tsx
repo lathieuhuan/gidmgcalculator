@@ -1,13 +1,13 @@
 import type { AttributeStat, DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
-  const isActivated = charModCtrlIsActivated(Itto.buffs!, char, selfBuffCtrls, 1);
+  const isActivated = charModIsInUse(Itto.buffs!, char, selfBuffCtrls, 1);
 
   return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
 };
@@ -138,7 +138,7 @@ const Itto: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           When Arataki Itto uses consecutive Arataki Kesagiri, he obtains the following effects:
@@ -159,7 +159,7 @@ const Itto: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's{" "}
@@ -171,7 +171,7 @@ const Itto: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When the Raging Oni King state caused by Royal Descent: Behold, Itto the Evil ends, all
@@ -185,7 +185,7 @@ const Itto: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Itto's <Green>Charged Attacks</Green> deal <Green b>+70%</Green> <Green>CRIT DMG</Green>.

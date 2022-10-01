@@ -10,7 +10,7 @@ import type {
 } from "@Src/types";
 import { Electro, Green, Red } from "@Src/styled-components";
 import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
 import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
@@ -190,7 +190,7 @@ const Raiden: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: ({ toSelf, char, charData, inputs, partyData }) => (
         <>
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
@@ -218,7 +218,7 @@ const Raiden: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ char, charBuffCtrls, partyData }) => {
         return (
           <>
@@ -245,7 +245,7 @@ const Raiden: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
           Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> that the Raiden Shogun
@@ -263,7 +263,7 @@ const Raiden: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: ({ char, charBuffCtrls, partyData }) => (
         <>
           When <Electro>Electro</Electro> characters use their Elemental Bursts, the{" "}
@@ -284,7 +284,7 @@ const Raiden: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When the Musou Isshin state expires, all nearby party members (excluding the Raiden
@@ -299,7 +299,7 @@ const Raiden: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           While using Musou no Hitotachi and in the Musou Isshin state applied by Secret Art: Musou

@@ -70,11 +70,12 @@ export function modIsActivated(modCtrls: ModifierCtrl[], index: number) {
   return ctrl && ctrl.activated;
 }
 
-export const charModCtrlIsActivated = (
-  mods: {
+/**activated is not enough for char modifiers, they need to be granted */
+export const charModIsInUse = (
+  mods: Array<{
     index: number;
     isGranted?: (char: CharInfo) => boolean;
-  }[],
+  }>,
   char: CharInfo,
   buffCtrls: ModifierCtrl[],
   index: number

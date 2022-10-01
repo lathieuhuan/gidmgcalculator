@@ -1,10 +1,10 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Green, Pyro, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
   const baseATK = getInput(inputs, 0, 0);
@@ -93,7 +93,7 @@ const Bennett: DataCharacter = {
           baseMult: 56,
           multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Bennett.buffs!, char, selfBuffCtrls, 1);
+            const isActivated = charModIsInUse(Bennett.buffs!, char, selfBuffCtrls, 1);
 
             return talentBuff([isActivated, "mult", [false, 1], 20]);
           },
@@ -122,7 +122,7 @@ const Bennett: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ toSelf, inputs }) => (
         <>
           The character within its AoE gains an <Green>ATK Bonus</Green> that is based on Bennett's{" "}
@@ -142,7 +142,7 @@ const Bennett: DataCharacter = {
           ? [
               totalAttr.base_atk,
               finalTalentLv(obj.char, "EB", obj.partyData),
-              !!charModCtrlIsActivated(Bennett.buffs!, char, obj.charBuffCtrls, 1),
+              !!charModIsInUse(Bennett.buffs!, char, obj.charBuffCtrls, 1),
             ]
           : obj.inputs;
         const [buffValue, xtraDesc] = getEBBuffValue(args);
@@ -152,7 +152,7 @@ const Bennett: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Fantastic Voyage's ATK increase gains an additional <Green b>20%</Green> of Bennett's{" "}
@@ -164,7 +164,7 @@ const Bennett: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Sword, Claymore, Polearm characters inside Fantastic Voyage's radius gain a{" "}

@@ -1,7 +1,7 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
@@ -122,7 +122,7 @@ const Yanfei: DataCharacter = {
   buffs: [
     {
       index: 3,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ char, partyData }) => (
         <>
           Increases the <Green>DMG</Green> dealt by her <Green>Charged Attacks</Green>
@@ -137,7 +137,7 @@ const Yanfei: DataCharacter = {
     },
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When Yanfei's Charged Attack consumes Scarlet Seals, each Scarlet Seal will increase her{" "}
@@ -158,7 +158,7 @@ const Yanfei: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by <Green b>20%</Green> against

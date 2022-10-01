@@ -1,14 +1,14 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA4TAlentBuff =
   (index: number): GetTalentBuffFn =>
   ({ totalAttr, char, selfBuffCtrls }) => {
-    const isActivated = charModCtrlIsActivated(Shinobu.buffs!, char, selfBuffCtrls, 1);
+    const isActivated = charModIsInUse(Shinobu.buffs!, char, selfBuffCtrls, 1);
     const buffValue = Math.round(totalAttr.em * (index ? 0.25 : 0.75));
 
     return talentBuff([isActivated, "flat", [true, 4], buffValue]);
@@ -113,7 +113,7 @@ const Shinobu: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When Shinobu's HP is not higher than 50%, her <Green>Healing Bonus</Green> is increased by{" "}
@@ -126,7 +126,7 @@ const Shinobu: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Sanctifying Ring's abilities will be boosted based on Shinobu's Elemental Mastery:

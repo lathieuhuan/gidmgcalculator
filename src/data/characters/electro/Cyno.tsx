@@ -1,27 +1,24 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
-
-import cynoImg from "@Src/assets/images/cyno.png";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
-  talentBuff([charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 1), "pct", [true, 1], 35]);
+  talentBuff([charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1), "pct", [true, 1], 35]);
 
 const getA4talentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
-  const isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
+  const isActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 2);
 
   return talentBuff([isActivated, "flat", [true, 4], Math.round(totalAttr.em * 1.5)]);
 };
 
 const Cyno: DataCharacter = {
   code: 59,
-  beta: true,
   name: "Cyno",
-  icon: cynoImg,
-  sideIcon: "",
+  icon: "d/d1/Character_Cyno_Thumb",
+  sideIcon: "d/de/Character_Cyno_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "electro",
@@ -59,7 +56,7 @@ const Cyno: DataCharacter = {
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Secret Rite: Chasmic Soulfarer",
-      image: "",
+      image: "e/e3/Talent_Secret_Rite_Chasmic_Soulfarer",
       xtraLvAtCons: 5,
       stats: [
         {
@@ -77,11 +74,11 @@ const Cyno: DataCharacter = {
           baseMult: 0,
           conditional: true,
           getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
-            const A4isActivated = charModCtrlIsActivated(Cyno.buffs!, char, selfBuffCtrls, 2);
+            const A4IsActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 2);
 
             return talentBuff(
               [checkAscs[1](char), "mult", [true, 1], 100],
-              [A4isActivated, "flat", [true, 4], totalAttr.em * 2.5]
+              [A4IsActivated, "flat", [true, 4], totalAttr.em * 2.5]
             );
           },
         },
@@ -89,7 +86,7 @@ const Cyno: DataCharacter = {
     },
     EB: {
       name: "Sacred Rite: Wolf's Swiftness",
-      image: "",
+      image: "a/a0/Talent_Sacred_Rite_Wolf%27s_Swiftness",
       xtraLvAtCons: 3,
       stats: [
         {
@@ -148,7 +145,7 @@ const Cyno: DataCharacter = {
   passiveTalents: [
     {
       name: "Featherfall Judgment",
-      image: "",
+      image: "b/b5/Talent_Featherfall_Judgment",
       get desc() {
         return (
           <>
@@ -171,7 +168,7 @@ const Cyno: DataCharacter = {
     },
     {
       name: "Authority Over the Nine Bows",
-      image: "",
+      image: "e/ed/Talent_Authority_Over_the_Nine_Bows",
       desc: (
         <>
           Cyno's DMG values will be increased based on his Elemental Mastery as follows:
@@ -182,12 +179,12 @@ const Cyno: DataCharacter = {
         </>
       ),
     },
-    { name: "The Gift of Silence", image: "" },
+    { name: "The Gift of Silence", image: "4/4b/Talent_The_Gift_of_Silence" },
   ],
   constellation: [
     {
       name: "Ordinance: Unceasing Vigil",
-      image: "",
+      image: "2/2c/Constellation_Ordinance_Unceasing_Vigil",
       get desc() {
         return (
           <>
@@ -208,7 +205,7 @@ const Cyno: DataCharacter = {
     },
     {
       name: "Ceremony: Homecoming of Spirits",
-      image: "",
+      image: "c/cc/Constellation_Ceremony_Homecoming_of_Spirits",
       desc: (
         <>
           When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will
@@ -217,10 +214,10 @@ const Cyno: DataCharacter = {
         </>
       ),
     },
-    { name: "Precept: Lawful Enforcer", image: "" },
+    { name: "Precept: Lawful Enforcer", image: "3/30/Constellation_Precept_Lawful_Enforcer" },
     {
       name: "Austerity: Forbidding Guard",
-      image: "",
+      image: "1/11/Constellation_Austerity_Forbidding_Guard",
       desc: (
         <>
           When Cyno is in the Pactsworn Pathclearer state triggered by Sacred Rite: Wolf's
@@ -232,10 +229,13 @@ const Cyno: DataCharacter = {
         </>
       ),
     },
-    { name: "Funerary Rite: The Passing of Starlight", image: "" },
+    {
+      name: "Funerary Rite: The Passing of Starlight",
+      image: "0/02/Constellation_Funerary_Rite_The_Passing_of_Starlight",
+    },
     {
       name: "Raiment: Just Scales",
-      image: "",
+      image: "1/11/Constellation_Raiment_Just_Scales",
       desc: (
         <>
           After using Sacred Rite: Wolf's Swiftness or triggering Judication, Cyno will gain{" "}
@@ -253,7 +253,7 @@ const Cyno: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           Pactsworn Pathclearer state:
@@ -272,21 +272,21 @@ const Cyno: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => Cyno.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => Cyno.passiveTalents[1].desc,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
     },
     {
       index: 3,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => Cyno.constellation[0].xtraDesc?.[0],
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
@@ -294,7 +294,7 @@ const Cyno: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => Cyno.constellation[1].desc,
       isGranted: checkCons[2],
       affect: EModAffect.SELF,

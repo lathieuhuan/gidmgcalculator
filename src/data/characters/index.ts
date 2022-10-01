@@ -30,8 +30,10 @@ import Kaeya from "./cryo/Kaeya";
 import Keqing from "./electro/Keqing";
 import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
+import Layla from "./cryo/Layla";
 import Lisa from "./electro/Lisa";
 import Mona from "./hydro/Mona";
+import Nahida from "./dendro/Nahida";
 import Nilou from "./hydro/Nilou";
 import Ningguang from "./geo/Ningguang";
 import Noelle from "./geo/Noelle";
@@ -92,8 +94,10 @@ const characters = [
   Keqing,
   Klee,
   Kokomi,
+  Layla,
   Lisa,
   Mona,
+  Nahida,
   Nilou,
   Ningguang,
   Noelle,

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -86,7 +86,7 @@ const Chongyun: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           After a short delay, the cold air created by the Cryo explosion will coalesce into a
@@ -103,7 +103,7 @@ const Chongyun: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           Sword, Claymore, or Polearm-wielding characters within the field created by Spirit Blade:
@@ -120,7 +120,7 @@ const Chongyun: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           <Green>Spirit Blade: Cloud-Parting Star</Green> deals <Green b>15%</Green>{" "}
@@ -136,7 +136,7 @@ const Chongyun: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           When the field created by Spirit Blade: Chonghua's Layered Frost disappears, another

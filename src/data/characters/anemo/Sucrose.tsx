@@ -1,7 +1,7 @@
 import type { DataCharacter, Vision } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 
 const Sucrose: DataCharacter = {
@@ -82,7 +82,7 @@ const Sucrose: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When Sucrose triggers a Swirl, all characters in the party with the matching element have
@@ -94,7 +94,7 @@ const Sucrose: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ inputs }) => (
         <>
           When Astable Anemohypostasis Creation - 6308 or Forbidden Creation - Isomer 75 / Type II
@@ -116,7 +116,7 @@ const Sucrose: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           If Forbidden Creation - Isomer 75 / Type II triggers an Elemental Absorption, all party

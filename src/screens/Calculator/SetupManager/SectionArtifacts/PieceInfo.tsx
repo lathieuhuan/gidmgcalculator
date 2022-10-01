@@ -26,8 +26,9 @@ export default function PieceInfo({
   onClickRemovePiece,
   onClickChangePiece,
 }: PieceInfoProps) {
-  const [saving, setSaving] = useState(false);
   const dispatch = useDispatch();
+
+  const [saving, setSaving] = useState(false);
 
   const { type, rarity = 5, level, mainStatType } = pieceInfo;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
@@ -41,18 +42,18 @@ export default function PieceInfo({
         <div className="mb-2 rounded-circle bg-darkblue-3">
           <Select
             className={`px-2 pt-2 pb-1 text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
-            value={"+" + level}
-            onChange={(e) =>
+            value={level}
+            onChange={(e) => {
               dispatch(
                 updateArtPiece({
                   pieceIndex,
-                  level: +e.target.value.slice(1),
+                  level: +e.target.value,
                 })
-              )
-            }
+              );
+            }}
           >
             {[...Array(rarity === 5 ? 21 : 17)].map((_, lv) => (
-              <option key={lv} className="text-base">
+              <option key={lv} className="text-base" value={lv}>
                 +{lv}
               </option>
             ))}

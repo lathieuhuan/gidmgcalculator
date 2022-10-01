@@ -1,7 +1,7 @@
 import type { DataCharacter, ModifierInput, TotalAttribute, Vision } from "@Src/types";
 import { Anemo, Green, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -96,7 +96,7 @@ const Kazuha: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           Within 10s of remaining airborne after casting Chihayaburu, Kazuha can unleash a powerful
@@ -112,7 +112,7 @@ const Kazuha: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: ({ toSelf, totalAttr, inputs }) => (
         <>
           Upon triggering a Swirl, Kazuha will grant all party members a <Green b>0.04%</Green>{" "}
@@ -139,7 +139,7 @@ const Kazuha: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           The Autumn Whirlwind field created by Kazuha Slash increases the{" "}
@@ -153,7 +153,7 @@ const Kazuha: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: ({ totalAttr }) => (
         <>
           After using Chihayaburu or Kazuha Slash, Kazuha gains an <Anemo>Anemo Infusion</Anemo> for

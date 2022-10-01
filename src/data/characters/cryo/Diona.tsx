@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
-import { checkCons } from "../utils";
+import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Diona: DataCharacter = {
   code: 24,
@@ -62,6 +62,10 @@ const Diona: DataCharacter = {
           baseMult: 7.2,
           multType: 2,
           flat: { base: 693, type: 3 },
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const C2IsActivated = charModIsInUse(Diona.buffs!, char, selfBuffCtrls, 0);
+            return talentBuff([C2IsActivated, "pct", [false, 1], 15]);
+          },
         },
       ],
       // getExtraStats: (lv) => [
@@ -109,10 +113,11 @@ const Diona: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
-          Increases Icy Paws' <Green>DMG</Green> by <Green b>15%</Green>.
+          Increases Icy Paws' <Green>DMG</Green> by <Green b>15%</Green>, and increases its shield's{" "}
+          <Green>DMG Absorption</Green> by <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -121,7 +126,7 @@ const Diona: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Characters within Signature Mix's radius will gain the following effects based on their HP

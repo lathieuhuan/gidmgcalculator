@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -52,7 +52,7 @@ const GeoMC: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Party members within the radius of Wake of Earth have their <Green>CRIT Rate</Green>{" "}

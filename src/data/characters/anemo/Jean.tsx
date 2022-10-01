@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -107,7 +107,7 @@ const Jean: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Increases the pulling speed of Gale Blade after holding for more than 1s, and increases
@@ -120,7 +120,7 @@ const Jean: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When Jean picks up an Elemental Orb/Particle, all party members have their{" "}
@@ -136,7 +136,7 @@ const Jean: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Within the Field created by Dandelion Breeze, all opponents have their{" "}

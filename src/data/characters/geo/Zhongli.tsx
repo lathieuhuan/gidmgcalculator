@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, AttackPatternPath, getInput } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
@@ -114,7 +114,7 @@ const Zhongli: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When the Jade Shield takes DMG, it will Fortify: <br />• Fortified characters have{" "}
@@ -137,7 +137,7 @@ const Zhongli: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />• Normal Attack, Charged

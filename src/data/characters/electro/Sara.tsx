@@ -1,7 +1,7 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Electro, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, increaseAttackBonus } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
@@ -102,7 +102,7 @@ const Sara: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: ({ toSelf, inputs }) => (
         <>
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
@@ -128,7 +128,7 @@ const Sara: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           The <Electro>Electro DMG</Electro> of characters who have had their ATK increased by Tengu

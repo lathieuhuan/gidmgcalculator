@@ -9,13 +9,13 @@ import type {
 import { Green, Hydro } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { NORMAL_ATTACKS } from "@Src/constants";
-import { MEDIUM_PAs, EModifierSrc, TALENT_LV_MULTIPLIERS } from "../constants";
+import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
+import { charModIsInUse, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
 const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
-  [charModCtrlIsActivated(Ayato.buffs!, char, charBuffCtrls, 3), "pct", [false, 1], 40] as const;
+  [charModIsInUse(Ayato.buffs!, char, charBuffCtrls, 3), "pct", [false, 1], 40] as const;
 
 const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, totalAttr }) => {
   if (modIsActivated(selfBuffCtrls, 0)) {
@@ -182,7 +182,7 @@ const Ayato: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           • Causes <Green>DMG</Green> from his <Green>Normal Attacks</Green> to be{" "}
@@ -205,7 +205,7 @@ const Ayato: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ toSelf, char, partyData, inputs }) => (
         <>
           Increases the <Green>Normal Attack DMG</Green> of characters within its AoE by{" "}
@@ -226,7 +226,7 @@ const Ayato: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           <Green>Shunsuiken DMG</Green> is increased by <Green b>40%</Green> against opponents with
@@ -238,7 +238,7 @@ const Ayato: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When Kamisato Ayato has at least 3 Namisen stacks, his <Green>Max HP</Green> is increased
@@ -251,7 +251,7 @@ const Ayato: DataCharacter = {
     },
     {
       index: 5,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           After using Kamisato Art: Suiyuu, all nearby party members will have <Green b>15%</Green>{" "}
@@ -267,7 +267,7 @@ const Ayato: DataCharacter = {
     {
       index: 2,
       outdated: true,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           <Green>Kamisato Art: Suiyuu's DMG</Green> is increased based on <Green b>3%</Green> of

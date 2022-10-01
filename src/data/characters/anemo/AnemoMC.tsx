@@ -1,7 +1,7 @@
 import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -60,7 +60,7 @@ const AnemoMC: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Increases <Green>Energy Recharge</Green> by <Green b>16%</Green>.
@@ -74,7 +74,7 @@ const AnemoMC: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Targets who take DMG from Gust Surge have their <Green>Anemo RES</Green> decreased by{" "}

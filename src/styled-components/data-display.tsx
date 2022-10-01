@@ -45,8 +45,8 @@ export function ModifierTemplate({
   onToggle,
 }: ModifierLayoutProps) {
   return (
-    <div className="pt-2">
-      <div className="pt-1 mb-1 flex">
+    <div>
+      <div className="mb-1 flex">
         <label className="flex items-center">
           {mutable && <Checkbox className="ml-1 mr-2" checked={checked} onChange={onToggle} />}
           <span className="pl-1 font-bold text-lightgold">{(mutable ? "" : "+ ") + heading}</span>
@@ -54,7 +54,7 @@ export function ModifierTemplate({
       </div>
       <p>{desc}</p>
       {setters && (
-        <div className={cn("flex flex-col", mutable ? "pt-2 pr-2 space-y-5" : "space-y-2")}>
+        <div className={cn("flex flex-col", mutable ? "py-2 pr-2 space-y-5" : "space-y-2")}>
           {setters}
         </div>
       )}

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -90,7 +90,7 @@ const Xiangling: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Picking up a chili pepper increases <Green>ATK</Green> by <Green b>10%</Green> for 10s.
@@ -102,7 +102,7 @@ const Xiangling: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           For the duration of Pyronado, all party members receive a <Green b>15%</Green>{" "}
@@ -117,7 +117,7 @@ const Xiangling: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Opponents hit by Guoba's attacks have their <Green>Pyro RES</Green> reduced by{" "}

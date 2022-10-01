@@ -100,7 +100,8 @@ const goldSwords: DataWeapon[] = [
         inputConfig: {
           labels: ["Stacks"],
           renderTypes: ["stacks"],
-          initialValues: [2],
+          initialValues: [1],
+          maxValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (15 + refi * 5) * getInput(inputs, 0, 0);

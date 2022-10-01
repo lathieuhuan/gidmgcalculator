@@ -1,11 +1,11 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs } from "../constants";
-import { charModCtrlIsActivated, checkAscs, checkCons, findInput, talentBuff } from "../utils";
+import { EModSrc, HEAVY_PAs } from "../constants";
+import { charModIsInUse, checkAscs, checkCons, findInput, talentBuff } from "../utils";
 
 const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1);
+  const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
   const buffValue = 3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5);
 
   return talentBuff([isActivated, "pct", [false, 2], buffValue]);
@@ -14,7 +14,7 @@ const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
 const getC6TalentBuff =
   (index: number): GetTalentBuffFn =>
   ({ char, selfBuffCtrls, totalAttr }) => {
-    const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 2);
+    const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 2);
     const buffValue = Math.min(totalAttr.em, 2000) * (index ? 3 : 0.2);
 
     return talentBuff([isActivated, index ? "flat" : "mult", [false, 6], buffValue]);
@@ -76,7 +76,7 @@ const Sayu: DataCharacter = {
           name: "Press Kick",
           baseMult: 158.4,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Sayu.buffs!, char, selfBuffCtrls, 1);
+            const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
 
             return talentBuff([isActivated, "pct", [false, 2], 3.3]);
           },
@@ -149,7 +149,7 @@ const Sayu: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: ({ totalAttr }) => (
         <>
           When Sayu triggers a Swirl reaction while active, she <Green>heals</Green> all your
@@ -166,7 +166,7 @@ const Sayu: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Yoohoo Art: Fuuin Dash gains the following effects:

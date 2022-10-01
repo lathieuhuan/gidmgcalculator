@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -88,7 +88,7 @@ const Heizou: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           After Shikanoin Heizou's Heartstopper Strike hits an opponent, increases all party
@@ -101,7 +101,7 @@ const Heizou: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           For 5s after Shikanoin Heizou takes the field, his <Green>Normal Attack SPD</Green> is
@@ -114,7 +114,7 @@ const Heizou: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Each Declension stack will increase the <Green>CRIT Rate</Green> of the Heartstopper

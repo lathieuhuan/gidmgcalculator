@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -85,7 +85,7 @@ const Keqing: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           After recasting Stellar Restoration while a Lightning Stiletto is present, Keqing's weapon
@@ -101,7 +101,7 @@ const Keqing: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           When casting Starward Sword, Keqing's <Green>CRIT Rate</Green> and{" "}
@@ -115,7 +115,7 @@ const Keqing: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           For 10s after Keqing triggers an Electro-related Elemental Reaction, her{" "}
@@ -128,7 +128,7 @@ const Keqing: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst,

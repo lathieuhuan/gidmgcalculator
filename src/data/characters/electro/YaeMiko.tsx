@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -87,7 +87,7 @@ const YaeMiko: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
           Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase{" "}
@@ -103,7 +103,7 @@ const YaeMiko: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When Sesshou Sakura thunderbolt hit opponents, the <Green>Electro DMG Bonus</Green> of all
@@ -118,7 +118,7 @@ const YaeMiko: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Sesshou Sakura's attacks will ignore <Green b>60%</Green> of the opponents'{" "}

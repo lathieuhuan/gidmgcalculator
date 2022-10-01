@@ -1,10 +1,10 @@
 import type { DataCharacter } from "@Src/types";
 import { Geo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Noelle: DataCharacter = {
   code: 14,
@@ -92,7 +92,7 @@ const Noelle: DataCharacter = {
           baseMult: 40,
           multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Noelle.buffs!, char, selfBuffCtrls, 2);
+            const isActivated = charModIsInUse(Noelle.buffs!, char, selfBuffCtrls, 2);
 
             return talentBuff([isActivated, "mult", [false, 6], 50]);
           },
@@ -121,7 +121,7 @@ const Noelle: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           • <Green>Converts</Green> attack DMG to <Geo>Geo DMG</Geo> that cannot be overridden by
@@ -133,7 +133,7 @@ const Noelle: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, charBuffCtrls, partyData, desc, tracker }) => {
         const level = finalTalentLv(char, "EB", partyData);
         let mult = 40 * TALENT_LV_MULTIPLIERS[2][level];
-        if (charModCtrlIsActivated(Noelle.buffs!, char, charBuffCtrls, 2)) {
+        if (charModIsInUse(Noelle.buffs!, char, charBuffCtrls, 2)) {
           mult += 50;
         }
         applyModifier(desc, totalAttr, "atk", applyPercent(totalAttr.def, mult), tracker);
@@ -145,7 +145,7 @@ const Noelle: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Increases her <Green>Charged Attack DMG</Green> by <Green b>15%</Green>.
@@ -157,7 +157,7 @@ const Noelle: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           <Green>Sweeping Time</Green> increases Noelle's <Green>ATK</Green> by an additional{" "}

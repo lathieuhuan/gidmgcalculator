@@ -337,7 +337,7 @@ export const calculatorSlice = createSlice({
       const piece = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
 
       if (piece) {
-        if (level) {
+        if (level !== undefined) {
           piece.level = level;
         }
         if (mainStatType) {

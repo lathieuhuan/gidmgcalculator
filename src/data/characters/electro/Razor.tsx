@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc } from "../constants";
+import { EModSrc } from "../constants";
 import { finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
@@ -114,7 +114,7 @@ const Razor: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ char, partyData }) => (
         <>
           Raises Razor's <Green>ATK SPD</Green> by{" "}
@@ -129,7 +129,7 @@ const Razor: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Picking up an Elemental Orb or Particle increases Razor's <Green>DMG</Green> by{" "}
@@ -142,7 +142,7 @@ const Razor: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Increases <Green>CRIT Rate</Green> against opponents with less than 30% HP by{" "}

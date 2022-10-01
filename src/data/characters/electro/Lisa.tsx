@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
 
@@ -88,7 +88,7 @@ const Lisa: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Opponents hit by Lightning Rose have their <Green>DEF</Green> decreased by{" "}

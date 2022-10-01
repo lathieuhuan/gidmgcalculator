@@ -7,13 +7,13 @@ import type {
 } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, HEAVIER_PAs } from "../constants";
+import { EModSrc, HEAVIER_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModCtrlIsActivated(Eula.buffs!, char, selfBuffCtrls, 1);
+  const isActivated = charModIsInUse(Eula.buffs!, char, selfBuffCtrls, 1);
 
   return talentBuff([isActivated, "pct", [false, 4], 25]);
 };
@@ -141,7 +141,7 @@ const Eula: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Every time Icetide Vortex's Grimheart stacks are consumed, Eula's{" "}
@@ -154,7 +154,7 @@ const Eula: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           <Green>Lightfall Swords</Green> deal <Green b>25%</Green> increased <Green>DMG</Green>{" "}
@@ -168,7 +168,7 @@ const Eula: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: ({ fromSelf, char, inputs, partyData }) => (
         <>
           If Grimheart stacks are consumed, surrounding opponents will have their{" "}

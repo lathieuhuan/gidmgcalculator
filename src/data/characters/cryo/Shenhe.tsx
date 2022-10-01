@@ -1,7 +1,7 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import {
   applyModifier,
@@ -112,7 +112,7 @@ const Shenhe: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: () => (
         <>
           When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal{" "}
@@ -148,7 +148,7 @@ const Shenhe: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           An active character within the field created by Divine Maiden's Deliverance gain{" "}
@@ -161,7 +161,7 @@ const Shenhe: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ inputs }) => (
         <>
           After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the
@@ -197,7 +197,7 @@ const Shenhe: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Divine Maiden's Deliverance lasts for <Green b>6s</Green> <Green>longer</Green>. Active
@@ -219,7 +219,7 @@ const Shenhe: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra
@@ -244,7 +244,7 @@ const Shenhe: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ fromSelf, char, inputs, partyData }) => (
         <>
           The field decreases the <Green>Cryo RES</Green> and <Green>Physical RES</Green> of

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -87,7 +87,7 @@ const Amber: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           Increases the <Green>CRIT Rate</Green> of <Green>Fiery Rain</Green> by{" "}
@@ -100,7 +100,7 @@ const Amber: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Aimed Shot hits on weak spots increase <Green>ATK</Green> by <Green b>15%</Green> for 10s.
@@ -112,7 +112,7 @@ const Amber: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           <Green>Baron Bunny</Green>'s explosion via manual detonation deals <Green b>200%</Green>{" "}
@@ -125,7 +125,7 @@ const Amber: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Fiery Rain increases all party members' <Green>Movement SPD</Green> and <Green>ATK</Green>{" "}

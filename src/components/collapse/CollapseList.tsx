@@ -11,11 +11,11 @@ export function CollapseList({ headingList, contentList }: CollapseListProps) {
   return (
     <div>
       {headingList.map((heading, i) => (
-        <div key={i} className={expanded[i] ? "mb-6" : "mb-1"}>
+        <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
           <p
             className={cn(
-              "mb-2 pt-1 px-6 cursor-pointer bg-darkblue-3 font-bold text-lg leading-relaxed transition duration-200",
-              expanded[i] && "bg-[#f5dc6e] text-black"
+              "mb-2 pt-1 px-6 cursor-pointer font-bold text-lg leading-relaxed transition duration-200",
+              expanded[i] ? "bg-dullyellow text-black" : "bg-darkblue-3"
             )}
             onClick={() =>
               setExpanded((prev) => {

@@ -1,8 +1,8 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const Fischl: DataCharacter = {
   code: 8,
@@ -75,7 +75,7 @@ const Fischl: DataCharacter = {
           name: "Summoning DMG",
           baseMult: 115.44,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Fischl.buffs!, char, selfBuffCtrls, 2);
+            const isActivated = charModIsInUse(Fischl.buffs!, char, selfBuffCtrls, 2);
 
             return talentBuff([isActivated, "mult", [false, 2], 200]);
           },
@@ -129,7 +129,7 @@ const Fischl: DataCharacter = {
   buffs: [
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When <Green>Nightrider</Green> is used, it deals an <Green>additional</Green>{" "}

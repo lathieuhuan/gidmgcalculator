@@ -1,10 +1,10 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
 const Thoma: DataCharacter = {
@@ -85,7 +85,7 @@ const Thoma: DataCharacter = {
           name: "Fiery Collapse DMG",
           baseMult: 58,
           getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
-            const isActivated = charModCtrlIsActivated(Thoma.buffs!, char, selfBuffCtrls, 1);
+            const isActivated = charModIsInUse(Thoma.buffs!, char, selfBuffCtrls, 1);
 
             return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.hp, 2.2)]);
           },
@@ -123,7 +123,7 @@ const Thoma: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When your current active character obtains or refreshes a Blazing Barrier, this
@@ -148,7 +148,7 @@ const Thoma: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           <Green>DMG</Green> dealt by <Green>Crimson Ooyoroi's Fiery Collapse</Green> is increased
@@ -160,7 +160,7 @@ const Thoma: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           When a Blazing Barrier is obtained or refreshed, the <Green>DMG</Green> dealt by all party

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -81,7 +81,7 @@ const Kaeya: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           The <Green>CRIT Rate</Green> of Kaeya's <Green>Normal and Charged Attacks</Green> against

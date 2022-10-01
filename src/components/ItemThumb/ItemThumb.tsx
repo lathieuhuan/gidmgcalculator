@@ -1,5 +1,4 @@
 import cn from "classnames";
-import { memo } from "react";
 import { Level, Rarity } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
 import { wikiImg } from "@Src/utils";
@@ -20,7 +19,7 @@ interface ItemThumbProps {
   onMouseUp: () => void;
   onMouseDown?: () => void;
 }
-function ItemThumbCore({
+export function ItemThumb({
   noDecoration,
   item: { beta, icon, rarity, level, refi, owner },
   clicked,
@@ -96,10 +95,10 @@ function ItemThumbCore({
   );
 }
 
-export const ItemThumb = memo(ItemThumbCore, (prev, next) => {
-  if (prev.clicked !== next.clicked || prev.chosen !== next.chosen) return false;
-  for (const field of ["icon", "level", "refi", "owner"] as const) {
-    if (prev.item[field] !== next.item[field]) return false;
-  }
-  return true;
-});
+// export const ItemThumb = memo(ItemThumbCore, (prev, next) => {
+//   if (prev.clicked !== next.clicked || prev.chosen !== next.chosen) return false;
+//   for (const field of ["icon", "level", "refi", "owner"] as const) {
+//     if (prev.item[field] !== next.item[field]) return false;
+//   }
+//   return true;
+// });

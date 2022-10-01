@@ -157,7 +157,7 @@ export function ArtifactBuffs() {
   const mainCode = sets[0]?.code;
 
   buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated } = ctrl;
+    const { activated, inputs } = ctrl;
     const { name, buffs } = findArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
@@ -173,13 +173,15 @@ export function ArtifactBuffs() {
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
         desc={buff.desc()}
-        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
+        setters={
+          inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
+        }
       />
     );
   });
 
   subBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { code, activated } = ctrl;
+    const { code, activated, inputs } = ctrl;
     const { name, buffs } = findArtifactSet({ code })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
@@ -195,7 +197,9 @@ export function ArtifactBuffs() {
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
         desc={buff.desc()}
-        setters={<SetterSection buff={buff} inputs={ctrl.inputs} path={path} />}
+        setters={
+          inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
+        }
       />
     );
   });

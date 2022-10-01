@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
 
@@ -96,7 +96,7 @@ const Ningguang: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           A character that passes through the Jade Screen will gain a <Green b>12%</Green>{" "}

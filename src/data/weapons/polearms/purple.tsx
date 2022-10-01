@@ -14,14 +14,11 @@ import { findByCode } from "@Src/utils";
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
-import shiftingWindbladeImg from "@Src/assets/images/shifting-windblade.png";
-
 const purplePolearms: DataWeapon[] = [
   {
     code: 141,
-    beta: true,
-    name: "Shifting Windblade",
-    icon: shiftingWindbladeImg,
+    name: "Missive Windspear",
+    icon: "9/9b/Weapon_Missive_Windspear",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
@@ -30,8 +27,8 @@ const purplePolearms: DataWeapon[] = [
       core: (
         <>
           Within 10s after an Elemental Reaction is triggered, <Green>ATK</Green> is increased by{" "}
-          <Green b>{7.5 + refi * 2.5}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
-          <Green b>{30 + refi * 10}</Green>.
+          <Green b>{9 + refi * 3}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
+          <Green b>{36 + refi * 12}</Green>.
         </>
       ),
     }),
@@ -39,7 +36,7 @@ const purplePolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [10, 40]),
+        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [3, 12]),
         desc: ({ refi }) => findByCode(purplePolearms, 141)!.passiveDesc({ refi }).core,
       },
     ],

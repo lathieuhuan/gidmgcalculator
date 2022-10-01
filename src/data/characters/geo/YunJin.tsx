@@ -1,11 +1,11 @@
 import type { CalcCharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import {
-  charModCtrlIsActivated,
+  charModIsInUse,
   checkAscs,
   modIsActivated,
   countVisionTypes,
@@ -23,7 +23,7 @@ const getA4BuffValue = (
   let result = 0;
 
   if (
-    (toSelf && charModCtrlIsActivated(YunJin.buffs!, char, buffCtrls, 1)) ||
+    (toSelf && charModIsInUse(YunJin.buffs!, char, buffCtrls, 1)) ||
     (!toSelf && modIsActivated(buffCtrls, 1))
   ) {
     const numOfElmts = countVisionTypes(charData, partyData);
@@ -138,7 +138,7 @@ const YunJin: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           When <Green>Normal Attack DMG</Green> is dealt to opponents, <Green>Bonus DMG</Green> will
@@ -172,7 +172,7 @@ const YunJin: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ charData, partyData }) => {
         const n = countVisionTypes(charData, partyData);
         return (
@@ -192,7 +192,7 @@ const YunJin: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           After Cliffbreaker's Banner is unleashed, all nearby party members's{" "}
@@ -205,7 +205,7 @@ const YunJin: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When Yun Jin trigger the Crystallize Reaction, her <Green>DEF</Green> is increased by{" "}
@@ -218,7 +218,7 @@ const YunJin: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Characters under the effects of the Flying Cloud Flag Formation have their{" "}

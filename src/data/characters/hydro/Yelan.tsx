@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs, checkCons, countVisionTypes, talentBuff } from "../utils";
 
@@ -123,7 +123,7 @@ const Yelan: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: ({ charData, partyData }) => {
         const n = countVisionTypes(charData, partyData);
         return (
@@ -150,7 +150,7 @@ const Yelan: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           So long as an Exquisite Throw is in play, your own active character deals{" "}
@@ -174,7 +174,7 @@ const Yelan: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for

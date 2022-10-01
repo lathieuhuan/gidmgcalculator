@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -179,7 +179,7 @@ const Tighnari: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => Tighnari.passiveTalents[0].desc,
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
@@ -187,7 +187,7 @@ const Tighnari: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => Tighnari.passiveTalents[1].desc,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
@@ -198,7 +198,7 @@ const Tighnari: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => Tighnari.constellation[0].desc,
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
@@ -206,7 +206,7 @@ const Tighnari: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => Tighnari.constellation[1].xtraDesc![0],
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
@@ -214,7 +214,7 @@ const Tighnari: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => Tighnari.constellation[3].xtraDesc![0],
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,

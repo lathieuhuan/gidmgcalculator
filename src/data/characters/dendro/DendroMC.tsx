@@ -1,7 +1,7 @@
 import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -112,7 +112,7 @@ const DendroMC: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => DendroMC.passiveTalents[0].desc,
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
@@ -129,7 +129,7 @@ const DendroMC: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => DendroMC.passiveTalents[1].desc,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
@@ -141,7 +141,7 @@ const DendroMC: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => DendroMC.constellation[5].desc,
       isGranted: checkCons[6],
       affect: EModAffect.PARTY,

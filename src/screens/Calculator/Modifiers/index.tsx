@@ -18,7 +18,7 @@ function Modifiers() {
   const partyData = getPartyData(party);
 
   const { activeIndex, tabs } = useTabs({
-    className: "text-lg",
+    className: "text-lg shrink-0",
     defaultIndex: 1,
     configs: [{ text: "Debuffs" }, { text: "Buffs" }],
   });

@@ -1,7 +1,7 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Anemo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs } from "../utils";
@@ -118,7 +118,7 @@ const Xiao: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: ({ char, partyData }) => (
         <>
           Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
@@ -138,7 +138,7 @@ const Xiao: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           With the effects of Bane of All Evil, <Green>all DMG</Green> dealt by Xiao increases by{" "}
@@ -160,7 +160,7 @@ const Xiao: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Using Lemniscatic Wind Cycling increases the DMG of subsequent{" "}

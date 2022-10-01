@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -97,7 +97,7 @@ const Klee: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           Explosive Spark is consumed by the next <Green>Charged Attacks</Green>, which costs no
@@ -110,7 +110,7 @@ const Klee: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           When Sparks 'n' Splash is used, all party members will gain a <Green b>10%</Green>{" "}
@@ -125,7 +125,7 @@ const Klee: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Attacks and Skills have a certain chance to summon sparks that bombard opponents, dealing

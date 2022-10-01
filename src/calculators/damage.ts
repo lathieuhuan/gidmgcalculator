@@ -167,6 +167,8 @@ function calcTalentStat(
     if (stat.notAttack === "healing") {
       flat = talentBuff.flat?.value || 0;
       normalMult += totalAttr.healBn / 100;
+    } else if (stat.notAttack === "shield") {
+      normalMult += (talentBuff.pct?.value || 0) / 100;
     }
     base += flat;
     record.finalFlat += flat;
@@ -401,7 +403,7 @@ export default function getDamage(
     for (const rxn of reactions) {
       const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
 
-      const specialPercent = rxnBonus[rxn] + (rxn === "rupture" ? nilouA4BuffValue : 0);
+      const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
       const specialMult = 1 + specialPercent / 100;
       const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
       const base = baseRxnDmg * normalMult * specialMult * resMult;

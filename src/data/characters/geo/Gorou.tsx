@@ -1,7 +1,7 @@
 import type { AttributeStat, CalcCharData, DataCharacter, PartyData } from "@Src/types";
 import { Geo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv } from "@Src/utils";
 import {
   applyModifier,
@@ -141,7 +141,7 @@ const Gorou: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: ({ toSelf, charData, inputs, partyData }) => {
         const numOfGeo = countGeo(charData, partyData);
         return (
@@ -193,7 +193,7 @@ const Gorou: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           After using Juuga: Forward Unto Victory, all nearby party members' <Green>DEF</Green> is
@@ -206,7 +206,7 @@ const Gorou: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Gorou receives the following DMG Bonuses to his attacks based on his DEF:
@@ -225,7 +225,7 @@ const Gorou: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: ({ charData, partyData }) => {
         const n = countGeo(charData, partyData);
         return (

@@ -73,6 +73,7 @@ interface EmSectionProps {
 function EmSection({ em }: EmSectionProps) {
   const [dropped, setDropped] = useState(false);
   const rxnBonusFromEM = getRxnBonusesFromEM(em);
+  const quickenBonus = Math.round((5000 * em) / (em + 1200)) / 10;
 
   return (
     <div>
@@ -103,7 +104,8 @@ function EmSection({ em }: EmSectionProps) {
             <Green>{rxnBonusFromEM.transformative}%</Green>.
           </li>
           <li>
-            - Increases the DMG Bonus provided by Aggravate and Spread by <Green>{"?"}%</Green>.
+            - Increases the DMG Bonus provided by Aggravate and Spread by{" "}
+            <Green>{quickenBonus}%</Green>.
           </li>
           <li>
             - Increases the damage absorption power of shields created through Crystallize by{" "}

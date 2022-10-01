@@ -1,18 +1,15 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Hydro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-import candaceImg from "@Src/assets/images/candace.png";
-
 const Candace: DataCharacter = {
   code: 58,
-  beta: true,
   name: "Candace",
-  icon: candaceImg,
-  sideIcon: "",
+  icon: "b/bf/Character_Candace_Thumb",
+  sideIcon: "9/95/Character_Candace_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "hydro",
@@ -50,7 +47,7 @@ const Candace: DataCharacter = {
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sacred Rite: Heron's Sanctum",
-      image: "",
+      image: "5/5d/Talent_Sacred_Rite_Heron%27s_Sanctum",
       xtraLvAtCons: 5,
       stats: [
         {
@@ -66,7 +63,7 @@ const Candace: DataCharacter = {
     },
     EB: {
       name: "Sacred Rite: Wagtail's Tide",
-      image: "",
+      image: "1/1a/Talent_Sacred_Rite_Wagtail%27s_Tide",
       xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", baseStatType: "hp", baseMult: 6.61 },
@@ -89,7 +86,7 @@ const Candace: DataCharacter = {
   passiveTalents: [
     {
       name: "Featherflow Guard",
-      image: "",
+      image: "3/33/Talent_Aegis_of_Crossed_Arrows",
       desc: (
         <>
           If Candace is hit by an attack in the Hold duration of Sacred Rite: Heron's Sanctum, that
@@ -98,8 +95,8 @@ const Candace: DataCharacter = {
       ),
     },
     {
-      name: "Sand Arch",
-      image: "",
+      name: "Celestial Dome of Sand",
+      image: "8/86/Talent_Celestial_Dome_of_Sand",
       desc: (
         <>
           Characters affected by the Prayer of the Crimson Crown caused by Sacred Rite: Wagtail's
@@ -109,12 +106,12 @@ const Candace: DataCharacter = {
         </>
       ),
     },
-    { name: "To Dawn's First Light", image: "" },
+    { name: "To Dawn's First Light", image: "a/a6/Talent_To_Dawn%27s_First_Light" },
   ],
   constellation: [
     {
       name: "Returning Heir of the Scarlet Sands",
-      image: "",
+      image: "1/1d/Constellation_Returning_Heiress_of_the_Scarlet_Sands",
       desc: (
         <>
           The <Green>duration</Green> of Prayer of the Crimson Crown effect triggered by Sacred
@@ -124,7 +121,7 @@ const Candace: DataCharacter = {
     },
     {
       name: "Moon-Piercing Brilliance",
-      image: "",
+      image: "3/3b/Constellation_Moon-Piercing_Brilliance",
       desc: (
         <>
           When Sacred Rite: Heron's Guard hits opponents, Candace's <Green>Max HP</Green> will be
@@ -132,10 +129,10 @@ const Candace: DataCharacter = {
         </>
       ),
     },
-    { name: "Hunter's Supplication", image: "" },
+    { name: "Hunter's Supplication", image: "f/f2/Constellation_Hunter%27s_Supplication" },
     {
       name: "Sentinel Oath",
-      image: "",
+      image: "b/b7/Constellation_Sentinel_Oath",
       desc: (
         <>
           Shortens the Hold CD of Sacred Rite: Heron's Guard to be the same as that of the Tapping
@@ -143,10 +140,10 @@ const Candace: DataCharacter = {
         </>
       ),
     },
-    { name: "Golden Eye", image: "" },
+    { name: "Golden Eye", image: "f/fc/Constellation_Heterochromatic_Gaze" },
     {
       name: "The Overflow",
-      image: "",
+      image: "e/ec/Constellation_The_Overflow",
       desc: (
         <>
           When characters (excluding Candace herself) affected by the Prayer of the Crimson Crown
@@ -161,7 +158,7 @@ const Candace: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: () => (
         <>
           Prayer of the Crimson Crown has the following properties:
@@ -181,7 +178,7 @@ const Candace: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => Candace.passiveTalents[1].desc,
       isGranted: checkAscs[4],
       affect: EModAffect.PARTY,
@@ -198,7 +195,7 @@ const Candace: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => Candace.constellation[1].desc,
       isGranted: checkCons[2],
       affect: EModAffect.SELF,

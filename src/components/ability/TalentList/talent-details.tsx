@@ -13,7 +13,7 @@ const { Row } = StatsTable;
 const styles = {
   row: "pb-1 text-subtitle-1",
   leftCol: "pr-8 text-dullyellow",
-  rightCol: "align-right font-bold",
+  rightCol: "font-bold text-right",
 };
 
 interface SkillAttributesProps {

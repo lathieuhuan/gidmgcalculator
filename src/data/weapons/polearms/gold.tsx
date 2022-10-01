@@ -6,22 +6,16 @@ import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils
 import { getInput, applyModifier } from "@Src/calculators/utils";
 import { makeWpModApplier } from "../utils";
 
-import staffOfTheScarletSandsImg from "@Src/assets/images/staff-of-the-scarlet-sands.png";
-
 const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
   const mult = 0.8 + refi * 0.2;
-  return [
-    applyPercent(totalAttr.hp, 0.8 + refi * 0.2),
-    ` / ${round1(mult)}% of ${totalAttr.hp} HP`,
-  ] as const;
+  return [applyPercent(totalAttr.hp, mult), ` / ${round1(mult)}% of ${totalAttr.hp} HP`] as const;
 };
 
 const goldPolearms: DataWeapon[] = [
   {
     code: 139,
-    beta: true,
     name: "Staff of the Scarlet Sands",
-    icon: staffOfTheScarletSandsImg,
+    icon: "4/44/Weapon_Staff_of_the_Scarlet_Sands",
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate", scale: "9.6%b" },

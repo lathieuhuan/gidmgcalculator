@@ -1,7 +1,7 @@
 import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Cryo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, totalXtraTalentLv } from "@Src/utils";
 import { applyModifier, getInput } from "@Src/calculators/utils";
 import { checkAscs, findInput, modIsActivated } from "../utils";
@@ -138,7 +138,7 @@ const Aloy: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When Aloy receives the Coil effect from Frozen Wilds, her <Green>ATK</Green> is increased
@@ -154,7 +154,7 @@ const Aloy: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           When Aloy is in the Rushing Ice state conferred by Frozen Wilds, her{" "}

@@ -1,12 +1,12 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModCtrlIsActivated(Ganyu.buffs!, char, selfBuffCtrls, 0);
+  const isActivated = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
 
   return talentBuff([isActivated, "cRate", [true, 1], 20]);
 };
@@ -121,7 +121,7 @@ const Ganyu: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           After firing a Frostflake Arrow, the <Green>CRIT Rate</Green> of subsequent{" "}
@@ -134,7 +134,7 @@ const Ganyu: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Celestial Shower grants a <Green b>20%</Green> <Green>Cryo DMG Bonus</Green> to active

@@ -1,7 +1,7 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, LIGHT_PAs } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -102,7 +102,7 @@ const Mona: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.EB,
+      src: EModSrc.EB,
       desc: (obj) => (
         <>
           Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG taken</Green> by
@@ -122,7 +122,7 @@ const Mona: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
           Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to{" "}
@@ -138,7 +138,7 @@ const Mona: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           When any of your own party members hits an opponent affected by an Omen,{" "}
@@ -153,7 +153,7 @@ const Mona: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When any party member attacks an opponent affected by an Omen, their{" "}
@@ -166,7 +166,7 @@ const Mona: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green>{" "}

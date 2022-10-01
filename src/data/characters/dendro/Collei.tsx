@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Dendro, Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkCons } from "../utils";
 
@@ -163,7 +163,7 @@ const Collei: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => Collei.constellation[0].desc,
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
@@ -171,7 +171,7 @@ const Collei: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => Collei.constellation[3].desc,
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,

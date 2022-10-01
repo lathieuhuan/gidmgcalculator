@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Dori: DataCharacter = {
   code: 56,
@@ -48,7 +48,7 @@ const Dori: DataCharacter = {
           baseMult: 0,
           multType: 2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Dori.buffs!, char, selfBuffCtrls, 1);
+            const isActivated = charModIsInUse(Dori.buffs!, char, selfBuffCtrls, 1);
 
             return talentBuff([isActivated, "mult", [false, 6], 4]);
           },
@@ -187,7 +187,7 @@ const Dori: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           When Energy of the character connected to the Lamp Spirit{" "}
@@ -200,7 +200,7 @@ const Dori: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => Dori.constellation[5].desc,
       isGranted: checkCons[6],
       affect: EModAffect.SELF,

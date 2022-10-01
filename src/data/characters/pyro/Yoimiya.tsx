@@ -1,7 +1,7 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModifierSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -97,7 +97,7 @@ const Yoimiya: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.ES,
+      src: EModSrc.ES,
       desc: ({ char, partyData }) => (
         <>
           During this time, arrows fired by Yoimiya's <Green>Normal Attack</Green> will be Blazing
@@ -119,12 +119,12 @@ const Yoimiya: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           During Niwabi Fire-Dance, shots from Yoimiya's Normal Attack will increase her{" "}
           <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> on hit. This effect lasts for 3s and
-          can have a <Green>maximum</Green> of <Green b>10</Green> stacks.
+          can have a maximum of <Green b>10</Green> stacks.
         </>
       ),
       isGranted: checkAscs[1],
@@ -141,7 +141,7 @@ const Yoimiya: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Using Ryuukin Saxifrage causes nearby party members (not including Yoimiya) to gain a{" "}
@@ -165,7 +165,7 @@ const Yoimiya: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           When an opponent affected by Aurous Blaze is defeated within its duration, Yoimiya's{" "}
@@ -178,7 +178,7 @@ const Yoimiya: DataCharacter = {
     },
     {
       index: 4,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a{" "}

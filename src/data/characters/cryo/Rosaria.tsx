@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -84,7 +84,7 @@ const Rosaria: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A1,
+      src: EModSrc.A1,
       desc: () => (
         <>
           When Rosaria strikes an opponent from behind using Ravaging Confession, her{" "}
@@ -97,7 +97,7 @@ const Rosaria: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: ({ inputs }) => (
         <>
           Casting Rites of Termination increases <Green>CRIT Rate</Green> of all nearby party
@@ -120,7 +120,7 @@ const Rosaria: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           When Rosaria deals a CRIT Hit, her <Green>ATK SPD</Green> and{" "}
@@ -138,7 +138,7 @@ const Rosaria: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Rites of Termination's attack decreases opponents' <Green>Physical RES</Green> by{" "}

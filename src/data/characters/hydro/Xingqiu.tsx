@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
@@ -88,7 +88,7 @@ const Xingqiu: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Xingqiu gains a <Green b>20%</Green> <Green>Hydro DMG Bonus</Green>.
@@ -100,7 +100,7 @@ const Xingqiu: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Throughout the duration of Guhua Sword: Raincutter, the <Green>DMG</Green> dealt by{" "}
@@ -115,7 +115,7 @@ const Xingqiu: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           Decreases the <Green>Hydro RES</Green> of opponents hit by sword rain attacks by{" "}

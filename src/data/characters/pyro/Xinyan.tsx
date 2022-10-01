@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { EModifierSrc, HEAVY_PAs } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/calculators/utils";
-import { charModCtrlIsActivated, checkAscs, checkCons, talentBuff } from "../utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const Xinyan: DataCharacter = {
   code: 27,
@@ -94,7 +94,7 @@ const Xinyan: DataCharacter = {
           dmgTypes: ["EB", "phys"],
           baseMult: 340.8,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModCtrlIsActivated(Xinyan.buffs!, char, selfBuffCtrls, 2);
+            const isActivated = charModIsInUse(Xinyan.buffs!, char, selfBuffCtrls, 2);
 
             return talentBuff([isActivated, "cRate", [false, 2], 100]);
           },
@@ -133,7 +133,7 @@ const Xinyan: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModifierSrc.A4,
+      src: EModSrc.A4,
       desc: () => (
         <>
           Characters shielded by Sweeping Fervor deal <Green b>15%</Green> increased{" "}
@@ -146,7 +146,7 @@ const Xinyan: DataCharacter = {
     },
     {
       index: 1,
-      src: EModifierSrc.C1,
+      src: EModSrc.C1,
       desc: () => (
         <>
           Upon scoring a CRIT Hit, increases <Green>ATK SPD</Green> of Xinyan's{" "}
@@ -159,7 +159,7 @@ const Xinyan: DataCharacter = {
     },
     {
       index: 2,
-      src: EModifierSrc.C2,
+      src: EModSrc.C2,
       desc: () => (
         <>
           <Green>Riff Revolution's Physical DMG</Green> has its <Green>CRIT Rate</Green> increased
@@ -171,7 +171,7 @@ const Xinyan: DataCharacter = {
     },
     {
       index: 3,
-      src: EModifierSrc.C6,
+      src: EModSrc.C6,
       desc: () => (
         <>
           Xinyan's <Green>Charged Attacks</Green> gain an <Green>ATK Bonus</Green> equal to{" "}
@@ -188,7 +188,7 @@ const Xinyan: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModifierSrc.C4,
+      src: EModSrc.C4,
       desc: () => (
         <>
           Sweeping Fervor's swing DMG decreases opponent's <Green>Physical RES</Green> by{" "}

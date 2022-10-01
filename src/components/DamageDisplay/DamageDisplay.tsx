@@ -45,12 +45,14 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
         return (
           <div key={key.main} className="flex flex-col">
             <button
-              className="mx-auto mb-2 pt-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
+              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
               onClick={() => toggle(index)}
             >
-              <span className="text-h5">{key.main}</span>
+              <span className="text-xl leading-none">{key.main}</span>
               {talentLevel ? (
-                <span className="ml-1 text-subtitle-1 self-start">[{talentLevel}]</span>
+                <span className="ml-1 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default/80 text-sm leading-none">
+                  {talentLevel}
+                </span>
               ) : null}
               <FaChevronDown
                 className={cn(
