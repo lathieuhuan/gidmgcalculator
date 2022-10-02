@@ -83,7 +83,7 @@ export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath
 
 export type CopyCustomModCtrlsAction = PayloadAction<{
   isBuffs: boolean;
-  sourceIndex: number;
+  sourceID: number;
 }>;
 
 type CustomModCtrlPath = {
@@ -124,12 +124,14 @@ export type ChangeArtPieceSubStatAction = PayloadAction<
   ArtPieceSubStatPath & Partial<CalcArtPieceSubStatInfo>
 >;
 
+export type NewSetupManageInfo = CalcSetupManageInfo & { status: "OLD" | "NEW" | "DUPLICATE" };
+
 export type ApplySettingsOnCalculatorAction = PayloadAction<{
-  setupManageInfos: CalcSetupManageInfo[];
-  indexes: (number | null)[];
-  tempoConfigs: CalcConfigurations;
-  standardIndex: number;
-  currentIndex: number;
+  newSetupManageInfos: NewSetupManageInfo[];
+  newConfigs: CalcConfigurations;
+  // indexes: (number | null)[];
+  // standardIndex: number;
+  // currentIndex: number;
 }>;
 
 export type ImportSetupAction = PayloadAction<{

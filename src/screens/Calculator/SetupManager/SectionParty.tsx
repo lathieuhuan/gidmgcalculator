@@ -5,39 +5,47 @@ import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { addTeammate, copyParty, removeTeammate } from "@Store/calculatorSlice";
 import {
-  selectCalcSetups,
+  selectCalcSetupsById,
   selectCharData,
-  selectCurrentIndex,
+  selectActiveId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
-import { indexByName } from "@Src/utils";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Picker } from "@Components/Picker";
 import { IconButton } from "@Src/styled-components";
 import { CopySection } from "../components";
 import { pedestalStyles } from "./tw-compound";
+import { indexById } from "@Src/utils";
 
-const selectAllParties = createSelector(selectCalcSetups, (setups) =>
-  setups.map(({ party }) => party)
+const selectAllParties = createSelector(
+  selectSetupManageInfos,
+  selectCalcSetupsById,
+  (setupManageInfos, setupsById) => setupManageInfos.map(({ ID }) => setupsById[ID].party)
 );
 
 export default function SectionParty() {
-  const charData = useSelector(selectCharData);
-  const setupManageInfos = useSelector(selectSetupManageInfos);
-  const allParties = useSelector(selectAllParties);
-  const currentIndex = useSelector(selectCurrentIndex);
   const dispatch = useDispatch();
 
+  const charData = useSelector(selectCharData);
+  const activeId = useSelector(selectActiveId);
+  const setupManageInfos = useSelector(selectSetupManageInfos);
+  const allParties = useSelector(selectAllParties);
+
   const [pendingSlot, setPendingSlot] = useState<number | null>(null);
-  const party = allParties[currentIndex];
-  const isOriginal = setupManageInfos[currentIndex].type === "original";
+
+  const activeIndex = indexById(setupManageInfos, activeId);
+  const party = allParties[activeIndex];
+  const isOriginal = setupManageInfos[activeIndex].type === "original";
 
   const copyOptions = [];
   if (party.every((teammate) => !teammate)) {
     for (const partyIndex in allParties) {
       if (allParties[partyIndex].some((tm) => tm)) {
-        copyOptions.push(setupManageInfos[partyIndex].name);
+        copyOptions.push({
+          label: setupManageInfos[partyIndex].name,
+          value: setupManageInfos[partyIndex].ID,
+        });
       }
     }
   }
@@ -47,7 +55,7 @@ export default function SectionParty() {
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}
-          onClickCopy={(name) => dispatch(copyParty(indexByName(setupManageInfos, name)))}
+          onClickCopy={({ value }) => dispatch(copyParty(value))}
         />
       ) : null}
 
@@ -59,9 +67,7 @@ export default function SectionParty() {
                 <CharFilledSlot
                   mutable={isOriginal}
                   name={teammate.name}
-                  onClickSlot={() => {
-                    if (isOriginal) setPendingSlot(tmIndex);
-                  }}
+                  onClickSlot={() => isOriginal && setPendingSlot(tmIndex)}
                   onClickRemove={() => dispatch(removeTeammate(tmIndex))}
                 />
               ) : (

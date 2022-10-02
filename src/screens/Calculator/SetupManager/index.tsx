@@ -4,26 +4,21 @@ import type { Artifact } from "@Src/types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
 import {
-  changeCurrentSetup,
+  changeActiveSetup,
   pickWeaponInUsersDatabase,
   changeArtPiece,
 } from "@Store/calculatorSlice";
-import {
-  changeStandardSetup,
-  selectComparedIndexes,
-  selectStandardIndex,
-  toggleSettings,
-} from "@Store/uiSlice";
+import { toggleSettings } from "@Store/uiSlice";
 import {
   selectArtInfo,
   selectCharData,
-  selectCurrentIndex,
+  selectActiveId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
-import { indexByName, wikiImg } from "@Src/utils";
+import { wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { Button, IconButton } from "@Src/styled-components";
@@ -38,14 +33,12 @@ import { MainSelect } from "../components";
 import Settings from "../Settings";
 
 export default function SetupManager() {
-  const setupManageInfos = useSelector(selectSetupManageInfos);
-  const comparedIndexes = useSelector(selectComparedIndexes);
-  const currentIndex = useSelector(selectCurrentIndex);
-  const charData = useSelector(selectCharData);
-  const artPieces = useSelector(selectArtInfo).pieces;
-
-  const isChosenSetup = useSelector(selectStandardIndex) === currentIndex;
   const dispatch = useDispatch();
+
+  const setupManageInfos = useSelector(selectSetupManageInfos);
+  const activeId = useSelector(selectActiveId);
+  const charData = useSelector(selectCharData);
+  const artPieces = useSelector(selectArtInfo)?.pieces;
 
   const [modalType, setModalType] = useState<"weapon" | Artifact | "character" | "">("");
   const [prePickerOn, setPrePickerOn] = useState(false);
@@ -57,9 +50,16 @@ export default function SetupManager() {
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
       <MainSelect
-        tab={setupManageInfos[currentIndex].name}
-        onChangeTab={(name) => dispatch(changeCurrentSetup(indexByName(setupManageInfos, name)))}
-        options={setupManageInfos.map((info) => info.name)}
+        value={activeId}
+        options={setupManageInfos.map((info) => {
+          return {
+            label: info.name,
+            value: info.ID,
+          };
+        })}
+        onChangeTab={({ value }) => {
+          dispatch(changeActiveSetup(value));
+        }}
       />
 
       <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
@@ -70,17 +70,7 @@ export default function SetupManager() {
       </div>
 
       <div className="mt-4 flex items-center">
-        {comparedIndexes.length === 1 ? (
-          <div style={{ width: "5.425rem" }} />
-        ) : (
-          <Button
-            variant="positive"
-            disabled={isChosenSetup}
-            onClick={() => dispatch(changeStandardSetup(currentIndex))}
-          >
-            Choose
-          </Button>
-        )}
+        <div style={{ width: "5.425rem" }} />
 
         <IconButton
           className="mx-auto text-lg"

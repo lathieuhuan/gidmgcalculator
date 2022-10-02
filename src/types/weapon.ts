@@ -36,7 +36,7 @@ type ApplyWpPassiveBuffsArgs = {
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
   charData: CalcCharData;
-  partyData: PartyData;
+  partyData?: PartyData;
   refi: number;
   desc?: string;
   tracker?: Tracker;

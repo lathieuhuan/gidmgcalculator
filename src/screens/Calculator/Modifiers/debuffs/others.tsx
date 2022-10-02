@@ -51,7 +51,7 @@ export function ElementDebuffs() {
 export function ArtifactDebuffs() {
   const dispatch = useDispatch();
   const subDebuffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].subArtDebuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].subArtDebuffCtrls;
   });
   const content: JSX.Element[] = [];
 

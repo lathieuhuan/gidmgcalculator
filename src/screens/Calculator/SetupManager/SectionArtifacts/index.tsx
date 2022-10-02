@@ -4,13 +4,13 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { copyAllArtifacts, changeArtPiece } from "@Store/calculatorSlice";
 import {
-  selectCalcSetups,
-  selectCurrentIndex,
+  selectCalcSetupsById,
+  selectActiveId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactPiece } from "@Data/controllers";
-import { indexByName, wikiImg } from "@Src/utils";
+import { indexById, wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { CopySection } from "@Screens/Calculator/components";
@@ -19,18 +19,21 @@ import { Picker } from "@Components/Picker";
 import { pedestalStyles } from "../tw-compound";
 import PieceInfo from "./PieceInfo";
 
-const selectAllArtInfos = createSelector(selectCalcSetups, (setups) =>
-  setups.map(({ artInfo }) => artInfo)
+const selectAllArtInfos = createSelector(
+  selectSetupManageInfos,
+  selectCalcSetupsById,
+  (setupManageInfos, setupsById) => setupManageInfos.map(({ ID }) => setupsById[ID].artInfo)
 );
 
 interface SectionArtifactsProps {
   containerRef: RefObject<HTMLDivElement>;
 }
 export default function SectionArtifacts({ containerRef }: SectionArtifactsProps) {
+  const dispatch = useDispatch();
+
+  const activeId = useSelector(selectActiveId);
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const allArtInfos = useSelector(selectAllArtInfos);
-  const currentIndex = useSelector(selectCurrentIndex);
-  const dispatch = useDispatch();
 
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
   const [artifactPicker, setArtifactPicker] = useState({
@@ -38,7 +41,8 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     slot: 0,
   });
 
-  const { pieces } = allArtInfos[currentIndex];
+  const activeIndex = indexById(setupManageInfos, activeId);
+  const { pieces } = allArtInfos[activeIndex];
   const pieceInfo = pieces[activeTabIndex];
 
   const scrollContainer = () => {
@@ -66,7 +70,10 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
   if (pieces.every((piece) => piece === null)) {
     for (const index in allArtInfos) {
       if (allArtInfos[index].pieces.some((piece) => piece !== null)) {
-        copyOptions.push(setupManageInfos[index].name);
+        copyOptions.push({
+          label: setupManageInfos[index].name,
+          value: setupManageInfos[index].ID,
+        });
       }
     }
   }
@@ -75,7 +82,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}
-          onClickCopy={(name) => dispatch(copyAllArtifacts(indexByName(setupManageInfos, name)))}
+          onClickCopy={({ value }) => dispatch(copyAllArtifacts(value))}
         />
       ) : null}
 

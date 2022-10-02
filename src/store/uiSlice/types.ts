@@ -6,7 +6,7 @@ export interface UIState {
   atScreen: EScreen;
   introOn: boolean;
   settingsOn: boolean;
-  standardIndex: number;
+  standardID: number;
   comparedIndexes: number[];
   importInfo: ImportInfo;
 }
@@ -18,5 +18,5 @@ export type ImportInfo = {
 
 export type ApplySettingsOnUIAction = PayloadAction<{
   comparedIndexes: number[];
-  standardIndex: number;
+  standardID: number;
 }>;

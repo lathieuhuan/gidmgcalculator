@@ -50,20 +50,20 @@ export type CalcSetup = {
 };
 
 export type CalculatorState = {
-  currentIndex: number;
+  activeId: number;
   configs: CalcConfigurations;
 
   charData: CalcCharData;
   setupManageInfos: CalcSetupManageInfo[];
-  setups: CalcSetup[];
+  setupsById: Record<string, CalcSetup>;
   target: Target;
   monster: Monster;
 
-  allTotalAttrs: TotalAttribute[];
-  allartAttr: ArtifactAttribute[];
-  allRxnBonuses: ReactionBonus[];
-  allFinalInfusion: FinalInfusion[];
-  allDmgResult: DamageResult[];
+  allTotalAttrs: Record<string, TotalAttribute>;
+  allArtAttr: Record<string, ArtifactAttribute>;
+  allRxnBonuses: Record<string, ReactionBonus>;
+  allFinalInfusion: Record<string, FinalInfusion>;
+  allDmgResult: Record<string, DamageResult>;
 
   isError: boolean;
   touched: boolean;

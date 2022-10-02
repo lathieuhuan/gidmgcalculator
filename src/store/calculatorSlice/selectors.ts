@@ -1,6 +1,8 @@
 import type { RootState } from "../index";
 
-export const selectCurrentIndex = (state: RootState) => state.calculator.currentIndex;
+export const selectCalcSetupsById = (state: RootState) => state.calculator.setupsById;
+
+export const selectActiveId = (state: RootState) => state.calculator.activeId;
 
 export const selectCharData = (state: RootState) => state.calculator.charData;
 
@@ -8,39 +10,31 @@ export const selectCalcConfigs = (state: RootState) => state.calculator.configs;
 
 export const selectSetupManageInfos = (state: RootState) => state.calculator.setupManageInfos;
 
-export const selectSetupManageInfo = (state: RootState) =>
-  state.calculator.setupManageInfos[state.calculator.currentIndex];
-
-export const selectCalcSetups = (state: RootState) => state.calculator.setups;
-
-export const selectCalcSetup = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex];
-
 export const selectChar = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex].char;
+  state.calculator.setupsById[state.calculator.activeId]?.char;
 
 export const selectArtInfo = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex].artInfo;
+  state.calculator.setupsById[state.calculator.activeId]?.artInfo;
 
 export const selectWeapon = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex].weapon;
+  state.calculator.setupsById[state.calculator.activeId]?.weapon;
 
 export const selectParty = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex].party;
+  state.calculator.setupsById[state.calculator.activeId]?.party;
 
 export const selectElmtModCtrls = (state: RootState) =>
-  state.calculator.setups[state.calculator.currentIndex].elmtModCtrls;
+  state.calculator.setupsById[state.calculator.activeId]?.elmtModCtrls;
 
 export const selectTotalAttr = (state: RootState) =>
-  state.calculator.allTotalAttrs[state.calculator.currentIndex];
+  state.calculator.allTotalAttrs[state.calculator.activeId];
 
 export const selectFinalInfusion = (state: RootState) =>
-  state.calculator.allFinalInfusion[state.calculator.currentIndex];
+  state.calculator.allFinalInfusion[state.calculator.activeId];
 
 export const selectRxnBonus = (state: RootState) =>
-  state.calculator.allRxnBonuses[state.calculator.currentIndex];
+  state.calculator.allRxnBonuses[state.calculator.activeId];
 
 export const selectDamageResult = (state: RootState) =>
-  state.calculator.allDmgResult[state.calculator.currentIndex];
+  state.calculator.allDmgResult[state.calculator.activeId];
 
 export const selectTarget = (state: RootState) => state.calculator.target;

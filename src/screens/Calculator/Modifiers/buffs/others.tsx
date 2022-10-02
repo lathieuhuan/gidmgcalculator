@@ -34,7 +34,7 @@ export function ElememtBuffs() {
   const { vision } = useSelector(selectCharData);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
-  const infusion = useSelector(selectFinalInfusion).NA;
+  const infusion = useSelector(selectFinalInfusion)?.NA;
 
   const content: JSX.Element[] = [];
 
@@ -146,10 +146,10 @@ function QuickenBuff({ vision }: { vision: Vision }) {
 export function ArtifactBuffs() {
   const { sets } = useSelector(selectArtInfo);
   const buffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].artBuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].artBuffCtrls;
   });
   const subBuffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].subArtBuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].subArtBuffCtrls;
   });
   const dispatch = useDispatch();
 

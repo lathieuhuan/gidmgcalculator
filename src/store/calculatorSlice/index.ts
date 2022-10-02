@@ -2,6 +2,7 @@ import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
   CalcSetup,
+  CalcSetupManageInfo,
   CalculatorState,
   CalcWeapon,
   CharInfo,
@@ -39,7 +40,7 @@ import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 
 import monsters from "@Data/monsters";
 import { RESONANCE_VISION_TYPES } from "@Src/constants";
-import { bareLv, countVision, countWeapon, indexByCode } from "@Src/utils";
+import { bareLv, countVision, countWeapon, deepCopy, findById, indexByCode } from "@Src/utils";
 import {
   autoModifyTarget,
   calculate,
@@ -70,21 +71,21 @@ const defaultChar = {
 };
 
 const initialState: CalculatorState = {
-  currentIndex: 0,
+  activeId: 0,
   configs: {
     separateCharInfo: false,
     keepArtStatsOnSwitch: false,
   },
   charData: getCharData(defaultChar),
   setupManageInfos: [],
-  setups: [],
+  setupsById: {},
   target: initTarget(),
   monster: initMonster(),
-  allTotalAttrs: [],
-  allartAttr: [],
-  allRxnBonuses: [],
-  allFinalInfusion: [],
-  allDmgResult: [],
+  allTotalAttrs: {},
+  allArtAttr: {},
+  allRxnBonuses: {},
+  allFinalInfusion: {},
+  allDmgResult: {},
   isError: false,
   touched: false,
 };
@@ -97,15 +98,16 @@ export const calculatorSlice = createSlice({
       const { pickedChar, myWps, myArts } = action.payload;
       const result = parseAndInitData(pickedChar, myWps, myArts);
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
+      const setupManageInfo = getSetupManageInfo({});
 
-      state.currentIndex = 0;
+      state.activeId = setupManageInfo.ID;
       state.configs.separateCharInfo = false;
       state.touched = true;
 
       state.charData = getCharData(result.char);
-      state.setupManageInfos = [getSetupManageInfo({})];
-      state.setups = [
-        {
+      state.setupManageInfos = [setupManageInfo];
+      state.setupsById = {
+        [setupManageInfo.ID]: {
           char: result.char,
           selfBuffCtrls: selfBuffCtrls,
           selfDebuffCtrls: selfDebuffCtrls,
@@ -121,7 +123,7 @@ export const calculatorSlice = createSlice({
           customBuffCtrls: [],
           customDebuffCtrls: [],
         },
-      ];
+      };
       state.monster = initMonster();
 
       calculate(state, true);
@@ -131,25 +133,27 @@ export const calculatorSlice = createSlice({
 
       state.charData = getCharData(setupInfo.char);
       state.setupManageInfos = [getSetupManageInfo({ ID, type })];
-      state.setups = [setupInfo];
+      state.setupsById = {
+        [ID]: setupInfo,
+      };
       state.target = target;
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
-      state.currentIndex = 0;
+      state.activeId = ID;
 
       calculate(state);
     },
-    changeCurrentSetup: (state, action: PayloadAction<number>) => {
-      state.currentIndex = action.payload;
+    changeActiveSetup: (state, action: PayloadAction<number>) => {
+      state.activeId = action.payload;
     },
     importSetup: (state, action: ImportSetupAction) => {
       const { data, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID, type, name, target, ...importedsetup } = data;
-      const { setupManageInfos, setups } = state;
+      const { setupManageInfos, setupsById } = state;
       const { separateCharInfo } = state.configs;
 
       if (shouldOverwriteChar && separateCharInfo) {
-        for (const setup of setups) {
+        for (const setup of Object.values(setupsById)) {
           setup.char = importedsetup.char;
         }
       }
@@ -160,8 +164,8 @@ export const calculatorSlice = createSlice({
       state.setupManageInfos.push(
         getSetupManageInfo({ name: getNewSetupName(setupManageInfos), ID, type })
       );
-      state.setups.push(importedsetup);
-      state.currentIndex = state.setups.length - 1;
+      state.setupsById[ID] = importedsetup;
+      state.activeId = ID;
 
       calculate(state, shouldOverwriteChar || shouldOverwriteTarget);
     },
@@ -170,20 +174,20 @@ export const calculatorSlice = createSlice({
     },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
-      const { configs, setups, target } = state;
+      const { configs, setupsById, target } = state;
       const { level } = action.payload;
 
       if (level && target.level === 1) {
         target.level = bareLv(level);
       }
       if (configs.separateCharInfo) {
-        const currentSetup = setups[state.currentIndex];
+        const currentSetup = setupsById[state.activeId];
         currentSetup.char = {
           ...currentSetup.char,
           ...action.payload,
         };
       } else {
-        for (const setup of setups) {
+        for (const setup of Object.values(setupsById)) {
           setup.char = {
             ...setup.char,
             ...action.payload,
@@ -195,7 +199,7 @@ export const calculatorSlice = createSlice({
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
       const { name, vision, weapon: weaponType, tmIndex } = action.payload;
-      const setup = state.setups[state.currentIndex];
+      const setup = state.setupsById[state.activeId];
       const { char, weapon, party, elmtModCtrls, subWpComplexBuffCtrls } = setup;
 
       const oldVisionCount = countVision(char, party);
@@ -261,7 +265,7 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const tmIndex = action.payload;
-      const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = state.setups[state.currentIndex];
+      const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = state.setupsById[state.activeId];
       const teammate = party[tmIndex];
 
       if (teammate) {
@@ -287,18 +291,18 @@ export const calculatorSlice = createSlice({
       }
     },
     copyParty: (state, action: PayloadAction<number>) => {
-      const sourceIndex = action.payload;
-      const { currentIndex, setups } = state;
-      setups[currentIndex].party = setups[sourceIndex].party;
-      setups[currentIndex].elmtModCtrls = setups[sourceIndex].elmtModCtrls;
-      setups[currentIndex].subWpComplexBuffCtrls = setups[sourceIndex].subWpComplexBuffCtrls;
+      const activeSetup = state.setupsById[state.activeId];
+      const sourceSetup = state.setupsById[action.payload];
+      activeSetup.party = sourceSetup.party;
+      activeSetup.elmtModCtrls = sourceSetup.elmtModCtrls;
+      activeSetup.subWpComplexBuffCtrls = sourceSetup.subWpComplexBuffCtrls;
 
       calculate(state);
     },
     // WEAPON
     pickWeaponInUsersDatabase: (state, action: PayloadAction<CalcWeapon>) => {
       const wpInfo = action.payload;
-      const setup = state.setups[state.currentIndex];
+      const setup = state.setupsById[state.activeId];
       setup.weapon = wpInfo;
       setup.wpBuffCtrls = getMainWpBuffCtrls(wpInfo);
 
@@ -306,7 +310,7 @@ export const calculatorSlice = createSlice({
     },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
       const weapon = action.payload;
-      const setup = state.setups[state.currentIndex];
+      const setup = state.setupsById[state.activeId];
       const subWpBuffCtrls = setup.subWpComplexBuffCtrls[weapon.type];
 
       const oldWeapon = { ...setup.weapon };
@@ -324,7 +328,7 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateWeapon: (state, action: PayloadAction<Partial<CalcWeapon>>) => {
-      const currentSetup = state.setups[state.currentIndex];
+      const currentSetup = state.setupsById[state.activeId];
       currentSetup.weapon = {
         ...currentSetup.weapon,
         ...action.payload,
@@ -334,7 +338,7 @@ export const calculatorSlice = createSlice({
     // ARTIFACTS
     updateArtPiece: (state, action: UpdateArtPieceAction) => {
       const { pieceIndex, level, mainStatType } = action.payload;
-      const piece = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
+      const piece = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
 
       if (piece) {
         if (level !== undefined) {
@@ -348,7 +352,7 @@ export const calculatorSlice = createSlice({
     },
     updateArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
       const { pieceIndex, subStatIndex, ...changeInfo } = action.payload;
-      const pieceInfo = state.setups[state.currentIndex].artInfo.pieces[pieceIndex];
+      const pieceInfo = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
 
       if (pieceInfo) {
         pieceInfo.subStats[subStatIndex] = {
@@ -360,7 +364,7 @@ export const calculatorSlice = createSlice({
     },
     changeArtPiece: (state, action: ChangeArtPieceAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
-      const setup = state.setups[state.currentIndex];
+      const setup = state.setupsById[state.activeId];
       const { artInfo, subArtBuffCtrls } = setup;
 
       const piece = artInfo.pieces[pieceIndex];
@@ -406,7 +410,7 @@ export const calculatorSlice = createSlice({
       const pieces = action.payload;
       const sets = getArtifactSets(pieces);
       const bonusLv = sets[0]?.bonusLv;
-      const setup = state.setups[state.currentIndex];
+      const setup = state.setupsById[state.activeId];
 
       if (bonusLv) {
         setup.subArtBuffCtrls = setup.subArtBuffCtrls.filter((ctrl) => ctrl.code !== sets[0].code);
@@ -416,18 +420,20 @@ export const calculatorSlice = createSlice({
 
       calculate(state);
     },
+    // #to-do: change-dispatch
     copyAllArtifacts: (state, action: PayloadAction<number>) => {
-      const { setups, currentIndex } = state;
-      setups[currentIndex].artInfo = setups[action.payload].artInfo;
-      setups[currentIndex].artBuffCtrls = setups[action.payload].artBuffCtrls;
-      setups[currentIndex].subArtBuffCtrls = setups[action.payload].subArtBuffCtrls;
-      setups[currentIndex].subArtDebuffCtrls = setups[action.payload].subArtDebuffCtrls;
+      const activeSetup = state.setupsById[state.activeId];
+      const sourceSetup = state.setupsById[action.payload];
+      activeSetup.artInfo = sourceSetup.artInfo;
+      activeSetup.artBuffCtrls = sourceSetup.artBuffCtrls;
+      activeSetup.subArtBuffCtrls = sourceSetup.subArtBuffCtrls;
+      activeSetup.subArtDebuffCtrls = sourceSetup.subArtDebuffCtrls;
 
       calculate(state);
     },
     // MOD CTRLS
     toggleResonance: (state, action: PayloadAction<Vision>) => {
-      const rsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(({ vision }) => {
+      const rsn = state.setupsById[state.activeId].elmtModCtrls.resonance.find(({ vision }) => {
         return vision === action.payload;
       });
 
@@ -438,7 +444,7 @@ export const calculatorSlice = createSlice({
     },
     changeResonanceInput: (state, action: PayloadAction<number>) => {
       // for now only dendro has inputs
-      const dendroRsn = state.setups[state.currentIndex].elmtModCtrls.resonance.find(
+      const dendroRsn = state.setupsById[state.activeId].elmtModCtrls.resonance.find(
         ({ vision }) => {
           return vision === "dendro";
         }
@@ -454,7 +460,7 @@ export const calculatorSlice = createSlice({
       action: PayloadAction<"superconduct" | "aggravate" | "spread">
     ) => {
       const key = action.payload;
-      const { elmtModCtrls } = state.setups[state.currentIndex];
+      const { elmtModCtrls } = state.setupsById[state.activeId];
 
       elmtModCtrls[key] = !elmtModCtrls[key];
       calculate(state);
@@ -462,19 +468,19 @@ export const calculatorSlice = createSlice({
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
 
-      state.setups[state.currentIndex].elmtModCtrls[field] = value;
+      state.setupsById[state.activeId].elmtModCtrls[field] = value;
       calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setups[state.currentIndex][modCtrlName][ctrlIndex];
+      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
 
       ctrl.activated = !ctrl.activated;
       calculate(state);
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const { inputs } = state.setups[state.currentIndex][modCtrlName][ctrlIndex];
+      const { inputs } = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
 
       if (inputs) {
         inputs[inputIndex] = value;
@@ -483,7 +489,7 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setups[state.currentIndex].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -492,7 +498,7 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.setups[state.currentIndex].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -501,7 +507,7 @@ export const calculatorSlice = createSlice({
     },
     toggleSubWpModCtrl: (state, action: ToggleSubWpModCtrlAction) => {
       const { weaponType, ctrlIndex } = action.payload;
-      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
+      const ctrls = state.setupsById[state.activeId].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].activated = !ctrls[ctrlIndex].activated;
@@ -510,7 +516,7 @@ export const calculatorSlice = createSlice({
     },
     refineSubWeapon: (state, action: RefineSubWeaponAction) => {
       const { weaponType, ctrlIndex, value } = action.payload;
-      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
+      const ctrls = state.setupsById[state.activeId].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         ctrls[ctrlIndex].refi = value;
@@ -519,7 +525,7 @@ export const calculatorSlice = createSlice({
     },
     changeSubWpModCtrlInput: (state, action: ChangeSubWpModCtrlInputAction) => {
       const { weaponType, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrls = state.setups[state.currentIndex].subWpComplexBuffCtrls[weaponType];
+      const ctrls = state.setupsById[state.activeId].subWpComplexBuffCtrls[weaponType];
 
       if (ctrls && ctrls[ctrlIndex]) {
         const { inputs } = ctrls[ctrlIndex];
@@ -532,27 +538,28 @@ export const calculatorSlice = createSlice({
     },
     // CUSTOM MOD CTRLS
     createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
-      state.setups[state.currentIndex].customBuffCtrls.unshift(action.payload);
+      state.setupsById[state.activeId].customBuffCtrls.unshift(action.payload);
       calculate(state);
     },
     createCustomDebuffCtrl: (state, action: PayloadAction<CustomDebuffCtrl>) => {
-      state.setups[state.currentIndex].customDebuffCtrls.unshift(action.payload);
+      state.setupsById[state.activeId].customDebuffCtrls.unshift(action.payload);
       calculate(state);
     },
     clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
       const modCtrlName = action.payload ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state.setups[state.currentIndex][modCtrlName] = [];
+      state.setupsById[state.activeId][modCtrlName] = [];
       calculate(state);
     },
     copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
-      const { isBuffs, sourceIndex } = action.payload;
-      const { setups, currentIndex } = state;
+      const { isBuffs, sourceID } = action.payload;
+      const activeSetup = state.setupsById[state.activeId];
+      const sourceSetup = state.setupsById[sourceID];
 
       if (isBuffs) {
-        setups[currentIndex].customBuffCtrls = setups[sourceIndex].customBuffCtrls;
+        activeSetup.customBuffCtrls = sourceSetup.customBuffCtrls;
       } else {
-        setups[currentIndex].customDebuffCtrls = setups[sourceIndex].customDebuffCtrls;
+        activeSetup.customDebuffCtrls = sourceSetup.customDebuffCtrls;
       }
       calculate(state);
     },
@@ -560,14 +567,14 @@ export const calculatorSlice = createSlice({
       const { isBuffs, ctrlIndex } = action.payload;
       const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state.setups[state.currentIndex][modCtrlName].splice(ctrlIndex, 1);
+      state.setupsById[state.activeId][modCtrlName].splice(ctrlIndex, 1);
       calculate(state);
     },
     changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
       const { isBuffs, ctrlIndex, value } = action.payload;
       const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
-      state.setups[state.currentIndex][modCtrlName][ctrlIndex].value = value;
+      state.setupsById[state.activeId][modCtrlName][ctrlIndex].value = value;
       calculate(state);
     },
     // TARGET
@@ -608,59 +615,91 @@ export const calculatorSlice = createSlice({
     },
     //
     applySettingsOnCalculator: (state, action: ApplySettingsOnCalculatorAction) => {
-      const { setupManageInfos, tempoConfigs, standardIndex, currentIndex } = action.payload;
-      const { charData, setups } = state;
+      const { newSetupManageInfos, newConfigs } = action.payload;
+      const { setupManageInfos, setupsById, charData, activeId } = state;
 
-      let ID = Date.now();
+      let rootID = Date.now();
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
       const newWeapon = initWeapon({ type: charData.weapon });
       const wpBuffCtrls = getMainWpBuffCtrls(newWeapon);
       const subArtBuffCtrls = getAllSubArtBuffCtrls(null);
       const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
       const elmtModCtrls = initElmtModCtrls();
-      const newSetups: CalcSetup[] = [];
+      const newInfos: CalcSetupManageInfo[] = [];
 
-      action.payload.indexes.forEach((index, i) => {
-        if (index === null) {
-          newSetups[i] = {
-            char: setups[standardIndex].char,
-            selfBuffCtrls,
-            selfDebuffCtrls,
-            weapon: {
-              ID: ++ID,
-              ...newWeapon,
-            },
-            wpBuffCtrls,
-            subWpComplexBuffCtrls: {},
-            artInfo: {
-              pieces: [null, null, null, null, null],
-              sets: [],
-            },
-            artBuffCtrls: [],
-            subArtBuffCtrls,
-            subArtDebuffCtrls,
-            party: [null, null, null],
-            elmtModCtrls,
-            customBuffCtrls: [],
-            customDebuffCtrls: [],
-          };
-        } else {
-          const char =
-            state.configs.separateCharInfo && !tempoConfigs.separateCharInfo
-              ? setups[standardIndex].char
-              : setups[index].char;
+      newSetupManageInfos.forEach(({ ID, name, type, status }) => {
+        switch (status) {
+          case "OLD": {
+            const oldInfo = findById(setupManageInfos, ID);
+            if (oldInfo) {
+              newInfos.push({
+                ...oldInfo,
+                name: name,
+              });
+            }
+            break;
+          }
+          case "DUPLICATE": {
+            const oldInfo = findById(setupManageInfos, ID);
+            if (oldInfo) {
+              const setupID = rootID++;
 
-          newSetups[i] = {
-            ...setups[index],
-            char,
-          };
+              newInfos.push({
+                ID: setupID,
+                name,
+                type: "original",
+              });
+              setupsById[setupID] = deepCopy(setupsById[ID]);
+            }
+            break;
+          }
+          case "NEW": {
+            newInfos.push({
+              ID,
+              name,
+              type: "original",
+            });
+            setupsById[ID] = {
+              char: setupsById[activeId].char,
+              selfBuffCtrls,
+              selfDebuffCtrls,
+              weapon: {
+                ID: rootID++,
+                ...newWeapon,
+              },
+              wpBuffCtrls,
+              subWpComplexBuffCtrls: {},
+              artInfo: {
+                pieces: [null, null, null, null, null],
+                sets: [],
+              },
+              artBuffCtrls: [],
+              subArtBuffCtrls,
+              subArtDebuffCtrls,
+              party: [null, null, null],
+              elmtModCtrls,
+              customBuffCtrls: [],
+              customDebuffCtrls: [],
+            };
+            break;
+          }
         }
       });
 
-      state.currentIndex = currentIndex > -1 ? currentIndex : standardIndex;
-      state.configs = tempoConfigs;
-      state.setupManageInfos = setupManageInfos;
-      state.setups = newSetups;
+      const activeSetup = findById(newSetupManageInfos, activeId);
+      const newActiveID = activeSetup ? activeSetup.ID : newSetupManageInfos[0].ID;
+
+      if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
+        const activeChar = setupsById[newActiveID].char;
+
+        for (const setup of Object.values(setupsById)) {
+          setup.char = activeChar;
+        }
+      }
+
+      state.activeId = newActiveID;
+      state.setupManageInfos = newInfos;
+      state.configs = newConfigs;
 
       calculate(state, true);
     },
@@ -670,7 +709,7 @@ export const calculatorSlice = createSlice({
 export const {
   initSessionWithChar,
   initSessionWithSetup,
-  changeCurrentSetup,
+  changeActiveSetup,
   importSetup,
   closeError,
   updateCharacter,

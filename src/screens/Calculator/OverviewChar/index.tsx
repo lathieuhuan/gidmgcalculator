@@ -66,9 +66,15 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
         </div>
       </div>
       <MainSelect
-        tab={tab}
-        onChangeTab={setTab}
-        options={["Attributes", "Weapon", "Artifacts", "Constellation", "Talents"]}
+        value={tab}
+        options={[
+          { label: "Attributes", value: "Attributes" },
+          { label: "Weapon", value: "Weapon" },
+          { label: "Artifacts", value: "Artifacts" },
+          { label: "Constellation", value: "Constellation" },
+          { label: "Talents", value: "Talents" },
+        ]}
+        onChangeTab={({ value }) => setTab(value)}
       />
       <div className="mt-3 grow hide-scrollbar">{Content && <Content />}</div>
     </div>

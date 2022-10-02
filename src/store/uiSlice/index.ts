@@ -7,7 +7,8 @@ const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
-  standardIndex: 0,
+  // standardIndex: 0,
+  standardID: 0,
   comparedIndexes: [0],
   importInfo: {
     type: "",
@@ -26,20 +27,20 @@ export const uiSlice = createSlice({
     },
     resetCalculatorUI: (state) => {
       state.atScreen = EScreen.CALCULATOR;
-      state.standardIndex = 0;
+      // state.standardIndex = 0;
       state.comparedIndexes = [0];
       state.settingsOn = false;
     },
-    changeStandardSetup: (state, action: PayloadAction<number>) => {
-      state.standardIndex = action.payload;
-    },
+    // changeStandardSetup: (state, action: PayloadAction<number>) => {
+    //   state.standardIndex = action.payload;
+    // },
     toggleSettings: (state, action: PayloadAction<boolean>) => {
       state.settingsOn = action.payload;
     },
     applySettingsOnUI: (state, action: ApplySettingsOnUIAction) => {
-      const { comparedIndexes, standardIndex } = action.payload;
+      const { comparedIndexes } = action.payload;
       state.comparedIndexes = comparedIndexes;
-      state.standardIndex = standardIndex;
+      // state.standardIndex = standardIndex;
       state.settingsOn = false;
     },
     updateImportInfo: (state, action: PayloadAction<ImportInfo>) => {
@@ -52,7 +53,7 @@ export const {
   toggleIntro,
   changeScreen,
   resetCalculatorUI,
-  changeStandardSetup,
+  // changeStandardSetup,
   toggleSettings,
   applySettingsOnUI,
   updateImportInfo,
@@ -60,7 +61,7 @@ export const {
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;
 
-export const selectStandardIndex = (state: RootState) => state.ui.standardIndex;
+export const selectStandardIndex = (state: RootState) => state.ui.standardID;
 
 export const selectComparedIndexes = (state: RootState) => state.ui.comparedIndexes;
 

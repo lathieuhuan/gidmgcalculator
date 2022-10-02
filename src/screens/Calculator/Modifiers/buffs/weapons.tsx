@@ -20,10 +20,10 @@ export default function WeaponBuffs() {
   const weapon = useSelector(selectWeapon);
   const totalAttr = useSelector(selectTotalAttr);
   const weaponBuffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].wpBuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].wpBuffCtrls;
   });
   const subWpComplexBuffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].subWpComplexBuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].subWpComplexBuffCtrls;
   });
   const dispatch = useDispatch();
 

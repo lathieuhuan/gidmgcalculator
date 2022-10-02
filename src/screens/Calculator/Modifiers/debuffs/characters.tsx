@@ -22,7 +22,7 @@ import { findByIndex, processNumInput } from "@Src/utils";
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const char = useSelector(selectChar);
   const selfDebuffCtrls = useSelector((state) => {
-    return state.calculator.setups[state.calculator.currentIndex].selfDebuffCtrls;
+    return state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls;
   });
   const dispatch = useDispatch();
 

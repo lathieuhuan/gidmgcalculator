@@ -41,7 +41,7 @@ export const pickEquippedArtSet =
     dispatch(updateAllArtPieces(artPieces));
   };
 
-export const saveSetupThunk = (index: number, ID: number, name: string): AppThunk => {
+export const saveSetupThunk = (ID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const { calculator } = getState();
 
@@ -51,7 +51,7 @@ export const saveSetupThunk = (index: number, ID: number, name: string): AppThun
           ID,
           name,
           data: {
-            ...cleanCalcSetup(calculator.setups[index]),
+            ...cleanCalcSetup(calculator.setupsById[ID]),
             target: calculator.target,
           },
         })

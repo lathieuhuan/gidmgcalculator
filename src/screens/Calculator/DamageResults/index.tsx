@@ -2,18 +2,14 @@ import cn from "classnames";
 import { memo, useState, useEffect } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
-import {
-  selectChar,
-  selectDamageResult,
-  selectParty,
-  selectSetupManageInfo,
-} from "@Store/calculatorSlice/selectors";
+import { selectChar, selectDamageResult, selectParty } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedIndexes } from "@Store/uiSlice";
 import { EStatDamageKey } from "@Src/constants";
 
 import { IconButton, Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
+import { findById } from "@Src/utils";
 
 export default function DamageResults() {
   const [enlargedOn, setEnlargedOn] = useState(false);
@@ -62,7 +58,10 @@ const MemoResults = memo(Results);
 function Results() {
   const char = useSelector(selectChar);
   const party = useSelector(selectParty);
-  const setupManageInfo = useSelector(selectSetupManageInfo);
+  const activeSetupName = useSelector((state) => {
+    const { activeId, setupManageInfos } = state.calculator;
+    return findById(setupManageInfos, activeId)?.name || "";
+  });
   const comparedIndexes = useSelector(selectComparedIndexes);
   const dmgResult = useSelector(selectDamageResult);
 
@@ -90,7 +89,7 @@ function Results() {
           </Select>
         </div>
       ) : (
-        <p className="mx-4 my-2 font-bold text-center">{setupManageInfo.name.toUpperCase()}</p>
+        <p className="mx-4 my-2 font-bold text-center">{activeSetupName.toUpperCase()}</p>
       )}
       <div className="grow hide-scrollbar">
         <DamageDisplay

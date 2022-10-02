@@ -1,11 +1,12 @@
 import cn from "classnames";
 import { useCallback, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import type { CalcConfigurations, CalcSetupManageInfo } from "@Src/types";
-import type { SettingsModalInfo, SettingsModalType, TemporarySetup } from "./types";
+import type { CalcConfigurations } from "@Src/types";
+import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
+import type { SettingsModalInfo, SettingsModalType } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectCurrentIndex, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
+import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
 import {
   applySettingsOnUI,
@@ -23,6 +24,7 @@ import { SaveSetup } from "./modal-content";
 
 import styles from "../styles.module.scss";
 import { applySettingsOnCalculator } from "@Store/calculatorSlice";
+import { useTabs } from "@Hooks/useTabs";
 
 const CONFIG_OPTIONS: Array<{
   field: keyof CalcConfigurations;
@@ -39,31 +41,27 @@ const CONFIG_OPTIONS: Array<{
 ];
 
 const SETUP_LIMIT = 4;
+const tabs = ["Setups", "Configs"] as const;
 
 function HiddenSettings() {
   const dispatch = useDispatch();
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const currentIndex = useSelector(selectCurrentIndex);
-  const standardIndex = useSelector(selectStandardIndex);
   const configs = useSelector((state) => state.calculator.configs);
   const comparedIndexes = useSelector(selectComparedIndexes);
 
-  const [tempoSetups, setTempoSetups] = useState<TemporarySetup[]>(
-    setupManageInfos.map((manageInfos, index) => {
-      return {
-        ID: manageInfos.ID,
-        name: manageInfos.name,
-        type: manageInfos.type,
-        index,
-        checked: comparedIndexes.includes(index),
-        isStandard: index === standardIndex,
-        isCurrent: index === currentIndex,
-      };
-    })
+  const { activeIndex, tabs } = useTabs({
+    className: "shrink-0",
+    configs: [{ text: "Setups" }, { text: "Configs" }],
+  });
+  const [tempoSetups, setTempoSetups] = useState<NewSetupManageInfo[]>(
+    setupManageInfos.map((manageInfos) => ({
+      ...manageInfos,
+      status: "OLD",
+    }))
   );
   const [tempoConfigs, setTempoConfigs] = useState(configs);
-  const [isError, setIsError] = useState(false);
+  const [errorCode, setErrorCode] = useState(0);
   const [modal, setModal] = useState<SettingsModalInfo>({ type: "", index: null });
 
   const openModal = (index: number | null) => (type: SettingsModalType) => {
@@ -79,8 +77,8 @@ function HiddenSettings() {
       return newTempoSetups;
     });
 
-    if (isError) {
-      setIsError(false);
+    if (errorCode) {
+      setErrorCode(0);
     }
   };
 
@@ -96,91 +94,54 @@ function HiddenSettings() {
     if (tempoSetups.length < SETUP_LIMIT) {
       setTempoSetups((prev) => {
         let name = prev[index].name.trim();
-        name += name ? " (copy)" : "Setup copy";
-
-        return [
-          ...prev,
-          {
-            ...getSetupManageInfo({ name }),
-            index: prev[index].index,
-            checked: false,
-            isStandard: false,
-            isCurrent: false,
-          },
-        ];
+        const newSetup: NewSetupManageInfo = {
+          ID: prev[index].ID,
+          name: name ? `${name} (copy)` : "Setup copy",
+          type: "original",
+          status: "DUPLICATE",
+        };
+        return [...prev, newSetup];
       });
     }
   };
 
   const addNewSetup = () => {
     setTempoSetups((prev) => {
-      return [
-        ...prev,
-        {
-          ...getSetupManageInfo({ name: getNewSetupName(prev) }),
-          index: null,
-          checked: false,
-          isCurrent: false,
-          isStandard: false,
-        },
-      ];
+      const newSetup: NewSetupManageInfo = {
+        ...getSetupManageInfo({ name: getNewSetupName(prev) }),
+        status: "NEW",
+      };
+      return [...prev, newSetup];
     });
+
+    setErrorCode(0);
   };
 
-  const toggleCompareSetup = (index: number) => () => {
-    setTempoSetups((prev) => {
-      const newTempoSetups = [...prev];
-      newTempoSetups[index].checked = !newTempoSetups[index].checked;
-      return newTempoSetups;
-    });
-  };
+  const tryApply = () => {
+    if (!tempoSetups.length) {
+      setErrorCode(1);
+      return;
+    }
 
-  const tryApply = useCallback(() => {
-    let appliable = true;
-    const names: string[] = [];
-
+    const nameMap: Record<string, boolean> = {};
     for (const tempoSetup of tempoSetups) {
       const name = tempoSetup.name.trim();
 
-      if (!name.length || names.includes(name)) {
-        appliable = false;
-        break;
+      if (!name.length || nameMap[name]) {
+        setErrorCode(2);
+        return;
       } else {
-        names.push(name);
+        nameMap[name] = true;
       }
     }
-    if (appliable) {
-      const setupManageInfos: CalcSetupManageInfo[] = [];
-      const comparedIndexes: number[] = [];
-      const indexes: (number | null)[] = [];
-      let standardIndex = 0;
-      let currentIndex = -1;
 
-      for (const i in tempoSetups) {
-        const tempoSetup = tempoSetups[i];
-        const { name, ID, type } = tempoSetups[i];
-
-        setupManageInfos.push({ name, ID, type });
-        indexes.push(tempoSetup.index);
-
-        if (tempoSetup.checked) comparedIndexes.push(+i);
-        if (tempoSetup.isStandard) standardIndex = +i;
-        if (tempoSetup.isCurrent) currentIndex = +i;
-      }
-      dispatch(
-        applySettingsOnCalculator({
-          setupManageInfos,
-          indexes,
-          tempoConfigs,
-          standardIndex,
-          currentIndex,
-        })
-      );
-      dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
-    } else {
-      setIsError(true);
-    }
-  }, [tempoSetups, tempoConfigs, dispatch]);
+    dispatch(
+      applySettingsOnCalculator({ newSetupManageInfos: tempoSetups, newConfigs: tempoConfigs })
+    );
+    // #to-do
+    // dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
+    dispatch(applySettingsOnUI({ comparedIndexes, standardID: 0 }));
+  };
 
   // const settingsUtils = {
   //   save: <SaveUtil setup={tempoSetups[util.index]} close={closeUtil} />,
@@ -195,71 +156,79 @@ function HiddenSettings() {
         onClick={() => dispatch(toggleSettings(false))}
       />
 
-      <p className="mt-2 text-h3 text-center text-orange font-bold">SETTINGS</p>
+      <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>
+      {tabs}
 
-      <div className="mt-2 flex-grow flex flex-col hide-scrollbar">
-        <div className="space-y-4">
-          {tempoSetups.map((setup, index) => (
-            <SetupControl
-              key={index}
-              setup={setup}
-              changeSetupName={changeSetupName(index)}
-              removeSetup={removeSetup(index)}
-              copySetup={copySetup(index)}
-              toggleCompareSetup={toggleCompareSetup(index)}
-              openModal={openModal(index)}
-            />
-          ))}
-        </div>
+      <div className="mt-4 flex-grow flex flex-col hide-scrollbar">
+        {activeIndex === 0 && (
+          <div>
+            <div className="space-y-4">
+              {tempoSetups.map((setup, index) => (
+                <SetupControl
+                  key={index}
+                  setup={setup}
+                  changeSetupName={changeSetupName(index)}
+                  removeSetup={removeSetup(index)}
+                  copySetup={copySetup(index)}
+                  openModal={openModal(index)}
+                />
+              ))}
+            </div>
 
-        {tempoSetups.length < 4 && (
-          <div className="mt-6">
-            <button
-              className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
-              onClick={addNewSetup}
-            >
-              <FaPlus />
-            </button>
-            {/* <ImportBtn /> */}
+            {tempoSetups.length < 4 && (
+              <div className="mt-4">
+                <button
+                  className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
+                  onClick={addNewSetup}
+                >
+                  <FaPlus />
+                </button>
+                {/* <ImportBtn /> */}
+              </div>
+            )}
           </div>
         )}
 
-        <div className="mt-6 p-4 relative rounded-lg bg-darkblue-2">
-          <InfoSign
-            className="absolute top-3 right-3"
-            selfHover
-            onClick={() =>
-              setModal({
-                type: "CONFIG_TIPS",
-                index: null,
-              })
-            }
-          />
-          <p className="text-h5 text-orange">Configurations</p>
+        {activeIndex === 1 && (
+          <div className="p-4 relative rounded-lg bg-darkblue-2">
+            <InfoSign
+              className="absolute top-3 right-3"
+              selfHover
+              onClick={() =>
+                setModal({
+                  type: "CONFIG_TIPS",
+                  index: null,
+                })
+              }
+            />
+            <p className="text-h5 text-orange">Configurations</p>
 
-          <div className="mt-2 space-y-4">
-            {CONFIG_OPTIONS.map(({ field, desc }, i) => (
-              <label key={i} className="flex items-center group">
-                <Checkbox
-                  className="ml-1 mr-4 scale-180"
-                  checked={tempoConfigs[field]}
-                  onChange={() => setTempoConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
-                />
-                <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
-              </label>
-            ))}
+            <div className="mt-2 space-y-4">
+              {CONFIG_OPTIONS.map(({ field, desc }, i) => (
+                <label key={i} className="flex items-center group">
+                  <Checkbox
+                    className="ml-1 mr-4 scale-180"
+                    checked={tempoConfigs[field]}
+                    onChange={() => setTempoConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
+                  />
+                  <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApply}>
         <span
           className={cn(
             "w-60 mb-2 px-2 py-1 small-tooltip bottom-full origin-bottom-center text-lightred",
-            isError && "group-hover:scale-100"
+            errorCode && "group-hover:scale-100"
           )}
         >
-          Please choose a unique name for each Setup.
+          {errorCode === 1
+            ? "Please have atleast 1 Setup"
+            : errorCode === 2 && "Please choose a unique name for each Setup."}
         </span>
         <span>Apply</span>
       </Button>

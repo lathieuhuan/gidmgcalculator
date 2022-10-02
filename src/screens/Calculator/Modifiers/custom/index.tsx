@@ -5,9 +5,9 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
-  selectCurrentIndex,
+  selectActiveId,
   selectSetupManageInfos,
-  selectCalcSetups,
+  selectCalcSetupsById,
 } from "@Store/calculatorSlice/selectors";
 import {
   changeCustomModCtrlValue,
@@ -15,7 +15,7 @@ import {
   copyCustomModCtrls,
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
-import { indexByName, processNumInput } from "@Src/utils";
+import { indexById, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
 import { IconButton } from "@Src/styled-components";
@@ -23,44 +23,52 @@ import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 
-const selectAllCustomBuffCtrls = createSelector(selectCalcSetups, (setups) =>
-  setups.map(({ customBuffCtrls }) => customBuffCtrls)
+const selectAllCustomBuffCtrls = createSelector(
+  selectSetupManageInfos,
+  selectCalcSetupsById,
+  (setupManageInfos, setupsById) => {
+    return setupManageInfos.map(({ ID }) => setupsById[ID].customBuffCtrls);
+  }
 );
-const selectAllCustomDebuffCtrls = createSelector(selectCalcSetups, (setups) =>
-  setups.map(({ customDebuffCtrls }) => customDebuffCtrls)
+const selectAllCustomDebuffCtrls = createSelector(
+  selectSetupManageInfos,
+  selectCalcSetupsById,
+  (setupManageInfos, setupsById) => {
+    return setupManageInfos.map(({ ID }) => setupsById[ID].customDebuffCtrls);
+  }
 );
 
 interface CustomModifiersProps {
   isBuffs: boolean;
 }
 export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
-  const currentIndex = useSelector(selectCurrentIndex);
+  const dispatch = useDispatch();
+
+  const activeId = useSelector(selectActiveId);
   const allCustomBuffCtrls = useSelector(selectAllCustomBuffCtrls);
   const allCustomDebuffCtrls = useSelector(selectAllCustomDebuffCtrls);
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const dispatch = useDispatch();
 
   const [modalOn, setModalOn] = useState(false);
 
+  const activeIndex = indexById(setupManageInfos, activeId);
   const allModCtrls = isBuffs ? allCustomBuffCtrls : allCustomDebuffCtrls;
-  const modCtrls = isBuffs ? allCustomBuffCtrls[currentIndex] : allCustomDebuffCtrls[currentIndex];
+  const modCtrls = isBuffs ? allCustomBuffCtrls[activeIndex] : allCustomDebuffCtrls[activeIndex];
   const copyOptions = [];
 
   if (!modCtrls.length) {
     for (const index in allModCtrls) {
       if (allModCtrls[index].length) {
-        copyOptions.push(setupManageInfos[index].name);
+        copyOptions.push({
+          label: setupManageInfos[index].name,
+          value: setupManageInfos[index].ID,
+        });
       }
     }
   }
 
-  const copyModCtrls = (sourceName: string) => {
-    dispatch(
-      copyCustomModCtrls({
-        isBuffs,
-        sourceIndex: indexByName(setupManageInfos, sourceName),
-      })
-    );
+  const copyModCtrls = (args: { value: number }) => {
+    dispatch(copyCustomModCtrls({ isBuffs, sourceID: args.value }));
   };
 
   const closeModal = () => setModalOn(false);

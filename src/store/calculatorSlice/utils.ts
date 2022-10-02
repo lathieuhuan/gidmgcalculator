@@ -12,7 +12,7 @@ import type {
   SubWeaponBuffCtrl,
   Target,
   Weapon,
-  SetupType,
+  CalcSetupManageInfo,
 } from "@Src/types";
 import { findById } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
@@ -26,22 +26,22 @@ import { initCharInfo, initWeapon } from "./initiators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
-    const { currentIndex, setups, charData, target } = state;
-    const indexes = all ? [...Array(setups.length).keys()] : [currentIndex];
+    const { activeId, setupManageInfos, setupsById, charData, target } = state;
+    const allIds = all ? setupManageInfos.map(({ ID }) => ID) : [activeId];
 
-    for (const i of indexes) {
+    for (const id of allIds) {
       const results = calculateAll(
         {
-          ...setups[i],
+          ...setupsById[id],
           target,
         },
         charData
       );
-      state.allFinalInfusion[i] = results[0];
-      state.allTotalAttrs[i] = results[1];
-      state.allRxnBonuses[i] = results[4];
-      state.allartAttr[i] = results[5];
-      state.allDmgResult[i] = results[6];
+      state.allFinalInfusion[id] = results[0];
+      state.allTotalAttrs[id] = results[1];
+      state.allRxnBonuses[id] = results[4];
+      state.allArtAttr[id] = results[5];
+      state.allDmgResult[id] = results[6];
     }
   } catch (err) {
     console.log(err);
@@ -257,11 +257,6 @@ export function autoModifyTarget(target: Target, monster: Monster) {
   }
 }
 
-type CalcSetupManageInfo = {
-  name: string;
-  ID: number;
-  type: SetupType;
-};
 export const getSetupManageInfo = ({
   name = "Setup 1",
   ID = Date.now(),

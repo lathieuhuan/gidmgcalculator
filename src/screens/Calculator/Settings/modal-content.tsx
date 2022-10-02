@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { TemporarySetup } from "./types";
+import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { saveSetupThunk } from "@Store/thunks";
@@ -10,10 +10,10 @@ import { ButtonBar } from "@Components/minors";
 import { findById } from "@Src/utils";
 
 interface SaveSetup {
-  setup: TemporarySetup;
+  setup: NewSetupManageInfo;
   onClose: () => void;
 }
-export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
+export function SaveSetup({ setup: { name, ID, status }, onClose }: SaveSetup) {
   const dispatch = useDispatch();
   const charData = useSelector(selectCharData);
   const existed = findById(useSelector(selectMySetups), ID);
@@ -21,21 +21,21 @@ export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
   const [input, setInput] = useState(existed ? existed.name : charData.name + " - " + name);
 
   return (
-    <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-darkblue-1">
+    <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow">
       <p className="mb-2 mx-auto text-h5 text-orange font-bold">
         {existed ? "Modify OLD" : "Save NEW"} Setup
       </p>
       <input
         type="text"
-        className="mt-1 mb-8 px-4 pt-4 pb-2 text-2xl text-center textinput-common"
+        className="mt-1 mb-8 px-4 pt-4 pb-2 text-2xl text-center textinput-common font-medium"
         value={input}
         onChange={(e) => {
           const { value } = e.target;
           if (value.length <= 34) setInput(value);
         }}
         onKeyDown={(e) => {
-          if (index !== null && e.key === "Enter") {
-            dispatch(saveSetupThunk(index, ID, input));
+          if (status !== "NEW" && e.key === "Enter") {
+            dispatch(saveSetupThunk(ID, input));
             onClose();
           }
         }}
@@ -45,8 +45,8 @@ export function SaveSetup({ setup: { name, ID, index }, onClose }: SaveSetup) {
         handlers={[
           onClose,
           () => {
-            if (index !== null) {
-              dispatch(saveSetupThunk(index, ID, input));
+            if (status !== "NEW") {
+              dispatch(saveSetupThunk(ID, input));
               onClose();
             }
           },

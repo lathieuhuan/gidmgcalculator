@@ -159,10 +159,11 @@ export function applyWpPassiveBuffs(
   partyData?: PartyData
 ) {
   const { applyBuff, applyFinalBuff } = wpData;
-  if (!isFinal && applyBuff) {
-    applyBuff({ ...wrapper, refi, partyData });
-  } else if (isFinal && applyFinalBuff) {
-    applyFinalBuff({ ...wrapper, refi });
+  const applyFn =
+    !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+
+  if (applyFn) {
+    applyFn({ ...wrapper, refi, partyData });
   }
 }
 

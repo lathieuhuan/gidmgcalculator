@@ -5,8 +5,8 @@ import type { UsersSetup } from "@Src/types";
 import { useSelector } from "@Store/hooks";
 import {
   selectCalcConfigs,
-  selectCalcSetups,
-  selectCurrentIndex,
+  selectCalcSetupsById,
+  selectActiveId,
   selectTarget,
 } from "@Store/calculatorSlice/selectors";
 
@@ -26,23 +26,31 @@ export function OverrideOptions({
   addImportedSetup,
   endImport,
 }: OverrideOptions) {
-  const setups = useSelector(selectCalcSetups);
-  const currentIndex = useSelector(selectCurrentIndex);
+  const setupsById = useSelector(selectCalcSetupsById);
+  const activeId = useSelector(selectActiveId);
   const target = useSelector(selectTarget);
   const { separateCharInfo } = useSelector(selectCalcConfigs);
 
   const [ticked, setTicked] = useState([false, false]);
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
-  const { char } = setups[currentIndex];
+  const { char } = setupsById[activeId];
   const comparedChar = {
     name: char.name,
-    level: separateCharInfo ? setups.map((setup) => setup.char.level) : char.level,
-    NAs: separateCharInfo ? setups.map((setup) => setup.char.NAs) : char.NAs,
-    ES: separateCharInfo ? setups.map((setup) => setup.char.ES) : char.ES,
-    EB: separateCharInfo ? setups.map((setup) => setup.char.EB) : char.EB,
-    cons: separateCharInfo ? setups.map((setup) => setup.char.cons) : char.cons,
+    level: [char.level],
+    NAs: [char.NAs],
+    ES: [char.ES],
+    EB: [char.EB],
+    cons: [char.cons],
   };
+
+  if (separateCharInfo) {
+    comparedChar.level = Object.values(setupsById).map(({ char }) => char.level);
+    comparedChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
+    comparedChar.ES = Object.values(setupsById).map(({ char }) => char.ES);
+    comparedChar.EB = Object.values(setupsById).map(({ char }) => char.EB);
+    comparedChar.cons = Object.values(setupsById).map(({ char }) => char.cons);
+  }
 
   const onChangeTickedOption = (i: number) => () => {
     setTicked((prev) => {
@@ -115,9 +123,9 @@ export function OverrideOptions({
                                 comparedCols = (
                                   <>
                                     <td className={tableStyles.td}>
-                                      {Array.isArray(object1[type])
+                                      {object1[type].length > 1
                                         ? `[${object1[type].join(", ")}]`
-                                        : object1[type]}
+                                        : object1[type][0]}
                                     </td>
                                     <td className={tableStyles.td}>{object2?.[type]}</td>
                                   </>
