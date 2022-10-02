@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronUp } from "react-icons/fa";
 import type { CharInfo, DamageResult, Party } from "@Src/types";
 
 import { EStatDamageKey } from "@Src/constants";
@@ -45,21 +45,21 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
         return (
           <div key={key.main} className="flex flex-col">
             <button
-              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
+              className="mr-auto mb-2 pt-1 pb-0.5 pl-3 pr-4 flex items-center rounded-2xl bg-orange text-black font-bold"
               onClick={() => toggle(index)}
             >
-              <span className="text-xl leading-none">{key.main}</span>
+              <FaChevronUp
+                className={cn(
+                  "mr-1 text-subtitle-1 text-black duration-150 ease-linear",
+                  closedItems[index] ? "rotate-90" : "rotate-180"
+                )}
+              />
+              <span className="text-lg leading-none">{key.main}</span>
               {talentLevel ? (
                 <span className="ml-1 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default/80 text-sm leading-none">
                   {talentLevel}
                 </span>
               ) : null}
-              <FaChevronDown
-                className={cn(
-                  "ml-2 text-subtitle-1 text-black duration-150 ease-linear",
-                  closedItems[index] && "rotate-90"
-                )}
-              />
             </button>
 
             <CollapseSpace active={!closedItems[index]}>

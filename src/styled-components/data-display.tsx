@@ -54,7 +54,7 @@ export function ModifierTemplate({
       </div>
       <p>{desc}</p>
       {setters && (
-        <div className={cn("flex flex-col", mutable ? "py-2 pr-2 space-y-5" : "space-y-2")}>
+        <div className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-2 space-y-5" : "space-y-2")}>
           {setters}
         </div>
       )}

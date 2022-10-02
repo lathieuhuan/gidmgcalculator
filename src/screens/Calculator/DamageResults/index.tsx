@@ -21,24 +21,23 @@ export default function DamageResults() {
 
   return (
     <div className="h-full">
-      {window.innerWidth >= 610 && (
+      <div className="flex absolute top-3 right-3">
         <IconButton
-          className="w-7 h-7 absolute top-3 left-3 hidden md1:flex"
-          variant="positive"
-          onClick={() => setEnlargedOn(true)}
+          className={cn("w-7 h-7 hover:bg-lightgold", trackerState ? "text-green" : "text-default")}
+          onClick={() => setTrackerState([0, 2].includes(trackerState) ? 1 : 0)}
         >
-          <FaExpandArrowsAlt />
+          <FaSearch />
         </IconButton>
-      )}
-      <IconButton
-        className={cn(
-          "w-7 h-7 absolute top-3 right-3 hover:bg-lightgold",
-          trackerState ? "text-green" : "text-default"
+        {window.innerWidth >= 610 && (
+          <IconButton
+            className="ml-3 w-7 h-7 hidden md1:flex"
+            variant="positive"
+            onClick={() => setEnlargedOn(true)}
+          >
+            <FaExpandArrowsAlt />
+          </IconButton>
         )}
-        onClick={() => setTrackerState([0, 2].includes(trackerState) ? 1 : 0)}
-      >
-        <FaSearch />
-      </IconButton>
+      </div>
 
       <MemoResults />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
@@ -78,7 +77,7 @@ function Results() {
   return (
     <div className="h-full flex flex-col">
       {focus ? (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
           <Select
             className="text-center text-lightgold"

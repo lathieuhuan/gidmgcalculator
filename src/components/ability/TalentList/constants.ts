@@ -7,6 +7,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${Weapon}_${Vision}`, string>>
   bow_electro: "9/98/Bow_Electro",
   bow_geo: "7/71/Bow_Geo",
   bow_anemo: "5/5b/Bow_Anemo",
+  bow_dendro: "a/a9/Bow_Dendro",
   catalyst_pyro: "8/80/Catalyst_Pyro",
   catalyst_hydro: "7/77/Catalyst_Hydro",
   catalyst_electro: "e/e7/Catalyst_Electro",

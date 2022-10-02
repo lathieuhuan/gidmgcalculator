@@ -6,7 +6,60 @@ import { getInput, applyModifier } from "@Src/calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
+import aThousandFloatingDreamsImg from "@Src/assets/images/a-thousand-floating-dreams.png";
+
 const goldCatalysts: DataWeapon[] = [
+  {
+    code: 143,
+    beta: true,
+    name: "A Thousand Floating Dreams",
+    icon: aThousandFloatingDreamsImg,
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "em", scale: "58" },
+    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
+      const sameVision = partyData.reduce((result, data) => {
+        return data.vision === charData.vision ? result + 1 : result;
+      }, 0);
+      const emBuffValue = sameVision * (24 + refi * 8);
+      const elmtDmgBuffValue = (partyData.length - sameVision) * (6 + refi * 4);
+
+      applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
+      applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
+    },
+    buffs: [
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+          applyModifier(desc, totalAttr, "em", 38 + refi * 2, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldCatalysts, 143)!.passiveDesc({ refi }).extra![0],
+      },
+    ],
+    passiveName: "A Thousand Nights' Dawnsong",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Party members other than the equipping character will provide the equipping character
+            with buffs based on whether their Elemental Type is the same as the latter or not. If
+            their Elemental Types are the same, increase <Green>Elemental Mastery</Green> by{" "}
+            <Green b>{24 + refi * 8}</Green>. If not, increase the equipping character's{" "}
+            <Green>DMG Bonus</Green> from their Elemental Type by <Green b>{6 + refi * 4}%</Green>.
+            Max <Green b>3</Green> <Green>stacks</Green>. {this.extra![0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          Additionally, all nearby party members other than the equipping character will have their{" "}
+          <Green>Elemental Mastery</Green> increased by <Green b>{38 + refi * 2}</Green>. Multiple
+          such effects from multiple such weapons can stack.
+        </>,
+      ],
+    }),
+  },
   {
     code: 122,
     name: "Kagura's Verity",
