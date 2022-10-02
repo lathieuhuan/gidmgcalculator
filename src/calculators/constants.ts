@@ -34,12 +34,12 @@ export const TRANSFORMATIVE_REACTION_INFO: Record<
   { mult: number; dmgType: AttackElement | "various" }
 > = {
   bloom: { mult: 2, dmgType: "dendro" },
+  hyperbloom: { mult: 3, dmgType: "dendro" },
+  burgeon: { mult: 3, dmgType: "dendro" },
+  burning: { mult: 0.25, dmgType: "pyro" },
   swirl: { mult: 0.6, dmgType: "various" },
   superconduct: { mult: 0.5, dmgType: "cryo" },
   electroCharged: { mult: 1.2, dmgType: "electro" },
   overloaded: { mult: 2, dmgType: "pyro" },
   shattered: { mult: 1.5, dmgType: "phys" },
-  burning: { mult: 0.25, dmgType: "pyro" },
-  burgeon: { mult: 3, dmgType: "dendro" },
-  hyperbloom: { mult: 3, dmgType: "dendro" },
 };

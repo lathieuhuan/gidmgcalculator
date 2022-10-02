@@ -106,14 +106,14 @@ export const ARTIFACT_ICONS: Record<typeof ARTIFACT_TYPES[number], string> = {
 
 export const TRANSFORMATIVE_REACTIONS = [
   "bloom",
-  "superconduct",
+  "hyperbloom",
+  "burgeon",
+  "burning",
   "swirl",
+  "superconduct",
   "electroCharged",
   "overloaded",
   "shattered",
-  "burning",
-  "burgeon",
-  "hyperbloom",
 ] as const;
 
 export const QUICKEN_REACTIONS = ["spread", "aggravate"] as const;

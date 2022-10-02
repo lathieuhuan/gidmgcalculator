@@ -21,7 +21,6 @@ import {
   AttackElementBonus,
   StatInfo,
   CalcCharData,
-  TransformativeReaction,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
@@ -30,18 +29,12 @@ import {
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import {
-  applyToOneOrMany,
-  ascsFromLv,
-  bareLv,
-  finalTalentLv,
-  findByIndex,
-  toMultiplier,
-} from "@Src/utils";
+import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
 import { applyModifier, getDefaultStatInfo, getInput, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord } from "./types";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
+import { charModIsInUse } from "@Data/characters/utils";
 
 function calcTalentStat(
   stat: StatInfo,
@@ -372,62 +365,74 @@ export default function getDamage(
   });
 
   const baseRxnDmg = BASE_REACTION_DAMAGE[bareLv(char.level)];
-  let nilouA1Activated = false;
   let nilouA4BuffValue = 0;
+  let nahidaC2BuffIsActivated = false;
 
-  if (charData.name === "Nilou") {
-    const ascs = ascsFromLv(char.level);
-
-    if (ascs >= 1 && selfBuffCtrls[0].activated) {
-      nilouA1Activated = true;
+  switch (charData.name) {
+    case "Nilou": {
+      const { buffs } = findCharacter(char) || {};
+      if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 1) && totalAttr.hp > 30000) {
+        nilouA4BuffValue = Math.min(9 * (totalAttr.hp / 1000 - 30), 400);
+      }
+      break;
     }
-    if (ascs >= 4 && selfBuffCtrls[1].activated && totalAttr.hp > 30000) {
-      nilouA4BuffValue = Math.min(9 * (totalAttr.hp / 1000 - 30), 400);
+    case "Nahida":
+      const { buffs } = findCharacter(char) || {};
+      if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 3)) {
+        nahidaC2BuffIsActivated = true;
+      }
+      break;
+  }
+
+  for (const teammate of party) {
+    if (!teammate) {
+      continue;
     }
-  } else {
-    const nilou = party.find((teammate) => teammate?.name === "Nilou");
+    switch (teammate.name) {
+      case "Nilou":
+        const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 1) || {};
+        const maxHP = getInput(inputs, 0, 0);
 
-    if (nilou) {
-      nilouA1Activated = nilou.buffCtrls[0].activated;
-
-      const { activated, inputs = [] } = nilou.buffCtrls[1];
-      const maxHP = getInput(inputs, 0, 0);
-
-      if (activated && maxHP > 30000) {
-        nilouA4BuffValue = Math.min(9 * (maxHP / 1000 - 30), 400);
+        if (activated && maxHP > 30000) {
+          nilouA4BuffValue = Math.min(9 * (maxHP / 1000 - 30), 400);
+        }
+        break;
+      case "Nahida": {
+        nahidaC2BuffIsActivated = !!findByIndex(teammate.buffCtrls, 3)?.activated;
+        break;
       }
     }
   }
 
-  function calculateTransformativeReactionDamage(reactions: TransformativeReaction[]) {
-    for (const rxn of reactions) {
-      const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
+  for (const rxn of TRANSFORMATIVE_REACTIONS) {
+    const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
 
-      const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
-      const specialMult = 1 + specialPercent / 100;
-      const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
-      const base = baseRxnDmg * normalMult * specialMult * resMult;
+    const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
+    const specialMult = 1 + specialPercent / 100;
+    const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
+    const base = baseRxnDmg * normalMult * specialMult * resMult;
 
-      finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
+    finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
+
+    if (tracker) {
+      tracker.RXN[rxn] = {
+        record: { normalMult, specialMult, resMult },
+      };
+    }
+  }
+
+  if (nahidaC2BuffIsActivated) {
+    for (const rxn of ["burning", "bloom", "hyperbloom", "burgeon"] as const) {
+      const { [rxn]: rxnDmg } = finalResult.RXN;
+
+      rxnDmg.crit = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 2);
+      rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
 
       if (tracker) {
-        tracker.RXN[rxn] = {
-          record: {
-            normalMult,
-            specialMult,
-            resMult,
-          },
-        };
+        tracker.RXN[rxn].record.cRate = 0.2;
+        tracker.RXN[rxn].record.cDmg = 1;
       }
     }
-  }
-
-  if (nilouA1Activated) {
-    calculateTransformativeReactionDamage(
-      TRANSFORMATIVE_REACTIONS.filter((rxn) => rxn !== "hyperbloom" && rxn !== "burgeon")
-    );
-  } else {
-    calculateTransformativeReactionDamage([...TRANSFORMATIVE_REACTIONS]);
   }
 
   return finalResult;

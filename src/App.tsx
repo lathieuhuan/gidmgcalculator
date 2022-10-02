@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
@@ -45,13 +44,24 @@ function App() {
   );
 
   useEffect(() => {
+    const beforeunloadAlert = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      return (e.returnValue = "Are you sure you want to exit?");
+    };
+    window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
+
     const data = localStorage.getItem("GDC_Data");
-    if (data)
+    if (data) {
       try {
         checkAndAddUsersData(JSON.parse(data));
       } catch (err) {
         console.log(err);
       }
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
+    };
   }, []);
 
   const renderTabContent = useCallback(() => {
