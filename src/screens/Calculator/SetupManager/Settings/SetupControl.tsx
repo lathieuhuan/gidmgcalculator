@@ -1,5 +1,4 @@
-import { FaCopy, FaSave, FaTrashAlt } from "react-icons/fa";
-import type { SettingsModalType } from "./types";
+import { FaCopy, FaTrashAlt } from "react-icons/fa";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // import { CollapseSpace } from "@Components/collapse";
@@ -10,14 +9,12 @@ interface SetupControlProps {
   changeSetupName: (newName: string) => void;
   removeSetup: () => void;
   copySetup: () => void;
-  openModal: (type: SettingsModalType) => void;
 }
 export function SetupControl({
   setup,
   changeSetupName,
   removeSetup,
   copySetup,
-  openModal,
 }: SetupControlProps) {
   const isNew = setup.status === "NEW";
 
@@ -52,10 +49,6 @@ export function SetupControl({
 
           <IconButton variant="positive" disabled={isNew} onClick={copySetup}>
             <FaCopy />
-          </IconButton>
-
-          <IconButton variant="positive" disabled={isNew} onClick={() => openModal("SAVE_SETUP")}>
-            <FaSave />
           </IconButton>
         </div>
       </div>

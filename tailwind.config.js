@@ -23,6 +23,7 @@ module.exports = {
       },
       borderRadius: {
         circle: "50%",
+        "2.5xl": "1.25rem",
       },
       boxShadow: {
         common:

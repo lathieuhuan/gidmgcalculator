@@ -14,7 +14,7 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export function AbilityIcon({ className, img, vision, active = true, onClick }: AbilityImgProps) {
-  const tw = cn("transition-opacity duration-150 ease-out", !active && "opacity-50");
+  const tw = cn("transition-opacity duration-150 ease-in-out", !active && "opacity-50");
 
   return img ? (
     <img

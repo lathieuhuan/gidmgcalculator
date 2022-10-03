@@ -3,7 +3,6 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import type { CalcConfigurations } from "@Src/types";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
-import type { SettingsModalInfo, SettingsModalType } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
@@ -16,15 +15,14 @@ import {
 } from "@Store/uiSlice";
 import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 
-import { TipsModal, InfoSign } from "@Components/minors";
+import { InfoSign, TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
-import { Modal } from "@Components/modals";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { SetupControl } from "./SetupControl";
-import { SaveSetup } from "./modal-content";
 
 import { useTabs } from "@Hooks/useTabs";
-import styles from "../styles.module.scss";
+
+import styles from "@Screens/Calculator/styles.module.scss";
 
 const CONFIG_OPTIONS: Array<{
   field: keyof CalcConfigurations;
@@ -62,13 +60,7 @@ function HiddenSettings() {
   );
   const [tempoConfigs, setTempoConfigs] = useState(configs);
   const [errorCode, setErrorCode] = useState(0);
-  const [modal, setModal] = useState<SettingsModalInfo>({ type: "", index: null });
-
-  const openModal = (index: number | null) => (type: SettingsModalType) => {
-    setModal({ type, index });
-  };
-
-  const closeModal = () => setModal({ type: "", index: null });
+  const [tipsOn, setTipsOn] = useState(false);
 
   const changeSetupName = (index: number) => (newName: string) => {
     setTempoSetups((prev) => {
@@ -170,7 +162,6 @@ function HiddenSettings() {
                   changeSetupName={changeSetupName(index)}
                   removeSetup={removeSetup(index)}
                   copySetup={copySetup(index)}
-                  openModal={openModal(index)}
                 />
               ))}
             </div>
@@ -194,12 +185,7 @@ function HiddenSettings() {
             <InfoSign
               className="absolute top-3 right-3"
               selfHover
-              onClick={() =>
-                setModal({
-                  type: "CONFIG_TIPS",
-                  index: null,
-                })
-              }
+              onClick={() => setTipsOn(true)}
             />
             <p className="text-h5 text-orange">Configurations</p>
 
@@ -233,18 +219,8 @@ function HiddenSettings() {
         <span>Apply</span>
       </Button>
 
-      <Modal
-        active={modal.index !== null}
-        isCustom
-        className="rounded-lg max-w-95"
-        style={{ width: "30rem" }}
-        onClose={closeModal}
-      >
-        <SaveSetup setup={tempoSetups[modal.index || 0]} onClose={closeModal} />
-      </Modal>
-
       <TipsModal
-        active={modal.type === "CONFIG_TIPS"}
+        active={tipsOn}
         content={
           <div className="space-y-2 text-default">
             <p>
@@ -262,13 +238,16 @@ function HiddenSettings() {
             </p>
           </div>
         }
-        onClose={closeModal}
+        onClose={() => setTipsOn(false)}
       />
     </div>
   );
 }
 
-export default function Settings({ height }: { height: number }) {
+interface SettingsProps {
+  height: number;
+}
+export default function Settings({ height }: SettingsProps) {
   const active = useSelector((state) => state.ui.settingsOn);
   return (
     <CollapseAndMount

@@ -1,6 +1,8 @@
+import cn from "classnames";
 import { useRef, useState } from "react";
-import { FaCog } from "react-icons/fa";
+import { FaCaretDown, FaCog, FaCopy, FaSave } from "react-icons/fa";
 import type { Artifact } from "@Src/types";
+import { ModalInfo, ModalType } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
 import {
@@ -29,8 +31,9 @@ import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import SectionTarget from "./SectionTarget";
-import { MainSelect } from "../components";
-import Settings from "../Settings";
+import Settings from "./Settings";
+import { Modal } from "@Components/modals";
+import { SaveSetup } from "./modal-content";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
@@ -40,27 +43,88 @@ export default function SetupManager() {
   const charData = useSelector(selectCharData);
   const artPieces = useSelector(selectArtInfo)?.pieces;
 
-  const [modalType, setModalType] = useState<"weapon" | Artifact | "character" | "">("");
+  const [modal, setModal] = useState<ModalInfo>({
+    type: "",
+    index: undefined,
+  });
   const [prePickerOn, setPrePickerOn] = useState(false);
-  const [ref, height] = useHeight();
-  const bodyRef = useRef(null);
+  const [setupListOn, setSetupListOn] = useState(false);
 
-  const onCloseModal = () => setModalType("");
+  const bodyRef = useRef(null);
+  const [ref, height] = useHeight();
+
+  const openModal = (index?: number) => (type: ModalType) => {
+    setModal({ type, index });
+  };
+
+  const closeModal = () => setModal({ type: "", index: undefined });
+
+  const toggleSetupList = (isOn: boolean) => {
+    setSetupListOn(isOn);
+
+    const setupSelect = document.querySelector("#setup-select");
+    if (!setupListOn) {
+      setupSelect?.classList.remove("rounded-b-2.5xl");
+    } else {
+      setTimeout(() => {
+        setupSelect?.classList.add("rounded-b-2.5xl");
+      }, 150);
+    }
+  };
 
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
-      <MainSelect
-        value={activeId}
-        options={setupManageInfos.map((info) => {
-          return {
-            label: info.name,
-            value: info.ID,
-          };
-        })}
-        onChangeTab={({ value }) => {
-          dispatch(changeActiveSetup(value));
+      <button
+        id="setup-select"
+        className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative outline-none cursor-default"
+        onClick={() => toggleSetupList(!setupListOn)}
+      >
+        <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
+        <span className="w-full text-xl font-bold text-center relative z-10">
+          {setupManageInfos.find((setupManageInfo) => setupManageInfo.ID === activeId)?.name}
+        </span>
+      </button>
+
+      <div
+        className="shrink-0 rounded-b-md bg-darkblue-2 text-default overflow-hidden transition-all duration-150 ease-linear"
+        style={{
+          height: setupListOn ? `${setupManageInfos.length * 2.8125}rem` : 0,
         }}
-      />
+      >
+        {setupManageInfos.map(({ ID, name }, i) => {
+          return (
+            <div key={ID} className="flex border-t border-darkblue-3">
+              <button
+                className="pl-3 grow text-lg text-left font-bold truncate hover:text-orange"
+                onClick={() => {
+                  if (ID !== activeId) {
+                    dispatch(changeActiveSetup(ID));
+                  }
+                  toggleSetupList(false);
+                }}
+              >
+                {name}
+              </button>
+
+              <div className="ml-auto flex text-xl">
+                <button
+                  className="p-3 border-l border-darkblue-3 flex hover:text-lightgold"
+                  onClick={() => {}}
+                >
+                  <FaCopy />
+                </button>
+
+                <button
+                  className="p-3 border-l border-darkblue-3 flex hover:text-lightgold"
+                  onClick={() => openModal(i)("SAVE_SETUP")}
+                >
+                  <FaSave />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
         <SectionParty />
@@ -83,7 +147,7 @@ export default function SetupManager() {
         <div className="flex">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
-            onClick={() => setModalType("weapon")}
+            onClick={() => openModal()("WEAPONS")}
           >
             <img src={wikiImg("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
@@ -102,7 +166,7 @@ export default function SetupManager() {
         active={prePickerOn}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artifactType) => {
-          setModalType(artifactType as Artifact);
+          openModal()(artifactType as Artifact);
           setPrePickerOn(false);
         }}
         onClose={() => setPrePickerOn(false)}
@@ -111,7 +175,7 @@ export default function SetupManager() {
             <Button
               variant="positive"
               onClick={() => {
-                setModalType("character");
+                openModal()("CHARACTERS");
                 setPrePickerOn(false);
               }}
             >
@@ -122,42 +186,52 @@ export default function SetupManager() {
       />
 
       <InventoryWeapon
-        active={modalType === "weapon"}
+        active={modal.type === "WEAPONS"}
         weaponType={charData.weapon}
         buttonText="Pick"
         onClickButton={({ owner, ...wpInfo }) => {
           dispatch(pickWeaponInUsersDatabase(wpInfo));
         }}
-        onClose={onCloseModal}
+        onClose={closeModal}
       />
 
       <InventoryArtifact
-        active={modalType !== "" && modalType !== "weapon" && modalType !== "character"}
+        active={["flower", "plume", "sands", "goblet", "circlet"].includes(modal.type)}
         owner={charData.name}
-        artifactType={modalType as Artifact}
+        artifactType={modal.type as Artifact}
         currentPieces={artPieces}
         buttonText="Pick"
         onClickButton={({ owner, ...pieceInfo }) => {
           dispatch(
             changeArtPiece({
-              pieceIndex: ARTIFACT_TYPES.indexOf(modalType as Artifact),
+              pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as Artifact),
               newPiece: pieceInfo,
             })
           );
         }}
-        onClose={onCloseModal}
+        onClose={closeModal}
       />
 
       <Picker.Character
-        active={modalType === "character"}
+        active={modal.type === "CHARACTERS"}
         sourceType="usersData"
         onPickCharacter={({ artifactIDs }) => {
           if (artifactIDs) {
             dispatch(pickEquippedArtSet(artifactIDs));
           }
         }}
-        onClose={onCloseModal}
+        onClose={closeModal}
       />
+
+      <Modal
+        active={modal.type === "SAVE_SETUP"}
+        isCustom
+        className="rounded-lg max-w-95"
+        style={{ width: "30rem" }}
+        onClose={closeModal}
+      >
+        <SaveSetup setup={setupManageInfos[modal.index || 0]} onClose={closeModal} />
+      </Modal>
     </div>
   );
 }

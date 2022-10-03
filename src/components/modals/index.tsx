@@ -1,6 +1,6 @@
 import cn from "classnames";
 import ReactDOM from "react-dom";
-import { CSSProperties, ReactNode, useCallback, useEffect, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
 import styles from "./styles.module.scss";
 
@@ -21,20 +21,20 @@ export function Modal({ active, className, style, isCustom, children, onClose }:
     animate: false,
   });
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setState((prev) => ({ ...prev, animate: false }));
     setTimeout(() => {
       setState((prev) => ({ ...prev, active: false }));
       onClose();
-    }, 160);
-  }, [onClose]);
+    }, 150);
+  };
 
   useEffect(() => {
     if (active && !state.active) {
       setState((prev) => ({ ...prev, active: true }));
       setTimeout(() => {
         setState((prev) => ({ ...prev, animate: true }));
-      }, 30);
+      }, 50);
     } else if (active === false && state.active) {
       closeModal();
     }

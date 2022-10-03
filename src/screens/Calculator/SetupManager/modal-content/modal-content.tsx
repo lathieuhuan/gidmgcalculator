@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
+import type { CalcSetupManageInfo } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { saveSetupThunk } from "@Store/thunks";
@@ -9,11 +9,11 @@ import { selectMySetups } from "@Store/usersDatabaseSlice/selectors";
 import { ButtonBar } from "@Components/minors";
 import { findById } from "@Src/utils";
 
-interface SaveSetup {
-  setup: NewSetupManageInfo;
+interface SaveSetupProps {
+  setup: CalcSetupManageInfo;
   onClose: () => void;
 }
-export function SaveSetup({ setup: { name, ID, status }, onClose }: SaveSetup) {
+export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const charData = useSelector(selectCharData);
   const existed = findById(useSelector(selectMySetups), ID);
@@ -34,10 +34,8 @@ export function SaveSetup({ setup: { name, ID, status }, onClose }: SaveSetup) {
           if (value.length <= 34) setInput(value);
         }}
         onKeyDown={(e) => {
-          if (status !== "NEW" && e.key === "Enter") {
-            dispatch(saveSetupThunk(ID, input));
-            onClose();
-          }
+          dispatch(saveSetupThunk(ID, input));
+          onClose();
         }}
       />
       <ButtonBar
@@ -45,10 +43,8 @@ export function SaveSetup({ setup: { name, ID, status }, onClose }: SaveSetup) {
         handlers={[
           onClose,
           () => {
-            if (status !== "NEW") {
-              dispatch(saveSetupThunk(ID, input));
-              onClose();
-            }
+            dispatch(saveSetupThunk(ID, input));
+            onClose();
           },
         ]}
       />
