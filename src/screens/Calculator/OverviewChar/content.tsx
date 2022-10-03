@@ -44,12 +44,13 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const sets = useSelector(selectArtInfo).sets;
 
     const { activeIndex, tabs } = useTabs({
+      level: 2,
       configs: [{ text: "Details" }, { text: "Set Bonus" }],
     });
 
     return (
-      <div className="pt-1 h-full flex flex-col">
-        <div className="mb-4">{tabs}</div>
+      <div className="h-full flex flex-col">
+        <div className="mb-3">{tabs}</div>
         <div className="grow">
           <SharedSpace
             atLeft={activeIndex === 0}

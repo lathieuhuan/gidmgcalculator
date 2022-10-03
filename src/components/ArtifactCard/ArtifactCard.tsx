@@ -97,7 +97,7 @@ export function ArtifactCard({
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
             <Select
-              className="pl-8 text-lg text-white appearance-none relative z-10"
+              className="pl-8 text-lg text-default appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
@@ -164,7 +164,7 @@ export function ArtifactSubstats({
             <Select
               className={cn(
                 "pr-2 pl-10 relative z-10 appearance-none",
-                statTypeCount[type] === 1 ? "text-white" : "text-darkred"
+                statTypeCount[type] === 1 ? "text-default" : "text-darkred"
               )}
               value={type}
               onChange={(e) =>
@@ -181,7 +181,7 @@ export function ArtifactSubstats({
             <input
               className={cn(
                 "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent outline-none text-base leading-tight text-right text-last-right",
-                isValid ? "text-white" : "text-darkred"
+                isValid ? "text-default" : "text-darkred"
               )}
               value={value}
               onChange={(e) =>
@@ -195,7 +195,7 @@ export function ArtifactSubstats({
             <p className={space}>•</p>
             <p>
               <span
-                className={cn("mr-1", statTypeCount[type] === 1 ? "text-white" : "text-darkred")}
+                className={cn("mr-1", statTypeCount[type] === 1 ? "text-default" : "text-darkred")}
               >
                 {type}
               </span>

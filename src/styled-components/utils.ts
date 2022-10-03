@@ -15,7 +15,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const buttonStyles = ({ noGlow, disabled, variant = "default" }: ButtonProps) => {
   return cn(
     bgColorByVariant[variant],
-    variant === "negative" ? "text-white" : "text-black",
+    variant === "negative" ? "text-default" : "text-black",
     !noGlow && "glow-on-hover",
     disabled && "!opacity-50 cursor-default"
   );

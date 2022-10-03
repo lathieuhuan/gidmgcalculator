@@ -70,7 +70,7 @@ export function SkillAttributes({
           <p className="px-1 text-h6 font-bold">1</p>
         ) : (
           <Select
-            className="pr-2 text-lg font-bold text-white text-right text-last-right"
+            className="pr-2 text-lg font-bold text-default text-right text-last-right"
             value={level}
             onChange={(e) => setLevel(+e.target.value)}
           >

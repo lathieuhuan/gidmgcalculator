@@ -54,7 +54,7 @@ export const SeeDetails = (props: SeeDetailsProps) => {
     <p
       className={cn(
         "cursor-pointer",
-        active ? "text-green" : "text-white hover:text-lightgold",
+        active ? "text-green" : "text-default hover:text-lightgold",
         className
       )}
       {...rest}

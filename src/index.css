@@ -19,7 +19,7 @@
     @apply top-0 bottom-0 right-0 left-0;
   }
   .glow-on-hover {
-    @apply opacity-90 hover:opacity-100;
+    @apply opacity-95 hover:opacity-100;
   }
   .custom-modal {
     @apply rounded-lg shadow-white-glow;

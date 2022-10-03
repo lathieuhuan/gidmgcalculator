@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import type { CalcConfigurations } from "@Src/types";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
@@ -14,6 +14,7 @@ import {
   selectStandardIndex,
   toggleSettings,
 } from "@Store/uiSlice";
+import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 
 import { TipsModal, InfoSign } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
@@ -22,9 +23,8 @@ import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { SetupControl } from "./SetupControl";
 import { SaveSetup } from "./modal-content";
 
-import styles from "../styles.module.scss";
-import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 import { useTabs } from "@Hooks/useTabs";
+import styles from "../styles.module.scss";
 
 const CONFIG_OPTIONS: Array<{
   field: keyof CalcConfigurations;
@@ -41,7 +41,6 @@ const CONFIG_OPTIONS: Array<{
 ];
 
 const SETUP_LIMIT = 4;
-const tabs = ["Setups", "Configs"] as const;
 
 function HiddenSettings() {
   const dispatch = useDispatch();
@@ -52,6 +51,7 @@ function HiddenSettings() {
 
   const { activeIndex, tabs } = useTabs({
     className: "shrink-0",
+    level: 2,
     configs: [{ text: "Setups" }, { text: "Configs" }],
   });
   const [tempoSetups, setTempoSetups] = useState<NewSetupManageInfo[]>(
@@ -159,10 +159,10 @@ function HiddenSettings() {
       <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>
       {tabs}
 
-      <div className="mt-4 flex-grow flex flex-col hide-scrollbar">
+      <div className="mt-3 flex-grow hide-scrollbar">
         {activeIndex === 0 && (
           <div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {tempoSetups.map((setup, index) => (
                 <SetupControl
                   key={index}
@@ -190,7 +190,7 @@ function HiddenSettings() {
         )}
 
         {activeIndex === 1 && (
-          <div className="p-4 relative rounded-lg bg-darkblue-2">
+          <div className="p-4 h-full relative rounded-lg bg-darkblue-2">
             <InfoSign
               className="absolute top-3 right-3"
               selfHover
@@ -246,7 +246,7 @@ function HiddenSettings() {
       <TipsModal
         active={modal.type === "CONFIG_TIPS"}
         content={
-          <div className="space-y-2">
+          <div className="space-y-2 text-default">
             <p>
               - Be careful when the Calculator is under the effect of{" "}
               <Green>Separate Character's Info</Green> (level, constellation, talents) on each

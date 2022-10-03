@@ -7,16 +7,17 @@ interface TabInfo {
 }
 interface UseTabArgs {
   className?: string;
+  level?: number;
   defaultIndex?: number;
   configs: TabInfo[];
 }
-export function useTabs({ className, defaultIndex = 0, configs }: UseTabArgs) {
+export function useTabs({ className, level = 1, defaultIndex = 0, configs }: UseTabArgs) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
   const tabs = (
     <div
       className={cn(
-        "w-full flex divide-x-2 divide-darkblue-3 rounded-full overflow-hidden",
+        "w-full flex divide-x-2 rounded-full divide-darkblue-3 overflow-hidden",
         className
       )}
     >
@@ -26,12 +27,16 @@ export function useTabs({ className, defaultIndex = 0, configs }: UseTabArgs) {
           type="button"
           disabled={disabled}
           className={cn(
-            "py-1 w-1/2 flex-center font-bold text-black",
-            i === activeIndex ? "bg-orange " : "bg-default"
+            "py-1 w-1/2 flex-center text-black font-bold",
+            i === activeIndex
+              ? level === 1
+                ? "bg-orange"
+                : "bg-lightorange"
+              : "bg-white opacity-80"
           )}
           onClick={() => setActiveIndex(i)}
         >
-          <span className={cn(i !== activeIndex && "opacity-80")}>{text}</span>
+          <span>{text}</span>
         </button>
       ))}
     </div>

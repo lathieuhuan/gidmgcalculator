@@ -61,7 +61,7 @@ export default function useArtStatsFilter({ artifactType, stats, isError }: UseA
           <Select
             className={cn(
               "w-full p-1 text-center text-last-center",
-              stats.main === "All" ? "text-white" : "text-green"
+              stats.main === "All" ? "text-default" : "text-green"
             )}
             value={filter.main}
             onChange={onChangeMainStat}
@@ -85,7 +85,7 @@ export default function useArtStatsFilter({ artifactType, stats, isError }: UseA
               <Select
                 className={cn(
                   "w-full p-1 text-center text-last-center",
-                  filter.subs[i] === "All" ? "text-white" : "text-green"
+                  filter.subs[i] === "All" ? "text-default" : "text-green"
                 )}
                 value={filter.subs[i]}
                 onChange={(e) => onChangeSubStat(e.target.value, i)}

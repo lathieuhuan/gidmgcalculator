@@ -67,7 +67,7 @@ export default function PieceInfo({
             <div className="py-1 relative">
               <FaChevronDown className="absolute top-2 left-1 scale-110" />
               <Select
-                className="pl-8 text-lg text-white appearance-none"
+                className="pl-8 text-lg text-default appearance-none"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(

@@ -50,7 +50,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
     return window.innerWidth > 1050 ? (
       <button
-        className="w-8 h-8 mr-2 rounded-circle text-white hover:bg-darkred flex-center group"
+        className="w-8 h-8 mr-2 rounded-circle text-default hover:bg-darkred flex-center group"
         onClick={uncombine}
       >
         <FaUnlink className="hidden group-hover:block" />

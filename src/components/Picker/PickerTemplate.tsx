@@ -42,7 +42,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
           {dataType === "character" && (
             <>
               <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
-              <div className="absolute w-full top-full left-0 z-10">
+              <div className="absolute w-full top-full left-0 z-50">
                 <div className="rounded-b-lg bg-darkblue-3 shadow-common">
                   <CollapseSpace active={filterOn}>
                     <CharFilter

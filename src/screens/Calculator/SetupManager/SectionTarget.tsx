@@ -149,7 +149,7 @@ export default function SectionTarget() {
                     <p
                       className={cn(
                         "text-h6",
-                        attElmt === "phys" ? "text-white" : `text-${attElmt}`
+                        attElmt === "phys" ? "text-default" : `text-${attElmt}`
                       )}
                     >
                       {attElmt}

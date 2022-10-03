@@ -13,7 +13,6 @@ import {
 
 import { CharFilledSlot } from "@Components/minors";
 import { Picker } from "@Components/Picker";
-import { IconButton } from "@Src/styled-components";
 import { CopySection } from "../components";
 import { pedestalStyles } from "./tw-compound";
 import { indexById } from "@Src/utils";
@@ -71,12 +70,12 @@ export default function SectionParty() {
                   onClickRemove={() => dispatch(removeTeammate(tmIndex))}
                 />
               ) : (
-                <IconButton
-                  className="w-full h-full text-2xl leading-6 !bg-darkblue-3 text-white/70 outline-none"
+                <button
+                  className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 outline-none glow-on-hover"
                   onClick={() => setPendingSlot(tmIndex)}
                 >
-                  <FaPlus />
-                </IconButton>
+                  <FaPlus className="text-default opacity-80" />
+                </button>
               )}
             </div>
           );

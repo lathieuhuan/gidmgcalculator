@@ -56,7 +56,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
               />
               <span className="text-lg leading-none">{key.main}</span>
               {talentLevel ? (
-                <span className="ml-1 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default/80 text-sm leading-none">
+                <span className="ml-1 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default text-sm leading-none">
                   {talentLevel}
                 </span>
               ) : null}

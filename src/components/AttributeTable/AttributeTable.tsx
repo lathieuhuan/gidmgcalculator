@@ -86,7 +86,7 @@ function EmSection({ em }: EmSectionProps) {
           <FaCaretDown
             className={cn(
               "duration-150 ease-linear",
-              dropped ? "text-green" : "text-white rotate-90"
+              dropped ? "text-green" : "text-default rotate-90"
             )}
           />
         </div>

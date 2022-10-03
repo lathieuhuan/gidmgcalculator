@@ -73,8 +73,8 @@ export function ItemThumb({
         {refi !== undefined ? (
           <p
             className={cn(
-              "absolute top-1 left-1 rounded px-1 bg-black/60 text-default/80 text-sm font-bold",
-              refi === 5 && "bg-black text-orange"
+              "absolute top-1 left-1 rounded px-1 text-sm font-bold",
+              refi === 5 ? "bg-black text-orange" : "bg-black/60 text-default"
             )}
           >
             {refi}

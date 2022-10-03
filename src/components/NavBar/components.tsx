@@ -13,7 +13,7 @@ export const navButtonStyles = {
 
 export const mobileNavButtonStyles = {
   base: "w-10 h-10 text-2xl",
-  idle: "bg-darkblue-3 text-white",
+  idle: "bg-darkblue-3 text-default",
   active: "bg-darkblue-1 text-green",
 };
 
