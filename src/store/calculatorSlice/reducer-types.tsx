@@ -124,14 +124,14 @@ export type ChangeArtPieceSubStatAction = PayloadAction<
   ArtPieceSubStatPath & Partial<CalcArtPieceSubStatInfo>
 >;
 
-export type NewSetupManageInfo = CalcSetupManageInfo & { status: "OLD" | "NEW" | "DUPLICATE" };
+export type NewSetupManageInfo = CalcSetupManageInfo & {
+  status: "OLD" | "NEW" | "DUPLICATE";
+};
 
 export type ApplySettingsOnCalculatorAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newConfigs: CalcConfigurations;
-  // indexes: (number | null)[];
-  // standardIndex: number;
-  // currentIndex: number;
+  removedSetupIDs: number[];
 }>;
 
 export type ImportSetupAction = PayloadAction<{

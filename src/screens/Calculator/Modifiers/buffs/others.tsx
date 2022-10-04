@@ -82,7 +82,7 @@ export function ElememtBuffs() {
 
       return (
         <ModifierTemplate
-          key={reaction}
+          key={reaction + (field === "infusion_ampRxn" ? "-external" : "")}
           checked={activated}
           onToggle={() =>
             dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))

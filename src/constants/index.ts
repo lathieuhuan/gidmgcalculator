@@ -1,5 +1,7 @@
 export * from "./maps";
 
+export const MAX_CALC_SETUPS = 4;
+
 export enum EScreen {
   CALCULATOR = "Calculator",
   MY_SETUPS = "My Setups",

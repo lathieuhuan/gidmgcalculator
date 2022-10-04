@@ -28,14 +28,17 @@ export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
       <input
         type="text"
         className="mt-1 mb-8 px-4 pt-4 pb-2 text-2xl text-center textinput-common font-medium"
+        autoFocus
         value={input}
         onChange={(e) => {
           const { value } = e.target;
-          if (value.length <= 34) setInput(value);
+          value.length <= 34 && setInput(value);
         }}
         onKeyDown={(e) => {
-          dispatch(saveSetupThunk(ID, input));
-          onClose();
+          if (e.key === "Enter") {
+            dispatch(saveSetupThunk(ID, input));
+            onClose();
+          }
         }}
       />
       <ButtonBar

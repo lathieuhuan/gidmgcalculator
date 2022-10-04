@@ -14,7 +14,6 @@ import {
 import { CharFilledSlot } from "@Components/minors";
 import { Picker } from "@Components/Picker";
 import { CopySection } from "../components";
-import { pedestalStyles } from "./tw-compound";
 import { indexById } from "@Src/utils";
 
 const selectAllParties = createSelector(
@@ -50,7 +49,7 @@ export default function SectionParty() {
   }
 
   return (
-    <div className={pedestalStyles}>
+    <div className="setup-manager_pedestal">
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}

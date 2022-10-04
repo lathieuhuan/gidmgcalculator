@@ -12,7 +12,6 @@ import { wikiImg } from "@Src/utils";
 import { Picker } from "@Components/Picker";
 import { BetaMark } from "@Components/minors";
 import { Select } from "@Src/styled-components";
-import { pedestalStyles } from "./tw-compound";
 
 export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);
@@ -26,7 +25,7 @@ export default function SectionWeapon() {
   const { beta, rarity, icon, name } = weaponData;
 
   return (
-    <div className={"px-2 flex items-start " + pedestalStyles}>
+    <div className="setup-manager_pedestal px-2 flex items-start">
       <div
         className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}

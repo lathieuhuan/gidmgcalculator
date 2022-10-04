@@ -11,7 +11,6 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 import { Checkbox, CloseButton, linkStyles, Select } from "@Src/styled-components";
 import { twInputStyles } from "../components";
-import { pedestalStyles } from "./tw-compound";
 import { Modal } from "@Components/modals";
 import { Target } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
@@ -91,7 +90,7 @@ export default function SectionTarget() {
   return (
     <>
       <div
-        className={"px-4 cursor-default " + pedestalStyles}
+        className="setup-manager_pedestal px-4 cursor-default"
         onClick={() => setModalType("EDIT_SINGLE")}
       >
         <p className="text-sm text-lightred">Target</p>

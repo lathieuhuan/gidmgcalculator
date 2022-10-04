@@ -1,14 +1,15 @@
 import cn from "classnames";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaCog, FaCopy, FaSave } from "react-icons/fa";
 import type { Artifact } from "@Src/types";
-import { ModalInfo, ModalType } from "./types";
+import { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
 import {
   changeActiveSetup,
   pickWeaponInUsersDatabase,
   changeArtPiece,
+  duplicateCalcSetup,
 } from "@Store/calculatorSlice";
 import { toggleSettings } from "@Store/uiSlice";
 import {
@@ -21,9 +22,10 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { wikiImg } from "@Src/utils";
-import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+import { ARTIFACT_ICONS, ARTIFACT_TYPES, MAX_CALC_SETUPS } from "@Src/constants";
 
 import { Button, IconButton } from "@Src/styled-components";
+import { Modal } from "@Components/modals";
 import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
 import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
@@ -32,7 +34,6 @@ import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import SectionTarget from "./SectionTarget";
 import Settings from "./Settings";
-import { Modal } from "@Components/modals";
 import { SaveSetup } from "./modal-content";
 
 export default function SetupManager() {
@@ -42,6 +43,7 @@ export default function SetupManager() {
   const activeId = useSelector(selectActiveId);
   const charData = useSelector(selectCharData);
   const artPieces = useSelector(selectArtInfo)?.pieces;
+  const isAtMax = setupManageInfos.length === MAX_CALC_SETUPS;
 
   const [modal, setModal] = useState<ModalInfo>({
     type: "",
@@ -53,77 +55,92 @@ export default function SetupManager() {
   const bodyRef = useRef(null);
   const [ref, height] = useHeight();
 
-  const openModal = (index?: number) => (type: ModalType) => {
-    setModal({ type, index });
-  };
+  useEffect(() => {
+    const handleClickOutsideSelect = (e: any) => {
+      if (setupListOn && !e.target?.closest("#gidc-setup-select_wrapper")) {
+        toggleSetupList(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutsideSelect);
+
+    return () => document.body.removeEventListener("click", handleClickOutsideSelect);
+  }, [setupListOn]);
 
   const closeModal = () => setModal({ type: "", index: undefined });
 
   const toggleSetupList = (isOn: boolean) => {
     setSetupListOn(isOn);
 
-    const setupSelect = document.querySelector("#setup-select");
-    if (!setupListOn) {
-      setupSelect?.classList.remove("rounded-b-2.5xl");
+    const setupSelect = document.querySelector("#gidc-setup-select");
+    if (isOn) {
+      setupSelect?.classList.remove("rounded-t-2.5xl", "rounded-b-2.5xl");
+      setupSelect?.classList.add("rounded-t-lg");
     } else {
       setTimeout(() => {
-        setupSelect?.classList.add("rounded-b-2.5xl");
-      }, 150);
+        setupSelect?.classList.remove("rounded-t-lg");
+        setupSelect?.classList.add("rounded-t-2.5xl", "rounded-b-2.5xl");
+      }, 100);
     }
   };
 
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
-      <button
-        id="setup-select"
-        className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative outline-none cursor-default"
-        onClick={() => toggleSetupList(!setupListOn)}
-      >
-        <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
-        <span className="w-full text-xl font-bold text-center relative z-10">
-          {setupManageInfos.find((setupManageInfo) => setupManageInfo.ID === activeId)?.name}
-        </span>
-      </button>
+      <div id="gidc-setup-select_wrapper" className="shrink-0 relative">
+        <button
+          id="gidc-setup-select"
+          className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative outline-none cursor-default"
+          onClick={() => toggleSetupList(!setupListOn)}
+        >
+          <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
+          <span className="w-full text-xl font-bold text-center relative z-10">
+            {setupManageInfos.find((setupManageInfo) => setupManageInfo.ID === activeId)?.name}
+          </span>
+        </button>
 
-      <div
-        className="shrink-0 rounded-b-md bg-darkblue-2 text-default overflow-hidden transition-all duration-150 ease-linear"
-        style={{
-          height: setupListOn ? `${setupManageInfos.length * 2.8125}rem` : 0,
-        }}
-      >
-        {setupManageInfos.map(({ ID, name }, i) => {
-          return (
-            <div key={ID} className="flex border-t border-darkblue-3">
-              <button
-                className="pl-3 grow text-lg text-left font-bold truncate hover:text-orange"
-                onClick={() => {
-                  if (ID !== activeId) {
-                    dispatch(changeActiveSetup(ID));
-                  }
-                  toggleSetupList(false);
-                }}
-              >
-                {name}
-              </button>
-
-              <div className="ml-auto flex text-xl">
+        <div
+          className="absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-all duration-100 ease-linear"
+          style={{
+            height: setupListOn ? `${setupManageInfos.length * 2.5625}rem` : 0,
+          }}
+        >
+          {setupManageInfos.map(({ ID, name }, i) => {
+            return (
+              <div key={ID} className="flex">
                 <button
-                  className="p-3 border-l border-darkblue-3 flex hover:text-lightgold"
-                  onClick={() => {}}
+                  className="pl-3 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default"
+                  onClick={() => {
+                    if (ID !== activeId) {
+                      dispatch(changeActiveSetup(ID));
+                    }
+                    toggleSetupList(false);
+                  }}
                 >
-                  <FaCopy />
+                  {name}
                 </button>
 
-                <button
-                  className="p-3 border-l border-darkblue-3 flex hover:text-lightgold"
-                  onClick={() => openModal(i)("SAVE_SETUP")}
-                >
-                  <FaSave />
-                </button>
+                <div className="ml-auto border-b border-darkblue-1 flex text-xl">
+                  <button
+                    className={cn(
+                      "p-2.5 border-l border-darkblue-1 flex",
+                      isAtMax ? "bg-lesser" : "bg-lightgold"
+                    )}
+                    disabled={isAtMax}
+                    onClick={() => dispatch(duplicateCalcSetup(ID))}
+                  >
+                    <FaCopy />
+                  </button>
+
+                  <button
+                    className="p-2.5 border-l border-darkblue-1 flex bg-lightgold"
+                    onClick={() => setModal({ type: "SAVE_SETUP", index: i })}
+                  >
+                    <FaSave />
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
@@ -147,7 +164,7 @@ export default function SetupManager() {
         <div className="flex">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
-            onClick={() => openModal()("WEAPONS")}
+            onClick={() => setModal({ type: "WEAPONS" })}
           >
             <img src={wikiImg("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
@@ -166,7 +183,7 @@ export default function SetupManager() {
         active={prePickerOn}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artifactType) => {
-          openModal()(artifactType as Artifact);
+          setModal({ type: artifactType as Artifact });
           setPrePickerOn(false);
         }}
         onClose={() => setPrePickerOn(false)}
@@ -175,7 +192,7 @@ export default function SetupManager() {
             <Button
               variant="positive"
               onClick={() => {
-                openModal()("CHARACTERS");
+                setModal({ type: "CHARACTERS" });
                 setPrePickerOn(false);
               }}
             >

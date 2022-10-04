@@ -20,6 +20,8 @@ import { CollapseAndMount } from "@Components/collapse";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { SetupControl } from "./SetupControl";
 
+import { MAX_CALC_SETUPS } from "@Src/constants";
+
 import { useTabs } from "@Hooks/useTabs";
 
 import styles from "@Screens/Calculator/styles.module.scss";
@@ -38,8 +40,6 @@ const CONFIG_OPTIONS: Array<{
   },
 ];
 
-const SETUP_LIMIT = 4;
-
 function HiddenSettings() {
   const dispatch = useDispatch();
 
@@ -52,18 +52,19 @@ function HiddenSettings() {
     level: 2,
     configs: [{ text: "Setups" }, { text: "Configs" }],
   });
-  const [tempoSetups, setTempoSetups] = useState<NewSetupManageInfo[]>(
+  const [tempSetups, setTempSetups] = useState<NewSetupManageInfo[]>(
     setupManageInfos.map((manageInfos) => ({
       ...manageInfos,
       status: "OLD",
     }))
   );
-  const [tempoConfigs, setTempoConfigs] = useState(configs);
+  const [tempConfigs, setTempConfigs] = useState(configs);
+  const [removedIds, setRemovedIds] = useState<number[]>([]);
   const [errorCode, setErrorCode] = useState(0);
   const [tipsOn, setTipsOn] = useState(false);
 
   const changeSetupName = (index: number) => (newName: string) => {
-    setTempoSetups((prev) => {
+    setTempSetups((prev) => {
       const newTempoSetups = [...prev];
       newTempoSetups[index].name = newName;
       return newTempoSetups;
@@ -75,7 +76,10 @@ function HiddenSettings() {
   };
 
   const removeSetup = (index: number) => () => {
-    setTempoSetups((prev) => {
+    if (tempSetups[index] && tempSetups[index].status === "OLD") {
+      setRemovedIds((prev) => [...prev, tempSetups[index].ID]);
+    }
+    setTempSetups((prev) => {
       const newTempoSetups = [...prev];
       newTempoSetups.splice(index, 1);
       return newTempoSetups;
@@ -83,8 +87,8 @@ function HiddenSettings() {
   };
 
   const copySetup = (index: number) => () => {
-    if (tempoSetups.length < SETUP_LIMIT) {
-      setTempoSetups((prev) => {
+    if (tempSetups.length < MAX_CALC_SETUPS) {
+      setTempSetups((prev) => {
         let name = prev[index].name.trim();
         const newSetup: NewSetupManageInfo = {
           ID: prev[index].ID,
@@ -98,7 +102,7 @@ function HiddenSettings() {
   };
 
   const addNewSetup = () => {
-    setTempoSetups((prev) => {
+    setTempSetups((prev) => {
       const newSetup: NewSetupManageInfo = {
         ...getSetupManageInfo({ name: getNewSetupName(prev) }),
         status: "NEW",
@@ -110,13 +114,13 @@ function HiddenSettings() {
   };
 
   const tryApply = () => {
-    if (!tempoSetups.length) {
+    if (!tempSetups.length) {
       setErrorCode(1);
       return;
     }
 
     const nameMap: Record<string, boolean> = {};
-    for (const tempoSetup of tempoSetups) {
+    for (const tempoSetup of tempSetups) {
       const name = tempoSetup.name.trim();
 
       if (!name.length || nameMap[name]) {
@@ -128,7 +132,11 @@ function HiddenSettings() {
     }
 
     dispatch(
-      applySettingsOnCalculator({ newSetupManageInfos: tempoSetups, newConfigs: tempoConfigs })
+      applySettingsOnCalculator({
+        newSetupManageInfos: tempSetups,
+        newConfigs: tempConfigs,
+        removedSetupIDs: removedIds,
+      })
     );
     // #to-do
     // dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
@@ -136,8 +144,8 @@ function HiddenSettings() {
   };
 
   // const settingsUtils = {
-  //   save: <SaveUtil setup={tempoSetups[util.index]} close={closeUtil} />,
-  //   share: <SharedUtil setup={tempoSetups[util.index]} close={closeUtil} />,
+  //   save: <SaveUtil setup={tempSetups[util.index]} close={closeUtil} />,
+  //   share: <SharedUtil setup={tempSetups[util.index]} close={closeUtil} />,
   //   updateDB: <UpdateDB index={util.index} close={closeUtil} />,
   // };
 
@@ -155,7 +163,7 @@ function HiddenSettings() {
         {activeIndex === 0 && (
           <div>
             <div className="space-y-3">
-              {tempoSetups.map((setup, index) => (
+              {tempSetups.map((setup, index) => (
                 <SetupControl
                   key={index}
                   setup={setup}
@@ -166,7 +174,7 @@ function HiddenSettings() {
               ))}
             </div>
 
-            {tempoSetups.length < 4 && (
+            {tempSetups.length < 4 && (
               <div className="mt-4">
                 <button
                   className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
@@ -194,8 +202,8 @@ function HiddenSettings() {
                 <label key={i} className="flex items-center group">
                   <Checkbox
                     className="ml-1 mr-4 scale-180"
-                    checked={tempoConfigs[field]}
-                    onChange={() => setTempoConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
+                    checked={tempConfigs[field]}
+                    onChange={() => setTempConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
                   />
                   <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
                 </label>
@@ -252,9 +260,9 @@ export default function Settings({ height }: SettingsProps) {
   return (
     <CollapseAndMount
       active={active}
-      className={cn("absolute bottom-0 left-0 bg-darkblue-3 z-10", styles.card)}
+      className={cn("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
-      duration={250}
+      duration={200}
     >
       <HiddenSettings />
     </CollapseAndMount>

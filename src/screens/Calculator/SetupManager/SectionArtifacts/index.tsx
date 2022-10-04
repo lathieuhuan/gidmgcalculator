@@ -16,7 +16,6 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { CopySection } from "@Screens/Calculator/components";
 import { CollapseSpace } from "@Components/collapse";
 import { Picker } from "@Components/Picker";
-import { pedestalStyles } from "../tw-compound";
 import PieceInfo from "./PieceInfo";
 
 const selectAllArtInfos = createSelector(
@@ -78,7 +77,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     }
   }
   return (
-    <div className={pedestalStyles}>
+    <div className="setup-manager_pedestal">
       {copyOptions.length ? (
         <CopySection
           options={copyOptions}

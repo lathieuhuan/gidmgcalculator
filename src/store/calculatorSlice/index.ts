@@ -1,7 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
-  CalcSetup,
   CalcSetupManageInfo,
   CalculatorState,
   CalcWeapon,
@@ -614,8 +613,24 @@ export const calculatorSlice = createSlice({
       calculate(state, true);
     },
     //
+    duplicateCalcSetup: (state, action: PayloadAction<number>) => {
+      const sourceId = action.payload;
+      const { setupManageInfos, setupsById } = state;
+      const ID = Date.now();
+
+      if (setupsById[sourceId]) {
+        setupManageInfos.push({
+          ID,
+          name: getNewSetupName(setupManageInfos),
+          type: "original",
+        });
+
+        setupsById[ID] = setupsById[sourceId];
+        calculate(state, true);
+      }
+    },
     applySettingsOnCalculator: (state, action: ApplySettingsOnCalculatorAction) => {
-      const { newSetupManageInfos, newConfigs } = action.payload;
+      const { newSetupManageInfos, newConfigs, removedSetupIDs } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
 
       let rootID = Date.now();
@@ -625,14 +640,14 @@ export const calculatorSlice = createSlice({
       const subArtBuffCtrls = getAllSubArtBuffCtrls(null);
       const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
       const elmtModCtrls = initElmtModCtrls();
-      const newInfos: CalcSetupManageInfo[] = [];
+      const tempoManageInfos: CalcSetupManageInfo[] = [];
 
       newSetupManageInfos.forEach(({ ID, name, type, status }) => {
         switch (status) {
           case "OLD": {
             const oldInfo = findById(setupManageInfos, ID);
             if (oldInfo) {
-              newInfos.push({
+              tempoManageInfos.push({
                 ...oldInfo,
                 name: name,
               });
@@ -644,7 +659,7 @@ export const calculatorSlice = createSlice({
             if (oldInfo) {
               const setupID = rootID++;
 
-              newInfos.push({
+              tempoManageInfos.push({
                 ID: setupID,
                 name,
                 type: "original",
@@ -654,7 +669,7 @@ export const calculatorSlice = createSlice({
             break;
           }
           case "NEW": {
-            newInfos.push({
+            tempoManageInfos.push({
               ID,
               name,
               type: "original",
@@ -686,8 +701,12 @@ export const calculatorSlice = createSlice({
         }
       });
 
+      removedSetupIDs.forEach((ID) => {
+        delete setupsById[ID];
+      });
+
       const activeSetup = findById(newSetupManageInfos, activeId);
-      const newActiveID = activeSetup ? activeSetup.ID : newSetupManageInfos[0].ID;
+      const newActiveID = activeSetup ? activeSetup.ID : tempoManageInfos[0].ID;
 
       if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
         const activeChar = setupsById[newActiveID].char;
@@ -698,9 +717,8 @@ export const calculatorSlice = createSlice({
       }
 
       state.activeId = newActiveID;
-      state.setupManageInfos = newInfos;
+      state.setupManageInfos = tempoManageInfos;
       state.configs = newConfigs;
-
       calculate(state, true);
     },
   },
@@ -744,6 +762,7 @@ export const {
   modifyTarget,
   changeMonster,
   changeMonsterConfig,
+  duplicateCalcSetup,
   applySettingsOnCalculator,
 } = calculatorSlice.actions;
 
