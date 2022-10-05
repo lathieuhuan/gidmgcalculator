@@ -7,6 +7,7 @@ export type ModalType =
   | "SAVE_SETUP"
   | "SHARE_SETUP"
   // | "UPDATE_USERS_DATA"
+  | "NOTICE_MOVE_TARGET"
   | "";
 
 export type ModalInfo = {

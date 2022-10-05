@@ -94,7 +94,7 @@ export const ButtonBar = ({
         return (
           <Button
             key={i}
-            className="focus:shadow-[0_0_2px_2px_black,_0_0_2px_4px_white]"
+            className="button-focus-shadow"
             disabled={disabled[i]}
             variant={variant}
             onClick={handlers[i]}
@@ -325,7 +325,7 @@ export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmT
 
   return (
     <div className="p-4 rounded-lg bg-darkblue-3">
-      <p className="py-2 text-center text-1.5xl">{message}</p>
+      <p className="py-2 text-center text-1.5xl text-default">{message}</p>
       <ButtonBar
         className={cn("mt-4 flex-wrap", mid && "space-x-4")}
         texts={texts}

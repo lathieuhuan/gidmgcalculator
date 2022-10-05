@@ -29,6 +29,7 @@ import { Modal } from "@Components/modals";
 import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
 import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
+import { ConfirmModal } from "@Components/minors";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
@@ -51,6 +52,7 @@ export default function SetupManager() {
   });
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [setupListOn, setSetupListOn] = useState(false);
+  const [targetAtFront, setTargetAtFront] = useState(true);
 
   const bodyRef = useRef(null);
   const [ref, height] = useHeight();
@@ -147,7 +149,10 @@ export default function SetupManager() {
         <SectionParty />
         <SectionWeapon />
         <SectionArtifacts containerRef={bodyRef} />
-        <SectionTarget />
+
+        {targetAtFront && (
+          <SectionTarget isAtFront onMove={() => setModal({ type: "NOTICE_MOVE_TARGET" })} />
+        )}
       </div>
 
       <div className="mt-4 flex items-center">
@@ -177,7 +182,11 @@ export default function SetupManager() {
         </div>
       </div>
 
-      <Settings height={height} />
+      <Settings
+        height={height}
+        shouldShowTarget={!targetAtFront}
+        onMoveTarget={() => setTargetAtFront(true)}
+      />
 
       <PrePicker
         active={prePickerOn}
@@ -249,6 +258,15 @@ export default function SetupManager() {
       >
         <SaveSetup setup={setupManageInfos[modal.index || 0]} onClose={closeModal} />
       </Modal>
+
+      <ConfirmModal
+        active={modal.type === "NOTICE_MOVE_TARGET"}
+        message="Move Target Overview to Settings/Configs?"
+        right={{
+          onClick: () => setTargetAtFront(false),
+        }}
+        onClose={closeModal}
+      />
     </div>
   );
 }

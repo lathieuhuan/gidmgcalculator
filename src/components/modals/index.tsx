@@ -40,7 +40,7 @@ export function Modal({ active, className, style, isCustom, children, onClose }:
     }
   }, [active, state.active]);
 
-  useCloseWithEsc(closeModal);
+  useCloseWithEsc(() => active && closeModal());
 
   return state.active
     ? ReactDOM.createPortal(

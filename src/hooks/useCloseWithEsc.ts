@@ -7,5 +7,5 @@ export function useCloseWithEsc(close: () => void) {
     };
     document.addEventListener("keydown", handlePressEsc, true);
     return () => document.removeEventListener("keydown", handlePressEsc, true);
-  }, []);
+  }, [close]);
 }

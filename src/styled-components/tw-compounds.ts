@@ -1,7 +1,5 @@
 export const tooltipStyles = "py-2 px-4 absolute z-10 rounded bg-black/90";
 
-export const linkStyles = "text-green hover:text-lightred";
-
 export const tableStyles = {
   table: "min-w-full border-collapse",
   th: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default",

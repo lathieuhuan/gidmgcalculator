@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaInfoCircle, FaPlus } from "react-icons/fa";
 import type { CalcConfigurations } from "@Src/types";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
@@ -18,6 +18,7 @@ import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 import { InfoSign, TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
+import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
 
 import { MAX_CALC_SETUPS } from "@Src/constants";
@@ -40,7 +41,11 @@ const CONFIG_OPTIONS: Array<{
   },
 ];
 
-function HiddenSettings() {
+interface HiddenSettingsProps {
+  shouldShowTarget: boolean;
+  onMoveTarget: () => void;
+}
+function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps) {
   const dispatch = useDispatch();
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
@@ -157,7 +162,17 @@ function HiddenSettings() {
       />
 
       <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>
-      {tabs}
+      <div className="relative">
+        {tabs}
+        {activeIndex === 1 && (
+          <button
+            className="w-40 h-8 absolute top-0 right-0 pr-2 flex items-center justify-end text-2xl text-black outline-none"
+            onClick={() => setTipsOn(true)}
+          >
+            <FaInfoCircle />
+          </button>
+        )}
+      </div>
 
       <div className="mt-3 flex-grow hide-scrollbar">
         {activeIndex === 0 && (
@@ -189,27 +204,25 @@ function HiddenSettings() {
         )}
 
         {activeIndex === 1 && (
-          <div className="p-4 h-full relative rounded-lg bg-darkblue-2">
-            <InfoSign
-              className="absolute top-3 right-3"
-              selfHover
-              onClick={() => setTipsOn(true)}
-            />
-            <p className="text-h5 text-orange">Configurations</p>
-
-            <div className="mt-2 space-y-4">
-              {CONFIG_OPTIONS.map(({ field, desc }, i) => (
-                <label key={i} className="flex items-center group">
-                  <Checkbox
-                    className="ml-1 mr-4 scale-180"
-                    checked={tempConfigs[field]}
-                    onChange={() => setTempConfigs((prev) => ({ ...prev, [field]: !prev[field] }))}
-                  />
-                  <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
-                </label>
-              ))}
+          <>
+            {shouldShowTarget && <SectionTarget onMove={onMoveTarget} />}
+            <div className="mt-3 p-4 rounded-lg bg-darkblue-2">
+              <div className="space-y-4">
+                {CONFIG_OPTIONS.map(({ field, desc }, i) => (
+                  <label key={i} className="flex items-center group">
+                    <Checkbox
+                      className="ml-1 mr-4 scale-180"
+                      checked={tempConfigs[field]}
+                      onChange={() =>
+                        setTempConfigs((prev) => ({ ...prev, [field]: !prev[field] }))
+                      }
+                    />
+                    <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
 
@@ -252,10 +265,10 @@ function HiddenSettings() {
   );
 }
 
-interface SettingsProps {
+interface SettingsProps extends HiddenSettingsProps {
   height: number;
 }
-export default function Settings({ height }: SettingsProps) {
+export default function Settings({ height, ...rest }: SettingsProps) {
   const active = useSelector((state) => state.ui.settingsOn);
   return (
     <CollapseAndMount
@@ -264,7 +277,7 @@ export default function Settings({ height }: SettingsProps) {
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}
     >
-      <HiddenSettings />
+      <HiddenSettings {...rest} />
     </CollapseAndMount>
   );
 }

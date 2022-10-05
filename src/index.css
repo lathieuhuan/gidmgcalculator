@@ -88,6 +88,9 @@ body {
   transform: scale(1.2);
 }
 
+.button-focus-shadow:focus {
+  box-shadow: 0 0 2px 2px black, 0 0 2px 4px white;
+}
 .shadow-3px-2px {
   box-shadow: 0 0 3px 2px var(--tw-shadow-color);
 }
