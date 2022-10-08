@@ -6,8 +6,11 @@
   option {
     color: black;
   }
+  button, input {
+    outline: none;
+  }
   .textinput-common {
-    @apply leading-tight text-black rounded bg-default focus:bg-green outline-none;
+    @apply leading-tight text-black rounded bg-default focus:bg-green;
   }
   .setup-manager_pedestal {
     @apply py-3 border-2 border-lesser rounded-xl bg-darkblue-1;

@@ -19,7 +19,7 @@ export default function DamageResults() {
     <div className="h-full">
       <div className="flex absolute top-3 right-3">
         <IconButton
-          className={cn("w-7 h-7 hover:bg-lightgold", trackerState ? "text-green" : "text-default")}
+          className={cn("w-7 h-7", trackerState ? "bg-green" : "bg-default hover:bg-lightgold")}
           onClick={() => setTrackerState([0, 2].includes(trackerState) ? 1 : 0)}
         >
           <FaSearch />

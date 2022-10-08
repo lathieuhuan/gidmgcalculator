@@ -166,7 +166,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         {tabs}
         {activeIndex === 1 && (
           <button
-            className="w-40 h-8 absolute top-0 right-0 pr-2 flex items-center justify-end text-2xl text-black outline-none"
+            className="w-40 h-8 absolute top-0 right-0 pr-2 flex items-center justify-end text-2xl text-black"
             onClick={() => setTipsOn(true)}
           >
             <FaInfoCircle />

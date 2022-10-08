@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { ChangeEventHandler, useState, useEffect } from "react";
+import { ChangeEventHandler, useState, useEffect, useRef } from "react";
 import type { Target, Vision } from "@Src/types";
 
 import monsters from "@Data/monsters";
@@ -10,10 +10,10 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateMonster, updateTarget } from "@Store/calculatorSlice";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
-import { CloseButton } from "@Src/styled-components";
+import { Button, CloseButton } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
 import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
-import { turnArray } from "@Src/utils";
+import { indexByCode, turnArray } from "@Src/utils";
 import { DataMonster } from "@Data/monsters/types";
 import { InfoSign } from "@Components/minors";
 
@@ -30,10 +30,21 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
   const [detailsIndex, setDetailsIndex] = useState(0);
 
   useEffect(() => {
-    if (!monsterListOn && !chosenMonsterData?.names) {
+    const list = document.querySelector("#monster-list");
+    const { code } = chosenMonster || {};
+
+    if (list && code) {
+      const chosenIndex = indexByCode(monsters, code);
+
+      list.scrollTop = chosenIndex * 32 + (chosenIndex > 1 ? Math.min(chosenIndex - 1, 4) * 20 : 0);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!monsterListOn) {
       setDetailsIndex(0);
     }
-  }, [monsterListOn, chosenMonsterData?.names]);
+  }, [monsterListOn]);
 
   if (!chosenMonsterData) {
     return null;
@@ -77,130 +88,151 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
 
   return (
     <div
-      className="pl-5 pr-2 py-4 bg-darkblue-2 flex flex-col rounded-lg shadow-white-glow overflow-auto"
-      style={{ height: "80vh" }}
+      className="pl-5 pr-2 pt-4 pb-2 bg-darkblue-2 flex flex-col rounded-lg shadow-white-glow overflow-auto"
+      style={{ height: "90vh" }}
     >
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="text-h4 text-orange font-bold">Target Config</p>
 
-      <div className="grow flex overflow-auto">
+      <div className="py-4 grow flex overflow-auto">
         <div className="w-80 flex flex-col shrink-0">
-          <div className="flex">
-            {turnArray(states).length ? (
-              <div className="self-end group relative text-default">
-                <InfoSign />
-                <ul className="w-75 ml-2 mt-2 px-2 py-1 marker:mr-1 small-tooltip group-hover:scale-100 origin-top-left">
-                  {turnArray(states).map((state, i) => {
-                    const changes = Object.entries(state.changes)
-                      .map(([key, value]) => {
-                        const changeField = {
-                          base: "all Resistances",
-                          variant: "Resistance to their Element",
-                        }[key];
+          <div className="grow overflow-auto flex flex-col">
+            <div className="flex">
+              {turnArray(states).length ? (
+                <div className="self-end group relative text-default">
+                  <InfoSign />
+                  <ul className="w-75 ml-2 mt-2 px-2 py-1 marker:mr-1 small-tooltip group-hover:scale-100 origin-top-left">
+                    {turnArray(states).map((state, i) => {
+                      const changes = Object.entries(state.changes)
+                        .map(([key, value]) => {
+                          const changeField = {
+                            base: "all Resistances",
+                            variant: "Resistance to their Element",
+                          }[key];
 
-                        return `${value}% ${changeField || key}`;
-                      })
-                      .join(", ");
+                          return `${value > 0 ? "+" : ""}${value}% ${changeField || key}`;
+                        })
+                        .join(", ");
 
+                      return (
+                        <li
+                          key={i}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              `• When <span class="text-lightred">${state.label}</span>, ` +
+                              `this target gets <span class="text-green">${changes}</span>.`,
+                          }}
+                        />
+                      );
+                    })}
+                  </ul>
+                </div>
+              ) : null}
+
+              <label className="ml-auto flex items-center">
+                <span className="mr-4 text-h6 text-lightgold">Level</span>
+                <input
+                  className="w-16 p-2 text-right font-bold textinput-common"
+                  value={target.level}
+                  onChange={onChangeTargetProp("level")}
+                />
+              </label>
+            </div>
+
+            <div className="mt-4 bg-default rounded text-black flex flex-col overflow-auto">
+              <button
+                className="px-2 pt-1 w-full rounded-t text-lg font-bold flex items-center"
+                onClick={() => setMonsterListOn((prev) => !prev)}
+              >
+                <span className="pr-2 truncate">{title}</span>
+                <FaChevronDown className="ml-auto" />
+              </button>
+
+              <div
+                id="monster-list"
+                className={cn(
+                  "flex flex-col custom-scrollbar rounded-b duration-200 ease-in-out",
+                  monsterListOn && "grow"
+                )}
+                style={{ maxHeight: monsterListOn ? `${monsters.length * 2}rem` : 0 }}
+              >
+                {monsters.map((monster, i) => {
+                  return (
+                    <button
+                      key={monster.code}
+                      className={cn(
+                        "text-black flex justify-between cursor-default group",
+                        monster.code === chosenMonster.code
+                          ? "bg-lesser"
+                          : "hover:bg-blue-600 hover:text-default hover:font-bold"
+                      )}
+                      onClick={() => onClickMonster(monster)}
+                    >
+                      <p className="px-2 py-1 text-left flex flex-col">
+                        <span>{monster.title}</span>
+                        {monster.subtitle && (
+                          <span className="text-sm italic">{monster.subtitle}</span>
+                        )}
+                      </p>
+                      {monster.names && (
+                        <span
+                          className={cn(
+                            "h-full px-2 flex items-center text-xl"
+                            // monster.code !== chosenMonster.code && "group-hover:text-default"
+                          )}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDetailsIndex(i);
+                          }}
+                        >
+                          <FaInfoCircle />
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                className="h-1 rounded-b"
+                onClick={() => setMonsterListOn(true)}
+              />
+            </div>
+
+            {variant?.types.length && variantType ? (
+              <div className="mt-4 flex justify-end items-center">
+                <p className="mr-4 text-default">Variant</p>
+
+                <select
+                  className={twInputStyles.select}
+                  value={variantType}
+                  onChange={onChangeElementVariant}
+                >
+                  {variant.types.map((variantType, i) => {
                     return (
-                      <li
+                      <option
                         key={i}
-                        dangerouslySetInnerHTML={{
-                          __html: `• When ${state.label}, this target gets <span class="font-bold">${changes}</span>.`,
-                        }}
-                      />
+                        value={typeof variantType === "string" ? variantType : variantType.value}
+                      >
+                        {typeof variantType === "string" ? variantType : variantType.label}
+                      </option>
                     );
                   })}
-                </ul>
+                </select>
               </div>
             ) : null}
 
-            <label className="ml-auto flex items-center">
-              <span className="mr-4 text-h6 text-lightgold">Level</span>
-              <input
-                className="w-16 p-2 text-right font-bold textinput-common"
-                value={target.level}
-                onChange={onChangeTargetProp("level")}
-              />
-            </label>
+            {monsters[detailsIndex]?.names ? (
+              <p className="mt-3 text-default">
+                <span className="text-lightred">{monsters[detailsIndex].title}</span>:{" "}
+                {monsters[detailsIndex].names?.join(", ")}
+              </p>
+            ) : null}
           </div>
 
-          <div className="mt-4 bg-default rounded text-black flex flex-col overflow-auto">
-            <button
-              className="px-2 pt-1 w-full rounded-t text-lg font-bold flex items-center"
-              onClick={() => setMonsterListOn((prev) => !prev)}
-            >
-              <span className="pr-2 truncate">{title}</span>
-              <FaChevronDown className="ml-auto" />
-            </button>
-
-            <div
-              className={cn(
-                "flex flex-col custom-scrollbar rounded-b duration-200 ease-in-out",
-                monsterListOn && "grow"
-              )}
-              style={{ maxHeight: monsterListOn ? `${monsters.length * 2}rem` : 0 }}
-            >
-              {monsters.map((monster, i) => {
-                return (
-                  <button
-                    key={monster.code}
-                    className={cn(
-                      "flex justify-between outline-none cursor-default group",
-                      monster.code === chosenMonster.code
-                        ? "bg-lesser"
-                        : "hover:bg-darkblue-2 hover:text-default"
-                    )}
-                    onClick={() => onClickMonster(monster)}
-                  >
-                    <span className="px-2 py-1 truncate">{monster.title}</span>
-                    {monster.names && (
-                      <span
-                        className="h-full px-2 flex items-center text-xl text-black group-hover:text-default"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDetailsIndex(i);
-                        }}
-                      >
-                        <FaInfoCircle />
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <button className="h-1 rounded-b outline-none" onClick={() => setMonsterListOn(true)} />
-          </div>
-
-          {variant?.types.length && variantType ? (
-            <div className="mt-4 flex justify-end items-center">
-              <p className="mr-4 text-default">Variant</p>
-
-              <select
-                className={twInputStyles.select}
-                value={variantType}
-                onChange={onChangeElementVariant}
-              >
-                {variant.types.map((variantType, i) => {
-                  return (
-                    <option
-                      key={i}
-                      value={typeof variantType === "string" ? variantType : variantType.value}
-                    >
-                      {typeof variantType === "string" ? variantType : variantType.label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          ) : null}
-
-          {monsters[detailsIndex]?.names ? (
-            <p className="mt-3 text-default">
-              {monsters[detailsIndex].title} contains: {monsters[detailsIndex].names?.join(", ")}
-            </p>
-          ) : null}
+          <Button className="mt-3 mr-auto" variant="positive" onClick={onClose}>
+            Close
+          </Button>
         </div>
 
         <div className="mx-4 w-0.5 bg-darkblue-3" />

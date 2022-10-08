@@ -180,7 +180,7 @@ export function ArtifactSubstats({
 
             <input
               className={cn(
-                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent outline-none text-base leading-tight text-right text-last-right",
+                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent text-base leading-tight text-right text-last-right",
                 isValid ? "text-default" : "text-darkred"
               )}
               value={value}

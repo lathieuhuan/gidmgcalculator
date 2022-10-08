@@ -90,7 +90,7 @@ export default function SetupManager() {
       <div id="gidc-setup-select_wrapper" className="shrink-0 relative">
         <button
           id="gidc-setup-select"
-          className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative outline-none cursor-default"
+          className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
           onClick={() => toggleSetupList(!setupListOn)}
         >
           <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
@@ -168,13 +168,13 @@ export default function SetupManager() {
 
         <div className="flex">
           <button
-            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
+            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setModal({ type: "WEAPONS" })}
           >
             <img src={wikiImg("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
           <button
-            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold outline-none"
+            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setPrePickerOn(true)}
           >
             <img src={wikiImg("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />

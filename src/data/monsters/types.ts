@@ -17,6 +17,7 @@ type MonsterState = {
 export type DataMonster = {
   code: number;
   title: string;
+  subtitle?: string;
   names?: string[];
   resistance: MonsterResistance;
   variant?: MonsterVariant;

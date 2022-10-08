@@ -5,6 +5,7 @@ const monsters: DataMonster[] = [
   {
     code: 1,
     title: "Group 1",
+    subtitle: "All RES: 10",
     names: [
       "Slime",
       "Hilichurl",
@@ -24,18 +25,21 @@ const monsters: DataMonster[] = [
   {
     code: 2,
     title: "Group 2",
+    subtitle: "All RES: 10, Physical RES: 30",
     names: ["Mitachurl", "Ruin Cruiser", "Ruin Destroyer"],
     resistance: { base: 10, phys: 30 },
   },
   {
     code: 3,
     title: "Group 3",
+    subtitle: "All RES: 10, Physical RES: 50",
     names: ["Ruin Hunter", "Ruin Defender", "Ruin Scout"],
     resistance: { base: 10, phys: 50 },
   },
   {
     code: 4,
     title: "Group 4",
+    subtitle: "All RES: 10, Physical RES: -20",
     names: ["Treasure Hoarders", "Nobushi", "Kairagi", "Low-tier Eremites"],
     resistance: { base: 10, phys: -20 },
   },

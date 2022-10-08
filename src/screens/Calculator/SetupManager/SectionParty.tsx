@@ -70,7 +70,7 @@ export default function SectionParty() {
                 />
               ) : (
                 <button
-                  className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 outline-none glow-on-hover"
+                  className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 glow-on-hover"
                   onClick={() => setPendingSlot(tmIndex)}
                 >
                   <FaPlus className="text-default opacity-80" />
