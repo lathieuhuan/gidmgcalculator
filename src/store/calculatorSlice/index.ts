@@ -1,5 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
+  AttackElement,
   CalcArtPiece,
   CalcSetupManageInfo,
   CalculatorState,
@@ -7,7 +8,9 @@ import type {
   CharInfo,
   CustomBuffCtrl,
   CustomDebuffCtrl,
+  Monster,
   ResonancePair,
+  Target,
   UsersSetup,
   Vision,
 } from "@Src/types";
@@ -19,13 +22,11 @@ import type {
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
-  ChangeMonsterConfigAction,
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   CopyCustomModCtrlsAction,
   ImportSetupAction,
   InitSessionWithCharAction,
-  ModifyTargetAction,
   RefineSubWeaponAction,
   RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
@@ -33,15 +34,21 @@ import type {
   ToggleTeammateModCtrlAction,
   UpdateArtPieceAction,
 } from "./reducer-types";
-import type { MonsterConfig } from "@Data/monsters/types";
 
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
 
-import monsters from "@Data/monsters";
-import { RESONANCE_VISION_TYPES } from "@Src/constants";
-import { bareLv, countVision, countWeapon, deepCopy, findById, indexByCode } from "@Src/utils";
+import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import {
-  autoModifyTarget,
+  bareLv,
+  countVision,
+  countWeapon,
+  deepCopy,
+  findByCode,
+  findById,
+  indexByCode,
+  turnArray,
+} from "@Src/utils";
+import {
   calculate,
   getAllSubArtBuffCtrls,
   getAllSubArtDebuffCtrls,
@@ -63,6 +70,7 @@ import {
   initMonster,
   initTarget,
 } from "./initiators";
+import monsters from "@Data/monsters";
 
 const defaultChar = {
   name: "Albedo",
@@ -419,7 +427,6 @@ export const calculatorSlice = createSlice({
 
       calculate(state);
     },
-    // #to-do: change-dispatch
     copyAllArtifacts: (state, action: PayloadAction<number>) => {
       const activeSetup = state.setupsById[state.activeId];
       const sourceSetup = state.setupsById[action.payload];
@@ -577,40 +584,39 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // TARGET
-    modifyTarget: (state, action: ModifyTargetAction) => {
-      const { key, value } = action.payload;
-
-      state.target[key] = value;
+    updateTarget: (state, action: PayloadAction<Partial<Target>>) => {
+      state.target = {
+        ...state.target,
+        ...action.payload,
+      };
       calculate(state);
     },
-    changeMonster: (state, action: PayloadAction<number>) => {
-      const monsterData = monsters[action.payload];
-      if (!monsterData) return;
-
-      const { variant, config } = monsterData;
-      const inputs: MonsterConfig[] = [];
-
-      if (config) {
-        for (const type of config.renderTypes) {
-          if (type === "check") {
-            inputs.push(false);
-          }
-        }
-      }
+    updateMonster: (state, action: PayloadAction<Partial<Monster>>) => {
       state.monster = {
-        index: action.payload,
-        variantIndex: variant ? 0 : null,
-        configs: inputs,
+        ...state.monster,
+        ...action.payload,
       };
-      autoModifyTarget(state.target, state.monster);
-      calculate(state, true);
-    },
-    changeMonsterConfig: (state, action: ChangeMonsterConfigAction) => {
-      const { inputIndex, value } = action.payload;
+      const { code, variantType } = state.monster;
+      const monsterData = findByCode(monsters, code);
 
-      state.monster.configs[inputIndex] = value;
-      autoModifyTarget(state.target, state.monster);
-      calculate(state, true);
+      // not update target if monster code === 0 (custom monster)
+      if (monsterData && state.monster.code) {
+        const { resistance, variant } = monsterData;
+        const { base, ...otherResist } = resistance;
+
+        for (const atkElmt of ATTACK_ELEMENTS) {
+          state.target[atkElmt] = base;
+        }
+        for (const [key, value] of Object.entries(otherResist)) {
+          state.target[key as AttackElement] = value;
+        }
+
+        if (variantType && variant) {
+          state.target[variantType] += variant.change;
+        }
+
+        calculate(state, true);
+      }
     },
     //
     duplicateCalcSetup: (state, action: PayloadAction<number>) => {
@@ -759,9 +765,8 @@ export const {
   copyCustomModCtrls,
   removeCustomModCtrl,
   changeCustomModCtrlValue,
-  modifyTarget,
-  changeMonster,
-  changeMonsterConfig,
+  updateTarget,
+  updateMonster,
   duplicateCalcSetup,
   applySettingsOnCalculator,
 } = calculatorSlice.actions;

@@ -1,1 +1,0 @@
-export const MONSTER_VARIANT_LABELS = ["Variant", "Element", "Phase", "Type", "State"];

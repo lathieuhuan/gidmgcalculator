@@ -1,324 +1,251 @@
 import type { DataMonster } from "./types";
-import { applyVariant, byVariant, changeAllResistances } from "./utils";
 
 const monsters: DataMonster[] = [
+  { code: 0, title: "Custom Target", resistance: { base: 10 } },
   {
-    name: "Hilichurl / Slimes / Spectre",
+    code: 1,
+    title: "Group 1",
+    names: [
+      "Slime",
+      "Hilichurl",
+      "Specter",
+      "Abyss Mage",
+      "Abyss Herald",
+      "Abyss Lector",
+      "Eye of the Storm",
+      "Hypostasis",
+      "Dvalin",
+      "Andrius",
+      "Maguu Kenki",
+      "Thunder Manifestation",
+    ],
     resistance: { base: 10 },
   },
   {
-    name: "Mitachurl",
-    resistance: { phys: 30, base: 10 },
+    code: 2,
+    title: "Group 2",
+    names: ["Mitachurl", "Ruin Cruiser", "Ruin Destroyer"],
+    resistance: { base: 10, phys: 30 },
   },
   {
-    name: "Samachurl",
+    code: 3,
+    title: "Group 3",
+    names: ["Ruin Hunter", "Ruin Defender", "Ruin Scout"],
+    resistance: { base: 10, phys: 50 },
+  },
+  {
+    code: 4,
+    title: "Group 4",
+    names: ["Treasure Hoarders", "Nobushi", "Kairagi", "Low-tier Eremites"],
+    resistance: { base: 10, phys: -20 },
+  },
+  {
+    code: 5,
+    title: "Samachurl",
     resistance: { base: 10 },
     variant: {
-      labelIndex: 1,
-      options: ["dendro", "anemo", "geo", "hydro", "cryo", "electro"],
+      types: ["dendro", "anemo", "geo", "hydro", "cryo", "electro"],
+      change: 40,
     },
-    changeResistance: byVariant(40),
   },
   {
-    name: "Lawachurl",
-    resistance: { phys: 50, base: 10 },
+    code: 6,
+    title: "Lawachurl",
+    resistance: { base: 10, phys: 50 },
     variant: {
-      labelIndex: 1,
-      options: ["geo", "cryo", "electro"],
-    },
-    changeResistance: byVariant(60),
-  },
-  {
-    name: "Ruin Guard / Grader",
-    resistance: { phys: 70, base: 10 },
-  },
-  {
-    name: "Ruin Hunter / Defender / Scout",
-    resistance: { phys: 50, base: 10 },
-  },
-  {
-    name: "Ruin Cruiser / Destroyer",
-    resistance: { phys: 30, base: 10 },
-  },
-  {
-    name: "Perpetual Mechanical Array",
-    resistance: { phys: 70, base: 10 },
-    config: {
-      labels: ["Stunned"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, configs }) => {
-      if (configs[0]) changeAllResistances(target, -50);
+      types: ["geo", "cryo", "electro"],
+      change: 60,
     },
   },
   {
-    name: "Whopperflower",
-    resistance: { phys: 35, base: 35 },
+    code: 7,
+    title: "Ruin Guard / Ruin Grader",
+    resistance: { base: 10, phys: 70 },
+  },
+  {
+    code: 8,
+    title: "Perpetual Mechanical Array",
+    resistance: { base: 10, phys: 70 },
+    states: { label: "stunned", changes: { base: -50 } },
+  },
+  {
+    code: 9,
+    title: "Whopperflower",
+    resistance: { base: 35, phys: 35 },
     variant: {
-      labelIndex: 1,
-      options: ["pyro", "cryo", "electro"],
+      types: ["pyro", "cryo", "electro"],
+      change: 40,
     },
-    config: {
-      labels: ["Stunned"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      applyVariant(target, variant, 40);
-      if (configs[1]) changeAllResistances(target, -25);
-    },
+    states: { label: "stunned", changes: { base: -25 } },
   },
   {
-    name: "Regisvine",
-    resistance: { phys: 130, base: 110 },
+    code: 10,
+    title: "Regisvine",
+    resistance: { base: 110, phys: 130 },
     variant: {
-      labelIndex: 1,
-      options: ["pyro", "cryo"],
+      types: ["pyro", "cryo", "electro"],
+      change: 60,
     },
-    config: {
-      labels: ["Stunned"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      applyVariant(target, variant, 60);
-      if (configs[1]) changeAllResistances(target, -100);
-    },
+    states: { label: "stunned", changes: { base: -100 } },
   },
   {
-    name: "Hypostasis / Maguu Kenki / Dvalin",
-    resistance: { phys: 10, base: 10 },
-  },
-  {
-    name: "Andrius",
-    resistance: { phys: 10, base: 10, anemo: Infinity, cryo: Infinity },
-  },
-  {
-    name: "Treasure Hoarders",
-    resistance: { phys: -20, base: 10 },
-  },
-  {
-    name: "Nobushi / Kairagi",
-    resistance: { phys: -20, base: 10 },
-  },
-  {
-    name: "Fatui Skirmisher",
-    resistance: { phys: -20, base: 10 },
-    config: {
-      labels: ["Armored"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, configs }) => {
-      if (configs[0]) changeAllResistances(target, 100);
-    },
-  },
-  {
-    name: "Shadowy Husks",
-    resistance: { phys: 30, base: 10 },
+    code: 11,
+    title: "Hydro Mimic",
+    resistance: { base: 15 },
     variant: {
-      labelIndex: 1,
-      options: ["pyro", "hydro", "cryo"],
+      types: [
+        { label: "Boar/Ferret", value: "pyro" },
+        { label: "Crane/Raptor", value: "electro" },
+        { label: "Crab/Mallard", value: "cryo" },
+        { label: "Finch/Frog", value: "geo" },
+      ],
+      change: -55,
     },
-    changeResistance: byVariant(20),
   },
   {
-    name: "Fatui Pyro Agent",
-    resistance: { phys: -20, base: 10, pyro: 50 },
+    code: 15,
+    title: "Geovishap Hatchling",
+    resistance: { base: 10, phys: 30, geo: 50 },
   },
   {
-    name: "Fatui Mirror Maiden",
-    resistance: { phys: -20, base: 10, hydro: 50 },
-  },
-  {
-    name: "Fatui Cicin Mage",
-    resistance: { phys: -20, base: 10 },
+    code: 16,
+    title: "Geovishap",
+    resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
-      labelIndex: 1,
-      options: ["cryo", "electro"],
+      types: ["pyro", "hydro", "cryo", "electro"],
+      change: 20,
     },
-    changeResistance: byVariant(40),
   },
   {
-    name: "Childe",
-    resistance: { base: 0 },
+    code: 17,
+    title: "Primo Geovishap",
+    resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
-      labelIndex: 2,
-      options: ["1", "2", "3"],
+      types: ["pyro", "hydro", "cryo", "electro"],
+      change: 20,
     },
-    config: {
-      labels: ["Stunned"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      if (variant !== "3") {
-        const inPhase1 = variant === "1";
-        target[inPhase1 ? "hydro" : "electro"] += 50;
-        if (configs[1]) {
-          changeAllResistances(target, inPhase1 ? -30 : -50);
-        }
-      } else {
-        target.hydro += 70;
-        target.electro += 70;
-      }
-    },
+    states: { label: "countered (5s)", changes: { base: -50 } },
   },
   {
-    name: "Signora",
-    resistance: { base: 10 },
-    variant: {
-      labelIndex: 2,
-      options: ["1", "2"],
-    },
-    changeResistance: ({ target, variant }) => {
-      if (variant === "1") {
-        target.cryo += 40;
-      } else {
-        target.pyro += 60;
-      }
-    },
-  },
-  {
-    name: "Cicin",
-    resistance: { phys: -50, base: 10 },
-    variant: {
-      labelIndex: 1,
-      options: ["cryo", "electro", "hydro"],
-    },
-    changeResistance: byVariant(40),
-  },
-  {
-    name: "Geovishap Hatchling",
-    resistance: { phys: 30, base: 10, geo: 50 },
-  },
-  {
-    name: "Geovishap",
-    resistance: { phys: 30, base: 10, geo: 50 },
-    variant: {
-      labelIndex: 1,
-      options: ["pyro", "hydro", "cryo", "electro"],
-    },
-    config: {
-      labels: ["Infused with Element"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      if (configs[0]) applyVariant(target, variant, 20);
-    },
-  },
-  {
-    name: "Primo Geovishap",
-    resistance: { phys: 30, base: 10, geo: 50 },
-    variant: {
-      labelIndex: 1,
-      options: ["pyro", "hydro", "cryo", "electro"],
-    },
-    config: {
-      labels: ["Countered (5s)"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      applyVariant(target, variant, 20);
-      if (configs[0]) changeAllResistances(target, -50);
-    },
-  },
-  {
-    name: "Azhdaha",
-    resistance: { phys: 40, base: 10, geo: 70 },
-  },
-  {
-    name: "Abyss Mage / Herald / Lector",
-    resistance: { base: 10 },
-  },
-  {
-    name: "Hydro Mimic",
-    resistance: { base: 15, hydro: Infinity },
-    variant: {
-      labelIndex: 3,
-      options: ["Boar/Ferret", "Crane/Raptor", "Crab/Mallard", "Finch/Frog"],
-    },
-    changeResistance: ({ target, variant }) => {
-      const elmtWeakRes = {
-        "Boar/Ferret": "pyro",
-        "Crane/Raptor": "electro",
-        "Crab/Mallard": "cryo",
-        "Finch/Frog": "geo",
-      } as const;
-      const resistanceKey = elmtWeakRes[variant as keyof typeof elmtWeakRes];
-      if (resistanceKey) {
-        target[resistanceKey] -= 55;
-      }
-    },
-  },
-  {
-    name: "The Shogun",
-    resistance: { base: 10 },
-    variant: {
-      labelIndex: 4,
-      options: ["Normal", "Shielded", "Stunned"],
-    },
-    changeResistance: ({ target, configs }) => {
-      if (configs[0] !== "Normal")
-        changeAllResistances(target, configs[0] === "Shielded" ? 200 : -60);
-    },
-  },
-  {
-    name: "Rifthound Whelp",
+    code: 19,
+    title: "Rifthound Whelp",
     resistance: { base: 20 },
-    variant: {
-      labelIndex: 1,
-      options: ["electro", "geo"],
-    },
-    config: {
-      labels: ["Enraged"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      if (configs[0]) applyVariant(target, variant, -30);
-    },
+    states: { label: "enraged", changes: { variant: -30 } },
   },
   {
-    name: "Rifthound",
+    code: 21,
+    title: "Rifthound",
     resistance: { base: 25 },
-    variant: {
-      labelIndex: 1,
-      options: ["electro", "geo"],
-    },
-    config: {
-      labels: ["Enraged"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, variant, configs }) => {
-      if (configs[0]) applyVariant(target, variant, -65);
-    },
+    states: { label: "enraged", changes: { variant: -65 } },
   },
   {
-    name: "Golden Wolflord",
+    code: 22,
+    title: "Golden Wolflord",
     resistance: { base: 25 },
-    config: {
-      labels: ["After Shield Phase"],
-      renderTypes: ["check"],
-    },
-    changeResistance: ({ target, configs }) => {
-      if (configs[0]) {
-        target.geo -= 45;
-      }
+    states: { label: "after Shield Phase", changes: { geo: -45 } },
+  },
+  {
+    code: 23,
+    title: "Bathysmal Vishap Hatchling",
+    resistance: { base: 10, phys: 30 },
+    variant: {
+      types: ["electro", "hydro", "cryo"],
+      change: 10,
     },
   },
   {
-    name: "Bathysmal Vishap Hatchling",
-    resistance: { phys: 30, base: 10 },
+    code: 24,
+    title: "Bathysmal Vishaps Boss",
+    resistance: { base: 10, phys: 30 },
     variant: {
-      labelIndex: 1,
-      options: ["electro", "hydro", "cryo"],
+      types: ["electro", "cryo"],
+      change: 20,
     },
-    changeResistance: byVariant(10),
   },
   {
-    name: "Bathysmal Vishaps (boss)",
-    resistance: { phys: 30, base: 10 },
+    code: 25,
+    title: "Fatui Skirmisher",
+    resistance: { base: 10, phys: -20 },
+    states: { label: "Armored", changes: { base: 100 } },
+  },
+
+  {
+    code: 26,
+    title: "Fatui Elites",
+    resistance: { base: 10, phys: -20 },
     variant: {
-      labelIndex: 1,
-      options: ["electro", "cryo"],
+      types: [
+        { label: "Fatui Pyro Agent", value: "pyro" },
+        { label: "Fatui Electro Cicin Mage", value: "electro" },
+        { label: "Fatui Cryo Cicin Mage", value: "cryo" },
+        { label: "Mirror Maiden", value: "hydro" },
+      ],
+      change: 40,
     },
-    changeResistance: byVariant(20),
+  },
+  {
+    code: 27,
+    title: "Shadowy Husks",
+    resistance: { base: 10, phys: 30 },
+    variant: {
+      types: ["pyro", "hydro", "cryo"],
+      change: 20,
+    },
+  },
+  {
+    code: 34,
+    title: "Black Serpent Knight: Windcutter",
+    resistance: { base: 10, phys: 30, anemo: 50 },
+  },
+  {
+    code: 35,
+    title: "Mid-tier Eremites",
+    names: ["Desert Clearwater", "Sunfrost", "Daythunder"],
+    resistance: { base: 10, phys: -20 },
+    states: { label: "stunned", changes: { variant: -60 } },
+  },
+  {
+    code: 36,
+    title: "High-tier Eremites",
+    names: ["Galehunter", "Stone Enchanter"],
+    resistance: { base: 10, phys: -20 },
+    states: [
+      { label: "enhanced", changes: { base: 50 } },
+      { label: "stunned", changes: { variant: -60 } },
+    ],
+  },
+  {
+    code: 28,
+    title: "Childe Phase 1",
+    resistance: { base: 0, hydro: 50 },
+    states: { label: "stunned", changes: { base: -30 } },
+  },
+  {
+    code: 29,
+    title: "Childe Phase 2",
+    resistance: { base: 0, electro: 50 },
+    states: { label: "stunned", changes: { base: -50 } },
+  },
+  {
+    code: 30,
+    title: "Childe Phase 3",
+    resistance: { base: 0, hydro: 70, electro: 70 },
+  },
+  {
+    code: 31,
+    title: "Signora Phase 1 (Cryo)",
+    resistance: { base: 10, cryo: 40 },
+  },
+  {
+    code: 32,
+    title: "Signora Phase 2 (Pyro)",
+    resistance: { base: 10, pyro: 60 },
+  },
+  {
+    code: 33,
+    title: "The Shogun",
+    resistance: { base: 10 },
+    states: { label: "stunned", changes: { base: -60 } },
   },
 ];
 

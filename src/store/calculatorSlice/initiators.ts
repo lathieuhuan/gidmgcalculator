@@ -139,9 +139,8 @@ export const initElmtModCtrls = (): ElementModCtrl => ({
 });
 
 export const initMonster = (): Monster => ({
-  index: 0,
-  variantIndex: null,
-  configs: [],
+  code: 0,
+  variantType: null,
 });
 
 export function initTarget() {

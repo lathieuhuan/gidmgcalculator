@@ -1,27 +1,24 @@
-import type { AttackElement, Target } from "@Src/types";
-
-export type MonsterConfig = string | boolean;
-
-type ChangeResistanceArgs = {
-  target: Target;
-  variant?: string;
-  configs: MonsterConfig[];
-};
+import type { AttackElement, Vision } from "@Src/types";
 
 type MonsterResistance = Partial<Record<AttackElement, number>> & {
   base: number;
 };
 
+type MonsterVariant = {
+  types: Array<Vision | { label: string; value: Vision }>;
+  change: number;
+};
+
+type MonsterState = {
+  label: string;
+  changes: Partial<Record<"base" | "variant" | AttackElement, number>>;
+};
+
 export type DataMonster = {
-  name: string;
+  code: number;
+  title: string;
+  names?: string[];
   resistance: MonsterResistance;
-  variant?: {
-    labelIndex?: 0 | 1 | 2 | 3 | 4; // length of MONSTER_VARIANT_LABELS ./constants
-    options: string[];
-  };
-  config?: {
-    labels: string[];
-    renderTypes: "check"[];
-  };
-  changeResistance?: (args: ChangeResistanceArgs) => void;
+  variant?: MonsterVariant;
+  states?: MonsterState | MonsterState[];
 };

@@ -30,7 +30,7 @@
     max-width: 22rem;
   }
   .small-tooltip {
-    @apply absolute left-1/2 -translate-x-1/2 transform duration-200 z-10 bg-black rounded-lg text-sm text-center font-normal scale-0 cursor-default;
+    @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;
   }
 }
 

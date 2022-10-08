@@ -95,5 +95,5 @@ export const Setter = ({ label, inputComponent }: SetterProps) => {
 };
 
 export const twInputStyles = {
-  select: "px-2 py-1 !bg-white text-black rounded font-bold outline-none",
+  select: "px-2 py-1 !bg-default text-black rounded font-bold outline-none",
 };

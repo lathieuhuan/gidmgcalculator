@@ -1,19 +1,21 @@
 import cn from "classnames";
-import { ChangeEventHandler, useState } from "react";
-import type { Monster, Target } from "@Src/types";
+import { ChangeEventHandler, useState, useEffect } from "react";
+import type { Target, Vision } from "@Src/types";
 
 import monsters from "@Data/monsters";
 import { findMonster } from "@Data/controllers";
-import { MONSTER_VARIANT_LABELS } from "@Data/monsters/constants";
-import { ATTACK_ELEMENTS } from "@Src/constants";
+import { ATTACK_ELEMENTS, VISION_TYPES } from "@Src/constants";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeMonster, changeMonsterConfig, modifyTarget } from "@Store/calculatorSlice";
+import { updateMonster, updateTarget } from "@Store/calculatorSlice";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
-import { Checkbox, CloseButton } from "@Src/styled-components";
+import { CloseButton } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
+import { turnArray } from "@Src/utils";
+import { DataMonster } from "@Data/monsters/types";
+import { InfoSign } from "@Components/minors";
 
 interface TargetConfigProps {
   onClose: () => void;
@@ -21,75 +23,56 @@ interface TargetConfigProps {
 export function TargetConfig({ onClose }: TargetConfigProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
-  const monster = useSelector((state) => state.calculator.monster);
-  // const [monster, setMonster] = useState<Monster>({
-  // });
-  const monsterData = findMonster(monster);
+  const chosenMonster = useSelector((state) => state.calculator.monster);
+  const chosenMonsterData = findMonster(chosenMonster);
 
-  const [listOn, setListOn] = useState(false);
+  const [monsterListOn, setMonsterListOn] = useState(false);
+  const [detailsIndex, setDetailsIndex] = useState(0);
+
+  useEffect(() => {
+    if (!monsterListOn && !chosenMonsterData?.names) {
+      setDetailsIndex(0);
+    }
+  }, [monsterListOn, chosenMonsterData?.names]);
+
+  if (!chosenMonsterData) {
+    return null;
+  }
+
+  const { variantType } = chosenMonster;
+  const { title, variant, names = [], states = [] } = chosenMonsterData;
+
+  const onClickMonster = (monster: DataMonster) => {
+    if (monster.code !== chosenMonster.code) {
+      let variantType = null;
+
+      if (monster.variant) {
+        const firstVariant = monster.variant.types[0];
+        variantType = typeof firstVariant === "string" ? firstVariant : firstVariant.value;
+      }
+
+      dispatch(
+        updateMonster({
+          code: monster.code,
+          variantType,
+        })
+      );
+    }
+    setMonsterListOn(false);
+  };
+
+  const onChangeElementVariant: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    dispatch(updateMonster({ variantType: e.target.value as Vision }));
+  };
 
   const onChangeTargetProp = (key: keyof Target): ChangeEventHandler<HTMLInputElement> => {
     return (e) => {
       const value = +e.target.value;
 
-      if (!isNaN(value) && value >= 0 && value <= 100) {
-        dispatch(modifyTarget({ key, value: Math.round(value) }));
+      if (!isNaN(value) && value >= -100 && value <= 100) {
+        dispatch(updateTarget({ [key]: Math.round(value) }));
       }
     };
-  };
-
-  const renderVariant = () => {
-    if (monsterData.variant) {
-      const { labelIndex, options } = monsterData.variant;
-
-      return (
-        <div className="mt-4 flex justify-end items-center">
-          {labelIndex && <p className="mr-4">{MONSTER_VARIANT_LABELS[labelIndex]}</p>}
-
-          <select className={twInputStyles.select}>
-            {options.map((opt, i) => {
-              return <option key={i}>{opt}</option>;
-            })}
-          </select>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderConfig = () => {
-    if (monsterData.config) {
-      const { labels, renderTypes } = monsterData.config;
-      const configItems: JSX.Element[] = [];
-
-      labels.forEach((label, i) => {
-        let inputComponent = null;
-
-        switch (renderTypes[i]) {
-          case "check":
-            inputComponent = (
-              <Checkbox
-                key={i}
-                className="mr-1"
-                checked={!!monster.configs[i]}
-                onChange={() =>
-                  dispatch(changeMonsterConfig({ inputIndex: i, value: !monster.configs[i] }))
-                }
-              />
-            );
-            break;
-        }
-
-        configItems.push(
-          <div className="mt-4 flex justify-end items-center">
-            <p className="mr-4">{label}</p>
-            {inputComponent}
-          </div>
-        );
-      });
-      return configItems;
-    }
-    return null;
   };
 
   return (
@@ -102,47 +85,122 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
 
       <div className="grow flex overflow-auto">
         <div className="w-80 flex flex-col shrink-0">
-          <label className="flex items-center justify-end">
-            <span className="mr-4 text-h6 text-lightgold">Level</span>
-            <input
-              className="w-20 p-2 text-right font-bold textinput-common"
-              value={target.level}
-              onChange={onChangeTargetProp("level")}
-            />
-          </label>
+          <div className="flex">
+            {turnArray(states).length ? (
+              <div className="self-end group relative text-default">
+                <InfoSign />
+                <ul className="w-75 ml-2 mt-2 px-2 py-1 marker:mr-1 small-tooltip group-hover:scale-100 origin-top-left">
+                  {turnArray(states).map((state, i) => {
+                    const changes = Object.entries(state.changes)
+                      .map(([key, value]) => {
+                        const changeField = {
+                          base: "all Resistances",
+                          variant: "Resistance to their Element",
+                        }[key];
 
-          {monsterData && (
-            <div className="mt-4 bg-default rounded text-black flex flex-col overflow-auto">
-              <button
-                className="px-2 pt-1 w-full rounded-t text-lg font-bold flex items-center"
-                onClick={() => setListOn((prev) => !prev)}
-              >
-                {monsterData.name}
-                <FaChevronDown className="ml-auto" />
-              </button>
+                        return `${value}% ${changeField || key}`;
+                      })
+                      .join(", ");
 
-              <div
-                className={cn(
-                  "custom-scrollbar rounded-b duration-150 ease-in-out",
-                  listOn && "grow"
-                )}
-                style={{ maxHeight: listOn ? `${monsters.length * 2}rem` : 0 }}
+                    return (
+                      <li
+                        key={i}
+                        dangerouslySetInnerHTML={{
+                          __html: `• When ${state.label}, this target gets <span class="font-bold">${changes}</span>.`,
+                        }}
+                      />
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : null}
+
+            <label className="ml-auto flex items-center">
+              <span className="mr-4 text-h6 text-lightgold">Level</span>
+              <input
+                className="w-16 p-2 text-right font-bold textinput-common"
+                value={target.level}
+                onChange={onChangeTargetProp("level")}
+              />
+            </label>
+          </div>
+
+          <div className="mt-4 bg-default rounded text-black flex flex-col overflow-auto">
+            <button
+              className="px-2 pt-1 w-full rounded-t text-lg font-bold flex items-center"
+              onClick={() => setMonsterListOn((prev) => !prev)}
+            >
+              <span className="pr-2 truncate">{title}</span>
+              <FaChevronDown className="ml-auto" />
+            </button>
+
+            <div
+              className={cn(
+                "flex flex-col custom-scrollbar rounded-b duration-200 ease-in-out",
+                monsterListOn && "grow"
+              )}
+              style={{ maxHeight: monsterListOn ? `${monsters.length * 2}rem` : 0 }}
+            >
+              {monsters.map((monster, i) => {
+                return (
+                  <button
+                    key={monster.code}
+                    className={cn(
+                      "flex justify-between outline-none cursor-default group",
+                      monster.code === chosenMonster.code
+                        ? "bg-lesser"
+                        : "hover:bg-darkblue-2 hover:text-default"
+                    )}
+                    onClick={() => onClickMonster(monster)}
+                  >
+                    <span className="px-2 py-1 truncate">{monster.title}</span>
+                    {monster.names && (
+                      <span
+                        className="h-full px-2 flex items-center text-xl text-black group-hover:text-default"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDetailsIndex(i);
+                        }}
+                      >
+                        <FaInfoCircle />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button className="h-1 rounded-b outline-none" onClick={() => setMonsterListOn(true)} />
+          </div>
+
+          {variant?.types.length && variantType ? (
+            <div className="mt-4 flex justify-end items-center">
+              <p className="mr-4 text-default">Variant</p>
+
+              <select
+                className={twInputStyles.select}
+                value={variantType}
+                onChange={onChangeElementVariant}
               >
-                {monsters.map(({ name }) => {
+                {variant.types.map((variantType, i) => {
                   return (
-                    <button className="px-2 py-1 hover:bg-darkblue-2 hover:text-default outline-none">
-                      {name}
-                    </button>
+                    <option
+                      key={i}
+                      value={typeof variantType === "string" ? variantType : variantType.value}
+                    >
+                      {typeof variantType === "string" ? variantType : variantType.label}
+                    </option>
                   );
                 })}
-              </div>
-
-              <button className="h-1 rounded-b outline-none" onClick={() => setListOn(true)} />
+              </select>
             </div>
-          )}
+          ) : null}
 
-          {renderVariant()}
-          {renderConfig()}
+          {monsters[detailsIndex]?.names ? (
+            <p className="mt-3 text-default">
+              {monsters[detailsIndex].title} contains: {monsters[detailsIndex].names?.join(", ")}
+            </p>
+          ) : null}
         </div>
 
         <div className="mx-4 w-0.5 bg-darkblue-3" />
@@ -163,7 +221,8 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                     {attElmt}
                   </p>
                   <input
-                    className="w-20 p-2 text-right textinput-common"
+                    className="w-20 p-2 text-right textinput-common disabled:bg-lesser"
+                    disabled={chosenMonster.code !== 0}
                     value={target[attElmt]}
                     onChange={onChangeTargetProp(attElmt)}
                   />

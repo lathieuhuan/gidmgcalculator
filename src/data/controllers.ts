@@ -22,7 +22,7 @@ export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {
   return findByCode(weapons[type], code);
 };
 
-export const findMonster = ({ index }: { index: number }) => monsters[index];
+export const findMonster = ({ code }: { code: number }) => findByCode(monsters, code);
 
 export const getCharData = (char: HasName): CalcCharData => {
   const { code, name, vision, nation, weapon, activeTalents } = findCharacter(char)!;

@@ -32,7 +32,7 @@ export const getAllStats = () => [
   ...OTHER_PERCENT_STAT_TYPES,
 ];
 
-export const turnArr = <T>(subject: T | T[]): T[] => {
+export const turnArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };
 

@@ -239,24 +239,6 @@ export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
   return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
 }
 
-export function autoModifyTarget(target: Target, monster: Monster) {
-  const { index, variantIndex, configs } = monster;
-  const { resistance, variant, changeResistance } = monsters[index];
-  const { base, ...otherResistances } = resistance;
-
-  for (const key of ATTACK_ELEMENTS) {
-    const overwriteValue = otherResistances[key];
-    target[key] = overwriteValue || base;
-  }
-  if (changeResistance) {
-    changeResistance({
-      target,
-      variant: variant && variantIndex ? variant.options[variantIndex] : undefined,
-      configs,
-    });
-  }
-}
-
 export const getSetupManageInfo = ({
   name = "Setup 1",
   ID = Date.now(),

@@ -40,7 +40,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
           <FaTimes />
         </button>
         <p className="text-sm text-lightred">Target</p>
-        <p className="mt-1 flex justify-between">{monsterData.name}</p>
+        <p className="mt-1 flex justify-between">{monsterData?.title}</p>
         <p>Lv. {target.level}</p>
       </div>
 

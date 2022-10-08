@@ -18,7 +18,6 @@ import type {
   BaseStat,
   ResonanceVision,
 } from "./global";
-import type { MonsterConfig } from "@Data/monsters/types";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
 export type SetupType = "original" | "combined" | "complex";
@@ -193,9 +192,8 @@ export type CustomDebuffCtrl = {
 export type Target = { level: number } & Record<AttackElement, number>;
 
 export type Monster = {
-  index: number;
-  variantIndex: number | null;
-  configs: MonsterConfig[];
+  code: number;
+  variantType: Vision | null;
 };
 
 export type TotalAttribute = Record<BaseStat | AttributeStat, number>;

@@ -17,7 +17,7 @@ import type {
   ModifierInput,
   Level,
 } from "@Src/types";
-import { bareLv, pickOne, turnArr } from "@Src/utils";
+import { bareLv, pickOne, turnArray } from "@Src/utils";
 import { BASE_REACTION_DAMAGE } from "./constants";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
@@ -116,7 +116,7 @@ export function applyModifier(
   rootValue: RootValue,
   tracker: Tracker
 ) {
-  turnArr(keys).forEach((key, i) => {
+  turnArray(keys).forEach((key, i) => {
     const routes = key.split(".");
     const value = pickOne(rootValue, i);
     const node = {

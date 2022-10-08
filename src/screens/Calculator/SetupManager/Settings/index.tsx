@@ -229,7 +229,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApply}>
         <span
           className={cn(
-            "w-60 mb-2 px-2 py-1 small-tooltip bottom-full origin-bottom-center text-lightred",
+            "w-60 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 text-center small-tooltip bottom-full origin-bottom-center text-lightred",
             errorCode && "group-hover:scale-100"
           )}
         >

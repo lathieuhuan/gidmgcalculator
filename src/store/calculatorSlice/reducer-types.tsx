@@ -1,4 +1,3 @@
-import type { MonsterConfig } from "@Data/monsters/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   AmplifyingReaction,
@@ -98,16 +97,6 @@ export type ChangeCustomModCtrlValueAction = PayloadAction<
     value: number;
   }
 >;
-
-export type ModifyTargetAction = PayloadAction<{
-  key: keyof Target;
-  value: number;
-}>;
-
-export type ChangeMonsterConfigAction = PayloadAction<{
-  inputIndex: number;
-  value: MonsterConfig;
-}>;
 
 export type ChangeArtPieceAction = PayloadAction<{
   pieceIndex: number;
