@@ -54,7 +54,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="px-2 py-4 rounded-lg bg-darkblue-2">
-      <CloseButton className="absolute top-2 right-2" onClick={onClose} />
+      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="text-h4 text-orange text-center">Sort by</p>
       <ButtonBar
         className="mt-4 space-x-4"
@@ -108,7 +108,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
               <button className="w-8 h-8 mr-2 text-default  pointer-events-none ">
                 <FaSort size="1.25rem" />
               </button>
-              <p className="pointer-events-none">
+              <p className="pointer-events-none text-default">
                 <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
                 {char.level})
               </p>

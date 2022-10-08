@@ -21,6 +21,7 @@ import {
 } from "@Src/types";
 import { Exclude, Expose, plainToInstance, Transform, Type } from "class-transformer";
 
+@Exclude()
 export class MyCharacter3_0 {
   @Expose()
   name: string;
@@ -47,6 +48,7 @@ export class MyCharacter3_0 {
   artifactIDs: number[];
 }
 
+@Exclude()
 export class MyWeapon3_0 {
   @Expose()
   ID: number;
@@ -77,6 +79,7 @@ class ArtifactSubstat {
   value: number;
 }
 
+@Exclude()
 export class MyArtifact3_0 {
   @Expose()
   ID: number;

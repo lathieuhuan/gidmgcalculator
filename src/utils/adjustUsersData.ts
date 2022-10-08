@@ -23,28 +23,20 @@ export function adjustUsersData(data: AdjustDatabaseArgs) {
   if (!data.version && data.version < 2.1) {
     throw new Error(ERROR.databaseTooOld);
   }
-  const transformConfigs = { excludeExtraneousValues: true };
 
   const Characters: UsersCharacter[] = plainToInstance(MyCharacter3_0, data.Characters, {
-    ...transformConfigs,
     groups: ["charInfo"],
   });
 
   const Weapons: UsersWeapon[] = plainToInstance(MyWeapon3_0, data.Weapons, {
-    ...transformConfigs,
     groups: ["item"],
   });
 
   const Artifacts: UsersArtifact[] = plainToInstance(MyArtifact3_0, data.Artifacts, {
-    ...transformConfigs,
     groups: ["item"],
   });
 
-  const Setups: (UsersSetup | UsersComplexSetup)[] = plainToInstance(
-    MySetup3_0,
-    data.Setups,
-    transformConfigs
-  );
+  const Setups: (UsersSetup | UsersComplexSetup)[] = plainToInstance(MySetup3_0, data.Setups);
 
   return {
     version: 3,
