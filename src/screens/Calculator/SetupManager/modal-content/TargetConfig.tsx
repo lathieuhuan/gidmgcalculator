@@ -1,20 +1,21 @@
 import cn from "classnames";
-import { ChangeEventHandler, useState, useEffect, useRef } from "react";
+import { ChangeEventHandler, useState, useEffect } from "react";
+import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
 import type { Target, Vision } from "@Src/types";
+import type { DataMonster } from "@Data/monsters/types";
 
 import monsters from "@Data/monsters";
 import { findMonster } from "@Data/controllers";
-import { ATTACK_ELEMENTS, VISION_TYPES } from "@Src/constants";
+import { ATTACK_ELEMENTS } from "@Src/constants";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { updateMonster, updateTarget } from "@Store/calculatorSlice";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
+import { indexByCode, turnArray } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 
 import { Button, CloseButton } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
-import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
-import { indexByCode, turnArray } from "@Src/utils";
-import { DataMonster } from "@Data/monsters/types";
 import { InfoSign } from "@Components/minors";
 
 interface TargetConfigProps {
@@ -22,6 +23,8 @@ interface TargetConfigProps {
 }
 export function TargetConfig({ onClose }: TargetConfigProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const target = useSelector(selectTarget);
   const chosenMonster = useSelector((state) => state.calculator.monster);
   const chosenMonsterData = findMonster(chosenMonster);
@@ -132,7 +135,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               <label className="ml-auto flex items-center">
                 <span className="mr-4 text-h6 text-lightgold">Level</span>
                 <input
-                  className="w-16 p-2 text-right font-bold textinput-common"
+                  className="w-16 p-2 text-right textinput-common"
                   value={target.level}
                   onChange={onChangeTargetProp("level")}
                 />
@@ -193,10 +196,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 })}
               </div>
 
-              <button
-                className="h-1 rounded-b"
-                onClick={() => setMonsterListOn(true)}
-              />
+              <button className="h-1 rounded-b" onClick={() => setMonsterListOn(true)} />
             </div>
 
             {variant?.types.length && variantType ? (
@@ -250,7 +250,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                       attElmt === "phys" ? "text-default" : `text-${attElmt}`
                     )}
                   >
-                    {attElmt}
+                    {t(attElmt, { ns: "resistance" })}
                   </p>
                   <input
                     className="w-20 p-2 text-right textinput-common disabled:bg-lesser"

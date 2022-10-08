@@ -110,12 +110,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
                 })}
                 onClick={() => onClickTab(index)}
               >
-                <img
-                  className={cn("full-w", !artPiece && "")}
-                  src={src}
-                  alt={type}
-                  draggable={false}
-                />
+                <img src={src} alt={type} draggable={false} />
               </div>
             </div>
           );

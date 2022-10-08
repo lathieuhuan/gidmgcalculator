@@ -11,8 +11,10 @@ import type {
 
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import VALID_SUBSTAT_VALUES from "./validSubstatValues";
+import VALID_SUBSTAT_VALUES from "./validSubstatValues"
+;
 import { percentSign, processNumInput, wikiImg } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 import { findArtifactPiece } from "@Data/controllers";
 
 import { Button, IconButton, Select } from "@Src/styled-components";
@@ -146,6 +148,7 @@ export function ArtifactSubstats({
   space,
   changeSubStat,
 }: ArtifactSubstatsProps) {
+  const { t } = useTranslation();
   //
   const statTypeCount = { [mainStatType]: 1 };
   for (const { type } of subStats) {
@@ -172,7 +175,9 @@ export function ArtifactSubstats({
               }
             >
               {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
-                <option key={type}>{type}</option>
+                <option key={type} value={type}>
+                  {t(type)}
+                </option>
               ))}
             </Select>
 

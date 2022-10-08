@@ -8,11 +8,14 @@ import { getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/calculators/util
 import { Green } from "@Src/styled-components";
 import { StatsTable } from "@Components/StatsTable";
 import { CollapseSpace } from "@Components/collapse";
+import { useTranslation } from "@Hooks/useTranslation";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;
 }
 export function AttributeTable({ attributes }: AttributeTableProps) {
+  const { t } = useTranslation();
+
   if (!attributes) {
     return null;
   }
@@ -22,9 +25,10 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
     <StatsTable>
       {CORE_STAT_TYPES.map((type) => {
         const baseAttr = attributes[`base_${type}`];
+
         return (
           <StatsTable.Row key={type} className="group">
-            <p>{type}</p>
+            <p>{t(type)}</p>
             <div className="relative">
               <p className={cn("mr-2", { "group-hover:hidden": baseAttr })}>
                 {Math.round(attributes[type])}
@@ -42,7 +46,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
       {(["cRate", "cDmg", "healBn", "er", "shStr"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
-            <p>{type}</p>
+            <p>{t(type)}</p>
             <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
@@ -50,7 +54,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
       {ATTACK_ELEMENTS.map((type) => {
         return (
           <StatsTable.Row key={type}>
-            <p>{type}</p>
+            <p>{t(type)}</p>
             <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
@@ -58,7 +62,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
       {(["naAtkSpd", "caAtkSpd"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
-            <p>{type}</p>
+            <p>{t(type)}</p>
             <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );

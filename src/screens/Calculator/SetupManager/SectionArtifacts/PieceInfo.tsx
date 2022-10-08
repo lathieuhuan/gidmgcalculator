@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 
+import { useDispatch, useSelector } from "@Store/hooks";
 import { updateArtPieceSubStat, changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
 import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
-import { useDispatch, useSelector } from "@Store/hooks";
 
-import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { findById, isEqual, percentSign } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
+import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
+import { IconButton, Select } from "@Src/styled-components";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
 import { Modal } from "@Components/modals";
-import { IconButton, Select } from "@Src/styled-components";
 import { ConfirmTemplate } from "@Components/minors";
 
 interface PieceInfoProps {
@@ -27,6 +28,7 @@ export default function PieceInfo({
   onClickChangePiece,
 }: PieceInfoProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [saving, setSaving] = useState(false);
 
@@ -79,7 +81,9 @@ export default function PieceInfo({
                 }
               >
                 {Object.keys(availableMainStatTypes).map((type) => (
-                  <option key={type}>{type}</option>
+                  <option key={type} value={type}>
+                    {t(type)}
+                  </option>
                 ))}
               </Select>
             </div>

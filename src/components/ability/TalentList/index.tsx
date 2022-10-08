@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import type { CharInfo, DataCharacter, GetExtraStatsFn, Party, StatInfo, Talent } from "@Src/types";
+
 import { TALENT_TYPES } from "@Src/constants";
-import { ascsFromLv } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
 import { NORMAL_ATTACK_ICONS } from "./constants";
+
+import { ascsFromLv } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
+import { findCharacter } from "@Data/controllers";
 
 import { CloseButton } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
@@ -107,6 +110,7 @@ function Details({
   changePosition,
   close,
 }: DetailsProps) {
+  const { t } = useTranslation();
   // // for when details for passiveTalents are available
   // const atActiveTalent = position < Object.keys(activeTalents).length;
   // const [switcher, tab, setTab] = useSwitcher([
@@ -171,7 +175,7 @@ function Details({
           onClickNext={() => {
             if (position < Object.keys(activeTalents).length - 1) changePosition(position + 1);
           }}
-          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-subtitle-1">{type}</p>}
+          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-subtitle-1">{t(type)}</p>}
         />
         <p className={`text-h5 font-bold text-${vision} text-center`}>{name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
