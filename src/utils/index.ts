@@ -44,20 +44,6 @@ export const applyToOneOrMany = <T>(base: T | T[], callback: (base: T, index?: n
   return Array.isArray(base) ? base.map(callback) : callback(base);
 };
 
-export function isEqual(obj1: any, obj2: any) {
-  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-    return false;
-  }
-  for (const k in obj1) {
-    if (typeof obj1[k] === "object" && typeof obj2[k] === "object" && isEqual(obj1[k], obj2[k])) {
-      continue;
-    } else if (obj1[k] !== obj2[k]) {
-      return false;
-    }
-  }
-  return true;
-}
-
 const find = (key: string) => {
   return <T>(arr: T[], value?: string | number | null): T | undefined => {
     if (value === undefined) {

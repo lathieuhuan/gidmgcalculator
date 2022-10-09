@@ -1,9 +1,11 @@
 import cn from "classnames";
 import { Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
+import isEqual from "react-fast-compare";
 
 import type { CalcArtPieces, CalcWeapon } from "@Src/types";
-import { findById, isEqual } from "@Src/utils";
+
+import { findById } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
 import { selectMyArts, selectMyWps } from "@Store/usersDatabaseSlice/selectors";
 
@@ -17,7 +19,10 @@ interface OutdateWarnProps {
   existedInfo: any;
 }
 function OutdateWarn({ className, info, existedInfo }: OutdateWarnProps) {
-  if (isEqual(info, existedInfo)) {
+  const { owner, ...restInfo } = info;
+  const { owner: existedOwner, ...restExistedInfo } = existedInfo;
+
+  if (isEqual(restInfo, restExistedInfo)) {
     return null;
   }
 
@@ -57,7 +62,7 @@ export function MySetupArtifactPieces({ pieces }: MySetupArtifactPiecesProps) {
     <Fragment>
       {pieces.map((piece, i) => {
         if (piece) {
-          const existed = piece.ID && findById(myArts, piece.ID);
+          const existed = piece.ID ? findById(myArts, piece.ID) : undefined;
 
           return (
             <div key={i} className="px-1 relative" style={{ width: "14.5rem" }}>

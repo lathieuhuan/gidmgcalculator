@@ -42,13 +42,13 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
       {item.vision && (
         <div
           className={cn(
-            "absolute top-0.5 right-0.5 p-1 rounded-full bg-black shadow-[0_0_2px_white]",
+            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-[0_0_2px_white]",
             { "flex rounded-2xl pl-1.5": item.cons !== undefined }
           )}
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
           <img
-            className="w-5"
+            className="w-5 h-5"
             src={wikiImg(VISION_ICONS[item.vision])}
             alt="vision"
             draggable={false}

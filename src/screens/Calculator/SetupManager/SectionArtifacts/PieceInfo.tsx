@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 
@@ -6,7 +7,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateArtPieceSubStat, changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
 import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
 
-import { findById, isEqual, percentSign } from "@Src/utils";
+import { findById, percentSign } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 

@@ -11,8 +11,7 @@ import type {
 
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
-import VALID_SUBSTAT_VALUES from "./validSubstatValues"
-;
+import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 import { percentSign, processNumInput, wikiImg } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 import { findArtifactPiece } from "@Data/controllers";
@@ -33,6 +32,8 @@ export function ArtifactCard({
   changeMainStatType,
   changeSubStat,
 }: ArtifactCardProps) {
+  const { t } = useTranslation();
+
   if (!artPiece) return null;
 
   const { beta, name, icon } = findArtifactPiece(artPiece)!;
@@ -42,7 +43,7 @@ export function ArtifactCard({
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
-      <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
+      <div className={`px-4 pt-2 pb-1 bg-rarity-${rarity}`}>
         <p className="text-h5 font-bold text-black truncate">{name}</p>
       </div>
       <div className="mt-4 mx-4 flex">
@@ -94,7 +95,7 @@ export function ArtifactCard({
 
       <div className="mt-2 ml-6">
         {["flower", "plume"].includes(artPiece.type) || !mutable ? (
-          <p className={cn("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{mainStatType}</p>
+          <p className={cn("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
@@ -103,9 +104,13 @@ export function ArtifactCard({
               value={mainStatType}
               onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
-              {Object.keys(possibleMainStatTypes).map((type) => (
-                <option key={type}>{type}</option>
-              ))}
+              {Object.keys(possibleMainStatTypes).map((type) => {
+                return (
+                  <option key={type} value={type}>
+                    {t(type)}
+                  </option>
+                );
+              })}
             </Select>
           </div>
         )}
@@ -161,14 +166,15 @@ export function ArtifactSubstats({
         const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
         return mutable ? (
-          <div key={i} className="mt-2 pt-1 flex items-center bg-darkblue-2 relative">
-            <FaChevronDown className="absolute left-3 top-3" />
+          <div key={i} className="mt-2 flex items-center bg-darkblue-2 relative">
+            <FaChevronDown className="absolute left-3 top-2.5" />
 
             <Select
               className={cn(
-                "pr-2 pl-10 relative z-10 appearance-none",
-                statTypeCount[type] === 1 ? "text-default" : "text-darkred"
+                "pt-2 pb-1 pr-2 pl-10 relative z-10 appearance-none",
+                statTypeCount[type] === 1 ? "text-default" : "text-red-500"
               )}
+              style={{ fontSize: "1.0625rem" }}
               value={type}
               onChange={(e) =>
                 changeSubStat && changeSubStat(i, { type: e.target.value as CalcArtPieceSubStat })
@@ -185,26 +191,27 @@ export function ArtifactSubstats({
 
             <input
               className={cn(
-                "relative ml-1 pr-2 py-1 w-[3.25rem] bg-transparent text-base leading-tight text-right text-last-right",
-                isValid ? "text-default" : "text-darkred"
+                "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right text-last-right",
+                isValid ? "text-default" : "text-red-500"
               )}
+              style={{ fontSize: "1.0625rem" }}
               value={value}
               onChange={(e) =>
                 changeSubStat && changeSubStat(i, { value: processNumInput(e.target.value, value) })
               }
             />
-            <span>{percentSign(type)}</span>
+            <span className="pt-2 pb-1">{percentSign(type)}</span>
           </div>
         ) : (
-          <div key={i} className={`mt-2 pt-1 flex items-center bg-darkblue-2`}>
+          <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-darkblue-2`}>
             <p className={space}>•</p>
             <p>
               <span
-                className={cn("mr-1", statTypeCount[type] === 1 ? "text-default" : "text-darkred")}
+                className={cn("mr-1", statTypeCount[type] === 1 ? "text-default" : "text-red-500")}
               >
-                {type}
+                {t(type)}
               </span>
-              <span className={isValid ? "text-green" : "text-darkred"}>
+              <span className={isValid ? "text-green" : "text-red-500"}>
                 +{value}
                 {percentSign(type)}
               </span>

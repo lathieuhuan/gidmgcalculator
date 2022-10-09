@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import isEqual from "react-fast-compare";
 import type { UsersSetup } from "@Src/types";
 import type { ImportInfo } from "@Store/uiSlice/types";
 
 import { EScreen } from "@Src/constants";
-import { isEqual } from "@Src/utils";
 import { restoreCalcSetup } from "@Src/utils/setup";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";

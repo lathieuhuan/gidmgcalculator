@@ -130,7 +130,7 @@ export default function MyArtifacts() {
 
           <div className="flex flex-col justify-between">
             <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
-              <div className="w-75 hide-scrollbar" style={{ height: "25rem" }}>
+              <div className="w-75 hide-scrollbar" style={{ height: "26.5rem" }}>
                 {artifact ? (
                   <ArtifactCard
                     artPiece={artifact}

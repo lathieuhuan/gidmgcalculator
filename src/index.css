@@ -41,6 +41,7 @@ body {
   font-family: "Nunito", "Helvetica", "Roboto", "Arial", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  @apply text-default;
 }
 
 ::-webkit-scrollbar {

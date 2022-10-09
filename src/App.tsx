@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
+
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
 import { closeError } from "@Store/calculatorSlice";
+import { addUsersDatabase } from "@Store/usersDatabaseSlice";
+import { convertUsersData } from "./utils/convertUsersData";
 import { EScreen } from "./constants";
 
 import Calculator from "@Screens/Calculator";
@@ -11,13 +14,10 @@ import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
 
 import { NavBar } from "@Components/NavBar";
+import { Modal } from "@Components/modals";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
 import UploadOptions from "@Components/load-options/UploadOptions";
-
-import { adjustUsersData } from "./utils/adjustUsersData";
-import { addUsersDatabase } from "@Store/usersDatabaseSlice";
 import { ImportManager } from "@Components/ImportManager";
-import { Modal } from "@Components/modals";
 import { Button } from "./styled-components";
 
 function App() {
@@ -32,9 +32,8 @@ function App() {
 
   const checkAndAddUsersData = useCallback(
     (data: any) => {
-      const { version, outdates, ...database } = adjustUsersData(data);
-      // dispatch(addUsersDatabase(JSON.parse(JSON.stringify(database))));
-      console.log(JSON.parse(JSON.stringify(database)));
+      const { version, outdates, ...database } = convertUsersData(data);
+      dispatch(addUsersDatabase(JSON.parse(JSON.stringify(database))));
 
       if (outdates.length) {
         setOutdates(outdates);
@@ -43,26 +42,26 @@ function App() {
     [dispatch]
   );
 
-  useEffect(() => {
-    const beforeunloadAlert = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      return (e.returnValue = "Are you sure you want to exit?");
-    };
-    window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
+  // useEffect(() => {
+  //   const beforeunloadAlert = (e: BeforeUnloadEvent) => {
+  //     e.preventDefault();
+  //     return (e.returnValue = "Are you sure you want to exit?");
+  //   };
+  //   window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
 
-    const data = localStorage.getItem("GDC_Data");
-    if (data) {
-      try {
-        checkAndAddUsersData(JSON.parse(data));
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  //   const data = localStorage.getItem("GDC_Data");
+  //   if (data) {
+  //     try {
+  //       checkAndAddUsersData(JSON.parse(data));
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
 
-    return () => {
-      window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
+  //   };
+  // }, []);
 
   const renderTabContent = useCallback(() => {
     switch (atScreen) {
