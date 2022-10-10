@@ -6,6 +6,7 @@ import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 import { createCustomBuffCtrl } from "@Store/calculatorSlice";
 import { percentSign, processNumInput } from "@Src/utils";
 import { useDispatch } from "@Store/hooks";
+import { useTranslation } from "@Hooks/useTranslation";
 
 import { Select } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
@@ -36,16 +37,19 @@ interface BuffCtrlCreatorProps {
   onClose: () => void;
 }
 export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const [config, setConfig] = useState<CustomBuffCtrl>({
     category: 0,
     type: "atk_",
     value: 0,
   });
-  const dispatch = useDispatch();
 
   const onChangeCategory = (categoryName: typeof CUSTOM_BUFF_CATEGORIES[number]) => {
     setConfig((prev) => ({
       ...prev,
+      type: OPTIONS_BY_CATEGORY[categoryName][0],
       category: CUSTOM_BUFF_CATEGORIES.indexOf(categoryName),
     }));
   };
@@ -79,8 +83,9 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
             <button
               key={categoryName}
               className={cn(
-                "px-4 py-2 first:rounded-t-lg last:rounded-b-lg",
-                "md1:first:rounded-tr-none md1:last:rounded-bl-none md1:first:rounded-l-lg md1:last:rounded-r-lg",
+                "px-4 py-1",
+                !index && "rounded-t-lg md1:rounded-tr-none md1:rounded-l-lg",
+                index === 3 && "rounded-b-lg md1:rounded-bl-none md1:rounded-r-lg",
                 chosen ? "bg-default" : "bg-darkblue-3"
               )}
               onClick={() => {
@@ -99,12 +104,14 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
 
       <div className="mx-auto mt-8 flex items-center">
         <Select
-          className="text-default"
+          className="pr-2 text-default text-right text-last-right"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
-          {OPTIONS_BY_CATEGORY[CUSTOM_BUFF_CATEGORIES[config.category]].map((opt) => (
-            <option key={opt}>{opt}</option>
+          {OPTIONS_BY_CATEGORY[CUSTOM_BUFF_CATEGORIES[config.category]].map((option) => (
+            <option key={option} value={option}>
+              {t(option)}
+            </option>
           ))}
         </Select>
         <input
@@ -112,7 +119,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />
-        <span className="ml-2">{percentSign(config.type)}</span>
+        <span className="ml-2">{config.category > 1 ? "%" : percentSign(config.type)}</span>
       </div>
       <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
     </Fragment>

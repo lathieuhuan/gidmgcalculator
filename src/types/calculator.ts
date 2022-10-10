@@ -17,6 +17,7 @@ import type {
   NormalAttack,
   BaseStat,
   ResonanceVision,
+  TransformativeReaction,
 } from "./global";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
@@ -173,8 +174,7 @@ export type ElementModCtrl = {
   resonance: ResonancePair[];
 };
 
-// #to-do
-export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey;
+export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey | TransformativeReaction;
 
 export type CustomBuffCtrl = {
   category: number;
