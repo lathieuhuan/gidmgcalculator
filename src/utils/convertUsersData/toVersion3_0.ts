@@ -94,7 +94,7 @@ function convertSetup(setup: any): UsersSetup {
     elmtMCs = {},
     subWpMCs,
     selfMCs,
-    customMCs,
+    customMCs = {},
   } = setup;
 
   const resonance = elmtMCs.resonance
@@ -131,7 +131,10 @@ function convertSetup(setup: any): UsersSetup {
     sets: getArtifactSets(artPieces),
   };
 
-  const customBuffCtrls: CustomBuffCtrl[] = customMCs.BCs.map((ctrl: any): CustomBuffCtrl => {
+  //
+  const { customBCs = [], customDCs = [] } = customMCs;
+
+  const customBuffCtrls: CustomBuffCtrl[] = customBCs.map((ctrl: any): CustomBuffCtrl => {
     return {
       category: ctrl.catKey,
       type: mapVerson3_0[ctrl.type] as CustomBuffCtrlType,
@@ -139,7 +142,7 @@ function convertSetup(setup: any): UsersSetup {
     };
   });
 
-  const customDebuffCtrls: CustomDebuffCtrl[] = customMCs.DCs.map((ctrl: any): CustomDebuffCtrl => {
+  const customDebuffCtrls: CustomDebuffCtrl[] = customDCs.map((ctrl: any): CustomDebuffCtrl => {
     return {
       type: mapVerson3_0[ctrl.type] as CustomDebuffCtrlType,
       value: ctrl.val,

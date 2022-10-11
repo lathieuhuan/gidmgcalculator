@@ -48,7 +48,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
         return (
           <div key={key.main} className="flex flex-col">
             <button
-              className="mr-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
+              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
               onClick={() => toggle(index)}
             >
               <span className="text-lg leading-none">{t(key.main)}</span>

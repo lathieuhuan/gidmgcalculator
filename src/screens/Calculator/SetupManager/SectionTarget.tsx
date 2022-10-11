@@ -46,7 +46,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
           isAtFront && "border-2 border-lesser"
         )}
       >
-        <div className="absolute top-1 bottom-0 right-1 flex flex-col text-xl text-lesser">
+        <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-lesser space-y-1">
           <button className="w-8 h-8 flex-center hover:text-darkred" onClick={onMove}>
             <FaTimes />
           </button>

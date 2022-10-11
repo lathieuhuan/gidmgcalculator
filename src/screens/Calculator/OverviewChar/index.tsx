@@ -9,24 +9,24 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 import { BetaMark, StarLine } from "@Components/minors";
 import { IconButton, Select } from "@Src/styled-components";
-import { MainSelect } from "../components";
 import contentByTab from "./content";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { wikiImg } from "@Src/utils";
+import { ComplexSelect } from "@Components/ComplexSelect";
 
 interface OverviewCharProps {
   onClickCharImg: () => void;
 }
 export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
-  const [tab, setTab] = useState("Attributes");
-
+  const dispatch = useDispatch();
   const char = useSelector(selectChar)!;
   const charData = useSelector(selectCharData);
-  const dispatch = useDispatch();
 
-  const Content = contentByTab[tab];
+  const [activeTab, setActiveTab] = useState("Attributes");
+
+  const Content = contentByTab[activeTab];
   const { beta, icon, vision, rarity } = findCharacter(charData)!;
 
   return (
@@ -70,8 +70,10 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
           </div>
         </div>
       </div>
-      <MainSelect
-        value={tab}
+
+      <ComplexSelect
+        selectId="character-overview-select"
+        value={activeTab}
         options={[
           { label: "Attributes", value: "Attributes" },
           { label: "Weapon", value: "Weapon" },
@@ -79,8 +81,9 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
           { label: "Constellation", value: "Constellation" },
           { label: "Talents", value: "Talents" },
         ]}
-        onChangeTab={({ value }) => setTab(value)}
+        onChange={(newTab) => setActiveTab(newTab.toString())}
       />
+
       <div className="mt-3 grow hide-scrollbar">{Content && <Content />}</div>
     </div>
   );

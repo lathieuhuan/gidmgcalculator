@@ -17,22 +17,26 @@ export default function DamageResults() {
 
   return (
     <div className="h-full">
-      <div className="flex absolute top-3 right-3">
+      <div>
         <IconButton
-          className={cn("w-7 h-7", trackerState ? "bg-green" : "bg-default hover:bg-lightgold")}
+          className={cn(
+            "w-7 h-7 absolute top-3 left-3",
+            trackerState ? "bg-green" : "bg-default hover:bg-lightgold"
+          )}
           onClick={() => setTrackerState([0, 2].includes(trackerState) ? 1 : 0)}
         >
           <FaSearch />
         </IconButton>
-        {window.innerWidth >= 610 && (
+
+        <div className="absolute top-3 right-3 hidden md1:flex">
           <IconButton
-            className="ml-3 w-7 h-7 hidden md1:flex"
+            className="ml-3 w-7 h-7"
             variant="positive"
             onClick={() => setEnlargedOn(true)}
           >
             <FaExpandArrowsAlt />
           </IconButton>
-        )}
+        </div>
       </div>
 
       <MemoResults />

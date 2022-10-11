@@ -204,9 +204,9 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         )}
 
         {activeIndex === 1 && (
-          <>
+          <div className="space-y-3">
             {shouldShowTarget && <SectionTarget onMove={onMoveTarget} />}
-            <div className="mt-3 p-4 rounded-lg bg-darkblue-2">
+            <div className="p-4 rounded-lg bg-darkblue-2">
               <div className="space-y-4">
                 {CONFIG_OPTIONS.map(({ field, desc }, i) => (
                   <label key={i} className="flex items-center group">
@@ -222,7 +222,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
                 ))}
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
 
