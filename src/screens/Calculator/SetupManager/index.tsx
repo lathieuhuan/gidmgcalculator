@@ -76,10 +76,10 @@ export default function SetupManager() {
             label: name,
             value: ID,
             suffix: (
-              <div className="ml-auto border-b border-darkblue-1 flex text-xl">
+              <div className="ml-auto flex text-xl">
                 <button
                   className={cn(
-                    "p-2.5 border-l border-darkblue-1 flex",
+                    "p-2.5 border-l border-white flex",
                     isAtMax ? "bg-lesser" : "bg-lightgold"
                   )}
                   disabled={isAtMax}
@@ -92,7 +92,7 @@ export default function SetupManager() {
                 </button>
 
                 <button
-                  className="p-2.5 border-l border-darkblue-1 flex bg-lightgold"
+                  className="p-2.5 border-l border-white flex bg-lightgold"
                   onClick={() => setModal({ type: "SAVE_SETUP", index: i })}
                 >
                   <FaSave />

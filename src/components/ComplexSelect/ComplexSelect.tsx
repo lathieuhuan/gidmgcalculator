@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { useState, useEffect } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
@@ -65,7 +66,10 @@ export function ComplexSelect({
       </button>
 
       <div
-        className="absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-all duration-100 ease-linear"
+        className={cn(
+          "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-all duration-100 ease-linear",
+          showingOptions && "border border-white"
+        )}
         style={{
           height: showingOptions ? `${options.length * optionHeight}rem` : 0,
         }}

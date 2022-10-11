@@ -15,7 +15,7 @@ import {
 } from "@Store/uiSlice";
 import { applySettingsOnCalculator } from "@Store/calculatorSlice";
 
-import { InfoSign, TipsModal } from "@Components/minors";
+import { TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
 import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import SectionTarget from "../SectionTarget";
