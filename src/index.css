@@ -6,7 +6,8 @@
   option {
     color: black;
   }
-  button, input {
+  button,
+  input {
     outline: none;
   }
   .textinput-common {

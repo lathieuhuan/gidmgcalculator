@@ -109,13 +109,13 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           onChange={(e) => onChangeType(e.target.value)}
         >
           {OPTIONS_BY_CATEGORY[CUSTOM_BUFF_CATEGORIES[config.category]].map((option) => (
-            <option key={option} value={option}>
+            <option key={option} className="pr-2" value={option}>
               {t(option)}
             </option>
           ))}
         </Select>
         <input
-          className="ml-4 p-2 w-16 text-right textinput-common"
+          className="ml-4 w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

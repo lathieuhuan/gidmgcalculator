@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { ReactNode, useState } from "react";
 import { FaCaretDown, FaCopy } from "react-icons/fa";
 import { Select } from "@Src/styled-components";
@@ -40,16 +41,18 @@ export const MainSelect = <TOption extends Option>({
 };
 
 interface CopySectionProps<TOption> {
+  className?: string;
   options: TOption[];
   defaultIndex?: number;
   onClickCopy: (option: TOption) => void;
 }
 export const CopySection = <TOption extends Option>({
+  className,
   options,
   defaultIndex = 0,
   onClickCopy,
 }: CopySectionProps<TOption>) => {
-  const [chosenLabel, setChosenLabel] = useState(options[defaultIndex].label);
+  const [chosenLabel, setChosenLabel] = useState(options[defaultIndex]?.label);
 
   const onClick = () => {
     const chosen = options.find(({ label }) => label === chosenLabel);
@@ -59,7 +62,7 @@ export const CopySection = <TOption extends Option>({
   };
 
   return (
-    <div className="mb-4 px-4 flex justify-end">
+    <div className={cn("flex justify-end", className)}>
       <Select
         className="px-1 rounded-l bg-default font-bold text-black"
         value={chosenLabel}

@@ -80,6 +80,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     <div className="setup-manager_pedestal">
       {copyOptions.length ? (
         <CopySection
+          className="mb-4 px-4"
           options={copyOptions}
           onClickCopy={({ value }) => dispatch(copyAllArtifacts(value))}
         />

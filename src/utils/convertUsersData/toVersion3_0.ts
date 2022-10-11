@@ -1,9 +1,11 @@
 import type { ConvertUsersDataArgs } from "./types";
 import type {
   ArtPieceMainStat,
-  CalcArtInfo,
   CharInfo,
   CustomBuffCtrl,
+  CustomBuffCtrlType,
+  CustomDebuffCtrl,
+  CustomDebuffCtrlType,
   ResonancePair,
   SubWeaponBuffCtrl,
   Teammate,
@@ -14,7 +16,7 @@ import type {
   UsersWeapon,
   Weapon,
 } from "@Src/types";
-import { resonanceMap, statsMap } from "./constant";
+import { mapVerson3_0 } from "./constants";
 import { getArtifactSets } from "@Store/calculatorSlice/utils";
 
 const ERROR = {
@@ -67,10 +69,10 @@ function convertWeapon(weapon: any): UsersWeapon {
 function convertArtifact(artifact: any): UsersArtifact {
   const { ID, type, code, rarity = 5, level, mainSType, subS, user: owner = null } = artifact;
 
-  const mainStatType = statsMap[mainSType] as ArtPieceMainStat;
+  const mainStatType = mapVerson3_0[mainSType] as ArtPieceMainStat;
   const subStats = subS.map((stat: any) => {
     return {
-      type: statsMap[stat.type],
+      type: mapVerson3_0[stat.type],
       value: stat.val,
     };
   });
@@ -97,7 +99,7 @@ function convertSetup(setup: any): UsersSetup {
 
   const resonance = elmtMCs.resonance
     ? elmtMCs.resonance.reduce((result: ResonancePair[], { name, ...rest }: any) => {
-        const vision = resonanceMap[name];
+        const vision = mapVerson3_0[name];
 
         if (vision) {
           result.push({ vision, ...rest });
@@ -129,13 +131,20 @@ function convertSetup(setup: any): UsersSetup {
     sets: getArtifactSets(artPieces),
   };
 
-  // const customBuffCtrls: CustomBuffCtrl[] = customMCs.BCs.map((ctrl): CustomBuffCtrl => {
-  //   return {
-  //     category: ctrl.catKey,
-  //     type: statsMap[ctrl.type],
+  const customBuffCtrls: CustomBuffCtrl[] = customMCs.BCs.map((ctrl: any): CustomBuffCtrl => {
+    return {
+      category: ctrl.catKey,
+      type: mapVerson3_0[ctrl.type] as CustomBuffCtrlType,
+      value: ctrl.val,
+    };
+  });
 
-  //   }
-  // })
+  const customDebuffCtrls: CustomDebuffCtrl[] = customMCs.DCs.map((ctrl: any): CustomDebuffCtrl => {
+    return {
+      type: mapVerson3_0[ctrl.type] as CustomDebuffCtrlType,
+      value: ctrl.val,
+    };
+  });
 
   //
   const {
@@ -180,8 +189,8 @@ function convertSetup(setup: any): UsersSetup {
     subArtBuffCtrls: art.subBCs,
     subArtDebuffCtrls: art.subDCs,
 
-    customBuffCtrls: [],
-    customDebuffCtrls: [],
+    customBuffCtrls,
+    customDebuffCtrls,
     target: { level, pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
   };
 }

@@ -97,7 +97,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="text-h4 text-orange font-bold">Target Config</p>
 
-      <div className="py-4 grow flex overflow-auto">
+      <div className="py-4 grow flex custom-scrollbar">
         <div className="w-80 flex flex-col shrink-0">
           <div className="grow overflow-auto flex flex-col">
             <div className="flex">
@@ -164,7 +164,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                     <button
                       key={monster.code}
                       className={cn(
-                        "text-black flex justify-between cursor-default group",
+                        "text-black flex justify-between cursor-default group font-medium",
                         monster.code === chosenMonster.code
                           ? "bg-lesser"
                           : "hover:bg-blue-600 hover:text-default hover:font-bold"
@@ -179,10 +179,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                       </p>
                       {monster.names && (
                         <span
-                          className={cn(
-                            "h-full px-2 flex items-center text-xl"
-                            // monster.code !== chosenMonster.code && "group-hover:text-default"
-                          )}
+                          className="h-full px-2 flex items-center text-xl"
                           onClick={(e) => {
                             e.stopPropagation();
                             setDetailsIndex(i);

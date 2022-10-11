@@ -42,8 +42,8 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
         const withDamage = key.subs.length !== 0;
-        const talentLevel =
-          key.main !== "RXN" ? finalTalentLv(char, key.main, getPartyData(party)) : 0;
+        const isReactionDmg = key.main === "RXN";
+        const talentLevel = !isReactionDmg ? finalTalentLv(char, key.main, getPartyData(party)) : 0;
 
         return (
           <div key={key.main} className="flex flex-col">
@@ -91,7 +91,9 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
 
                           return nonCrit === undefined ? null : (
                             <tr key={subKey} className={tableStyles.row}>
-                              <td className={tableStyles.td}>{subKey}</td>
+                              <td className={tableStyles.td}>
+                                {isReactionDmg ? t(subKey) : subKey}
+                              </td>
                               <td className={tableStyles.td}>{displayValue(nonCrit)}</td>
                               <td className={tableStyles.td}>{displayValue(crit)}</td>
                               <td className={cn("text-lightgold", tableStyles.td)}>

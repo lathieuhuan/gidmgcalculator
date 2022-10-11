@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useState } from "react";
-import { FaMinus, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaTimes, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -22,6 +22,7 @@ import { IconButton } from "@Src/styled-components";
 import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
+import { useTranslation } from "@Hooks/useTranslation";
 
 const selectAllCustomBuffCtrls = createSelector(
   selectSetupManageInfos,
@@ -43,6 +44,7 @@ interface CustomModifiersProps {
 }
 export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const activeId = useSelector(selectActiveId);
   const allCustomBuffCtrls = useSelector(selectAllCustomBuffCtrls);
@@ -75,43 +77,47 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
   return (
     <div className="flex flex-col">
-      <div className={cn("mx-auto mt-4 flex", !modCtrls.length && "pb-2")}>
-        {modCtrls.length > 0 && (
-          <IconButton
-            className="mr-8 glow-on-hover"
-            variant="negative"
-            onClick={() => dispatch(clearCustomModCtrls(isBuffs))}
-          >
-            <FaTrashAlt />
-          </IconButton>
-        )}
-        {modCtrls.length < 10 && (
-          <IconButton variant="positive" onClick={() => setModalOn(true)}>
-            <FaPlus />
-          </IconButton>
-        )}
+      <div className="mt-3 flex justify-between">
+        <button
+          className={cn(
+            "w-8 h-8 shrink-0 rounded-circle flex-center text-lesser",
+            modCtrls.length ? "bg-darkred glow-on-hover" : ""
+          )}
+          disabled={modCtrls.length === 0}
+          onClick={() => dispatch(clearCustomModCtrls(isBuffs))}
+        >
+          <FaTrashAlt />
+        </button>
+
+        <button
+          className={cn(
+            "w-8 h-8 shrink-0 rounded-circle flex-center",
+            modCtrls.length <= 9 ? "bg-lightgold text-black glow-on-hover" : "text-lesser"
+          )}
+          disabled={modCtrls.length > 9}
+          onClick={() => setModalOn(true)}
+        >
+          <FaPlus />
+        </button>
       </div>
 
       {copyOptions.length ? (
-        <div className="mt-8">
-          <CopySection options={copyOptions} onClickCopy={copyModCtrls} />
-        </div>
+        <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} />
       ) : null}
 
-      {modCtrls.map(({ type, value }, ctrlIndex) => (
-        <div key={ctrlIndex} className="mt-6 flex items-center">
-          <IconButton
-            className="mr-4 text-xl"
-            variant="negative"
-            onClick={() => dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }))}
-          >
-            <FaMinus />
-          </IconButton>
+      <div className="mt-6 space-y-4">
+        {modCtrls.map(({ type, value }, ctrlIndex) => (
+          <div key={ctrlIndex} className="flex items-center">
+            <button
+              className="mr-3 text-lesser text-xl hover:text-darkred"
+              onClick={() => dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }))}
+            >
+              <FaTimes />
+            </button>
+            <p className="pr-2 text-lg">{t(type)}</p>
 
-          <div className="grow flex items-center">
-            <p className="pr-2">{type}</p>
             <input
-              className="ml-auto p-2 w-16 text-right textinput-common"
+              className="ml-auto w-16 px-2 py-1 text-right text-lg textinput-common font-medium"
               value={value}
               onChange={(e) =>
                 dispatch(
@@ -124,8 +130,8 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
               }
             />
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <Modal
         active={modalOn}

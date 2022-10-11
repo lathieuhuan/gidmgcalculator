@@ -52,6 +52,7 @@ export default function SectionParty() {
     <div className="setup-manager_pedestal">
       {copyOptions.length ? (
         <CopySection
+          className="mb-4 px-4"
           options={copyOptions}
           onClickCopy={({ value }) => dispatch(copyParty(value))}
         />

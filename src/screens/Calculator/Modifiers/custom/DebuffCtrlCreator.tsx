@@ -4,7 +4,8 @@ import { ATTACK_ELEMENTS } from "@Src/constants";
 
 import { useDispatch } from "@Store/hooks";
 import { createCustomDebuffCtrl } from "@Store/calculatorSlice";
-import { percentSign, processNumInput } from "@Src/utils";
+import { processNumInput } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 
 import { Select } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
@@ -14,6 +15,8 @@ interface DebuffCtrlCreatorProps {
 }
 export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const [config, setConfig] = useState<CustomDebuffCtrl>({
     type: "def",
     value: 0,
@@ -42,20 +45,22 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
     <Fragment>
       <div className="mx-auto mt-4 px-2 flex items-center">
         <Select
-          className="text-default"
+          className="pr-2 text-default text-right text-last-right"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
-          {[...ATTACK_ELEMENTS, "def"].map((opt) => (
-            <option key={opt}>{opt}</option>
+          {["def", ...ATTACK_ELEMENTS].map((option) => (
+            <option key={option} value={option}>
+              {t(option, { ns: "resistance" })} reduction
+            </option>
           ))}
         </Select>
         <input
-          className="ml-4 p-2 w-16 text-right textinput-common"
+          className="ml-4  w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />
-        <span className="ml-2">{percentSign(config.type)}</span>
+        <span className="ml-2">%</span>
       </div>
       <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
     </Fragment>
