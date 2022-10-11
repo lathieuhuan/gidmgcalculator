@@ -201,7 +201,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 <p className="mr-4 text-default">Variant</p>
 
                 <select
-                  className={twInputStyles.select}
+                  className={twInputStyles.select + " capitalize"}
                   value={variantType}
                   onChange={onChangeElementVariant}
                 >

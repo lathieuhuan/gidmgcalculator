@@ -1,9 +1,11 @@
 import cn from "classnames";
 import type { CalcWeapon, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+
 import { percentSign, wikiImg } from "@Src/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
+import { useTranslation } from "@Hooks/useTranslation";
 
 import { Select } from "@Src/styled-components";
 import { BetaMark } from "../minors";
@@ -17,6 +19,8 @@ interface WeaponCardProps {
   refine?: (newRefi: number) => void;
 }
 export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
+  const { t } = useTranslation();
+
   if (!weapon) return null;
 
   const wpData = findWeapon(weapon)!;
@@ -52,7 +56,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             <div
               className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}
             >
-              <p>{subStat.type}</p>
+              <p>{t(subStat.type)}</p>
               <p className={`text-rarity-${rarity} text-h3`}>
                 {wpSubStatAtLv(subStat.scale, level)}
                 {percentSign(subStat.type)}

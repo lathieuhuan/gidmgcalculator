@@ -29,4 +29,5 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${Weapon}_${Vision}`, string>>
   sword_electro: "6/68/Talent_Yunlai_Swordsmanship",
   sword_geo: "7/79/Sword_Geo",
   sword_anemo: "0/04/Sword_Anemo",
+  sword_dendro: "5/5e/Sword_Dendro",
 };

@@ -87,7 +87,12 @@ export function ElememtBuffs() {
           onToggle={() =>
             dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
           }
-          heading={reaction + (field === "infusion_ampRxn" ? " (external infusion)" : "")}
+          heading={
+            <>
+              <span className="capitalize">{reaction}</span>{" "}
+              {field === "infusion_ampRxn" ? " (external infusion)" : ""}
+            </>
+          }
           desc={renderAmpReactionDesc(element, rxnBonus[reaction])}
         />
       );
@@ -135,7 +140,7 @@ function QuickenBuff({ vision }: { vision: Vision }) {
       onToggle={() => dispatch(toggleElementModCtrl(reaction))}
       desc={
         <>
-          Increase base <span className={`text-${vision}`}>{vision} DMG</span> by{" "}
+          Increase base <span className={`text-${vision} capitalize`}>{vision} DMG</span> by{" "}
           <Green b>{buffValue}</Green>.
         </>
       }

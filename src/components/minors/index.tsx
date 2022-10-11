@@ -248,7 +248,7 @@ export const renderNoItems = (type: string) => (
 
 export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   <>
-    Increases <span className={`text-${element}`}>{element} DMG</span> by{" "}
+    Increases <span className={`text-${element} capitalize`}>{element} DMG</span> by{" "}
     <Green b>{round3(mult)}</Green> times.
   </>
 );

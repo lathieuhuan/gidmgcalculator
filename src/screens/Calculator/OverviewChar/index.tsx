@@ -49,7 +49,7 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
         <div className="overflow-hidden">
           <p className={`text-h1 truncate text-${vision} font-black`}>{char.name}</p>
           <StarLine className="mt-1" rarity={rarity} />
-          <div className="mt-1 flex">
+          <div className="mt-1 flex items-center">
             <p className="mr-1 text-h6">Level</p>
             <Select
               className={`text-lg text-${vision} font-bold text-last-right`}
@@ -62,6 +62,11 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
                 </option>
               ))}
             </Select>
+            <p
+              className={`ml-2 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-darkblue-2 text-${vision} leading-none font-bold cursor-default`}
+            >
+              <span>C{char.cons}</span>
+            </p>
           </div>
         </div>
       </div>
