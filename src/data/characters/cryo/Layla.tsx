@@ -209,7 +209,7 @@ const Layla: DataCharacter = {
       src: EModSrc.A1,
       desc: () => Layla.passiveTalents[0].desc,
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         selfLabels: ["Stacks"],
         labels: ["Stacks"],

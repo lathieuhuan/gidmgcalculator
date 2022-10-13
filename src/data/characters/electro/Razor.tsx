@@ -157,7 +157,7 @@ const Razor: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: "Constellation 4",
+      src: EModSrc.C4,
       desc: () => (
         <>
           Claw and Thunder (Press) decreases opponents' <Green>DEF</Green> by <Green b>15%</Green>{" "}

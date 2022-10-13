@@ -170,7 +170,7 @@ const Gorou: DataCharacter = {
           </>
         );
       },
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Elemental Skill Level"],
         renderTypes: ["text"],

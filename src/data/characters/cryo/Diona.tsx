@@ -135,7 +135,7 @@ const Diona: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "em", 200),
     },
   ],

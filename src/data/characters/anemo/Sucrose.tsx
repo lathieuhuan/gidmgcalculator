@@ -85,8 +85,9 @@ const Sucrose: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When Sucrose triggers a Swirl, all characters in the party with the matching element have
-          their <Green>Elemental Mastery</Green> increased by <Green b>50</Green> for 8s.
+          When Sucrose triggers a Swirl, all characters in the party with the matching element
+          (excluding Sucrose) have their <Green>Elemental Mastery</Green> increased by{" "}
+          <Green b>50</Green> for 8s.
         </>
       ),
       affect: EModAffect.TEAMMATE,
@@ -98,8 +99,9 @@ const Sucrose: DataCharacter = {
       desc: ({ inputs }) => (
         <>
           When Astable Anemohypostasis Creation - 6308 or Forbidden Creation - Isomer 75 / Type II
-          hits an opponent, increases all party members' <Green>Elemental Mastery</Green> based on{" "}
-          <Green b>20%</Green> of Sucrose's <Green>Elemental Mastery</Green> for 8s.{" "}
+          hits an opponent, increases all party members' (excluding Sucrose){" "}
+          <Green>Elemental Mastery</Green> based on <Green b>20%</Green> of Sucrose's{" "}
+          <Green>Elemental Mastery</Green> for 8s.{" "}
           <Red>Elemental Mastery Bonus: {Math.round(getInput(inputs, 0, 0) * 0.2)}.</Red>
         </>
       ),
@@ -124,7 +126,7 @@ const Sucrose: DataCharacter = {
           corresponding <Green>absorbed element</Green> during its duration.
         </>
       ),
-      affect: EModAffect.TEAMMATE,
+      affect: EModAffect.PARTY,
       inputConfig: {
         labels: ["Element Absorbed"],
         renderTypes: ["anemoable"],

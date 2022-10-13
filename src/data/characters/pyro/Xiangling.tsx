@@ -33,7 +33,6 @@ const Xiangling: DataCharacter = {
   bonusStat: { type: "em", value: 24 },
   NAsConfig: {
     name: "Dough-Fu",
-    caStamina: 25,
   },
   activeTalents: {
     NA: {
@@ -97,7 +96,7 @@ const Xiangling: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ONE_UNIT,
       applyBuff: makeModApplier("totalAttr", "atk_", 10),
     },
     {
@@ -110,7 +109,7 @@ const Xiangling: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
+      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "pyro", 15),
     },
   ],

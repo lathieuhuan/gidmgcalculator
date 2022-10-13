@@ -141,8 +141,7 @@ const Collei: DataCharacter = {
       desc: (
         <>
           Using Trump-Card Kitty will increase all nearby characters'{" "}
-          <Green>Elemental Mastery</Green> by <Green b>60</Green> for 12s (not including Collei
-          herself).
+          <Green>Elemental Mastery</Green> by <Green b>60</Green> for 12s (excluding Collei).
         </>
       ),
     },
@@ -163,7 +162,7 @@ const Collei: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModSrc.A1,
+      src: EModSrc.C1,
       desc: () => Collei.constellation[0].desc,
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
@@ -174,7 +173,7 @@ const Collei: DataCharacter = {
       src: EModSrc.C4,
       desc: () => Collei.constellation[3].desc,
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 60),
     },
   ],

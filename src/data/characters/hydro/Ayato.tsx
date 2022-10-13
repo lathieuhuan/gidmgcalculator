@@ -212,7 +212,7 @@ const Ayato: DataCharacter = {
           <Green b>{getEBBuffValue(toSelf, char, partyData, inputs)}%</Green>.
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Elemental Burst Level"],
         renderTypes: ["text"],

@@ -13,7 +13,10 @@ export enum EScreen {
 export enum EModAffect {
   SELF = "self",
   TEAMMATE = "teammate",
+  SELF_TEAMMATE = "self teammate",
   PARTY = "party",
+  ONE_UNIT = "one unit",
+  ACTIVE_UNIT = "active unit",
 }
 
 export enum EStatDamageKey {

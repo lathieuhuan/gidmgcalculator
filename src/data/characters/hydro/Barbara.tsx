@@ -118,7 +118,7 @@ const Barbara: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "hydro", 15),
     },
   ],

@@ -141,7 +141,7 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "phys", 15),
     },
     {

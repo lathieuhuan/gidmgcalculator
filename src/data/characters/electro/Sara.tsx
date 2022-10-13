@@ -110,7 +110,7 @@ const Sara: DataCharacter = {
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Base ATK", "Elemental Skill Level"],
         initialValues: [0, 1],
@@ -136,7 +136,7 @@ const Sara: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: (obj) => {
         increaseAttackBonus({
           ...obj,

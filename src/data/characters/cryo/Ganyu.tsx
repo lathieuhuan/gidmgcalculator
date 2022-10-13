@@ -142,7 +142,7 @@ const Ganyu: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "cryo", 20),
     },
     {

@@ -71,7 +71,7 @@ const ElectroMC: DataCharacter = {
           Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ONE_UNIT,
       inputConfig: {
         labels: ["A4 Passive Talent", "Energy Recharge"],
         renderTypes: ["check", "text"],
@@ -101,7 +101,7 @@ const ElectroMC: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
+      affect: EModAffect.ONE_UNIT,
     },
   ],
   debuffs: [

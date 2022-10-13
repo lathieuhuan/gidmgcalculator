@@ -155,7 +155,7 @@ const Tighnari: DataCharacter = {
         <>
           When Fashioner's Tanglevine Shaft is unleashed, all party members gain <Green b>60</Green>{" "}
           <Green>Elemental Mastery</Green> for 8s. If the Fashioner's Tanglevine Shaft triggers a
-          Burning, Bloom, Aggravate, or Spread reaction, their<Green>Elemental Mastery</Green> will
+          Burning, Bloom, Aggravate, or Spread reaction, their <Green>Elemental Mastery</Green> will
           be further increased by <Green b>60</Green>.
         </>,
       ],

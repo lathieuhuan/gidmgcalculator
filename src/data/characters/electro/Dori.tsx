@@ -195,7 +195,7 @@ const Dori: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "er", 30),
     },
     {

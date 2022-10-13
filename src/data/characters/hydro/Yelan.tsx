@@ -160,7 +160,7 @@ const Yelan: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         selfLabels: ["Stacks (max 14)"],
         labels: ["Stacks"],

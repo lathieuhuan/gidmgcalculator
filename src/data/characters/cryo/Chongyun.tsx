@@ -94,7 +94,7 @@ const Chongyun: DataCharacter = {
           weapons will be <Green>infused</Green> with <Cryo>Cryo</Cryo>.
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       infuseConfig: {
         appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
         range: [...NORMAL_ATTACKS],
@@ -112,7 +112,7 @@ const Chongyun: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
         if (["Sword", "Claymore", "Polearm"].includes(charData.weapon))
           applyModifier(desc, totalAttr, "naAtkSpd", 8, tracker);

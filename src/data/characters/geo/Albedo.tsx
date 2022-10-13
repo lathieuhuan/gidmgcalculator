@@ -153,7 +153,7 @@ const Albedo: DataCharacter = {
           <Green>Plunging Attack DMG</Green> increased by <Green b>30%</Green>.
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "PA.pct", 30),
     },
@@ -166,7 +166,7 @@ const Albedo: DataCharacter = {
           by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "all.pct", 17),
     },

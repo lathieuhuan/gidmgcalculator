@@ -134,7 +134,7 @@ const Thoma: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         selfLabels: ["Stacks"],
         labels: ["Stacks"],

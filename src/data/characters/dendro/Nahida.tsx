@@ -256,7 +256,7 @@ const Nahida: DataCharacter = {
           <>
             While Nahida remains within the Shrine of Maya, the <Green>DMG</Green> dealt by{" "}
             <Green>Tri-Karma Purification</Green> is increased by <Green b>{buffValue}%</Green> with{" "}
-            {pyroCount} Pyro teammate(s) .
+            {pyroCount} Pyro teammate(s).
           </>
         );
       },
@@ -268,7 +268,7 @@ const Nahida: DataCharacter = {
       src: EModSrc.A1,
       desc: () => Nahida.passiveTalents[0].desc,
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         selfLabels: ["Highest Elemental Mastery"],
         labels: ["Highest Elemental Mastery"],
@@ -314,10 +314,10 @@ const Nahida: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: "Constellation 2",
+      src: EModSrc.C2,
       desc: () => Nahida.constellation[1].xtraDesc![1],
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
+      affect: EModAffect.PARTY,
       applyDebuff: makeModApplier("resisReduct", "def", 30),
     },
   ],

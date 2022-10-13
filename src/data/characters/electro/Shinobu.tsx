@@ -141,7 +141,7 @@ const Shinobu: DataCharacter = {
     },
     {
       index: 2,
-      src: "Constellation 6",
+      src: EModSrc.C6,
       desc: () => (
         <>
           When Shinobu's HP drops below 25%, she will gain <Green b>150</Green>{" "}

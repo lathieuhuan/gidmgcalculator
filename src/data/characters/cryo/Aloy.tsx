@@ -147,7 +147,7 @@ const Aloy: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.SELF_TEAMMATE,
       applyBuff: ({ totalAttr, toSelf, desc, tracker }) => {
         applyModifier(desc, totalAttr, "atk_", toSelf ? 16 : 8, tracker);
       },

@@ -138,8 +138,8 @@ const HuTao: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When a Paramita Papilio state ends, all allies in the party will have their{" "}
-          <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
+          When a Paramita Papilio state ends, all allies in the party (excluding Hu Tao) will have
+          their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -180,8 +180,8 @@ const HuTao: DataCharacter = {
       desc: () => (
         <>
           Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all
-          nearby allies in the party (excluding Hu Tao herself) will have their{" "}
-          <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 15s.
+          nearby allies in the party (excluding Hu Tao) will have their <Green>CRIT Rate</Green>{" "}
+          increased by <Green b>12%</Green> for 15s.
         </>
       ),
       isGranted: checkCons[4],

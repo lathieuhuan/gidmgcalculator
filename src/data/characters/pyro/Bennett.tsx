@@ -129,7 +129,7 @@ const Bennett: DataCharacter = {
           <Green>Base ATK</Green>. {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
         </>
       ),
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Base ATK", "Elemental Burst Level", "Constellation 1"],
         renderTypes: ["text", "text", "check"],

@@ -115,7 +115,7 @@ const DendroMC: DataCharacter = {
       src: EModSrc.A1,
       desc: () => DendroMC.passiveTalents[0].desc,
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Stacks"],
         selfLabels: ["Stacks"],
@@ -144,7 +144,7 @@ const DendroMC: DataCharacter = {
       src: EModSrc.C6,
       desc: () => DendroMC.constellation[5].desc,
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
         labels: ["Element contact"],
         selfLabels: ["Element contact"],

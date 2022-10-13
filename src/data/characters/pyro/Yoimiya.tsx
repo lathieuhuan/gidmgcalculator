@@ -144,7 +144,7 @@ const Yoimiya: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Using Ryuukin Saxifrage causes nearby party members (not including Yoimiya) to gain a{" "}
+          Using Ryuukin Saxifrage causes nearby party members (excluding Yoimiya) to gain a{" "}
           <Green b>10%</Green> <Green>ATK</Green> increase for 15s. Additionally, a further ATK
           Bonus will be added on based on the number of "Tricks of the Trouble-Maker" stacks Yoimiya
           possesses when using Ryuukin Saxifrage. Each stack increases this <Green>ATK Bonus</Green>{" "}

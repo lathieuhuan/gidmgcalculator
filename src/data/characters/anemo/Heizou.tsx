@@ -96,7 +96,7 @@ const Heizou: DataCharacter = {
           <Green b>80</Green> for 10s.
         </>
       ),
-      affect: EModAffect.SELF,
+      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 80),
     },
     {

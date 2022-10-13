@@ -156,7 +156,7 @@ const Shenhe: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "cryo", 15),
     },
     {
@@ -200,13 +200,12 @@ const Shenhe: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Divine Maiden's Deliverance lasts for <Green b>6s</Green> <Green>longer</Green>. Active
-          characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green> increased{" "}
-          <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
+          Active characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green>{" "}
+          increased <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
+      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: (obj) => {
         increaseAttackBonus({
           ...obj,
