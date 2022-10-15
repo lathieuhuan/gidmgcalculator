@@ -1,5 +1,4 @@
 import type {
-  ArtifactAttribute,
   AttackElementBonus,
   AttackPatternBonus,
   CalcCharData,
@@ -23,7 +22,6 @@ export type CalculatorState = {
   monster: Monster;
 
   allTotalAttrs: Record<string, TotalAttribute>;
-  allArtAttr: Record<string, ArtifactAttribute>;
   allAttPattBonus: Record<string, AttackPatternBonus>;
   allAttElmtBonus: Record<string, AttackElementBonus>;
   allRxnBonuses: Record<string, ReactionBonus>;
