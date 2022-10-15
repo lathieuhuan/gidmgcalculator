@@ -13,7 +13,6 @@ import {
   selectChar,
   selectCharData,
   selectElmtModCtrls,
-  selectFinalInfusion,
   selectRxnBonus,
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
@@ -28,13 +27,15 @@ import { findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
 import { getQuickenBuffDamage } from "@Calculators/utils";
 
-export function ElememtBuffs() {
+export function ElementBuffs() {
   const dispatch = useDispatch();
 
   const { vision } = useSelector(selectCharData);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
-  const infusion = useSelector(selectFinalInfusion)?.NA;
+  const infusion = useSelector((state) => {
+    return state.calculator.statsById[state.calculator.activeId].finalInfusion?.NA;
+  });
 
   const content: JSX.Element[] = [];
 

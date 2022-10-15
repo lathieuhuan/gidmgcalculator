@@ -35,11 +35,13 @@ export function calculate(state: CalculatorState, all?: boolean) {
         },
         charData
       );
-      state.allFinalInfusion[id] = results.finalInfusion;
-      state.allTotalAttrs[id] = results.totalAttr;
-      state.allAttPattBonus[id] = results.attPattBonus;
-      state.allAttElmtBonus[id] = results.attElmtBonus;
-      state.allRxnBonuses[id] = results.rxnBonus;
+      state.statsById[id] = {
+        finalInfusion: results.finalInfusion,
+        totalAttrs: results.totalAttr,
+        attPattBonus: results.attPattBonus,
+        attElmtBonus: results.attElmtBonus,
+        rxnBonuses: results.rxnBonus,
+      };
     }
   } catch (err) {
     console.log(err);

@@ -46,7 +46,6 @@ import {
   findByCode,
   findById,
   indexByCode,
-  turnArray,
 } from "@Src/utils";
 import {
   calculate,
@@ -86,13 +85,9 @@ const initialState: CalculatorState = {
   charData: getCharData(defaultChar),
   setupManageInfos: [],
   setupsById: {},
+  statsById: {},
   target: initTarget(),
   monster: initMonster(),
-  allTotalAttrs: {},
-  allAttPattBonus: {},
-  allAttElmtBonus: {},
-  allRxnBonuses: {},
-  allFinalInfusion: {},
   isError: false,
   touched: false,
 };
@@ -131,9 +126,11 @@ export const calculatorSlice = createSlice({
           customDebuffCtrls: [],
         },
       };
+      // calculate will repopulate statsById
+      state.statsById = {};
       state.monster = initMonster();
 
-      calculate(state, true);
+      calculate(state);
     },
     initSessionWithSetup: (state, action: PayloadAction<UsersSetup>) => {
       const { ID, type, target, ...setupInfo } = action.payload;
@@ -144,6 +141,8 @@ export const calculatorSlice = createSlice({
       state.setupsById = {
         [ID]: setupInfo,
       };
+      // calculate will repopulate statsById
+      state.statsById = {};
       state.target = target;
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
@@ -710,6 +709,7 @@ export const calculatorSlice = createSlice({
 
       removedSetupIDs.forEach((ID) => {
         delete setupsById[ID];
+        delete state.statsById[ID];
       });
 
       const activeSetup = findById(newSetupManageInfos, activeId);

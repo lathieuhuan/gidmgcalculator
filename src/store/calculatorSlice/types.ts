@@ -18,14 +18,19 @@ export type CalculatorState = {
   charData: CalcCharData;
   setupManageInfos: CalcSetupManageInfo[];
   setupsById: Record<string, CalcSetup>;
+  statsById: Record<
+    string,
+    {
+      totalAttrs: TotalAttribute;
+      attPattBonus: AttackPatternBonus;
+      attElmtBonus: AttackElementBonus;
+      rxnBonuses: ReactionBonus;
+      finalInfusion: FinalInfusion;
+    }
+  >;
+
   target: Target;
   monster: Monster;
-
-  allTotalAttrs: Record<string, TotalAttribute>;
-  allAttPattBonus: Record<string, AttackPatternBonus>;
-  allAttElmtBonus: Record<string, AttackElementBonus>;
-  allRxnBonuses: Record<string, ReactionBonus>;
-  allFinalInfusion: Record<string, FinalInfusion>;
 
   isError: boolean;
   touched: boolean;

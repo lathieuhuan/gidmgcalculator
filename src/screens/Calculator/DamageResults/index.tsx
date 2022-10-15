@@ -63,6 +63,7 @@ const MemoResults = memo(Results);
 
 function Results() {
   const activeId = useSelector(selectActiveId);
+  const { charData, target } = useSelector((state) => state.calculator);
   const {
     char,
     party,
@@ -73,15 +74,10 @@ function Results() {
     customDebuffCtrls,
   } = useSelector((state) => state.calculator.setupsById)[activeId];
 
-  const {
-    charData,
-    target,
-    allTotalAttrs,
-    allAttPattBonus,
-    allAttElmtBonus,
-    allRxnBonuses,
-    allFinalInfusion,
-  } = useSelector((state) => state.calculator);
+  const { totalAttrs, attPattBonus, attElmtBonus, rxnBonuses, finalInfusion } = useSelector(
+    (state) => state.calculator.statsById[activeId]
+  );
+
   const partyData = getPartyData(party);
 
   const activeSetupName = useSelector((state) => {
@@ -100,28 +96,30 @@ function Results() {
     party,
     partyData,
     subArtDebuffCtrls,
-    allTotalAttrs[activeId],
-    allAttPattBonus[activeId],
-    allAttElmtBonus[activeId],
-    allRxnBonuses[activeId],
+    totalAttrs,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonuses,
     customDebuffCtrls,
-    allFinalInfusion[activeId],
+    finalInfusion,
     elmtModCtrls,
     target,
     tracker
   );
 
-  const [focus, setFocus] = useState<EStatDamageKey | undefined>();
+  const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
   const comparing = comparedIndexes.length > 1;
 
   useEffect(() => {
-    setFocus(comparing ? EStatDamageKey.AVERAGE : undefined);
+    if (comparing) {
+      setFocus(EStatDamageKey.AVERAGE);
+    }
   }, [comparing]);
 
   return (
     <div className="h-full flex flex-col">
-      {focus ? (
+      {comparing ? (
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
           <Select
@@ -143,7 +141,7 @@ function Results() {
           char={char}
           party={party}
           damageResult={dmgResult}
-          focus={focus}
+          focus={comparing ? focus : undefined}
         />
       </div>
     </div>

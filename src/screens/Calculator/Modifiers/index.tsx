@@ -6,7 +6,7 @@ import { selectParty } from "@Store/calculatorSlice/selectors";
 import { getPartyData } from "@Data/controllers";
 
 import { CollapseList } from "@Components/collapse";
-import { ArtifactBuffs, ElememtBuffs } from "./buffs/others";
+import { ArtifactBuffs, ElementBuffs } from "./buffs/others";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";
 import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
@@ -40,7 +40,7 @@ function Modifiers() {
               "Custom",
             ]}
             contentList={[
-              <ElememtBuffs />,
+              <ElementBuffs />,
               <SelfBuffs />,
               <PartyBuffs />,
               <WeaponBuffs />,

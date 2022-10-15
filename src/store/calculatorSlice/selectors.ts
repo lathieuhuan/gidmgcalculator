@@ -26,12 +26,12 @@ export const selectElmtModCtrls = (state: RootState) =>
   state.calculator.setupsById[state.calculator.activeId]?.elmtModCtrls;
 
 export const selectTotalAttr = (state: RootState) =>
-  state.calculator.allTotalAttrs[state.calculator.activeId];
+  state.calculator.statsById[state.calculator.activeId].totalAttrs;
 
 export const selectFinalInfusion = (state: RootState) =>
-  state.calculator.allFinalInfusion[state.calculator.activeId];
+  state.calculator.statsById[state.calculator.activeId].finalInfusion;
 
 export const selectRxnBonus = (state: RootState) =>
-  state.calculator.allRxnBonuses[state.calculator.activeId];
+  state.calculator.statsById[state.calculator.activeId].rxnBonuses;
 
 export const selectTarget = (state: RootState) => state.calculator.target;
