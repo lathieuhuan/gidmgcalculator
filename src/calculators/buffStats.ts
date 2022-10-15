@@ -306,5 +306,11 @@ export default function getBuffedStats(
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
-  return [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] as const;
+  return {
+    totalAttr,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
+    artAttr,
+  };
 }

@@ -34,7 +34,7 @@ export default function calculateAll(
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
 
-  const [totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] = getBuffedStats(
+  const buffedStats = getBuffedStats(
     char,
     charData,
     selfBuffCtrls,
@@ -51,7 +51,10 @@ export default function calculateAll(
     finalInfusion,
     tracker
   );
-  return [finalInfusion, totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] as const;
+  return {
+    finalInfusion,
+    ...buffedStats,
+  };
 }
 
 const INFUSE_PRIORITIES = ["pyro", "cryo", "electro", "anemo", "phys"] as const;

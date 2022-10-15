@@ -190,5 +190,9 @@ export default function getBaseStats(
   applyArtPassiveBuffs(false, artifact.sets, wrapper);
   applyWpPassiveBuffs(false, wpData, weapon.refi, wrapper);
   calcFinalTotalAttrs(totalAttr);
-  return [totalAttr, artAttr] as const;
+
+  return {
+    totalAttr,
+    artAttr,
+  };
 }

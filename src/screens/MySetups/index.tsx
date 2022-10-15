@@ -129,7 +129,12 @@ export default function MySetups() {
       EBcost: databaseChar.activeTalents.EB.energyCost,
     };
 
-    [finalInfusion, totalAttr, , , rxnBonus, artAttr, damage] = calculateAll(chosenSetup, charData);
+    const result = calculateAll(chosenSetup, charData);
+    finalInfusion = result.finalInfusion;
+    totalAttr = result.totalAttr;
+    rxnBonus = result.rxnBonus;
+    artAttr = result.artAttr;
+    // damage =
   }
 
   const renderSetup = (setup: UsersSetup | UsersComplexSetup, index: number) => {
@@ -449,11 +454,11 @@ export default function MySetups() {
                   <p className="text-center truncate">{chosenSetup.name}</p>
                 </div>
                 <div className="mt-2 grow hide-scrollbar">
-                  <DamageDisplay
+                  {/* <DamageDisplay
                     char={chosenSetup.char}
                     party={chosenSetup.party}
                     damageResult={damage}
-                  />
+                  /> */}
                 </div>
               </>
             )}

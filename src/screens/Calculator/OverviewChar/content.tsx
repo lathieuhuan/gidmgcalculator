@@ -6,8 +6,10 @@ import {
   selectTotalAttr,
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
+
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Hooks/useTabs";
+import { addArtAttr } from "@Calculators/baseStats";
 
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
@@ -38,10 +40,10 @@ const contentByTab: Record<string, () => JSX.Element> = {
     );
   },
   Artifacts() {
-    const artAttr = useSelector((state) => {
-      return state.calculator.allArtAttr[state.calculator.activeId];
-    });
-    const sets = useSelector(selectArtInfo).sets;
+    const { pieces, sets } = useSelector(selectArtInfo);
+    const totalAttr = useSelector(selectTotalAttr);
+
+    const artAttr = addArtAttr(pieces, { ...totalAttr });
 
     const { activeIndex, tabs } = useTabs({
       level: 2,

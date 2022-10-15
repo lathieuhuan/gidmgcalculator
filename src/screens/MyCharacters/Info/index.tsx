@@ -53,7 +53,7 @@ export default function Info() {
   }
   const { code, beta, name, rarity, nation, vision, weapon, icon } = dataChar;
 
-  const [totalAttr, artAttr] = getBaseStats(
+  const { totalAttr, artAttr } = getBaseStats(
     {
       code,
       name,
