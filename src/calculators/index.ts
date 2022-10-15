@@ -13,13 +13,11 @@ import type {
 } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import getBuffedStats from "./buffStats";
-import getDamage from "./damage";
 
 export default function calculateAll(
   {
     char,
     selfBuffCtrls,
-    selfDebuffCtrls,
     party,
     weapon,
     wpBuffCtrls,
@@ -27,11 +25,8 @@ export default function calculateAll(
     artInfo,
     artBuffCtrls,
     subArtBuffCtrls,
-    subArtDebuffCtrls,
     elmtModCtrls,
     customBuffCtrls,
-    customDebuffCtrls,
-    target,
   }: UsersSetupCalcInfo,
   charData: CalcCharData,
   tracker?: Tracker
@@ -56,25 +51,7 @@ export default function calculateAll(
     finalInfusion,
     tracker
   );
-  const damage = getDamage(
-    char,
-    charData,
-    selfBuffCtrls,
-    selfDebuffCtrls,
-    party,
-    partyData,
-    subArtDebuffCtrls,
-    totalAttr,
-    attPattBonus,
-    attElmtBonus,
-    rxnBonus,
-    customDebuffCtrls,
-    finalInfusion,
-    elmtModCtrls,
-    target,
-    tracker
-  );
-  return [finalInfusion, totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr, damage] as const;
+  return [finalInfusion, totalAttr, attPattBonus, attElmtBonus, rxnBonus, artAttr] as const;
 }
 
 const INFUSE_PRIORITIES = ["pyro", "cryo", "electro", "anemo", "phys"] as const;

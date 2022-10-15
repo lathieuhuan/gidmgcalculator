@@ -34,7 +34,4 @@ export const selectFinalInfusion = (state: RootState) =>
 export const selectRxnBonus = (state: RootState) =>
   state.calculator.allRxnBonuses[state.calculator.activeId];
 
-export const selectDamageResult = (state: RootState) =>
-  state.calculator.allDmgResult[state.calculator.activeId];
-
 export const selectTarget = (state: RootState) => state.calculator.target;

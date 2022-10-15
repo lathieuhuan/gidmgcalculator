@@ -9,11 +9,11 @@ import type {
   Target,
   Vision,
   Weapon,
-  CalcConfigurations,
   UsersSetup,
   CalcSetupManageInfo,
   ArtPieceMainStat,
 } from "@Src/types";
+import type { CalcConfigurations } from "./types";
 
 export type PickedChar = Partial<UsersCharacter> & {
   name: string;

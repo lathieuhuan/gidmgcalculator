@@ -49,31 +49,6 @@ export type CalcSetup = {
   customDebuffCtrls: CustomDebuffCtrl[];
 };
 
-export type CalculatorState = {
-  activeId: number;
-  configs: CalcConfigurations;
-
-  charData: CalcCharData;
-  setupManageInfos: CalcSetupManageInfo[];
-  setupsById: Record<string, CalcSetup>;
-  target: Target;
-  monster: Monster;
-
-  allTotalAttrs: Record<string, TotalAttribute>;
-  allArtAttr: Record<string, ArtifactAttribute>;
-  allRxnBonuses: Record<string, ReactionBonus>;
-  allFinalInfusion: Record<string, FinalInfusion>;
-  allDmgResult: Record<string, DamageResult>;
-
-  isError: boolean;
-  touched: boolean;
-};
-
-export type CalcConfigurations = {
-  separateCharInfo: boolean;
-  keepArtStatsOnSwitch: boolean;
-};
-
 export type CalcCharData = {
   code: number;
   name: string;

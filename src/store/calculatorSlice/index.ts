@@ -3,7 +3,6 @@ import type {
   AttackElement,
   CalcArtPiece,
   CalcSetupManageInfo,
-  CalculatorState,
   CalcWeapon,
   CharInfo,
   CustomBuffCtrl,
@@ -14,6 +13,7 @@ import type {
   UsersSetup,
   Vision,
 } from "@Src/types";
+import type { CalculatorState } from "./types";
 import type {
   AddTeammateAction,
   ApplySettingsOnCalculatorAction,
@@ -90,9 +90,10 @@ const initialState: CalculatorState = {
   monster: initMonster(),
   allTotalAttrs: {},
   allArtAttr: {},
+  allAttPattBonus: {},
+  allAttElmtBonus: {},
   allRxnBonuses: {},
   allFinalInfusion: {},
-  allDmgResult: {},
   isError: false,
   touched: false,
 };

@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useState } from "react";
 import { FaInfoCircle, FaPlus } from "react-icons/fa";
-import type { CalcConfigurations } from "@Src/types";
+import type { CalcConfigurations } from "@Store/calculatorSlice/types";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 import { useDispatch, useSelector } from "@Store/hooks";

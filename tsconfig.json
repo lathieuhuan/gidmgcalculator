@@ -21,6 +21,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@Calculators/*": ["src/calculators/*"],
       "@Components/*": ["src/components/*"],
       "@Data/*": ["src/data/*"],
       "@Store/*": ["src/store/*"],

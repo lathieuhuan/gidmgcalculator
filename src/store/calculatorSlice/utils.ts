@@ -1,27 +1,25 @@
 import type {
   CalcArtPiece,
   CalcArtSet,
-  CalculatorState,
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
-  Monster,
   UsersArtifact,
   UsersWeapon,
   SubArtModCtrl,
   SubWeaponBuffCtrl,
-  Target,
   Weapon,
   CalcSetupManageInfo,
 } from "@Src/types";
-import { findById } from "@Src/utils";
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
-import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
+import type { PickedChar } from "./reducer-types";
+import type { CalculatorState } from "./types";
+
 import weapons from "@Data/weapons";
 import artifacts from "@Data/artifacts";
-import monsters from "@Data/monsters";
+import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
-import type { PickedChar } from "./reducer-types";
+import { findById } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
@@ -39,9 +37,10 @@ export function calculate(state: CalculatorState, all?: boolean) {
       );
       state.allFinalInfusion[id] = results[0];
       state.allTotalAttrs[id] = results[1];
+      state.allAttPattBonus[id] = results[2];
+      state.allAttElmtBonus[id] = results[3];
       state.allRxnBonuses[id] = results[4];
       state.allArtAttr[id] = results[5];
-      state.allDmgResult[id] = results[6];
     }
   } catch (err) {
     console.log(err);

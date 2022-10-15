@@ -2,14 +2,16 @@ import cn from "classnames";
 import { memo, useState, useEffect } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
-import { selectChar, selectDamageResult, selectParty } from "@Store/calculatorSlice/selectors";
+import { selectActiveId } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedIndexes } from "@Store/uiSlice";
 import { EStatDamageKey } from "@Src/constants";
 
 import { IconButton, Select } from "@Src/styled-components";
-import { DamageDisplay } from "@Components/DamageDisplay";
 import { findById } from "@Src/utils";
+import { DamageDisplay } from "@Components/DamageDisplay";
+import getDamage from "@Calculators/damage";
+import { getPartyData } from "@Data/controllers";
 
 export default function DamageResults() {
   const [enlargedOn, setEnlargedOn] = useState(false);
@@ -60,14 +62,54 @@ export default function DamageResults() {
 const MemoResults = memo(Results);
 
 function Results() {
-  const char = useSelector(selectChar);
-  const party = useSelector(selectParty);
+  const activeId = useSelector(selectActiveId);
+  const {
+    char,
+    party,
+    elmtModCtrls,
+    selfBuffCtrls,
+    selfDebuffCtrls,
+    subArtDebuffCtrls,
+    customDebuffCtrls,
+  } = useSelector((state) => state.calculator.setupsById)[activeId];
+
+  const {
+    charData,
+    target,
+    allTotalAttrs,
+    allAttPattBonus,
+    allAttElmtBonus,
+    allRxnBonuses,
+    allFinalInfusion,
+  } = useSelector((state) => state.calculator);
+  const partyData = getPartyData(party);
+
   const activeSetupName = useSelector((state) => {
     const { activeId, setupManageInfos } = state.calculator;
     return findById(setupManageInfos, activeId)?.name || "";
   });
   const comparedIndexes = useSelector(selectComparedIndexes);
-  const dmgResult = useSelector(selectDamageResult);
+
+  const tracker = undefined;
+
+  const dmgResult = getDamage(
+    char,
+    charData,
+    selfBuffCtrls,
+    selfDebuffCtrls,
+    party,
+    partyData,
+    subArtDebuffCtrls,
+    allTotalAttrs[activeId],
+    allAttPattBonus[activeId],
+    allAttElmtBonus[activeId],
+    allRxnBonuses[activeId],
+    customDebuffCtrls,
+    allFinalInfusion[activeId],
+    elmtModCtrls,
+    target,
+    tracker
+  );
 
   const [focus, setFocus] = useState<EStatDamageKey | undefined>();
 
