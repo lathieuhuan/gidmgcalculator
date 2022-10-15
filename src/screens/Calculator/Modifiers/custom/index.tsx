@@ -18,7 +18,6 @@ import {
 import { indexById, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
-import { IconButton } from "@Src/styled-components";
 import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
@@ -80,8 +79,8 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       <div className="mt-3 flex justify-between">
         <button
           className={cn(
-            "w-8 h-8 shrink-0 rounded-circle flex-center text-lesser",
-            modCtrls.length ? "bg-darkred glow-on-hover" : ""
+            "w-8 h-8 shrink-0 rounded-circle flex-center",
+            modCtrls.length ? "bg-darkred glow-on-hover text-default" : "text-lesser"
           )}
           disabled={modCtrls.length === 0}
           onClick={() => dispatch(clearCustomModCtrls(isBuffs))}

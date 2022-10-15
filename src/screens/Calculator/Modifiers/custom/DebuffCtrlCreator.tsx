@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 
@@ -17,6 +17,8 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [config, setConfig] = useState<CustomDebuffCtrl>({
     type: "def",
     value: 0,
@@ -27,6 +29,8 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
       ...prev,
       type: type as CustomDebuffCtrlType,
     }));
+
+    inputRef.current?.focus();
   };
 
   const onChangeValue = (value: string) => {
@@ -56,7 +60,9 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
+          ref={inputRef}
           className="ml-4  w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
+          autoFocus
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />

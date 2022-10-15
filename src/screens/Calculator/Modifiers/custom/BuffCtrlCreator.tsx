@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
@@ -40,6 +40,8 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [config, setConfig] = useState<CustomBuffCtrl>({
     category: 0,
     type: "atk_",
@@ -59,6 +61,8 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
       ...prev,
       type: type as CustomDebuffCtrlType,
     }));
+
+    inputRef.current?.focus();
   };
 
   const onChangeValue = (value: string) => {
@@ -88,6 +92,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
                 index === 3 && "rounded-b-lg md1:rounded-bl-none md1:rounded-r-lg",
                 chosen ? "bg-default" : "bg-darkblue-3"
               )}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 if (!chosen) {
                   onChangeCategory(categoryName);
@@ -115,7 +120,9 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           ))}
         </Select>
         <input
+          ref={inputRef}
           className="ml-4 w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
+          autoFocus
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
         />
