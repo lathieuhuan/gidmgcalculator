@@ -83,7 +83,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
     return (e) => {
       const value = +e.target.value;
 
-      if (!isNaN(value) && value >= -100 && value <= 100) {
+      if (!isNaN(value) && value >= (key === "level" ? 0 : -100) && value <= 100) {
         dispatch(updateTarget({ [key]: Math.round(value) }));
       }
     };
@@ -135,7 +135,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               <label className="ml-auto flex items-center">
                 <span className="mr-4 text-h6 text-lightgold">Level</span>
                 <input
-                  className="w-16 p-2 text-right textinput-common"
+                  className="w-16 p-2 text-right textinput-common font-bold"
                   value={target.level}
                   onChange={onChangeTargetProp("level")}
                 />
@@ -250,7 +250,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                     {t(attElmt, { ns: "resistance" })}
                   </p>
                   <input
-                    className="w-20 p-2 text-right textinput-common disabled:bg-lesser"
+                    className="w-20 p-2 text-right textinput-common font-bold disabled:bg-lesser"
                     disabled={chosenMonster.code !== 0}
                     value={target[attElmt]}
                     onChange={onChangeTargetProp(attElmt)}

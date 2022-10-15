@@ -78,7 +78,7 @@ export function ComplexSelect({
           return (
             <div key={i} className="flex">
               <button
-                className="pl-3 py-1.5 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default"
+                className="pl-3 py-1.5 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default cursor-default"
                 onClick={onClickOption(value || label)}
               >
                 {label}

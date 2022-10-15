@@ -83,7 +83,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
               onChange={(e) => {
                 const value = +e.target.value;
 
-                if (!isNaN(value) && value >= -100 && value <= 100) {
+                if (!isNaN(value) && value >= 0 && value <= 100) {
                   dispatch(updateTarget({ level: value }));
                 }
               }}
