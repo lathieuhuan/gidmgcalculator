@@ -142,7 +142,7 @@ export type RecipientName =
   | "attPattBonus"
   | "attElmtBonus"
   | "rxnBonus"
-  | "resisReduct";
+  | "resistReduct";
 
 interface ModApplierArgs {
   totalAttr: TotalAttribute;
@@ -176,7 +176,7 @@ export function makeModApplier(
   rootValue: RootValue
 ): (args: any) => void;
 export function makeModApplier(
-  recipientName: "resisReduct",
+  recipientName: "resistReduct",
   keys: (AttackElement | "def") | (AttackElement | "def")[],
   rootValue: RootValue
 ): (args: any) => void;

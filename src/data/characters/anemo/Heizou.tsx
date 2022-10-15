@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const Heizou: DataCharacter = {

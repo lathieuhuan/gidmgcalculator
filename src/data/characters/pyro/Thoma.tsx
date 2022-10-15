@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 

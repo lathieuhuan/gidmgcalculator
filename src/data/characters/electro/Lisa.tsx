@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkAscs } from "../utils";
 
 const Lisa: DataCharacter = {
@@ -96,7 +96,7 @@ const Lisa: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyDebuff: makeModApplier("resisReduct", "def", 15),
+      applyDebuff: makeModApplier("resistReduct", "def", 15),
     },
   ],
 };

@@ -3,7 +3,7 @@ import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const HuTao: DataCharacter = {

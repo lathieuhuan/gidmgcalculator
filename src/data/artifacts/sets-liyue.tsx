@@ -2,7 +2,7 @@ import type { DataArtifact, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 
 const liyueSets: DataArtifact[] = [
   {

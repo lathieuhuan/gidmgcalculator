@@ -2,7 +2,7 @@ import type { AttributeStat, DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Diluc: DataCharacter = {

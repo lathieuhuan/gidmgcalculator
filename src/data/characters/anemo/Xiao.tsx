@@ -3,7 +3,7 @@ import { Anemo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput } from "@Src/calculators/utils";
+import { applyModifier, getInput } from "@Calculators/utils";
 import { checkAscs } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 

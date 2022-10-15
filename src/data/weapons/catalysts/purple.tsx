@@ -9,7 +9,7 @@ import {
   SacrificialSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Src/calculators/utils";
+import { getInput, applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: DataWeapon[] = [

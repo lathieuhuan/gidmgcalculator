@@ -2,7 +2,7 @@ import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const AnemoMC: DataCharacter = {

@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Chongyun: DataCharacter = {
@@ -145,7 +145,7 @@ const Chongyun: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyDebuff: makeModApplier("resisReduct", "cryo", 10),
+      applyDebuff: makeModApplier("resistReduct", "cryo", 10),
     },
   ],
 };

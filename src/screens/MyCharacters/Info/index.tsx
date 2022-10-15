@@ -4,7 +4,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import getBaseStats from "@Src/calculators/baseStats";
+import getBaseStats from "@Calculators/baseStats";
 import { findById, findByName, wikiImg } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 

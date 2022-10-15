@@ -2,7 +2,7 @@ import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
@@ -257,7 +257,7 @@ const Cyno: DataCharacter = {
       desc: () => (
         <>
           Pactsworn Pathclearer state:
-          <br />• Cyno's <Green>Elemental Mastery</Green> and increase by <Green b>100</Green>.
+          <br />• Cyno's <Green>Elemental Mastery</Green> is increased by <Green b>100</Green>.
           <br />• Cyno's <Green>Normal, Charged, and Plunging Attacks</Green> will be converted to{" "}
           <Electro>Electro DMG</Electro> that cannot be overriden.
         </>

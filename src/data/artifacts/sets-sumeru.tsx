@@ -1,7 +1,7 @@
 import type { DataArtifact } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 
 const sumeruSets: DataArtifact[] = [
   {
@@ -50,7 +50,7 @@ const sumeruSets: DataArtifact[] = [
     debuffs: [
       {
         desc: () => findByCode(sumeruSets, 33)!.setBonuses[1].desc,
-        applyDebuff: makeModApplier("resisReduct", "dendro", 30),
+        applyDebuff: makeModApplier("resistReduct", "dendro", 30),
       },
     ],
   },

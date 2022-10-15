@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Klee: DataCharacter = {
@@ -133,7 +133,7 @@ const Klee: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resisReduct", "def", 23),
+      applyDebuff: makeModApplier("resistReduct", "def", 23),
     },
   ],
 };

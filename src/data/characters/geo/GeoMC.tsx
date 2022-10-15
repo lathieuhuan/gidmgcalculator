@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const GeoMC: DataCharacter = {

@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { MEDIUM_PAs, EModSrc } from "../constants";
 import { checkAscs, charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
 

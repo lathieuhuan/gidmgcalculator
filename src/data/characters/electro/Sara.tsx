@@ -3,7 +3,7 @@ import { Electro, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput, increaseAttackBonus } from "@Src/calculators/utils";
+import { applyModifier, getInput, increaseAttackBonus } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const getAttackBuffValue = (inputs: ModifierInput[] | undefined): [number, string] => {

@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Xiangling: DataCharacter = {
@@ -124,7 +124,7 @@ const Xiangling: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyDebuff: makeModApplier("resisReduct", "pyro", 15),
+      applyDebuff: makeModApplier("resistReduct", "pyro", 15),
     },
   ],
 };

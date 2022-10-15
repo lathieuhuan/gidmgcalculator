@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Keqing: DataCharacter = {

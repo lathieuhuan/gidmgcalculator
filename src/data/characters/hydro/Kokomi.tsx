@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons } from "../utils";
 
 const Kokomi: DataCharacter = {

@@ -26,7 +26,7 @@ import { SetterSection } from "../components";
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
-import { getQuickenBuffDamage } from "@Src/calculators/utils";
+import { getQuickenBuffDamage } from "@Calculators/utils";
 
 export function ElememtBuffs() {
   const dispatch = useDispatch();

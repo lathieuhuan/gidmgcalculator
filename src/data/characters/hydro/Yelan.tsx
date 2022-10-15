@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, getInput } from "@Src/calculators/utils";
+import { applyModifier, getInput } from "@Calculators/utils";
 import { checkAscs, checkCons, countVisionTypes, talentBuff } from "../utils";
 
 const Yelan: DataCharacter = {

@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const Xinyan: DataCharacter = {
@@ -196,7 +196,7 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resisReduct", "phys", 15),
+      applyDebuff: makeModApplier("resistReduct", "phys", 15),
     },
   ],
 };

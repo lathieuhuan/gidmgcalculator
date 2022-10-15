@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Dori: DataCharacter = {

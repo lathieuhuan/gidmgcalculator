@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Xingqiu: DataCharacter = {
@@ -123,7 +123,7 @@ const Xingqiu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resisReduct", "hydro", 15),
+      applyDebuff: makeModApplier("resistReduct", "hydro", 15),
     },
   ],
 };

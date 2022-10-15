@@ -3,7 +3,7 @@ import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { countVision, round1 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 import nilouImg from "@Src/assets/images/nilou.png";
@@ -286,14 +286,14 @@ const Nilou: DataCharacter = {
       src: EModSrc.C2,
       desc: () => Nilou.constellation[1].xtraDesc?.[0],
       isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resisReduct", "hydro", 35),
+      applyDebuff: makeModApplier("resistReduct", "hydro", 35),
     },
     {
       index: 1,
       src: EModSrc.C2,
       desc: () => Nilou.constellation[1].xtraDesc?.[1],
       isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resisReduct", "dendro", 35),
+      applyDebuff: makeModApplier("resistReduct", "dendro", 35),
     },
   ],
 };

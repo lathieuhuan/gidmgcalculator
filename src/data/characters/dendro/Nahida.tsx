@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 import nahidaImg from "@Src/assets/images/nahida.png";
 
@@ -318,7 +318,7 @@ const Nahida: DataCharacter = {
       desc: () => Nahida.constellation[1].xtraDesc![1],
       isGranted: checkCons[2],
       affect: EModAffect.PARTY,
-      applyDebuff: makeModApplier("resisReduct", "def", 30),
+      applyDebuff: makeModApplier("resistReduct", "def", 30),
     },
   ],
 };

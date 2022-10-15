@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Rosaria: DataCharacter = {
@@ -146,7 +146,7 @@ const Rosaria: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyDebuff: makeModApplier("resisReduct", "phys", 20),
+      applyDebuff: makeModApplier("resistReduct", "phys", 20),
     },
   ],
 };

@@ -3,7 +3,7 @@ import type {
   AttackPatternPath,
   ModRecipientKey,
   RecipientName,
-} from "@Src/calculators/utils";
+} from "@Calculators/utils";
 import type {
   AttackElement,
   AttributeStat,
@@ -11,7 +11,7 @@ import type {
   ModifierInput,
   ReactionBonusKey,
 } from "@Src/types";
-import { applyModifier } from "@Src/calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { LEVELS } from "@Src/constants";
 import { bareLv, pickOne } from "@Src/utils";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
@@ -43,7 +43,7 @@ export function makeWpModApplier(
   divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
-  recipientName: "resisReduct",
+  recipientName: "resistReduct",
   keys: (AttackElement | "def") | (AttackElement | "def")[],
   baseBuffValue: NumOrArrayNum,
   divider?: NumOrArrayNum

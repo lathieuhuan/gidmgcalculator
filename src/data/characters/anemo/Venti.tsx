@@ -2,7 +2,7 @@ import type { ApplyCharDebuffFn, DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const applyC2Debuff: ApplyCharDebuffFn = ({ resistReduct, desc, tracker }) => {

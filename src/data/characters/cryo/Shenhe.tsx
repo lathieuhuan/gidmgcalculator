@@ -9,7 +9,7 @@ import {
   getInput,
   increaseAttackBonus,
   makeModApplier,
-} from "@Src/calculators/utils";
+} from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 

@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DataCharacter = {
@@ -115,7 +115,7 @@ const ElectroMC: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resisReduct", "electro", 15),
+      applyDebuff: makeModApplier("resistReduct", "electro", 15),
     },
   ],
 };

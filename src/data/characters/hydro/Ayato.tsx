@@ -11,7 +11,7 @@ import { EModAffect } from "@Src/constants";
 import { NORMAL_ATTACKS } from "@Src/constants";
 import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
 const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>

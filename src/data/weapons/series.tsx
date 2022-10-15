@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { round2 } from "@Src/utils";
-import { getInput, applyModifier } from "@Src/calculators/utils";
+import { getInput, applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;

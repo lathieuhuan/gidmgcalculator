@@ -12,7 +12,7 @@ import { Electro, Green, Red } from "@Src/styled-components";
 import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
-import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
 export const isshinBonusMults = [

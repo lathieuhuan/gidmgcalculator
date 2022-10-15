@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { LiyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const goldClaymores: DataWeapon[] = [

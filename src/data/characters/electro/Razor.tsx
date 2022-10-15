@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const getEBBuffValue = (level: number) => {
@@ -165,7 +165,7 @@ const Razor: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resisReduct", "def", 15),
+      applyDebuff: makeModApplier("resistReduct", "def", 15),
     },
   ],
 };

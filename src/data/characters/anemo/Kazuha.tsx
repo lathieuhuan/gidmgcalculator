@@ -3,7 +3,7 @@ import { Anemo, Green, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round2 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Src/calculators/utils";
+import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 

@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1, CullTheWeak } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Src/calculators/utils";
+import { getInput, applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const otherClaymores: DataWeapon[] = [

@@ -3,12 +3,7 @@ import { Geo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import {
-  applyModifier,
-  makeModApplier,
-  increaseAttackBonus,
-  getInput,
-} from "@Src/calculators/utils";
+import { applyModifier, makeModApplier, increaseAttackBonus, getInput } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);

@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
-import { getInput, applyModifier } from "@Src/calculators/utils";
+import { getInput, applyModifier } from "@Calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 

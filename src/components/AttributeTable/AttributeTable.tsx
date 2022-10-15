@@ -3,7 +3,7 @@ import { FaCaretDown } from "react-icons/fa";
 import cn from "classnames";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
-import { getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/calculators/utils";
+import { getRxnBonusesFromEM } from "@Calculators/utils";
 
 import { Green } from "@Src/styled-components";
 import { StatsTable } from "@Components/StatsTable";

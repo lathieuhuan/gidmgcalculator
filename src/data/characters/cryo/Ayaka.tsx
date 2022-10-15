@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { makeModApplier } from "@Src/calculators/utils";
+import { makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Ayaka: DataCharacter = {
@@ -158,7 +158,7 @@ const Ayaka: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resisReduct", "def", 30),
+      applyDebuff: makeModApplier("resistReduct", "def", 30),
     },
   ],
 };
