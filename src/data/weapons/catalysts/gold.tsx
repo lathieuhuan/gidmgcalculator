@@ -18,14 +18,16 @@ const goldCatalysts: DataWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "em", scale: "58" },
     applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      const sameVision = partyData.reduce((result, data) => {
-        return data.vision === charData.vision ? result + 1 : result;
-      }, 0);
-      const emBuffValue = sameVision * (24 + refi * 8);
-      const elmtDmgBuffValue = (partyData.length - sameVision) * (6 + refi * 4);
+      if (partyData) {
+        const sameVision = partyData.reduce((result, data) => {
+          return data.vision === charData.vision ? result + 1 : result;
+        }, 0);
+        const emBuffValue = sameVision * (24 + refi * 8);
+        const elmtDmgBuffValue = (partyData.length - sameVision) * (6 + refi * 4);
 
-      applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
-      applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
+        applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
+        applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
+      }
     },
     buffs: [
       {

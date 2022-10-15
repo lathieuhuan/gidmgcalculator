@@ -26,7 +26,7 @@ const purpleClaymores: DataWeapon[] = [
     buffs: [
       {
         index: 0,
-        affect: EModAffect.SELF,
+        affect: EModAffect.ONE_UNIT,
         applyBuff: makeWpModApplier("totalAttr", "em", 60),
         desc: ({ refi }) => findByCode(purpleClaymores, 136)!.passiveDesc({ refi }).extra?.[0],
       },

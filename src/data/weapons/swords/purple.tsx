@@ -51,7 +51,7 @@ const purpleSwords: DataWeapon[] = [
     buffs: [
       {
         index: 0,
-        affect: EModAffect.PARTY,
+        affect: EModAffect.ONE_UNIT,
         applyBuff: makeWpModApplier("totalAttr", "em", 60),
         desc: ({ refi }) => findByCode(purpleSwords, 134)!.passiveDesc({ refi }).extra?.[0],
       },

@@ -82,7 +82,7 @@ const otherCatalysts: DataWeapon[] = [
     buffs: [
       {
         index: 0,
-        affect: EModAffect.TEAMMATE,
+        affect: EModAffect.ONE_UNIT,
         applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
         desc: ({ refi }) => findByCode(otherCatalysts, 29)!.passiveDesc({ refi }).core,
       },
