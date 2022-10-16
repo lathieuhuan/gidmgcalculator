@@ -140,8 +140,10 @@ type NoStatsAbility = {
 
 type AbilityModifier = {
   index: number;
+  // #to-remove
   outdated?: boolean;
   src: string;
+  isInnate?: boolean;
   isGranted?: (char: CharInfo) => boolean;
 };
 

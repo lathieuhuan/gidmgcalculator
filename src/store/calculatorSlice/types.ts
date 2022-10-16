@@ -14,6 +14,7 @@ import type {
 export type CalculatorState = {
   activeId: number;
   configs: CalcConfigurations;
+  isError: boolean;
 
   charData: CalcCharData;
   setupManageInfos: CalcSetupManageInfo[];
@@ -31,9 +32,6 @@ export type CalculatorState = {
 
   target: Target;
   monster: Monster;
-
-  isError: boolean;
-  touched: boolean;
 };
 
 export type CalcConfigurations = {

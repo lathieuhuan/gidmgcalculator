@@ -100,7 +100,7 @@ export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
 
   if (buffs) {
     for (const buff of buffs) {
-      if (buff.outdated || buff.affect === EModAffect.TEAMMATE) {
+      if (buff.affect === EModAffect.TEAMMATE) {
         continue;
       }
       const node: ModifierCtrl = {
@@ -123,7 +123,7 @@ export function getSubWeaponBuffCtrls(weapon: { type: Weapon; code: number }) {
 
   if (weaponData && weaponData.buffs) {
     for (const buff of weaponData.buffs) {
-      if (buff.outdated || buff.affect === "self") {
+      if (buff.affect === "self") {
         continue;
       }
       const node: SubWeaponBuffCtrl = {

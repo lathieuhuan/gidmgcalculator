@@ -194,13 +194,13 @@ export type FinalInfusion = Record<NormalAttack, AttackElement>;
 
 export type Talent = typeof TALENT_TYPES[number];
 
-type CalculatedStat = Record<"nonCrit" | "crit" | "average", number | number[]>;
+type CalculatedDamage = Record<"nonCrit" | "crit" | "average", number | number[]>;
 
-type CalculatedStatCluster = {
-  [k: string]: CalculatedStat;
+type CalculatedDamageCluster = {
+  [k: string]: CalculatedDamage;
 };
 
-export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedStatCluster>;
+export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
 export type PartyData = {
   name: string;
