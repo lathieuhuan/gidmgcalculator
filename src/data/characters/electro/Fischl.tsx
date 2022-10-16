@@ -1,8 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Fischl: DataCharacter = {
   code: 8,
@@ -74,11 +73,7 @@ const Fischl: DataCharacter = {
         {
           name: "Summoning DMG",
           baseMult: 115.44,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Fischl.buffs!, char, selfBuffCtrls, 2);
-
-            return talentBuff([isActivated, "mult", [false, 2], 200]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
         },
         {
           name: "Thundering Retribution (A4)",
@@ -126,9 +121,8 @@ const Fischl: DataCharacter = {
     { name: "Against the Fleeing Light", image: "5/5f/Constellation_Against_the_Fleeing_Light" },
     { name: "Evernight Raven", image: "4/4e/Constellation_Evernight_Raven" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 2,
       src: EModSrc.C2,
       desc: () => (
         <>
@@ -137,7 +131,6 @@ const Fischl: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
     },
   ],
 };

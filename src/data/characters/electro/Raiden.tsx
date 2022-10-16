@@ -187,6 +187,24 @@ const Raiden: DataCharacter = {
     { name: "Shogun's Descent", image: "8/85/Constellation_Shogun%27s_Descent" },
     { name: "Wishbearer", image: "5/5e/Constellation_Wishbearer" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: ({ totalAttr }) => (
+        <>
+          Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> that the Raiden Shogun
+          possesses grants her:
+          <br />• <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
+          <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
+        </>
+      ),
+      isGranted: checkAscs[4],
+      applyBuff: ({ totalAttr, desc, tracker }) => {
+        const buffValue = getBuffValue.A4(totalAttr);
+        applyModifier(desc, totalAttr, "electro", buffValue, tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -241,24 +259,6 @@ const Raiden: DataCharacter = {
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: false,
-      },
-    },
-    {
-      index: 2,
-      src: EModSrc.A4,
-      desc: ({ totalAttr }) => (
-        <>
-          Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> that the Raiden Shogun
-          possesses grants her:
-          <br />• <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
-          <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyBuff: ({ totalAttr, desc, tracker }) => {
-        const buffValue = getBuffValue.A4(totalAttr);
-        applyModifier(desc, totalAttr, "electro", buffValue, tracker);
       },
     },
     {

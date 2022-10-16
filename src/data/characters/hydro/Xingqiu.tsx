@@ -85,19 +85,19 @@ const Xingqiu: DataCharacter = {
       image: "9/91/Constellation_Hence%2C_Call_Them_My_Own_Verses",
     },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.A4,
+      isGranted: checkAscs[4],
       desc: () => (
         <>
           Xingqiu gains a <Green b>20%</Green> <Green>Hydro DMG Bonus</Green>.
         </>
       ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "hydro", 20),
     },
+  ],
+  buffs: [
     {
       index: 1,
       src: EModSrc.C4,

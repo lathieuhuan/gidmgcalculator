@@ -111,6 +111,28 @@ const Zhongli: DataCharacter = {
       image: "7/7c/Constellation_Chrysos%2C_Bounty_of_Dominator",
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />• Normal Attack, Charged
+          Attack, and Plunging Attack DMG increased by <Green b>1.39%</Green> of Max HP.
+          <br />• Dominus Lapidis Stone Stele, resonance, and hold DMG increased by{" "}
+          <Green b>1.9%</Green> of Max HP.
+          <br />• Planet Befall DMG increased by <Green b>33%</Green> of Max HP.
+        </>
+      ),
+      isGranted: checkAscs[4],
+      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+        const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "PA.flat", "ES.flat", "EB.flat"];
+        const bnValues = [1.39, 1.39, 1.39, 1.9, 33].map((mult) =>
+          applyPercent(totalAttr.hp, mult)
+        );
+        applyModifier(desc, attPattBonus, fields, bnValues, tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -133,28 +155,6 @@ const Zhongli: DataCharacter = {
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />• Normal Attack, Charged
-          Attack, and Plunging Attack DMG increased by <Green b>1.39%</Green> of Max HP.
-          <br />• Dominus Lapidis Stone Stele, resonance, and hold DMG increased by{" "}
-          <Green b>1.9%</Green> of Max HP.
-          <br />• Planet Befall DMG increased by <Green b>33%</Green> of Max HP.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "PA.flat", "ES.flat", "EB.flat"];
-        const bnValues = [1.39, 1.39, 1.39, 1.9, 33].map((mult) =>
-          applyPercent(totalAttr.hp, mult)
-        );
-        applyModifier(desc, attPattBonus, fields, bnValues, tracker);
       },
     },
   ],

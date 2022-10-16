@@ -11,14 +11,13 @@ const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   return talentBuff([isActivated, "pct", [false, 2], buffValue]);
 };
 
-const getC6TalentBuff =
-  (index: number): GetTalentBuffFn =>
-  ({ char, selfBuffCtrls, totalAttr }) => {
-    const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 2);
+const getC6TalentBuff = (index: number): GetTalentBuffFn => {
+  return ({ char, totalAttr }) => {
     const buffValue = Math.min(totalAttr.em, 2000) * (index ? 3 : 0.2);
 
-    return talentBuff([isActivated, index ? "flat" : "mult", [false, 6], buffValue]);
+    return talentBuff([checkCons[6](char), index ? "flat" : "mult", [false, 6], buffValue]);
   };
+};
 
 const Sayu: DataCharacter = {
   code: 36,
@@ -146,6 +145,21 @@ const Sayu: DataCharacter = {
     { name: "Speed Comes First", image: "a/aa/Constellation_Speed_Comes_First" },
     { name: "Sleep O'Clock", image: "2/22/Constellation_Sleep_O%27Clock" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C6,
+      desc: () => (
+        <>
+          Each point of Sayu's <Green>Elemental Mastery</Green> will:
+          <br />• Increases <Green>DMG</Green> dealt by the Daruma's attacks by{" "}
+          <Green b>0.2%</Green> <Green>ATK</Green>, up to <Green b>400%</Green> ATK.
+          <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to{" "}
+          <Green b>6,000</Green> additional HP.
+        </>
+      ),
+      isGranted: checkCons[6],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -183,21 +197,6 @@ const Sayu: DataCharacter = {
         initialValues: [0],
         maxValues: [10],
       },
-    },
-    {
-      index: 2,
-      src: "Constellation 6",
-      desc: () => (
-        <>
-          Each point of Sayu's <Green>Elemental Mastery</Green> will:
-          <br />• Increases <Green>DMG</Green> dealt by the Daruma's attacks by{" "}
-          <Green b>0.2%</Green> <Green>ATK</Green>, up to <Green b>400%</Green> ATK.
-          <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to{" "}
-          <Green b>6,000</Green> additional HP.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
     },
   ],
 };

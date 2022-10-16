@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkCons, talentBuff } from "../utils";
+import { checkCons, talentBuff } from "../utils";
 
 const Diona: DataCharacter = {
   code: 24,
@@ -62,10 +62,7 @@ const Diona: DataCharacter = {
           baseMult: 7.2,
           multType: 2,
           flat: { base: 693, type: 3 },
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const C2IsActivated = charModIsInUse(Diona.buffs!, char, selfBuffCtrls, 0);
-            return talentBuff([C2IsActivated, "pct", [false, 1], 15]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "pct", [false, 1], 15]),
         },
       ],
       // getExtraStats: (lv) => [
@@ -110,9 +107,8 @@ const Diona: DataCharacter = {
     { name: "Double Shot, On The Rocks", image: "b/b4/Constellation_Double_Shot%2C_on_the_Rocks" },
     { name: "Cat's Tail Closing Time", image: "2/2f/Constellation_Cat%27s_Tail_Closing_Time" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.C2,
       desc: () => (
         <>
@@ -121,9 +117,10 @@ const Diona: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "ES.pct", 15),
     },
+  ],
+  buffs: [
     {
       index: 1,
       src: EModSrc.C6,

@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const Kokomi: DataCharacter = {
   code: 42,
@@ -117,6 +117,19 @@ const Kokomi: DataCharacter = {
     },
     { name: "Sango Isshin", image: "3/3b/Constellation_Sango_Isshin" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          During Nereid's Ascension, the <Green>Normal and Charged Attack DMG Bonus</Green> Kokomi
+          gains based on her <Green>Max HP</Green> will receive a further increase based on{" "}
+          <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
+        </>
+      ),
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -133,29 +146,17 @@ const Kokomi: DataCharacter = {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
         const level = finalTalentLv(char, "EB", obj.partyData);
+        const A4BuffIsActivated = checkAscs[4](char);
 
         const bnValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];
-          if (charModIsInUse(Kokomi.buffs!, char, obj.charBuffCtrls, 1) && i !== 2) {
+          if (A4BuffIsActivated && i !== 2) {
             finalMult += obj.totalAttr.healBn * 0.15;
           }
           return applyPercent(obj.totalAttr.hp, finalMult);
         });
         applyModifier(obj.desc, obj.attPattBonus, fields, bnValues, obj.tracker);
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          During Nereid's Ascension, the <Green>Normal and Charged Attack DMG Bonus</Green> Kokomi
-          gains based on her <Green>Max HP</Green> will receive a further increase based on{" "}
-          <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
     },
     {
       index: 2,

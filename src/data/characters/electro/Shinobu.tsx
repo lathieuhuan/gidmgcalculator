@@ -3,16 +3,15 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA4TAlentBuff =
-  (index: number): GetTalentBuffFn =>
-  ({ totalAttr, char, selfBuffCtrls }) => {
-    const isActivated = charModIsInUse(Shinobu.buffs!, char, selfBuffCtrls, 1);
+const getA4TAlentBuff = (index: number): GetTalentBuffFn => {
+  return ({ totalAttr, char }) => {
     const buffValue = Math.round(totalAttr.em * (index ? 0.25 : 0.75));
 
-    return talentBuff([isActivated, "flat", [true, 4], buffValue]);
+    return talentBuff([checkAscs[4](char), "flat", [true, 4], buffValue]);
   };
+};
 
 const Shinobu: DataCharacter = {
   code: 52,
@@ -110,6 +109,21 @@ const Shinobu: DataCharacter = {
     { name: "To Cease Courtesies", image: "6/6f/Constellation_To_Cease_Courtesies" },
     { name: "To Ward Weakness", image: "9/9f/Constellation_To_Ward_Weakness" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          Sanctifying Ring's abilities will be boosted based on Shinobu's Elemental Mastery:
+          <br />• <Green>Healing amount</Green> will be increased by <Green b>75%</Green> of{" "}
+          <Green>Elemental Mastery</Green>.
+          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of{" "}
+          <Green>Elemental Mastery</Green>.
+        </>
+      ),
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -123,21 +137,6 @@ const Shinobu: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "healBn", 15),
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          Sanctifying Ring's abilities will be boosted based on Shinobu's Elemental Mastery:
-          <br />• <Green>Healing amount</Green> will be increased by <Green b>75%</Green> of{" "}
-          <Green>Elemental Mastery</Green>.
-          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of{" "}
-          <Green>Elemental Mastery</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
     },
     {
       index: 2,

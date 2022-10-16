@@ -4,12 +4,10 @@ import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
-  const isActivated = charModIsInUse(Itto.buffs!, char, selfBuffCtrls, 1);
-
-  return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
+const getA4TalentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
+  return talentBuff([checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
 };
 
 const Itto: DataCharacter = {
@@ -135,6 +133,28 @@ const Itto: DataCharacter = {
     },
     { name: "Arataki Itto, Present!", image: "8/89/Constellation_Arataki_Itto%2C_Present%21" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's{" "}
+          <Green>DEF</Green>.
+        </>
+      ),
+      isGranted: checkAscs[4],
+    },
+    {
+      src: EModSrc.C6,
+      desc: () => (
+        <>
+          Itto's <Green>Charged Attacks</Green> deal <Green b>+70%</Green> <Green>CRIT DMG</Green>.
+        </>
+      ),
+      isGranted: checkCons[6],
+      applyBuff: makeModApplier("attPattBonus", "CA.cDmg", 70),
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -158,18 +178,6 @@ const Itto: DataCharacter = {
       },
     },
     {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's{" "}
-          <Green>DEF</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-    },
-    {
       index: 2,
       src: EModSrc.C4,
       desc: () => (
@@ -182,18 +190,6 @@ const Itto: DataCharacter = {
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", ["def_", "atk_"], 20),
-    },
-    {
-      index: 3,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          Itto's <Green>Charged Attacks</Green> deal <Green b>+70%</Green> <Green>CRIT DMG</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("attPattBonus", "CA.cDmg", 70),
     },
   ],
 };

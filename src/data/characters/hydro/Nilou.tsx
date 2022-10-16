@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { countVision, round1 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 import nilouImg from "@Src/assets/images/nilou.png";
 
@@ -60,10 +60,7 @@ const Nilou: DataCharacter = {
           name: "Watery Moon DMG",
           baseStatType: "hp",
           baseMult: 7.17,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Nilou.buffs!, char, selfBuffCtrls, 2);
-            talentBuff([isActivated, "pct", [false, 1], 65]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 65]),
         },
         { name: "Whirling Steps 1-Hit DMG", baseStatType: "hp", baseMult: 3.26 },
         { name: "Whirling Steps 2-Hit DMG", baseStatType: "hp", baseMult: 3.96 },
@@ -212,6 +209,29 @@ const Nilou: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C1,
+      isGranted: checkCons[1],
+      desc: () => Nilou.constellation[0].xtraDesc?.[0],
+    },
+    {
+      src: EModSrc.C4,
+      isGranted: checkCons[4],
+      desc: () => Nilou.constellation[3].xtraDesc?.[0],
+      applyBuff: makeModApplier("attPattBonus", "EB.pct", 50),
+    },
+    {
+      src: EModSrc.C6,
+      desc: () => Nilou.constellation[5].desc,
+      isGranted: checkCons[6],
+      applyBuff: ({ totalAttr, desc, tracker }) => {
+        const baseValue = round1(Math.min((totalAttr.hp / 1000) * 0.6, 30));
+        const buffValues = [baseValue, baseValue * 2];
+        applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValues, tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -251,33 +271,6 @@ const Nilou: DataCharacter = {
         );
       },
       isGranted: checkAscs[4],
-    },
-    {
-      index: 2,
-      src: EModSrc.C1,
-      affect: EModAffect.SELF,
-      isGranted: checkCons[1],
-      desc: () => Nilou.constellation[0].xtraDesc?.[0],
-    },
-    {
-      index: 3,
-      src: EModSrc.C4,
-      affect: EModAffect.SELF,
-      desc: () => Nilou.constellation[3].xtraDesc?.[0],
-      isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 50),
-    },
-    {
-      index: 4,
-      src: EModSrc.C6,
-      affect: EModAffect.SELF,
-      desc: () => Nilou.constellation[5].desc,
-      isGranted: checkCons[6],
-      applyFinalBuff: ({ totalAttr, desc, tracker }) => {
-        const baseValue = round1(Math.min((totalAttr.hp / 1000) * 0.6, 30));
-        const buffValues = [baseValue, baseValue * 2];
-        applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValues, tracker);
-      },
     },
   ],
   debuffs: [

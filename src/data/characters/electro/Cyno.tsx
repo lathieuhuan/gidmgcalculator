@@ -5,13 +5,8 @@ import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) =>
-  talentBuff([charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1), "pct", [true, 1], 35]);
-
-const getA4talentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls, totalAttr }) => {
-  const isActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 2);
-
-  return talentBuff([isActivated, "flat", [true, 4], Math.round(totalAttr.em * 1.5)]);
+const getA4talentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
+  return talentBuff([checkAscs[4](char), "flat", [true, 4], Math.round(totalAttr.em * 1.5)]);
 };
 
 const Cyno: DataCharacter = {
@@ -62,23 +57,23 @@ const Cyno: DataCharacter = {
         {
           name: "Skill DMG",
           baseMult: 130.4,
-          getTalentBuff: getA1TalentBuff,
         },
         {
           name: "Mortuary Rite DMG",
           baseMult: 156.8,
-          getTalentBuff: getA1TalentBuff,
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const A1BuffisActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1);
+            return talentBuff([A1BuffisActivated, "pct", [true, 1], 35]);
+          },
         },
         {
           name: "Duststalker Bolt DMG (A1)",
           baseMult: 0,
           conditional: true,
-          getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
-            const A4IsActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 2);
-
+          getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
               [checkAscs[1](char), "mult", [true, 1], 100],
-              [A4IsActivated, "flat", [true, 4], totalAttr.em * 2.5]
+              [checkAscs[4](char), "flat", [true, 4], totalAttr.em * 2.5]
             );
           },
         },
@@ -250,6 +245,13 @@ const Cyno: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => Cyno.passiveTalents[1].desc,
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -275,13 +277,6 @@ const Cyno: DataCharacter = {
       src: EModSrc.A1,
       desc: () => Cyno.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
-    },
-    {
-      index: 2,
-      src: EModSrc.A4,
-      desc: () => Cyno.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
       affect: EModAffect.SELF,
     },
     {

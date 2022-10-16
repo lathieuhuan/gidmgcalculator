@@ -147,7 +147,7 @@ const Ganyu: DataCharacter = {
     },
     {
       index: 2,
-      src: "Constellation 4",
+      src: EModSrc.C4,
       desc: () => (
         <>
           Opponents within Celestial Shower take increased DMG. This effect strengthens over time.
@@ -172,7 +172,7 @@ const Ganyu: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: "Constellation 1",
+      src: EModSrc.C1,
       desc: () => (
         <>
           Charge Level 2 Frostflake Arrows or Frostflake Arrow Blooms decrease opponents'{" "}

@@ -71,7 +71,7 @@ const Nahida: DataCharacter = {
             let buffValue = 0;
             let desc = [];
             const EBBuffIsActivated = modIsActivated(selfBuffCtrls, 0);
-            const A4BuffIsActivated = charModIsInUse(Nahida.buffs!, char, selfBuffCtrls, 2);
+            const A4BuffIsActivated = checkAscs[4](char);
             const excessEM = Math.max(totalAttr.em - 200, 0);
 
             if (EBBuffIsActivated) {
@@ -246,6 +246,13 @@ const Nahida: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => Nahida.passiveTalents[1].desc,
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -279,13 +286,6 @@ const Nahida: DataCharacter = {
       applyFinalBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", Math.min(getInput(inputs, 0, 0) * 0.2, 200), tracker);
       },
-    },
-    {
-      index: 2,
-      src: EModSrc.A4,
-      desc: () => Nahida.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
     },
     {
       index: 3,

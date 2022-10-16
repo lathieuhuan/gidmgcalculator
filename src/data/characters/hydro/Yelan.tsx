@@ -120,9 +120,8 @@ const Yelan: DataCharacter = {
     { name: "Dealer's Sleight", image: "6/6f/Constellation_Dealer%27s_Sleight" },
     { name: "Winner Take All", image: "5/59/Constellation_Winner_Takes_All" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.A1,
       desc: ({ charData, partyData }) => {
         const n = countVisionTypes(charData, partyData);
@@ -137,7 +136,6 @@ const Yelan: DataCharacter = {
         );
       },
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
         const typeCount = countVisionTypes(charData, partyData);
         let buffValue = typeCount * 6;
@@ -148,6 +146,8 @@ const Yelan: DataCharacter = {
         applyModifier(desc, totalAttr, "hp_", buffValue, tracker);
       },
     },
+  ],
+  buffs: [
     {
       index: 1,
       src: EModSrc.A4,

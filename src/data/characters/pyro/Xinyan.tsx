@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Xinyan: DataCharacter = {
   code: 27,
@@ -93,11 +93,7 @@ const Xinyan: DataCharacter = {
           name: "Physical Burst DMG",
           dmgTypes: ["EB", "phys"],
           baseMult: 340.8,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Xinyan.buffs!, char, selfBuffCtrls, 2);
-
-            return talentBuff([isActivated, "cRate", [false, 2], 100]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "cRate", [false, 2], 100]),
         },
         { name: "Pyro DoT", baseMult: 40 },
       ],
@@ -130,6 +126,31 @@ const Xinyan: DataCharacter = {
       image: "4/40/Constellation_Rockin%27_in_a_Flaming_World",
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C2,
+      desc: () => (
+        <>
+          <Green>Riff Revolution's Physical DMG</Green> has its <Green>CRIT Rate</Green> increased
+          by <Green b>100%</Green>.
+        </>
+      ),
+      isGranted: checkCons[2],
+    },
+    {
+      src: EModSrc.C6,
+      desc: () => (
+        <>
+          Xinyan's <Green>Charged Attacks</Green> gain an <Green>ATK Bonus</Green> equal to{" "}
+          <Green b>50%</Green> of her <Green>DEF</Green>.
+        </>
+      ),
+      isGranted: checkCons[6],
+      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+        applyModifier(desc, attPattBonus, "CA.flat", Math.round(totalAttr.def / 2), tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -156,33 +177,6 @@ const Xinyan: DataCharacter = {
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", ["naAtkSpd", "caAtkSpd"], 12),
-    },
-    {
-      index: 2,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          <Green>Riff Revolution's Physical DMG</Green> has its <Green>CRIT Rate</Green> increased
-          by <Green b>100%</Green>.
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.SELF,
-    },
-    {
-      index: 3,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          Xinyan's <Green>Charged Attacks</Green> gain an <Green>ATK Bonus</Green> equal to{" "}
-          <Green b>50%</Green> of her <Green>DEF</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
-      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.flat", Math.round(totalAttr.def / 2), tracker);
-      },
     },
   ],
   debuffs: [

@@ -50,7 +50,7 @@ function applySelfBuffs(
 
   if (!isFinal) {
     for (const { src, isGranted, applyBuff } of innateBuffs) {
-      if (isGranted(char)) {
+      if (isGranted(char) && applyBuff) {
         applyBuff({ ...wrapper, ...wrapper2, partyData, desc: `Self / ${src}` });
       }
     }

@@ -1,6 +1,5 @@
 import type { DataCharacter, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
@@ -57,9 +56,8 @@ const AnemoMC: DataCharacter = {
     { name: "Vortex Stellaris", image: "9/98/Constellation_Vortex_Stellaris" },
     { name: "Intertwined Winds", image: "8/87/Constellation_Intertwined_Winds" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.C2,
       desc: () => (
         <>
@@ -67,7 +65,6 @@ const AnemoMC: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "er", 16),
     },
   ],

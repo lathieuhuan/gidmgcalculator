@@ -4,7 +4,7 @@ import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkCons, talentBuff } from "../utils";
+import { checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
   const baseATK = getInput(inputs, 0, 0);
@@ -17,7 +17,7 @@ function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
     mult += 20;
     desc += ` / C1: 20% extra`;
   }
-  return [applyPercent(+baseATK, mult), desc + ` / ${round2(mult)}% of ${baseATK} Base ATK`];
+  return [applyPercent(baseATK, mult), desc + ` / ${round2(mult)}% of ${baseATK} Base ATK`];
 }
 
 const Bennett: DataCharacter = {
@@ -89,14 +89,11 @@ const Bennett: DataCharacter = {
         },
         {
           name: "ATK Bonus",
+          notAttack: "other",
           baseStatType: "base_atk",
           baseMult: 56,
           multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Bennett.buffs!, char, selfBuffCtrls, 1);
-
-            return talentBuff([isActivated, "mult", [false, 1], 20]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "mult", [false, 1], 20]),
         },
       ],
       // getExtraStats: () => [
@@ -119,6 +116,18 @@ const Bennett: DataCharacter = {
     { name: "True Explorer", image: "3/39/Constellation_True_Explorer" },
     { name: "Fire Ventures with Me", image: "3/3a/Constellation_Fire_Ventures_With_Me" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C1,
+      desc: () => (
+        <>
+          Fantastic Voyage's ATK increase gains an additional <Green b>20%</Green> of Bennett's{" "}
+          <Green>Base ATK</Green>.
+        </>
+      ),
+      isGranted: checkCons[1],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -139,28 +148,12 @@ const Bennett: DataCharacter = {
       applyBuff: (obj) => {
         const { char, totalAttr } = obj;
         const args = obj.toSelf
-          ? [
-              totalAttr.base_atk,
-              finalTalentLv(obj.char, "EB", obj.partyData),
-              !!charModIsInUse(Bennett.buffs!, char, obj.charBuffCtrls, 1),
-            ]
+          ? [totalAttr.base_atk, finalTalentLv(obj.char, "EB", obj.partyData), checkCons[1](char)]
           : obj.inputs;
         const [buffValue, xtraDesc] = getEBBuffValue(args);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.C1,
-      desc: () => (
-        <>
-          Fantastic Voyage's ATK increase gains an additional <Green b>20%</Green> of Bennett's{" "}
-          <Green>Base ATK</Green>.
-        </>
-      ),
-      isGranted: checkCons[1],
-      affect: EModAffect.SELF,
     },
     {
       index: 2,

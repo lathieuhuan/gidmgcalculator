@@ -110,6 +110,21 @@ const HuTao: DataCharacter = {
     { name: "Floral Incense", image: "f/f2/Constellation_Floral_Incense" },
     { name: "Butterfly's Embrace", image: "0/09/Constellation_Butterfly%27s_Embrace" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C2,
+      desc: () => (
+        <>
+          Increases the <Green>Blood Blossom DMG</Green> by an amount equal to <Green b>10%</Green>{" "}
+          of Hu Tao's <Green>Max HP</Green>
+        </>
+      ),
+      isGranted: checkCons[2],
+      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+        applyModifier(desc, attPattBonus, "ES.flat", Math.round(totalAttr.hp / 10), tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -158,21 +173,6 @@ const HuTao: DataCharacter = {
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "pyro", 33),
-    },
-    {
-      index: 3,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          Increases the <Green>Blood Blossom DMG</Green> by an amount equal to <Green b>10%</Green>{" "}
-          of Hu Tao's <Green>Max HP</Green>
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.SELF,
-      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.flat", Math.round(totalAttr.hp / 10), tracker);
-      },
     },
     {
       index: 5,

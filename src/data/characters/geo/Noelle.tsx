@@ -4,7 +4,7 @@ import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkCons, talentBuff } from "../utils";
+import { checkCons, talentBuff } from "../utils";
 
 const Noelle: DataCharacter = {
   code: 14,
@@ -91,11 +91,7 @@ const Noelle: DataCharacter = {
           baseStatType: "def",
           baseMult: 40,
           multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Noelle.buffs!, char, selfBuffCtrls, 2);
-
-            return talentBuff([isActivated, "mult", [false, 6], 50]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 50]),
         },
       ],
       // getExtraStats: () => [
@@ -118,6 +114,28 @@ const Noelle: DataCharacter = {
     { name: "Favonius Sweeper Master", image: "3/3f/Constellation_Favonius_Sweeper_Master" },
     { name: "Must Be Spotless", image: "1/14/Constellation_Must_Be_Spotless" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C2,
+      desc: () => (
+        <>
+          Increases her <Green>Charged Attack DMG</Green> by <Green b>15%</Green>.
+        </>
+      ),
+      isGranted: checkCons[2],
+      applyBuff: makeModApplier("attPattBonus", "CA.pct", 15),
+    },
+    {
+      src: EModSrc.C6,
+      desc: () => (
+        <>
+          <Green>Sweeping Time</Green> increases Noelle's <Green>ATK</Green> by an additional{" "}
+          <Green b>50%</Green> of her <Green>DEF</Green>.
+        </>
+      ),
+      isGranted: checkCons[6],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -130,42 +148,15 @@ const Noelle: DataCharacter = {
         </>
       ),
       affect: EModAffect.SELF,
-      applyFinalBuff: ({ totalAttr, char, charBuffCtrls, partyData, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv(char, "EB", partyData);
-        let mult = 40 * TALENT_LV_MULTIPLIERS[2][level];
-        if (charModIsInUse(Noelle.buffs!, char, charBuffCtrls, 2)) {
-          mult += 50;
-        }
+        const mult = 40 * TALENT_LV_MULTIPLIERS[2][level] + (checkCons[6](char) ? 50 : 0);
         applyModifier(desc, totalAttr, "atk", applyPercent(totalAttr.def, mult), tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          Increases her <Green>Charged Attack DMG</Green> by <Green b>15%</Green>.
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("attPattBonus", "CA.pct", 15),
-    },
-    {
-      index: 2,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          <Green>Sweeping Time</Green> increases Noelle's <Green>ATK</Green> by an additional{" "}
-          <Green b>50%</Green> of her <Green>DEF</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
     },
   ],
 };

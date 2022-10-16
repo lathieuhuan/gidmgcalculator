@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 import laylaImg from "@Src/assets/images/layla.png";
 
@@ -57,11 +57,10 @@ const Layla: DataCharacter = {
         {
           name: "Shooting Star DMG",
           baseMult: 17.1,
-          getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
-            const A4IsActivated = charModIsInUse(Layla.buffs!, char, selfBuffCtrls, 1);
+          getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
-              [A4IsActivated, "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
-              [charModIsInUse(Layla.buffs!, char, selfBuffCtrls, 4), "pct", [false, 6], 40]
+              [checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
+              [checkCons[6](char), "pct", [false, 6], 40]
             );
           },
         },
@@ -72,10 +71,7 @@ const Layla: DataCharacter = {
           baseMult: 10.8,
           multType: 2,
           flat: { base: 1040, type: 3 },
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const C1IsActivated = charModIsInUse(Layla.buffs!, char, selfBuffCtrls, 2);
-            return talentBuff([C1IsActivated, "pct", [false, 1], 20]);
-          },
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 20]),
         },
       ],
       // getExtraStats: (lv) => [{ name: "Shield Duration", value: "12s" }],
@@ -203,6 +199,24 @@ const Layla: DataCharacter = {
       ],
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => Layla.passiveTalents[1].desc,
+      isGranted: checkAscs[4],
+    },
+    {
+      src: EModSrc.C1,
+      desc: () => Layla.constellation[0].xtraDesc![0],
+      isGranted: checkCons[1],
+    },
+    {
+      src: EModSrc.C6,
+      desc: () => Layla.constellation[5].xtraDesc![0],
+      isGranted: checkCons[6],
+      applyBuff: makeModApplier("attPattBonus", "EB.pct", 40),
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -222,20 +236,6 @@ const Layla: DataCharacter = {
       },
     },
     {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => Layla.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-    },
-    {
-      index: 2,
-      src: EModSrc.C1,
-      desc: () => Layla.constellation[0].xtraDesc![0],
-      isGranted: checkCons[1],
-      affect: EModAffect.SELF,
-    },
-    {
       index: 3,
       src: EModSrc.C4,
       desc: () => Layla.constellation[3].xtraDesc![0],
@@ -252,14 +252,6 @@ const Layla: DataCharacter = {
         const buffValue = applyPercent(maxHP, 5);
         applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       },
-    },
-    {
-      index: 4,
-      src: EModSrc.C6,
-      desc: () => Layla.constellation[5].xtraDesc![0],
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 40),
     },
   ],
 };

@@ -142,13 +142,11 @@ type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
   desc: (args: {
-    // char: CharInfo;
-    // charData: CalcCharData;
-    // charBuffCtrls: ModifierCtrl[];
-    // partyData: PartyData;
+    charData: CalcCharData;
+    partyData: PartyData;
     totalAttr: TotalAttribute;
   }) => ReactNode;
-  applyBuff: (args: ApplyCharInnateBuffArgs) => void;
+  applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
 
 type ApplyCharInnateBuffArgs = {
@@ -157,7 +155,7 @@ type ApplyCharInnateBuffArgs = {
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   // char: CharInfo;
-  // charData: CalcCharData;
+  charData: CalcCharData;
   partyData: PartyData;
   charBuffCtrls: ModifierCtrl[];
   desc: string;

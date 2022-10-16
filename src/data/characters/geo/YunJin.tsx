@@ -4,14 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import {
-  charModIsInUse,
-  checkAscs,
-  modIsActivated,
-  countVisionTypes,
-  talentBuff,
-  checkCons,
-} from "../utils";
+import { checkAscs, modIsActivated, countVisionTypes, talentBuff, checkCons } from "../utils";
 
 const getA4BuffValue = (
   toSelf: boolean,
@@ -22,10 +15,7 @@ const getA4BuffValue = (
 ) => {
   let result = 0;
 
-  if (
-    (toSelf && charModIsInUse(YunJin.buffs!, char, buffCtrls, 1)) ||
-    (!toSelf && modIsActivated(buffCtrls, 1))
-  ) {
+  if (toSelf ? checkAscs[4](char) : modIsActivated(buffCtrls, 1)) {
     const numOfElmts = countVisionTypes(charData, partyData);
     result += numOfElmts * 2.5;
 
@@ -135,6 +125,26 @@ const YunJin: DataCharacter = {
     { name: "Famed Throughout the Land", image: "f/f4/Constellation_Famed_Throughout_the_Land" },
     { name: "Decorous Harmony", image: "1/10/Constellation_Decorous_Harmony" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: ({ charData, partyData }) => {
+        const n = countVisionTypes(charData, partyData);
+        return (
+          <>
+            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation is
+            further increased by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
+            <Green className={n === 2 ? "" : "opacity-50"}>5%</Green>/
+            <Green className={n === 3 ? "" : "opacity-50"}>7.5%</Green>/
+            <Green className={n === 4 ? "" : "opacity-50"}>11.5%</Green> of Yun Jin's{" "}
+            <Green>DEF</Green> when the party contains characters of 1/2/3/4 Elemental Types,
+            respectively.
+          </>
+        );
+      },
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -169,26 +179,6 @@ const YunJin: DataCharacter = {
         desc += ` / ${round2(tlMult)}% of ${DEF} DEF`;
         applyModifier(desc, obj.attPattBonus, "NA.flat", buffValue, obj.tracker);
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: ({ charData, partyData }) => {
-        const n = countVisionTypes(charData, partyData);
-        return (
-          <>
-            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation is
-            further increased by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
-            <Green className={n === 2 ? "" : "opacity-50"}>5%</Green>/
-            <Green className={n === 3 ? "" : "opacity-50"}>7.5%</Green>/
-            <Green className={n === 4 ? "" : "opacity-50"}>11.5%</Green> of Yun Jin's{" "}
-            <Green>DEF</Green> when the party contains characters of 1/2/3/4 Elemental Types,
-            respectively.
-          </>
-        );
-      },
-      isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
     },
     {
       index: 2,

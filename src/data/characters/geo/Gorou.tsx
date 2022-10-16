@@ -133,6 +133,25 @@ const Gorou: DataCharacter = {
       image: "9/9d/Constellation_Valiant_Hound_Mountainous_Fealty",
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          Gorou receives the following DMG Bonuses to his attacks based on his DEF:
+          <br />• <Green>Inuzaka All-Round Defense</Green>: Skill DMG increased by{" "}
+          <Green b>156%</Green> of <Green>DEF</Green>
+          <br />• <Green>Juuga: Forward Unto Victory</Green>: Skill DMG and Crystal Collapse DMG
+          increased by <Green b>15.6%</Green> of <Green>DEF</Green>
+        </>
+      ),
+      isGranted: checkAscs[4],
+      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+        const bnValues = [totalAttr.def * 1.56, totalAttr.def * 0.156];
+        applyModifier(desc, attPattBonus, ["ES.flat", "EB.flat"], bnValues, tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -198,25 +217,6 @@ const Gorou: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "def_", 25),
-    },
-    {
-      index: 2,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          Gorou receives the following DMG Bonuses to his attacks based on his DEF:
-          <br />• <Green>Inuzaka All-Round Defense</Green>: Skill DMG increased by{" "}
-          <Green b>156%</Green> of <Green>DEF</Green>
-          <br />• <Green>Juuga: Forward Unto Victory</Green>: Skill DMG and Crystal Collapse DMG
-          increased by <Green b>15.6%</Green> of <Green>DEF</Green>
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        const bnValues = [totalAttr.def * 1.56, totalAttr.def * 0.156];
-        applyModifier(desc, attPattBonus, ["ES.flat", "EB.flat"], bnValues, tracker);
-      },
     },
     {
       index: 3,

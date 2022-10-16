@@ -43,13 +43,7 @@ export function SelfBuffs() {
           key={`innate-${index}`}
           mutable={false}
           heading={src}
-          desc={desc({
-            totalAttr,
-            // char,
-            // charBuffCtrls: selfBuffCtrls,
-            // charData,
-            // partyData,
-          })}
+          desc={desc({ totalAttr, charData, partyData })}
         />
       );
     }
@@ -180,6 +174,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
           labels={labels}
           renderTypes={renderTypes}
           initialValues={initialValues}
+          maxValues={maxValues}
           inputs={validatedInputs}
           onTextChange={(value, i) =>
             dispatch(

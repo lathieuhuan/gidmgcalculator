@@ -84,23 +84,23 @@ const YaeMiko: DataCharacter = {
     { name: "Mischievous Teasing", image: "a/ac/Constellation_Mischievous_Teasing" },
     { name: "Forbidden Art: Daisesshou", image: "c/cd/Constellation_Forbidden_Art_Daisesshou" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
           Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase{" "}
-          <Green>Sesshou Sakura DMG</Green> by <Green b>0.15%</Green>.
+          <Green>Sesshou Sakura DMG</Green> by <Green b>0.15%</Green>.{" "}
           <Red>DMG Bonus: {(totalAttr.em * 15) / 100}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct", (totalAttr.em * 15) / 100, tracker);
       },
     },
+  ],
+  buffs: [
     {
       index: 2,
       src: EModSrc.C4,

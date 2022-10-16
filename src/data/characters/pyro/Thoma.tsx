@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
 const Thoma: DataCharacter = {
@@ -84,10 +84,9 @@ const Thoma: DataCharacter = {
         {
           name: "Fiery Collapse DMG",
           baseMult: 58,
-          getTalentBuff: ({ char, selfBuffCtrls, totalAttr }) => {
-            const isActivated = charModIsInUse(Thoma.buffs!, char, selfBuffCtrls, 1);
-
-            return talentBuff([isActivated, "flat", [true, 4], applyPercent(totalAttr.hp, 2.2)]);
+          getTalentBuff: ({ char, totalAttr }) => {
+            const buffValue = applyPercent(totalAttr.hp, 2.2);
+            return talentBuff([checkAscs[4](char), "flat", [true, 4], buffValue]);
           },
         },
         {
@@ -120,6 +119,18 @@ const Thoma: DataCharacter = {
     { name: "Raging Wildfire", image: "5/5b/Constellation_Raging_Wildfire" },
     { name: "Burning Heart", image: "0/0f/Constellation_Burning_Heart" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => (
+        <>
+          <Green>DMG</Green> dealt by Crimson Ooyoroi's <Green>Fiery Collapse</Green> is increased
+          by <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>.
+        </>
+      ),
+      isGranted: checkAscs[4],
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -145,18 +156,6 @@ const Thoma: DataCharacter = {
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          <Green>DMG</Green> dealt by <Green>Crimson Ooyoroi's Fiery Collapse</Green> is increased
-          by <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
     },
     {
       index: 2,

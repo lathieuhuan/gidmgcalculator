@@ -104,9 +104,8 @@ const Jean: DataCharacter = {
       image: "e/e4/Constellation_Lion%27s_Fang%2C_Fair_Protector_of_Mondstadt",
     },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.C1,
       desc: () => (
         <>
@@ -115,9 +114,10 @@ const Jean: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "ES.pct", 40),
     },
+  ],
+  buffs: [
     {
       index: 1,
       src: EModSrc.C2,

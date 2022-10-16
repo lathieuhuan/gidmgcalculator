@@ -99,6 +99,22 @@ const Mona: DataCharacter = {
     { name: "Mockery of Fortuna", image: "b/bd/Constellation_Mockery_of_Fortuna" },
     { name: "Rhetorics of Calamitas", image: "6/62/Constellation_Rhetorics_of_Calamitas" },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: ({ totalAttr }) => (
+        <>
+          Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to{" "}
+          <Green b>20%</Green> of her <Green>Energy Recharge</Green> rate.{" "}
+          <Red>Hydro DMG Bonus: {getA4BuffValue(totalAttr)}%.</Red>
+        </>
+      ),
+      isGranted: checkAscs[4],
+      applyBuff: ({ totalAttr, desc, tracker }) => {
+        applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -118,22 +134,6 @@ const Mona: DataCharacter = {
       },
       applyBuff: ({ attPattBonus, desc, tracker, ...rest }) => {
         applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: ({ totalAttr }) => (
-        <>
-          Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to{" "}
-          <Green b>20%</Green> of her <Green>Energy Recharge</Green> rate.
-          <Red>Hydro DMG Bonus: {getA4BuffValue(totalAttr)}%.</Red>
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyBuff: ({ totalAttr, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);
       },
     },
     {

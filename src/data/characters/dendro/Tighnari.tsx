@@ -176,6 +176,23 @@ const Tighnari: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => Tighnari.passiveTalents[1].desc,
+      isGranted: checkAscs[4],
+      applyBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
+        const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
+        applyModifier(desc, attPattBonus, ["CA.pct", "EB.pct"], buffValue, tracker);
+      },
+    },
+    {
+      src: EModSrc.C1,
+      desc: () => Tighnari.constellation[0].desc,
+      isGranted: checkCons[1],
+      applyBuff: makeModApplier("attPattBonus", "CA.cRate", 15),
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -184,25 +201,6 @@ const Tighnari: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 50),
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => Tighnari.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
-        const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
-        applyModifier(desc, attPattBonus, ["CA.pct", "EB.pct"], buffValue, tracker);
-      },
-    },
-    {
-      index: 2,
-      src: EModSrc.C1,
-      desc: () => Tighnari.constellation[0].desc,
-      isGranted: checkCons[1],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("attPattBonus", "CA.cRate", 15),
     },
     {
       index: 3,

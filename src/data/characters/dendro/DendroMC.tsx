@@ -109,6 +109,18 @@ const DendroMC: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.A4,
+      desc: () => DendroMC.passiveTalents[1].desc,
+      isGranted: checkAscs[4],
+      applyBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
+        const buffValue1 = totalAttr.em * 0.15;
+        const buffValue2 = totalAttr.em * 0.1;
+        applyModifier(desc, attPattBonus, ["ES.pct", "EB.pct"], [buffValue1, buffValue2], tracker);
+      },
+    },
+  ],
   buffs: [
     {
       index: 0,
@@ -125,18 +137,6 @@ const DendroMC: DataCharacter = {
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
         applyModifier(desc, totalAttr, "em", 6 * getInput(inputs, 0, 0), tracker);
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => DendroMC.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
-        const buffValue1 = totalAttr.em * 0.15;
-        const buffValue2 = totalAttr.em * 0.1;
-        applyModifier(desc, attPattBonus, ["ES.pct", "EB.pct"], [buffValue1, buffValue2], tracker);
       },
     },
     {

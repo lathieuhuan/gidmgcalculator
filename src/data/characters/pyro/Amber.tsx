@@ -84,9 +84,8 @@ const Amber: DataCharacter = {
     { name: "It's Baron Bunny!", image: "9/95/Constellation_It%27s_Baron_Bunny%21" },
     { name: "Wildfire", image: "1/1b/Constellation_Wildfire" },
   ],
-  buffs: [
+  innateBuffs: [
     {
-      index: 0,
       src: EModSrc.A1,
       desc: () => (
         <>
@@ -95,9 +94,10 @@ const Amber: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "EB.cRate", 10),
     },
+  ],
+  buffs: [
     {
       index: 1,
       src: EModSrc.A4,
