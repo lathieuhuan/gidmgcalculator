@@ -263,19 +263,6 @@ const Ayato: DataCharacter = {
       applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
     },
   ],
-  outdatedMods: [
-    {
-      index: 2,
-      outdated: true,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          <Green>Kamisato Art: Suiyuu's DMG</Green> is increased based on <Green b>3%</Green> of
-          Ayato's <Green>Max HP</Green>.
-        </>
-      ),
-    },
-  ],
 };
 
 export default Ayato;

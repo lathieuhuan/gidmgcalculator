@@ -58,9 +58,9 @@ export type DataCharacter = {
   };
   passiveTalents: NoStatsAbility[];
   constellation: NoStatsAbility[];
+  innateBuffs?: InnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
-  outdatedMods?: OutdatedModifier[];
 };
 
 /**
@@ -138,12 +138,35 @@ type NoStatsAbility = {
   xtraDesc?: JSX.Element[];
 };
 
+type InnateBuff = {
+  src: string;
+  isGranted: (char: CharInfo) => boolean;
+  desc: (args: {
+    // char: CharInfo;
+    // charData: CalcCharData;
+    // charBuffCtrls: ModifierCtrl[];
+    // partyData: PartyData;
+    totalAttr: TotalAttribute;
+  }) => ReactNode;
+  applyBuff: (args: ApplyCharInnateBuffArgs) => void;
+};
+
+type ApplyCharInnateBuffArgs = {
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  // char: CharInfo;
+  // charData: CalcCharData;
+  partyData: PartyData;
+  charBuffCtrls: ModifierCtrl[];
+  desc: string;
+  tracker?: Tracker;
+};
+
 type AbilityModifier = {
   index: number;
-  // #to-remove
-  outdated?: boolean;
   src: string;
-  isInnate?: boolean;
   isGranted?: (char: CharInfo) => boolean;
 };
 
@@ -232,11 +255,4 @@ export type AbilityDebuff = AbilityModifier & {
     partyData: PartyData;
   }) => ReactNode;
   applyDebuff?: ApplyCharDebuffFn;
-};
-
-export type OutdatedModifier = {
-  index: number;
-  outdated: true;
-  src: string;
-  desc: () => JSX.Element;
 };

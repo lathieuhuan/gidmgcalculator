@@ -33,8 +33,27 @@ export function SelfBuffs() {
   });
   const dispatch = useDispatch();
 
-  const { buffs } = findCharacter(char)!;
+  const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
   const content: JSX.Element[] = [];
+
+  innateBuffs.forEach(({ src, isGranted, desc }, index) => {
+    if (isGranted(char)) {
+      content.push(
+        <ModifierTemplate
+          key={`innate-${index}`}
+          mutable={false}
+          heading={src}
+          desc={desc({
+            totalAttr,
+            // char,
+            // charBuffCtrls: selfBuffCtrls,
+            // charData,
+            // partyData,
+          })}
+        />
+      );
+    }
+  });
 
   selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs } = ctrl;

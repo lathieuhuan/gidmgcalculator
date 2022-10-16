@@ -67,7 +67,6 @@ type WpDescArgs = {
 
 type WeaponBuff = {
   index: number;
-  outdated?: boolean;
   affect: EModAffect;
   inputConfig?: {
     labels: string[];

@@ -69,7 +69,7 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
 
   if (buffs) {
     for (const buff of buffs) {
-      if (buff.isInnate || buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
+      if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
         continue;
       }
       const node: ModifierCtrl = {
@@ -106,7 +106,7 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
   }
   if (debuffs) {
     for (const debuff of debuffs) {
-      if (debuff.isInnate || (!forSelf && debuff.affect === EModAffect.SELF)) {
+      if (!forSelf && debuff.affect === EModAffect.SELF) {
         continue;
       }
       const node: ModifierCtrl = {

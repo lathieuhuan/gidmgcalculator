@@ -46,27 +46,33 @@ function applySelfBuffs(
   partyData: PartyData
 ) {
   const { char, charBuffCtrls } = wrapper2;
-  const { buffs = [] } = findCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
 
-  for (const buff of buffs) {
-    if (!buff.isGranted || buff.isGranted(char)) {
-      const buffCtrl = findByIndex(charBuffCtrls, buff.index);
-
-      if (buff.isInnate || buffCtrl?.activated) {
-        let applyFn: Function | undefined;
-
-        if (!isFinal && buff.applyBuff) {
-          applyFn = buff.applyBuff;
-        } else if (isFinal && buff.applyFinalBuff) {
-          applyFn = buff.applyFinalBuff;
-        } else {
-          continue;
-        }
-
-        const desc = `Self / ${buff.src}`;
-        const inputs = buffCtrl?.inputs || buff.inputConfig?.initialValues || [];
-        applyFn({ ...wrapper, ...wrapper2, partyData, inputs, toSelf: true, desc });
+  if (!isFinal) {
+    for (const { src, isGranted, applyBuff } of innateBuffs) {
+      if (isGranted(char)) {
+        applyBuff({ ...wrapper, ...wrapper2, partyData, desc: `Self / ${src}` });
       }
+    }
+  }
+
+  for (const { index, activated, inputs } of charBuffCtrls) {
+    const buff = findByIndex(buffs, index);
+
+    if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
+      let applyFn: Function | undefined;
+
+      if (!isFinal && buff.applyBuff) {
+        applyFn = buff.applyBuff;
+      } else if (isFinal && buff.applyFinalBuff) {
+        applyFn = buff.applyFinalBuff;
+      } else {
+        continue;
+      }
+
+      const desc = `Self / ${buff.src}`;
+      const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+      applyFn({ ...wrapper, ...wrapper2, partyData, inputs: validatedInputs, toSelf: true, desc });
     }
   }
 }
