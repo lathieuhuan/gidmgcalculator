@@ -34,7 +34,7 @@ export default function calculateAll(
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
 
-  const buffedStats = getBuffedStats(
+  const buffedStats = getBuffedStats({
     char,
     charData,
     selfBuffCtrls,
@@ -48,9 +48,9 @@ export default function calculateAll(
     party,
     partyData,
     customBuffCtrls,
-    finalInfusion,
-    tracker
-  );
+    infusion: finalInfusion,
+    tracker,
+  });
   return {
     finalInfusion,
     ...buffedStats,

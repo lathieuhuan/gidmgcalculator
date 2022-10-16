@@ -89,7 +89,6 @@ const initialState: CalculatorState = {
   target: initTarget(),
   monster: initMonster(),
   isError: false,
-  touched: false,
 };
 
 export const calculatorSlice = createSlice({
@@ -102,7 +101,6 @@ export const calculatorSlice = createSlice({
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
       const setupManageInfo = getSetupManageInfo({});
 
-      state.touched = true;
       state.activeId = setupManageInfo.ID;
       state.configs.separateCharInfo = false;
 
@@ -135,7 +133,6 @@ export const calculatorSlice = createSlice({
     initSessionWithSetup: (state, action: PayloadAction<UsersSetup>) => {
       const { ID, type, target, ...setupInfo } = action.payload;
 
-      state.touched = true;
       state.charData = getCharData(setupInfo.char);
       state.setupManageInfos = [getSetupManageInfo({ ID, type })];
       state.setupsById = {

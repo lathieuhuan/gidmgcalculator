@@ -12,21 +12,9 @@ import {
   AttackPatternBonusKey,
   AttackPatternInfo,
   AttributeStat,
-  CalcArtInfo,
-  CalcCharData,
-  CalcWeapon,
-  CharInfo,
-  CustomBuffCtrl,
-  ElementModCtrl,
-  FinalInfusion,
-  ModifierCtrl,
-  Party,
   PartyData,
   Reaction,
   ReactionBonus,
-  SubArtModCtrl,
-  SubWeaponComplexBuffCtrl,
-  Tracker,
   Weapon,
 } from "@Src/types";
 import { findByIndex, toMultiplier } from "@Src/utils";
@@ -39,7 +27,7 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import type { Wrapper1, Wrapper2 } from "./types";
+import type { GetBuffedStatsArgs, Wrapper1, Wrapper2 } from "./types";
 import {
   applyModifier,
   getQuickenBuffDamage,
@@ -58,45 +46,48 @@ function applySelfBuffs(
   partyData: PartyData
 ) {
   const { char, charBuffCtrls } = wrapper2;
-  const { buffs } = findCharacter(char)!;
+  const { buffs = [] } = findCharacter(char) || {};
 
-  for (const { index, activated, inputs } of charBuffCtrls) {
-    const buff = findByIndex(buffs!, index);
+  for (const buff of buffs) {
+    if (!buff.isGranted || buff.isGranted(char)) {
+      const buffCtrl = findByIndex(charBuffCtrls, buff.index);
 
-    if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
-      let applyFn: Function | undefined;
+      if (buff.isInnate || buffCtrl?.activated) {
+        let applyFn: Function | undefined;
 
-      if (!isFinal && buff.applyBuff) {
-        applyFn = buff.applyBuff;
-      } else if (isFinal && buff.applyFinalBuff) {
-        applyFn = buff.applyFinalBuff;
-      } else {
-        continue;
+        if (!isFinal && buff.applyBuff) {
+          applyFn = buff.applyBuff;
+        } else if (isFinal && buff.applyFinalBuff) {
+          applyFn = buff.applyFinalBuff;
+        } else {
+          continue;
+        }
+
+        const desc = `Self / ${buff.src}`;
+        const inputs = buffCtrl?.inputs || buff.inputConfig?.initialValues || [];
+        applyFn({ ...wrapper, ...wrapper2, partyData, inputs, toSelf: true, desc });
       }
-      const desc = `Self / ${buff.src}`;
-      const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
-      applyFn({ ...wrapper, ...wrapper2, partyData, inputs: validatedInputs, toSelf: true, desc });
     }
   }
 }
 
-export default function getBuffedStats(
-  char: CharInfo,
-  charData: CalcCharData,
-  charBuffCtrls: ModifierCtrl[],
-  weapon: CalcWeapon,
-  wpBuffCtrls: ModifierCtrl[],
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl,
-  artInfo: CalcArtInfo,
-  artBuffCtrls: ModifierCtrl[],
-  subArtBuffCtrls: SubArtModCtrl[],
-  elmtModCtrls: ElementModCtrl,
-  party: Party,
-  partyData: PartyData,
-  customBuffCtrls: CustomBuffCtrl[],
-  infusion: FinalInfusion,
-  tracker: Tracker
-) {
+export default function getBuffedStats({
+  char,
+  charData,
+  selfBuffCtrls,
+  weapon,
+  wpBuffCtrls,
+  subWpComplexBuffCtrls,
+  artInfo,
+  artBuffCtrls,
+  subArtBuffCtrls,
+  elmtModCtrls,
+  party,
+  partyData,
+  customBuffCtrls,
+  infusion,
+  tracker,
+}: GetBuffedStatsArgs) {
   const wpData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr(char, wpData, weapon, tracker);
   const artAttr = addArtAttr(artInfo.pieces, totalAttr, tracker);
@@ -128,7 +119,7 @@ export default function getBuffedStats(
   }
 
   const wrapper1 = { totalAttr, attPattBonus, attElmtBonus, rxnBonus, charData, tracker };
-  const wrapper2 = { char, charBuffCtrls, infusion, party };
+  const wrapper2 = { char, charBuffCtrls: selfBuffCtrls, infusion, party };
   const { refi } = weapon;
 
   addWpSubStat(totalAttr, wpData, weapon.level, tracker);

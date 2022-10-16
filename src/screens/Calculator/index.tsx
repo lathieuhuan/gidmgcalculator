@@ -14,7 +14,7 @@ import SetupManager from "./SetupManager";
 import styles from "./styles.module.scss";
 
 function Calculator() {
-  const touched = useSelector((state) => state.calculator.touched);
+  const touched = useSelector((state) => state.calculator.setupManageInfos.length !== 0);
   const dispatch = useDispatch();
   const [pickerOn, setPickerOn] = useState(false);
 

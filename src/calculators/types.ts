@@ -1,12 +1,19 @@
 import type {
   AttackElementBonus,
   AttackPatternBonus,
+  CalcArtInfo,
   CalcCharData,
+  CalcWeapon,
   CharInfo,
+  CustomBuffCtrl,
+  ElementModCtrl,
   FinalInfusion,
   ModifierCtrl,
   Party,
+  PartyData,
   ReactionBonus,
+  SubArtModCtrl,
+  SubWeaponComplexBuffCtrl,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
@@ -40,4 +47,22 @@ export type TrackerDamageRecord = {
   cRate?: number;
   cDmg?: number;
   note?: string;
+};
+
+export type GetBuffedStatsArgs = {
+  char: CharInfo;
+  charData: CalcCharData;
+  selfBuffCtrls: ModifierCtrl[];
+  weapon: CalcWeapon;
+  wpBuffCtrls: ModifierCtrl[];
+  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
+  artInfo: CalcArtInfo;
+  artBuffCtrls: ModifierCtrl[];
+  subArtBuffCtrls: SubArtModCtrl[];
+  elmtModCtrls: ElementModCtrl;
+  party: Party;
+  partyData: PartyData;
+  customBuffCtrls: CustomBuffCtrl[];
+  infusion: FinalInfusion;
+  tracker: Tracker;
 };
