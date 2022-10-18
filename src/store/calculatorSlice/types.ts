@@ -1,9 +1,8 @@
 import type {
-  AttackElementBonus,
-  AttackPatternBonus,
   CalcCharData,
   CalcSetup,
   CalcSetupManageInfo,
+  DamageResult,
   FinalInfusion,
   Monster,
   ReactionBonus,
@@ -23,9 +22,8 @@ export type CalculatorState = {
     string,
     {
       totalAttrs: TotalAttribute;
-      attPattBonus: AttackPatternBonus;
-      attElmtBonus: AttackElementBonus;
       rxnBonuses: ReactionBonus;
+      dmgResult: DamageResult;
       finalInfusion: FinalInfusion;
     }
   >;

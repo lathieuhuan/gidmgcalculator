@@ -53,8 +53,9 @@ export default function Info() {
   }
   const { code, beta, name, rarity, nation, vision, weapon, icon } = dataChar;
 
-  const { totalAttr, artAttr } = getBaseStats(
-    {
+  const { totalAttr, artAttr } = getBaseStats({
+    char,
+    charData: {
       code,
       name,
       nation,
@@ -62,10 +63,9 @@ export default function Info() {
       weapon,
       EBcost: dataChar.activeTalents.EB.energyCost,
     },
-    char,
-    wpInfo,
-    artInfo
-  );
+    weapon: wpInfo,
+    artifact: artInfo,
+  });
   const isMobile = window.innerWidth <= 700;
 
   return (

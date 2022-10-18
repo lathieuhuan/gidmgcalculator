@@ -38,9 +38,8 @@ export function calculate(state: CalculatorState, all?: boolean) {
       state.statsById[id] = {
         finalInfusion: results.finalInfusion,
         totalAttrs: results.totalAttr,
-        attPattBonus: results.attPattBonus,
-        attElmtBonus: results.attElmtBonus,
         rxnBonuses: results.rxnBonus,
+        dmgResult: results.dmgResult,
       };
     }
   } catch (err) {

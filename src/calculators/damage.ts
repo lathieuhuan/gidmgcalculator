@@ -36,22 +36,38 @@ import { TrackerDamageRecord } from "./types";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 import { charModIsInUse } from "@Data/characters/utils";
 
-function calcTalentStat(
-  stat: StatInfo,
-  defaultDmgTypes: DamageTypes,
-  base: number | number[],
-  char: CharInfo,
-  vision: Vision,
-  target: Target,
-  elmtModCtrls: ElementModCtrl,
-  talentBuff: TalentBuff,
-  totalAttr: TotalAttribute,
-  attPattBonus: AttackPatternBonus,
-  attElmtBonus: AttackElementBonus,
-  rxnBonus: ReactionBonus,
-  resistReduct: ResistanceReduction,
-  infusion: FinalInfusion
-) {
+interface CalcTalentStatArgs {
+  stat: StatInfo;
+  defaultDmgTypes: DamageTypes;
+  base: number | number[];
+  char: CharInfo;
+  vision: Vision;
+  target: Target;
+  elmtModCtrls: ElementModCtrl;
+  talentBuff: TalentBuff;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  resistReduct: ResistanceReduction;
+  infusion: FinalInfusion;
+}
+function calcTalentDamage({
+  stat,
+  defaultDmgTypes,
+  base,
+  char,
+  vision,
+  target,
+  elmtModCtrls,
+  talentBuff,
+  totalAttr,
+  attPattBonus,
+  attElmtBonus,
+  rxnBonus,
+  resistReduct,
+  infusion,
+}: CalcTalentStatArgs) {
   let record = {} as TrackerDamageRecord;
   const [attPatt, attElmt] = stat.dmgTypes || defaultDmgTypes;
 
@@ -187,24 +203,42 @@ function calcTalentStat(
   }
 }
 
-export default function getDamage(
-  char: CharInfo,
-  charData: CalcCharData,
-  selfBuffCtrls: ModifierCtrl[],
-  selfDebuffCtrls: ModifierCtrl[],
-  party: Party,
-  partyData: PartyData,
-  subArtDebuffCtrls: SubArtModCtrl[],
-  totalAttr: TotalAttribute,
-  attPattBonus: AttackPatternBonus,
-  attElmtBonus: AttackElementBonus,
-  rxnBonus: ReactionBonus,
-  customDebuffCtrls: CustomDebuffCtrl[],
-  infusion: FinalInfusion,
-  elmtModCtrls: ElementModCtrl,
-  target: Target,
-  tracker: Tracker
-) {
+interface GetDamageArgs {
+  char: CharInfo;
+  charData: CalcCharData;
+  selfBuffCtrls: ModifierCtrl[];
+  selfDebuffCtrls: ModifierCtrl[];
+  party: Party;
+  partyData: PartyData;
+  subArtDebuffCtrls: SubArtModCtrl[];
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  customDebuffCtrls: CustomDebuffCtrl[];
+  infusion: FinalInfusion;
+  elmtModCtrls: ElementModCtrl;
+  target: Target;
+  tracker: Tracker;
+}
+export default function getDamage({
+  char,
+  charData,
+  selfBuffCtrls,
+  selfDebuffCtrls,
+  party,
+  partyData,
+  subArtDebuffCtrls,
+  totalAttr,
+  attPattBonus,
+  attElmtBonus,
+  rxnBonus,
+  customDebuffCtrls,
+  infusion,
+  elmtModCtrls,
+  target,
+  tracker,
+}: GetDamageArgs) {
   const resistReduct = { def: 0 } as ResistanceReduction;
 
   for (const key of ATTACK_ELEMENTS) {
@@ -342,9 +376,9 @@ export default function getDamage(
         base = baseDamage(pct);
       }
 
-      finalResult[resultKey][stat.name] = calcTalentStat(
+      finalResult[resultKey][stat.name] = calcTalentDamage({
         stat,
-        [attPatt, defaultInfo.attElmt],
+        defaultDmgTypes: [attPatt, defaultInfo.attElmt],
         base,
         char,
         vision,
@@ -356,8 +390,8 @@ export default function getDamage(
         attElmtBonus,
         rxnBonus,
         resistReduct,
-        infusion
-      );
+        infusion,
+      });
       if (tracker) {
         tracker[resultKey][stat.name] = { record, talentBuff };
       }

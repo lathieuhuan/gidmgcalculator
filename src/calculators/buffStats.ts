@@ -39,12 +39,13 @@ import {
 import { RESONANCE_STAT } from "./constants";
 import { current } from "@reduxjs/toolkit";
 
-function applySelfBuffs(
-  isFinal: boolean,
-  wrapper: Required<Wrapper1>,
-  wrapper2: Wrapper2,
-  partyData: PartyData
-) {
+interface ApplySelfBuffs {
+  isFinal: boolean;
+  wrapper: Required<Wrapper1>;
+  wrapper2: Wrapper2;
+  partyData: PartyData;
+}
+function applySelfBuffs({ isFinal, wrapper, wrapper2, partyData }: ApplySelfBuffs) {
   const { char, charBuffCtrls } = wrapper2;
   const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
 
@@ -94,9 +95,9 @@ export default function getBuffedStats({
   infusion,
   tracker,
 }: GetBuffedStatsArgs) {
-  const wpData = findWeapon(weapon)!;
-  const totalAttr = initiateTotalAttr(char, wpData, weapon, tracker);
-  const artAttr = addArtAttr(artInfo.pieces, totalAttr, tracker);
+  const weaponData = findWeapon(weapon)!;
+  const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
+  const artAttr = addArtAttr({ pieces: artInfo.pieces, totalAttr, tracker });
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -128,9 +129,9 @@ export default function getBuffedStats({
   const wrapper2 = { char, charBuffCtrls: selfBuffCtrls, infusion, party };
   const { refi } = weapon;
 
-  addWpSubStat(totalAttr, wpData, weapon.level, tracker);
-  applyWpPassiveBuffs(false, wpData, refi, wrapper1, partyData);
-  applyArtPassiveBuffs(false, artInfo.sets, wrapper1, partyData);
+  addWpSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
+  applyWpPassiveBuffs({ isFinal: false, weaponData, refi, wrapper: wrapper1, partyData });
+  applyArtPassiveBuffs({ isFinal: false, sets: artInfo.sets, wrapper: wrapper1, partyData });
 
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {
@@ -195,10 +196,10 @@ export default function getBuffedStats({
     }
   }
   for (const { activated, index, inputs } of wpBuffCtrls) {
-    if (wpData.buffs) {
-      const { applyBuff } = findByIndex(wpData.buffs, index) || {};
+    if (weaponData.buffs) {
+      const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
       if (activated && applyBuff) {
-        applyBuff({ ...wrapper1, refi, inputs, desc: `${wpData.name} activated` });
+        applyBuff({ ...wrapper1, refi, inputs, desc: `${weaponData.name} activated` });
       }
     } else {
       console.log(`buffs of main weapon not found`);
@@ -242,25 +243,25 @@ export default function getBuffedStats({
     }
   }
 
-  applySelfBuffs(false, wrapper1, wrapper2, partyData);
+  applySelfBuffs({ isFinal: false, wrapper: wrapper1, wrapper2, partyData });
   calcFinalTotalAttrs(totalAttr);
 
-  applyArtPassiveBuffs(true, artInfo.sets, wrapper1);
-  applyWpPassiveBuffs(true, wpData, refi, wrapper1, partyData);
+  applyArtPassiveBuffs({ isFinal: true, sets: artInfo.sets, wrapper: wrapper1 });
+  applyWpPassiveBuffs({ isFinal: true, weaponData, refi, wrapper: wrapper1, partyData });
 
   // APPLY WEAPON FINAL BUFFS
   for (const { activated, index, inputs } of wpBuffCtrls) {
-    if (activated && wpData.buffs) {
-      const { applyFinalBuff } = findByIndex(wpData.buffs, index) || {};
+    if (activated && weaponData.buffs) {
+      const { applyFinalBuff } = findByIndex(weaponData.buffs, index) || {};
       if (applyFinalBuff) {
-        applyFinalBuff({ totalAttr, refi, desc: `${wpData.name} activated`, inputs, tracker });
+        applyFinalBuff({ totalAttr, refi, desc: `${weaponData.name} activated`, inputs, tracker });
       }
-    } else if (!wpData.buffs) {
+    } else if (!weaponData.buffs) {
       console.log(`final buffs of main weapon not found`);
     }
   }
 
-  applySelfBuffs(true, wrapper1, wrapper2, partyData);
+  applySelfBuffs({ isFinal: true, wrapper: wrapper1, wrapper2, partyData });
 
   // APPLY ARTIFACT FINAL BUFFS
   for (const ctrl of artBuffCtrls) {

@@ -6,12 +6,10 @@ import { selectActiveId } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { selectComparedIndexes } from "@Store/uiSlice";
 import { EStatDamageKey } from "@Src/constants";
+import { findById } from "@Src/utils";
 
 import { IconButton, Select } from "@Src/styled-components";
-import { findById } from "@Src/utils";
 import { DamageDisplay } from "@Components/DamageDisplay";
-import getDamage from "@Calculators/damage";
-import { getPartyData } from "@Data/controllers";
 
 export default function DamageResults() {
   const [enlargedOn, setEnlargedOn] = useState(false);
@@ -63,49 +61,14 @@ const MemoResults = memo(Results);
 
 function Results() {
   const activeId = useSelector(selectActiveId);
-  const { charData, target } = useSelector((state) => state.calculator);
-  const {
-    char,
-    party,
-    elmtModCtrls,
-    selfBuffCtrls,
-    selfDebuffCtrls,
-    subArtDebuffCtrls,
-    customDebuffCtrls,
-  } = useSelector((state) => state.calculator.setupsById)[activeId];
-
-  const { totalAttrs, attPattBonus, attElmtBonus, rxnBonuses, finalInfusion } = useSelector(
-    (state) => state.calculator.statsById[activeId]
-  );
-
-  const partyData = getPartyData(party);
+  const { dmgResult } = useSelector((state) => state.calculator.statsById[activeId]);
+  const { char, party } = useSelector((state) => state.calculator.setupsById[activeId]);
 
   const activeSetupName = useSelector((state) => {
     const { activeId, setupManageInfos } = state.calculator;
     return findById(setupManageInfos, activeId)?.name || "";
   });
   const comparedIndexes = useSelector(selectComparedIndexes);
-
-  const tracker = undefined;
-
-  const dmgResult = getDamage(
-    char,
-    charData,
-    selfBuffCtrls,
-    selfDebuffCtrls,
-    party,
-    partyData,
-    subArtDebuffCtrls,
-    totalAttrs,
-    attPattBonus,
-    attElmtBonus,
-    rxnBonuses,
-    customDebuffCtrls,
-    finalInfusion,
-    elmtModCtrls,
-    target,
-    tracker
-  );
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 

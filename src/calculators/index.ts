@@ -13,11 +13,13 @@ import type {
 } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import getBuffedStats from "./buffStats";
+import getDamage from "./damage";
 
 export default function calculateAll(
   {
     char,
     selfBuffCtrls,
+    selfDebuffCtrls,
     party,
     weapon,
     wpBuffCtrls,
@@ -25,8 +27,11 @@ export default function calculateAll(
     artInfo,
     artBuffCtrls,
     subArtBuffCtrls,
+    subArtDebuffCtrls,
     elmtModCtrls,
     customBuffCtrls,
+    customDebuffCtrls,
+    target,
   }: UsersSetupCalcInfo,
   charData: CalcCharData,
   tracker?: Tracker
@@ -34,7 +39,7 @@ export default function calculateAll(
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);
   const partyData = getPartyData(party);
 
-  const buffedStats = getBuffedStats({
+  const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
     char,
     charData,
     selfBuffCtrls,
@@ -51,9 +56,31 @@ export default function calculateAll(
     infusion: finalInfusion,
     tracker,
   });
+
+  const dmgResult = getDamage({
+    char,
+    charData,
+    selfBuffCtrls,
+    selfDebuffCtrls,
+    party,
+    partyData,
+    subArtDebuffCtrls,
+    totalAttr,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
+    customDebuffCtrls,
+    infusion: finalInfusion,
+    elmtModCtrls,
+    target,
+    tracker,
+  });
   return {
     finalInfusion,
-    ...buffedStats,
+    totalAttr,
+    artAttr,
+    rxnBonus,
+    dmgResult,
   };
 }
 
