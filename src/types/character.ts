@@ -13,9 +13,7 @@ import type {
 } from "./global";
 import type {
   CalcCharData,
-  FinalInfusion,
   ModifierCtrl,
-  Party,
   PartyData,
   ReactionBonus,
   ResistanceReduction,
@@ -24,6 +22,7 @@ import type {
   TotalAttribute,
   ModifierInput,
   AttackElementBonus,
+  BuffModifierArgsWrapper,
 } from "./calculator";
 import { ReactNode } from "react";
 
@@ -205,21 +204,11 @@ export type AbilityBuff = AbilityModifier & {
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
-export type ApplyCharBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
-  rxnBonus: ReactionBonus;
-  char: CharInfo;
-  charData: CalcCharData;
-  party: Party;
-  partyData: PartyData;
+export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
   inputs?: ModifierInput[];
-  infusion: FinalInfusion;
   toSelf: boolean;
   charBuffCtrls: ModifierCtrl[];
   desc: string;
-  tracker?: Tracker;
 };
 
 // DEBUFFS

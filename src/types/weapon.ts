@@ -4,6 +4,7 @@ import type { Tracker, Rarity, ArtifactPercentStat } from "./global";
 import type {
   AttackPatternBonus,
   CalcCharData,
+  BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
   ReactionBonus,
@@ -42,15 +43,10 @@ type ApplyWpPassiveBuffsArgs = {
   tracker?: Tracker;
 };
 
-type ApplyWpBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  rxnBonus: ReactionBonus;
-  charData: CalcCharData;
+type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
   inputs?: ModifierInput[];
   refi: number;
   desc?: string;
-  tracker?: Tracker;
 };
 
 type ApplyWpFinalBuffArgs = {

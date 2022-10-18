@@ -1,8 +1,8 @@
-import type { DataCharacter } from "@Src/types";
+import type { DataCharacter, Vision } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { countVision, round1 } from "@Src/utils";
+import { round1 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -239,11 +239,15 @@ const Nilou: DataCharacter = {
       desc: () => Nilou.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
       affect: EModAffect.PARTY,
-      applyBuff: ({ totalAttr, char, party, desc, tracker }) => {
-        const visionCount = countVision(char, party);
-        const { dendro = 0, hydro = 0 } = visionCount;
+      applyBuff: ({ totalAttr, partyData, desc, tracker }) => {
+        const visionCount = partyData.reduce((count, teammateData) => {
+          count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
+          return count;
+        }, {} as Partial<Record<Vision, number>>);
 
-        if (dendro > 0 && hydro > 0 && Object.keys(visionCount).length === 2) {
+        const { dendro = 0, hydro, ...rest } = visionCount;
+
+        if (dendro > 0 && !Object.keys(rest).length) {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },

@@ -18,20 +18,14 @@ import type {
   Tracker,
 } from "@Src/types";
 
-export type Wrapper1 = {
+export type BaseModifierArgsWrapper = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   attElmtBonus?: AttackElementBonus;
   rxnBonus?: ReactionBonus;
   charData: CalcCharData;
+  partyData?: PartyData;
   tracker?: Tracker;
-};
-
-export type Wrapper2 = {
-  char: CharInfo;
-  charBuffCtrls: ModifierCtrl[];
-  infusion: FinalInfusion;
-  party: Party;
 };
 
 export type TrackerDamageRecord = {

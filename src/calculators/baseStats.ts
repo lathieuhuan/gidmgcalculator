@@ -8,16 +8,16 @@ import type {
   CharInfo,
   DataWeapon,
   Level,
-  PartyData,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
+import type { BaseModifierArgsWrapper } from "./types";
+
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 import { applyPercent, ascsFromLv, toMultiplier } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
-import type { Wrapper1 } from "./types";
 import { addOrInit, pushOrMergeTrackerRecord } from "./utils";
 
 interface InitiateTotalAttrArgs {
@@ -137,19 +137,18 @@ export function addWpSubStat({ totalAttr, weaponData, wpLevel, tracker }: AddWpS
 interface ApplyArtPassiveBuffs {
   isFinal: boolean;
   sets: CalcArtSet[];
-  wrapper: Wrapper1;
-  partyData?: PartyData;
+  modifierArgs: BaseModifierArgsWrapper;
 }
-export function applyArtPassiveBuffs({ isFinal, sets, wrapper, partyData }: ApplyArtPassiveBuffs) {
+export function applyArtPassiveBuffs({ isFinal, sets, modifierArgs }: ApplyArtPassiveBuffs) {
   for (const { code, bonusLv } of sets) {
     //
     for (let i = 0; i <= bonusLv; i++) {
       const { applyBuff, applyFinalBuff } = findArtifactSet({ code })!.setBonuses[i];
 
       if (!isFinal && applyBuff) {
-        applyBuff({ ...wrapper, partyData });
+        applyBuff(modifierArgs);
       } else if (isFinal && applyFinalBuff) {
-        applyFinalBuff({ ...wrapper, partyData });
+        applyFinalBuff(modifierArgs);
       }
     }
   }
@@ -159,22 +158,20 @@ interface ApplyWpPassiveBuffsArgs {
   isFinal: boolean;
   weaponData: DataWeapon;
   refi: number;
-  wrapper: Wrapper1;
-  partyData?: PartyData;
+  modifierArgs: BaseModifierArgsWrapper;
 }
 export function applyWpPassiveBuffs({
   isFinal,
   weaponData,
   refi,
-  wrapper,
-  partyData,
+  modifierArgs,
 }: ApplyWpPassiveBuffsArgs) {
   const { applyBuff, applyFinalBuff } = weaponData;
   const applyFn =
     !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
   if (applyFn) {
-    applyFn({ ...wrapper, refi, partyData });
+    applyFn({ ...modifierArgs, refi });
   }
 }
 
@@ -191,16 +188,21 @@ interface GetBaseStatsArgs {
   weapon: CalcWeapon;
   artifact: CalcArtInfo;
 }
-export default function getBaseStats({ charData, char, weapon, artifact }: GetBaseStatsArgs) {
+export default function getBaseStats({
+  charData,
+  char,
+  weapon,
+  artifact: { pieces, sets },
+}: GetBaseStatsArgs) {
   //
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weaponData, weapon });
-  const artAttr = addArtAttr({ pieces: artifact.pieces, totalAttr });
+  const artAttr = addArtAttr({ pieces, totalAttr });
   addWpSubStat({ totalAttr, weaponData, wpLevel: weapon.level });
 
-  const wrapper = { totalAttr, charData };
-  applyArtPassiveBuffs({ isFinal: false, sets: artifact.sets, wrapper });
-  applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, wrapper });
+  const modifierArgs = { totalAttr, charData };
+  applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, modifierArgs });
   calcFinalTotalAttrs(totalAttr);
 
   return {

@@ -18,6 +18,7 @@ import type {
   BaseStat,
   ResonanceVision,
   TransformativeReaction,
+  Tracker,
 } from "./global";
 import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
@@ -209,3 +210,15 @@ export type PartyData = {
   nation: Nation;
   EBcost: number;
 }[];
+
+export type BuffModifierArgsWrapper = {
+  char: CharInfo;
+  charData: CalcCharData;
+  partyData: PartyData;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  infusion: FinalInfusion;
+  tracker?: Tracker;
+};

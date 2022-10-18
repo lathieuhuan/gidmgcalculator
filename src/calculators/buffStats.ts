@@ -12,7 +12,8 @@ import {
   AttackPatternBonusKey,
   AttackPatternInfo,
   AttributeStat,
-  PartyData,
+  BuffModifierArgsWrapper,
+  ModifierCtrl,
   Reaction,
   ReactionBonus,
   Weapon,
@@ -27,7 +28,7 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import type { GetBuffedStatsArgs, Wrapper1, Wrapper2 } from "./types";
+import type { GetBuffedStatsArgs } from "./types";
 import {
   applyModifier,
   getQuickenBuffDamage,
@@ -41,18 +42,17 @@ import { current } from "@reduxjs/toolkit";
 
 interface ApplySelfBuffs {
   isFinal: boolean;
-  wrapper: Required<Wrapper1>;
-  wrapper2: Wrapper2;
-  partyData: PartyData;
+  modifierArgs: BuffModifierArgsWrapper;
+  charBuffCtrls: ModifierCtrl[];
 }
-function applySelfBuffs({ isFinal, wrapper, wrapper2, partyData }: ApplySelfBuffs) {
-  const { char, charBuffCtrls } = wrapper2;
+function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs) {
+  const { char } = modifierArgs;
   const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
 
   if (!isFinal) {
     for (const { src, isGranted, applyBuff } of innateBuffs) {
       if (isGranted(char) && applyBuff) {
-        applyBuff({ ...wrapper, ...wrapper2, partyData, desc: `Self / ${src}` });
+        applyBuff({ ...modifierArgs, charBuffCtrls, desc: `Self / ${src}` });
       }
     }
   }
@@ -73,7 +73,7 @@ function applySelfBuffs({ isFinal, wrapper, wrapper2, partyData }: ApplySelfBuff
 
       const desc = `Self / ${buff.src}`;
       const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
-      applyFn({ ...wrapper, ...wrapper2, partyData, inputs: validatedInputs, toSelf: true, desc });
+      applyFn({ ...modifierArgs, charBuffCtrls, inputs: validatedInputs, toSelf: true, desc });
     }
   }
 }
@@ -85,7 +85,7 @@ export default function getBuffedStats({
   weapon,
   wpBuffCtrls,
   subWpComplexBuffCtrls,
-  artInfo,
+  artInfo: { pieces, sets },
   artBuffCtrls,
   subArtBuffCtrls,
   elmtModCtrls,
@@ -97,7 +97,7 @@ export default function getBuffedStats({
 }: GetBuffedStatsArgs) {
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
-  const artAttr = addArtAttr({ pieces: artInfo.pieces, totalAttr, tracker });
+  const artAttr = addArtAttr({ pieces, totalAttr, tracker });
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -125,20 +125,29 @@ export default function getBuffedStats({
     rxnBonus[rxn] = 0;
   }
 
-  const wrapper1 = { totalAttr, attPattBonus, attElmtBonus, rxnBonus, charData, tracker };
-  const wrapper2 = { char, charBuffCtrls: selfBuffCtrls, infusion, party };
+  const modifierArgs: BuffModifierArgsWrapper = {
+    char,
+    charData,
+    partyData,
+    totalAttr,
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
+    infusion,
+    tracker,
+  };
   const { refi } = weapon;
 
   addWpSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
-  applyWpPassiveBuffs({ isFinal: false, weaponData, refi, wrapper: wrapper1, partyData });
-  applyArtPassiveBuffs({ isFinal: false, sets: artInfo.sets, wrapper: wrapper1, partyData });
+  applyWpPassiveBuffs({ isFinal: false, weaponData, refi, modifierArgs });
+  applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
 
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {
     if (category === 2) {
       const key = type as AttackPatternBonusKey;
       attPattBonus[key].pct += value;
-      pushOrMergeTrackerRecord(tracker?.[key], "pct", "Custom Buff", value);
+      // pushOrMergeTrackerRecord(tracker?.[key], "pct", "Custom Buff", value);
     } else {
       if (category < 2) {
         const key = type as AttributeStat;
@@ -147,7 +156,7 @@ export default function getBuffedStats({
         const key = type as Reaction;
         rxnBonus[key] += value;
       }
-      pushOrMergeTrackerRecord(tracker, type as string, "Custom Buff", value);
+      // pushOrMergeTrackerRecord(tracker, type as string, "Custom Buff", value);
     }
   }
 
@@ -159,12 +168,8 @@ export default function getBuffedStats({
       const desc = `${rsn.vision} Resonance`;
 
       if (rsn.vision === "dendro" && rsn.inputs) {
-        if (rsn.inputs[0]) {
-          xtraValue += 30;
-        }
-        if (rsn.inputs[1]) {
-          xtraValue += 20;
-        }
+        if (rsn.inputs[0]) xtraValue += 30;
+        if (rsn.inputs[1]) xtraValue += 20;
       }
 
       applyModifier(desc, totalAttr, key, value + xtraValue, tracker);
@@ -185,7 +190,7 @@ export default function getBuffedStats({
           const { applyBuff } = findByIndex(buffs, ctrl.index) || {};
           if (applyBuff) {
             const desc = `${name} activated`;
-            applyBuff({ ...wrapper1, refi, inputs, desc });
+            applyBuff({ ...modifierArgs, refi, inputs, desc });
           } else {
             console.log(`weapon buff #${ctrl.index} of weapon #${code} not found`);
           }
@@ -199,7 +204,7 @@ export default function getBuffedStats({
     if (weaponData.buffs) {
       const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
       if (activated && applyBuff) {
-        applyBuff({ ...wrapper1, refi, inputs, desc: `${weaponData.name} activated` });
+        applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponData.name} activated` });
       }
     } else {
       console.log(`buffs of main weapon not found`);
@@ -209,18 +214,18 @@ export default function getBuffedStats({
   // APPLY ARTIFACT BUFFS
   for (const { activated, code, index, inputs } of subArtBuffCtrls) {
     if (activated) {
-      const { name, buffs } = findArtifactSet({ code })!;
+      const { name, buffs } = findArtifactSet({ code }) || {};
       const desc = `${name} / 4-Piece activated`;
-      buffs![index].applyBuff!({ ...wrapper1, inputs, desc });
+      buffs?.[index].applyBuff?.({ ...modifierArgs, inputs, desc });
     }
   }
   for (const { index, activated, inputs } of artBuffCtrls) {
-    const { name, buffs } = findArtifactSet({ code: artInfo.sets[0].code })!;
-    const { applyBuff } = buffs![index];
+    const { name, buffs } = findArtifactSet({ code: sets[0].code }) || {};
+    const { applyBuff } = buffs?.[index] || {};
 
     if (activated && applyBuff) {
       const desc = `${name} (self) / 4-Piece activated`;
-      applyBuff({ ...wrapper1, inputs, desc });
+      applyBuff({ ...modifierArgs, inputs, desc });
     }
   }
 
@@ -237,17 +242,17 @@ export default function getBuffedStats({
       if (activated && applyFn) {
         const desc = `${teammate} / ${buff.src}`;
         const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
-        const wrapper3 = { char, inputs: validatedInputs, infusion, party, partyData, desc };
-        applyFn({ ...wrapper1, ...wrapper3, toSelf: false, charBuffCtrls: teammate.buffCtrls });
+        const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
+        applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
       }
     }
   }
 
-  applySelfBuffs({ isFinal: false, wrapper: wrapper1, wrapper2, partyData });
+  applySelfBuffs({ isFinal: false, modifierArgs, charBuffCtrls: selfBuffCtrls });
   calcFinalTotalAttrs(totalAttr);
 
-  applyArtPassiveBuffs({ isFinal: true, sets: artInfo.sets, wrapper: wrapper1 });
-  applyWpPassiveBuffs({ isFinal: true, weaponData, refi, wrapper: wrapper1, partyData });
+  applyArtPassiveBuffs({ isFinal: true, sets, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: true, weaponData, refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
   for (const { activated, index, inputs } of wpBuffCtrls) {
@@ -261,11 +266,11 @@ export default function getBuffedStats({
     }
   }
 
-  applySelfBuffs({ isFinal: true, wrapper: wrapper1, wrapper2, partyData });
+  applySelfBuffs({ isFinal: true, modifierArgs, charBuffCtrls: selfBuffCtrls });
 
   // APPLY ARTIFACT FINAL BUFFS
   for (const ctrl of artBuffCtrls) {
-    const { name, buffs } = findArtifactSet({ code: artInfo.sets[0].code })!;
+    const { name, buffs } = findArtifactSet({ code: sets[0].code }) || {};
     const { applyFinalBuff } = buffs?.[ctrl.index] || {};
 
     if (ctrl.activated && applyFinalBuff) {

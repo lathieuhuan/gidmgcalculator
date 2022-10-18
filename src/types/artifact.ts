@@ -3,6 +3,7 @@ import type { Rarity, Tracker } from "./global";
 import type {
   AttackPatternBonus,
   CalcCharData,
+  BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
   ReactionBonus,
@@ -47,14 +48,9 @@ type SetBonus = {
   applyFinalBuff?: (args: ApplyArtPassiveBuffArgs) => void;
 };
 
-type ApplyArtBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  rxnBonus: ReactionBonus;
-  charData: CalcCharData;
+type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
   inputs?: ModifierInput[];
   desc?: string;
-  tracker?: Tracker;
 };
 
 type ApplyArtFinalBuffArgs = {
