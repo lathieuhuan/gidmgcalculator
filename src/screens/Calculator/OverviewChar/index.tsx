@@ -56,9 +56,9 @@ export default function OverviewChar({ onClickCharImg }: OverviewCharProps) {
               value={char.level}
               onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
             >
-              {LEVELS.map((lv) => (
-                <option key={lv} className="text-black">
-                  {lv}
+              {LEVELS.map((_, index) => (
+                <option key={index} className="text-black">
+                  {LEVELS[LEVELS.length - 1 - index]}
                 </option>
               ))}
             </Select>

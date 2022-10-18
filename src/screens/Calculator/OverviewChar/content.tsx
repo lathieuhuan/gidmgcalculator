@@ -43,7 +43,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const { pieces, sets } = useSelector(selectArtInfo);
     const totalAttr = useSelector(selectTotalAttr);
 
-    const artAttr = addArtAttr(pieces, { ...totalAttr });
+    const artAttr = addArtAttr({ pieces, totalAttr: { ...totalAttr } });
 
     const { activeIndex, tabs } = useTabs({
       level: 2,

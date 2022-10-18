@@ -57,7 +57,9 @@ export function ArtifactCard({
                   onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
                 >
                   {[...Array(maxLevel + 1).keys()].map((_, lv) => (
-                    <option key={lv}>+{lv}</option>
+                    <option key={lv} className="text-base">
+                      +{lv}
+                    </option>
                   ))}
                 </Select>
               </div>

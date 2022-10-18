@@ -23,6 +23,7 @@ export default function SectionWeapon() {
     return null;
   }
   const { beta, rarity, icon, name } = weaponData;
+  const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (
     <div className="setup-manager_pedestal px-2 flex items-start">
@@ -48,8 +49,8 @@ export default function SectionWeapon() {
             value={weapon.level}
             onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
           >
-            {(rarity < 3 ? LEVELS.slice(0, -4) : LEVELS).map((level) => (
-              <option key={level}>{level}</option>
+            {selectLevels.map((_, index) => (
+              <option key={index}>{selectLevels[selectLevels.length - 1 - index]}</option>
             ))}
           </Select>
         </div>

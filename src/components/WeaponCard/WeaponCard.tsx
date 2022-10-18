@@ -43,8 +43,8 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
                 value={level}
                 onChange={(e) => upgrade && upgrade(e.target.value as Level)}
               >
-                {selectLevels.map((level) => (
-                  <option key={level}>{level}</option>
+                {selectLevels.map((_, index) => (
+                  <option key={index}>{selectLevels[selectLevels.length - 1 - index]}</option>
                 ))}
               </Select>
             ) : (
