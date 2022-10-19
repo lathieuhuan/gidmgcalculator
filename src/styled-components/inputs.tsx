@@ -1,5 +1,5 @@
 import cn from "classnames";
-import type { InputHTMLAttributes, SelectHTMLAttributes } from "react";
+import type { InputHTMLAttributes, SelectHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
@@ -24,11 +24,36 @@ export const IconButton = (props: ButtonProps) => {
     <button
       type="button"
       className={cn(
-        "rounded-circle flex-center",
+        "rounded-circle flex-center shrink-0",
         (!className || !className.includes("w-") || !className.includes("h-")) && "h-8 w-8",
         buttonStyles(props),
         className
       )}
+      {...rest}
+    />
+  );
+};
+
+interface IconToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  disabledColor?: string;
+}
+export const IconToggleButton = ({
+  className,
+  disabled,
+  color = "text-black bg-lightgold",
+  disabledColor = "text-lesser bg-transparent",
+  ...rest
+}: IconToggleButtonProps) => {
+  return (
+    <button
+      type="button"
+      className={cn(
+        "rounded-circle flex-center shrink-0",
+        (!className || !className.includes("w-") || !className.includes("h-")) && "h-8 w-8",
+        disabled ? disabledColor : `${color} glow-on-hover`,
+        className
+      )}
+      disabled={disabled}
       {...rest}
     />
   );

@@ -7,9 +7,8 @@ const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
-  // standardIndex: 0,
   standardID: 0,
-  comparedIndexes: [0],
+  comparedIDs: [],
   importInfo: {
     type: "",
   },
@@ -28,7 +27,7 @@ export const uiSlice = createSlice({
     resetCalculatorUI: (state) => {
       state.atScreen = EScreen.CALCULATOR;
       // state.standardIndex = 0;
-      state.comparedIndexes = [0];
+      state.comparedIDs = [];
       state.settingsOn = false;
     },
     // changeStandardSetup: (state, action: PayloadAction<number>) => {
@@ -38,9 +37,9 @@ export const uiSlice = createSlice({
       state.settingsOn = action.payload;
     },
     applySettingsOnUI: (state, action: ApplySettingsOnUIAction) => {
-      const { comparedIndexes } = action.payload;
-      state.comparedIndexes = comparedIndexes;
-      // state.standardIndex = standardIndex;
+      const { comparedIDs, standardID } = action.payload;
+      state.comparedIDs = comparedIDs;
+      state.standardID = standardID;
       state.settingsOn = false;
     },
     updateImportInfo: (state, action: PayloadAction<ImportInfo>) => {
@@ -61,8 +60,8 @@ export const {
 
 export const selectAtScreen = (state: RootState) => state.ui.atScreen;
 
-export const selectStandardIndex = (state: RootState) => state.ui.standardID;
+export const selectStandardID = (state: RootState) => state.ui.standardID;
 
-export const selectComparedIndexes = (state: RootState) => state.ui.comparedIndexes;
+export const selectComparedIDs = (state: RootState) => state.ui.comparedIDs;
 
 export default uiSlice.reducer;

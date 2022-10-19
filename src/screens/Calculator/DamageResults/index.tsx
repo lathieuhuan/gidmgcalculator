@@ -4,7 +4,7 @@ import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 
 import { selectActiveId } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
-import { selectComparedIndexes } from "@Store/uiSlice";
+import { selectComparedIDs } from "@Store/uiSlice";
 import { EStatDamageKey } from "@Src/constants";
 import { findById } from "@Src/utils";
 
@@ -68,11 +68,11 @@ function Results() {
     const { activeId, setupManageInfos } = state.calculator;
     return findById(setupManageInfos, activeId)?.name || "";
   });
-  const comparedIndexes = useSelector(selectComparedIndexes);
+  const comparedIDs = useSelector(selectComparedIDs);
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
 
-  const comparing = comparedIndexes.length > 1;
+  const comparing = comparedIDs.length > 1;
 
   useEffect(() => {
     if (comparing) {

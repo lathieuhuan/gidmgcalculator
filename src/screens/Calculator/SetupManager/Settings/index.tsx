@@ -1,16 +1,15 @@
 import cn from "classnames";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaInfoCircle, FaPlus } from "react-icons/fa";
-import type { CalcConfigurations } from "@Store/calculatorSlice/types";
-import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
+import type { ConfigOption, TemporarySetupInfo } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
 import {
   applySettingsOnUI,
-  selectComparedIndexes,
-  selectStandardIndex,
+  selectComparedIDs,
+  selectStandardID,
   toggleSettings,
 } from "@Store/uiSlice";
 import { applySettingsOnCalculator } from "@Store/calculatorSlice";
@@ -24,13 +23,11 @@ import { SetupControl } from "./SetupControl";
 import { MAX_CALC_SETUPS } from "@Src/constants";
 
 import { useTabs } from "@Hooks/useTabs";
+import { randomString } from "@Src/utils";
 
 import styles from "@Screens/Calculator/styles.module.scss";
 
-const CONFIG_OPTIONS: Array<{
-  field: keyof CalcConfigurations;
-  desc: string;
-}> = [
+const CONFIG_OPTIONS: ConfigOption[] = [
   {
     field: "separateCharInfo",
     desc: "Separate Character's Info on each Setup",
@@ -50,23 +47,35 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const configs = useSelector((state) => state.calculator.configs);
-  const comparedIndexes = useSelector(selectComparedIndexes);
+  const comparedIDs = useSelector(selectComparedIDs);
+  const standardID = useSelector(selectStandardID);
 
   const { activeIndex, tabs } = useTabs({
     className: "shrink-0",
     level: 2,
     configs: [{ text: "Setups" }, { text: "Configs" }],
   });
-  const [tempSetups, setTempSetups] = useState<NewSetupManageInfo[]>(
+  const [tempSetups, setTempSetups] = useState<TemporarySetupInfo[]>(
     setupManageInfos.map((manageInfos) => ({
       ...manageInfos,
+      uid: randomString(7),
       status: "OLD",
+      isCompared: comparedIDs.includes(manageInfos.ID),
     }))
   );
   const [tempConfigs, setTempConfigs] = useState(configs);
   const [removedIds, setRemovedIds] = useState<number[]>([]);
-  const [errorCode, setErrorCode] = useState(0);
+  const [standardUid, setStandardUid] = useState("");
+  const [errorCode, setErrorCode] = useState<"DUPLICATE_SETUP_NAME" | "NO_SETUPS" | "">("");
   const [tipsOn, setTipsOn] = useState(false);
+
+  const comparedSetups = tempSetups.filter((tempSetup) => tempSetup.isCompared);
+
+  useEffect(() => {
+    if (comparedSetups.length && standardUid === "") {
+      setStandardUid(comparedSetups[0].uid);
+    }
+  }, [comparedSetups.length, standardUid]);
 
   const changeSetupName = (index: number) => (newName: string) => {
     setTempSetups((prev) => {
@@ -76,7 +85,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     });
 
     if (errorCode) {
-      setErrorCode(0);
+      setErrorCode("");
     }
   };
 
@@ -95,8 +104,9 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     if (tempSetups.length < MAX_CALC_SETUPS) {
       setTempSetups((prev) => {
         let name = prev[index].name.trim();
-        const newSetup: NewSetupManageInfo = {
-          ID: prev[index].ID,
+        const newSetup: TemporarySetupInfo = {
+          ...prev[index],
+          uid: randomString(6),
           name: name ? `${name} (copy)` : "Setup copy",
           type: "original",
           status: "DUPLICATE",
@@ -108,19 +118,40 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   const addNewSetup = () => {
     setTempSetups((prev) => {
-      const newSetup: NewSetupManageInfo = {
+      const newSetup: TemporarySetupInfo = {
         ...getSetupManageInfo({ name: getNewSetupName(prev) }),
+        uid: randomString(7),
         status: "NEW",
+        isCompared: false,
       };
       return [...prev, newSetup];
     });
 
-    setErrorCode(0);
+    setErrorCode("");
   };
 
-  const tryApply = () => {
+  const onSelectSetupForCompare = (index: number) => () => {
+    const { isCompared: isToggleOff, uid } = tempSetups[index] || {};
+
+    if (isToggleOff && uid === standardUid) {
+      setStandardUid("");
+    }
+
+    setTempSetups((prevTempSetups) => {
+      const newTempSetups = [...prevTempSetups];
+      newTempSetups[index].isCompared = !newTempSetups[index].isCompared;
+
+      return newTempSetups;
+    });
+  };
+
+  const onClickComparedSetupName = (uid: string) => () => {
+    setStandardUid(uid);
+  };
+
+  const tryApplyNewSettings = () => {
     if (!tempSetups.length) {
-      setErrorCode(1);
+      setErrorCode("NO_SETUPS");
       return;
     }
 
@@ -129,7 +160,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       const name = tempoSetup.name.trim();
 
       if (!name.length || nameMap[name]) {
-        setErrorCode(2);
+        setErrorCode("DUPLICATE_SETUP_NAME");
         return;
       } else {
         nameMap[name] = true;
@@ -144,12 +175,10 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       })
     );
     // #to-do
-    // dispatch(applySettingsOnUI({ comparedIndexes, standardIndex }));
-    dispatch(applySettingsOnUI({ comparedIndexes, standardID: 0 }));
+    dispatch(applySettingsOnUI({ comparedIDs, standardID: 0 }));
   };
 
   // const settingsUtils = {
-  //   save: <SaveUtil setup={tempSetups[util.index]} close={closeUtil} />,
   //   share: <SharedUtil setup={tempSetups[util.index]} close={closeUtil} />,
   //   updateDB: <UpdateDB index={util.index} close={closeUtil} />,
   // };
@@ -177,14 +206,39 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       <div className="mt-3 flex-grow hide-scrollbar">
         {activeIndex === 0 && (
           <div>
+            {comparedSetups.length ? (
+              <div className="mb-4">
+                <p className="text-sm">Select the Standard Setup</p>
+                <div className="flex flex-wrap">
+                  {comparedSetups.map((comparedSetup, i) => {
+                    return (
+                      <button
+                        key={comparedSetup.uid}
+                        className={cn(
+                          "mt-2 mr-2 px-3 py-1 rounded-2xl font-bold",
+                          comparedSetup.uid === standardUid
+                            ? "bg-darkblue-2"
+                            : "bg-default text-black"
+                        )}
+                        onClick={onClickComparedSetupName(comparedSetup.uid)}
+                      >
+                        {comparedSetup.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
             <div className="space-y-3">
               {tempSetups.map((setup, index) => (
                 <SetupControl
-                  key={index}
+                  key={setup.uid}
                   setup={setup}
                   changeSetupName={changeSetupName(index)}
                   removeSetup={removeSetup(index)}
                   copySetup={copySetup(index)}
+                  onSelectForCompare={onSelectSetupForCompare(index)}
                 />
               ))}
             </div>
@@ -226,16 +280,20 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         )}
       </div>
 
-      <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApply}>
+      <Button
+        className="mt-4 mx-auto group relative"
+        variant="positive"
+        onClick={tryApplyNewSettings}
+      >
         <span
           className={cn(
             "w-60 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 text-center small-tooltip bottom-full origin-bottom-center text-lightred",
-            errorCode && "group-hover:scale-100"
+            errorCode !== "" && "group-hover:scale-100"
           )}
         >
-          {errorCode === 1
+          {errorCode === "NO_SETUPS"
             ? "Please have atleast 1 Setup"
-            : errorCode === 2 && "Please choose a unique name for each Setup."}
+            : errorCode === "DUPLICATE_SETUP_NAME" && "Please choose a unique name for each Setup."}
         </span>
         <span>Apply</span>
       </Button>

@@ -1,20 +1,22 @@
-import { FaCopy, FaTrashAlt } from "react-icons/fa";
-import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
+import cn from "classnames";
+import { FaBalanceScaleLeft, FaCopy, FaTrashAlt } from "react-icons/fa";
+import type { TemporarySetupInfo } from "./types";
 
-// import { CollapseSpace } from "@Components/collapse";
 import { IconButton } from "@Src/styled-components";
 
 interface SetupControlProps {
-  setup: NewSetupManageInfo;
+  setup: TemporarySetupInfo;
   changeSetupName: (newName: string) => void;
   removeSetup: () => void;
   copySetup: () => void;
+  onSelectForCompare: () => void;
 }
 export function SetupControl({
   setup,
   changeSetupName,
   removeSetup,
   copySetup,
+  onSelectForCompare,
 }: SetupControlProps) {
   const isNew = setup.status === "NEW";
 
@@ -42,7 +44,7 @@ export function SetupControl({
         }}
       />
       <div className="mt-4 flex justify-between">
-        <div className="ml-1 flex space-x-6">
+        <div className="ml-1 flex space-x-4">
           <IconButton variant="negative" onClick={removeSetup}>
             <FaTrashAlt />
           </IconButton>
@@ -51,9 +53,17 @@ export function SetupControl({
             <FaCopy />
           </IconButton>
         </div>
-      </div>
 
-      {/* <CollapseSpace active={expanded}></CollapseSpace> */}
+        <button
+          className={cn(
+            "w-8 h-8 rounded-circle flex-center",
+            setup.isCompared ? "bg-green text-black" : "border-2 border-lesser text-lesser"
+          )}
+          onClick={onSelectForCompare}
+        >
+          <FaBalanceScaleLeft />
+        </button>
+      </div>
     </div>
   );
 }

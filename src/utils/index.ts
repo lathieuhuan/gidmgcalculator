@@ -10,6 +10,12 @@ import { findCharacter } from "@Data/controllers";
 
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 
+export const randomString = (n: number) => {
+  return Math.random()
+    .toString(36)
+    .slice(2, 2 + n);
+};
+
 export const wikiImg = (src: string) => {
   return `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`;
 };

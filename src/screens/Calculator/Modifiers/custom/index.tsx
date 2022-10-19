@@ -22,6 +22,7 @@ import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 import { useTranslation } from "@Hooks/useTranslation";
+import { IconToggleButton } from "@Src/styled-components";
 
 const selectAllCustomBuffCtrls = createSelector(
   selectSetupManageInfos,
@@ -77,27 +78,17 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   return (
     <div className="flex flex-col">
       <div className="mt-3 flex justify-between">
-        <button
-          className={cn(
-            "w-8 h-8 shrink-0 rounded-circle flex-center",
-            modCtrls.length ? "bg-darkred glow-on-hover text-default" : "text-lesser"
-          )}
+        <IconToggleButton
+          color="text-default bg-darkred"
           disabled={modCtrls.length === 0}
           onClick={() => dispatch(clearCustomModCtrls(isBuffs))}
         >
           <FaTrashAlt />
-        </button>
+        </IconToggleButton>
 
-        <button
-          className={cn(
-            "w-8 h-8 shrink-0 rounded-circle flex-center",
-            modCtrls.length <= 9 ? "bg-lightgold text-black glow-on-hover" : "text-lesser"
-          )}
-          disabled={modCtrls.length > 9}
-          onClick={() => setModalOn(true)}
-        >
+        <IconToggleButton disabled={modCtrls.length > 9} onClick={() => setModalOn(true)}>
           <FaPlus />
-        </button>
+        </IconToggleButton>
       </div>
 
       {copyOptions.length ? (

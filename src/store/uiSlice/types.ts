@@ -7,7 +7,7 @@ export interface UIState {
   introOn: boolean;
   settingsOn: boolean;
   standardID: number;
-  comparedIndexes: number[];
+  comparedIDs: number[];
   importInfo: ImportInfo;
 }
 
@@ -17,6 +17,6 @@ export type ImportInfo = {
 };
 
 export type ApplySettingsOnUIAction = PayloadAction<{
-  comparedIndexes: number[];
   standardID: number;
+  comparedIDs: number[];
 }>;
