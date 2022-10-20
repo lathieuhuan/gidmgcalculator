@@ -4,9 +4,7 @@ export type ModalType =
   | "CHARACTERS"
   | "WEAPONS"
   | Artifact
-  | "SAVE_SETUP"
   | "SHARE_SETUP"
-  // | "UPDATE_USERS_DATA"
   | "NOTICE_MOVE_TARGET"
   | "";
 

@@ -1,33 +1,20 @@
-import cn from "classnames";
 import { useRef, useState } from "react";
-import { FaCog, FaCopy, FaSave } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 import type { Artifact } from "@Src/types";
 import type { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
-import {
-  changeActiveSetup,
-  pickWeaponInUsersDatabase,
-  changeArtPiece,
-  duplicateCalcSetup,
-} from "@Store/calculatorSlice";
+import { pickWeaponInUsersDatabase, changeArtPiece } from "@Store/calculatorSlice";
 import { toggleSettings } from "@Store/uiSlice";
-import {
-  selectArtInfo,
-  selectCharData,
-  selectActiveId,
-  selectSetupManageInfos,
-} from "@Store/calculatorSlice/selectors";
+import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Src/hooks/useHeight";
 import { wikiImg } from "@Src/utils";
-import { ARTIFACT_ICONS, ARTIFACT_TYPES, MAX_CALC_SETUPS } from "@Src/constants";
+import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { Button, IconButton } from "@Src/styled-components";
 import { PrePicker, Picker } from "@Components/Picker";
-import { ComplexSelect } from "@Components/ComplexSelect";
-import { Modal } from "@Components/modals";
 import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
 import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
 import { ConfirmModal } from "@Components/minors";
@@ -36,16 +23,13 @@ import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import SectionTarget from "./SectionTarget";
 import Settings from "./Settings";
-import { SaveSetup } from "./modal-content";
+import { SetupSelect } from "./SetupSelect";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
 
-  const setupManageInfos = useSelector(selectSetupManageInfos);
-  const activeId = useSelector(selectActiveId);
   const charData = useSelector(selectCharData);
   const artPieces = useSelector(selectArtInfo)?.pieces;
-  const isAtMax = setupManageInfos.length === MAX_CALC_SETUPS;
 
   const [modal, setModal] = useState<ModalInfo>({
     type: "",
@@ -59,50 +43,9 @@ export default function SetupManager() {
 
   const closeModal = () => setModal({ type: "", index: undefined });
 
-  const onClickSetupName = (ID: number) => {
-    if (ID !== activeId) {
-      dispatch(changeActiveSetup(ID));
-    }
-  };
-
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
-      <ComplexSelect
-        selectId="setup-select"
-        value={setupManageInfos.find((setupManageInfo) => setupManageInfo.ID === activeId)?.name}
-        optionHeight={2.5625}
-        options={setupManageInfos.map(({ name, ID }, i) => {
-          return {
-            label: name,
-            value: ID,
-            suffix: (
-              <div className="ml-auto flex text-xl">
-                <button
-                  className={cn(
-                    "p-2.5 border-l border-white flex",
-                    isAtMax ? "bg-lesser" : "bg-lightgold"
-                  )}
-                  disabled={isAtMax}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    dispatch(duplicateCalcSetup(ID));
-                  }}
-                >
-                  <FaCopy />
-                </button>
-
-                <button
-                  className="p-2.5 border-l border-white flex bg-lightgold"
-                  onClick={() => setModal({ type: "SAVE_SETUP", index: i })}
-                >
-                  <FaSave />
-                </button>
-              </div>
-            ),
-          };
-        })}
-        onChange={(newID) => onClickSetupName(+newID)}
-      />
+      <SetupSelect />
 
       <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
         <SectionParty />
@@ -207,16 +150,6 @@ export default function SetupManager() {
         }}
         onClose={closeModal}
       />
-
-      <Modal
-        active={modal.type === "SAVE_SETUP"}
-        isCustom
-        className="rounded-lg max-w-95"
-        style={{ width: "30rem" }}
-        onClose={closeModal}
-      >
-        <SaveSetup setup={setupManageInfos[modal.index || 0]} onClose={closeModal} />
-      </Modal>
 
       <ConfirmModal
         active={modal.type === "NOTICE_MOVE_TARGET"}
