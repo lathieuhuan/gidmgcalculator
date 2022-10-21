@@ -1,8 +1,7 @@
 import { useState } from "react";
 import type { Artifact, CalcArtPiece } from "@Src/types";
 
-import useArtSetFilter from "../hooks/useArtifactSetFilter";
-import useArtStatsFilter from "../hooks/useArtifactStatsFilter";
+import { useArtSetFilter, useArtStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
 import { ButtonBar } from "@Components/minors";

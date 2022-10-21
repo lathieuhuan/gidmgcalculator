@@ -23,7 +23,7 @@ interface UseArtStatsFilterArgs {
   stats: StatsFilter;
   isError: boolean;
 }
-export default function useArtStatsFilter({ artifactType, stats, isError }: UseArtStatsFilterArgs) {
+export function useArtStatsFilter({ artifactType, stats, isError }: UseArtStatsFilterArgs) {
   const [filter, setFilter] = useState(stats);
   const [atInfo, setAtInfo] = useState(false);
 

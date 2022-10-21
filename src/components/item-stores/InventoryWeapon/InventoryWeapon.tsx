@@ -1,4 +1,3 @@
-import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
 import type { UsersWeapon, Weapon } from "@Src/types";
 
 import {
@@ -7,6 +6,7 @@ import {
   selectWeaponById,
 } from "@Store/usersDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
+import { useInventoryRack } from "../hooks";
 
 import { WeaponCard } from "@Components/WeaponCard";
 import { Modal, ModalControl } from "@Components/modals";

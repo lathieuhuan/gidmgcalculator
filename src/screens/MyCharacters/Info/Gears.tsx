@@ -7,10 +7,9 @@ import { useDispatch } from "@Store/hooks";
 import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/usersDatabaseSlice";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { SharedSpace } from "@Components/minors";
-import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
-import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
 import { CloseButton } from "@Src/styled-components";
+import { SharedSpace } from "@Components/minors";
+import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
 

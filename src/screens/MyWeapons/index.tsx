@@ -17,8 +17,7 @@ import {
   selectWeaponById,
 } from "@Store/usersDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
-import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
-import useTypeFilter from "@Components/item-stores/hooks/useTypeFilter";
+import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
 import { Picker, PrePicker } from "@Components/Picker";
 import { WeaponCard } from "@Components/WeaponCard";

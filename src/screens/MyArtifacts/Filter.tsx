@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import type { Artifact } from "@Src/types";
 
 import { useSelector } from "@Store/hooks";
-import useArtSetFilter from "@Components/item-stores/hooks/useArtifactSetFilter";
-import useArtStatsFilter from "@Components/item-stores/hooks/useArtifactStatsFilter";
-import useTypeFilter from "@Components/item-stores/hooks/useTypeFilter";
+import { useArtSetFilter, useArtStatsFilter, useTypeFilter } from "@Components/item-stores/hooks";
 
 import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 import { hasDupStat, StatsFilter } from "@Components/item-stores/utils";

@@ -3,7 +3,7 @@ import cn from "classnames";
 import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { wikiImg } from "@Src/utils";
 
-export default function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
+export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
   const [types, setTypes] = useState<string[]>(initialTypes || []);
   const icons = Object.entries(forWeapon ? WEAPON_ICONS : ARTIFACT_ICONS);
 

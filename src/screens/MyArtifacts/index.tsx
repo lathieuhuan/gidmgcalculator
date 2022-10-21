@@ -16,8 +16,7 @@ import {
 } from "@Store/usersDatabaseSlice";
 import { selectArtifactById, selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 
-import useInventoryRack from "@Components/item-stores/hooks/useInventoryRack";
-import useTypeFilter from "@Components/item-stores/hooks/useTypeFilter";
+import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 import {
   filterArtIdsBySetsAndStats,
   initArtifactStatsFilter,

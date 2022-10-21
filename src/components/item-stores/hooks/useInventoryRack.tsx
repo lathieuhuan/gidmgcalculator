@@ -43,7 +43,7 @@ interface UseInventoryRackArgs {
   itemType: "weapon" | "artifact";
   filteredIds: number[];
 }
-export default function useInventoryRack({
+export function useInventoryRack({
   listClassName,
   itemClassName,
   items,

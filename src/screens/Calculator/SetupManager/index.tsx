@@ -9,14 +9,13 @@ import { toggleSettings } from "@Store/uiSlice";
 import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import useHeight from "@Src/hooks/useHeight";
+import useHeight from "@Hooks/useHeight";
 import { wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { Button, IconButton } from "@Src/styled-components";
 import { PrePicker, Picker } from "@Components/Picker";
-import { InventoryWeapon } from "@Components/item-stores/InventoryWeapon";
-import { InventoryArtifact } from "@Components/item-stores/InventoryArtifact";
+import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { ConfirmModal } from "@Components/minors";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";

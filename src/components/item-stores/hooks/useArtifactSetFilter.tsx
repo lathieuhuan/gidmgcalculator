@@ -10,7 +10,7 @@ interface UseArtSetFilterArgs {
   artifacts: CalcArtPiece[];
   codes: number[];
 }
-export default function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFilterArgs) {
+export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFilterArgs) {
   //
   const [tempSets, setTempSets] = useState(
     (() => {
