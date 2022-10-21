@@ -1,9 +1,9 @@
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import {
   changeModCtrlInput,
-  toggleElementModCtrl,
   toggleModCtrl,
   toggleResonance,
+  updateCalcSetup,
 } from "@Store/calculatorSlice";
 import { selectElmtModCtrls } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -13,15 +13,26 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 
 export function ElementDebuffs() {
-  const { resonance, superconduct } = useSelector(selectElmtModCtrls);
   const dispatch = useDispatch();
+  const elmtModCtrls = useSelector(selectElmtModCtrls);
+
+  const { resonance, superconduct } = elmtModCtrls;
   const geoResonance = resonance.find((rsn) => rsn.vision === "geo");
 
   return (
     <>
       <ModifierTemplate
         checked={superconduct}
-        onToggle={() => dispatch(toggleElementModCtrl("superconduct"))}
+        onToggle={() =>
+          dispatch(
+            updateCalcSetup({
+              elmtModCtrls: {
+                ...elmtModCtrls,
+                superconduct: !superconduct,
+              },
+            })
+          )
+        }
         heading="Superconduct"
         desc={
           <>

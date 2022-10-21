@@ -2,18 +2,18 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { addTeammate, updateCalcSetup, removeTeammate } from "@Store/calculatorSlice";
+import { addTeammate, removeTeammate } from "@Store/calculatorSlice";
 import {
   selectCharData,
   selectActiveId,
   selectSetupManageInfos,
-  selectCalcSetupsById,
+  selectParty,
 } from "@Store/calculatorSlice/selectors";
 import { findById } from "@Src/utils";
 
 import { CharFilledSlot } from "@Components/minors";
 import { Picker } from "@Components/Picker";
-import { CopySection } from "../components";
+import { CopySelect } from "./CopySelect";
 
 export default function SectionParty() {
   const dispatch = useDispatch();
@@ -21,36 +21,15 @@ export default function SectionParty() {
   const charData = useSelector(selectCharData);
   const activeId = useSelector(selectActiveId);
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const setupsById = useSelector(selectCalcSetupsById);
+  const party = useSelector(selectParty);
 
   const [pendingSlot, setPendingSlot] = useState<number | null>(null);
 
-  const allParties = setupManageInfos.map(({ ID }) => setupsById[ID].party);
-  const { party = [] } = setupsById[activeId] || {};
   const isOriginal = findById(setupManageInfos, activeId)?.type === "original";
-
-  const copyOptions = [];
-  if (party.length && party.every((teammate) => !teammate)) {
-    for (const partyIndex in allParties) {
-      if (allParties[partyIndex].some((tm) => tm)) {
-        copyOptions.push({
-          label: setupManageInfos[partyIndex].name,
-          value: setupManageInfos[partyIndex].ID,
-        });
-      }
-    }
-  }
-
-  const onClickCopyParty = ({ value: sourceId }: { value: number }) => {
-    const { party, elmtModCtrls, subWpComplexBuffCtrls } = setupsById[sourceId];
-    dispatch(updateCalcSetup({ party, elmtModCtrls, subWpComplexBuffCtrls }));
-  };
 
   return (
     <div className="setup-manager_pedestal">
-      {copyOptions.length ? (
-        <CopySection className="mb-4 px-4" options={copyOptions} onClickCopy={onClickCopyParty} />
-      ) : null}
+      {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="w-full px-2 flex justify-around">
         {party.map((teammate, tmIndex) => {

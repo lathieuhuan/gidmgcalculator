@@ -13,7 +13,7 @@ import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
 import CustomModifiers from "./custom";
 
-function Modifiers() {
+export default function Modifiers() {
   const party = useSelector(selectParty);
   const partyData = getPartyData(party);
 
@@ -65,5 +65,3 @@ function Modifiers() {
     </div>
   );
 }
-
-export default memo(Modifiers);

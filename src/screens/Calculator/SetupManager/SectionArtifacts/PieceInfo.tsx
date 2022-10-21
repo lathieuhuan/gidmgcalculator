@@ -4,7 +4,7 @@ import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { updateArtPieceSubStat, changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
+import { changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
 import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
 
 import { findById, percentSign } from "@Src/utils";
@@ -102,7 +102,15 @@ export default function PieceInfo({
           mainStatType={mainStatType}
           subStats={pieceInfo.subStats}
           changeSubStat={(subStatIndex, changeInfo) => {
-            dispatch(updateArtPieceSubStat({ pieceIndex, subStatIndex, ...changeInfo }));
+            dispatch(
+              updateArtPiece({
+                pieceIndex,
+                subStat: {
+                  index: subStatIndex,
+                  newInfo: changeInfo,
+                },
+              })
+            );
           }}
         />
       </div>

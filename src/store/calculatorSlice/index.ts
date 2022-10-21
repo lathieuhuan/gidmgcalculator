@@ -18,7 +18,6 @@ import type {
   AddTeammateAction,
   ApplySettingsOnCalculatorAction,
   ChangeArtPieceAction,
-  ChangeArtPieceSubStatAction,
   ChangeCustomModCtrlValueAction,
   ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
@@ -33,6 +32,8 @@ import type {
   ToggleSubWpModCtrlAction,
   ToggleTeammateModCtrlAction,
   UpdateArtPieceAction,
+  UpdateCalculatorAction,
+  UpdateCalcSetupAction,
 } from "./reducer-types";
 
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
@@ -95,6 +96,12 @@ export const calculatorSlice = createSlice({
   name: "calculator",
   initialState,
   reducers: {
+    updateCalculator: (state, action: UpdateCalculatorAction) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
       const result = parseAndInitData(pickedChar, myWps, myArts);
@@ -147,9 +154,6 @@ export const calculatorSlice = createSlice({
 
       calculate(state);
     },
-    changeActiveSetup: (state, action: PayloadAction<number>) => {
-      state.activeId = action.payload;
-    },
     importSetup: (state, action: ImportSetupAction) => {
       const { data, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID, type, name, target, ...importedsetup } = data;
@@ -173,8 +177,15 @@ export const calculatorSlice = createSlice({
 
       calculate(state, shouldOverwriteChar || shouldOverwriteTarget);
     },
-    closeError: (state) => {
-      state.isError = false;
+    updateCalcSetup: (state, action: UpdateCalcSetupAction) => {
+      const { setupId = state.activeId, ...newInfo } = action.payload;
+
+      state.setupsById[setupId] = {
+        ...state.setupsById[setupId],
+        ...newInfo,
+      };
+
+      calculate(state, setupId !== state.activeId);
     },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
@@ -294,15 +305,6 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    copyParty: (state, action: PayloadAction<number>) => {
-      const activeSetup = state.setupsById[state.activeId];
-      const sourceSetup = state.setupsById[action.payload];
-      activeSetup.party = sourceSetup.party;
-      activeSetup.elmtModCtrls = sourceSetup.elmtModCtrls;
-      activeSetup.subWpComplexBuffCtrls = sourceSetup.subWpComplexBuffCtrls;
-
-      calculate(state);
-    },
     // WEAPON
     pickWeaponInUsersDatabase: (state, action: PayloadAction<CalcWeapon>) => {
       const wpInfo = action.payload;
@@ -340,32 +342,6 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // ARTIFACTS
-    updateArtPiece: (state, action: UpdateArtPieceAction) => {
-      const { pieceIndex, level, mainStatType } = action.payload;
-      const piece = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
-
-      if (piece) {
-        if (level !== undefined) {
-          piece.level = level;
-        }
-        if (mainStatType) {
-          piece.mainStatType = mainStatType;
-        }
-      }
-      calculate(state);
-    },
-    updateArtPieceSubStat: (state, action: ChangeArtPieceSubStatAction) => {
-      const { pieceIndex, subStatIndex, ...changeInfo } = action.payload;
-      const pieceInfo = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
-
-      if (pieceInfo) {
-        pieceInfo.subStats[subStatIndex] = {
-          ...pieceInfo.subStats[subStatIndex],
-          ...changeInfo,
-        };
-        calculate(state);
-      }
-    },
     changeArtPiece: (state, action: ChangeArtPieceAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
       const setup = state.setupsById[state.activeId];
@@ -410,6 +386,27 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
+    updateArtPiece: (state, action: UpdateArtPieceAction) => {
+      const { pieceIndex, level, mainStatType, subStat } = action.payload;
+      const piece = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
+
+      if (piece) {
+        if (level !== undefined) {
+          piece.level = level;
+        }
+        if (mainStatType) {
+          piece.mainStatType = mainStatType;
+        }
+        if (subStat) {
+          const { index, newInfo } = subStat;
+          piece.subStats[index] = {
+            ...piece.subStats[index],
+            ...newInfo,
+          };
+        }
+      }
+      calculate(state);
+    },
     updateAllArtPieces: (state, action: PayloadAction<(CalcArtPiece | null)[]>) => {
       const pieces = action.payload;
       const sets = getArtifactSets(pieces);
@@ -421,16 +418,6 @@ export const calculatorSlice = createSlice({
       }
       setup.artInfo = { pieces, sets };
       setup.artBuffCtrls = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
-
-      calculate(state);
-    },
-    copyAllArtifacts: (state, action: PayloadAction<number>) => {
-      const activeSetup = state.setupsById[state.activeId];
-      const sourceSetup = state.setupsById[action.payload];
-      activeSetup.artInfo = sourceSetup.artInfo;
-      activeSetup.artBuffCtrls = sourceSetup.artBuffCtrls;
-      activeSetup.subArtBuffCtrls = sourceSetup.subArtBuffCtrls;
-      activeSetup.subArtDebuffCtrls = sourceSetup.subArtDebuffCtrls;
 
       calculate(state);
     },
@@ -457,16 +444,6 @@ export const calculatorSlice = createSlice({
         dendroRsn.inputs[action.payload] = !dendroRsn.inputs[action.payload];
         calculate(state);
       }
-    },
-    toggleElementModCtrl: (
-      state,
-      action: PayloadAction<"superconduct" | "aggravate" | "spread">
-    ) => {
-      const key = action.payload;
-      const { elmtModCtrls } = state.setupsById[state.activeId];
-
-      elmtModCtrls[key] = !elmtModCtrls[key];
-      calculate(state);
     },
     changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
       const { field, value } = action.payload;
@@ -729,26 +706,22 @@ export const calculatorSlice = createSlice({
 });
 
 export const {
+  updateCalculator,
   initSessionWithChar,
   initSessionWithSetup,
-  changeActiveSetup,
   importSetup,
-  closeError,
+  updateCalcSetup,
   updateCharacter,
   addTeammate,
   removeTeammate,
-  copyParty,
   pickWeaponInUsersDatabase,
   changeWeapon,
   updateWeapon,
   updateArtPiece,
-  updateArtPieceSubStat,
   changeArtPiece,
   updateAllArtPieces,
-  copyAllArtifacts,
   toggleResonance,
   changeResonanceInput,
-  toggleElementModCtrl,
   changeElementModCtrl,
   toggleModCtrl,
   changeModCtrlInput,

@@ -4,7 +4,7 @@ import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
 import type { ModalInfo } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeActiveSetup, duplicateCalcSetup } from "@Store/calculatorSlice";
+import { duplicateCalcSetup, updateCalculator } from "@Store/calculatorSlice";
 import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { MAX_CALC_SETUPS } from "@Src/constants";
 
@@ -36,12 +36,16 @@ export function SetupSelect() {
 
   const onClickSetupName = (newID: string | number) => {
     if (+newID !== activeId) {
-      dispatch(changeActiveSetup(+newID));
+      dispatch(updateCalculator({ activeId: +newID }));
     }
   };
 
   const onClickCopySetup = (ID: number) => () => {
     dispatch(duplicateCalcSetup(ID));
+  };
+
+  const onClickToggleCompared = () => {
+    //
   };
 
   const onClickMoreActions = (index: number) => () => {
@@ -62,7 +66,7 @@ export function SetupSelect() {
             label: name,
             value: ID,
             renderSuffix: ({ closeSelect }) => {
-              const commonClassNames = "h-10 w-10 border-l border-b border-white";
+              const commonClassNames = "h-9 w-9 border-l border-b border-white";
 
               return (
                 <div className="ml-auto flex text-xl transition-all duration-300">
@@ -77,22 +81,22 @@ export function SetupSelect() {
                   >
                     <FaCopy />
                   </button>
-
                   <button
                     className={cn(
                       commonClassNames,
-                      styles["more-actions-btn"],
-                      i === moreActionsIndex && styles.active
+                      "flex-center",
+                      isAtMax ? "bg-lesser" : "bg-lightgold"
                     )}
-                    onClick={onClickMoreActions(i)}
+                    disabled={isAtMax}
+                    onClick={onClickCopySetup(ID)}
                   >
-                    <div className="bg-black" />
+                    <FaCopy />
                   </button>
 
                   <div
                     className="flex overflow-hidden transition-all duration-300"
                     style={{
-                      width: i === moreActionsIndex ? "2.5rem" : 0,
+                      width: i === moreActionsIndex ? "2.25rem" : 0,
                     }}
                   >
                     <button
@@ -105,6 +109,17 @@ export function SetupSelect() {
                       <FaSave />
                     </button>
                   </div>
+
+                  <button
+                    className={cn(
+                      commonClassNames,
+                      styles["more-actions-btn"],
+                      i === moreActionsIndex && styles.active + " bg-green"
+                    )}
+                    onClick={onClickMoreActions(i)}
+                  >
+                    <div className="bg-black" />
+                  </button>
                 </div>
               );
             },

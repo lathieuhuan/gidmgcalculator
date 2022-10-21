@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
-import { closeError } from "@Store/calculatorSlice";
+import { updateCalculator } from "@Store/calculatorSlice";
 import { addUsersDatabase } from "@Store/usersDatabaseSlice";
 import { convertUsersData } from "./utils/convertUsersData";
 import { EScreen } from "./constants";
@@ -63,6 +63,8 @@ function App() {
   //   };
   // }, []);
 
+  const closeError = () => dispatch(updateCalculator({ isError: false }));
+
   const renderTabContent = useCallback(() => {
     switch (atScreen) {
       case EScreen.MY_CHARACTERS:
@@ -98,12 +100,12 @@ function App() {
         active={isError}
         isCustom
         className="p-4 w-80 rounded-lg flex flex-col bg-darkblue-1"
-        onClose={() => dispatch(closeError())}
+        onClose={closeError}
       >
         <p className="text-h5 text-center text-lightred">
           An Error has occurred and prevented the calculation process.
         </p>
-        <Button className="mt-4 mx-auto" variant="positive" onClick={() => dispatch(closeError())}>
+        <Button className="mt-4 mx-auto" variant="positive" onClick={closeError}>
           Confirm
         </Button>
       </Modal>

@@ -24,7 +24,7 @@ export function ComplexSelect({
   selectId,
   value,
   options = [],
-  optionHeight = 2.5,
+  optionHeight = 2.25,
   onChange,
   onCloseSelect,
 }: ComplexSelectProps) {
@@ -73,7 +73,7 @@ export function ComplexSelect({
 
   const heightByDropdownType = {
     "": 0,
-    OPTIONS: `${options.length * optionHeight}rem`,
+    OPTIONS: `${options.length * optionHeight + 0.0625}rem`,
     ACTIONS: `${optionHeight}rem`,
   };
 
@@ -118,7 +118,7 @@ export function ComplexSelect({
             return (
               <div key={i} className="flex">
                 <button
-                  className="px-2 py-1.5 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default cursor-default"
+                  className="px-2 py-1 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default cursor-default"
                   onClick={onClickOption(value || label)}
                 >
                   {label}

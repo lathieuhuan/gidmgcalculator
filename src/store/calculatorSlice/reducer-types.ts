@@ -6,14 +6,18 @@ import type {
   UsersCharacter,
   UsersArtifact,
   UsersWeapon,
-  Target,
   Vision,
   Weapon,
   UsersSetup,
   CalcSetupManageInfo,
   ArtPieceMainStat,
+  CalcSetup,
 } from "@Src/types";
-import type { CalcConfigurations } from "./types";
+import type { CalcConfigurations, CalculatorState } from "./types";
+
+export type UpdateCalculatorAction = PayloadAction<
+  Partial<Pick<CalculatorState, "activeId" | "isError">>
+>;
 
 export type PickedChar = Partial<UsersCharacter> & {
   name: string;
@@ -24,18 +28,18 @@ export type InitSessionWithCharAction = PayloadAction<{
   myArts: UsersArtifact[];
 }>;
 
-export type UpdateArtPieceAction = PayloadAction<{
-  pieceIndex: number;
-  level?: number;
-  mainStatType?: ArtPieceMainStat;
-}>;
-
 export type AddTeammateAction = PayloadAction<{
   name: string;
   vision: Vision;
   weapon: Weapon;
   tmIndex: number;
 }>;
+
+export type UpdateCalcSetupAction = PayloadAction<
+  Partial<CalcSetup> & {
+    setupId?: number;
+  }
+>;
 
 export type ChangeElementModCtrlAction = PayloadAction<{
   field: "ampRxn" | "infusion_ampRxn";
@@ -104,14 +108,15 @@ export type ChangeArtPieceAction = PayloadAction<{
   isFresh?: boolean;
 }>;
 
-type ArtPieceSubStatPath = {
+export type UpdateArtPieceAction = PayloadAction<{
   pieceIndex: number;
-  subStatIndex: number;
-};
-
-export type ChangeArtPieceSubStatAction = PayloadAction<
-  ArtPieceSubStatPath & Partial<CalcArtPieceSubStatInfo>
->;
+  level?: number;
+  mainStatType?: ArtPieceMainStat;
+  subStat?: {
+    index: number;
+    newInfo: Partial<CalcArtPieceSubStatInfo>;
+  };
+}>;
 
 export type NewSetupManageInfo = CalcSetupManageInfo & {
   status: "OLD" | "NEW" | "DUPLICATE";

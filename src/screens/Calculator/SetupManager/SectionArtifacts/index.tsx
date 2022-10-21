@@ -1,28 +1,17 @@
 import cn from "classnames";
 import { type RefObject, useState } from "react";
-import { createSelector } from "@reduxjs/toolkit";
 
-import { copyAllArtifacts, changeArtPiece } from "@Store/calculatorSlice";
-import {
-  selectCalcSetupsById,
-  selectActiveId,
-  selectSetupManageInfos,
-} from "@Store/calculatorSlice/selectors";
+import { changeArtPiece } from "@Store/calculatorSlice";
+import { selectArtInfo } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactPiece } from "@Data/controllers";
-import { indexById, wikiImg } from "@Src/utils";
+import { wikiImg } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
-import { CopySection } from "@Screens/Calculator/components";
 import { CollapseSpace } from "@Components/collapse";
 import { Picker } from "@Components/Picker";
 import PieceInfo from "./PieceInfo";
-
-const selectAllArtInfos = createSelector(
-  selectSetupManageInfos,
-  selectCalcSetupsById,
-  (setupManageInfos, setupsById) => setupManageInfos.map(({ ID }) => setupsById[ID].artInfo)
-);
+import { CopySelect } from "./CopySelect";
 
 interface SectionArtifactsProps {
   containerRef: RefObject<HTMLDivElement>;
@@ -30,9 +19,7 @@ interface SectionArtifactsProps {
 export default function SectionArtifacts({ containerRef }: SectionArtifactsProps) {
   const dispatch = useDispatch();
 
-  const activeId = useSelector(selectActiveId);
-  const setupManageInfos = useSelector(selectSetupManageInfos);
-  const allArtInfos = useSelector(selectAllArtInfos);
+  const { pieces = [] } = useSelector(selectArtInfo);
 
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
   const [artifactPicker, setArtifactPicker] = useState({
@@ -40,8 +27,6 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     slot: 0,
   });
 
-  const activeIndex = indexById(setupManageInfos, activeId);
-  const { pieces } = allArtInfos[activeIndex];
   const pieceInfo = pieces[activeTabIndex];
 
   const scrollContainer = () => {
@@ -65,26 +50,9 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     }
   };
 
-  const copyOptions = [];
-  if (pieces.every((piece) => piece === null)) {
-    for (const index in allArtInfos) {
-      if (allArtInfos[index].pieces.some((piece) => piece !== null)) {
-        copyOptions.push({
-          label: setupManageInfos[index].name,
-          value: setupManageInfos[index].ID,
-        });
-      }
-    }
-  }
   return (
     <div className="setup-manager_pedestal">
-      {copyOptions.length ? (
-        <CopySection
-          className="mb-4 px-4"
-          options={copyOptions}
-          onClickCopy={({ value }) => dispatch(copyAllArtifacts(value))}
-        />
-      ) : null}
+      {pieces.length && pieces.every((piece) => piece === null) ? <CopySelect /> : null}
 
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {

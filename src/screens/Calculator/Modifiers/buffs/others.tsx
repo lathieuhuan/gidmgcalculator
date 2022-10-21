@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import {
   changeElementModCtrl,
   changeResonanceInput,
-  toggleElementModCtrl,
   toggleModCtrl,
   toggleResonance,
+  updateCalcSetup,
 } from "@Store/calculatorSlice";
 import {
   selectArtInfo,
@@ -127,7 +127,7 @@ function QuickenBuff({ vision }: { vision: Vision }) {
   const char = useSelector(selectChar);
   const totalAttr = useSelector(selectTotalAttr);
   const rxnBonus = useSelector(selectRxnBonus);
-  const activated = useSelector(selectElmtModCtrls)[reaction];
+  const elmtModCtrls = useSelector(selectElmtModCtrls);
 
   const buffValue = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus)[reaction];
 
@@ -137,8 +137,17 @@ function QuickenBuff({ vision }: { vision: Vision }) {
   return (
     <ModifierTemplate
       heading={heading}
-      checked={activated}
-      onToggle={() => dispatch(toggleElementModCtrl(reaction))}
+      checked={elmtModCtrls[reaction]}
+      onToggle={() =>
+        dispatch(
+          updateCalcSetup({
+            elmtModCtrls: {
+              ...elmtModCtrls,
+              [reaction]: !elmtModCtrls[reaction],
+            },
+          })
+        )
+      }
       desc={
         <>
           Increase base <span className={`text-${vision} capitalize`}>{vision} DMG</span> by{" "}
