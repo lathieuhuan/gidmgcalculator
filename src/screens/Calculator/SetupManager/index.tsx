@@ -5,7 +5,7 @@ import type { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
 import { changeArtPiece, changeWeapon } from "@Store/calculatorSlice";
-import { toggleSettings } from "@Store/uiSlice";
+import { updateUI } from "@Store/uiSlice";
 import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -62,7 +62,7 @@ export default function SetupManager() {
         <IconButton
           className="mx-auto text-lg"
           variant="positive"
-          onClick={() => dispatch(toggleSettings(true))}
+          onClick={() => dispatch(updateUI({ settingsOn: true }))}
         >
           <FaCog />
         </IconButton>

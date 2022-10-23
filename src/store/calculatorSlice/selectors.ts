@@ -4,6 +4,10 @@ export const selectCalcSetupsById = (state: RootState) => state.calculator.setup
 
 export const selectActiveId = (state: RootState) => state.calculator.activeId;
 
+export const selectStandardId = (state: RootState) => state.calculator.standardId;
+
+export const selectComparedIds = (state: RootState) => state.calculator.comparedIds;
+
 export const selectCharData = (state: RootState) => state.calculator.charData;
 
 export const selectCalcConfigs = (state: RootState) => state.calculator.configs;
@@ -25,6 +29,8 @@ export const selectParty = (state: RootState) =>
 export const selectElmtModCtrls = (state: RootState) =>
   state.calculator.setupsById[state.calculator.activeId]?.elmtModCtrls;
 
+export const selectTarget = (state: RootState) => state.calculator.target;
+
 export const selectTotalAttr = (state: RootState) =>
   state.calculator.statsById[state.calculator.activeId].totalAttrs;
 
@@ -34,4 +40,5 @@ export const selectFinalInfusion = (state: RootState) =>
 export const selectRxnBonus = (state: RootState) =>
   state.calculator.statsById[state.calculator.activeId].rxnBonuses;
 
-export const selectTarget = (state: RootState) => state.calculator.target;
+export const selectDmgResult = (state: RootState) =>
+  state.calculator.statsById[state.calculator.activeId].dmgResult;

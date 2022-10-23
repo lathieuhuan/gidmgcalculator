@@ -4,15 +4,15 @@ import { FaInfoCircle, FaPlus } from "react-icons/fa";
 import type { ConfigOption, TemporarySetupInfo } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
-import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
 import {
-  applySettingsOnUI,
-  selectComparedIDs,
-  selectStandardID,
-  toggleSettings,
-} from "@Store/uiSlice";
-import { applySettingsOnCalculator } from "@Store/calculatorSlice";
+  selectActiveId,
+  selectComparedIds,
+  selectStandardId,
+  selectSetupManageInfos,
+} from "@Store/calculatorSlice/selectors";
+import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
+import { updateUI } from "@Store/uiSlice";
+import { applySettings } from "@Store/calculatorSlice";
 
 import { TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
@@ -47,8 +47,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const configs = useSelector((state) => state.calculator.configs);
-  const comparedIDs = useSelector(selectComparedIDs);
-  const standardID = useSelector(selectStandardID);
+  const comparedIds = useSelector(selectComparedIds);
+  const standardId = useSelector(selectStandardId);
 
   const { activeIndex, tabs } = useTabs({
     className: "shrink-0",
@@ -60,7 +60,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       ...manageInfos,
       uid: randomString(7),
       status: "OLD",
-      isCompared: comparedIDs.includes(manageInfos.ID),
+      isCompared: comparedIds.includes(manageInfos.ID),
     }))
   );
   const [tempConfigs, setTempConfigs] = useState(configs);
@@ -168,14 +168,13 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     }
 
     dispatch(
-      applySettingsOnCalculator({
+      applySettings({
         newSetupManageInfos: tempSetups,
         newConfigs: tempConfigs,
-        removedSetupIDs: removedIds,
+        removedSetupIds: removedIds,
       })
     );
-    // #to-do
-    dispatch(applySettingsOnUI({ comparedIDs, standardID: 0 }));
+    dispatch(updateUI({ settingsOn: false }));
   };
 
   // const settingsUtils = {
@@ -187,7 +186,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     <div className="p-4 h-full flex flex-col">
       <CloseButton
         className="absolute top-3 right-3"
-        onClick={() => dispatch(toggleSettings(false))}
+        onClick={() => dispatch(updateUI({ settingsOn: false }))}
       />
 
       <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>

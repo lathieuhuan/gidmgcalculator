@@ -114,14 +114,16 @@ export function ComplexSelect({
         }}
       >
         {dropdownType === "OPTIONS" &&
-          options.map(({ label, value, renderSuffix }, i) => {
+          options.map((option, i) => {
+            const { renderSuffix } = option;
+
             return (
               <div key={i} className="flex">
                 <button
-                  className="px-2 py-1 grow text-lg text-left font-bold truncate hover:bg-darkblue-2 hover:text-default cursor-default"
-                  onClick={onClickOption(value || label)}
+                  className="px-2 py-1 grow text-lg text-left font-bold truncate cursor-default hover:bg-darkblue-2 hover:text-default"
+                  onClick={onClickOption(option.value || option.label)}
                 >
-                  {label}
+                  {option.label}
                 </button>
 
                 {renderSuffix && renderSuffix(renderKit)}

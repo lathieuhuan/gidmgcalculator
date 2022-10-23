@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
 import { EScreen } from "@Src/constants";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeScreen, selectAtScreen, toggleIntro } from "@Store/uiSlice";
+import { selectAtScreen, updateUI } from "@Store/uiSlice";
 
 export const navButtonStyles = {
   base: "flex items-center font-bold",
@@ -23,7 +23,7 @@ export function IntroButton({ className }: { className?: string }) {
   return (
     <button
       className={cn("group", navButtonStyles.base, className)}
-      onClick={() => dispatch(toggleIntro(true))}
+      onClick={() => dispatch(updateUI({ introOn: true }))}
     >
       <FaInfoCircle className="mr-2 group-hover:text-lightgold" size="1.125rem" />
       <span className="group-hover:text-lightgold">Introduction</span>
@@ -75,7 +75,7 @@ export function Tabs({ className, onClick }: TabsProps) {
             tab === atScreen ? navButtonStyles.active : navButtonStyles.idle
           )}
           onClick={() => {
-            dispatch(changeScreen(tab));
+            dispatch(updateUI({ atScreen: tab }));
 
             if (typeof onClick === "function") {
               onClick();

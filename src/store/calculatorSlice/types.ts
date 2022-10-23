@@ -12,6 +12,9 @@ import type {
 
 export type CalculatorState = {
   activeId: number;
+  standardId: number;
+  comparedIds: number[];
+
   configs: CalcConfigurations;
   isError: boolean;
 

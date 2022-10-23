@@ -8,7 +8,7 @@ import { restoreCalcSetup } from "@Src/utils/setup";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
 import { selectChar } from "@Store/calculatorSlice/selectors";
-import { changeScreen, resetCalculatorUI, toggleSettings, updateImportInfo } from "@Store/uiSlice";
+import { updateImportInfo, updateUI } from "@Store/uiSlice";
 
 import { Modal } from "@Components/modals";
 import { ConfirmTemplate } from "@Components/minors";
@@ -35,6 +35,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
       importedSetup = data;
       break;
     default:
+      // #to-check
       // importedSetup = createTmSetup(data, myChars, myWps, myArts);
       importedSetup = data;
   }
@@ -46,30 +47,34 @@ function Importing({ type, data }: Required<ImportInfo>) {
 
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
     dispatch(importSetup({ data: importedSetup, shouldOverwriteChar, shouldOverwriteTarget }));
-    dispatch(changeScreen(EScreen.CALCULATOR));
-    dispatch(toggleSettings(false));
+    dispatch(
+      updateUI({
+        atScreen: EScreen.CALCULATOR,
+        settingsOn: false,
+      })
+    );
     endImport();
   };
 
   const startNewSession = () => {
     dispatch(initSessionWithSetup(importedSetup));
-    dispatch(resetCalculatorUI());
+    dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
     endImport();
   };
 
   useEffect(() => {
-    const execute = (fn: Function) => setTimeout(fn, 100);
+    const delayExecute = (fn: Function) => setTimeout(fn, 100);
 
     if (char) {
       if (char.name === importedSetup.char.name) {
         if (mySetups.length === 4) {
-          execute(() => setPendingCode(2));
+          delayExecute(() => setPendingCode(2));
         } else {
           const sameChar = isEqual(char, importedSetup.char);
           const sameTarget = isEqual(target, importedSetup.target);
 
           if (sameChar && sameTarget) {
-            execute(() => addImportedSetup(false, false));
+            delayExecute(() => addImportedSetup(false, false));
           } else {
             let code = 3;
 
@@ -83,10 +88,10 @@ function Importing({ type, data }: Required<ImportInfo>) {
           }
         }
       } else {
-        execute(() => setPendingCode(1));
+        delayExecute(() => setPendingCode(1));
       }
     } else {
-      execute(startNewSession);
+      delayExecute(startNewSession);
     }
   }, []);
 

@@ -1,13 +1,18 @@
 import cn from "classnames";
 import { FaLongArrowAltUp } from "react-icons/fa";
-import { EStatDamageKey } from "@Src/constants";
 
-import { selectComparedIDs, selectStandardID } from "@Store/uiSlice";
-import { selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
+import {
+  selectComparedIds,
+  selectStandardId,
+  selectSetupManageInfos,
+} from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
-import { tableStyles } from "@Src/styled-components";
+import { EStatDamageKey } from "@Src/constants";
+import { findById } from "@Src/utils";
 import { displayValue, TableKey } from "./utils";
+
+import { tableStyles } from "@Src/styled-components";
 
 interface CompareTableProps {
   focus: EStatDamageKey;
@@ -15,25 +20,28 @@ interface CompareTableProps {
 }
 export function CompareTable({ focus, tableKey: { main, subs } }: CompareTableProps) {
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const allDmgResult = useSelector((state) => state.calculator.statsById);
-  const comparedIDs = useSelector(selectComparedIDs);
-  const standardID = useSelector(selectStandardID);
+  const statsById = useSelector((state) => state.calculator.statsById);
+  const comparedIds = useSelector(selectComparedIds);
+  const standardId = useSelector(selectStandardId);
+
+  const title = findById(setupManageInfos, standardId)?.name;
+  const otherSetupIds = comparedIds.filter((id) => id !== standardId);
 
   return (
     <tbody>
-      {/* <tr className={tableStyles.row}>
+      <tr className={tableStyles.row}>
         <th className={tableStyles.th} />
-        <th className={tableStyles.th}>{setupManageInfos[standardIndex].name}</th>
+        <th className={tableStyles.th}>{title || "Setup's name missing"}</th>
 
-        {otherSetupIs.map((index, i) => (
-          <th key={i} className={tableStyles.th}>
-            {setupManageInfos[index].name}
+        {otherSetupIds.map((id, i) => (
+          <th key={id} className={tableStyles.th}>
+            {findById(setupManageInfos, id)?.name}
           </th>
         ))}
       </tr>
 
       {subs.map((name, i) => {
-        const standardValue = allDmgResult[standardIndex][main][name][focus];
+        const standardValue = statsById[standardId].dmgResult[main][name][focus];
         const standardIsArray = Array.isArray(standardValue);
 
         return (
@@ -41,8 +49,8 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
             <td className={tableStyles.td}>{name}</td>
             <td className={tableStyles.td}>{displayValue(standardValue)}</td>
 
-            {otherSetupIs.map((index, j) => {
-              const thisValue = allDmgResult[index][main][name][focus];
+            {otherSetupIds.map((id, j) => {
+              const thisValue = statsById[id].dmgResult[main][name][focus];
               const thisIsArray = Array.isArray(thisValue);
               let diff = 0;
 
@@ -88,7 +96,7 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
             })}
           </tr>
         );
-      })} */}
+      })}
     </tbody>
   );
 }

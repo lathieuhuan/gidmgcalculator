@@ -1,11 +1,17 @@
 import cn from "classnames";
-import { useState } from "react";
+import { useState, type ButtonHTMLAttributes } from "react";
 import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
+import { FiTarget } from "react-icons/fi";
 import type { ModalInfo } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { duplicateCalcSetup, updateCalculator } from "@Store/calculatorSlice";
-import { selectActiveId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
+import {
+  selectActiveId,
+  selectComparedIds,
+  selectStandardId,
+  selectSetupManageInfos,
+} from "@Store/calculatorSlice/selectors";
 import { MAX_CALC_SETUPS } from "@Src/constants";
 
 import { ComplexSelect } from "@Components/ComplexSelect";
@@ -13,12 +19,15 @@ import { Modal } from "@Components/modals";
 import { SaveSetup } from "../modal-content";
 
 import styles from "./styles.module.scss";
+import { findById } from "@Src/utils";
 
 export function SetupSelect() {
   const dispatch = useDispatch();
 
   const activeId = useSelector(selectActiveId);
   const setupManageInfos = useSelector(selectSetupManageInfos);
+  const standardId = useSelector(selectStandardId);
+  const comparedIds = useSelector(selectComparedIds);
 
   const [modal, setModal] = useState<ModalInfo>({
     type: "",
@@ -40,12 +49,36 @@ export function SetupSelect() {
     }
   };
 
-  const onClickCopySetup = (ID: number) => () => {
-    dispatch(duplicateCalcSetup(ID));
+  const onClickChooseStandard = (ID: number) => () => {
+    if (ID !== standardId) {
+      dispatch(updateCalculator({ standardId: ID }));
+    }
   };
 
-  const onClickToggleCompared = () => {
-    //
+  const onClickToggleCompared = (ID: number) => () => {
+    let newStandardId = standardId;
+    const newComparedIds = comparedIds.includes(ID)
+      ? comparedIds.filter((id) => id !== ID)
+      : comparedIds.concat(ID);
+
+    if (newComparedIds.length === 0) {
+      newStandardId = 0;
+    } else if (newComparedIds.length === 1) {
+      newStandardId = newComparedIds[0];
+    } else if (!newComparedIds.includes(newStandardId)) {
+      newStandardId = newComparedIds[0];
+    }
+
+    dispatch(
+      updateCalculator({
+        standardId: newStandardId,
+        comparedIds: newComparedIds,
+      })
+    );
+  };
+
+  const onClickCopySetup = (ID: number) => () => {
+    dispatch(duplicateCalcSetup(ID));
   };
 
   const onClickMoreActions = (index: number) => () => {
@@ -56,70 +89,83 @@ export function SetupSelect() {
     setModal({ type: "SAVE_SETUP", index });
   };
 
+  const renderSuffixButton = (
+    { className, ...otherAttrs }: ButtonHTMLAttributes<HTMLButtonElement>,
+    index?: number
+  ) => {
+    return (
+      <button
+        key={index}
+        className={cn(
+          "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-lesser disabled:text-black",
+          className
+        )}
+        {...otherAttrs}
+      />
+    );
+  };
+
   return (
     <>
       <ComplexSelect
         selectId="setup-select"
-        value={setupManageInfos.find((setupManageInfo) => setupManageInfo.ID === activeId)?.ID}
+        value={findById(setupManageInfos, activeId)?.ID}
         options={setupManageInfos.map(({ name, ID }, i) => {
           return {
             label: name,
             value: ID,
             renderSuffix: ({ closeSelect }) => {
-              const commonClassNames = "h-9 w-9 border-l border-b border-white";
+              const shownButtons: Array<ButtonHTMLAttributes<HTMLButtonElement>> = [
+                {
+                  className: ID === standardId ? "bg-green" : "bg-default",
+                  disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
+                  onClick: onClickChooseStandard(ID),
+                  children: <FiTarget />,
+                },
+                {
+                  className: comparedIds.includes(ID) ? "bg-green" : "bg-default",
+                  disabled: setupManageInfos.length < 2,
+                  onClick: onClickToggleCompared(ID),
+                  children: <FaBalanceScaleLeft />,
+                },
+                {
+                  className: cn(isAtMax && "bg-lesser"),
+                  disabled: isAtMax,
+                  onClick: onClickCopySetup(ID),
+                  children: <FaCopy />,
+                },
+              ];
+              const hidddenButtons: Array<ButtonHTMLAttributes<HTMLButtonElement>> = [
+                {
+                  onClick: () => {
+                    closeSelect();
+                    onClickSaveSetup(i);
+                  },
+                  children: <FaSave />,
+                },
+              ];
 
               return (
                 <div className="ml-auto flex text-xl transition-all duration-300">
-                  <button
-                    className={cn(
-                      commonClassNames,
-                      "flex-center",
-                      isAtMax ? "bg-lesser" : "bg-lightgold"
-                    )}
-                    disabled={isAtMax}
-                    onClick={onClickCopySetup(ID)}
-                  >
-                    <FaCopy />
-                  </button>
-                  <button
-                    className={cn(
-                      commonClassNames,
-                      "flex-center",
-                      isAtMax ? "bg-lesser" : "bg-lightgold"
-                    )}
-                    disabled={isAtMax}
-                    onClick={onClickCopySetup(ID)}
-                  >
-                    <FaCopy />
-                  </button>
+                  {shownButtons.map(renderSuffixButton)}
 
                   <div
                     className="flex overflow-hidden transition-all duration-300"
                     style={{
-                      width: i === moreActionsIndex ? "2.25rem" : 0,
+                      width: i === moreActionsIndex ? `${2.25 * hidddenButtons.length}rem` : 0,
                     }}
                   >
-                    <button
-                      className={cn(commonClassNames, "shrink-0 flex-center bg-lightgold")}
-                      onClick={() => {
-                        closeSelect();
-                        onClickSaveSetup(i);
-                      }}
-                    >
-                      <FaSave />
-                    </button>
+                    {hidddenButtons.map(renderSuffixButton)}
                   </div>
 
-                  <button
-                    className={cn(
-                      commonClassNames,
+                  {renderSuffixButton({
+                    className: cn(
                       styles["more-actions-btn"],
                       i === moreActionsIndex && styles.active + " bg-green"
-                    )}
-                    onClick={onClickMoreActions(i)}
-                  >
-                    <div className="bg-black" />
-                  </button>
+                    ),
+                    onClick: onClickMoreActions(i),
+                    children: <div className="bg-black" />,
+                  })}
                 </div>
               );
             },

@@ -4,7 +4,7 @@ import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 
 import { initSessionWithChar, updateAllArtPieces } from "./calculatorSlice";
-import { resetCalculatorUI, changeScreen, toggleSettings } from "./uiSlice";
+import { updateUI } from "./uiSlice";
 import { saveSetup } from "./usersDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
@@ -18,7 +18,7 @@ export const startCalculation =
 
     batch(() => {
       dispatch(initSessionWithChar({ pickedChar, myWps, myArts }));
-      dispatch(resetCalculatorUI());
+      dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
     });
   };
 
@@ -56,8 +56,12 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
           },
         })
       );
-      dispatch(changeScreen(EScreen.MY_SETUPS));
-      dispatch(toggleSettings(false));
+      dispatch(
+        updateUI({
+          atScreen: EScreen.MY_SETUPS,
+          settingsOn: false,
+        })
+      );
     });
   };
 };

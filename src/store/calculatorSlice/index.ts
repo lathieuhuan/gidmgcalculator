@@ -14,13 +14,11 @@ import type {
 import type { CalculatorState } from "./types";
 import type {
   AddTeammateAction,
-  ApplySettingsOnCalculatorAction,
+  ApplySettingsAction,
   ChangeArtPieceAction,
-  ChangeCustomModCtrlValueAction,
   ChangeModCtrlInputAction,
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
-  CopyCustomModCtrlsAction,
   ImportSetupAction,
   InitSessionWithCharAction,
   RefineSubWeaponAction,
@@ -79,6 +77,8 @@ const defaultChar = {
 
 const initialState: CalculatorState = {
   activeId: 0,
+  standardId: 0,
+  comparedIds: [],
   configs: {
     separateCharInfo: false,
     keepArtStatsOnSwitch: false,
@@ -107,14 +107,15 @@ export const calculatorSlice = createSlice({
       const result = parseAndInitData(pickedChar, myWps, myArts);
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
       const setupManageInfo = getSetupManageInfo({});
+      const { ID } = setupManageInfo;
 
-      state.activeId = setupManageInfo.ID;
+      state.activeId = ID;
       state.configs.separateCharInfo = false;
 
       state.charData = getCharData(result.char);
       state.setupManageInfos = [setupManageInfo];
       state.setupsById = {
-        [setupManageInfo.ID]: {
+        [ID]: {
           char: result.char,
           selfBuffCtrls: selfBuffCtrls,
           selfDebuffCtrls: selfDebuffCtrls,
@@ -151,6 +152,8 @@ export const calculatorSlice = createSlice({
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
       state.activeId = ID;
+      state.standardId = ID;
+      state.comparedIds = [ID];
 
       calculate(state);
     },
@@ -580,7 +583,7 @@ export const calculatorSlice = createSlice({
     //
     duplicateCalcSetup: (state, action: PayloadAction<number>) => {
       const sourceId = action.payload;
-      const { setupManageInfos, setupsById } = state;
+      const { comparedIds, setupManageInfos, setupsById } = state;
       const ID = Date.now();
 
       if (setupsById[sourceId]) {
@@ -591,11 +594,16 @@ export const calculatorSlice = createSlice({
         });
 
         setupsById[ID] = setupsById[sourceId];
+
+        if (comparedIds.includes(sourceId)) {
+          state.comparedIds.push(ID);
+        }
+
         calculate(state, true);
       }
     },
-    applySettingsOnCalculator: (state, action: ApplySettingsOnCalculatorAction) => {
-      const { newSetupManageInfos, newConfigs, removedSetupIDs } = action.payload;
+    applySettings: (state, action: ApplySettingsAction) => {
+      const { newSetupManageInfos, newConfigs, removedSetupIds } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
 
       let rootID = Date.now();
@@ -666,7 +674,7 @@ export const calculatorSlice = createSlice({
         }
       });
 
-      removedSetupIDs.forEach((ID) => {
+      removedSetupIds.forEach((ID) => {
         delete setupsById[ID];
         delete state.statsById[ID];
       });
@@ -683,7 +691,8 @@ export const calculatorSlice = createSlice({
       }
 
       state.activeId = newActiveID;
-      state.setupManageInfos = tempoManageInfos;
+      (state.comparedIds = state.comparedIds.filter((id) => !removedSetupIds.includes(id))),
+        (state.setupManageInfos = tempoManageInfos);
       state.configs = newConfigs;
       calculate(state, true);
     },
@@ -718,7 +727,7 @@ export const {
   updateTarget,
   updateMonster,
   duplicateCalcSetup,
-  applySettingsOnCalculator,
+  applySettings,
 } = calculatorSlice.actions;
 
 export default calculatorSlice.reducer;

@@ -18,7 +18,7 @@ import type {
 import type { CalcConfigurations, CalculatorState } from "./types";
 
 export type UpdateCalculatorAction = PayloadAction<
-  Partial<Pick<CalculatorState, "activeId" | "isError">>
+  Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds" | "isError">>
 >;
 
 export type PickedChar = Partial<UsersCharacter> & {
@@ -109,23 +109,12 @@ export type UpdateCustomDebuffCtrlsAction = PayloadAction<
     }
 >;
 
-export type CopyCustomModCtrlsAction = PayloadAction<{
-  isBuffs: boolean;
-  sourceID: number;
-}>;
-
 type CustomModCtrlPath = {
   isBuffs: boolean;
   ctrlIndex: number;
 };
 
 export type RemoveCustomModCtrlAction = PayloadAction<CustomModCtrlPath>;
-
-export type ChangeCustomModCtrlValueAction = PayloadAction<
-  CustomModCtrlPath & {
-    value: number;
-  }
->;
 
 export type ChangeArtPieceAction = PayloadAction<{
   pieceIndex: number;
@@ -147,10 +136,10 @@ export type NewSetupManageInfo = CalcSetupManageInfo & {
   status: "OLD" | "NEW" | "DUPLICATE";
 };
 
-export type ApplySettingsOnCalculatorAction = PayloadAction<{
+export type ApplySettingsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newConfigs: CalcConfigurations;
-  removedSetupIDs: number[];
+  removedSetupIds: number[];
 }>;
 
 export type ImportSetupAction = PayloadAction<{
