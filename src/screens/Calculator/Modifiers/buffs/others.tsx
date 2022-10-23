@@ -1,13 +1,7 @@
 import type { AmplifyingReaction, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
-import {
-  changeElementModCtrl,
-  changeResonanceInput,
-  toggleModCtrl,
-  toggleResonance,
-  updateCalcSetup,
-} from "@Store/calculatorSlice";
+import { toggleModCtrl, updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 import {
   selectArtInfo,
   selectChar,
@@ -39,12 +33,16 @@ export function ElementBuffs() {
 
   const content: JSX.Element[] = [];
 
-  elmtModCtrls.resonance.forEach((rsn) => {
-    const { name, desc } = resonanceRenderInfo[rsn.vision];
+  elmtModCtrls.resonances.forEach((resonance) => {
+    const { name, desc } = resonanceRenderInfo[resonance.vision];
     let setters;
 
-    if (rsn.vision === "dendro") {
+    if (resonance.vision === "dendro") {
+      const { inputs = [] } = resonance;
+
       const renderBuff = (index: number) => {
+        const activated = !!inputs[index];
+
         return (
           <Setter
             key={index}
@@ -55,8 +53,13 @@ export function ElementBuffs() {
             }
             inputComponent={
               <Checkbox
-                checked={rsn.inputs?.[index]}
-                onChange={() => dispatch(changeResonanceInput(index))}
+                checked={activated}
+                onChange={() => {
+                  const newInputs = [...inputs];
+                  newInputs[index] = !activated;
+
+                  dispatch(updateResonance({ ...resonance, inputs: newInputs }));
+                }}
               />
             }
           />
@@ -67,9 +70,16 @@ export function ElementBuffs() {
 
     content.push(
       <ModifierTemplate
-        key={rsn.vision}
-        checked={rsn.activated}
-        onToggle={() => dispatch(toggleResonance(rsn.vision))}
+        key={resonance.vision}
+        checked={resonance.activated}
+        onToggle={() => {
+          dispatch(
+            updateResonance({
+              ...resonance,
+              activated: !resonance.activated,
+            })
+          );
+        }}
         heading={name}
         desc={desc}
         setters={setters}
@@ -85,9 +95,16 @@ export function ElementBuffs() {
         <ModifierTemplate
           key={reaction + (field === "infusion_ampRxn" ? "-external" : "")}
           checked={activated}
-          onToggle={() =>
-            dispatch(changeElementModCtrl({ field, value: activated ? null : reaction }))
-          }
+          onToggle={() => {
+            dispatch(
+              updateCalcSetup({
+                elmtModCtrls: {
+                  ...elmtModCtrls,
+                  [field]: activated ? null : reaction,
+                },
+              })
+            );
+          }}
           heading={
             <>
               <span className="capitalize">{reaction}</span>{" "}
@@ -138,7 +155,7 @@ function QuickenBuff({ vision }: { vision: Vision }) {
     <ModifierTemplate
       heading={heading}
       checked={elmtModCtrls[reaction]}
-      onToggle={() =>
+      onToggle={() => {
         dispatch(
           updateCalcSetup({
             elmtModCtrls: {
@@ -146,8 +163,8 @@ function QuickenBuff({ vision }: { vision: Vision }) {
               [reaction]: !elmtModCtrls[reaction],
             },
           })
-        )
-      }
+        );
+      }}
       desc={
         <>
           Increase base <span className={`text-${vision} capitalize`}>{vision} DMG</span> by{" "}

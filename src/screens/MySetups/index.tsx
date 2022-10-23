@@ -296,7 +296,7 @@ export default function MySetups() {
                 contentList={[
                   <ElementDebuffs
                     superconduct={elmtModCtrls.superconduct}
-                    resonance={elmtModCtrls.resonance}
+                    resonances={elmtModCtrls.resonances}
                   />,
                   <SelfDebuffs
                     char={char}

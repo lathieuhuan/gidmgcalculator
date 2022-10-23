@@ -2,7 +2,7 @@ import cn from "classnames";
 import { FaLongArrowAltUp } from "react-icons/fa";
 import { EStatDamageKey } from "@Src/constants";
 
-import { selectComparedIndexes, selectStandardIndex } from "@Store/uiSlice";
+import { selectComparedIDs, selectStandardID } from "@Store/uiSlice";
 import { selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
@@ -15,14 +15,13 @@ interface CompareTableProps {
 }
 export function CompareTable({ focus, tableKey: { main, subs } }: CompareTableProps) {
   const setupManageInfos = useSelector(selectSetupManageInfos);
-  const allDmgResult = useSelector((state) => state.calculator.allDmgResult);
-  const comparedIndexes = useSelector(selectComparedIndexes);
-  const standardIndex = useSelector(selectStandardIndex);
-  const otherSetupIs = comparedIndexes.filter((i) => i !== standardIndex);
+  const allDmgResult = useSelector((state) => state.calculator.statsById);
+  const comparedIDs = useSelector(selectComparedIDs);
+  const standardID = useSelector(selectStandardID);
 
   return (
     <tbody>
-      <tr className={tableStyles.row}>
+      {/* <tr className={tableStyles.row}>
         <th className={tableStyles.th} />
         <th className={tableStyles.th}>{setupManageInfos[standardIndex].name}</th>
 
@@ -89,7 +88,7 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
             })}
           </tr>
         );
-      })}
+      })} */}
     </tbody>
   );
 }

@@ -2,7 +2,7 @@ import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import {
   changeModCtrlInput,
   toggleModCtrl,
-  toggleResonance,
+  updateResonance,
   updateCalcSetup,
 } from "@Store/calculatorSlice";
 import { selectElmtModCtrls } from "@Store/calculatorSlice/selectors";
@@ -16,14 +16,14 @@ export function ElementDebuffs() {
   const dispatch = useDispatch();
   const elmtModCtrls = useSelector(selectElmtModCtrls);
 
-  const { resonance, superconduct } = elmtModCtrls;
-  const geoResonance = resonance.find((rsn) => rsn.vision === "geo");
+  const { resonances, superconduct } = elmtModCtrls;
+  const geoResonance = resonances.find(({ vision }) => vision === "geo");
 
   return (
-    <>
+    <div className="pt-2 space-y-3">
       <ModifierTemplate
         checked={superconduct}
-        onToggle={() =>
+        onToggle={() => {
           dispatch(
             updateCalcSetup({
               elmtModCtrls: {
@@ -31,8 +31,8 @@ export function ElementDebuffs() {
                 superconduct: !superconduct,
               },
             })
-          )
-        }
+          );
+        }}
         heading="Superconduct"
         desc={
           <>
@@ -45,7 +45,9 @@ export function ElementDebuffs() {
         <ModifierTemplate
           key="rock"
           checked={geoResonance.activated}
-          onToggle={() => dispatch(toggleResonance("geo"))}
+          onToggle={() => {
+            dispatch(updateResonance({ ...geoResonance, activated: !geoResonance.activated }));
+          }}
           heading="Enduring Rock"
           desc={
             <>
@@ -55,7 +57,7 @@ export function ElementDebuffs() {
           }
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -87,15 +89,15 @@ export function ArtifactDebuffs() {
             <Select
               className={twInputStyles.select}
               value={inputs ? inputs[0].toString() : undefined}
-              onChange={(e) =>
+              onChange={(e) => {
                 dispatch(
                   changeModCtrlInput({
                     ...path,
                     inputIndex: 0,
                     value: e.target.value,
                   })
-                )
-              }
+                );
+              }}
             >
               {["pyro", "hydro", "electro", "cryo"].map((element) => (
                 <option key={element}>{element}</option>
@@ -116,5 +118,6 @@ export function ArtifactDebuffs() {
       />
     );
   });
+
   return <>{content}</>;
 }

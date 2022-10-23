@@ -53,27 +53,27 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
             inputs={validatedInputs}
             renderTypes={renderTypes}
             initialValues={initialValues}
-            onTextChange={(value, i) =>
+            onTextChange={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
                   value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
                 })
-              )
-            }
-            onToggleCheck={(i) =>
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }))
-            }
-            onSelect={(value, i) =>
+              );
+            }}
+            onToggleCheck={(i) => {
+              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }));
+            }}
+            onSelect={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
                   value: isNaN(+value) ? value : +value,
                 })
-              )
-            }
+              );
+            }}
           />
         );
       }

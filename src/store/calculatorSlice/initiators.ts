@@ -135,7 +135,7 @@ export const initElmtModCtrls = (): ElementModCtrl => ({
   superconduct: false,
   aggravate: false,
   spread: false,
-  resonance: [],
+  resonances: [],
 });
 
 export const initMonster = (): Monster => ({

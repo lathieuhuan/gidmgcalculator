@@ -135,7 +135,7 @@ export type Teammate = {
 
 export type Party = (Teammate | null)[];
 
-export type ResonancePair = {
+export type Resonance = {
   vision: ResonanceVision;
   activated: boolean;
   inputs?: boolean[];
@@ -147,7 +147,7 @@ export type ElementModCtrl = {
   superconduct: boolean;
   aggravate: boolean;
   spread: boolean;
-  resonance: ResonancePair[];
+  resonances: Resonance[];
 };
 
 export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey | TransformativeReaction;

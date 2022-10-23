@@ -33,9 +33,9 @@ interface ElementBuffsProps {
 }
 export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: ElementBuffsProps) {
   const content = [];
-  const { resonance, ampRxn, infusion_ampRxn } = elmtModCtrls;
+  const { resonances, ampRxn, infusion_ampRxn } = elmtModCtrls;
 
-  for (const { vision } of resonance) {
+  for (const { vision } of resonances) {
     const { name, desc } = resonanceRenderInfo[vision];
     content.push(<ModifierTemplate key={vision} mutable={false} heading={name} desc={desc} />);
   }

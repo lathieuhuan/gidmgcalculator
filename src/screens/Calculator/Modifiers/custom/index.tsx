@@ -11,8 +11,8 @@ import {
 } from "@Store/calculatorSlice/selectors";
 import {
   changeCustomModCtrlValue,
-  clearCustomModCtrls,
-  copyCustomModCtrls,
+  updateCustomBuffCtrls,
+  updateCustomDebuffCtrls,
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
 import { indexById, processNumInput } from "@Src/utils";
@@ -45,32 +45,46 @@ interface CustomModifiersProps {
 export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const key = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
   const activeId = useSelector(selectActiveId);
-  const allCustomBuffCtrls = useSelector(selectAllCustomBuffCtrls);
-  const allCustomDebuffCtrls = useSelector(selectAllCustomDebuffCtrls);
+  const setupsById = useSelector(selectCalcSetupsById);
   const setupManageInfos = useSelector(selectSetupManageInfos);
 
   const [modalOn, setModalOn] = useState(false);
 
-  const activeIndex = indexById(setupManageInfos, activeId);
-  const allModCtrls = isBuffs ? allCustomBuffCtrls : allCustomDebuffCtrls;
-  const modCtrls = isBuffs ? allCustomBuffCtrls[activeIndex] : allCustomDebuffCtrls[activeIndex];
+  const modCtrls = setupsById[activeId][key];
   const copyOptions = [];
 
   if (!modCtrls.length) {
-    for (const index in allModCtrls) {
-      if (allModCtrls[index].length) {
+    for (const { ID, name } of setupManageInfos) {
+      if (setupsById[ID][key].length) {
         copyOptions.push({
-          label: setupManageInfos[index].name,
-          value: setupManageInfos[index].ID,
+          label: name,
+          value: ID,
         });
       }
     }
   }
 
-  const copyModCtrls = (args: { value: number }) => {
-    dispatch(copyCustomModCtrls({ isBuffs, sourceID: args.value }));
+  const copyModCtrls = ({ value }: { value: number }) => {
+    if (isBuffs) {
+      console.log(setupsById[value].customBuffCtrls);
+
+      dispatch(
+        updateCustomBuffCtrls({
+          actionType: "replace",
+          ctrls: setupsById[value].customBuffCtrls,
+        })
+      );
+    } else {
+      dispatch(
+        updateCustomDebuffCtrls({
+          actionType: "replace",
+          ctrls: setupsById[value].customDebuffCtrls,
+        })
+      );
+    }
   };
 
   const closeModal = () => setModalOn(false);
@@ -81,7 +95,13 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
         <IconToggleButton
           color="text-default bg-darkred"
           disabled={modCtrls.length === 0}
-          onClick={() => dispatch(clearCustomModCtrls(isBuffs))}
+          onClick={() => {
+            if (isBuffs) {
+              dispatch(updateCustomBuffCtrls({ actionType: "replace", ctrls: [] }));
+            } else {
+              dispatch(updateCustomDebuffCtrls({ actionType: "replace", ctrls: [] }));
+            }
+          }}
         >
           <FaTrashAlt />
         </IconToggleButton>

@@ -3,7 +3,7 @@ import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 
 import { useDispatch } from "@Store/hooks";
-import { createCustomDebuffCtrl } from "@Store/calculatorSlice";
+import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
 import { processNumInput } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 
@@ -41,7 +41,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   };
 
   const onConfirm = () => {
-    dispatch(createCustomDebuffCtrl(config));
+    dispatch(updateCustomDebuffCtrls({ actionType: "add", ctrls: config }));
     onClose();
   };
 

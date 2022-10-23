@@ -9,7 +9,7 @@ import {
   ModifierCtrl,
   Party,
   PartyData,
-  ResonancePair,
+  Resonance,
   SubArtModCtrl,
 } from "@Src/types";
 import { findByIndex } from "@Src/utils";
@@ -17,9 +17,9 @@ import { renderSetters } from "../components";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
-  resonance: ResonancePair[];
+  resonances: Resonance[];
 }
-export function ElementDebuffs({ superconduct, resonance }: ElementDebuffsProps) {
+export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps) {
   const content = [];
 
   if (superconduct) {
@@ -37,7 +37,7 @@ export function ElementDebuffs({ superconduct, resonance }: ElementDebuffsProps)
       />
     );
   }
-  if (resonance.some((rsn) => rsn.vision === "geo")) {
+  if (resonances.some((rsn) => rsn.vision === "geo")) {
     const { name, desc } = resonanceRenderInfo.geo;
     content.push(<ModifierTemplate key="geo" mutable={false} heading={name} desc={desc} />);
   }

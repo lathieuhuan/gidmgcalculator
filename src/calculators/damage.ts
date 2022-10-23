@@ -295,7 +295,7 @@ export default function getDamage({
   }
 
   // APPLY RESONANCE DEBUFFS
-  const geoRsn = elmtModCtrls.resonance.find((rsn) => rsn.vision === "geo");
+  const geoRsn = elmtModCtrls.resonances.find((rsn) => rsn.vision === "geo");
   if (geoRsn && geoRsn.activated) {
     applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
   }

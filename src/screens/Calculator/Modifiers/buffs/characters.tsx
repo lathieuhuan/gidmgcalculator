@@ -72,27 +72,27 @@ export function SelfBuffs() {
             initialValues={initialValues}
             maxValues={maxValues}
             inputs={validatedInputs}
-            onTextChange={(value, i) =>
+            onTextChange={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
                   value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
                 })
-              )
-            }
+              );
+            }}
             onToggleCheck={(i) =>
               dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }))
             }
-            onSelect={(value, i) =>
+            onSelect={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
                   value: isNaN(+value) ? value : +value,
                 })
-              )
-            }
+              );
+            }}
           />
         );
       }
@@ -176,33 +176,33 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
           initialValues={initialValues}
           maxValues={maxValues}
           inputs={validatedInputs}
-          onTextChange={(value, i) =>
+          onTextChange={(value, i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
                 value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
               })
-            )
-          }
-          onToggleCheck={(i) =>
+            );
+          }}
+          onToggleCheck={(i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
                 value: !validatedInputs[i],
               })
-            )
-          }
-          onSelect={(value, i) =>
+            );
+          }}
+          onSelect={(value, i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
                 value: isNaN(+value) ? value : +value,
               })
-            )
-          }
+            );
+          }}
         />
       );
     }

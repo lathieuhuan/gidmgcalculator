@@ -161,7 +161,7 @@ export default function getBuffedStats({
   }
 
   // APPLY RESONANCE BUFFS
-  for (const rsn of elmtModCtrls.resonance) {
+  for (const rsn of elmtModCtrls.resonances) {
     if (rsn.activated) {
       const { key, value } = RESONANCE_STAT[rsn.vision];
       let xtraValue = 0;

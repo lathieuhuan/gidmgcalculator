@@ -50,7 +50,7 @@ export default function WeaponBuffs() {
                 key={i}
                 className="mr-1"
                 checked={!!inputs?.[i]}
-                onChange={() =>
+                onChange={() => {
                   dispatch(
                     changeModCtrlInput({
                       modCtrlName: "wpBuffCtrls",
@@ -58,8 +58,8 @@ export default function WeaponBuffs() {
                       inputIndex: i,
                       value: !inputs?.[i],
                     })
-                  )
-                }
+                  );
+                }}
               />
             );
             break;
@@ -100,14 +100,14 @@ export default function WeaponBuffs() {
       <ModifierTemplate
         key={weapon.code.toString() + ctrlIndex}
         checked={activated}
-        onToggle={() =>
+        onToggle={() => {
           dispatch(
             toggleModCtrl({
               modCtrlName: "wpBuffCtrls",
               ctrlIndex,
             })
-          )
-        }
+          );
+        }}
         heading={name + " (self)"}
         desc={buff.desc({ refi: weapon.refi, totalAttr })}
         setters={setters}
@@ -132,7 +132,7 @@ export default function WeaponBuffs() {
 
       if (buff.inputConfig) {
         setters = [];
-        const { labels, renderTypes, initialValues, maxValues } = buff.inputConfig;
+        const { labels, renderTypes, maxValues } = buff.inputConfig;
 
         labels.forEach((label, inputIndex) => {
           let inputCpn = null;
@@ -144,11 +144,11 @@ export default function WeaponBuffs() {
                 <Select
                   className={twInputStyles.select}
                   value={inputs[inputIndex] as string}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     dispatch(
                       changeSubWpModCtrlInput({ ...path, inputIndex, value: e.target.value })
-                    )
-                  }
+                    );
+                  }}
                 >
                   {["pyro", "hydro", "cryo", "anemo"].map((opt) => (
                     <option key={opt}>{opt}</option>

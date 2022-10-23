@@ -12,6 +12,8 @@ import type {
   CalcSetupManageInfo,
   ArtPieceMainStat,
   CalcSetup,
+  CustomBuffCtrl,
+  CustomDebuffCtrl,
 } from "@Src/types";
 import type { CalcConfigurations, CalculatorState } from "./types";
 
@@ -40,11 +42,6 @@ export type UpdateCalcSetupAction = PayloadAction<
     setupId?: number;
   }
 >;
-
-export type ChangeElementModCtrlAction = PayloadAction<{
-  field: "ampRxn" | "infusion_ampRxn";
-  value: AmplifyingReaction | null;
-}>;
 
 type InputInfo = {
   inputIndex: number;
@@ -83,6 +80,16 @@ export type ToggleSubWpModCtrlAction = PayloadAction<ToggleSubWpModCtrlPath>;
 export type RefineSubWeaponAction = PayloadAction<ToggleSubWpModCtrlPath & { value: number }>;
 
 export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath & InputInfo>;
+
+export type UpdateCustomBuffCtrlsAction = PayloadAction<{
+  actionType: "add" | "replace";
+  ctrls: CustomBuffCtrl | CustomBuffCtrl[];
+}>;
+
+export type UpdateCustomDebuffCtrlsAction = PayloadAction<{
+  actionType: "add" | "replace";
+  ctrls: CustomDebuffCtrl | CustomDebuffCtrl[];
+}>;
 
 export type CopyCustomModCtrlsAction = PayloadAction<{
   isBuffs: boolean;

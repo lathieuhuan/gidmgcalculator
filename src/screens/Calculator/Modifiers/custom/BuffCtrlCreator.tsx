@@ -3,7 +3,7 @@ import { Fragment, useState, useRef } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
-import { createCustomBuffCtrl } from "@Store/calculatorSlice";
+import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 import { percentSign, processNumInput } from "@Src/utils";
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
@@ -73,7 +73,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   };
 
   const onConfirm = () => {
-    dispatch(createCustomBuffCtrl(config));
+    dispatch(updateCustomBuffCtrls({ actionType: "add", ctrls: config }));
     onClose();
   };
 

@@ -4,7 +4,7 @@ import type { Artifact } from "@Src/types";
 import type { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
-import { pickWeaponInUsersDatabase, changeArtPiece } from "@Store/calculatorSlice";
+import { changeArtPiece, changeWeapon } from "@Store/calculatorSlice";
 import { toggleSettings } from "@Store/uiSlice";
 import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors";
 
@@ -116,9 +116,7 @@ export default function SetupManager() {
         active={modal.type === "WEAPONS"}
         weaponType={charData.weapon}
         buttonText="Pick"
-        onClickButton={({ owner, ...wpInfo }) => {
-          dispatch(pickWeaponInUsersDatabase(wpInfo));
-        }}
+        onClickButton={({ owner, ...wpInfo }) => dispatch(changeWeapon(wpInfo))}
         onClose={closeModal}
       />
 

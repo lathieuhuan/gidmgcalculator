@@ -6,7 +6,7 @@ import type {
   CustomBuffCtrlType,
   CustomDebuffCtrl,
   CustomDebuffCtrlType,
-  ResonancePair,
+  Resonance,
   SubWeaponBuffCtrl,
   Teammate,
   UsersArtifact,
@@ -97,8 +97,8 @@ function convertSetup(setup: any): UsersSetup {
     customMCs = {},
   } = setup;
 
-  const resonance = elmtMCs.resonance
-    ? elmtMCs.resonance.reduce((result: ResonancePair[], { name, ...rest }: any) => {
+  const resonances = elmtMCs.resonance
+    ? elmtMCs.resonance.reduce((result: Resonance[], { name, ...rest }: any) => {
         const vision = mapVerson3_0[name];
 
         if (vision) {
@@ -170,7 +170,7 @@ function convertSetup(setup: any): UsersSetup {
     selfBuffCtrls: selfMCs?.BCs || [],
     selfDebuffCtrls: selfMCs?.DCs || [],
 
-    elmtModCtrls: { ...elmtMCs, resonance },
+    elmtModCtrls: { ...elmtMCs, resonances },
     party: party.map((teammate: any): Teammate | null => {
       if (teammate) {
         return {

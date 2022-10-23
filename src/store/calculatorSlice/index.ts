@@ -5,13 +5,11 @@ import type {
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
-  CustomBuffCtrl,
-  CustomDebuffCtrl,
   Monster,
-  ResonancePair,
+  PartiallyOptional,
+  Resonance,
   Target,
   UsersSetup,
-  Vision,
 } from "@Src/types";
 import type { CalculatorState } from "./types";
 import type {
@@ -19,7 +17,6 @@ import type {
   ApplySettingsOnCalculatorAction,
   ChangeArtPieceAction,
   ChangeCustomModCtrlValueAction,
-  ChangeElementModCtrlAction,
   ChangeModCtrlInputAction,
   ChangeSubWpModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
@@ -34,6 +31,8 @@ import type {
   UpdateArtPieceAction,
   UpdateCalculatorAction,
   UpdateCalcSetupAction,
+  UpdateCustomBuffCtrlsAction,
+  UpdateCustomDebuffCtrlsAction,
 } from "./reducer-types";
 
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
@@ -47,6 +46,7 @@ import {
   findByCode,
   findById,
   indexByCode,
+  turnArray,
 } from "@Src/utils";
 import {
   calculate,
@@ -239,16 +239,15 @@ export const calculatorSlice = createSlice({
         if (oldTeammateData) {
           const { vision: oldVision, weapon: oldWeapon } = oldTeammateData;
 
-          // lose a resonance pair
+          // lose a resonance
           if (
             resonanceVisionTypes.includes(oldVision) &&
             oldVisionCount[oldVision] === 2 &&
             newVisionCount[oldVision] === 1
           ) {
-            const resonanceIndex = elmtModCtrls.resonance.findIndex(
-              (resonance) => resonance.vision === oldVision
-            );
-            elmtModCtrls.resonance.splice(resonanceIndex, 1);
+            elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
+              return resonance.vision !== oldVision;
+            });
           }
           // lose a weapon type in subWpBuffCtrl
           if (!newWeaponCount[oldWeapon]) {
@@ -256,21 +255,21 @@ export const calculatorSlice = createSlice({
           }
         }
       }
-      // new teammate form new resonance pair
+      // new teammate form new resonance
       if (
         resonanceVisionTypes.includes(vision) &&
         oldVisionCount[vision] === 1 &&
         newVisionCount[vision] === 2
       ) {
-        const newResonancePair = {
+        const newResonance = {
           vision,
           activated: ["pyro", "hydro", "dendro"].includes(vision),
-        } as ResonancePair;
+        } as Resonance;
 
         if (vision === "dendro") {
-          newResonancePair.inputs = [false, false];
+          newResonance.inputs = [false, false];
         }
-        elmtModCtrls.resonance.push(newResonancePair);
+        elmtModCtrls.resonances.push(newResonance);
       }
       // add a weapon type in subWpBuffCtrl
       if (!oldWeaponCount[weaponType]) {
@@ -291,13 +290,9 @@ export const calculatorSlice = createSlice({
         const newWeaponCount = countWeapon(party);
 
         if (newVisionCount[vision] === 1) {
-          const resonanceIndex = elmtModCtrls.resonance.findIndex(
-            (resonance) => resonance.vision === vision
-          );
-
-          if (resonanceIndex >= 0) {
-            elmtModCtrls.resonance.splice(resonanceIndex, 1);
-          }
+          elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
+            return resonance.vision !== vision;
+          });
         }
         if (!newWeaponCount[weapon]) {
           delete subWpComplexBuffCtrls[weapon];
@@ -306,14 +301,6 @@ export const calculatorSlice = createSlice({
       }
     },
     // WEAPON
-    pickWeaponInUsersDatabase: (state, action: PayloadAction<CalcWeapon>) => {
-      const wpInfo = action.payload;
-      const setup = state.setupsById[state.activeId];
-      setup.weapon = wpInfo;
-      setup.wpBuffCtrls = getMainWpBuffCtrls(wpInfo);
-
-      calculate(state);
-    },
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
       const weapon = action.payload;
       const setup = state.setupsById[state.activeId];
@@ -422,34 +409,19 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // MOD CTRLS
-    toggleResonance: (state, action: PayloadAction<Vision>) => {
-      const rsn = state.setupsById[state.activeId].elmtModCtrls.resonance.find(({ vision }) => {
-        return vision === action.payload;
-      });
+    updateResonance: (state, action: PayloadAction<PartiallyOptional<Resonance, "activated">>) => {
+      const { vision, ...newInfo } = action.payload;
+      const { resonances } = state.setupsById[state.activeId].elmtModCtrls;
+      const targetIndex = resonances.findIndex((resonance) => resonance.vision === vision);
 
-      if (rsn) {
-        rsn.activated = !rsn.activated;
+      if (targetIndex >= 0) {
+        resonances[targetIndex] = {
+          ...resonances[targetIndex],
+          ...newInfo,
+        };
+
         calculate(state);
       }
-    },
-    changeResonanceInput: (state, action: PayloadAction<number>) => {
-      // for now only dendro has inputs
-      const dendroRsn = state.setupsById[state.activeId].elmtModCtrls.resonance.find(
-        ({ vision }) => {
-          return vision === "dendro";
-        }
-      );
-
-      if (dendroRsn && dendroRsn.inputs) {
-        dendroRsn.inputs[action.payload] = !dendroRsn.inputs[action.payload];
-        calculate(state);
-      }
-    },
-    changeElementModCtrl: (state, action: ChangeElementModCtrlAction) => {
-      const { field, value } = action.payload;
-
-      state.setupsById[state.activeId].elmtModCtrls[field] = value;
-      calculate(state);
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
@@ -517,30 +489,34 @@ export const calculatorSlice = createSlice({
       }
     },
     // CUSTOM MOD CTRLS
-    createCustomBuffCtrl: (state, action: PayloadAction<CustomBuffCtrl>) => {
-      state.setupsById[state.activeId].customBuffCtrls.unshift(action.payload);
-      calculate(state);
-    },
-    createCustomDebuffCtrl: (state, action: PayloadAction<CustomDebuffCtrl>) => {
-      state.setupsById[state.activeId].customDebuffCtrls.unshift(action.payload);
-      calculate(state);
-    },
-    clearCustomModCtrls: (state, action: PayloadAction<boolean>) => {
-      const modCtrlName = action.payload ? "customBuffCtrls" : "customDebuffCtrls";
-
-      state.setupsById[state.activeId][modCtrlName] = [];
-      calculate(state);
-    },
-    copyCustomModCtrls: (state, action: CopyCustomModCtrlsAction) => {
-      const { isBuffs, sourceID } = action.payload;
+    updateCustomBuffCtrls: (state, action: UpdateCustomBuffCtrlsAction) => {
+      const { actionType, ctrls } = action.payload;
       const activeSetup = state.setupsById[state.activeId];
-      const sourceSetup = state.setupsById[sourceID];
 
-      if (isBuffs) {
-        activeSetup.customBuffCtrls = sourceSetup.customBuffCtrls;
-      } else {
-        activeSetup.customDebuffCtrls = sourceSetup.customDebuffCtrls;
+      switch (actionType) {
+        case "add":
+          activeSetup.customBuffCtrls.unshift(...turnArray(ctrls));
+          break;
+        case "replace":
+          activeSetup.customBuffCtrls = turnArray(ctrls);
+          break;
       }
+
+      calculate(state);
+    },
+    updateCustomDebuffCtrls: (state, action: UpdateCustomDebuffCtrlsAction) => {
+      const { actionType, ctrls } = action.payload;
+      const activeSetup = state.setupsById[state.activeId];
+
+      switch (actionType) {
+        case "add":
+          activeSetup.customDebuffCtrls.unshift(...turnArray(ctrls));
+          break;
+        case "replace":
+          activeSetup.customDebuffCtrls = turnArray(ctrls);
+          break;
+      }
+
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
@@ -714,15 +690,12 @@ export const {
   updateCharacter,
   addTeammate,
   removeTeammate,
-  pickWeaponInUsersDatabase,
   changeWeapon,
   updateWeapon,
   updateArtPiece,
   changeArtPiece,
   updateAllArtPieces,
-  toggleResonance,
-  changeResonanceInput,
-  changeElementModCtrl,
+  updateResonance,
   toggleModCtrl,
   changeModCtrlInput,
   toggleTeammateModCtrl,
@@ -730,10 +703,8 @@ export const {
   toggleSubWpModCtrl,
   refineSubWeapon,
   changeSubWpModCtrlInput,
-  createCustomBuffCtrl,
-  createCustomDebuffCtrl,
-  clearCustomModCtrls,
-  copyCustomModCtrls,
+  updateCustomBuffCtrls,
+  updateCustomDebuffCtrls,
   removeCustomModCtrl,
   changeCustomModCtrlValue,
   updateTarget,
