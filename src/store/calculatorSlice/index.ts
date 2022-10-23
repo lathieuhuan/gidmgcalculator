@@ -497,6 +497,14 @@ export const calculatorSlice = createSlice({
         case "add":
           activeSetup.customBuffCtrls.unshift(...turnArray(ctrls));
           break;
+        case "edit":
+          for (const { index, ...newInfo } of turnArray(ctrls)) {
+            activeSetup.customBuffCtrls[index] = {
+              ...activeSetup.customBuffCtrls[index],
+              ...newInfo,
+            };
+          }
+          break;
         case "replace":
           activeSetup.customBuffCtrls = turnArray(ctrls);
           break;
@@ -512,6 +520,14 @@ export const calculatorSlice = createSlice({
         case "add":
           activeSetup.customDebuffCtrls.unshift(...turnArray(ctrls));
           break;
+        case "edit":
+          for (const { index, ...newInfo } of turnArray(ctrls)) {
+            activeSetup.customDebuffCtrls[index] = {
+              ...activeSetup.customDebuffCtrls[index],
+              ...newInfo,
+            };
+          }
+          break;
         case "replace":
           activeSetup.customDebuffCtrls = turnArray(ctrls);
           break;
@@ -524,13 +540,6 @@ export const calculatorSlice = createSlice({
       const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
 
       state.setupsById[state.activeId][modCtrlName].splice(ctrlIndex, 1);
-      calculate(state);
-    },
-    changeCustomModCtrlValue: (state, action: ChangeCustomModCtrlValueAction) => {
-      const { isBuffs, ctrlIndex, value } = action.payload;
-      const modCtrlName = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
-
-      state.setupsById[state.activeId][modCtrlName][ctrlIndex].value = value;
       calculate(state);
     },
     // TARGET
@@ -706,7 +715,6 @@ export const {
   updateCustomBuffCtrls,
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
-  changeCustomModCtrlValue,
   updateTarget,
   updateMonster,
   duplicateCalcSetup,

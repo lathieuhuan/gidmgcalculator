@@ -81,15 +81,33 @@ export type RefineSubWeaponAction = PayloadAction<ToggleSubWpModCtrlPath & { val
 
 export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath & InputInfo>;
 
-export type UpdateCustomBuffCtrlsAction = PayloadAction<{
-  actionType: "add" | "replace";
-  ctrls: CustomBuffCtrl | CustomBuffCtrl[];
-}>;
+type CustomBuffCtrlChange = Partial<CustomDebuffCtrl> & {
+  index: number;
+};
+export type UpdateCustomBuffCtrlsAction = PayloadAction<
+  | {
+      actionType: "add" | "replace";
+      ctrls: CustomBuffCtrl | CustomBuffCtrl[];
+    }
+  | {
+      actionType: "edit";
+      ctrls: CustomBuffCtrlChange | CustomBuffCtrlChange[];
+    }
+>;
 
-export type UpdateCustomDebuffCtrlsAction = PayloadAction<{
-  actionType: "add" | "replace";
-  ctrls: CustomDebuffCtrl | CustomDebuffCtrl[];
-}>;
+type CustomDebuffCtrlChange = Partial<CustomDebuffCtrl> & {
+  index: number;
+};
+export type UpdateCustomDebuffCtrlsAction = PayloadAction<
+  | {
+      actionType: "add" | "replace";
+      ctrls: CustomDebuffCtrl | CustomDebuffCtrl[];
+    }
+  | {
+      actionType: "edit";
+      ctrls: CustomDebuffCtrlChange | CustomDebuffCtrlChange[];
+    }
+>;
 
 export type CopyCustomModCtrlsAction = PayloadAction<{
   isBuffs: boolean;

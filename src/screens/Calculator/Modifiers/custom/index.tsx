@@ -1,7 +1,5 @@
-import cn from "classnames";
 import { useState } from "react";
 import { FaTimes, FaPlus, FaTrashAlt } from "react-icons/fa";
-import { createSelector } from "@reduxjs/toolkit";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -10,12 +8,11 @@ import {
   selectCalcSetupsById,
 } from "@Store/calculatorSlice/selectors";
 import {
-  changeCustomModCtrlValue,
   updateCustomBuffCtrls,
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
-import { indexById, processNumInput } from "@Src/utils";
+import { deepCopy, processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
 import { Modal } from "@Components/modals";
@@ -23,21 +20,6 @@ import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 import { useTranslation } from "@Hooks/useTranslation";
 import { IconToggleButton } from "@Src/styled-components";
-
-const selectAllCustomBuffCtrls = createSelector(
-  selectSetupManageInfos,
-  selectCalcSetupsById,
-  (setupManageInfos, setupsById) => {
-    return setupManageInfos.map(({ ID }) => setupsById[ID].customBuffCtrls);
-  }
-);
-const selectAllCustomDebuffCtrls = createSelector(
-  selectSetupManageInfos,
-  selectCalcSetupsById,
-  (setupManageInfos, setupsById) => {
-    return setupManageInfos.map(({ ID }) => setupsById[ID].customDebuffCtrls);
-  }
-);
 
 interface CustomModifiersProps {
   isBuffs: boolean;
@@ -54,6 +36,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   const [modalOn, setModalOn] = useState(false);
 
   const modCtrls = setupsById[activeId][key];
+  const updateAction = isBuffs ? updateCustomBuffCtrls : updateCustomDebuffCtrls;
   const copyOptions = [];
 
   if (!modCtrls.length) {
@@ -69,8 +52,6 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
   const copyModCtrls = ({ value }: { value: number }) => {
     if (isBuffs) {
-      console.log(setupsById[value].customBuffCtrls);
-
       dispatch(
         updateCustomBuffCtrls({
           actionType: "replace",
@@ -96,11 +77,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           color="text-default bg-darkred"
           disabled={modCtrls.length === 0}
           onClick={() => {
-            if (isBuffs) {
-              dispatch(updateCustomBuffCtrls({ actionType: "replace", ctrls: [] }));
-            } else {
-              dispatch(updateCustomDebuffCtrls({ actionType: "replace", ctrls: [] }));
-            }
+            dispatch(updateAction({ actionType: "replace", ctrls: [] }));
           }}
         >
           <FaTrashAlt />
@@ -120,7 +97,9 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
           <div key={ctrlIndex} className="flex items-center">
             <button
               className="mr-3 text-lesser text-xl hover:text-darkred"
-              onClick={() => dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }))}
+              onClick={() => {
+                dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
+              }}
             >
               <FaTimes />
             </button>
@@ -129,15 +108,17 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             <input
               className="ml-auto w-16 px-2 py-1 text-right text-lg textinput-common font-medium"
               value={value}
-              onChange={(e) =>
+              onChange={(e) => {
                 dispatch(
-                  changeCustomModCtrlValue({
-                    isBuffs,
-                    ctrlIndex,
-                    value: processNumInput(e.target.value, value, 999),
+                  updateAction({
+                    actionType: "edit",
+                    ctrls: {
+                      index: ctrlIndex,
+                      value: processNumInput(e.target.value, value, 999),
+                    },
                   })
-                )
-              }
+                );
+              }}
             />
           </div>
         ))}
