@@ -133,13 +133,17 @@ export type UpdateArtPieceAction = PayloadAction<{
 }>;
 
 export type NewSetupManageInfo = CalcSetupManageInfo & {
-  status: "OLD" | "NEW" | "DUPLICATE";
+  status: "REMOVED" | "OLD" | "NEW" | "DUPLICATE";
+  originId?: number;
+  isCompared: boolean;
 };
 
 export type ApplySettingsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newConfigs: CalcConfigurations;
-  removedSetupIds: number[];
+  // removedSetupIds: number[];
+  // standardUid: string;
+  standardId: number;
 }>;
 
 export type ImportSetupAction = PayloadAction<{

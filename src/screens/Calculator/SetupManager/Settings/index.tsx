@@ -1,29 +1,28 @@
 import cn from "classnames";
 import { useState, useEffect } from "react";
 import { FaInfoCircle, FaPlus } from "react-icons/fa";
-import type { ConfigOption, TemporarySetupInfo } from "./types";
+import type { ConfigOption } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
+import { applySettings } from "@Store/calculatorSlice";
 import {
-  selectActiveId,
   selectComparedIds,
   selectStandardId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
 import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
+import { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 import { updateUI } from "@Store/uiSlice";
-import { applySettings } from "@Store/calculatorSlice";
 
+import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import { TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
-import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
 import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
 
 import { MAX_CALC_SETUPS } from "@Src/constants";
-
 import { useTabs } from "@Hooks/useTabs";
-import { randomString } from "@Src/utils";
+import { findById, randomString } from "@Src/utils";
 
 import styles from "@Screens/Calculator/styles.module.scss";
 
@@ -55,33 +54,31 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     level: 2,
     configs: [{ text: "Setups" }, { text: "Configs" }],
   });
-  const [tempSetups, setTempSetups] = useState<TemporarySetupInfo[]>(
+  const [tempSetups, setTempSetups] = useState<NewSetupManageInfo[]>(
     setupManageInfos.map((manageInfos) => ({
       ...manageInfos,
-      uid: randomString(7),
       status: "OLD",
       isCompared: comparedIds.includes(manageInfos.ID),
     }))
   );
+  const [tempStandardId, setTempStandardId] = useState(findById(tempSetups, standardId)?.ID || 0);
   const [tempConfigs, setTempConfigs] = useState(configs);
-  const [removedIds, setRemovedIds] = useState<number[]>([]);
-  const [standardUid, setStandardUid] = useState("");
   const [errorCode, setErrorCode] = useState<"DUPLICATE_SETUP_NAME" | "NO_SETUPS" | "">("");
   const [tipsOn, setTipsOn] = useState(false);
 
   const comparedSetups = tempSetups.filter((tempSetup) => tempSetup.isCompared);
 
   useEffect(() => {
-    if (comparedSetups.length && standardUid === "") {
-      setStandardUid(comparedSetups[0].uid);
+    if (comparedSetups.length && tempStandardId === 0) {
+      setTempStandardId(comparedSetups[0].ID);
     }
-  }, [comparedSetups.length, standardUid]);
+  }, [comparedSetups.length, tempStandardId]);
 
   const changeSetupName = (index: number) => (newName: string) => {
     setTempSetups((prev) => {
-      const newTempoSetups = [...prev];
-      newTempoSetups[index].name = newName;
-      return newTempoSetups;
+      const newTempSetups = [...prev];
+      newTempSetups[index].name = newName;
+      return newTempSetups;
     });
 
     if (errorCode) {
@@ -91,26 +88,34 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   const removeSetup = (index: number) => () => {
     if (tempSetups[index] && tempSetups[index].status === "OLD") {
-      setRemovedIds((prev) => [...prev, tempSetups[index].ID]);
+      setTempSetups((prev) => {
+        const newTempSetups = [...prev];
+        newTempSetups[index].status = "REMOVED";
+        return newTempSetups;
+      });
+      // setRemovedIds((prev) => [...prev, tempSetups[index].ID]);
+    } else {
+      setTempSetups((prev) => {
+        const newTempSetups = [...prev];
+        newTempSetups.splice(index, 1);
+        return newTempSetups;
+      });
     }
-    setTempSetups((prev) => {
-      const newTempoSetups = [...prev];
-      newTempoSetups.splice(index, 1);
-      return newTempoSetups;
-    });
   };
 
   const copySetup = (index: number) => () => {
     if (tempSetups.length < MAX_CALC_SETUPS) {
       setTempSetups((prev) => {
         let name = prev[index].name.trim();
-        const newSetup: TemporarySetupInfo = {
+        const newSetup: NewSetupManageInfo = {
           ...prev[index],
-          uid: randomString(6),
+          ID: Date.now(),
           name: name ? `${name} (copy)` : "Setup copy",
           type: "original",
+          originId: prev[index].ID,
           status: "DUPLICATE",
         };
+
         return [...prev, newSetup];
       });
     }
@@ -118,9 +123,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   const addNewSetup = () => {
     setTempSetups((prev) => {
-      const newSetup: TemporarySetupInfo = {
+      const newSetup: NewSetupManageInfo = {
         ...getSetupManageInfo({ name: getNewSetupName(prev) }),
-        uid: randomString(7),
         status: "NEW",
         isCompared: false,
       };
@@ -131,10 +135,10 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   };
 
   const onSelectSetupForCompare = (index: number) => () => {
-    const { isCompared: isToggleOff, uid } = tempSetups[index] || {};
+    const { isCompared: isToggleOff, ID } = tempSetups[index] || {};
 
-    if (isToggleOff && uid === standardUid) {
-      setStandardUid("");
+    if (isToggleOff && ID === tempStandardId) {
+      setTempStandardId(0);
     }
 
     setTempSetups((prevTempSetups) => {
@@ -145,8 +149,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     });
   };
 
-  const onClickComparedSetupName = (uid: string) => () => {
-    setStandardUid(uid);
+  const onChooseStandardSetup = (index: number) => () => {
+    setTempStandardId(tempSetups[index].ID);
   };
 
   const tryApplyNewSettings = () => {
@@ -156,8 +160,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     }
 
     const nameMap: Record<string, boolean> = {};
-    for (const tempoSetup of tempSetups) {
-      const name = tempoSetup.name.trim();
+    for (const tempSetup of tempSetups) {
+      const name = tempSetup.name.trim();
 
       if (!name.length || nameMap[name]) {
         setErrorCode("DUPLICATE_SETUP_NAME");
@@ -171,7 +175,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       applySettings({
         newSetupManageInfos: tempSetups,
         newConfigs: tempConfigs,
-        removedSetupIds: removedIds,
+        standardId: tempStandardId,
       })
     );
     dispatch(updateUI({ settingsOn: false }));
@@ -205,41 +209,25 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       <div className="mt-3 flex-grow hide-scrollbar">
         {activeIndex === 0 && (
           <div>
-            {comparedSetups.length ? (
-              <div className="mb-4">
-                <p className="text-sm">Select the Standard Setup</p>
-                <div className="flex flex-wrap">
-                  {comparedSetups.map((comparedSetup, i) => {
-                    return (
-                      <button
-                        key={comparedSetup.uid}
-                        className={cn(
-                          "mt-2 mr-2 px-3 py-1 rounded-2xl font-bold",
-                          comparedSetup.uid === standardUid
-                            ? "bg-darkblue-2"
-                            : "bg-default text-black"
-                        )}
-                        onClick={onClickComparedSetupName(comparedSetup.uid)}
-                      >
-                        {comparedSetup.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : null}
-
             <div className="space-y-3">
-              {tempSetups.map((setup, index) => (
-                <SetupControl
-                  key={setup.uid}
-                  setup={setup}
-                  changeSetupName={changeSetupName(index)}
-                  removeSetup={removeSetup(index)}
-                  copySetup={copySetup(index)}
-                  onSelectForCompare={onSelectSetupForCompare(index)}
-                />
-              ))}
+              {tempSetups.map((setup, index) => {
+                if (setup.status === "REMOVED") {
+                  return null;
+                }
+
+                return (
+                  <SetupControl
+                    key={setup.ID}
+                    setup={setup}
+                    isStandard={setup.ID === tempStandardId}
+                    changeSetupName={changeSetupName(index)}
+                    removeSetup={removeSetup(index)}
+                    copySetup={copySetup(index)}
+                    onSelectForCompare={onSelectSetupForCompare(index)}
+                    onChooseStandard={onChooseStandardSetup(index)}
+                  />
+                );
+              })}
             </div>
 
             {tempSetups.length < 4 && (

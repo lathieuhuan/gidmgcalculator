@@ -603,24 +603,33 @@ export const calculatorSlice = createSlice({
       }
     },
     applySettings: (state, action: ApplySettingsAction) => {
-      const { newSetupManageInfos, newConfigs, removedSetupIds } = action.payload;
+      const { newSetupManageInfos, newConfigs, standardId } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
+      const removedIds = [];
 
-      let rootID = Date.now();
+      // Reset compareIds before repopulate with newSetupManageInfos
+      state.comparedIds = [];
+
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
       const newWeapon = initWeapon({ type: charData.weapon });
       const wpBuffCtrls = getMainWpBuffCtrls(newWeapon);
       const subArtBuffCtrls = getAllSubArtBuffCtrls(null);
       const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
       const elmtModCtrls = initElmtModCtrls();
-      const tempoManageInfos: CalcSetupManageInfo[] = [];
+      const tempManageInfos: CalcSetupManageInfo[] = [];
 
-      newSetupManageInfos.forEach(({ ID, name, type, status }) => {
+      for (const { ID, name, type, status, originId, isCompared } of newSetupManageInfos) {
+        isCompared && state.comparedIds.push(ID);
+
         switch (status) {
+          case "REMOVED": {
+            removedIds.push(ID);
+            break;
+          }
           case "OLD": {
             const oldInfo = findById(setupManageInfos, ID);
             if (oldInfo) {
-              tempoManageInfos.push({
+              tempManageInfos.push({
                 ...oldInfo,
                 name: name,
               });
@@ -628,21 +637,18 @@ export const calculatorSlice = createSlice({
             break;
           }
           case "DUPLICATE": {
-            const oldInfo = findById(setupManageInfos, ID);
-            if (oldInfo) {
-              const setupID = rootID++;
-
-              tempoManageInfos.push({
-                ID: setupID,
+            if (originId && setupsById[originId]) {
+              tempManageInfos.push({
+                ID,
                 name,
                 type: "original",
               });
-              setupsById[setupID] = deepCopy(setupsById[ID]);
+              setupsById[ID] = deepCopy(setupsById[originId]);
             }
             break;
           }
           case "NEW": {
-            tempoManageInfos.push({
+            tempManageInfos.push({
               ID,
               name,
               type: "original",
@@ -652,7 +658,7 @@ export const calculatorSlice = createSlice({
               selfBuffCtrls,
               selfDebuffCtrls,
               weapon: {
-                ID: rootID++,
+                ID: Date.now(),
                 ...newWeapon,
               },
               wpBuffCtrls,
@@ -672,27 +678,28 @@ export const calculatorSlice = createSlice({
             break;
           }
         }
-      });
+      }
 
-      removedSetupIds.forEach((ID) => {
+      for (const ID of removedIds) {
         delete setupsById[ID];
         delete state.statsById[ID];
-      });
+      }
 
       const activeSetup = findById(newSetupManageInfos, activeId);
-      const newActiveID = activeSetup ? activeSetup.ID : tempoManageInfos[0].ID;
+      const newActiveId = activeSetup ? activeSetup.ID : tempManageInfos[0].ID;
 
       if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
-        const activeChar = setupsById[newActiveID].char;
+        const activeChar = setupsById[newActiveId].char;
 
         for (const setup of Object.values(setupsById)) {
           setup.char = activeChar;
         }
       }
 
-      state.activeId = newActiveID;
-      (state.comparedIds = state.comparedIds.filter((id) => !removedSetupIds.includes(id))),
-        (state.setupManageInfos = tempoManageInfos);
+      state.activeId = newActiveId;
+      state.standardId = standardId;
+      state.setupManageInfos = tempManageInfos;
+
       state.configs = newConfigs;
       calculate(state, true);
     },

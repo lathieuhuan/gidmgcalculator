@@ -1,22 +1,27 @@
 import cn from "classnames";
 import { FaBalanceScaleLeft, FaCopy, FaTrashAlt } from "react-icons/fa";
-import type { TemporarySetupInfo } from "./types";
+import { SiTarget } from "react-icons/si";
 
+import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 import { IconButton } from "@Src/styled-components";
 
 interface SetupControlProps {
-  setup: TemporarySetupInfo;
+  setup: NewSetupManageInfo;
+  isStandard: boolean;
   changeSetupName: (newName: string) => void;
   removeSetup: () => void;
   copySetup: () => void;
   onSelectForCompare: () => void;
+  onChooseStandard: () => void;
 }
 export function SetupControl({
   setup,
+  isStandard,
   changeSetupName,
   removeSetup,
   copySetup,
   onSelectForCompare,
+  onChooseStandard,
 }: SetupControlProps) {
   const isNew = setup.status === "NEW";
 
@@ -54,15 +59,27 @@ export function SetupControl({
           </IconButton>
         </div>
 
-        <button
-          className={cn(
-            "w-8 h-8 rounded-circle flex-center",
-            setup.isCompared ? "bg-green text-black" : "border-2 border-lesser text-lesser"
-          )}
-          onClick={onSelectForCompare}
-        >
-          <FaBalanceScaleLeft />
-        </button>
+        <div className="flex space-x-4">
+          <button
+            className={cn(
+              "w-8 h-8 rounded-circle flex-center text-black text-2xl",
+              isStandard ? "bg-green" : "bg-default"
+            )}
+            disabled={!setup.isCompared}
+            onClick={onChooseStandard}
+          >
+            <SiTarget />
+          </button>
+          <button
+            className={cn(
+              "w-8 h-8 rounded-circle flex-center",
+              setup.isCompared ? "bg-green text-black" : "border-2 border-lesser text-lesser"
+            )}
+            onClick={onSelectForCompare}
+          >
+            <FaBalanceScaleLeft />
+          </button>
+        </div>
       </div>
     </div>
   );

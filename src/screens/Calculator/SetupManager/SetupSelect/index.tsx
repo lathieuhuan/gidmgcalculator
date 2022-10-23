@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useState, type ButtonHTMLAttributes } from "react";
 import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
-import { FiTarget } from "react-icons/fi";
+import { SiTarget } from "react-icons/si";
 import type { ModalInfo } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -120,7 +120,7 @@ export function SetupSelect() {
                   className: ID === standardId ? "bg-green" : "bg-default",
                   disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
                   onClick: onClickChooseStandard(ID),
-                  children: <FiTarget />,
+                  children: <SiTarget />,
                 },
                 {
                   className: comparedIds.includes(ID) ? "bg-green" : "bg-default",
