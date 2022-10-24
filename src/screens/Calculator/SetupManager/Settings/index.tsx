@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useState, useEffect } from "react";
-import { FaInfoCircle, FaPlus } from "react-icons/fa";
+import { FaInfoCircle, FaPlus, FaTimes } from "react-icons/fa";
 import type { ConfigOption } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -14,7 +14,7 @@ import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/util
 import { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 import { updateUI } from "@Store/uiSlice";
 
-import { Button, Checkbox, CloseButton, Green } from "@Src/styled-components";
+import { Button, Checkbox, Green } from "@Src/styled-components";
 import { TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
 import SectionTarget from "../SectionTarget";
@@ -66,11 +66,18 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   const [errorCode, setErrorCode] = useState<"DUPLICATE_SETUP_NAME" | "NO_SETUPS" | "">("");
   const [tipsOn, setTipsOn] = useState(false);
 
-  const comparedSetups = tempSetups.filter((tempSetup) => tempSetup.isCompared);
+  const comparedSetups = tempSetups.filter((tempSetup) => {
+    return tempSetup.isCompared && tempSetup.status !== "REMOVED";
+  });
 
   useEffect(() => {
-    if (comparedSetups.length && tempStandardId === 0) {
-      setTempStandardId(comparedSetups[0].ID);
+    if (comparedSetups.length === 0 && tempStandardId !== 0) {
+      setTempStandardId(0);
+    } else if (
+      comparedSetups.length === 1 ||
+      comparedSetups.every((comparedSetup) => comparedSetup.ID !== tempStandardId)
+    ) {
+      setTempStandardId(comparedSetups[0]?.ID || 0);
     }
   }, [comparedSetups.length, tempStandardId]);
 
@@ -91,9 +98,9 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       setTempSetups((prev) => {
         const newTempSetups = [...prev];
         newTempSetups[index].status = "REMOVED";
+        newTempSetups[index].isCompared = false;
         return newTempSetups;
       });
-      // setRemovedIds((prev) => [...prev, tempSetups[index].ID]);
     } else {
       setTempSetups((prev) => {
         const newTempSetups = [...prev];
@@ -134,17 +141,10 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
     setErrorCode("");
   };
 
-  const onSelectSetupForCompare = (index: number) => () => {
-    const { isCompared: isToggleOff, ID } = tempSetups[index] || {};
-
-    if (isToggleOff && ID === tempStandardId) {
-      setTempStandardId(0);
-    }
-
+  const onToggleSetupCompared = (index: number) => () => {
     setTempSetups((prevTempSetups) => {
       const newTempSetups = [...prevTempSetups];
       newTempSetups[index].isCompared = !newTempSetups[index].isCompared;
-
       return newTempSetups;
     });
   };
@@ -175,7 +175,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
       applySettings({
         newSetupManageInfos: tempSetups,
         newConfigs: tempConfigs,
-        standardId: tempStandardId,
+        newStandardId: tempStandardId,
       })
     );
     dispatch(updateUI({ settingsOn: false }));
@@ -188,10 +188,12 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
 
   return (
     <div className="p-4 h-full flex flex-col">
-      <CloseButton
-        className="absolute top-3 right-3"
+      <button
+        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-darkred"
         onClick={() => dispatch(updateUI({ settingsOn: false }))}
-      />
+      >
+        <FaTimes />
+      </button>
 
       <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>
       <div className="relative">
@@ -220,10 +222,11 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
                     key={setup.ID}
                     setup={setup}
                     isStandard={setup.ID === tempStandardId}
+                    isStandardChoosable={setup.isCompared && comparedSetups.length > 1}
                     changeSetupName={changeSetupName(index)}
                     removeSetup={removeSetup(index)}
                     copySetup={copySetup(index)}
-                    onSelectForCompare={onSelectSetupForCompare(index)}
+                    onToggleCompared={onToggleSetupCompared(index)}
                     onChooseStandard={onChooseStandardSetup(index)}
                   />
                 );

@@ -190,6 +190,27 @@ export const calculatorSlice = createSlice({
 
       calculate(state, setupId !== state.activeId);
     },
+    duplicateCalcSetup: (state, action: PayloadAction<number>) => {
+      const sourceId = action.payload;
+      const { comparedIds, setupManageInfos, setupsById } = state;
+      const ID = Date.now();
+
+      if (setupsById[sourceId]) {
+        setupManageInfos.push({
+          ID,
+          name: getNewSetupName(setupManageInfos),
+          type: "original",
+        });
+
+        setupsById[ID] = setupsById[sourceId];
+
+        if (comparedIds.includes(sourceId)) {
+          state.comparedIds.push(ID);
+        }
+
+        calculate(state, true);
+      }
+    },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
       const { configs, setupsById, target } = state;
@@ -580,34 +601,11 @@ export const calculatorSlice = createSlice({
         calculate(state, true);
       }
     },
-    //
-    duplicateCalcSetup: (state, action: PayloadAction<number>) => {
-      const sourceId = action.payload;
-      const { comparedIds, setupManageInfos, setupsById } = state;
-      const ID = Date.now();
-
-      if (setupsById[sourceId]) {
-        setupManageInfos.push({
-          ID,
-          name: getNewSetupName(setupManageInfos),
-          type: "original",
-        });
-
-        setupsById[ID] = setupsById[sourceId];
-
-        if (comparedIds.includes(sourceId)) {
-          state.comparedIds.push(ID);
-        }
-
-        calculate(state, true);
-      }
-    },
     applySettings: (state, action: ApplySettingsAction) => {
-      const { newSetupManageInfos, newConfigs, standardId } = action.payload;
+      const { newSetupManageInfos, newConfigs, newStandardId } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
       const removedIds = [];
-
-      // Reset compareIds before repopulate with newSetupManageInfos
+      // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];
 
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
@@ -623,6 +621,7 @@ export const calculatorSlice = createSlice({
 
         switch (status) {
           case "REMOVED": {
+            // Delete later coz they can be used for ref of duplicate setups
             removedIds.push(ID);
             break;
           }
@@ -685,7 +684,7 @@ export const calculatorSlice = createSlice({
         delete state.statsById[ID];
       }
 
-      const activeSetup = findById(newSetupManageInfos, activeId);
+      const activeSetup = findById(tempManageInfos, activeId);
       const newActiveId = activeSetup ? activeSetup.ID : tempManageInfos[0].ID;
 
       if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
@@ -697,9 +696,9 @@ export const calculatorSlice = createSlice({
       }
 
       state.activeId = newActiveId;
-      state.standardId = standardId;
+      state.comparedIds = state.comparedIds.length === 1 ? [] : state.comparedIds;
+      state.standardId = state.comparedIds.length ? newStandardId : 0;
       state.setupManageInfos = tempManageInfos;
-
       state.configs = newConfigs;
       calculate(state, true);
     },

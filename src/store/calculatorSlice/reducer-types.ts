@@ -141,9 +141,7 @@ export type NewSetupManageInfo = CalcSetupManageInfo & {
 export type ApplySettingsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newConfigs: CalcConfigurations;
-  // removedSetupIds: number[];
-  // standardUid: string;
-  standardId: number;
+  newStandardId: number;
 }>;
 
 export type ImportSetupAction = PayloadAction<{

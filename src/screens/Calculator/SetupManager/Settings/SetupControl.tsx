@@ -8,19 +8,21 @@ import { IconButton } from "@Src/styled-components";
 interface SetupControlProps {
   setup: NewSetupManageInfo;
   isStandard: boolean;
+  isStandardChoosable: boolean;
   changeSetupName: (newName: string) => void;
   removeSetup: () => void;
   copySetup: () => void;
-  onSelectForCompare: () => void;
+  onToggleCompared: () => void;
   onChooseStandard: () => void;
 }
 export function SetupControl({
   setup,
   isStandard,
+  isStandardChoosable,
   changeSetupName,
   removeSetup,
   copySetup,
-  onSelectForCompare,
+  onToggleCompared,
   onChooseStandard,
 }: SetupControlProps) {
   const isNew = setup.status === "NEW";
@@ -39,7 +41,7 @@ export function SetupControl({
       <input
         type="text"
         placeholder="Enter Setup's name"
-        className="w-full px-4 pt-2 pb-1 text-xl text-center textinput-common rounded-md font-medium"
+        className="w-full px-4 pt-1 text-lg text-center textinput-common rounded-md font-medium"
         value={setup.name}
         onChange={(e) => {
           const { value } = e.target;
@@ -59,23 +61,27 @@ export function SetupControl({
           </IconButton>
         </div>
 
-        <div className="flex space-x-4">
+        <div className="flex space-x-3">
           <button
             className={cn(
-              "w-8 h-8 rounded-circle flex-center text-black text-2xl",
-              isStandard ? "bg-green" : "bg-default"
+              "w-8 h-8 rounded-circle flex-center text-2xl",
+              isStandard
+                ? "bg-green text-black"
+                : isStandardChoosable
+                ? "text-default"
+                : "text-lesser"
             )}
-            disabled={!setup.isCompared}
+            disabled={!isStandardChoosable}
             onClick={onChooseStandard}
           >
             <SiTarget />
           </button>
           <button
             className={cn(
-              "w-8 h-8 rounded-circle flex-center",
-              setup.isCompared ? "bg-green text-black" : "border-2 border-lesser text-lesser"
+              "w-8 h-8 rounded-circle flex-center text-xl",
+              setup.isCompared && "bg-green text-black"
             )}
-            onClick={onSelectForCompare}
+            onClick={onToggleCompared}
           >
             <FaBalanceScaleLeft />
           </button>

@@ -91,7 +91,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
 
   return (
     <div
-      className="pl-5 pr-2 pt-4 pb-2 bg-darkblue-2 flex flex-col rounded-lg shadow-white-glow overflow-auto"
+      className="pl-5 pr-2 pt-4 pb-2 bg-darkblue-1 flex flex-col rounded-lg shadow-white-glow overflow-auto"
       style={{ height: "90vh" }}
     >
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />

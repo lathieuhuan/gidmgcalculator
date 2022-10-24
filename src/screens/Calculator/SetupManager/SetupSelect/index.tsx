@@ -63,9 +63,7 @@ export function SetupSelect() {
 
     if (newComparedIds.length === 0) {
       newStandardId = 0;
-    } else if (newComparedIds.length === 1) {
-      newStandardId = newComparedIds[0];
-    } else if (!newComparedIds.includes(newStandardId)) {
+    } else if (newComparedIds.length === 1 || !newComparedIds.includes(newStandardId)) {
       newStandardId = newComparedIds[0];
     }
 
@@ -120,13 +118,13 @@ export function SetupSelect() {
                   className: ID === standardId ? "bg-green" : "bg-default",
                   disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
                   onClick: onClickChooseStandard(ID),
-                  children: <SiTarget />,
+                  children: <SiTarget className="text-1.5xl" />,
                 },
                 {
                   className: comparedIds.includes(ID) ? "bg-green" : "bg-default",
                   disabled: setupManageInfos.length < 2,
                   onClick: onClickToggleCompared(ID),
-                  children: <FaBalanceScaleLeft />,
+                  children: <FaBalanceScaleLeft className="text-1.5xl" />,
                 },
                 {
                   className: cn(isAtMax && "bg-lesser"),
