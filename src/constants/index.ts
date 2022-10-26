@@ -1,3 +1,5 @@
+import { Weapon } from "@Src/types";
+
 export * from "./maps";
 
 export const MAX_CALC_SETUPS = 4;
@@ -132,3 +134,11 @@ export const REACTIONS = [
 ] as const;
 
 export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;
+
+export const DEFAULT_WEAPON_CODE: Record<Weapon, number> = {
+  bow: 11,
+  catalyst: 36,
+  claymore: 59,
+  polearm: 84,
+  sword: 108,
+};

@@ -131,6 +131,15 @@ export type Teammate = {
   name: string;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
+  weapon: {
+    code: number;
+    buffCtrls: ModifierCtrl[];
+  };
+  artifact: null | {
+    code: number;
+    buffCtrls: ModifierCtrl[];
+    debuffCtrls: ModifierCtrl[];
+  };
 };
 
 export type Party = (Teammate | null)[];

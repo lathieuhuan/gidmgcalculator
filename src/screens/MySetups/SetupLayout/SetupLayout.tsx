@@ -23,7 +23,7 @@ import {
 } from "@Store/usersDatabaseSlice";
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 
-import { CharFilledSlot } from "@Components/minors";
+import { CharacterPortrait } from "@Components/minors";
 import { Button, IconButton } from "@Src/styled-components";
 
 interface SetupLayoutProps {
@@ -114,10 +114,9 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
                 : "group relative"
             )}
           >
-            <CharFilledSlot
-              mutable={false}
+            <CharacterPortrait
               name={teammate.name}
-              onClickSlot={() => {
+              onClickIcon={() => {
                 if (clickable) {
                   dispatch(switchShownSetupInComplex({ complexID: ID, shownID: teammateSetupID }));
                 }

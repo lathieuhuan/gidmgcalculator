@@ -1,6 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
-import { Fragment } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 
 import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@Src/types";
@@ -161,12 +160,11 @@ export function TipsModal({ active, content, onClose }: TipsModalProps) {
 }
 
 interface CharFilledSlotProps {
+  className?: string;
   name: string;
-  mutable: boolean;
-  onClickSlot?: () => void;
-  onClickRemove?: () => void;
+  onClickIcon?: () => void;
 }
-export function CharFilledSlot({ name, mutable, onClickSlot, onClickRemove }: CharFilledSlotProps) {
+export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSlotProps) {
   const { code, icon } = findCharacter({ name })!;
   // for the traveler
   const bgColorByCode: Record<number, string> = {
@@ -177,22 +175,20 @@ export function CharFilledSlot({ name, mutable, onClickSlot, onClickRemove }: Ch
   };
 
   return (
-    <>
-      <div
-        className={`zoomin-on-hover overflow-hidden rounded-circle ${
-          bgColorByCode[code] || "bg-darkblue-3"
-        }`}
-      >
-        <img
-          className={cn("w-full rounded-circle", mutable && "cursor-pointer")}
-          src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
-          alt={name}
-          draggable={false}
-          onClick={onClickSlot}
-        />
-      </div>
-      {mutable && <CloseButton className="absolute -bottom-1 -right-2.5" onClick={onClickRemove} />}
-    </>
+    <div
+      className={cn(
+        `zoomin-on-hover overflow-hidden rounded-circle ${bgColorByCode[code] || "bg-darkblue-3"}`,
+        className
+      )}
+    >
+      <img
+        className="w-full rounded-circle"
+        src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
+        alt={name}
+        draggable={false}
+        onClick={onClickIcon}
+      />
+    </div>
   );
 }
 

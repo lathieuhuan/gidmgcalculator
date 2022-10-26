@@ -11,9 +11,10 @@ import type {
   CalcWeapon,
   ElementModCtrl,
   Monster,
+  Teammate,
 } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
-import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
+import { findCharacter, findWeapon } from "@Data/controllers";
+import { ATTACK_ELEMENTS, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
 
 type InitCharInfo = Omit<CharInfo, "name">;
 export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
@@ -31,14 +32,7 @@ interface InitWeapon {
   code?: number;
 }
 export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID"> {
-  const defaultWp = {
-    bow: 11,
-    catalyst: 36,
-    claymore: 59,
-    polearm: 84,
-    sword: 108,
-  };
-  return { type, code: code || defaultWp[type], level: "1/20", refi: 1 };
+  return { type, code: code || DEFAULT_WEAPON_CODE[type], level: "1/20", refi: 1 };
 }
 
 interface InitArtPiece {
@@ -127,6 +121,42 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
     }
   }
   return [buffCtrls, debuffCtrls];
+}
+
+interface IInitTeammateArgs {
+  name: string;
+  weapon: Weapon;
+}
+export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
+  const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
+
+  const weaponCode = DEFAULT_WEAPON_CODE[weapon];
+  const { buffs: weaponBuffs = [] } = findWeapon({ code: weaponCode, type: weapon }) || {};
+
+  const weaponBuffCtrls = weaponBuffs.reduce((accumulator, { index, affect, inputConfig }) => {
+    if (affect !== EModAffect.SELF) {
+      const buffNode: ModifierCtrl = {
+        index,
+        activated: false,
+      };
+      if (inputConfig) {
+        buffNode.inputs = [...inputConfig.initialValues];
+      }
+      accumulator.push(buffNode);
+    }
+    return accumulator;
+  }, [] as ModifierCtrl[]);
+
+  return {
+    name,
+    buffCtrls,
+    debuffCtrls,
+    weapon: {
+      code: weaponCode,
+      buffCtrls: weaponBuffCtrls,
+    },
+    artifact: null,
+  };
 }
 
 export const initElmtModCtrls = (): ElementModCtrl => ({

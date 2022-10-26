@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useState } from "react";
 
-import { CharFilledSlot } from "@Components/minors";
+import { CharacterPortrait } from "@Components/minors";
 
 import type { UsersSetup } from "@Src/types";
 export type SetupOptions = Array<Pick<UsersSetup, "ID" | "type" | "name" | "char" | "party">>;
@@ -59,13 +59,13 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
               </div>
               <div className="mt-2 md1:mt-0 flex space-x-4">
                 <div className="w-16 rounded-circle shadow-3px-2px shadow-orange">
-                  <CharFilledSlot mutable={false} name={setup.char.name} />
+                  <CharacterPortrait name={setup.char.name} />
                 </div>
                 {setup.party.map((teammate, j) => {
                   if (teammate) {
                     return (
                       <div key={j} className="w-16 rounded-circle">
-                        <CharFilledSlot mutable={false} name={teammate.name} />
+                        <CharacterPortrait name={teammate.name} />
                       </div>
                     );
                   }

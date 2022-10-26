@@ -232,7 +232,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
           </Button>
         </div>
 
-        <div className="mx-4 w-0.5 bg-darkblue-3" />
+        <div className="mx-4" />
 
         <div className="w-80 shrink-0 flex flex-col">
           <p className="text-orange font-bold text-h5">Resistances</p>

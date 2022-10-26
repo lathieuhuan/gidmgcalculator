@@ -67,6 +67,7 @@ import {
   initElmtModCtrls,
   initMonster,
   initTarget,
+  initTeammate,
 } from "./initiators";
 import monsters from "@Data/monsters";
 
@@ -245,10 +246,11 @@ export const calculatorSlice = createSlice({
       const oldWeaponCount = countWeapon(party);
       const oldTeammate = party[tmIndex];
 
-      const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
+      // const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
 
       // assign to party
-      party[tmIndex] = { name, buffCtrls, debuffCtrls };
+      // party[tmIndex] = { name, buffCtrls, debuffCtrls };
+      party[tmIndex] = initTeammate({ name, weapon: weaponType });
 
       const newVisionCount = countVision(char, party);
       const newWeaponCount = countWeapon(party);
@@ -295,10 +297,11 @@ export const calculatorSlice = createSlice({
         }
         elmtModCtrls.resonances.push(newResonance);
       }
+
       // add a weapon type in subWpBuffCtrl
-      if (!oldWeaponCount[weaponType]) {
-        subWpComplexBuffCtrls[weaponType] = getSubWeaponComplexBuffCtrls(weaponType, weapon.code);
-      }
+      // if (!oldWeaponCount[weaponType]) {
+      //   subWpComplexBuffCtrls[weaponType] = getSubWeaponComplexBuffCtrls(weaponType, weapon.code);
+      // }
       calculate(state);
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
