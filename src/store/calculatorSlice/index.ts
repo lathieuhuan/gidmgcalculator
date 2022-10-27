@@ -238,19 +238,19 @@ export const calculatorSlice = createSlice({
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
-      const { name, vision, weapon: weaponType, tmIndex } = action.payload;
+      const { name, vision, weapon: weaponType, teammateIndex } = action.payload;
       const setup = state.setupsById[state.activeId];
       const { char, weapon, party, elmtModCtrls, subWpComplexBuffCtrls } = setup;
 
       const oldVisionCount = countVision(char, party);
       const oldWeaponCount = countWeapon(party);
-      const oldTeammate = party[tmIndex];
+      const oldTeammate = party[teammateIndex];
 
       // const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
 
       // assign to party
-      // party[tmIndex] = { name, buffCtrls, debuffCtrls };
-      party[tmIndex] = initTeammate({ name, weapon: weaponType });
+      // party[teammateIndex] = { name, buffCtrls, debuffCtrls };
+      party[teammateIndex] = initTeammate({ name, weapon: weaponType });
 
       const newVisionCount = countVision(char, party);
       const newWeaponCount = countWeapon(party);
@@ -305,13 +305,13 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
-      const tmIndex = action.payload;
+      const teammateIndex = action.payload;
       const { char, party, elmtModCtrls, subWpComplexBuffCtrls } = state.setupsById[state.activeId];
-      const teammate = party[tmIndex];
+      const teammate = party[teammateIndex];
 
       if (teammate) {
         const { weapon, vision } = findCharacter(teammate)!;
-        party[tmIndex] = null;
+        party[teammateIndex] = null;
 
         const newVisionCount = countVision(char, party);
         const newWeaponCount = countWeapon(party);

@@ -34,7 +34,7 @@ export type AddTeammateAction = PayloadAction<{
   name: string;
   vision: Vision;
   weapon: Weapon;
-  tmIndex: number;
+  teammateIndex: number;
 }>;
 
 export type UpdateCalcSetupAction = PayloadAction<

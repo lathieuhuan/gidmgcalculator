@@ -106,7 +106,7 @@ export function ComplexSelect({
 
       <div
         className={cn(
-          "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-all duration-100 ease-linear",
+          "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-size duration-100 ease-linear",
           dropdownType !== "" && "border border-white"
         )}
         style={{

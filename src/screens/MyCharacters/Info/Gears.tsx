@@ -108,7 +108,7 @@ export default function Gears(props: GearsProps) {
         <div className="ml-2 h-full flex">
           <div className="w-75 px-4 rounded-lg bg-darkblue-1 box-content">{overviewComponent}</div>
           <div
-            className="py-2 hide-scrollbar transition-all duration-200 ease-in-out"
+            className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
             style={{ width: showingDetails ? "20.25rem" : 0 }}
           >
             {detailsComponent}

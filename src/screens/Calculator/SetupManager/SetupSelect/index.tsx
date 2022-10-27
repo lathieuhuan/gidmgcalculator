@@ -144,11 +144,11 @@ export function SetupSelect() {
               ];
 
               return (
-                <div className="ml-auto flex text-xl transition-all duration-300">
+                <div className="ml-auto flex text-xl">
                   {shownButtons.map(renderSuffixButton)}
 
                   <div
-                    className="flex overflow-hidden transition-all duration-300"
+                    className="flex overflow-hidden transition-size duration-300"
                     style={{
                       width: i === moreActionsIndex ? `${2.25 * hidddenButtons.length}rem` : 0,
                     }}

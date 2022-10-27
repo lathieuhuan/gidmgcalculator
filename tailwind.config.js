@@ -146,6 +146,9 @@ module.exports = {
       scale: {
         180: "1.8",
       },
+      transitionProperty: {
+        size: "height, width",
+      },
     },
   },
   plugins: [],

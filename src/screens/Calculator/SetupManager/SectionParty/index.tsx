@@ -19,6 +19,11 @@ import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
 import { CopySelect } from "./CopySelect";
 
+interface IModal {
+  type: "" | "CHARACTER" | "WEAPON" | "ARTIFACT";
+  teammateIndex: number | null;
+}
+
 export default function SectionParty() {
   const dispatch = useDispatch();
 
@@ -27,19 +32,40 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const [pendingSlot, setPendingSlot] = useState<number | null>(null);
+  const [modal, setModal] = useState<IModal>({
+    type: "",
+    teammateIndex: null,
+  });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
   const isOriginalSetup = findById(setupManageInfos, activeId)?.type === "original";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
+
+  const closeModal = () => {
+    setModal({ type: "", teammateIndex: null });
+  };
+
+  const onClickChangeTeammate = (teammateIndex: number) => () => {
+    setModal({
+      type: "CHARACTER",
+      teammateIndex,
+    });
+  };
+
+  const onClickRemoveTeammate = () => {
+    if (detailSlot !== null) {
+      dispatch(removeTeammate(detailSlot));
+      setDetailSlot(null);
+    }
+  };
 
   return (
     <div className="setup-manager_pedestal">
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="w-full grid grid-cols-3 relative">
-        {party.map((teammate, tmIndex) => {
-          const isExpanded = tmIndex === detailSlot;
+        {party.map((teammate, teammateIndex) => {
+          const isExpanded = teammateIndex === detailSlot;
           let button;
 
           if (teammate) {
@@ -52,28 +78,45 @@ export default function SectionParty() {
             };
 
             button = (
-              <button
+              <div
                 className={cn(
-                  `overflow-hidden ${
-                    bgColorByCode[code] || "bg-darkblue-3"
-                  } transition-all duration-150`,
-                  isExpanded ? "pt-4 px-1 rounded-t-lg" : "zoomin-on-hover rounded-circle"
+                  `overflow-hidden ${bgColorByCode[code] || "bg-darkblue-3"}`,
+                  isExpanded ? "rounded-t-lg" : "h-full zoomin-on-hover rounded-circle"
                 )}
-                onClick={() => setDetailSlot(isExpanded ? null : tmIndex)}
               >
+                <div
+                  className={cn(
+                    "grid grid-cols-2 text-xl transition-size",
+                    isExpanded ? "h-10" : "h-0"
+                  )}
+                >
+                  <button
+                    className={"text-darkred " + (isExpanded ? "flex-center " : "hidden")}
+                    onClick={onClickRemoveTeammate}
+                  >
+                    <FaUserSlash />
+                  </button>
+                  <button
+                    className={"text-lightgold " + (isExpanded ? "flex-center" : "hidden")}
+                    onClick={onClickChangeTeammate(teammateIndex)}
+                  >
+                    <FaSyncAlt />
+                  </button>
+                </div>
                 <img
-                  className={cn("w-full", !isExpanded && "rounded-circle")}
+                  className={cn("w-full h-full px-1", !isExpanded && "rounded-circle")}
                   src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
                   alt=""
                   draggable={false}
+                  onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
                 />
-              </button>
+              </div>
             );
           } else {
             button = (
               <button
-                className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 transition-all duration-150 glow-on-hover"
-                onClick={() => setPendingSlot(tmIndex)}
+                className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 glow-on-hover"
+                onClick={onClickChangeTeammate(teammateIndex)}
               >
                 <FaPlus className="text-default opacity-80" />
               </button>
@@ -81,7 +124,7 @@ export default function SectionParty() {
           }
 
           return (
-            <div key={tmIndex}>
+            <div key={teammateIndex}>
               <div className={cn("mx-auto h-18 relative", isExpanded ? "w-20" : "w-18")}>
                 {button}
               </div>
@@ -94,62 +137,55 @@ export default function SectionParty() {
         active={detailSlot !== null}
         className={cn("bg-darkblue-3", detailSlot !== null && "mt-2")}
       >
-        {detailTeammate && (
-          <TeammateDetail
-            teammate={detailTeammate}
-            onClickChangeTeammate={() => setPendingSlot(detailSlot)}
-            onClickRemoveTeammate={() => {
-              if (detailSlot !== null) {
-                dispatch(removeTeammate(detailSlot));
-                setDetailSlot(null);
-              }
-            }}
-          />
-        )}
+        {detailTeammate && <TeammateDetail teammate={detailTeammate} />}
       </CollapseSpace>
 
       <Picker.Character
-        active={pendingSlot !== null}
+        active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="appData"
         filter={({ name }) => {
           return name !== charData.name && party.every((tm) => name !== tm?.name);
         }}
         onPickCharacter={({ name, vision, weapon }) => {
-          if (vision && weapon && pendingSlot !== null) {
-            dispatch(addTeammate({ name, vision, weapon, tmIndex: pendingSlot }));
-            setDetailSlot(pendingSlot);
+          const { teammateIndex } = modal;
+
+          if (vision && weapon && teammateIndex !== null) {
+            dispatch(addTeammate({ name, vision, weapon, teammateIndex }));
+            setDetailSlot(teammateIndex);
           }
         }}
-        onClose={() => setPendingSlot(null)}
+        onClose={closeModal}
       />
+
+      {/* <Picker.Weapon
+        active={modal.type === "WEAPON" && modal.teammateIndex !== null}
+        weaponType={}
+        onClose={closeModal}
+      /> */}
     </div>
   );
 }
 
 interface ITeammateDetailProps {
   teammate: Teammate;
-  onClickChangeTeammate: () => void;
-  onClickRemoveTeammate: () => void;
 }
-function TeammateDetail({
-  teammate,
-  onClickChangeTeammate,
-  onClickRemoveTeammate,
-}: ITeammateDetailProps) {
+function TeammateDetail({ teammate }: ITeammateDetailProps) {
   const { weapon, artifact } = teammate;
   const { weapon: weaponType } = findCharacter(teammate)!;
   const weaponData = findWeapon({ code: weapon.code, type: weaponType });
   const artifactIcon = artifact ? findArtifactSet(artifact)?.flower.icon : undefined;
 
   return (
-    <div className="pt-6 px-2 pb-2 flex justify-between">
+    <div className="pt-12 px-2 pb-2 flex justify-between">
       <div>
         {weaponData && (
           <div className="flex">
             <button className={`w-12 h-12 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}>
               <img src={wikiImg(weaponData.icon)} alt="" />
             </button>
-            <p className={`text-rarity-${weaponData.rarity} font-medium`}>{weaponData.name}</p>
+            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold`}>
+              {weaponData.name}
+            </p>
           </div>
         )}
 
@@ -166,11 +202,11 @@ function TeammateDetail({
               />
             )}
           </button>
-          <p className="font-medium text-lesser">No artifact</p>
+          <p className="text-lg font-medium text-lesser">No artifact</p>
         </div>
       </div>
 
-      <div className="flex flex-col space-y-2">
+      {/* <div className="flex flex-col space-y-2">
         <button
           className="w-8 h-8 text-xl flex-center text-lightgold"
           onClick={onClickChangeTeammate}
@@ -183,7 +219,7 @@ function TeammateDetail({
         >
           <FaUserSlash />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
