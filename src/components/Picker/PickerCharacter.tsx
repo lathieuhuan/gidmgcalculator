@@ -1,9 +1,10 @@
-import type { Weapon } from "@Src/types";
+import { useMemo } from "react";
+import type { DataCharacter, Weapon } from "@Src/types";
 import type { PickerItem } from "./types";
 
 import characters from "@Data/characters";
 import { findCharacter } from "@Data/controllers";
-import { findByName } from "@Src/utils";
+import { findByName, pickProps } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
 import { PickerTemplate } from "./PickerTemplate";
 
@@ -23,38 +24,53 @@ export function PickerCharacter({
 }: PickerCharacterProps) {
   const myChars = useSelector((state) => state.database.myChars);
 
-  const data: PickerItem[] = [];
+  const data = useMemo(() => {
+    const fields: Array<keyof DataCharacter> = [
+      "code",
+      "beta",
+      "name",
+      "icon",
+      "rarity",
+      "vision",
+      "weapon",
+    ];
+    const data: PickerItem[] = [];
 
-  if (sourceType === "mixed") {
-    for (const { name, code, beta, icon, rarity, vision, weapon } of characters) {
-      const char = { code, beta, icon, rarity, vision, weapon };
-      const existedChar = findByName(myChars, name);
+    if (sourceType === "mixed") {
+      for (const character of characters) {
+        const charData = pickProps(character, fields);
+        const existedChar = findByName(myChars, character.name);
 
-      if (existedChar) {
-        data.push({ ...existedChar, ...char });
-      } else {
-        data.push({ name, ...char });
+        if (existedChar) {
+          data.push({ ...existedChar, ...charData });
+        } else {
+          data.push(charData);
+        }
       }
-    }
-  } else if (sourceType === "appData") {
-    for (const { code, beta, name, icon, rarity, vision, weapon } of characters) {
-      if (filter === undefined || filter({ name, weapon })) {
-        data.push({ code, beta, name, icon, rarity, vision, weapon });
+    } else if (sourceType === "appData") {
+      for (const character of characters) {
+        if (filter === undefined || filter(character)) {
+          data.push(pickProps(character, fields));
+        }
       }
-    }
-  } else if (sourceType === "usersData") {
-    for (const { name, cons, artifactIDs } of myChars) {
-      const found = findCharacter({ name });
+    } else if (sourceType === "usersData") {
+      for (const { name, cons, artifactIDs } of myChars) {
+        const found = findCharacter({ name });
 
-      if (found) {
-        const { code, beta, icon, rarity, vision, weapon } = found;
-
-        if (filter === undefined || filter({ name, weapon })) {
-          data.push({ code, beta, name, icon, rarity, vision, weapon, cons, artifactIDs });
+        if (found) {
+          if (filter === undefined || filter(found)) {
+            data.push({
+              ...pickProps(found, fields),
+              cons,
+              artifactIDs,
+            });
+          }
         }
       }
     }
-  }
+
+    return data;
+  }, []);
 
   return (
     <PickerTemplate

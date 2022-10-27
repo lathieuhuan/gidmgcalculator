@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import type { Tracker, Rarity, ArtifactPercentStat } from "./global";
 import type {
   AttackPatternBonus,
-  CalcCharData,
+  TCharData,
   BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
@@ -36,7 +36,7 @@ type ApplyWpPassiveBuffsArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
-  charData: CalcCharData;
+  charData: TCharData;
   partyData?: PartyData;
   refi: number;
   desc?: string;

@@ -4,7 +4,7 @@ import type {
   ModifierCtrl,
   TalentBuff,
   AttackPatternInfoKey,
-  CalcCharData,
+  TCharData,
   PartyData,
 } from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
@@ -29,7 +29,7 @@ export const checkCons = {
   6: makeConsChecker(6),
 };
 
-export function countVisionTypes(charData: CalcCharData, partyData: PartyData) {
+export function countVisionTypes(charData: TCharData, partyData: PartyData) {
   const existed = [charData.vision];
 
   partyData.forEach(({ vision }) => {

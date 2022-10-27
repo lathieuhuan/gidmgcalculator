@@ -4,7 +4,7 @@ import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 
 import type {
   ArtifactAttribute,
-  CalcCharData,
+  TCharData,
   DamageResult,
   FinalInfusion,
   ReactionBonus,
@@ -107,7 +107,7 @@ export default function MySetups() {
     setModal((prev) => ({ ...prev, type: "" }));
   };
 
-  let charData = {} as CalcCharData;
+  let charData = {} as TCharData;
   let finalInfusion: FinalInfusion;
   let totalAttr: TotalAttribute;
   let artAttr: ArtifactAttribute;

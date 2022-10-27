@@ -3,7 +3,7 @@ import type {
   CalcArtInfo,
   CalcArtPieces,
   CalcArtSet,
-  CalcCharData,
+  TCharData,
   CalcWeapon,
   CharInfo,
   DataWeapon,
@@ -183,7 +183,7 @@ export function calcFinalTotalAttrs(totalAttr: TotalAttribute) {
 }
 
 interface GetBaseStatsArgs {
-  charData: CalcCharData;
+  charData: TCharData;
   char: CharInfo;
   weapon: CalcWeapon;
   artifact: CalcArtInfo;

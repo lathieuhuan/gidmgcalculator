@@ -16,6 +16,13 @@ export const randomString = (n: number) => {
     .slice(2, 2 + n);
 };
 
+export function pickProps<M, T extends keyof M>(obj: M, keys: T[]): Pick<M, T> {
+  return keys.reduce((accumulator, key) => {
+    accumulator[key] = obj[key];
+    return accumulator;
+  }, {} as Pick<M, T>);
+}
+
 export const wikiImg = (src: string) => {
   return `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`;
 };

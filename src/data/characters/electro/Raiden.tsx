@@ -1,5 +1,5 @@
 import type {
-  CalcCharData,
+  TCharData,
   CharInfo,
   DataCharacter,
   GetTalentBuffFn,
@@ -43,7 +43,7 @@ const getBuffValue = {
   ES: (
     toSelf: boolean,
     char: CharInfo,
-    { EBcost }: CalcCharData,
+    { EBcost }: TCharData,
     inputs: ModifierInput[] | undefined,
     partyData: PartyData
   ) => {

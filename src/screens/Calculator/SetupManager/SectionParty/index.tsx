@@ -40,6 +40,9 @@ export default function SectionParty() {
 
   const isOriginalSetup = findById(setupManageInfos, activeId)?.type === "original";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
+  const detailWeaponType = detailTeammate
+    ? findCharacter(detailTeammate)?.weapon || "sword"
+    : "sword";
 
   const closeModal = () => {
     setModal({ type: "", teammateIndex: null });
@@ -137,7 +140,13 @@ export default function SectionParty() {
         active={detailSlot !== null}
         className={cn("bg-darkblue-3", detailSlot !== null && "mt-2")}
       >
-        {detailTeammate && <TeammateDetail teammate={detailTeammate} />}
+        {detailTeammate && (
+          <TeammateDetail
+            teammate={detailTeammate}
+            onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
+            onClickArtifact={() => {}}
+          />
+        )}
       </CollapseSpace>
 
       <Picker.Character
@@ -157,19 +166,22 @@ export default function SectionParty() {
         onClose={closeModal}
       />
 
-      {/* <Picker.Weapon
+      <Picker.Weapon
         active={modal.type === "WEAPON" && modal.teammateIndex !== null}
-        weaponType={}
+        weaponType={detailWeaponType}
+        onPickWeapon={() => {}}
         onClose={closeModal}
-      /> */}
+      />
     </div>
   );
 }
 
 interface ITeammateDetailProps {
   teammate: Teammate;
+  onClickWeapon: () => void;
+  onClickArtifact: () => void;
 }
-function TeammateDetail({ teammate }: ITeammateDetailProps) {
+function TeammateDetail({ teammate, onClickWeapon, onClickArtifact }: ITeammateDetailProps) {
   const { weapon, artifact } = teammate;
   const { weapon: weaponType } = findCharacter(teammate)!;
   const weaponData = findWeapon({ code: weapon.code, type: weaponType });
@@ -180,7 +192,10 @@ function TeammateDetail({ teammate }: ITeammateDetailProps) {
       <div>
         {weaponData && (
           <div className="flex">
-            <button className={`w-12 h-12 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}>
+            <button
+              className={`w-12 h-12 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+              onClick={onClickWeapon}
+            >
               <img src={wikiImg(weaponData.icon)} alt="" />
             </button>
             <p className={`text-rarity-${weaponData.rarity} text-lg font-bold`}>
@@ -190,7 +205,7 @@ function TeammateDetail({ teammate }: ITeammateDetailProps) {
         )}
 
         <div className="mt-2 flex">
-          <button className="mr-2 w-12 h-12">
+          <button className="mr-2 w-12 h-12" onClick={onClickArtifact}>
             {artifactIcon ? (
               <img src={wikiImg(artifactIcon)} alt="" />
             ) : (

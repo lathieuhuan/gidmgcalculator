@@ -1,4 +1,4 @@
-import type { AttributeStat, CalcCharData, DataCharacter, PartyData } from "@Src/types";
+import type { AttributeStat, TCharData, DataCharacter, PartyData } from "@Src/types";
 import { Geo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
@@ -8,7 +8,7 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
 
-const countGeo = (charData: CalcCharData, partyData: PartyData) => {
+const countGeo = (charData: TCharData, partyData: PartyData) => {
   return partyData.reduce(
     (result, data) => (data.vision === "geo" ? result + 1 : result),
     charData.vision === "geo" ? 1 : 0

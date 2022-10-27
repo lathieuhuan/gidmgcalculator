@@ -1,9 +1,12 @@
+import { useMemo } from "react";
+import type { PickerItem } from "./types";
+import type { Artifact, Weapon } from "@Src/types";
+
 import artifacts from "@Data/artifacts";
 import weapons from "@Data/weapons";
-import { Artifact, Weapon } from "@Src/types";
+import { pickProps } from "@Src/utils";
 import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
 import { PickerTemplate } from "./PickerTemplate";
-import { PickerItem } from "./types";
 
 export interface PickerWeaponProps {
   type?: string;
@@ -18,11 +21,11 @@ export function PickerWeapon({
   onPickWeapon,
   onClose,
 }: PickerWeaponProps) {
-  const data: PickerItem[] = [];
-
-  for (const { code, name, beta, icon, rarity } of weapons[weaponType]) {
-    data.push({ code, name, beta, icon, rarity });
-  }
+  const data = useMemo(() => {
+    return weapons[weaponType].map((weapon) =>
+      pickProps(weapon, ["code", "name", "beta", "icon", "rarity"])
+    );
+  }, []);
 
   return (
     <PickerTemplate
@@ -48,22 +51,23 @@ export function PickerArtifact({
   onPickArtifact,
   onClose,
 }: PickerArtifactProps) {
-  const gold = [];
-  const purple = [];
+  const [gold, purple] = useMemo(() => {
+    return artifacts.reduce(
+      (accumulator, set) => {
+        const { code, beta, name } = set;
 
-  for (const set of artifacts) {
-    const { code, beta, name } = set;
+        for (const rarity of set.variants) {
+          const { icon } = set[artifactType];
+          const artifactData = { code, beta, name, icon, rarity };
 
-    for (const rarity of set.variants) {
-      const { icon } = set[artifactType];
+          accumulator[rarity === 5 ? 0 : 1].push(artifactData);
+        }
 
-      if (rarity === 5) {
-        gold.push({ code, beta, name, icon, rarity });
-      } else {
-        purple.push({ code, beta, name, icon, rarity });
-      }
-    }
-  }
+        return accumulator;
+      },
+      [[], []] as PickerItem[][]
+    );
+  }, []);
 
   return (
     <PickerTemplate

@@ -1,5 +1,5 @@
-import type { Artifact, CalcCharData, PartyData, Weapon } from "@Src/types";
-import { findByCode, findByName } from "@Src/utils";
+import type { Artifact, TCharData, PartyData, Weapon } from "@Src/types";
+import { findByCode, findByName, pickProps } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -24,7 +24,7 @@ export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {
 
 export const findMonster = ({ code }: { code: number }) => findByCode(monsters, code);
 
-export const getCharData = (char: HasName): CalcCharData => {
+export const getCharData = (char: HasName): TCharData => {
   const { code, name, vision, nation, weapon, activeTalents } = findCharacter(char)!;
   return {
     code,
@@ -40,8 +40,12 @@ export function getPartyData(party: (HasName | null)[]): PartyData {
   const result = [];
   for (const tm of party) {
     if (tm) {
-      const { code, name, nation, vision, activeTalents } = findCharacter(tm)!;
-      result.push({ code, name, nation, vision, EBcost: activeTalents.EB.energyCost });
+      const dataCharacter = findCharacter(tm)!;
+
+      result.push({
+        ...pickProps(dataCharacter, ["code", "name", "nation", "vision", "weapon"]),
+        EBcost: dataCharacter.activeTalents.EB.energyCost,
+      });
     }
   }
   return result;

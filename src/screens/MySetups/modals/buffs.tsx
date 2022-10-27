@@ -1,7 +1,7 @@
 import type {
   AbilityBuff,
   CalcArtSet,
-  CalcCharData,
+  TCharData,
   CalcWeapon,
   CharInfo,
   CustomBuffCtrl,
@@ -64,7 +64,7 @@ export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: El
 
 interface SelfBuffsProps {
   char: CharInfo;
-  charData: CalcCharData;
+  charData: TCharData;
   buffs: AbilityBuff[];
   totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
@@ -109,7 +109,7 @@ export function SelfBuffs({
 
 interface PartyBuffsProps {
   char: CharInfo;
-  charData: CalcCharData;
+  charData: TCharData;
   party: Party;
   partyData: PartyData;
   totalAttr: TotalAttribute;
