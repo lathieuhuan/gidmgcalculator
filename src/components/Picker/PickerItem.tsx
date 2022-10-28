@@ -7,6 +7,7 @@ import weapons from "@Data/weapons";
 import { pickProps } from "@Src/utils";
 import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
 import { PickerTemplate } from "./PickerTemplate";
+import { EModAffect } from "@Src/constants";
 
 export interface PickerWeaponProps {
   type?: string;
@@ -42,31 +43,52 @@ export interface PickerArtifactProps {
   type?: string;
   artifactType: Artifact;
   needMassAdd?: boolean;
+  forFeature?: "TEAMMATE_MODIFIERS";
   onPickArtifact: (info: ReturnType<typeof initArtPiece>) => void;
   onClose: () => void;
 }
 export function PickerArtifact({
   artifactType,
   needMassAdd,
+  forFeature,
   onPickArtifact,
   onClose,
 }: PickerArtifactProps) {
   const [gold, purple] = useMemo(() => {
-    return artifacts.reduce(
-      (accumulator, set) => {
-        const { code, beta, name } = set;
+    switch (forFeature) {
+      case "TEAMMATE_MODIFIERS":
+        return artifacts.reduce(
+          (accumulator, set) => {
+            const { code, beta, name, buffs, debuffs } = set;
 
-        for (const rarity of set.variants) {
-          const { icon } = set[artifactType];
-          const artifactData = { code, beta, name, icon, rarity };
+            if (buffs?.some((buff) => buff.affect !== EModAffect.SELF) || debuffs?.length) {
+              const { icon } = set[artifactType];
+              const artifactData = { code, beta, name, icon, rarity: 5 as const };
 
-          accumulator[rarity === 5 ? 0 : 1].push(artifactData);
-        }
+              accumulator[0].push(artifactData);
+            }
 
-        return accumulator;
-      },
-      [[], []] as PickerItem[][]
-    );
+            return accumulator;
+          },
+          [[], []] as [PickerItem[], PickerItem[]]
+        );
+      default:
+        return artifacts.reduce(
+          (accumulator, set) => {
+            const { code, beta, name } = set;
+
+            for (const rarity of set.variants) {
+              const { icon } = set[artifactType];
+              const artifactData = { code, beta, name, icon, rarity };
+
+              accumulator[rarity === 5 ? 0 : 1].push(artifactData);
+            }
+
+            return accumulator;
+          },
+          [[], []] as [PickerItem[], PickerItem[]]
+        );
+    }
   }, []);
 
   return (

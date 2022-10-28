@@ -31,6 +31,8 @@ import type {
   UpdateCalcSetupAction,
   UpdateCustomBuffCtrlsAction,
   UpdateCustomDebuffCtrlsAction,
+  TUpdateTeammateWeaponAction,
+  TUpdateTeammateArtifactAction,
 } from "./reducer-types";
 
 import { findArtifactSet, findCharacter, getCharData } from "@Data/controllers";
@@ -327,6 +329,48 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
+    updateTeammateWeapon: (state, action: TUpdateTeammateWeaponAction) => {
+      const { teammateIndex, ...newWeaponInfo } = action.payload;
+      const teammate = state.setupsById[state.activeId].party[teammateIndex];
+
+      if (teammate) {
+        teammate.weapon = {
+          ...teammate.weapon,
+          ...newWeaponInfo,
+        };
+        calculate(state);
+      }
+    },
+    updateTeammateArtifact: (state, action: TUpdateTeammateArtifactAction) => {
+      const { teammateIndex, ...newArtifactInfo } = action.payload;
+      const teammate = state.setupsById[state.activeId].party[teammateIndex];
+
+      if (teammate) {
+        teammate.artifact = {
+          ...teammate.artifact,
+          ...newArtifactInfo,
+        };
+        calculate(state);
+      }
+    },
+    toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
+      const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+
+      if (ctrl) {
+        ctrl.activated = !ctrl.activated;
+        calculate(state);
+      }
+    },
+    changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
+      const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+
+      if (ctrl && ctrl.inputs) {
+        ctrl.inputs[inputIndex] = value;
+        calculate(state);
+      }
+    },
     // WEAPON
     changeWeapon: (state, action: PayloadAction<CalcWeapon>) => {
       const weapon = action.payload;
@@ -463,24 +507,6 @@ export const calculatorSlice = createSlice({
 
       if (inputs) {
         inputs[inputIndex] = value;
-        calculate(state);
-      }
-    },
-    toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
-      const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
-
-      if (ctrl) {
-        ctrl.activated = !ctrl.activated;
-        calculate(state);
-      }
-    },
-    changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
-      const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
-
-      if (ctrl && ctrl.inputs) {
-        ctrl.inputs[inputIndex] = value;
         calculate(state);
       }
     },
@@ -717,6 +743,8 @@ export const {
   updateCharacter,
   addTeammate,
   removeTeammate,
+  updateTeammateWeapon,
+  updateTeammateArtifact,
   changeWeapon,
   updateWeapon,
   updateArtPiece,

@@ -156,7 +156,11 @@ export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
       refi: 1,
       buffCtrls: weaponBuffCtrls,
     },
-    artifact: null,
+    artifact: {
+      code: -1,
+      buffCtrls: [],
+      debuffCtrls: [],
+    },
   };
 }
 

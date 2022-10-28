@@ -1,6 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-  AmplifyingReaction,
   CalcArtPiece,
   CalcArtPieceSubStatInfo,
   UsersCharacter,
@@ -14,6 +13,8 @@ import type {
   CalcSetup,
   CustomBuffCtrl,
   CustomDebuffCtrl,
+  TTeammateWeapon,
+  TTeammateArtifact,
 } from "@Src/types";
 import type { CalcConfigurations, CalculatorState } from "./types";
 
@@ -36,6 +37,18 @@ export type AddTeammateAction = PayloadAction<{
   weapon: Weapon;
   teammateIndex: number;
 }>;
+
+export type TUpdateTeammateWeaponAction = PayloadAction<
+  {
+    teammateIndex: number;
+  } & Partial<TTeammateWeapon>
+>;
+
+export type TUpdateTeammateArtifactAction = PayloadAction<
+  {
+    teammateIndex: number;
+  } & Partial<TTeammateArtifact>
+>;
 
 export type UpdateCalcSetupAction = PayloadAction<
   Partial<CalcSetup> & {

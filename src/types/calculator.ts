@@ -127,20 +127,25 @@ export type CalcArtInfo = {
 };
 // ARTIFACTS ends
 
+// PARTY start
+export type TTeammateWeapon = {
+  code: number;
+  refi: number;
+  buffCtrls: ModifierCtrl[];
+};
+
+export type TTeammateArtifact = {
+  code: number;
+  buffCtrls: ModifierCtrl[];
+  debuffCtrls: ModifierCtrl[];
+};
+
 export type Teammate = {
   name: string;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
-  weapon: {
-    code: number;
-    refi: number;
-    buffCtrls: ModifierCtrl[];
-  };
-  artifact: null | {
-    code: number;
-    buffCtrls: ModifierCtrl[];
-    debuffCtrls: ModifierCtrl[];
-  };
+  weapon: TTeammateWeapon;
+  artifact: TTeammateArtifact;
 };
 
 export type Party = (Teammate | null)[];

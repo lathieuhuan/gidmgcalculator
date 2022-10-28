@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { DataCharacter, Weapon } from "@Src/types";
+import type { DataCharacter } from "@Src/types";
 import type { PickerItem } from "./types";
 
 import characters from "@Data/characters";
@@ -11,7 +11,7 @@ import { PickerTemplate } from "./PickerTemplate";
 export interface PickerCharacterProps {
   sourceType: "mixed" | "appData" | "usersData";
   needMassAdd?: boolean;
-  filter?: (character: { name: string; weapon: Weapon }) => boolean;
+  filter?: (character: DataCharacter) => boolean;
   onPickCharacter: (character: PickerItem) => void;
   onClose: () => void;
 }
@@ -49,7 +49,7 @@ export function PickerCharacter({
       }
     } else if (sourceType === "appData") {
       for (const character of characters) {
-        if (filter === undefined || filter(character)) {
+        if (!filter || filter(character)) {
           data.push(pickProps(character, fields));
         }
       }
@@ -58,7 +58,7 @@ export function PickerCharacter({
         const found = findCharacter({ name });
 
         if (found) {
-          if (filter === undefined || filter(found)) {
+          if (!filter || filter(found)) {
             data.push({
               ...pickProps(found, fields),
               cons,

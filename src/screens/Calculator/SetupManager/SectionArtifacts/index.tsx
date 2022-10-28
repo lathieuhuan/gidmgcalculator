@@ -51,7 +51,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
   };
 
   return (
-    <div className="setup-manager_pedestal">
+    <div className="py-3 border-2 border-lesser rounded-xl bg-darkblue-1">
       {pieces.length && pieces.every((piece) => piece === null) ? <CopySelect /> : null}
 
       <div className="flex">

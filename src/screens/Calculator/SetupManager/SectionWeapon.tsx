@@ -26,7 +26,7 @@ export default function SectionWeapon() {
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (
-    <div className="setup-manager_pedestal px-2 flex items-start">
+    <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-darkblue-1 flex items-start">
       <div
         className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}
@@ -49,9 +49,14 @@ export default function SectionWeapon() {
             value={weapon.level}
             onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
           >
-            {selectLevels.map((_, index) => (
-              <option key={index}>{selectLevels[selectLevels.length - 1 - index]}</option>
-            ))}
+            {selectLevels.map((_, index) => {
+              const value = selectLevels[selectLevels.length - 1 - index];
+              return (
+                <option key={index} value={value}>
+                  {value}
+                </option>
+              );
+            })}
           </Select>
         </div>
         {rarity >= 3 && (

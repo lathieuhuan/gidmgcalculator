@@ -148,6 +148,7 @@ module.exports = {
       },
       transitionProperty: {
         size: "height, width",
+        spacing: "margin, padding",
       },
     },
   },

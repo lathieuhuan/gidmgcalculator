@@ -1,10 +1,15 @@
 import cn from "classnames";
 import { useState } from "react";
-import { FaPlus, FaSyncAlt, FaUserSlash } from "react-icons/fa";
+import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { addTeammate, removeTeammate } from "@Store/calculatorSlice";
+import {
+  addTeammate,
+  removeTeammate,
+  updateTeammateArtifact,
+  updateTeammateWeapon,
+} from "@Store/calculatorSlice";
 import {
   selectCharData,
   selectActiveId,
@@ -18,6 +23,8 @@ import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
 import { CopySelect } from "./CopySelect";
+import { EModAffect } from "@Src/constants";
+import { Select } from "@Src/styled-components";
 
 interface IModal {
   type: "" | "CHARACTER" | "WEAPON" | "ARTIFACT";
@@ -63,7 +70,7 @@ export default function SectionParty() {
   };
 
   return (
-    <div className="setup-manager_pedestal">
+    <div className="pb-3 border-2 border-lesser rounded-xl bg-darkblue-2">
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="w-full grid grid-cols-3 relative">
@@ -72,19 +79,13 @@ export default function SectionParty() {
           let button;
 
           if (teammate) {
-            const { code, icon } = findCharacter(teammate)!;
-            const bgColorByCode: Record<number, string> = {
-              1: "bg-anemo",
-              12: "bg-geo",
-              46: "bg-electro",
-              57: "bg-dendro",
-            };
+            const { icon, vision } = findCharacter(teammate)!;
 
             button = (
               <div
                 className={cn(
-                  `overflow-hidden ${bgColorByCode[code] || "bg-darkblue-3"}`,
-                  isExpanded ? "rounded-t-lg" : "h-full zoomin-on-hover rounded-circle"
+                  "overflow-hidden",
+                  !isExpanded && "h-full zoomin-on-hover rounded-circle"
                 )}
               >
                 <div
@@ -94,7 +95,7 @@ export default function SectionParty() {
                   )}
                 >
                   <button
-                    className={"text-darkred " + (isExpanded ? "flex-center " : "hidden")}
+                    className={"text-darkred " + (isExpanded ? "flex-center" : "hidden")}
                     onClick={onClickRemoveTeammate}
                   >
                     <FaUserSlash />
@@ -106,13 +107,17 @@ export default function SectionParty() {
                     <FaSyncAlt />
                   </button>
                 </div>
-                <img
-                  className={cn("w-full h-full px-1", !isExpanded && "rounded-circle")}
-                  src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
-                  alt=""
-                  draggable={false}
+                <button
+                  className={`w-full h-full bg-${vision} rounded-md`}
                   onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
-                />
+                >
+                  <img
+                    className={cn("w-full h-full", isExpanded ? "pt-1 px-1" : "rounded-circle")}
+                    src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
+                    alt=""
+                    draggable={false}
+                  />
+                </button>
               </div>
             );
           } else {
@@ -127,7 +132,10 @@ export default function SectionParty() {
           }
 
           return (
-            <div key={teammateIndex}>
+            <div
+              key={teammateIndex}
+              className={cn("transition-spacing", isExpanded ? "pt-1" : "pt-3")}
+            >
               <div className={cn("mx-auto h-18 relative", isExpanded ? "w-20" : "w-18")}>
                 {button}
               </div>
@@ -138,13 +146,33 @@ export default function SectionParty() {
 
       <CollapseSpace
         active={detailSlot !== null}
-        className={cn("bg-darkblue-3", detailSlot !== null && "mt-2")}
+        className={cn("bg-darkblue-1", detailSlot !== null && "mt-2")}
       >
         {detailTeammate && (
           <TeammateDetail
             teammate={detailTeammate}
             onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
-            onClickArtifact={() => {}}
+            onChangeWeaponRefinement={(refi: number) => {
+              if (detailSlot !== null) {
+                dispatch(
+                  updateTeammateWeapon({
+                    teammateIndex: detailSlot,
+                    refi,
+                  })
+                );
+              }
+            }}
+            onClickArtifact={() => setModal({ type: "ARTIFACT", teammateIndex: detailSlot })}
+            onClickRemoveArtifact={() => {
+              if (detailSlot !== null) {
+                dispatch(
+                  updateTeammateArtifact({
+                    teammateIndex: detailSlot,
+                    code: -1,
+                  })
+                );
+              }
+            }}
           />
         )}
       </CollapseSpace>
@@ -169,7 +197,33 @@ export default function SectionParty() {
       <Picker.Weapon
         active={modal.type === "WEAPON" && modal.teammateIndex !== null}
         weaponType={detailWeaponType}
-        onPickWeapon={() => {}}
+        onPickWeapon={({ code }) => {
+          if (detailSlot !== null) {
+            dispatch(
+              updateTeammateWeapon({
+                teammateIndex: detailSlot,
+                code,
+              })
+            );
+          }
+        }}
+        onClose={closeModal}
+      />
+
+      <Picker.Artifact
+        active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
+        artifactType="flower"
+        forFeature="TEAMMATE_MODIFIERS"
+        onPickArtifact={({ code }) => {
+          if (detailSlot !== null) {
+            dispatch(
+              updateTeammateArtifact({
+                teammateIndex: detailSlot,
+                code,
+              })
+            );
+          }
+        }}
         onClose={closeModal}
       />
     </div>
@@ -179,62 +233,91 @@ export default function SectionParty() {
 interface ITeammateDetailProps {
   teammate: Teammate;
   onClickWeapon: () => void;
+  onChangeWeaponRefinement: (newRefinement: number) => void;
   onClickArtifact: () => void;
+  onClickRemoveArtifact: () => void;
 }
-function TeammateDetail({ teammate, onClickWeapon, onClickArtifact }: ITeammateDetailProps) {
+function TeammateDetail({
+  teammate,
+  onClickWeapon,
+  onChangeWeaponRefinement,
+  onClickArtifact,
+  onClickRemoveArtifact,
+}: ITeammateDetailProps) {
   const { weapon, artifact } = teammate;
   const { weapon: weaponType } = findCharacter(teammate)!;
   const weaponData = findWeapon({ code: weapon.code, type: weaponType });
-  const artifactIcon = artifact ? findArtifactSet(artifact)?.flower.icon : undefined;
+  const { name: artifactSetName, flower } = findArtifactSet(artifact) || {};
+  const { icon: artifactSetIcon = "" } = flower || {};
 
   return (
-    <div className="pt-12 px-2 pb-2 flex justify-between">
-      <div>
-        {weaponData && (
-          <div className="flex">
-            <button
-              className={`w-12 h-12 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
-              onClick={onClickWeapon}
-            >
-              <img src={wikiImg(weaponData.icon)} alt="" />
-            </button>
-            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold`}>
+    <div className="pt-10 px-2 pb-2">
+      {weaponData && (
+        <div className="flex">
+          <button
+            className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+            onClick={onClickWeapon}
+          >
+            <img src={wikiImg(weaponData.icon)} alt="" />
+          </button>
+
+          <div>
+            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
               {weaponData.name}
             </p>
-          </div>
-        )}
-
-        <div className="mt-2 flex">
-          <button className="mr-2 w-12 h-12" onClick={onClickArtifact}>
-            {artifactIcon ? (
-              <img src={wikiImg(artifactIcon)} alt="" />
-            ) : (
-              <img
-                className="p-1"
-                src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
-                alt="artifact"
-                draggable={false}
-              />
+            {weaponData.rarity >= 3 && (
+              <div className="flex items-center">
+                <span>Refinement</span>
+                <Select
+                  className={`ml-2 text-rarity-${weaponData.rarity} text-right`}
+                  value={weapon.refi}
+                  onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
+                >
+                  {[...Array(5)].map((_, index) => {
+                    return (
+                      <option key={index} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </div>
             )}
-          </button>
-          <p className="text-lg font-medium text-lesser">No artifact</p>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* <div className="flex flex-col space-y-2">
-        <button
-          className="w-8 h-8 text-xl flex-center text-lightgold"
-          onClick={onClickChangeTeammate}
-        >
-          <FaSyncAlt />
+      <div className="mt-2 flex space-x-2">
+        <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
+          {artifactSetIcon ? (
+            <img className="bg-darkblue-2 rounded" src={wikiImg(artifactSetIcon)} alt="" />
+          ) : (
+            <img
+              className="p-1"
+              src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
+              alt="artifact"
+              draggable={false}
+            />
+          )}
         </button>
-        <button
-          className="w-8 h-8 text-xl flex-center text-darkred"
-          onClick={onClickRemoveTeammate}
+
+        <p
+          className={cn(
+            "grow text-lg font-medium truncate",
+            artifactSetName ? "text-default" : "text-lesser"
+          )}
         >
-          <FaUserSlash />
-        </button>
-      </div> */}
+          {artifactSetName || "No artifact buff"}
+        </p>
+        {artifactSetName && (
+          <button
+            className="self-start pt-1 shrink-0 text-xl hover:text-darkred"
+            onClick={onClickRemoveArtifact}
+          >
+            <FaTimes />
+          </button>
+        )}
+      </div>
     </div>
   );
 }
