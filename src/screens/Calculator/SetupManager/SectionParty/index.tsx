@@ -305,7 +305,7 @@ function TeammateDetail({
               artifactSetName ? "text-default text-lg" : "text-lesser"
             )}
           >
-            {artifactSetName || "No artifact buff/debuff"}
+            {artifactSetName || "No artifact buff / debuff"}
           </p>
           {artifactSetName && (
             <button

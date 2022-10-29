@@ -70,14 +70,14 @@ const goldSwords: DataWeapon[] = [
         <>
           When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This
           effect increases the equipping character's <Green>Elemental Mastery</Green> by{" "}
-          <Green b>{0.09 + refi * 0.03}%</Green> of their <Green>Max HP</Green>. This effect can
+          <Green b>{(9 + refi * 3) / 100}%</Green> of their <Green>Max HP</Green>. This effect can
           trigger once every 0.3s. Max <Green b>3</Green> <Green>stacks</Green>.
         </>,
         <>
           When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed,
           the <Green>Elemental Mastery</Green> of all nearby party members will be increased by{" "}
-          <Green b>{0.15 + refi * 0.05}%</Green> of the equipping character's <Green>Max HP</Green>{" "}
-          for 20s.
+          <Green b>{(15 + refi * 5) / 100}%</Green> of the equipping character's{" "}
+          <Green>Max HP</Green> for 20s.
         </>,
       ],
     }),

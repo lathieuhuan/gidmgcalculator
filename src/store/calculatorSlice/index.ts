@@ -253,22 +253,18 @@ export const calculatorSlice = createSlice({
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const oldTeammateData = findCharacter(oldTeammate);
+        const { vision: oldVision } = findCharacter(oldTeammate) || {};
 
-        // there was an old teammate
-        if (oldTeammateData) {
-          const { vision: oldVision, weapon: oldWeapon } = oldTeammateData;
-
-          // lose a resonance
-          if (
-            resonanceVisionTypes.includes(oldVision) &&
-            oldVisionCount[oldVision] === 2 &&
-            newVisionCount[oldVision] === 1
-          ) {
-            elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
-              return resonance.vision !== oldVision;
-            });
-          }
+        // lose a resonance
+        if (
+          oldVision &&
+          resonanceVisionTypes.includes(oldVision) &&
+          oldVisionCount[oldVision] === 2 &&
+          newVisionCount[oldVision] === 1
+        ) {
+          elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
+            return resonance.vision !== oldVision;
+          });
         }
       }
       // new teammate form new resonance

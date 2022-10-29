@@ -153,7 +153,9 @@ export default function WeaponBuffs() {
                   }}
                 >
                   {["pyro", "hydro", "cryo", "anemo"].map((opt) => (
-                    <option key={opt}>{opt}</option>
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
                   ))}
                 </Select>
               );
@@ -195,7 +197,7 @@ export default function WeaponBuffs() {
               })
             );
           }}
-          heading={name}
+          heading={name + ` R${refi}`}
           desc={buff.desc({ refi, totalAttr })}
           setters={setters}
         />

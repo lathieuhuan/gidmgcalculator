@@ -233,8 +233,10 @@ export default function getBuffedStats({
     for (const { index, activated, inputs } of buffCtrls) {
       const buff = findByIndex(weaponBuffs, index);
 
-      if (activated && buff?.applyBuff) {
-        buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponName} activated` });
+      if (buff) {
+        if (activated && buff?.applyBuff) {
+          buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponName} activated` });
+        }
       } else {
         console.log(`weapon buff #${index} of weapon #${code} not found`);
       }
