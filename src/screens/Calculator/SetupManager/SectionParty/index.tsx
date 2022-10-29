@@ -23,7 +23,6 @@ import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
 import { CopySelect } from "./CopySelect";
-import { EModAffect } from "@Src/constants";
 import { Select } from "@Src/styled-components";
 
 interface IModal {
@@ -73,7 +72,7 @@ export default function SectionParty() {
     <div className="pb-3 border-2 border-lesser rounded-xl bg-darkblue-2">
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
-      <div className="w-full grid grid-cols-3 relative">
+      <div className="flex">
         {party.map((teammate, teammateIndex) => {
           const isExpanded = teammateIndex === detailSlot;
           let button;
@@ -82,48 +81,25 @@ export default function SectionParty() {
             const { icon, vision } = findCharacter(teammate)!;
 
             button = (
-              <div
+              <button
                 className={cn(
-                  "overflow-hidden",
-                  !isExpanded && "h-full zoomin-on-hover rounded-circle"
+                  `w-18 h-18 bg-${vision} rounded-circle shrink-0 overflow-hidden`,
+                  !isExpanded && "zoomin-on-hover"
                 )}
+                onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
               >
-                <div
-                  className={cn(
-                    "grid grid-cols-2 text-xl transition-size",
-                    isExpanded ? "h-10" : "h-0"
-                  )}
-                >
-                  <button
-                    className={"text-darkred " + (isExpanded ? "flex-center" : "hidden")}
-                    onClick={onClickRemoveTeammate}
-                  >
-                    <FaUserSlash />
-                  </button>
-                  <button
-                    className={"text-lightgold " + (isExpanded ? "flex-center" : "hidden")}
-                    onClick={onClickChangeTeammate(teammateIndex)}
-                  >
-                    <FaSyncAlt />
-                  </button>
-                </div>
-                <button
-                  className={`w-full h-full bg-${vision} rounded-md`}
-                  onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
-                >
-                  <img
-                    className={cn("w-full h-full", isExpanded ? "pt-1 px-1" : "rounded-circle")}
-                    src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
-                    alt=""
-                    draggable={false}
-                  />
-                </button>
-              </div>
+                <img
+                  className="w-full h-full"
+                  src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
+                  alt=""
+                  draggable={false}
+                />
+              </button>
             );
           } else {
             button = (
               <button
-                className="w-full h-full rounded-circle flex-center text-2xl leading-6 bg-darkblue-3 glow-on-hover"
+                className="w-18 h-18 rounded-circle flex-center text-2xl shrink-0 bg-darkblue-3 glow-on-hover"
                 onClick={onClickChangeTeammate(teammateIndex)}
               >
                 <FaPlus className="text-default opacity-80" />
@@ -134,20 +110,42 @@ export default function SectionParty() {
           return (
             <div
               key={teammateIndex}
-              className={cn("transition-spacing", isExpanded ? "pt-1" : "pt-3")}
+              className="w-1/3 flex flex-col items-center"
+              style={{ height: "5.25rem" }}
             >
-              <div className={cn("mx-auto h-18 relative", isExpanded ? "w-20" : "w-18")}>
-                {button}
+              <div
+                className={cn(
+                  "flex items-end text-xl shrink-0 overflow-hidden transition-size",
+                  isExpanded ? "h-11" : "h-3"
+                )}
+              >
+                <button
+                  className={
+                    "w-10 h-10 text-darkred glow-on-hover " +
+                    (isExpanded ? "flex-center" : "hidden")
+                  }
+                  onClick={onClickRemoveTeammate}
+                >
+                  <FaUserSlash />
+                </button>
+                <button
+                  className={
+                    "w-10 h-10 text-lightgold glow-on-hover " +
+                    (isExpanded ? "flex-center" : "hidden")
+                  }
+                  onClick={onClickChangeTeammate(teammateIndex)}
+                >
+                  <FaSyncAlt />
+                </button>
               </div>
+
+              {button}
             </div>
           );
         })}
       </div>
 
-      <CollapseSpace
-        active={detailSlot !== null}
-        className={cn("bg-darkblue-1", detailSlot !== null && "mt-2")}
-      >
+      <CollapseSpace active={detailSlot !== null}>
         {detailTeammate && (
           <TeammateDetail
             teammate={detailTeammate}
@@ -245,78 +243,79 @@ function TeammateDetail({
   onClickRemoveArtifact,
 }: ITeammateDetailProps) {
   const { weapon, artifact } = teammate;
-  const { weapon: weaponType } = findCharacter(teammate)!;
-  const weaponData = findWeapon({ code: weapon.code, type: weaponType });
+  const weaponData = findWeapon(weapon);
   const { name: artifactSetName, flower } = findArtifactSet(artifact) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (
-    <div className="pt-10 px-2 pb-2">
-      {weaponData && (
-        <div className="flex">
-          <button
-            className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
-            onClick={onClickWeapon}
-          >
-            <img src={wikiImg(weaponData.icon)} alt="" />
-          </button>
+    <div className="bg-darkblue-2 pt-2">
+      <div className="bg-darkblue-1 pt-10 px-2 pb-2">
+        {weaponData && (
+          <div className="flex">
+            <button
+              className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+              onClick={onClickWeapon}
+            >
+              <img src={wikiImg(weaponData.icon)} alt="" />
+            </button>
 
-          <div>
-            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
-              {weaponData.name}
-            </p>
-            {weaponData.rarity >= 3 && (
-              <div className="flex items-center">
-                <span>Refinement</span>
-                <Select
-                  className={`ml-2 text-rarity-${weaponData.rarity} text-right`}
-                  value={weapon.refi}
-                  onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
-                >
-                  {[...Array(5)].map((_, index) => {
-                    return (
-                      <option key={index} value={index + 1}>
-                        {index + 1}
-                      </option>
-                    );
-                  })}
-                </Select>
-              </div>
-            )}
+            <div className="overflow-hidden">
+              <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
+                {weaponData.name}
+              </p>
+              {weaponData.rarity >= 3 && (
+                <div className="flex items-center">
+                  <span>Refinement</span>
+                  <Select
+                    className={`ml-2 text-rarity-${weaponData.rarity} text-right`}
+                    value={weapon.refi}
+                    onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
+                  >
+                    {[...Array(5)].map((_, index) => {
+                      return (
+                        <option key={index} value={index + 1}>
+                          {index + 1}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-
-      <div className="mt-2 flex space-x-2">
-        <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
-          {artifactSetIcon ? (
-            <img className="bg-darkblue-2 rounded" src={wikiImg(artifactSetIcon)} alt="" />
-          ) : (
-            <img
-              className="p-1"
-              src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
-              alt="artifact"
-              draggable={false}
-            />
-          )}
-        </button>
-
-        <p
-          className={cn(
-            "grow text-lg font-medium truncate",
-            artifactSetName ? "text-default" : "text-lesser"
-          )}
-        >
-          {artifactSetName || "No artifact buff"}
-        </p>
-        {artifactSetName && (
-          <button
-            className="self-start pt-1 shrink-0 text-xl hover:text-darkred"
-            onClick={onClickRemoveArtifact}
-          >
-            <FaTimes />
-          </button>
         )}
+
+        <div className="mt-2 flex space-x-2">
+          <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
+            {artifactSetIcon ? (
+              <img className="bg-darkblue-2 rounded" src={wikiImg(artifactSetIcon)} alt="" />
+            ) : (
+              <img
+                className="p-1"
+                src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
+                alt="artifact"
+                draggable={false}
+              />
+            )}
+          </button>
+
+          <p
+            className={cn(
+              "mt-1 grow font-medium truncate",
+              artifactSetName ? "text-default text-lg" : "text-lesser"
+            )}
+          >
+            {artifactSetName || "No artifact buff/debuff"}
+          </p>
+          {artifactSetName && (
+            <button
+              className="self-start pt-2 shrink-0 text-xl hover:text-darkred"
+              onClick={onClickRemoveArtifact}
+            >
+              <FaTimes />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

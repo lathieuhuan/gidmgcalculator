@@ -88,11 +88,6 @@ export type ToggleSubWpModCtrlPath = {
   weaponType: Weapon;
   ctrlIndex: number;
 };
-export type ToggleSubWpModCtrlAction = PayloadAction<ToggleSubWpModCtrlPath>;
-
-export type RefineSubWeaponAction = PayloadAction<ToggleSubWpModCtrlPath & { value: number }>;
-
-export type ChangeSubWpModCtrlInputAction = PayloadAction<ToggleSubWpModCtrlPath & InputInfo>;
 
 type CustomBuffCtrlChange = Partial<CustomDebuffCtrl> & {
   index: number;

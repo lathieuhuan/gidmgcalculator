@@ -12,7 +12,6 @@ import type {
   PartyData,
   ReactionBonus,
   SubArtModCtrl,
-  SubWeaponComplexBuffCtrl,
   TotalAttribute,
   Weapon,
 } from "@Src/types";
@@ -171,14 +170,8 @@ interface WeaponBuffsProps {
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
   totalAttr: TotalAttribute;
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
 }
-export function WeaponBuffs({
-  weapon,
-  wpBuffCtrls,
-  totalAttr,
-  subWpComplexBuffCtrls,
-}: WeaponBuffsProps) {
+export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr }: WeaponBuffsProps) {
   const content = [];
 
   for (const { index, inputs = [] } of wpBuffCtrls) {
@@ -202,36 +195,37 @@ export function WeaponBuffs({
       );
     }
   }
-  for (const [type, buffCtrls] of Object.entries(subWpComplexBuffCtrls)) {
-    for (const ctrl of buffCtrls) {
-      const { code, refi, index } = ctrl;
-      const weaponData = findWeapon({ type: type as Weapon, code });
-      if (!weaponData) {
-        continue;
-      }
+  // #to-do
+  // for (const [type, buffCtrls] of Object.entries(subWpComplexBuffCtrls)) {
+  //   for (const ctrl of buffCtrls) {
+  //     const { code, refi, index } = ctrl;
+  //     const weaponData = findWeapon({ type: type as Weapon, code });
+  //     if (!weaponData) {
+  //       continue;
+  //     }
 
-      const { name, buffs = [] } = weaponData;
-      const buff = findByIndex(buffs, index);
+  //     const { name, buffs = [] } = weaponData;
+  //     const buff = findByIndex(buffs, index);
 
-      if (buff) {
-        content.push(
-          <ModifierTemplate
-            key={`sub-${code}-${index}`}
-            mutable={false}
-            heading={name}
-            desc={buff.desc({ refi, totalAttr })}
-            setters={renderSetters(
-              {
-                labels: ["Refinement", ...(buff.inputConfig?.labels || [])],
-                renderTypes: ["text", ...(buff.inputConfig?.renderTypes || [])],
-              },
-              [refi, ...(ctrl.inputs || [])]
-            )}
-          />
-        );
-      }
-    }
-  }
+  //     if (buff) {
+  //       content.push(
+  //         <ModifierTemplate
+  //           key={`sub-${code}-${index}`}
+  //           mutable={false}
+  //           heading={name}
+  //           desc={buff.desc({ refi, totalAttr })}
+  //           setters={renderSetters(
+  //             {
+  //               labels: ["Refinement", ...(buff.inputConfig?.labels || [])],
+  //               renderTypes: ["text", ...(buff.inputConfig?.renderTypes || [])],
+  //             },
+  //             [refi, ...(ctrl.inputs || [])]
+  //           )}
+  //         />
+  //       );
+  //     }
+  //   }
+  // }
   return renderModifiers(content, true);
 }
 

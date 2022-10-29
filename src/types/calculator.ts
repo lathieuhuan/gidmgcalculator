@@ -37,7 +37,6 @@ export type CalcSetup = {
 
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
 
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
@@ -74,16 +73,6 @@ export type CalcWeapon = {
   level: Level;
   refi: number;
 };
-
-export type SubWeaponBuffCtrl = {
-  code: number;
-  activated: boolean;
-  refi: number;
-  index: number;
-  inputs?: ModifierInput[];
-};
-
-export type SubWeaponComplexBuffCtrl = Partial<Record<Weapon, SubWeaponBuffCtrl[]>>;
 
 // ARTIFACTS starts
 export type ArtPieceMainStat =
@@ -127,9 +116,10 @@ export type CalcArtInfo = {
 };
 // ARTIFACTS ends
 
-// PARTY start
+// PARTY starts
 export type TTeammateWeapon = {
   code: number;
+  type: Weapon;
   refi: number;
   buffCtrls: ModifierCtrl[];
 };
@@ -149,6 +139,7 @@ export type Teammate = {
 };
 
 export type Party = (Teammate | null)[];
+// PARTY ends
 
 export type Resonance = {
   vision: ResonanceVision;

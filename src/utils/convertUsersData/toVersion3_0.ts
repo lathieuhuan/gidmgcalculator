@@ -7,14 +7,12 @@ import type {
   CustomDebuffCtrl,
   CustomDebuffCtrlType,
   Resonance,
-  SubWeaponBuffCtrl,
   Teammate,
   UsersArtifact,
   UsersCharacter,
   UsersComplexSetup,
   UsersSetup,
   UsersWeapon,
-  Weapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
 import { getArtifactSets } from "@Store/calculatorSlice/utils";
@@ -112,16 +110,17 @@ function convertSetup(setup: any): UsersSetup {
   //
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
 
-  const subWpComplexBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>> = {};
+  // #to-do
+  // const subWpComplexBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>> = {};
 
-  for (const [key, value] of Object.entries(subWpMCs.BCs || {})) {
-    const weaponType = key.toLowerCase() as Weapon;
-    const subWeaponBuffCtrls = (value as any).map(({ refinement: refi, ...rest }: any) => {
-      return { refi, ...rest };
-    });
+  // for (const [key, value] of Object.entries(subWpMCs.BCs || {})) {
+  //   const weaponType = key.toLowerCase() as Weapon;
+  //   const subWeaponBuffCtrls = (value as any).map(({ refinement: refi, ...rest }: any) => {
+  //     return { refi, ...rest };
+  //   });
 
-    subWpComplexBuffCtrls[weaponType] = subWeaponBuffCtrls;
-  }
+  //   subWpComplexBuffCtrls[weaponType] = subWeaponBuffCtrls;
+  // }
 
   //
   const artPieces = art.pieces.map((piece: any) => (piece ? convertArtifact(piece) : null));
@@ -173,10 +172,22 @@ function convertSetup(setup: any): UsersSetup {
     elmtModCtrls: { ...elmtMCs, resonances },
     party: party.map((teammate: any): Teammate | null => {
       if (teammate) {
+        // #to-do
         return {
           name: teammate.name,
           buffCtrls: teammate.BCs,
           debuffCtrls: teammate.DCs,
+          weapon: {
+            code: 0,
+            refi: 1,
+            type: "bow",
+            buffCtrls: [],
+          },
+          artifact: {
+            code: 0,
+            buffCtrls: [],
+            debuffCtrls: [],
+          },
         };
       }
 
@@ -185,7 +196,6 @@ function convertSetup(setup: any): UsersSetup {
 
     weapon: convertWeapon(weaponInfo),
     wpBuffCtrls,
-    subWpComplexBuffCtrls,
 
     artInfo,
     artBuffCtrls: art.BCs,

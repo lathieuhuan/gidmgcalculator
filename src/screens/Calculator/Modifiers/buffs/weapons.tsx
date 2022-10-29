@@ -1,31 +1,22 @@
-import type { Weapon } from "@Src/types";
-import type { ToggleSubWpModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import type { ModifierInput } from "@Src/types";
 import { useDispatch, useSelector } from "@Store/hooks";
-import {
-  changeModCtrlInput,
-  changeSubWpModCtrlInput,
-  refineSubWeapon,
-  toggleModCtrl,
-  toggleSubWpModCtrl,
-} from "@Store/calculatorSlice";
-import { selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
+import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
+import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 import { findWeapon } from "@Data/controllers";
-import { findByIndex, genNumberSequence, processNumInput } from "@Src/utils";
+import { deepCopy, findByIndex, genNumberSequence, processNumInput } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate, Checkbox, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 export default function WeaponBuffs() {
+  const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
   const totalAttr = useSelector(selectTotalAttr);
   const weaponBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].wpBuffCtrls;
   });
-  const subWpComplexBuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].subWpComplexBuffCtrls;
-  });
-  const dispatch = useDispatch();
+  const party = useSelector(selectParty);
 
   const { name, buffs: mainBuffs = [] } = findWeapon(weapon)!;
   const content: JSX.Element[] = [];
@@ -115,19 +106,32 @@ export default function WeaponBuffs() {
     );
   });
 
-  Object.entries(subWpComplexBuffCtrls).forEach(([weapon, subWpBuffCtrls], i) => {
-    const weaponType = weapon as Weapon;
+  party.forEach((teammate, teammateIndex) => {
+    if (!teammate) return null;
 
-    subWpBuffCtrls.forEach((ctrl, ctrlIndex) => {
-      const { activated, code, inputs = [], index } = ctrl;
-      const { name, buffs = [] } = findWeapon({ type: weaponType, code })!;
-      const buff = findByIndex(buffs, ctrl.index);
+    const { weapon } = teammate;
+    const { code, refi, buffCtrls } = weapon;
+    const { name, buffs = [] } = findWeapon(weapon) || {};
+
+    const updateWeaponInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
+      const newBuffCtrls = deepCopy(buffCtrls);
+      const { inputs } = newBuffCtrls[ctrlIndex];
+
+      if (inputs) {
+        inputs[inputIndex] = value;
+        dispatch(
+          updateTeammateWeapon({
+            teammateIndex,
+            buffCtrls: newBuffCtrls,
+          })
+        );
+      }
+    };
+
+    buffCtrls.forEach((buffCtrl, ctrlIndex) => {
+      const { activated, inputs = [], index } = buffCtrl;
+      const buff = findByIndex(buffs, index);
       if (!buff) return;
-
-      const path: ToggleSubWpModCtrlPath = {
-        weaponType,
-        ctrlIndex,
-      };
       let setters = null;
 
       if (buff.inputConfig) {
@@ -135,19 +139,17 @@ export default function WeaponBuffs() {
         const { labels, renderTypes, maxValues } = buff.inputConfig;
 
         labels.forEach((label, inputIndex) => {
-          let inputCpn = null;
+          let inputComponent = null;
 
           switch (renderTypes[inputIndex]) {
             // Hakushin Ring
             case "choices":
-              inputCpn = (
+              inputComponent = (
                 <Select
                   className={twInputStyles.select}
                   value={inputs[inputIndex] as string}
                   onChange={(e) => {
-                    dispatch(
-                      changeSubWpModCtrlInput({ ...path, inputIndex, value: e.target.value })
-                    );
+                    updateWeaponInputs(ctrlIndex, inputIndex, e.target.value);
                   }}
                 >
                   {["pyro", "hydro", "cryo", "anemo"].map((opt) => (
@@ -157,7 +159,7 @@ export default function WeaponBuffs() {
               );
               break;
             case "text":
-              inputCpn = (
+              inputComponent = (
                 <input
                   type="text"
                   className="w-16 p-2 text-right textinput-common"
@@ -168,44 +170,38 @@ export default function WeaponBuffs() {
                       +inputs[inputIndex],
                       maxValues?.[inputIndex]
                     );
-                    dispatch(changeSubWpModCtrlInput({ ...path, inputIndex, value }));
+                    updateWeaponInputs(ctrlIndex, inputIndex, value);
                   }}
                 />
               );
               break;
           }
-          setters.push(<Setter key={inputIndex} label={label} inputComponent={inputCpn} />);
+          setters.push(<Setter key={inputIndex} label={label} inputComponent={inputComponent} />);
         });
       }
+
       content.push(
         <ModifierTemplate
-          key={code.toString() + ctrlIndex}
+          key={teammateIndex.toString() + code + ctrlIndex}
           checked={activated}
-          onToggle={() => dispatch(toggleSubWpModCtrl(path))}
+          onToggle={() => {
+            const newBuffCtrls = deepCopy(buffCtrls);
+            newBuffCtrls[ctrlIndex].activated = !activated;
+
+            dispatch(
+              updateTeammateWeapon({
+                teammateIndex,
+                buffCtrls: newBuffCtrls,
+              })
+            );
+          }}
           heading={name}
-          desc={buff.desc({ refi: ctrl.refi, totalAttr })}
-          setters={
-            <>
-              <Setter
-                label="Refinement"
-                inputComponent={
-                  <Select
-                    className={twInputStyles.select}
-                    value={ctrl.refi}
-                    onChange={(e) => dispatch(refineSubWeapon({ ...path, value: +e.target.value }))}
-                  >
-                    {[1, 2, 3, 4, 5].map((opt, i) => (
-                      <option key={i}>{opt}</option>
-                    ))}
-                  </Select>
-                }
-              />
-              {setters}
-            </>
-          }
+          desc={buff.desc({ refi, totalAttr })}
+          setters={setters}
         />
       );
     });
   });
+
   return renderModifiers(content, true);
 }

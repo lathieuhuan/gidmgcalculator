@@ -7,8 +7,6 @@ import { applyPercent, findByCode } from "@Src/utils";
 import { getInput, applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
-import keyOfHierophanyImg from "@Src/assets/images/key-of-hierophany.png";
-
 const mistsplitterBuffValuesByStack = (refi: number) => [
   6 + refi * 2,
   12 + refi * 4,
@@ -18,9 +16,8 @@ const mistsplitterBuffValuesByStack = (refi: number) => [
 const goldSwords: DataWeapon[] = [
   {
     code: 140,
-    beta: true,
     name: "Key of Hierophany",
-    icon: keyOfHierophanyImg,
+    icon: "5/52/Weapon_Key_of_Khaj-Nisut",
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "hp_", scale: "14.4%" },

@@ -125,6 +125,11 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           autoFocus
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onConfirm();
+            }
+          }}
         />
         <span className="ml-2">{config.category > 1 ? "%" : percentSign(config.type)}</span>
       </div>

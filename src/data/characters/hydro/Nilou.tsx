@@ -6,14 +6,11 @@ import { round1 } from "@Src/utils";
 import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-import nilouImg from "@Src/assets/images/nilou.png";
-
 const Nilou: DataCharacter = {
   code: 60,
-  beta: true,
   name: "Nilou",
-  icon: nilouImg,
-  sideIcon: "",
+  icon: "a/a5/Character_Nilou_Thumb",
+  sideIcon: "a/a9/Character_Nilou_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "hydro",
@@ -36,7 +33,7 @@ const Nilou: DataCharacter = {
   ],
   bonusStat: { type: "hp_", value: 7.2 },
   NAsConfig: {
-    name: "Dance of the Bowstring Moon",
+    name: "Dance of Samser",
   },
   activeTalents: {
     NA: {
@@ -49,8 +46,8 @@ const Nilou: DataCharacter = {
     CA: { stats: [{ name: "Charged Attack", baseMult: [50.22, 54.44] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
-      name: "Dance of the Seven Realms",
-      image: "",
+      name: "Dance of Haftkarsvar",
+      image: "3/3e/Talent_Dance_of_Haftkarsvar",
       xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", baseStatType: "hp", baseMult: 3.34 },
@@ -74,8 +71,8 @@ const Nilou: DataCharacter = {
       // ],
     },
     EB: {
-      name: "Dance of the Lotus: Distant Dreams, Listening Spring",
-      image: "",
+      name: "Dance of Abzendegi: Distant Dreams, Listening Spring",
+      image: "b/b9/Talent_Dance_of_Abzendegi_Distant_Dreams%2C_Listening_Spring",
       xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", baseStatType: "hp", baseMult: 18.43 },
@@ -88,7 +85,7 @@ const Nilou: DataCharacter = {
   passiveTalents: [
     {
       name: "Court of Dancing Petals",
-      image: "",
+      image: "7/74/Talent_Court_of_Dancing_Petals",
       get desc() {
         return (
           <>
@@ -117,7 +114,7 @@ const Nilou: DataCharacter = {
     },
     {
       name: "Dreamy Dance of Aeons",
-      image: "",
+      image: "6/60/Talent_Dreamy_Dance_of_Aeons",
       desc: (
         <>
           Each 1,000 points of Max HP above 30,000 will cause the <Green>DMG</Green> dealt by{" "}
@@ -129,12 +126,12 @@ const Nilou: DataCharacter = {
         </>
       ),
     },
-    { name: "White Jade Lotus", image: "" },
+    { name: "White Jade Lotus", image: "3/39/Talent_White_Jade_Lotus" },
   ],
   constellation: [
     {
       name: "Dance of the Waning Moon",
-      image: "",
+      image: "0/0a/Constellation_Dance_of_the_Waning_Moon",
       get desc() {
         return (
           <>
@@ -152,7 +149,7 @@ const Nilou: DataCharacter = {
     },
     {
       name: "The Starry Skies Their Flowers Rain",
-      image: "",
+      image: "0/09/Constellation_The_Starry_Skies_Their_Flowers_Rain",
       get desc() {
         return (
           <>
@@ -173,10 +170,10 @@ const Nilou: DataCharacter = {
         </>,
       ],
     },
-    { name: "Beguiling Shadowstep", image: "" },
+    { name: "Beguiling Shadowstep", image: "6/60/Constellation_Beguiling_Shadowstep" },
     {
       name: "Fricative Pulse",
-      image: "",
+      image: "1/1e/Constellation_Fricative_Pulse",
       get desc() {
         return (
           <>
@@ -193,10 +190,10 @@ const Nilou: DataCharacter = {
         </>,
       ],
     },
-    { name: "Twirling Light", image: "" },
+    { name: "Twirling Light", image: "a/a2/Constellation_Twirling_Light" },
     {
       name: "Frostbreaker's Melody",
-      image: "",
+      image: "9/93/Constellation_Frostbreaker%27s_Melody",
       desc: (
         <>
           For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> and{" "}

@@ -1,45 +1,36 @@
-import type {
-  CalcSetup,
-  ModifierInput,
-  Party,
-  SubArtModCtrl,
-  SubWeaponBuffCtrl,
-  SubWeaponComplexBuffCtrl,
-  Weapon,
-} from "@Src/types";
-import { WEAPON_TYPES } from "@Src/constants";
+import type { CalcSetup, ModifierInput, Party, SubArtModCtrl } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import {
   getAllSubArtBuffCtrls,
   getAllSubArtDebuffCtrls,
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
-  getSubWeaponComplexBuffCtrls,
 } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { findByIndex } from "./index";
 
 export function cleanCalcSetup(data: CalcSetup): CalcSetup {
   const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
-  const subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl = {};
   const party: Party = [];
-
-  for (const weaponType of WEAPON_TYPES) {
-    if (weaponType in data.subWpComplexBuffCtrls) {
-      const ctrls = data.subWpComplexBuffCtrls[weaponType] || [];
-
-      if (ctrls.length) {
-        subWpComplexBuffCtrls[weaponType] = ctrls.filter((ctrl) => ctrl.activated);
-      }
-    }
-  }
 
   for (const teammate of data.party) {
     if (teammate) {
+      // #to-do
       party.push({
         name: teammate.name,
         buffCtrls: teammate.buffCtrls.filter((ctrl) => ctrl.activated),
         debuffCtrls: teammate.debuffCtrls.filter((ctrl) => ctrl.activated),
+        weapon: {
+          code: 0,
+          refi: 1,
+          type: "bow",
+          buffCtrls: [],
+        },
+        artifact: {
+          code: 0,
+          buffCtrls: [],
+          debuffCtrls: [],
+        },
       });
     }
   }
@@ -58,7 +49,6 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
       return debuff ? ctrl.activated && (!debuff.isGranted || debuff.isGranted(data.char)) : false;
     }),
     wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
-    subWpComplexBuffCtrls,
     party,
     artBuffCtrls: data.artBuffCtrls.filter((ctrl) => ctrl.activated),
     subArtBuffCtrls: data.subArtBuffCtrls.filter((ctrl) => ctrl.activated),
@@ -97,27 +87,29 @@ export function restoreCalcSetup(data: CalcSetup) {
 
   const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
   const wpBuffCtrls = getMainWpBuffCtrls(weapon);
-  const subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl = {};
   const party: Party = [];
-
-  for (const key in data.subWpComplexBuffCtrls) {
-    const weaponType = key as Weapon;
-    const newCtrls = getSubWeaponComplexBuffCtrls(weaponType, weapon.code);
-    const refCtrls = data.subWpComplexBuffCtrls[weaponType] || [];
-
-    subWpComplexBuffCtrls[weaponType] = restoreModCtrls(newCtrls, refCtrls) as SubWeaponBuffCtrl[];
-  }
 
   for (const index of [0, 1, 2]) {
     const teammate = data.party[index];
 
     if (teammate) {
       const [buffCtrls, debuffCtrls] = initCharModCtrls(teammate.name, false);
-
+      // #to-do
       party.push({
         name: teammate.name,
         buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),
         debuffCtrls: restoreModCtrls(debuffCtrls, teammate.debuffCtrls),
+        weapon: {
+          code: 0,
+          refi: 1,
+          type: "bow",
+          buffCtrls: [],
+        },
+        artifact: {
+          code: 0,
+          buffCtrls: [],
+          debuffCtrls: [],
+        },
       });
     } else {
       party.push(null);
@@ -134,7 +126,6 @@ export function restoreCalcSetup(data: CalcSetup) {
     selfBuffCtrls: restoreModCtrls(selfBuffCtrls, data.selfBuffCtrls),
     selfDebuffCtrls: restoreModCtrls(selfDebuffCtrls, data.selfDebuffCtrls),
     wpBuffCtrls: restoreModCtrls(wpBuffCtrls, data.wpBuffCtrls),
-    subWpComplexBuffCtrls,
     party,
     artBuffCtrls: restoreModCtrls(artBuffCtrls, data.artBuffCtrls),
     subArtBuffCtrls: restoreModCtrls(subArtBuffCtrls, data.subArtBuffCtrls) as SubArtModCtrl[],

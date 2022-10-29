@@ -13,7 +13,6 @@ import type {
   PartyData,
   ReactionBonus,
   SubArtModCtrl,
-  SubWeaponComplexBuffCtrl,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
@@ -49,7 +48,6 @@ export type GetBuffedStatsArgs = {
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-  subWpComplexBuffCtrls: SubWeaponComplexBuffCtrl;
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
   subArtBuffCtrls: SubArtModCtrl[];

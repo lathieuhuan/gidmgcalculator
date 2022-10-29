@@ -129,23 +129,7 @@ interface IInitTeammateArgs {
 }
 export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
   const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
-
   const weaponCode = DEFAULT_WEAPON_CODE[weapon];
-  const { buffs: weaponBuffs = [] } = findWeapon({ code: weaponCode, type: weapon }) || {};
-
-  const weaponBuffCtrls = weaponBuffs.reduce((accumulator, { index, affect, inputConfig }) => {
-    if (affect !== EModAffect.SELF) {
-      const buffNode: ModifierCtrl = {
-        index,
-        activated: false,
-      };
-      if (inputConfig) {
-        buffNode.inputs = [...inputConfig.initialValues];
-      }
-      accumulator.push(buffNode);
-    }
-    return accumulator;
-  }, [] as ModifierCtrl[]);
 
   return {
     name,
@@ -153,11 +137,12 @@ export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
     debuffCtrls,
     weapon: {
       code: weaponCode,
+      type: weapon,
       refi: 1,
-      buffCtrls: weaponBuffCtrls,
+      buffCtrls: [],
     },
     artifact: {
-      code: -1,
+      code: 0,
       buffCtrls: [],
       debuffCtrls: [],
     },

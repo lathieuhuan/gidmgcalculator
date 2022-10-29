@@ -197,7 +197,6 @@ export default function MySetups() {
       selfBuffCtrls,
       selfDebuffCtrls,
       wpBuffCtrls,
-      subWpComplexBuffCtrls,
       artBuffCtrls,
       subArtBuffCtrls,
       subArtDebuffCtrls,
@@ -274,12 +273,7 @@ export default function MySetups() {
                     partyData={partyData}
                     totalAttr={totalAttr}
                   />,
-                  <WeaponBuffs
-                    weapon={weapon}
-                    wpBuffCtrls={wpBuffCtrls}
-                    subWpComplexBuffCtrls={subWpComplexBuffCtrls}
-                    totalAttr={totalAttr}
-                  />,
+                  <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} totalAttr={totalAttr} />,
                   <ArtifactBuffs
                     sets={artInfo.sets}
                     artBuffCtrls={artBuffCtrls}

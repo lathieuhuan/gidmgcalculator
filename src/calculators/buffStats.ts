@@ -84,7 +84,6 @@ export default function getBuffedStats({
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
-  subWpComplexBuffCtrls,
   artInfo: { pieces, sets },
   artBuffCtrls,
   subArtBuffCtrls,
@@ -181,25 +180,6 @@ export default function getBuffedStats({
   }
 
   // APPLY WEAPON BUFFS
-  for (const [type, ctrls] of Object.entries(subWpComplexBuffCtrls)) {
-    for (const ctrl of ctrls) {
-      if (ctrl.activated) {
-        const { code, refi, inputs } = ctrl;
-        const { name, buffs } = findWeapon({ type: type as Weapon, code }) || {};
-        if (buffs) {
-          const { applyBuff } = findByIndex(buffs, ctrl.index) || {};
-          if (applyBuff) {
-            const desc = `${name} activated`;
-            applyBuff({ ...modifierArgs, refi, inputs, desc });
-          } else {
-            console.log(`weapon buff #${ctrl.index} of weapon #${code} not found`);
-          }
-        } else {
-          console.log(`weapon #${code} not found`);
-        }
-      }
-    }
-  }
   for (const { activated, index, inputs } of wpBuffCtrls) {
     if (weaponData.buffs) {
       const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
@@ -232,7 +212,7 @@ export default function getBuffedStats({
   // APPPLY TEAMMATE BUFFS
   for (const teammate of party) {
     if (!teammate) continue;
-    const { buffs = [] } = findCharacter(teammate) || {};
+    const { weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
 
     for (const { index, activated, inputs } of teammate.buffCtrls) {
       const buff = findByIndex(buffs, index);
@@ -244,6 +224,19 @@ export default function getBuffedStats({
         const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
         const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
         applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
+      }
+    }
+
+    // #to-check: should be applied before main weapon buffs?
+    const { code, refi, buffCtrls } = teammate.weapon;
+    const { name: weaponName, buffs: weaponBuffs = [] } = findWeapon({ code, type: weaponType })!;
+    for (const { index, activated, inputs } of buffCtrls) {
+      const buff = findByIndex(weaponBuffs, index);
+
+      if (activated && buff?.applyBuff) {
+        buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponName} activated` });
+      } else {
+        console.log(`weapon buff #${index} of weapon #${code} not found`);
       }
     }
   }

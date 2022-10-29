@@ -65,6 +65,11 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           autoFocus
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onConfirm();
+            }
+          }}
         />
         <span className="ml-2">%</span>
       </div>

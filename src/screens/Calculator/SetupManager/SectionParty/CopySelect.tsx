@@ -1,10 +1,6 @@
 import { CopySection } from "@Screens/Calculator/components";
 import { updateCalcSetup } from "@Store/calculatorSlice";
-import {
-  selectActiveId,
-  selectCalcSetupsById,
-  selectSetupManageInfos,
-} from "@Store/calculatorSlice/selectors";
+import { selectCalcSetupsById, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 export function CopySelect() {
@@ -25,9 +21,9 @@ export function CopySelect() {
   }
 
   const onClickCopyParty = ({ value: sourceId }: { value: number }) => {
-    const { party, elmtModCtrls, subWpComplexBuffCtrls } = setupsById[sourceId];
+    const { party, elmtModCtrls } = setupsById[sourceId];
 
-    dispatch(updateCalcSetup({ party, elmtModCtrls, subWpComplexBuffCtrls }));
+    dispatch(updateCalcSetup({ party, elmtModCtrls }));
   };
 
   return copyOptions.length ? (
