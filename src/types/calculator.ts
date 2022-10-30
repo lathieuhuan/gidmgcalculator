@@ -37,11 +37,8 @@ export type CalcSetup = {
 
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
-  subArtBuffCtrls: SubArtModCtrl[];
-  subArtDebuffCtrls: SubArtModCtrl[];
 
   party: Party;
   elmtModCtrls: ElementModCtrl;
@@ -104,10 +101,6 @@ export type CalcArtPieces = (CalcArtPiece | null)[];
 export type CalcArtSet = {
   code: number;
   bonusLv: number;
-};
-
-export type SubArtModCtrl = ModifierCtrl & {
-  code: number;
 };
 
 export type CalcArtInfo = {

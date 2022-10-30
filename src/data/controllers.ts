@@ -10,7 +10,9 @@ type HasCode = { code: number };
 
 export const findCharacter = (char: HasName) => findByName(characters, char.name);
 
-export const findArtifactSet = ({ code }: HasCode) => findByCode(artifacts, code);
+export const findArtifactSet = ({ code }: HasCode) => {
+  return code ? findByCode(artifacts, code) : undefined;
+};
 
 export function findArtifactPiece({ code, type }: { type: Artifact } & HasCode) {
   const tgSet = findByCode(artifacts, code)!;
@@ -19,7 +21,7 @@ export function findArtifactPiece({ code, type }: { type: Artifact } & HasCode) 
 }
 
 export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {
-  return findByCode(weapons[type], code);
+  return code ? findByCode(weapons[type], code) : undefined;
 };
 
 export const findMonster = ({ code }: { code: number }) => findByCode(monsters, code);

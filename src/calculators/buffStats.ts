@@ -86,7 +86,6 @@ export default function getBuffedStats({
   wpBuffCtrls,
   artInfo: { pieces, sets },
   artBuffCtrls,
-  subArtBuffCtrls,
   elmtModCtrls,
   party,
   partyData,
@@ -192,13 +191,6 @@ export default function getBuffedStats({
   }
 
   // APPLY ARTIFACT BUFFS
-  for (const { activated, code, index, inputs } of subArtBuffCtrls) {
-    if (activated) {
-      const { name, buffs } = findArtifactSet({ code }) || {};
-      const desc = `${name} / 4-Piece activated`;
-      buffs?.[index].applyBuff?.({ ...modifierArgs, inputs, desc });
-    }
-  }
   for (const { index, activated, inputs } of artBuffCtrls) {
     const { name, buffs } = findArtifactSet({ code: sets[0].code }) || {};
     const { applyBuff } = buffs?.[index] || {};
@@ -212,35 +204,58 @@ export default function getBuffedStats({
   // APPPLY TEAMMATE BUFFS
   for (const teammate of party) {
     if (!teammate) continue;
-    const { weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
+    const { name, weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
 
     for (const { index, activated, inputs } of teammate.buffCtrls) {
       const buff = findByIndex(buffs, index);
-      if (!buff) continue;
 
-      const applyFn = buff.applyBuff || buff.applyFinalBuff;
-      if (activated && applyFn) {
-        const desc = `${teammate} / ${buff.src}`;
-        const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
-        const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
-        applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
+      if (buff) {
+        const applyFn = buff.applyBuff || buff.applyFinalBuff;
+        if (activated && applyFn) {
+          const desc = `${name} / ${buff.src}`;
+          const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+          const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
+          applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
+        }
+      } else {
+        console.log(`buff #${index} of teammate ${name} not found`);
       }
     }
 
     // #to-check: should be applied before main weapon buffs?
-    const { code, refi, buffCtrls } = teammate.weapon;
-    const { name: weaponName, buffs: weaponBuffs = [] } = findWeapon({ code, type: weaponType })!;
-    for (const { index, activated, inputs } of buffCtrls) {
-      const buff = findByIndex(weaponBuffs, index);
+    (() => {
+      const { code, refi } = teammate.weapon;
+      const { name, buffs = [] } = findWeapon({ code, type: weaponType }) || {};
 
-      if (buff) {
-        if (activated && buff?.applyBuff) {
-          buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponName} activated` });
+      for (const { index, activated, inputs } of teammate.weapon.buffCtrls) {
+        const buff = findByIndex(buffs, index);
+
+        if (buff) {
+          if (activated && buff?.applyBuff) {
+            buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${name} activated` });
+          }
+        } else {
+          console.log(`buff #${index} of weapon #${code} not found`);
         }
-      } else {
-        console.log(`weapon buff #${index} of weapon #${code} not found`);
       }
-    }
+    })();
+
+    (() => {
+      const { code } = teammate.artifact;
+      const { name, buffs = [] } = findArtifactSet({ code }) || {};
+
+      for (const { index, activated, inputs } of teammate.artifact.buffCtrls) {
+        const buff = findByIndex(buffs, index);
+
+        if (buff) {
+          if (activated && buff.applyBuff) {
+            buff.applyBuff({ ...modifierArgs, inputs, desc: `${name} / 4-Piece activated` });
+          }
+        } else {
+          console.log(`buff #${index} of artifact #${code} not found`);
+        }
+      }
+    })();
   }
 
   applySelfBuffs({ isFinal: false, modifierArgs, charBuffCtrls: selfBuffCtrls });

@@ -133,7 +133,9 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
                 }}
               >
                 {options.map((opt) => (
-                  <option key={opt}>{opt}</option>
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
                 ))}
               </Select>
             }

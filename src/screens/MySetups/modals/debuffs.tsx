@@ -10,7 +10,6 @@ import {
   Party,
   PartyData,
   Resonance,
-  SubArtModCtrl,
 } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { renderSetters } from "../components";
@@ -122,32 +121,30 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
   return renderModifiers(content, false);
 }
 
-interface ArtifactDebuffsProps {
-  subArtDebuffCtrls: SubArtModCtrl[];
-}
-export function ArtifactDebuffs({ subArtDebuffCtrls }: ArtifactDebuffsProps) {
+interface ArtifactDebuffsProps {}
+export function ArtifactDebuffs({}: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
-  for (const { code, index, inputs } of subArtDebuffCtrls) {
-    const artifactData = findArtifactSet({ code });
-    if (!artifactData) {
-      continue;
-    }
-    const { name, debuffs = [] } = artifactData;
-    const debuff = debuffs[index];
+  // for (const { code, index, inputs } of subArtDebuffCtrls) {
+  //   const artifactData = findArtifactSet({ code });
+  //   if (!artifactData) {
+  //     continue;
+  //   }
+  //   const { name, debuffs = [] } = artifactData;
+  //   const debuff = debuffs[index];
 
-    if (debuff) {
-      content.push(
-        <ModifierTemplate
-          key={index}
-          mutable={false}
-          heading={name}
-          desc={debuff.desc()}
-          setters={renderSetters(debuff.inputConfig, inputs)}
-        />
-      );
-    }
-  }
+  //   if (debuff) {
+  //     content.push(
+  //       <ModifierTemplate
+  //         key={index}
+  //         mutable={false}
+  //         heading={name}
+  //         desc={debuff.desc()}
+  //         setters={renderSetters(debuff.inputConfig, inputs)}
+  //       />
+  //     );
+  //   }
+  // }
   return renderModifiers(content, false);
 }
 

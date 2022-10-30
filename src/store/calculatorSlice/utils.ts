@@ -6,10 +6,10 @@ import type {
   ModifierCtrl,
   UsersArtifact,
   UsersWeapon,
-  SubArtModCtrl,
-  SubWeaponBuffCtrl,
   Weapon,
   CalcSetupManageInfo,
+  TTeammateWeapon,
+  TTeammateArtifact,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
@@ -88,8 +88,6 @@ export function parseAndInitData(
     wpBuffCtrls,
     artInfo: { pieces, sets },
     artBuffCtrls: getMainArtBuffCtrls(setCode),
-    subArtBuffCtrls: getAllSubArtBuffCtrls(setCode),
-    subArtDebuffCtrls: getAllSubArtDebuffCtrls(),
   } as const;
 }
 
@@ -116,45 +114,38 @@ export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
   return result;
 }
 
-export function getSubWeaponBuffCtrls(weapon: { type: Weapon; code: number }) {
-  const buffCtrls: SubWeaponBuffCtrl[] = [];
-  const weaponData = findWeapon(weapon);
-
-  if (weaponData && weaponData.buffs) {
-    for (const buff of weaponData.buffs) {
-      if (buff.affect === "self") {
-        continue;
-      }
-      const node: SubWeaponBuffCtrl = {
-        code: weapon.code,
+export function getTeammateWeaponBuffCtrls(teammateWeapon: TTeammateWeapon) {
+  const { buffs = [] } = findWeapon(teammateWeapon) || {};
+  return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
+    if (affect !== EModAffect.SELF) {
+      const buffNode: ModifierCtrl = {
+        index,
         activated: false,
-        refi: 1,
-        index: buff.index,
       };
-      if (buff.inputConfig) {
-        const { initialValues, renderTypes } = buff.inputConfig;
-        node.inputs = [];
-
-        renderTypes.forEach((renderType, j) => {
-          if (renderType === "choices" || renderType === "text") {
-            node.inputs!.push(initialValues[j]);
-          }
-        });
+      if (inputConfig) {
+        buffNode.inputs = [...inputConfig.initialValues];
       }
-      buffCtrls.push(node);
+      accumulator.push(buffNode);
     }
-  }
-  return buffCtrls;
+    return accumulator;
+  }, [] as ModifierCtrl[]);
 }
 
-export function getSubWeaponComplexBuffCtrls(type: Weapon, mainWpCode: number) {
-  const result = [];
-  for (const weapon of weapons[type]) {
-    if (weapon.code !== mainWpCode) {
-      result.push(...getSubWeaponBuffCtrls({ type, code: weapon.code }));
+export function getTeammateArtifactBuffCtrls(teammateArtifact: TTeammateArtifact) {
+  const { buffs = [] } = findArtifactSet(teammateArtifact) || {};
+  return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
+    if (affect !== EModAffect.SELF) {
+      const buffNode: ModifierCtrl = {
+        index,
+        activated: false,
+      };
+      if (inputConfig) {
+        buffNode.inputs = [...inputConfig.initialValues];
+      }
+      accumulator.push(buffNode);
     }
-  }
-  return result;
+    return accumulator;
+  }, [] as ModifierCtrl[]);
 }
 
 export function getArtifactSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSet[] {
@@ -201,42 +192,9 @@ export function getMainArtBuffCtrls(code: number | null) {
   return result;
 }
 
-export function getSubArtBuffCtrls(code: number) {
-  const result: SubArtModCtrl[] = [];
-  const { buffs } = findArtifactSet({ code })!;
-
-  if (buffs) {
-    buffs.forEach((buff, index) => {
-      if (buff.affect !== EModAffect.SELF) {
-        const node: SubArtModCtrl = {
-          code,
-          activated: false,
-          index,
-        };
-
-        if (buff.inputConfig) {
-          node.inputs = [...buff.inputConfig.initialValues];
-        }
-        result.push(node);
-      }
-    });
-  }
-  return result;
-}
-
-export function getAllSubArtBuffCtrls(mainCode: number | null) {
-  const result: SubArtModCtrl[] = [];
-  for (const { code } of artifacts) {
-    if (code !== mainCode) {
-      result.push(...getSubArtBuffCtrls(code));
-    }
-  }
-  return result;
-}
-
-export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
-  return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
-}
+// export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
+//   return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
+// }
 
 export const getSetupManageInfo = ({
   name = "Setup 1",

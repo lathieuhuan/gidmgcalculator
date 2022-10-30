@@ -1,23 +1,29 @@
-import type { AmplifyingReaction, Vision } from "@Src/types";
+import type { AmplifyingReaction, ModifierInput, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { toggleModCtrl, updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
+import {
+  toggleModCtrl,
+  updateCalcSetup,
+  updateResonance,
+  updateTeammateArtifact,
+} from "@Store/calculatorSlice";
 import {
   selectArtInfo,
   selectChar,
   selectCharData,
   selectElmtModCtrls,
+  selectParty,
   selectRxnBonus,
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
 
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { Checkbox, Green, ModifierTemplate } from "@Src/styled-components";
-import { Setter } from "@Screens/Calculator/components";
+import { Checkbox, Green, ModifierTemplate, Select } from "@Src/styled-components";
+import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { SetterSection } from "../components";
 
 import { findArtifactSet } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
+import { deepCopy, findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
 import { getQuickenBuffDamage } from "@Calculators/utils";
 
@@ -176,14 +182,15 @@ function QuickenBuff({ vision }: { vision: Vision }) {
 }
 
 export function ArtifactBuffs() {
+  const dispatch = useDispatch();
   const { sets } = useSelector(selectArtInfo);
   const buffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].artBuffCtrls;
   });
-  const subBuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].subArtBuffCtrls;
-  });
-  const dispatch = useDispatch();
+  const party = useSelector(selectParty);
+  // const subBuffCtrls = useSelector((state) => {
+  //   return state.calculator.setupsById[state.calculator.activeId].subArtBuffCtrls;
+  // });
 
   const content: JSX.Element[] = [];
   const mainCode = sets[0]?.code;
@@ -212,28 +219,107 @@ export function ArtifactBuffs() {
     );
   });
 
-  subBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { code, activated, inputs } = ctrl;
-    const { name, buffs } = findArtifactSet({ code })!;
-    const buff = findByIndex(buffs!, ctrl.index);
-    if (!buff) return;
+  party.forEach((teammate, teammateIndex) => {
+    if (!teammate) return;
+    const { code, buffCtrls } = teammate.artifact;
+    const { name, buffs = [] } = findArtifactSet({ code }) || {};
+    if (!name) return;
 
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "subArtBuffCtrls",
-      ctrlIndex,
+    const updateArtifactInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
+      const newBuffCtrls = deepCopy(buffCtrls);
+      const { inputs } = newBuffCtrls[ctrlIndex];
+
+      if (inputs) {
+        inputs[inputIndex] = value;
+        dispatch(
+          updateTeammateArtifact({
+            teammateIndex,
+            buffCtrls: newBuffCtrls,
+          })
+        );
+      }
     };
-    content.push(
-      <ModifierTemplate
-        key={code.toString() + ctrlIndex}
-        checked={activated}
-        onToggle={() => dispatch(toggleModCtrl(path))}
-        heading={name}
-        desc={buff.desc()}
-        setters={
-          inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
-        }
-      />
-    );
+
+    buffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
+      const buff = findByIndex(buffs, index);
+      let setters = null;
+      if (!buff) return;
+
+      if (buff.inputConfig) {
+        setters = [];
+
+        inputs.forEach((input, inputIndex) => {
+          if (typeof input === "boolean") return;
+
+          setters.push(
+            <Setter
+              key={inputIndex}
+              label={name}
+              inputComponent={
+                <Select
+                  className={twInputStyles.select + " capitalize"}
+                  value={input}
+                  onChange={(e) => {
+                    updateArtifactInputs(ctrlIndex, inputIndex, e.target.value);
+                  }}
+                >
+                  {["pyro", "hydro", "electro", "cryo"].map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </Select>
+              }
+            />
+          );
+        });
+      }
+
+      content.push(
+        <ModifierTemplate
+          key={teammateIndex.toString() + code + ctrlIndex}
+          checked={activated}
+          onToggle={() => {
+            const newBuffCtrls = deepCopy(buffCtrls);
+            newBuffCtrls[ctrlIndex].activated = !activated;
+
+            dispatch(
+              updateTeammateArtifact({
+                teammateIndex,
+                buffCtrls: newBuffCtrls,
+              })
+            );
+          }}
+          heading={name}
+          desc={buff.desc()}
+          setters={setters}
+        />
+      );
+    });
   });
+
+  // subBuffCtrls.forEach((ctrl, ctrlIndex) => {
+  //   const { code, activated, inputs } = ctrl;
+  //   const { name, buffs } = findArtifactSet({ code })!;
+  //   const buff = findByIndex(buffs!, ctrl.index);
+  //   if (!buff) return;
+
+  //   const path: ToggleModCtrlPath = {
+  //     modCtrlName: "subArtBuffCtrls",
+  //     ctrlIndex,
+  //   };
+  //   content.push(
+  //     <ModifierTemplate
+  //       key={code.toString() + ctrlIndex}
+  //       checked={activated}
+  //       onToggle={() => dispatch(toggleModCtrl(path))}
+  //       heading={name}
+  //       desc={buff.desc()}
+  //       setters={
+  //         inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
+  //       }
+  //     />
+  //   );
+  // });
   return renderModifiers(content, true);
 }

@@ -5,7 +5,6 @@ import type {
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
-  ModifierCtrl,
   Monster,
   PartiallyOptional,
   Resonance,
@@ -33,31 +32,19 @@ import type {
   TUpdateTeammateArtifactAction,
 } from "./reducer-types";
 
-import { findArtifactSet, findCharacter, findWeapon, getCharData } from "@Data/controllers";
+import { findCharacter, getCharData } from "@Data/controllers";
 
-import { ATTACK_ELEMENTS, EModAffect, RESONANCE_VISION_TYPES } from "@Src/constants";
-import {
-  bareLv,
-  countVision,
-  countWeapon,
-  deepCopy,
-  findByCode,
-  findById,
-  indexByCode,
-  turnArray,
-} from "@Src/utils";
+import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import { bareLv, countVision, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
 import {
   calculate,
-  getAllSubArtBuffCtrls,
-  getAllSubArtDebuffCtrls,
   getArtifactSets,
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
   getNewSetupName,
   getSetupManageInfo,
-  getSubArtBuffCtrls,
-  getSubWeaponBuffCtrls,
-  getSubWeaponComplexBuffCtrls,
+  getTeammateArtifactBuffCtrls,
+  getTeammateWeaponBuffCtrls,
   parseAndInitData,
 } from "./utils";
 import {
@@ -70,7 +57,6 @@ import {
   initTeammate,
 } from "./initiators";
 import monsters from "@Data/monsters";
-import weapons from "@Data/weapons";
 
 const defaultChar = {
   name: "Albedo",
@@ -125,8 +111,6 @@ export const calculatorSlice = createSlice({
           wpBuffCtrls: result.wpBuffCtrls,
           artInfo: result.artInfo,
           artBuffCtrls: result.artBuffCtrls,
-          subArtBuffCtrls: result.subArtBuffCtrls,
-          subArtDebuffCtrls: result.subArtDebuffCtrls,
           party: [null, null, null],
           elmtModCtrls: initElmtModCtrls(),
           customBuffCtrls: [],
@@ -315,25 +299,7 @@ export const calculatorSlice = createSlice({
           ...newWeaponInfo,
         };
         if (newWeaponInfo.code) {
-          const { buffs = [] } =
-            findWeapon({ code: newWeaponInfo.code, type: teammate.weapon.type }) || {};
-
-          teammate.weapon.buffCtrls = buffs.reduce(
-            (accumulator, { index, affect, inputConfig }) => {
-              if (affect !== EModAffect.SELF) {
-                const buffNode: ModifierCtrl = {
-                  index,
-                  activated: false,
-                };
-                if (inputConfig) {
-                  buffNode.inputs = [...inputConfig.initialValues];
-                }
-                accumulator.push(buffNode);
-              }
-              return accumulator;
-            },
-            [] as ModifierCtrl[]
-          );
+          teammate.weapon.buffCtrls = getTeammateWeaponBuffCtrls(teammate.weapon);
         }
         calculate(state);
       }
@@ -347,6 +313,9 @@ export const calculatorSlice = createSlice({
           ...teammate.artifact,
           ...newArtifactInfo,
         };
+        if (newArtifactInfo.code) {
+          teammate.artifact.buffCtrls = getTeammateArtifactBuffCtrls(teammate.artifact);
+        }
         calculate(state);
       }
     },
@@ -389,7 +358,7 @@ export const calculatorSlice = createSlice({
     changeArtPiece: (state, action: ChangeArtPieceAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
       const setup = state.setupsById[state.activeId];
-      const { artInfo, subArtBuffCtrls } = setup;
+      const { artInfo } = setup;
 
       const piece = artInfo.pieces[pieceIndex];
 
@@ -409,23 +378,9 @@ export const calculatorSlice = createSlice({
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
           setup.artBuffCtrls = getMainArtBuffCtrls(newSetBonus.code);
-
-          // find ctrl of the same buff in subArtBuffCtrls
-          const position = indexByCode(subArtBuffCtrls, newSetBonus.code);
-
-          // remove if found, coz no duplicate
-          if (position !== -1) {
-            subArtBuffCtrls.splice(position, 1);
-          }
-        } else if (oldBonusLevel && !newSetBonus.bonusLv) {
+        } //
+        else if (oldBonusLevel && !newSetBonus.bonusLv) {
           setup.artBuffCtrls = [];
-
-          const oldSetCode = oldSets[0].code;
-          const { buffs } = findArtifactSet({ code: oldSetCode }) || {};
-
-          if (buffs) {
-            subArtBuffCtrls.push(...getSubArtBuffCtrls(oldSetCode));
-          }
         }
       }
       calculate(state);
@@ -457,9 +412,6 @@ export const calculatorSlice = createSlice({
       const bonusLv = sets[0]?.bonusLv;
       const setup = state.setupsById[state.activeId];
 
-      if (bonusLv) {
-        setup.subArtBuffCtrls = setup.subArtBuffCtrls.filter((ctrl) => ctrl.code !== sets[0].code);
-      }
       setup.artInfo = { pieces, sets };
       setup.artBuffCtrls = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
 
@@ -595,8 +547,6 @@ export const calculatorSlice = createSlice({
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
       const newWeapon = initWeapon({ type: charData.weapon });
       const wpBuffCtrls = getMainWpBuffCtrls(newWeapon);
-      const subArtBuffCtrls = getAllSubArtBuffCtrls(null);
-      const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
       const elmtModCtrls = initElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
 
@@ -650,8 +600,6 @@ export const calculatorSlice = createSlice({
                 sets: [],
               },
               artBuffCtrls: [],
-              subArtBuffCtrls,
-              subArtDebuffCtrls,
               party: [null, null, null],
               elmtModCtrls,
               customBuffCtrls: [],

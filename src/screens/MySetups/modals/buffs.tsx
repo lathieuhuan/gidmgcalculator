@@ -11,7 +11,6 @@ import type {
   Party,
   PartyData,
   ReactionBonus,
-  SubArtModCtrl,
   TotalAttribute,
   Weapon,
 } from "@Src/types";
@@ -232,9 +231,8 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr }: WeaponBuffsProps
 interface ArtifactBuffsProps {
   sets: CalcArtSet[];
   artBuffCtrls: ModifierCtrl[];
-  subArtBuffCtrls: SubArtModCtrl[];
 }
-export function ArtifactBuffs({ sets, artBuffCtrls, subArtBuffCtrls }: ArtifactBuffsProps) {
+export function ArtifactBuffs({ sets, artBuffCtrls }: ArtifactBuffsProps) {
   const content = [];
   const mainCode = sets[0]?.code;
 
@@ -260,27 +258,28 @@ export function ArtifactBuffs({ sets, artBuffCtrls, subArtBuffCtrls }: ArtifactB
     }
   }
 
-  for (const { code, index, inputs = [] } of subArtBuffCtrls) {
-    const artifactData = findArtifactSet({ code });
-    if (!artifactData) {
-      continue;
-    }
+  // #to-do
+  // for (const { code, index, inputs = [] } of subArtBuffCtrls) {
+  //   const artifactData = findArtifactSet({ code });
+  //   if (!artifactData) {
+  //     continue;
+  //   }
 
-    const { name, buffs = [] } = artifactData;
-    const buff = buffs[index];
+  //   const { name, buffs = [] } = artifactData;
+  //   const buff = buffs[index];
 
-    if (buff) {
-      content.push(
-        <ModifierTemplate
-          key={`${code}-${index}`}
-          mutable={false}
-          heading={name}
-          desc={buff.desc()}
-          setters={renderSetters(buff.inputConfig, inputs)}
-        />
-      );
-    }
-  }
+  //   if (buff) {
+  //     content.push(
+  //       <ModifierTemplate
+  //         key={`${code}-${index}`}
+  //         mutable={false}
+  //         heading={name}
+  //         desc={buff.desc()}
+  //         setters={renderSetters(buff.inputConfig, inputs)}
+  //       />
+  //     );
+  //   }
+  // }
   return renderModifiers(content, true);
 }
 

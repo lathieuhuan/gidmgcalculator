@@ -1,11 +1,6 @@
-import type { CalcSetup, ModifierInput, Party, SubArtModCtrl } from "@Src/types";
+import type { CalcSetup, ModifierInput, Party } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
-import {
-  getAllSubArtBuffCtrls,
-  getAllSubArtDebuffCtrls,
-  getMainArtBuffCtrls,
-  getMainWpBuffCtrls,
-} from "@Store/calculatorSlice/utils";
+import { getMainArtBuffCtrls, getMainWpBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { findByIndex } from "./index";
 
@@ -15,7 +10,7 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
 
   for (const teammate of data.party) {
     if (teammate) {
-      // #to-do
+      // #to-do filter weapon, artifact?
       party.push({
         name: teammate.name,
         buffCtrls: teammate.buffCtrls.filter((ctrl) => ctrl.activated),
@@ -51,8 +46,6 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
     wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
     party,
     artBuffCtrls: data.artBuffCtrls.filter((ctrl) => ctrl.activated),
-    subArtBuffCtrls: data.subArtBuffCtrls.filter((ctrl) => ctrl.activated),
-    subArtDebuffCtrls: data.subArtDebuffCtrls.filter((ctrl) => ctrl.activated),
     customBuffCtrls: data.customBuffCtrls.filter((ctrl) => ctrl.value),
     customDebuffCtrls: data.customDebuffCtrls.filter((ctrl) => ctrl.value),
   };
@@ -118,9 +111,8 @@ export function restoreCalcSetup(data: CalcSetup) {
 
   const setCode = artInfo.sets[0]?.bonusLv === 1 ? artInfo.sets[0].code : null;
   const artBuffCtrls = getMainArtBuffCtrls(setCode);
-  const subArtBuffCtrls = getAllSubArtBuffCtrls(setCode);
-  const subArtDebuffCtrls = getAllSubArtDebuffCtrls();
 
+  // #to-do restore subArtBuffCtrls & subArtDebuffCtrls
   const output: CalcSetup = {
     ...data,
     selfBuffCtrls: restoreModCtrls(selfBuffCtrls, data.selfBuffCtrls),
@@ -128,11 +120,6 @@ export function restoreCalcSetup(data: CalcSetup) {
     wpBuffCtrls: restoreModCtrls(wpBuffCtrls, data.wpBuffCtrls),
     party,
     artBuffCtrls: restoreModCtrls(artBuffCtrls, data.artBuffCtrls),
-    subArtBuffCtrls: restoreModCtrls(subArtBuffCtrls, data.subArtBuffCtrls) as SubArtModCtrl[],
-    subArtDebuffCtrls: restoreModCtrls(
-      subArtDebuffCtrls,
-      data.subArtDebuffCtrls
-    ) as SubArtModCtrl[],
   };
 
   return output;

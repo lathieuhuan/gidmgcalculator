@@ -62,13 +62,7 @@ type InputInfo = {
 };
 
 export type ToggleModCtrlPath = {
-  modCtrlName:
-    | "selfBuffCtrls"
-    | "selfDebuffCtrls"
-    | "wpBuffCtrls"
-    | "artBuffCtrls"
-    | "subArtBuffCtrls"
-    | "subArtDebuffCtrls";
+  modCtrlName: "selfBuffCtrls" | "selfDebuffCtrls" | "wpBuffCtrls" | "artBuffCtrls";
   ctrlIndex: number;
 };
 export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;

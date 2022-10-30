@@ -99,7 +99,7 @@ export default function WeaponBuffs() {
             })
           );
         }}
-        heading={name + " (self)"}
+        heading={name + ` R${weapon.refi} (self)`}
         desc={buff.desc({ refi: weapon.refi, totalAttr })}
         setters={setters}
       />

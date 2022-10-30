@@ -12,7 +12,6 @@ import type {
   Party,
   PartyData,
   ReactionBonus,
-  SubArtModCtrl,
   TotalAttribute,
   Tracker,
 } from "@Src/types";
@@ -50,7 +49,6 @@ export type GetBuffedStatsArgs = {
   wpBuffCtrls: ModifierCtrl[];
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
-  subArtBuffCtrls: SubArtModCtrl[];
   elmtModCtrls: ElementModCtrl;
   party: Party;
   partyData: PartyData;

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
 
@@ -50,6 +50,12 @@ export default function SectionParty() {
     ? findCharacter(detailTeammate)?.weapon || "sword"
     : "sword";
 
+  useEffect(() => {
+    if (!detailTeammate) {
+      setDetailSlot(null);
+    }
+  }, [detailTeammate]);
+
   const closeModal = () => {
     setModal({ type: "", teammateIndex: null });
   };
@@ -64,7 +70,6 @@ export default function SectionParty() {
   const onClickRemoveTeammate = () => {
     if (detailSlot !== null) {
       dispatch(removeTeammate(detailSlot));
-      setDetailSlot(null);
     }
   };
 

@@ -7,7 +7,6 @@ import type {
   Party,
   PartyData,
   ReactionBonus,
-  SubArtModCtrl,
   Target,
   TotalAttribute,
   Tracker,
@@ -210,7 +209,6 @@ interface GetDamageArgs {
   selfDebuffCtrls: ModifierCtrl[];
   party: Party;
   partyData: PartyData;
-  subArtDebuffCtrls: SubArtModCtrl[];
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
@@ -228,7 +226,6 @@ export default function getDamage({
   selfDebuffCtrls,
   party,
   partyData,
-  subArtDebuffCtrls,
   totalAttr,
   attPattBonus,
   attElmtBonus,
@@ -286,13 +283,13 @@ export default function getDamage({
   }
 
   // APPLY ARTIFACT DEBUFFS
-  for (const { activated, code, index, inputs } of subArtDebuffCtrls) {
-    if (activated) {
-      const { name, debuffs } = findArtifactSet({ code })!;
-      const desc = `${name} / 4-Piece activated`;
-      debuffs![index].applyDebuff({ resistReduct, inputs, desc, tracker });
-    }
-  }
+  // for (const { activated, code, index, inputs } of subArtDebuffCtrls) {
+  //   if (activated) {
+  //     const { name, debuffs } = findArtifactSet({ code })!;
+  //     const desc = `${name} / 4-Piece activated`;
+  //     debuffs![index].applyDebuff({ resistReduct, inputs, desc, tracker });
+  //   }
+  // }
 
   // APPLY RESONANCE DEBUFFS
   const geoRsn = elmtModCtrls.resonances.find((rsn) => rsn.vision === "geo");
