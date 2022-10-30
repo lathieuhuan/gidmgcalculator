@@ -4,6 +4,8 @@ export * from "./maps";
 
 export const MAX_CALC_SETUPS = 4;
 
+export const GENSHIN_DEV_URL = "https://api.genshin.dev";
+
 export enum EScreen {
   CALCULATOR = "Calculator",
   MY_SETUPS = "My Setups",

@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
 import cn from "classnames";
+import { type ReactNode, useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
 import type { CharInfo } from "@Src/types";
+import { GENSHIN_DEV_URL } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
+
 import { Green, CloseButton } from "@Src/styled-components";
 import { InfoSign, SharedSpace } from "@Components/minors";
 import { AbilityIcon, SlideShow } from "./components";
@@ -14,12 +18,8 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const { code, vision, constellation } = findCharacter(char)!;
-  let name = "";
-  if (consLv >= 1) {
-    name = constellation[consLv - 1].name;
-  }
-  const desc = "No description yet";
+  const { code, beta, vision, constellation } = findCharacter(char)!;
+  const { name, desc } = constellation[consLv - 1] || {};
 
   useEffect(() => {
     setAtDetails(false);
@@ -84,16 +84,14 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                 <p className="text-h6">
                   Constellation Lv. <Green b>{consLv}</Green>
                 </p>
-                <p className="mt-4">
-                  {consLv === 3 || consLv === 5 ? (
-                    <>
-                      Increases the Level of <Green>{desc}</Green> by <Green b>3</Green>.<br />{" "}
-                      Maximum upgrade level is 15.
-                    </>
-                  ) : (
-                    desc
-                  )}
-                </p>
+                {atDetails && (
+                  <ConstellationDetailDesc
+                    charName={char.name}
+                    beta={beta}
+                    consLv={consLv}
+                    desc={desc}
+                  />
+                )}
               </div>
             </div>
             <div className="mt-4">
@@ -109,5 +107,46 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
         ) : null
       }
     />
+  );
+}
+
+interface IConstellationDetailDescProps {
+  charName: string;
+  beta?: boolean;
+  consLv: number;
+  desc: ReactNode;
+}
+function ConstellationDetailDesc({ charName, beta, consLv, desc }: IConstellationDetailDescProps) {
+  const [descArr, setDescArr] = useState([]);
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
+
+  useEffect(() => {
+    if (!beta) {
+      setStatus("loading");
+
+      fetch(GENSHIN_DEV_URL + `/characters/` + charName)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            setStatus("error");
+          } else {
+            const { constellations = [] } = data;
+            setDescArr(constellations.map((constellation: any) => constellation.description));
+            setStatus("idle");
+          }
+        });
+    }
+  }, [beta]);
+
+  if (beta) {
+    return <p className="mt-4">{desc}</p>;
+  }
+
+  return (
+    <p className={cn("mt-4", status === "loading" && "py-4 flex justify-center")}>
+      {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
+      {status === "error" && "Error. Rebooting... Please comeback later."}
+      {status === "idle" && descArr[consLv - 1]}
+    </p>
   );
 }

@@ -261,9 +261,8 @@ const Nahida: DataCharacter = {
         const [buffValue, pyroCount] = getEBBuffValue(char, partyData);
         return (
           <>
-            While Nahida remains within the Shrine of Maya, the <Green>DMG</Green> dealt by{" "}
-            <Green>Tri-Karma Purification</Green> is increased by <Green b>{buffValue}%</Green> with{" "}
-            {pyroCount} Pyro teammate(s).
+            Within the Shrine of Maya, <Green>Tri-Karma Purification DMG</Green> is increased by{" "}
+            <Green b>{buffValue}%</Green> ({pyroCount} Pyro teammates).
           </>
         );
       },
@@ -283,7 +282,7 @@ const Nahida: DataCharacter = {
         initialValues: [0],
         maxValues: [9999],
       },
-      applyFinalBuff: ({ totalAttr, inputs, desc, tracker }) => {
+      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.2, 200), tracker);
       },
     },
@@ -306,7 +305,7 @@ const Nahida: DataCharacter = {
         initialValues: [1],
         maxValues: [4],
       },
-      applyFinalBuff: ({ totalAttr, inputs, desc, tracker }) => {
+      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", (inputs?.[0] || 0) * 20 + 80, tracker);
       },
     },

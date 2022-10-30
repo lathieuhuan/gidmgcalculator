@@ -16,7 +16,6 @@ import {
   ModifierCtrl,
   Reaction,
   ReactionBonus,
-  Weapon,
 } from "@Src/types";
 import { findByIndex, toMultiplier } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
@@ -28,7 +27,7 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import type { GetBuffedStatsArgs } from "./types";
+import type { GetBuffedStatsArgs, TUsedCode } from "./types";
 import {
   applyModifier,
   getQuickenBuffDamage,
@@ -61,19 +60,16 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs
     const buff = findByIndex(buffs, index);
 
     if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
-      let applyFn: Function | undefined;
-
-      if (!isFinal && buff.applyBuff) {
-        applyFn = buff.applyBuff;
-      } else if (isFinal && buff.applyFinalBuff) {
-        applyFn = buff.applyFinalBuff;
-      } else {
-        continue;
-      }
+      const applyFn =
+        !isFinal && buff.applyBuff
+          ? buff.applyBuff
+          : isFinal && buff.applyFinalBuff
+          ? buff.applyFinalBuff
+          : undefined;
 
       const desc = `Self / ${buff.src}`;
       const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
-      applyFn({ ...modifierArgs, charBuffCtrls, inputs: validatedInputs, toSelf: true, desc });
+      applyFn?.({ ...modifierArgs, charBuffCtrls, inputs: validatedInputs, toSelf: true, desc });
     }
   }
 }
@@ -96,6 +92,20 @@ export default function getBuffedStats({
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
   const artAttr = addArtAttr({ pieces, totalAttr, tracker });
+  const usedWpMods: TUsedCode[] = [];
+  const usedArtMods: TUsedCode[] = [];
+
+  function isNewMod(isWeapon: boolean, wpCode: number, modIndex: number) {
+    const usedMods = isWeapon ? usedWpMods : usedArtMods;
+    const foundItem = usedMods.find((mod) => mod.itemCode === wpCode);
+
+    if (foundItem && foundItem.modIndex === modIndex) {
+      return false;
+    } else {
+      usedMods.push({ itemCode: wpCode, modIndex });
+      return true;
+    }
+  }
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -182,8 +192,13 @@ export default function getBuffedStats({
   for (const { activated, index, inputs } of wpBuffCtrls) {
     if (weaponData.buffs) {
       const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
-      if (activated && applyBuff) {
-        applyBuff({ ...modifierArgs, refi, inputs, desc: `${weaponData.name} activated` });
+      if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
+        applyBuff({
+          ...modifierArgs,
+          refi,
+          inputs,
+          desc: `${weaponData.name} activated`,
+        });
       }
     } else {
       console.log(`buffs of main weapon not found`);
@@ -191,13 +206,16 @@ export default function getBuffedStats({
   }
 
   // APPLY ARTIFACT BUFFS
-  for (const { index, activated, inputs } of artBuffCtrls) {
-    const { name, buffs } = findArtifactSet({ code: sets[0].code }) || {};
-    const { applyBuff } = buffs?.[index] || {};
+  const mainArtCode = sets[0]?.code;
+  if (mainArtCode) {
+    for (const { index, activated, inputs } of artBuffCtrls) {
+      const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
+      const { applyBuff } = buffs?.[index] || {};
 
-    if (activated && applyBuff) {
-      const desc = `${name} (self) / 4-Piece activated`;
-      applyBuff({ ...modifierArgs, inputs, desc });
+      if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
+        const desc = `${name} (self) / 4-Piece activated`;
+        applyBuff({ ...modifierArgs, inputs, desc });
+      }
     }
   }
 
@@ -231,7 +249,7 @@ export default function getBuffedStats({
         const buff = findByIndex(buffs, index);
 
         if (buff) {
-          if (activated && buff?.applyBuff) {
+          if (activated && isNewMod(true, code, index) && buff?.applyBuff) {
             buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${name} activated` });
           }
         } else {
@@ -248,7 +266,7 @@ export default function getBuffedStats({
         const buff = findByIndex(buffs, index);
 
         if (buff) {
-          if (activated && buff.applyBuff) {
+          if (activated && isNewMod(false, code, index) && buff.applyBuff) {
             buff.applyBuff({ ...modifierArgs, inputs, desc: `${name} / 4-Piece activated` });
           }
         } else {

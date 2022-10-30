@@ -3,6 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import {
   BlackcliffSeries,
+  DesertSeries,
   DragonspineSeries,
   FavoniusSeries,
   RoyalSeries,
@@ -13,6 +14,13 @@ import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: DataWeapon[] = [
+  {
+    code: 144,
+    name: "Wandering Evenstar",
+    icon: "4/44/Weapon_Wandering_Evenstar",
+    passiveName: "Wildling Nightstar",
+    ...DesertSeries,
+  },
   {
     code: 137,
     name: "Fruit of Fulfillment",

@@ -16,6 +16,11 @@ import type {
   Tracker,
 } from "@Src/types";
 
+export type TUsedCode = {
+  itemCode: number;
+  modIndex: number;
+};
+
 export type BaseModifierArgsWrapper = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;

@@ -1,11 +1,63 @@
 import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { round2 } from "@Src/utils";
+import { applyPercent, round2 } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
+
+export const DesertSeries: Pick<
+  DataWeapon,
+  "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat"
+> = {
+  rarity: 4,
+  mainStatScale: "42",
+  subStat: { type: "em", scale: "36" },
+  buffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+        const buffValue = applyPercent(totalAttr.em, 18 + refi * 6);
+        console.log(totalAttr.em);
+        console.log(buffValue);
+        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+      },
+      desc: ({ refi }) => DesertSeries.passiveDesc({ refi }).extra?.[0],
+    },
+    {
+      index: 1,
+      affect: EModAffect.TEAMMATE,
+      inputConfig: {
+        labels: ["Elemental Mastery"],
+        renderTypes: ["text"],
+        initialValues: [0],
+      },
+      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+        const buffValue = applyPercent(inputs?.[0] || 0, ((18 + refi * 6) * 3) / 10);
+        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+      },
+      desc: ({ refi }) => DesertSeries.passiveDesc({ refi }).extra?.[0],
+    },
+  ],
+  passiveDesc: ({ refi }) => ({
+    get core() {
+      return <>{this.extra}</>;
+    },
+    extra: [
+      <>
+        Every 10s, the equipping character will gain <Green b>{18 + refi * 6}%</Green> of their{" "}
+        <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green> for 12s, with nearby party
+        members gaining <b>30%</b> of this buff for the same duration.
+      </>,
+      <>
+        Multiple instances of this weapon can allow this buff to stack. This effect will still
+        trigger even if the character is not on the field.
+      </>,
+    ],
+  }),
+};
 
 export const RoyalSeries: SeriesInfo = {
   buffs: [

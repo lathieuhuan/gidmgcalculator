@@ -99,6 +99,8 @@ export const calculatorSlice = createSlice({
       const { ID } = setupManageInfo;
 
       state.activeId = ID;
+      state.comparedIds = [];
+      state.standardId = 0;
       state.configs.separateCharInfo = false;
 
       state.charData = getCharData(result.char);
@@ -139,8 +141,9 @@ export const calculatorSlice = createSlice({
       state.monster = initMonster();
       state.configs.separateCharInfo = false;
       state.activeId = ID;
-      state.standardId = ID;
-      state.comparedIds = [ID];
+      // #to-do: add to compare when comparing setups of the same character
+      state.standardId = 0;
+      state.comparedIds = [];
 
       calculate(state);
     },
