@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const Heizou: DataCharacter = {
@@ -131,15 +131,13 @@ const Heizou: DataCharacter = {
         maxValues: [4],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        const stacks = getInput(inputs, 0, 0);
-        const paths: AttackPatternPath[] = ["ES.cRate"];
-        const buffValues = [4 * stacks];
+        const stacks = inputs?.[0] || 0;
 
-        if (stacks === 4) {
-          paths.push("ES.cDmg");
-          buffValues.push(32);
+        if (stacks !== 4) {
+          applyModifier(desc, attPattBonus, "ES.cRate", 4 * stacks, tracker);
+        } else {
+          applyModifier(desc, attPattBonus, ["ES.cRate", "ES.cDmg"], [4 * stacks, 32], tracker);
         }
-        applyModifier(desc, attPattBonus, paths, buffValues, tracker);
       },
     },
   ],

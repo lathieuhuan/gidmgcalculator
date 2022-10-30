@@ -1,23 +1,32 @@
 import { Fragment } from "react";
-import type { ArtifactBuff, CharBuffInputRenderType, ModifierInput } from "@Src/types";
+import type {
+  ArtifactBuff,
+  CharBuffInputRenderType,
+  ModifierInput,
+  TWeaponBuffInputRenderType,
+} from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { ANEMOABLE_OPTIONS, DENDROABLE_OPTIONS, TOption } from "../constants";
 
 import { Checkbox, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { useDispatch } from "@Store/hooks";
 import { changeModCtrlInput } from "@Store/calculatorSlice";
-import { genNumberSequence } from "@Src/utils";
+import { genNumberSequenceOptions } from "@Src/utils";
 
-interface CharModSettersProps {
+interface ISetterProps {
   labels: string[];
-  renderTypes: CharBuffInputRenderType[];
   initialValues: ModifierInput[];
   maxValues?: number[];
   inputs: ModifierInput[];
-  onTextChange: (text: string, inputIndex: number) => void;
-  onToggleCheck: (inputIndex: number) => void;
-  onSelect: (text: string, inputIndex: number) => void;
+  onTextChange?: (text: string, inputIndex: number) => void;
+  onToggleCheck?: (currentInput: number, inputIndex: number) => void;
+  onSelect?: (value: number, inputIndex: number) => void;
+}
+
+interface ICharModSettersProps extends ISetterProps {
+  renderTypes: CharBuffInputRenderType[];
 }
 export function CharModSetters({
   labels,
@@ -28,53 +37,54 @@ export function CharModSetters({
   onTextChange,
   onToggleCheck,
   onSelect,
-}: CharModSettersProps) {
+}: ICharModSettersProps) {
   //
   const renderInput = (index: number) => {
-    switch (renderTypes[index]) {
-      case "text": {
-        const input = inputs[index];
+    const input = inputs[index];
 
-        return typeof input === "boolean" ? null : (
+    switch (renderTypes[index]) {
+      case "text":
+        return (
           <input
             type="text"
-            className="w-20 p-2 text-right textinput-common"
+            className="w-20 p-2 text-right textinput-common font-bold"
             value={input}
-            onChange={(e) => onTextChange(e.target.value, index)}
+            onChange={(e) => onTextChange && onTextChange(e.target.value, index)}
           />
         );
-      }
       case "check":
+        const checked = input === 1;
         return (
           <Checkbox
             className="mr-1"
-            checked={!!inputs[index]}
-            onChange={() => onToggleCheck(index)}
+            checked={checked}
+            onChange={() => onToggleCheck && onToggleCheck(input, index)}
           />
         );
       default:
-        let options: (string | number)[] = [];
-        const input = inputs[index];
+        let options: TOption[] = [];
 
         switch (renderTypes[index]) {
           case "select":
-            options = genNumberSequence(maxValues?.[index], initialValues[index] === 0);
+            options = genNumberSequenceOptions(maxValues?.[index], initialValues[index] === 0);
             break;
           case "anemoable":
-            options = ["pyro", "hydro", "electro", "cryo"];
+            options = ANEMOABLE_OPTIONS;
             break;
           case "dendroable":
-            options = ["pyro", "hydro", "electro"];
+            options = DENDROABLE_OPTIONS;
             break;
         }
-        return typeof input === "boolean" ? null : (
+        return (
           <Select
             className={twInputStyles.select}
             value={input}
-            onChange={(e) => onSelect(e.target.value, index)}
+            onChange={(e) => onSelect && onSelect(+e.target.value, index)}
           >
             {options.map((opt, i) => (
-              <option key={i}>{opt}</option>
+              <option key={i} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
           </Select>
         );
@@ -96,7 +106,6 @@ interface SetterSectionProps {
 }
 export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   const dispatch = useDispatch();
-
   if (!buff.inputConfig) return null;
   const { labels, initialValues, maxValues, renderTypes } = buff.inputConfig;
 
@@ -104,16 +113,17 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
     <Fragment>
       {labels.map((label, i) => {
         const input = inputs[i];
-        let options: string[] | number[] = [];
+        let options: TOption[] = [];
 
-        if (renderTypes[i] === "stacks") {
-          options = genNumberSequence(maxValues?.[i], initialValues[i] === 0);
-        } //
-        else if (renderTypes[i] === "anemoable") {
-          options = ["pyro", "hydro", "electro", "cryo"];
+        switch (renderTypes[i]) {
+          case "stacks":
+            options = genNumberSequenceOptions(maxValues?.[i], initialValues[i] === 0);
+            break;
+          case "anemoable":
+            options = ANEMOABLE_OPTIONS;
+            break;
         }
-
-        return typeof input === "boolean" ? null : (
+        return (
           <Setter
             key={i}
             label={label}
@@ -122,19 +132,18 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
                 className={twInputStyles.select}
                 value={input}
                 onChange={(e) => {
-                  const { value } = e.target;
                   dispatch(
                     changeModCtrlInput({
                       ...path,
                       inputIndex: i,
-                      value: isNaN(+value) ? value : +value,
+                      value: +e.target.value,
                     })
                   );
                 }}
               >
-                {options.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
+                {options.map((opt, j) => (
+                  <option key={j} value={opt.value}>
+                    {opt.label}
                   </option>
                 ))}
               </Select>
@@ -142,6 +151,85 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
           />
         );
       })}
+    </Fragment>
+  );
+}
+
+interface IWeaponModSettersProps extends ISetterProps {
+  renderTypes: TWeaponBuffInputRenderType[];
+  options?: string[][];
+}
+export function WeaponModSetters({
+  labels,
+  renderTypes,
+  initialValues,
+  maxValues,
+  options = [],
+  inputs,
+  onTextChange,
+  onToggleCheck,
+  onSelect,
+}: IWeaponModSettersProps) {
+  //
+  const renderInput = (index: number) => {
+    const input = inputs[index];
+
+    switch (renderTypes[index]) {
+      case "text":
+        return (
+          <input
+            type="text"
+            className="w-20 p-2 text-right textinput-common font-bold"
+            value={input}
+            onChange={(e) => onTextChange && onTextChange(e.target.value, index)}
+          />
+        );
+      case "check":
+        const checked = input === 1;
+        return (
+          <Checkbox
+            className="mr-1"
+            checked={checked}
+            onChange={() => onToggleCheck && onToggleCheck(input, index)}
+          />
+        );
+      default:
+        let renderOptions: TOption[] = [];
+
+        switch (renderTypes[index]) {
+          case "stacks":
+            renderOptions = genNumberSequenceOptions(
+              maxValues?.[index],
+              initialValues[index] === 0
+            );
+            break;
+          case "choices":
+            renderOptions = options[index].map((option, i) => ({
+              label: option,
+              value: i,
+            }));
+            break;
+        }
+        return (
+          <Select
+            className={twInputStyles.select}
+            value={input}
+            onChange={(e) => onSelect && onSelect(+e.target.value, index)}
+          >
+            {renderOptions.map((opt, i) => (
+              <option key={i} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </Select>
+        );
+    }
+  };
+  return (
+    <Fragment>
+      {labels.map((label, i) => (
+        <Setter key={i} label={label} inputComponent={renderInput(i)} />
+      ))}
     </Fragment>
   );
 }

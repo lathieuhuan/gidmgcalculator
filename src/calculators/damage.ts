@@ -20,6 +20,7 @@ import type {
   AttackElementBonus,
   StatInfo,
   TCharData,
+  TArtifactDebuffCtrl,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
@@ -29,7 +30,7 @@ import {
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
-import { applyModifier, getDefaultStatInfo, getInput, pushOrMergeTrackerRecord } from "./utils";
+import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord } from "./types";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
@@ -207,6 +208,7 @@ interface GetDamageArgs {
   charData: TCharData;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
+  artDebuffCtrls: TArtifactDebuffCtrl[];
   party: Party;
   partyData: PartyData;
   totalAttr: TotalAttribute;
@@ -224,6 +226,7 @@ export default function getDamage({
   charData,
   selfBuffCtrls,
   selfDebuffCtrls,
+  artDebuffCtrls,
   party,
   partyData,
   totalAttr,
@@ -283,13 +286,15 @@ export default function getDamage({
   }
 
   // APPLY ARTIFACT DEBUFFS
-  // for (const { activated, code, index, inputs } of subArtDebuffCtrls) {
-  //   if (activated) {
-  //     const { name, debuffs } = findArtifactSet({ code })!;
-  //     const desc = `${name} / 4-Piece activated`;
-  //     debuffs![index].applyDebuff({ resistReduct, inputs, desc, tracker });
-  //   }
-  // }
+  for (const { activated, code, index, inputs } of artDebuffCtrls) {
+    if (activated) {
+      const { name, debuffs = [] } = findArtifactSet({ code }) || {};
+      if (name) {
+        const desc = `${name} / 4-Piece activated`;
+        debuffs[index]?.applyDebuff({ resistReduct, inputs, desc, tracker });
+      }
+    }
+  }
 
   // APPLY RESONANCE DEBUFFS
   const geoRsn = elmtModCtrls.resonances.find((rsn) => rsn.vision === "geo");
@@ -422,7 +427,7 @@ export default function getDamage({
     switch (teammate.name) {
       case "Nilou":
         const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 1) || {};
-        const maxHP = getInput(inputs, 0, 0);
+        const maxHP = inputs[0] || 0;
 
         if (activated && maxHP > 30000) {
           nilouA4BuffValue = Math.min(9 * (maxHP / 1000 - 30), 400);

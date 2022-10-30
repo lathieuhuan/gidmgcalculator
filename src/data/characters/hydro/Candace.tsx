@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Hydro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Candace: DataCharacter = {
@@ -189,7 +189,7 @@ const Candace: DataCharacter = {
         maxValues: [99999],
       },
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf ? totalAttr.hp : getInput(inputs, 0, 0);
+        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         applyModifier(desc, attPattBonus, "NA.pct", (maxHP / 1000) * 0.5, tracker);
       },
     },

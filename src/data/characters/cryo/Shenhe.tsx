@@ -3,13 +3,7 @@ import { Cryo, Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import {
-  applyModifier,
-  AttackPatternPath,
-  getInput,
-  increaseAttackBonus,
-  makeModApplier,
-} from "@Calculators/utils";
+import { applyModifier, increaseAttackBonus, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
@@ -19,7 +13,7 @@ const getEBDebuffValue = (
   inputs: ModifierInput[] | undefined,
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 0, 0);
+  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[0] || 0;
   return level ? Math.min(5 + level, 15) : 0;
 };
 
@@ -129,10 +123,8 @@ const Shenhe: DataCharacter = {
       },
       applyFinalBuff: (obj) => {
         const { toSelf, inputs } = obj;
-        const ATK = toSelf ? obj.totalAttr.atk : getInput(inputs, 0, 0);
-        const level = toSelf
-          ? finalTalentLv(obj.char, "ES", obj.partyData)
-          : getInput(inputs, 1, 0);
+        const ATK = toSelf ? obj.totalAttr.atk : inputs?.[0] || 0;
+        const level = toSelf ? finalTalentLv(obj.char, "ES", obj.partyData) : inputs?.[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraDesc = ` / Lv. ${level} / ${round2(mult)}% of ${ATK} ATK`;
 
@@ -184,13 +176,13 @@ const Shenhe: DataCharacter = {
         selfLabels: ["Press", "Hold"],
         labels: ["Press", "Hold"],
         renderTypes: ["check", "check"],
-        initialValues: [true, false],
+        initialValues: [1, 0],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        if (getInput(inputs, 0, false)) {
+        if (inputs?.[0] === 1) {
           applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
         }
-        if (getInput(inputs, 1, false)) {
+        if (inputs?.[0] === 1) {
           applyModifier(desc + " / Hold", attPattBonus, [...NCPA_PERCENTS], 15, tracker);
         }
       },
@@ -236,7 +228,7 @@ const Shenhe: DataCharacter = {
         maxValues: [50],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 5 * (inputs?.[0] || 0), tracker);
       },
     },
   ],

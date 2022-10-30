@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { BaneSeries1, CullTheWeak } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const otherClaymores: DataWeapon[] = [
@@ -60,7 +60,7 @@ const otherClaymores: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", (5 + refi) * getInput(inputs, 0, 0), tracker);
+          applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs?.[0] || 0), tracker);
         },
         desc: ({ refi }) => findByCode(otherClaymores, 50)!.passiveDesc({ refi }).core,
       },

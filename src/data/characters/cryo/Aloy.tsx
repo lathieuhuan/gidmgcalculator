@@ -3,7 +3,7 @@ import { Cryo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, totalXtraTalentLv } from "@Src/utils";
-import { applyModifier, getInput } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkAscs, findInput, modIsActivated } from "../utils";
 
 const getCoilStacksBuffValue = (
@@ -171,7 +171,7 @@ const Aloy: DataCharacter = {
         maxValues: [10],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "cryo", 3.5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "cryo", 3.5 * (inputs?.[0] || 0), tracker);
       },
     },
   ],

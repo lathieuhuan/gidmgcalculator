@@ -20,17 +20,13 @@ import { findCharacter } from "@Data/controllers";
 import { findByIndex, processNumInput } from "@Src/utils";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
+  const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const selfDebuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls;
   });
-  const dispatch = useDispatch();
 
-  const { debuffs } = findCharacter(char) || {};
-  if (!debuffs) {
-    return renderModifiers([], false);
-  }
-
+  const { debuffs = [] } = findCharacter(char) || {};
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach(({ index, activated, inputs }, ctrlIndex) => {
@@ -62,8 +58,10 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
                 })
               );
             }}
-            onToggleCheck={(i) => {
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }));
+            onToggleCheck={(currentInput, inputIndex) => {
+              dispatch(
+                changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 })
+              );
             }}
             onSelect={(value, i) => {
               dispatch(
@@ -157,23 +155,17 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
               })
             )
           }
-          onToggleCheck={(i) =>
+          onToggleCheck={(currentInput, inputIndex) =>
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
-                inputIndex: i,
-                value: !validatedInputs[i],
+                inputIndex,
+                value: currentInput === 1 ? 0 : 1,
               })
             )
           }
-          onSelect={(value, i) =>
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value: isNaN(+value) ? value : +value,
-              })
-            )
+          onSelect={(value, inputIndex) =>
+            dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))
           }
         />
       );

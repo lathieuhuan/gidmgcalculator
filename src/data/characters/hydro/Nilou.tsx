@@ -3,7 +3,7 @@ import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round1 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Nilou: DataCharacter = {
@@ -260,8 +260,7 @@ const Nilou: DataCharacter = {
         maxValues: [100000],
       },
       desc: ({ totalAttr, toSelf, inputs }) => {
-        const maxHP = toSelf ? totalAttr.hp : getInput(inputs, 0, 0);
-
+        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         return (
           <>
             {Nilou.passiveTalents[1].desc}{" "}

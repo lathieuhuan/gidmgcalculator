@@ -10,6 +10,7 @@ import type {
   CalcSetupManageInfo,
   TTeammateWeapon,
   TTeammateArtifact,
+  TArtifactDebuffCtrl,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
@@ -88,7 +89,7 @@ export function parseAndInitData(
     wpBuffCtrls,
     artInfo: { pieces, sets },
     artBuffCtrls: getMainArtBuffCtrls(setCode),
-  } as const;
+  };
 }
 
 export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
@@ -192,9 +193,12 @@ export function getMainArtBuffCtrls(code: number | null) {
   return result;
 }
 
-// export function getAllSubArtDebuffCtrls(): SubArtModCtrl[] {
-//   return [{ code: 15, activated: false, index: 0, inputs: ["pyro"] }];
-// }
+export function getArtDebuffCtrls(): TArtifactDebuffCtrl[] {
+  return [
+    { code: 15, activated: false, index: 0, inputs: [0] },
+    { code: 33, activated: false, index: 0 },
+  ];
+}
 
 export const getSetupManageInfo = ({
   name = "Setup 1",

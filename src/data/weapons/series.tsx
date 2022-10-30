@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { round2 } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
@@ -18,7 +18,7 @@ export const RoyalSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+        const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
       desc: ({ refi }) => RoyalSeries.passiveDesc({ refi }).core,
@@ -47,7 +47,7 @@ export const BlackcliffSeries: SeriesInfo = {
         initialValues: [3],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (9 + refi * 3) * getInput(inputs, 0, 0);
+        const buffValue = (9 + refi * 3) * (inputs?.[0] || 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => BlackcliffSeries.passiveDesc({ refi }).core,
@@ -133,11 +133,7 @@ export const LiyueSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        let buffValue = (3 + refi) * getInput(inputs, 0, 0);
-
-        if (getInput(inputs, 1, false)) {
-          buffValue *= 2;
-        }
+        const buffValue = (3 + refi) * (inputs?.[0] || 0) * (inputs?.[1] === 1 ? 2 : 1);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => LiyueSeries.passiveDesc!({ refi }).extra![0],

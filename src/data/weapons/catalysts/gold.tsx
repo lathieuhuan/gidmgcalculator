@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
@@ -80,7 +80,7 @@ const goldCatalysts: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stack = getInput(inputs, 0, 0);
+          const stack = inputs?.[0] || 0;
           applyModifier(desc, attPattBonus, "ES.pct", (9 + refi * 3) * stack, tracker);
 
           if (stack === 3) {
@@ -169,7 +169,7 @@ const goldCatalysts: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldCatalysts, 32)!.passiveDesc({ refi }).extra![0],

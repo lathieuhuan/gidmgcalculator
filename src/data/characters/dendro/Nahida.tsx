@@ -3,8 +3,8 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 import nahidaImg from "@Src/assets/images/nahida.png";
 
 function getEBBuffValue(char: CharInfo, partyData: PartyData) {
@@ -284,7 +284,7 @@ const Nahida: DataCharacter = {
         maxValues: [9999],
       },
       applyFinalBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", Math.min(getInput(inputs, 0, 0) * 0.2, 200), tracker);
+        applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.2, 200), tracker);
       },
     },
     {
@@ -307,7 +307,7 @@ const Nahida: DataCharacter = {
         maxValues: [4],
       },
       applyFinalBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 80 + getInput(inputs, 0, 0) * 20, tracker);
+        applyModifier(desc, totalAttr, "em", (inputs?.[0] || 0) * 20 + 80, tracker);
       },
     },
   ],

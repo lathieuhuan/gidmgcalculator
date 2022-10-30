@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
@@ -154,7 +154,7 @@ const Thoma: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "shStr", 5 * (inputs?.[0] || 0), tracker);
       },
     },
     {

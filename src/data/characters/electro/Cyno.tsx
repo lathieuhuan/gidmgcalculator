@@ -2,7 +2,7 @@ import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA4talentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
@@ -300,8 +300,7 @@ const Cyno: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const stacks = getInput(inputs, 0, 0);
-        applyModifier(desc, totalAttr, "electro", stacks * 10, tracker);
+        applyModifier(desc, totalAttr, "electro", (inputs?.[0] || 0) * 10, tracker);
       },
     },
   ],

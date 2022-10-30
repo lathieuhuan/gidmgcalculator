@@ -1,16 +1,20 @@
+import { useEffect } from "react";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+import { ANEMOABLE_OPTIONS } from "../constants";
+
 import {
   changeModCtrlInput,
   toggleModCtrl,
   updateResonance,
   updateCalcSetup,
 } from "@Store/calculatorSlice";
-import { selectElmtModCtrls } from "@Store/calculatorSlice/selectors";
+import { selectArtInfo, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactSet } from "@Data/controllers";
 
-import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { Green, ModifierTemplate, Select } from "@Src/styled-components";
+import { renderModifiers } from "@Components/minors";
+import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -63,20 +67,45 @@ export function ElementDebuffs() {
 
 export function ArtifactDebuffs() {
   const dispatch = useDispatch();
-  const subDebuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].subArtDebuffCtrls;
+  const artDebuffCtrls = useSelector((state) => {
+    return state.calculator.setupsById[state.calculator.activeId].artDebuffCtrls;
   });
+  const { code, bonusLv } = useSelector(selectArtInfo).sets[0] || {};
+  const party = useSelector(selectParty);
+
+  const usedArtCodes = party.reduce(
+    (accumulator, teammate) => {
+      if (teammate && teammate.artifact.code) {
+        accumulator.push(teammate.artifact.code);
+      }
+      return accumulator;
+    },
+    [code && bonusLv === 1 ? code : 0]
+  );
+
+  useEffect(() => {
+    artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
+      if (ctrl.activated && !usedArtCodes.includes(ctrl.code)) {
+        dispatch(
+          toggleModCtrl({
+            modCtrlName: "artDebuffCtrls",
+            ctrlIndex,
+          })
+        );
+      }
+    });
+  }, [JSON.stringify(usedArtCodes)]);
+
   const content: JSX.Element[] = [];
 
-  subDebuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { code, inputs } = ctrl;
-    const artSetData = findArtifactSet({ code });
-    if (!artSetData) return;
-
-    const { name, debuffs } = artSetData;
+  artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
+    if (!usedArtCodes.includes(ctrl.code)) return;
+    const { index, activated, inputs } = ctrl;
+    const { name, debuffs } = findArtifactSet(ctrl) || {};
+    if (!name) return;
 
     const path: ToggleModCtrlPath = {
-      modCtrlName: "subArtDebuffCtrls",
+      modCtrlName: "artDebuffCtrls",
       ctrlIndex,
     };
     let setters;
@@ -94,13 +123,15 @@ export function ArtifactDebuffs() {
                   changeModCtrlInput({
                     ...path,
                     inputIndex: 0,
-                    value: e.target.value,
+                    value: +e.target.value,
                   })
                 );
               }}
             >
-              {["pyro", "hydro", "electro", "cryo"].map((element) => (
-                <option key={element}>{element}</option>
+              {ANEMOABLE_OPTIONS.map((opt, i) => (
+                <option key={i} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
             </Select>
           }
@@ -110,14 +141,13 @@ export function ArtifactDebuffs() {
     content.push(
       <ModifierTemplate
         key={ctrlIndex}
-        checked={ctrl.activated}
+        checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
-        desc={debuffs?.[ctrl.index]?.desc()}
+        desc={debuffs?.[index]?.desc()}
         setters={setters}
       />
     );
   });
-
-  return <>{content}</>;
+  return renderModifiers(content, false);
 }

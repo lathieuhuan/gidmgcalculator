@@ -1,9 +1,9 @@
-import type { DataCharacter, ModifierInput, TotalAttribute, Vision } from "@Src/types";
+import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { Anemo, Green, Red } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect, NORMAL_ATTACKS, VISION_TYPES } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round2 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
@@ -113,28 +113,33 @@ const Kazuha: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C4,
-      desc: ({ toSelf, totalAttr, inputs }) => (
-        <>
-          Upon triggering a Swirl, Kazuha will grant all party members a <Green b>0.04%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> to the element absorbed by Swirl for every point of{" "}
-          <Green>Elemental Mastery</Green> he has for 8s.{" "}
-          <Red>
-            {inputs?.[0]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs || [])}%.
-          </Red>
-        </>
-      ),
+      desc: ({ toSelf, totalAttr, inputs = [] }) => {
+        const elmtIndex = inputs[0] || 0;
+        return (
+          <>
+            Upon triggering a Swirl, Kazuha will grant all party members a <Green b>0.04%</Green>{" "}
+            <Green>Elemental DMG Bonus</Green> to the element absorbed by Swirl for every point of{" "}
+            <Green>Elemental Mastery</Green> he has for 8s.{" "}
+            <Red className="capitalize">
+              {VISION_TYPES[elmtIndex]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs || [])}
+              %.
+            </Red>
+          </>
+        );
+      },
       isGranted: checkAscs[4],
       affect: EModAffect.PARTY,
       inputConfig: {
         labels: ["Element Swirled", "Elemental Mastery"],
         selfLabels: ["Element Swirled"],
         renderTypes: ["anemoable", "text"],
-        initialValues: ["pyro", 0],
+        initialValues: [0, 0],
         maxValues: [0, 9999],
       },
-      applyBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
-        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs || []);
-        applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, buffValue, tracker);
+      applyBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
+        const elmtIndex = inputs[0] || 0;
+        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
+        applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], buffValue, tracker);
       },
     },
     {

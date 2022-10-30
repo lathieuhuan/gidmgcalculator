@@ -39,6 +39,7 @@ export type CalcSetup = {
   wpBuffCtrls: ModifierCtrl[];
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
+  artDebuffCtrls: TArtifactDebuffCtrl[];
 
   party: Party;
   elmtModCtrls: ElementModCtrl;
@@ -55,7 +56,7 @@ export type TCharData = {
   EBcost: number;
 };
 
-export type ModifierInput = string | number | boolean;
+export type ModifierInput = number;
 
 export type ModifierCtrl = {
   activated: boolean;
@@ -106,6 +107,10 @@ export type CalcArtSet = {
 export type CalcArtInfo = {
   pieces: CalcArtPieces;
   sets: CalcArtSet[];
+};
+
+export type TArtifactDebuffCtrl = ModifierCtrl & {
+  code: number;
 };
 // ARTIFACTS ends
 

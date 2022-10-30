@@ -176,7 +176,6 @@ type InputConfig = {
   maxValues?: number[]; // no max = 0
 };
 
-// #to-do
 export type CharBuffInputRenderType = "text" | "check" | "select" | "anemoable" | "dendroable";
 
 type BuffInputConfig = InputConfig & {

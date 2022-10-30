@@ -1,8 +1,8 @@
-import type { DataArtifact, Vision } from "@Src/types";
+import type { DataArtifact } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 
 const liyueSets: DataArtifact[] = [
   {
@@ -176,7 +176,7 @@ const liyueSets: DataArtifact[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "pyro", 7.5 * getInput(inputs, 0, 0), tracker);
+          applyModifier(desc, totalAttr, "pyro", 7.5 * (inputs?.[0] || 0), tracker);
         },
       },
     ],
@@ -278,10 +278,11 @@ const liyueSets: DataArtifact[] = [
         inputConfig: {
           labels: ["Element"],
           renderTypes: ["anemoable"],
-          initialValues: ["pyro"],
+          initialValues: [0],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, 35, tracker);
+          const elmtIndex = inputs?.[0] || 0;
+          applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 35, tracker);
         },
       },
     ],
@@ -393,7 +394,7 @@ const liyueSets: DataArtifact[] = [
           maxValues: [2],
         },
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const stacks = getInput(inputs, 0, 0);
+          const stacks = inputs?.[0] || 0;
           applyModifier(desc, totalAttr, "atk_", 9 * stacks, tracker);
 
           if (stacks === 2) {

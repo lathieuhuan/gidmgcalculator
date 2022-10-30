@@ -1,8 +1,8 @@
 import type { DataArtifact, Vision } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 
 const mondstadtSets: DataArtifact[] = [
   {
@@ -159,10 +159,8 @@ const mondstadtSets: DataArtifact[] = [
           renderTypes: ["anemoable"],
         },
         applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-          const key = getInput(inputs, 0, "pyro") as Vision;
-          if (key in resistReduct) {
-            applyModifier(desc, resistReduct, key, 40, tracker);
-          }
+          const elmtIndex = inputs?.[0] || 0;
+          applyModifier(desc, resistReduct, VISION_TYPES[elmtIndex], 40, tracker);
         },
       },
     ],

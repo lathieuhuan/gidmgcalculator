@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const polarStarBuffValuesByStack = (refi: number) => [
@@ -131,7 +131,8 @@ const goldBows: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = polarStarBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
+          const valueIndex = (inputs?.[0] || 0) - 1;
+          const buffValue = polarStarBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 6)!.passiveDesc({ refi }).extra![0],
@@ -180,7 +181,8 @@ const goldBows: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = thunderingPulseBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
+          const valueIndex = (inputs?.[0] || 0) - 1;
+          const buffValue = thunderingPulseBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 7)!.passiveDesc({ refi }).extra![0],
@@ -229,7 +231,7 @@ const goldBows: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 8)!.passiveDesc({ refi }).extra![0],

@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkAscs, checkCons } from "../utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DataCharacter = {
   code: 46,
@@ -87,15 +87,15 @@ const ElectroMC: DataCharacter = {
       inputConfig: {
         labels: ["A4 Passive Talent", "Energy Recharge"],
         renderTypes: ["check", "text"],
-        initialValues: [false, 100],
+        initialValues: [0, 100],
         maxValues: [0, 999],
       },
       applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {
         let bonusValue = 20;
-        const boosted = toSelf ? checkAscs[4](char) : getInput(inputs, 0, false);
+        const boosted = toSelf ? checkAscs[4](char) : inputs?.[0] === 1;
 
         if (boosted) {
-          const ER = toSelf ? totalAttr.er : getInput(inputs, 1, 0);
+          const ER = toSelf ? totalAttr.er : inputs?.[1] || 0;
           bonusValue += Math.round(ER) / 10;
         }
         applyModifier(desc, totalAttr, "er", bonusValue, tracker);

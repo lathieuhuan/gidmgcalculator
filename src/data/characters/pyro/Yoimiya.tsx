@@ -3,7 +3,7 @@ import { Green, Pyro } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
@@ -136,7 +136,7 @@ const Yoimiya: DataCharacter = {
         maxValues: [10],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "pyro", 2 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "pyro", 2 * (inputs?.[0] || 0), tracker);
       },
     },
     {
@@ -160,7 +160,7 @@ const Yoimiya: DataCharacter = {
         maxValues: [10],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "atk_", 10 + getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "atk_", 10 + (inputs?.[0] || 0), tracker);
       },
     },
     {

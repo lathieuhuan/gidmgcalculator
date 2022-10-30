@@ -3,12 +3,12 @@ import { Electro, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput, increaseAttackBonus } from "@Calculators/utils";
+import { applyModifier, increaseAttackBonus } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const getAttackBuffValue = (inputs: ModifierInput[] | undefined): [number, string] => {
-  const baseATK = getInput(inputs, 0, 0);
-  const level = getInput(inputs, 1, 0);
+  const baseATK = inputs?.[0] || 0;
+  const level = inputs?.[1] || 1;
   const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];
   return [applyPercent(baseATK, mult), `${level} / ${round2(mult)}% of ${baseATK} Base ATK`];
 };

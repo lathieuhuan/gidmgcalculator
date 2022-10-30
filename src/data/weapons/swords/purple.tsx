@@ -9,7 +9,7 @@ import {
   SacrificialSeries,
 } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleSwords: DataWeapon[] = [
@@ -130,7 +130,7 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * getInput(inputs, 0, 0);
+          const buffValue = (3 + refi * 1) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
@@ -238,7 +238,7 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0, 0);
+          const buffValue = (4.5 + refi * 1.5) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,

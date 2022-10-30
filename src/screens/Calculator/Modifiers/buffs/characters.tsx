@@ -24,6 +24,7 @@ import { ModifierTemplate } from "@Src/styled-components";
 import { CharModSetters } from "../components";
 
 export function SelfBuffs() {
+  const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const charData = useSelector(selectCharData);
   const partyData = getPartyData(useSelector(selectParty));
@@ -31,7 +32,6 @@ export function SelfBuffs() {
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
-  const dispatch = useDispatch();
 
   const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
   const content: JSX.Element[] = [];
@@ -63,7 +63,7 @@ export function SelfBuffs() {
 
       if (buff.inputConfig) {
         const { selfLabels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
-        const validatedInputs = inputs || buff.inputConfig.initialValues;
+        const validatedInputs = inputs || initialValues;
 
         setters = (
           <CharModSetters
@@ -81,9 +81,10 @@ export function SelfBuffs() {
                 })
               );
             }}
-            onToggleCheck={(i) =>
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: !validatedInputs[i] }))
-            }
+            onToggleCheck={(currentinput, i) => {
+              const newInput = currentinput === 1 ? 0 : 1;
+              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: newInput }));
+            }}
             onSelect={(value, i) => {
               dispatch(
                 changeModCtrlInput({
@@ -185,12 +186,12 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
               })
             );
           }}
-          onToggleCheck={(i) => {
+          onToggleCheck={(currentInput, i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: !validatedInputs[i],
+                value: currentInput === 1 ? 0 : 1,
               })
             );
           }}
@@ -199,7 +200,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: isNaN(+value) ? value : +value,
+                value: +value,
               })
             );
           }}

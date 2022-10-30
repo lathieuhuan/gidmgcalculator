@@ -4,7 +4,7 @@ import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { LiyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const mistsplitterBuffValuesByStack = (refi: number) => [
@@ -33,8 +33,7 @@ const goldSwords: DataWeapon[] = [
           maxValues: [3],
         },
         applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const stacks = getInput(inputs, 0, 0);
-          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * stacks;
+          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
@@ -49,8 +48,7 @@ const goldSwords: DataWeapon[] = [
           maxValues: [99999],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const maxHP = getInput(inputs, 0, 0);
-          const buffValue = applyPercent(maxHP, 0.15 + refi * 0.05);
+          const buffValue = applyPercent(inputs?.[0] || 0, 0.15 + refi * 0.05);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
@@ -101,7 +99,7 @@ const goldSwords: DataWeapon[] = [
           maxValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (15 + refi * 5) * getInput(inputs, 0, 0);
+          const buffValue = (15 + refi * 5) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
@@ -148,7 +146,8 @@ const goldSwords: DataWeapon[] = [
           maxValues: [3],
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const buffValue = mistsplitterBuffValuesByStack(refi)[getInput(inputs, 0, 1) - 1];
+          const valueIndex = (inputs?.[0] || 0) - 1;
+          const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],

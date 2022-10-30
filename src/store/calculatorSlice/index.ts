@@ -38,6 +38,7 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import { bareLv, countVision, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
 import {
   calculate,
+  getArtDebuffCtrls,
   getArtifactSets,
   getMainArtBuffCtrls,
   getMainWpBuffCtrls,
@@ -111,6 +112,7 @@ export const calculatorSlice = createSlice({
           wpBuffCtrls: result.wpBuffCtrls,
           artInfo: result.artInfo,
           artBuffCtrls: result.artBuffCtrls,
+          artDebuffCtrls: getArtDebuffCtrls(),
           party: [null, null, null],
           elmtModCtrls: initElmtModCtrls(),
           customBuffCtrls: [],
@@ -436,8 +438,10 @@ export const calculatorSlice = createSlice({
       const { modCtrlName, ctrlIndex } = action.payload;
       const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
 
-      ctrl.activated = !ctrl.activated;
-      calculate(state);
+      if (ctrl) {
+        ctrl.activated = !ctrl.activated;
+        calculate(state);
+      }
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
@@ -600,6 +604,7 @@ export const calculatorSlice = createSlice({
                 sets: [],
               },
               artBuffCtrls: [],
+              artDebuffCtrls: getArtDebuffCtrls(),
               party: [null, null, null],
               elmtModCtrls,
               customBuffCtrls: [],

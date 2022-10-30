@@ -12,7 +12,7 @@ import { Electro, Green, Red } from "@Src/styled-components";
 import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
-import { applyModifier, AttackPatternPath, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
 export const isshinBonusMults = [
@@ -47,7 +47,7 @@ const getBuffValue = {
     inputs: ModifierInput[] | undefined,
     partyData: PartyData
   ) => {
-    const level = toSelf ? finalTalentLv(char, "ES", partyData) : getInput(inputs, 0, 0);
+    const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs?.[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
     return [round1(EBcost * mult), `${level} / ${round2(mult)}% * ${EBcost} Energy Cost`] as const;
   },

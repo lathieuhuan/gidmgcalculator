@@ -94,16 +94,16 @@ export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 1
 
 export const toMultiplier = (n: number) => 1 + n / 100;
 
-export const genNumberSequence = (
-  max: number | undefined,
+export const genNumberSequenceOptions = (
+  max: number | undefined = 0,
   startsAt0: boolean = false,
   min: number = 1
 ) => {
-  const result = Array.from({ length: max || 0 }, (_, i) => i + min);
-  if (startsAt0) {
-    result.unshift(0);
-  }
-  return result;
+  const result = [...Array(max)].map((_, i) => {
+    const value = i + min;
+    return { label: value, value };
+  });
+  return startsAt0 ? [{ label: 0, value: 0 }].concat(result) : result;
 };
 
 export function processNumInput(input: string, before: number, max: number = 9999) {

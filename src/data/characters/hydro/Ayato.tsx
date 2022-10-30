@@ -11,7 +11,7 @@ import { EModAffect } from "@Src/constants";
 import { NORMAL_ATTACKS } from "@Src/constants";
 import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkCons, findInput, modIsActivated, talentBuff } from "../utils";
 
 const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]) =>
@@ -36,7 +36,7 @@ const getEBBuffValue = (
   partyData: PartyData,
   inputs: ModifierInput[] | undefined
 ) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : getInput(inputs, 0, 0);
+  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;
 };
 

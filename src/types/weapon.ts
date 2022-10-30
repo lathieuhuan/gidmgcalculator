@@ -22,17 +22,17 @@ export type DataWeapon = {
     type: ArtifactPercentStat | "em" | "phys";
     scale: string;
   };
-  applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  applyBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
+  applyFinalBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
   passiveName: string;
-  passiveDesc: (args: WpDescArgs) => {
+  passiveDesc: (args: TWeaponDescArgs) => {
     core?: JSX.Element;
     extra?: JSX.Element[];
   };
-  buffs?: WeaponBuff[];
+  buffs?: TWeaponBuff[];
 };
 
-type ApplyWpPassiveBuffsArgs = {
+type TApplyWpPassiveBuffsArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
@@ -43,13 +43,13 @@ type ApplyWpPassiveBuffsArgs = {
   tracker?: Tracker;
 };
 
-type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
+type TApplyWpBuffArgs = BuffModifierArgsWrapper & {
   inputs?: ModifierInput[];
   refi: number;
   desc?: string;
 };
 
-type ApplyWpFinalBuffArgs = {
+type TApplyWpFinalBuffArgs = {
   totalAttr: TotalAttribute;
   refi: number;
   desc?: string;
@@ -57,23 +57,26 @@ type ApplyWpFinalBuffArgs = {
   inputs?: ModifierInput[];
 };
 
-type WpDescArgs = {
+type TWeaponDescArgs = {
   refi: number;
 };
 
-type WeaponBuff = {
+export type TWeaponBuffInputRenderType = "text" | "check" | "choices" | "stacks";
+
+type TWeaponBuff = {
   index: number;
   affect: EModAffect;
   inputConfig?: {
     labels: string[];
-    renderTypes: ("stacks" | "check" | "choices" | "text")[];
+    renderTypes: TWeaponBuffInputRenderType[];
     initialValues: ModifierInput[];
     maxValues?: number[];
+    options?: string[][];
   };
-  applyBuff?: (args: ApplyWpBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
+  applyBuff?: (args: TApplyWpBuffArgs) => void;
+  applyFinalBuff?: (args: TApplyWpFinalBuffArgs) => void;
   desc: (
-    args: WpDescArgs & {
+    args: TWeaponDescArgs & {
       totalAttr: TotalAttribute;
     }
   ) => ReactNode;

@@ -26,6 +26,7 @@ import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
 import { getQuickenBuffDamage } from "@Calculators/utils";
+import { ANEMOABLE_OPTIONS } from "../constants";
 
 export function ElementBuffs() {
   const dispatch = useDispatch();
@@ -184,18 +185,15 @@ function QuickenBuff({ vision }: { vision: Vision }) {
 export function ArtifactBuffs() {
   const dispatch = useDispatch();
   const { sets } = useSelector(selectArtInfo);
-  const buffCtrls = useSelector((state) => {
+  const artBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].artBuffCtrls;
   });
   const party = useSelector(selectParty);
-  // const subBuffCtrls = useSelector((state) => {
-  //   return state.calculator.setupsById[state.calculator.activeId].subArtBuffCtrls;
-  // });
 
   const content: JSX.Element[] = [];
   const mainCode = sets[0]?.code;
 
-  buffCtrls.forEach((ctrl, ctrlIndex) => {
+  artBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, inputs } = ctrl;
     const { name, buffs } = findArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
@@ -242,30 +240,27 @@ export function ArtifactBuffs() {
 
     buffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
       const buff = findByIndex(buffs, index);
-      let setters = null;
       if (!buff) return;
+      let setters = null;
 
       if (buff.inputConfig) {
-        setters = [];
-
-        inputs.forEach((input, inputIndex) => {
-          if (typeof input === "boolean") return;
-
-          setters.push(
+        // Archaic Petra
+        setters = inputs.map((input, inputIndex) => {
+          return (
             <Setter
               key={inputIndex}
               label={name}
               inputComponent={
                 <Select
-                  className={twInputStyles.select + " capitalize"}
+                  className={twInputStyles.select}
                   value={input}
                   onChange={(e) => {
-                    updateArtifactInputs(ctrlIndex, inputIndex, e.target.value);
+                    updateArtifactInputs(ctrlIndex, inputIndex, +e.target.value);
                   }}
                 >
-                  {["pyro", "hydro", "electro", "cryo"].map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
+                  {ANEMOABLE_OPTIONS.map((opt, i) => (
+                    <option key={i} value={opt.value}>
+                      {opt.label}
                     </option>
                   ))}
                 </Select>
@@ -274,7 +269,6 @@ export function ArtifactBuffs() {
           );
         });
       }
-
       content.push(
         <ModifierTemplate
           key={teammateIndex.toString() + code + ctrlIndex}
@@ -297,29 +291,5 @@ export function ArtifactBuffs() {
       );
     });
   });
-
-  // subBuffCtrls.forEach((ctrl, ctrlIndex) => {
-  //   const { code, activated, inputs } = ctrl;
-  //   const { name, buffs } = findArtifactSet({ code })!;
-  //   const buff = findByIndex(buffs!, ctrl.index);
-  //   if (!buff) return;
-
-  //   const path: ToggleModCtrlPath = {
-  //     modCtrlName: "subArtBuffCtrls",
-  //     ctrlIndex,
-  //   };
-  //   content.push(
-  //     <ModifierTemplate
-  //       key={code.toString() + ctrlIndex}
-  //       checked={activated}
-  //       onToggle={() => dispatch(toggleModCtrl(path))}
-  //       heading={name}
-  //       desc={buff.desc()}
-  //       setters={
-  //         inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
-  //       }
-  //     />
-  //   );
-  // });
   return renderModifiers(content, true);
 }

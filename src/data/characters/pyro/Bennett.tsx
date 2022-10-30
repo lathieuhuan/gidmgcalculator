@@ -3,17 +3,17 @@ import { Green, Pyro, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
-  const baseATK = getInput(inputs, 0, 0);
-  const level = getInput(inputs, 1, 0);
-  const boosted = getInput(inputs, 2, false);
-  let mult = 56 * TALENT_LV_MULTIPLIERS[2][+level];
+  const baseATK = inputs?.[0] || 0;
+  const level = inputs?.[1] || 0;
+  const boosted = (inputs?.[2] || 0) === 1;
+  let mult = 56 * TALENT_LV_MULTIPLIERS[2][level];
   let desc = level.toString();
 
-  if (boosted) {
+  if (level && boosted) {
     mult += 20;
     desc += ` / C1: 20% extra`;
   }
@@ -142,13 +142,17 @@ const Bennett: DataCharacter = {
       inputConfig: {
         labels: ["Base ATK", "Elemental Burst Level", "Constellation 1"],
         renderTypes: ["text", "text", "check"],
-        initialValues: [0, 1, false],
+        initialValues: [0, 1, 0],
         maxValues: [9999, 13, 0],
       },
       applyBuff: (obj) => {
         const { char, totalAttr } = obj;
         const args = obj.toSelf
-          ? [totalAttr.base_atk, finalTalentLv(obj.char, "EB", obj.partyData), checkCons[1](char)]
+          ? [
+              totalAttr.base_atk,
+              finalTalentLv(obj.char, "EB", obj.partyData),
+              checkCons[1](char) ? 1 : 0,
+            ]
           : obj.inputs;
         const [buffValue, xtraDesc] = getEBBuffValue(args);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;

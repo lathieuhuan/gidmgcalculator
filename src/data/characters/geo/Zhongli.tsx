@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, AttackPatternPath, getInput } from "@Calculators/utils";
+import { applyModifier, AttackPatternPath } from "@Calculators/utils";
 import { checkAscs } from "../utils";
 
 const Zhongli: DataCharacter = {
@@ -154,7 +154,7 @@ const Zhongli: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "shStr", 5 * (inputs?.[0] || 0), tracker);
       },
     },
   ],

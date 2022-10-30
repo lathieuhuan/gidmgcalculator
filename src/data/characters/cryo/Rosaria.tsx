@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const Rosaria: DataCharacter = {
@@ -102,7 +102,7 @@ const Rosaria: DataCharacter = {
         <>
           Casting Rites of Termination increases <Green>CRIT Rate</Green> of all nearby party
           members (excluding Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green>{" "}
-          for 10s. <Red>CRIT Rate Bonus: {Math.round(getInput(inputs, 0, 0) * 1.5) / 10}%.</Red>
+          for 10s. <Red>CRIT Rate Bonus: {Math.round((inputs?.[0] || 0) * 15) / 100}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],
@@ -114,7 +114,7 @@ const Rosaria: DataCharacter = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const buffValue = Math.round(getInput(inputs, 0, 0) * 1.5) / 10;
+        const buffValue = Math.round((inputs?.[0] || 0) * 15) / 100;
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
     },

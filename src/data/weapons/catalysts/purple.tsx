@@ -9,7 +9,7 @@ import {
   SacrificialSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: DataWeapon[] = [
@@ -31,7 +31,7 @@ const purpleCatalysts: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
-          const stacks = getInput(inputs, 0, 0);
+          const stacks = inputs?.[0] || 0;
           const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
           applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
         },
@@ -130,12 +130,15 @@ const purpleCatalysts: DataWeapon[] = [
         inputConfig: {
           labels: ["Element"],
           renderTypes: ["choices"],
-          initialValues: ["pyro"],
-          // options: [["Pyro", "Hydro", "Cryo", "Anemo"]],
+          initialValues: [0],
+          options: [["Pyro", "Hydro", "Cryo", "Anemo"]],
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { vision } = charData;
-          if (vision === "electro" || vision === getInput(inputs, 0, "")) {
+          const optionIndex = inputs?.[0] || 0;
+          const elmtIndex = [0, 1, 3, 5][optionIndex];
+
+          if (vision === "electro" || vision === VISION_TYPES[elmtIndex]) {
             applyModifier(desc, totalAttr, vision, 7.5 + refi * 2.5, tracker);
           }
         },
@@ -181,7 +184,7 @@ const purpleCatalysts: DataWeapon[] = [
           maxValues: [2],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleCatalysts, 40)!.passiveDesc({ refi }).core,
@@ -211,18 +214,18 @@ const purpleCatalysts: DataWeapon[] = [
         inputConfig: {
           labels: ["Theme Song"],
           renderTypes: ["choices"],
-          initialValues: ["Recitative"],
-          // options: [["Recitative", "Aria", "Interlude"]],
+          initialValues: [0],
+          options: [["Recitative", "Aria", "Interlude"]],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffType = getInput(inputs, 0, "Aria");
+          const buffIndex = inputs?.[0] || 0;
 
-          if (buffType === "Aria") {
+          if (buffIndex === 0) {
+            applyModifier(desc, totalAttr, "atk_", 45 + refi * 15, tracker);
+          } else if (buffIndex === 1) {
             applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
           } else {
-            const field = buffType === "Recitative" ? "atk_" : "em";
-            const buffValue = buffType === "Recitative" ? 45 + refi * 15 : 180 + refi * 60;
-            applyModifier(desc, totalAttr, field, buffValue, tracker);
+            applyModifier(desc, totalAttr, "em", 180 + refi * 60, tracker);
           }
         },
         desc: ({ refi }) => findByCode(purpleCatalysts, 41)!.passiveDesc({ refi }).core,

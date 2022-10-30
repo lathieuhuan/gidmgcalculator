@@ -2,12 +2,11 @@ import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   const isActivated = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
-
   return talentBuff([isActivated, "cRate", [true, 1], 20]);
 };
 
@@ -165,7 +164,7 @@ const Ganyu: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs?.[0] || 0), tracker);
       },
     },
   ],

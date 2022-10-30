@@ -12,7 +12,7 @@ import {
   WatatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleClaymores: DataWeapon[] = [
@@ -117,7 +117,7 @@ const purpleClaymores: DataWeapon[] = [
           maxValues: [4],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * getInput(inputs, 0, 0);
+          const buffValue = (4.5 + refi * 1.5) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleClaymores, 64)!.passiveDesc({ refi }).core,
@@ -170,7 +170,7 @@ const purpleClaymores: DataWeapon[] = [
           maxValues: [5],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (5 + refi) * getInput(inputs, 0, 0);
+          const buffValue = (5 + refi) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => (

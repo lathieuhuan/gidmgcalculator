@@ -1,8 +1,8 @@
-import type { DataCharacter, Vision } from "@Src/types";
+import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 
 const Sucrose: DataCharacter = {
   code: 3,
@@ -102,7 +102,7 @@ const Sucrose: DataCharacter = {
           hits an opponent, increases all party members' (excluding Sucrose){" "}
           <Green>Elemental Mastery</Green> based on <Green b>20%</Green> of Sucrose's{" "}
           <Green>Elemental Mastery</Green> for 8s.{" "}
-          <Red>Elemental Mastery Bonus: {Math.round(getInput(inputs, 0, 0) * 0.2)}.</Red>
+          <Red>Elemental Mastery Bonus: {Math.round((inputs?.[0] || 0) * 0.2)}.</Red>
         </>
       ),
       affect: EModAffect.TEAMMATE,
@@ -113,7 +113,7 @@ const Sucrose: DataCharacter = {
         maxValues: [9999],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", Math.round(getInput(inputs, 0, 0) * 0.2), tracker);
+        applyModifier(desc, totalAttr, "em", Math.round((inputs?.[0] || 0) * 0.2), tracker);
       },
     },
     {
@@ -130,10 +130,11 @@ const Sucrose: DataCharacter = {
       inputConfig: {
         labels: ["Element Absorbed"],
         renderTypes: ["anemoable"],
-        initialValues: ["pyro"],
+        initialValues: [0],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, getInput(inputs, 0, "pyro") as Vision, 20, tracker);
+        const elmtIndex = inputs?.[0] || 0;
+        applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 20, tracker);
       },
     },
   ],

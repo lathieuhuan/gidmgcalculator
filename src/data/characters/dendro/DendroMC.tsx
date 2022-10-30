@@ -1,8 +1,8 @@
-import type { DataCharacter, Vision } from "@Src/types";
+import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, getInput } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const DendroMC: DataCharacter = {
@@ -136,7 +136,7 @@ const DendroMC: DataCharacter = {
         maxValues: [10],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 6 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "em", 6 * (inputs?.[0] || 0), tracker);
       },
     },
     {
@@ -149,11 +149,11 @@ const DendroMC: DataCharacter = {
         labels: ["Element contact"],
         selfLabels: ["Element contact"],
         renderTypes: ["dendroable"],
-        initialValues: ["Pyro"],
+        initialValues: [0],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        const paths: Vision[] = ["dendro", getInput(inputs, 0, "pyro") as Vision];
-        applyModifier(desc, totalAttr, paths, 12, tracker);
+        const elmtIndex = inputs?.[0] || 0;
+        applyModifier(desc, totalAttr, ["dendro", VISION_TYPES[elmtIndex]], 12, tracker);
       },
     },
   ],

@@ -1,8 +1,9 @@
-import type { DataCharacter, Vision } from "@Src/types";
+import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
+import { VISION_TYPES } from "@Src/constants";
 
 const AnemoMC: DataCharacter = {
   code: 1,
@@ -85,11 +86,11 @@ const AnemoMC: DataCharacter = {
         selfLabels: ["Element Absorbed"],
         labels: ["Element Absorbed"],
         renderTypes: ["anemoable"],
-        initialValues: ["pyro"],
+        initialValues: [0],
       },
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        const paths: Vision[] = ["anemo", `${getInput(inputs, 0, "pyro")}` as Vision];
-        applyModifier(desc, resistReduct, paths, 20, tracker);
+        const elmtIndex = inputs?.[0] || 0;
+        applyModifier(desc, resistReduct, ["anemo", VISION_TYPES[elmtIndex]], 20, tracker);
       },
     },
   ],

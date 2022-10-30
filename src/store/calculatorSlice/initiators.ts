@@ -91,7 +91,7 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
     labels.forEach((_, i) => {
       const type = renderTypes[i];
       if (type === "anemoable") {
-        inputs.push("pyro");
+        inputs.push(0);
       } else if (type === "text") {
         inputs.push(1); // level
       }

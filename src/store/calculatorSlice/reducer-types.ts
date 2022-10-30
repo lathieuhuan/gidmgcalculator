@@ -58,11 +58,16 @@ export type UpdateCalcSetupAction = PayloadAction<
 
 type InputInfo = {
   inputIndex: number;
-  value: string | number | boolean;
+  value: number;
 };
 
 export type ToggleModCtrlPath = {
-  modCtrlName: "selfBuffCtrls" | "selfDebuffCtrls" | "wpBuffCtrls" | "artBuffCtrls";
+  modCtrlName:
+    | "selfBuffCtrls"
+    | "selfDebuffCtrls"
+    | "wpBuffCtrls"
+    | "artBuffCtrls"
+    | "artDebuffCtrls";
   ctrlIndex: number;
 };
 export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;

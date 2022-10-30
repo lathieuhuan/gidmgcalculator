@@ -3,7 +3,7 @@ import { Anemo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, getInput } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkAscs } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
@@ -155,7 +155,7 @@ const Xiao: DataCharacter = {
         maxValues: [5],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 5 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs?.[0] || 0), tracker);
       },
     },
     {
@@ -177,7 +177,7 @@ const Xiao: DataCharacter = {
         maxValues: [3],
       },
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 15 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 15 * (inputs?.[0] || 0), tracker);
       },
     },
   ],

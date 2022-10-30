@@ -11,7 +11,7 @@ import {
   WatatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { getInput, applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purplePolearms: DataWeapon[] = [
@@ -171,7 +171,7 @@ const purplePolearms: DataWeapon[] = [
           maxValues: [2],
         },
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * getInput(inputs, 0, 0);
+          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purplePolearms, 91)!.passiveDesc({ refi }).core,
@@ -237,14 +237,13 @@ const purplePolearms: DataWeapon[] = [
         inputConfig: {
           labels: ["Fewer than 2 opponents"],
           renderTypes: ["check"],
-          initialValues: [true],
+          initialValues: [1],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          if (getInput(inputs, 0, false)) {
+          if (inputs?.[0] === 1) {
             applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);
           } else {
-            const buffValue = 12 + refi * 4;
-            applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
+            applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);
           }
         },
         desc: ({ refi }) => findByCode(purplePolearms, 95)!.passiveDesc({ refi }).core,

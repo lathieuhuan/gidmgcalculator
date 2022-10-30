@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Tighnari: DataCharacter = {
@@ -220,10 +220,10 @@ const Tighnari: DataCharacter = {
         labels: ["Trigger reactions"],
         selfLabels: ["Trigger reactions"],
         renderTypes: ["check"],
-        initialValues: [false],
+        initialValues: [0],
       },
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 60 + (getInput(inputs, 0, false) ? 60 : 0), tracker);
+        applyModifier(desc, totalAttr, "em", 60 + (inputs?.[0] === 1 ? 60 : 0), tracker);
       },
     },
   ],

@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, getInput, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 import laylaImg from "@Src/assets/images/layla.png";
@@ -232,7 +232,7 @@ const Layla: DataCharacter = {
         maxValues: [4],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 6 * getInput(inputs, 0, 0), tracker);
+        applyModifier(desc, totalAttr, "shStr", 6 * (inputs?.[0] || 0), tracker);
       },
     },
     {
@@ -248,7 +248,7 @@ const Layla: DataCharacter = {
         maxValues: [99999],
       },
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf ? totalAttr.hp : getInput(inputs, 0, 0);
+        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         const buffValue = applyPercent(maxHP, 5);
         applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       },
