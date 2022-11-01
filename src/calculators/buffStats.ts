@@ -27,7 +27,7 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import type { GetBuffedStatsArgs, TUsedCode } from "./types";
+import type { GetBuffedStatsArgs, UsedCode } from "./types";
 import {
   applyModifier,
   getQuickenBuffDamage,
@@ -37,7 +37,6 @@ import {
   vaporizeMult,
 } from "./utils";
 import { RESONANCE_STAT } from "./constants";
-import { current } from "@reduxjs/toolkit";
 
 interface ApplySelfBuffs {
   isFinal: boolean;
@@ -48,11 +47,12 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs
   const { char } = modifierArgs;
   const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
 
-  if (!isFinal) {
-    for (const { src, isGranted, applyBuff } of innateBuffs) {
-      if (isGranted(char) && applyBuff) {
-        applyBuff({ ...modifierArgs, charBuffCtrls, desc: `Self / ${src}` });
-      }
+  for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
+    if (isGranted(char)) {
+      const applyFn =
+        !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+
+      applyFn?.({ ...modifierArgs, charBuffCtrls, desc: `Self / ${src}` });
     }
   }
 
@@ -92,8 +92,8 @@ export default function getBuffedStats({
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
   const artAttr = addArtAttr({ pieces, totalAttr, tracker });
-  const usedWpMods: TUsedCode[] = [];
-  const usedArtMods: TUsedCode[] = [];
+  const usedWpMods: UsedCode[] = [];
+  const usedArtMods: UsedCode[] = [];
 
   function isNewMod(isWeapon: boolean, wpCode: number, modIndex: number) {
     const usedMods = isWeapon ? usedWpMods : usedArtMods;
@@ -188,36 +188,7 @@ export default function getBuffedStats({
     }
   }
 
-  // APPLY WEAPON BUFFS
-  for (const { activated, index, inputs } of wpBuffCtrls) {
-    if (weaponData.buffs) {
-      const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
-      if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
-        applyBuff({
-          ...modifierArgs,
-          refi,
-          inputs,
-          desc: `${weaponData.name} activated`,
-        });
-      }
-    } else {
-      console.log(`buffs of main weapon not found`);
-    }
-  }
-
-  // APPLY ARTIFACT BUFFS
-  const mainArtCode = sets[0]?.code;
-  if (mainArtCode) {
-    for (const { index, activated, inputs } of artBuffCtrls) {
-      const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
-      const { applyBuff } = buffs?.[index] || {};
-
-      if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
-        const desc = `${name} (self) / 4-Piece activated`;
-        applyBuff({ ...modifierArgs, inputs, desc });
-      }
-    }
-  }
+  applySelfBuffs({ isFinal: false, modifierArgs, charBuffCtrls: selfBuffCtrls });
 
   // APPPLY TEAMMATE BUFFS
   for (const teammate of party) {
@@ -276,7 +247,33 @@ export default function getBuffedStats({
     })();
   }
 
-  applySelfBuffs({ isFinal: false, modifierArgs, charBuffCtrls: selfBuffCtrls });
+  // APPLY WEAPON BUFFS
+  for (const { activated, index, inputs } of wpBuffCtrls) {
+    if (weaponData.buffs) {
+      const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
+      if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
+        const desc = `${weaponData.name} activated`;
+        applyBuff({ ...modifierArgs, refi, inputs, desc });
+      }
+    } else {
+      console.log(`buffs of main weapon not found`);
+    }
+  }
+
+  // APPLY ARTIFACT BUFFS
+  const mainArtCode = sets[0]?.code;
+  if (mainArtCode) {
+    for (const { index, activated, inputs } of artBuffCtrls) {
+      const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
+      const { applyBuff } = buffs?.[index] || {};
+
+      if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
+        const desc = `${name} (self) / 4-Piece activated`;
+        applyBuff({ ...modifierArgs, inputs, desc });
+      }
+    }
+  }
+
   calcFinalTotalAttrs(totalAttr);
 
   applyArtPassiveBuffs({ isFinal: true, sets, modifierArgs });

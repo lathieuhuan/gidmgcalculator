@@ -120,7 +120,7 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.flat", Math.round(totalAttr.hp / 10), tracker);
       },
     },

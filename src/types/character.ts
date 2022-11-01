@@ -1,4 +1,4 @@
-import { EModAffect } from "@Src/constants";
+import type { ReactNode } from "react";
 import type {
   AttackElement,
   AttackPattern,
@@ -15,16 +15,14 @@ import type {
   CharData,
   ModifierCtrl,
   PartyData,
-  ReactionBonus,
   ResistanceReduction,
   AttackPatternBonus,
   AttackPatternInfoKey,
   TotalAttribute,
   ModifierInput,
-  AttackElementBonus,
   BuffModifierArgsWrapper,
 } from "./calculator";
-import { ReactNode } from "react";
+import { EModAffect } from "@Src/constants";
 
 export type DataCharacter = {
   code: number;
@@ -146,19 +144,12 @@ type InnateBuff = {
     totalAttr: TotalAttribute;
   }) => ReactNode;
   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
 
-type ApplyCharInnateBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
-  rxnBonus: ReactionBonus;
-  // char: CharInfo;
-  charData: CharData;
-  partyData: PartyData;
+type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
   charBuffCtrls: ModifierCtrl[];
   desc: string;
-  tracker?: Tracker;
 };
 
 type AbilityModifier = {

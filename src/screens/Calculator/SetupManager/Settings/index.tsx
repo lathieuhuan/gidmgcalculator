@@ -14,7 +14,7 @@ import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/util
 import { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 import { updateUI } from "@Store/uiSlice";
 
-import { Button, Checkbox, Green } from "@Src/styled-components";
+import { Button, Green } from "@Src/styled-components";
 import { TipsModal } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
 import SectionTarget from "../SectionTarget";
@@ -254,7 +254,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
               <div className="space-y-4">
                 {CONFIG_OPTIONS.map(({ field, desc }, i) => (
                   <label key={i} className="flex items-center group">
-                    <Checkbox
+                    <input
+                      type="checkbox"
                       className="ml-1 mr-4 scale-180"
                       checked={tempConfigs[field]}
                       onChange={() =>

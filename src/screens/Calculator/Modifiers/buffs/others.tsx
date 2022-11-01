@@ -18,7 +18,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { Checkbox, Green, ModifierTemplate, Select } from "@Src/styled-components";
+import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { SetterSection } from "../components";
 
@@ -59,7 +59,9 @@ export function ElementBuffs() {
                 : "Trigger Burning, Quicken, Bloom"
             }
             inputComponent={
-              <Checkbox
+              <input
+                type="checkbox"
+                className="scale-180"
                 checked={activated}
                 onChange={() => {
                   const newInputs = [...inputs];

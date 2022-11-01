@@ -16,7 +16,7 @@ import type {
   Tracker,
 } from "@Src/types";
 
-export type TUsedCode = {
+export type UsedCode = {
   itemCode: number;
   modIndex: number;
 };

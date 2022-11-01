@@ -72,11 +72,6 @@ export const CloseButton = ({ className, ...rest }: CloseButtonProps) => {
   );
 };
 
-export const Checkbox = (props: InputHTMLAttributes<HTMLInputElement>) => {
-  const { className, type, ...rest } = props;
-  return <input type="checkbox" className={cn("scale-150", className)} {...rest} />;
-};
-
 export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
   return (
     <select

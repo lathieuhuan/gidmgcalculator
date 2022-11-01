@@ -1,7 +1,6 @@
 import cn from "classnames";
 import type { HTMLAttributes } from "react";
 import type { Vision } from "@Src/types";
-import { Checkbox } from "./inputs";
 import { ReactNode } from "react";
 
 type SpanExtraColor = "gold" | "lightgold" | "lightred" | "green" | "orange";
@@ -48,7 +47,14 @@ export function ModifierTemplate({
     <div>
       <div className="mb-1 flex">
         <label className="flex items-center">
-          {mutable && <Checkbox className="ml-1 mr-2" checked={checked} onChange={onToggle} />}
+          {mutable && (
+            <input
+              type="checkbox"
+              className="ml-1 mr-2 scale-150"
+              checked={checked}
+              onChange={onToggle}
+            />
+          )}
           <span className="pl-1 font-bold text-lightgold">
             {mutable ? "" : "+"} {heading}
           </span>
@@ -56,7 +62,7 @@ export function ModifierTemplate({
       </div>
       <p>{desc}</p>
       {setters && (
-        <div className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-2 space-y-5" : "space-y-2")}>
+        <div className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "space-y-2")}>
           {setters}
         </div>
       )}

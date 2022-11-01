@@ -62,10 +62,10 @@ export function SelfBuffs() {
       let setters = null;
 
       if (buff.inputConfig) {
-        const { selfLabels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
+        const { selfLabels, renderTypes, initialValues, maxValues } = buff.inputConfig;
         const validatedInputs = inputs || initialValues;
 
-        setters = (
+        setters = selfLabels ? (
           <CharModSetters
             labels={selfLabels}
             renderTypes={renderTypes}
@@ -95,7 +95,7 @@ export function SelfBuffs() {
               );
             }}
           />
-        );
+        ) : null;
       }
       content.push(
         <ModifierTemplate
@@ -228,8 +228,13 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   });
   return (
     <div>
-      <p className={`text-h6 text-${vision} font-bold text-center uppercase`}>{teammate.name}</p>
-      <div className="mt-3 space-y-3">{subContent}</div>
+      <p
+        className={`text-h6 text-${vision} font-bold text-center uppercase`}
+        style={{ marginTop: "-0.25rem" }}
+      >
+        {teammate.name}
+      </p>
+      <div className="mt-1 space-y-3">{subContent}</div>
     </div>
   );
 }

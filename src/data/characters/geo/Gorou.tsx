@@ -146,7 +146,7 @@ const Gorou: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const bnValues = [totalAttr.def * 1.56, totalAttr.def * 0.156];
         applyModifier(desc, attPattBonus, ["ES.flat", "EB.flat"], bnValues, tracker);
       },

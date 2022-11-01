@@ -39,7 +39,7 @@ const purpleSwords: DataWeapon[] = [
           initialValues: [0],
         },
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = applyPercent(inputs?.[0] || 0, (2.7 + refi * 0.9) * 0.3);
+          const buffValue = Math.round((inputs?.[0] || 0) * (27 + refi * 9) * 0.003) / 10;
           applyModifier(desc, totalAttr, "er", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],

@@ -222,7 +222,7 @@ const Nilou: DataCharacter = {
       src: EModSrc.C6,
       desc: () => Nilou.constellation[5].desc,
       isGranted: checkCons[6],
-      applyBuff: ({ totalAttr, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const baseValue = round1(Math.min((totalAttr.hp / 1000) * 0.6, 30));
         const buffValues = [baseValue, baseValue * 2];
         applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValues, tracker);

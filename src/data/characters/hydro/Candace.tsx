@@ -185,7 +185,7 @@ const Candace: DataCharacter = {
       inputConfig: {
         labels: ["Max HP"],
         renderTypes: ["text"],
-        initialValues: [912],
+        initialValues: [0],
         maxValues: [99999],
       },
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {

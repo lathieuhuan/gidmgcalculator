@@ -95,7 +95,7 @@ const YaeMiko: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct", (totalAttr.em * 15) / 100, tracker);
       },
     },

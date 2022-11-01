@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { DataType, Filter, PickerItem } from "./types";
 
 import { CollapseSpace } from "@Components/collapse";
-import { Checkbox, ModalHeader } from "@Src/styled-components";
+import { ModalHeader } from "@Src/styled-components";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 
@@ -63,7 +63,12 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
           {needMassAdd && (
             <div className="absolute right-16 flex items-center">
               <label className="flex font-bold text-black">
-                <Checkbox checked={massAdd} onChange={() => setMassAdd((prev) => !prev)} />
+                <input
+                  type="checkbox"
+                  className="scale-150"
+                  checked={massAdd}
+                  onChange={() => setMassAdd((prev) => !prev)}
+                />
                 <span className="ml-2 pt-1">Mass Add ({amount.total})</span>
               </label>
             </div>

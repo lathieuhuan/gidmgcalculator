@@ -8,7 +8,7 @@ import type {
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { ANEMOABLE_OPTIONS, DENDROABLE_OPTIONS, TOption } from "../constants";
 
-import { Checkbox, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { useDispatch } from "@Store/hooks";
@@ -55,8 +55,9 @@ export function CharModSetters({
       case "check":
         const checked = input === 1;
         return (
-          <Checkbox
-            className="mr-1"
+          <input
+            type="checkbox"
+            className="mr-1 scale-180"
             checked={checked}
             onChange={() => onToggleCheck && onToggleCheck(input, index)}
           />
@@ -90,6 +91,7 @@ export function CharModSetters({
         );
     }
   };
+
   return (
     <Fragment>
       {labels.map((label, i) => (
@@ -187,8 +189,9 @@ export function WeaponModSetters({
       case "check":
         const checked = input === 1;
         return (
-          <Checkbox
-            className="mr-1"
+          <input
+            type="checkbox"
+            className="mr-1 scale-180"
             checked={checked}
             onChange={() => onToggleCheck && onToggleCheck(input, index)}
           />

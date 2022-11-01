@@ -1,6 +1,5 @@
 import cn from "classnames";
 import type { ModifierInput } from "@Src/types";
-import { Checkbox } from "@Src/styled-components";
 
 interface ModifierWrapperProps {
   className?: string;
@@ -38,7 +37,7 @@ export function renderSetters(
       <p className={cn(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
 
       {renderTypes[i] === "check" ? (
-        <Checkbox className="mr-1" checked={true} readOnly />
+        <input type="checkbox" className="mr-1 scale-150" checked={true} readOnly />
       ) : (
         <p className="text-orange font-bold">{inputs[i]}</p>
       )}

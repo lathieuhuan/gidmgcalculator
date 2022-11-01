@@ -10,7 +10,7 @@ import {
   selectTarget,
 } from "@Store/calculatorSlice/selectors";
 
-import { Checkbox, tableStyles } from "@Src/styled-components";
+import { tableStyles } from "@Src/styled-components";
 import { ButtonBar, SeeDetails } from "@Components/minors";
 import { CollapseSpace } from "@Components/collapse";
 
@@ -85,7 +85,12 @@ export function OverrideOptions({
                 <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>
                   <div className="px-8 flex align-center">
                     <label>
-                      <Checkbox checked={ticked[i]} onChange={onChangeTickedOption(i)} />
+                      <input
+                        type="checkbox"
+                        className="scale-150"
+                        checked={ticked[i]}
+                        onChange={onChangeTickedOption(i)}
+                      />
                       <span className="ml-4 text-h6">{text}</span>
                     </label>
                     <SeeDetails

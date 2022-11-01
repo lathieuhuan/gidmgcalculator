@@ -146,7 +146,7 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "CA.flat", Math.round(totalAttr.def / 2), tracker);
       },
     },

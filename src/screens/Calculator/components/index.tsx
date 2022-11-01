@@ -58,7 +58,7 @@ interface SetterProps {
 }
 export const Setter = ({ label, inputComponent }: SetterProps) => {
   return (
-    <div className="flex items-center justify-end">
+    <div className="flex items-center justify-end h-9">
       <span className="mr-4 text-base leading-6 text-right">{label}</span>
       {inputComponent}
     </div>
