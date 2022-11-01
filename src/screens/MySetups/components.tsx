@@ -1,5 +1,6 @@
 import cn from "classnames";
 import type { ModifierInput } from "@Src/types";
+import { VISION_TYPES } from "@Src/constants";
 
 interface ModifierWrapperProps {
   className?: string;
@@ -39,7 +40,11 @@ export function renderSetters(
       {renderTypes[i] === "check" ? (
         <input type="checkbox" className="mr-1 scale-150" checked={true} readOnly />
       ) : (
-        <p className="text-orange font-bold">{inputs[i]}</p>
+        <p className="text-orange font-bold capitalize">
+          {["anemoable", "dendroable"].includes(renderTypes[i])
+            ? VISION_TYPES[inputs[i]]
+            : inputs[i]}
+        </p>
       )}
     </div>
   ));

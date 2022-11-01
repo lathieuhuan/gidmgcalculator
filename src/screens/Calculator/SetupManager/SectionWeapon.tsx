@@ -68,7 +68,9 @@ export default function SectionWeapon() {
               onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
             >
               {[1, 2, 3, 4, 5].map((level) => (
-                <option key={level}>{level}</option>
+                <option key={level} value={level}>
+                  {level}
+                </option>
               ))}
             </Select>
           </div>

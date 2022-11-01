@@ -60,9 +60,13 @@ export function ModifierTemplate({
           </span>
         </label>
       </div>
+
       <p>{desc}</p>
+
       {setters && (
-        <div className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "space-y-2")}>
+        <div
+          className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}
+        >
           {setters}
         </div>
       )}

@@ -228,9 +228,13 @@ export function SetBonus({ noTitle, sets }: SetBonusProps) {
   );
 }
 
-export const renderModifiers = (modifiers: JSX.Element[], isBuff: boolean) => {
+export const renderModifiers = (
+  modifiers: JSX.Element[],
+  isBuff: boolean,
+  mutable: boolean = true
+) => {
   return modifiers.length ? (
-    <div className="pt-2 space-y-3">{modifiers}</div>
+    <div className={mutable ? "pt-2 space-y-3" : "space-y-2"}>{modifiers}</div>
   ) : (
     <p className="pt-6 pb-4 text-center">No {isBuff ? "buffs" : "debuffs"} found</p>
   );

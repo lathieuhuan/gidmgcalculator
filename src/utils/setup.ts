@@ -2,7 +2,7 @@ import type { CalcSetup, ModifierInput, Party } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import { getMainArtBuffCtrls, getMainWpBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
-import { findByIndex } from "./index";
+import { deepCopy, findByIndex } from "./index";
 
 export function cleanCalcSetup(data: CalcSetup): CalcSetup {
   const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
@@ -10,22 +10,12 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
 
   for (const teammate of data.party) {
     if (teammate) {
-      // #to-do filter weapon, artifact?
       party.push({
         name: teammate.name,
         buffCtrls: teammate.buffCtrls.filter((ctrl) => ctrl.activated),
         debuffCtrls: teammate.debuffCtrls.filter((ctrl) => ctrl.activated),
-        weapon: {
-          code: 0,
-          refi: 1,
-          type: "bow",
-          buffCtrls: [],
-        },
-        artifact: {
-          code: 0,
-          buffCtrls: [],
-          debuffCtrls: [],
-        },
+        weapon: teammate.weapon,
+        artifact: teammate.artifact,
       });
     }
   }
@@ -46,6 +36,7 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
     wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
     party,
     artBuffCtrls: data.artBuffCtrls.filter((ctrl) => ctrl.activated),
+    artDebuffCtrls: data.artDebuffCtrls.filter((ctrl) => ctrl.activated),
     customBuffCtrls: data.customBuffCtrls.filter((ctrl) => ctrl.value),
     customDebuffCtrls: data.customDebuffCtrls.filter((ctrl) => ctrl.value),
   };
@@ -87,22 +78,12 @@ export function restoreCalcSetup(data: CalcSetup) {
 
     if (teammate) {
       const [buffCtrls, debuffCtrls] = initCharModCtrls(teammate.name, false);
-      // #to-do
       party.push({
         name: teammate.name,
         buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),
         debuffCtrls: restoreModCtrls(debuffCtrls, teammate.debuffCtrls),
-        weapon: {
-          code: 0,
-          refi: 1,
-          type: "bow",
-          buffCtrls: [],
-        },
-        artifact: {
-          code: 0,
-          buffCtrls: [],
-          debuffCtrls: [],
-        },
+        weapon: deepCopy(teammate.weapon),
+        artifact: deepCopy(teammate.artifact),
       });
     } else {
       party.push(null);

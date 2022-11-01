@@ -272,7 +272,7 @@ function TeammateDetail({
                 <div className="flex items-center">
                   <span>Refinement</span>
                   <Select
-                    className={`ml-2 text-rarity-${weaponData.rarity} text-right`}
+                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
                     value={weapon.refi}
                     onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
                   >
@@ -314,7 +314,7 @@ function TeammateDetail({
           </p>
           {artifactSetName && (
             <button
-              className="self-start pt-2 shrink-0 text-xl hover:text-darkred"
+              className="self-start pt-2 pr-1 shrink-0 text-xl hover:text-darkred"
               onClick={onClickRemoveArtifact}
             >
               <FaTimes />

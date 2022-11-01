@@ -1,9 +1,7 @@
-import { renderModifiers } from "@Components/minors";
-import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { resonanceRenderInfo } from "@Src/constants";
-import { Green, ModifierTemplate } from "@Src/styled-components";
-import {
+import type {
   AbilityDebuff,
+  ArtifactDebuffCtrl,
   CharInfo,
   CustomDebuffCtrl,
   ModifierCtrl,
@@ -11,7 +9,13 @@ import {
   PartyData,
   Resonance,
 } from "@Src/types";
+
+import { useTranslation } from "@Hooks/useTranslation";
+import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
+
+import { Green, ModifierTemplate } from "@Src/styled-components";
+import { renderModifiers } from "@Components/minors";
 import { renderSetters } from "../components";
 
 interface ElementDebuffsProps {
@@ -41,7 +45,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
     content.push(<ModifierTemplate key="geo" mutable={false} heading={name} desc={desc} />);
   }
 
-  return renderModifiers(content, false);
+  return renderModifiers(content, false, false);
 }
 
 interface SelfDebuffsProps {
@@ -68,7 +72,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
       );
     }
   }
-  return renderModifiers(content, false);
+  return renderModifiers(content, false, false);
 }
 
 interface PartyDebuffsProps {
@@ -118,45 +122,49 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       }
     }
   }
-  return renderModifiers(content, false);
+  return renderModifiers(content, false, false);
 }
 
-interface ArtifactDebuffsProps {}
-export function ArtifactDebuffs({}: ArtifactDebuffsProps) {
+interface ArtifactDebuffsProps {
+  artDebuffCtrls: ArtifactDebuffCtrl[];
+}
+export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
-  // for (const { code, index, inputs } of subArtDebuffCtrls) {
-  //   const artifactData = findArtifactSet({ code });
-  //   if (!artifactData) {
-  //     continue;
-  //   }
-  //   const { name, debuffs = [] } = artifactData;
-  //   const debuff = debuffs[index];
+  for (const { code, index, inputs } of artDebuffCtrls) {
+    const artifactData = findArtifactSet({ code });
+    if (!artifactData) {
+      continue;
+    }
+    const { name, debuffs = [] } = artifactData;
+    const debuff = debuffs[index];
 
-  //   if (debuff) {
-  //     content.push(
-  //       <ModifierTemplate
-  //         key={index}
-  //         mutable={false}
-  //         heading={name}
-  //         desc={debuff.desc()}
-  //         setters={renderSetters(debuff.inputConfig, inputs)}
-  //       />
-  //     );
-  //   }
-  // }
-  return renderModifiers(content, false);
+    if (debuff) {
+      content.push(
+        <ModifierTemplate
+          key={index}
+          mutable={false}
+          heading={name}
+          desc={debuff.desc()}
+          setters={renderSetters(debuff.inputConfig, inputs)}
+        />
+      );
+    }
+  }
+  return renderModifiers(content, false, false);
 }
 
 interface CustomDebuffsProps {
   customDebuffCtrls: CustomDebuffCtrl[];
 }
 export function CustomDebuffs({ customDebuffCtrls }: CustomDebuffsProps) {
+  const { t } = useTranslation();
+
   const content = customDebuffCtrls.map(({ type, value }, i) => (
-    <div key={i} className="pt-2 flex justify-end">
-      <p className="mr-4">{type}</p>
+    <div key={i} className="flex justify-end">
+      <p className="mr-4">{t(type, { ns: "resistance" })}</p>
       <p className="text-orange font-bold">{value}%</p>
     </div>
   ));
-  return renderModifiers(content, false);
+  return renderModifiers(content, false, false);
 }

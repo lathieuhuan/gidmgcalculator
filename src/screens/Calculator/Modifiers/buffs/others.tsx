@@ -222,7 +222,7 @@ export function ArtifactBuffs() {
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
     const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [] } = findArtifactSet({ code }) || {};
+    const { name, buffs = [] } = findArtifactSet(teammate.artifact) || {};
     if (!name) return;
 
     const updateArtifactInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {

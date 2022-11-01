@@ -13,25 +13,39 @@ import type {
   ReactionBonus,
   TotalAttribute,
   Weapon,
+  Vision,
+  InnateBuff,
 } from "@Src/types";
 import { resonanceRenderInfo } from "@Src/constants";
 
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Src/styled-components";
+import { Green, ModifierTemplate } from "@Src/styled-components";
 import { renderSetters } from "../components";
 
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { findByIndex, percentSign } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
+import { getQuickenBuffDamage } from "@Calculators/utils";
 
 interface ElementBuffsProps {
   elmtModCtrls: ElementModCtrl;
-  char: CharInfo;
   finalInfusion: FinalInfusion;
   rxnBonus: ReactionBonus;
+  vision: Vision;
+  quickenBuff?: {
+    label: string;
+    value: number;
+  };
 }
-export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: ElementBuffsProps) {
+export function ElementBuffs({
+  elmtModCtrls,
+  finalInfusion,
+  rxnBonus,
+  vision,
+  quickenBuff,
+}: ElementBuffsProps) {
   const content = [];
-  const { resonances, ampRxn, infusion_ampRxn } = elmtModCtrls;
+  const { resonances, ampRxn, infusion_ampRxn, spread, aggravate } = elmtModCtrls;
 
   for (const { vision } of resonances) {
     const { name, desc } = resonanceRenderInfo[vision];
@@ -43,7 +57,7 @@ export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: El
         key="ampRxn"
         mutable={false}
         heading={ampRxn}
-        desc={renderAmpReactionDesc(findCharacter(char)!.vision, rxnBonus[ampRxn])}
+        desc={renderAmpReactionDesc(vision, rxnBonus[ampRxn])}
       />
     );
   }
@@ -57,7 +71,22 @@ export function ElementBuffs({ elmtModCtrls, char, finalInfusion, rxnBonus }: El
       />
     );
   }
-  return renderModifiers(content, true);
+  if (quickenBuff) {
+    content.push(
+      <ModifierTemplate
+        mutable={false}
+        key={quickenBuff.label}
+        heading={quickenBuff.label}
+        desc={
+          <>
+            Increase base <span className={`text-${vision} capitalize`}>{vision} DMG</span> by{" "}
+            <Green b>{quickenBuff.value}</Green>.
+          </>
+        }
+      />
+    );
+  }
+  return renderModifiers(content, true, false);
 }
 
 interface SelfBuffsProps {
@@ -67,6 +96,7 @@ interface SelfBuffsProps {
   totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
+  innateBuffs: InnateBuff[];
 }
 export function SelfBuffs({
   char,
@@ -75,8 +105,20 @@ export function SelfBuffs({
   totalAttr,
   selfBuffCtrls,
   partyData,
+  innateBuffs,
 }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
+
+  innateBuffs.forEach(({ src, desc }, i) => {
+    content.push(
+      <ModifierTemplate
+        key={i}
+        mutable={false}
+        heading={src}
+        desc={desc({ charData, partyData, totalAttr })}
+      />
+    );
+  });
 
   for (const { index, inputs } of selfBuffCtrls) {
     const buff = findByIndex(buffs, index);
@@ -102,7 +144,7 @@ export function SelfBuffs({
     }
   }
 
-  return renderModifiers(content, true);
+  return renderModifiers(content, true, false);
 }
 
 interface PartyBuffsProps {
@@ -129,10 +171,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
 
     if (buffs.length) {
       content.push(
-        <p
-          key={name}
-          className={`pt-2 -mb-1 text-h6 text-${vision} font-bold text-center uppercase`}
-        >
+        <p key={name} className={`text-h6 text-${vision} font-bold text-center uppercase`}>
           {name}
         </p>
       );
@@ -162,15 +201,16 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       }
     }
   }
-  return renderModifiers(content, true);
+  return renderModifiers(content, true, false);
 }
 
 interface WeaponBuffsProps {
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
   totalAttr: TotalAttribute;
+  party: Party;
 }
-export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr }: WeaponBuffsProps) {
+export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuffsProps) {
   const content = [];
 
   for (const { index, inputs = [] } of wpBuffCtrls) {
@@ -194,7 +234,27 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr }: WeaponBuffsProps
       );
     }
   }
-  // #to-do
+
+  party.forEach((teammate, teammateIndex) => {
+    if (!teammate) return;
+    const { name, buffs = [] } = findWeapon(teammate.weapon) || {};
+
+    for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
+      const buff = findByIndex(buffs, index);
+
+      if (buff) {
+        content.push(
+          <ModifierTemplate
+            key={`${teammateIndex}-${index}`}
+            mutable={false}
+            heading={name}
+            desc={buff.desc({ refi: teammate.weapon.refi, totalAttr })}
+            setters={renderSetters(buff.inputConfig, inputs)}
+          />
+        );
+      }
+    }
+  });
   // for (const [type, buffCtrls] of Object.entries(subWpComplexBuffCtrls)) {
   //   for (const ctrl of buffCtrls) {
   //     const { code, refi, index } = ctrl;
@@ -225,14 +285,15 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr }: WeaponBuffsProps
   //     }
   //   }
   // }
-  return renderModifiers(content, true);
+  return renderModifiers(content, true, false);
 }
 
 interface ArtifactBuffsProps {
   sets: CalcArtSet[];
   artBuffCtrls: ModifierCtrl[];
+  party: Party;
 }
-export function ArtifactBuffs({ sets, artBuffCtrls }: ArtifactBuffsProps) {
+export function ArtifactBuffs({ sets, artBuffCtrls, party }: ArtifactBuffsProps) {
   const content = [];
   const mainCode = sets[0]?.code;
 
@@ -257,45 +318,44 @@ export function ArtifactBuffs({ sets, artBuffCtrls }: ArtifactBuffsProps) {
       );
     }
   }
+  for (const teammate of party) {
+    if (!teammate) continue;
+    const { code, buffCtrls } = teammate.artifact;
+    const { name, buffs = [] } = findArtifactSet(teammate.artifact) || {};
 
-  // #to-do
-  // for (const { code, index, inputs = [] } of subArtBuffCtrls) {
-  //   const artifactData = findArtifactSet({ code });
-  //   if (!artifactData) {
-  //     continue;
-  //   }
+    for (const { index, inputs = [] } of buffCtrls) {
+      const buff = findByIndex(buffs, index);
 
-  //   const { name, buffs = [] } = artifactData;
-  //   const buff = buffs[index];
-
-  //   if (buff) {
-  //     content.push(
-  //       <ModifierTemplate
-  //         key={`${code}-${index}`}
-  //         mutable={false}
-  //         heading={name}
-  //         desc={buff.desc()}
-  //         setters={renderSetters(buff.inputConfig, inputs)}
-  //       />
-  //     );
-  //   }
-  // }
-  return renderModifiers(content, true);
+      if (buff) {
+        content.push(
+          <ModifierTemplate
+            key={`${code}-${index}`}
+            mutable={false}
+            heading={name}
+            desc={buff.desc()}
+            setters={renderSetters(buff.inputConfig, inputs)}
+          />
+        );
+      }
+    }
+  }
+  return renderModifiers(content, true, false);
 }
 
 interface CustomBuffsProps {
   customBuffCtrls: CustomBuffCtrl[];
 }
 export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
+  const { t } = useTranslation();
+
   const content = customBuffCtrls.map(({ category, type, value }, i) => (
-    <div key={i} className="pt-2 flex justify-end">
-      <p className="mr-4">{type}</p>
+    <div key={i} className="flex justify-end">
+      <p className="mr-4">{t(type)}</p>
       <p className="text-orange font-bold">
-        {value}
-        {category > 1 ? "%" : percentSign(type)}
+        {value} {category > 1 ? "%" : percentSign(type)}
       </p>
     </div>
   ));
 
-  return renderModifiers(content, true);
+  return renderModifiers(content, true, false);
 }

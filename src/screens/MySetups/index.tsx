@@ -7,6 +7,7 @@ import type {
   CharData,
   DamageResult,
   FinalInfusion,
+  InnateBuff,
   ReactionBonus,
   TotalAttribute,
   UsersComplexSetup,
@@ -20,7 +21,7 @@ import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/s
 import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
-import { findCharacter, getPartyData } from "@Data/controllers";
+import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
 
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
@@ -56,6 +57,7 @@ import {
 import styles from "../styles.module.scss";
 import { CombineMore } from "./modals/combine-setups/CombineMore";
 import { SetupExporter } from "@Components/SetupExporter";
+import { getQuickenBuffDamage } from "@Calculators/utils";
 
 export default function MySetups() {
   const [modal, setModal] = useState<MySetupModal>({
@@ -95,10 +97,8 @@ export default function MySetups() {
   const openModal = (type: MySetupModalType, ID?: number) => () => {
     setModal((prev) => {
       const newModal = { ...prev, type };
+      if (ID) newModal.ID = ID;
 
-      if (ID) {
-        newModal.ID = ID;
-      }
       return newModal;
     });
   };
@@ -113,34 +113,27 @@ export default function MySetups() {
   let artAttr: ArtifactAttribute;
   let rxnBonus: ReactionBonus;
   let damage = {} as DamageResult;
+  let innateBuffs: InnateBuff[] = [];
 
   if (chosenSetup) {
-    const databaseChar = findCharacter(chosenSetup.char);
-    if (!databaseChar) {
-      return null;
-    }
+    const dataCharacter = findCharacter(chosenSetup.char);
+    if (!dataCharacter) return null;
+    const { code, name, vision, nation, weapon, activeTalents } = dataCharacter;
 
-    charData = {
-      code: databaseChar.code,
-      name: databaseChar.name,
-      nation: databaseChar.nation,
-      vision: databaseChar.vision,
-      weapon: databaseChar.weapon,
-      EBcost: databaseChar.activeTalents.EB.energyCost,
-    };
+    charData = { code, name, vision, nation, weapon, EBcost: activeTalents.EB.energyCost };
+    innateBuffs = dataCharacter.innateBuffs || [];
 
     const result = calculateAll(chosenSetup, charData);
+
     finalInfusion = result.finalInfusion;
     totalAttr = result.totalAttr;
     rxnBonus = result.rxnBonus;
     artAttr = result.artAttr;
-    // damage =
+    damage = result.dmgResult;
   }
 
   const renderSetup = (setup: UsersSetup | UsersComplexSetup, index: number) => {
-    if (setup.type === "combined") {
-      return null;
-    }
+    if (setup.type === "combined") return null;
     const { ID } = setup;
     let setupDisplay: JSX.Element;
 
@@ -198,8 +191,7 @@ export default function MySetups() {
       selfDebuffCtrls,
       wpBuffCtrls,
       artBuffCtrls,
-      subArtBuffCtrls,
-      subArtDebuffCtrls,
+      artDebuffCtrls,
       elmtModCtrls,
       customBuffCtrls,
       customDebuffCtrls,
@@ -238,6 +230,18 @@ export default function MySetups() {
       case "MODIFIERS": {
         const partyData = getPartyData(party);
         const { buffs = [], debuffs = [] } = findCharacter(char) || {};
+        const quickenType = elmtModCtrls.spread
+          ? "spread"
+          : elmtModCtrls.aggravate
+          ? "aggravate"
+          : "";
+
+        const quickenBuff = quickenType
+          ? {
+              label: quickenType === "spread" ? "Spread" : "Aggravate",
+              value: getQuickenBuffDamage(char.level, totalAttr?.em || 0, rxnBonus)[quickenType],
+            }
+          : undefined;
 
         return (
           <div className="h-full px-4 flex space-x-4 overflow-auto">
@@ -253,10 +257,11 @@ export default function MySetups() {
                 ]}
                 contentList={[
                   <ElementBuffs
-                    char={char}
+                    vision={charData?.vision}
                     elmtModCtrls={elmtModCtrls}
                     rxnBonus={rxnBonus}
                     finalInfusion={finalInfusion}
+                    quickenBuff={quickenBuff}
                   />,
                   <SelfBuffs
                     char={char}
@@ -265,6 +270,7 @@ export default function MySetups() {
                     selfBuffCtrls={selfBuffCtrls}
                     partyData={partyData}
                     buffs={buffs}
+                    innateBuffs={innateBuffs}
                   />,
                   <PartyBuffs
                     char={char}
@@ -273,12 +279,13 @@ export default function MySetups() {
                     partyData={partyData}
                     totalAttr={totalAttr}
                   />,
-                  <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} totalAttr={totalAttr} />,
-                  <ArtifactBuffs
-                    sets={artInfo.sets}
-                    artBuffCtrls={artBuffCtrls}
-                    subArtBuffCtrls={subArtBuffCtrls}
+                  <WeaponBuffs
+                    weapon={weapon}
+                    wpBuffCtrls={wpBuffCtrls}
+                    totalAttr={totalAttr}
+                    party={party}
                   />,
+                  <ArtifactBuffs sets={artInfo.sets} artBuffCtrls={artBuffCtrls} party={party} />,
                   <CustomBuffs customBuffCtrls={customBuffCtrls} />,
                 ]}
               />
@@ -299,7 +306,7 @@ export default function MySetups() {
                     partyData={partyData}
                   />,
                   <PartyDebuffs char={char} party={party} partyData={partyData} />,
-                  <ArtifactDebuffs subArtDebuffCtrls={subArtDebuffCtrls} />,
+                  <ArtifactDebuffs artDebuffCtrls={artDebuffCtrls} />,
                   <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
                 ]}
               />
@@ -448,11 +455,11 @@ export default function MySetups() {
                   <p className="text-center truncate">{chosenSetup.name}</p>
                 </div>
                 <div className="mt-2 grow hide-scrollbar">
-                  {/* <DamageDisplay
+                  <DamageDisplay
                     char={chosenSetup.char}
                     party={chosenSetup.party}
                     damageResult={damage}
-                  /> */}
+                  />
                 </div>
               </>
             )}

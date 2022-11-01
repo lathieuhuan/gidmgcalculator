@@ -97,24 +97,16 @@ export type StatInfo = {
    */
   conditional?: boolean;
   getTalentBuff?: GetTalentBuffFn;
-  /**
-   * only on ES / EB
-   */
+  /** only on ES / EB */
   notAttack?: "healing" | "shield" | "other";
-  /**
-   * only on ES / EB
-   */
+  /** only on ES / EB */
   baseStatType?: "base_atk" | "atk" | "def" | "hp";
-  /**
-   * only on ES / EB
-   */
+  /** only on ES / EB */
   flat?: {
     base: number;
     type: number;
   };
-  /**
-   * only on ES / EB
-   */
+  /** only on ES / EB */
   getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };
 
@@ -135,7 +127,7 @@ type NoStatsAbility = {
   xtraDesc?: JSX.Element[];
 };
 
-type InnateBuff = {
+export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
   desc: (args: {
