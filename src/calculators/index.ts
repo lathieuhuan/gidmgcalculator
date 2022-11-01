@@ -2,7 +2,7 @@ import { findCharacter, getPartyData } from "@Data/controllers";
 import { NORMAL_ATTACKS } from "@Src/constants";
 import type {
   AttackElement,
-  TCharData,
+  CharData,
   CharInfo,
   FinalInfusion,
   ModifierCtrl,
@@ -31,7 +31,7 @@ export default function calculateAll(
     customDebuffCtrls,
     target,
   }: UsersSetupCalcInfo,
-  charData: TCharData,
+  charData: CharData,
   tracker?: Tracker
 ) {
   const finalInfusion = getFinalInfusion(char, selfBuffCtrls, charData.vision, party);

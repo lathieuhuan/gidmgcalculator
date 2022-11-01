@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { BaneSeries1 } from "../series";
+import { baneSeries1 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -105,7 +105,7 @@ const otherCatalysts: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "em", scale: "41" },
-    ...BaneSeries1("Storm and Tide", "Hydro or Electro"),
+    ...baneSeries1("Storm and Tide", "Hydro or Electro"),
   },
   {
     code: 35,

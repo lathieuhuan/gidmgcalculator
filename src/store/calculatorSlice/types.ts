@@ -1,5 +1,5 @@
 import type {
-  TCharData,
+  CharData,
   CalcSetup,
   CalcSetupManageInfo,
   DamageResult,
@@ -18,7 +18,7 @@ export type CalculatorState = {
   configs: CalcConfigurations;
   isError: boolean;
 
-  charData: TCharData;
+  charData: CharData;
   setupManageInfos: CalcSetupManageInfo[];
   setupsById: Record<string, CalcSetup>;
   statsById: Record<

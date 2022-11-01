@@ -2,7 +2,7 @@ import { EModAffect } from "@Src/constants";
 import type { Rarity, Tracker } from "./global";
 import type {
   AttackPatternBonus,
-  TCharData,
+  CharData,
   BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
@@ -35,7 +35,7 @@ type ApplyArtPassiveBuffArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
-  charData: TCharData;
+  charData: CharData;
   partyData?: PartyData;
   desc?: string;
   tracker?: Tracker;

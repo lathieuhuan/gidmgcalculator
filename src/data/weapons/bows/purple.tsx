@@ -2,11 +2,11 @@ import type { DataWeapon } from "@Src/types";
 import { Cryo, Gold, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import {
-  BlackcliffSeries,
-  FavoniusSeries,
-  RoyalSeries,
-  SacrificialSeries,
-  WatatsumiSeries,
+  blackcliffSeries,
+  favoniusSeries,
+  royalSeries,
+  sacrificialSeries,
+  watatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
@@ -154,7 +154,7 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cDmg", scale: "8%" },
-    ...BlackcliffSeries,
+    ...blackcliffSeries,
   },
   {
     code: 14,
@@ -163,7 +163,7 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    ...WatatsumiSeries,
+    ...watatsumiSeries,
   },
   {
     code: 15,
@@ -172,7 +172,7 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
-    ...SacrificialSeries,
+    ...sacrificialSeries,
   },
   {
     code: 16,
@@ -313,7 +313,7 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...RoyalSeries,
+    ...royalSeries,
   },
   {
     code: 21,
@@ -465,7 +465,7 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er", scale: "13.3%" },
-    ...FavoniusSeries,
+    ...favoniusSeries,
   },
 ];
 

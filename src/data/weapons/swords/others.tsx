@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { BaneSeries1 } from "../series";
+import { baneSeries1 } from "../series";
 import { findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
@@ -94,7 +94,7 @@ const otherSwords: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "atk_", scale: "7.7%" },
-    ...BaneSeries1("Water and Ice", "Hydro or Cryo"),
+    ...baneSeries1("Water and Ice", "Hydro or Cryo"),
   },
   {
     code: 100,

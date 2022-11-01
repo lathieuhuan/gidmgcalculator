@@ -19,8 +19,8 @@ import type {
   AttackPatternBonus,
   AttackElementBonus,
   StatInfo,
-  TCharData,
-  TArtifactDebuffCtrl,
+  CharData,
+  ArtifactDebuffCtrl,
 } from "@Src/types";
 import {
   AMPLIFYING_REACTIONS,
@@ -205,10 +205,10 @@ function calcTalentDamage({
 
 interface GetDamageArgs {
   char: CharInfo;
-  charData: TCharData;
+  charData: CharData;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
-  artDebuffCtrls: TArtifactDebuffCtrl[];
+  artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;
   partyData: PartyData;
   totalAttr: TotalAttribute;

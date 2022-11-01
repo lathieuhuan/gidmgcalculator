@@ -13,8 +13,8 @@ import type {
   CalcSetup,
   CustomBuffCtrl,
   CustomDebuffCtrl,
-  TTeammateWeapon,
-  TTeammateArtifact,
+  TeammateWeapon,
+  TeammateArtifact,
 } from "@Src/types";
 import type { CalcConfigurations, CalculatorState } from "./types";
 
@@ -41,13 +41,13 @@ export type AddTeammateAction = PayloadAction<{
 export type TUpdateTeammateWeaponAction = PayloadAction<
   {
     teammateIndex: number;
-  } & Partial<TTeammateWeapon>
+  } & Partial<TeammateWeapon>
 >;
 
 export type TUpdateTeammateArtifactAction = PayloadAction<
   {
     teammateIndex: number;
-  } & Partial<TTeammateArtifact>
+  } & Partial<TeammateArtifact>
 >;
 
 export type UpdateCalcSetupAction = PayloadAction<

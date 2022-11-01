@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { BaneSeries1, CullTheWeak } from "../series";
+import { baneSeries1, cullTheWeakSeries } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -15,7 +15,7 @@ const otherClaymores: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "def_", scale: "9.6%a" },
-    ...CullTheWeak,
+    ...cullTheWeakSeries,
   },
   {
     code: 129,
@@ -101,7 +101,7 @@ const otherClaymores: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "em", scale: "41" },
-    ...BaneSeries1("Fire and Thunder", "Pyro or Electro"),
+    ...baneSeries1("Fire and Thunder", "Pyro or Electro"),
   },
   {
     code: 58,

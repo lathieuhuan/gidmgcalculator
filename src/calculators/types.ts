@@ -2,7 +2,7 @@ import type {
   AttackElementBonus,
   AttackPatternBonus,
   CalcArtInfo,
-  TCharData,
+  CharData,
   CalcWeapon,
   CharInfo,
   CustomBuffCtrl,
@@ -26,7 +26,7 @@ export type BaseModifierArgsWrapper = {
   attPattBonus?: AttackPatternBonus;
   attElmtBonus?: AttackElementBonus;
   rxnBonus?: ReactionBonus;
-  charData: TCharData;
+  charData: CharData;
   partyData?: PartyData;
   tracker?: Tracker;
 };
@@ -48,7 +48,7 @@ export type TrackerDamageRecord = {
 
 export type GetBuffedStatsArgs = {
   char: CharInfo;
-  charData: TCharData;
+  charData: CharData;
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];

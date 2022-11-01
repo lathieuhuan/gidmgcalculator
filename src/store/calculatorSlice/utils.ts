@@ -8,9 +8,9 @@ import type {
   UsersWeapon,
   Weapon,
   CalcSetupManageInfo,
-  TTeammateWeapon,
-  TTeammateArtifact,
-  TArtifactDebuffCtrl,
+  TeammateWeapon,
+  TeammateArtifact,
+  ArtifactDebuffCtrl,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
@@ -115,7 +115,7 @@ export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
   return result;
 }
 
-export function getTeammateWeaponBuffCtrls(teammateWeapon: TTeammateWeapon) {
+export function getTeammateWeaponBuffCtrls(teammateWeapon: TeammateWeapon) {
   const { buffs = [] } = findWeapon(teammateWeapon) || {};
   return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
     if (affect !== EModAffect.SELF) {
@@ -132,7 +132,7 @@ export function getTeammateWeaponBuffCtrls(teammateWeapon: TTeammateWeapon) {
   }, [] as ModifierCtrl[]);
 }
 
-export function getTeammateArtifactBuffCtrls(teammateArtifact: TTeammateArtifact) {
+export function getTeammateArtifactBuffCtrls(teammateArtifact: TeammateArtifact) {
   const { buffs = [] } = findArtifactSet(teammateArtifact) || {};
   return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
     if (affect !== EModAffect.SELF) {
@@ -193,7 +193,7 @@ export function getMainArtBuffCtrls(code: number | null) {
   return result;
 }
 
-export function getArtDebuffCtrls(): TArtifactDebuffCtrl[] {
+export function getArtDebuffCtrls(): ArtifactDebuffCtrl[] {
   return [
     { code: 15, activated: false, index: 0, inputs: [0] },
     { code: 33, activated: false, index: 0 },

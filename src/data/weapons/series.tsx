@@ -7,7 +7,7 @@ import { makeWpModApplier } from "./utils";
 
 type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
 
-export const DesertSeries: Pick<
+export const desertSeries: Pick<
   DataWeapon,
   "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat"
 > = {
@@ -20,11 +20,9 @@ export const DesertSeries: Pick<
       affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, refi, desc, tracker }) => {
         const buffValue = applyPercent(totalAttr.em, 18 + refi * 6);
-        console.log(totalAttr.em);
-        console.log(buffValue);
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);
       },
-      desc: ({ refi }) => DesertSeries.passiveDesc({ refi }).extra?.[0],
+      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
     },
     {
       index: 1,
@@ -38,12 +36,16 @@ export const DesertSeries: Pick<
         const buffValue = applyPercent(inputs?.[0] || 0, ((18 + refi * 6) * 3) / 10);
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);
       },
-      desc: ({ refi }) => DesertSeries.passiveDesc({ refi }).extra?.[0],
+      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
     },
   ],
   passiveDesc: ({ refi }) => ({
     get core() {
-      return <>{this.extra}</>;
+      return (
+        <>
+          {this.extra?.[0]} {this.extra?.[1]}
+        </>
+      );
     },
     extra: [
       <>
@@ -59,7 +61,7 @@ export const DesertSeries: Pick<
   }),
 };
 
-export const RoyalSeries: SeriesInfo = {
+export const royalSeries: SeriesInfo = {
   buffs: [
     {
       index: 0,
@@ -73,7 +75,7 @@ export const RoyalSeries: SeriesInfo = {
         const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
-      desc: ({ refi }) => RoyalSeries.passiveDesc({ refi }).core,
+      desc: ({ refi }) => royalSeries.passiveDesc({ refi }).core,
     },
   ],
   passiveName: "Focus",
@@ -88,7 +90,7 @@ export const RoyalSeries: SeriesInfo = {
   }),
 };
 
-export const BlackcliffSeries: SeriesInfo = {
+export const blackcliffSeries: SeriesInfo = {
   buffs: [
     {
       index: 0,
@@ -102,7 +104,7 @@ export const BlackcliffSeries: SeriesInfo = {
         const buffValue = (9 + refi * 3) * (inputs?.[0] || 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
-      desc: ({ refi }) => BlackcliffSeries.passiveDesc({ refi }).core,
+      desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
     },
   ],
   passiveName: "Press the Advantage",
@@ -117,7 +119,7 @@ export const BlackcliffSeries: SeriesInfo = {
   }),
 };
 
-export const FavoniusSeries: SeriesInfo = {
+export const favoniusSeries: SeriesInfo = {
   passiveName: "Windfall",
   passiveDesc: ({ refi }) => ({
     core: (
@@ -131,7 +133,7 @@ export const FavoniusSeries: SeriesInfo = {
   }),
 };
 
-export const SacrificialSeries: SeriesInfo = {
+export const sacrificialSeries: SeriesInfo = {
   passiveName: "Composed",
   passiveDesc: ({ refi }) => ({
     core: (
@@ -144,7 +146,7 @@ export const SacrificialSeries: SeriesInfo = {
   }),
 };
 
-export const DragonspineSeries: SeriesInfo = {
+export const dragonspineSeries: SeriesInfo = {
   // pasvProcD: [
   //   {
   //     name: "Usual DMG",
@@ -173,7 +175,7 @@ export const DragonspineSeries: SeriesInfo = {
   }),
 };
 
-export const LiyueSeries: SeriesInfo = {
+export const liyueSeries: SeriesInfo = {
   applyBuff: makeWpModApplier("totalAttr", "shStr", 20),
   buffs: [
     {
@@ -188,7 +190,7 @@ export const LiyueSeries: SeriesInfo = {
         const buffValue = (3 + refi) * (inputs?.[0] || 0) * (inputs?.[1] === 1 ? 2 : 1);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
-      desc: ({ refi }) => LiyueSeries.passiveDesc!({ refi }).extra![0],
+      desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],
     },
   ],
   passiveName: "Golden Majesty",
@@ -210,7 +212,7 @@ export const LiyueSeries: SeriesInfo = {
   }),
 };
 
-export const LithicSeries: SeriesInfo = {
+export const lithicSeries: SeriesInfo = {
   applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
     if (partyData) {
       const stacks = partyData.reduce(
@@ -234,13 +236,13 @@ export const LithicSeries: SeriesInfo = {
   }),
 };
 
-export const BaneSeries1 = (name: string, elements: string): SeriesInfo => ({
+export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
       applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
-      desc: ({ refi }) => BaneSeries1(name, elements).passiveDesc({ refi }).core,
+      desc: ({ refi }) => baneSeries1(name, elements).passiveDesc({ refi }).core,
     },
   ],
   passiveName: `Bane of ${name}`,
@@ -254,13 +256,13 @@ export const BaneSeries1 = (name: string, elements: string): SeriesInfo => ({
   }),
 });
 
-export const BaneSeries2 = (name: string, elements: string): SeriesInfo => ({
+export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
       applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
-      desc: ({ refi }) => BaneSeries2(name, elements).passiveDesc({ refi }).core,
+      desc: ({ refi }) => baneSeries2(name, elements).passiveDesc({ refi }).core,
     },
   ],
   passiveName: `Bane of ${name}`,
@@ -274,7 +276,7 @@ export const BaneSeries2 = (name: string, elements: string): SeriesInfo => ({
   }),
 });
 
-export const WatatsumiSeries: SeriesInfo = {
+export const watatsumiSeries: SeriesInfo = {
   applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
     if (partyData && attPattBonus) {
       const maxEnergy = partyData.reduce((result, data) => result + data.EBcost, charData.EBcost);
@@ -295,7 +297,7 @@ export const WatatsumiSeries: SeriesInfo = {
   }),
 };
 
-export const CullTheWeak: SeriesInfo = {
+export const cullTheWeakSeries: SeriesInfo = {
   passiveName: "Cull the Weak",
   passiveDesc: ({ refi }) => ({
     core: <>Defeating an opponent restores {6 + refi * 2}% HP.</>,

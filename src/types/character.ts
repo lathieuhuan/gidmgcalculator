@@ -12,7 +12,7 @@ import type {
   ArtifactPercentStat,
 } from "./global";
 import type {
-  TCharData,
+  CharData,
   ModifierCtrl,
   PartyData,
   ReactionBonus,
@@ -78,7 +78,7 @@ export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
 
 type GetTalentBuffArgs = {
   char: CharInfo;
-  charData: TCharData;
+  charData: CharData;
   partyData: PartyData;
   totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
@@ -141,7 +141,7 @@ type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
   desc: (args: {
-    charData: TCharData;
+    charData: CharData;
     partyData: PartyData;
     totalAttr: TotalAttribute;
   }) => ReactNode;
@@ -154,7 +154,7 @@ type ApplyCharInnateBuffArgs = {
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   // char: CharInfo;
-  charData: TCharData;
+  charData: CharData;
   partyData: PartyData;
   charBuffCtrls: ModifierCtrl[];
   desc: string;
@@ -193,7 +193,7 @@ export type AbilityBuff = AbilityModifier & {
   desc: (args: {
     toSelf: boolean;
     char: CharInfo;
-    charData: TCharData;
+    charData: CharData;
     charBuffCtrls: ModifierCtrl[];
     partyData: PartyData;
     totalAttr: TotalAttribute;

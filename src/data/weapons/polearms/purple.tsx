@@ -2,13 +2,13 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import {
-  BaneSeries2,
-  BlackcliffSeries,
-  DragonspineSeries,
-  FavoniusSeries,
-  LithicSeries,
-  RoyalSeries,
-  WatatsumiSeries,
+  baneSeries2,
+  blackcliffSeries,
+  dragonspineSeries,
+  favoniusSeries,
+  lithicSeries,
+  royalSeries,
+  watatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
@@ -86,7 +86,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "45",
     subStat: { type: "atk_", scale: "3%" },
-    ...WatatsumiSeries,
+    ...watatsumiSeries,
   },
   {
     code: 86,
@@ -112,7 +112,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    ...LithicSeries,
+    ...lithicSeries,
   },
   {
     code: 88,
@@ -142,7 +142,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    ...RoyalSeries,
+    ...royalSeries,
   },
   {
     code: 90,
@@ -151,7 +151,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
-    ...FavoniusSeries,
+    ...favoniusSeries,
   },
   {
     code: 91,
@@ -212,7 +212,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cDmg", scale: "12%" },
-    ...BlackcliffSeries,
+    ...blackcliffSeries,
   },
   {
     code: 94,
@@ -221,7 +221,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "phys", scale: "15%" },
-    ...DragonspineSeries,
+    ...dragonspineSeries,
   },
   {
     code: 95,
@@ -268,7 +268,7 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "em", scale: "48" },
-    ...BaneSeries2("Flame and Water", "Hydro or Pyro"),
+    ...baneSeries2("Flame and Water", "Hydro or Pyro"),
   },
 ];
 

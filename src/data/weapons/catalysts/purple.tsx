@@ -2,12 +2,12 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import {
-  BlackcliffSeries,
-  DesertSeries,
-  DragonspineSeries,
-  FavoniusSeries,
-  RoyalSeries,
-  SacrificialSeries,
+  blackcliffSeries,
+  desertSeries,
+  dragonspineSeries,
+  favoniusSeries,
+  royalSeries,
+  sacrificialSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
@@ -19,7 +19,7 @@ const purpleCatalysts: DataWeapon[] = [
     name: "Wandering Evenstar",
     icon: "4/44/Weapon_Wandering_Evenstar",
     passiveName: "Wildling Nightstar",
-    ...DesertSeries,
+    ...desertSeries,
   },
   {
     code: 137,
@@ -172,7 +172,7 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    ...RoyalSeries,
+    ...royalSeries,
   },
   {
     code: 40,
@@ -259,7 +259,7 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...DragonspineSeries,
+    ...dragonspineSeries,
   },
   {
     code: 43,
@@ -328,7 +328,7 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    ...FavoniusSeries,
+    ...favoniusSeries,
   },
   {
     code: 46,
@@ -337,7 +337,7 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cDmg", scale: "12%" },
-    ...BlackcliffSeries,
+    ...blackcliffSeries,
   },
   {
     code: 47,
@@ -407,7 +407,7 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "em", scale: "48" },
-    ...SacrificialSeries,
+    ...sacrificialSeries,
   },
 ];
 

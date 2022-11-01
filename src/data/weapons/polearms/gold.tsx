@@ -1,7 +1,7 @@
 import type { DataWeapon, TotalAttribute } from "@Src/types";
 import { Green, Red } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { LiyueSeries } from "../series";
+import { liyueSeries } from "../series";
 import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -234,7 +234,7 @@ const goldPolearms: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    ...LiyueSeries,
+    ...liyueSeries,
   },
   {
     code: 82,

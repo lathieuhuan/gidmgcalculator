@@ -1,7 +1,7 @@
 import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { LiyueSeries } from "../series";
+import { liyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -77,7 +77,7 @@ const goldClaymores: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    ...LiyueSeries,
+    ...liyueSeries,
   },
   {
     code: 56,

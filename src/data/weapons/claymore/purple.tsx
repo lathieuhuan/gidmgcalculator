@@ -2,20 +2,28 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import {
-  BaneSeries2,
-  BlackcliffSeries,
-  DragonspineSeries,
-  FavoniusSeries,
-  LithicSeries,
-  RoyalSeries,
-  SacrificialSeries,
-  WatatsumiSeries,
+  baneSeries2,
+  blackcliffSeries,
+  desertSeries,
+  dragonspineSeries,
+  favoniusSeries,
+  lithicSeries,
+  royalSeries,
+  sacrificialSeries,
+  watatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleClaymores: DataWeapon[] = [
+  {
+    code: 145,
+    name: "Makhaira Aquamarine",
+    icon: "9/90/Weapon_Makhaira_Aquamarine",
+    passiveName: "Desert Pavilion",
+    ...desertSeries,
+  },
   {
     code: 136,
     name: "Forest Regalia",
@@ -61,7 +69,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
-    ...DragonspineSeries,
+    ...dragonspineSeries,
   },
   {
     code: 61,
@@ -70,7 +78,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
-    ...SacrificialSeries,
+    ...sacrificialSeries,
   },
   {
     code: 62,
@@ -79,7 +87,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    ...RoyalSeries,
+    ...royalSeries,
   },
   {
     code: 63,
@@ -141,7 +149,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cDmg", scale: "12%" },
-    ...BlackcliffSeries,
+    ...blackcliffSeries,
   },
   {
     code: 66,
@@ -150,7 +158,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...LithicSeries,
+    ...lithicSeries,
   },
   {
     code: 67,
@@ -207,7 +215,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...WatatsumiSeries,
+    ...watatsumiSeries,
   },
   {
     code: 69,
@@ -271,7 +279,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    ...BaneSeries2("Storm and Tide", "Hydro or Electro"),
+    ...baneSeries2("Storm and Tide", "Hydro or Electro"),
   },
   {
     code: 72,
@@ -300,7 +308,7 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er", scale: "13.3%" },
-    ...FavoniusSeries,
+    ...favoniusSeries,
   },
 ];
 

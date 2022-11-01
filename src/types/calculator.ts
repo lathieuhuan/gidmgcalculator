@@ -39,7 +39,7 @@ export type CalcSetup = {
   wpBuffCtrls: ModifierCtrl[];
   artInfo: CalcArtInfo;
   artBuffCtrls: ModifierCtrl[];
-  artDebuffCtrls: TArtifactDebuffCtrl[];
+  artDebuffCtrls: ArtifactDebuffCtrl[];
 
   party: Party;
   elmtModCtrls: ElementModCtrl;
@@ -47,7 +47,7 @@ export type CalcSetup = {
   customDebuffCtrls: CustomDebuffCtrl[];
 };
 
-export type TCharData = {
+export type CharData = {
   code: number;
   name: string;
   nation: Nation;
@@ -109,20 +109,20 @@ export type CalcArtInfo = {
   sets: CalcArtSet[];
 };
 
-export type TArtifactDebuffCtrl = ModifierCtrl & {
+export type ArtifactDebuffCtrl = ModifierCtrl & {
   code: number;
 };
 // ARTIFACTS ends
 
 // PARTY starts
-export type TTeammateWeapon = {
+export type TeammateWeapon = {
   code: number;
   type: Weapon;
   refi: number;
   buffCtrls: ModifierCtrl[];
 };
 
-export type TTeammateArtifact = {
+export type TeammateArtifact = {
   code: number;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
@@ -132,8 +132,8 @@ export type Teammate = {
   name: string;
   buffCtrls: ModifierCtrl[];
   debuffCtrls: ModifierCtrl[];
-  weapon: TTeammateWeapon;
-  artifact: TTeammateArtifact;
+  weapon: TeammateWeapon;
+  artifact: TeammateArtifact;
 };
 
 export type Party = (Teammate | null)[];
@@ -207,11 +207,11 @@ type CalculatedDamageCluster = {
 
 export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
-export type PartyData = TCharData[];
+export type PartyData = CharData[];
 
 export type BuffModifierArgsWrapper = {
   char: CharInfo;
-  charData: TCharData;
+  charData: CharData;
   partyData: PartyData;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;

@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { BaneSeries1, CullTheWeak } from "../series";
+import { baneSeries1, cullTheWeakSeries } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -15,7 +15,7 @@ const otherBows: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
-    ...CullTheWeak,
+    ...cullTheWeakSeries,
   },
   {
     code: 1,
@@ -41,7 +41,7 @@ const otherBows: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "em", scale: "20" },
-    ...BaneSeries1("Flame and Water", "Hydro or Pyro"),
+    ...baneSeries1("Flame and Water", "Hydro or Pyro"),
   },
   {
     code: 3,

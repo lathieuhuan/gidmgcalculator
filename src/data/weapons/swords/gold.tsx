@@ -2,7 +2,7 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { LiyueSeries } from "../series";
+import { liyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
@@ -291,7 +291,7 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    ...LiyueSeries,
+    ...liyueSeries,
   },
   {
     code: 106,

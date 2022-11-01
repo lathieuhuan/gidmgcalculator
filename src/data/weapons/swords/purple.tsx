@@ -2,17 +2,72 @@ import type { DataWeapon } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import {
-  BaneSeries2,
-  BlackcliffSeries,
-  FavoniusSeries,
-  RoyalSeries,
-  SacrificialSeries,
+  baneSeries2,
+  blackcliffSeries,
+  favoniusSeries,
+  royalSeries,
+  sacrificialSeries,
 } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { makeWpModApplier } from "../utils";
 
 const purpleSwords: DataWeapon[] = [
+  {
+    code: 146,
+    name: "Xiphos' Moonlight",
+    icon: "8/8a/Weapon_Xiphos%27_Moonlight",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "em", scale: "36" },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+          const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
+          applyModifier(desc, totalAttr, "er", buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
+      },
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        inputConfig: {
+          labels: ["Elemental Mastery"],
+          renderTypes: ["text"],
+          initialValues: [0],
+        },
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const buffValue = applyPercent(inputs?.[0] || 0, (2.7 + refi * 0.9) * 0.3);
+          applyModifier(desc, totalAttr, "er", buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+    passiveName: "Jinni's Whisper",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} {this.extra?.[1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          The following effect will trigger every 10s: the equipping character will gain{" "}
+          <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point
+          of <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members
+          gaining <b>30%</b> of this buff for the same duration.
+        </>,
+        <>
+          Multiple instances of this weapon can allow this buff to stack. This effect will still
+          trigger even if the character is not on the field.
+        </>,
+      ],
+    }),
+  },
   {
     code: 142,
     name: "Kagotsurube Isshin",
@@ -111,7 +166,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cDmg", scale: "8%" },
-    ...BlackcliffSeries,
+    ...blackcliffSeries,
   },
   {
     code: 111,
@@ -210,7 +265,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...RoyalSeries,
+    ...royalSeries,
   },
   {
     code: 116,
@@ -219,7 +274,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...BaneSeries2("Fire and Thunder", "Pyro or Electro"),
+    ...baneSeries2("Fire and Thunder", "Pyro or Electro"),
   },
   {
     code: 117,
@@ -282,7 +337,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er", scale: "13.3%" },
-    ...FavoniusSeries,
+    ...favoniusSeries,
   },
   {
     code: 120,
@@ -291,7 +346,7 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er", scale: "13.3%" },
-    ...SacrificialSeries,
+    ...sacrificialSeries,
   },
   {
     code: 121,

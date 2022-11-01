@@ -1,4 +1,4 @@
-import type { TCharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
+import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
@@ -10,7 +10,7 @@ const getA4BuffValue = (
   toSelf: boolean,
   char: CharInfo,
   buffCtrls: ModifierCtrl[],
-  charData: TCharData,
+  charData: CharData,
   partyData: PartyData
 ) => {
   let result = 0;
