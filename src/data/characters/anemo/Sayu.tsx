@@ -87,6 +87,14 @@ const Sayu: DataCharacter = {
           baseMult: 76.16,
           getTalentBuff: getC2TalentBuff,
         },
+        {
+          name: "Heal Amount (A1)",
+          notAttack: "healing",
+          isStatic: true,
+          baseStatType: "em",
+          baseMult: 1.2,
+          flat: { base: 300, type: 0 },
+        },
       ],
       // getExtraStats: () => [
       //   { name: "Max Duration (Hold)", value: "10s" },
@@ -161,23 +169,6 @@ const Sayu: DataCharacter = {
     },
   ],
   buffs: [
-    {
-      index: 0,
-      src: EModSrc.C1,
-      desc: ({ totalAttr }) => (
-        <>
-          When Sayu triggers a Swirl reaction while active, she <Green>heals</Green> all your
-          characters and nearby allies for <Green b>300</Green> <Green>HP</Green>. The healing is
-          increased by <Green b>1.2</Green> <Green>HP</Green> for every point of{" "}
-          <Green>Elemental Mastery</Green> she has.
-          <br />
-          This effect can be triggered once every 2s.{" "}
-          <Red>Total healing: {300 + Math.round(totalAttr.em * 1.2)}. (read-only)</Red>
-        </>
-      ),
-      isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
-    },
     {
       index: 1,
       src: EModSrc.C2,

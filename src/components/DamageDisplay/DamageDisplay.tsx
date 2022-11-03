@@ -107,8 +107,10 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                   </table>
                 </div>
               ) : (
-                <div className="mb-2 pt-2 pb-1 flex-center bg-darkblue-2">
-                  <p>This talent does not deal damage.</p>
+                <div className="pb-2">
+                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">
+                    This talent does not deal damage.
+                  </p>
                 </div>
               )}
             </CollapseSpace>

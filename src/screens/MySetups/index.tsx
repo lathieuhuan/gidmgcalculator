@@ -58,17 +58,19 @@ import styles from "../styles.module.scss";
 import { CombineMore } from "./modals/combine-setups/CombineMore";
 import { SetupExporter } from "@Components/SetupExporter";
 import { getQuickenBuffDamage } from "@Calculators/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 
 export default function MySetups() {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const mySetups = useSelector(selectMySetups);
+  const chosenSetupID = useSelector(selectChosenSetupID);
+
+  const ref = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<MySetupModal>({
     type: "",
     ID: 0,
   });
-  const ref = useRef<HTMLDivElement>(null);
-
-  const mySetups = useSelector(selectMySetups);
-  const chosenSetupID = useSelector(selectChosenSetupID);
-  const dispatch = useDispatch();
 
   const chosenSetup = (() => {
     const setup = findById(mySetups, chosenSetupID);
@@ -245,6 +247,27 @@ export default function MySetups() {
 
         return (
           <div className="h-full px-4 flex space-x-4 overflow-auto">
+            <ModifierWrapper title="Debuffs used" className="w-75 flex flex-col">
+              <CollapseList
+                headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
+                contentList={[
+                  <ElementDebuffs
+                    superconduct={elmtModCtrls.superconduct}
+                    resonances={elmtModCtrls.resonances}
+                  />,
+                  <SelfDebuffs
+                    char={char}
+                    selfDebuffCtrls={selfDebuffCtrls}
+                    debuffs={debuffs}
+                    partyData={partyData}
+                  />,
+                  <PartyDebuffs char={char} party={party} partyData={partyData} />,
+                  <ArtifactDebuffs artDebuffCtrls={artDebuffCtrls} />,
+                  <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
+                ]}
+              />
+            </ModifierWrapper>
+
             <ModifierWrapper title="Buffs used" className="w-75 flex flex-col">
               <CollapseList
                 headingList={[
@@ -291,35 +314,17 @@ export default function MySetups() {
               />
             </ModifierWrapper>
 
-            <ModifierWrapper title="Debuffs used" className="w-75 flex flex-col">
-              <CollapseList
-                headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
-                contentList={[
-                  <ElementDebuffs
-                    superconduct={elmtModCtrls.superconduct}
-                    resonances={elmtModCtrls.resonances}
-                  />,
-                  <SelfDebuffs
-                    char={char}
-                    selfDebuffCtrls={selfDebuffCtrls}
-                    debuffs={debuffs}
-                    partyData={partyData}
-                  />,
-                  <PartyDebuffs char={char} party={party} partyData={partyData} />,
-                  <ArtifactDebuffs artDebuffCtrls={artDebuffCtrls} />,
-                  <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
-                ]}
-              />
-            </ModifierWrapper>
-
             <ModifierWrapper title="Target" className="w-68">
               <div className="h-full px-2">
                 {Object.entries(target).map(([key, value], i) => (
                   <p key={i} className="mb-1 text-h6">
                     <span
-                      className={cn("mr-2", key === "level" ? "text-lightgold" : `text-${key}`)}
+                      className={cn(
+                        "mr-2 capitalize",
+                        key === "level" ? "text-lightgold" : `text-${key}`
+                      )}
                     >
-                      {key}:
+                      {t(key, { ns: "resistance" })}:
                     </span>
                     <b>{value}</b>
                   </p>

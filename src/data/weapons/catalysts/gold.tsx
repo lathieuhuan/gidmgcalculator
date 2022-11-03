@@ -6,14 +6,11 @@ import { applyModifier } from "@Calculators/utils";
 import { applyPercent, findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
-import aThousandFloatingDreamsImg from "@Src/assets/images/a-thousand-floating-dreams.png";
-
 const goldCatalysts: DataWeapon[] = [
   {
     code: 143,
-    beta: true,
     name: "A Thousand Floating Dreams",
-    icon: aThousandFloatingDreamsImg,
+    icon: "4/4c/Weapon_A_Thousand_Floating_Dreams",
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "em", scale: "58" },

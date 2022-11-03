@@ -39,7 +39,7 @@ export default function PieceInfo({
   const maxLevel = rarity === 5 ? 20 : 16;
 
   return (
-    <div className="pt-6" onDoubleClick={() => console.log(pieceInfo)}>
+    <div className="pt-4" onDoubleClick={() => console.log(pieceInfo)}>
       <div className="pl-6 flex items-start">
         {/*  */}
         <div className="mb-2 rounded-circle bg-darkblue-3">

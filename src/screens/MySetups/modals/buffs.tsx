@@ -351,8 +351,9 @@ export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
   const content = customBuffCtrls.map(({ category, type, value }, i) => (
     <div key={i} className="flex justify-end">
       <p className="mr-4">{t(type)}</p>
-      <p className="text-orange font-bold">
-        {value} {category > 1 ? "%" : percentSign(type)}
+      <p className="w-12 shrink-0 text-orange text-right">
+        {value}
+        {category > 1 ? "%" : percentSign(type)}
       </p>
     </div>
   ));

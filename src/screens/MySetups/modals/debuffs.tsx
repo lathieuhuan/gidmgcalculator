@@ -162,8 +162,8 @@ export function CustomDebuffs({ customDebuffCtrls }: CustomDebuffsProps) {
 
   const content = customDebuffCtrls.map(({ type, value }, i) => (
     <div key={i} className="flex justify-end">
-      <p className="mr-4">{t(type, { ns: "resistance" })}</p>
-      <p className="text-orange font-bold">{value}%</p>
+      <p className="mr-4">{t(type, { ns: "resistance" })} reduction</p>
+      <p className="w-12 shrink-0 text-orange text-right">{value}%</p>
     </div>
   ));
   return renderModifiers(content, false, false);

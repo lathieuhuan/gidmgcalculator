@@ -139,12 +139,12 @@ const purpleCatalysts: DataWeapon[] = [
           labels: ["Element"],
           renderTypes: ["choices"],
           initialValues: [0],
-          options: [["Pyro", "Hydro", "Cryo", "Anemo"]],
+          options: [["Pyro", "Hydro", "Cryo", "Geo", "Anemo", "Dendro"]],
         },
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { vision } = charData;
           const optionIndex = inputs?.[0] || 0;
-          const elmtIndex = [0, 1, 3, 5][optionIndex];
+          const elmtIndex = [0, 1, 3, 4, 5, 6][optionIndex];
 
           if (vision === "electro" || vision === VISION_TYPES[elmtIndex]) {
             applyModifier(desc, totalAttr, vision, 7.5 + refi * 2.5, tracker);

@@ -5,23 +5,21 @@ import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
-import nahidaImg from "@Src/assets/images/nahida.png";
 
 function getEBBuffValue(char: CharInfo, partyData: PartyData) {
   const pyroCount = partyData.reduce(
     (result, data) => (data.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
-  const baseMult = pyroCount === 1 ? 11.12 : pyroCount >= 2 ? 16.72 : 0;
+  const baseMult = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
   return [round2(baseMult * TALENT_LV_MULTIPLIERS[2][char.EB]), pyroCount];
 }
 
 const Nahida: DataCharacter = {
   code: 62,
-  beta: true,
   name: "Nahida",
-  icon: nahidaImg,
-  sideIcon: "",
+  icon: "c/cf/Character_Nahida_Thumb",
+  sideIcon: "1/13/Character_Nahida_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",
@@ -59,7 +57,7 @@ const Nahida: DataCharacter = {
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "All Schemes to Know",
-      image: "",
+      image: "7/72/Talent_All_Schemes_to_Know",
       xtraLvAtCons: 3,
       stats: [
         { name: "Press DMG", baseMult: 98.4 },
@@ -127,7 +125,7 @@ const Nahida: DataCharacter = {
     },
     EB: {
       name: "Illusory Heart",
-      image: "",
+      image: "e/e9/Talent_Illusory_Heart",
       xtraLvAtCons: 5,
       stats: [],
       // getExtraStats: (lv) => [
@@ -152,35 +150,14 @@ const Nahida: DataCharacter = {
     },
   },
   passiveTalents: [
-    {
-      name: "Compassion Illuminated",
-      image: "",
-      desc: (
-        <>
-          The Elemental Mastery of the active character within the Shrine of Maya will be increased
-          by <Green>20%</Green> of the <Green>Elemental Mastery</Green> of the party member with the
-          highest Elemental Mastery. Max <Green>200</Green> <Green>Elemental Mastery</Green>.
-        </>
-      ),
-    },
-    {
-      name: "Awakening Elucidated",
-      image: "",
-      desc: (
-        <>
-          Each point of Nahida's Elemental Mastery beyond 200 will grant <Green b>0.1%</Green>{" "}
-          <Green>Bonus DMG</Green> and <Green b>0.03%</Green> <Green>CRIT Rate</Green> to{" "}
-          <Green>Tri-Karma Purification</Green>. A maximum of <Green b>80%</Green>{" "}
-          <Green>Bonus DMG</Green> and <Green b>24%</Green> <Green>CRIT Rate</Green>.
-        </>
-      ),
-    },
-    { name: "On All Things Meditated", image: "" },
+    { name: "Compassion Illuminated", image: "6/63/Talent_Compassion_Illuminated" },
+    { name: "Awakening Elucidated", image: "1/1a/Talent_Awakening_Elucidated" },
+    { name: "On All Things Meditated", image: "d/db/Talent_On_All_Things_Meditated" },
   ],
   constellation: [
     {
       name: "The Seed of Stored Knowledge",
-      image: "",
+      image: "5/5f/Constellation_The_Seed_of_Stored_Knowledge",
       desc: (
         <>
           When the Shrine of Maya is unleashed and the Elemental Types of the party members are
@@ -190,8 +167,8 @@ const Nahida: DataCharacter = {
       ),
     },
     {
-      name: "Explosive Frags",
-      image: "",
+      name: "The Root of All Fullness",
+      image: "3/38/Constellation_The_Root_of_All_Fullness",
       get desc() {
         return (
           <>
@@ -214,10 +191,13 @@ const Nahida: DataCharacter = {
         </>,
       ],
     },
-    { name: "The Shoot of Conscious Attainment", image: "" },
+    {
+      name: "The Shoot of Conscious Attainment",
+      image: "1/18/Constellation_The_Shoot_of_Conscious_Attainment",
+    },
     {
       name: "The Stem of Manifest Inference",
-      image: "",
+      image: "8/8b/Constellation_The_Stem_of_Manifest_Inference",
       desc: (
         <>
           When 1/2/3/(4 or more) nearby opponents are affected by All Schemes to Know's Seeds of
@@ -226,10 +206,13 @@ const Nahida: DataCharacter = {
         </>
       ),
     },
-    { name: "The Leaves of Enlightening Speech", image: "" },
+    {
+      name: "The Leaves of Enlightening Speech",
+      image: "f/fb/Constellation_The_Leaves_of_Enlightening_Speech",
+    },
     {
       name: "The Fruit of Reason's Culmination",
-      image: "",
+      image: "b/b5/Constellation_The_Fruit_of_Reason%27s_Culmination",
       desc: (
         <>
           When Nahida hits an opponent linked by All Schemes to Know's Seeds of Skandha with Normal
@@ -249,7 +232,14 @@ const Nahida: DataCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => Nahida.passiveTalents[1].desc,
+      desc: () => (
+        <>
+          Each point of Nahida's Elemental Mastery beyond 200 will grant <Green b>0.1%</Green>{" "}
+          <Green>Bonus DMG</Green> and <Green b>0.03%</Green> <Green>CRIT Rate</Green> to{" "}
+          <Green>Tri-Karma Purification</Green>. A maximum of <Green b>80%</Green>{" "}
+          <Green>Bonus DMG</Green> and <Green b>24%</Green> <Green>CRIT Rate</Green>.
+        </>
+      ),
       isGranted: checkAscs[4],
     },
   ],
@@ -272,7 +262,13 @@ const Nahida: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
-      desc: () => Nahida.passiveTalents[0].desc,
+      desc: () => (
+        <>
+          The Elemental Mastery of the active character within the Shrine of Maya will be increased
+          by <Green>25%</Green> of the <Green>Elemental Mastery</Green> of the party member with the
+          highest Elemental Mastery. Max <Green>250</Green> <Green>Elemental Mastery</Green>.
+        </>
+      ),
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
@@ -283,7 +279,7 @@ const Nahida: DataCharacter = {
         maxValues: [9999],
       },
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.2, 200), tracker);
+        applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.25, 250), tracker);
       },
     },
     {

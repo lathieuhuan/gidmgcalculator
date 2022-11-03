@@ -20,6 +20,7 @@ interface InputConfig {
   selfLabels?: string[];
   labels?: string[];
   renderTypes: string[];
+  options?: string[][];
 }
 export function renderSetters(
   inputConfig: InputConfig | undefined,
@@ -30,22 +31,32 @@ export function renderSetters(
     return [];
   }
 
-  const { renderTypes } = inputConfig;
+  const { renderTypes, options = [] } = inputConfig;
   const labels = (useSelfLabels ? inputConfig.selfLabels : inputConfig.labels) || [];
 
-  return labels.map((label, i) => (
-    <div key={i} className="flex justify-end align-center">
-      <p className={cn(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
+  return labels.map((label, i) => {
+    let setterValue;
 
-      {renderTypes[i] === "check" ? (
-        <input type="checkbox" className="mr-1 scale-150" checked={true} readOnly />
-      ) : (
-        <p className="text-orange font-bold capitalize">
-          {["anemoable", "dendroable"].includes(renderTypes[i])
-            ? VISION_TYPES[inputs[i]]
-            : inputs[i]}
-        </p>
-      )}
-    </div>
-  ));
+    switch (renderTypes[i]) {
+      case "check":
+        setterValue = <input type="checkbox" className="mr-1 scale-150" checked={true} readOnly />;
+        break;
+      case "anemoable":
+      case "dendroable":
+        setterValue = <p className="text-orange capitalize">{VISION_TYPES[inputs[i]]}</p>;
+        break;
+      case "choices":
+        setterValue = <p className="text-orange capitalize">{options[i][inputs[i]]}</p>;
+        break;
+      default:
+        setterValue = <p className="text-orange capitalize">{inputs[i]}</p>;
+        break;
+    }
+    return (
+      <div key={i} className="flex justify-end align-center">
+        <p className={cn(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
+        {setterValue}
+      </div>
+    );
+  });
 }

@@ -193,14 +193,9 @@ function calcTalentDamage({
         record.note = ` (limited to ${limit})`;
       }
     }
-    return {
-      nonCrit: base,
-      crit: 0,
-      average: base,
-    };
-  } else {
-    return { nonCrit: 0, crit: 0, average: 0 };
+    return { nonCrit: base, crit: 0, average: base };
   }
+  return { nonCrit: 0, crit: 0, average: 0 };
 }
 
 interface GetDamageArgs {
@@ -348,7 +343,13 @@ export default function getDamage({
 
       // CALCULATE BASE DAMAGE
       let base;
-      const { baseStatType = "atk", baseMult, multType = defaultInfo.multType, flat } = stat;
+      const {
+        baseStatType = "atk",
+        baseMult,
+        isStatic,
+        multType = defaultInfo.multType,
+        flat,
+      } = stat;
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
         baseValue: totalAttr[baseStatType],

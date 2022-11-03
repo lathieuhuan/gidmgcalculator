@@ -13,6 +13,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${Weapon}_${Vision}`, string>>
   catalyst_electro: "e/e7/Catalyst_Electro",
   catalyst_geo: "e/e1/Catalyst_Geo",
   catalyst_anemo: "d/dd/Catalyst_Anemo",
+  catalyst_dendro: "c/c4/Catalyst_Dendro",
   claymore_pyro: "5/57/Claymore_Pyro",
   claymore_cryo: "9/99/Claymore_Cryo",
   claymore_geo: "6/65/Claymore_Geo",

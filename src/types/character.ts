@@ -96,11 +96,12 @@ export type StatInfo = {
    * if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
    */
   conditional?: boolean;
+  isStatic?: boolean;
   getTalentBuff?: GetTalentBuffFn;
   /** only on ES / EB */
   notAttack?: "healing" | "shield" | "other";
   /** only on ES / EB */
-  baseStatType?: "base_atk" | "atk" | "def" | "hp";
+  baseStatType?: "base_atk" | "atk" | "def" | "hp" | "em";
   /** only on ES / EB */
   flat?: {
     base: number;

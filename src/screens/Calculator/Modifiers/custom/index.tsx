@@ -92,18 +92,20 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
         <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} />
       ) : null}
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-4" style={{ marginLeft: "-0.5rem" }}>
         {modCtrls.map(({ type, value }, ctrlIndex) => (
           <div key={ctrlIndex} className="flex items-center">
             <button
-              className="mr-3 text-lesser text-xl hover:text-darkred"
+              className="mr-1 text-lesser text-xl hover:text-darkred"
               onClick={() => {
                 dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
               }}
             >
               <FaTimes />
             </button>
-            <p className="pr-2 text-lg">{t(type)}</p>
+            <p className="pr-2 text-lg">
+              {t(type, { ns: isBuffs ? "common" : "resistance" })} {!isBuffs && "reduction"}
+            </p>
 
             <input
               className="ml-auto w-16 px-2 py-1 text-right text-lg textinput-common font-medium"
