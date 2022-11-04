@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier, increaseAttackBonus } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
 
@@ -47,10 +47,10 @@ const Gorou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 37.75 },
-        { name: "2-Hit", baseMult: 37.15 },
-        { name: "3-Hit", baseMult: 49.45 },
-        { name: "4-Hit", baseMult: 59 },
+        { name: "1-Hit", multBase: 37.75 },
+        { name: "2-Hit", multBase: 37.15 },
+        { name: "3-Hit", multBase: 49.45 },
+        { name: "4-Hit", multBase: 59 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -60,11 +60,11 @@ const Gorou: DataCharacter = {
       image: "e/e6/Talent_Inuzaka_All-Round_Defense",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 107.2 },
+        { name: "Skill DMG", multBase: 107.2 },
         {
           name: "DEF Increase",
           notAttack: "other",
-          baseMult: 0,
+          multBase: 0,
           multType: 2,
           flat: { base: 206, type: 2 },
         },
@@ -80,16 +80,14 @@ const Gorou: DataCharacter = {
       image: "f/f9/Talent_Juuga_Forward_Unto_Victory",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseStatType: "def", baseMult: 98.22 },
-        { name: "Crystal Collapse DMG", baseStatType: "def", baseMult: 61.3 },
+        { name: "Skill DMG", baseStatType: "def", multBase: 98.22 },
+        { name: "Crystal Collapse DMG", baseStatType: "def", multBase: 61.3 },
         {
           name: "Heal Amount (C4)",
           notAttack: "healing",
-          conditional: true,
+          isStatic: true,
           baseStatType: "def",
-          baseMult: 0,
-          multType: 2,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[4](char), "mult", [false, 4], 50]),
+          multBase: 50,
         },
       ],
       // getExtraStats: () => [

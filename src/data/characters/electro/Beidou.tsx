@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const Beidou: DataCharacter = {
   code: 6,
@@ -37,24 +37,22 @@ const Beidou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 71.12 },
-        { name: "2-Hit", baseMult: 70.86 },
-        { name: "3-Hit", baseMult: 88.32 },
-        { name: "4-Hit", baseMult: 86.52 },
-        { name: "5-Hit", baseMult: 112.14 },
+        { name: "1-Hit", multBase: 71.12 },
+        { name: "2-Hit", multBase: 70.86 },
+        { name: "3-Hit", multBase: 88.32 },
+        { name: "4-Hit", multBase: 86.52 },
+        { name: "5-Hit", multBase: 112.14 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 56.24 },
-        { name: "Charged Attack Final", baseMult: 101.82 },
+        { name: "Charged Attack Spinning", multBase: 56.24 },
+        { name: "Charged Attack Final", multBase: 101.82 },
         {
           name: "Extra Hit (C4)",
-          conditional: true,
+          isStatic: true,
           dmgTypes: [null, "electro"],
-          baseMult: 0,
-          multType: 1,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[4](char), "mult", [false, 4], 20]),
+          multBase: 20,
         },
       ],
     },
@@ -68,13 +66,13 @@ const Beidou: DataCharacter = {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           baseStatType: "hp",
-          baseMult: 14.4,
+          multBase: 14.4,
           multType: 2,
           flat: { base: 1386, type: 3 },
         },
-        { name: "Base DMG", baseMult: 121.6 },
-        { name: "DMG Bonus on Hit", baseMult: 160 },
-        { name: "Full Counter", baseMult: 441.6, conditional: true },
+        { name: "Base DMG", multBase: 121.6 },
+        { name: "DMG Bonus on Hit", multBase: 160 },
+        { name: "Full Counter", multBase: 441.6, notOfficial: true },
       ],
       // getExtraStats: () => [{ name: "CD", value: "7.5s" }],
     },
@@ -83,8 +81,8 @@ const Beidou: DataCharacter = {
       image: "3/33/Talent_Stormbreaker",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 121.6 },
-        { name: "Lightning DMG", baseMult: 96 },
+        { name: "Skill DMG", multBase: 121.6 },
+        { name: "Lightning DMG", multBase: 96 },
       ],
       // getExtraStats: (lv) => [
       //   {

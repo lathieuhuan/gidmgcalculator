@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const Tighnari: DataCharacter = {
   code: 54,
@@ -37,25 +37,23 @@ const Tighnari: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 44.63 },
-        { name: "2-Hit", baseMult: 41.97 },
-        { name: "3-Hit (1/2)", baseMult: 26.45 },
-        { name: "4-Hit", baseMult: 68.63 },
+        { name: "1-Hit", multBase: 44.63 },
+        { name: "2-Hit", multBase: 41.97 },
+        { name: "3-Hit (1/2)", multBase: 26.45 },
+        { name: "4-Hit", multBase: 68.63 },
       ],
     },
     CA: {
       stats: [
-        { name: "Aimed Shot", baseMult: 43.86 },
-        { name: "Level 1 Aimed Shot", dmgTypes: ["CA", "dendro"], baseMult: 124, multType: 2 },
-        { name: "Wreath Arrow DMG", dmgTypes: ["CA", "dendro"], baseMult: 87.2, multType: 2 },
-        { name: "Clusterbloom Arrow DMG", dmgTypes: ["CA", "dendro"], baseMult: 38.6, multType: 2 },
+        { name: "Aimed Shot", multBase: 43.86 },
+        { name: "Level 1 Aimed Shot", dmgTypes: ["CA", "dendro"], multBase: 124, multType: 2 },
+        { name: "Wreath Arrow DMG", dmgTypes: ["CA", "dendro"], multBase: 87.2, multType: 2 },
+        { name: "Clusterbloom Arrow DMG", dmgTypes: ["CA", "dendro"], multBase: 38.6, multType: 2 },
         {
-          name: "Additional Clusterbloom Arrow DMG",
-          conditional: true,
+          name: "Additional Clusterbloom Arrow DMG (C6)",
+          isStatic: true,
           dmgTypes: ["CA", "dendro"],
-          baseMult: 0,
-          multType: 2,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 150]),
+          multBase: 150,
         },
       ],
     },
@@ -64,7 +62,7 @@ const Tighnari: DataCharacter = {
       name: "Vijnana-Phala Mine",
       image: "f/f9/Talent_Vijnana-Phala_Mine",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: 149.6 }],
+      stats: [{ name: "Skill DMG", multBase: 149.6 }],
       // getExtraStats: () => [
       //   { name: "Vijnana-Phala Field Duration", value: "8s" },
       //   { name: "Vijnana Penetrator Duration", value: "12s" },
@@ -76,8 +74,8 @@ const Tighnari: DataCharacter = {
       image: "3/30/Talent_Fashioner%27s_Tanglevine_Shaft",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Tanglevine Shaft DMG", baseMult: 55.62 },
-        { name: "Secondary Tanglevine Shaft DMG", baseMult: 67.98 },
+        { name: "Tanglevine Shaft DMG", multBase: 55.62 },
+        { name: "Secondary Tanglevine Shaft DMG", multBase: 67.98 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

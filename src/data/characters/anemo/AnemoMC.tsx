@@ -20,10 +20,10 @@ const AnemoMC: DataCharacter = {
       image: "0/07/Talent_Palm_Vortex",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Initial Cutting", baseMult: 12 },
-        { name: "Max Cutting", baseMult: 16.8 },
-        { name: "Initial Storm", baseMult: 176 },
-        { name: "Max Storm", baseMult: 192 },
+        { name: "Initial Cutting", multBase: 12 },
+        { name: "Max Cutting", multBase: 16.8 },
+        { name: "Initial Storm", multBase: 176 },
+        { name: "Max Storm", multBase: 192 },
       ],
       // getExtraStats: () => [
       //   { name: "Base CD", value: "5s" },
@@ -35,8 +35,8 @@ const AnemoMC: DataCharacter = {
       image: "9/98/Talent_Gust_Surge",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Tornado DMG", baseMult: 80.8 },
-        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], baseMult: 24.8 },
+        { name: "Tornado DMG", multBase: 80.8 },
+        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], multBase: 24.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

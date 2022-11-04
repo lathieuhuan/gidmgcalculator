@@ -38,16 +38,16 @@ const Noelle: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 79.12 },
-        { name: "2-Hit", baseMult: 73.36 },
-        { name: "3-Hit", baseMult: 86.26 },
-        { name: "4-Hit", baseMult: 113.43 },
+        { name: "1-Hit", multBase: 79.12 },
+        { name: "2-Hit", multBase: 73.36 },
+        { name: "3-Hit", multBase: 86.26 },
+        { name: "4-Hit", multBase: 113.43 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 50.74 },
-        { name: "Charged Attack Final", baseMult: 90.47 },
+        { name: "Charged Attack Spinning", multBase: 50.74 },
+        { name: "Charged Attack Final", multBase: 90.47 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -56,19 +56,19 @@ const Noelle: DataCharacter = {
       image: "5/5a/Talent_Breastplate",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "def", baseMult: 120 },
+        { name: "Skill DMG", baseStatType: "def", multBase: 120 },
         {
           name: "DMG Absorption",
           notAttack: "shield",
           baseStatType: "def",
-          baseMult: 160,
+          multBase: 160,
           flat: { base: 770, type: 3 },
         },
         {
           name: "Healing",
           notAttack: "healing",
           baseStatType: "def",
-          baseMult: 21.28,
+          multBase: 21.28,
           flat: { base: 103, type: 3 },
         },
       ],
@@ -83,13 +83,13 @@ const Noelle: DataCharacter = {
       image: "7/7c/Talent_Sweeping_Time",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", baseMult: 67.2 },
-        { name: "Skill DMG", baseMult: 92.8 },
+        { name: "Burst DMG", multBase: 67.2 },
+        { name: "Skill DMG", multBase: 92.8 },
         {
           name: "ATK Bonus",
           notAttack: "other",
           baseStatType: "def",
-          baseMult: 40,
+          multBase: 40,
           multType: 2,
           getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 50]),
         },

@@ -3,7 +3,7 @@ import { Green, Hydro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const Candace: DataCharacter = {
   code: 58,
@@ -37,13 +37,13 @@ const Candace: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 60.8 },
-        { name: "2-Hit", baseMult: 61.15 },
-        { name: "3-Hit", baseMult: [35.49, 43.37] },
-        { name: "4-Hit", baseMult: 94.94 },
+        { name: "1-Hit", multBase: 60.8 },
+        { name: "2-Hit", multBase: 61.15 },
+        { name: "3-Hit", multBase: [35.49, 43.37] },
+        { name: "4-Hit", multBase: 94.94 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", baseMult: 124.18 }] },
+    CA: { stats: [{ name: "Charged Attack DMG", multBase: 124.18 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sacred Rite: Heron's Sanctum",
@@ -53,12 +53,12 @@ const Candace: DataCharacter = {
         {
           name: "Shield DMG Absorption",
           baseStatType: "hp",
-          baseMult: 12,
+          multBase: 12,
           multType: 2,
           flat: { base: 1156, type: 3 },
         },
-        { name: "Basic DMG", baseStatType: "hp", baseMult: 12.43 },
-        { name: "Charged Up DMG", baseStatType: "hp", baseMult: 20.43 },
+        { name: "Basic DMG", baseStatType: "hp", multBase: 12.43 },
+        { name: "Charged Up DMG", baseStatType: "hp", multBase: 20.43 },
       ],
     },
     EB: {
@@ -66,13 +66,13 @@ const Candace: DataCharacter = {
       image: "1/1a/Talent_Sacred_Rite_Wagtail%27s_Tide",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", baseMult: 6.61 },
-        { name: "Wave Impact DMG", baseStatType: "hp", baseMult: 6.61 },
+        { name: "Skill DMG", baseStatType: "hp", multBase: 6.61 },
+        { name: "Wave Impact DMG", baseStatType: "hp", multBase: 6.61 },
         {
           name: "Wave DMG (C6)",
           baseStatType: "hp",
-          baseMult: 0,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 15]),
+          isStatic: true,
+          multBase: 15,
         },
       ],
       // getExtraStats: () => [

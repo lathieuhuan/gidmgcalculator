@@ -37,20 +37,20 @@ const Xingqiu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 46.61 },
-        { name: "2-Hit", baseMult: 47.64 },
-        { name: "3-Hit (1/2)", baseMult: 28.55 },
-        { name: "4-Hit", baseMult: 55.99 },
-        { name: "5-Hit (1/2)", baseMult: 35.86 },
+        { name: "1-Hit", multBase: 46.61 },
+        { name: "2-Hit", multBase: 47.64 },
+        { name: "3-Hit (1/2)", multBase: 28.55 },
+        { name: "4-Hit", multBase: 55.99 },
+        { name: "5-Hit (1/2)", multBase: 35.86 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [47.3, 56.16] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [47.3, 56.16] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Guhua Sword: Fatal Rainscreen",
       image: "5/5d/Talent_Guhua_Sword_Fatal_Rainscreen",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: [168, 191.2] }],
+      stats: [{ name: "Skill DMG", multBase: [168, 191.2] }],
       // getExtraStats: (lv) => [
       //   { name: "DMG Redution Ratio", value: Math.min(19 + lv, 29) + "%" },
       //   { name: "Duration", value: "15s" },
@@ -61,7 +61,7 @@ const Xingqiu: DataCharacter = {
       name: "Guhua Sword: Raincutter",
       image: "2/23/Talent_Guhua_Sword_Raincutter",
       xtraLvAtCons: 3,
-      stats: [{ name: "Sword Rain", baseMult: 54.27 }],
+      stats: [{ name: "Sword Rain", multBase: 54.27 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "20s" },

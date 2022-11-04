@@ -41,22 +41,22 @@ const Layla: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 51.2 },
-        { name: "2-Hit", baseMult: 48.5 },
-        { name: "3-Hit", baseMult: 73 },
+        { name: "1-Hit", multBase: 51.2 },
+        { name: "2-Hit", multBase: 48.5 },
+        { name: "3-Hit", multBase: 73 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", baseMult: [47.7, 52.5] }] },
+    CA: { stats: [{ name: "Charged Attack DMG", multBase: [47.7, 52.5] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Nights of Formal Focus",
       image: "",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 14.85 },
+        { name: "Skill DMG", multBase: 14.85 },
         {
           name: "Shooting Star DMG",
-          baseMult: 17.1,
+          multBase: 17.1,
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
               [checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
@@ -68,7 +68,7 @@ const Layla: DataCharacter = {
           name: "Base Shield DMG Absorption",
           notAttack: "shield",
           baseStatType: "hp",
-          baseMult: 10.8,
+          multBase: 10.8,
           multType: 2,
           flat: { base: 1040, type: 3 },
           getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 20]),
@@ -80,7 +80,7 @@ const Layla: DataCharacter = {
       name: "Dream of the Star-Stream Shaker",
       image: "",
       xtraLvAtCons: 5,
-      stats: [{ name: "Starlight Slug DMG", baseStatType: "hp", baseMult: 7 }],
+      stats: [{ name: "Starlight Slug DMG", baseStatType: "hp", multBase: 7 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "12s" },
       //   { name: "CD", value: "15s" },

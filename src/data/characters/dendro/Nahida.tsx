@@ -11,8 +11,8 @@ function getEBBuffValue(char: CharInfo, partyData: PartyData) {
     (result, data) => (data.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
-  const baseMult = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
-  return [round2(baseMult * TALENT_LV_MULTIPLIERS[2][char.EB]), pyroCount];
+  const multBase = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
+  return [round2(multBase * TALENT_LV_MULTIPLIERS[2][char.EB]), pyroCount];
 }
 
 const Nahida: DataCharacter = {
@@ -47,24 +47,24 @@ const Nahida: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 40.3 },
-        { name: "2-Hit", baseMult: 36.97 },
-        { name: "3-Hit", baseMult: 45.87 },
-        { name: "4-Hit", baseMult: 58.21 },
+        { name: "1-Hit", multBase: 40.3 },
+        { name: "2-Hit", multBase: 36.97 },
+        { name: "3-Hit", multBase: 45.87 },
+        { name: "4-Hit", multBase: 58.21 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 132 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 132 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "All Schemes to Know",
       image: "7/72/Talent_All_Schemes_to_Know",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press DMG", baseMult: 98.4 },
-        { name: "Hold DMG", baseMult: 130.4 },
+        { name: "Press DMG", multBase: 98.4 },
+        { name: "Hold DMG", multBase: 130.4 },
         {
           name: "Tri-Karma Purification DMG",
-          baseMult: 103.2,
+          multBase: 103.2,
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
             let desc = [];
@@ -105,14 +105,11 @@ const Nahida: DataCharacter = {
         },
         {
           name: "Karmic Oblivion DMG (C6)",
-          baseMult: 0,
-          conditional: true,
+          isStatic: true,
+          multBase: 200,
           getTalentBuff: ({ totalAttr, char }) => {
             const emPartDesc = `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Mult. 400%)`;
-            return talentBuff(
-              [checkCons[6](char), "mult", [false, 6], 200],
-              [checkCons[6](char), "flat", emPartDesc, totalAttr.em * 4]
-            );
+            return talentBuff([checkCons[6](char), "flat", emPartDesc, totalAttr.em * 4]);
           },
         },
       ],

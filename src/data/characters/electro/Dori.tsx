@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { makeModApplier } from "@Calculators/utils";
-import { charModIsInUse, checkCons, talentBuff } from "../utils";
+import { checkCons } from "../utils";
 
 const Dori: DataCharacter = {
   code: 56,
@@ -37,28 +37,22 @@ const Dori: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 90.21 },
-        { name: "2-Hit", baseMult: [41.07, 43.12] },
-        { name: "3-Hit", baseMult: 128.4 },
+        { name: "1-Hit", multBase: 90.21 },
+        { name: "2-Hit", multBase: [41.07, 43.12] },
+        { name: "3-Hit", multBase: 128.4 },
         {
           name: "Heal on Normal Attacks hit (C6)",
           notAttack: "healing",
-          conditional: true,
+          isStatic: true,
           baseStatType: "hp",
-          baseMult: 0,
-          multType: 2,
-          getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Dori.buffs!, char, selfBuffCtrls, 1);
-
-            return talentBuff([isActivated, "mult", [false, 6], 4]);
-          },
+          multBase: 4,
         },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 62.55 },
-        { name: "Charged Attack Final", baseMult: 113.09 },
+        { name: "Charged Attack Spinning", multBase: 62.55 },
+        { name: "Charged Attack Final", multBase: 113.09 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -67,8 +61,8 @@ const Dori: DataCharacter = {
       image: "c/c8/Talent_Spirit-Warding_Lamp_Troubleshooter_Cannon",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Troubleshooter Shot DMG", baseMult: 147.28 },
-        { name: "After-Sales Service Round DMG", baseMult: 31.56 },
+        { name: "Troubleshooter Shot DMG", multBase: 147.28 },
+        { name: "After-Sales Service Round DMG", multBase: 31.56 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
@@ -77,12 +71,12 @@ const Dori: DataCharacter = {
       image: "7/77/Talent_Alcazarzaray%27s_Exactitude",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Connector DMG", baseMult: 15.88 },
+        { name: "Connector DMG", multBase: 15.88 },
         {
           name: "Continuous Healing",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 6.67,
+          multBase: 6.67,
           multType: 2,
           flat: { base: 642, type: 3 },
         },
@@ -197,17 +191,6 @@ const Dori: DataCharacter = {
       isGranted: checkCons[4],
       affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "er", 30),
-    },
-    {
-      index: 1,
-      src: EModSrc.C6,
-      desc: () => Dori.constellation[5].desc,
-      isGranted: checkCons[6],
-      affect: EModAffect.SELF,
-      infuseConfig: {
-        range: [...NORMAL_ATTACKS],
-        overwritable: true,
-      },
     },
   ],
 };

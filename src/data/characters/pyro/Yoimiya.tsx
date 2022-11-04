@@ -43,14 +43,14 @@ const Yoimiya: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", baseMult: 35.64, multType: 4 },
-        { name: "2-Hit", baseMult: 68.38, multType: 4 },
-        { name: "3-Hit", baseMult: 88.89, multType: 4 },
-        { name: "4-Hit (1/2)", baseMult: 46.42, multType: 4 },
-        { name: "5-Hit", baseMult: 105.86, multType: 4 },
+        { name: "1-Hit (1/2)", multBase: 35.64, multType: 4 },
+        { name: "2-Hit", multBase: 68.38, multType: 4 },
+        { name: "3-Hit", multBase: 88.89, multType: 4 },
+        { name: "4-Hit (1/2)", multBase: 46.42, multType: 4 },
+        { name: "5-Hit", multBase: 105.86, multType: 4 },
       ],
     },
-    CA: { stats: [...BOW_CAs, { name: "Kindling Arrow", baseMult: 16.4 }] },
+    CA: { stats: [...BOW_CAs, { name: "Kindling Arrow", multBase: 16.4 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Niwabi Fire-Dance",
@@ -71,8 +71,8 @@ const Yoimiya: DataCharacter = {
       image: "a/a7/Talent_Ryuukin_Saxifrage",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 127.2 },
-        { name: "Aurous Blaze Explosion", baseMult: 122 },
+        { name: "Skill DMG", multBase: 127.2 },
+        { name: "Aurous Blaze Explosion", multBase: 122 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "10s" },

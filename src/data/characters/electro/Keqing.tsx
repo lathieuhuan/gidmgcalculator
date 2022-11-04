@@ -37,22 +37,22 @@ const Keqing: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 41.02 },
-        { name: "2-Hit", baseMult: 41.02 },
-        { name: "3-Hit", baseMult: 54.44 },
-        { name: "4-Hit", baseMult: [31.48, 34.4] },
-        { name: "5-Hit", baseMult: 66.99 },
+        { name: "1-Hit", multBase: 41.02 },
+        { name: "2-Hit", multBase: 41.02 },
+        { name: "3-Hit", multBase: 54.44 },
+        { name: "4-Hit", multBase: [31.48, 34.4] },
+        { name: "5-Hit", multBase: 66.99 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [76.8, 86] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [76.8, 86] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Stellar Restoration",
       image: "5/5a/Talent_Stellar_Restoration",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Lightning Stiletto", baseMult: 50.4 },
-        { name: "Slashing / Thunderclap Slash DMG", baseMult: 168 },
+        { name: "Lightning Stiletto", multBase: 50.4 },
+        { name: "Slashing / Thunderclap Slash DMG", multBase: 168 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "7.5s" }],
     },
@@ -61,9 +61,9 @@ const Keqing: DataCharacter = {
       image: "1/14/Talent_Starward_Sword",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 88 },
-        { name: "Consecutive Slash (1/8)", baseMult: 24 },
-        { name: "Last Attack", baseMult: 188.8 },
+        { name: "Skill DMG", multBase: 88 },
+        { name: "Consecutive Slash (1/8)", multBase: 24 },
+        { name: "Last Attack", multBase: 188.8 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

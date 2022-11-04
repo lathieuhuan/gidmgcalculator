@@ -37,20 +37,20 @@ const Xiangling: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 42.05 },
-        { name: "2-Hit", baseMult: 42.14 },
-        { name: "3-Hit (1/2)", baseMult: 26.06 },
-        { name: "4-Hit (1/4)", baseMult: 14.1 },
-        { name: "5-Hit", baseMult: 71.04 },
+        { name: "1-Hit", multBase: 42.05 },
+        { name: "2-Hit", multBase: 42.14 },
+        { name: "3-Hit (1/2)", multBase: 26.06 },
+        { name: "4-Hit (1/4)", multBase: 14.1 },
+        { name: "5-Hit", multBase: 71.04 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 121.69 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 121.69 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Guoba Attack",
       image: "a/a9/Talent_Guoba_Attack",
       xtraLvAtCons: 5,
-      stats: [{ name: "Flame DMG (1/4)", baseMult: 111.28 }],
+      stats: [{ name: "Flame DMG (1/4)", multBase: 111.28 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
     EB: {
@@ -58,10 +58,10 @@ const Xiangling: DataCharacter = {
       image: "2/29/Talent_Pyronado",
       xtraLvAtCons: 3,
       stats: [
-        { name: "1-Hit Swing", baseMult: 72 },
-        { name: "2-Hit Swing", baseMult: 88 },
-        { name: "3-Hit Swing", baseMult: 109.6 },
-        { name: "Pyronado DMG", baseMult: 112 },
+        { name: "1-Hit Swing", multBase: 72 },
+        { name: "2-Hit Swing", multBase: 88 },
+        { name: "3-Hit Swing", multBase: 109.6 },
+        { name: "Pyronado DMG", multBase: 112 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "10s" },

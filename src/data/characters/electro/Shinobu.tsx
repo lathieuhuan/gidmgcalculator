@@ -45,32 +45,32 @@ const Shinobu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 48.76 },
-        { name: "2-Hit", baseMult: 44.55 },
-        { name: "3-Hit", baseMult: 59.34 },
-        { name: "4-Hit", baseMult: 76.11 },
+        { name: "1-Hit", multBase: 48.76 },
+        { name: "2-Hit", multBase: 44.55 },
+        { name: "3-Hit", multBase: 59.34 },
+        { name: "4-Hit", multBase: 76.11 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [55.63, 66.77] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [55.63, 66.77] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sanctifying Ring",
       image: "d/d7/Talent_Sanctifying_Ring",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 75.71 },
+        { name: "Skill DMG", multBase: 75.71 },
         {
           name: "Grass Ring of Sanctification Healing",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 3,
+          multBase: 3,
           multType: 2,
           flat: { base: 289, type: 3 },
           getTalentBuff: getA4TAlentBuff(0),
         },
         {
           name: "Grass Ring of Sanctification DMG",
-          baseMult: 25.24,
+          multBase: 25.24,
           getTalentBuff: getA4TAlentBuff(1),
         },
       ],
@@ -85,9 +85,9 @@ const Shinobu: DataCharacter = {
       image: "4/47/Talent_Gyoei_Narukami_Kariyama_Rite",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Single Instance DMG", baseStatType: "hp", baseMult: 3.6 },
-        { name: "Total DMG (HP > 50%)", baseStatType: "hp", baseMult: 25.23 },
-        { name: "Total DMG", baseStatType: "hp", baseMult: 43.26 },
+        { name: "Single Instance DMG", baseStatType: "hp", multBase: 3.6 },
+        { name: "Total DMG (HP > 50%)", baseStatType: "hp", multBase: 25.23 },
+        { name: "Total DMG", baseStatType: "hp", multBase: 43.26 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "2s/3.5s" },

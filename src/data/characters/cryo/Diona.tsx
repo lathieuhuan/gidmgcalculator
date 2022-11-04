@@ -37,11 +37,11 @@ const Diona: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 36.12 },
-        { name: "2-Hit", baseMult: 33.54 },
-        { name: "3-Hit", baseMult: 45.58 },
-        { name: "4-Hit", baseMult: 43 },
-        { name: "5-Hit", baseMult: 53.75 },
+        { name: "1-Hit", multBase: 36.12 },
+        { name: "2-Hit", multBase: 33.54 },
+        { name: "3-Hit", multBase: 45.58 },
+        { name: "4-Hit", multBase: 43 },
+        { name: "5-Hit", multBase: 53.75 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -53,13 +53,13 @@ const Diona: DataCharacter = {
       stats: [
         {
           name: "DMG per Paw",
-          baseMult: 41.92,
+          multBase: 41.92,
         },
         {
           name: "Base DMG Absorption",
           notAttack: "shield",
           baseStatType: "hp",
-          baseMult: 7.2,
+          multBase: 7.2,
           multType: 2,
           flat: { base: 693, type: 3 },
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "pct", [false, 1], 15]),
@@ -76,13 +76,13 @@ const Diona: DataCharacter = {
       image: "5/57/Talent_Signature_Mix",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 80 },
-        { name: "Continuous DMG", baseMult: 52.64 },
+        { name: "Skill DMG", multBase: 80 },
+        { name: "Continuous DMG", multBase: 52.64 },
         {
           name: "HP Regen. Over Time",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 5.34,
+          multBase: 5.34,
           multType: 2,
           flat: { base: 513, type: 3 },
         },

@@ -59,17 +59,17 @@ const Eula: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 89.73 },
-        { name: "2-Hit", baseMult: 93.55 },
-        { name: "3-Hit (1/2)", baseMult: 56.8 },
-        { name: "4-Hit", baseMult: 112.64 },
-        { name: "5-Hit (1/2)", baseMult: 71.83 },
+        { name: "1-Hit", multBase: 89.73 },
+        { name: "2-Hit", multBase: 93.55 },
+        { name: "3-Hit (1/2)", multBase: 56.8 },
+        { name: "4-Hit", multBase: 112.64 },
+        { name: "5-Hit (1/2)", multBase: 71.83 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 68.8 },
-        { name: "Charged Attack Final", baseMult: 124.4 },
+        { name: "Charged Attack Spinning", multBase: 68.8 },
+        { name: "Charged Attack Final", multBase: 124.4 },
       ],
     },
     PA: { stats: HEAVIER_PAs.map((stat) => ({ ...stat, multType: 1 })) },
@@ -78,9 +78,9 @@ const Eula: DataCharacter = {
       image: "a/ae/Talent_Icetide_Vortex",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", baseMult: 146.4 },
-        { name: "Hold DMG", baseMult: 245.6 },
-        { name: "Icewhirl Brand", baseMult: 96 },
+        { name: "Press DMG", multBase: 146.4 },
+        { name: "Hold DMG", multBase: 245.6 },
+        { name: "Icewhirl Brand", multBase: 96 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "DEF bonus", value: "30% per Stack" },
@@ -98,18 +98,18 @@ const Eula: DataCharacter = {
       image: "a/af/Talent_Glacial_Illumination",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 245.6 },
+        { name: "Skill DMG", multBase: 245.6 },
         {
           name: "Lightfall Sword Base DMG",
           dmgTypes: ["EB", "phys"],
-          baseMult: 367.05,
+          multBase: 367.05,
           multType: 1,
           getTalentBuff: getC4TalentBuff,
         },
         {
           name: "DMG per Stack",
           dmgTypes: ["EB", "phys"],
-          baseMult: 74.99,
+          multBase: 74.99,
           multType: 1,
           getTalentBuff: getC4TalentBuff,
         },

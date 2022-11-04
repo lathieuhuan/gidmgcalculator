@@ -37,10 +37,10 @@ const Collei: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 43.6 },
-        { name: "2-Hit", baseMult: 42.66 },
-        { name: "3-Hit", baseMult: 54.09 },
-        { name: "4-Hit", baseMult: 68.03 },
+        { name: "1-Hit", multBase: 43.6 },
+        { name: "2-Hit", multBase: 42.66 },
+        { name: "3-Hit", multBase: 54.09 },
+        { name: "4-Hit", multBase: 68.03 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -49,7 +49,7 @@ const Collei: DataCharacter = {
       name: "Floral Brush",
       image: "8/88/Talent_Floral_Brush",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", baseMult: 151.2 }],
+      stats: [{ name: "Skill DMG", multBase: 151.2 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
     EB: {
@@ -57,8 +57,8 @@ const Collei: DataCharacter = {
       image: "2/2e/Talent_Trump-Card_Kitty",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Explosion DMG", baseMult: 201.82 },
-        { name: "Leap DMG", baseMult: 43.25 },
+        { name: "Explosion DMG", multBase: 201.82 },
+        { name: "Leap DMG", multBase: 43.25 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

@@ -48,10 +48,10 @@ const Aloy: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: [21.12, 23.76] },
-        { name: "2-Hit", baseMult: 43.12 },
-        { name: "3-Hit", baseMult: 52.8 },
-        { name: "4-Hit", baseMult: 65.65 },
+        { name: "1-Hit", multBase: [21.12, 23.76] },
+        { name: "2-Hit", multBase: 43.12 },
+        { name: "3-Hit", multBase: 52.8 },
+        { name: "4-Hit", multBase: 65.65 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -60,8 +60,8 @@ const Aloy: DataCharacter = {
       name: "Frozen Wilds",
       image: "9/9a/Talent_Frozen_Wilds",
       stats: [
-        { name: "Freeze Bomb", baseMult: 177.6 },
-        { name: "Chillwater Bomblets", baseMult: 40 },
+        { name: "Freeze Bomb", multBase: 177.6 },
+        { name: "Chillwater Bomblets", multBase: 40 },
       ],
       // getExtraStats: (lv) => [
       //   {
@@ -86,7 +86,7 @@ const Aloy: DataCharacter = {
     EB: {
       name: "Prophecies of Dawn",
       image: "b/b4/Talent_Prophecies_of_Dawn",
-      stats: [{ name: "Skill DMG", baseMult: 359.2 }],
+      stats: [{ name: "Skill DMG", multBase: 359.2 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,
     },

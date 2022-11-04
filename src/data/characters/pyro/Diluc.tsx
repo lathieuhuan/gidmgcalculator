@@ -37,23 +37,23 @@ const Diluc: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 89.7 },
-        { name: "2-Hit", baseMult: 87.63 },
-        { name: "3-Hit", baseMult: 98.81 },
-        { name: "4-Hit", baseMult: 133.99 },
+        { name: "1-Hit", multBase: 89.7 },
+        { name: "2-Hit", multBase: 87.63 },
+        { name: "3-Hit", multBase: 98.81 },
+        { name: "4-Hit", multBase: 133.99 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 68.8 },
-        { name: "Charged Attack Final", baseMult: 124.7 },
+        { name: "Charged Attack Spinning", multBase: 68.8 },
+        { name: "Charged Attack Final", multBase: 124.7 },
       ],
     },
     PA: {
       stats: [
-        { name: "Plunge DMG", baseMult: 89.51, multType: 7 },
-        { name: "Low Plunge", baseMult: 178.97, multType: 7 },
-        { name: "High Plunge", baseMult: 223.55, multType: 7 },
+        { name: "Plunge DMG", multBase: 89.51, multType: 7 },
+        { name: "Low Plunge", multBase: 178.97, multType: 7 },
+        { name: "High Plunge", multBase: 223.55, multType: 7 },
       ],
     },
     ES: {
@@ -61,9 +61,9 @@ const Diluc: DataCharacter = {
       image: "5/53/Talent_Searing_Onslaught",
       xtraLvAtCons: 3,
       stats: [
-        { name: "1-Hit DMG", baseMult: 94.4 },
-        { name: "2-Hit DMG", baseMult: 97.6 },
-        { name: "3-Hit DMG", baseMult: 128.8 },
+        { name: "1-Hit DMG", multBase: 94.4 },
+        { name: "2-Hit DMG", multBase: 97.6 },
+        { name: "3-Hit DMG", multBase: 128.8 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
@@ -72,9 +72,9 @@ const Diluc: DataCharacter = {
       image: "f/f5/Talent_Dawn",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Splashing DMG", baseMult: 204 },
-        { name: "DoT", baseMult: 60 },
-        { name: "Explosion DMG", baseMult: 204 },
+        { name: "Splashing DMG", multBase: 204 },
+        { name: "DoT", multBase: 60 },
+        { name: "Explosion DMG", multBase: 204 },
       ],
       // getExtraStats: () => [
       //   { name: "CD", value: "12s" },

@@ -38,30 +38,30 @@ const Nilou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 50.31 },
-        { name: "2-Hit", baseMult: 45.44 },
-        { name: "3-Hit", baseMult: 70.35 },
+        { name: "1-Hit", multBase: 50.31 },
+        { name: "2-Hit", multBase: 45.44 },
+        { name: "3-Hit", multBase: 70.35 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [50.22, 54.44] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [50.22, 54.44] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Dance of Haftkarsvar",
       image: "3/3e/Talent_Dance_of_Haftkarsvar",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", baseMult: 3.34 },
-        { name: "Sword Dance 1-Hit DMG", baseStatType: "hp", baseMult: 4.55 },
-        { name: "Sword Dance 2-Hit DMG", baseStatType: "hp", baseMult: 5.14 },
+        { name: "Skill DMG", baseStatType: "hp", multBase: 3.34 },
+        { name: "Sword Dance 1-Hit DMG", baseStatType: "hp", multBase: 4.55 },
+        { name: "Sword Dance 2-Hit DMG", baseStatType: "hp", multBase: 5.14 },
         {
           name: "Watery Moon DMG",
           baseStatType: "hp",
-          baseMult: 7.17,
+          multBase: 7.17,
           getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 65]),
         },
-        { name: "Whirling Steps 1-Hit DMG", baseStatType: "hp", baseMult: 3.26 },
-        { name: "Whirling Steps 2-Hit DMG", baseStatType: "hp", baseMult: 3.96 },
-        { name: "Water Wheel DMG", baseStatType: "hp", baseMult: 5.06 },
+        { name: "Whirling Steps 1-Hit DMG", baseStatType: "hp", multBase: 3.26 },
+        { name: "Whirling Steps 2-Hit DMG", baseStatType: "hp", multBase: 3.96 },
+        { name: "Water Wheel DMG", baseStatType: "hp", multBase: 5.06 },
       ],
       // getExtraStats: () => [
       //   { name: "Pirouette Duration", value: "10s" },
@@ -75,8 +75,8 @@ const Nilou: DataCharacter = {
       image: "b/b9/Talent_Dance_of_Abzendegi_Distant_Dreams%2C_Listening_Spring",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", baseMult: 18.43 },
-        { name: "Lingering Aeon DMG", baseStatType: "hp", baseMult: 22.53 },
+        { name: "Skill DMG", baseStatType: "hp", multBase: 18.43 },
+        { name: "Lingering Aeon DMG", baseStatType: "hp", multBase: 22.53 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "18s" }],
       energyCost: 70,

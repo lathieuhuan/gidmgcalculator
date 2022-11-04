@@ -37,20 +37,20 @@ const Jean: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 48.33 },
-        { name: "2-Hit", baseMult: 45.58 },
-        { name: "3-Hit", baseMult: 60.29 },
-        { name: "4-Hit", baseMult: 65.88 },
-        { name: "5-Hit", baseMult: 79.21 },
+        { name: "1-Hit", multBase: 48.33 },
+        { name: "2-Hit", multBase: 45.58 },
+        { name: "3-Hit", multBase: 60.29 },
+        { name: "4-Hit", multBase: 65.88 },
+        { name: "5-Hit", multBase: 79.21 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 162.02 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 162.02 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Gale Blade",
       image: "2/24/Talent_Gale_Blade",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: 292 }],
+      stats: [{ name: "Skill DMG", multBase: 292 }],
       // getExtraStats: () => [
       //   { name: "Stamina Consumption", value: "20 per Second" },
       //   { name: "Max Duration", value: "5s" },
@@ -62,13 +62,13 @@ const Jean: DataCharacter = {
       image: "e/ef/Talent_Dandelion_Breeze",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Burst DMG", baseMult: 424.8 },
-        { name: "Entering/Exiting DMG", baseMult: 78.4 },
+        { name: "Burst DMG", multBase: 424.8 },
+        { name: "Entering/Exiting DMG", multBase: 78.4 },
         {
           name: "Activation Healing",
           notAttack: "healing",
           baseStatType: "atk",
-          baseMult: 251.2,
+          multBase: 251.2,
           multType: 2,
           flat: { base: 1540, type: 3 },
         },
@@ -76,7 +76,7 @@ const Jean: DataCharacter = {
           name: "Continuous Regen.",
           notAttack: "healing",
           baseStatType: "atk",
-          baseMult: 25.12,
+          multBase: 25.12,
           multType: 2,
           flat: { base: 154, type: 3 },
         },

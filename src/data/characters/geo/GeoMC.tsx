@@ -19,7 +19,7 @@ const GeoMC: DataCharacter = {
       name: "Starfell Sword",
       image: "0/05/Talent_Starfell_Sword",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: 248 }],
+      stats: [{ name: "Skill DMG", multBase: 248 }],
       // getExtraStats: () => [
       //   { name: "Meteorite Duration", value: "30s" },
       //   { name: "CD", value: "8s" }
@@ -29,7 +29,7 @@ const GeoMC: DataCharacter = {
       name: "Wake of Earth",
       image: "5/5f/Talent_Wake_of_Earth",
       xtraLvAtCons: 3,
-      stats: [{ name: "DMG per Shockwave", baseMult: 148 }],
+      stats: [{ name: "DMG per Shockwave", multBase: 148 }],
       // getExtraStats: () => [
       //   { name: "Stonewall Duration", value: "30s" },
       //   { name: "CD", value: "15s" },

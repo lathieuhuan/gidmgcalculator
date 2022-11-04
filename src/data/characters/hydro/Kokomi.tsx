@@ -39,12 +39,12 @@ const Kokomi: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 68.38 },
-        { name: "2-Hit", baseMult: 61.54 },
-        { name: "3-Hit", baseMult: 94.31 },
+        { name: "1-Hit", multBase: 68.38 },
+        { name: "2-Hit", multBase: 61.54 },
+        { name: "3-Hit", multBase: 94.31 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 148.32 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 148.32 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Kurage's Oath",
@@ -55,11 +55,11 @@ const Kokomi: DataCharacter = {
           name: "Regeneration",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 4.4,
+          multBase: 4.4,
           multType: 2,
           flat: { base: 424, type: 3 },
         },
-        { name: "Ripple DMG", baseMult: 109.19 },
+        { name: "Ripple DMG", multBase: 109.19 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "12s" },
@@ -71,12 +71,12 @@ const Kokomi: DataCharacter = {
       image: "4/46/Talent_Nereid%27s_Ascension",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", baseMult: 10.42 },
+        { name: "Skill DMG", baseStatType: "hp", multBase: 10.42 },
         {
           name: "HP Regen. per Hit",
           notAttack: "healing",
           baseStatType: "hp",
-          baseMult: 0.81,
+          multBase: 0.81,
           multType: 2,
           flat: { base: 77, type: 3 },
         },

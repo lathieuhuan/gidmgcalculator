@@ -43,7 +43,7 @@ export const makeTrackerDesc = (isAscs: boolean, level: number) => {
   return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;
 };
 
-type TalentBuffConfig = [
+export type TalentBuffConfig = [
   boolean | undefined,
   AttackPatternInfoKey,
   string | readonly [boolean, number],

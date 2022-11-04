@@ -87,21 +87,27 @@ export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; va
 
 export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff | void;
 
+export type BaseStatType = "base_atk" | "atk" | "def" | "hp" | "em";
+
 export type StatInfo = {
   name: string;
   dmgTypes?: DamageTypes;
-  baseMult: number | number[];
+  multBase: number | number[];
   multType?: number;
+  /** only on ES / EB */
+  baseStatType?: BaseStatType;
   /**
-   * if true, stat not listed in-game, baseMult = 0, use getTalentBuff to generate mult
+   * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
-  conditional?: boolean;
+  notOfficial?: boolean;
+  /**
+   * If true, multBase and flat.base will not scale with talent level
+   */
   isStatic?: boolean;
   getTalentBuff?: GetTalentBuffFn;
   /** only on ES / EB */
   notAttack?: "healing" | "shield" | "other";
-  /** only on ES / EB */
-  baseStatType?: "base_atk" | "atk" | "def" | "hp" | "em";
+
   /** only on ES / EB */
   flat?: {
     base: number;

@@ -42,34 +42,34 @@ const Ganyu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 31.73 },
-        { name: "2-Hit", baseMult: 35.6 },
-        { name: "3-Hit", baseMult: 45.49 },
-        { name: "4-Hit", baseMult: 45.49 },
-        { name: "5-Hit", baseMult: 48.25 },
-        { name: "6-Hit", baseMult: 57.62 },
+        { name: "1-Hit", multBase: 31.73 },
+        { name: "2-Hit", multBase: 35.6 },
+        { name: "3-Hit", multBase: 45.49 },
+        { name: "4-Hit", multBase: 45.49 },
+        { name: "5-Hit", multBase: 48.25 },
+        { name: "6-Hit", multBase: 57.62 },
       ],
     },
     CA: {
       stats: [
-        { name: "Aimed Shot", baseMult: 43.86 },
+        { name: "Aimed Shot", multBase: 43.86 },
         {
           name: "Aimed Shot Charged Level 1",
           dmgTypes: ["CA", "cryo"],
-          baseMult: 124,
+          multBase: 124,
           multType: 2,
         },
         {
           name: "Frostflake Arrow",
           dmgTypes: ["CA", "cryo"],
-          baseMult: 128,
+          multBase: 128,
           multType: 2,
           getTalentBuff: getA1TalentBuff,
         },
         {
           name: "Frostflake Arrow Bloom",
           dmgTypes: ["CA", "cryo"],
-          baseMult: 217.6,
+          multBase: 217.6,
           multType: 2,
           getTalentBuff: getA1TalentBuff,
         },
@@ -81,8 +81,8 @@ const Ganyu: DataCharacter = {
       image: "d/d1/Talent_Trail_of_the_Qilin",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Inherited HP", baseStatType: "hp", baseMult: 120, multType: 2 },
-        { name: "Skill DMG", baseMult: 132 },
+        { name: "Inherited HP", baseStatType: "hp", multBase: 120, multType: 2 },
+        { name: "Skill DMG", multBase: 132 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },
@@ -93,7 +93,7 @@ const Ganyu: DataCharacter = {
       name: "Celestial Shower",
       image: "4/47/Talent_Celestial_Shower",
       xtraLvAtCons: 3,
-      stats: [{ name: "Ice shard DMG", baseMult: 70.27 }],
+      stats: [{ name: "Ice shard DMG", multBase: 70.27 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "15s" },

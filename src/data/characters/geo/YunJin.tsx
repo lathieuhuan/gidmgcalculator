@@ -58,28 +58,28 @@ const YunJin: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 40.51 },
-        { name: "2-Hit", baseMult: 40.25 },
-        { name: "3-Hit", baseMult: [22.96, 27.52] },
-        { name: "4-Hit", baseMult: [23.99, 28.81] },
-        { name: "5-Hit", baseMult: 67.34 },
+        { name: "1-Hit", multBase: 40.51 },
+        { name: "2-Hit", multBase: 40.25 },
+        { name: "3-Hit", multBase: [22.96, 27.52] },
+        { name: "4-Hit", multBase: [23.99, 28.81] },
+        { name: "5-Hit", multBase: 67.34 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 121.69 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 121.69 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Whirling Opener",
       image: "9/92/Talent_Opening_Flourish",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", baseStatType: "def", baseMult: 149.12 },
-        { name: "Charge Level 1 DMG", baseStatType: "def", baseMult: 260.96 },
-        { name: "Charge Level 2 DMG", baseStatType: "def", baseMult: 372.8 },
+        { name: "Press DMG", baseStatType: "def", multBase: 149.12 },
+        { name: "Charge Level 1 DMG", baseStatType: "def", multBase: 260.96 },
+        { name: "Charge Level 2 DMG", baseStatType: "def", multBase: 372.8 },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           baseStatType: "hp",
-          baseMult: 12,
+          multBase: 12,
           multType: 2,
           flat: { base: 1155, type: 3 },
         },
@@ -91,12 +91,12 @@ const YunJin: DataCharacter = {
       image: "5/59/Talent_Cliffbreaker%27s_Banner",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 244 },
+        { name: "Skill DMG", multBase: 244 },
         {
           name: "DMG Increase",
           notAttack: "other",
           baseStatType: "def",
-          baseMult: 32.16,
+          multBase: 32.16,
           getTalentBuff: ({ char, selfBuffCtrls, charData, partyData }) => {
             const buffValue = getA4BuffValue(true, char, selfBuffCtrls, charData, partyData);
 

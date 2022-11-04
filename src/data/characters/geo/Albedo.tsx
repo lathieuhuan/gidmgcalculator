@@ -37,25 +37,25 @@ const Albedo: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 36.74 },
-        { name: "2-Hit", baseMult: 36.74 },
-        { name: "3-Hit", baseMult: 47.45 },
-        { name: "4-Hit", baseMult: 49.75 },
-        { name: "5-Hit", baseMult: 62.07 },
+        { name: "1-Hit", multBase: 36.74 },
+        { name: "2-Hit", multBase: 36.74 },
+        { name: "3-Hit", multBase: 47.45 },
+        { name: "4-Hit", multBase: 49.75 },
+        { name: "5-Hit", multBase: 62.07 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [47.3, 60.2] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [47.3, 60.2] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseMult: 130.4 },
+        { name: "Skill DMG", multBase: 130.4 },
         {
           name: "Transient Blossom",
           baseStatType: "def",
-          baseMult: 133.6,
+          multBase: 133.6,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const isActivated = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
 
@@ -73,8 +73,8 @@ const Albedo: DataCharacter = {
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", baseMult: 367.2 },
-        { name: "Fatal Blossom DMG", baseMult: 72 },
+        { name: "Burst DMG", multBase: 367.2 },
+        { name: "Fatal Blossom DMG", multBase: 72 },
       ],
       // getExtraStats: (lv) => [{ name: "CD", value: "12s" }],
       energyCost: 40,

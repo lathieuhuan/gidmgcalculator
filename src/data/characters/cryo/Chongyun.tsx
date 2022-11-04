@@ -37,16 +37,16 @@ const Chongyun: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 70 },
-        { name: "2-Hit", baseMult: 63.12 },
-        { name: "3-Hit", baseMult: 80.32 },
-        { name: "4-Hit", baseMult: 101.22 },
+        { name: "1-Hit", multBase: 70 },
+        { name: "2-Hit", multBase: 63.12 },
+        { name: "3-Hit", multBase: 80.32 },
+        { name: "4-Hit", multBase: 101.22 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", baseMult: 56.29 },
-        { name: "Charged Attack Final", baseMult: 101.78 },
+        { name: "Charged Attack Spinning", multBase: 56.29 },
+        { name: "Charged Attack Final", multBase: 101.78 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -54,7 +54,7 @@ const Chongyun: DataCharacter = {
       name: "Spirit Blade: Chonghua's Layered Frost",
       image: "a/aa/Talent_Spirit_Blade_Chonghua%27s_Layered_Frost",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: 172.04 }],
+      stats: [{ name: "Skill DMG", multBase: 172.04 }],
       // getExtraStats: (lv) => [
       //   { name: "Infusion Duration", value: Math.min(19 + lv, 30) / 10 + "s" },
       //   { name: "Field Duration", value: "10s" },
@@ -65,7 +65,7 @@ const Chongyun: DataCharacter = {
       name: "Spirit Blade: Cloud-Parting Star",
       image: "9/93/Talent_Spirit_Blade_Cloud-Parting_Star",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", baseMult: 142.4 }],
+      stats: [{ name: "Skill DMG", multBase: 142.4 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,
     },

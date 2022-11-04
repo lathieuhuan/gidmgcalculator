@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkCons, talentBuff } from "../utils";
 
 const Fischl: DataCharacter = {
   code: 8,
@@ -35,18 +35,16 @@ const Fischl: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 44.12 },
-        { name: "2-Hit", baseMult: 46.78 },
-        { name: "3-Hit", baseMult: 58.14 },
-        { name: "4-Hit", baseMult: 57.71 },
-        { name: "5-Hit", baseMult: 72.07 },
+        { name: "1-Hit", multBase: 44.12 },
+        { name: "2-Hit", multBase: 46.78 },
+        { name: "3-Hit", multBase: 58.14 },
+        { name: "4-Hit", multBase: 57.71 },
+        { name: "5-Hit", multBase: 72.07 },
         {
           name: "Oz's Joint Attack (C1)",
-          conditional: true,
+          isStatic: true,
           dmgTypes: ["NA", "phys"],
-          baseMult: 0,
-          multType: 2,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "mult", [false, 1], 22]),
+          multBase: 22,
         },
       ],
     },
@@ -55,11 +53,9 @@ const Fischl: DataCharacter = {
         ...BOW_CAs,
         {
           name: "Thundering Retribution (A1)",
-          conditional: true,
+          isStatic: true,
           dmgTypes: ["CA", "electro"],
-          baseMult: 0,
-          multType: 2,
-          getTalentBuff: ({ char }) => talentBuff([checkAscs[1](char), "mult", [true, 1], 189.35]),
+          multBase: 189.35,
         },
       ],
     },
@@ -69,23 +65,21 @@ const Fischl: DataCharacter = {
       image: "b/b3/Talent_Nightrider",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Oz's ATK", baseMult: 88.8 },
+        { name: "Oz's ATK", multBase: 88.8 },
         {
           name: "Summoning DMG",
-          baseMult: 115.44,
+          multBase: 115.44,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
         },
         {
           name: "Thundering Retribution (A4)",
-          conditional: true,
-          baseMult: 0,
-          getTalentBuff: ({ char }) => talentBuff([checkAscs[4](char), "mult", [true, 4], 80]),
+          isStatic: true,
+          multBase: 80,
         },
         {
           name: "Oz's Joint Attack (C6)",
-          baseMult: 0,
-          conditional: true,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 30]),
+          isStatic: true,
+          multBase: 30,
         },
       ],
       // getExtraStats: () => [
@@ -97,7 +91,7 @@ const Fischl: DataCharacter = {
       name: "Midnight Phantasmagoria",
       image: "f/ff/Talent_Midnight_Phantasmagoria",
       xtraLvAtCons: 5,
-      stats: [{ name: "Falling Thunder", baseMult: 208 }],
+      stats: [{ name: "Falling Thunder", multBase: 208 }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,
     },

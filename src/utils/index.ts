@@ -92,7 +92,7 @@ export const round3 = roundMaker(3);
 
 export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 100);
 
-export const toMultiplier = (n: number) => 1 + n / 100;
+export const toMult = (n: number) => 1 + n / 100;
 
 export const genNumberSequenceOptions = (
   max: number | undefined = 0,

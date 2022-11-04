@@ -37,11 +37,11 @@ const Amber: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 36.12 },
-        { name: "2-Hit", baseMult: 36.12 },
-        { name: "3-Hit", baseMult: 46.44 },
-        { name: "4-Hit", baseMult: 47.3 },
-        { name: "5-Hit", baseMult: 59.34 },
+        { name: "1-Hit", multBase: 36.12 },
+        { name: "2-Hit", multBase: 36.12 },
+        { name: "3-Hit", multBase: 46.44 },
+        { name: "4-Hit", multBase: 47.3 },
+        { name: "5-Hit", multBase: 59.34 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -51,8 +51,8 @@ const Amber: DataCharacter = {
       image: "e/e0/Talent_Explosive_Puppet",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Inherited HP", notAttack: "other", baseStatType: "hp", baseMult: 41.4 },
-        { name: "Explosion DMG", baseMult: 123.2 },
+        { name: "Inherited HP", notAttack: "other", baseStatType: "hp", multBase: 41.4 },
+        { name: "Explosion DMG", multBase: 123.2 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
     },
@@ -61,8 +61,8 @@ const Amber: DataCharacter = {
       image: "6/6c/Talent_Fiery_Rain",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Each Wave DMG", baseMult: 28.08 },
-        { name: "Total DMG", baseMult: 505.44 },
+        { name: "Each Wave DMG", multBase: 28.08 },
+        { name: "Total DMG", multBase: 505.44 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "2s" },

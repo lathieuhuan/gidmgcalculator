@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import type { GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
+import type { BaseStatType, GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
 
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { getDefaultStatInfo } from "@Calculators/utils";
@@ -85,20 +85,20 @@ export function SkillAttributes({
         {!isStatic &&
           stats.map((stat, i) => {
             const defaultInfo = getDefaultStatInfo(talentType, weapon, vision);
-            const { baseMult, multType = defaultInfo.multType, baseStatType, flat } = stat;
+            const { multBase, multType = defaultInfo.multType, baseStatType, flat } = stat;
 
-            return stat.conditional ? null : (
+            return stat.notOfficial || stat.isStatic ? null : (
               <Row key={i} className={styles.row}>
                 <p className={styles.leftCol}>{stat.name}</p>
                 <p className={styles.rightCol}>
-                  {Array.isArray(baseMult)
-                    ? baseMult
+                  {Array.isArray(multBase)
+                    ? multBase
                         .map((mult) => getValue(mult, multType, level, true, baseStatType))
                         .join("+")
-                    : baseMult
-                    ? getValue(baseMult, multType, level, true, baseStatType)
+                    : multBase
+                    ? getValue(multBase, multType, level, true, baseStatType)
                     : null}
-                  {baseMult && flat && " + "}
+                  {multBase && flat && " + "}
                   {flat && getValue(flat.base, flat.type, level, false)}
                 </p>
               </Row>
@@ -129,7 +129,7 @@ function getValue(
   type: number,
   level: number,
   isPct: boolean,
-  baseStatType?: "base_atk" | "hp" | "atk" | "def"
+  baseStatType?: BaseStatType
 ) {
   let result = base * TALENT_LV_MULTIPLIERS[type][level];
   if (isPct) {

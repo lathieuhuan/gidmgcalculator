@@ -17,7 +17,7 @@ import {
   Reaction,
   ReactionBonus,
 } from "@Src/types";
-import { findByIndex, toMultiplier } from "@Src/utils";
+import { findByIndex, toMult } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
   addArtAttr,
@@ -314,8 +314,8 @@ export default function getBuffedStats({
   for (const rxn of AMPLIFYING_REACTIONS) {
     rxnBonus[rxn] += amplifying;
   }
-  const meltBonus = toMultiplier(rxnBonus.melt);
-  const vapBonus = toMultiplier(rxnBonus.vaporize);
+  const meltBonus = toMult(rxnBonus.melt);
+  const vapBonus = toMult(rxnBonus.vaporize);
 
   rxnBonus.melt = meltMult(vision) * meltBonus;
   rxnBonus.vaporize = vaporizeMult(vision) * vapBonus;

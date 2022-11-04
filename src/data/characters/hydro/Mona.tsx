@@ -50,21 +50,21 @@ const Mona: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 37.6 },
-        { name: "2-Hit", baseMult: 36 },
-        { name: "3-Hit", baseMult: 44.8 },
-        { name: "4-Hit", baseMult: 56.16 },
+        { name: "1-Hit", multBase: 37.6 },
+        { name: "2-Hit", multBase: 36 },
+        { name: "3-Hit", multBase: 44.8 },
+        { name: "4-Hit", multBase: 56.16 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 149.72 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 149.72 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Mirror Reflection of Doom",
       image: "4/45/Talent_Mirror_Reflection_of_Doom",
       xtraLvAtCons: 5,
       stats: [
-        { name: "DoT", baseMult: 32 },
-        { name: "Explosion DMG", baseMult: 132.8 },
+        { name: "DoT", multBase: 32 },
+        { name: "Explosion DMG", multBase: 132.8 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
@@ -72,7 +72,7 @@ const Mona: DataCharacter = {
       name: "Stellaris Phantasm",
       image: "c/c4/Talent_Stellaris_Phantasm",
       xtraLvAtCons: 3,
-      stats: [{ name: "Bubble Explosion DMG", baseMult: 442.4 }],
+      stats: [{ name: "Bubble Explosion DMG", multBase: 442.4 }],
       // getExtraStats: (lv) => [
       //   { name: "", value: "8s" },
       //   { name: "DMG Bonus", value: Math.min(40 + lv * 2, 60) + "%" },

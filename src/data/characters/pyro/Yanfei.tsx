@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv(char, "EB", partyData);
@@ -48,24 +48,19 @@ const Yanfei: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 58.34 },
-        { name: "2-Hit", baseMult: 52.13 },
-        { name: "3-Hit", baseMult: 76.01 },
+        { name: "1-Hit", multBase: 58.34 },
+        { name: "2-Hit", multBase: 52.13 },
+        { name: "3-Hit", multBase: 76.01 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack", baseMult: 98.23 },
-        { name: "1-Seal Charged Attack", baseMult: 115.56 },
-        { name: "2-Seal Charged Attack", baseMult: 132.9 },
-        { name: "3-Seal Charged Attack", baseMult: 150.23 },
-        { name: "4-Seal Charged Attack", baseMult: 167.57 },
-        {
-          name: "Extra Hit (A4)",
-          conditional: true,
-          baseMult: 0,
-          getTalentBuff: ({ char }) => talentBuff([checkAscs[4](char), "mult", [true, 4], 80]),
-        },
+        { name: "Charged Attack", multBase: 98.23 },
+        { name: "1-Seal Charged Attack", multBase: 115.56 },
+        { name: "2-Seal Charged Attack", multBase: 132.9 },
+        { name: "3-Seal Charged Attack", multBase: 150.23 },
+        { name: "4-Seal Charged Attack", multBase: 167.57 },
+        { name: "Extra Hit (A4)", isStatic: true, multBase: 80 },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -73,14 +68,14 @@ const Yanfei: DataCharacter = {
       name: "Signed Edict",
       image: "a/a3/Talent_Signed_Edict",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", baseMult: 169.6 }],
+      stats: [{ name: "Skill DMG", multBase: 169.6 }],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
     EB: {
       name: "Done Deal",
       image: "9/96/Talent_Done_Deal",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseMult: 182.4 }],
+      stats: [{ name: "Skill DMG", multBase: 182.4 }],
       // getExtraStats: (lv) => [
       //   { name: "Scarlet Seal Grant Interval", value: "1s" },
       //   {

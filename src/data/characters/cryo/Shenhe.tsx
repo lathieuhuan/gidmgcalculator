@@ -49,23 +49,23 @@ const Shenhe: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 43.26 },
-        { name: "2-Hit", baseMult: 40.25 },
-        { name: "3-Hit", baseMult: 53.32 },
-        { name: "4-Hit (1/2)", baseMult: 26.32 },
-        { name: "5-Hit", baseMult: 65.62 },
+        { name: "1-Hit", multBase: 43.26 },
+        { name: "2-Hit", multBase: 40.25 },
+        { name: "3-Hit", multBase: 53.32 },
+        { name: "4-Hit (1/2)", multBase: 26.32 },
+        { name: "5-Hit", multBase: 65.62 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 110.67 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 110.67 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Spring Spirit Summoning",
       image: "6/6c/Talent_Spring_Spirit_Summoning",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press Skill DMG", baseMult: 139.2 },
-        { name: "Hold Skill DMG", baseMult: 188.8 },
-        { name: "DMG Bonus", notAttack: "other", baseMult: 45.66, multType: 2 },
+        { name: "Press Skill DMG", multBase: 139.2 },
+        { name: "Hold Skill DMG", multBase: 188.8 },
+        { name: "DMG Bonus", notAttack: "other", multBase: 45.66, multType: 2 },
       ],
       // getExtraStats: () => [
       //   { name: "Press/Hold Duration", value: "10s/15s" },
@@ -79,8 +79,8 @@ const Shenhe: DataCharacter = {
       image: "d/d5/Talent_Divine_Maiden%27s_Deliverance",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 100.8 },
-        { name: "DoT", baseMult: 33.12 },
+        { name: "Skill DMG", multBase: 100.8 },
+        { name: "DoT", multBase: 33.12 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "RES Decrease", value: Math.min(5 + lv, 15) + "%" },

@@ -29,7 +29,7 @@ import {
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMultiplier } from "@Src/utils";
+import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
 import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { TrackerDamageRecord } from "./types";
@@ -88,14 +88,14 @@ function calcTalentDamage({
     if (attPatt) {
       normalMult += attPattBonus[attPatt].pct;
 
-      if (["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
-        normalMult += totalAttr[attInfusion];
-      } else if (attElmt !== "various") {
-        normalMult += totalAttr[attElmt];
-      }
-      specialMult = toMultiplier(attPattBonus[attPatt].specialMult);
+      specialMult = toMult(attPattBonus[attPatt].specialMult);
     }
-    normalMult = toMultiplier(normalMult + attPattBonus.all.pct);
+    if (attPatt && ["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
+      normalMult += totalAttr[attInfusion];
+    } else if (attElmt !== "various") {
+      normalMult += totalAttr[attElmt];
+    }
+    normalMult = toMult(normalMult + attPattBonus.all.pct);
 
     // CALCULATE REACTION MULTIPLIER
     let rxnMult = 1;
@@ -173,11 +173,14 @@ function calcTalentDamage({
     let flat = 0;
     let normalMult = 1;
 
-    if (stat.notAttack === "healing") {
-      flat = talentBuff.flat?.value || 0;
-      normalMult += totalAttr.healBn / 100;
-    } else if (stat.notAttack === "shield") {
-      normalMult += (talentBuff.pct?.value || 0) / 100;
+    switch (stat.notAttack) {
+      case "healing":
+        flat = talentBuff.flat?.value || 0;
+        normalMult += totalAttr.healBn / 100;
+        break;
+      case "shield":
+        normalMult += (talentBuff.pct?.value || 0) / 100;
+        break;
     }
     base += flat;
     record.finalFlat += flat;
@@ -345,7 +348,7 @@ export default function getDamage({
       let base;
       const {
         baseStatType = "atk",
-        baseMult,
+        multBase,
         isStatic,
         multType = defaultInfo.multType,
         flat,
@@ -356,27 +359,30 @@ export default function getDamage({
         baseStatType,
       } as TrackerDamageRecord;
 
-      const finalMult = (base: number) => base * TALENT_LV_MULTIPLIERS[multType][level] + xtraMult;
+      const finalMult = (multBase: number) =>
+        multBase * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[multType][level]) + xtraMult;
 
-      const baseDamage = (pct: number) => {
-        const result = (totalAttr[baseStatType] * pct) / 100;
-        const flatBonus = flat ? flat.base * TALENT_LV_MULTIPLIERS[flat.type][level] : 0;
+      const baseDamage = (percent: number) => {
+        const result = (totalAttr[baseStatType] * percent) / 100;
+        const flatBonus = flat
+          ? flat.base * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[flat.type][level])
+          : 0;
 
         record.finalFlat = flatBonus;
         return result + flatBonus;
       };
 
-      if (Array.isArray(baseMult)) {
-        const pcts = baseMult.map(finalMult);
+      if (Array.isArray(multBase)) {
+        const percents = multBase.map(finalMult);
 
-        record.finalMult = pcts;
-        base = pcts.map(baseDamage);
+        record.finalMult = percents;
+        base = percents.map(baseDamage);
       } //
       else {
-        const pct = finalMult(baseMult);
+        const percent = finalMult(multBase);
 
-        record.finalMult = pct;
-        base = baseDamage(pct);
+        record.finalMult = percent;
+        base = baseDamage(percent);
       }
 
       finalResult[resultKey][stat.name] = calcTalentDamage({

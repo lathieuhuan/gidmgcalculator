@@ -111,22 +111,22 @@ const Raiden: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 39.65 },
-        { name: "2-Hit", baseMult: 39.73 },
-        { name: "3-Hit", baseMult: 49.88 },
-        { name: "4-Hit (1/2)", baseMult: 28.98 },
-        { name: "5-Hit", baseMult: 65.45 },
+        { name: "1-Hit", multBase: 39.65 },
+        { name: "2-Hit", multBase: 39.73 },
+        { name: "3-Hit", multBase: 49.88 },
+        { name: "4-Hit (1/2)", multBase: 28.98 },
+        { name: "5-Hit", multBase: 65.45 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 99.59 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 99.59 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Transcendence: Baleful Omen",
       image: "3/3c/Talent_Transcendence_Baleful_Omen",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 117.2 },
-        { name: "Coordinated ATK DMG", baseMult: 42 },
+        { name: "Skill DMG", multBase: 117.2 },
+        { name: "Coordinated ATK DMG", multBase: 42 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "Duration", value: "25s" },
@@ -139,21 +139,21 @@ const Raiden: DataCharacter = {
       image: "e/e0/Talent_Secret_Art_Musou_Shinsetsu",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Musou no Hitotachi", baseMult: 400.8, getTalentBuff: getEBTalentBuff(1) },
-        { name: "1-Hit", baseMult: 44.74, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "2-Hit", baseMult: 43.96, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "3-Hit", baseMult: 53.82, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "4-Hit (1/2)", baseMult: 30.89, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "5-Hit", baseMult: 73.94, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        { name: "Musou no Hitotachi", multBase: 400.8, getTalentBuff: getEBTalentBuff(1) },
+        { name: "1-Hit", multBase: 44.74, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        { name: "2-Hit", multBase: 43.96, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        { name: "3-Hit", multBase: 53.82, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        { name: "4-Hit (1/2)", multBase: 30.89, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        { name: "5-Hit", multBase: 73.94, multType: 4, getTalentBuff: getEBTalentBuff(2) },
         {
           name: "Charged Attack",
-          baseMult: [61.6, 74.36],
+          multBase: [61.6, 74.36],
           multType: 4,
           getTalentBuff: getEBTalentBuff(2),
         },
-        { name: "Plunge DMG", baseMult: 63.93, multType: 1, getTalentBuff: getEBTalentBuff(2) },
-        { name: "Low Plunge", baseMult: 127.84, multType: 1, getTalentBuff: getEBTalentBuff(2) },
-        { name: "High Plunge", baseMult: 159.68, multType: 1, getTalentBuff: getEBTalentBuff(2) },
+        { name: "Plunge DMG", multBase: 63.93, multType: 1, getTalentBuff: getEBTalentBuff(2) },
+        { name: "Low Plunge", multBase: 127.84, multType: 1, getTalentBuff: getEBTalentBuff(2) },
+        { name: "High Plunge", multBase: 159.68, multType: 1, getTalentBuff: getEBTalentBuff(2) },
       ],
       // getExtraStats: (lv) => [
       //   {

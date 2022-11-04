@@ -47,25 +47,25 @@ const Itto: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 79.23 },
-        { name: "2-Hit", baseMult: 76.37 },
-        { name: "3-Hit", baseMult: 91.64 },
-        { name: "4-Hit", baseMult: 117.22 },
+        { name: "1-Hit", multBase: 79.23 },
+        { name: "2-Hit", multBase: 76.37 },
+        { name: "3-Hit", multBase: 91.64 },
+        { name: "4-Hit", multBase: 117.22 },
       ],
     },
     CA: {
       stats: [
         {
           name: "Arataki Kesagiri Combo Slash DMG",
-          baseMult: 91.16,
+          multBase: 91.16,
           getTalentBuff: getA4TalentBuff,
         },
         {
           name: "Arataki Kesagiri Final Slash DMG",
-          baseMult: 190.92,
+          multBase: 190.92,
           getTalentBuff: getA4TalentBuff,
         },
-        { name: "Saichimonji Slash DMG", baseMult: 90.47 },
+        { name: "Saichimonji Slash DMG", multBase: 90.47 },
       ],
     },
     PA: { stats: HEAVIER_PAs },
@@ -73,7 +73,7 @@ const Itto: DataCharacter = {
       name: "Masatsu Zetsugi: Akaushi Burst!",
       image: "5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", baseMult: 307.2 }],
+      stats: [{ name: "Skill DMG", multBase: 307.2 }],
       // getExtraStats: () => [
       //   { name: "Inherited HP", value: "100%" },
       //   { name: "Duration", value: "6s" },
@@ -84,7 +84,7 @@ const Itto: DataCharacter = {
       name: "Royal Descent: Behold, Itto the Evil!",
       image: "5/50/Talent_Royal_Descent_Behold%2C_Itto_the_Evil%21",
       xtraLvAtCons: 5,
-      stats: [{ name: "ATK Bonus", notAttack: "other", baseStatType: "def", baseMult: 57.6 }],
+      stats: [{ name: "ATK Bonus", notAttack: "other", baseStatType: "def", multBase: 57.6 }],
       // getExtraStats: () => [
       //   { name: "ATK SPD Bonus", value: "10%" },
       //   { name: "Duration", value: "11s" },

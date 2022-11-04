@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier } from "@Calculators/utils";
-import { checkAscs, checkCons, countVisionTypes, talentBuff } from "../utils";
+import { checkAscs, checkCons, countVisionTypes } from "../utils";
 
 const Yelan: DataCharacter = {
   code: 51,
@@ -37,10 +37,10 @@ const Yelan: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 40.68 },
-        { name: "2-Hit", baseMult: 39.04 },
-        { name: "3-Hit", baseMult: 51.6 },
-        { name: "4-Hit (1/2)", baseMult: 32.51 },
+        { name: "1-Hit", multBase: 40.68 },
+        { name: "2-Hit", multBase: 39.04 },
+        { name: "3-Hit", multBase: 51.6 },
+        { name: "4-Hit (1/2)", multBase: 32.51 },
       ],
     },
     CA: {
@@ -50,16 +50,16 @@ const Yelan: DataCharacter = {
           name: "Breakthrough Barb DMG",
           baseStatType: "hp",
           dmgTypes: ["CA", "hydro"],
-          baseMult: 11.58,
+          multBase: 11.58,
           multType: 2,
         },
         {
           name: "Special Breakthrough Barb DMG (C6)",
           baseStatType: "hp",
           dmgTypes: ["CA", "hydro"],
-          baseMult: 18.0648,
+          multBase: 18.0648,
           multType: 2,
-          conditional: true,
+          notOfficial: true,
         },
       ],
     },
@@ -68,7 +68,7 @@ const Yelan: DataCharacter = {
       name: "Lingering Lifeline",
       image: "5/59/Talent_Lingering_Lifeline",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseStatType: "hp", baseMult: 22.61 }],
+      stats: [{ name: "Skill DMG", baseStatType: "hp", multBase: 22.61 }],
       // getExtraStats: () => [
       //   { name: "Max Duration (Hold)", value: "3s" },
       //   { name: "CD", value: "10" },
@@ -79,22 +79,13 @@ const Yelan: DataCharacter = {
       image: "b/bd/Talent_Depth-Clarion_Dice",
       xtraLvAtCons: 3,
       stats: [
-        {
-          name: "Skill DMG",
-          baseStatType: "hp",
-          baseMult: 7.31,
-        },
-        {
-          name: "Exquisite Throw DMG (1/3)",
-          baseStatType: "hp",
-          baseMult: 4.87,
-        },
+        { name: "Skill DMG", baseStatType: "hp", multBase: 7.31 },
+        { name: "Exquisite Throw DMG (1/3)", baseStatType: "hp", multBase: 4.87 },
         {
           name: "Additional Water Arrow DMG (C2)",
-          conditional: true,
+          isStatic: true,
           baseStatType: "hp",
-          baseMult: 0,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 14]),
+          multBase: 14,
         },
       ],
       // otherStats: () => [

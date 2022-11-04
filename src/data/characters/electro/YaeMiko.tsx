@@ -37,22 +37,22 @@ const YaeMiko: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 39.66 },
-        { name: "2-Hit", baseMult: 38.52 },
-        { name: "3-Hit", baseMult: 56.89 },
+        { name: "1-Hit", multBase: 39.66 },
+        { name: "2-Hit", multBase: 38.52 },
+        { name: "3-Hit", multBase: 56.89 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 142.89 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 142.89 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Yakan Evocation: Sesshou Sakura",
       image: "9/93/Talent_Yakan_Evocation_Sesshou_Sakura",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Sesshou Sakura DMG Lv.1", baseMult: 60.67 },
-        { name: "DMG Lv. 2", baseMult: 75.84 },
-        { name: "DMG Lv. 3", baseMult: 94.8 },
-        { name: "DMG Lv. 4", baseMult: 118.5 },
+        { name: "Sesshou Sakura DMG Lv.1", multBase: 60.67 },
+        { name: "DMG Lv. 2", multBase: 75.84 },
+        { name: "DMG Lv. 3", multBase: 94.8 },
+        { name: "DMG Lv. 4", multBase: 118.5 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "14s" },
@@ -64,8 +64,8 @@ const YaeMiko: DataCharacter = {
       image: "9/93/Talent_Great_Secret_Art_Tenko_Kenshin",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 260 },
-        { name: "Tenko Thunderbolt DMG", baseMult: 333.82 },
+        { name: "Skill DMG", multBase: 260 },
+        { name: "Tenko Thunderbolt DMG", multBase: 333.82 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "22s" }],
       energyCost: 90,

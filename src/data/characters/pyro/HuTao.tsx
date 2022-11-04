@@ -39,20 +39,20 @@ const HuTao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 46.89, multType: 4 },
-        { name: "2-Hit", baseMult: 48.25, multType: 4 },
-        { name: "3-Hit", baseMult: 61.05, multType: 4 },
-        { name: "4-Hit", baseMult: 65.64, multType: 4 },
-        { name: "5-Hit", baseMult: [33.27, 35.2], multType: 4 },
-        { name: "6-Hit", baseMult: 85.96, multType: 4 },
+        { name: "1-Hit", multBase: 46.89, multType: 4 },
+        { name: "2-Hit", multBase: 48.25, multType: 4 },
+        { name: "3-Hit", multBase: 61.05, multType: 4 },
+        { name: "4-Hit", multBase: 65.64, multType: 4 },
+        { name: "5-Hit", multBase: [33.27, 35.2], multType: 4 },
+        { name: "6-Hit", multBase: 85.96, multType: 4 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: 135.96, multType: 4 }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: 135.96, multType: 4 }] },
     PA: {
       stats: [
-        { name: "Plunge DMG", baseMult: 65.42, multType: 4 },
-        { name: "Low Plunge", baseMult: 130.81, multType: 4 },
-        { name: "High Plunge", baseMult: 163.39, multType: 4 },
+        { name: "Plunge DMG", multBase: 65.42, multType: 4 },
+        { name: "Low Plunge", multBase: 130.81, multType: 4 },
+        { name: "High Plunge", multBase: 163.39, multType: 4 },
       ],
     },
     ES: {
@@ -64,11 +64,11 @@ const HuTao: DataCharacter = {
           name: "ATK Increase",
           notAttack: "other",
           baseStatType: "hp",
-          baseMult: 3.84,
+          multBase: 3.84,
           multType: 5,
           getLimit: ({ totalAttr }) => totalAttr.base_atk * 4,
         },
-        { name: "Blood Blossom DMG", baseMult: 64 },
+        { name: "Blood Blossom DMG", multBase: 64 },
       ],
       getExtraStats: () => [
         { name: "Activation Cost", value: "30% Current HP" },
@@ -82,14 +82,14 @@ const HuTao: DataCharacter = {
       image: "1/11/Talent_Spirit_Soother",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", baseMult: 303.27, multType: 5 },
-        { name: "Low HP Skill DMG", baseMult: 379.09, multType: 5 },
-        { name: "HP Regen.", notAttack: "other", baseStatType: "hp", baseMult: 6.26, multType: 5 },
+        { name: "Skill DMG", multBase: 303.27, multType: 5 },
+        { name: "Low HP Skill DMG", multBase: 379.09, multType: 5 },
+        { name: "HP Regen.", notAttack: "other", baseStatType: "hp", multBase: 6.26, multType: 5 },
         {
           name: "Low HP Regen.",
           notAttack: "other",
           baseStatType: "hp",
-          baseMult: 8.35,
+          multBase: 8.35,
           multType: 5,
         },
       ],

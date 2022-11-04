@@ -45,22 +45,22 @@ const Kazuha: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", baseMult: 44.98 },
-        { name: "2-Hit", baseMult: 45.24 },
-        { name: "3-Hit", baseMult: [25.8, 30.96] },
-        { name: "4-Hit", baseMult: 60.72 },
-        { name: "5-Hit (1/3)", baseMult: 25.37 },
+        { name: "1-Hit", multBase: 44.98 },
+        { name: "2-Hit", multBase: 45.24 },
+        { name: "3-Hit", multBase: [25.8, 30.96] },
+        { name: "4-Hit", multBase: 60.72 },
+        { name: "5-Hit (1/3)", multBase: 25.37 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", baseMult: [43, 74.65] }] },
+    CA: { stats: [{ name: "Charged Attack", multBase: [43, 74.65] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Chihayaburu",
       image: "2/22/Talent_Chihayaburu",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press DMG", baseMult: 192 },
-        { name: "Hold DMG", baseMult: 260.8 },
+        { name: "Press DMG", multBase: 192 },
+        { name: "Hold DMG", multBase: 260.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Press CD", value: "6s" },
@@ -72,9 +72,9 @@ const Kazuha: DataCharacter = {
       image: "0/06/Talent_Kazuha_Slash",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Slashing DMG", baseMult: 262.4 },
-        { name: "DoT", baseMult: 120 },
-        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], baseMult: 36 },
+        { name: "Slashing DMG", multBase: 262.4 },
+        { name: "DoT", multBase: 120 },
+        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], multBase: 36 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,
