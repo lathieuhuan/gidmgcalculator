@@ -68,7 +68,7 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs
           : undefined;
 
       const desc = `Self / ${buff.src}`;
-      const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+      const validatedInputs = inputs || [];
       applyFn?.({ ...modifierArgs, charBuffCtrls, inputs: validatedInputs, toSelf: true, desc });
     }
   }
@@ -202,7 +202,7 @@ export default function getBuffedStats({
         const applyFn = buff.applyBuff || buff.applyFinalBuff;
         if (activated && applyFn) {
           const desc = `${name} / ${buff.src}`;
-          const validatedInputs = inputs || buff.inputConfig?.initialValues || [];
+          const validatedInputs = inputs || [];
           const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
           applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
         }

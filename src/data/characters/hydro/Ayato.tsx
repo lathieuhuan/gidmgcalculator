@@ -193,12 +193,13 @@ const Ayato: DataCharacter = {
         </>
       ),
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 5,
+        },
+      ],
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: false,
@@ -214,12 +215,15 @@ const Ayato: DataCharacter = {
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Elemental Burst Level"],
-        renderTypes: ["text"],
-        initialValues: [1],
-        maxValues: [15],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Burst Level",
+          type: "text",
+          initialValue: 1,
+          max: 13,
+          for: "teammate",
+        },
+      ],
       applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
         const bonusValue = getEBBuffValue(toSelf, char, partyData, inputs);
         applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);

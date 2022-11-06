@@ -2,7 +2,7 @@ import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/type
 import { Cryo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round2, totalXtraTalentLv } from "@Src/utils";
+import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { checkAscs, findInput, modIsActivated } from "../utils";
 
@@ -11,9 +11,10 @@ const getCoilStacksBuffValue = (
   partyData: PartyData,
   charBuffCtrls: ModifierCtrl[]
 ) => {
-  const level = totalXtraTalentLv(char, "ES", partyData);
+  const level = finalTalentLv(char, "ES", partyData);
   const stacks = modIsActivated(charBuffCtrls, 1) ? 5 : findInput(charBuffCtrls, 0, 0);
-  return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * +stacks);
+
+  return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks);
 };
 
 const Aloy: DataCharacter = {
@@ -103,20 +104,21 @@ const Aloy: DataCharacter = {
       src: "Coil stacks",
       desc: ({ char, partyData, charBuffCtrls }) => (
         <>
-          Each stack increases Aloy's <Green>Normal Attack DMG</Green>{" "}
+          Each stack increases Aloy's <Green>Normal Attack DMG</Green>.{" "}
           <Red>Total DMG Bonus: {getCoilStacksBuffValue(char, partyData, charBuffCtrls)}%.</Red>
         </>
       ),
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [3],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 3,
+        },
+      ],
       applyBuff: ({ attPattBonus, char, charBuffCtrls, partyData, desc, tracker }) => {
-        const bonusValue = getCoilStacksBuffValue(char, partyData, charBuffCtrls);
-        applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);
+        const buffValue = getCoilStacksBuffValue(char, partyData, charBuffCtrls);
+        applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
       },
     },
     {
@@ -164,12 +166,13 @@ const Aloy: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [10],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 10,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "cryo", 3.5 * (inputs?.[0] || 0), tracker);
       },

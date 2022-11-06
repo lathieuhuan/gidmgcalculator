@@ -290,12 +290,13 @@ const Cyno: DataCharacter = {
       desc: () => Cyno.constellation[1].desc,
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 5,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "electro", (inputs?.[0] || 0) * 10, tracker);
       },

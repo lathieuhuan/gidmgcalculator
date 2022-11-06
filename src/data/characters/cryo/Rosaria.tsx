@@ -107,12 +107,14 @@ const Rosaria: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.TEAMMATE,
-      inputConfig: {
-        labels: ["CRIT Rate"],
-        renderTypes: ["text"],
-        maxValues: [100],
-        initialValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "CRIT Rate",
+          type: "text",
+          max: 100,
+          for: "teammate",
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const buffValue = Math.round((inputs?.[0] || 0) * 15) / 100;
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);

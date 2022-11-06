@@ -139,12 +139,11 @@ const Bennett: DataCharacter = {
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Base ATK", "Elemental Burst Level", "Constellation 1"],
-        renderTypes: ["text", "text", "check"],
-        initialValues: [0, 1, 0],
-        maxValues: [9999, 13, 0],
-      },
+      inputConfigs: [
+        { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
+        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Constellation 1", type: "check", for: "teammate" },
+      ],
       applyBuff: (obj) => {
         const { char, totalAttr } = obj;
         const args = obj.toSelf

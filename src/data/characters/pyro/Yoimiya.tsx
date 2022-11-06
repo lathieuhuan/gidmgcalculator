@@ -129,12 +129,13 @@ const Yoimiya: DataCharacter = {
       ),
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [10],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 10,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "pyro", 2 * (inputs?.[0] || 0), tracker);
       },
@@ -153,12 +154,14 @@ const Yoimiya: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.TEAMMATE,
-      inputConfig: {
-        labels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [10],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          initialValue: 0,
+          max: 10,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "atk_", 10 + (inputs?.[0] || 0), tracker);
       },

@@ -53,7 +53,7 @@ const getBuffValue = {
   },
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
     const level = finalTalentLv(char, "EB", partyData);
-    let stacks = countResolve(+findInput(selfBuffCtrls, 1, 0), level);
+    let stacks = countResolve(findInput(selfBuffCtrls, 1, 0), level);
 
     if (checkCons[1](char) && modIsActivated(selfBuffCtrls, 3)) {
       stacks += getBuffValue.C1(char, selfBuffCtrls, partyData, level);
@@ -221,12 +221,15 @@ const Raiden: DataCharacter = {
         </>
       ),
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Elemental Skill Level"],
-        renderTypes: ["text"],
-        initialValues: [1],
-        maxValues: [13],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Skill Level",
+          type: "text",
+          initialValue: 1,
+          max: 13,
+          for: "teammate",
+        },
+      ],
       applyBuff: (obj) => {
         const { toSelf, char, charData, inputs, partyData } = obj;
         const result = getBuffValue.ES(toSelf, char, charData, inputs, partyData);
@@ -250,12 +253,13 @@ const Raiden: DataCharacter = {
         );
       },
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Total Energy Spent"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [999],
-      },
+      inputConfigs: [
+        {
+          label: "Total Energy Spent",
+          type: "text",
+          max: 999,
+        },
+      ],
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: false,
@@ -275,12 +279,13 @@ const Raiden: DataCharacter = {
       ),
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Energy Spent by Electro Characters (part of total)"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [999],
-      },
+      inputConfigs: [
+        {
+          label: "Energy spent by Electro characters (part of total)",
+          type: "text",
+          max: 999,
+        },
+      ],
     },
     {
       index: 4,

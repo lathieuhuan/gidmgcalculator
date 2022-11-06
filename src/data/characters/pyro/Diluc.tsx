@@ -117,7 +117,7 @@ const Diluc: DataCharacter = {
         <>
           The searing flames that run down his blade cause it to be <Green>infused</Green> with{" "}
           <Pyro>Pyro</Pyro>.<br />
-          At Ascension 4, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during this
+          At A4, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during this
           duration.
         </>
       ),
@@ -151,12 +151,13 @@ const Diluc: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [3],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 3,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const buffValue = 5 * (inputs?.[0] || 0);
         const keys: AttributeStat[] = ["atk_", "naAtkSpd", "caAtkSpd"];

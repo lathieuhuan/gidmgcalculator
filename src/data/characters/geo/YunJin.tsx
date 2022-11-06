@@ -156,12 +156,10 @@ const YunJin: DataCharacter = {
         </>
       ),
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Current DEF", "Elemental Burst Level"],
-        renderTypes: ["text", "text"],
-        initialValues: [0, 1],
-        maxValues: [9999, 13],
-      },
+      inputConfigs: [
+        { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
+        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+      ],
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, char, partyData } = obj;
         const DEF = toSelf ? obj.totalAttr.def : inputs?.[0] || 0;

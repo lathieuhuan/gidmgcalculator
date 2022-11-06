@@ -115,12 +115,10 @@ const Shenhe: DataCharacter = {
         </>
       ),
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Current ATK", "Elemental Skill Level"],
-        renderTypes: ["text", "text"],
-        initialValues: [0, 1],
-        maxValues: [9999, 13],
-      },
+      inputConfigs: [
+        { label: "Current ATK", type: "text", max: 9999, for: "teammate" },
+        { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+      ],
       applyFinalBuff: (obj) => {
         const { toSelf, inputs } = obj;
         const ATK = toSelf ? obj.totalAttr.atk : inputs?.[0] || 0;
@@ -172,17 +170,15 @@ const Shenhe: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        selfLabels: ["Press", "Hold"],
-        labels: ["Press", "Hold"],
-        renderTypes: ["check", "check"],
-        initialValues: [1, 0],
-      },
+      inputConfigs: [
+        { label: "Press", type: "check", initialValue: 1 },
+        { label: "Hold", type: "check", initialValue: 0 },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         if (inputs?.[0] === 1) {
           applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
         }
-        if (inputs?.[0] === 1) {
+        if (inputs?.[1] === 1) {
           applyModifier(desc + " / Hold", attPattBonus, [...NCPA_PERCENTS], 15, tracker);
         }
       },
@@ -221,12 +217,13 @@ const Shenhe: DataCharacter = {
       ),
       isGranted: checkCons[4],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [50],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "text",
+          max: 50,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct", 5 * (inputs?.[0] || 0), tracker);
       },
@@ -243,11 +240,15 @@ const Shenhe: DataCharacter = {
           <Green b>{getEBDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
         </>
       ),
-      inputConfig: {
-        labels: ["Elemental Burst Level"],
-        renderTypes: ["text"],
-        initialValues: [1],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Burst Level",
+          type: "text",
+          initialValue: 1,
+          max: 13,
+          for: "teammate",
+        },
+      ],
       applyDebuff: ({ fromSelf, resistReduct, inputs, char, partyData, desc, tracker }) => {
         const pntValue = getEBDebuffValue(fromSelf, char, inputs, partyData);
         applyModifier(desc, resistReduct, ["phys", "cryo"], pntValue, tracker);

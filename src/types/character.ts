@@ -159,22 +159,19 @@ type AbilityModifier = {
 
 // BUFFS
 
-type InputConfig = {
-  labels?: string[];
-  selfLabels?: string[];
-  initialValues: ModifierInput[];
-  maxValues?: number[]; // no max = 0
-};
+type CharModInputType = "text" | "check" | "select" | "anemoable" | "dendroable";
 
-export type CharBuffInputRenderType = "text" | "check" | "select" | "anemoable" | "dendroable";
-
-type BuffInputConfig = InputConfig & {
-  renderTypes: CharBuffInputRenderType[];
+export type CharModInputConfig = {
+  label: string;
+  type: CharModInputType;
+  for?: "self" | "teammate";
+  initialValue?: ModifierInput;
+  max?: number; // no max = 0
 };
 
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
-  inputConfig?: BuffInputConfig;
+  inputConfigs?: CharModInputConfig[];
   infuseConfig?: {
     range: NormalAttack[];
     overwritable: boolean;
@@ -202,12 +199,6 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
 
 // DEBUFFS
 
-export type DebuffInputRenderType = "anemoable" | "text";
-
-type DebuffInputConfig = InputConfig & {
-  renderTypes: DebuffInputRenderType[];
-};
-
 export type ApplyCharDebuffFn = (args: {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
@@ -223,7 +214,7 @@ export type ApplyCharDebuffFn = (args: {
 
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
-  inputConfig?: DebuffInputConfig;
+  inputConfigs?: CharModInputConfig[];
   desc: (args: {
     fromSelf: boolean;
     char: CharInfo;

@@ -152,13 +152,13 @@ const Yelan: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        selfLabels: ["Stacks (max 14)"],
-        labels: ["Stacks"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [14],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks (max 14)",
+          type: "text",
+          max: 14,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * (inputs?.[0] || 0), tracker);
       },
@@ -175,13 +175,13 @@ const Yelan: DataCharacter = {
       ),
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        labels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "hp_", 10 * (inputs?.[0] || 0), tracker);
       },

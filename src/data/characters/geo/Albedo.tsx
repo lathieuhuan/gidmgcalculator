@@ -133,12 +133,13 @@ const Albedo: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        initialValues: [1],
-        renderTypes: ["select"],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyFinalBuff: ({ totalAttr, attPattBonus, charBuffCtrls, desc, tracker }) => {
         const buffValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
         applyModifier(desc, attPattBonus, "EB.flat", Math.round(buffValue), tracker);

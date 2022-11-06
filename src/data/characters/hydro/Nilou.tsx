@@ -253,12 +253,14 @@ const Nilou: DataCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Nilou's Max HP"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [100000],
-      },
+      inputConfigs: [
+        {
+          label: "Nilou's Max HP",
+          type: "text",
+          max: 99999,
+          for: "teammate",
+        },
+      ],
       desc: ({ totalAttr, toSelf, inputs }) => {
         const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         return (

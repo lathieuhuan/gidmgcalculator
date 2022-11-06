@@ -214,12 +214,12 @@ const Tighnari: DataCharacter = {
       desc: () => Tighnari.constellation[3].xtraDesc![0],
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Trigger reactions"],
-        selfLabels: ["Trigger reactions"],
-        renderTypes: ["check"],
-        initialValues: [0],
-      },
+      inputConfigs: [
+        {
+          label: "Trigger reactions",
+          type: "check",
+        },
+      ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
         applyModifier(desc, totalAttr, "em", 60 + (inputs?.[0] === 1 ? 60 : 0), tracker);
       },

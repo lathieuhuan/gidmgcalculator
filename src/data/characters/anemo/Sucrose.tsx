@@ -106,12 +106,13 @@ const Sucrose: DataCharacter = {
         </>
       ),
       affect: EModAffect.TEAMMATE,
-      inputConfig: {
-        labels: ["Elemental Mastery"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [9999],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Mastery",
+          type: "text",
+          max: 9999,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", Math.round((inputs?.[0] || 0) * 0.2), tracker);
       },
@@ -127,11 +128,12 @@ const Sucrose: DataCharacter = {
         </>
       ),
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Element Absorbed"],
-        renderTypes: ["anemoable"],
-        initialValues: [0],
-      },
+      inputConfigs: [
+        {
+          label: "Element Absorbed",
+          type: "anemoable",
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const elmtIndex = inputs?.[0] || 0;
         applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 20, tracker);

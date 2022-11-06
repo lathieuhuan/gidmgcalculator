@@ -141,12 +141,13 @@ const Yanfei: DataCharacter = {
       ),
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "pyro", 5 * (inputs?.[0] || 0), tracker);
       },

@@ -262,7 +262,7 @@ export default function getDamage({
       debuff.applyDebuff
     ) {
       const desc = `Self / ${debuff.src}`;
-      const validatedInputs = inputs || debuff.inputConfig?.initialValues || [];
+      const validatedInputs = inputs || [];
       debuff.applyDebuff({ ...wrapper3, fromSelf: true, inputs: validatedInputs, desc });
     }
   }
@@ -276,7 +276,7 @@ export default function getDamage({
 
         if (activated && debuff && debuff.applyDebuff) {
           const desc = `${teammate} / ${debuff.src}`;
-          const validatedInputs = inputs || debuff.inputConfig?.initialValues || [];
+          const validatedInputs = inputs || [];
           debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs: validatedInputs, desc });
         }
       }

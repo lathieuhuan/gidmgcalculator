@@ -129,13 +129,10 @@ const Kazuha: DataCharacter = {
       },
       isGranted: checkAscs[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Element Swirled", "Elemental Mastery"],
-        selfLabels: ["Element Swirled"],
-        renderTypes: ["anemoable", "text"],
-        initialValues: [0, 0],
-        maxValues: [0, 9999],
-      },
+      inputConfigs: [
+        { label: "Element Swirled", type: "anemoable" },
+        { label: "Elemental Mastery", type: "text", max: 9999, for: "teammate" },
+      ],
       applyBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
         const elmtIndex = inputs[0] || 0;
         const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);

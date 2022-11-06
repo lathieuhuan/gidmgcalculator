@@ -81,7 +81,13 @@ const Ganyu: DataCharacter = {
       image: "d/d1/Talent_Trail_of_the_Qilin",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Inherited HP", baseStatType: "hp", multBase: 120, multType: 2 },
+        {
+          name: "Inherited HP",
+          notAttack: "other",
+          baseStatType: "hp",
+          multBase: 120,
+          multType: 2,
+        },
         { name: "Skill DMG", multBase: 132 },
       ],
       // getExtraStats: () => [
@@ -156,13 +162,13 @@ const Ganyu: DataCharacter = {
       ),
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        labels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 5,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs?.[0] || 0), tracker);
       },

@@ -29,7 +29,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const { debuffs = [] } = findCharacter(char) || {};
   const content: JSX.Element[] = [];
 
-  selfDebuffCtrls.forEach(({ index, activated, inputs }, ctrlIndex) => {
+  selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
     const debuff = findByIndex(debuffs, index);
 
     if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
@@ -38,23 +38,19 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         ctrlIndex,
       };
       let setters = null;
+      const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      if (debuff.inputConfig) {
-        const { selfLabels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
-        const validatedInputs = inputs || initialValues;
-
+      if (inputConfigs) {
         setters = (
           <CharModSetters
-            labels={selfLabels}
-            inputs={validatedInputs}
-            renderTypes={renderTypes}
-            initialValues={initialValues}
+            inputs={inputs}
+            inputConfigs={inputConfigs}
             onTextChange={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
-                  value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
+                  value,
                 })
               );
             }}
@@ -125,7 +121,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   const { vision, debuffs = [] } = tmData;
   const subContent: JSX.Element[] = [];
 
-  teammate.debuffCtrls.forEach(({ activated, index, inputs }, ctrlIndex) => {
+  teammate.debuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
     const debuff = findByIndex(debuffs, index);
     if (!debuff) return;
 
@@ -135,35 +131,31 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
       ctrlIndex,
     };
     let setters = null;
+    const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "self");
 
-    if (debuff.inputConfig) {
-      const { labels = [], renderTypes, initialValues, maxValues } = debuff.inputConfig;
-      const validatedInputs = inputs || initialValues;
-
+    if (inputConfigs) {
       setters = (
         <CharModSetters
-          labels={labels}
-          inputs={validatedInputs}
-          renderTypes={renderTypes}
-          initialValues={initialValues}
-          onTextChange={(value, i) =>
+          inputs={inputs}
+          inputConfigs={inputConfigs}
+          onTextChange={(value, i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
+                value,
               })
-            )
-          }
-          onToggleCheck={(currentInput, inputIndex) =>
+            );
+          }}
+          onToggleCheck={(currentInput, inputIndex) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex,
                 value: currentInput === 1 ? 0 : 1,
               })
-            )
-          }
+            );
+          }}
           onSelect={(value, inputIndex) =>
             dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))
           }

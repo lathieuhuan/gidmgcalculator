@@ -182,12 +182,13 @@ const Sayu: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Time (max. 10 sec)"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [10],
-      },
+      inputConfigs: [
+        {
+          label: "Seconds (max. 10)",
+          type: "text",
+          max: 10,
+        },
+      ],
     },
   ],
 };

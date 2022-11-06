@@ -1,10 +1,8 @@
 import type {
   Artifact,
   CharInfo,
-  ModifierInput,
   Rarity,
   Weapon,
-  DebuffInputRenderType,
   ModifierCtrl,
   Target,
   CalcArtPiece,
@@ -13,8 +11,9 @@ import type {
   Monster,
   Teammate,
 } from "@Src/types";
-import { findCharacter, findWeapon } from "@Data/controllers";
+import { findCharacter } from "@Data/controllers";
 import { ATTACK_ELEMENTS, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
+import { INITIAL_VALUES } from "./constants";
 
 type InitCharInfo = Omit<CharInfo, "name">;
 export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
@@ -59,66 +58,47 @@ export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArt
 export function initCharModCtrls(name: string, forSelf: boolean) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs, debuffs } = findCharacter({ name })!;
+  const { buffs = [], debuffs = [] } = findCharacter({ name }) || {};
 
-  if (buffs) {
-    for (const buff of buffs) {
-      if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
-        continue;
-      }
-      const node: ModifierCtrl = {
-        activated: false,
-        index: buff.index,
-      };
+  for (const buff of buffs) {
+    if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
+      continue;
+    }
+    const node: ModifierCtrl = { activated: false, index: buff.index };
 
-      if (buff.inputConfig) {
-        const { labels, selfLabels, initialValues } = buff.inputConfig;
+    if (buff.inputConfigs) {
+      const initialValues = [];
 
-        if ((forSelf && selfLabels) || (!forSelf && labels)) {
-          node.inputs = [...initialValues];
+      for (const config of buff.inputConfigs) {
+        if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
+          initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
         }
       }
-      buffCtrls.push(node);
+      if (initialValues.length) {
+        node.inputs = initialValues;
+      }
     }
+    buffCtrls.push(node);
   }
-  /**
-    v2.8 - debuffs need inputs:
-    From self: AnemoMC C6 & Venti C6 / Not from self: Eula E & Shenhe Q
-  */
-  function getInputs(labels: string[], renderTypes: DebuffInputRenderType[]) {
-    const inputs: ModifierInput[] = [];
+  for (const debuff of debuffs) {
+    if (!forSelf && debuff.affect === EModAffect.SELF) {
+      continue;
+    }
+    const node: ModifierCtrl = { activated: false, index: debuff.index };
 
-    labels.forEach((_, i) => {
-      const type = renderTypes[i];
-      if (type === "anemoable") {
-        inputs.push(0);
-      } else if (type === "text") {
-        inputs.push(1); // level
-      }
-    });
-    return inputs;
-  }
-  if (debuffs) {
-    for (const debuff of debuffs) {
-      if (!forSelf && debuff.affect === EModAffect.SELF) {
-        continue;
-      }
-      const node: ModifierCtrl = {
-        activated: false,
-        index: debuff.index,
-      };
+    if (debuff.inputConfigs) {
+      const initialValues = [];
 
-      if (debuff.inputConfig) {
-        const { labels, selfLabels, renderTypes } = debuff.inputConfig;
-
-        if (forSelf && selfLabels) {
-          node.inputs = getInputs(selfLabels, renderTypes);
-        } else if (!forSelf && labels) {
-          node.inputs = getInputs(labels, renderTypes);
+      for (const config of debuff.inputConfigs) {
+        if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
+          initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
         }
       }
-      debuffCtrls.push(node);
+      if (initialValues.length) {
+        node.inputs = initialValues;
+      }
     }
+    debuffCtrls.push(node);
   }
   return [buffCtrls, debuffCtrls];
 }

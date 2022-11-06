@@ -140,12 +140,12 @@ const Venti: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      inputConfig: {
-        selfLabels: ["Element Absorbed"],
-        labels: ["Element Absorbed"],
-        renderTypes: ["anemoable"],
-        initialValues: [0],
-      },
+      inputConfigs: [
+        {
+          label: "Element Absorbed",
+          type: "anemoable",
+        },
+      ],
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
         const elmtIndex = inputs?.[0] || 0;
         applyModifier(desc, resistReduct, ["anemo", VISION_TYPES[elmtIndex]], 20, tracker);

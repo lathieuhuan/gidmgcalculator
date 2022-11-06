@@ -224,13 +224,13 @@ const Layla: DataCharacter = {
       desc: () => Layla.passiveTalents[0].desc,
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        labels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "shStr", 6 * (inputs?.[0] || 0), tracker);
       },
@@ -241,12 +241,14 @@ const Layla: DataCharacter = {
       desc: () => Layla.constellation[3].xtraDesc![0],
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Max HP"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [99999],
-      },
+      inputConfigs: [
+        {
+          label: "Max HP",
+          type: "text",
+          max: 99999,
+          for: "teammate",
+        },
+      ],
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
         const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         const buffValue = applyPercent(maxHP, 5);

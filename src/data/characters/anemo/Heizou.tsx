@@ -124,12 +124,13 @@ const Heizou: DataCharacter = {
       ),
       isGranted: checkCons[6],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         const stacks = inputs?.[0] || 0;
 

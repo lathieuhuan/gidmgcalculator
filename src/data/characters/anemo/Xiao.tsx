@@ -148,12 +148,13 @@ const Xiao: DataCharacter = {
       ),
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 5,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs?.[0] || 0), tracker);
       },
@@ -170,12 +171,13 @@ const Xiao: DataCharacter = {
       ),
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [3],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 3,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct", 15 * (inputs?.[0] || 0), tracker);
       },

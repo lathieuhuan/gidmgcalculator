@@ -268,13 +268,13 @@ const Nahida: DataCharacter = {
       ),
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        selfLabels: ["Highest Elemental Mastery"],
-        labels: ["Highest Elemental Mastery"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [9999],
-      },
+      inputConfigs: [
+        {
+          label: "Highest Elemental Mastery",
+          type: "text",
+          max: 9999,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.25, 250), tracker);
       },
@@ -292,12 +292,13 @@ const Nahida: DataCharacter = {
       desc: () => Nahida.constellation[3].desc,
       isGranted: checkCons[4],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Number of the affected"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [4],
-      },
+      inputConfigs: [
+        {
+          label: "Number of the affected",
+          type: "select",
+          max: 4,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "em", (inputs?.[0] || 0) * 20 + 80, tracker);
       },

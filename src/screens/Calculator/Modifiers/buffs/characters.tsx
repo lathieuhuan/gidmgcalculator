@@ -17,7 +17,7 @@ import {
 } from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findCharacter, getPartyData } from "@Data/controllers";
-import { findByIndex, processNumInput } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate } from "@Src/styled-components";
@@ -50,34 +50,28 @@ export function SelfBuffs() {
   });
 
   selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs } = ctrl;
-    const buff = findByIndex(buffs!, index);
-
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "selfBuffCtrls",
-      ctrlIndex,
-    };
+    const { activated, index, inputs = [] } = ctrl;
+    const buff = findByIndex(buffs, index);
 
     if (buff && (!buff.isGranted || buff.isGranted(char))) {
+      const path: ToggleModCtrlPath = {
+        modCtrlName: "selfBuffCtrls",
+        ctrlIndex,
+      };
       let setters = null;
+      const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      if (buff.inputConfig) {
-        const { selfLabels, renderTypes, initialValues, maxValues } = buff.inputConfig;
-        const validatedInputs = inputs || initialValues;
-
-        setters = selfLabels ? (
+      if (inputConfigs?.length) {
+        setters = (
           <CharModSetters
-            labels={selfLabels}
-            renderTypes={renderTypes}
-            initialValues={initialValues}
-            maxValues={maxValues}
-            inputs={validatedInputs}
+            inputs={inputs}
+            inputConfigs={inputConfigs}
             onTextChange={(value, i) => {
               dispatch(
                 changeModCtrlInput({
                   ...path,
                   inputIndex: i,
-                  value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
+                  value,
                 })
               );
             }}
@@ -95,7 +89,7 @@ export function SelfBuffs() {
               );
             }}
           />
-        ) : null;
+        );
       }
       content.push(
         <ModifierTemplate
@@ -108,7 +102,7 @@ export function SelfBuffs() {
             totalAttr,
             char,
             charBuffCtrls: selfBuffCtrls,
-            inputs: inputs || [],
+            inputs,
             charData,
             partyData,
           })}
@@ -146,16 +140,16 @@ interface TeammateBuffsProps {
   partyData: PartyData;
 }
 function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProps) {
+  const dispatch = useDispatch();
   const totalAttr = useSelector(selectTotalAttr);
   const char = useSelector(selectChar);
   const charData = useSelector(selectCharData);
-  const dispatch = useDispatch();
 
   const subContent: JSX.Element[] = [];
   const { buffs = [], vision } = findCharacter(teammate)!;
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs } = ctrl;
+    const { activated, index, inputs = [] } = ctrl;
     const buff = findByIndex(buffs, index);
     if (!buff) return;
 
@@ -166,23 +160,17 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     };
     let setters = null;
 
-    if (buff.inputConfig) {
-      const { labels = [], renderTypes, initialValues, maxValues } = buff.inputConfig;
-      const validatedInputs = inputs || initialValues;
-
+    if (buff.inputConfigs) {
       setters = (
         <CharModSetters
-          labels={labels}
-          renderTypes={renderTypes}
-          initialValues={initialValues}
-          maxValues={maxValues}
-          inputs={validatedInputs}
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
           onTextChange={(value, i) => {
             dispatch(
               changeTeammateModCtrlInput({
                 ...path,
                 inputIndex: i,
-                value: processNumInput(value, +validatedInputs[i], maxValues?.[i] || undefined),
+                value,
               })
             );
           }}

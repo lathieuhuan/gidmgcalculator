@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import type {
   ArtifactBuff,
-  CharBuffInputRenderType,
+  CharModInputConfig,
   ModifierInput,
   TWeaponBuffInputRenderType,
 } from "@Src/types";
@@ -13,7 +13,7 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 
 import { useDispatch } from "@Store/hooks";
 import { changeModCtrlInput } from "@Store/calculatorSlice";
-import { genNumberSequenceOptions } from "@Src/utils";
+import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
 
 interface ISetterProps {
   labels: string[];
@@ -25,14 +25,15 @@ interface ISetterProps {
   onSelect?: (value: number, inputIndex: number) => void;
 }
 
-interface ICharModSettersProps extends ISetterProps {
-  renderTypes: CharBuffInputRenderType[];
+interface ICharModSettersProps {
+  inputConfigs: CharModInputConfig[];
+  inputs: ModifierInput[];
+  onTextChange?: (newValue: number, inputIndex: number) => void;
+  onToggleCheck?: (currentInput: number, inputIndex: number) => void;
+  onSelect?: (value: number, inputIndex: number) => void;
 }
 export function CharModSetters({
-  labels,
-  renderTypes,
-  initialValues,
-  maxValues,
+  inputConfigs,
   inputs,
   onTextChange,
   onToggleCheck,
@@ -40,16 +41,22 @@ export function CharModSetters({
 }: ICharModSettersProps) {
   //
   const renderInput = (index: number) => {
+    const config = inputConfigs[index];
     const input = inputs[index];
 
-    switch (renderTypes[index]) {
+    switch (config.type) {
       case "text":
         return (
           <input
             type="text"
             className="w-20 p-2 text-right textinput-common font-bold"
             value={input}
-            onChange={(e) => onTextChange && onTextChange(e.target.value, index)}
+            onChange={(e) => {
+              if (onTextChange) {
+                const newValue = processNumInput(e.target.value, input, config.max);
+                onTextChange(newValue, index);
+              }
+            }}
           />
         );
       case "check":
@@ -65,9 +72,9 @@ export function CharModSetters({
       default:
         let options: TOption[] = [];
 
-        switch (renderTypes[index]) {
+        switch (config.type) {
           case "select":
-            options = genNumberSequenceOptions(maxValues?.[index], initialValues[index] === 0);
+            options = genNumberSequenceOptions(config.max, config.initialValue === 0);
             break;
           case "anemoable":
             options = ANEMOABLE_OPTIONS;
@@ -91,11 +98,10 @@ export function CharModSetters({
         );
     }
   };
-
   return (
     <Fragment>
-      {labels.map((label, i) => (
-        <Setter key={i} label={label} inputComponent={renderInput(i)} />
+      {inputConfigs.map((config, i) => (
+        <Setter key={i} label={config.label} inputComponent={renderInput(i)} />
       ))}
     </Fragment>
   );

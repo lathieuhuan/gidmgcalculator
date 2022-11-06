@@ -146,13 +146,13 @@ const Zhongli: DataCharacter = {
       ),
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        labels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [5],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 5,
+        },
+      ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, "shStr", 5 * (inputs?.[0] || 0), tracker);
       },

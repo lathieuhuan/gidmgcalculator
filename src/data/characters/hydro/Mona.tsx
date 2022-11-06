@@ -126,12 +126,15 @@ const Mona: DataCharacter = {
         </>
       ),
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Elemental Burst Level"],
-        renderTypes: ["text"],
-        initialValues: [1],
-        maxValues: [13],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Burst Level",
+          type: "text",
+          initialValue: 1,
+          max: 13,
+          for: "teammate",
+        },
+      ],
       applyBuff: ({ attPattBonus, desc, tracker, ...rest }) => {
         applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
       },
@@ -176,12 +179,13 @@ const Mona: DataCharacter = {
       ),
       isGranted: checkCons[6],
       affect: EModAffect.SELF,
-      inputConfig: {
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [3],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 3,
+        },
+      ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "CA.pct", 60 * (inputs?.[0] || 0), tracker);
       },

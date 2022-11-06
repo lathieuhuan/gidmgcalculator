@@ -109,17 +109,15 @@ const Sara: DataCharacter = {
           Sara's <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
           <br />
-          At Constellation 6, it also increases <Green>Electro Crit DMG</Green> by{" "}
-          <Green b>60%</Green>.
+          At C6, it also increases <Green>Electro Crit DMG</Green> by <Green b>60%</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Base ATK", "Elemental Skill Level", "Constellation 6"],
-        initialValues: [0, 1, 0],
-        renderTypes: ["text", "text", "check"],
-        maxValues: [9999, 13],
-      },
+      inputConfigs: [
+        { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
+        { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Constellation 6", type: "check", for: "teammate" },
+      ],
       applyBuff: (obj) => {
         const buffValueArgs = obj.toSelf
           ? [obj.totalAttr.base_atk, finalTalentLv(obj.char, "ES", obj.partyData)]

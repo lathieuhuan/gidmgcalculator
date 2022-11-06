@@ -128,13 +128,13 @@ const DendroMC: DataCharacter = {
       desc: () => DendroMC.passiveTalents[0].desc,
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Stacks"],
-        selfLabels: ["Stacks"],
-        renderTypes: ["select"],
-        initialValues: [1],
-        maxValues: [10],
-      },
+      inputConfigs: [
+        {
+          label: "Stacks",
+          type: "select",
+          max: 10,
+        },
+      ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
         applyModifier(desc, totalAttr, "em", 6 * (inputs?.[0] || 0), tracker);
       },
@@ -145,12 +145,12 @@ const DendroMC: DataCharacter = {
       desc: () => DendroMC.constellation[5].desc,
       isGranted: checkCons[6],
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Element contact"],
-        selfLabels: ["Element contact"],
-        renderTypes: ["dendroable"],
-        initialValues: [0],
-      },
+      inputConfigs: [
+        {
+          label: "Element contact",
+          type: "dendroable",
+        },
+      ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
         const elmtIndex = inputs?.[0] || 0;
         applyModifier(desc, totalAttr, ["dendro", VISION_TYPES[elmtIndex]], 12, tracker);

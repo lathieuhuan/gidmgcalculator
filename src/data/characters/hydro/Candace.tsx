@@ -182,12 +182,14 @@ const Candace: DataCharacter = {
       desc: () => Candace.passiveTalents[1].desc,
       isGranted: checkAscs[4],
       affect: EModAffect.PARTY,
-      inputConfig: {
-        labels: ["Max HP"],
-        renderTypes: ["text"],
-        initialValues: [0],
-        maxValues: [99999],
-      },
+      inputConfigs: [
+        {
+          label: "Max HP",
+          type: "text",
+          max: 99999,
+          for: "teammate",
+        },
+      ],
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
         const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
         applyModifier(desc, attPattBonus, "NA.pct", (maxHP / 1000) * 0.5, tracker);

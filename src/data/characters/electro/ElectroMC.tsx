@@ -84,12 +84,10 @@ const ElectroMC: DataCharacter = {
         </>
       ),
       affect: EModAffect.ONE_UNIT,
-      inputConfig: {
-        labels: ["A4 Passive Talent", "Energy Recharge"],
-        renderTypes: ["check", "text"],
-        initialValues: [0, 100],
-        maxValues: [0, 999],
-      },
+      inputConfigs: [
+        { label: "A4 Passive Talent", type: "check", for: "teammate" },
+        { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
+      ],
       applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {
         let bonusValue = 20;
         const boosted = toSelf ? checkAscs[4](char) : inputs?.[0] === 1;

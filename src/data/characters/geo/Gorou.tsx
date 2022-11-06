@@ -183,12 +183,15 @@ const Gorou: DataCharacter = {
         );
       },
       affect: EModAffect.ACTIVE_UNIT,
-      inputConfig: {
-        labels: ["Elemental Skill Level"],
-        renderTypes: ["text"],
-        initialValues: [1],
-        maxValues: [13],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Skill Level",
+          type: "text",
+          initialValue: 1,
+          max: 13,
+          for: "teammate",
+        },
+      ],
       applyBuff: (obj) => {
         const level = obj.toSelf
           ? finalTalentLv(obj.char, "ES", obj.partyData)
