@@ -108,8 +108,7 @@ const Sara: DataCharacter = {
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
           Sara's <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
-          <br />
-          At C6, it also increases <Green>Electro Crit DMG</Green> by <Green b>60%</Green>.
+          <br />• At C6, it also increases <Green>Electro Crit DMG</Green> by <Green b>60%</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,

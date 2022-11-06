@@ -23,15 +23,15 @@ const countResolve = (energyCost: number, level: number) => {
   return Math.round(energyCost * Math.min(Math.ceil(14.5 + level * 0.5), 20)) / 100;
 };
 
-const getEBTalentBuff = (index: number): GetTalentBuffFn => {
+const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuffFn => {
   return ({ char, selfBuffCtrls, partyData }) => {
     if (modIsActivated(selfBuffCtrls, 1)) {
-      const value = getBuffValue.EB(char, selfBuffCtrls, partyData).map(round2);
-      if (value[0]) {
+      const buffValue = getBuffValue.EB(char, selfBuffCtrls, partyData);
+      if (buffValue.stacks) {
         return {
           mult: {
-            desc: `Bonus from ${value[0]} Resolve, each gave ${value[index]}% extra multiplier`,
-            value: round2(value[0] * value[index]),
+            desc: `Bonus from ${buffValue.stacks} Resolve, each gave ${buffValue[bonusType]}% extra multiplier`,
+            value: round2(buffValue.stacks * buffValue[bonusType]),
           },
         };
       }
@@ -53,13 +53,21 @@ const getBuffValue = {
   },
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
     const level = finalTalentLv(char, "EB", partyData);
-    let stacks = countResolve(findInput(selfBuffCtrls, 1, 0), level);
+    const totalEnergySpent = findInput(selfBuffCtrls, 1, 0);
+    const electroEnergySpent = findInput(selfBuffCtrls, 1, 1);
+    let bonusEnergySpent = 0;
 
-    if (checkCons[1](char) && modIsActivated(selfBuffCtrls, 3)) {
-      stacks += getBuffValue.C1(char, selfBuffCtrls, partyData, level);
+    if (checkCons[1](char) && electroEnergySpent < totalEnergySpent) {
+      bonusEnergySpent += electroEnergySpent * 0.8 + (totalEnergySpent - electroEnergySpent) * 0.2;
     }
-    stacks = Math.min(round2(stacks), 60);
-    return [stacks, 3.89 * TALENT_LV_MULTIPLIERS[2][level], isshinBonusMults[level]];
+
+    let stacks = countResolve(totalEnergySpent + bonusEnergySpent, level);
+    return {
+      stacks: Math.min(round2(stacks), 60),
+      extraStacks: round2(countResolve(bonusEnergySpent, level)),
+      musouBonus: 3.89 * TALENT_LV_MULTIPLIERS[2][level],
+      isshinBonus: isshinBonusMults[level],
+    };
   },
   A4: (totalAttr: TotalAttribute) => {
     return round1((totalAttr.er - 100) * 0.4);
@@ -139,21 +147,65 @@ const Raiden: DataCharacter = {
       image: "e/e0/Talent_Secret_Art_Musou_Shinsetsu",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Musou no Hitotachi", multBase: 400.8, getTalentBuff: getEBTalentBuff(1) },
-        { name: "1-Hit", multBase: 44.74, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "2-Hit", multBase: 43.96, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "3-Hit", multBase: 53.82, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "4-Hit (1/2)", multBase: 30.89, multType: 4, getTalentBuff: getEBTalentBuff(2) },
-        { name: "5-Hit", multBase: 73.94, multType: 4, getTalentBuff: getEBTalentBuff(2) },
+        {
+          name: "Musou no Hitotachi",
+          multBase: 400.8,
+          getTalentBuff: getEBTalentBuff("musouBonus"),
+        },
+        {
+          name: "1-Hit",
+          multBase: 44.74,
+          multType: 4,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "2-Hit",
+          multBase: 43.96,
+          multType: 4,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "3-Hit",
+          multBase: 53.82,
+          multType: 4,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "4-Hit (1/2)",
+          multBase: 30.89,
+          multType: 4,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "5-Hit",
+          multBase: 73.94,
+          multType: 4,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
         {
           name: "Charged Attack",
           multBase: [61.6, 74.36],
           multType: 4,
-          getTalentBuff: getEBTalentBuff(2),
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
-        { name: "Plunge DMG", multBase: 63.93, multType: 1, getTalentBuff: getEBTalentBuff(2) },
-        { name: "Low Plunge", multBase: 127.84, multType: 1, getTalentBuff: getEBTalentBuff(2) },
-        { name: "High Plunge", multBase: 159.68, multType: 1, getTalentBuff: getEBTalentBuff(2) },
+        {
+          name: "Plunge DMG",
+          multBase: 63.93,
+          multType: 1,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "Low Plunge",
+          multBase: 127.84,
+          multType: 1,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
+        {
+          name: "High Plunge",
+          multBase: 159.68,
+          multType: 1,
+          getTalentBuff: getEBTalentBuff("isshinBonus"),
+        },
       ],
       // getExtraStats: (lv) => [
       //   {
@@ -192,9 +244,8 @@ const Raiden: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> that the Raiden Shogun
-          possesses grants her:
-          <br />• <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
+          Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> grants the Raiden
+          Shogun <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
           <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
         </>
       ),
@@ -241,51 +292,30 @@ const Raiden: DataCharacter = {
       index: 1,
       src: EModSrc.EB,
       desc: ({ char, charBuffCtrls, partyData }) => {
+        const { stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
         return (
           <>
-            The DMG dealt by Musou no Hitotachi and Musou Isshin's attacks will be increased based
-            on the number of Chakra Desiderata's Resolve stacks consumed when this skill is used.{" "}
-            <Red>Total Resolve: {getBuffValue.EB(char, charBuffCtrls, partyData)[0]}.</Red>
+            Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased
+            based on the number of Chakra Desiderata's Resolve stacks consumed.{" "}
+            <Red>Total Resolve: {stacks}.</Red>
             <br />
             Normal, Charged, and Plunging Attacks will be <Green>infused</Green> with{" "}
             <Electro>Electro DMG</Electro>, which cannot be overridden.
+            <br />• At C1, increases <Green>Resolve</Green> gained from Electro characters by{" "}
+            <Green b>80%</Green>, from characters of other visions by <Green b>20%</Green>.{" "}
+            <Red>Extra Resolve: {extraStacks}</Red>
           </>
         );
       },
       affect: EModAffect.SELF,
       inputConfigs: [
-        {
-          label: "Total Energy Spent",
-          type: "text",
-          max: 999,
-        },
+        { label: "Total Energy spent", type: "text", max: 999 },
+        { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
-    },
-    {
-      index: 3,
-      src: EModSrc.C1,
-      desc: ({ char, charBuffCtrls, partyData }) => (
-        <>
-          When <Electro>Electro</Electro> characters use their Elemental Bursts, the{" "}
-          <Green>Resolve</Green> gained is increased by <Green b>80%</Green>. When characters of
-          other Elemental Types use their Elemental Bursts, the <Green>Resolve</Green> gained is
-          increased by <Green b>20%</Green>.{" "}
-          <Red>Extra Resolve: {getBuffValue.C1(char, charBuffCtrls, partyData)}.</Red>
-        </>
-      ),
-      isGranted: checkCons[1],
-      affect: EModAffect.SELF,
-      inputConfigs: [
-        {
-          label: "Energy spent by Electro characters (part of total)",
-          type: "text",
-          max: 999,
-        },
-      ],
     },
     {
       index: 4,

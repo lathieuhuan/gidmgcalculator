@@ -37,7 +37,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
     <>
       {touched ? (
         <div className="h-full flex flex-col">
-          <div className="mt-2 pb-4 flex">
+          <div className="mt-2 pb-6 flex">
             <div className="mr-4 relative" onClick={onClickCharImg}>
               <IconButton className="absolute -top-2.5 -left-2.5 z-10 text-xl" variant="positive">
                 <FaSyncAlt />

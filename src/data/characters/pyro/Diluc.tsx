@@ -116,9 +116,8 @@ const Diluc: DataCharacter = {
       desc: () => (
         <>
           The searing flames that run down his blade cause it to be <Green>infused</Green> with{" "}
-          <Pyro>Pyro</Pyro>.<br />
-          At A4, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during this
-          duration.
+          <Pyro>Pyro</Pyro>.<br />• At A4, Diluc gains <Green b>20%</Green>{" "}
+          <Green>Pyro DMG Bonus</Green> during this duration.
         </>
       ),
       infuseConfig: {

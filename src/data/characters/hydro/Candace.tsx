@@ -161,38 +161,32 @@ const Candace: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          Prayer of the Crimson Crown has the following properties:
+          Prayer of the Crimson Crown [EB] has the following properties:
           <br />• Characters deal <Green b>20%</Green> increased Elemental DMG with their{" "}
           <Green>Normal Attacks</Green>.
+          <br />• At A4, increases the above bonus by <Green b>0.5%</Green> for every 1,000 points
+          of Candace's <Green>Max HP</Green>.
           <br />• Active Sword, Claymore, and Polearm-wielding character(s) under this effect will
           obtain a <Hydro>Hydro Infusion</Hydro>.
         </>
       ),
       affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("attPattBonus", "NA.pct", 20),
-      infuseConfig: {
-        appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
-        range: [...NORMAL_ATTACKS],
-        overwritable: true,
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => Candace.passiveTalents[1].desc,
-      isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
-          label: "Max HP",
+          label: "Max HP (A4)",
           type: "text",
           max: 99999,
           for: "teammate",
         },
       ],
-      applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
-        applyModifier(desc, attPattBonus, "NA.pct", (maxHP / 1000) * 0.5, tracker);
+      applyFinalBuff: ({ toSelf, char, totalAttr, attPattBonus, inputs, desc, tracker }) => {
+        const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs?.[0] || 0 : 0;
+        applyModifier(desc, attPattBonus, "NA.pct", 20 + (maxHP / 1000) * 0.5, tracker);
+      },
+      infuseConfig: {
+        appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
+        range: [...NORMAL_ATTACKS],
+        overwritable: true,
       },
     },
     {

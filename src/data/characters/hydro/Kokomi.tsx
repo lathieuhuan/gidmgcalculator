@@ -137,8 +137,8 @@ const Kokomi: DataCharacter = {
       desc: () => (
         <>
           Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
-          based on her <Green>Max HP</Green>.<br />
-          At C4, Kokomi's <Green>Normal Attack SPD</Green> is increased by <Green b>10%</Green>.
+          based on her <Green>Max HP</Green>.<br />• At C4, Kokomi's{" "}
+          <Green>Normal Attack SPD</Green> is increased by <Green b>10%</Green>.
         </>
       ),
       isGranted: () => true,
