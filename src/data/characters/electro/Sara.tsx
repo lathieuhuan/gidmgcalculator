@@ -108,13 +108,16 @@ const Sara: DataCharacter = {
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
           Sara's <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
+          <br />
+          At Constellation 6, it also increases <Green>Electro Crit DMG</Green> by{" "}
+          <Green b>60%</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
       inputConfig: {
-        labels: ["Base ATK", "Elemental Skill Level"],
-        initialValues: [0, 1],
-        renderTypes: ["text", "text"],
+        labels: ["Base ATK", "Elemental Skill Level", "Constellation 6"],
+        initialValues: [0, 1, 0],
+        renderTypes: ["text", "text", "check"],
         maxValues: [9999, 13],
       },
       applyBuff: (obj) => {
@@ -124,27 +127,17 @@ const Sara: DataCharacter = {
         const [bonusValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, obj.totalAttr, "atk", bonusValue, obj.tracker);
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          The <Electro>Electro DMG</Electro> of characters who have had their ATK increased by Tengu
-          Juurai has its <Green>Crit DMG</Green> increased by <Green b>60%</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.ACTIVE_UNIT,
-      applyBuff: (obj) => {
-        increaseAttackBonus({
-          ...obj,
-          element: "electro",
-          type: "cDmg",
-          value: 60,
-          mainCharVision: obj.charData.vision,
-        });
+
+        if ((obj.toSelf && obj.char.cons >= 6) || (!obj.toSelf && obj.inputs?.[2])) {
+          increaseAttackBonus({
+            ...obj,
+            desc: `Self / ${EModSrc.C6}`,
+            element: "electro",
+            type: "cDmg",
+            value: 60,
+            mainCharVision: obj.charData.vision,
+          });
+        }
       },
     },
   ],

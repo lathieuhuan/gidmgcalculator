@@ -4,6 +4,7 @@ import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
+import { ascsFromLv } from "@Src/utils";
 
 const Diluc: DataCharacter = {
   code: 20,
@@ -106,30 +107,24 @@ const Diluc: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
+      applyBuff: ({ char, totalAttr, tracker }) => {
+        if (checkAscs[4](char)) {
+          applyModifier(`Self / ${EModSrc.A4}`, totalAttr, "pyro", 20, tracker);
+        }
+      },
       desc: () => (
         <>
           The searing flames that run down his blade cause it to be <Green>infused</Green> with{" "}
-          <Pyro>Pyro</Pyro>.
+          <Pyro>Pyro</Pyro>.<br />
+          At Ascension 4, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during this
+          duration.
         </>
       ),
-      affect: EModAffect.SELF,
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
         overwritable: true,
       },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during the duration of the
-          Pyro Enchantment provided by Dawn.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("totalAttr", "pyro", 20),
     },
     {
       index: 2,

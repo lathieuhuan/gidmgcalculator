@@ -137,7 +137,9 @@ const Kokomi: DataCharacter = {
       desc: () => (
         <>
           Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
-          based on her <Green>Max HP</Green>.
+          based on her <Green>Max HP</Green>.<br />
+          At Constellation 4, Kokomi's <Green>Normal Attack SPD</Green> is increased by{" "}
+          <Green b>10%</Green>.
         </>
       ),
       isGranted: () => true,
@@ -156,20 +158,11 @@ const Kokomi: DataCharacter = {
           return applyPercent(obj.totalAttr.hp, finalMult);
         });
         applyModifier(obj.desc, obj.attPattBonus, fields, bnValues, obj.tracker);
+
+        if (checkCons[4](char)) {
+          applyModifier(`Self / ${EModSrc.C4}`, obj.totalAttr, "naAtkSpd", 10, obj.tracker);
+        }
       },
-    },
-    {
-      index: 2,
-      src: EModSrc.C4,
-      desc: () => (
-        <>
-          During Nereid's Ascension, Kokomi's <Green>Normal Attack SPD</Green> is increased by{" "}
-          <Green b>10%</Green>.
-        </>
-      ),
-      isGranted: checkCons[4],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 10),
     },
     {
       index: 3,
