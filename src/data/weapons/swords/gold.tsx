@@ -26,12 +26,12 @@ const goldSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
@@ -41,12 +41,13 @@ const goldSwords: DataWeapon[] = [
       {
         index: 1,
         affect: EModAffect.TEAMMATE,
-        inputConfig: {
-          labels: ["Max HP"],
-          renderTypes: ["text"],
-          initialValues: [0],
-          maxValues: [99999],
-        },
+        inputConfigs: [
+          {
+            label: "Max HP",
+            type: "text",
+            max: 99999,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = applyPercent(inputs?.[0] || 0, 0.15 + refi * 0.05);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
@@ -92,12 +93,12 @@ const goldSwords: DataWeapon[] = [
       {
         index: 1,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [2],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (15 + refi * 5) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
@@ -139,12 +140,12 @@ const goldSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const valueIndex = (inputs?.[0] || 0) - 1;
           const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];

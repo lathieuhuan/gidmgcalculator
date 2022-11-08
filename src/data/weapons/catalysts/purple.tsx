@@ -32,12 +32,12 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [5],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
           const stacks = inputs?.[0] || 0;
           const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
@@ -135,12 +135,14 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        inputConfig: {
-          labels: ["Element"],
-          renderTypes: ["choices"],
-          initialValues: [0],
-          options: [["Pyro", "Hydro", "Cryo", "Geo", "Anemo", "Dendro"]],
-        },
+        inputConfigs: [
+          {
+            label: "Element",
+            type: "select",
+            initialValue: 0,
+            options: ["Pyro", "Hydro", "Cryo", "Geo", "Anemo", "Dendro"],
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { vision } = charData;
           const optionIndex = inputs?.[0] || 0;
@@ -185,12 +187,12 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [2],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
@@ -219,12 +221,14 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Theme Song"],
-          renderTypes: ["choices"],
-          initialValues: [0],
-          options: [["Recitative", "Aria", "Interlude"]],
-        },
+        inputConfigs: [
+          {
+            label: "Theme Song",
+            type: "select",
+            initialValue: 0,
+            options: ["Recitative", "Aria", "Interlude"],
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffIndex = inputs?.[0] || 0;
 

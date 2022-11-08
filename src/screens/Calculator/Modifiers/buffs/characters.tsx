@@ -20,8 +20,7 @@ import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Src/styled-components";
-import { CharModSetters } from "../components";
+import { NewModifierTemplate } from "../components";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -39,7 +38,7 @@ export function SelfBuffs() {
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
     if (isGranted(char)) {
       content.push(
-        <ModifierTemplate
+        <NewModifierTemplate
           key={`innate-${index}`}
           mutable={false}
           heading={src}
@@ -58,44 +57,11 @@ export function SelfBuffs() {
         modCtrlName: "selfBuffCtrls",
         ctrlIndex,
       };
-      let setters = null;
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      if (inputConfigs?.length) {
-        setters = (
-          <CharModSetters
-            inputs={inputs}
-            inputConfigs={inputConfigs}
-            onTextChange={(value, i) => {
-              dispatch(
-                changeModCtrlInput({
-                  ...path,
-                  inputIndex: i,
-                  value,
-                })
-              );
-            }}
-            onToggleCheck={(currentinput, i) => {
-              const newInput = currentinput === 1 ? 0 : 1;
-              dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: newInput }));
-            }}
-            onSelect={(value, i) => {
-              dispatch(
-                changeModCtrlInput({
-                  ...path,
-                  inputIndex: i,
-                  value: isNaN(+value) ? value : +value,
-                })
-              );
-            }}
-          />
-        );
-      }
       content.push(
-        <ModifierTemplate
-          key={ctrlIndex}
-          checked={activated}
-          onToggle={() => dispatch(toggleModCtrl(path))}
+        <NewModifierTemplate
+          key={`self-${ctrlIndex}`}
           heading={buff.src}
           desc={buff.desc({
             toSelf: true,
@@ -106,7 +72,32 @@ export function SelfBuffs() {
             charData,
             partyData,
           })}
-          setters={setters}
+          checked={activated}
+          onToggle={() => dispatch(toggleModCtrl(path))}
+          inputs={inputs}
+          inputConfigs={inputConfigs}
+          onChangeText={(value, i) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value,
+              })
+            );
+          }}
+          onToggleCheck={(currentinput, i) => {
+            const newInput = currentinput === 1 ? 0 : 1;
+            dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: newInput }));
+          }}
+          onSelectOption={(value, i) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value: isNaN(+value) ? value : +value,
+              })
+            );
+          }}
         />
       );
     }
@@ -158,45 +149,9 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
       modCtrlName: "buffCtrls",
       ctrlIndex,
     };
-    let setters = null;
 
-    if (buff.inputConfigs) {
-      setters = (
-        <CharModSetters
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs}
-          onTextChange={(value, i) => {
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value,
-              })
-            );
-          }}
-          onToggleCheck={(currentInput, i) => {
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value: currentInput === 1 ? 0 : 1,
-              })
-            );
-          }}
-          onSelect={(value, i) => {
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value: +value,
-              })
-            );
-          }}
-        />
-      );
-    }
     subContent.push(
-      <ModifierTemplate
+      <NewModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
@@ -210,7 +165,35 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
           charBuffCtrls: teammate.buffCtrls,
           totalAttr,
         })}
-        setters={setters}
+        inputs={inputs}
+        inputConfigs={buff.inputConfigs}
+        onChangeText={(value, i) => {
+          dispatch(
+            changeTeammateModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value,
+            })
+          );
+        }}
+        onToggleCheck={(currentInput, i) => {
+          dispatch(
+            changeTeammateModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value: currentInput === 1 ? 0 : 1,
+            })
+          );
+        }}
+        onSelectOption={(value, i) => {
+          dispatch(
+            changeTeammateModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value: +value,
+            })
+          );
+        }}
       />
     );
   });

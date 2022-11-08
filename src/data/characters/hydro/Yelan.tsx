@@ -177,8 +177,7 @@ const Yelan: DataCharacter = {
       affect: EModAffect.PARTY,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 4,
         },
       ],

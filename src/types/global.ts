@@ -67,6 +67,17 @@ export type CharInfo = {
   cons: number;
 };
 
+export type ModInputType = "text" | "check" | "stacks" | "select" | "anemoable" | "dendroable";
+
+export type ModInputConfig = {
+  label?: string;
+  type: ModInputType;
+  for?: "self" | "teammate";
+  initialValue?: number;
+  max?: number;
+  options?: string[];
+};
+
 /**
  * utility generic
  */

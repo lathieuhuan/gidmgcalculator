@@ -164,12 +164,12 @@ const purplePolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [2],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
@@ -234,11 +234,12 @@ const purplePolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Fewer than 2 opponents"],
-          renderTypes: ["check"],
-          initialValues: [1],
-        },
+        inputConfigs: [
+          {
+            label: "Fewer than 2 opponents",
+            type: "check",
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           if (inputs?.[0] === 1) {
             applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);

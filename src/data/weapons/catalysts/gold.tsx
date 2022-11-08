@@ -70,12 +70,12 @@ const goldCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
           const stack = inputs?.[0] || 0;
           applyModifier(desc, attPattBonus, "ES.pct", (9 + refi * 3) * stack, tracker);
@@ -159,12 +159,12 @@ const goldCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [5],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);

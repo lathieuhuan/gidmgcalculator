@@ -8,20 +8,18 @@ import type {
   UsersWeapon,
   Weapon,
   CalcSetupManageInfo,
-  TeammateWeapon,
   TeammateArtifact,
   ArtifactDebuffCtrl,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
-import weapons from "@Data/weapons";
-import artifacts from "@Data/artifacts";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
 import { findById } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
+import { INITIAL_VALUES } from "./constants";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -64,12 +62,12 @@ export function parseAndInitData(
   if (existedWp) {
     const { owner, ...weaponInfo } = existedWp;
     weapon = weaponInfo;
-    wpBuffCtrls = getMainWpBuffCtrls(existedWp);
+    wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
   } //
   else {
     const newWp = initWeapon({ type: findCharacter(char)!.weapon });
     weapon = { ...newWp, ID: rootID++ };
-    wpBuffCtrls = getMainWpBuffCtrls(newWp);
+    wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
   }
 
   const pieces = artifactIDs.map((id) => {
@@ -92,44 +90,29 @@ export function parseAndInitData(
   };
 }
 
-export function getMainWpBuffCtrls(weapon: { type: Weapon; code: number }) {
+export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: Weapon; code: number }) {
   const result: ModifierCtrl[] = [];
-  const { buffs } = findWeapon(weapon)!;
+  const { buffs = [] } = findWeapon(weapon) || {};
 
-  if (buffs) {
-    for (const buff of buffs) {
-      if (buff.affect === EModAffect.TEAMMATE) {
-        continue;
-      }
-      const node: ModifierCtrl = {
-        activated: false,
-        index: buff.index,
-      };
-
-      if (buff.inputConfig) {
-        node.inputs = [...buff.inputConfig.initialValues];
-      }
-      result.push(node);
+  for (const buff of buffs) {
+    if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
+      continue;
     }
+    const node: ModifierCtrl = { activated: false, index: buff.index };
+
+    if (buff.inputConfigs) {
+      const initialValues = [];
+
+      for (const config of buff.inputConfigs) {
+        initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+      }
+      if (initialValues.length) {
+        node.inputs = initialValues;
+      }
+    }
+    result.push(node);
   }
   return result;
-}
-
-export function getTeammateWeaponBuffCtrls(teammateWeapon: TeammateWeapon) {
-  const { buffs = [] } = findWeapon(teammateWeapon) || {};
-  return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
-    if (affect !== EModAffect.SELF) {
-      const buffNode: ModifierCtrl = {
-        index,
-        activated: false,
-      };
-      if (inputConfig) {
-        buffNode.inputs = [...inputConfig.initialValues];
-      }
-      accumulator.push(buffNode);
-    }
-    return accumulator;
-  }, [] as ModifierCtrl[]);
 }
 
 export function getTeammateArtifactBuffCtrls(teammateArtifact: TeammateArtifact) {

@@ -1,13 +1,15 @@
 import type { ModifierInput } from "@Src/types";
+
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
 import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
+import { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+
 import { findWeapon } from "@Data/controllers";
-import { deepCopy, findByIndex, processNumInput } from "@Src/utils";
+import { deepCopy, findByIndex } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Src/styled-components";
-import { WeaponModSetters } from "../components";
+import { NewModifierTemplate } from "../components";
 
 export default function WeaponBuffs() {
   const dispatch = useDispatch();
@@ -25,48 +27,38 @@ export default function WeaponBuffs() {
     const buff = findByIndex(mainBuffs, index);
     if (!buff) return;
 
+    const path: ToggleModCtrlPath = {
+      modCtrlName: "wpBuffCtrls",
+      ctrlIndex,
+    };
+
     content.push(
-      <ModifierTemplate
+      <NewModifierTemplate
         key={weapon.code.toString() + ctrlIndex}
         checked={activated}
-        onToggle={() => {
+        onToggle={() => dispatch(toggleModCtrl(path))}
+        heading={name + ` R${weapon.refi} (self)`}
+        desc={buff.desc({ refi: weapon.refi, totalAttr })}
+        inputs={inputs}
+        inputConfigs={buff.inputConfigs}
+        onToggleCheck={(currentInput, i) => {
           dispatch(
-            toggleModCtrl({
-              modCtrlName: "wpBuffCtrls",
-              ctrlIndex,
+            changeModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value: currentInput === 1 ? 0 : 1,
             })
           );
         }}
-        heading={name + ` R${weapon.refi} (self)`}
-        desc={buff.desc({ refi: weapon.refi, totalAttr })}
-        setters={
-          buff.inputConfig ? (
-            <WeaponModSetters
-              {...buff.inputConfig}
-              inputs={inputs}
-              onToggleCheck={(currentInput, i) => {
-                dispatch(
-                  changeModCtrlInput({
-                    modCtrlName: "wpBuffCtrls",
-                    ctrlIndex,
-                    inputIndex: i,
-                    value: currentInput === 1 ? 0 : 1,
-                  })
-                );
-              }}
-              onSelect={(value, i) => {
-                dispatch(
-                  changeModCtrlInput({
-                    modCtrlName: "wpBuffCtrls",
-                    ctrlIndex,
-                    inputIndex: i,
-                    value,
-                  })
-                );
-              }}
-            />
-          ) : null
-        }
+        onSelectOption={(value, i) => {
+          dispatch(
+            changeModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value,
+            })
+          );
+        }}
       />
     );
   });
@@ -97,10 +89,9 @@ export default function WeaponBuffs() {
       const { activated, inputs = [], index } = buffCtrl;
       const buff = findByIndex(buffs, index);
       if (!buff) return;
-      const { maxValues } = buff.inputConfig || {};
 
       content.push(
-        <ModifierTemplate
+        <NewModifierTemplate
           key={teammateIndex.toString() + code + ctrlIndex}
           checked={activated}
           onToggle={() => {
@@ -116,21 +107,10 @@ export default function WeaponBuffs() {
           }}
           heading={name + ` R${refi}`}
           desc={buff.desc({ refi, totalAttr })}
-          setters={
-            buff.inputConfig ? (
-              <WeaponModSetters
-                {...buff.inputConfig}
-                inputs={inputs}
-                onTextChange={(text, inputIndex) => {
-                  const value = processNumInput(text, +inputs[inputIndex], maxValues?.[inputIndex]);
-                  updateWeaponInputs(ctrlIndex, inputIndex, value);
-                }}
-                onSelect={(value, i) => {
-                  updateWeaponInputs(ctrlIndex, i, value);
-                }}
-              />
-            ) : null
-          }
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
+          onChangeText={(text, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, text)}
+          onSelectOption={(value, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, value)}
         />
       );
     });

@@ -124,12 +124,12 @@ const goldBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const valueIndex = (inputs?.[0] || 0) - 1;
           const buffValue = polarStarBuffValuesByStack(refi)[valueIndex];
@@ -174,12 +174,12 @@ const goldBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const valueIndex = (inputs?.[0] || 0) - 1;
           const buffValue = thunderingPulseBuffValuesByStack(refi)[valueIndex];
@@ -224,12 +224,12 @@ const goldBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [5],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);

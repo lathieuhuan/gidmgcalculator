@@ -142,7 +142,7 @@ export type Party = (Teammate | null)[];
 export type Resonance = {
   vision: ResonanceVision;
   activated: boolean;
-  inputs?: boolean[];
+  inputs?: ModifierInput[];
 };
 
 export type ElementModCtrl = {

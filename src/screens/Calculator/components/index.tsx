@@ -53,10 +53,10 @@ export const CopySection = <TOption extends Option>({
 };
 
 interface SetterProps {
-  label: string;
+  label?: string;
   inputComponent: ReactNode;
 }
-export const Setter = ({ label, inputComponent }: SetterProps) => {
+export const Setter = ({ label = "Stacks", inputComponent }: SetterProps) => {
   return (
     <div className="flex items-center justify-end" style={{ minHeight: "2.25rem" }}>
       <span className="mr-4 text-base leading-6 text-right">{label}</span>

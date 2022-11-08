@@ -1,6 +1,6 @@
 import type { CalcSetup, ModifierInput, Party } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
-import { getMainArtBuffCtrls, getMainWpBuffCtrls } from "@Store/calculatorSlice/utils";
+import { getMainArtBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
 
@@ -70,7 +70,7 @@ export function restoreCalcSetup(data: CalcSetup) {
   const { char, weapon, artInfo } = data;
 
   const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
-  const wpBuffCtrls = getMainWpBuffCtrls(weapon);
+  const wpBuffCtrls = getWeaponBuffCtrls(true, weapon);
   const party: Party = [];
 
   for (const index of [0, 1, 2]) {

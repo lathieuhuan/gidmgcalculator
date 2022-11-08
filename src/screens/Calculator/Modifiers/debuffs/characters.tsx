@@ -13,11 +13,10 @@ import {
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
 import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Src/styled-components";
-import { CharModSetters } from "../components";
+import { NewModifierTemplate } from "../components";
 
 import { findCharacter } from "@Data/controllers";
-import { findByIndex, processNumInput } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -37,50 +36,40 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         modCtrlName: "selfDebuffCtrls",
         ctrlIndex,
       };
-      let setters = null;
       const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      if (inputConfigs) {
-        setters = (
-          <CharModSetters
-            inputs={inputs}
-            inputConfigs={inputConfigs}
-            onTextChange={(value, i) => {
-              dispatch(
-                changeModCtrlInput({
-                  ...path,
-                  inputIndex: i,
-                  value,
-                })
-              );
-            }}
-            onToggleCheck={(currentInput, inputIndex) => {
-              dispatch(
-                changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 })
-              );
-            }}
-            onSelect={(value, i) => {
-              dispatch(
-                changeModCtrlInput({
-                  ...path,
-                  inputIndex: i,
-                  value: isNaN(+value) ? value : +value,
-                })
-              );
-            }}
-          />
-        );
-      }
       content.push(
-        <ModifierTemplate
+        <NewModifierTemplate
           key={ctrlIndex}
           checked={activated}
-          onToggle={() => {
-            dispatch(toggleModCtrl(path));
-          }}
+          onToggle={() => dispatch(toggleModCtrl(path))}
           heading={debuff.src}
           desc={debuff.desc({ fromSelf: true, char, inputs: inputs || [], partyData })}
-          setters={setters}
+          inputs={inputs}
+          inputConfigs={inputConfigs}
+          onChangeText={(value, i) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex: i,
+                value,
+              })
+            );
+          }}
+          onToggleCheck={(currentInput, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 })
+            );
+          }}
+          onSelectOption={(value, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value: isNaN(+value) ? value : +value,
+              })
+            );
+          }}
         />
       );
     }
@@ -130,52 +119,48 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
       modCtrlName: "debuffCtrls",
       ctrlIndex,
     };
-    let setters = null;
     const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "self");
 
-    if (inputConfigs) {
-      setters = (
-        <CharModSetters
-          inputs={inputs}
-          inputConfigs={inputConfigs}
-          onTextChange={(value, i) => {
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value,
-              })
-            );
-          }}
-          onToggleCheck={(currentInput, inputIndex) => {
-            dispatch(
-              changeTeammateModCtrlInput({
-                ...path,
-                inputIndex,
-                value: currentInput === 1 ? 0 : 1,
-              })
-            );
-          }}
-          onSelect={(value, inputIndex) =>
-            dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))
-          }
-        />
-      );
-    }
     subContent.push(
-      <ModifierTemplate
+      <NewModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={debuff.src}
         desc={debuff.desc({ fromSelf: false, char, inputs: inputs || [], partyData })}
-        setters={setters}
+        inputs={inputs}
+        inputConfigs={inputConfigs}
+        onChangeText={(value, inputIndex) => {
+          dispatch(
+            changeTeammateModCtrlInput({
+              ...path,
+              inputIndex,
+              value,
+            })
+          );
+        }}
+        onToggleCheck={(currentInput, inputIndex) => {
+          dispatch(
+            changeTeammateModCtrlInput({
+              ...path,
+              inputIndex,
+              value: currentInput === 1 ? 0 : 1,
+            })
+          );
+        }}
+        onSelectOption={(value, inputIndex) =>
+          dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))
+        }
       />
     );
   });
+
   return (
     <>
-      <p className={`pt-2 -mb-1 text-h6 text-${vision} font-bold text-center uppercase`}>
+      <p
+        className={`text-h6 text-${vision} font-bold text-center uppercase`}
+        style={{ marginTop: "-0.25rem" }}
+      >
         {teammate.name}
       </p>
       {subContent}

@@ -41,11 +41,10 @@ import {
   getArtDebuffCtrls,
   getArtifactSets,
   getMainArtBuffCtrls,
-  getMainWpBuffCtrls,
   getNewSetupName,
   getSetupManageInfo,
   getTeammateArtifactBuffCtrls,
-  getTeammateWeaponBuffCtrls,
+  getWeaponBuffCtrls,
   parseAndInitData,
 } from "./utils";
 import {
@@ -268,7 +267,7 @@ export const calculatorSlice = createSlice({
         } as Resonance;
 
         if (vision === "dendro") {
-          newResonance.inputs = [false, false];
+          newResonance.inputs = [0, 0];
         }
         elmtModCtrls.resonances.push(newResonance);
       }
@@ -304,7 +303,7 @@ export const calculatorSlice = createSlice({
           ...newWeaponInfo,
         };
         if (newWeaponInfo.code) {
-          teammate.weapon.buffCtrls = getTeammateWeaponBuffCtrls(teammate.weapon);
+          teammate.weapon.buffCtrls = getWeaponBuffCtrls(false, teammate.weapon);
         }
         calculate(state);
       }
@@ -347,7 +346,7 @@ export const calculatorSlice = createSlice({
       const weapon = action.payload;
       const setup = state.setupsById[state.activeId];
       setup.weapon = weapon;
-      setup.wpBuffCtrls = getMainWpBuffCtrls(weapon);
+      setup.wpBuffCtrls = getWeaponBuffCtrls(true, weapon);
 
       calculate(state);
     },
@@ -553,7 +552,7 @@ export const calculatorSlice = createSlice({
 
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
       const newWeapon = initWeapon({ type: charData.weapon });
-      const wpBuffCtrls = getMainWpBuffCtrls(newWeapon);
+      const wpBuffCtrls = getWeaponBuffCtrls(true, newWeapon);
       const elmtModCtrls = initElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
 

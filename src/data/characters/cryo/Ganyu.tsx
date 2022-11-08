@@ -164,8 +164,7 @@ const Ganyu: DataCharacter = {
       affect: EModAffect.PARTY,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 5,
         },
       ],

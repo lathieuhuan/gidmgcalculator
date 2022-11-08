@@ -27,12 +27,12 @@ const goldPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyFinalBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
           const mult = 21 + refi * 7;
           const stacks = inputs?.[0] || 0;
@@ -100,12 +100,12 @@ const goldPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [7],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 7,
+          },
+        ],
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
           const stacks = inputs?.[0] || 0;
           const bnValue1 = (2.5 + refi * 0.7) * stacks;
@@ -248,12 +248,16 @@ const goldPolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks", "Not on the field"],
-          renderTypes: ["stacks", "check"],
-          initialValues: [1],
-          maxValues: [6],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 6,
+          },
+          {
+            label: "Not on the field",
+            type: "check",
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = (2.4 + refi * 0.8) * (inputs?.[0] || 0) * (inputs?.[1] === 1 ? 2 : 1);
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);

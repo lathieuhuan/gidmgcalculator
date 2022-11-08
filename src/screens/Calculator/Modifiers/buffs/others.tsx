@@ -1,4 +1,4 @@
-import type { AmplifyingReaction, ModifierInput, Vision } from "@Src/types";
+import type { AmplifyingReaction, ModifierInput, ModInputConfig, Vision } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -20,7 +20,7 @@ import {
 import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
 import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 import { Setter, twInputStyles } from "@Screens/Calculator/components";
-import { SetterSection } from "../components";
+import { SetterSection, NewModifierTemplate } from "../components";
 
 import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
@@ -42,43 +42,17 @@ export function ElementBuffs() {
 
   elmtModCtrls.resonances.forEach((resonance) => {
     const { name, desc } = resonanceRenderInfo[resonance.vision];
-    let setters;
 
-    if (resonance.vision === "dendro") {
-      const { inputs = [] } = resonance;
-
-      const renderBuff = (index: number) => {
-        const activated = !!inputs[index];
-
-        return (
-          <Setter
-            key={index}
-            label={
-              index
-                ? "Trigger Aggravate, Spread, Hyperbloom, Burgeon"
-                : "Trigger Burning, Quicken, Bloom"
-            }
-            inputComponent={
-              <input
-                type="checkbox"
-                className="scale-180"
-                checked={activated}
-                onChange={() => {
-                  const newInputs = [...inputs];
-                  newInputs[index] = !activated;
-
-                  dispatch(updateResonance({ ...resonance, inputs: newInputs }));
-                }}
-              />
-            }
-          />
-        );
-      };
-      setters = [renderBuff(0), renderBuff(1)];
-    }
+    const inputConfigs: ModInputConfig[] =
+      resonance.vision === "dendro"
+        ? [
+            { label: "Trigger Aggravate, Spread, Hyperbloom, Burgeon", type: "check" },
+            { label: "Trigger Burning, Quicken, Bloom", type: "check" },
+          ]
+        : [];
 
     content.push(
-      <ModifierTemplate
+      <NewModifierTemplate
         key={resonance.vision}
         checked={resonance.activated}
         onToggle={() => {
@@ -91,7 +65,16 @@ export function ElementBuffs() {
         }}
         heading={name}
         desc={desc}
-        setters={setters}
+        inputs={resonance.inputs}
+        inputConfigs={inputConfigs}
+        onToggleCheck={(currentInput, inputIndex) => {
+          if (resonance.inputs) {
+            const newInputs = [...resonance.inputs];
+            newInputs[inputIndex] = currentInput === 1 ? 0 : 1;
+
+            dispatch(updateResonance({ ...resonance, inputs: newInputs }));
+          }
+        }}
       />
     );
   });
@@ -101,7 +84,7 @@ export function ElementBuffs() {
       const activated = elmtModCtrls[field] === reaction;
 
       return (
-        <ModifierTemplate
+        <NewModifierTemplate
           key={reaction + (field === "infusion_ampRxn" ? "-external" : "")}
           checked={activated}
           onToggle={() => {
@@ -139,7 +122,7 @@ export function ElementBuffs() {
     addAmpReactionBuff(infusion, "infusion_ampRxn");
   }
 
-  if (vision === "electro" || vision === "dendro") {
+  if (["electro", "dendro"].includes(vision)) {
     content.push(<QuickenBuff key="quicken" vision={vision} />);
   }
 
@@ -161,7 +144,7 @@ function QuickenBuff({ vision }: { vision: Vision }) {
     reaction === "spread" ? "Spread (Dendro on Quicken)" : "Aggravate (Electro on Quicken)";
 
   return (
-    <ModifierTemplate
+    <NewModifierTemplate
       heading={heading}
       checked={elmtModCtrls[reaction]}
       onToggle={() => {

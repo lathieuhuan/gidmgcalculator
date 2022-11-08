@@ -111,8 +111,7 @@ const Aloy: DataCharacter = {
       affect: EModAffect.SELF,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 3,
         },
       ],
@@ -168,8 +167,7 @@ const Aloy: DataCharacter = {
       affect: EModAffect.SELF,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 10,
         },
       ],

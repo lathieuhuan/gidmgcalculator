@@ -44,7 +44,7 @@ export default function Modifiers() {
               <SelfBuffs />,
               <PartyBuffs />,
               <WeaponBuffs />,
-              <ArtifactBuffs />,
+              // <ArtifactBuffs />,
               <CustomModifiers isBuffs />,
             ]}
           />

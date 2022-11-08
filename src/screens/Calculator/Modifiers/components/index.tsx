@@ -1,10 +1,6 @@
-import { Fragment } from "react";
-import type {
-  ArtifactBuff,
-  CharModInputConfig,
-  ModifierInput,
-  TWeaponBuffInputRenderType,
-} from "@Src/types";
+import cn from "classnames";
+import { Fragment, type ReactNode } from "react";
+import type { ArtifactBuff, ModInputConfig, ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { ANEMOABLE_OPTIONS, DENDROABLE_OPTIONS, TOption } from "../constants";
 
@@ -14,98 +10,6 @@ import { Setter, twInputStyles } from "@Screens/Calculator/components";
 import { useDispatch } from "@Store/hooks";
 import { changeModCtrlInput } from "@Store/calculatorSlice";
 import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
-
-interface ISetterProps {
-  labels: string[];
-  initialValues: ModifierInput[];
-  maxValues?: number[];
-  inputs: ModifierInput[];
-  onTextChange?: (text: string, inputIndex: number) => void;
-  onToggleCheck?: (currentInput: number, inputIndex: number) => void;
-  onSelect?: (value: number, inputIndex: number) => void;
-}
-
-interface ICharModSettersProps {
-  inputConfigs: CharModInputConfig[];
-  inputs: ModifierInput[];
-  onTextChange?: (newValue: number, inputIndex: number) => void;
-  onToggleCheck?: (currentInput: number, inputIndex: number) => void;
-  onSelect?: (value: number, inputIndex: number) => void;
-}
-export function CharModSetters({
-  inputConfigs,
-  inputs,
-  onTextChange,
-  onToggleCheck,
-  onSelect,
-}: ICharModSettersProps) {
-  //
-  const renderInput = (index: number) => {
-    const config = inputConfigs[index];
-    const input = inputs[index];
-
-    switch (config.type) {
-      case "text":
-        return (
-          <input
-            type="text"
-            className="w-20 p-2 text-right textinput-common font-bold"
-            value={input}
-            onChange={(e) => {
-              if (onTextChange) {
-                const newValue = processNumInput(e.target.value, input, config.max);
-                onTextChange(newValue, index);
-              }
-            }}
-          />
-        );
-      case "check":
-        const checked = input === 1;
-        return (
-          <input
-            type="checkbox"
-            className="mr-1 scale-180"
-            checked={checked}
-            onChange={() => onToggleCheck && onToggleCheck(input, index)}
-          />
-        );
-      default:
-        let options: TOption[] = [];
-
-        switch (config.type) {
-          case "select":
-            options = genNumberSequenceOptions(config.max, config.initialValue === 0);
-            break;
-          case "anemoable":
-            options = ANEMOABLE_OPTIONS;
-            break;
-          case "dendroable":
-            options = DENDROABLE_OPTIONS;
-            break;
-        }
-        return (
-          <Select
-            className={twInputStyles.select}
-            value={input}
-            onChange={(e) => onSelect && onSelect(+e.target.value, index)}
-          >
-            {options.map((opt, i) => (
-              <option key={i} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </Select>
-        );
-    }
-  };
-  return (
-    <Fragment>
-      {inputConfigs.map((config, i) => (
-        <Setter key={i} label={config.label} inputComponent={renderInput(i)} />
-      ))}
-    </Fragment>
-  );
-}
 
 interface SetterSectionProps {
   buff: ArtifactBuff;
@@ -163,33 +67,48 @@ export function SetterSection({ buff, inputs = [], path }: SetterSectionProps) {
   );
 }
 
-interface IWeaponModSettersProps extends ISetterProps {
-  renderTypes: TWeaponBuffInputRenderType[];
-  options?: string[][];
+interface NewModifierTemplateProps {
+  mutable?: boolean;
+  checked?: boolean;
+  heading: ReactNode;
+  desc: ReactNode;
+  inputConfigs?: ModInputConfig[];
+  inputs?: ModifierInput[];
+  onToggle?: () => void;
+  onChangeText?: (newValue: number, inputIndex: number) => void;
+  onToggleCheck?: (currentInput: number, inputIndex: number) => void;
+  onSelectOption?: (value: number, inputIndex: number) => void;
 }
-export function WeaponModSetters({
-  labels,
-  renderTypes,
-  initialValues,
-  maxValues,
-  options = [],
-  inputs,
-  onTextChange,
+export function NewModifierTemplate({
+  mutable = true,
+  checked,
+  heading,
+  desc,
+  inputConfigs = [],
+  inputs = [],
+  onToggle,
+  onChangeText,
   onToggleCheck,
-  onSelect,
-}: IWeaponModSettersProps) {
+  onSelectOption,
+}: NewModifierTemplateProps) {
   //
   const renderInput = (index: number) => {
+    const config = inputConfigs[index];
     const input = inputs[index];
 
-    switch (renderTypes[index]) {
+    switch (config.type) {
       case "text":
         return (
           <input
             type="text"
             className="w-20 p-2 text-right textinput-common font-bold"
             value={input}
-            onChange={(e) => onTextChange && onTextChange(e.target.value, index)}
+            onChange={(e) => {
+              if (onChangeText) {
+                const newValue = processNumInput(e.target.value, input, config.max);
+                onChangeText(newValue, index);
+              }
+            }}
           />
         );
       case "check":
@@ -203,29 +122,36 @@ export function WeaponModSetters({
           />
         );
       default:
-        let renderOptions: TOption[] = [];
+        let options: TOption[] = [];
 
-        switch (renderTypes[index]) {
+        switch (config.type) {
+          case "select":
           case "stacks":
-            renderOptions = genNumberSequenceOptions(
-              maxValues?.[index],
-              initialValues[index] === 0
-            );
+            if (config.options) {
+              options = config.options.map((option, optionIndex) => {
+                return {
+                  label: option,
+                  value: optionIndex,
+                };
+              });
+            } else {
+              options = genNumberSequenceOptions(config.max, config.initialValue === 0);
+            }
             break;
-          case "choices":
-            renderOptions = options[index].map((option, i) => ({
-              label: option,
-              value: i,
-            }));
+          case "anemoable":
+            options = ANEMOABLE_OPTIONS;
+            break;
+          case "dendroable":
+            options = DENDROABLE_OPTIONS;
             break;
         }
         return (
           <Select
             className={twInputStyles.select}
             value={input}
-            onChange={(e) => onSelect && onSelect(+e.target.value, index)}
+            onChange={(e) => onSelectOption && onSelectOption(+e.target.value, index)}
           >
-            {renderOptions.map((opt, i) => (
+            {options.map((opt, i) => (
               <option key={i} value={opt.value}>
                 {opt.label}
               </option>
@@ -234,11 +160,38 @@ export function WeaponModSetters({
         );
     }
   };
+
   return (
-    <Fragment>
-      {labels.map((label, i) => (
-        <Setter key={i} label={label} inputComponent={renderInput(i)} />
-      ))}
-    </Fragment>
+    <div>
+      <div className="mb-1 flex">
+        <label className="flex items-center">
+          {mutable && (
+            <input
+              type="checkbox"
+              className="ml-1 mr-2 scale-150"
+              checked={checked}
+              onChange={onToggle}
+            />
+          )}
+          <span className="pl-1 font-bold text-lightgold">
+            {mutable ? "" : "+"} {heading}
+          </span>
+        </label>
+      </div>
+      <p>{desc}</p>
+
+      {inputConfigs.length ? (
+        <div
+          className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}
+        >
+          {
+            //
+            inputConfigs.map((config, i) => (
+              <Setter key={i} label={config.label} inputComponent={renderInput(i)} />
+            ))
+          }
+        </div>
+      ) : null}
+    </div>
   );
 }

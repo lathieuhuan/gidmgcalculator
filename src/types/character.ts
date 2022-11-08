@@ -10,6 +10,7 @@ import type {
   Tracker,
   NormalAttack,
   ArtifactPercentStat,
+  ModInputConfig,
 } from "./global";
 import type {
   CharData,
@@ -159,19 +160,9 @@ type AbilityModifier = {
 
 // BUFFS
 
-type CharModInputType = "text" | "check" | "select" | "anemoable" | "dendroable";
-
-export type CharModInputConfig = {
-  label: string;
-  type: CharModInputType;
-  for?: "self" | "teammate";
-  initialValue?: ModifierInput;
-  max?: number; // no max = 0
-};
-
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
-  inputConfigs?: CharModInputConfig[];
+  inputConfigs?: ModInputConfig[];
   infuseConfig?: {
     range: NormalAttack[];
     overwritable: boolean;
@@ -214,7 +205,7 @@ export type ApplyCharDebuffFn = (args: {
 
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
-  inputConfigs?: CharModInputConfig[];
+  inputConfigs?: ModInputConfig[];
   desc: (args: {
     fromSelf: boolean;
     char: CharInfo;

@@ -148,8 +148,7 @@ const Thoma: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 5,
         },
       ],

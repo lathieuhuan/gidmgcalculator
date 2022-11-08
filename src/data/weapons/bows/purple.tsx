@@ -65,12 +65,13 @@ const purpleBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["State number"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            label: "State number",
+            type: "select",
+            max: 3,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const valueIndex = (inputs?.[0] || 0) - 1;
           const buffValue = fadingTwilightBuffValuesByState(refi)[valueIndex];
@@ -115,12 +116,12 @@ const purpleBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [10],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 10,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (1.5 + refi * 0.5) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
@@ -190,12 +191,12 @@ const purpleBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [2],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
         applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
           const buffValue = 10 * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
@@ -398,12 +399,12 @@ const purpleBows: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const stacks = inputs?.[0] || 0;
           const bnValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];

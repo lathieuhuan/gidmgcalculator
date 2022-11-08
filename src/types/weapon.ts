@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
-import type { Tracker, Rarity, ArtifactPercentStat } from "./global";
+import type { Tracker, Rarity, ArtifactPercentStat, ModInputConfig } from "./global";
 import type {
   AttackPatternBonus,
   CharData,
@@ -25,7 +25,7 @@ export type DataWeapon = {
   applyBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
   applyFinalBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
   passiveName: string;
-  passiveDesc: (args: TWeaponDescArgs) => {
+  passiveDesc: (args: WeaponDescArgs) => {
     core?: JSX.Element;
     extra?: JSX.Element[];
   };
@@ -57,26 +57,18 @@ type TApplyWpFinalBuffArgs = {
   inputs?: ModifierInput[];
 };
 
-type TWeaponDescArgs = {
+type WeaponDescArgs = {
   refi: number;
 };
-
-export type TWeaponBuffInputRenderType = "text" | "check" | "choices" | "stacks";
 
 type TWeaponBuff = {
   index: number;
   affect: EModAffect;
-  inputConfig?: {
-    labels: string[];
-    renderTypes: TWeaponBuffInputRenderType[];
-    initialValues: ModifierInput[];
-    maxValues?: number[];
-    options?: string[][];
-  };
+  inputConfigs?: ModInputConfig[];
   applyBuff?: (args: TApplyWpBuffArgs) => void;
   applyFinalBuff?: (args: TApplyWpFinalBuffArgs) => void;
   desc: (
-    args: TWeaponDescArgs & {
+    args: WeaponDescArgs & {
       totalAttr: TotalAttribute;
     }
   ) => ReactNode;

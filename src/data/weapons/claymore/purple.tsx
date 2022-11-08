@@ -118,12 +118,12 @@ const purpleClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const buffValue = (4.5 + refi * 1.5) * (inputs?.[0] || 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
@@ -171,12 +171,12 @@ const purpleClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [5],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (5 + refi) * (inputs?.[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);

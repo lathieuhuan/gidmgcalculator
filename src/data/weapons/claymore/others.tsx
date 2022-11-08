@@ -53,12 +53,12 @@ const otherClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs?.[0] || 0), tracker);
         },

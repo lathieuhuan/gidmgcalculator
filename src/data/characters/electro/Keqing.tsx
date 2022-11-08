@@ -141,8 +141,7 @@ const Keqing: DataCharacter = {
       affect: EModAffect.SELF,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 4,
         },
       ],

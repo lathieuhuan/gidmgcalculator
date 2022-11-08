@@ -131,8 +131,7 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.SELF,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           max: 10,
         },
       ],
@@ -156,8 +155,7 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       inputConfigs: [
         {
-          label: "Stacks",
-          type: "select",
+          type: "stacks",
           initialValue: 0,
           max: 10,
         },
