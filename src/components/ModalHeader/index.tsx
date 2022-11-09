@@ -1,7 +1,7 @@
 import cn from "classnames";
 import type { InsHTMLAttributes, ParamHTMLAttributes } from "react";
 import { FaFilter } from "react-icons/fa";
-import { CloseButton, type CloseButtonProps } from "./inputs";
+import { CloseButton, CloseButtonProps } from "@Src/styled-components";
 
 function ModalHeader({ className, ...rest }: InsHTMLAttributes<HTMLDivElement>) {
   return (

@@ -1,7 +1,7 @@
 import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { Anemo, Green, Red } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS, VISION_TYPES } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { EModSrc } from "../constants";
 import { round2 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -53,7 +53,19 @@ const Kazuha: DataCharacter = {
       ],
     },
     CA: { stats: [{ name: "Charged Attack", multBase: [43, 74.65] }] },
-    PA: { stats: MEDIUM_PAs },
+    PA: {
+      stats: [
+        {
+          name: "Plunging Attack: Midare Ranzan",
+          dmgTypes: ["PA", "anemo"],
+          multBase: 81.83,
+          multType: 7,
+        },
+        { name: "Plunge DMG", multBase: 81.83, multType: 7 },
+        { name: "Low Plunge", multBase: 163.63, multType: 7 },
+        { name: "High Plunge", multBase: 204.39, multType: 7 },
+      ],
+    },
     ES: {
       name: "Chihayaburu",
       image: "2/22/Talent_Chihayaburu",
@@ -94,22 +106,6 @@ const Kazuha: DataCharacter = {
     { name: "Crimson Momiji", image: "8/87/Constellation_Crimson_Momiji" },
   ],
   buffs: [
-    {
-      index: 0,
-      src: EModSrc.ES,
-      desc: () => (
-        <>
-          Within 10s of remaining airborne after casting Chihayaburu, Kazuha can unleash a powerful
-          Plunging Attack known as Midare Ranzan, <Green>converting</Green> his{" "}
-          <Green>Plunging Attack DMG</Green> to <Anemo>Anemo DMG</Anemo>.
-        </>
-      ),
-      affect: EModAffect.SELF,
-      infuseConfig: {
-        range: ["PA"],
-        overwritable: false,
-      },
-    },
     {
       index: 1,
       src: EModSrc.C4,

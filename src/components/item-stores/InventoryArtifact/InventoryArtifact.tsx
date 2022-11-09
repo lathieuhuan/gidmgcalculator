@@ -9,8 +9,8 @@ import { findById } from "@Src/utils";
 import { useInventoryRack } from "../hooks";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 
-import { ModalHeader } from "@Src/styled-components";
 import { ArtifactCard } from "@Components/ArtifactCard";
+import { ModalHeader } from "@Components/ModalHeader";
 import { ButtonBar } from "@Components/minors";
 import { Modal, ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";

@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { DataType, Filter, PickerItem } from "./types";
 
 import { CollapseSpace } from "@Components/collapse";
-import { ModalHeader } from "@Src/styled-components";
+import { ModalHeader } from "@Components/ModalHeader";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 

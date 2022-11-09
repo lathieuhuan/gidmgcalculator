@@ -9,8 +9,9 @@ import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "../hooks";
 
 import { WeaponCard } from "@Components/WeaponCard";
+import { ModalHeader } from "@Components/ModalHeader";
 import { Modal, ModalControl } from "@Components/modals";
-import { Button, ModalHeader } from "@Src/styled-components";
+import { Button } from "@Src/styled-components";
 import { renderEquippedChar } from "../components";
 
 import styles from "../styles.module.scss";
