@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import { useSelector } from "@Store/hooks";
 import { useTabs } from "@Hooks/useTabs";
 import { selectParty } from "@Store/calculatorSlice/selectors";
@@ -44,7 +42,7 @@ export default function Modifiers() {
               <SelfBuffs />,
               <PartyBuffs />,
               <WeaponBuffs />,
-              // <ArtifactBuffs />,
+              <ArtifactBuffs />,
               <CustomModifiers isBuffs />,
             ]}
           />

@@ -1,5 +1,5 @@
 import { EModAffect } from "@Src/constants";
-import type { Rarity, Tracker } from "./global";
+import type { ModInputConfig, Rarity, Tracker } from "./global";
 import type {
   AttackPatternBonus,
   CharData,
@@ -64,22 +64,15 @@ export type ArtifactBuff = {
   index: number;
   desc: () => JSX.Element;
   affect: EModAffect;
-  inputConfig?: {
-    labels: string[];
-    renderTypes: ("stacks" | "anemoable")[];
-    initialValues: ModifierInput[];
-    maxValues?: number[];
-  };
+  inputConfigs?: ModInputConfig[];
   applyBuff?: (args: ApplyArtBuffArgs) => void;
   applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
 };
 
 type ArtifactDebuff = {
+  index: number;
   desc: () => JSX.Element;
-  inputConfig?: {
-    labels: string[];
-    renderTypes: "anemoable"[];
-  };
+  inputConfigs?: ModInputConfig[];
   applyDebuff: (args: {
     resistReduct: ResistanceReduction;
     inputs?: ModifierInput[];

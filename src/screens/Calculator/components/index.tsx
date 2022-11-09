@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { FaCopy } from "react-icons/fa";
 import { Select } from "@Src/styled-components";
 
@@ -48,19 +48,6 @@ export const CopySection = <TOption extends Option>({
       >
         <FaCopy />
       </button>
-    </div>
-  );
-};
-
-interface SetterProps {
-  label?: string;
-  inputComponent: ReactNode;
-}
-export const Setter = ({ label = "Stacks", inputComponent }: SetterProps) => {
-  return (
-    <div className="flex items-center justify-end" style={{ minHeight: "2.25rem" }}>
-      <span className="mr-4 text-base leading-6 text-right">{label}</span>
-      {inputComponent}
     </div>
   );
 };

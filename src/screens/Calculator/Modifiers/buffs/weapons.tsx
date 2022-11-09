@@ -9,7 +9,7 @@ import { findWeapon } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
-import { NewModifierTemplate } from "../components";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
 
 export default function WeaponBuffs() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export default function WeaponBuffs() {
     };
 
     content.push(
-      <NewModifierTemplate
+      <ModifierTemplate
         key={weapon.code.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
@@ -91,7 +91,7 @@ export default function WeaponBuffs() {
       if (!buff) return;
 
       content.push(
-        <NewModifierTemplate
+        <ModifierTemplate
           key={teammateIndex.toString() + code + ctrlIndex}
           checked={activated}
           onToggle={() => {

@@ -1,4 +1,4 @@
-import type { DataArtifact, Vision } from "@Src/types";
+import type { DataArtifact } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
@@ -148,16 +148,19 @@ const mondstadtSets: DataArtifact[] = [
     ],
     debuffs: [
       {
+        index: 0,
         desc: () => (
           <>
             Decreases opponent's <Green>Elemental RES</Green> to the element infused in the Swirl by{" "}
             <Green b>40%</Green> for 10s.
           </>
         ),
-        inputConfig: {
-          labels: ["Element swirled"],
-          renderTypes: ["anemoable"],
-        },
+        inputConfigs: [
+          {
+            label: "Element swirled",
+            type: "anemoable",
+          },
+        ],
         applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
           const elmtIndex = inputs?.[0] || 0;
           applyModifier(desc, resistReduct, VISION_TYPES[elmtIndex], 40, tracker);

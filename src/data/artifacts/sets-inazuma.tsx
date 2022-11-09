@@ -137,12 +137,13 @@ const inazumaSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(inazumaSets, 31)!.setBonuses[1].xtraDesc![0],
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [0],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            initialValue: 0,
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, "atk_", 10 * (inputs?.[0] || 0) + 8, tracker);
         },
@@ -312,12 +313,12 @@ const inazumaSets: DataArtifact[] = [
           </>
         ),
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [4],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, ["def_", "geo"], 6 * (inputs?.[0] || 0), tracker);
         },

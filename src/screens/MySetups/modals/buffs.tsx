@@ -12,20 +12,18 @@ import type {
   PartyData,
   ReactionBonus,
   TotalAttribute,
-  Weapon,
   Vision,
   InnateBuff,
 } from "@Src/types";
 import { resonanceRenderInfo } from "@Src/constants";
 
-import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { Green, ModifierTemplate } from "@Src/styled-components";
-import { renderSetters } from "../components";
-
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { findByIndex, percentSign } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
-import { getQuickenBuffDamage } from "@Calculators/utils";
+
+import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
+import { Green } from "@Src/styled-components";
 
 interface ElementBuffsProps {
   elmtModCtrls: ElementModCtrl;
@@ -138,7 +136,8 @@ export function SelfBuffs({
             partyData,
             inputs,
           })}
-          setters={renderSetters(buff.inputConfig, inputs, true)}
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
         />
       );
     }
@@ -195,7 +194,8 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
               charData,
               partyData,
             })}
-            setters={renderSetters(buff.inputConfig, inputs)}
+            inputs={inputs}
+            inputConfigs={buff.inputConfigs}
           />
         );
       }
@@ -229,7 +229,8 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
           mutable={false}
           heading={name}
           desc={buff.desc({ refi: weapon.refi, totalAttr })}
-          setters={renderSetters(buff.inputConfig, inputs)}
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
         />
       );
     }
@@ -249,42 +250,14 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
             mutable={false}
             heading={name}
             desc={buff.desc({ refi: teammate.weapon.refi, totalAttr })}
-            setters={renderSetters(buff.inputConfig, inputs)}
+            inputs={inputs}
+            inputConfigs={buff.inputConfigs}
           />
         );
       }
     }
   });
-  // for (const [type, buffCtrls] of Object.entries(subWpComplexBuffCtrls)) {
-  //   for (const ctrl of buffCtrls) {
-  //     const { code, refi, index } = ctrl;
-  //     const weaponData = findWeapon({ type: type as Weapon, code });
-  //     if (!weaponData) {
-  //       continue;
-  //     }
 
-  //     const { name, buffs = [] } = weaponData;
-  //     const buff = findByIndex(buffs, index);
-
-  //     if (buff) {
-  //       content.push(
-  //         <ModifierTemplate
-  //           key={`sub-${code}-${index}`}
-  //           mutable={false}
-  //           heading={name}
-  //           desc={buff.desc({ refi, totalAttr })}
-  //           setters={renderSetters(
-  //             {
-  //               labels: ["Refinement", ...(buff.inputConfig?.labels || [])],
-  //               renderTypes: ["text", ...(buff.inputConfig?.renderTypes || [])],
-  //             },
-  //             [refi, ...(ctrl.inputs || [])]
-  //           )}
-  //         />
-  //       );
-  //     }
-  //   }
-  // }
   return renderModifiers(content, true, false);
 }
 
@@ -313,7 +286,8 @@ export function ArtifactBuffs({ sets, artBuffCtrls, party }: ArtifactBuffsProps)
           mutable={false}
           heading={name + " (self)"}
           desc={buff.desc()}
-          setters={renderSetters(buff.inputConfig, inputs)}
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
         />
       );
     }
@@ -333,7 +307,8 @@ export function ArtifactBuffs({ sets, artBuffCtrls, party }: ArtifactBuffsProps)
             mutable={false}
             heading={name}
             desc={buff.desc()}
-            setters={renderSetters(buff.inputConfig, inputs)}
+            inputs={inputs}
+            inputConfigs={buff.inputConfigs}
           />
         );
       }

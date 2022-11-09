@@ -14,9 +14,9 @@ import { useTranslation } from "@Hooks/useTranslation";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
-import { Green, ModifierTemplate } from "@Src/styled-components";
 import { renderModifiers } from "@Components/minors";
-import { renderSetters } from "../components";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
+import { Green } from "@Src/styled-components";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
@@ -67,7 +67,8 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
           mutable={false}
           heading={debuff.src}
           desc={debuff.desc({ fromSelf: true, char, partyData })}
-          setters={renderSetters(debuff.inputConfig, inputs)}
+          inputs={inputs}
+          inputConfigs={debuff.inputConfigs}
         />
       );
     }
@@ -116,7 +117,8 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
             mutable={false}
             heading={debuff.src}
             desc={debuff.desc({ fromSelf: false, char, inputs, partyData })}
-            setters={renderSetters(debuff.inputConfig, inputs)}
+            inputs={inputs}
+            inputConfigs={debuff.inputConfigs}
           />
         );
       }
@@ -146,7 +148,8 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
           mutable={false}
           heading={name}
           desc={debuff.desc()}
-          setters={renderSetters(debuff.inputConfig, inputs)}
+          inputs={inputs}
+          inputConfigs={debuff.inputConfigs}
         />
       );
     }

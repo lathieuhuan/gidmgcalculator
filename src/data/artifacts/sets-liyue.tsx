@@ -169,12 +169,12 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 7)!.setBonuses[1].xtraDesc![0],
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [3],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, "pyro", 7.5 * (inputs?.[0] || 0), tracker);
         },
@@ -275,11 +275,12 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 9)!.setBonuses[1].desc,
         affect: EModAffect.PARTY,
-        inputConfig: {
-          labels: ["Element"],
-          renderTypes: ["anemoable"],
-          initialValues: [0],
-        },
+        inputConfigs: [
+          {
+            label: "Element",
+            type: "anemoable",
+          },
+        ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
           const elmtIndex = inputs?.[0] || 0;
           applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 35, tracker);
@@ -387,12 +388,12 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 11)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        inputConfig: {
-          labels: ["Stacks"],
-          renderTypes: ["stacks"],
-          initialValues: [1],
-          maxValues: [2],
-        },
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
           const stacks = inputs?.[0] || 0;
           applyModifier(desc, totalAttr, "atk_", 9 * stacks, tracker);

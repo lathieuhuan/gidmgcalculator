@@ -12,11 +12,11 @@ import {
 } from "@Store/calculatorSlice";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
-import { renderModifiers } from "@Components/minors";
-import { NewModifierTemplate } from "../components";
-
 import { findCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
+
+import { renderModifiers } from "@Components/minors";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
       const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
 
       content.push(
-        <NewModifierTemplate
+        <ModifierTemplate
           key={ctrlIndex}
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
@@ -122,7 +122,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
     const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "self");
 
     subContent.push(
-      <NewModifierTemplate
+      <ModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}

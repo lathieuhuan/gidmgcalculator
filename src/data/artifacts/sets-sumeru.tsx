@@ -49,6 +49,7 @@ const sumeruSets: DataArtifact[] = [
     ],
     debuffs: [
       {
+        index: 0,
         desc: () => findByCode(sumeruSets, 33)!.setBonuses[1].desc,
         applyDebuff: makeModApplier("resistReduct", "dendro", 30),
       },

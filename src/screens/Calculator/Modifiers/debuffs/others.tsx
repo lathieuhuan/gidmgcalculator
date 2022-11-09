@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
-import { ANEMOABLE_OPTIONS } from "../constants";
 
 import {
   changeModCtrlInput,
@@ -11,10 +10,11 @@ import {
 import { selectArtInfo, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactSet } from "@Data/controllers";
+import { findByIndex } from "@Src/utils";
 
-import { Green, ModifierTemplate, Select } from "@Src/styled-components";
 import { renderModifiers } from "@Components/minors";
-import { Setter, twInputStyles } from "@Screens/Calculator/components";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
+import { Green } from "@Src/styled-components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -100,44 +100,17 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const { index, activated, inputs } = ctrl;
-    const { name, debuffs } = findArtifactSet(ctrl) || {};
-    if (!name) return;
+    const { index, activated, inputs = [] } = ctrl;
+    const { name, debuffs = [] } = findArtifactSet(ctrl) || {};
+    const debuff = findByIndex(debuffs, index);
+
+    if (!debuff) return;
 
     const path: ToggleModCtrlPath = {
       modCtrlName: "artDebuffCtrls",
       ctrlIndex,
     };
-    let setters;
 
-    if (ctrlIndex === 0) {
-      setters = (
-        <Setter
-          label="Element swirled"
-          inputComponent={
-            <Select
-              className={twInputStyles.select}
-              value={inputs ? inputs[0].toString() : undefined}
-              onChange={(e) => {
-                dispatch(
-                  changeModCtrlInput({
-                    ...path,
-                    inputIndex: 0,
-                    value: +e.target.value,
-                  })
-                );
-              }}
-            >
-              {ANEMOABLE_OPTIONS.map((opt, i) => (
-                <option key={i} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </Select>
-          }
-        />
-      );
-    }
     content.push(
       <ModifierTemplate
         key={ctrlIndex}
@@ -145,7 +118,17 @@ export function ArtifactDebuffs() {
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
         desc={debuffs?.[index]?.desc()}
-        setters={setters}
+        inputs={inputs}
+        inputConfigs={debuff.inputConfigs}
+        onSelectOption={(value, inputIndex) => {
+          dispatch(
+            changeModCtrlInput({
+              ...path,
+              inputIndex,
+              value,
+            })
+          );
+        }}
       />
     );
   });

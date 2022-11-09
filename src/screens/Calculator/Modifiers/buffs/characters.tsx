@@ -20,7 +20,7 @@ import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 import { renderModifiers } from "@Components/minors";
-import { NewModifierTemplate } from "../components";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export function SelfBuffs() {
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
     if (isGranted(char)) {
       content.push(
-        <NewModifierTemplate
+        <ModifierTemplate
           key={`innate-${index}`}
           mutable={false}
           heading={src}
@@ -60,7 +60,7 @@ export function SelfBuffs() {
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
       content.push(
-        <NewModifierTemplate
+        <ModifierTemplate
           key={`self-${ctrlIndex}`}
           heading={buff.src}
           desc={buff.desc({
@@ -151,7 +151,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     };
 
     subContent.push(
-      <NewModifierTemplate
+      <ModifierTemplate
         key={ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
@@ -199,10 +199,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   });
   return (
     <div>
-      <p
-        className={`text-h6 text-${vision} font-bold text-center uppercase`}
-        style={{ marginTop: "-0.25rem" }}
-      >
+      <p className={`-mt-1 text-h6 text-${vision} font-bold text-center uppercase`}>
         {teammate.name}
       </p>
       <div className="mt-1 space-y-3">{subContent}</div>

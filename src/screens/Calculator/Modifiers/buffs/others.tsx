@@ -2,6 +2,7 @@ import type { AmplifyingReaction, ModifierInput, ModInputConfig, Vision } from "
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
+  changeModCtrlInput,
   toggleModCtrl,
   updateCalcSetup,
   updateResonance,
@@ -17,16 +18,14 @@ import {
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
 
-import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
-import { Green, ModifierTemplate, Select } from "@Src/styled-components";
-import { Setter, twInputStyles } from "@Screens/Calculator/components";
-import { SetterSection, NewModifierTemplate } from "../components";
-
 import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 import { resonanceRenderInfo } from "@Src/constants";
 import { getQuickenBuffDamage } from "@Calculators/utils";
-import { ANEMOABLE_OPTIONS } from "../constants";
+
+import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
+import { ModifierTemplate } from "@Components/ModifierTemplate";
+import { Green } from "@Src/styled-components";
 
 export function ElementBuffs() {
   const dispatch = useDispatch();
@@ -52,7 +51,7 @@ export function ElementBuffs() {
         : [];
 
     content.push(
-      <NewModifierTemplate
+      <ModifierTemplate
         key={resonance.vision}
         checked={resonance.activated}
         onToggle={() => {
@@ -84,7 +83,7 @@ export function ElementBuffs() {
       const activated = elmtModCtrls[field] === reaction;
 
       return (
-        <NewModifierTemplate
+        <ModifierTemplate
           key={reaction + (field === "infusion_ampRxn" ? "-external" : "")}
           checked={activated}
           onToggle={() => {
@@ -144,7 +143,7 @@ function QuickenBuff({ vision }: { vision: Vision }) {
     reaction === "spread" ? "Spread (Dendro on Quicken)" : "Aggravate (Electro on Quicken)";
 
   return (
-    <NewModifierTemplate
+    <ModifierTemplate
       heading={heading}
       checked={elmtModCtrls[reaction]}
       onToggle={() => {
@@ -179,7 +178,6 @@ export function ArtifactBuffs() {
   const mainCode = sets[0]?.code;
 
   artBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, inputs } = ctrl;
     const { name, buffs } = findArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
@@ -191,13 +189,21 @@ export function ArtifactBuffs() {
     content.push(
       <ModifierTemplate
         key={mainCode.toString() + ctrlIndex}
-        checked={activated}
+        checked={ctrl.activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
         desc={buff.desc()}
-        setters={
-          inputs ? <SetterSection buff={buff} inputs={ctrl.inputs} path={path} /> : undefined
-        }
+        inputs={ctrl.inputs}
+        inputConfigs={buff.inputConfigs}
+        onSelectOption={(value, inputIndex) => {
+          dispatch(
+            changeModCtrlInput({
+              ...path,
+              inputIndex,
+              value,
+            })
+          );
+        }}
       />
     );
   });
@@ -226,34 +232,7 @@ export function ArtifactBuffs() {
     buffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
       const buff = findByIndex(buffs, index);
       if (!buff) return;
-      let setters = null;
 
-      if (buff.inputConfig) {
-        // Archaic Petra
-        setters = inputs.map((input, inputIndex) => {
-          return (
-            <Setter
-              key={inputIndex}
-              label={name}
-              inputComponent={
-                <Select
-                  className={twInputStyles.select}
-                  value={input}
-                  onChange={(e) => {
-                    updateArtifactInputs(ctrlIndex, inputIndex, +e.target.value);
-                  }}
-                >
-                  {ANEMOABLE_OPTIONS.map((opt, i) => (
-                    <option key={i} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </Select>
-              }
-            />
-          );
-        });
-      }
       content.push(
         <ModifierTemplate
           key={teammateIndex.toString() + code + ctrlIndex}
@@ -271,10 +250,13 @@ export function ArtifactBuffs() {
           }}
           heading={name}
           desc={buff.desc()}
-          setters={setters}
+          inputs={inputs}
+          inputConfigs={buff.inputConfigs}
+          onSelectOption={(value, inputIndex) => updateArtifactInputs(ctrlIndex, inputIndex, value)}
         />
       );
     });
   });
+
   return renderModifiers(content, true);
 }
