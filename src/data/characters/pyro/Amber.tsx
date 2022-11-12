@@ -89,8 +89,7 @@ const Amber: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          Increases the <Green>CRIT Rate</Green> of <Green>Fiery Rain</Green> by{" "}
-          <Green b>10%</Green>.
+          Increases Fiery Rain <Green>[EB] CRIT Rate</Green> by <Green b>10%</Green>.
         </>
       ),
       isGranted: checkAscs[1],
@@ -115,8 +114,8 @@ const Amber: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          <Green>Baron Bunny</Green>'s explosion via manual detonation deals <Green b>200%</Green>{" "}
-          <Green>additional DMG</Green>.
+          Increases Baron Bunny <Green>[ES] DMG</Green> via manual detonation by{" "}
+          <Green b>200%</Green>.
         </>
       ),
       affect: EModAffect.SELF,

@@ -1,9 +1,9 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
-import { Green, Pyro, Red } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { Green, Lightgold, Red } from "@Src/styled-components";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
@@ -116,26 +116,18 @@ const Bennett: DataCharacter = {
     { name: "True Explorer", image: "3/39/Constellation_True_Explorer" },
     { name: "Fire Ventures with Me", image: "3/3a/Constellation_Fire_Ventures_With_Me" },
   ],
-  innateBuffs: [
-    {
-      src: EModSrc.C1,
-      desc: () => (
-        <>
-          Fantastic Voyage's ATK increase gains an additional <Green b>20%</Green> of Bennett's{" "}
-          <Green>Base ATK</Green>.
-        </>
-      ),
-      isGranted: checkCons[1],
-    },
-  ],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       desc: ({ toSelf, inputs }) => (
         <>
-          The character within its AoE gains an <Green>ATK Bonus</Green> that is based on Bennett's{" "}
-          <Green>Base ATK</Green>. {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
+          The character within its AoE gains an <Green>ATK Bonus</Green> based on Bennett's{" "}
+          <Green>Base ATK</Green>. At <Lightgold>C1</Lightgold>, the bonus is increased by an
+          additional <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
+          {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
+          <br />• At <Lightgold>C6</Lightgold>, Sword, Claymore, Polearm characters will gain a{" "}
+          <Green b>15%</Green> <Green>Pyro DMG Bonus</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
@@ -143,39 +135,29 @@ const Bennett: DataCharacter = {
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
+        { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {
-        const { char, totalAttr } = obj;
-        const args = obj.toSelf
+        const { toSelf, char, totalAttr, inputs = [] } = obj;
+        const args = toSelf
           ? [
               totalAttr.base_atk,
               finalTalentLv(obj.char, "EB", obj.partyData),
               checkCons[1](char) ? 1 : 0,
             ]
-          : obj.inputs;
+          : inputs;
         const [buffValue, xtraDesc] = getEBBuffValue(args);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);
+
+        const C6isInUse = toSelf
+          ? checkCons[6](char)
+          : ["sword", "claymore", "polearm"].includes(obj.charData.weapon) && inputs[3];
+
+        if (C6isInUse) {
+          applyModifier(desc, totalAttr, "pyro", 15, obj.tracker);
+        }
       },
-    },
-    {
-      index: 2,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          Sword, Claymore, Polearm characters inside Fantastic Voyage's radius gain a{" "}
-          <Green b>15%</Green> <Green>Pyro DMG Bonus</Green> and their weapons are{" "}
-          <Green>infused</Green> with <Pyro>Pyro</Pyro>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
-      infuseConfig: {
-        range: [...NORMAL_ATTACKS],
-        overwritable: true,
-        appliable: (charData) => ["sword", "claymore", "polearm"].includes(charData.weapon),
-      },
-      applyBuff: makeModApplier("totalAttr", "pyro", 15),
     },
   ],
 };

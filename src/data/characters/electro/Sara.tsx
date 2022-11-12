@@ -122,9 +122,9 @@ const Sara: DataCharacter = {
         const buffValueArgs = obj.toSelf
           ? [obj.totalAttr.base_atk, finalTalentLv(obj.char, "ES", obj.partyData)]
           : obj.inputs;
-        const [bonusValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
+        const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
-        applyModifier(desc, obj.totalAttr, "atk", bonusValue, obj.tracker);
+        applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
 
         if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs?.[2])) {
           increaseAttackBonus({

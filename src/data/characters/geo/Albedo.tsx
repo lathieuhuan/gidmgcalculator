@@ -57,9 +57,8 @@ const Albedo: DataCharacter = {
           baseStatType: "def",
           multBase: 133.6,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
-
-            return talentBuff([isActivated, "pct", [true, 1], 25]);
+            const A1isInUse = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
+            return talentBuff([A1isInUse, "pct", [true, 1], 25]);
           },
         },
       ],

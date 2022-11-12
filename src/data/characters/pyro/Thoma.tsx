@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -124,8 +124,8 @@ const Thoma: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          <Green>DMG</Green> dealt by Crimson Ooyoroi's <Green>Fiery Collapse</Green> is increased
-          by <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>.
+          Crimson Ooyoroi's [EB] <Green>Fiery Collapse DMG</Green> is increased by{" "}
+          <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -139,9 +139,7 @@ const Thoma: DataCharacter = {
         <>
           When your current active character obtains or refreshes a Blazing Barrier, this
           character's <Green>Shield Strength</Green> will increase by <Green b>5%</Green> for 6s.
-          <br />
-          This effect can be triggered once every 0.3 seconds. Max <Green b>5</Green>{" "}
-          <Green>stacks</Green>.
+          Max <Rose>5 stacks</Rose>, each stack can be obtained once every 0.3 seconds.
         </>
       ),
       isGranted: checkAscs[1],
@@ -161,8 +159,8 @@ const Thoma: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          When a Blazing Barrier is obtained or refreshed, the <Green>DMG</Green> dealt by all party
-          members' <Green>Normal, Charged, and Plunging Attacks</Green> is increased by{" "}
+          When a Blazing Barrier is obtained or refreshed, all party members'{" "}
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> is increased by{" "}
           <Green b>15%</Green> for 6s.
         </>
       ),

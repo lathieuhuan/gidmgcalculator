@@ -96,14 +96,14 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
         {modCtrls.map(({ type, value }, ctrlIndex) => (
           <div key={ctrlIndex} className="flex items-center">
             <button
-              className="mr-1 text-lesser text-xl hover:text-darkred"
+              className="mr-2 text-lesser text-xl hover:text-darkred"
               onClick={() => {
                 dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
               }}
             >
               <FaTimes />
             </button>
-            <p className="pr-2 text-lg">
+            <p className="pr-2">
               {t(type, { ns: isBuffs ? "common" : "resistance" })} {!isBuffs && "reduction"}
             </p>
 

@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, modIsActivated, countVisionTypes, talentBuff, checkCons } from "../utils";
+import { checkAscs, modIsActivated, countVision, talentBuff, checkCons } from "../utils";
 
 const getA4BuffValue = (
   toSelf: boolean,
@@ -13,17 +13,12 @@ const getA4BuffValue = (
   charData: CharData,
   partyData: PartyData
 ) => {
-  let result = 0;
-
   if (toSelf ? checkAscs[4](char) : modIsActivated(buffCtrls, 1)) {
-    const numOfElmts = countVisionTypes(charData, partyData);
-    result += numOfElmts * 2.5;
-
-    if (numOfElmts === 4) {
-      result += 1.5;
-    }
+    const visionCount = countVision(partyData, charData);
+    const numOfElmts = Object.keys(visionCount).length;
+    return numOfElmts * 2.5 + (numOfElmts === 4 ? 1.5 : 0);
   }
-  return result;
+  return 0;
 };
 
 const YunJin: DataCharacter = {
@@ -129,7 +124,8 @@ const YunJin: DataCharacter = {
     {
       src: EModSrc.A4,
       desc: ({ charData, partyData }) => {
-        const n = countVisionTypes(charData, partyData);
+        const visionCount = countVision(partyData, charData);
+        const n = Object.keys(visionCount).length;
         return (
           <>
             The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation [EB]

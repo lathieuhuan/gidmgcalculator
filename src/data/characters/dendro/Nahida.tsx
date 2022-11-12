@@ -68,18 +68,18 @@ const Nahida: DataCharacter = {
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
             let desc = [];
-            const EBBuffIsActivated = modIsActivated(selfBuffCtrls, 0);
-            const A4BuffIsActivated = checkAscs[4](char);
+            const EBisInUse = modIsActivated(selfBuffCtrls, 0);
+            const A4isInUse = checkAscs[4](char);
             const excessEM = Math.max(totalAttr.em - 200, 0);
 
-            if (EBBuffIsActivated) {
+            if (EBisInUse) {
               const [EBBuffValue] = getEBBuffValue(char, partyData);
               if (EBBuffValue) {
                 buffValue += EBBuffValue;
                 desc.push(`Elemental Burst (${EBBuffValue})`);
               }
             }
-            if (A4BuffIsActivated) {
+            if (A4isInUse) {
               const A4BuffValue = Math.min(excessEM / 10, 80);
               if (A4BuffValue) {
                 buffValue += A4BuffValue;
@@ -98,8 +98,8 @@ const Nahida: DataCharacter = {
                 )}%)`,
                 emPart,
               ],
-              [EBBuffIsActivated || A4BuffIsActivated, "pct", desc.join(" + "), buffValue],
-              [A4BuffIsActivated, "cRate", [true, 4], Math.min(excessEM * 0.03, 24)]
+              [EBisInUse || A4isInUse, "pct", desc.join(" + "), buffValue],
+              [A4isInUse, "cRate", [true, 4], Math.min(excessEM * 0.03, 24)]
             );
           },
         },

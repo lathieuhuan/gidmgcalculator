@@ -79,16 +79,7 @@ const Klee: DataCharacter = {
   ],
   constellation: [
     { name: "Chained Reactions", image: "a/ac/Constellation_Chained_Reactions" },
-    {
-      name: "Explosive Frags",
-      image: "e/e0/Constellation_Explosive_Frags",
-      // desc: (
-      //   <>
-      //     Being hit by Jumpy Dumpty's mines decreases opponents' <Green>DEF</Green> by{" "}
-      //     <Green b>23%</Green> for 10s.
-      //   </>
-      // ),
-    },
+    { name: "Explosive Frags", image: "e/e0/Constellation_Explosive_Frags" },
     { name: "Exquisite Compound", image: "6/6f/Constellation_Exquisite_Compound" },
     { name: "Sparkly Explosion", image: "3/3a/Constellation_Sparkly_Explosion" },
     { name: "Nova Burst", image: "a/a7/Constellation_Nova_Burst" },
@@ -113,7 +104,7 @@ const Klee: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          When Sparks 'n' Splash is used, all party members will gain a <Green b>10%</Green>{" "}
+          When Sparks 'n' Splash [EB] is used, all party members will gain a <Green b>10%</Green>{" "}
           <Green>Pyro DMG Bonus</Green> for 25s.
         </>
       ),
@@ -128,8 +119,8 @@ const Klee: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Attacks and Skills have a certain chance to summon sparks that bombard opponents, dealing
-          DMG equal to <Green b>120%</Green> of Sparks 'n' Splash's <Green>DMG</Green>.
+          On hit, Jumpy Dumpty's [ES] mines decreases opponents' <Green>DEF</Green> by{" "}
+          <Green b>23%</Green> for 10s.
         </>
       ),
       isGranted: checkCons[2],

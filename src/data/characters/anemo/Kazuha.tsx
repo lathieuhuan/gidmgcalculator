@@ -162,8 +162,8 @@ const Kazuha: DataCharacter = {
       isGranted: checkCons[6],
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        const bonusValue = Math.round(totalAttr.em * 0.2);
-        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], bonusValue, tracker);
+        const buffValue = Math.round(totalAttr.em * 0.2);
+        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

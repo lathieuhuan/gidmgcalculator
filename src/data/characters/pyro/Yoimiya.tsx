@@ -100,9 +100,8 @@ const Yoimiya: DataCharacter = {
       src: EModSrc.ES,
       desc: ({ char, partyData }) => (
         <>
-          During this time, arrows fired by Yoimiya's <Green>Normal Attack</Green> will be Blazing
-          Arrows, and their <Green>DMG</Green> will be increased by{" "}
-          <Green b>{getESBuffValue(char, partyData)}%</Green> and <Green>converted</Green> to{" "}
+          During Niwabi Fire-Dance [ES], Yoimiya's <Green>Normal Attack DMG</Green> will be
+          increased by <Green b>{getESBuffValue(char, partyData)}%</Green> and will be converted to{" "}
           <Pyro>Pyro DMG</Pyro>.
         </>
       ),
@@ -122,7 +121,7 @@ const Yoimiya: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          During Niwabi Fire-Dance, shots from Yoimiya's Normal Attack will increase her{" "}
+          During Niwabi Fire-Dance [ES], shots from Yoimiya's Normal Attack will increase her{" "}
           <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> on hit. This effect lasts for 3s and
           can have a maximum of <Green b>10</Green> stacks.
         </>
@@ -145,8 +144,8 @@ const Yoimiya: DataCharacter = {
       desc: () => (
         <>
           Using Ryuukin Saxifrage causes nearby party members (excluding Yoimiya) to gain a{" "}
-          <Green b>10%</Green> <Green>ATK</Green> increase for 15s. Additionally, a further ATK
-          Bonus will be added on based on the number of "Tricks of the Trouble-Maker" stacks Yoimiya
+          <Green b>10%</Green> <Green>ATK Bonus</Green> for 15s. Additionally, a further ATK Bonus
+          will be added on based on the number of "Tricks of the Trouble-Maker" (A1) stacks Yoimiya
           possesses when using Ryuukin Saxifrage. Each stack increases this <Green>ATK Bonus</Green>{" "}
           by <Green b>1%</Green>.
         </>

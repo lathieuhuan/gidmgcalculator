@@ -13,8 +13,8 @@ import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModIsInUse(Eula.buffs!, char, selfBuffCtrls, 1);
-  return talentBuff([isActivated, "pct", [false, 4], 25]);
+  const isInUse = charModIsInUse(Eula.buffs!, char, selfBuffCtrls, 1);
+  return talentBuff([isInUse, "pct", [false, 4], 25]);
 };
 
 const getESDebuffValue = (

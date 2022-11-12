@@ -28,13 +28,16 @@ import {
   ATTACK_PATTERNS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
-import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
-import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
+
+import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-import { TrackerDamageRecord } from "./types";
-import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 import { charModIsInUse } from "@Data/characters/utils";
+import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
+
+import { TrackerDamageRecord } from "./types";
+import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
+import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 interface CalcTalentStatArgs {
   stat: StatInfo;
@@ -408,21 +411,26 @@ export default function getDamage({
   });
 
   const baseRxnDmg = BASE_REACTION_DAMAGE[bareLv(char.level)];
+  // Special reaction buffs, one of its kind
   let nilouA4BuffValue = 0;
-  let nahidaC2BuffIsActivated = false;
+  let nahidaC2isInUse = false;
 
   switch (charData.name) {
     case "Nilou": {
       const { buffs } = findCharacter(char) || {};
-      if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 1) && totalAttr.hp > 30000) {
-        nilouA4BuffValue = Math.min(9 * (totalAttr.hp / 1000 - 30), 400);
+      if (
+        buffs &&
+        nilouA1isOn(partyData, charData) &&
+        charModIsInUse(buffs, char, selfBuffCtrls, 0)
+      ) {
+        nilouA4BuffValue = getNilouA4BuffValue(totalAttr.hp);
       }
       break;
     }
     case "Nahida":
       const { buffs } = findCharacter(char) || {};
       if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 3)) {
-        nahidaC2BuffIsActivated = true;
+        nahidaC2isInUse = true;
       }
       break;
   }
@@ -433,15 +441,14 @@ export default function getDamage({
     }
     switch (teammate.name) {
       case "Nilou":
-        const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 1) || {};
-        const maxHP = inputs[0] || 0;
+        const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 0) || {};
 
-        if (activated && maxHP > 30000) {
-          nilouA4BuffValue = Math.min(9 * (maxHP / 1000 - 30), 400);
+        if (nilouA1isOn(partyData, charData) && activated) {
+          nilouA4BuffValue = getNilouA4BuffValue(inputs[0] || 0);
         }
         break;
       case "Nahida": {
-        nahidaC2BuffIsActivated = !!findByIndex(teammate.buffCtrls, 3)?.activated;
+        nahidaC2isInUse = !!findByIndex(teammate.buffCtrls, 3)?.activated;
         break;
       }
     }
@@ -464,7 +471,7 @@ export default function getDamage({
     }
   }
 
-  if (nahidaC2BuffIsActivated) {
+  if (nahidaC2isInUse) {
     for (const rxn of ["burning", "bloom", "hyperbloom", "burgeon"] as const) {
       const { [rxn]: rxnDmg } = finalResult.RXN;
 

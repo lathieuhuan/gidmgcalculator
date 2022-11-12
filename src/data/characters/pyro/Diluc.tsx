@@ -1,10 +1,9 @@
 import type { AttributeStat, DataCharacter } from "@Src/types";
-import { Green, Lightgold, Pyro } from "@Src/styled-components";
+import { Green, Lightgold, Pyro, Rose } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
-import { ascsFromLv } from "@Src/utils";
 
 const Diluc: DataCharacter = {
   code: 20,
@@ -144,8 +143,8 @@ const Diluc: DataCharacter = {
       desc: () => (
         <>
           When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and{" "}
-          <Green>ATK SPD</Green> increases by <Green b>5%</Green>
-          for 10s, up to <Green b>3</Green> times.
+          <Green>ATK SPD</Green> increases by <Green b>5%</Green> for 10s, up to{" "}
+          <Rose>3 times</Rose>.
         </>
       ),
       isGranted: checkCons[2],
@@ -167,9 +166,8 @@ const Diluc: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          2s after casting Searing Onslaught, casting the next <Green>Searing Onslaught</Green> in
-          the combo deals <Green b>40%</Green> <Green>additional DMG</Green>. This effect lasts for
-          2s.
+          Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the
+          combo deals <Green b>40%</Green> <Green>DMG Bonus</Green>. This effect lasts for 2s.
         </>
       ),
       isGranted: checkCons[4],
@@ -181,9 +179,9 @@ const Diluc: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          After casting Searing Onslaught, the next <Green b>2</Green> <Green>Normal Attacks</Green>{" "}
-          within the next 6s will have their <Green>DMG</Green> and <Green>ATK SPD</Green> increased
-          by <Green b>30%</Green>.
+          Within 6s after casting Searing Onslaught [ES], the next <Green b>2</Green>{" "}
+          <Green>Normal Attacks</Green> will have their <Green>DMG and ATK SPD</Green> increased by{" "}
+          <Green b>30%</Green>.
         </>
       ),
       isGranted: checkCons[6],

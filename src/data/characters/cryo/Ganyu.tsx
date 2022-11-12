@@ -6,8 +6,8 @@ import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
-  return talentBuff([isActivated, "cRate", [true, 1], 20]);
+  const isInUse = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
+  return talentBuff([isInUse, "cRate", [true, 1], 20]);
 };
 
 const Ganyu: DataCharacter = {

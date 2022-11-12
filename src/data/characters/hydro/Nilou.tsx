@@ -1,10 +1,19 @@
-import type { DataCharacter, Vision } from "@Src/types";
-import { Green, Red } from "@Src/styled-components";
+import type { CharData, DataCharacter, PartyData } from "@Src/types";
+import { Green, Lightgold, Red, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round1 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, countVision, talentBuff } from "../utils";
+
+export function nilouA1isOn(partyData: PartyData, charData: CharData) {
+  const { dendro, hydro, ...rest } = countVision(partyData, charData);
+  return Boolean(dendro && hydro && !Object.keys(rest).length);
+}
+
+export function getNilouA4BuffValue(maxHP: number) {
+  return maxHP > 30000 ? round1(Math.min((maxHP / 1000 - 30) * 9, 400)) : 0;
+}
 
 const Nilou: DataCharacter = {
   code: 60,
@@ -90,8 +99,8 @@ const Nilou: DataCharacter = {
         return (
           <>
             When all characters in the party are either Dendro or Hydro, and there is at least one
-            Dendro and Hydro character, the flowery steps of Nilou's Dance of the Seven Realms will
-            grant all nearby characters the Golden Chalice's Bounty for 30s.
+            Dendro and Hydro character, the flowery steps of Nilou's Dance of Haftkarsvar will grant
+            all nearby characters the Golden Chalice's Bounty for 30s.
             <br />
             {this.xtraDesc![0]}
             <br />
@@ -99,7 +108,7 @@ const Nilou: DataCharacter = {
             <br />
             Bountiful Cores cannot trigger Hyperbloom or Burgeon, and they share a upper numerical
             limit with Dendro Cores. Bountiful Core DMG is considered DMG dealt by Dendro Cores
-            produced by Bloom (Rupture).
+            produced by Bloom.
           </>
         );
       },
@@ -135,7 +144,7 @@ const Nilou: DataCharacter = {
       get desc() {
         return (
           <>
-            Dance of the Seven Realms will be enhanced as follows:
+            Dance of Haftkarsvar will be enhanced as follows:
             <br />• {this.xtraDesc![0]}
             <br />• The Tranquility Aura's duration is extended by 6s.
           </>
@@ -155,7 +164,7 @@ const Nilou: DataCharacter = {
           <>
             {this.xtraDesc![0]} {this.xtraDesc![1]}
             <br />
-            You need to have unlocked the “Court of Dancing Petals” Talent.
+            You need to have unlocked the "Court of Dancing Petals" Talent.
           </>
         );
       },
@@ -177,8 +186,8 @@ const Nilou: DataCharacter = {
       get desc() {
         return (
           <>
-            After the third dance step of Dance of the Seven Realms' Pirouette hits opponents, Nilou
-            will gain 15 Elemental Energy, and {this.xtraDesc![0]}
+            After the third dance step of Dance of Haftkarsvar' Pirouette hits opponents, Nilou will
+            gain 15 Elemental Energy, and {this.xtraDesc![0]}
           </>
         );
       },
@@ -232,47 +241,33 @@ const Nilou: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModSrc.A1,
-      desc: () => Nilou.passiveTalents[0].xtraDesc?.[0],
+      src: "Golden Chalice's Bounty",
+      desc: ({ toSelf, totalAttr, inputs = [] }) => (
+        <>
+          Increases characters' <Green>Elemental Mastery</Green> by <Green b>100</Green> for 10s
+          whenever they are hit by Dendro attacks. Also, triggering Bloom reaction will create
+          Bountiful Cores instead of Dendro Cores.
+          <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green>{" "}
+          above 30,000 will cause <Green>Bountiful Cores DMG</Green> to increase by{" "}
+          <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
+          <Red>Bonus DMG: {getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
+        </>
+      ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
-      applyBuff: ({ totalAttr, partyData, desc, tracker }) => {
-        const visionCount = partyData.reduce((count, teammateData) => {
-          count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
-          return count;
-        }, {} as Partial<Record<Vision, number>>);
-
-        const { dendro = 0, hydro, ...rest } = visionCount;
-
-        if (dendro > 0 && !Object.keys(rest).length) {
-          applyModifier(desc, totalAttr, "em", 100, tracker);
-        }
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A4,
       affect: EModAffect.PARTY,
       inputConfigs: [
         {
-          label: "Nilou's Max HP",
+          label: "Max HP (A4)",
           type: "text",
           max: 99999,
           for: "teammate",
         },
       ],
-      desc: ({ totalAttr, toSelf, inputs }) => {
-        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
-        return (
-          <>
-            {Nilou.passiveTalents[1].desc}{" "}
-            <Red>
-              Bonus DMG: {maxHP > 30000 ? round1(Math.min((maxHP / 1000 - 30) * 9, 400)) : 0}%
-            </Red>
-          </>
-        );
+      applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
+        if (nilouA1isOn(partyData, charData)) {
+          applyModifier(desc, totalAttr, "em", 100, tracker);
+        }
       },
-      isGranted: checkAscs[4],
     },
   ],
   debuffs: [

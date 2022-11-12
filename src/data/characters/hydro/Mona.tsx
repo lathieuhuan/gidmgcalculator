@@ -122,7 +122,7 @@ const Mona: DataCharacter = {
       desc: (obj) => (
         <>
           Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG taken</Green> by
-          opponents. (This is actually a DMG bonus.)
+          opponents.
         </>
       ),
       affect: EModAffect.PARTY,

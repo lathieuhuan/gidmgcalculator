@@ -89,14 +89,14 @@ const ElectroMC: DataCharacter = {
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
       ],
       applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {
-        let bonusValue = 20;
+        let buffValue = 20;
         const boosted = toSelf ? checkAscs[4](char) : inputs?.[0] === 1;
 
         if (boosted) {
           const ER = toSelf ? totalAttr.er : inputs?.[1] || 0;
-          bonusValue += Math.round(ER) / 10;
+          buffValue += Math.round(ER) / 10;
         }
-        applyModifier(desc, totalAttr, "er", bonusValue, tracker);
+        applyModifier(desc, totalAttr, "er", buffValue, tracker);
       },
     },
   ],

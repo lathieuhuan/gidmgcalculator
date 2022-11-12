@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier } from "@Calculators/utils";
-import { checkAscs, checkCons, countVisionTypes } from "../utils";
+import { checkAscs, checkCons, countVision } from "../utils";
 
 const Yelan: DataCharacter = {
   code: 51,
@@ -115,7 +115,8 @@ const Yelan: DataCharacter = {
     {
       src: EModSrc.A1,
       desc: ({ charData, partyData }) => {
-        const n = countVisionTypes(charData, partyData);
+        const visionCount = countVision(partyData, charData);
+        const n = Object.keys(visionCount).length;
         return (
           <>
             When the party has 1/2/3/4 Elemental Types, Yelan's <Green>Max HP</Green> is increased
@@ -128,13 +129,9 @@ const Yelan: DataCharacter = {
       },
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
-        const typeCount = countVisionTypes(charData, partyData);
-        let buffValue = typeCount * 6;
-
-        if (typeCount === 4) {
-          buffValue += 6;
-        }
-        applyModifier(desc, totalAttr, "hp_", buffValue, tracker);
+        const visionCount = countVision(partyData, charData);
+        const numOfElmts = Object.keys(visionCount).length;
+        applyModifier(desc, totalAttr, "hp_", (numOfElmts === 4 ? 5 : numOfElmts) * 6, tracker);
       },
     },
   ],
@@ -144,10 +141,9 @@ const Yelan: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          So long as an Exquisite Throw is in play, your own active character deals{" "}
-          <Green b>1%</Green> <Green>more DMG</Green>. This increases by a further{" "}
-          <Green b>3.5%</Green> <Green>DMG</Green> every second. The <Green>maximum</Green> increase
-          to DMG dealt is <Green b>50%</Green>.
+          During Depth-Clarion Dice [EB], your own active character gains <Green b>1%</Green>{" "}
+          <Green>DMG Bonus</Green> which will increase by a further <Green b>3.5%</Green> every
+          second. Maximum <Rose>50%</Rose>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -169,8 +165,7 @@ const Yelan: DataCharacter = {
       desc: () => (
         <>
           Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for
-          every opponent marked by Lifeline when the Lifeline explodes. A <Green>maximum</Green>{" "}
-          increase of <Green b>40%</Green> <Green>Max HP</Green> can be attained in this manner.
+          every opponent marked by Lifeline when the Lifeline explodes. Maximum <Rose>40%</Rose>.
         </>
       ),
       isGranted: checkCons[4],

@@ -62,8 +62,8 @@ const Cyno: DataCharacter = {
           name: "Mortuary Rite DMG",
           multBase: 156.8,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const A1BuffisActivated = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1);
-            return talentBuff([A1BuffisActivated, "pct", [true, 1], 35]);
+            const A1isInUse = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1);
+            return talentBuff([A1isInUse, "pct", [true, 1], 35]);
           },
         },
         {

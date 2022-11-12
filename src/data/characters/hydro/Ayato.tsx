@@ -94,24 +94,28 @@ const Ayato: DataCharacter = {
       stats: [
         {
           name: "Shunsuiken 1-Hit DMG",
+          dmgTypes: ["NA", "hydro"],
           multBase: 52.89,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 2-Hit DMG",
+          dmgTypes: ["NA", "hydro"],
           multBase: 58.91,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 3-Hit DMG",
+          dmgTypes: ["NA", "hydro"],
           multBase: 64.93,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Extra Shunsuiken strike (1/2) (C6)",
+          dmgTypes: ["NA", "hydro"],
           isStatic: true,
           multBase: 450,
           getTalentBuff: ({ char, selfBuffCtrls }) => talentBuff(C1TalentBuff(char, selfBuffCtrls)),
@@ -187,14 +191,15 @@ const Ayato: DataCharacter = {
       desc: () => (
         <>
           • Causes DMG from his <Green>Normal Attacks</Green> to be converted into AoE{" "}
-          <Hydro>Hydro DMG</Hydro>. This cannot be overridden.
-          <br />• Namisen increases <Green>Shunsuiken DMG</Green> based on Ayato's{" "}
-          <Green>current Max HP</Green>.
+          <Hydro>Hydro DMG</Hydro> (Shunsuiken). This cannot be overridden.
+          <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase{" "}
+          <Green>Shunsuiken DMG</Green> based on Ayato's <Green>current Max HP</Green>.
         </>
       ),
       affect: EModAffect.SELF,
       inputConfigs: [
         {
+          label: "Namisen stacks",
           type: "stacks",
           max: 5,
         },
@@ -224,8 +229,8 @@ const Ayato: DataCharacter = {
         },
       ],
       applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
-        const bonusValue = getEBBuffValue(toSelf, char, partyData, inputs);
-        applyModifier(desc, attPattBonus, "NA.pct", bonusValue, tracker);
+        const buffValue = getEBBuffValue(toSelf, char, partyData, inputs);
+        applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
       },
     },
     {
@@ -245,8 +250,8 @@ const Ayato: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          When Kamisato Ayato has at least 3 Namisen stacks, his <Green>Max HP</Green> is increased
-          by <Green b>50%</Green>.
+          When Ayato has at least 3 Namisen stacks, his <Green>Max HP</Green> is increased by{" "}
+          <Green b>50%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -258,8 +263,8 @@ const Ayato: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          After using Kamisato Art: Suiyuu, all nearby party members will have <Green b>15%</Green>{" "}
-          increased <Green>Normal Attack SPD</Green> for 12s.
+          After using Kamisato Art: Suiyuu [EB], all nearby party members will have{" "}
+          <Green b>15%</Green> increased <Green>Normal Attack SPD</Green> for 15s.
         </>
       ),
       isGranted: checkCons[4],

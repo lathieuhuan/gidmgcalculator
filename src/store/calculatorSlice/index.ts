@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AttackElement,
   CalcArtPiece,
@@ -32,10 +32,10 @@ import type {
   TUpdateTeammateArtifactAction,
 } from "./reducer-types";
 
-import { findCharacter, getCharData } from "@Data/controllers";
+import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
 
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { bareLv, countVision, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
+import { bareLv, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
 import {
   calculate,
   getArtDebuffCtrls,
@@ -57,6 +57,7 @@ import {
   initTeammate,
 } from "./initiators";
 import monsters from "@Data/monsters";
+import { countVision } from "@Data/characters/utils";
 
 const defaultChar = {
   name: "Albedo",
@@ -228,15 +229,15 @@ export const calculatorSlice = createSlice({
     addTeammate: (state, action: AddTeammateAction) => {
       const { name, vision, weapon: weaponType, teammateIndex } = action.payload;
       const setup = state.setupsById[state.activeId];
-      const { char, party, elmtModCtrls } = setup;
+      const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision(char, party);
+      const oldVisionCount = countVision(getPartyData(party), state.charData);
       const oldTeammate = party[teammateIndex];
 
       // assign to party
       party[teammateIndex] = initTeammate({ name, weapon: weaponType });
 
-      const newVisionCount = countVision(char, party);
+      const newVisionCount = countVision(getPartyData(party), state.charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
@@ -276,13 +277,13 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const teammateIndex = action.payload;
-      const { char, party, elmtModCtrls } = state.setupsById[state.activeId];
+      const { party, elmtModCtrls } = state.setupsById[state.activeId];
       const teammate = party[teammateIndex];
 
       if (teammate) {
         const { vision } = findCharacter(teammate)!;
         party[teammateIndex] = null;
-        const newVisionCount = countVision(char, party);
+        const newVisionCount = countVision(getPartyData(party), state.charData);
 
         if (newVisionCount[vision] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {

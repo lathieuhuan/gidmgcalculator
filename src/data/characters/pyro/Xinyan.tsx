@@ -131,8 +131,8 @@ const Xinyan: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          <Green>Riff Revolution's Physical DMG</Green> has its <Green>CRIT Rate</Green> increased
-          by <Green b>100%</Green>.
+          Riff Revolution's <Green>[EB] Physical CRIT Rate</Green> is increased by{" "}
+          <Green b>100%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -141,8 +141,8 @@ const Xinyan: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Xinyan's <Green>Charged Attacks</Green> gain an <Green>ATK Bonus</Green> equal to{" "}
-          <Green b>50%</Green> of her <Green>DEF</Green>.
+          Xinyan's <Green>Charged Attacks DMG</Green> is increased by <Green b>50%</Green> of her{" "}
+          <Green>DEF</Green>.
         </>
       ),
       isGranted: checkCons[6],
@@ -157,7 +157,7 @@ const Xinyan: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Characters shielded by Sweeping Fervor deal <Green b>15%</Green> increased{" "}
+          Characters shielded by Sweeping Fervor [ES] deal <Green b>15%</Green> increased{" "}
           <Green>Physical DMG</Green>.
         </>
       ),

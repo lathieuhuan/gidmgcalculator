@@ -141,8 +141,8 @@ const Zhongli: DataCharacter = {
       desc: () => (
         <>
           When Jade Shield takes DMG, the characters have their <Green>Shield Strength</Green>{" "}
-          increased by <Green b>5%</Green>. Max <Rose>5 stacks</Rose>, and lasts until the Jade
-          Shield disappears.
+          increased by <Green b>5%</Green> until the Jade Shield disappears. Max{" "}
+          <Rose>5 stacks</Rose>.
         </>
       ),
       isGranted: checkAscs[1],

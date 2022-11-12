@@ -115,8 +115,8 @@ const HuTao: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Increases the <Green>Blood Blossom DMG</Green> by an amount equal to <Green b>10%</Green>{" "}
-          of Hu Tao's <Green>Max HP</Green>
+          Increases the Blood Blossom <Green>[ES] DMG</Green> by an amount equal to{" "}
+          <Green b>10%</Green> of Hu Tao's <Green>Max HP</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -153,8 +153,8 @@ const HuTao: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When a Paramita Papilio state ends, all allies in the party (excluding Hu Tao) will have
-          their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
+          When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will
+          have their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
         </>
       ),
       isGranted: checkAscs[1],

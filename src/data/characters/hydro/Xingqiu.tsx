@@ -103,8 +103,8 @@ const Xingqiu: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Throughout the duration of Guhua Sword: Raincutter, the <Green>DMG</Green> dealt by{" "}
-          <Green>Guhua Sword: Fatal Rainscreen</Green> is increased by <Green b>50%</Green>.
+          During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen <Green>[ES] DMG</Green>{" "}
+          is increased by <Green b>50%</Green>.
         </>
       ),
       isGranted: checkCons[4],

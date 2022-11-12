@@ -117,19 +117,6 @@ const Kokomi: DataCharacter = {
     },
     { name: "Sango Isshin", image: "3/3b/Constellation_Sango_Isshin" },
   ],
-  innateBuffs: [
-    {
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          During Nereid's Ascension, the <Green>Normal and Charged Attack DMG Bonus</Green> Kokomi
-          gains based on her <Green>Max HP</Green> will receive a further increase based on{" "}
-          <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-    },
-  ],
   buffs: [
     {
       index: 0,
@@ -137,26 +124,27 @@ const Kokomi: DataCharacter = {
       desc: () => (
         <>
           Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
-          based on her <Green>Max HP</Green>.<br />• At <Lightgold>C4</Lightgold>, Kokomi's{" "}
-          <Green>Normal Attack SPD</Green> is increased by <Green b>10%</Green>.
+          based on her <Green>Max HP</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, <Green>Normal and Charged Attack DMG Bonus</Green>{" "}
+          is further increasd based on <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
+          <br />• At <Lightgold>C4</Lightgold>, Kokomi's <Green>Normal Attack SPD</Green> is
+          increased by <Green b>10%</Green>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       applyFinalBuff: (obj) => {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
         const level = finalTalentLv(char, "EB", obj.partyData);
-        const A4BuffIsActivated = checkAscs[4](char);
 
-        const bnValues = [4.84, 6.78, 7.1].map((mult, i) => {
+        const buffValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];
-          if (A4BuffIsActivated && i !== 2) {
+          if (i !== 2 && checkAscs[4](char)) {
             finalMult += obj.totalAttr.healBn * 0.15;
           }
           return applyPercent(obj.totalAttr.hp, finalMult);
         });
-        applyModifier(obj.desc, obj.attPattBonus, fields, bnValues, obj.tracker);
+        applyModifier(obj.desc, obj.attPattBonus, fields, buffValues, obj.tracker);
 
         if (checkCons[4](char)) {
           applyModifier(`Self / ${EModSrc.C4}`, obj.totalAttr, "naAtkSpd", 10, obj.tracker);

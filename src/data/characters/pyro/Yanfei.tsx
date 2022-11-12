@@ -120,8 +120,8 @@ const Yanfei: DataCharacter = {
       src: EModSrc.EB,
       desc: ({ char, partyData }) => (
         <>
-          Increases the <Green>DMG</Green> dealt by her <Green>Charged Attacks</Green>
-          by <Green b>{getEBBuffValue(char, partyData)}%</Green>.
+          Increases <Green>Charged Attack DMG</Green> by{" "}
+          <Green b>{getEBBuffValue(char, partyData)}%</Green>.
         </>
       ),
       isGranted: () => true,

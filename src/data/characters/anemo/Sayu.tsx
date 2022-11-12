@@ -5,10 +5,10 @@ import { EModSrc, HEAVY_PAs } from "../constants";
 import { charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
 
 const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
+  const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
   const buffValue = 3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5);
 
-  return talentBuff([isActivated, "pct", [false, 2], buffValue]);
+  return talentBuff([isInUse, "pct", [false, 2], buffValue]);
 };
 
 const getC6TalentBuff = (index: number): GetTalentBuffFn => {
@@ -75,9 +75,9 @@ const Sayu: DataCharacter = {
           name: "Press Kick",
           multBase: 158.4,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const isActivated = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
+            const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
 
-            return talentBuff([isActivated, "pct", [false, 2], 3.3]);
+            return talentBuff([isInUse, "pct", [false, 2], 3.3]);
           },
         },
         { name: "Hold Kick", multBase: 217.6, getTalentBuff: getC2TalentBuff },

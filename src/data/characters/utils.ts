@@ -6,6 +6,7 @@ import type {
   AttackPatternInfoKey,
   CharData,
   PartyData,
+  Vision,
 } from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
@@ -29,14 +30,15 @@ export const checkCons = {
   6: makeConsChecker(6),
 };
 
-export function countVisionTypes(charData: CharData, partyData: PartyData) {
-  const existed = [charData.vision];
-
-  partyData.forEach(({ vision }) => {
-    if (!existed.includes(vision)) existed.push(vision);
-  });
-
-  return existed.length;
+export function countVision(partyData: PartyData, charData?: CharData) {
+  const result: Partial<Record<Vision, number>> = {};
+  if (charData) {
+    result[charData.vision] = 1;
+  }
+  return partyData.reduce((count, teammateData) => {
+    count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
+    return count;
+  }, result);
 }
 
 export const makeTrackerDesc = (isAscs: boolean, level: number) => {

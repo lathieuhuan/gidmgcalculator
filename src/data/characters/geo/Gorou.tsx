@@ -197,13 +197,13 @@ const Gorou: DataCharacter = {
           ? finalTalentLv(obj.char, "ES", obj.partyData)
           : obj.inputs?.[0] || 1;
         const fields: AttributeStat[] = ["def"];
-        const bonusValues = [getESBuffValue(level)];
+        const buffValues = [getESBuffValue(level)];
 
         if (countGeo(obj.charData, obj.partyData) > 2) {
           fields.push("geo");
-          bonusValues.push(15);
+          buffValues.push(15);
         }
-        applyModifier(obj.desc, obj.totalAttr, fields, bonusValues, obj.tracker);
+        applyModifier(obj.desc, obj.totalAttr, fields, buffValues, obj.tracker);
       },
     },
     {
