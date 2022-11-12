@@ -8,7 +8,7 @@ import type {
   PartyData,
   TotalAttribute,
 } from "@Src/types";
-import { Electro, Green, Red } from "@Src/styled-components";
+import { Electro, Green, Lightgold, Red } from "@Src/styled-components";
 import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
@@ -244,8 +244,8 @@ const Raiden: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Each <Green b>1%</Green> above 100% <Green>Energy Recharge</Green> grants the Raiden
-          Shogun <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
+          Each 1% above 100% <Green>Energy Recharge</Green> grants the Raiden Shogun{" "}
+          <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
           <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
         </>
       ),
@@ -263,10 +263,9 @@ const Raiden: DataCharacter = {
       desc: ({ toSelf, char, charData, inputs, partyData }) => (
         <>
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
-          <Green>Energy Cost</Green> of the Elemental Burst during the Eye's duration.{" "}
+          <Green>Energy Cost</Green> of the Elemental Burst during the eye's duration.{" "}
           <Red>
-            Elemental Burst DMG Bonus:{" "}
-            {getBuffValue.ES(toSelf, char, charData, inputs, partyData)[0]}
+            DMG Bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData)[0]}
             %.
           </Red>
         </>
@@ -301,9 +300,9 @@ const Raiden: DataCharacter = {
             <br />
             Normal, Charged, and Plunging Attacks will be <Green>infused</Green> with{" "}
             <Electro>Electro DMG</Electro>, which cannot be overridden.
-            <br />• At C1, increases <Green>Resolve</Green> gained from Electro characters by{" "}
-            <Green b>80%</Green>, from characters of other visions by <Green b>20%</Green>.{" "}
-            <Red>Extra Resolve: {extraStacks}</Red>
+            <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from
+            Electro characters by <Green b>80%</Green>, from characters of other visions by{" "}
+            <Green b>20%</Green>. <Red>Extra Resolve: {extraStacks}</Red>
           </>
         );
       },
@@ -323,7 +322,7 @@ const Raiden: DataCharacter = {
       desc: () => (
         <>
           When the Musou Isshin state expires, all nearby party members (excluding the Raiden
-          Shogun) gain <Green b>30%</Green> <Green>bonus ATK</Green> for 10s.
+          Shogun) gain <Green b>30%</Green> <Green>ATK</Green> for 10s.
         </>
       ),
       isGranted: checkCons[4],
@@ -337,9 +336,8 @@ const Raiden: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          While using Musou no Hitotachi and in the Musou Isshin state applied by Secret Art: Musou
-          Shinsetsu, the Raiden Shogun's attacks ignore <Green b>60%</Green> of opponents'{" "}
-          <Green>DEF</Green>.
+          Under the Musou Isshin state, the Raiden Shogun's attacks ignore <Green b>60%</Green> of
+          opponents' <Green>DEF</Green>.
         </>
       ),
       isGranted: checkCons[2],

@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Lightgold } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
@@ -137,7 +137,7 @@ const Kokomi: DataCharacter = {
       desc: () => (
         <>
           Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
-          based on her <Green>Max HP</Green>.<br />• At C4, Kokomi's{" "}
+          based on her <Green>Max HP</Green>.<br />• At <Lightgold>C4</Lightgold>, Kokomi's{" "}
           <Green>Normal Attack SPD</Green> is increased by <Green b>10%</Green>.
         </>
       ),

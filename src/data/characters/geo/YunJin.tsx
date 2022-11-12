@@ -1,5 +1,5 @@
 import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Lightgold } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
@@ -132,8 +132,8 @@ const YunJin: DataCharacter = {
         const n = countVisionTypes(charData, partyData);
         return (
           <>
-            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation is
-            further increased by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
+            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation [EB]
+            is further increased by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
             <Green className={n === 2 ? "" : "opacity-50"}>5%</Green>/
             <Green className={n === 3 ? "" : "opacity-50"}>7.5%</Green>/
             <Green className={n === 4 ? "" : "opacity-50"}>11.5%</Green> of Yun Jin's{" "}
@@ -151,19 +151,23 @@ const YunJin: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          When <Green>Normal Attack DMG</Green> is dealt to opponents, <Green>Bonus DMG</Green> will
-          be dealt based on Yun Jin's <Green>current DEF</Green>.
+          Increases <Green>Normal Attack DMG</Green> based on Yun Jin's <Green>current DEF</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, increases <Green>Normal Attack DMG</Green> by{" "}
+          <Green b>15%</Green>.<br />• At <Lightgold>C6</Lightgold>, increases{" "}
+          <Green>Normal ATK SPD</Green> by <Green b>12%</Green>.
         </>
       ),
       affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Ascension 4 Passive", type: "check", for: "teammate" },
+        { label: "Constrellation 6", type: "check", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, inputs, char, partyData } = obj;
-        const DEF = toSelf ? obj.totalAttr.def : inputs?.[0] || 0;
-        const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[1] || 1;
+        const { toSelf, inputs = [], char, partyData } = obj;
+        const DEF = toSelf ? obj.totalAttr.def : inputs[0] || 0;
+        const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[1] || 1;
         let desc = `${obj.desc} / Lv. ${level}`;
         let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraMult = getA4BuffValue(toSelf, char, obj.charBuffCtrls, obj.charData, partyData);
@@ -172,24 +176,17 @@ const YunJin: DataCharacter = {
           desc += ` / A4: ${xtraMult}% extra`;
           tlMult += xtraMult;
         }
-
         const buffValue = applyPercent(DEF, tlMult);
         desc += ` / ${round2(tlMult)}% of ${DEF} DEF`;
         applyModifier(desc, obj.attPattBonus, "NA.flat", buffValue, obj.tracker);
+
+        if (toSelf ? checkCons[2](char) : inputs[2]) {
+          applyModifier(obj.desc, obj.attPattBonus, "NA.pct", 15, obj.tracker);
+        }
+        if (toSelf ? checkCons[6](char) : inputs[3]) {
+          applyModifier(obj.desc, obj.totalAttr, "naAtkSpd", 12, obj.tracker);
+        }
       },
-    },
-    {
-      index: 2,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          After Cliffbreaker's Banner is unleashed, all nearby party members's{" "}
-          <Green>Normal Attack DMG</Green> is increased by <Green b>15%</Green> for 10s.
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("attPattBonus", "NA.pct", 15),
     },
     {
       index: 3,
@@ -203,19 +200,6 @@ const YunJin: DataCharacter = {
       isGranted: checkCons[4],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "def_", 20),
-    },
-    {
-      index: 4,
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          Characters under the effects of the Flying Cloud Flag Formation have their{" "}
-          <Green>Normal ATK SPD</Green> increased by <Green b>12%</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 12),
     },
   ],
 };

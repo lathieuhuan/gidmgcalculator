@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -82,60 +82,18 @@ const Tighnari: DataCharacter = {
     },
   },
   passiveTalents: [
-    {
-      name: "Keen Sight",
-      image: "7/77/Talent_Keen_Sight",
-      desc: (
-        <>
-          After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by{" "}
-          <Green b>50</Green> for 4s.
-        </>
-      ),
-    },
-    {
-      name: "Scholarly Blade",
-      image: "e/e6/Talent_Scholarly_Blade",
-      desc: (
-        <>
-          For every point of Elemental Mastery Tighnari possesses, his{" "}
-          <Green>Charged Attack and Fashioner's Tanglevine Shaft DMG</Green> are increased by{" "}
-          <Green b>0.08%</Green>.
-          <br />
-          The maximum DMG bonus obtainable this way is 80%.
-        </>
-      ),
-    },
+    { name: "Keen Sight", image: "7/77/Talent_Keen_Sight" },
+    { name: "Scholarly Blade", image: "e/e6/Talent_Scholarly_Blade" },
     { name: "Encyclopedic Knowledge", image: "e/ee/Talent_Encyclopedic_Knowledge" },
   ],
   constellation: [
     {
       name: "Beginnings Determined at the Roots",
       image: "2/2e/Constellation_Beginnings_Determined_at_the_Roots",
-      desc: (
-        <>
-          Tighnari's <Green>Charged Attack CRIT Rate</Green> is increased by <Green b>15%</Green>.
-        </>
-      ),
     },
     {
       name: "Origins Known From the Stem",
       image: "3/30/Constellation_Origins_Known_From_the_Stem",
-      get desc() {
-        return (
-          <>
-            {this.xtraDesc![0]}
-            <br />
-            The effect will last up to 6s if the field's duraton ends or if it no longer has
-            opponents within it.
-          </>
-        );
-      },
-      xtraDesc: [
-        <>
-          When there are opponents within Vijnana-Khanda Field created by Vijnana-Phala Mine,
-          Tighnari gains <Green b>20%</Green> <Green>Dendro DMG Bonus</Green>.
-        </>,
-      ],
     },
     {
       name: "Fortunes Read Amongst the Branches",
@@ -144,19 +102,6 @@ const Tighnari: DataCharacter = {
     {
       name: "Withering Glimpsed in the Leaves",
       image: "8/8b/Constellation_Withering_Glimpsed_in_the_Leaves",
-      get desc() {
-        return (
-          <>{this.xtraDesc![0]} This latter case will also refresh the buff state's duration.</>
-        );
-      },
-      xtraDesc: [
-        <>
-          When Fashioner's Tanglevine Shaft is unleashed, all party members gain <Green b>60</Green>{" "}
-          <Green>Elemental Mastery</Green> for 8s. If the Fashioner's Tanglevine Shaft triggers a
-          Burning, Bloom, Aggravate, or Spread reaction, their <Green>Elemental Mastery</Green> will
-          be further increased by <Green b>60</Green>.
-        </>,
-      ],
     },
     {
       name: "Comprehension Amidst the Flowers",
@@ -165,19 +110,18 @@ const Tighnari: DataCharacter = {
     {
       name: "Karma Adjudged From the Leaden Fruit",
       image: "f/f5/Constellation_Karma_Adjudged_From_the_Leaden_Fruit",
-      desc: (
-        <>
-          Wreath Arrow's charging time is decreased by 0.9s, and will produce <Green b>1</Green>{" "}
-          <Green>additional Clusterbloom Arrow</Green> upon hit. This arrow deals{" "}
-          <Green b>150%</Green> of Tighnari's <Green>ATK</Green> as DMG.
-        </>
-      ),
     },
   ],
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => Tighnari.passiveTalents[1].desc,
+      desc: () => (
+        <>
+          For every point of Elemental Mastery Tighnari possesses, his{" "}
+          <Green>Charged Attack DMG</Green> and Fashioner's Tanglevine Shaft <Green>[EB] DMG</Green>{" "}
+          are increased by <Green b>0.08%</Green>. Max <Rose>80%</Rose>.
+        </>
+      ),
       isGranted: checkAscs[4],
       applyBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
         const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
@@ -186,7 +130,11 @@ const Tighnari: DataCharacter = {
     },
     {
       src: EModSrc.C1,
-      desc: () => Tighnari.constellation[0].desc,
+      desc: () => (
+        <>
+          Tighnari's <Green>Charged Attack CRIT Rate</Green> is increased by <Green b>15%</Green>.
+        </>
+      ),
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "CA.cRate", 15),
     },
@@ -195,7 +143,12 @@ const Tighnari: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
-      desc: () => Tighnari.passiveTalents[0].desc,
+      desc: () => (
+        <>
+          After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by{" "}
+          <Green b>50</Green> for 4s.
+        </>
+      ),
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 50),
@@ -203,7 +156,12 @@ const Tighnari: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C2,
-      desc: () => Tighnari.constellation[1].xtraDesc![0],
+      desc: () => (
+        <>
+          When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains{" "}
+          <Green b>20%</Green> <Green>Dendro DMG Bonus</Green>.
+        </>
+      ),
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "dendro", 20),
@@ -211,7 +169,14 @@ const Tighnari: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C4,
-      desc: () => Tighnari.constellation[3].xtraDesc![0],
+      desc: () => (
+        <>
+          When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain{" "}
+          <Green b>60</Green> <Green>Elemental Mastery</Green> for 8s. If this skill triggers a
+          Burning, Bloom, Aggravate, or Spread reaction, their <Green>Elemental Mastery</Green> will
+          be further increased by <Green b>60</Green>.
+        </>
+      ),
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
       inputConfigs: [

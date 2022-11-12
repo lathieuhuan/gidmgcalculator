@@ -1,5 +1,5 @@
 import type { AttributeStat, DataCharacter } from "@Src/types";
-import { Green, Pyro } from "@Src/styled-components";
+import { Green, Lightgold, Pyro } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -116,7 +116,7 @@ const Diluc: DataCharacter = {
       desc: () => (
         <>
           The searing flames that run down his blade cause it to be <Green>infused</Green> with{" "}
-          <Pyro>Pyro</Pyro>.<br />• At A4, Diluc gains <Green b>20%</Green>{" "}
+          <Pyro>Pyro</Pyro>.<br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green>{" "}
           <Green>Pyro DMG Bonus</Green> during this duration.
         </>
       ),

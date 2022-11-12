@@ -91,7 +91,7 @@ const Lisa: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Opponents hit by Lightning Rose have their <Green>DEF</Green> decreased by{" "}
+          Opponents hit by Lightning Rose [EB] have their <Green>DEF</Green> decreased by{" "}
           <Green b>15%</Green> for 10s.
         </>
       ),

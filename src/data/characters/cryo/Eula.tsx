@@ -156,8 +156,8 @@ const Eula: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          <Green>Lightfall Swords</Green> deal <Green b>25%</Green> increased <Green>DMG</Green>{" "}
-          against opponents with less than 50% HP.
+          <Green>Lightfall Swords DMG</Green> is increased by <Green b>25%</Green> against opponents
+          with less than 50% HP.
         </>
       ),
       isGranted: checkCons[4],

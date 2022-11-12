@@ -87,7 +87,7 @@ const Rosaria: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When Rosaria strikes an opponent from behind using Ravaging Confession, her{" "}
+          When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her{" "}
           <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 5s.
         </>
       ),
@@ -100,7 +100,7 @@ const Rosaria: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ inputs }) => (
         <>
-          Casting Rites of Termination increases <Green>CRIT Rate</Green> of all nearby party
+          Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party
           members (excluding Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green>{" "}
           for 10s. <Red>CRIT Rate Bonus: {Math.round((inputs?.[0] || 0) * 15) / 100}%.</Red>
         </>
@@ -125,8 +125,8 @@ const Rosaria: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          When Rosaria deals a CRIT Hit, her <Green>ATK SPD</Green> and{" "}
-          <Green>Normal Attack DMG</Green> increases by <Green b>10%</Green> for 4s.
+          When Rosaria deals a CRIT Hit, her <Green>Normal Attack Speed and DMG</Green> increases by{" "}
+          <Green b>10%</Green> for 4s.
         </>
       ),
       isGranted: checkCons[1],
@@ -143,7 +143,7 @@ const Rosaria: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Rites of Termination's attack decreases opponents' <Green>Physical RES</Green> by{" "}
+          Rites of Termination's [EB] attack decreases opponents' <Green>Physical RES</Green> by{" "}
           <Green b>20%</Green> for 10s.
         </>
       ),

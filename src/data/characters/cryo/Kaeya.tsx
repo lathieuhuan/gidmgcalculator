@@ -84,8 +84,8 @@ const Kaeya: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          The <Green>CRIT Rate</Green> of Kaeya's <Green>Normal and Charged Attacks</Green> against
-          opponents affected by Cryo is increased by <Green b>15%</Green>.
+          Kaeya's <Green>Normal and Charged Attack CRIT Rate</Green> against opponents affected by
+          Cryo is increased by <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[1],

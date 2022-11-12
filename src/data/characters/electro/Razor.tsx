@@ -160,8 +160,8 @@ const Razor: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Claw and Thunder (Press) decreases opponents' <Green>DEF</Green> by <Green b>15%</Green>{" "}
-          for 7s.
+          Claw and Thunder [ES] (Press) decreases opponents' <Green>DEF</Green> by{" "}
+          <Green b>15%</Green> for 7s.
         </>
       ),
       isGranted: checkCons[4],

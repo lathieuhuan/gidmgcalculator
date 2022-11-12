@@ -3,6 +3,7 @@ import { Green, Red } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { checkCons } from "../utils";
 
 const Sucrose: DataCharacter = {
   code: 3,
@@ -98,8 +99,8 @@ const Sucrose: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ inputs }) => (
         <>
-          When Astable Anemohypostasis Creation - 6308 or Forbidden Creation - Isomer 75 / Type II
-          hits an opponent, increases all party members' (excluding Sucrose){" "}
+          When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type
+          II [EB] hits an opponent, increases all party members' (excluding Sucrose){" "}
           <Green>Elemental Mastery</Green> based on <Green b>20%</Green> of Sucrose's{" "}
           <Green>Elemental Mastery</Green> for 8s.{" "}
           <Red>Elemental Mastery Bonus: {Math.round((inputs?.[0] || 0) * 0.2)}.</Red>
@@ -122,11 +123,12 @@ const Sucrose: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          If Forbidden Creation - Isomer 75 / Type II triggers an Elemental Absorption, all party
-          members gain a <Green b>20%</Green> <Green>Elemental DMG Bonus</Green> for the
+          If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all
+          party members gain a <Green b>20%</Green> <Green>Elemental DMG Bonus</Green> for the
           corresponding <Green>absorbed element</Green> during its duration.
         </>
       ),
+      isGranted: checkCons[6],
       affect: EModAffect.PARTY,
       inputConfigs: [
         {

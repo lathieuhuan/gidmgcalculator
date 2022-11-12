@@ -111,8 +111,8 @@ const Albedo: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Using Rite of Progeniture: Tectonic Tide increases the <Green>Elemental Mastery</Green> of
-          nearby party members by <Green b>125</Green> for 10s.
+          Using Rite of Progeniture: Tectonic Tide [EB] increases the{" "}
+          <Green>Elemental Mastery</Green> of nearby party members by <Green b>125</Green> for 10s.
         </>
       ),
       affect: EModAffect.PARTY,
@@ -149,7 +149,7 @@ const Albedo: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Active party members within the Solar Isotoma field have their{" "}
+          Active party members within the Solar Isotoma [ES] field have their{" "}
           <Green>Plunging Attack DMG</Green> increased by <Green b>30%</Green>.
         </>
       ),
@@ -162,8 +162,8 @@ const Albedo: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Active party members within the Solar Isotoma field who are protected by a shield created
-          by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
+          Active party members within the Solar Isotoma [ES] field who are protected by a shield
+          created by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,

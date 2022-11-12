@@ -140,9 +140,8 @@ const Kazuha: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          The Autumn Whirlwind field created by Kazuha Slash increases the{" "}
-          <Green>Elemental Mastery</Green> of him and characters within the field by{" "}
-          <Green b>200</Green>.
+          Kazuha Slash's [EB] field increases the <Green>Elemental Mastery</Green> of him and
+          characters within the field by <Green b>200</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -155,9 +154,9 @@ const Kazuha: DataCharacter = {
       desc: ({ totalAttr }) => (
         <>
           After using Chihayaburu or Kazuha Slash, Kazuha gains an <Anemo>Anemo Infusion</Anemo> for
-          5s. Additionally, each point of <Green>Elemental Mastery</Green> will increase the{" "}
-          <Green>DMG</Green> dealt by Kazuha's <Green>Normal, Charged, and Plunging Attack</Green>{" "}
-          by <Green b>0.2%</Green>. <Red>DMG Bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
+          5s. Each point of <Green>Elemental Mastery</Green> will increase Kazuha's{" "}
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> by <Green b>0.2%</Green>.{" "}
+          <Red>DMG Bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
         </>
       ),
       isGranted: checkCons[6],

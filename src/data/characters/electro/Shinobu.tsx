@@ -114,11 +114,12 @@ const Shinobu: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Sanctifying Ring's abilities will be boosted based on Shinobu's Elemental Mastery:
+          Sanctifying Ring's [ES] abilities will be boosted based on Shinobu's{" "}
+          <Green>Elemental Mastery</Green>:
           <br />• <Green>Healing amount</Green> will be increased by <Green b>75%</Green> of{" "}
-          <Green>Elemental Mastery</Green>.
-          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of{" "}
-          <Green>Elemental Mastery</Green>.
+          Elemental Mastery.
+          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of Elemental
+          Mastery.
         </>
       ),
       isGranted: checkAscs[4],

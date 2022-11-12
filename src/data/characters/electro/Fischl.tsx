@@ -120,8 +120,8 @@ const Fischl: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          When <Green>Nightrider</Green> is used, it deals an <Green>additional</Green>{" "}
-          <Green b>200%</Green> <Green>ATK</Green> as DMG.
+          Nightrider's <Green>Summoning DMG</Green> is increased by <Green b>200%</Green> of{" "}
+          <Green>ATK</Green>.
         </>
       ),
       isGranted: checkCons[2],

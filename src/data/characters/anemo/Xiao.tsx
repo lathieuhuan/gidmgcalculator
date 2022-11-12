@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
-import { Anemo, Green } from "@Src/styled-components";
+import { Anemo, Green, Rose } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
@@ -123,7 +123,7 @@ const Xiao: DataCharacter = {
         <>
           Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
           <Green b>{getEBBuffValue(char, partyData)}%</Green> and converts them to{" "}
-          <Anemo>Anemo DMG</Anemo>
+          <Anemo>Anemo DMG</Anemo>.
         </>
       ),
       affect: EModAffect.SELF,
@@ -141,9 +141,9 @@ const Xiao: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          With the effects of Bane of All Evil, <Green>all DMG</Green> dealt by Xiao increases by{" "}
+          With the effects of Bane of All Evil [EB], Xiao's <Green>DMG</Green> is increases by{" "}
           <Green b>5%</Green>. DMG increases by a further <Green b>5%</Green> for every 3s the
-          ability persists. The maximum DMG Bonus is <Green b>25%</Green>.
+          ability persists. Max <Rose>25%</Rose>.
         </>
       ),
       isGranted: checkAscs[1],
@@ -163,9 +163,9 @@ const Xiao: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Using Lemniscatic Wind Cycling increases the DMG of subsequent{" "}
-          <Green>Lemniscatic Wind Cycling</Green> by <Green b>15%</Green> for 10s. This effect lasts
-          for 7s, and has a maximum of <Green b>3</Green> <Green>stacks</Green>.
+          Using Lemniscatic Wind Cycling increases subsequent Lemniscatic Wind Cycling{" "}
+          <Green>[ES] DMG</Green> by <Green b>15%</Green>. This effect lasts for 7s, and has a
+          maximum of <Rose>3 stacks</Rose>.
         </>
       ),
       isGranted: checkAscs[4],

@@ -112,8 +112,8 @@ const Diona: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Increases Icy Paws' <Green>DMG</Green> by <Green b>15%</Green>, and increases its shield's{" "}
-          <Green>DMG Absorption</Green> by <Green b>15%</Green>.
+          Increases Icy Paws <Green>[ES] DMG</Green> by <Green b>15%</Green>, and increases its
+          shield's <Green>DMG Absorption</Green> by <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -126,9 +126,8 @@ const Diona: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Characters within Signature Mix's radius will gain the following effects based on their HP
-          amounts: <Green>Elemental Mastery</Green> increased by <Green b>200</Green> when HP is
-          above 50%.
+          When characters within Signature Mix's radius have more than 50% HP, their{" "}
+          <Green>Elemental Mastery</Green> is increased by <Green b>200</Green>.
         </>
       ),
       isGranted: checkCons[6],

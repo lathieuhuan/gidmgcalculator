@@ -186,10 +186,10 @@ const Ayato: DataCharacter = {
       src: EModSrc.ES,
       desc: () => (
         <>
-          • Causes <Green>DMG</Green> from his <Green>Normal Attacks</Green> to be{" "}
-          <Green>converted</Green> into AoE <Hydro>Hydro DMG</Hydro>. This cannot be overridden.
-          <br />• Namisen increases the <Green>DMG</Green> dealt by <Green>Shunsuiken</Green> based
-          on Ayato's <Green>current Max HP</Green>.
+          • Causes DMG from his <Green>Normal Attacks</Green> to be converted into AoE{" "}
+          <Hydro>Hydro DMG</Hydro>. This cannot be overridden.
+          <br />• Namisen increases <Green>Shunsuiken DMG</Green> based on Ayato's{" "}
+          <Green>current Max HP</Green>.
         </>
       ),
       affect: EModAffect.SELF,

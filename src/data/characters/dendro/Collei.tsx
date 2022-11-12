@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Dendro, Green } from "@Src/styled-components";
+import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Calculators/utils";
@@ -68,102 +68,28 @@ const Collei: DataCharacter = {
     },
   },
   passiveTalents: [
-    {
-      name: "Floral Sidewinder",
-      image: "c/cf/Talent_Floral_Sidewinder",
-      desc: (
-        <>
-          If one of your party members has triggered Burning, Quicken, Aggravate, Spread, Bloom,
-          Hyperbloom, or Burgeon reactions before the Floral Ring returns, it will grant the
-          character the Sprout effect upon return, which will continuously deal Dendro DMG
-          equivalent to <Green b>40%</Green> of Collei's <Green>ATK</Green> to nearby opponents for
-          3s.
-          <br />
-          If another Sprout effect is triggered during its initial duration, the initial effect will
-          be removed.
-        </>
-      ),
-    },
-    {
-      name: "The Languid Wood",
-      image: "c/cb/Talent_The_Languid_Wood",
-      desc: (
-        <>
-          When a character within the Cuilein-Anbar Zone triggers Burning, Quicken, Aggravate,
-          Spread, Bloom, Hyperbloom, or Burgeon reactions, the Zone's <Green>duration</Green> will
-          be increased by <Green>1s</Green>.
-          <br />A single Trump-Card Kitty can be extended by up to <Green>3s</Green>.
-        </>
-      ),
-    },
+    { name: "Floral Sidewinder", image: "c/cf/Talent_Floral_Sidewinder" },
+    { name: "The Languid Wood", image: "c/cb/Talent_The_Languid_Wood" },
     { name: "Gliding Champion of Sumeru", image: "d/d3/Talent_Gliding_Champion_of_Sumeru" },
   ],
   constellation: [
-    {
-      name: "Beginnings Determined at the Roots",
-      image: "b/b7/Constellation_Deepwood_Patrol",
-      desc: (
-        <>
-          When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is
-          increased by <Green b>20%</Green>.
-        </>
-      ),
-    },
-    {
-      name: "Through Hill and Copse",
-      image: "d/d8/Constellation_Through_Hill_and_Copse",
-      get desc() {
-        return (
-          <>
-            The Passive Talent Floral Sidewinder is changed to this:
-            <br />
-            ...
-            {this.xtraDesc![0]}
-            <br />
-            The effect will last up to 6s if the field's duraton ends or if it no longer has
-            opponents within it.
-          </>
-        );
-      },
-      xtraDesc: [
-        <>
-          From the moment of using Floral Brush to the moment when this instance of Sprout effect
-          ends, if any of your party members triggers Burning, Quicken, Aggravate, Spread, Bloom,
-          Hyperbloom, or Burgeon reactions, the <Green>Sprout effect</Green> will be extended by{" "}
-          <Green b>3s</Green>.
-        </>,
-      ],
-    },
+    { name: "Beginnings Determined at the Roots", image: "b/b7/Constellation_Deepwood_Patrol" },
+    { name: "Through Hill and Copse", image: "d/d8/Constellation_Through_Hill_and_Copse" },
     { name: "Scent of Summer", image: "a/ac/Constellation_Scent_of_Summer" },
-    {
-      name: "Gift of the Woods",
-      image: "8/85/Constellation_Gift_of_the_Woods",
-      desc: (
-        <>
-          Using Trump-Card Kitty will increase all nearby characters'{" "}
-          <Green>Elemental Mastery</Green> by <Green b>60</Green> for 12s (excluding Collei).
-        </>
-      ),
-    },
+    { name: "Gift of the Woods", image: "8/85/Constellation_Gift_of_the_Woods" },
     { name: "All Embers", image: "7/77/Constellation_All_Embers" },
-    {
-      name: "Forest of Falling Arrows",
-      image: "b/b8/Constellation_Forest_of_Falling_Arrows",
-      desc: (
-        <>
-          When the Floral Ring hits opponents, it will create a miniature Cuilein-Anbar that will
-          deal <Green b>200%</Green> of Collei's <Green>ATK</Green> as <Dendro>Dendro DMG</Dendro>.
-          <br />
-          Each Floral Brush can only create one such miniature Cuilein-Anbar.
-        </>
-      ),
-    },
+    { name: "Forest of Falling Arrows", image: "b/b8/Constellation_Forest_of_Falling_Arrows" },
   ],
   buffs: [
     {
       index: 0,
       src: EModSrc.C1,
-      desc: () => Collei.constellation[0].desc,
+      desc: () => (
+        <>
+          When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is
+          increased by <Green b>20%</Green>.
+        </>
+      ),
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "er", 20),
@@ -171,7 +97,12 @@ const Collei: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C4,
-      desc: () => Collei.constellation[3].desc,
+      desc: () => (
+        <>
+          Using Trump-Card Kitty [EB] will increase all nearby characters'{" "}
+          <Green>Elemental Mastery</Green> (excluding Collei) by <Green b>60</Green> for 12s.
+        </>
+      ),
       isGranted: checkCons[4],
       affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 60),

@@ -1,5 +1,5 @@
-import type { AttributeStat, DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import { Geo, Green } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
@@ -93,24 +93,6 @@ const Itto: DataCharacter = {
       energyCost: 70,
     },
   },
-  // actvTalents: [
-  //   {
-  //     desc: [
-  //       {
-  //         lines: [
-  //           <>
-  //             • <Green>Converts</Green> Itto's Normal, Charged, and Plunging Attacks to {geoDmg}.
-  //             This cannot be overridden.
-  //           </>,
-  //           <>
-  //             <br />• Increases Itto's <Green>Normal Attack SPD</Green>. Also increases his{" "}
-  //             <Green>ATK</Green> based on his <Green>DEF</Green>.
-  //           </>,
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // ],
   passiveTalents: [
     { name: "Arataki Ichiban", image: "a/a5/Talent_Arataki_Ichiban" },
     { name: "Bloodline of the Crimson Oni", image: "d/db/Talent_Bloodline_of_the_Crimson_Oni" },
@@ -161,16 +143,17 @@ const Itto: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          When Arataki Itto uses consecutive Arataki Kesagiri, he obtains the following effects:
-          <br />• Each slash increases the <Green>ATK SPD</Green> of the next slash by{" "}
+          • Converts Itto's <Green>Normal, Charged, and Plunging Attacks</Green> to{" "}
+          <Geo>Geo DMG</Geo>. This cannot be overridden.
+          <br />• Increases Itto's <Green>Normal Attack SPD</Green> by <Green b>10%</Green>. Also
+          increases his <Green>ATK</Green> based on his <Green>DEF</Green>.
         </>
       ),
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv(char, "EB", partyData);
-        const fields: AttributeStat[] = ["atk", "naAtkSpd"];
         const buffValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
-        applyModifier(desc, totalAttr, fields, [buffValue, 10], tracker);
+        applyModifier(desc, totalAttr, ["atk", "naAtkSpd"], [buffValue, 10], tracker);
       },
       infuseConfig: {
         range: [...NORMAL_ATTACKS],
@@ -182,9 +165,9 @@ const Itto: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          When the Raging Oni King state caused by Royal Descent: Behold, Itto the Evil ends, all
-          nearby party members gain <Green b>20%</Green> <Green>DEF</Green> and <Green b>20%</Green>{" "}
-          <Green>ATK</Green> for 10s.
+          When the Raging Oni King state [EB] ends, all nearby party members gain{" "}
+          <Green b>20%</Green> <Green>DEF</Green> and <Green b>20%</Green> <Green>ATK</Green> for
+          10s.
         </>
       ),
       isGranted: checkCons[4],

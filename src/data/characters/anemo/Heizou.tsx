@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const Heizou: DataCharacter = {
@@ -91,9 +91,8 @@ const Heizou: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          After Shikanoin Heizou's Heartstopper Strike hits an opponent, increases all party
-          members' (excluding Shikanoin Heizou) <Green>Elemental Mastery</Green> by{" "}
-          <Green b>80</Green> for 10s.
+          When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding
+          Heizou) <Green>Elemental Mastery</Green> by <Green b>80</Green> for 10s.
         </>
       ),
       affect: EModAffect.TEAMMATE,
@@ -104,8 +103,8 @@ const Heizou: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          For 5s after Shikanoin Heizou takes the field, his <Green>Normal Attack SPD</Green> is
-          increased by <Green>15%</Green>.
+          For 5s after Heizou takes the field, his <Green>Normal Attack SPD</Green> is increased by{" "}
+          <Green>15%</Green>.
         </>
       ),
       isGranted: checkCons[1],
@@ -117,9 +116,9 @@ const Heizou: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Each Declension stack will increase the <Green>CRIT Rate</Green> of the Heartstopper
-          Strike unleashed by <Green b>4%</Green>. When Heizou possesses Conviction, this
-          Heartstoppper Strike's <Green>CRIT DMG</Green> is increased by <Green b>32%</Green>.
+          Each Declension stack increases Heartstopper Strike <Green>[ES] CRIT Rate</Green> by{" "}
+          <Green b>4%</Green>. When Heizou possesses Conviction, Heartstoppper Strike's{" "}
+          <Green>[ES] CRIT DMG</Green> is increased by <Green b>32%</Green>.
         </>
       ),
       isGranted: checkCons[6],

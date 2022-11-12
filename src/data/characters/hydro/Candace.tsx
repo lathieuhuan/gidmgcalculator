@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Hydro } from "@Src/styled-components";
+import { Green, Hydro, Lightgold } from "@Src/styled-components";
 import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -164,8 +164,8 @@ const Candace: DataCharacter = {
           Prayer of the Crimson Crown [EB] has the following properties:
           <br />• Characters deal <Green b>20%</Green> increased Elemental DMG with their{" "}
           <Green>Normal Attacks</Green>.
-          <br />• At A4, increases the above bonus by <Green b>0.5%</Green> for every 1,000 points
-          of Candace's <Green>Max HP</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green>{" "}
+          for every 1,000 points of Candace's <Green>Max HP</Green>.
           <br />• Active Sword, Claymore, and Polearm-wielding character(s) under this effect will
           obtain a <Hydro>Hydro Infusion</Hydro>.
         </>

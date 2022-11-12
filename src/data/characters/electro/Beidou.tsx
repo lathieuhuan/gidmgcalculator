@@ -117,7 +117,7 @@ const Beidou: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          After unleashing Tidecaller with its maximum DMG Bonus, Beidou's{" "}
+          After unleashing Tidecaller [ES] with its maximum DMG Bonus, Beidou's{" "}
           <Green>Normal and Charged Attacks DMG</Green> and <Green>ATK SPD</Green> are increased by{" "}
           <Green b>15%</Green> for 10s.
         </>
@@ -136,7 +136,7 @@ const Beidou: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          During the duration of Stormbreaker, the <Green>Electro RES</Green> of surrounding
+          During the duration of Stormbreaker [EB], the <Green>Electro RES</Green> of surrounding
           opponents is decreased by <Green b>15%</Green>.
         </>
       ),

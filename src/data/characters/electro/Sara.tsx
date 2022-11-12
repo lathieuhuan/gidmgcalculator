@@ -1,5 +1,5 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
-import { Electro, Green, Red } from "@Src/styled-components";
+import { Green, Lightgold, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
@@ -108,7 +108,8 @@ const Sara: DataCharacter = {
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
           Sara's <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
-          <br />• At C6, it also increases <Green>Electro Crit DMG</Green> by <Green b>60%</Green>.
+          <br />• At <Lightgold>C6</Lightgold>, it also increases <Green>Electro Crit DMG</Green> by{" "}
+          <Green b>60%</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
@@ -125,7 +126,7 @@ const Sara: DataCharacter = {
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, obj.totalAttr, "atk", bonusValue, obj.tracker);
 
-        if ((obj.toSelf && obj.char.cons >= 6) || (!obj.toSelf && obj.inputs?.[2])) {
+        if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs?.[2])) {
           increaseAttackBonus({
             ...obj,
             desc: `Self / ${EModSrc.C6}`,

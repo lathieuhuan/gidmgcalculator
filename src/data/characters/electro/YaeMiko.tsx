@@ -89,8 +89,8 @@ const YaeMiko: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase{" "}
-          <Green>Sesshou Sakura DMG</Green> by <Green b>0.15%</Green>.{" "}
+          Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase Sesshou
+          Sakura <Green>[ES] DMG</Green> by <Green b>0.15%</Green>.{" "}
           <Red>DMG Bonus: {(totalAttr.em * 15) / 100}%.</Red>
         </>
       ),
@@ -106,8 +106,8 @@ const YaeMiko: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          When Sesshou Sakura thunderbolt hit opponents, the <Green>Electro DMG Bonus</Green> of all
-          nearby party members is increased by <Green b>20%</Green> for 5s.
+          When Sesshou Sakura thunderbolt [EB] hit opponents, the <Green>Electro DMG Bonus</Green>{" "}
+          of all nearby party members is increased by <Green b>20%</Green> for 5s.
         </>
       ),
       isGranted: checkCons[4],

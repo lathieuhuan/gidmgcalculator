@@ -91,7 +91,6 @@ module.exports = {
         darkred: "#cd212a",
         darkerred: "#8a1200",
         lightred: "#ff8d8c",
-        // gold: "#ffd700",
         lightgold: "#edc73d", // #ffdc4e
         lightorange: "#ffa629",
         dullyellow: "#f5dc6e",

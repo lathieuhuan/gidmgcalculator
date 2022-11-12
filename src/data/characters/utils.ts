@@ -95,5 +95,5 @@ export function findInput(
   defaultValue: ModifierInput = 0
 ) {
   const ctrl = findByIndex(modCtrls, ctrlIndex);
-  return ctrl && ctrl.inputs ? ctrl.inputs[inputIndex] : defaultValue;
+  return ctrl && ctrl.inputs ? ctrl.inputs[inputIndex] ?? 0 : defaultValue;
 }

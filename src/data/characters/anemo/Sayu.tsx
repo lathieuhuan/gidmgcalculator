@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
@@ -159,10 +159,10 @@ const Sayu: DataCharacter = {
       desc: () => (
         <>
           Each point of Sayu's <Green>Elemental Mastery</Green> will:
-          <br />• Increases <Green>DMG</Green> dealt by the Daruma's attacks by{" "}
-          <Green b>0.2%</Green> <Green>ATK</Green>, up to <Green b>400%</Green> ATK.
+          <br />• Increases <Green>Daruma DMG</Green> by <Green b>0.2%</Green> <Green>ATK</Green>,
+          up to <Rose>400%</Rose> ATK.
           <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to{" "}
-          <Green b>6,000</Green> additional HP.
+          <Rose>6,000</Rose> additional HP.
         </>
       ),
       isGranted: checkCons[6],
@@ -174,10 +174,10 @@ const Sayu: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Yoohoo Art: Fuuin Dash gains the following effects:
+          Yoohoo Art: Fuuin Dash [ES] gains the following effects:
           <br />• <Green>Press Kick DMG</Green> increased by <Green b>3.3%</Green>.
           <br />• <Green>Hold Kick DMG</Green> increased by <Green b>3.3%</Green> for every 0.5s
-          Sayu in Fuufuu Windwheel state, up to <Green b>66%</Green>.
+          Sayu in Fuufuu Windwheel state, up to <Rose>66%</Rose>.
         </>
       ),
       isGranted: checkCons[2],

@@ -129,7 +129,7 @@ const Noelle: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          <Green>Sweeping Time</Green> increases Noelle's <Green>ATK</Green> by an additional{" "}
+          Sweeping Time [EB] increases Noelle's <Green>ATK</Green> by an additional{" "}
           <Green b>50%</Green> of her <Green>DEF</Green>.
         </>
       ),
@@ -142,7 +142,7 @@ const Noelle: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          • <Green>Converts</Green> attack DMG to <Geo>Geo DMG</Geo> that cannot be overridden by
+          • Converts <Green>attack DMG</Green> to <Geo>Geo DMG</Geo> that cannot be overridden by
           any other elemental infusion.
           <br />• Increased <Green>ATK</Green> that scales based on her <Green>DEF</Green>.
         </>

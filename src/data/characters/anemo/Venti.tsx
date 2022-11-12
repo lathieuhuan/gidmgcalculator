@@ -1,13 +1,9 @@
-import type { ApplyCharDebuffFn, DataCharacter } from "@Src/types";
+import type { DataCharacter } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkCons } from "../utils";
-
-const applyC2Debuff: ApplyCharDebuffFn = ({ resistReduct, desc, tracker }) => {
-  applyModifier(desc, resistReduct, ["phys", "anemo"], 12, tracker);
-};
 
 const Venti: DataCharacter = {
   code: 22,
@@ -116,19 +112,16 @@ const Venti: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyDebuff: applyC2Debuff,
-    },
-    {
-      index: 1,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          Opponents launched by Skyward Sonnet suffer an additional <Green b>12%</Green>{" "}
-          <Green>Anemo RES</Green> and <Green>Physical RES</Green> decrease while airborne.
-        </>
-      ),
-      isGranted: checkCons[2],
-      applyDebuff: applyC2Debuff,
+      inputConfigs: [
+        {
+          label: "Launch target",
+          type: "check",
+        },
+      ],
+      applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
+        const buffValue = 12 * (inputs?.[0] ? 2 : 1);
+        applyModifier(desc, resistReduct, ["phys", "anemo"], buffValue, tracker);
+      },
     },
     {
       index: 2,

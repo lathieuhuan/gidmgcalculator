@@ -109,8 +109,8 @@ const Jean: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          Increases the pulling speed of Gale Blade after holding for more than 1s, and increases
-          the <Green>DMG</Green> dealt by <Green b>40%</Green>.
+          Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and
+          increases the <Green>DMG</Green> dealt by <Green b>40%</Green>.
         </>
       ),
       isGranted: checkCons[1],
@@ -139,7 +139,7 @@ const Jean: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Within the Field created by Dandelion Breeze, all opponents have their{" "}
+          Within the field of Dandelion Breeze [EB], all opponents have their{" "}
           <Green>Anemo RES</Green> decreased by <Green b>40%</Green>.
         </>
       ),

@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -116,11 +116,12 @@ const Zhongli: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />• Normal Attack, Charged
-          Attack, and Plunging Attack DMG increased by <Green b>1.39%</Green> of Max HP.
-          <br />• Dominus Lapidis Stone Stele, resonance, and hold DMG increased by{" "}
-          <Green b>1.9%</Green> of Max HP.
-          <br />• Planet Befall DMG increased by <Green b>33%</Green> of Max HP.
+          Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />•{" "}
+          <Green>Normal Attack, Charged Attack, and Plunging Attack DMG</Green> increased by{" "}
+          <Green b>1.39%</Green> of Max HP.
+          <br />• Dominus Lapidis Stone Stele, resonance, and hold <Green>[ES] DMG</Green> increased
+          by <Green b>1.9%</Green> of Max HP.
+          <br />• Planet Befall <Green>[EB] DMG</Green> increased by <Green b>33%</Green> of Max HP.
         </>
       ),
       isGranted: checkAscs[4],
@@ -139,9 +140,9 @@ const Zhongli: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When the Jade Shield takes DMG, it will Fortify: <br />• Fortified characters have{" "}
-          <Green b>5%</Green> increased <Green>Shield Strength</Green>.<br />
-          Can stack up to <Green b>5</Green> times, and lasts until the Jade Shield disappears.
+          When Jade Shield takes DMG, the characters have their <Green>Shield Strength</Green>{" "}
+          increased by <Green b>5%</Green>. Max <Rose>5 stacks</Rose>, and lasts until the Jade
+          Shield disappears.
         </>
       ),
       isGranted: checkAscs[1],
@@ -163,9 +164,8 @@ const Zhongli: DataCharacter = {
       src: "Jade Shield",
       desc: () => (
         <>
-          Characters protected by the Jade Shield will decrease the <Green>Elemental RES</Green> and{" "}
-          <Green>Physical RES</Green> of opponents in a small AoE by <Green b>20%</Green>. This
-          effect cannot be stacked.
+          Jade Shield decreases <Green>Elemental RES</Green> and <Green>Physical RES</Green> of
+          opponents in a small AoE by <Green b>20%</Green>. Cannot be stacked.
         </>
       ),
       applyDebuff: ({ resistReduct, desc, tracker }) => {

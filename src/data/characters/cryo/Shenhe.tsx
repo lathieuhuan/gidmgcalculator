@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Cryo, Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
@@ -110,7 +110,7 @@ const Shenhe: DataCharacter = {
       desc: () => (
         <>
           When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal{" "}
-          <Cryo>Cryo DMG</Cryo> the <Green>DMG</Green> dealt is increased based on Shenhe's{" "}
+          <Green>Cryo DMG</Green> the DMG dealt is increased based on Shenhe's{" "}
           <Green>current ATK</Green>.
         </>
       ),
@@ -141,7 +141,7 @@ const Shenhe: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          An active character within the field created by Divine Maiden's Deliverance gain{" "}
+          An active character within Divine Maiden's Deliverance [EB] field gain{" "}
           <Green b>15%</Green> <Green>Cryo DMG Bonus</Green>.
         </>
       ),
@@ -152,17 +152,17 @@ const Shenhe: DataCharacter = {
     {
       index: 2,
       src: EModSrc.A4,
-      desc: ({ inputs }) => (
+      desc: ({ inputs = [] }) => (
         <>
           After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the
           following effects:
           <br />
-          <span className={inputs?.[0] ? "" : "opacity-50"}>
+          <span className={inputs[0] ? "" : "opacity-50"}>
             • Press: <Green>Elemental Skill and Elemental Burst DMG</Green> increased by{" "}
             <Green b>15%</Green> for 10s.
           </span>
           <br />
-          <span className={inputs?.[1] ? "" : "opacity-50"}>
+          <span className={inputs[1] ? "" : "opacity-50"}>
             • Hold: <Green>Normal, Charged and Plunging Attack DMG</Green> increased by{" "}
             <Green b>15%</Green> for 15s.
           </span>
@@ -189,7 +189,7 @@ const Shenhe: DataCharacter = {
       desc: () => (
         <>
           Active characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green>{" "}
-          increased <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
+          increased <Green>Cryo CRIT DMG</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -210,9 +210,8 @@ const Shenhe: DataCharacter = {
       desc: () => (
         <>
           Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra
-          stack. Each stack increases her next <Green>Spring Spirit Summoning's DMG</Green> by{" "}
-          <Green b>5%</Green>. Stacks last for 60s and has a <Green>maximum</Green> of{" "}
-          <Green b>50</Green>.
+          stack for 60s. Each stack increases her next Spring Spirit Summoning{" "}
+          <Green>[ES] DMG</Green> by <Green b>5%</Green>. Maximum <Rose>50 stacks</Rose>.
         </>
       ),
       isGranted: checkCons[4],
@@ -235,8 +234,7 @@ const Shenhe: DataCharacter = {
       src: EModSrc.EB,
       desc: ({ fromSelf, char, inputs, partyData }) => (
         <>
-          The field decreases the <Green>Cryo RES</Green> and <Green>Physical RES</Green> of
-          opponents within it by{" "}
+          The field decreases opponents' <Green>Cryo RES</Green> and <Green>Physical RES</Green> by{" "}
           <Green b>{getEBDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
         </>
       ),

@@ -136,11 +136,11 @@ const Gorou: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Gorou receives the following DMG Bonuses to his attacks based on his DEF:
-          <br />• <Green>Inuzaka All-Round Defense</Green>: Skill DMG increased by{" "}
-          <Green b>156%</Green> of <Green>DEF</Green>
-          <br />• <Green>Juuga: Forward Unto Victory</Green>: Skill DMG and Crystal Collapse DMG
-          increased by <Green b>15.6%</Green> of <Green>DEF</Green>
+          Gorou skills receive DMG Bonuses based on his <Green>DEF</Green>:
+          <br />• Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by{" "}
+          <Green b>156%</Green> of DEF.
+          <br />• Juuga: Forward Unto Victory <Green>[ES] DMG</Green> increased by{" "}
+          <Green b>15.6%</Green> of DEF.
         </>
       ),
       isGranted: checkAscs[4],
@@ -159,7 +159,7 @@ const Gorou: DataCharacter = {
         return (
           <>
             Provides up to 3 buffs to active characters within the skill's AoE based on the number
-            of <Geo>Geo</Geo> characters in the party at the time of casting:
+            of <Geo>Geo</Geo> characters in the party:
             <br />
             <span className={numOfGeo >= 1 ? "" : "opacity-50"}>
               • 1 Geo character: Adds "Standing Firm" - <Green>DEF Bonus</Green>
@@ -211,8 +211,8 @@ const Gorou: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          After using Juuga: Forward Unto Victory, all nearby party members' <Green>DEF</Green> is
-          increased by <Green b>25%</Green> for 12s.
+          After using Juuga: Forward Unto Victory [EB], all nearby party members' <Green>DEF</Green>{" "}
+          is increased by <Green b>25%</Green> for 12s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -226,9 +226,9 @@ const Gorou: DataCharacter = {
         const n = countGeo(charData, partyData);
         return (
           <>
-            For 12s after using Inuzaka All-Round Defense or Juuga: Forward Unto Victory, increases
-            the <Green>CRIT DMG</Green> of all nearby party members' <Geo>Geo DMG</Geo> based on the
-            buff level of the skill's field at the time of use:
+            For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB],
+            increases all nearby party members' <Green>Geo CRIT DMG</Green> based on the buff level
+            of the skill's field:
             <br />
             <span className={n === 1 ? "" : "opacity-50"}>
               • "Standing Firm": <Green b>+10%</Green>

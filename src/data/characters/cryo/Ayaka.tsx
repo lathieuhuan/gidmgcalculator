@@ -153,7 +153,7 @@ const Ayaka: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Opponents damaged by Kamisato Art: Soumetsu's Frostflake Seki no To will have their{" "}
+          Opponents damaged by Kamisato Art: Soumetsu's Frostflake Seki no To [EB] will have their{" "}
           <Green>DEF</Green> decreased by <Green b>30%</Green> for 6s.
         </>
       ),

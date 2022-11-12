@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -142,8 +142,8 @@ const Ganyu: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Celestial Shower grants a <Green b>20%</Green> <Green>Cryo DMG Bonus</Green> to active
-          members in the AoE.
+          Celestial Shower [EB] grants a <Green b>20%</Green> <Green>Cryo DMG Bonus</Green> to
+          active members in the AoE.
         </>
       ),
       isGranted: checkAscs[4],
@@ -157,7 +157,7 @@ const Ganyu: DataCharacter = {
         <>
           Opponents within Celestial Shower take increased DMG. This effect strengthens over time.
           Increased <Green>DMG</Green> taken begins at <Green b>5%</Green> and increases by{" "}
-          <Green b>5%</Green> every 3s, up to a maximum of <Green b>25%</Green>.
+          <Green b>5%</Green> every 3s, up to a maximum of <Rose>25%</Rose>.
         </>
       ),
       isGranted: checkCons[4],

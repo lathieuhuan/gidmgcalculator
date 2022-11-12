@@ -1,19 +1,19 @@
-import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { Cryo, Green, Red } from "@Src/styled-components";
+import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
+import { Cryo, Green, Lightgold, Red, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
-import { checkAscs, findInput, modIsActivated } from "../utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { checkAscs } from "../utils";
 
-const getCoilStacksBuffValue = (
-  char: CharInfo,
-  partyData: PartyData,
-  charBuffCtrls: ModifierCtrl[]
-) => {
-  const level = finalTalentLv(char, "ES", partyData);
-  const stacks = modIsActivated(charBuffCtrls, 1) ? 5 : findInput(charBuffCtrls, 0, 0);
-
+const getNApctBonus = (args: {
+  char: CharInfo;
+  partyData: PartyData;
+  inputs?: ModifierInput[];
+}) => {
+  const level = finalTalentLv(args.char, "ES", args.partyData);
+  let stacks = args.inputs?.[0] || 0;
+  stacks = stacks === 4 ? 5 : stacks;
   return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks);
 };
 
@@ -102,39 +102,41 @@ const Aloy: DataCharacter = {
     {
       index: 0,
       src: "Coil stacks",
-      desc: ({ char, partyData, charBuffCtrls }) => (
+      desc: (args) => (
         <>
-          Each stack increases Aloy's <Green>Normal Attack DMG</Green>.{" "}
-          <Red>Total DMG Bonus: {getCoilStacksBuffValue(char, partyData, charBuffCtrls)}%.</Red>
+          Increases Aloy's <Green>Normal Attack DMG</Green>. When she has 4 Coil stacks, all stacks
+          are cleared. Aloy then enters the Rushing Ice state, which further increases her{" "}
+          <Green>Normal Attack DMG</Green> and converts it to <Cryo>Cryo DMG</Cryo>.{" "}
+          <Red>Total DMG Bonus: {getNApctBonus(args)}%.</Red>
+          <br />• At <Lightgold>A1</Lightgold> when Aloy receives Coil effect, her{" "}
+          <Green>ATK</Green> is increased by <Green b>16%</Green> for 10s.
+          <br />• At <Lightgold>A4</Lightgold> when Aloy is in Rushing Ice state, her{" "}
+          <Green>Cryo DMG Bonus</Green> increases by <Green b>3.5%</Green> every 1s, up to{" "}
+          <Rose>35%</Rose>.
         </>
       ),
       affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
-          max: 3,
+          max: 4,
+        },
+        {
+          label: "Time passed (A4)",
+          type: "stacks",
+          max: 10,
         },
       ],
-      applyBuff: ({ attPattBonus, char, charBuffCtrls, partyData, desc, tracker }) => {
-        const buffValue = getCoilStacksBuffValue(char, partyData, charBuffCtrls);
-        applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
-      },
-    },
-    {
-      index: 1,
-      src: "Max Coil stacks",
-      desc: () => (
-        <>
-          When Aloy has 4 Coil stacks, all stacks of Coil are cleared. She then enters the Rushing
-          Ice state, which further increases the <Green>DMG</Green> dealt by her{" "}
-          <Green>Normal Attacks</Green> and converts her <Green>Normal Attack DMG</Green> to{" "}
-          <Cryo>Cryo DMG</Cryo>.
-        </>
-      ),
-      affect: EModAffect.SELF,
-      infuseConfig: {
-        range: ["NA"],
-        overwritable: false,
+      applyBuff: (obj) => {
+        const { char, desc, tracker } = obj;
+        applyModifier(desc, obj.attPattBonus, "NA.pct", getNApctBonus(obj), tracker);
+
+        if (checkAscs[1](char)) {
+          applyModifier(desc, obj.totalAttr, "atk_", 16, tracker);
+        }
+        if (checkAscs[4](char)) {
+          applyModifier(desc, obj.totalAttr, "cryo", 3.5 * (obj.inputs?.[1] || 0), tracker);
+        }
       },
     },
     {
@@ -142,38 +144,13 @@ const Aloy: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          When Aloy receives the Coil effect from Frozen Wilds, her <Green>ATK</Green> is increased
-          by <Green b>16%</Green>, while nearby party members' <Green>ATK</Green> is increased by{" "}
-          <Green b>8%</Green>. This effect lasts 10s.
+          when Aloy receives the Coil effect, nearby party members' <Green>ATK</Green> is increased
+          by <Green b>8%</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF_TEAMMATE,
-      applyBuff: ({ totalAttr, toSelf, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "atk_", toSelf ? 16 : 8, tracker);
-      },
-    },
-    {
-      index: 3,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          When Aloy is in the Rushing Ice state conferred by Frozen Wilds, her{" "}
-          <Green>Cryo DMG Bonus</Green> increases by <Green b>3.5%</Green> every 1s, up to{" "}
-          <Green b>35%</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 10,
-        },
-      ],
-      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "cryo", 3.5 * (inputs?.[0] || 0), tracker);
-      },
+      affect: EModAffect.TEAMMATE,
+      applyBuff: makeModApplier("totalAttr", "atk_", 8),
     },
   ],
 };

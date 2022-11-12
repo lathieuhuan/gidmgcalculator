@@ -75,10 +75,9 @@ const AnemoMC: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Targets who take DMG from Gust Surge have their <Green>Anemo RES</Green> decreased by{" "}
-          <Green b>20%</Green>.<br />
-          If an Elemental Absorption occurred, then their <Green>RES</Green> towards the{" "}
-          <Green>corresponding Element</Green> is also decreased by <Green b>20%</Green>.
+          Gust Surge decreases targets' <Green>Anemo RES</Green> by <Green b>20%</Green>.<br />
+          If an Elemental Absorption occurred, it also decreases <Green>RES</Green> towards the{" "}
+          <Green>corresponding Element</Green> by <Green b>20%</Green>.
         </>
       ),
       isGranted: checkCons[6],
