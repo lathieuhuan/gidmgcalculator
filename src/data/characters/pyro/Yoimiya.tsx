@@ -1,5 +1,5 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
-import { Green, Pyro } from "@Src/styled-components";
+import { Green, Lightgold, Pyro, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
@@ -101,41 +101,33 @@ const Yoimiya: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           During Niwabi Fire-Dance [ES], Yoimiya's <Green>Normal Attack DMG</Green> will be
-          increased by <Green b>{getESBuffValue(char, partyData)}%</Green> and will be converted to{" "}
+          increased by <Green b>{getESBuffValue(char, partyData)}%</Green> and converted to{" "}
           <Pyro>Pyro DMG</Pyro>.
+          <br />• At <Lightgold>A1</Lightgold>, Normal Attacks on hit will increase Yoimiya's{" "}
+          <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> for 3s. Maximum{" "}
+          <Rose>10 stacks</Rose>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
-      applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
+      inputConfigs: [
+        {
+          label: "Stacks (A4)",
+          type: "stacks",
+          initialValue: 0,
+          max: 10,
+        },
+      ],
+      applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs = [], desc, tracker }) => {
         const buffValue = getESBuffValue(char, partyData);
         applyModifier(desc, attPattBonus, "NA.specialMult", buffValue, tracker);
+
+        if (checkAscs[1](char)) {
+          applyModifier(desc, totalAttr, "pyro", 2 * (inputs[0] || 0), tracker);
+        }
       },
       infuseConfig: {
         range: ["NA"],
         overwritable: false,
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A1,
-      desc: () => (
-        <>
-          During Niwabi Fire-Dance [ES], shots from Yoimiya's Normal Attack will increase her{" "}
-          <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> on hit. This effect lasts for 3s and
-          can have a maximum of <Green b>10</Green> stacks.
-        </>
-      ),
-      isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 10,
-        },
-      ],
-      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "pyro", 2 * (inputs?.[0] || 0), tracker);
       },
     },
     {
@@ -182,7 +174,7 @@ const Yoimiya: DataCharacter = {
       desc: () => (
         <>
           When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a{" "}
-          <Green b>25%</Green> <Green>Pyro DMG Bonus</Green> for 6s.
+          <Green b>25%</Green> <Green>Pyro DMG Bonus</Green> for 6s. Can work off-field.
         </>
       ),
       isGranted: checkCons[2],

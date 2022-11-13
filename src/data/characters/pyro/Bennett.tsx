@@ -126,8 +126,8 @@ const Bennett: DataCharacter = {
           <Green>Base ATK</Green>. At <Lightgold>C1</Lightgold>, the bonus is increased by an
           additional <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
-          <br />• At <Lightgold>C6</Lightgold>, Sword, Claymore, Polearm characters will gain a{" "}
-          <Green b>15%</Green> <Green>Pyro DMG Bonus</Green>.
+          <br />• At <Lightgold>C6</Lightgold>, the characters also gain a <Green b>15%</Green>{" "}
+          <Green>Pyro DMG Bonus</Green>.
         </>
       ),
       affect: EModAffect.ACTIVE_UNIT,
@@ -150,11 +150,7 @@ const Bennett: DataCharacter = {
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);
 
-        const C6isInUse = toSelf
-          ? checkCons[6](char)
-          : ["sword", "claymore", "polearm"].includes(obj.charData.weapon) && inputs[3];
-
-        if (C6isInUse) {
+        if (toSelf ? checkCons[6](char) : inputs[3]) {
           applyModifier(desc, totalAttr, "pyro", 15, obj.tracker);
         }
       },

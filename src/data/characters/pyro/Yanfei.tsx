@@ -124,7 +124,6 @@ const Yanfei: DataCharacter = {
           <Green b>{getEBBuffValue(char, partyData)}%</Green>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "CA.pct", getEBBuffValue(char, partyData), tracker);

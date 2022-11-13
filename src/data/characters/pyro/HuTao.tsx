@@ -135,7 +135,6 @@ const HuTao: DataCharacter = {
           <Green>attack DMG</Green> to <Pyro>Pyro DMG</Pyro>.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv(char, "ES", partyData);

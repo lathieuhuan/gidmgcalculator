@@ -253,7 +253,6 @@ const Nahida: DataCharacter = {
           </>
         );
       },
-      isGranted: () => true,
       affect: EModAffect.SELF,
     },
     {

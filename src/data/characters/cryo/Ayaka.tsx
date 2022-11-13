@@ -100,7 +100,6 @@ const Ayaka: DataCharacter = {
           period.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       infuseConfig: {
         range: [...NORMAL_ATTACKS],

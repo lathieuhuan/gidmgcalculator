@@ -261,7 +261,6 @@ const Cyno: DataCharacter = {
           <Electro>Electro DMG</Electro> that cannot be overriden.
         </>
       ),
-      isGranted: () => true,
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
