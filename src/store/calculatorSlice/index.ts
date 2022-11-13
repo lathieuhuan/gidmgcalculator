@@ -39,11 +39,10 @@ import { bareLv, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
 import {
   calculate,
   getArtDebuffCtrls,
+  getArtifactBuffCtrls,
   getArtifactSets,
-  getMainArtBuffCtrls,
   getNewSetupName,
   getSetupManageInfo,
-  getTeammateArtifactBuffCtrls,
   getWeaponBuffCtrls,
   parseAndInitData,
 } from "./utils";
@@ -119,6 +118,7 @@ export const calculatorSlice = createSlice({
           elmtModCtrls: initElmtModCtrls(),
           customBuffCtrls: [],
           customDebuffCtrls: [],
+          customInfusion: { element: "phys" },
         },
       };
       // calculate will repopulate statsById
@@ -177,7 +177,6 @@ export const calculatorSlice = createSlice({
         ...state.setupsById[setupId],
         ...newInfo,
       };
-
       calculate(state, setupId !== state.activeId);
     },
     duplicateCalcSetup: (state, action: PayloadAction<number>) => {
@@ -191,13 +190,11 @@ export const calculatorSlice = createSlice({
           name: getNewSetupName(setupManageInfos),
           type: "original",
         });
-
         setupsById[ID] = setupsById[sourceId];
 
         if (comparedIds.includes(sourceId)) {
           state.comparedIds.push(ID);
         }
-
         calculate(state, true);
       }
     },
@@ -233,7 +230,6 @@ export const calculatorSlice = createSlice({
 
       const oldVisionCount = countVision(getPartyData(party), state.charData);
       const oldTeammate = party[teammateIndex];
-
       // assign to party
       party[teammateIndex] = initTeammate({ name, weapon: weaponType });
 
@@ -243,7 +239,6 @@ export const calculatorSlice = createSlice({
 
       if (oldTeammate) {
         const { vision: oldVision } = findCharacter(oldTeammate) || {};
-
         // lose a resonance
         if (
           oldVision &&
@@ -289,7 +284,6 @@ export const calculatorSlice = createSlice({
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
             return resonance.vision !== vision;
           });
-
           calculate(state);
         }
       }
@@ -319,7 +313,7 @@ export const calculatorSlice = createSlice({
           ...newArtifactInfo,
         };
         if (newArtifactInfo.code) {
-          teammate.artifact.buffCtrls = getTeammateArtifactBuffCtrls(teammate.artifact);
+          teammate.artifact.buffCtrls = getArtifactBuffCtrls(false, newArtifactInfo);
         }
         calculate(state);
       }
@@ -382,7 +376,7 @@ export const calculatorSlice = createSlice({
 
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
-          setup.artBuffCtrls = getMainArtBuffCtrls(newSetBonus.code);
+          setup.artBuffCtrls = getArtifactBuffCtrls(true, newSetBonus);
         } //
         else if (oldBonusLevel && !newSetBonus.bonusLv) {
           setup.artBuffCtrls = [];
@@ -414,11 +408,9 @@ export const calculatorSlice = createSlice({
     updateAllArtPieces: (state, action: PayloadAction<(CalcArtPiece | null)[]>) => {
       const pieces = action.payload;
       const sets = getArtifactSets(pieces);
-      const bonusLv = sets[0]?.bonusLv;
       const setup = state.setupsById[state.activeId];
-
       setup.artInfo = { pieces, sets };
-      setup.artBuffCtrls = bonusLv ? getMainArtBuffCtrls(sets[0].code) : [];
+      setup.artBuffCtrls = sets[0]?.bonusLv ? getArtifactBuffCtrls(true, sets[0]) : [];
 
       calculate(state);
     },
@@ -433,7 +425,6 @@ export const calculatorSlice = createSlice({
           ...resonances[targetIndex],
           ...newInfo,
         };
-
         calculate(state);
       }
     },
@@ -476,7 +467,6 @@ export const calculatorSlice = createSlice({
           activeSetup.customBuffCtrls = turnArray(ctrls);
           break;
       }
-
       calculate(state);
     },
     updateCustomDebuffCtrls: (state, action: UpdateCustomDebuffCtrlsAction) => {
@@ -499,7 +489,6 @@ export const calculatorSlice = createSlice({
           activeSetup.customDebuffCtrls = turnArray(ctrls);
           break;
       }
-
       calculate(state);
     },
     removeCustomModCtrl: (state, action: RemoveCustomModCtrlAction) => {
@@ -540,7 +529,6 @@ export const calculatorSlice = createSlice({
         if (variantType && variant) {
           state.target[variantType] += variant.change;
         }
-
         calculate(state, true);
       }
     },
@@ -612,6 +600,7 @@ export const calculatorSlice = createSlice({
               elmtModCtrls,
               customBuffCtrls: [],
               customDebuffCtrls: [],
+              customInfusion: { element: "phys" },
             };
             break;
           }
@@ -639,6 +628,7 @@ export const calculatorSlice = createSlice({
       state.standardId = state.comparedIds.length ? newStandardId : 0;
       state.setupManageInfos = tempManageInfos;
       state.configs = newConfigs;
+
       calculate(state, true);
     },
   },

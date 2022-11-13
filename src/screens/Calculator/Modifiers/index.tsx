@@ -4,9 +4,10 @@ import { selectParty } from "@Store/calculatorSlice/selectors";
 import { getPartyData } from "@Data/controllers";
 
 import { CollapseList } from "@Components/collapse";
-import { ArtifactBuffs, ElementBuffs } from "./buffs/others";
+import ElementBuffs from "./buffs/elements";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";
+import ArtifactBuffs from "./buffs/artifacts";
 import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
 import CustomModifiers from "./custom";

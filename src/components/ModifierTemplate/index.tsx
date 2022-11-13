@@ -5,19 +5,19 @@ import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
 import { twInputStyles } from "@Screens/Calculator/components";
 import { Select } from "@Src/styled-components";
 
-type TOption = {
+export type ModSelectOption = {
   label: string | number;
   value: string | number;
 };
 
-const ANEMOABLE_OPTIONS: TOption[] = [
+const ANEMOABLE_OPTIONS: ModSelectOption[] = [
   { label: "Pyro", value: 0 },
   { label: "Hydro", value: 1 },
   { label: "Electro", value: 2 },
   { label: "Cryo", value: 3 },
 ];
 
-const DENDROABLE_OPTIONS: TOption[] = [
+const DENDROABLE_OPTIONS: ModSelectOption[] = [
   { label: "Pyro", value: 0 },
   { label: "Hydro", value: 1 },
   { label: "Electro", value: 2 },
@@ -84,7 +84,7 @@ export function ModifierTemplate({
         }
         return <input type="checkbox" className="mr-1 scale-180" checked={true} readOnly />;
       default:
-        let options: TOption[] = [];
+        let options: ModSelectOption[] = [];
 
         switch (config.type) {
           case "select":

@@ -164,9 +164,8 @@ export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   infuseConfig?: {
-    range: NormalAttack[];
     overwritable: boolean;
-    appliable?: (charData: DataCharacter) => boolean;
+    range?: NormalAttack[];
   };
   desc: (args: {
     toSelf: boolean;

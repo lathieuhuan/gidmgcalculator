@@ -3,11 +3,11 @@ import type {
   CalcSetup,
   CalcSetupManageInfo,
   DamageResult,
-  FinalInfusion,
   Monster,
   ReactionBonus,
   Target,
   TotalAttribute,
+  AttackElement,
 } from "@Src/types";
 
 export type CalculatorState = {
@@ -24,10 +24,10 @@ export type CalculatorState = {
   statsById: Record<
     string,
     {
+      infusedElement: AttackElement;
       totalAttrs: TotalAttribute;
       rxnBonuses: ReactionBonus;
       dmgResult: DamageResult;
-      finalInfusion: FinalInfusion;
     }
   >;
 

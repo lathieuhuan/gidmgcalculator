@@ -130,11 +130,9 @@ export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
 }
 
 export const initElmtModCtrls = (): ElementModCtrl => ({
-  infusion_ampRxn: null,
-  ampRxn: null,
+  infusion_reaction: null,
+  reaction: null,
   superconduct: false,
-  aggravate: false,
-  spread: false,
   resonances: [],
 });
 

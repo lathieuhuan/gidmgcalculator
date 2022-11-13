@@ -8,8 +8,8 @@ import type {
   UsersWeapon,
   Weapon,
   CalcSetupManageInfo,
-  TeammateArtifact,
   ArtifactDebuffCtrl,
+  ModInputConfig,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
@@ -35,7 +35,7 @@ export function calculate(state: CalculatorState, all?: boolean) {
         charData
       );
       state.statsById[id] = {
-        finalInfusion: results.finalInfusion,
+        infusedElement: results.infusedElement,
         totalAttrs: results.totalAttr,
         rxnBonuses: results.rxnBonus,
         dmgResult: results.dmgResult,
@@ -79,14 +79,13 @@ export function parseAndInitData(
     return null;
   });
   const sets = getArtifactSets(pieces);
-  const setCode = sets[0]?.bonusLv === 1 ? sets[0].code : null;
 
   return {
     char,
     weapon,
     wpBuffCtrls,
     artInfo: { pieces, sets },
-    artBuffCtrls: getMainArtBuffCtrls(setCode),
+    artBuffCtrls: sets[0]?.bonusLv ? getArtifactBuffCtrls(true, sets[0]) : [],
   };
 }
 
@@ -115,21 +114,44 @@ export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: Weapon; cod
   return result;
 }
 
-export function getTeammateArtifactBuffCtrls(teammateArtifact: TeammateArtifact) {
-  const { buffs = [] } = findArtifactSet(teammateArtifact) || {};
-  return buffs.reduce((accumulator, { index, affect, inputConfig }) => {
-    if (affect !== EModAffect.SELF) {
-      const buffNode: ModifierCtrl = {
-        index,
+interface IModifier {
+  index: number;
+  affect: EModAffect;
+  inputConfigs?: ModInputConfig[];
+}
+export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
+  const buffCtrls: ModifierCtrl[] = [];
+
+  for (const buff of buffs) {
+    if (buff.affect !== EModAffect.SELF) {
+      const node: ModifierCtrl = {
+        index: buff.index,
         activated: false,
       };
-      if (inputConfig) {
-        buffNode.inputs = [...inputConfig.initialValues];
+      if (buff.inputConfigs) {
+        const initialValues = [];
+
+        for (const config of buff.inputConfigs) {
+          if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
+            initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+          }
+        }
+        if (initialValues.length) {
+          node.inputs = initialValues;
+        }
       }
-      accumulator.push(buffNode);
+      buffCtrls.push(node);
     }
-    return accumulator;
-  }, [] as ModifierCtrl[]);
+  }
+  return buffCtrls;
+}
+
+export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
+  if (!hasCode?.code) {
+    return [];
+  }
+  const { buffs = [] } = findArtifactSet({ code: hasCode.code }) || {};
+  return getModCtrls(buffs, forSelf);
 }
 
 export function getArtifactSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSet[] {
@@ -149,31 +171,6 @@ export function getArtifactSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSe
     }
   }
   return sets;
-}
-
-export function getMainArtBuffCtrls(code: number | null) {
-  if (!code) {
-    return [];
-  }
-  const result: ModifierCtrl[] = [];
-  const { buffs } = findArtifactSet({ code })!;
-
-  if (buffs) {
-    buffs.forEach((buff, index) => {
-      if (buff.affect !== EModAffect.TEAMMATE) {
-        const node: ModifierCtrl = {
-          activated: false,
-          index,
-        };
-
-        if (buff.inputConfig) {
-          node.inputs = [...buff.inputConfig.initialValues];
-        }
-        result.push(node);
-      }
-    });
-  }
-  return result;
 }
 
 export function getArtDebuffCtrls(): ArtifactDebuffCtrl[] {

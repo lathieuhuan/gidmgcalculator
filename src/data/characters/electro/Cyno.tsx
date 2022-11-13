@@ -1,6 +1,6 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
@@ -264,7 +264,6 @@ const Cyno: DataCharacter = {
       affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

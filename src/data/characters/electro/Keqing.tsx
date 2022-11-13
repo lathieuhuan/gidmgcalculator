@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -95,7 +95,6 @@ const Keqing: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: true,
       },
     },

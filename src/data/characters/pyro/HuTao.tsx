@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -143,7 +143,6 @@ const HuTao: DataCharacter = {
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);
       },
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

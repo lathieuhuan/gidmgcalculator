@@ -9,7 +9,7 @@ import type {
   TotalAttribute,
 } from "@Src/types";
 import { Electro, Green, Lightgold, Red } from "@Src/styled-components";
-import { ATTACK_PATTERNS, EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { ATTACK_PATTERNS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round1, round2 } from "@Src/utils";
 import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
@@ -312,7 +312,6 @@ const Raiden: DataCharacter = {
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

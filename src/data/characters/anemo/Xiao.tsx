@@ -1,6 +1,6 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Anemo, Green, Rose } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
@@ -132,7 +132,6 @@ const Xiao: DataCharacter = {
         applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
       },
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

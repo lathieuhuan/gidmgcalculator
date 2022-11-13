@@ -1,6 +1,6 @@
 import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { Anemo, Green, Red } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS, VISION_TYPES } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { round2 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -166,7 +166,6 @@ const Kazuha: DataCharacter = {
         applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
       },
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: true,
       },
     },

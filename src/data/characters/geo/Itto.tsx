@@ -1,6 +1,6 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Geo, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -156,7 +156,6 @@ const Itto: DataCharacter = {
         applyModifier(desc, totalAttr, ["atk", "naAtkSpd"], [buffValue, 10], tracker);
       },
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

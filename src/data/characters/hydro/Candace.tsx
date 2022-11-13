@@ -166,8 +166,6 @@ const Candace: DataCharacter = {
           <Green>Normal Attacks</Green>.
           <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green>{" "}
           for every 1,000 points of Candace's <Green>Max HP</Green>.
-          <br />• Active Sword, Claymore, and Polearm-wielding character(s) under this effect will
-          obtain a <Hydro>Hydro Infusion</Hydro>.
         </>
       ),
       affect: EModAffect.PARTY,
@@ -182,11 +180,6 @@ const Candace: DataCharacter = {
       applyFinalBuff: ({ toSelf, char, totalAttr, attPattBonus, inputs, desc, tracker }) => {
         const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs?.[0] || 0 : 0;
         applyModifier(desc, attPattBonus, "NA.pct", 20 + (maxHP / 1000) * 0.5, tracker);
-      },
-      infuseConfig: {
-        appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
-        range: [...NORMAL_ATTACKS],
-        overwritable: true,
       },
     },
     {

@@ -82,11 +82,11 @@ export default function getBuffedStats({
   wpBuffCtrls,
   artInfo: { pieces, sets },
   artBuffCtrls,
-  elmtModCtrls,
+  elmtModCtrls: { resonances, reaction, infusion_reaction },
   party,
   partyData,
   customBuffCtrls,
-  infusion,
+  infusedElement,
   tracker,
 }: GetBuffedStatsArgs) {
   const weaponData = findWeapon(weapon)!;
@@ -141,7 +141,7 @@ export default function getBuffedStats({
     attPattBonus,
     attElmtBonus,
     rxnBonus,
-    infusion,
+    infusedElement,
     tracker,
   };
   const { refi } = weapon;
@@ -169,20 +169,20 @@ export default function getBuffedStats({
   }
 
   // APPLY RESONANCE BUFFS
-  for (const rsn of elmtModCtrls.resonances) {
-    if (rsn.activated) {
-      const { key, value } = RESONANCE_STAT[rsn.vision];
+  for (const { vision, activated, inputs } of resonances) {
+    if (activated) {
+      const { key, value } = RESONANCE_STAT[vision];
       let xtraValue = 0;
-      const desc = `${rsn.vision} Resonance`;
+      const desc = `${vision} Resonance`;
 
-      if (rsn.vision === "dendro" && rsn.inputs) {
-        if (rsn.inputs[0]) xtraValue += 30;
-        if (rsn.inputs[1]) xtraValue += 20;
+      if (vision === "dendro" && inputs) {
+        if (inputs[0]) xtraValue += 30;
+        if (inputs[1]) xtraValue += 20;
       }
 
       applyModifier(desc, totalAttr, key, value + xtraValue, tracker);
 
-      if (rsn.vision === "geo") {
+      if (vision === "geo") {
         applyModifier(desc, attPattBonus, "all.pct", 15, tracker);
       }
     }
@@ -316,23 +316,21 @@ export default function getBuffedStats({
   }
   const meltBonus = toMult(rxnBonus.melt);
   const vapBonus = toMult(rxnBonus.vaporize);
+  const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
+
+  console.log(reaction, infusion_reaction);
+
+  if (reaction === "spread" || infusion_reaction === "spread") {
+    applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
+  }
+  if (reaction === "aggravate" || infusion_reaction === "aggravate") {
+    applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
+  }
 
   rxnBonus.melt = meltMult(vision) * meltBonus;
   rxnBonus.vaporize = vaporizeMult(vision) * vapBonus;
-
-  if (infusion.NA !== vision) {
-    rxnBonus.infusion_melt = meltMult(infusion.NA) * meltBonus;
-    rxnBonus.infusion_vaporize = vaporizeMult(infusion.NA) * vapBonus;
-  }
-
-  const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
-
-  if (elmtModCtrls.spread) {
-    applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
-  }
-  if (elmtModCtrls.aggravate && charData.vision === "electro") {
-    applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
-  }
+  rxnBonus.infusion_melt = meltMult(infusedElement) * meltBonus;
+  rxnBonus.infusion_vaporize = vaporizeMult(infusedElement) * vapBonus;
 
   return {
     totalAttr,

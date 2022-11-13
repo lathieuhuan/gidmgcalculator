@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
@@ -102,7 +102,6 @@ const Ayaka: DataCharacter = {
       ),
       affect: EModAffect.SELF,
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: true,
       },
     },

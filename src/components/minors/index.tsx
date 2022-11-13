@@ -253,6 +253,13 @@ export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   </>
 );
 
+export const renderQuickenDesc = (element: Vision, value: number) => (
+  <>
+    Increase base <span className={`text-${element} capitalize`}>{element} DMG</span> by{" "}
+    <Green b>{value}</Green>.
+  </>
+);
+
 interface InfusionNotesProps {
   infusion: FinalInfusion;
   weapon: Weapon;

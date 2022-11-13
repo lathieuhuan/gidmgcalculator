@@ -1,6 +1,6 @@
 import type { CalcSetup, ModifierInput, Party } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
-import { getMainArtBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
+import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
 
@@ -90,8 +90,7 @@ export function restoreCalcSetup(data: CalcSetup) {
     }
   }
 
-  const setCode = artInfo.sets[0]?.bonusLv === 1 ? artInfo.sets[0].code : null;
-  const artBuffCtrls = getMainArtBuffCtrls(setCode);
+  const artBuffCtrls = artInfo.sets[0]?.bonusLv ? getArtifactBuffCtrls(true, artInfo.sets[0]) : [];
 
   // #to-do restore subArtBuffCtrls & subArtDebuffCtrls
   const output: CalcSetup = {

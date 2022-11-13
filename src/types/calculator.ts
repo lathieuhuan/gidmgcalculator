@@ -6,7 +6,6 @@ import type {
   Nation,
   Vision,
   Weapon,
-  AmplifyingReaction,
   Reaction,
   CharInfo,
   Rarity,
@@ -45,6 +44,8 @@ export type CalcSetup = {
   elmtModCtrls: ElementModCtrl;
   customBuffCtrls: CustomBuffCtrl[];
   customDebuffCtrls: CustomDebuffCtrl[];
+
+  customInfusion: Infusion;
 };
 
 export type CharData = {
@@ -146,11 +147,9 @@ export type Resonance = {
 };
 
 export type ElementModCtrl = {
-  ampRxn: AmplifyingReaction | null;
-  infusion_ampRxn: AmplifyingReaction | null;
+  infusion_reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
+  reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
   superconduct: boolean;
-  aggravate: boolean;
-  spread: boolean;
   resonances: Resonance[];
 };
 
@@ -195,7 +194,10 @@ export type ReactionBonus = Record<ReactionBonusKey, number>;
 
 export type ResistanceReduction = Record<AttackElement | "def", number>;
 
-export type FinalInfusion = Record<NormalAttack, AttackElement>;
+export type Infusion = {
+  element: AttackElement;
+  range?: NormalAttack[];
+};
 
 export type Talent = typeof TALENT_TYPES[number];
 
@@ -217,6 +219,6 @@ export type BuffModifierArgsWrapper = {
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
-  infusion: FinalInfusion;
+  infusedElement: AttackElement;
   tracker?: Tracker;
 };

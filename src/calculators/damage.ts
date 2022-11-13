@@ -2,7 +2,6 @@ import type {
   CharInfo,
   CustomDebuffCtrl,
   ElementModCtrl,
-  FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
@@ -21,11 +20,12 @@ import type {
   StatInfo,
   CharData,
   ArtifactDebuffCtrl,
+  AttackElement,
 } from "@Src/types";
 import {
-  AMPLIFYING_REACTIONS,
   ATTACK_ELEMENTS,
   ATTACK_PATTERNS,
+  NORMAL_ATTACKS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
@@ -53,7 +53,7 @@ interface CalcTalentStatArgs {
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   resistReduct: ResistanceReduction;
-  infusion: FinalInfusion;
+  infusedElement: AttackElement;
 }
 function calcTalentDamage({
   stat,
@@ -69,53 +69,55 @@ function calcTalentDamage({
   attElmtBonus,
   rxnBonus,
   resistReduct,
-  infusion,
+  infusedElement,
 }: CalcTalentStatArgs) {
   let record = {} as TrackerDamageRecord;
   const [attPatt, attElmt] = stat.dmgTypes || defaultDmgTypes;
 
   if (base !== 0 && !stat.notAttack) {
-    const attInfusion = attPatt ? infusion[attPatt as NormalAttack] : undefined;
-
+    // Validate infusedElement into attInfusion
+    const attInfusion = attPatt ? infusedElement : undefined;
     const flat =
       (talentBuff.flat?.value || 0) +
+      attPattBonus.all.flat +
       (attPatt ? attPattBonus[attPatt].flat : 0) +
       (attElmt === "various" ? 0 : attElmtBonus[attElmt].flat);
 
     record.finalFlat = flat;
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
-    let normalMult = talentBuff.pct?.value || 0;
+    let normalMult = (talentBuff.pct?.value || 0) + attPattBonus.all.pct;
     let specialMult = 1;
 
     if (attPatt) {
       normalMult += attPattBonus[attPatt].pct;
-
       specialMult = toMult(attPattBonus[attPatt].specialMult);
     }
-    if (attPatt && ["NA", "CA", "PA"].includes(attPatt) && attElmt === "phys" && attInfusion) {
+    // Normal Attacks infused with element
+    if (NORMAL_ATTACKS.includes(attPatt as NormalAttack) && attElmt === "phys" && attInfusion) {
       normalMult += totalAttr[attInfusion];
     } else if (attElmt !== "various") {
       normalMult += totalAttr[attElmt];
     }
-    normalMult = toMult(normalMult + attPattBonus.all.pct);
+    normalMult = toMult(normalMult);
 
-    // CALCULATE REACTION MULTIPLIER
+    // CALCULATE AMPLIFYING REACTION MULTIPLIER
     let rxnMult = 1;
-    const { ampRxn, infusion_ampRxn } = elmtModCtrls;
+    const { reaction, infusion_reaction } = elmtModCtrls;
 
+    // Want amplifying && can be amplified
     if (
-      ampRxn &&
-      (attElmt !== "phys" || (attInfusion === vision && AMPLIFYING_REACTIONS.includes(ampRxn)))
+      (reaction === "melt" || reaction === "vaporize") &&
+      (attElmt !== "phys" || attInfusion === vision)
     ) {
-      rxnMult = rxnBonus[ampRxn];
-    } //
+      rxnMult = rxnBonus[reaction];
+    }
+    // Want amplifying && can be amplified by infusion
     else if (
-      infusion_ampRxn &&
-      attInfusion !== vision &&
-      AMPLIFYING_REACTIONS.includes(infusion_ampRxn)
+      (infusion_reaction === "melt" || infusion_reaction === "vaporize") &&
+      attInfusion !== vision
     ) {
-      rxnMult = rxnBonus[`infusion_${infusion_ampRxn}`];
+      rxnMult = rxnBonus[`infusion_${infusion_reaction}`];
     }
 
     // CALCULATE DEFENSE MULTIPLIER
@@ -217,7 +219,7 @@ interface GetDamageArgs {
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   customDebuffCtrls: CustomDebuffCtrl[];
-  infusion: FinalInfusion;
+  infusedElement: AttackElement;
   elmtModCtrls: ElementModCtrl;
   target: Target;
   tracker: Tracker;
@@ -235,7 +237,7 @@ export default function getDamage({
   attElmtBonus,
   rxnBonus,
   customDebuffCtrls,
-  infusion,
+  infusedElement,
   elmtModCtrls,
   target,
   tracker,
@@ -402,7 +404,7 @@ export default function getDamage({
         attElmtBonus,
         rxnBonus,
         resistReduct,
-        infusion,
+        infusedElement,
       });
       if (tracker) {
         tracker[resultKey][stat.name] = { record, talentBuff };

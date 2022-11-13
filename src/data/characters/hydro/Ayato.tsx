@@ -8,7 +8,6 @@ import type {
 } from "@Src/types";
 import { Green, Hydro } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
-import { NORMAL_ATTACKS } from "@Src/constants";
 import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -205,7 +204,6 @@ const Ayato: DataCharacter = {
         },
       ],
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

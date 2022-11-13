@@ -126,7 +126,6 @@ const Yoimiya: DataCharacter = {
         }
       },
       infuseConfig: {
-        range: ["NA"],
         overwritable: false,
       },
     },

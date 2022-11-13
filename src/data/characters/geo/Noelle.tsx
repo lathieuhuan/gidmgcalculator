@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Geo, Green } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
@@ -154,7 +154,6 @@ const Noelle: DataCharacter = {
         applyModifier(desc, totalAttr, "atk", applyPercent(totalAttr.def, mult), tracker);
       },
       infuseConfig: {
-        range: [...NORMAL_ATTACKS],
         overwritable: false,
       },
     },

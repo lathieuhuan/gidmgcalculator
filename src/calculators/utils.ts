@@ -12,7 +12,6 @@ import type {
   AttackElementBonus,
   AttacklementInfoKey,
   Vision,
-  FinalInfusion,
   Weapon,
   Level,
 } from "@Src/types";
@@ -211,15 +210,19 @@ export function getRxnBonusesFromEM(EM = 0) {
   };
 }
 
-export const meltMult = (elmt: AttackElement) => (elmt === "pyro" ? 2 : 1.5);
-export const vaporizeMult = (elmt: AttackElement) => (elmt === "pyro" ? 1.5 : 2);
+export const meltMult = (elmt: AttackElement) => {
+  return elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1;
+};
+export const vaporizeMult = (elmt: AttackElement) => {
+  return elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1;
+};
 
 export type IncreaseAttackBonusArgs = {
   element: AttackElement;
   type: AttacklementInfoKey;
   value: number;
   mainCharVision: Vision;
-  infusion: FinalInfusion;
+  infusedElement: AttackElement;
   attElmtBonus: AttackElementBonus;
   attPattBonus: AttackPatternBonus;
   desc: string;
@@ -230,7 +233,7 @@ export function increaseAttackBonus({
   type,
   value,
   mainCharVision,
-  infusion,
+  infusedElement,
   attElmtBonus,
   attPattBonus,
   desc,
@@ -240,7 +243,7 @@ export function increaseAttackBonus({
     applyModifier(desc, attElmtBonus, `${element}.${type}`, value, tracker);
   }
   for (const patt of ["NA", "CA", "PA"] as const) {
-    if (infusion[patt] === element) {
+    if (infusedElement === element) {
       applyModifier(desc, attPattBonus, `${patt}.${type}`, value, tracker);
     }
   }

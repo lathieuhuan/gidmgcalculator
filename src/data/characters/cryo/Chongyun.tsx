@@ -85,23 +85,6 @@ const Chongyun: DataCharacter = {
   ],
   buffs: [
     {
-      index: 0,
-      src: EModSrc.ES,
-      desc: () => (
-        <>
-          After a short delay, the cold air created by the Cryo explosion will coalesce into a
-          Chonghua Frost Field, within which all Sword, Claymore and Polearm-wielding characters'
-          weapons will be <Green>infused</Green> with <Cryo>Cryo</Cryo>.
-        </>
-      ),
-      affect: EModAffect.ACTIVE_UNIT,
-      infuseConfig: {
-        appliable: ({ weapon }) => ["sword", "claymore", "polearm"].includes(weapon),
-        range: [...NORMAL_ATTACKS],
-        overwritable: true,
-      },
-    },
-    {
       index: 1,
       src: EModSrc.A1,
       desc: () => (
@@ -114,7 +97,7 @@ const Chongyun: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
-        if (["Sword", "Claymore", "Polearm"].includes(charData.weapon))
+        if (["sword", "claymore", "polearm"].includes(charData.weapon))
           applyModifier(desc, totalAttr, "naAtkSpd", 8, tracker);
       },
     },

@@ -7,13 +7,13 @@ import type {
   CharInfo,
   CustomBuffCtrl,
   ElementModCtrl,
-  FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
   ReactionBonus,
   TotalAttribute,
   Tracker,
+  AttackElement,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -58,6 +58,6 @@ export type GetBuffedStatsArgs = {
   party: Party;
   partyData: PartyData;
   customBuffCtrls: CustomBuffCtrl[];
-  infusion: FinalInfusion;
+  infusedElement: AttackElement;
   tracker: Tracker;
 };
