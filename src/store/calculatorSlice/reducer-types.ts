@@ -38,13 +38,13 @@ export type AddTeammateAction = PayloadAction<{
   teammateIndex: number;
 }>;
 
-export type TUpdateTeammateWeaponAction = PayloadAction<
+export type UpdateTeammateWeaponAction = PayloadAction<
   {
     teammateIndex: number;
   } & Partial<TeammateWeapon>
 >;
 
-export type TUpdateTeammateArtifactAction = PayloadAction<
+export type UpdateTeammateArtifactAction = PayloadAction<
   {
     teammateIndex: number;
   } & Partial<TeammateArtifact>

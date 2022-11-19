@@ -14,6 +14,15 @@ import type {
   TotalAttribute,
   Tracker,
   AttackElement,
+  DataCharacter,
+  DamageTypes,
+  StatInfo,
+  Vision,
+  Target,
+  TalentBuff,
+  ResistanceReduction,
+  ArtifactDebuffCtrl,
+  CustomDebuffCtrl,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -49,6 +58,7 @@ export type TrackerDamageRecord = {
 export type GetBuffedStatsArgs = {
   char: CharInfo;
   charData: CharData;
+  dataChar: DataCharacter;
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
@@ -61,3 +71,40 @@ export type GetBuffedStatsArgs = {
   infusedElement: AttackElement;
   tracker: Tracker;
 };
+
+export interface CalcTalentStatArgs {
+  stat: StatInfo;
+  defaultDmgTypes: DamageTypes;
+  base: number | number[];
+  char: CharInfo;
+  vision: Vision;
+  target: Target;
+  elmtModCtrls: ElementModCtrl;
+  talentBuff: TalentBuff;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  resistReduct: ResistanceReduction;
+  infusedElement: AttackElement;
+}
+
+export interface GetDamageArgs {
+  char: CharInfo;
+  charData: CharData;
+  dataChar: DataCharacter;
+  selfBuffCtrls: ModifierCtrl[];
+  selfDebuffCtrls: ModifierCtrl[];
+  artDebuffCtrls: ArtifactDebuffCtrl[];
+  party: Party;
+  partyData: PartyData;
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  attElmtBonus: AttackElementBonus;
+  rxnBonus: ReactionBonus;
+  customDebuffCtrls: CustomDebuffCtrl[];
+  infusedElement: AttackElement;
+  elmtModCtrls: ElementModCtrl;
+  target: Target;
+  tracker: Tracker;
+}

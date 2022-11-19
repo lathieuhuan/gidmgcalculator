@@ -6,13 +6,14 @@ import {
   REACTIONS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
-import {
+import type {
   AttackElementBonus,
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfo,
   AttributeStat,
   BuffModifierArgsWrapper,
+  DataCharacter,
   ModifierCtrl,
   Reaction,
   ReactionBonus,
@@ -42,21 +43,26 @@ interface ApplySelfBuffs {
   isFinal: boolean;
   modifierArgs: BuffModifierArgsWrapper;
   charBuffCtrls: ModifierCtrl[];
+  dataChar: DataCharacter;
 }
-function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs) {
+function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: ApplySelfBuffs) {
   const { char } = modifierArgs;
-  const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = dataChar;
 
   for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
     if (isGranted(char)) {
       const applyFn =
         !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
-      applyFn?.({ ...modifierArgs, charBuffCtrls, desc: `Self / ${src}` });
+      applyFn?.({
+        desc: `Self / ${src}`,
+        charBuffCtrls,
+        ...modifierArgs,
+      });
     }
   }
 
-  for (const { index, activated, inputs } of charBuffCtrls) {
+  for (const { index, activated, inputs = [] } of charBuffCtrls) {
     const buff = findByIndex(buffs, index);
 
     if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
@@ -67,9 +73,13 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs
           ? buff.applyFinalBuff
           : undefined;
 
-      const desc = `Self / ${buff.src}`;
-      const validatedInputs = inputs || [];
-      applyFn?.({ ...modifierArgs, charBuffCtrls, inputs: validatedInputs, toSelf: true, desc });
+      applyFn?.({
+        desc: `Self / ${buff.src}`,
+        toSelf: true,
+        charBuffCtrls,
+        inputs,
+        ...modifierArgs,
+      });
     }
   }
 }
@@ -77,6 +87,7 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls }: ApplySelfBuffs
 export default function getBuffedStats({
   char,
   charData,
+  dataChar,
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
@@ -111,17 +122,13 @@ export default function getBuffedStats({
   const attPattBonus = {} as AttackPatternBonus;
   const attElmtBonus = {} as AttackElementBonus;
 
-  const initAttPattBonusField = () => {
-    let result = {} as AttackPatternInfo;
+  for (const pattern of [...ATTACK_PATTERNS, "all"] as const) {
+    attPattBonus[pattern] = {} as AttackPatternInfo;
+
     for (const key of ATTACK_PATTERN_INFO_KEYS) {
-      result[key] = 0;
+      attPattBonus[pattern][key] = 0;
     }
-    return result;
-  };
-  for (const pattern of ATTACK_PATTERNS) {
-    attPattBonus[pattern] = initAttPattBonusField();
   }
-  attPattBonus.all = initAttPattBonusField();
 
   for (const element of ATTACK_ELEMENTS) {
     attElmtBonus[element] = { cDmg: 0, flat: 0 };
@@ -188,23 +195,31 @@ export default function getBuffedStats({
     }
   }
 
-  applySelfBuffs({ isFinal: false, modifierArgs, charBuffCtrls: selfBuffCtrls });
+  applySelfBuffs({
+    isFinal: false,
+    modifierArgs,
+    charBuffCtrls: selfBuffCtrls,
+    dataChar,
+  });
 
   // APPPLY TEAMMATE BUFFS
   for (const teammate of party) {
     if (!teammate) continue;
     const { name, weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
 
-    for (const { index, activated, inputs } of teammate.buffCtrls) {
+    for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       const buff = findByIndex(buffs, index);
 
       if (buff) {
         const applyFn = buff.applyBuff || buff.applyFinalBuff;
         if (activated && applyFn) {
-          const desc = `${name} / ${buff.src}`;
-          const validatedInputs = inputs || [];
-          const wrapper = { charBuffCtrls: teammate.buffCtrls, inputs: validatedInputs, desc };
-          applyFn({ ...modifierArgs, ...wrapper, toSelf: false });
+          applyFn({
+            desc: `${name} / ${buff.src}`,
+            toSelf: false,
+            inputs,
+            charBuffCtrls: teammate.buffCtrls,
+            ...modifierArgs,
+          });
         }
       } else {
         console.log(`buff #${index} of teammate ${name} not found`);
@@ -216,12 +231,17 @@ export default function getBuffedStats({
       const { code, refi } = teammate.weapon;
       const { name, buffs = [] } = findWeapon({ code, type: weaponType }) || {};
 
-      for (const { index, activated, inputs } of teammate.weapon.buffCtrls) {
+      for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
         const buff = findByIndex(buffs, index);
 
         if (buff) {
           if (activated && isNewMod(true, code, index) && buff?.applyBuff) {
-            buff.applyBuff({ ...modifierArgs, refi, inputs, desc: `${name} activated` });
+            buff.applyBuff({
+              desc: `${name} activated`,
+              refi,
+              inputs,
+              ...modifierArgs,
+            });
           }
         } else {
           console.log(`buff #${index} of weapon #${code} not found`);
@@ -233,12 +253,16 @@ export default function getBuffedStats({
       const { code } = teammate.artifact;
       const { name, buffs = [] } = findArtifactSet({ code }) || {};
 
-      for (const { index, activated, inputs } of teammate.artifact.buffCtrls) {
+      for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
         const buff = findByIndex(buffs, index);
 
         if (buff) {
           if (activated && isNewMod(false, code, index) && buff.applyBuff) {
-            buff.applyBuff({ ...modifierArgs, inputs, desc: `${name} / 4-Piece activated` });
+            buff.applyBuff({
+              desc: `${name} / 4-Piece activated`,
+              inputs,
+              ...modifierArgs,
+            });
           }
         } else {
           console.log(`buff #${index} of artifact #${code} not found`);
@@ -252,8 +276,12 @@ export default function getBuffedStats({
     if (weaponData.buffs) {
       const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
       if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
-        const desc = `${weaponData.name} activated`;
-        applyBuff({ ...modifierArgs, refi, inputs, desc });
+        applyBuff({
+          desc: `${weaponData.name} activated`,
+          refi,
+          inputs,
+          ...modifierArgs,
+        });
       }
     } else {
       console.log(`buffs of main weapon not found`);
@@ -268,8 +296,11 @@ export default function getBuffedStats({
       const { applyBuff } = buffs?.[index] || {};
 
       if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
-        const desc = `${name} (self) / 4-Piece activated`;
-        applyBuff({ ...modifierArgs, inputs, desc });
+        applyBuff({
+          desc: `${name} (self) / 4-Piece activated`,
+          inputs,
+          ...modifierArgs,
+        });
       }
     }
   }
@@ -283,15 +314,26 @@ export default function getBuffedStats({
   for (const { activated, index, inputs } of wpBuffCtrls) {
     if (activated && weaponData.buffs) {
       const { applyFinalBuff } = findByIndex(weaponData.buffs, index) || {};
+
       if (applyFinalBuff) {
-        applyFinalBuff({ totalAttr, refi, desc: `${weaponData.name} activated`, inputs, tracker });
+        applyFinalBuff({
+          desc: `${weaponData.name} activated`,
+          refi,
+          inputs,
+          ...modifierArgs,
+        });
       }
     } else if (!weaponData.buffs) {
       console.log(`final buffs of main weapon not found`);
     }
   }
 
-  applySelfBuffs({ isFinal: true, modifierArgs, charBuffCtrls: selfBuffCtrls });
+  applySelfBuffs({
+    isFinal: true,
+    modifierArgs,
+    charBuffCtrls: selfBuffCtrls,
+    dataChar,
+  });
 
   // APPLY ARTIFACT FINAL BUFFS
   for (const ctrl of artBuffCtrls) {
@@ -299,14 +341,15 @@ export default function getBuffedStats({
     const { applyFinalBuff } = buffs?.[ctrl.index] || {};
 
     if (ctrl.activated && applyFinalBuff) {
-      const desc = `${name} (self) / 4-Piece activated`;
-      applyFinalBuff({ totalAttr, attPattBonus, desc, tracker });
+      applyFinalBuff({
+        desc: `${name} (self) / 4-Piece activated`,
+        ...modifierArgs,
+      });
     }
   }
 
   // CALCULATE FINAL REACTION BONUSES
   const { transformative, amplifying } = getRxnBonusesFromEM(totalAttr.em);
-  const { vision } = charData;
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     rxnBonus[rxn] += transformative;
@@ -318,8 +361,6 @@ export default function getBuffedStats({
   const vapBonus = toMult(rxnBonus.vaporize);
   const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
 
-  console.log(reaction, infusion_reaction);
-
   if (reaction === "spread" || infusion_reaction === "spread") {
     applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
   }
@@ -327,10 +368,10 @@ export default function getBuffedStats({
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
-  rxnBonus.melt = meltMult(vision) * meltBonus;
-  rxnBonus.vaporize = vaporizeMult(vision) * vapBonus;
-  rxnBonus.infusion_melt = meltMult(infusedElement) * meltBonus;
-  rxnBonus.infusion_vaporize = vaporizeMult(infusedElement) * vapBonus;
+  rxnBonus.melt = meltMult(dataChar.vision) * meltBonus;
+  rxnBonus.vaporize = vaporizeMult(dataChar.vision) * vapBonus;
+  rxnBonus.infuse_melt = meltMult(infusedElement) * meltBonus;
+  rxnBonus.infuse_vaporize = vaporizeMult(infusedElement) * vapBonus;
 
   return {
     totalAttr,

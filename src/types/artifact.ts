@@ -7,8 +7,8 @@ import type {
   ModifierInput,
   PartyData,
   ReactionBonus,
-  ResistanceReduction,
   TotalAttribute,
+  DebuffModifierArgsWrapper,
 } from "./calculator";
 
 type ArtPieceData = {
@@ -53,9 +53,7 @@ type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
   desc?: string;
 };
 
-type ApplyArtFinalBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
+type ApplyArtFinalBuffArgs = BuffModifierArgsWrapper & {
   desc?: string;
   tracker?: Tracker;
 };
@@ -69,14 +67,15 @@ export type ArtifactBuff = {
   applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
 };
 
+export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
+  inputs?: ModifierInput[];
+  desc: string;
+  tracker: Tracker;
+};
+
 type ArtifactDebuff = {
   index: number;
   desc: () => JSX.Element;
   inputConfigs?: ModInputConfig[];
-  applyDebuff: (args: {
-    resistReduct: ResistanceReduction;
-    inputs?: ModifierInput[];
-    desc: string;
-    tracker: Tracker;
-  }) => void;
+  applyDebuff: (args: ApplyArtDebuffArgs) => void;
 };

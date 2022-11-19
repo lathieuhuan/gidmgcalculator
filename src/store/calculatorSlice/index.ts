@@ -28,8 +28,8 @@ import type {
   UpdateCalcSetupAction,
   UpdateCustomBuffCtrlsAction,
   UpdateCustomDebuffCtrlsAction,
-  TUpdateTeammateWeaponAction,
-  TUpdateTeammateArtifactAction,
+  UpdateTeammateWeaponAction,
+  UpdateTeammateArtifactAction,
 } from "./reducer-types";
 
 import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
@@ -288,7 +288,7 @@ export const calculatorSlice = createSlice({
         }
       }
     },
-    updateTeammateWeapon: (state, action: TUpdateTeammateWeaponAction) => {
+    updateTeammateWeapon: (state, action: UpdateTeammateWeaponAction) => {
       const { teammateIndex, ...newWeaponInfo } = action.payload;
       const teammate = state.setupsById[state.activeId].party[teammateIndex];
 
@@ -303,7 +303,7 @@ export const calculatorSlice = createSlice({
         calculate(state);
       }
     },
-    updateTeammateArtifact: (state, action: TUpdateTeammateArtifactAction) => {
+    updateTeammateArtifact: (state, action: UpdateTeammateArtifactAction) => {
       const { teammateIndex, ...newArtifactInfo } = action.payload;
       const teammate = state.setupsById[state.activeId].party[teammateIndex];
 

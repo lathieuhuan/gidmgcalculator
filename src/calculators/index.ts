@@ -35,6 +35,7 @@ export default function calculateAll(
   const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
     char,
     charData,
+    dataChar,
     selfBuffCtrls,
     weapon,
     wpBuffCtrls,
@@ -51,6 +52,7 @@ export default function calculateAll(
   const dmgResult = getDamage({
     char,
     charData,
+    dataChar,
     selfBuffCtrls,
     selfDebuffCtrls,
     artDebuffCtrls,

@@ -1,26 +1,9 @@
 import type {
-  CharInfo,
-  CustomDebuffCtrl,
-  ElementModCtrl,
-  ModifierCtrl,
-  Party,
-  PartyData,
-  ReactionBonus,
-  Target,
-  TotalAttribute,
-  Tracker,
   DamageResult,
   TalentBuff,
-  Vision,
   NormalAttack,
   ResistanceReduction,
-  DamageTypes,
-  AttackPatternBonus,
-  AttackElementBonus,
-  StatInfo,
-  CharData,
-  ArtifactDebuffCtrl,
-  AttackElement,
+  DebuffModifierArgsWrapper,
 } from "@Src/types";
 import {
   ATTACK_ELEMENTS,
@@ -35,26 +18,10 @@ import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { charModIsInUse } from "@Data/characters/utils";
 import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
-import { TrackerDamageRecord } from "./types";
+import { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
 import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
-interface CalcTalentStatArgs {
-  stat: StatInfo;
-  defaultDmgTypes: DamageTypes;
-  base: number | number[];
-  char: CharInfo;
-  vision: Vision;
-  target: Target;
-  elmtModCtrls: ElementModCtrl;
-  talentBuff: TalentBuff;
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
-  rxnBonus: ReactionBonus;
-  resistReduct: ResistanceReduction;
-  infusedElement: AttackElement;
-}
 function calcTalentDamage({
   stat,
   defaultDmgTypes,
@@ -117,7 +84,7 @@ function calcTalentDamage({
       (infusion_reaction === "melt" || infusion_reaction === "vaporize") &&
       attInfusion !== vision
     ) {
-      rxnMult = rxnBonus[`infusion_${infusion_reaction}`];
+      rxnMult = rxnBonus[`infuse_${infusion_reaction}`];
     }
 
     // CALCULATE DEFENSE MULTIPLIER
@@ -206,27 +173,10 @@ function calcTalentDamage({
   return { nonCrit: 0, crit: 0, average: 0 };
 }
 
-interface GetDamageArgs {
-  char: CharInfo;
-  charData: CharData;
-  selfBuffCtrls: ModifierCtrl[];
-  selfDebuffCtrls: ModifierCtrl[];
-  artDebuffCtrls: ArtifactDebuffCtrl[];
-  party: Party;
-  partyData: PartyData;
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
-  rxnBonus: ReactionBonus;
-  customDebuffCtrls: CustomDebuffCtrl[];
-  infusedElement: AttackElement;
-  elmtModCtrls: ElementModCtrl;
-  target: Target;
-  tracker: Tracker;
-}
 export default function getDamage({
   char,
   charData,
+  dataChar,
   selfBuffCtrls,
   selfDebuffCtrls,
   artDebuffCtrls,
@@ -247,13 +197,19 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { activeTalents, weapon, vision, debuffs } = findCharacter(char)!;
-  const wrapper3 = { char, resistReduct, attPattBonus, partyData, tracker };
+  const { activeTalents, weapon, vision, debuffs } = dataChar;
+  const modifierArgs: DebuffModifierArgsWrapper = {
+    char,
+    resistReduct,
+    attPattBonus,
+    partyData,
+    tracker,
+  };
 
   // APPLY CUSTOM DEBUFFS
   for (const { type, value } of customDebuffCtrls) {
     resistReduct[type] += value;
-    pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
+    // pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
   }
 
   // APPLY SELF DEBUFFS
@@ -266,9 +222,13 @@ export default function getDamage({
       (!debuff.isGranted || debuff.isGranted(char)) &&
       debuff.applyDebuff
     ) {
-      const desc = `Self / ${debuff.src}`;
       const validatedInputs = inputs || [];
-      debuff.applyDebuff({ ...wrapper3, fromSelf: true, inputs: validatedInputs, desc });
+      debuff.applyDebuff({
+        desc: `Self / ${debuff.src}`,
+        fromSelf: true,
+        inputs: validatedInputs,
+        ...modifierArgs,
+      });
     }
   }
 
@@ -276,13 +236,16 @@ export default function getDamage({
   for (const teammate of party) {
     if (teammate) {
       const { debuffs } = findCharacter(teammate)!;
-      for (const { activated, inputs, index } of teammate.debuffCtrls) {
+      for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs || [], index);
 
-        if (activated && debuff && debuff.applyDebuff) {
-          const desc = `${teammate} / ${debuff.src}`;
-          const validatedInputs = inputs || [];
-          debuff.applyDebuff({ ...wrapper3, fromSelf: false, inputs: validatedInputs, desc });
+        if (activated && debuff?.applyDebuff) {
+          debuff.applyDebuff({
+            desc: `${teammate} / ${debuff.src}`,
+            fromSelf: false,
+            inputs,
+            ...modifierArgs,
+          });
         }
       }
     }
@@ -293,8 +256,11 @@ export default function getDamage({
     if (activated) {
       const { name, debuffs = [] } = findArtifactSet({ code }) || {};
       if (name) {
-        const desc = `${name} / 4-Piece activated`;
-        debuffs[index]?.applyDebuff({ resistReduct, inputs, desc, tracker });
+        debuffs[index]?.applyDebuff({
+          desc: `${name} / 4-Piece activated`,
+          inputs,
+          ...modifierArgs,
+        });
       }
     }
   }

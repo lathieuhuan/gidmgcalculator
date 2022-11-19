@@ -188,7 +188,7 @@ export type AttacklementInfoKey = "cDmg" | "flat";
 export type AttacklementInfo = Record<AttacklementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
-export type ReactionBonusKey = Reaction | "infusion_melt" | "infusion_vaporize";
+export type ReactionBonusKey = Reaction | "infuse_melt" | "infuse_vaporize";
 
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
@@ -221,4 +221,12 @@ export type BuffModifierArgsWrapper = {
   rxnBonus: ReactionBonus;
   infusedElement: AttackElement;
   tracker?: Tracker;
+};
+
+export type DebuffModifierArgsWrapper = {
+  char: CharInfo;
+  resistReduct: ResistanceReduction;
+  attPattBonus: AttackPatternBonus;
+  partyData: PartyData;
+  tracker: Tracker;
 };

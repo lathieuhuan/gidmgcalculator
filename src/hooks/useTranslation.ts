@@ -1,7 +1,7 @@
-import { resources, TNameSpace } from "@Src/locales/i18n";
+import { resources, NameSpace } from "@Src/locales/i18n";
 
 interface ITranslateConfig {
-  ns?: TNameSpace;
+  ns?: NameSpace;
 }
 
 export const useTranslation = () => {

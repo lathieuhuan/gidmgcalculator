@@ -22,17 +22,17 @@ export type DataWeapon = {
     type: ArtifactPercentStat | "em" | "phys";
     scale: string;
   };
-  applyBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
-  applyFinalBuff?: (args: TApplyWpPassiveBuffsArgs) => void;
+  applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
   passiveName: string;
   passiveDesc: (args: WeaponDescArgs) => {
     core?: JSX.Element;
     extra?: JSX.Element[];
   };
-  buffs?: TWeaponBuff[];
+  buffs?: WeaponBuff[];
 };
 
-type TApplyWpPassiveBuffsArgs = {
+type ApplyWpPassiveBuffsArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
@@ -43,17 +43,15 @@ type TApplyWpPassiveBuffsArgs = {
   tracker?: Tracker;
 };
 
-type TApplyWpBuffArgs = BuffModifierArgsWrapper & {
+type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
   inputs?: ModifierInput[];
   refi: number;
   desc?: string;
 };
 
-type TApplyWpFinalBuffArgs = {
-  totalAttr: TotalAttribute;
+type ApplyWpFinalBuffArgs = BuffModifierArgsWrapper & {
   refi: number;
   desc?: string;
-  tracker?: Tracker;
   inputs?: ModifierInput[];
 };
 
@@ -61,12 +59,12 @@ type WeaponDescArgs = {
   refi: number;
 };
 
-type TWeaponBuff = {
+type WeaponBuff = {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  applyBuff?: (args: TApplyWpBuffArgs) => void;
-  applyFinalBuff?: (args: TApplyWpFinalBuffArgs) => void;
+  applyBuff?: (args: ApplyWpBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
   desc: (
     args: WeaponDescArgs & {
       totalAttr: TotalAttribute;

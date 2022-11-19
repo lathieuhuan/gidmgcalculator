@@ -47,7 +47,8 @@ export function initiateTotalAttr({ char, weapon, weaponData, tracker }: Initiat
   addOrInit(innerStats, "cRate", 5);
   addOrInit(innerStats, "cDmg", 50);
   addOrInit(innerStats, "er", 100);
-  innerStats.naAtkSpd = innerStats.caAtkSpd = 100;
+  addOrInit(innerStats, "naAtkSpd", 100);
+  addOrInit(innerStats, "caAtkSpd", 100);
 
   // Kokomi
   if (charData.code === 42) {
@@ -202,7 +203,12 @@ export default function getBaseStats({
 
   const modifierArgs = { totalAttr, charData };
   applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
-  applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, modifierArgs });
+  applyWpPassiveBuffs({
+    isFinal: false,
+    weaponData,
+    refi: weapon.refi,
+    modifierArgs,
+  });
   calcFinalTotalAttrs(totalAttr);
 
   return {
