@@ -24,7 +24,8 @@ import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants"
 
 function calcTalentDamage({
   stat,
-  defaultDmgTypes,
+  attElmt,
+  attPatt,
   base,
   char,
   vision,
@@ -39,7 +40,6 @@ function calcTalentDamage({
   infusedElement,
 }: CalcTalentStatArgs) {
   let record = {} as TrackerDamageRecord;
-  const [attPatt, attElmt] = stat.dmgTypes || defaultDmgTypes;
 
   if (base !== 0 && !stat.notAttack) {
     // Validate infusedElement into attInfusion
@@ -294,9 +294,9 @@ export default function getDamage({
     tracker.RXN = {};
   }
 
-  ATTACK_PATTERNS.forEach((attPatt) => {
-    const talent = activeTalents[attPatt];
-    const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
+  ATTACK_PATTERNS.forEach((ATT_PATT) => {
+    const talent = activeTalents[ATT_PATT];
+    const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getDefaultStatInfo(resultKey, weapon, vision);
     const level = finalTalentLv(char, resultKey, partyData);
 
@@ -318,12 +318,13 @@ export default function getDamage({
       // CALCULATE BASE DAMAGE
       let base;
       const {
+        isStatic,
         baseStatType = "atk",
         multBase,
-        isStatic,
         multType = defaultInfo.multType,
         flat,
       } = stat;
+
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
         baseValue: totalAttr[baseStatType],
@@ -333,7 +334,7 @@ export default function getDamage({
       const finalMult = (multBase: number) =>
         multBase * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[multType][level]) + xtraMult;
 
-      const baseDamage = (percent: number) => {
+      const getBaseDamage = (percent: number) => {
         const result = (totalAttr[baseStatType] * percent) / 100;
         const flatBonus = flat
           ? flat.base * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[flat.type][level])
@@ -347,18 +348,28 @@ export default function getDamage({
         const percents = multBase.map(finalMult);
 
         record.finalMult = percents;
-        base = percents.map(baseDamage);
+        base = percents.map(getBaseDamage);
       } //
       else {
         const percent = finalMult(multBase);
 
         record.finalMult = percent;
-        base = baseDamage(percent);
+        base = getBaseDamage(percent);
       }
 
+      // DMG TYPES
+      const attPatt = stat.attPatt !== undefined ? stat.attPatt : ATT_PATT;
+      let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
+
+      if (resultKey === "NAs" && attElmt === "phys" && infusedElement !== "phys") {
+        attElmt = infusedElement;
+      }
+
+      // TALENT DMG
       finalResult[resultKey][stat.name] = calcTalentDamage({
         stat,
-        defaultDmgTypes: [attPatt, defaultInfo.attElmt],
+        attPatt,
+        attElmt,
         base,
         char,
         vision,

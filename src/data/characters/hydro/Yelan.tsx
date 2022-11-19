@@ -49,14 +49,14 @@ const Yelan: DataCharacter = {
         {
           name: "Breakthrough Barb DMG",
           baseStatType: "hp",
-          dmgTypes: ["CA", "hydro"],
+          subAttPatt: "FCA",
           multBase: 11.58,
           multType: 2,
         },
         {
           name: "Special Breakthrough Barb DMG (C6)",
           baseStatType: "hp",
-          dmgTypes: ["CA", "hydro"],
+          subAttPatt: "FCA",
           multBase: 18.0648,
           multType: 2,
           notOfficial: true,

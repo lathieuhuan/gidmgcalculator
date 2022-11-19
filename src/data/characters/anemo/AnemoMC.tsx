@@ -36,7 +36,7 @@ const AnemoMC: DataCharacter = {
       xtraLvAtCons: 3,
       stats: [
         { name: "Tornado DMG", multBase: 80.8 },
-        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], multBase: 24.8 },
+        { name: "Additional Elemental DMG", attElmt: "various", multBase: 24.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

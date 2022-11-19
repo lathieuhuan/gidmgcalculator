@@ -15,7 +15,6 @@ import type {
   Tracker,
   AttackElement,
   DataCharacter,
-  DamageTypes,
   StatInfo,
   Vision,
   Target,
@@ -23,6 +22,7 @@ import type {
   ResistanceReduction,
   ArtifactDebuffCtrl,
   CustomDebuffCtrl,
+  AttackPattern,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -74,7 +74,8 @@ export type GetBuffedStatsArgs = {
 
 export interface CalcTalentStatArgs {
   stat: StatInfo;
-  defaultDmgTypes: DamageTypes;
+  attPatt: AttackPattern | null;
+  attElmt: AttackElement | "various";
   base: number | number[];
   char: CharInfo;
   vision: Vision;

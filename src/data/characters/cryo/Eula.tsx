@@ -101,14 +101,14 @@ const Eula: DataCharacter = {
         { name: "Skill DMG", multBase: 245.6 },
         {
           name: "Lightfall Sword Base DMG",
-          dmgTypes: ["EB", "phys"],
+          attElmt: "phys",
           multBase: 367.05,
           multType: 1,
           getTalentBuff: getC4TalentBuff,
         },
         {
           name: "DMG per Stack",
-          dmgTypes: ["EB", "phys"],
+          attElmt: "phys",
           multBase: 74.99,
           multType: 1,
           getTalentBuff: getC4TalentBuff,

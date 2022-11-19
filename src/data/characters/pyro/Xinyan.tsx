@@ -91,7 +91,7 @@ const Xinyan: DataCharacter = {
       stats: [
         {
           name: "Physical Burst DMG",
-          dmgTypes: ["EB", "phys"],
+          attElmt: "phys",
           multBase: 340.8,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "cRate", [false, 2], 100]),
         },

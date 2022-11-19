@@ -73,8 +73,6 @@ type NormalAttacks = {
   stats: StatInfo[];
 };
 
-export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
-
 type GetTalentBuffArgs = {
   char: CharInfo;
   charData: CharData;
@@ -90,9 +88,17 @@ export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff | void;
 
 export type BaseStatType = "base_atk" | "atk" | "def" | "hp" | "em";
 
+type ActualAttackPattern = AttackPattern | null;
+
+type ActualAttackElement = AttackElement | "various";
+
+export type SubAttackPattern = "FCA";
+
 export type StatInfo = {
   name: string;
-  dmgTypes?: DamageTypes;
+  attPatt?: ActualAttackPattern;
+  subAttPatt?: SubAttackPattern;
+  attElmt?: ActualAttackElement;
   multBase: number | number[];
   multType?: number;
   /** only on ES / EB */

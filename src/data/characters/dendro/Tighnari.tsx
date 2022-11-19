@@ -45,14 +45,14 @@ const Tighnari: DataCharacter = {
     },
     CA: {
       stats: [
-        { name: "Aimed Shot", multBase: 43.86 },
-        { name: "Level 1 Aimed Shot", dmgTypes: ["CA", "dendro"], multBase: 124, multType: 2 },
-        { name: "Wreath Arrow DMG", dmgTypes: ["CA", "dendro"], multBase: 87.2, multType: 2 },
-        { name: "Clusterbloom Arrow DMG", dmgTypes: ["CA", "dendro"], multBase: 38.6, multType: 2 },
+        { name: "Aimed Shot", multBase: 43.86, multType: 7 },
+        { name: "Level 1 Aimed Shot", subAttPatt: "FCA", multBase: 124, multType: 2 },
+        { name: "Wreath Arrow DMG", subAttPatt: "FCA", multBase: 87.2, multType: 2 },
+        { name: "Clusterbloom Arrow DMG", subAttPatt: "FCA", multBase: 38.6, multType: 2 },
         {
           name: "Additional Clusterbloom Arrow DMG (C6)",
           isStatic: true,
-          dmgTypes: ["CA", "dendro"],
+          subAttPatt: "FCA",
           multBase: 150,
         },
       ],

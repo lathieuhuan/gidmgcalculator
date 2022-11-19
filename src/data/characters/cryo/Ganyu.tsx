@@ -53,22 +53,17 @@ const Ganyu: DataCharacter = {
     CA: {
       stats: [
         { name: "Aimed Shot", multBase: 43.86 },
-        {
-          name: "Aimed Shot Charged Level 1",
-          dmgTypes: ["CA", "cryo"],
-          multBase: 124,
-          multType: 2,
-        },
+        { name: "Aimed Shot Charged Level 1", subAttPatt: "FCA", multBase: 124, multType: 2 },
         {
           name: "Frostflake Arrow",
-          dmgTypes: ["CA", "cryo"],
+          subAttPatt: "FCA",
           multBase: 128,
           multType: 2,
           getTalentBuff: getA1TalentBuff,
         },
         {
           name: "Frostflake Arrow Bloom",
-          dmgTypes: ["CA", "cryo"],
+          subAttPatt: "FCA",
           multBase: 217.6,
           multType: 2,
           getTalentBuff: getA1TalentBuff,

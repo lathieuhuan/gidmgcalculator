@@ -64,7 +64,7 @@ const Venti: DataCharacter = {
       xtraLvAtCons: 3,
       stats: [
         { name: "DoT", multBase: 37.6 },
-        { name: "Addition Elemental DMG", dmgTypes: ["EB", "various"], multBase: 18.8 },
+        { name: "Addition Elemental DMG", attElmt: "various", multBase: 18.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "8s" },
