@@ -40,7 +40,7 @@ const purpleSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = Math.round((inputs?.[0] || 0) * (27 + refi * 9) * 0.003) / 10;
+          const buffValue = Math.round((inputs[0] || 0) * (27 + refi * 9) * 0.003) / 10;
           applyModifier(desc, totalAttr, "er", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
@@ -187,7 +187,7 @@ const purpleSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * (inputs?.[0] || 0);
+          const buffValue = (3 + refi * 1) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
@@ -296,7 +296,7 @@ const purpleSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs?.[0] || 0);
+          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,

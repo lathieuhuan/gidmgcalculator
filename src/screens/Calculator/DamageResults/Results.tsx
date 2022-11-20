@@ -9,20 +9,18 @@ import {
 import { useSelector } from "@Store/hooks";
 
 import { EStatDamageKey } from "@Src/constants";
-import { findById } from "@Src/utils";
 
 import { Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
 
-export function Results() {
+interface IResultsProps {
+  activeSetupName: string;
+}
+export function Results({ activeSetupName }: IResultsProps) {
   const dmgResult = useSelector(selectDmgResult);
   const char = useSelector(selectChar);
   const party = useSelector(selectParty);
 
-  const activeSetupName = useSelector((state) => {
-    const { activeId, setupManageInfos } = state.calculator;
-    return findById(setupManageInfos, activeId)?.name || "";
-  });
   const comparedIds = useSelector(selectComparedIds);
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);

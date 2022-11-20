@@ -17,9 +17,9 @@ import type {
   BaseStat,
   ResonanceVision,
   TransformativeReaction,
-  Tracker,
 } from "./global";
-import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
+import type { Tracker } from "@Calculators/types";
+import { ATTACK_ELEMENT_INFO_KEYS, ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
 export type SetupType = "original" | "combined" | "complex";
 
@@ -186,12 +186,11 @@ export type AttackPatternInfo = Record<AttackPatternInfoKey, number>;
 export type AttackPatternBonusKey = AttackPattern | "all";
 export type AttackPatternBonus = Record<AttackPatternBonusKey, AttackPatternInfo>;
 
-export type AttacklementInfoKey = "cDmg" | "flat";
+export type AttacklementInfoKey = typeof ATTACK_ELEMENT_INFO_KEYS[number];
 export type AttacklementInfo = Record<AttacklementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
 export type ReactionBonusKey = Reaction | "infuse_melt" | "infuse_vaporize";
-
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
 export type ResistanceReduction = Record<AttackElement | "def", number>;
@@ -234,5 +233,5 @@ export type DebuffModifierArgsWrapper = {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
   partyData: PartyData;
-  tracker: Tracker;
+  tracker?: Tracker;
 };

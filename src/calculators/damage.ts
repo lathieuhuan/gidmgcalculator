@@ -24,9 +24,8 @@ function calcTalentDamage({
   attElmtBonus,
   rxnMult,
   resistReduct,
+  record,
 }: CalcTalentStatArgs) {
-  let record = {} as TrackerDamageRecord;
-
   if (base !== 0 && !stat.notAttack) {
     // Validate infusedElement into attInfusion
     const flat =
@@ -34,8 +33,6 @@ function calcTalentDamage({
       attPattBonus.all.flat +
       (attPatt !== "none" ? attPattBonus[attPatt].flat : 0) +
       (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
-
-    record.finalFlat = flat;
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
     let normalMult = (talentBuff.pct?.value || 0) + attPattBonus.all.pct;
@@ -82,16 +79,15 @@ function calcTalentDamage({
       (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
     );
 
-    record = {
-      ...record,
-      normalMult,
-      specialMult,
-      rxnMult,
-      defMult,
-      resMult,
-      cRate,
-      cDmg,
-    };
+    record.finalFlat = flat;
+    record.normalMult = normalMult;
+    record.specialMult = specialMult;
+    record.rxnMult = rxnMult;
+    record.defMult = defMult;
+    record.resMult = resMult;
+    record.cRate = cRate;
+    record.cDmg = cDmg;
+
     return {
       nonCrit: base,
       crit: applyToOneOrMany(base, (n) => n * (1 + cDmg)),
@@ -171,7 +167,7 @@ export default function getDamage({
   }
 
   // APPLY SELF DEBUFFS
-  for (const { activated, inputs, index } of selfDebuffCtrls) {
+  for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
     if (
@@ -180,11 +176,10 @@ export default function getDamage({
       (!debuff.isGranted || debuff.isGranted(char)) &&
       debuff.applyDebuff
     ) {
-      const validatedInputs = inputs || [];
       debuff.applyDebuff({
         desc: `Self / ${debuff.src}`,
         fromSelf: true,
-        inputs: validatedInputs,
+        inputs,
         ...modifierArgs,
       });
     }
@@ -210,7 +205,7 @@ export default function getDamage({
   }
 
   // APPLY ARTIFACT DEBUFFS
-  for (const { activated, code, index, inputs } of artDebuffCtrls) {
+  for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
       const { name, debuffs = [] } = findArtifactSet({ code }) || {};
       if (name) {
@@ -284,6 +279,7 @@ export default function getDamage({
       const record = {
         baseValue: totalAttr[baseStatType],
         baseStatType,
+        talentBuff,
       } as TrackerDamageRecord;
 
       const finalMult = (multBase: number) =>
@@ -354,10 +350,11 @@ export default function getDamage({
           attElmtBonus,
           rxnMult,
           resistReduct,
+          record,
         });
       }
       if (tracker) {
-        tracker[resultKey][stat.name] = { record, talentBuff };
+        tracker[resultKey][stat.name] = record;
       }
     }
   });
@@ -416,11 +413,13 @@ export default function getDamage({
 
     finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
 
-    if (tracker) {
-      tracker.RXN[rxn] = {
-        record: { normalMult, specialMult, resMult },
-      };
-    }
+    // if (tracker) {
+    //   tracker.RXN[rxn] = {
+    //     normalMult,
+    //     specialMult,
+    //     resMult,
+    //   };
+    // }
   }
 
   if (nahidaC2isInUse) {
@@ -431,8 +430,8 @@ export default function getDamage({
       rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
 
       if (tracker) {
-        tracker.RXN[rxn].record.cRate = 0.2;
-        tracker.RXN[rxn].record.cDmg = 1;
+        tracker.RXN[rxn].cRate = 0.2;
+        tracker.RXN[rxn].cDmg = 1;
       }
     }
   }

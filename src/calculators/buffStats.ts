@@ -1,6 +1,7 @@
 import {
   AMPLIFYING_REACTIONS,
   ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
   ATTACK_PATTERNS,
   ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
@@ -8,6 +9,7 @@ import {
 } from "@Src/constants";
 import type {
   AttackElementBonus,
+  AttacklementInfo,
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfo,
@@ -131,7 +133,11 @@ export default function getBuffedStats({
   }
 
   for (const element of ATTACK_ELEMENTS) {
-    attElmtBonus[element] = { cDmg: 0, flat: 0 };
+    attElmtBonus[element] = {} as AttacklementInfo;
+
+    for (const key of ATTACK_ELEMENT_INFO_KEYS) {
+      attElmtBonus[element][key] = 0;
+    }
   }
 
   // INIT REACTION BONUS
@@ -272,7 +278,7 @@ export default function getBuffedStats({
   }
 
   // APPLY WEAPON BUFFS
-  for (const { activated, index, inputs } of wpBuffCtrls) {
+  for (const { activated, index, inputs = [] } of wpBuffCtrls) {
     if (weaponData.buffs) {
       const { applyBuff } = findByIndex(weaponData.buffs, index) || {};
       if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
@@ -291,7 +297,7 @@ export default function getBuffedStats({
   // APPLY ARTIFACT BUFFS
   const mainArtCode = sets[0]?.code;
   if (mainArtCode) {
-    for (const { index, activated, inputs } of artBuffCtrls) {
+    for (const { index, activated, inputs = [] } of artBuffCtrls) {
       const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
       const { applyBuff } = buffs?.[index] || {};
 
@@ -311,7 +317,7 @@ export default function getBuffedStats({
   applyWpPassiveBuffs({ isFinal: true, weaponData, refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
-  for (const { activated, index, inputs } of wpBuffCtrls) {
+  for (const { activated, index, inputs = [] } of wpBuffCtrls) {
     if (activated && weaponData.buffs) {
       const { applyFinalBuff } = findByIndex(weaponData.buffs, index) || {};
 

@@ -186,7 +186,7 @@ const Tighnari: DataCharacter = {
         },
       ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 60 + (inputs?.[0] === 1 ? 60 : 0), tracker);
+        applyModifier(desc, totalAttr, "em", 60 + (inputs[0] === 1 ? 60 : 0), tracker);
       },
     },
   ],

@@ -23,7 +23,7 @@ const getESDebuffValue = (
   inputs: ModifierInput[] | undefined,
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "ES", partyData) : inputs?.[0] || 0;
+  const level = fromSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;
   return level ? Math.min(15 + level, 25) : 0;
 };
 

@@ -119,7 +119,7 @@ const Venti: DataCharacter = {
         },
       ],
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        const buffValue = 12 * (inputs?.[0] ? 2 : 1);
+        const buffValue = 12 * (inputs[0] ? 2 : 1);
         applyModifier(desc, resistReduct, ["phys", "anemo"], buffValue, tracker);
       },
     },
@@ -140,7 +140,7 @@ const Venti: DataCharacter = {
         },
       ],
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        const elmtIndex = inputs?.[0] || 0;
+        const elmtIndex = inputs[0] || 0;
         applyModifier(desc, resistReduct, ["anemo", VISION_TYPES[elmtIndex]], 20, tracker);
       },
     },

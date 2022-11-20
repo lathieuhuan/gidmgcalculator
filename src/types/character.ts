@@ -7,7 +7,6 @@ import type {
   Rarity,
   Weapon,
   CharInfo,
-  Tracker,
   NormalAttack,
   ArtifactPercentStat,
   ModInputConfig,
@@ -24,6 +23,7 @@ import type {
   BuffModifierArgsWrapper,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
+import { Tracker } from "@Calculators/types";
 
 export type DataCharacter = {
   code: number;
@@ -181,14 +181,14 @@ export type AbilityBuff = AbilityModifier & {
     charBuffCtrls: ModifierCtrl[];
     partyData: PartyData;
     totalAttr: TotalAttribute;
-    inputs?: ModifierInput[];
+    inputs: ModifierInput[];
   }) => ReactNode;
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
 export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   toSelf: boolean;
   charBuffCtrls: ModifierCtrl[];
   desc: string;
@@ -196,13 +196,11 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
 
 // DEBUFFS
 
-export type ApplyCharDebuffFn = (args: {
+type ApplyCharDebuffFn = (args: {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
-  // may need in future
-  // selfDebuffCtrls: ModifierCtrl[];
   char: CharInfo;
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   partyData: PartyData;
   fromSelf: boolean;
   desc?: string;
@@ -215,7 +213,7 @@ export type AbilityDebuff = AbilityModifier & {
   desc: (args: {
     fromSelf: boolean;
     char: CharInfo;
-    inputs?: ModifierInput[];
+    inputs: ModifierInput[];
     partyData: PartyData;
   }) => ReactNode;
   applyDebuff?: ApplyCharDebuffFn;

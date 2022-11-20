@@ -35,7 +35,7 @@ const goldPolearms: DataWeapon[] = [
         ],
         applyFinalBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
           const mult = 21 + refi * 7;
-          const stacks = inputs?.[0] || 0;
+          const stacks = inputs[0] || 0;
           const buffValue = applyPercent(totalAttr.em, mult) * stacks;
           const xtraDesc = ` / ${stacks} stacks / (each) ${round1(mult)}% of ${
             totalAttr.em
@@ -107,7 +107,7 @@ const goldPolearms: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stacks = inputs?.[0] || 0;
+          const stacks = inputs[0] || 0;
           const bnValue1 = (2.5 + refi * 0.7) * stacks;
           applyModifier(desc, totalAttr, "atk_", bnValue1, tracker);
 
@@ -259,7 +259,7 @@ const goldPolearms: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (2.4 + refi * 0.8) * (inputs?.[0] || 0) * (inputs?.[1] === 1 ? 2 : 1);
+          const buffValue = (2.4 + refi * 0.8) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldPolearms, 82)!.passiveDesc({ refi }).extra![0],

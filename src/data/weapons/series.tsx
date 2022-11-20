@@ -33,7 +33,7 @@ export const desertSeries: Pick<
         initialValues: [0],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = applyPercent(inputs?.[0] || 0, ((18 + refi * 6) * 3) / 10);
+        const buffValue = applyPercent(inputs[0] || 0, ((18 + refi * 6) * 3) / 10);
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);
       },
       desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
@@ -72,7 +72,7 @@ export const royalSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
+        const buffValue = (6 + refi * 2) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
       desc: ({ refi }) => royalSeries.passiveDesc({ refi }).core,
@@ -101,7 +101,7 @@ export const blackcliffSeries: SeriesInfo = {
         initialValues: [3],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (9 + refi * 3) * (inputs?.[0] || 0);
+        const buffValue = (9 + refi * 3) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
@@ -187,7 +187,7 @@ export const liyueSeries: SeriesInfo = {
         initialValues: [5],
       },
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (3 + refi) * (inputs?.[0] || 0) * (inputs?.[1] === 1 ? 2 : 1);
+        const buffValue = (3 + refi) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
       desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],

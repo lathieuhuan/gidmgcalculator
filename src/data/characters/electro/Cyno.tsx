@@ -296,7 +296,7 @@ const Cyno: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "electro", (inputs?.[0] || 0) * 10, tracker);
+        applyModifier(desc, totalAttr, "electro", (inputs[0] || 0) * 10, tracker);
       },
     },
   ],

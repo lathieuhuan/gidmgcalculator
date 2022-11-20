@@ -156,7 +156,7 @@ const Yelan: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * (inputs[0] || 0), tracker);
       },
     },
     {
@@ -177,7 +177,7 @@ const Yelan: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "hp_", 10 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "hp_", 10 * (inputs[0] || 0), tracker);
       },
     },
   ],

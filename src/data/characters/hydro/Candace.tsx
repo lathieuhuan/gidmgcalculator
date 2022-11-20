@@ -178,7 +178,7 @@ const Candace: DataCharacter = {
         },
       ],
       applyFinalBuff: ({ toSelf, char, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs?.[0] || 0 : 0;
+        const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs[0] || 0 : 0;
         applyModifier(desc, attPattBonus, "NA.pct", 20 + (maxHP / 1000) * 0.5, tracker);
       },
     },

@@ -125,7 +125,7 @@ const purpleClaymores: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs?.[0] || 0);
+          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleClaymores, 64)!.passiveDesc({ refi }).core,
@@ -178,7 +178,7 @@ const purpleClaymores: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (5 + refi) * (inputs?.[0] || 0);
+          const buffValue = (5 + refi) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
         desc: ({ refi }) => (

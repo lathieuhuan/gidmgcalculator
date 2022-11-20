@@ -156,7 +156,7 @@ const Yoimiya: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "atk_", 10 + (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "atk_", 10 + (inputs[0] || 0), tracker);
       },
     },
     {

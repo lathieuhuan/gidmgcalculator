@@ -154,7 +154,7 @@ const Xiao: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs[0] || 0), tracker);
       },
     },
     {
@@ -176,7 +176,7 @@ const Xiao: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 15 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 15 * (inputs[0] || 0), tracker);
       },
     },
   ],

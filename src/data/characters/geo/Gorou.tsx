@@ -3,7 +3,7 @@ import { Geo, Green, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier, increaseAttackBonus } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
@@ -167,7 +167,7 @@ const Gorou: DataCharacter = {
                 "."
               ) : (
                 <>
-                  : <Red>{getESBuffValue(inputs?.[0] || 0)}.</Red>
+                  : <Red>{getESBuffValue(inputs[0] || 0)}.</Red>
                 </>
               )}
             </span>
@@ -195,7 +195,7 @@ const Gorou: DataCharacter = {
       applyBuff: (obj) => {
         const level = obj.toSelf
           ? finalTalentLv(obj.char, "ES", obj.partyData)
-          : obj.inputs?.[0] || 1;
+          : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
         const buffValues = [getESBuffValue(level)];
 
@@ -247,13 +247,8 @@ const Gorou: DataCharacter = {
       isGranted: checkCons[6],
       affect: EModAffect.PARTY,
       applyBuff: (obj) => {
-        increaseAttackBonus({
-          ...obj,
-          element: "geo",
-          type: "cDmg",
-          value: [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1],
-          mainCharVision: obj.charData.vision,
-        });
+        const buffValue = [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1];
+        applyModifier(obj.desc, obj.attElmtBonus, "geo.cDmg", buffValue, obj.tracker);
       },
     },
   ],

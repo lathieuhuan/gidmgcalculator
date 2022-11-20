@@ -176,7 +176,7 @@ const liyueSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "pyro", 7.5 * (inputs?.[0] || 0), tracker);
+          applyModifier(desc, totalAttr, "pyro", 7.5 * (inputs[0] || 0), tracker);
         },
       },
     ],
@@ -282,7 +282,7 @@ const liyueSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const elmtIndex = inputs?.[0] || 0;
+          const elmtIndex = inputs[0] || 0;
           applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 35, tracker);
         },
       },
@@ -395,7 +395,7 @@ const liyueSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const stacks = inputs?.[0] || 0;
+          const stacks = inputs[0] || 0;
           applyModifier(desc, totalAttr, "atk_", 9 * stacks, tracker);
 
           if (stacks === 2) {

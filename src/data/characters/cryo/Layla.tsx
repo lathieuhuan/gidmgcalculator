@@ -231,7 +231,7 @@ const Layla: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 6 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "shStr", 6 * (inputs[0] || 0), tracker);
       },
     },
     {
@@ -249,7 +249,7 @@ const Layla: DataCharacter = {
         },
       ],
       applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf ? totalAttr.hp : inputs?.[0] || 0;
+        const maxHP = toSelf ? totalAttr.hp : inputs[0] || 0;
         const buffValue = applyPercent(maxHP, 5);
         applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       },

@@ -1,3 +1,11 @@
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
+  ATTRIBUTE_STAT_TYPES,
+  REACTIONS,
+} from "@Src/constants";
 import type {
   AttributeStat,
   AttackElement,
@@ -5,7 +13,6 @@ import type {
   ReactionBonusKey,
   ResistanceReduction,
   TotalAttribute,
-  Tracker,
   AttackPatternBonusKey,
   AttackPatternInfoKey,
   AttackPatternBonus,
@@ -17,6 +24,7 @@ import type {
 } from "@Src/types";
 import { bareLv, pickOne, turnArray } from "@Src/utils";
 import { BASE_REACTION_DAMAGE } from "./constants";
+import { Tracker, TrackerRecord } from "./types";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
   obj: T,
@@ -26,20 +34,48 @@ export function addOrInit<T extends Partial<Record<K, number | undefined>>, K ex
   obj[key] = (((obj[key] as number | undefined) || 0) + value) as T[K];
 }
 
-export function pushOrMergeTrackerRecord(
-  tracker: Tracker,
-  field: string,
-  desc: string,
-  value: number
-) {
-  if (tracker) {
-    // #to-check
-    const existed = tracker[field].find((note: any) => note.desc === desc);
-    if (existed) {
-      existed.value += value;
-    } else {
-      tracker[field].push({ desc, value });
+export function initTracker() {
+  const tracker = {
+    totalAttr: {},
+    attPattBonus: {},
+    attElmtBonus: {},
+    rxnBonus: {},
+    resistReduct: {},
+    NAs: {},
+    ES: {},
+    EB: {},
+    RXN: {},
+  } as Tracker;
+
+  for (const stat of ATTRIBUTE_STAT_TYPES) {
+    tracker.totalAttr[stat] = [];
+  }
+  for (const attPatt of [...ATTACK_PATTERNS, "all"] as const) {
+    for (const key of ATTACK_PATTERN_INFO_KEYS) {
+      tracker.attPattBonus[`${attPatt}.${key}`] = [];
     }
+  }
+  for (const attElmt of ATTACK_ELEMENTS) {
+    for (const key of ATTACK_ELEMENT_INFO_KEYS) {
+      tracker.attElmtBonus[`${attElmt}.${key}`] = [];
+    }
+    tracker.resistReduct[attElmt] = [];
+  }
+  tracker.resistReduct.def = [];
+
+  for (const reaction of [...REACTIONS, "infuse_melt", "infuse_vaporize"] as const) {
+    tracker.rxnBonus[reaction] = [];
+  }
+
+  return tracker;
+}
+
+export function pushOrMergeTrackerRecord(list: TrackerRecord[], desc: string, value: number) {
+  const existed = list.find((note: any) => note.desc === desc);
+  if (existed) {
+    existed.value += value;
+  } else {
+    list.push({ desc, value });
   }
 }
 
@@ -76,35 +112,35 @@ export function applyModifier(
   recipient: TotalAttribute,
   keys: AttributeStat | AttributeStat[],
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ): void;
 export function applyModifier(
   desc: string | undefined,
   recipient: AttackPatternBonus,
   keys: AttackPatternPath | AttackPatternPath[],
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ): void;
 export function applyModifier(
   desc: string | undefined,
   recipient: AttackElementBonus,
   keys: AttackElementPath | AttackElementPath[],
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ): void;
 export function applyModifier(
   desc: string | undefined,
   recipient: ReactionBonus,
   keys: ReactionBonusKey | ReactionBonusKey[],
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ): void;
 export function applyModifier(
   desc: string | undefined,
   recipient: ResistanceReduction,
   keys: (AttackElement | "def") | (AttackElement | "def")[],
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ): void;
 
 export function applyModifier(
@@ -112,24 +148,39 @@ export function applyModifier(
   recipient: ModRecipient,
   keys: ModRecipientKey,
   rootValue: RootValue,
-  tracker: Tracker
+  tracker?: Tracker
 ) {
+  const keyOfTracker = (): keyof Tracker => {
+    if ("atk" in recipient) {
+      return "totalAttr";
+    } else if ("all" in recipient) {
+      return "attPattBonus";
+    } else if ("bloom" in recipient) {
+      return "rxnBonus";
+    } else if ("def" in recipient) {
+      return "resistReduct";
+    } else {
+      return "attElmtBonus";
+    }
+  };
+
   turnArray(keys).forEach((key, i) => {
-    const routes = key.split(".");
+    const [field, subField] = key.split(".");
     const value = pickOne(rootValue, i);
     const node = {
       desc,
       value,
     };
-    if (routes[1] === undefined) {
-      (recipient as any)[routes[0]] += value;
+    // recipient: TotalAttribute, ReactionBonus, ResistanceReduction
+    if (subField === undefined) {
+      (recipient as any)[field] += value;
       if (tracker) {
-        tracker[routes[0]].push(node);
+        (tracker as any)[keyOfTracker()][field].push(node);
       }
     } else {
-      (recipient as any)[routes[0]][routes[1]] += value;
+      (recipient as any)[field][subField] += value;
       if (tracker) {
-        tracker[routes[0]][routes[1]].push(node);
+        (tracker as any)[keyOfTracker()][key].push(node);
       }
     }
   });
@@ -216,38 +267,6 @@ export const meltMult = (elmt: AttackElement) => {
 export const vaporizeMult = (elmt: AttackElement) => {
   return elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1;
 };
-
-export type IncreaseAttackBonusArgs = {
-  element: AttackElement;
-  type: AttacklementInfoKey;
-  value: number;
-  mainCharVision: Vision;
-  infusedElement: AttackElement;
-  attElmtBonus: AttackElementBonus;
-  attPattBonus: AttackPatternBonus;
-  desc: string;
-  tracker?: Tracker;
-};
-export function increaseAttackBonus({
-  element,
-  type,
-  value,
-  mainCharVision,
-  infusedElement,
-  attElmtBonus,
-  attPattBonus,
-  desc,
-  tracker,
-}: IncreaseAttackBonusArgs) {
-  if (mainCharVision === element) {
-    applyModifier(desc, attElmtBonus, `${element}.${type}`, value, tracker);
-  }
-  for (const patt of ["NA", "CA", "PA"] as const) {
-    if (infusedElement === element) {
-      applyModifier(desc, attPattBonus, `${patt}.${type}`, value, tracker);
-    }
-  }
-}
 
 export const getDefaultStatInfo = (
   key: "NAs" | "ES" | "EB",

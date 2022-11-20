@@ -7,9 +7,9 @@ import { applyModifier } from "@Calculators/utils";
 import { checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
-  const baseATK = inputs?.[0] || 0;
-  const level = inputs?.[1] || 0;
-  const boosted = (inputs?.[2] || 0) === 1;
+  const baseATK = inputs[0] || 0;
+  const level = inputs[1] || 0;
+  const boosted = (inputs[2] || 0) === 1;
   let mult = 56 * TALENT_LV_MULTIPLIERS[2][level];
   let desc = level.toString();
 

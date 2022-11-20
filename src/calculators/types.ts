@@ -12,7 +12,6 @@ import type {
   PartyData,
   ReactionBonus,
   TotalAttribute,
-  Tracker,
   AttackElement,
   DataCharacter,
   StatInfo,
@@ -23,7 +22,45 @@ import type {
   CustomDebuffCtrl,
   ActualAttackPattern,
   ActualAttackElement,
+  AttributeStat,
+  AttackPatternBonusKey,
+  AttackPatternInfoKey,
+  AttacklementInfoKey,
+  ReactionBonusKey,
 } from "@Src/types";
+
+export type TrackerRecord = {
+  desc: string;
+  value: number;
+};
+
+export type TrackerDamageRecord = {
+  baseValue: number;
+  baseStatType: "base_atk" | "hp" | "atk" | "def";
+  finalMult: number | number[];
+  finalFlat: number;
+  normalMult: number;
+  specialMult?: number;
+  rxnMult?: number;
+  defMult?: number;
+  resMult?: number;
+  cRate?: number;
+  cDmg?: number;
+  note?: string;
+  talentBuff?: TalentBuff;
+};
+
+export type Tracker = {
+  totalAttr: Record<AttributeStat, TrackerRecord[]>;
+  attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
+  attElmtBonus: Record<`${AttackElement}.${AttacklementInfoKey}`, TrackerRecord[]>;
+  rxnBonus: Record<ReactionBonusKey, TrackerRecord[]>;
+  resistReduct: Record<AttackElement | "def", TrackerRecord[]>;
+  NAs: Record<string, TrackerDamageRecord>;
+  ES: Record<string, TrackerDamageRecord>;
+  EB: Record<string, TrackerDamageRecord>;
+  RXN: Record<string, TrackerDamageRecord>;
+};
 
 export type UsedCode = {
   itemCode: number;
@@ -40,21 +77,6 @@ export type BaseModifierArgsWrapper = {
   tracker?: Tracker;
 };
 
-export type TrackerDamageRecord = {
-  baseValue: number;
-  baseStatType: "base_atk" | "hp" | "atk" | "def";
-  finalMult: number | number[];
-  finalFlat: number;
-  normalMult: number;
-  specialMult?: number;
-  rxnMult?: number;
-  defMult?: number;
-  resMult?: number;
-  cRate?: number;
-  cDmg?: number;
-  note?: string;
-};
-
 export type GetBuffedStatsArgs = {
   char: CharInfo;
   charData: CharData;
@@ -69,7 +91,7 @@ export type GetBuffedStatsArgs = {
   partyData: PartyData;
   customBuffCtrls: CustomBuffCtrl[];
   infusedElement: AttackElement;
-  tracker: Tracker;
+  tracker?: Tracker;
 };
 
 export interface CalcTalentStatArgs {
@@ -85,6 +107,7 @@ export interface CalcTalentStatArgs {
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
   resistReduct: ResistanceReduction;
+  record: TrackerDamageRecord;
 }
 
 export interface GetDamageArgs {
@@ -105,5 +128,5 @@ export interface GetDamageArgs {
   infusedElement: AttackElement;
   elmtModCtrls: ElementModCtrl;
   target: Target;
-  tracker: Tracker;
+  tracker?: Tracker;
 }

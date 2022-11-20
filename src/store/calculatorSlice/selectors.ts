@@ -34,9 +34,6 @@ export const selectTarget = (state: RootState) => state.calculator.target;
 export const selectTotalAttr = (state: RootState) =>
   state.calculator.statsById[state.calculator.activeId].totalAttrs;
 
-export const selectFinalInfusion = (state: RootState) =>
-  state.calculator.statsById[state.calculator.activeId].finalInfusion;
-
 export const selectRxnBonus = (state: RootState) =>
   state.calculator.statsById[state.calculator.activeId].rxnBonuses;
 

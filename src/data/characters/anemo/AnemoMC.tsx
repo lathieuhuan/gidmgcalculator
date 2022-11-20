@@ -88,7 +88,7 @@ const AnemoMC: DataCharacter = {
         },
       ],
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        const elmtIndex = inputs?.[0] || 0;
+        const elmtIndex = inputs[0] || 0;
         applyModifier(desc, resistReduct, ["anemo", VISION_TYPES[elmtIndex]], 20, tracker);
       },
     },

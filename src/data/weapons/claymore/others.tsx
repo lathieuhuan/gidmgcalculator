@@ -60,7 +60,7 @@ const otherClaymores: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs?.[0] || 0), tracker);
+          applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs[0] || 0), tracker);
         },
         desc: ({ refi }) => findByCode(otherClaymores, 50)!.passiveDesc({ refi }).core,
       },

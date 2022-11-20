@@ -3,7 +3,7 @@ import { Green, Rose } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, increaseAttackBonus, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
@@ -13,7 +13,7 @@ const getEBDebuffValue = (
   inputs: ModifierInput[] | undefined,
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[0] || 0;
+  const level = fromSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 0;
   return level ? Math.min(5 + level, 15) : 0;
 };
 
@@ -121,19 +121,18 @@ const Shenhe: DataCharacter = {
       ],
       applyFinalBuff: (obj) => {
         const { toSelf, inputs } = obj;
-        const ATK = toSelf ? obj.totalAttr.atk : inputs?.[0] || 0;
-        const level = toSelf ? finalTalentLv(obj.char, "ES", obj.partyData) : inputs?.[1] || 1;
+        const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
+        const level = toSelf ? finalTalentLv(obj.char, "ES", obj.partyData) : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraDesc = ` / Lv. ${level} / ${round2(mult)}% of ${ATK} ATK`;
 
-        increaseAttackBonus({
-          ...obj,
-          mainCharVision: obj.charData.vision,
-          element: "cryo",
-          type: "flat",
-          value: applyPercent(ATK, mult),
-          desc: obj.desc + xtraDesc,
-        });
+        applyModifier(
+          obj.desc + xtraDesc,
+          obj.attElmtBonus,
+          "cryo.flat",
+          applyPercent(ATK, mult),
+          obj.tracker
+        );
       },
     },
     {
@@ -175,10 +174,10 @@ const Shenhe: DataCharacter = {
         { label: "Hold", type: "check", initialValue: 0 },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        if (inputs?.[0] === 1) {
+        if (inputs[0] === 1) {
           applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
         }
-        if (inputs?.[1] === 1) {
+        if (inputs[1] === 1) {
           applyModifier(desc + " / Hold", attPattBonus, [...NCPA_PERCENTS], 15, tracker);
         }
       },
@@ -194,15 +193,7 @@ const Shenhe: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.ACTIVE_UNIT,
-      applyBuff: (obj) => {
-        increaseAttackBonus({
-          ...obj,
-          mainCharVision: obj.charData.vision,
-          element: "cryo",
-          type: "cDmg",
-          value: 15,
-        });
-      },
+      applyBuff: makeModApplier("attElmtBonus", "cryo.cDmg", 15),
     },
     {
       index: 4,
@@ -224,7 +215,7 @@ const Shenhe: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 5 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "ES.pct", 5 * (inputs[0] || 0), tracker);
       },
     },
   ],

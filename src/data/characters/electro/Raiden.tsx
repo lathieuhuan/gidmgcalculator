@@ -48,7 +48,7 @@ const getBuffValue = {
     inputs: ModifierInput[] | undefined,
     partyData: PartyData
   ) => {
-    const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs?.[0] || 0;
+    const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
     return [round1(EBcost * mult), `${level} / ${round2(mult)}% * ${EBcost} Energy Cost`] as const;
   },

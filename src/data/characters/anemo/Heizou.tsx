@@ -130,7 +130,7 @@ const Heizou: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        const stacks = inputs?.[0] || 0;
+        const stacks = inputs[0] || 0;
 
         if (stacks !== 4) {
           applyModifier(desc, attPattBonus, "ES.cRate", 4 * stacks, tracker);

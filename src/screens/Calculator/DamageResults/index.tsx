@@ -1,11 +1,18 @@
 import { Results } from "./Results";
 import { Header } from "./Header";
+import { useSelector } from "@Store/hooks";
+import { findById } from "@Src/utils";
 
 export default function DamageResults() {
+  const activeSetupName = useSelector((state) => {
+    const { activeId, setupManageInfos } = state.calculator;
+    return findById(setupManageInfos, activeId)?.name || "";
+  });
+
   return (
     <div className="h-full">
-      <Header />
-      <Results />
+      <Header activeSetupName={activeSetupName} />
+      <Results activeSetupName={activeSetupName} />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
       {/* {trackerState > 0 && (
         <Tracker trackerState={trackerState} setTrackerState={setTrackerState} />
