@@ -25,11 +25,12 @@ export default function calculateAll(
   tracker?: Tracker
 ) {
   const dataChar = findCharacter(char)!;
-  const selfInfusion = checkSelfInfusion(dataChar.buffs || [], selfBuffCtrls);
   const infusedElement =
-    selfInfusion === undefined || (selfInfusion === false && customInfusion.element !== "phys")
+    customInfusion.element !== "phys"
       ? customInfusion.element
-      : dataChar.vision;
+      : checkSelfInfusion(dataChar.buffs || [], selfBuffCtrls) !== undefined
+      ? dataChar.vision
+      : "phys";
   const partyData = getPartyData(party);
 
   const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({

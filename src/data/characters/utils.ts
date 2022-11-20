@@ -64,7 +64,7 @@ export function talentBuff(...configs: TalentBuffConfig[]) {
       result[attPattKey] = { desc, value };
     }
   }
-  if (Object.keys(result)) return result;
+  return result;
 }
 
 export function modIsActivated(modCtrls: ModifierCtrl[], index: number) {

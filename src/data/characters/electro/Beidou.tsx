@@ -48,7 +48,13 @@ const Beidou: DataCharacter = {
       stats: [
         { name: "Charged Attack Spinning", multBase: 56.24 },
         { name: "Charged Attack Final", multBase: 101.82 },
-        { name: "Extra Hit (C4)", isStatic: true, attPatt: null, attElmt: "electro", multBase: 20 },
+        {
+          name: "Extra Hit (C4)",
+          isStatic: true,
+          attPatt: "none",
+          attElmt: "electro",
+          multBase: 20,
+        },
       ],
     },
     PA: { stats: HEAVY_PAs },

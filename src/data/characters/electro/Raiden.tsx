@@ -36,6 +36,7 @@ const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuff
         };
       }
     }
+    return {};
   };
 };
 

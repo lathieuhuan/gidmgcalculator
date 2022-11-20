@@ -22,7 +22,9 @@ import type {
   ResistanceReduction,
   ArtifactDebuffCtrl,
   CustomDebuffCtrl,
-  AttackPattern,
+  ActualAttackPattern,
+  ActualAttackElement,
+  AttackReaction,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -74,20 +76,17 @@ export type GetBuffedStatsArgs = {
 
 export interface CalcTalentStatArgs {
   stat: StatInfo;
-  attPatt: AttackPattern | null;
-  attElmt: AttackElement | "various";
+  attPatt: ActualAttackPattern;
+  attElmt: ActualAttackElement;
   base: number | number[];
   char: CharInfo;
-  vision: Vision;
   target: Target;
-  elmtModCtrls: ElementModCtrl;
+  rxnMult: number;
   talentBuff: TalentBuff;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
-  rxnBonus: ReactionBonus;
   resistReduct: ResistanceReduction;
-  infusedElement: AttackElement;
 }
 
 export interface GetDamageArgs {

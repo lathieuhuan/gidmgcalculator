@@ -32,6 +32,7 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
 
     return talentBuff([true, "flat", "Elemental Skill", flat], C1TalentBuff(char, selfBuffCtrls));
   }
+  return {};
 };
 
 const getEBBuffValue = (

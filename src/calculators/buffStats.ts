@@ -93,7 +93,7 @@ export default function getBuffedStats({
   wpBuffCtrls,
   artInfo: { pieces, sets },
   artBuffCtrls,
-  elmtModCtrls: { resonances, reaction, infusion_reaction },
+  elmtModCtrls: { resonances, reaction, infuse_reaction },
   party,
   partyData,
   customBuffCtrls,
@@ -361,10 +361,10 @@ export default function getBuffedStats({
   const vapBonus = toMult(rxnBonus.vaporize);
   const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
 
-  if (reaction === "spread" || infusion_reaction === "spread") {
+  if (reaction === "spread" || infuse_reaction === "spread") {
     applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
   }
-  if (reaction === "aggravate" || infusion_reaction === "aggravate") {
+  if (reaction === "aggravate" || infuse_reaction === "aggravate") {
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 

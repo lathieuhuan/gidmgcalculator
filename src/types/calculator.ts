@@ -146,9 +146,11 @@ export type Resonance = {
   inputs?: ModifierInput[];
 };
 
+export type AttackReaction = null | "melt" | "vaporize" | "aggravate" | "spread";
+
 export type ElementModCtrl = {
-  infusion_reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
-  reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
+  infuse_reaction: AttackReaction;
+  reaction: AttackReaction;
   superconduct: boolean;
   resonances: Resonance[];
 };

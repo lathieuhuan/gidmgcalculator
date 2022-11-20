@@ -84,13 +84,13 @@ type GetTalentBuffArgs = {
 
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
-export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff | void;
+export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff;
 
 export type BaseStatType = "base_atk" | "atk" | "def" | "hp" | "em";
 
-type ActualAttackPattern = AttackPattern | null;
+export type ActualAttackPattern = AttackPattern | "none";
 
-type ActualAttackElement = AttackElement | "various";
+export type ActualAttackElement = AttackElement | "various";
 
 export type SubAttackPattern = "FCA";
 
