@@ -123,7 +123,7 @@ const Ayato: DataCharacter = {
         {
           name: "Namisen DMG Bonus",
           notAttack: "other",
-          notOfficial: true,
+          isNotOfficial: true,
           baseStatType: "hp",
           multBase: 0,
           multType: 7,
@@ -206,6 +206,7 @@ const Ayato: DataCharacter = {
       ],
       infuseConfig: {
         overwritable: false,
+        disabledNAs: true,
       },
     },
     {

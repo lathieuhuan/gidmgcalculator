@@ -1,5 +1,7 @@
+import { EModAffect } from "@Src/constants";
+import { Green, Hydro } from "@Src/styled-components";
 import type { DataCharacter } from "@Src/types";
-import { BOW_CAs, MEDIUM_PAs } from "../constants";
+import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 
 const Tartaglia: DataCharacter = {
   code: 26,
@@ -102,6 +104,23 @@ const Tartaglia: DataCharacter = {
     { name: "Abyssal Mayhem: Hydrospout", image: "9/9d/Constellation_Abyssal_Mayhem_Hydrospout" },
     { name: "Havoc: Formless Blade", image: "2/20/Constellation_Havoc_Formless_Blade" },
     { name: "Havoc: Annihilation", image: "5/5a/Constellation_Havoc_Annihilation" },
+  ],
+  buffs: [
+    {
+      index: 0,
+      src: EModSrc.ES,
+      desc: () => (
+        <>
+          Tartaglia's Normal and Charged Attacks are converted to <Hydro>Hydro DMG</Hydro> that
+          cannot be overridden by any other elemental infusion.
+        </>
+      ),
+      affect: EModAffect.SELF,
+      infuseConfig: {
+        overwritable: false,
+        disabledNAs: true,
+      },
+    },
   ],
 };
 

@@ -265,6 +265,7 @@ const Cyno: DataCharacter = {
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
         overwritable: false,
+        disabledNAs: true,
       },
     },
     {

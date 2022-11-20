@@ -314,6 +314,7 @@ const Raiden: DataCharacter = {
       ],
       infuseConfig: {
         overwritable: false,
+        disabledNAs: true,
       },
     },
     {

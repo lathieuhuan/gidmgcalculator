@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import {
-  selectActiveId,
   selectChar,
   selectComparedIds,
   selectDmgResult,
@@ -16,7 +15,6 @@ import { Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
 
 export function Results() {
-  const activeId = useSelector(selectActiveId);
   const dmgResult = useSelector(selectDmgResult);
   const char = useSelector(selectChar);
   const party = useSelector(selectParty);
@@ -28,7 +26,6 @@ export function Results() {
   const comparedIds = useSelector(selectComparedIds);
 
   const [focus, setFocus] = useState<EStatDamageKey>(EStatDamageKey.AVERAGE);
-
   const comparing = comparedIds.length > 1;
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import type { AbilityBuff, CharData, ModifierCtrl, Tracker, UsersSetupCalcInfo } from "@Src/types";
+import type { CharData, Tracker, UsersSetupCalcInfo } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";
@@ -25,10 +25,31 @@ export default function calculateAll(
   tracker?: Tracker
 ) {
   const dataChar = findCharacter(char)!;
+  /** false = overwritable infusion. true = unoverwritable. undefined = no infusion */
+  let selfInfused: boolean | undefined = undefined;
+  let disabledNAs = false;
+
+  if (dataChar.buffs) {
+    for (const { activated, index } of selfBuffCtrls) {
+      if (activated) {
+        const buff = findByIndex(dataChar.buffs, index);
+
+        if (buff && buff.infuseConfig) {
+          if (!selfInfused) {
+            selfInfused = !buff.infuseConfig.overwritable;
+          }
+          if (!disabledNAs) {
+            disabledNAs = buff.infuseConfig.disabledNAs || false;
+          }
+        }
+      }
+    }
+  }
+
   const infusedElement =
     customInfusion.element !== "phys"
       ? customInfusion.element
-      : checkSelfInfusion(dataChar.buffs || [], selfBuffCtrls) !== undefined
+      : selfInfused
       ? dataChar.vision
       : "phys";
   const partyData = getPartyData(party);
@@ -59,6 +80,7 @@ export default function calculateAll(
     artDebuffCtrls,
     party,
     partyData,
+    disabledNAs,
     totalAttr,
     attPattBonus,
     attElmtBonus,
@@ -76,25 +98,4 @@ export default function calculateAll(
     rxnBonus,
     dmgResult,
   };
-}
-
-/** false = overwritable infusion. true = unoverwritable. undefined = no infusion */
-function checkSelfInfusion(buffs: AbilityBuff[], selfBuffCtrls: ModifierCtrl[]) {
-  let result: boolean | undefined = undefined;
-
-  for (const { activated, index } of selfBuffCtrls) {
-    if (activated) {
-      const buff = findByIndex(buffs, index);
-
-      if (buff && buff.infuseConfig) {
-        if (buff.infuseConfig.overwritable) {
-          result = false;
-        } else {
-          return true;
-        }
-      }
-    }
-  }
-
-  return result;
 }

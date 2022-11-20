@@ -16,7 +16,6 @@ import type {
   AttackElement,
   DataCharacter,
   StatInfo,
-  Vision,
   Target,
   TalentBuff,
   ResistanceReduction,
@@ -24,7 +23,6 @@ import type {
   CustomDebuffCtrl,
   ActualAttackPattern,
   ActualAttackElement,
-  AttackReaction,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -98,6 +96,7 @@ export interface GetDamageArgs {
   artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;
   partyData: PartyData;
+  disabledNAs: boolean;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;

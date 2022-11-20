@@ -13,7 +13,7 @@ type ReactionKey = {
 
 export type TableKey = AttackPatternKey | ReactionKey;
 
-export function getKeys(charName: string) {
+export function getTableKeys(charName: string) {
   const charData = findCharacter({ name: charName });
   if (!charData) {
     return [];
@@ -45,5 +45,8 @@ export function getKeys(charName: string) {
 }
 
 export function displayValue(value: number | number[]) {
+  if (value === 0) {
+    return "-";
+  }
   return Array.isArray(value) ? value.map((v) => Math.round(v)).join(" + ") : Math.round(value);
 }

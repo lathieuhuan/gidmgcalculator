@@ -7,7 +7,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { charModIsInUse } from "@Data/characters/utils";
 import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
-import { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
+import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
 import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
@@ -92,10 +92,6 @@ function calcTalentDamage({
       cRate,
       cDmg,
     };
-    if (attPatt !== "EB" && attPatt !== "ES") {
-      console.log(attPatt);
-      console.log(record);
-    }
     return {
       nonCrit: base,
       crit: applyToOneOrMany(base, (n) => n * (1 + cDmg)),
@@ -143,6 +139,7 @@ export default function getDamage({
   artDebuffCtrls,
   party,
   partyData,
+  disabledNAs,
   totalAttr,
   attPattBonus,
   attElmtBonus,
@@ -337,20 +334,28 @@ export default function getDamage({
       }
 
       // TALENT DMG
-      finalResult[resultKey][stat.name] = calcTalentDamage({
-        stat,
-        attPatt,
-        attElmt,
-        base,
-        char,
-        target,
-        talentBuff,
-        totalAttr,
-        attPattBonus,
-        attElmtBonus,
-        rxnMult,
-        resistReduct,
-      });
+      if (!stat.notAttack && resultKey === "NAs" && disabledNAs) {
+        finalResult[resultKey][stat.name] = {
+          nonCrit: 0,
+          crit: 0,
+          average: 0,
+        };
+      } else {
+        finalResult[resultKey][stat.name] = calcTalentDamage({
+          stat,
+          attPatt,
+          attElmt,
+          base,
+          char,
+          target,
+          talentBuff,
+          totalAttr,
+          attPattBonus,
+          attElmtBonus,
+          rxnMult,
+          resistReduct,
+        });
+      }
       if (tracker) {
         tracker[resultKey][stat.name] = { record, talentBuff };
       }

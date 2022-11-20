@@ -59,7 +59,7 @@ const Yelan: DataCharacter = {
           subAttPatt: "FCA",
           multBase: 18.0648,
           multType: 2,
-          notOfficial: true,
+          isNotOfficial: true,
         },
       ],
     },

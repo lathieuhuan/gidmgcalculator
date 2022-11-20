@@ -106,7 +106,7 @@ export type StatInfo = {
   /**
    * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
-  notOfficial?: boolean;
+  isNotOfficial?: boolean;
   /**
    * If true, multBase and flat.base will not scale with talent level
    */
@@ -172,6 +172,7 @@ export type AbilityBuff = AbilityModifier & {
   infuseConfig?: {
     overwritable: boolean;
     range?: NormalAttack[];
+    disabledNAs?: boolean;
   };
   desc: (args: {
     toSelf: boolean;

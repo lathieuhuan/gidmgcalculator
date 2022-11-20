@@ -203,7 +203,11 @@ export type Infusion = {
 
 export type Talent = typeof TALENT_TYPES[number];
 
-type CalculatedDamage = Record<"nonCrit" | "crit" | "average", number | number[]>;
+type CalculatedDamage = {
+  nonCrit: number | number[];
+  crit: number | number[];
+  average: number | number[];
+};
 
 type CalculatedDamageCluster = {
   [k: string]: CalculatedDamage;
