@@ -1,10 +1,9 @@
-import { Modal } from "@Components/modals";
-import cn from "classnames";
 import { Fragment, useEffect, useState } from "react";
 import { FaExpandArrowsAlt, FaMinus, FaSearch, FaTimes } from "react-icons/fa";
-
 import { MdMoreVert } from "react-icons/md";
-import Tracker from "./Tracker";
+
+import { Modal } from "@Components/modals";
+import TrackerContainer from "./TrackerContainer";
 import { TrackerState } from "./types";
 
 interface IHeaderProps {
@@ -99,7 +98,7 @@ export function Header({ activeSetupName }: IHeaderProps) {
             <span className="ml-2 text-lesser">({activeSetupName})</span>
           </p>
 
-          <Tracker trackerState={trackerState} />
+          <TrackerContainer trackerState={trackerState} />
         </div>
       </Modal>
     </Fragment>

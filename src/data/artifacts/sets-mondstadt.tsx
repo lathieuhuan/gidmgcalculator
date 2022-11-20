@@ -36,7 +36,7 @@ const mondstadtSets: DataArtifact[] = [
             <Green>ATK</Green> <Green b>+18%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "atk", 18),
+        applyBuff: makeModApplier("totalAttr", "atk_", 18),
       },
       {
         desc: (
