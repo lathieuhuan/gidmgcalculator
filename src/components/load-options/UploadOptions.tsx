@@ -164,9 +164,8 @@ export default function UploadOptions({
   return (
     <Modal
       active={active}
-      isCustom
-      className={styles.wrapper}
-      style={{ width: "90%", maxWidth: "28rem" }}
+      className={styles.wrapper + " max-w-95"}
+      style={{ width: "28rem" }}
       onClose={onClose}
     >
       <Options {...rest} onClose={onClose} />

@@ -8,6 +8,7 @@ import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@
 import { StatsFilter } from "../utils";
 
 import { Green, IconButton, Select } from "@Src/styled-components";
+import { useTranslation } from "@Hooks/useTranslation";
 
 const MAIN_STAT_TYPES = [
   "hp",
@@ -28,6 +29,8 @@ export function useArtifactStatsFilter({
   stats,
   isError,
 }: UseArtifactStatsFilterArgs) {
+  const { t } = useTranslation();
+
   const [filter, setFilter] = useState(stats);
   const [atInfo, setAtInfo] = useState(false);
 
@@ -65,14 +68,14 @@ export function useArtifactStatsFilter({
           <Select
             className={cn(
               "w-full p-1 text-center text-last-center",
-              stats.main === "All" ? "text-default" : "text-green"
+              filter.main === "All" ? "text-default" : "text-green"
             )}
             value={filter.main}
             onChange={onChangeMainStat}
           >
             {mainStatOptions.map((type, i) => (
-              <option key={i} className="text-left">
-                {type}
+              <option key={i} className="text-left" value={type}>
+                {t(type)}
               </option>
             ))}
           </Select>
@@ -95,8 +98,8 @@ export function useArtifactStatsFilter({
                 onChange={(e) => onChangeSubStat(e.target.value, i)}
               >
                 {subStatOptions.map((type, j) => (
-                  <option key={j} className="text-left">
-                    {type}
+                  <option key={j} className="text-left" value={type}>
+                    {t(type)}
                   </option>
                 ))}
               </Select>

@@ -144,7 +144,7 @@ export default function PieceInfo({
         </IconButton>
       </div>
 
-      <Modal active={saving} isCustom className="custom-modal" onClose={() => setSaving(false)}>
+      <Modal active={saving} className="small-modal" onClose={() => setSaving(false)}>
         <ConfirmSaving pieceInfo={pieceInfo} onClose={() => setSaving(false)} />
       </Modal>
     </div>

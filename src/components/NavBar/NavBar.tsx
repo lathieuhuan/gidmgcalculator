@@ -47,7 +47,6 @@ export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownlo
 
           <Modal
             active={menuActive}
-            isCustom
             className="rounded flex flex-col shadow-white-glow text-default"
             onClose={() => setMenuActive(false)}
           >

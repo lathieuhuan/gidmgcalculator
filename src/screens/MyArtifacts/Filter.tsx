@@ -31,7 +31,6 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
     itemType: "artifact",
     initialTypes: types,
   });
-
   const { filter: artifactStatsFilter, renderArtifactStatsFilter } = useArtifactStatsFilter({
     stats,
     isError,
@@ -44,7 +43,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
   useEffect(() => setIsError(false), [stats]);
 
   return (
-    <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow max-w-95">
+    <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow">
       <div className="pb-2 flex custom-scrollbar">
         <div className="flex flex-col">
           <div className="pt-2 pb-4 flex justify-center">{renderTypeFilter()}</div>
@@ -76,7 +75,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
 
 export function Filter({ active, onClose, ...rest }: ModalControl & FilterProps) {
   return (
-    <Modal active={active} isCustom onClose={onClose}>
+    <Modal active={active} className="max-w-95" onClose={onClose}>
       <FilterInner {...rest} onClose={onClose} />
     </Modal>
   );

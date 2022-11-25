@@ -98,7 +98,6 @@ function App() {
 
       <Modal
         active={isError}
-        isCustom
         className="p-4 w-80 rounded-lg flex flex-col bg-darkblue-1"
         onClose={closeError}
       >

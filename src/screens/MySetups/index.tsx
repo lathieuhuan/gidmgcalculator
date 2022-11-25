@@ -474,7 +474,6 @@ export default function MySetups() {
 
       <Modal
         active={modal.type !== ""}
-        isCustom
         className={cn(modalClassName[modal.type], "text-default")}
         style={{
           height: ["STATS", "MODIFIERS", "FIRST_COMBINE", "COMBINE_MORE"].includes(modal.type)

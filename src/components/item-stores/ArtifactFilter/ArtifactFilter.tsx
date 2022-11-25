@@ -54,7 +54,7 @@ function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
     codes: filter.codes,
   });
   const disabled =
-    artifactStatsFilter.main === "All" || artifactStatsFilter.subs.every((s) => s === "All");
+    artifactStatsFilter.main === "All" && artifactStatsFilter.subs.every((s) => s === "All");
 
   return (
     <div className="p-4 flex hide-scrollbar">

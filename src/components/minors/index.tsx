@@ -151,7 +151,7 @@ interface TipsModalProps extends ModalControl {
 }
 export function TipsModal({ active, content, onClose }: TipsModalProps) {
   return (
-    <Modal active={active} className="p-4" onClose={onClose}>
+    <Modal active={active} className="p-4" withDefaultStyle onClose={onClose}>
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="mb-2 text-1.5xl text-orange font-bold">TIPs</p>
       {content}
@@ -350,7 +350,7 @@ export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmT
 
 export function ConfirmModal({ active, onClose, ...rest }: ModalControl & ConfirmTemplateProps) {
   return (
-    <Modal active={active} isCustom className="custom-modal" onClose={onClose}>
+    <Modal active={active} className="small-modal" onClose={onClose}>
       <ConfirmTemplate {...rest} onClose={onClose} />
     </Modal>
   );

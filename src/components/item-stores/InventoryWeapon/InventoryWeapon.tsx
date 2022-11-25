@@ -87,7 +87,7 @@ function WeaponInventory({
 
 export function InventoryWeapon({ active, onClose, ...rest }: ModalControl & WeaponInventoryProps) {
   return (
-    <Modal active={active} onClose={onClose}>
+    <Modal active={active} withDefaultStyle onClose={onClose}>
       <WeaponInventory {...rest} onClose={onClose} />
     </Modal>
   );

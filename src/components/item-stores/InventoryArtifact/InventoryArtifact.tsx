@@ -142,7 +142,7 @@ export function InventoryArtifact({
   ...rest
 }: ModalControl & ArtifactInventoryProps) {
   return (
-    <Modal active={active} onClose={onClose}>
+    <Modal active={active} withDefaultStyle onClose={onClose}>
       <ArtifactInventory {...rest} onClose={onClose} />
     </Modal>
   );

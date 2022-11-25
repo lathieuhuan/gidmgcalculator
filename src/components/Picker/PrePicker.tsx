@@ -11,7 +11,6 @@ export function PrePicker({ active, choices, onClickChoice, onClose, footer }: P
   return (
     <Modal
       active={active}
-      isCustom
       className="p-4 shadow-white-glow rounded-2xl bg-darkblue-3"
       onClose={onClose}
     >

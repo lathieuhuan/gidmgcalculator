@@ -133,7 +133,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
 export default function CharacterSort({ active, onClose }: ModalControl) {
   return (
-    <Modal active={active} isCustom className="custom-modal" onClose={onClose}>
+    <Modal active={active} className="small-modal" onClose={onClose}>
       <SortInner onClose={onClose} />
     </Modal>
   );

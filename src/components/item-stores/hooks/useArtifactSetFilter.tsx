@@ -1,9 +1,15 @@
 import cn from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Artifact, CalcArtPiece } from "@Src/types";
 import { findByCode, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 import { Button } from "@Src/styled-components";
+
+type TempSetsState = {
+  code: number;
+  chosen: boolean;
+  icon: string;
+};
 
 interface UseArtifactSetFilterArgs {
   artifactType?: Artifact;
@@ -15,17 +21,26 @@ export function useArtifactSetFilter({
   artifacts,
   codes,
 }: UseArtifactSetFilterArgs) {
-  const [tempSets, setTempSets] = useState(
-    (() => {
-      const result = [];
-      for (const { code } of artifacts) {
-        if (!findByCode(result, code)) {
-          result.push({ code, chosen: codes.includes(code) });
-        }
+  //
+  const [tempSets, setTempSets] = useState<TempSetsState[]>([]);
+
+  useEffect(() => {
+    const result: TempSetsState[] = [];
+
+    for (const { code } of artifacts) {
+      if (!findByCode(result, code)) {
+        const { icon = "" } = findArtifactPiece({ code, type: artifactType }) || {};
+
+        result.push({
+          code,
+          chosen: codes.includes(code),
+          icon,
+        });
       }
-      return result;
-    })()
-  );
+    }
+
+    setTempSets(result);
+  }, []);
 
   const renderArtifactSetFilter = () => (
     <div className="w-72 flex flex-col rounded-lg bg-darkblue-2" style={{ minWidth: "18rem" }}>
@@ -58,14 +73,7 @@ export function useArtifactSetFilter({
                     set.chosen ? "shadow-3px-2px shadow-green bg-darkblue-1" : "bg-transparent"
                   )}
                 >
-                  <img
-                    src={getImgSrc(
-                      findArtifactPiece({ code: set.code, type: artifactType })?.icon || ""
-                    )}
-                    alt=""
-                    width="100%"
-                    draggable={false}
-                  />
+                  <img src={getImgSrc(set.icon)} alt="" width="100%" draggable={false} />
                 </div>
               </div>
             );

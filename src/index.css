@@ -25,10 +25,9 @@
   .glow-on-hover {
     @apply opacity-90 hover:opacity-100;
   }
-  .custom-modal {
-    @apply rounded-lg shadow-white-glow;
-    width: 95%;
-    max-width: 22rem;
+  .small-modal {
+    @apply rounded-lg shadow-white-glow max-w-95 w-80;
+    /* width: 22rem; */
   }
   .small-tooltip {
     @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;

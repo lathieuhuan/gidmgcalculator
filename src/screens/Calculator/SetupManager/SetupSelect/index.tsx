@@ -175,7 +175,6 @@ export function SetupSelect() {
 
       <Modal
         active={modal.type === "SAVE_SETUP"}
-        isCustom
         className="rounded-lg max-w-95"
         style={{ width: "30rem" }}
         onClose={closeModal}

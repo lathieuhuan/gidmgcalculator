@@ -76,7 +76,11 @@ export function Header({ activeSetupName }: IHeaderProps) {
         </div>
       </div>
 
-      <Modal active={trackerState === "OPEN"} onClose={() => setTrackerState("CLOSE")}>
+      <Modal
+        active={trackerState === "OPEN"}
+        withDefaultStyle
+        onClose={() => setTrackerState("CLOSE")}
+      >
         <div className="p-4 relative">
           <div className="absolute top-1 right-1 flex space-x-2 text-xl">
             <button

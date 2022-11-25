@@ -133,7 +133,7 @@ export function ImportManager() {
   };
 
   return (
-    <Modal active={!!type && !!data} isCustom className="custom-modal" onClose={onClose}>
+    <Modal active={!!type && !!data} className="small-modal" onClose={onClose}>
       <Importing type={type} data={data!} />
     </Modal>
   );

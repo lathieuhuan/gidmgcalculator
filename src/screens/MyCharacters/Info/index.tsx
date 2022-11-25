@@ -139,7 +139,7 @@ export default function Info() {
         </div>
       </div>
 
-      <Modal active={removing} isCustom className="custom-modal" onClose={() => setRemoving(false)}>
+      <Modal active={removing} className="small-modal" onClose={() => setRemoving(false)}>
         <ConfirmTemplate
           message={
             <>
