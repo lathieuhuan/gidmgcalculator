@@ -18,12 +18,16 @@ const MAIN_STAT_TYPES = [
   "healBn",
 ];
 
-interface UseArtStatsFilterArgs {
+interface UseArtifactStatsFilterArgs {
   artifactType?: Artifact;
   stats: StatsFilter;
   isError: boolean;
 }
-export function useArtStatsFilter({ artifactType, stats, isError }: UseArtStatsFilterArgs) {
+export function useArtifactStatsFilter({
+  artifactType,
+  stats,
+  isError,
+}: UseArtifactStatsFilterArgs) {
   const [filter, setFilter] = useState(stats);
   const [atInfo, setAtInfo] = useState(false);
 
@@ -104,7 +108,7 @@ export function useArtStatsFilter({ artifactType, stats, isError }: UseArtStatsF
     </div>
   );
 
-  const filterComponent = (
+  const renderArtifactStatsFilter = () => (
     <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-darkblue-2 relative">
       <IconButton
         className="w-6 h-6 text-sm absolute bottom-3 left-3"
@@ -128,5 +132,9 @@ export function useArtStatsFilter({ artifactType, stats, isError }: UseArtStatsF
     </div>
   );
 
-  return [filterComponent, filter, setFilter] as const;
+  return {
+    filter,
+    setFilter,
+    renderArtifactStatsFilter,
+  };
 }

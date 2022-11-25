@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Artifact, CalcArtPiece } from "@Src/types";
 
-import { useArtSetFilter, useArtStatsFilter } from "../hooks";
+import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
 import { ButtonBar } from "@Components/minors";
@@ -37,17 +37,24 @@ interface FilterProps {
 }
 function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
   const [isError, setIsError] = useState(false);
-  const [statsFilter, stats, setStats] = useArtStatsFilter({
+
+  const {
+    filter: artifactStatsFilter,
+    setFilter: setArtifactStatsFilter,
+    renderArtifactStatsFilter,
+  } = useArtifactStatsFilter({
     artifactType,
     stats: filter.stats,
     isError,
   });
-  const [setFilter, codes] = useArtSetFilter({
+
+  const { filteredTempCodes, renderArtifactSetFilter } = useArtifactSetFilter({
     artifactType,
     artifacts,
     codes: filter.codes,
   });
-  const disabled = stats.main === "All" || stats.subs.every((s) => s === "All");
+  const disabled =
+    artifactStatsFilter.main === "All" || artifactStatsFilter.subs.every((s) => s === "All");
 
   return (
     <div className="p-4 flex hide-scrollbar">
@@ -55,29 +62,33 @@ function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
         <Button
           className="mb-2 mx-auto"
           disabled={disabled}
-          onClick={() => setStats(initArtifactStatsFilter())}
+          onClick={() => setArtifactStatsFilter(initArtifactStatsFilter())}
         >
           Reset Stats
         </Button>
-        {statsFilter}
+
+        {renderArtifactStatsFilter()}
+
         <ButtonBar
           className="mt-4 pb-2"
           texts={["Cancel", "Confirm"]}
           handlers={[
             onClose,
             () => {
-              if (hasDupStat(stats)) {
+              if (hasDupStat(artifactStatsFilter)) {
                 setIsError(true);
                 return;
               }
-              filter.setStats(stats);
-              filter.setCodes(codes);
+
+              filter.setStats(artifactStatsFilter);
+              filter.setCodes(filteredTempCodes);
               onClose();
             },
           ]}
         />
       </div>
-      {setFilter}
+
+      {renderArtifactSetFilter()}
     </div>
   );
 }

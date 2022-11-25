@@ -36,7 +36,7 @@ export function ArtifactCard({
 
   if (!artPiece) return null;
 
-  const { beta, name, icon } = findArtifactPiece(artPiece)!;
+  const { beta, name, icon = "" } = findArtifactPiece(artPiece) || {};
   const { rarity = 5, mainStatType } = artPiece;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artPiece.type];
   const maxLevel = rarity === 5 ? 20 : 16;

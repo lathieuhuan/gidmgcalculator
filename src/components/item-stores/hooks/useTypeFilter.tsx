@@ -3,9 +3,14 @@ import cn from "classnames";
 import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 
-export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
-  const [types, setTypes] = useState<string[]>(initialTypes || []);
-  const icons = Object.entries(forWeapon ? WEAPON_ICONS : ARTIFACT_ICONS);
+interface IUseTypeFilterArgs {
+  itemType: "weapon" | "artifact";
+  initialTypes?: string[];
+}
+export function useTypeFilter({ itemType, initialTypes = [] }: IUseTypeFilterArgs) {
+  const [types, setTypes] = useState<string[]>(initialTypes);
+
+  const icons = Object.entries(itemType === "weapon" ? WEAPON_ICONS : ARTIFACT_ICONS);
 
   const onClickIcon = (active: boolean, index: number, type: string) => {
     setTypes((prev) => {
@@ -19,7 +24,7 @@ export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
     });
   };
 
-  const typeFilter = (
+  const renderTypeFilter = () => (
     <div className="mx-1 flex items-center">
       {icons.map(([type, src], i) => {
         const index = types.indexOf(type);
@@ -30,13 +35,13 @@ export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
             key={i}
             className={cn(
               "mr-4 glow-on-hover rounded-circle transition duration-150",
-              !forWeapon && "p-1",
-              active && (forWeapon ? "shadow-3px-3px shadow-green" : "bg-green")
+              itemType === "artifact" && "p-1",
+              active && (itemType === "weapon" ? "shadow-3px-3px shadow-green" : "bg-green")
             )}
             onClick={() => onClickIcon(active, index, type)}
           >
             <img
-              className={cn(forWeapon ? "w-10" : "w-8")}
+              className={cn(itemType === "weapon" ? "w-10" : "w-8")}
               src={getImgSrc(src)}
               alt=""
               draggable={false}
@@ -47,5 +52,9 @@ export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
     </div>
   );
 
-  return [typeFilter, types, setTypes] as const;
+  return {
+    filteredTypes: types,
+    setFilteredType: setTypes,
+    renderTypeFilter,
+  };
 }

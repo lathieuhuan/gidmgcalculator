@@ -19,12 +19,12 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
+import { IconButton } from "@Src/styled-components";
 import { Picker, PrePicker } from "@Components/Picker";
 import { WeaponCard } from "@Components/WeaponCard";
 import { ButtonBar } from "@Components/minors";
 import { CollapseSpace } from "@Components/collapse";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
-import { IconButton } from "@Src/styled-components";
 
 import styles from "../styles.module.scss";
 
@@ -40,8 +40,10 @@ export default function MyWeapons() {
 
   const dispatch = useDispatch();
 
-  const [typeFilter, types] = useTypeFilter(true);
-  const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, types as Weapon[]));
+  const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
+  const filteredIds = useSelector((state) =>
+    selectFilteredWeaponIDs(state, filteredTypes as Weapon[])
+  );
 
   const [invRack, chosenID, setChosenID] = useInventoryRack({
     listClassName: styles.list,
@@ -66,7 +68,7 @@ export default function MyWeapons() {
             handlers={[openModal("PICK_WEAPON_TYPE"), () => dispatch(sortWeapons())]}
           />
           {window.innerWidth >= 500 ? (
-            typeFilter
+            renderTypeFilter()
           ) : (
             <Fragment>
               <IconButton
@@ -80,7 +82,7 @@ export default function MyWeapons() {
                 className="w-full absolute top-full left-0 z-20"
                 active={filterDropped}
               >
-                <div className="px-4 py-6 shadow-common bg-darkblue-2">{typeFilter}</div>
+                <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
               </CollapseSpace>
             </Fragment>
           )}

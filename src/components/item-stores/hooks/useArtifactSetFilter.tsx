@@ -5,13 +5,16 @@ import { findByCode, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 import { Button } from "@Src/styled-components";
 
-interface UseArtSetFilterArgs {
+interface UseArtifactSetFilterArgs {
   artifactType?: Artifact;
   artifacts: CalcArtPiece[];
   codes: number[];
 }
-export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFilterArgs) {
-  //
+export function useArtifactSetFilter({
+  artifactType = "flower",
+  artifacts,
+  codes,
+}: UseArtifactSetFilterArgs) {
   const [tempSets, setTempSets] = useState(
     (() => {
       const result = [];
@@ -24,22 +27,22 @@ export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFil
     })()
   );
 
-  const setsFilter = (
-    <div className="w-72 min-w-[18rem] flex flex-col rounded-lg bg-darkblue-2">
+  const renderArtifactSetFilter = () => (
+    <div className="w-72 flex flex-col rounded-lg bg-darkblue-2" style={{ minWidth: "18rem" }}>
       <Button
         className="mt-2 mx-auto"
         variant="negative"
         disabled={tempSets.every((set) => !set.chosen)}
         onClick={() => setTempSets(tempSets.map((set) => ({ ...set, chosen: false })))}
       >
-        Turn All Off
+        Turn all off
       </Button>
       <div className="px-1 py-2 h-96 hide-scrollbar">
         <div className="flex flex-wrap">
           {tempSets.map((set, i) => {
             return (
               <div
-                key={set.code}
+                key={i}
                 className="w-1/4 p-1"
                 onClick={() => {
                   setTempSets((prev) => {
@@ -57,7 +60,7 @@ export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFil
                 >
                   <img
                     src={getImgSrc(
-                      findArtifactPiece({ code: set.code, type: artifactType || "flower" }).icon
+                      findArtifactPiece({ code: set.code, type: artifactType })?.icon || ""
                     )}
                     alt=""
                     width="100%"
@@ -72,10 +75,16 @@ export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFil
     </div>
   );
 
-  const filteredTempCode = [];
-  for (const { chosen, code } of tempSets) {
-    if (chosen) filteredTempCode.push(code);
-  }
+  const filteredTempCodes = tempSets.reduce((codes: number[], tempSet) => {
+    if (tempSet.chosen) {
+      codes.push(tempSet.code);
+    }
+    return codes;
+  }, []);
 
-  return [setsFilter, filteredTempCode, setTempSets] as const;
+  return {
+    filteredTempCodes,
+    setTempSets,
+    renderArtifactSetFilter,
+  };
 }

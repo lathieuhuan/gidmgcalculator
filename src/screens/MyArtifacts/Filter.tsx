@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import type { Artifact } from "@Src/types";
 
 import { useSelector } from "@Store/hooks";
-import { useArtSetFilter, useArtStatsFilter, useTypeFilter } from "@Components/item-stores/hooks";
+import {
+  useArtifactSetFilter,
+  useArtifactStatsFilter,
+  useTypeFilter,
+} from "@Components/item-stores/hooks";
 
 import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
 import { hasDupStat, StatsFilter } from "@Components/item-stores/utils";
@@ -23,9 +27,19 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
   const [isError, setIsError] = useState(false);
   const myArts = useSelector(selectMyArts);
 
-  const [typeFilter, tempTypes] = useTypeFilter(false, types);
-  const [statsFilter, tempStats] = useArtStatsFilter({ stats, isError });
-  const [setsFilter, tempCodes] = useArtSetFilter({ artifacts: myArts, codes });
+  const { filteredTypes, renderTypeFilter } = useTypeFilter({
+    itemType: "artifact",
+    initialTypes: types,
+  });
+
+  const { filter: artifactStatsFilter, renderArtifactStatsFilter } = useArtifactStatsFilter({
+    stats,
+    isError,
+  });
+  const { filteredTempCodes, renderArtifactSetFilter } = useArtifactSetFilter({
+    artifacts: myArts,
+    codes,
+  });
 
   useEffect(() => setIsError(false), [stats]);
 
@@ -33,10 +47,10 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
     <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow max-w-95">
       <div className="pb-2 flex custom-scrollbar">
         <div className="flex flex-col">
-          <div className="pt-2 pb-4 flex justify-center">{typeFilter}</div>
-          {statsFilter}
+          <div className="pt-2 pb-4 flex justify-center">{renderTypeFilter()}</div>
+          {renderArtifactStatsFilter()}
         </div>
-        {setsFilter}
+        {renderArtifactSetFilter()}
       </div>
 
       <ButtonBar
@@ -45,13 +59,13 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
         handlers={[
           onClose,
           () => {
-            if (hasDupStat(tempStats)) {
+            if (hasDupStat(artifactStatsFilter)) {
               setIsError(true);
               return;
             }
-            setTypes(tempTypes as Artifact[]);
-            setCodes(tempCodes);
-            setStats(tempStats);
+            setTypes(filteredTypes as Artifact[]);
+            setCodes(filteredTempCodes);
+            setStats(artifactStatsFilter);
             onClose();
           },
         ]}
@@ -62,7 +76,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
 
 export function Filter({ active, onClose, ...rest }: ModalControl & FilterProps) {
   return (
-    <Modal active={active} onClose={onClose}>
+    <Modal active={active} isCustom onClose={onClose}>
       <FilterInner {...rest} onClose={onClose} />
     </Modal>
   );

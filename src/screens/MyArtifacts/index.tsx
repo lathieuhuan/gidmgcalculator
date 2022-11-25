@@ -46,6 +46,8 @@ const selectFilteredArtifactIds = createSelector(
 type ModalType = "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFACT" | "FITLER";
 
 export default function MyArtifacts() {
+  const dispatch = useDispatch();
+
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [pickArtifactModal, setPickArtifactModal] = useState<{ isActive: boolean; type: Artifact }>(
     {
@@ -55,14 +57,15 @@ export default function MyArtifacts() {
   );
   const [newOwner, setNewOwner] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
-
-  const [typeFilter, types, setTypes] = useTypeFilter(false);
   const [codes, setCodes] = useState<number[]>([]);
   const [stats, setStats] = useState(initArtifactStatsFilter());
 
+  const { filteredTypes, setFilteredType, renderTypeFilter } = useTypeFilter({
+    itemType: "artifact",
+  });
+
   const filteredIds = useSelector((state) =>
-    selectFilteredArtifactIds(state, types as Artifact[], codes, stats)
+    selectFilteredArtifactIds(state, filteredTypes as Artifact[], codes, stats)
   );
   const [invRack, chosenID, setChosenID] = useInventoryRack({
     listClassName: styles.list,
@@ -83,7 +86,10 @@ export default function MyArtifacts() {
   };
 
   const isFiltered =
-    types.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");
+    filteredTypes.length ||
+    codes.length ||
+    stats.main !== "All" ||
+    stats.subs.some((s) => s !== "All");
 
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
@@ -96,7 +102,7 @@ export default function MyArtifacts() {
             handlers={[openModal("PICK_ARTIFACT_TYPE"), () => dispatch(sortArtifacts())]}
           />
 
-          {window.innerWidth >= 600 && typeFilter}
+          {window.innerWidth >= 600 && renderTypeFilter()}
 
           <div className="flex cursor-pointer">
             <button
@@ -113,7 +119,7 @@ export default function MyArtifacts() {
               <div
                 className="pl-2 pr-3 rounded-r-2xl bg-darkred flex-center glow-on-hover"
                 onClick={() => {
-                  setTypes([]);
+                  setFilteredType([]);
                   setCodes([]);
                   setStats(initArtifactStatsFilter());
                 }}
@@ -167,10 +173,10 @@ export default function MyArtifacts() {
 
       <Filter
         active={modalType === "FITLER"}
-        types={types as Artifact[]}
+        types={filteredTypes as Artifact[]}
         codes={codes}
         stats={stats}
-        setTypes={setTypes}
+        setTypes={setFilteredType}
         setCodes={setCodes}
         setStats={setStats}
         onClose={closeModal}
@@ -232,7 +238,8 @@ export default function MyArtifacts() {
           active={!!newOwner}
           message={
             <>
-              <b>{artifact.owner}</b> is currently using "<b>{findArtifactPiece(artifact).name}</b>
+              <b>{artifact.owner}</b> is currently using "
+              <b>{findArtifactPiece(artifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }

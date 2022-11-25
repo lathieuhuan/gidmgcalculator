@@ -15,9 +15,14 @@ export const findArtifactSet = ({ code }: HasCode) => {
 };
 
 export function findArtifactPiece({ code, type }: { type: Artifact } & HasCode) {
-  const tgSet = findByCode(artifacts, code)!;
-  const { name, icon } = tgSet[type];
-  return { beta: tgSet.beta, name, icon };
+  const targetSet = findByCode(artifacts, code);
+
+  if (targetSet) {
+    const { name, icon } = targetSet[type];
+    return { beta: targetSet.beta, name, icon };
+  }
+
+  return undefined;
 }
 
 export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {

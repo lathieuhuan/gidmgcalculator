@@ -34,7 +34,7 @@ export function ItemConfirmRemove({
   updateChosenID,
   onClose,
 }: ItemConfirmRemoveProps) {
-  const { ID, owner, code, type } = item;
+  const { ID, owner, type } = item;
   const itemData = isWeapon(item, itemType) ? findWeapon(item) : findArtifactPiece(item);
 
   return (
