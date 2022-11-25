@@ -60,7 +60,7 @@ export function GearsOverview({
                 item={{
                   rarity: artP.rarity,
                   level: artP.level,
-                  icon: findArtifactPiece(artP).icon,
+                  icon: findArtifactPiece(artP)?.icon || "",
                   owner: artP.owner,
                 }}
                 chosen={window.innerWidth < 686 ? false : activeDetails === i}

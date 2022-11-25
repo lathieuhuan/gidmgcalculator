@@ -84,28 +84,30 @@ export function useArtifactStatsFilter({
 
       <p className="mt-2 text-h6 text-orange font-bold">Sub Stats</p>
       <div className="flex flex-col items-center">
-        {[1, 2, 3, 4].map((n, i) => (
-          <div className="mt-2 px-4 w-52 h-8 bg-darkblue-1 flex items-center">
-            <p className="mr-1 mt-1 text-orange">{n}</p>
+        {[1, 2, 3, 4].map((n, i) => {
+          return (
+            <div key={n} className="mt-2 px-4 w-52 h-8 bg-darkblue-1 flex items-center">
+              <p className="mr-1 mt-1 text-orange">{n}</p>
 
-            {(!i || filter.subs[i - 1] !== "All") && (
-              <Select
-                className={cn(
-                  "w-full p-1 text-center text-last-center",
-                  filter.subs[i] === "All" ? "text-default" : "text-green"
-                )}
-                value={filter.subs[i]}
-                onChange={(e) => onChangeSubStat(e.target.value, i)}
-              >
-                {subStatOptions.map((type, j) => (
-                  <option key={j} className="text-left" value={type}>
-                    {t(type)}
-                  </option>
-                ))}
-              </Select>
-            )}
-          </div>
-        ))}
+              {(!i || filter.subs[i - 1] !== "All") && (
+                <Select
+                  className={cn(
+                    "w-full p-1 text-center text-last-center",
+                    filter.subs[i] === "All" ? "text-default" : "text-green"
+                  )}
+                  value={filter.subs[i]}
+                  onChange={(e) => onChangeSubStat(e.target.value, i)}
+                >
+                  {subStatOptions.map((type, j) => (
+                    <option key={j} className="text-left" value={type}>
+                      {t(type)}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </div>
+          );
+        })}
       </div>
       {isError && <p className="mt-4 px-2 text-lightred text-right">Every stat must be unique!</p>}
     </div>

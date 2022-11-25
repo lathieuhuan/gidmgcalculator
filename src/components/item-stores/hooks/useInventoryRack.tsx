@@ -26,7 +26,7 @@ interface GetArtifactInfoArgs extends GetItemInfoArgs {
   rarity: Rarity;
 }
 function getArtifactInfo({ code, type, owner, rarity, level }: GetArtifactInfoArgs) {
-  const { beta, name, icon } = findArtifactPiece({ code, type });
+  const { beta, name, icon = "" } = findArtifactPiece({ code, type }) || {};
   return { beta, name, icon, rarity, level, owner };
 }
 

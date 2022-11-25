@@ -58,7 +58,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
         {ARTIFACT_TYPES.map((type, index) => {
           const artPiece = pieces[index];
           const icon = artPiece
-            ? findArtifactPiece({ code: artPiece.code, type })?.icon
+            ? findArtifactPiece({ code: artPiece.code, type })?.icon || ""
             : ARTIFACT_ICONS[type];
 
           return (

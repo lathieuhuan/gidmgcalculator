@@ -61,7 +61,7 @@ export function Header({ activeSetupName }: IHeaderProps) {
               return (
                 <button
                   key={i}
-                  className="px-2 py-1 flex items-center hover:bg-lesser"
+                  className="px-2 py-1 flex items-center font-medium hover:bg-lesser"
                   onClick={() => {
                     item.onClick();
                     setMenuDropped(false);
