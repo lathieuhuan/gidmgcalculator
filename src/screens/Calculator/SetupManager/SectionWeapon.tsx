@@ -7,7 +7,7 @@ import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { findWeapon } from "@Data/controllers";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 
 import { Picker } from "@Components/Picker";
 import { BetaMark } from "@Components/minors";
@@ -31,12 +31,7 @@ export default function SectionWeapon() {
         className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}
       >
-        <img
-          src={beta ? icon : wikiImg(icon)}
-          alt=""
-          style={{ width: "5.625rem" }}
-          draggable={false}
-        />
+        <img src={getImgSrc(icon)} alt="" style={{ width: "5.625rem" }} draggable={false} />
         {beta && <BetaMark className="absolute -top-1 -left-1" />}
       </div>
 

@@ -17,7 +17,7 @@ import {
   selectParty,
 } from "@Store/calculatorSlice/selectors";
 
-import { findById, wikiImg } from "@Src/utils";
+import { findById, getImgSrc } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 
 import { Picker } from "@Components/Picker";
@@ -93,12 +93,7 @@ export default function SectionParty() {
                 )}
                 onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
               >
-                <img
-                  className="w-full h-full"
-                  src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
-                  alt=""
-                  draggable={false}
-                />
+                <img className="w-full h-full" src={getImgSrc(icon)} alt="" draggable={false} />
               </button>
             );
           } else {
@@ -261,7 +256,7 @@ function TeammateDetail({
               className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
               onClick={onClickWeapon}
             >
-              <img src={wikiImg(weaponData.icon)} alt="" />
+              <img src={getImgSrc(weaponData.icon)} alt="" />
             </button>
 
             <div className="overflow-hidden">
@@ -293,11 +288,11 @@ function TeammateDetail({
         <div className="mt-2 flex space-x-2">
           <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
             {artifactSetIcon ? (
-              <img className="bg-darkblue-2 rounded" src={wikiImg(artifactSetIcon)} alt="" />
+              <img className="bg-darkblue-2 rounded" src={getImgSrc(artifactSetIcon)} alt="" />
             ) : (
               <img
                 className="p-1"
-                src={wikiImg("6/6a/Icon_Inventory_Artifacts")}
+                src={getImgSrc("6/6a/Icon_Inventory_Artifacts")}
                 alt="artifact"
                 draggable={false}
               />

@@ -2,7 +2,7 @@ import { memo } from "react";
 import cn from "classnames";
 import { BetaMark } from "@Components/minors";
 import { VISION_ICONS } from "@Src/constants";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { PickerItem } from "./types";
 
 interface ItemProps {
@@ -24,12 +24,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
               item.vision ? "pt-4" : "p-1"
             )}
           >
-            <img
-              src={item.beta ? item.icon : wikiImg(item.icon)}
-              alt=""
-              className="w-full h-full"
-              draggable={false}
-            />
+            <img src={getImgSrc(item.icon)} alt="" className="w-full h-full" draggable={false} />
           </div>
           {!!pickedAmount && (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
@@ -49,7 +44,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
           {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
           <img
             className="w-5 h-5"
-            src={wikiImg(VISION_ICONS[item.vision])}
+            src={getImgSrc(VISION_ICONS[item.vision])}
             alt="vision"
             draggable={false}
           />

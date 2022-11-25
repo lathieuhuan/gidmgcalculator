@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { Filter } from "./types";
 
 export interface CharFilterProps extends Filter {
@@ -22,7 +22,7 @@ export default function CharFilter(props: CharFilterProps) {
                   "ml-6": i,
                   "border-3 border-white": chosen,
                 })}
-                src={wikiImg(src)}
+                src={getImgSrc(src)}
                 alt={elmtType}
                 draggable={false}
                 onClick={() => {
@@ -43,7 +43,7 @@ export default function CharFilter(props: CharFilterProps) {
                   "ml-6": i,
                   "border-3 border-white": chosen,
                 })}
-                src={wikiImg(src)}
+                src={getImgSrc(src)}
                 alt={wpType}
                 draggable={false}
                 onClick={() => {

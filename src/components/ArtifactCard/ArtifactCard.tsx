@@ -12,7 +12,7 @@ import type {
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
-import { percentSign, processNumInput, wikiImg } from "@Src/utils";
+import { percentSign, processNumInput, getImgSrc } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 import { findArtifactPiece } from "@Data/controllers";
 
@@ -90,7 +90,7 @@ export function ArtifactCard({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <img className="w-28" src={beta ? icon : wikiImg(icon)} alt="" draggable={false} />
+          <img className="w-28" src={getImgSrc(icon)} alt="" draggable={false} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>

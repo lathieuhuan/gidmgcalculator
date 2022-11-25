@@ -2,7 +2,7 @@ import cn from "classnames";
 import type { CalcWeapon, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
-import { percentSign, wikiImg } from "@Src/utils";
+import { percentSign, getImgSrc } from "@Src/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
 import { useTranslation } from "@Hooks/useTranslation";
@@ -75,12 +75,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* right */}
         <div className="ml-2">
           <div className={`rounded-lg bg-gradient-${rarity} relative`}>
-            <img
-              className="w-32"
-              src={wpData.beta ? wpData.icon : wikiImg(wpData.icon)}
-              alt=""
-              draggable={false}
-            />
+            <img className="w-32" src={getImgSrc(wpData.icon)} alt="" draggable={false} />
             {wpData.beta && <BetaMark className="absolute bottom-0 right-0" />}
           </div>
 

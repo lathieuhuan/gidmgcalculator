@@ -5,7 +5,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import getBaseStats from "@Calculators/baseStats";
-import { findById, findByName, wikiImg } from "@Src/utils";
+import { findById, findByName, getImgSrc } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -51,7 +51,7 @@ export default function Info() {
   if (!dataChar || !wpInfo) {
     return null;
   }
-  const { code, beta, name, rarity, nation, vision, weapon, icon } = dataChar;
+  const { code, name, rarity, nation, vision, weapon, icon } = dataChar;
 
   const { totalAttr, artAttr } = getBaseStats({
     char,
@@ -83,9 +83,7 @@ export default function Info() {
         </IconButton>
 
         <div className="flex">
-          {isMobile && (
-            <img className="mr-4 mb-4 w-20" src={beta ? icon : wikiImg(icon)} alt={name} />
-          )}
+          {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
             {!isMobile && <p className={`text-h1 text-${vision} font-black`}>{name}</p>}
             <StarLine rarity={rarity} />

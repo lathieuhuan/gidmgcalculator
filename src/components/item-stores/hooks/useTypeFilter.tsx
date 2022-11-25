@@ -1,7 +1,7 @@
 import { useState } from "react";
 import cn from "classnames";
 import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 
 export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
   const [types, setTypes] = useState<string[]>(initialTypes || []);
@@ -37,7 +37,7 @@ export function useTypeFilter(forWeapon: boolean, initialTypes?: string[]) {
           >
             <img
               className={cn(forWeapon ? "w-10" : "w-8")}
-              src={wikiImg(src)}
+              src={getImgSrc(src)}
               alt=""
               draggable={false}
             />

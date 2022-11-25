@@ -4,7 +4,7 @@ import { InfoSign } from "@Components/minors";
 import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { UsersWeapon } from "@Src/types";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { ArtifactInfo, Details } from "./types";
 
 const bonusStyles = (active: boolean) => {
@@ -75,7 +75,7 @@ export function GearsOverview({
               >
                 <img
                   className="w-full"
-                  src={wikiImg(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])}
+                  src={getImgSrc(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])}
                   alt=""
                   draggable={false}
                 />

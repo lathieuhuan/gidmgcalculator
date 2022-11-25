@@ -1,6 +1,6 @@
 import { Modal, ModalControl } from "@Components/modals";
 import { CloseButton } from "@Src/styled-components";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 
 interface PrePickerProps extends ModalControl {
   choices: Record<string, string>;
@@ -25,7 +25,7 @@ export function PrePicker({ active, choices, onClickChoice, onClose, footer }: P
             className="mx-1 p-1 w-14 h-14 rounded-full hover:bg-lightgold"
             onClick={() => onClickChoice(title)}
           >
-            <img className="w-full" src={wikiImg(src)} alt={title} draggable={false} />
+            <img className="w-full" src={getImgSrc(src)} alt={title} draggable={false} />
           </button>
         ))}
       </div>

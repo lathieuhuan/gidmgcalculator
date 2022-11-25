@@ -5,7 +5,7 @@ import { changeArtPiece } from "@Store/calculatorSlice";
 import { selectArtInfo } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactPiece } from "@Data/controllers";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { CollapseSpace } from "@Components/collapse";
@@ -57,14 +57,10 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {
           const artPiece = pieces[index];
-          let src;
+          const icon = artPiece
+            ? findArtifactPiece({ code: artPiece.code, type })?.icon
+            : ARTIFACT_ICONS[type];
 
-          if (artPiece) {
-            const { beta, icon } = findArtifactPiece({ code: artPiece.code, type });
-            src = beta ? icon : wikiImg(icon);
-          } else {
-            src = wikiImg(ARTIFACT_ICONS[type]);
-          }
           return (
             <div
               key={index}
@@ -79,7 +75,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
                 })}
                 onClick={() => onClickTab(index)}
               >
-                <img src={src} alt={type} draggable={false} />
+                <img src={getImgSrc(icon)} alt={type} draggable={false} />
               </div>
             </div>
           );
@@ -92,12 +88,12 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             pieceInfo={pieceInfo}
             pieceIndex={activeTabIndex}
             onClickRemovePiece={() => setActiveTabIndex(-1)}
-            onClickChangePiece={() =>
+            onClickChangePiece={() => {
               setArtifactPicker({
                 active: true,
                 slot: activeTabIndex,
-              })
-            }
+              });
+            }}
           />
         )}
       </CollapseSpace>

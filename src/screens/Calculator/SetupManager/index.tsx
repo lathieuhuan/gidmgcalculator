@@ -10,7 +10,7 @@ import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors"
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Hooks/useHeight";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { Button, IconButton } from "@Src/styled-components";
@@ -72,13 +72,13 @@ export default function SetupManager() {
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setModal({ type: "WEAPONS" })}
           >
-            <img src={wikiImg("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
+            <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setPrePickerOn(true)}
           >
-            <img src={wikiImg("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
+            <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
       </div>

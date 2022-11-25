@@ -3,7 +3,7 @@ import cn from "classnames";
 import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import styles from "./styles.module.scss";
 
 interface AbilityImgProps {
@@ -19,7 +19,7 @@ export function AbilityIcon({ className, img, vision, active = true, onClick }: 
   return img ? (
     <img
       className={cn(tw, "min-w-13 h-13", className)}
-      src={wikiImg(img)}
+      src={getImgSrc(img)}
       alt=""
       draggable={false}
       onClick={onClick}

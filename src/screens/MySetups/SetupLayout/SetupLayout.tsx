@@ -14,7 +14,7 @@ import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { useDispatch } from "@Store/hooks";
-import { finalTalentLv, wikiImg } from "@Src/utils";
+import { finalTalentLv, getImgSrc } from "@Src/utils";
 import { updateImportInfo } from "@Store/uiSlice";
 import {
   chooseUsersSetup,
@@ -77,12 +77,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
 
     return (
       <div className="flex justify-center">
-        <img
-          className="w-24"
-          src={charInfo.beta ? charInfo.icon : wikiImg(charInfo.icon)}
-          alt={char.name}
-          draggable={false}
-        />
+        <img className="w-24" src={getImgSrc(charInfo.icon)} alt={char.name} draggable={false} />
 
         <div className="ml-2 pt-2 flex-col justify-between">
           <p className="text-h5">Level {renderSpan(char.level)}</p>
@@ -157,7 +152,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
             )}
             onClick={onClick}
           >
-            <img style={{ width: "4.25rem" }} src={beta ? icon : wikiImg(icon)} alt="" />
+            <img style={{ width: "4.25rem" }} src={getImgSrc(icon)} alt="" />
           </button>
         </div>
       );

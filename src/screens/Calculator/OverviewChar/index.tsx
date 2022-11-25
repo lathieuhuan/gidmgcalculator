@@ -14,7 +14,7 @@ import { ComplexSelect } from "@Components/ComplexSelect";
 import contentByTab from "./content";
 
 import { LEVELS } from "@Src/constants";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 
 interface OverviewCharProps {
@@ -46,7 +46,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
               {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
               <img
                 className="w-24 cursor-pointer"
-                src={beta ? icon : wikiImg(icon)}
+                src={getImgSrc(icon)}
                 alt={char.name}
                 draggable={false}
               />

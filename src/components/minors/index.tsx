@@ -2,9 +2,9 @@ import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
 import { FaInfoCircle } from "react-icons/fa";
 
-import type { AttackElement, CalcArtSet, FinalInfusion, Vision, Weapon } from "@Src/types";
+import type { CalcArtSet, Vision, Weapon } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { round3, wikiImg } from "@Src/utils";
+import { round3, getImgSrc } from "@Src/utils";
 import { Green, Button, CloseButton } from "@Src/styled-components";
 import { Modal, ModalControl } from "@Components/modals";
 
@@ -183,7 +183,7 @@ export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSl
     >
       <img
         className="w-full rounded-circle"
-        src={icon.split("/")[0].length === 1 ? wikiImg(icon) : icon}
+        src={getImgSrc(icon)}
         alt={name}
         draggable={false}
         onClick={onClickIcon}
@@ -261,19 +261,24 @@ export const renderQuickenDesc = (element: Vision, value: number) => (
 );
 
 interface InfusionNotesProps {
-  infusion: FinalInfusion;
   weapon: Weapon;
   vision: Vision;
 }
-export function InfusionNotes({ infusion, vision, weapon }: InfusionNotesProps) {
-  let notes: [string, AttackElement][] =
-    weapon === "catalyst"
-      ? [
-          ["NA", vision],
-          ["CA", vision],
-          ["PA", vision],
-        ]
-      : Object.entries(infusion);
+export function InfusionNotes({ vision, weapon }: InfusionNotesProps) {
+  // let notes: [string, AttackElement][] =
+  //   weapon === "catalyst"
+  //     ? [
+  //         ["NA", vision],
+  //         ["CA", vision],
+  //         ["PA", vision],
+  //       ]
+  //     : Object.entries(infusion);
+
+  let notes = [
+    ["NA", vision],
+    ["CA", vision],
+    ["PA", vision],
+  ];
 
   if (weapon === "bow") {
     notes[1][0] = "AS";

@@ -3,7 +3,7 @@ import { RefObject, useEffect, useState } from "react";
 import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { findCharacter } from "@Data/controllers";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import { chooseCharacter } from "@Store/usersDatabaseSlice";
 import { selectChosenChar } from "@Store/usersDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -73,7 +73,7 @@ export default function SideIconCarousel({
                 if (!databaseChar) {
                   return null;
                 }
-                const { beta, sideIcon, icon } = databaseChar;
+                const { sideIcon, icon } = databaseChar;
 
                 return (
                   <div
@@ -93,11 +93,7 @@ export default function SideIconCarousel({
                           : cn("m-1 overflow-hidden", styles["beta-icon-wrapper"])
                       )}
                     >
-                      <img
-                        src={beta ? icon : wikiImg(sideIcon || icon)}
-                        alt="icon"
-                        draggable={false}
-                      />
+                      <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />
                     </div>
                   </div>
                 );
@@ -117,7 +113,7 @@ export default function SideIconCarousel({
           className="absolute top-4 left-full ml-6 w-15 rounded-circle hover:shadow-3px-3px hover:shadow-white"
           onClick={onClickWish}
         >
-          <img src={wikiImg("4/48/System_Wish")} alt="wish" draggable={false} />
+          <img src={getImgSrc("4/48/System_Wish")} alt="wish" draggable={false} />
         </button>
       </div>
 

@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { useState } from "react";
 import type { Artifact, CalcArtPiece } from "@Src/types";
-import { findByCode, wikiImg } from "@Src/utils";
+import { findByCode, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 import { Button } from "@Src/styled-components";
 
@@ -56,7 +56,7 @@ export function useArtSetFilter({ artifactType, artifacts, codes }: UseArtSetFil
                   )}
                 >
                   <img
-                    src={wikiImg(
+                    src={getImgSrc(
                       findArtifactPiece({ code: set.code, type: artifactType || "flower" }).icon
                     )}
                     alt=""

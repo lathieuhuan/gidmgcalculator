@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { Level, Rarity } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
-import { wikiImg } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
 import styles from "./styles.module.scss";
 
 interface ItemThumbProps {
@@ -29,7 +29,7 @@ export function ItemThumb({
 }: ItemThumbProps) {
   //
   const renderSideIcon = (owner: string) => {
-    const { beta, icon, sideIcon } = findCharacter({ name: owner }) || {};
+    const { icon = "", sideIcon } = findCharacter({ name: owner }) || {};
     return (
       <div
         className={cn(
@@ -43,7 +43,7 @@ export function ItemThumb({
             "w-10 max-w-none -translate-x-2 -translate-y-4",
             !sideIcon && "-translate-y-2"
           )}
-          src={beta ? icon : wikiImg(sideIcon || icon || "")}
+          src={getImgSrc(sideIcon || icon)}
           alt=""
           draggable={false}
         />
@@ -82,7 +82,7 @@ export function ItemThumb({
         ) : null}
 
         <div className={`bg-gradient-${rarity || 5} rounded-t rounded-br-2xl`}>
-          <img className="w-full" src={beta ? icon : wikiImg(icon)} alt="" draggable={false} />
+          <img className="w-full" src={beta ? icon : getImgSrc(icon)} alt="" draggable={false} />
         </div>
 
         <div className="flex-center bg-default rounded-b">
