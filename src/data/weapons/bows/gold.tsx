@@ -131,7 +131,7 @@ const goldBows: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const valueIndex = (inputs?.[0] || 0) - 1;
+          const valueIndex = (inputs[0] || 0) - 1;
           const buffValue = polarStarBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
@@ -181,7 +181,7 @@ const goldBows: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const valueIndex = (inputs?.[0] || 0) - 1;
+          const valueIndex = (inputs[0] || 0) - 1;
           const buffValue = thunderingPulseBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
@@ -231,7 +231,7 @@ const goldBows: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
+          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldBows, 8)!.passiveDesc({ refi }).extra![0],

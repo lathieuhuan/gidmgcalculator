@@ -155,7 +155,7 @@ const Diluc: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const buffValue = 5 * (inputs?.[0] || 0);
+        const buffValue = 5 * (inputs[0] || 0);
         const keys: AttributeStat[] = ["atk_", "naAtkSpd", "caAtkSpd"];
         applyModifier(desc, totalAttr, keys, [buffValue * 2, buffValue, buffValue], tracker);
       },

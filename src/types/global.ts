@@ -50,8 +50,6 @@ export type ArtifactPercentStat = typeof ARTIFACT_PERCENT_STAT_TYPES[number];
 
 export type AttributeStat = typeof ATTRIBUTE_STAT_TYPES[number];
 
-export type Tracker = any;
-
 export type AmplifyingReaction = "melt" | "vaporize";
 
 export type Reaction = typeof REACTIONS[number];

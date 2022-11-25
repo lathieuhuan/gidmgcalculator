@@ -39,7 +39,7 @@ const purpleCatalysts: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
-          const stacks = inputs?.[0] || 0;
+          const stacks = inputs[0] || 0;
           const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
           applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
         },
@@ -145,7 +145,7 @@ const purpleCatalysts: DataWeapon[] = [
         ],
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
           const { vision } = charData;
-          const optionIndex = inputs?.[0] || 0;
+          const optionIndex = inputs[0] || 0;
           const elmtIndex = [0, 1, 3, 4, 5, 6][optionIndex];
 
           if (vision === "electro" || vision === VISION_TYPES[elmtIndex]) {
@@ -194,7 +194,7 @@ const purpleCatalysts: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
+          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purpleCatalysts, 40)!.passiveDesc({ refi }).core,
@@ -230,7 +230,7 @@ const purpleCatalysts: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffIndex = inputs?.[0] || 0;
+          const buffIndex = inputs[0] || 0;
 
           if (buffIndex === 0) {
             applyModifier(desc, totalAttr, "atk_", 45 + refi * 15, tracker);

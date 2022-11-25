@@ -1,5 +1,7 @@
+import { EModAffect } from "@Src/constants";
+import { Green, Hydro } from "@Src/styled-components";
 import type { DataCharacter } from "@Src/types";
-import { BOW_CAs, MEDIUM_PAs } from "../constants";
+import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 
 const Tartaglia: DataCharacter = {
   code: 26,
@@ -40,8 +42,8 @@ const Tartaglia: DataCharacter = {
         { name: "4-Hit", multBase: 57.02 },
         { name: "5-Hit", multBase: 60.89 },
         { name: "6-Hit", multBase: 72.76 },
-        { name: "Riptide Flash x3", dmgTypes: ["NA", "hydro"], multBase: 37.2, multType: 2 },
-        { name: "Riptide Burst", dmgTypes: ["NA", "hydro"], multBase: 62, multType: 2 },
+        { name: "Riptide Flash x3", attElmt: "hydro", multBase: 37.2, multType: 2 },
+        { name: "Riptide Burst", attElmt: "hydro", multBase: 62, multType: 2 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -52,13 +54,13 @@ const Tartaglia: DataCharacter = {
       xtraLvAtCons: 3,
       stats: [
         { name: "Stance Change DMG", multBase: 72 },
-        { name: "1-Hit", dmgTypes: ["NA", "hydro"], multBase: 38.87, multType: 1 },
-        { name: "2-Hit", dmgTypes: ["NA", "hydro"], multBase: 41.62, multType: 1 },
-        { name: "3-Hit", dmgTypes: ["NA", "hydro"], multBase: 56.33, multType: 1 },
-        { name: "4-Hit", dmgTypes: ["NA", "hydro"], multBase: 59.94, multType: 1 },
-        { name: "5-Hit", dmgTypes: ["NA", "hydro"], multBase: 55.3, multType: 1 },
-        { name: "6-Hit", dmgTypes: ["NA", "hydro"], multBase: [35.43, 37.67], multType: 1 },
-        { name: "Charged Attack", dmgTypes: ["CA", "hydro"], multBase: [60.2, 71.98], multType: 1 },
+        { name: "1-Hit", attPatt: "NA", multBase: 38.87, multType: 1 },
+        { name: "2-Hit", attPatt: "NA", multBase: 41.62, multType: 1 },
+        { name: "3-Hit", attPatt: "NA", multBase: 56.33, multType: 1 },
+        { name: "4-Hit", attPatt: "NA", multBase: 59.94, multType: 1 },
+        { name: "5-Hit", attPatt: "NA", multBase: 55.3, multType: 1 },
+        { name: "6-Hit", attPatt: "NA", multBase: [35.43, 37.67], multType: 1 },
+        { name: "Charged Attack", attPatt: "CA", multBase: [60.2, 71.98], multType: 1 },
         { name: "Riptide Slash", multBase: 60.2 },
       ],
       // getExtraStats: () => [
@@ -102,6 +104,23 @@ const Tartaglia: DataCharacter = {
     { name: "Abyssal Mayhem: Hydrospout", image: "9/9d/Constellation_Abyssal_Mayhem_Hydrospout" },
     { name: "Havoc: Formless Blade", image: "2/20/Constellation_Havoc_Formless_Blade" },
     { name: "Havoc: Annihilation", image: "5/5a/Constellation_Havoc_Annihilation" },
+  ],
+  buffs: [
+    {
+      index: 0,
+      src: EModSrc.ES,
+      desc: () => (
+        <>
+          Tartaglia's <Green>Normal and Charged Attacks</Green> are converted to{" "}
+          <Hydro>Hydro DMG</Hydro> that cannot be overridden by any other elemental infusion.
+        </>
+      ),
+      affect: EModAffect.SELF,
+      infuseConfig: {
+        overwritable: false,
+        disabledNAs: true,
+      },
+    },
   ],
 };
 

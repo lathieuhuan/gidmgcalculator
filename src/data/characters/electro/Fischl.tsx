@@ -40,12 +40,7 @@ const Fischl: DataCharacter = {
         { name: "3-Hit", multBase: 58.14 },
         { name: "4-Hit", multBase: 57.71 },
         { name: "5-Hit", multBase: 72.07 },
-        {
-          name: "Oz's Joint Attack (C1)",
-          isStatic: true,
-          dmgTypes: ["NA", "phys"],
-          multBase: 22,
-        },
+        { name: "Oz's Joint Attack (C1)", isStatic: true, multBase: 22 },
       ],
     },
     CA: {
@@ -54,7 +49,7 @@ const Fischl: DataCharacter = {
         {
           name: "Thundering Retribution (A1)",
           isStatic: true,
-          dmgTypes: ["CA", "electro"],
+          attElmt: "electro",
           multBase: 189.35,
         },
       ],

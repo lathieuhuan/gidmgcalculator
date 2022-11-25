@@ -275,7 +275,7 @@ const Nahida: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", Math.min((inputs?.[0] || 0) * 0.25, 250), tracker);
+        applyModifier(desc, totalAttr, "em", Math.min((inputs[0] || 0) * 0.25, 250), tracker);
       },
     },
     {
@@ -299,7 +299,7 @@ const Nahida: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "em", (inputs?.[0] || 0) * 20 + 80, tracker);
+        applyModifier(desc, totalAttr, "em", (inputs[0] || 0) * 20 + 80, tracker);
       },
     },
   ],

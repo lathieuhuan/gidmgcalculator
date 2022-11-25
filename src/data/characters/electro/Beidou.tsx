@@ -51,7 +51,8 @@ const Beidou: DataCharacter = {
         {
           name: "Extra Hit (C4)",
           isStatic: true,
-          dmgTypes: [null, "electro"],
+          attPatt: "none",
+          attElmt: "electro",
           multBase: 20,
         },
       ],
@@ -72,7 +73,7 @@ const Beidou: DataCharacter = {
         },
         { name: "Base DMG", multBase: 121.6 },
         { name: "DMG Bonus on Hit", multBase: 160 },
-        { name: "Full Counter", multBase: 441.6, notOfficial: true },
+        { name: "Full Counter", multBase: 441.6, isNotOfficial: true },
       ],
       // getExtraStats: () => [{ name: "CD", value: "7.5s" }],
     },

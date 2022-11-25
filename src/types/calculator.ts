@@ -17,9 +17,9 @@ import type {
   BaseStat,
   ResonanceVision,
   TransformativeReaction,
-  Tracker,
 } from "./global";
-import { ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
+import type { Tracker } from "@Calculators/types";
+import { ATTACK_ELEMENT_INFO_KEYS, ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
 
 export type SetupType = "original" | "combined" | "complex";
 
@@ -146,9 +146,11 @@ export type Resonance = {
   inputs?: ModifierInput[];
 };
 
+export type AttackReaction = null | "melt" | "vaporize" | "aggravate" | "spread";
+
 export type ElementModCtrl = {
-  infusion_reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
-  reaction: null | "melt" | "vaporize" | "aggravate" | "spread";
+  infuse_reaction: AttackReaction;
+  reaction: AttackReaction;
   superconduct: boolean;
   resonances: Resonance[];
 };
@@ -184,12 +186,11 @@ export type AttackPatternInfo = Record<AttackPatternInfoKey, number>;
 export type AttackPatternBonusKey = AttackPattern | "all";
 export type AttackPatternBonus = Record<AttackPatternBonusKey, AttackPatternInfo>;
 
-export type AttacklementInfoKey = "cDmg" | "flat";
+export type AttacklementInfoKey = typeof ATTACK_ELEMENT_INFO_KEYS[number];
 export type AttacklementInfo = Record<AttacklementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
 export type ReactionBonusKey = Reaction | "infuse_melt" | "infuse_vaporize";
-
 export type ReactionBonus = Record<ReactionBonusKey, number>;
 
 export type ResistanceReduction = Record<AttackElement | "def", number>;
@@ -201,7 +202,11 @@ export type Infusion = {
 
 export type Talent = typeof TALENT_TYPES[number];
 
-type CalculatedDamage = Record<"nonCrit" | "crit" | "average", number | number[]>;
+type CalculatedDamage = {
+  nonCrit: number | number[];
+  crit: number | number[];
+  average: number | number[];
+};
 
 type CalculatedDamageCluster = {
   [k: string]: CalculatedDamage;
@@ -228,5 +233,5 @@ export type DebuffModifierArgsWrapper = {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
   partyData: PartyData;
-  tracker: Tracker;
+  tracker?: Tracker;
 };

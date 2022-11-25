@@ -90,10 +90,10 @@ const ElectroMC: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {
         let buffValue = 20;
-        const boosted = toSelf ? checkAscs[4](char) : inputs?.[0] === 1;
+        const boosted = toSelf ? checkAscs[4](char) : inputs[0] === 1;
 
         if (boosted) {
-          const ER = toSelf ? totalAttr.er : inputs?.[1] || 0;
+          const ER = toSelf ? totalAttr.er : inputs[1] || 0;
           buffValue += Math.round(ER) / 10;
         }
         applyModifier(desc, totalAttr, "er", buffValue, tracker);

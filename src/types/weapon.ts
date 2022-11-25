@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { EModAffect } from "@Src/constants";
-import type { Tracker, Rarity, ArtifactPercentStat, ModInputConfig } from "./global";
+import type { Rarity, ArtifactPercentStat, ModInputConfig } from "./global";
 import type {
   AttackPatternBonus,
   CharData,
@@ -10,6 +10,7 @@ import type {
   ReactionBonus,
   TotalAttribute,
 } from "./calculator";
+import type { Tracker } from "@Calculators/types";
 
 export type DataWeapon = {
   code: number;
@@ -44,7 +45,7 @@ type ApplyWpPassiveBuffsArgs = {
 };
 
 type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   refi: number;
   desc?: string;
 };
@@ -52,7 +53,7 @@ type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
 type ApplyWpFinalBuffArgs = BuffModifierArgsWrapper & {
   refi: number;
   desc?: string;
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
 };
 
 type WeaponDescArgs = {

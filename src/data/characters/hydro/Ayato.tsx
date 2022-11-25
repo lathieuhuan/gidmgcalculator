@@ -32,6 +32,7 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
 
     return talentBuff([true, "flat", "Elemental Skill", flat], C1TalentBuff(char, selfBuffCtrls));
   }
+  return {};
 };
 
 const getEBBuffValue = (
@@ -40,7 +41,7 @@ const getEBBuffValue = (
   partyData: PartyData,
   inputs: ModifierInput[] | undefined
 ) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[0] || 1;
+  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;
 };
 
@@ -93,28 +94,28 @@ const Ayato: DataCharacter = {
       stats: [
         {
           name: "Shunsuiken 1-Hit DMG",
-          dmgTypes: ["NA", "hydro"],
+          attPatt: "NA",
           multBase: 52.89,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 2-Hit DMG",
-          dmgTypes: ["NA", "hydro"],
+          attPatt: "NA",
           multBase: 58.91,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 3-Hit DMG",
-          dmgTypes: ["NA", "hydro"],
+          attPatt: "NA",
           multBase: 64.93,
           multType: 7,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Extra Shunsuiken strike (1/2) (C6)",
-          dmgTypes: ["NA", "hydro"],
+          attPatt: "NA",
           isStatic: true,
           multBase: 450,
           getTalentBuff: ({ char, selfBuffCtrls }) => talentBuff(C1TalentBuff(char, selfBuffCtrls)),
@@ -122,7 +123,7 @@ const Ayato: DataCharacter = {
         {
           name: "Namisen DMG Bonus",
           notAttack: "other",
-          notOfficial: true,
+          isNotOfficial: true,
           baseStatType: "hp",
           multBase: 0,
           multType: 7,
@@ -205,6 +206,7 @@ const Ayato: DataCharacter = {
       ],
       infuseConfig: {
         overwritable: false,
+        disabledNAs: true,
       },
     },
     {

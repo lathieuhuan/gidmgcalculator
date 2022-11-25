@@ -50,7 +50,12 @@ const Yoimiya: DataCharacter = {
         { name: "5-Hit", multBase: 105.86, multType: 4 },
       ],
     },
-    CA: { stats: [...BOW_CAs, { name: "Kindling Arrow", multBase: 16.4 }] },
+    CA: {
+      stats: [
+        ...BOW_CAs,
+        { name: "Kindling Arrow", subAttPatt: "FCA", multBase: 16.4, multType: 2 },
+      ],
+    },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Niwabi Fire-Dance",
@@ -151,7 +156,7 @@ const Yoimiya: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "atk_", 10 + (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "atk_", 10 + (inputs[0] || 0), tracker);
       },
     },
     {

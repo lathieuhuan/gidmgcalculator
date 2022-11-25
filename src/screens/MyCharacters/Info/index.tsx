@@ -85,7 +85,7 @@ export default function Info() {
         <div className="flex">
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
-            {!isMobile && <p className={`text-h1 text-${vision} font-black`}>{name}</p>}
+            {!isMobile && <p className={`text-3xl text-${vision} font-black`}>{name}</p>}
             <StarLine rarity={rarity} />
 
             <div className="ml-1 my-1 flex">

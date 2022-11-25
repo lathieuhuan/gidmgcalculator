@@ -135,7 +135,7 @@ const DendroMC: DataCharacter = {
         },
       ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        applyModifier(desc, totalAttr, "em", 6 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "em", 6 * (inputs[0] || 0), tracker);
       },
     },
     {
@@ -151,7 +151,7 @@ const DendroMC: DataCharacter = {
         },
       ],
       applyBuff: ({ desc, totalAttr, inputs, tracker }) => {
-        const elmtIndex = inputs?.[0] || 0;
+        const elmtIndex = inputs[0] || 0;
         applyModifier(desc, totalAttr, ["dendro", VISION_TYPES[elmtIndex]], 12, tracker);
       },
     },

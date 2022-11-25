@@ -12,7 +12,7 @@ const getNApctBonus = (args: {
   inputs?: ModifierInput[];
 }) => {
   const level = finalTalentLv(args.char, "ES", args.partyData);
-  let stacks = args.inputs?.[0] || 0;
+  let stacks = args.inputs[0] || 0;
   stacks = stacks === 4 ? 5 : stacks;
   return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks);
 };
@@ -135,7 +135,7 @@ const Aloy: DataCharacter = {
           applyModifier(desc, obj.totalAttr, "atk_", 16, tracker);
         }
         if (checkAscs[4](char)) {
-          applyModifier(desc, obj.totalAttr, "cryo", 3.5 * (obj.inputs?.[1] || 0), tracker);
+          applyModifier(desc, obj.totalAttr, "cryo", 3.5 * (obj.inputs[1] || 0), tracker);
         }
       },
     },

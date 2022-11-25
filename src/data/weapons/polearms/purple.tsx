@@ -171,7 +171,7 @@ const purplePolearms: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
+          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(purplePolearms, 91)!.passiveDesc({ refi }).core,
@@ -241,7 +241,7 @@ const purplePolearms: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          if (inputs?.[0] === 1) {
+          if (inputs[0] === 1) {
             applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);
           } else {
             applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);

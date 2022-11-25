@@ -53,7 +53,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
             </div>
 
             <div className="overflow-hidden">
-              <p className={`text-h1 truncate text-${vision} font-black`}>{char.name}</p>
+              <p className={`text-3xl truncate text-${vision} font-black`}>{char.name}</p>
               <StarLine className="mt-1" rarity={rarity} />
               <div className="mt-1 flex items-center">
                 <p className="mr-1 text-h6">Level</p>

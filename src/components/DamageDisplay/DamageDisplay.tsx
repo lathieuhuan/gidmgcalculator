@@ -1,10 +1,9 @@
-import cn from "classnames";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import type { CharInfo, DamageResult, Party } from "@Src/types";
 
 import { EStatDamageKey } from "@Src/constants";
-import { displayValue, getKeys } from "./utils";
+import { displayValue, getTableKeys } from "./utils";
 
 import { CollapseSpace } from "@Components/collapse";
 import { tableStyles } from "@Src/styled-components";
@@ -23,13 +22,9 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
   const { t } = useTranslation();
 
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const tableKeys = getKeys(char.name);
+  const tableKeys = useMemo(() => getTableKeys(char.name), [char.name]);
 
-  if (char.name === "Nilou") {
-    tableKeys[tableKeys.length - 1].subs.unshift("bountifulCore" as any);
-  }
-
-  const toggle = (index: number) => {
+  const toggleTable = (index: number) => () => {
     setClosedItems((prev) => {
       const newC = [...prev];
       newC[index] = !newC[index];
@@ -41,7 +36,6 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
     <div className="flex flex-col space-y-2">
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
-        const withDamage = key.subs.length !== 0;
         const isReactionDmg = key.main === "RXN";
         const talentLevel = !isReactionDmg ? finalTalentLv(char, key.main, getPartyData(party)) : 0;
 
@@ -49,7 +43,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
           <div key={key.main} className="flex flex-col">
             <button
               className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
-              onClick={() => toggle(index)}
+              onClick={toggleTable(index)}
             >
               <span className="text-lg leading-none">{t(key.main)}</span>
               {talentLevel ? (
@@ -58,17 +52,23 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                 </span>
               ) : null}
               <FaChevronDown
-                className={cn(
-                  "ml-2 text-subtitle-1 text-black duration-150 ease-linear",
-                  closedItems[index] ? "rotate-90" : ""
-                )}
+                className={
+                  "ml-2 text-subtitle-1 text-black duration-150 ease-linear" +
+                  (closedItems[index] ? " rotate-90" : "")
+                }
               />
             </button>
 
             <CollapseSpace active={!closedItems[index]}>
-              {withDamage ? (
+              {key.subs.length === 0 ? (
+                <div className="pb-2">
+                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">
+                    This talent does not deal damage.
+                  </p>
+                </div>
+              ) : (
                 <div className="custom-scrollbar">
-                  <table className={cn("mb-2 w-full", tableStyles.table)}>
+                  <table className={"mb-2 w-full " + tableStyles.table}>
                     <colgroup>
                       <col className="w-34" />
                       <col />
@@ -83,7 +83,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                           <th className={tableStyles.th} />
                           <th className={tableStyles.th}>Non-crit</th>
                           <th className={tableStyles.th}>Crit</th>
-                          <th className={cn("text-lightgold", tableStyles.th)}>Avg.</th>
+                          <th className={"text-lightgold " + tableStyles.th}>Avg.</th>
                         </tr>
 
                         {key.subs.map((subKey, i) => {
@@ -96,7 +96,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                               </td>
                               <td className={tableStyles.td}>{displayValue(nonCrit)}</td>
                               <td className={tableStyles.td}>{displayValue(crit)}</td>
-                              <td className={cn("text-lightgold", tableStyles.td)}>
+                              <td className={tableStyles.td + " text-lightgold"}>
                                 {displayValue(average)}
                               </td>
                             </tr>
@@ -105,12 +105,6 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                       </tbody>
                     )}
                   </table>
-                </div>
-              ) : (
-                <div className="pb-2">
-                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">
-                    This talent does not deal damage.
-                  </p>
                 </div>
               )}
             </CollapseSpace>

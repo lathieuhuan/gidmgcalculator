@@ -1,16 +1,5 @@
-import type {
-  DamageResult,
-  TalentBuff,
-  NormalAttack,
-  ResistanceReduction,
-  DebuffModifierArgsWrapper,
-} from "@Src/types";
-import {
-  ATTACK_ELEMENTS,
-  ATTACK_PATTERNS,
-  NORMAL_ATTACKS,
-  TRANSFORMATIVE_REACTIONS,
-} from "@Src/constants";
+import type { DamageResult, ResistanceReduction, DebuffModifierArgsWrapper } from "@Src/types";
+import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
 
 import { findArtifactSet, findCharacter } from "@Data/controllers";
@@ -18,102 +7,67 @@ import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { charModIsInUse } from "@Data/characters/utils";
 import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
-import { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
+import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
 import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
   stat,
-  defaultDmgTypes,
+  attElmt,
+  attPatt,
   base,
   char,
-  vision,
   target,
-  elmtModCtrls,
   talentBuff,
   totalAttr,
   attPattBonus,
   attElmtBonus,
-  rxnBonus,
+  rxnMult,
   resistReduct,
-  infusedElement,
+  record,
 }: CalcTalentStatArgs) {
-  let record = {} as TrackerDamageRecord;
-  const [attPatt, attElmt] = stat.dmgTypes || defaultDmgTypes;
-
   if (base !== 0 && !stat.notAttack) {
     // Validate infusedElement into attInfusion
-    const attInfusion = attPatt ? infusedElement : undefined;
     const flat =
       (talentBuff.flat?.value || 0) +
       attPattBonus.all.flat +
-      (attPatt ? attPattBonus[attPatt].flat : 0) +
-      (attElmt === "various" ? 0 : attElmtBonus[attElmt].flat);
-
-    record.finalFlat = flat;
+      (attPatt !== "none" ? attPattBonus[attPatt].flat : 0) +
+      (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
     let normalMult = (talentBuff.pct?.value || 0) + attPattBonus.all.pct;
     let specialMult = 1;
 
-    if (attPatt) {
+    if (attPatt !== "none") {
       normalMult += attPattBonus[attPatt].pct;
       specialMult = toMult(attPattBonus[attPatt].specialMult);
     }
-    // Normal Attacks infused with element
-    if (NORMAL_ATTACKS.includes(attPatt as NormalAttack) && attElmt === "phys" && attInfusion) {
-      normalMult += totalAttr[attInfusion];
-    } else if (attElmt !== "various") {
+    if (attElmt !== "various") {
       normalMult += totalAttr[attElmt];
     }
     normalMult = toMult(normalMult);
-
-    // CALCULATE AMPLIFYING REACTION MULTIPLIER
-    let rxnMult = 1;
-    const { reaction, infusion_reaction } = elmtModCtrls;
-
-    // Want amplifying && can be amplified
-    if (
-      (reaction === "melt" || reaction === "vaporize") &&
-      (attElmt !== "phys" || attInfusion === vision)
-    ) {
-      rxnMult = rxnBonus[reaction];
-    }
-    // Want amplifying && can be amplified by infusion
-    else if (
-      (infusion_reaction === "melt" || infusion_reaction === "vaporize") &&
-      attInfusion !== vision
-    ) {
-      rxnMult = rxnBonus[`infuse_${infusion_reaction}`];
-    }
 
     // CALCULATE DEFENSE MULTIPLIER
     let defMult = 1;
     const charPart = bareLv(char.level) + 100;
     const defReduction = 1 - resistReduct.def / 100;
 
-    if (attPatt) {
+    if (attPatt !== "none") {
       defMult = 1 - attPattBonus[attPatt].defIgnore / 100;
     }
     defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
 
     // CALCULATE RESISTANCE MULTIPLIER
-    const resMult =
-      attElmt !== "phys" && attElmt !== "various"
-        ? resistReduct[vision]
-        : attElmt === "phys" && attPatt && !["NA", "CA", "PA"].includes(attPatt)
-        ? resistReduct.phys
-        : !attInfusion || attElmt === "various"
-        ? 1
-        : resistReduct[attInfusion];
+    const resMult = attElmt === "various" ? 1 : resistReduct[attElmt];
 
     // CALCULATE CRITS
     const totalCrit = (type: "cRate" | "cDmg") => {
       return (
         totalAttr[type] +
         (talentBuff[type]?.value || 0) +
-        (attPatt ? attPattBonus[attPatt][type] : 0) +
-        attPattBonus.all[type]
+        attPattBonus.all[type] +
+        (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
+        (attElmt !== "various" && type === "cDmg" ? attElmtBonus[attElmt][type] : 0)
       );
     };
     const xtraCritDmg = attElmt !== "various" ? attElmtBonus[attElmt].cDmg : 0;
@@ -125,16 +79,15 @@ function calcTalentDamage({
       (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
     );
 
-    record = {
-      ...record,
-      normalMult,
-      specialMult,
-      rxnMult,
-      defMult,
-      resMult,
-      cRate,
-      cDmg,
-    };
+    record.finalFlat = flat;
+    record.normalMult = normalMult;
+    record.specialMult = specialMult;
+    record.rxnMult = rxnMult;
+    record.defMult = defMult;
+    record.resMult = resMult;
+    record.cRate = cRate;
+    record.cDmg = cDmg;
+
     return {
       nonCrit: base,
       crit: applyToOneOrMany(base, (n) => n * (1 + cDmg)),
@@ -182,13 +135,14 @@ export default function getDamage({
   artDebuffCtrls,
   party,
   partyData,
+  disabledNAs,
   totalAttr,
   attPattBonus,
   attElmtBonus,
   rxnBonus,
   customDebuffCtrls,
   infusedElement,
-  elmtModCtrls,
+  elmtModCtrls: { reaction, infuse_reaction, resonances, superconduct },
   target,
   tracker,
 }: GetDamageArgs) {
@@ -213,7 +167,7 @@ export default function getDamage({
   }
 
   // APPLY SELF DEBUFFS
-  for (const { activated, inputs, index } of selfDebuffCtrls) {
+  for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
     if (
@@ -222,11 +176,10 @@ export default function getDamage({
       (!debuff.isGranted || debuff.isGranted(char)) &&
       debuff.applyDebuff
     ) {
-      const validatedInputs = inputs || [];
       debuff.applyDebuff({
         desc: `Self / ${debuff.src}`,
         fromSelf: true,
-        inputs: validatedInputs,
+        inputs,
         ...modifierArgs,
       });
     }
@@ -252,7 +205,7 @@ export default function getDamage({
   }
 
   // APPLY ARTIFACT DEBUFFS
-  for (const { activated, code, index, inputs } of artDebuffCtrls) {
+  for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
       const { name, debuffs = [] } = findArtifactSet({ code }) || {};
       if (name) {
@@ -266,11 +219,11 @@ export default function getDamage({
   }
 
   // APPLY RESONANCE DEBUFFS
-  const geoRsn = elmtModCtrls.resonances.find((rsn) => rsn.vision === "geo");
+  const geoRsn = resonances.find((rsn) => rsn.vision === "geo");
   if (geoRsn && geoRsn.activated) {
     applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
   }
-  if (elmtModCtrls.superconduct) {
+  if (superconduct) {
     applyModifier("Superconduct", resistReduct, "phys", 40, tracker);
   }
 
@@ -294,46 +247,45 @@ export default function getDamage({
     tracker.RXN = {};
   }
 
-  ATTACK_PATTERNS.forEach((attPatt) => {
-    const talent = activeTalents[attPatt];
-    const resultKey = attPatt === "ES" || attPatt === "EB" ? attPatt : "NAs";
+  ATTACK_PATTERNS.forEach((ATT_PATT) => {
+    const talent = activeTalents[ATT_PATT];
+    const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getDefaultStatInfo(resultKey, weapon, vision);
     const level = finalTalentLv(char, resultKey, partyData);
 
     for (const stat of talent.stats) {
-      let talentBuff: TalentBuff = {};
-
-      if (stat.getTalentBuff) {
-        talentBuff =
-          stat.getTalentBuff({
+      const talentBuff = stat.getTalentBuff
+        ? stat.getTalentBuff({
             char,
             charData,
             selfBuffCtrls,
             selfDebuffCtrls,
             totalAttr,
             partyData,
-          }) || {};
-      }
+          })
+        : {};
 
       // CALCULATE BASE DAMAGE
       let base;
       const {
+        isStatic,
         baseStatType = "atk",
         multBase,
-        isStatic,
         multType = defaultInfo.multType,
         flat,
       } = stat;
+
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
         baseValue: totalAttr[baseStatType],
         baseStatType,
+        talentBuff,
       } as TrackerDamageRecord;
 
       const finalMult = (multBase: number) =>
         multBase * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[multType][level]) + xtraMult;
 
-      const baseDamage = (percent: number) => {
+      const getBaseDamage = (percent: number) => {
         const result = (totalAttr[baseStatType] * percent) / 100;
         const flatBonus = flat
           ? flat.base * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[flat.type][level])
@@ -347,33 +299,62 @@ export default function getDamage({
         const percents = multBase.map(finalMult);
 
         record.finalMult = percents;
-        base = percents.map(baseDamage);
+        base = percents.map(getBaseDamage);
       } //
       else {
         const percent = finalMult(multBase);
 
         record.finalMult = percent;
-        base = baseDamage(percent);
+        base = getBaseDamage(percent);
       }
 
-      finalResult[resultKey][stat.name] = calcTalentDamage({
-        stat,
-        defaultDmgTypes: [attPatt, defaultInfo.attElmt],
-        base,
-        char,
-        vision,
-        target,
-        elmtModCtrls,
-        talentBuff,
-        totalAttr,
-        attPattBonus,
-        attElmtBonus,
-        rxnBonus,
-        resistReduct,
-        infusedElement,
-      });
+      // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
+      const attPatt = stat.attPatt || ATT_PATT;
+      let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
+      let rxnMult = 1;
+
+      // check and infused
+      if (resultKey === "NAs" && attElmt === "phys" && infusedElement !== "phys") {
+        attElmt = infusedElement;
+      }
+
+      if (attElmt !== "various" && attElmt !== "phys") {
+        // deal elemental dmg and want amplify reaction
+        if (reaction === "melt" || reaction === "vaporize") {
+          rxnMult = rxnBonus[reaction];
+        }
+        // infused normal attacks want amplify reaction
+        if (resultKey === "NAs" && (infuse_reaction === "melt" || infuse_reaction === "vaporize")) {
+          rxnMult = rxnBonus[`infuse_${infuse_reaction}`];
+        }
+      }
+
+      // TALENT DMG
+      if (!stat.notAttack && resultKey === "NAs" && disabledNAs) {
+        finalResult[resultKey][stat.name] = {
+          nonCrit: 0,
+          crit: 0,
+          average: 0,
+        };
+      } else {
+        finalResult[resultKey][stat.name] = calcTalentDamage({
+          stat,
+          attPatt,
+          attElmt,
+          base,
+          char,
+          target,
+          talentBuff,
+          totalAttr,
+          attPattBonus,
+          attElmtBonus,
+          rxnMult,
+          resistReduct,
+          record,
+        });
+      }
       if (tracker) {
-        tracker[resultKey][stat.name] = { record, talentBuff };
+        tracker[resultKey][stat.name] = record;
       }
     }
   });
@@ -432,11 +413,13 @@ export default function getDamage({
 
     finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
 
-    if (tracker) {
-      tracker.RXN[rxn] = {
-        record: { normalMult, specialMult, resMult },
-      };
-    }
+    // if (tracker) {
+    //   tracker.RXN[rxn] = {
+    //     normalMult,
+    //     specialMult,
+    //     resMult,
+    //   };
+    // }
   }
 
   if (nahidaC2isInUse) {
@@ -447,8 +430,8 @@ export default function getDamage({
       rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
 
       if (tracker) {
-        tracker.RXN[rxn].record.cRate = 0.2;
-        tracker.RXN[rxn].record.cDmg = 1;
+        tracker.RXN[rxn].cRate = 0.2;
+        tracker.RXN[rxn].cDmg = 1;
       }
     }
   }

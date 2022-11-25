@@ -14,6 +14,7 @@ import { renderAmpReactionDesc, renderModifiers, renderQuickenDesc } from "@Comp
 import { Select } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
 import { getQuickenBuffDamage } from "@Calculators/utils";
+import { useState } from "react";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
@@ -28,6 +29,10 @@ export default function ElementBuffs() {
 
   const { element: infusedElement } = customInfusion;
   const content: JSX.Element[] = [];
+
+  const [infusedValue, setInfusedValue] = useState(
+    infusedElement === "phys" ? "pyro" : infusedElement
+  );
 
   // Resonance buffs
   elmtModCtrls.resonances.forEach((resonance) => {
@@ -75,14 +80,14 @@ export default function ElementBuffs() {
   // Reaction buff
   const renderMeltVaporize = (
     element: Vision,
-    field: "reaction" | "infusion_reaction",
+    field: "reaction" | "infuse_reaction",
     reaction: AmplifyingReaction
   ) => {
     const activated = elmtModCtrls[field] === reaction;
-    const bonusField = field === "reaction" ? reaction : (`infusion_${reaction}` as const);
+    const bonusField = field === "reaction" ? reaction : (`infuse_${reaction}` as const);
     return (
       <ModifierTemplate
-        key={reaction + (field === "infusion_reaction" ? "-external" : "")}
+        key={reaction + (field === "infuse_reaction" ? "-external" : "")}
         checked={activated}
         onToggle={() => {
           dispatch(
@@ -107,17 +112,16 @@ export default function ElementBuffs() {
     );
   };
 
-  const quickenBuff = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
-
   const renderSpreadAggravate = (
     element: Vision,
-    field: "reaction" | "infusion_reaction",
+    field: "reaction" | "infuse_reaction",
     reaction: "spread" | "aggravate"
   ) => {
     const activated = elmtModCtrls[field] === reaction;
+    const quickenBuff = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
     return (
       <ModifierTemplate
-        key={reaction + (field === "infusion_reaction" ? "-external" : "")}
+        key={reaction + (field === "infuse_reaction" ? "-external" : "")}
         checked={activated}
         onToggle={() => {
           dispatch(
@@ -142,26 +146,32 @@ export default function ElementBuffs() {
     );
   };
 
-  switch (vision) {
-    case "pyro":
-      content.push(
-        renderMeltVaporize(vision, "reaction", "melt"),
-        renderMeltVaporize(vision, "reaction", "vaporize")
-      );
-      break;
-    case "hydro":
-      content.push(renderMeltVaporize(vision, "reaction", "vaporize"));
-      break;
-    case "cryo":
-      content.push(renderMeltVaporize(vision, "reaction", "melt"));
-      break;
-    case "electro":
-      content.push(renderSpreadAggravate(vision, "reaction", "aggravate"));
-      break;
-    case "dendro":
-      content.push(renderSpreadAggravate(vision, "reaction", "spread"));
-      break;
-  }
+  const addAttackReaction = (attReaction: "reaction" | "infuse_reaction") => {
+    const element = attReaction === "reaction" ? vision : infusedElement;
+
+    switch (element) {
+      case "pyro":
+        content.push(
+          renderMeltVaporize(element, attReaction, "melt"),
+          renderMeltVaporize(element, attReaction, "vaporize")
+        );
+        break;
+      case "hydro":
+        content.push(renderMeltVaporize(element, attReaction, "vaporize"));
+        break;
+      case "cryo":
+        content.push(renderMeltVaporize(element, attReaction, "melt"));
+        break;
+      case "electro":
+        content.push(renderSpreadAggravate(element, attReaction, "aggravate"));
+        break;
+      case "dendro":
+        content.push(renderSpreadAggravate(element, attReaction, "spread"));
+        break;
+    }
+  };
+
+  addAttackReaction("reaction");
 
   if (content.length > elmtModCtrls.resonances.length) {
     content.push(<div key="divider-2" className="mx-auto w-1/2 h-px bg-lesser" />);
@@ -176,19 +186,25 @@ export default function ElementBuffs() {
   content.push(
     <div key="custom-infusion">
       <ModifierTemplate
-        heading="External Infusion"
-        desc="This Infusion will overwrite self infusion if possible."
+        heading="Custom Infusion"
+        desc={
+          <>
+            This infusion overwrites self infusion but does not overwrite elemental nature of
+            attacks{" "}
+            <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
+          </>
+        }
         checked={isInfused}
         onToggle={() => {
           dispatch(
             updateCalcSetup({
               elmtModCtrls: {
                 ...elmtModCtrls,
-                infusion_reaction: isInfused ? null : elmtModCtrls.infusion_reaction,
+                infuse_reaction: isInfused ? null : elmtModCtrls.infuse_reaction,
               },
               customInfusion: {
                 ...customInfusion,
-                element: isInfused ? "phys" : "pyro",
+                element: isInfused ? "phys" : infusedValue,
               },
             })
           );
@@ -198,15 +214,17 @@ export default function ElementBuffs() {
         <span className="mr-4 text-base leading-6 text-right">Element</span>
         <Select
           className={twInputStyles.select + " capitalize"}
-          value={customInfusion.element}
+          value={infusedValue}
           disabled={!isInfused}
           onChange={(e) => {
             if (isInfused) {
+              setInfusedValue(e.target.value as Vision);
+
               dispatch(
                 updateCalcSetup({
                   elmtModCtrls: {
                     ...elmtModCtrls,
-                    infusion_reaction: null,
+                    infuse_reaction: null,
                   },
                   customInfusion: {
                     ...customInfusion,
@@ -228,26 +246,7 @@ export default function ElementBuffs() {
   );
 
   if (infusedElement !== vision && infusedElement !== "phys") {
-    switch (infusedElement) {
-      case "pyro":
-        content.push(
-          renderMeltVaporize(infusedElement, "infusion_reaction", "melt"),
-          renderMeltVaporize(infusedElement, "infusion_reaction", "vaporize")
-        );
-        break;
-      case "hydro":
-        content.push(renderMeltVaporize(infusedElement, "infusion_reaction", "vaporize"));
-        break;
-      case "cryo":
-        content.push(renderMeltVaporize(infusedElement, "infusion_reaction", "melt"));
-        break;
-      case "electro":
-        content.push(renderSpreadAggravate(infusedElement, "infusion_reaction", "aggravate"));
-        break;
-      case "dendro":
-        content.push(renderSpreadAggravate(infusedElement, "infusion_reaction", "spread"));
-        break;
-    }
+    addAttackReaction("infuse_reaction");
   }
 
   return renderModifiers(content, true);

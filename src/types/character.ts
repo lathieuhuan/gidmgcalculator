@@ -7,7 +7,6 @@ import type {
   Rarity,
   Weapon,
   CharInfo,
-  Tracker,
   NormalAttack,
   ArtifactPercentStat,
   ModInputConfig,
@@ -24,6 +23,7 @@ import type {
   BuffModifierArgsWrapper,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
+import { Tracker } from "@Calculators/types";
 
 export type DataCharacter = {
   code: number;
@@ -73,8 +73,6 @@ type NormalAttacks = {
   stats: StatInfo[];
 };
 
-export type DamageTypes = [AttackPattern | null, AttackElement | "various"];
-
 type GetTalentBuffArgs = {
   char: CharInfo;
   charData: CharData;
@@ -86,13 +84,21 @@ type GetTalentBuffArgs = {
 
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
-export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff | void;
+export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff;
 
 export type BaseStatType = "base_atk" | "atk" | "def" | "hp" | "em";
 
+export type ActualAttackPattern = AttackPattern | "none";
+
+export type ActualAttackElement = AttackElement | "various";
+
+export type SubAttackPattern = "FCA";
+
 export type StatInfo = {
   name: string;
-  dmgTypes?: DamageTypes;
+  attPatt?: ActualAttackPattern;
+  subAttPatt?: SubAttackPattern;
+  attElmt?: ActualAttackElement;
   multBase: number | number[];
   multType?: number;
   /** only on ES / EB */
@@ -100,7 +106,7 @@ export type StatInfo = {
   /**
    * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
-  notOfficial?: boolean;
+  isNotOfficial?: boolean;
   /**
    * If true, multBase and flat.base will not scale with talent level
    */
@@ -166,6 +172,7 @@ export type AbilityBuff = AbilityModifier & {
   infuseConfig?: {
     overwritable: boolean;
     range?: NormalAttack[];
+    disabledNAs?: boolean;
   };
   desc: (args: {
     toSelf: boolean;
@@ -174,14 +181,14 @@ export type AbilityBuff = AbilityModifier & {
     charBuffCtrls: ModifierCtrl[];
     partyData: PartyData;
     totalAttr: TotalAttribute;
-    inputs?: ModifierInput[];
+    inputs: ModifierInput[];
   }) => ReactNode;
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
 export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   toSelf: boolean;
   charBuffCtrls: ModifierCtrl[];
   desc: string;
@@ -189,13 +196,11 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
 
 // DEBUFFS
 
-export type ApplyCharDebuffFn = (args: {
+type ApplyCharDebuffFn = (args: {
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
-  // may need in future
-  // selfDebuffCtrls: ModifierCtrl[];
   char: CharInfo;
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   partyData: PartyData;
   fromSelf: boolean;
   desc?: string;
@@ -208,7 +213,7 @@ export type AbilityDebuff = AbilityModifier & {
   desc: (args: {
     fromSelf: boolean;
     char: CharInfo;
-    inputs?: ModifierInput[];
+    inputs: ModifierInput[];
     partyData: PartyData;
   }) => ReactNode;
   applyDebuff?: ApplyCharDebuffFn;

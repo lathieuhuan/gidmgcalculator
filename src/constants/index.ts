@@ -88,6 +88,8 @@ export const ATTACK_PATTERN_INFO_KEYS = [
   "specialMult",
 ] as const;
 
+export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg", "flat"] as const;
+
 export const VISION_ICONS = {
   pyro: "e/e8/Element_Pyro",
   cryo: "8/88/Element_Cryo",

@@ -36,7 +36,7 @@ const AnemoMC: DataCharacter = {
       xtraLvAtCons: 3,
       stats: [
         { name: "Tornado DMG", multBase: 80.8 },
-        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], multBase: 24.8 },
+        { name: "Additional Elemental DMG", attElmt: "various", multBase: 24.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },
@@ -88,7 +88,7 @@ const AnemoMC: DataCharacter = {
         },
       ],
       applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-        const elmtIndex = inputs?.[0] || 0;
+        const elmtIndex = inputs[0] || 0;
         applyModifier(desc, resistReduct, ["anemo", VISION_TYPES[elmtIndex]], 20, tracker);
       },
     },

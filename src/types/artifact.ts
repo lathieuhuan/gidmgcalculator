@@ -1,5 +1,5 @@
 import { EModAffect } from "@Src/constants";
-import type { ModInputConfig, Rarity, Tracker } from "./global";
+import type { ModInputConfig, Rarity } from "./global";
 import type {
   AttackPatternBonus,
   CharData,
@@ -10,6 +10,7 @@ import type {
   TotalAttribute,
   DebuffModifierArgsWrapper,
 } from "./calculator";
+import type { Tracker } from "@Calculators/types";
 
 type ArtPieceData = {
   name: string;
@@ -49,7 +50,7 @@ type SetBonus = {
 };
 
 type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   desc?: string;
 };
 
@@ -68,9 +69,9 @@ export type ArtifactBuff = {
 };
 
 export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
-  inputs?: ModifierInput[];
+  inputs: ModifierInput[];
   desc: string;
-  tracker: Tracker;
+  tracker?: Tracker;
 };
 
 type ArtifactDebuff = {

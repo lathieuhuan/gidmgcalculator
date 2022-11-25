@@ -147,7 +147,7 @@ const Yanfei: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "pyro", 5 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "pyro", 5 * (inputs[0] || 0), tracker);
       },
     },
     {

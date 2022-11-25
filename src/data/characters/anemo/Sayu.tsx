@@ -70,7 +70,7 @@ const Sayu: DataCharacter = {
       xtraLvAtCons: 5,
       stats: [
         { name: "Fuufuu Windwheel DMG", multBase: 36 },
-        { name: "Fuufuu Windwheel Elemental DMG", dmgTypes: ["ES", "various"], multBase: 16.8 },
+        { name: "Fuufuu Windwheel Elemental DMG", attElmt: "various", multBase: 16.8 },
         {
           name: "Press Kick",
           multBase: 158.4,
@@ -83,7 +83,7 @@ const Sayu: DataCharacter = {
         { name: "Hold Kick", multBase: 217.6, getTalentBuff: getC2TalentBuff },
         {
           name: "Kick's Elemental DMG",
-          dmgTypes: ["ES", "various"],
+          attElmt: "various",
           multBase: 76.16,
           getTalentBuff: getC2TalentBuff,
         },

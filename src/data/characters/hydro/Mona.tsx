@@ -12,7 +12,7 @@ const getEBBuffValue = ({
   partyData,
   inputs,
 }: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs?.[0] || 0;
+  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 0;
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
 
@@ -186,7 +186,7 @@ const Mona: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.pct", 60 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "CA.pct", 60 * (inputs[0] || 0), tracker);
       },
     },
   ],

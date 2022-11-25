@@ -145,7 +145,7 @@ const inazumaSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 10 * (inputs?.[0] || 0) + 8, tracker);
+          applyModifier(desc, totalAttr, "atk_", 10 * (inputs[0] || 0) + 8, tracker);
         },
       },
     ],
@@ -320,7 +320,7 @@ const inazumaSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, ["def_", "geo"], 6 * (inputs?.[0] || 0), tracker);
+          applyModifier(desc, totalAttr, ["def_", "geo"], 6 * (inputs[0] || 0), tracker);
         },
       },
     ],

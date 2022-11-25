@@ -55,12 +55,7 @@ const Kazuha: DataCharacter = {
     CA: { stats: [{ name: "Charged Attack", multBase: [43, 74.65] }] },
     PA: {
       stats: [
-        {
-          name: "Plunging Attack: Midare Ranzan",
-          dmgTypes: ["PA", "anemo"],
-          multBase: 81.83,
-          multType: 7,
-        },
+        { name: "Plunging Attack: Midare Ranzan", attElmt: "anemo", multBase: 81.83, multType: 7 },
         { name: "Plunge DMG", multBase: 81.83, multType: 7 },
         { name: "Low Plunge", multBase: 163.63, multType: 7 },
         { name: "High Plunge", multBase: 204.39, multType: 7 },
@@ -86,7 +81,7 @@ const Kazuha: DataCharacter = {
       stats: [
         { name: "Slashing DMG", multBase: 262.4 },
         { name: "DoT", multBase: 120 },
-        { name: "Additional Elemental DMG", dmgTypes: ["EB", "various"], multBase: 36 },
+        { name: "Additional Elemental DMG", attElmt: "various", multBase: 36 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,

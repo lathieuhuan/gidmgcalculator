@@ -36,7 +36,7 @@ const mondstadtSets: DataArtifact[] = [
             <Green>ATK</Green> <Green b>+18%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "atk", 18),
+        applyBuff: makeModApplier("totalAttr", "atk_", 18),
       },
       {
         desc: (
@@ -162,7 +162,7 @@ const mondstadtSets: DataArtifact[] = [
           },
         ],
         applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-          const elmtIndex = inputs?.[0] || 0;
+          const elmtIndex = inputs[0] || 0;
           applyModifier(desc, resistReduct, VISION_TYPES[elmtIndex], 40, tracker);
         },
       },

@@ -3,12 +3,12 @@ import { Green, Lightgold, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, increaseAttackBonus } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
 const getAttackBuffValue = (inputs: ModifierInput[] | undefined): [number, string] => {
-  const baseATK = inputs?.[0] || 0;
-  const level = inputs?.[1] || 1;
+  const baseATK = inputs[0] || 0;
+  const level = inputs[1] || 1;
   const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];
   return [applyPercent(baseATK, mult), `${level} / ${round2(mult)}% of ${baseATK} Base ATK`];
 };
@@ -126,15 +126,8 @@ const Sara: DataCharacter = {
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
         applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
 
-        if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs?.[2])) {
-          increaseAttackBonus({
-            ...obj,
-            desc: `Self / ${EModSrc.C6}`,
-            element: "electro",
-            type: "cDmg",
-            value: 60,
-            mainCharVision: obj.charData.vision,
-          });
+        if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs[2])) {
+          applyModifier(`Self / ${EModSrc.C6}`, obj.attElmtBonus, "electro.cDmg", 60, obj.tracker);
         }
       },
     },

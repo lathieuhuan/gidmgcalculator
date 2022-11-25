@@ -55,9 +55,9 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
               let diff = 0;
 
               if (thisIsArray && standardIsArray) {
-                diff = thisValue[0] - standardValue[0];
+                diff = thisValue[0] && standardValue[0] ? thisValue[0] - standardValue[0] : 0;
               } else if (!thisIsArray && !standardIsArray) {
-                diff = thisValue - standardValue;
+                diff = thisValue && standardValue ? thisValue - standardValue : 0;
               }
 
               const percenttDiff =

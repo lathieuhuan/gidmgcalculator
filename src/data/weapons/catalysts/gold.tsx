@@ -77,7 +77,7 @@ const goldCatalysts: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stack = inputs?.[0] || 0;
+          const stack = inputs[0] || 0;
           applyModifier(desc, attPattBonus, "ES.pct", (9 + refi * 3) * stack, tracker);
 
           if (stack === 3) {
@@ -166,7 +166,7 @@ const goldCatalysts: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs?.[0] || 0);
+          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldCatalysts, 32)!.passiveDesc({ refi }).extra![0],

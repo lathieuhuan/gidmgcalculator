@@ -144,7 +144,7 @@ const Keqing: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "electro", 6 * (inputs?.[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "electro", 6 * (inputs[0] || 0), tracker);
       },
     },
   ],

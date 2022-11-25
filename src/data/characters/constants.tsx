@@ -13,7 +13,7 @@ export enum EModSrc {
 
 export const BOW_CAs: StatInfo[] = [
   { name: "Aimed Shot", multBase: 43.86, multType: 7 },
-  { name: "Fully-charged Aimed Shot", multBase: 124, multType: 2 },
+  { name: "Fully-charged Aimed Shot", subAttPatt: "FCA", multBase: 124, multType: 2 },
 ];
 
 export const LIGHT_PAs: StatInfo[] = [

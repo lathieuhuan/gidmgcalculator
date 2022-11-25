@@ -33,7 +33,7 @@ const goldSwords: DataWeapon[] = [
           },
         ],
         applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * (inputs?.[0] || 0);
+          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
@@ -49,7 +49,7 @@ const goldSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = applyPercent(inputs?.[0] || 0, 0.15 + refi * 0.05);
+          const buffValue = applyPercent(inputs[0] || 0, 0.15 + refi * 0.05);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
@@ -100,7 +100,7 @@ const goldSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (15 + refi * 5) * (inputs?.[0] || 0);
+          const buffValue = (15 + refi * 5) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
@@ -147,7 +147,7 @@ const goldSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const valueIndex = (inputs?.[0] || 0) - 1;
+          const valueIndex = (inputs[0] || 0) - 1;
           const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
