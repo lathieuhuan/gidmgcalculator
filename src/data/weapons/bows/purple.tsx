@@ -350,7 +350,8 @@ const purpleBows: DataWeapon[] = [
     subStat: { type: "atk_", scale: "9%" },
     applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
       if (attPattBonus) {
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], [30 + refi * 10, -10], tracker);
+        applyModifier(desc, attPattBonus, "NA.pct", 30 + refi * 10, tracker);
+        applyModifier("Rust passive penalty", attPattBonus, "CA.pct", -10, tracker);
       }
     },
     passiveName: "Rapid Firing",

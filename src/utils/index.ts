@@ -33,7 +33,8 @@ export const percentSign = (stat: string) => {
   if (
     ARTIFACT_PERCENT_STAT_TYPES.includes(stat as any) ||
     OTHER_PERCENT_STAT_TYPES.includes(stat as any) ||
-    ATTACK_ELEMENTS.includes(stat as any)
+    ATTACK_ELEMENTS.includes(stat as any) ||
+    ["pct", "mult", "defIgnore"].includes(stat)
   ) {
     return "%";
   }

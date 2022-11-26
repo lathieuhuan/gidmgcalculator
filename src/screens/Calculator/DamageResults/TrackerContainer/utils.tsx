@@ -16,7 +16,7 @@ export function renderRecord(
   return ({ desc, value }: TrackerRecord, index: number) =>
     value ? (
       <p key={index} className="text-lesser">
-        • {desc[0].toUpperCase()}
+        • {desc?.[0].toUpperCase()}
         {desc.slice(1)}: {extraDesc ? `${extraDesc(value)} ` : ""}
         <Green>{calcFn ? calcFn(value) : value}</Green>
       </p>

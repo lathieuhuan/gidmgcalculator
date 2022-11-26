@@ -168,12 +168,12 @@ export function applyWpPassiveBuffs({
   refi,
   modifierArgs,
 }: ApplyWpPassiveBuffsArgs) {
-  const { applyBuff, applyFinalBuff } = weaponData;
+  const { name, applyBuff, applyFinalBuff } = weaponData;
   const applyFn =
     !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
   if (applyFn) {
-    applyFn({ ...modifierArgs, refi });
+    applyFn({ desc: `${name} passive bonus`, ...modifierArgs, refi });
   }
 }
 

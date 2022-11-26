@@ -256,7 +256,7 @@ function TeammateDetail({
               className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
               onClick={onClickWeapon}
             >
-              <img src={getImgSrc(weaponData.icon)} alt="" />
+              <img src={getImgSrc(weaponData.icon)} alt="weapon" draggable={false} />
             </button>
 
             <div className="overflow-hidden">
@@ -288,7 +288,12 @@ function TeammateDetail({
         <div className="mt-2 flex space-x-2">
           <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
             {artifactSetIcon ? (
-              <img className="bg-darkblue-2 rounded" src={getImgSrc(artifactSetIcon)} alt="" />
+              <img
+                className="bg-darkblue-2 rounded"
+                src={getImgSrc(artifactSetIcon)}
+                alt="artifact"
+                draggable={false}
+              />
             ) : (
               <img
                 className="p-1"

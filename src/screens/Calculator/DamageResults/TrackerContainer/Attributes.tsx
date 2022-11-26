@@ -19,20 +19,20 @@ export function Attributes({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {
   const calcTotalAttr = useSelector(selectTotalAttr);
 
   return (
-    <div className="pl-2 pr-4 columns-1 md2:columns-2 space-y-2">
+    <div className="pl-2 pr-4 columns-1 md2:columns-2 space-y-1">
       {CORE_STAT_TYPES.map((statType) => {
         const percent = percentSign(statType);
-        const record = totalAttr?.[statType] || [];
-        const record_ = totalAttr?.[`${statType}_`] || [];
+        const records = totalAttr?.[statType] || [];
+        const records_ = totalAttr?.[`${statType}_`] || [];
 
         return (
           <div key={statType} className="break-inside-avoid">
             {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
 
             <div className="pl-2">
-              {record.map(renderRecord((value) => round1(value) + percent))}
+              {records.map(renderRecord((value) => round1(value) + percent))}
 
-              {record_.map(
+              {records_.map(
                 renderRecord(
                   (value) => applyPercent(value, calcTotalAttr[`base_${statType}`]) + percent,
                   (value) => `${value}% = ${calcTotalAttr[`base_${statType}`]} * ${value / 100} =`
