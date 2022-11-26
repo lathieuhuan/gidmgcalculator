@@ -8,7 +8,7 @@ import { charModIsInUse } from "@Data/characters/utils";
 import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
 import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
-import { applyModifier, getDefaultStatInfo, pushOrMergeTrackerRecord } from "./utils";
+import { applyModifier, getDefaultStatInfo, addTrackerRecord } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
@@ -163,7 +163,7 @@ export default function getDamage({
   // APPLY CUSTOM DEBUFFS
   for (const { type, value } of customDebuffCtrls) {
     resistReduct[type] += value;
-    // pushOrMergeTrackerRecord(tracker, type, "Custom Debuff", value);
+    // addTrackerRecord(tracker, type, "Custom Debuff", value);
   }
 
   // APPLY SELF DEBUFFS

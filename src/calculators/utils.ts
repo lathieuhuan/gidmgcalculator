@@ -70,7 +70,11 @@ export function initTracker() {
   return tracker;
 }
 
-export function pushOrMergeTrackerRecord(list: TrackerRecord[], desc: string, value: number) {
+export function addTrackerRecord(list: TrackerRecord[] | undefined, desc: string, value: number) {
+  if (!list) {
+    return;
+  }
+
   const existed = list.find((note: any) => note.desc === desc);
   if (existed) {
     existed.value += value;

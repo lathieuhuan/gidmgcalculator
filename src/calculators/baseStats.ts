@@ -9,6 +9,7 @@ import type {
   DataWeapon,
   Level,
   TotalAttribute,
+  CoreStat,
 } from "@Src/types";
 import type { Tracker, BaseModifierArgsWrapper } from "./types";
 
@@ -17,7 +18,7 @@ import { applyPercent, ascsFromLv, toMult } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
-import { addOrInit, pushOrMergeTrackerRecord } from "./utils";
+import { addOrInit, addTrackerRecord, applyModifier } from "./utils";
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;
@@ -27,22 +28,25 @@ interface InitiateTotalAttrArgs {
 }
 export function initiateTotalAttr({ char, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
   const charData = findCharacter(char)!;
-  const [base_hp, base_atk, base_def] = charData.stats[LEVELS.indexOf(char.level)];
-
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
     totalAttr[type] = 0;
   }
+
+  // Character inner stats
+  const [base_hp, base_atk, base_def] = charData.stats[LEVELS.indexOf(char.level)];
+
   const innerStats = {
     base_hp,
     base_atk,
     base_def,
   } as TotalAttribute;
 
-  const scale = [0, 1, 2, 2, 3, 4][Math.max(ascsFromLv(char.level) - 1, 0)];
-  innerStats[charData.bonusStat.type] = charData.bonusStat.value * scale;
+  const scaleIndex = Math.max(ascsFromLv(char.level) - 1, 0);
+  const bonusScale = [0, 1, 2, 2, 3, 4][scaleIndex];
 
+  addOrInit(innerStats, charData.bonusStat.type, charData.bonusStat.value * bonusScale);
   addOrInit(innerStats, "cRate", 5);
   addOrInit(innerStats, "cDmg", 50);
   addOrInit(innerStats, "er", 100);
@@ -54,22 +58,25 @@ export function initiateTotalAttr({ char, weapon, weaponData, tracker }: Initiat
     innerStats.cRate -= 100;
     innerStats.healBn = 25;
   }
+  const baseConvertMap: Record<string, CoreStat> = {
+    base_atk: "atk",
+    base_hp: "hp",
+    base_def: "def",
+  };
 
   for (const type in innerStats) {
     const key = type as keyof typeof innerStats;
     totalAttr[key] += innerStats[key];
 
-    // if (tracker) {
-    //   const field = type.slice(0, 4) === "base" ? type.slice(5) : type;
-    //   tracker[field].push({ desc: "Character Base stat", value: innerStats[key] });
-    // }
+    const trackerField = baseConvertMap[key] || key;
+    addTrackerRecord(tracker?.totalAttr[trackerField], "Character Base stat", innerStats[key]);
   }
+
+  // Weapon main stat
   const weaponAtk = wpMainStatAtLv(weaponData.mainStatScale, weapon.level);
   totalAttr.base_atk += weaponAtk;
+  addTrackerRecord(tracker?.totalAttr.atk, "Weapon Main stat", weaponAtk);
 
-  // if (tracker) {
-  //   tracker.atk.push({ desc: "Weapon Main stat", value: weaponAtk });
-  // }
   return totalAttr;
 }
 
@@ -88,13 +95,11 @@ export function addArtAttr({ pieces, totalAttr, tracker }: AddArtAttrArgs): Arti
     const mainStat = artifactMainStatValue(artPiece);
 
     addOrInit(artAttr, mainStatType, mainStat);
+    addTrackerRecord(tracker?.totalAttr[mainStatType], type, mainStat);
 
-    // if (tracker) {
-    //   tracker[mainStatType].push({ desc: type, value: mainStat });
-    // }
     for (const subStat of subStats) {
       addOrInit(artAttr, subStat.type, subStat.value);
-      // pushOrMergeTrackerRecord(tracker, subStat.type, "Artifact Sub-stat", subStat.value);
+      addTrackerRecord(tracker?.totalAttr[subStat.type], "Artifact Sub-stat", subStat.value);
     }
   }
   for (const statType of CORE_STAT_TYPES) {
@@ -111,26 +116,23 @@ export function addArtAttr({ pieces, totalAttr, tracker }: AddArtAttrArgs): Arti
   return artAttr;
 }
 
-interface AddWpSubStatArgs {
+interface addWeaponSubStatArgs {
   totalAttr: TotalAttribute;
   weaponData: DataWeapon;
   wpLevel: Level;
   tracker?: Tracker;
 }
-export function addWpSubStat({ totalAttr, weaponData, wpLevel, tracker }: AddWpSubStatArgs) {
+export function addWeaponSubStat({
+  totalAttr,
+  weaponData,
+  wpLevel,
+  tracker,
+}: addWeaponSubStatArgs) {
   if (weaponData.subStat) {
     const { type, scale } = weaponData.subStat;
     const value = wpSubStatAtLv(scale, wpLevel);
-    totalAttr[type] += value;
 
-    // if (tracker) {
-    //   const record = { desc: `${weaponData.name} Sub-stat`, value };
-    //   if (type === "phys") {
-    //     tracker[type].pct.push(record);
-    //   } else {
-    //     tracker[type].push(record);
-    //   }
-    // }
+    applyModifier(`${weaponData.name} Sub-stat`, totalAttr, type, value, tracker);
   }
 }
 
@@ -198,7 +200,7 @@ export default function getBaseStats({
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weaponData, weapon });
   const artAttr = addArtAttr({ pieces, totalAttr });
-  addWpSubStat({ totalAttr, weaponData, wpLevel: weapon.level });
+  addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level });
 
   const modifierArgs = { totalAttr, charData };
   applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });

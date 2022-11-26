@@ -37,8 +37,8 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
       {item.vision && (
         <div
           className={cn(
-            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-[0_0_2px_white]",
-            { "flex rounded-2xl pl-1.5": item.cons !== undefined }
+            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow",
+            item.cons !== undefined && "flex rounded-2xl pl-1.5"
           )}
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}

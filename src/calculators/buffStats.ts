@@ -24,7 +24,7 @@ import { findByIndex, toMult } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
   addArtAttr,
-  addWpSubStat,
+  addWeaponSubStat,
   applyArtPassiveBuffs,
   applyWpPassiveBuffs,
   calcFinalTotalAttrs,
@@ -36,7 +36,7 @@ import {
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
   meltMult,
-  pushOrMergeTrackerRecord,
+  addTrackerRecord,
   vaporizeMult,
 } from "./utils";
 import { RESONANCE_STAT } from "./constants";
@@ -159,25 +159,34 @@ export default function getBuffedStats({
   };
   const { refi } = weapon;
 
-  addWpSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
+  addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
   applyWpPassiveBuffs({ isFinal: false, weaponData, refi, modifierArgs });
   applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
 
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {
-    if (category === 2) {
-      const key = type as AttackPatternBonusKey;
-      attPattBonus[key].pct += value;
-      // pushOrMergeTrackerRecord(tracker?.[key], "pct", "Custom Buff", value);
-    } else {
-      if (category < 2) {
+    switch (category) {
+      case 1: {
         const key = type as AttributeStat;
+
         totalAttr[key] += value;
-      } else {
-        const key = type as Reaction;
-        rxnBonus[key] += value;
+        addTrackerRecord(tracker?.totalAttr[key], "Custom Buff", value);
+        break;
       }
-      // pushOrMergeTrackerRecord(tracker, type as string, "Custom Buff", value);
+      case 2: {
+        const key = type as AttackPatternBonusKey;
+
+        attPattBonus[key].pct += value;
+        addTrackerRecord(tracker?.attPattBonus[`${key}.pct`], "Custom Buff", value);
+        break;
+      }
+      case 3: {
+        const key = type as Reaction;
+
+        rxnBonus[key] += value;
+        addTrackerRecord(tracker?.rxnBonus[key], "Custom Buff", value);
+        break;
+      }
     }
   }
 
