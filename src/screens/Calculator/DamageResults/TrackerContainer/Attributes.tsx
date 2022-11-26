@@ -1,36 +1,60 @@
-import { Tracker } from "@Calculators/types";
+import type { Tracker } from "@Calculators/types";
 import { useTranslation } from "@Hooks/useTranslation";
-import { CORE_STAT_TYPES } from "@Src/constants";
-import { Green } from "@Src/styled-components";
-import { percentSign, round1 } from "@Src/utils";
-import { getTotalRecord, renderHeading } from "./utils";
+import { useSelector } from "@Store/hooks";
+import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { ATTACK_ELEMENTS, CORE_STAT_TYPES, OTHER_PERCENT_STAT_TYPES } from "@Src/constants";
+import { applyPercent, percentSign, round1 } from "@Src/utils";
+import { renderHeading, renderRecord } from "./utils";
 
-interface IAttributesProps extends Partial<Pick<Tracker, "totalAttr">> {
-  //
-}
-export function Attributes({ totalAttr }: IAttributesProps) {
+const OTHER_STATS = [
+  "em",
+  "cRate",
+  "cDmg",
+  ...ATTACK_ELEMENTS,
+  ...OTHER_PERCENT_STAT_TYPES,
+] as const;
+
+export function Attributes({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {
   const { t } = useTranslation();
-  console.log(totalAttr);
+  const calcTotalAttr = useSelector(selectTotalAttr);
 
   return (
-    <div className="columns-1 space-y-2 break-inside-avoid-column break-before-avoid-page">
+    <div className="pl-2 pr-4 columns-1 md2:columns-2 space-y-2">
       {CORE_STAT_TYPES.map((statType) => {
-        const stat = totalAttr?.[statType] || [];
+        const percent = percentSign(statType);
+        const record = totalAttr?.[statType] || [];
+        const record_ = totalAttr?.[`${statType}_`] || [];
+
+        return (
+          <div key={statType} className="break-inside-avoid">
+            {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
+
+            <div className="pl-2">
+              {record.map(renderRecord((value) => round1(value) + percent))}
+
+              {record_.map(
+                renderRecord(
+                  (value) => applyPercent(value, calcTotalAttr[`base_${statType}`]) + percent,
+                  (value) => `${value}% = ${calcTotalAttr[`base_${statType}`]} * ${value / 100} =`
+                )
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      {OTHER_STATS.map((statType) => {
         const percent = percentSign(statType);
 
         return (
-          <div key={statType}>
-            {renderHeading(t(statType))}{" "}
-            <div className="pl-2">
-              {stat.map(({ desc, value }, i) =>
-                value ? (
-                  <p key={i} className="text-lesser">
-                    • {desc}: <Green>{round1(value) + percent}</Green>
-                  </p>
-                ) : null
-              )}
-              {/* <ExtraPct type={type} tracker={tracker} ATTRs={ATTRs} /> */}
-            </div>
+          <div key={statType} className="break-inside-avoid">
+            {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
+
+            {totalAttr?.[statType].length ? (
+              <div className="pl-2">
+                {totalAttr?.[statType].map(renderRecord((value) => round1(value) + percent))}
+              </div>
+            ) : null}
           </div>
         );
       })}

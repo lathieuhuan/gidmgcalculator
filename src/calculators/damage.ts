@@ -210,7 +210,7 @@ export default function getDamage({
       const { name, debuffs = [] } = findArtifactSet({ code }) || {};
       if (name) {
         debuffs[index]?.applyDebuff({
-          desc: `${name} / 4-Piece activated`,
+          desc: `${name} / 4-piece activated`,
           inputs,
           ...modifierArgs,
         });
@@ -221,7 +221,7 @@ export default function getDamage({
   // APPLY RESONANCE DEBUFFS
   const geoRsn = resonances.find((rsn) => rsn.vision === "geo");
   if (geoRsn && geoRsn.activated) {
-    applyModifier("Geo Resonance", resistReduct, "geo", 20, tracker);
+    applyModifier("Geo resonance", resistReduct, "geo", 20, tracker);
   }
   if (superconduct) {
     applyModifier("Superconduct", resistReduct, "phys", 40, tracker);

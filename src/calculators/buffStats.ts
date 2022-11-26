@@ -170,21 +170,21 @@ export default function getBuffedStats({
         const key = type as AttributeStat;
 
         totalAttr[key] += value;
-        addTrackerRecord(tracker?.totalAttr[key], "Custom Buff", value);
+        addTrackerRecord(tracker?.totalAttr[key], "Custom buff", value);
         break;
       }
       case 2: {
         const key = type as AttackPatternBonusKey;
 
         attPattBonus[key].pct += value;
-        addTrackerRecord(tracker?.attPattBonus[`${key}.pct`], "Custom Buff", value);
+        addTrackerRecord(tracker?.attPattBonus[`${key}.pct`], "Custom buff", value);
         break;
       }
       case 3: {
         const key = type as Reaction;
 
         rxnBonus[key] += value;
-        addTrackerRecord(tracker?.rxnBonus[key], "Custom Buff", value);
+        addTrackerRecord(tracker?.rxnBonus[key], "Custom buff", value);
         break;
       }
     }
@@ -195,7 +195,7 @@ export default function getBuffedStats({
     if (activated) {
       const { key, value } = RESONANCE_STAT[vision];
       let xtraValue = 0;
-      const desc = `${vision} Resonance`;
+      const desc = `${vision} resonance`;
 
       if (vision === "dendro" && inputs) {
         if (inputs[0]) xtraValue += 30;
@@ -312,7 +312,7 @@ export default function getBuffedStats({
 
       if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
         applyBuff({
-          desc: `${name} (self) / 4-Piece activated`,
+          desc: `${name} (self) / 4-piece activated`,
           inputs,
           ...modifierArgs,
         });
@@ -357,7 +357,7 @@ export default function getBuffedStats({
 
     if (ctrl.activated && applyFinalBuff) {
       applyFinalBuff({
-        desc: `${name} (self) / 4-Piece activated`,
+        desc: `${name} (self) / 4-piece activated`,
         ...modifierArgs,
       });
     }

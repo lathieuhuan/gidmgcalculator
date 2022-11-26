@@ -28,14 +28,13 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
     if (trackerState === "OPEN") {
       const tracker = initTracker();
 
-      const {} = calculateAll({ ...activeSetup, target }, charData, tracker);
-
+      calculateAll({ ...activeSetup, target }, charData, tracker);
       setResult(tracker);
     }
   }, [trackerState]);
 
   return (
-    <div>
+    <div className="mt-2 grow custom-scrollbar">
       <CollapseList
         headingList={["Attributes"]}
         contentList={[<Attributes totalAttr={result?.totalAttr} />]}

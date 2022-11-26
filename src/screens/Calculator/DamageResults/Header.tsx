@@ -81,7 +81,7 @@ export function Header({ activeSetupName }: IHeaderProps) {
         withDefaultStyle
         onClose={() => setTrackerState("CLOSE")}
       >
-        <div className="p-4 relative">
+        <div className="p-4 h-full relative flex flex-col">
           <div className="absolute top-1 right-1 flex space-x-2 text-xl">
             <button
               className="w-8 h-8 flex-center hover:text-lightgold"
