@@ -1,4 +1,5 @@
 import { Tracker } from "@Calculators/types";
+import { getRxnBonusesFromEM } from "@Calculators/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 import {
   ATTACK_ELEMENTS,
@@ -9,9 +10,7 @@ import {
 } from "@Src/constants";
 import { AttacklementInfoKey, AttackPatternInfoKey } from "@Src/types";
 import { round1, percentSign } from "@Src/utils";
-import { selectRxnBonus } from "@Store/calculatorSlice/selectors";
-import { useSelector } from "@Store/hooks";
-import { renderHeading, renderRecord } from "./utils";
+import { getTotalRecordValue, renderHeading, renderRecord } from "./utils";
 
 const infoKeyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
   pct: "Percent",
@@ -23,13 +22,13 @@ const infoKeyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
   specialMult: "Special Multiplier",
 };
 
-export function Bonuses({
-  attPattBonus,
-  attElmtBonus,
-  rxnBonus,
-}: Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">>) {
+interface BonusesProps
+  extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
+  em?: number;
+}
+
+export function Bonuses({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesProps) {
   const { t } = useTranslation();
-  const calcRxnBonus = useSelector(selectRxnBonus);
 
   const hasAttPattBonus =
     attPattBonus && Object.values(attPattBonus).some((records) => records.length);
@@ -37,7 +36,7 @@ export function Bonuses({
     attElmtBonus && Object.values(attElmtBonus).some((records) => records.length);
   const hasRxnBonus = rxnBonus && Object.values(rxnBonus).some((records) => records.length);
 
-  if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus) {
+  if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus && !em) {
     return (
       <div className="h-16 flex-center text-rarity-1">
         <p className="text-xl">No bonuses</p>
@@ -46,6 +45,7 @@ export function Bonuses({
   }
 
   const ATTACK_PATTERN_BONUS__KEYS = ["all", ...ATTACK_PATTERNS] as const;
+  const bonusesFromEM = getRxnBonusesFromEM(em);
 
   return (
     <div className="pl-2 pr-4 flex flex-col space-y-3 divide-y divide-rarity-1">
@@ -68,11 +68,7 @@ export function Bonuses({
 
                   return records.length ? (
                     <div key={infoKey} className="pl-2">
-                      {renderHeading(
-                        infoKeyMap[infoKey],
-                        records.reduce((accumulator, record) => accumulator + record.value, 0) +
-                          percent
-                      )}
+                      {renderHeading(infoKeyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
                         {records.map(renderRecord((value) => round1(value) + percent))}
@@ -107,11 +103,7 @@ export function Bonuses({
 
                   return records.length ? (
                     <div key={infoKey} className="mt-1 pl-2">
-                      {renderHeading(
-                        infoKeyMap[infoKey],
-                        records.reduce((accumulator, record) => accumulator + record.value, 0) +
-                          percent
-                      )}
+                      {renderHeading(infoKeyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
                         {records.map(renderRecord((value) => round1(value) + percent))}
@@ -125,7 +117,7 @@ export function Bonuses({
         </div>
       ) : null}
 
-      {hasRxnBonus ? (
+      {hasRxnBonus || em ? (
         <div
           className={
             "columns-1 md2:columns-2 space-y-1" +
@@ -133,14 +125,30 @@ export function Bonuses({
           }
         >
           {REACTIONS.map((reaction) => {
-            const records = rxnBonus[reaction];
-            const percent = reaction === "melt" || reaction === "vaporize" ? "" : "%";
+            const records = rxnBonus?.[reaction] || [];
+            let bonusFromEM = 0;
 
-            return records.length ? (
+            if (reaction === "melt" || reaction === "vaporize") {
+              bonusFromEM = bonusesFromEM.amplifying;
+            } else if (reaction === "aggravate" || reaction === "spread") {
+              bonusFromEM = bonusesFromEM.quicken;
+            } else {
+              bonusFromEM = bonusesFromEM.transformative;
+            }
+
+            return records.length || em ? (
               <div key={reaction} className="pl-2 break-inside-avoid">
-                {renderHeading(t(reaction), calcRxnBonus[reaction] + percent)}
+                {renderHeading(t(reaction), getTotalRecordValue(records) + bonusFromEM + "%")}
 
-                {records.map(renderRecord((value) => round1(value) + percent))}
+                {renderRecord((value) => value + "%")(
+                  {
+                    desc: "Bonus from Elemental Mastery",
+                    value: bonusFromEM,
+                  },
+                  -1
+                )}
+
+                {records.map(renderRecord((value) => round1(value) + "%"))}
               </div>
             ) : null;
           })}

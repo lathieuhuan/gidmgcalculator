@@ -40,7 +40,7 @@ type ApplyWpPassiveBuffsArgs = {
   charData: CharData;
   partyData?: PartyData;
   refi: number;
-  desc?: string;
+  desc: string;
   tracker?: Tracker;
 };
 

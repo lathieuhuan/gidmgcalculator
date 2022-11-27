@@ -145,12 +145,17 @@ export function applyArtPassiveBuffs({ isFinal, sets, modifierArgs }: ApplyArtPa
   for (const { code, bonusLv } of sets) {
     //
     for (let i = 0; i <= bonusLv; i++) {
-      const { applyBuff, applyFinalBuff } = findArtifactSet({ code })!.setBonuses[i];
+      const artData = findArtifactSet({ code });
 
-      if (!isFinal && applyBuff) {
-        applyBuff(modifierArgs);
-      } else if (isFinal && applyFinalBuff) {
-        applyFinalBuff(modifierArgs);
+      if (artData) {
+        const { applyBuff, applyFinalBuff } = artData.setBonuses[i];
+        const desc = `${artData.name} / ${i * 2 + 2}-piece bonus`;
+
+        if (!isFinal && applyBuff) {
+          applyBuff({ ...modifierArgs, desc });
+        } else if (isFinal && applyFinalBuff) {
+          applyFinalBuff({ ...modifierArgs, desc });
+        }
       }
     }
   }
@@ -173,7 +178,7 @@ export function applyWpPassiveBuffs({
     !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
   if (applyFn) {
-    applyFn({ desc: `${name} passive bonus`, ...modifierArgs, refi });
+    applyFn({ desc: `${name} bonus`, ...modifierArgs, refi });
   }
 }
 

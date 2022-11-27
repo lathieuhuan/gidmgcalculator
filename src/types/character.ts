@@ -203,7 +203,7 @@ type ApplyCharDebuffFn = (args: {
   inputs: ModifierInput[];
   partyData: PartyData;
   fromSelf: boolean;
-  desc?: string;
+  desc: string;
   tracker?: Tracker;
 }) => void;
 

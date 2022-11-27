@@ -38,7 +38,7 @@ type ApplyArtPassiveBuffArgs = {
   rxnBonus?: ReactionBonus;
   charData: CharData;
   partyData?: PartyData;
-  desc?: string;
+  desc: string;
   tracker?: Tracker;
 };
 

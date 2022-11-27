@@ -166,6 +166,7 @@ export default function getBuffedStats({
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {
     switch (category) {
+      case 0:
       case 1: {
         const key = type as AttributeStat;
 

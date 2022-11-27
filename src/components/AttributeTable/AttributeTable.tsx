@@ -42,7 +42,9 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           </StatsTable.Row>
         );
       })}
+
       <EmSection em={em} />
+
       {(["cRate", "cDmg", "healBn", "er", "shStr"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
@@ -51,6 +53,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           </StatsTable.Row>
         );
       })}
+
       {ATTACK_ELEMENTS.map((type) => {
         return (
           <StatsTable.Row key={type}>
@@ -59,6 +62,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           </StatsTable.Row>
         );
       })}
+
       {(["naAtkSpd", "caAtkSpd"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
@@ -77,7 +81,6 @@ interface EmSectionProps {
 function EmSection({ em }: EmSectionProps) {
   const [dropped, setDropped] = useState(false);
   const rxnBonusFromEM = getRxnBonusesFromEM(em);
-  const quickenBonus = Math.round((5000 * em) / (em + 1200)) / 10;
 
   return (
     <div>
@@ -109,7 +112,7 @@ function EmSection({ em }: EmSectionProps) {
           </li>
           <li>
             - Increases the DMG Bonus provided by Aggravate and Spread by{" "}
-            <Green>{quickenBonus}%</Green>.
+            <Green>{rxnBonusFromEM.quicken}%</Green>.
           </li>
           <li>
             - Increases the damage absorption power of shields created through Crystallize by{" "}
