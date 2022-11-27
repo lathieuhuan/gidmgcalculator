@@ -45,7 +45,7 @@ const getBuffValue = {
     toSelf: boolean,
     char: CharInfo,
     { EBcost }: CharData,
-    inputs: ModifierInput[] | undefined,
+    inputs: ModifierInput[],
     partyData: PartyData
   ) => {
     const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;
@@ -330,10 +330,8 @@ const Raiden: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "atk_", 30),
     },
-  ],
-  debuffs: [
     {
-      index: 0,
+      index: 5,
       src: EModSrc.C2,
       desc: () => (
         <>
@@ -343,7 +341,7 @@ const Raiden: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.SELF,
-      applyDebuff: ({ attPattBonus, desc, tracker }) => {
+      applyBuff: ({ attPattBonus, desc, tracker }) => {
         const fields = ATTACK_PATTERNS.map((t) => `${t}.defIgnore`) as AttackPatternPath[];
         applyModifier(desc, attPattBonus, fields, 60, tracker);
       },

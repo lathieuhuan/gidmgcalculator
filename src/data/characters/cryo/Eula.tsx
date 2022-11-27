@@ -20,7 +20,7 @@ const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
 const getESDebuffValue = (
   fromSelf: boolean,
   char: CharInfo,
-  inputs: ModifierInput[] | undefined,
+  inputs: ModifierInput[],
   partyData: PartyData
 ) => {
   const level = fromSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;

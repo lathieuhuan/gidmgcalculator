@@ -24,7 +24,7 @@ interface InputConfig {
 }
 export function renderSetters(
   inputConfig: InputConfig | undefined,
-  inputs: ModifierInput[] | undefined,
+  inputs: ModifierInput[],
   useSelfLabels?: boolean
 ) {
   if (!inputConfig || !inputs) {

@@ -52,7 +52,7 @@ export function Header({ activeSetupName }: IHeaderProps) {
 
         <div
           className={
-            "absolute right-0 mt-1 rounded bg-default text-black hide-scrollbar" +
+            "absolute right-0 z-10 mt-1 rounded bg-default text-black hide-scrollbar" +
             (menuDropped ? "" : " max-h-0")
           }
         >

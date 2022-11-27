@@ -10,7 +10,7 @@ import { NCPA_PERCENTS } from "@Data/constants";
 const getEBDebuffValue = (
   fromSelf: boolean,
   char: CharInfo,
-  inputs: ModifierInput[] | undefined,
+  inputs: ModifierInput[],
   partyData: PartyData
 ) => {
   const level = fromSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 0;

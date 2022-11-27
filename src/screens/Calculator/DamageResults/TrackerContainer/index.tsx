@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import type { TrackerState } from "../types";
+import type { AttackPattern } from "@Src/types";
 import type { Tracker } from "@Calculators/types";
+import type { TrackerState } from "../types";
 
 import { useSelector } from "@Store/hooks";
 import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 import calculateAll from "@Calculators/index";
 import { initTracker } from "@Calculators/utils";
+import { bareLv } from "@Src/utils";
 import { getTotalRecordValue } from "./utils";
 
+import { Green, Lesser } from "@Src/styled-components";
 import { CollapseList } from "@Components/collapse";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
@@ -28,7 +31,10 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
   const dmgResult = useSelector(selectDmgResult);
 
   const [result, setResult] = useState<Tracker>();
+
   const { totalAttr, attPattBonus, attElmtBonus, rxnBonus } = result || {};
+  const charLv = bareLv(activeSetup.char.level);
+  const totalDefReduct = getTotalRecordValue(result?.resistReduct.def || []);
 
   useEffect(() => {
     if (trackerState === "OPEN") {
@@ -38,7 +44,40 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
       setResult(tracker);
     }
   }, [trackerState]);
-  dmgResult.NAs;
+
+  const renderDefMultiplier = (talent: AttackPattern) => {
+    const totalDefIgnore = getTotalRecordValue(result?.attPattBonus[`${talent}.defIgnore`] || []);
+
+    return (
+      <div className="flex items-center">
+        <p className="mr-4 text-lightgold">DEF Mult.</p>
+
+        <div className="flex flex-col items-center">
+          <p>
+            <Lesser>char. Lv.</Lesser> <Green>{charLv}</Green> + 100
+          </p>
+
+          <div className="my-1 w-full h-px bg-rarity-1" />
+
+          <p className="px-2 text-center">
+            {totalDefReduct ? (
+              <>
+                (1 - <Lesser>DEF reduction</Lesser> <Green>{totalDefReduct}</Green> / 100) *
+              </>
+            ) : null}{" "}
+            {totalDefIgnore ? (
+              <>
+                (1 - <Lesser>DEF ignore</Lesser> <Green>{totalDefIgnore}</Green> / 100) *
+              </>
+            ) : null}{" "}
+            (<Lesser>target Lv.</Lesser> <Green>{target.level}</Green> + 100) +{" "}
+            <Lesser>char. Lv.</Lesser> <Green>{charLv}</Green> + 100
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="mt-2 grow custom-scrollbar cursor-default">
       <CollapseList
@@ -57,9 +96,21 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
             em={getTotalRecordValue(totalAttr?.em || [])}
           />,
           <DebuffsTracker resistReduct={result?.resistReduct} />,
-          <DamageTracker records={result?.NAs} calcDmgResult={dmgResult.NAs} />,
-          <DamageTracker records={result?.ES} calcDmgResult={dmgResult.ES} />,
-          <DamageTracker records={result?.EB} calcDmgResult={dmgResult.EB} />,
+          <DamageTracker
+            records={result?.NAs}
+            calcDmgResult={dmgResult.NAs}
+            defMultDisplay={renderDefMultiplier("NA")}
+          />,
+          <DamageTracker
+            records={result?.ES}
+            calcDmgResult={dmgResult.ES}
+            defMultDisplay={renderDefMultiplier("ES")}
+          />,
+          <DamageTracker
+            records={result?.EB}
+            calcDmgResult={dmgResult.EB}
+            defMultDisplay={renderDefMultiplier("EB")}
+          />,
         ]}
       />
     </div>

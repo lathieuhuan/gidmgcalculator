@@ -6,7 +6,7 @@ import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { checkCons } from "../utils";
 
-const getAttackBuffValue = (inputs: ModifierInput[] | undefined): [number, string] => {
+const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {
   const baseATK = inputs[0] || 0;
   const level = inputs[1] || 1;
   const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];

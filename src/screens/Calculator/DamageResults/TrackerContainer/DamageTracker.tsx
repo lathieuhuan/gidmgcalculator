@@ -1,21 +1,29 @@
-import { TrackerDamageRecord } from "@Calculators/types";
+import type { ReactNode } from "react";
+import type { TrackerDamageRecord } from "@Calculators/types";
+import type { CalculatedDamageCluster, TalentBuff } from "@Src/types";
 import { Green } from "@Src/styled-components";
-import { CalculatedDamageCluster, TalentBuff } from "@Src/types";
 import { percentSign, round2, round3 } from "@Src/utils";
-import { keyMap } from "./constants";
 import { renderDmgComponent, renderDmgValue } from "./utils";
+import { keyMap } from "./constants";
 
 interface DamageTrackerProps {
   records?: Record<string, TrackerDamageRecord>;
   calcDmgResult: CalculatedDamageCluster;
+  defMultDisplay: ReactNode;
 }
-export function DamageTracker({ records = {}, calcDmgResult }: DamageTrackerProps) {
+export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: DamageTrackerProps) {
   return (
     <div className="space-y-1">
+      {defMultDisplay}
+
       {Object.entries(records).map(([attackName, record], i) => {
         const { nonCrit = 0, crit = 0, average = 0 } = calcDmgResult[attackName] || {};
         const nonCritDmg = renderDmgValue(nonCrit);
         const cDmg = round3(record.cDmg || 0);
+
+        if (!nonCritDmg) {
+          return null;
+        }
 
         return (
           <div key={i}>

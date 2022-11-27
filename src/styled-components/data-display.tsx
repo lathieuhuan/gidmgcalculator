@@ -2,7 +2,14 @@ import { Vision } from "@Src/types";
 import cn from "classnames";
 import type { HTMLAttributes } from "react";
 
-type SpanExtraColor = "gold" | "lightgold" | "lightred" | "green" | "orange" | "rose-500";
+type SpanExtraColor =
+  | "gold"
+  | "lightgold"
+  | "lightred"
+  | "green"
+  | "orange"
+  | "lesser"
+  | "rose-500";
 
 interface SpanProps extends HTMLAttributes<HTMLSpanElement> {
   className?: string;
@@ -17,6 +24,7 @@ const makeSpan = (color: `text-${Vision | SpanExtraColor}`) => {
 export const Green = makeSpan("text-green");
 export const Red = makeSpan("text-lightred");
 export const Lightgold = makeSpan("text-lightgold");
+export const Lesser = makeSpan("text-lesser");
 export const Gold = makeSpan("text-gold");
 export const Pyro = makeSpan("text-pyro");
 export const Hydro = makeSpan("text-hydro");

@@ -114,10 +114,8 @@ const YaeMiko: DataCharacter = {
       affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "electro", 20),
     },
-  ],
-  debuffs: [
     {
-      index: 0,
+      index: 3,
       src: EModSrc.C6,
       desc: () => (
         <>
@@ -127,7 +125,7 @@ const YaeMiko: DataCharacter = {
       ),
       isGranted: checkCons[6],
       affect: EModAffect.SELF,
-      applyDebuff: makeModApplier("attPattBonus", "ES.defIgnore", 60),
+      applyBuff: makeModApplier("attPattBonus", "ES.defIgnore", 60),
     },
   ],
 };

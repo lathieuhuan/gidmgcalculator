@@ -1,9 +1,9 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
-import { Green, Red } from "@Src/styled-components";
+import { Green, Lightgold, Red } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
@@ -121,51 +121,33 @@ const Mona: DataCharacter = {
       src: EModSrc.EB,
       desc: (obj) => (
         <>
-          Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG taken</Green> by
+          Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG</Green> taken by
           opponents.
+          <br />• At <Lightgold>C1</Lightgold>, increases <Green>Electro-Charged DMG</Green>,{" "}
+          <Green>Vaporize DMG</Green>, and <Green>Hydro Swirl DMG</Green> by <Green b>15%</Green>{" "}
+          for 8s.
+          <br />• At <Lightgold>C4</Lightgold>, increases <Green>CRIT Rate</Green> by{" "}
+          <Green b>15%</Green>.
         </>
       ),
       affect: EModAffect.PARTY,
       inputConfigs: [
-        {
-          label: "Elemental Burst Level",
-          type: "text",
-          initialValue: 1,
-          max: 13,
-          for: "teammate",
-        },
+        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Constellation 1", type: "check", for: "teammate" },
+        { label: "Constellation 4", type: "check", for: "teammate" },
       ],
-      applyBuff: ({ attPattBonus, desc, tracker, ...rest }) => {
+      applyBuff: ({ totalAttr, attPattBonus, rxnBonus, desc, tracker, ...rest }) => {
+        const { toSelf, inputs, char } = rest;
+
         applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
+
+        if ((toSelf && checkCons[1](char)) || (!toSelf && inputs[1])) {
+          applyModifier(desc, rxnBonus, ["electroCharged", "swirl", "vaporize"], 15, tracker);
+        }
+        if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
+          applyModifier(desc, totalAttr, "cRate", 15, tracker);
+        }
       },
-    },
-    {
-      index: 2,
-      src: EModSrc.C1,
-      desc: () => (
-        <>
-          When any of your own party members hits an opponent affected by an Omen,{" "}
-          <Green>Electro-Charged DMG</Green>, <Green>Vaporize DMG</Green>,{" "}
-          <Green>Hydro Swirl DMG</Green>, and <Green>Frozen duration</Green> are increased by{" "}
-          <Green b>15%</Green> for 8s.
-        </>
-      ),
-      isGranted: checkCons[1],
-      affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("rxnBonus", ["electroCharged", "swirl", "vaporize"], 15),
-    },
-    {
-      index: 3,
-      src: EModSrc.C4,
-      desc: () => (
-        <>
-          When any party member attacks an opponent affected by an Omen, their{" "}
-          <Green>CRIT Rate</Green> is increased by <Green b>15%</Green>.
-        </>
-      ),
-      isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("totalAttr", "cRate", 15),
     },
     {
       index: 4,

@@ -39,7 +39,7 @@ const getEBBuffValue = (
   toSelf: boolean,
   char: CharInfo,
   partyData: PartyData,
-  inputs: ModifierInput[] | undefined
+  inputs: ModifierInput[]
 ) => {
   const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;

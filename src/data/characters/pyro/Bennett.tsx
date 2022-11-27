@@ -6,7 +6,7 @@ import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
 import { checkCons, talentBuff } from "../utils";
 
-function getEBBuffValue(inputs: ModifierInput[] | undefined): [number, string] {
+function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
   const baseATK = inputs[0] || 0;
   const level = inputs[1] || 0;
   const boosted = (inputs[2] || 0) === 1;
