@@ -97,8 +97,8 @@ export function Header({ activeSetupName }: IHeaderProps) {
             </button>
           </div>
 
-          <p className="flex-center">
-            <span className="text-2xl text-orange font-bold">Tracking Results</span>{" "}
+          <p className="flex items-center md1:justify-center">
+            <span className="md1:text-xl md2:text-2xl text-orange font-bold">Tracking Results</span>{" "}
             <span className="ml-2 text-lesser">({activeSetupName})</span>
           </p>
 

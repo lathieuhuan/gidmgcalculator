@@ -29,3 +29,32 @@ export function renderRecord(
       </p>
     ) : null;
 }
+
+interface RenderDmgComponentArgs {
+  desc: string;
+  value: number;
+  sign?: string;
+  nullValue?: number;
+  processor?: (value: number) => string | number;
+}
+export function renderDmgComponent({
+  desc,
+  value,
+  sign = "*",
+  nullValue = 0,
+  processor,
+}: RenderDmgComponentArgs) {
+  return value && value !== nullValue ? (
+    <>
+      {" "}
+      <Green>{sign}</Green> {desc} <Green>{processor ? processor(value) : value}</Green>
+    </>
+  ) : null;
+}
+
+export function renderDmgValue(
+  value: number | number[],
+  callback: (value: number) => string | number = Math.round
+) {
+  return Array.isArray(value) ? `[${value.map(callback).join(", ")}]` : callback(value);
+}

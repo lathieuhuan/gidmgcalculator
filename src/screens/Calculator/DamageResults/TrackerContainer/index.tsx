@@ -3,7 +3,7 @@ import type { TrackerState } from "../types";
 import type { Tracker } from "@Calculators/types";
 
 import { useSelector } from "@Store/hooks";
-import { selectCharData, selectTarget } from "@Store/calculatorSlice/selectors";
+import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 import calculateAll from "@Calculators/index";
 import { initTracker } from "@Calculators/utils";
@@ -13,6 +13,7 @@ import { CollapseList } from "@Components/collapse";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";
+import { DamageTracker } from "./DamageTracker";
 
 interface ITrackerContainerProps {
   trackerState: TrackerState;
@@ -24,9 +25,10 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
   });
   const charData = useSelector(selectCharData);
   const target = useSelector(selectTarget);
+  const dmgResult = useSelector(selectDmgResult);
 
   const [result, setResult] = useState<Tracker>();
-  const { totalAttr, attPattBonus, attElmtBonus, rxnBonus, resistReduct } = result || {};
+  const { totalAttr, attPattBonus, attElmtBonus, rxnBonus } = result || {};
 
   useEffect(() => {
     if (trackerState === "OPEN") {
@@ -36,18 +38,28 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
       setResult(tracker);
     }
   }, [trackerState]);
-
+  dmgResult.NAs;
   return (
     <div className="mt-2 grow custom-scrollbar cursor-default">
       <CollapseList
-        headingList={["Attributes", "Bonuses", "Debuffs on Target"]}
+        headingList={[
+          "Attributes",
+          "Bonuses",
+          "Debuffs on Target",
+          "Normal Attacks",
+          "Elemental Skill",
+          "Elemental Burst",
+        ]}
         contentList={[
           <AttributesTracker totalAttr={totalAttr} />,
           <BonusesTracker
             {...{ attPattBonus, attElmtBonus, rxnBonus }}
             em={getTotalRecordValue(totalAttr?.em || [])}
           />,
-          <DebuffsTracker resistReduct={resistReduct} />,
+          <DebuffsTracker resistReduct={result?.resistReduct} />,
+          <DamageTracker records={result?.NAs} calcDmgResult={dmgResult.NAs} />,
+          <DamageTracker records={result?.ES} calcDmgResult={dmgResult.ES} />,
+          <DamageTracker records={result?.EB} calcDmgResult={dmgResult.EB} />,
         ]}
       />
     </div>

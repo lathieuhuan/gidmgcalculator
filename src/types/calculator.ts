@@ -208,7 +208,7 @@ type CalculatedDamage = {
   average: number | number[];
 };
 
-type CalculatedDamageCluster = {
+export type CalculatedDamageCluster = {
   [k: string]: CalculatedDamage;
 };
 

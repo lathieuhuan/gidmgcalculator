@@ -1,4 +1,4 @@
-import { Tracker } from "@Calculators/types";
+import type { Tracker } from "@Calculators/types";
 import { getRxnBonusesFromEM } from "@Calculators/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 import {
@@ -8,19 +8,9 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
-import { AttacklementInfoKey, AttackPatternInfoKey } from "@Src/types";
 import { round1, percentSign } from "@Src/utils";
+import { keyMap } from "./constants";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
-
-const infoKeyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
-  pct: "Percent",
-  flat: "Flat",
-  cDmg: "CRIT DMG",
-  cRate: "CRIT Rate",
-  defIgnore: "DEF ignore",
-  mult: "Multiplier",
-  specialMult: "Special Multiplier",
-};
 
 interface BonusesTrackerProps
   extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
@@ -39,7 +29,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
   if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus && !em) {
     return (
       <div className="h-16 flex-center text-rarity-1">
-        <p className="text-xl">No bonuses</p>
+        <p>No bonuses</p>
       </div>
     );
   }
@@ -68,7 +58,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
                   return records.length ? (
                     <div key={infoKey} className="pl-2">
-                      {renderHeading(infoKeyMap[infoKey], getTotalRecordValue(records) + percent)}
+                      {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
                         {records.map(renderRecord((value) => round1(value) + percent))}
@@ -101,7 +91,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
                   return records.length ? (
                     <div key={infoKey} className="mt-1 pl-2">
-                      {renderHeading(infoKeyMap[infoKey], getTotalRecordValue(records) + percent)}
+                      {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
                         {records.map(renderRecord((value) => round1(value) + percent))}

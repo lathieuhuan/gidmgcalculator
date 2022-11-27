@@ -47,7 +47,7 @@ export type TrackerDamageRecord = {
   cRate?: number;
   cDmg?: number;
   note?: string;
-  talentBuff?: TalentBuff;
+  talentBuff: TalentBuff;
 };
 
 export type Tracker = {
