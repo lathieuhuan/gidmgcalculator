@@ -65,7 +65,7 @@ export default function PieceInfo({
 
         <div className="ml-4">
           {type === "flower" || type === "plume" ? (
-            <p className="pl-8 pt-1 text-h6">{mainStatType}</p>
+            <p className="pl-8 pt-1 text-h6">{t(mainStatType)}</p>
           ) : (
             <div className="py-1 relative">
               <FaChevronDown className="absolute top-2 left-1 scale-110" />

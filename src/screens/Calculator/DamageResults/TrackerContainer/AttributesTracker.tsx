@@ -4,7 +4,7 @@ import { useSelector } from "@Store/hooks";
 import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES, OTHER_PERCENT_STAT_TYPES } from "@Src/constants";
 import { applyPercent, percentSign, round1 } from "@Src/utils";
-import { renderHeading, renderRecord } from "./utils";
+import { recordListStyles, renderHeading, renderRecord } from "./utils";
 
 const OTHER_STATS = [
   "em",
@@ -14,12 +14,12 @@ const OTHER_STATS = [
   ...OTHER_PERCENT_STAT_TYPES,
 ] as const;
 
-export function Attributes({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {
+export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {
   const { t } = useTranslation();
   const calcTotalAttr = useSelector(selectTotalAttr);
 
   return (
-    <div className="pl-2 pr-4 columns-1 md2:columns-2 space-y-1">
+    <div className={"pl-2 pr-4 " + recordListStyles}>
       {CORE_STAT_TYPES.map((statType) => {
         const percent = percentSign(statType);
         const records = totalAttr?.[statType] || [];

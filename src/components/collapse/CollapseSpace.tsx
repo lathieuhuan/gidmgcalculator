@@ -10,6 +10,7 @@ interface CollapseSpaceProps {
 export function CollapseSpace({ active, className, children }: CollapseSpaceProps) {
   const [ref, height] = useHeight();
   const duration = Math.max(Math.min(Math.round(height) / 2, 300), 150);
+
   return (
     <div
       className={cn("hide-scrollbar", className)}

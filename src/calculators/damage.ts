@@ -194,7 +194,7 @@ export default function getDamage({
 
         if (activated && debuff?.applyDebuff) {
           debuff.applyDebuff({
-            desc: `${teammate} / ${debuff.src}`,
+            desc: `${teammate.name} / ${debuff.src}`,
             fromSelf: false,
             inputs,
             ...modifierArgs,

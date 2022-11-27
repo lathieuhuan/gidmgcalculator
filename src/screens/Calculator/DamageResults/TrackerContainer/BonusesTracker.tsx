@@ -10,7 +10,7 @@ import {
 } from "@Src/constants";
 import { AttacklementInfoKey, AttackPatternInfoKey } from "@Src/types";
 import { round1, percentSign } from "@Src/utils";
-import { getTotalRecordValue, renderHeading, renderRecord } from "./utils";
+import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 const infoKeyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
   pct: "Percent",
@@ -22,12 +22,12 @@ const infoKeyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
   specialMult: "Special Multiplier",
 };
 
-interface BonusesProps
+interface BonusesTrackerProps
   extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
   em?: number;
 }
 
-export function Bonuses({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesProps) {
+export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesTrackerProps) {
   const { t } = useTranslation();
 
   const hasAttPattBonus =
@@ -48,9 +48,9 @@ export function Bonuses({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesPro
   const bonusesFromEM = getRxnBonusesFromEM(em);
 
   return (
-    <div className="pl-2 pr-4 flex flex-col space-y-3 divide-y divide-rarity-1">
+    <div className="pl-2 space-y-3 divide-y divide-rarity-1">
       {hasAttPattBonus ? (
-        <div className="pl-2 columns-1 md2:columns-2 space-y-1">
+        <div className={"pl-2 " + recordListStyles}>
           {ATTACK_PATTERN_BONUS__KEYS.map((attPatt) => {
             const noRecord = ATTACK_PATTERN_INFO_KEYS.every((infoKey) => {
               return attPattBonus[`${attPatt}.${infoKey}`].length === 0;
@@ -83,9 +83,7 @@ export function Bonuses({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesPro
       ) : null}
 
       {hasAttElmtBonus ? (
-        <div
-          className={"pl-2 columns-1 md2:columns-2 space-y-1" + (hasAttPattBonus ? " pt-3" : "")}
-        >
+        <div className={"pl-2 " + recordListStyles + (hasAttPattBonus ? " pt-3" : "")}>
           {ATTACK_ELEMENTS.map((attElmt) => {
             const noRecord = ATTACK_ELEMENT_INFO_KEYS.every((infoKey) => {
               return attElmtBonus[`${attElmt}.${infoKey}`].length === 0;
@@ -118,12 +116,7 @@ export function Bonuses({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesPro
       ) : null}
 
       {hasRxnBonus || em ? (
-        <div
-          className={
-            "columns-1 md2:columns-2 space-y-1" +
-            (hasAttPattBonus || hasAttElmtBonus ? " pt-3" : "")
-          }
-        >
+        <div className={recordListStyles + (hasAttPattBonus || hasAttElmtBonus ? " pt-3" : "")}>
           {REACTIONS.map((reaction) => {
             const records = rxnBonus?.[reaction] || [];
             let bonusFromEM = 0;

@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import type { TrackerState } from "../types";
+import type { Tracker } from "@Calculators/types";
 
 import { useSelector } from "@Store/hooks";
 import { selectCharData, selectTarget } from "@Store/calculatorSlice/selectors";
 
 import calculateAll from "@Calculators/index";
-import { Tracker } from "@Calculators/types";
 import { initTracker } from "@Calculators/utils";
+import { getTotalRecordValue } from "./utils";
 
 import { CollapseList } from "@Components/collapse";
-import { Attributes } from "./Attributes";
-import { Bonuses } from "./Bonuses";
-import { getTotalRecordValue } from "./utils";
+import { AttributesTracker } from "./AttributesTracker";
+import { BonusesTracker } from "./BonusesTracker";
+import { DebuffsTracker } from "./DebuffsTracker";
 
 interface ITrackerContainerProps {
   trackerState: TrackerState;
@@ -25,7 +26,7 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
   const target = useSelector(selectTarget);
 
   const [result, setResult] = useState<Tracker>();
-  const { totalAttr, attPattBonus, attElmtBonus, rxnBonus } = result || {};
+  const { totalAttr, attPattBonus, attElmtBonus, rxnBonus, resistReduct } = result || {};
 
   useEffect(() => {
     if (trackerState === "OPEN") {
@@ -39,13 +40,14 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
   return (
     <div className="mt-2 grow custom-scrollbar cursor-default">
       <CollapseList
-        headingList={["Attributes", "Bonuses"]}
+        headingList={["Attributes", "Bonuses", "Debuffs on Target"]}
         contentList={[
-          <Attributes totalAttr={totalAttr} />,
-          <Bonuses
+          <AttributesTracker totalAttr={totalAttr} />,
+          <BonusesTracker
             {...{ attPattBonus, attElmtBonus, rxnBonus }}
             em={getTotalRecordValue(totalAttr?.em || [])}
           />,
+          <DebuffsTracker resistReduct={resistReduct} />,
         ]}
       />
     </div>

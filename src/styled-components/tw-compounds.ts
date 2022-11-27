@@ -3,7 +3,7 @@ export const tooltipStyles = "py-2 px-4 absolute z-10 rounded bg-black/90";
 export const tableStyles = {
   table: "min-w-full border-collapse",
   th: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default",
-  td: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default text-right first:text-left first:font-bold",
+  td: "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default text-right first:text-left first:font-semibold",
   row: "odd:bg-darkblue-1 even:bg-darkblue-2 hover:bg-darkerred first:hover:bg-darkblue-1",
 };
 
