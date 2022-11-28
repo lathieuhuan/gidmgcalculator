@@ -26,9 +26,13 @@ export default function calculateAll(
   tracker?: Tracker
 ) {
   const dataChar = findCharacter(char)!;
+  const partyData = getPartyData(party);
+  let infusedElement = customInfusion.element;
+  let isCustomInfusion = true;
+  let disabledNAs = false;
+
   /** false = overwritable infusion. true = unoverwritable. undefined = no infusion */
   let selfInfused: boolean | undefined = undefined;
-  let disabledNAs = false;
 
   if (dataChar.buffs) {
     for (const { activated, index } of selfBuffCtrls) {
@@ -47,13 +51,12 @@ export default function calculateAll(
     }
   }
 
-  const infusedElement =
-    customInfusion.element !== "phys"
-      ? customInfusion.element
-      : selfInfused !== undefined
-      ? dataChar.vision
-      : "phys";
-  const partyData = getPartyData(party);
+  if (infusedElement === "phys" && selfInfused !== undefined) {
+    infusedElement = dataChar.vision;
+    isCustomInfusion = false;
+  } else if (infusedElement === dataChar.vision) {
+    isCustomInfusion = false;
+  }
 
   const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
     char,
@@ -87,7 +90,10 @@ export default function calculateAll(
     attElmtBonus,
     rxnBonus,
     customDebuffCtrls,
-    infusedElement,
+    infusion: {
+      element: infusedElement,
+      isCustom: isCustomInfusion,
+    },
     elmtModCtrls,
     target,
     tracker,

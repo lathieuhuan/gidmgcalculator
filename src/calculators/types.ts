@@ -125,7 +125,10 @@ export interface GetDamageArgs {
   attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   customDebuffCtrls: CustomDebuffCtrl[];
-  infusedElement: AttackElement;
+  infusion: {
+    element: AttackElement;
+    isCustom: boolean;
+  };
   elmtModCtrls: ElementModCtrl;
   target: Target;
   tracker?: Tracker;

@@ -114,7 +114,7 @@ const Diluc: DataCharacter = {
       },
       desc: () => (
         <>
-          The searing flames that run down his blade cause it to be <Pyro>Pyro-infused</Pyro>.
+          The searing flames that run down his blade cause it to be <Pyro>Pyro</Pyro> infused.
           <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green>{" "}
           <Green>Pyro DMG Bonus</Green> during this duration.
         </>

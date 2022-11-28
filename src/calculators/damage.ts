@@ -146,7 +146,7 @@ export default function getDamage({
   attElmtBonus,
   rxnBonus,
   customDebuffCtrls,
-  infusedElement,
+  infusion,
   elmtModCtrls: { reaction, infuse_reaction, resonances, superconduct },
   target,
   tracker,
@@ -320,13 +320,12 @@ export default function getDamage({
       let rxnMult = 1;
 
       // check and infused
-      if (resultKey === "NAs" && attElmt === "phys" && infusedElement !== "phys") {
-        attElmt = infusedElement;
-        actualReaction = infuse_reaction || reaction;
-        // infused normal attacks want amplify reaction
-        // if (infuse_reaction === "melt" || infuse_reaction === "vaporize") {
-        //   rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[infuse_reaction];
-        // }
+      if (resultKey === "NAs" && attElmt === "phys" && infusion.element !== "phys") {
+        attElmt = infusion.element;
+
+        if (infusion.isCustom) {
+          actualReaction = infuse_reaction;
+        }
       }
 
       // deal elemental dmg and want amplify reaction
@@ -337,7 +336,6 @@ export default function getDamage({
       ) {
         rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
-      console.log(stat.name, attElmt, actualReaction);
 
       // TALENT DMG
       if (!stat.notAttack && resultKey === "NAs" && disabledNAs) {
