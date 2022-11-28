@@ -4,7 +4,9 @@ import {
   ATTACK_ELEMENT_INFO_KEYS,
   ATTACK_PATTERNS,
   ATTACK_PATTERN_INFO_KEYS,
+  QUICKEN_REACTIONS,
   REACTIONS,
+  REACTION_BONUS_INFO_KEYS,
   TRANSFORMATIVE_REACTIONS,
 } from "@Src/constants";
 import type {
@@ -19,6 +21,7 @@ import type {
   ModifierCtrl,
   Reaction,
   ReactionBonus,
+  ReactionBonusInfo,
 } from "@Src/types";
 import { findByIndex, toMult } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
@@ -143,7 +146,11 @@ export default function getBuffedStats({
   // INIT REACTION BONUS
   const rxnBonus = {} as ReactionBonus;
   for (const rxn of REACTIONS) {
-    rxnBonus[rxn] = 0;
+    rxnBonus[rxn] = {} as ReactionBonusInfo;
+
+    for (const key of REACTION_BONUS_INFO_KEYS) {
+      rxnBonus[rxn][key] = 0;
+    }
   }
 
   const modifierArgs: BuffModifierArgsWrapper = {
@@ -184,7 +191,7 @@ export default function getBuffedStats({
       case 3: {
         const key = type as Reaction;
 
-        rxnBonus[key] += value;
+        rxnBonus[key].pct += value;
         addTrackerRecord(tracker?.rxnBonus[key], "Custom buff", value);
         break;
       }
@@ -365,17 +372,18 @@ export default function getBuffedStats({
   }
 
   // CALCULATE FINAL REACTION BONUSES
-  const { transformative, amplifying } = getRxnBonusesFromEM(totalAttr.em);
+  const { transformative, amplifying, quicken } = getRxnBonusesFromEM(totalAttr.em);
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
-    rxnBonus[rxn] += transformative;
+    rxnBonus[rxn].pct += transformative;
   }
   for (const rxn of AMPLIFYING_REACTIONS) {
-    rxnBonus[rxn] += amplifying;
+    rxnBonus[rxn].pct += amplifying;
   }
-  const meltBonus = toMult(rxnBonus.melt);
-  const vapBonus = toMult(rxnBonus.vaporize);
-  const { spread, aggravate } = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
+  for (const rxn of QUICKEN_REACTIONS) {
+    rxnBonus[rxn].pct += quicken;
+  }
+  const { spread, aggravate } = getQuickenBuffDamage(char.level, rxnBonus);
 
   if (reaction === "spread" || infuse_reaction === "spread") {
     applyModifier("Spread reaction", attElmtBonus, "dendro.flat", spread, tracker);
@@ -384,10 +392,12 @@ export default function getBuffedStats({
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
-  rxnBonus.melt = meltMult(dataChar.vision) * meltBonus;
-  rxnBonus.vaporize = vaporizeMult(dataChar.vision) * vapBonus;
-  rxnBonus.infuse_melt = meltMult(infusedElement) * meltBonus;
-  rxnBonus.infuse_vaporize = vaporizeMult(infusedElement) * vapBonus;
+  // const meltBonus = toMult(rxnBonus.melt.pct);
+  // const vapBonus = toMult(rxnBonus.vaporize.pct);
+  // rxnBonus.melt.pct = meltMult(dataChar.vision) * meltBonus;
+  // rxnBonus.vaporize.pct = vaporizeMult(dataChar.vision) * vapBonus;
+  // rxnBonus.infuse_melt.pct = meltMult(infusedElement) * meltBonus;
+  // rxnBonus.infuse_vaporize.pct = vaporizeMult(infusedElement) * vapBonus;
 
   return {
     totalAttr,

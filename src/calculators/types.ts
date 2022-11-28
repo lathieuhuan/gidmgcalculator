@@ -26,7 +26,7 @@ import type {
   AttackPatternBonusKey,
   AttackPatternInfoKey,
   AttacklementInfoKey,
-  ReactionBonusKey,
+  Reaction,
 } from "@Src/types";
 
 export type TrackerRecord = {
@@ -54,7 +54,7 @@ export type Tracker = {
   totalAttr: Record<AttributeStat, TrackerRecord[]>;
   attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
   attElmtBonus: Record<`${AttackElement}.${AttacklementInfoKey}`, TrackerRecord[]>;
-  rxnBonus: Record<ReactionBonusKey, TrackerRecord[]>;
+  rxnBonus: Record<Reaction, TrackerRecord[]>;
   resistReduct: Record<AttackElement | "def", TrackerRecord[]>;
   NAs: Record<string, TrackerDamageRecord>;
   ES: Record<string, TrackerDamageRecord>;

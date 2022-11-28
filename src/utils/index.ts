@@ -24,9 +24,10 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]): Pick<M, T> {
 }
 
 export const getImgSrc = (src: string) => {
-  return src.split("/")[0].length === 1
-    ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
-    : src;
+  return "";
+  // return src.split("/")[0].length === 1
+  //   ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
+  //   : src;
 };
 
 export const percentSign = (stat: string) => {

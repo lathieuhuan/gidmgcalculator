@@ -220,7 +220,7 @@ export const calculatorSlice = createSlice({
           };
         }
       }
-      calculate(state, configs.separateCharInfo);
+      calculate(state, !configs.separateCharInfo);
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {

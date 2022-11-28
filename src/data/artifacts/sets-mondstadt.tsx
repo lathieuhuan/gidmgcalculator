@@ -143,7 +143,7 @@ const mondstadtSets: DataArtifact[] = [
             for 10s.
           </>
         ),
-        applyBuff: makeModApplier("rxnBonus", "swirl", 60),
+        applyBuff: makeModApplier("rxnBonus", "swirl.pct", 60),
       },
     ],
     debuffs: [
@@ -254,9 +254,14 @@ const mondstadtSets: DataArtifact[] = [
         ),
         applyBuff: ({ rxnBonus, desc, tracker }) => {
           if (rxnBonus) {
-            const keys = ["overloaded", "electroCharged", "superconduct", "hyperbloom"] as const;
-            applyModifier(desc, rxnBonus, [...keys], 40, tracker);
-            applyModifier(desc, rxnBonus, "aggravate", 20, tracker);
+            applyModifier(
+              desc,
+              rxnBonus,
+              ["overloaded.pct", "electroCharged.pct", "superconduct.pct", "hyperbloom.pct"],
+              40,
+              tracker
+            );
+            applyModifier(desc, rxnBonus, "aggravate.pct", 20, tracker);
           }
         },
       },

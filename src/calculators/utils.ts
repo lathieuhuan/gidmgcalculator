@@ -10,7 +10,7 @@ import type {
   AttributeStat,
   AttackElement,
   ReactionBonus,
-  ReactionBonusKey,
+  Reaction,
   ResistanceReduction,
   TotalAttribute,
   AttackPatternBonusKey,
@@ -21,10 +21,12 @@ import type {
   Vision,
   Weapon,
   Level,
+  ResistanceReductionKey,
+  ReactionBonusInfoKey,
 } from "@Src/types";
 import { bareLv, pickOne, turnArray } from "@Src/utils";
 import { BASE_REACTION_DAMAGE } from "./constants";
-import { Tracker, TrackerRecord } from "./types";
+import type { Tracker, TrackerRecord } from "./types";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
   obj: T,
@@ -63,7 +65,7 @@ export function initTracker() {
   }
   tracker.resistReduct.def = [];
 
-  for (const reaction of [...REACTIONS, "infuse_melt", "infuse_vaporize"] as const) {
+  for (const reaction of REACTIONS) {
     tracker.rxnBonus[reaction] = [];
   }
 
@@ -87,6 +89,8 @@ export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey
 
 export type AttackElementPath = `${AttackElement}.${AttacklementInfoKey}`;
 
+export type ReactionBonusPath = `${Reaction}.${ReactionBonusInfoKey}`;
+
 export type ModRecipient =
   | TotalAttribute
   | ReactionBonus
@@ -97,8 +101,8 @@ export type ModRecipient =
 export type ModRecipientKey =
   | AttributeStat
   | AttributeStat[]
-  | ReactionBonusKey
-  | ReactionBonusKey[]
+  | ReactionBonusPath
+  | ReactionBonusPath[]
   | AttackPatternPath
   | AttackPatternPath[]
   | AttackElementPath
@@ -135,14 +139,14 @@ export function applyModifier(
 export function applyModifier(
   desc: string | undefined,
   recipient: ReactionBonus,
-  keys: ReactionBonusKey | ReactionBonusKey[],
+  keys: ReactionBonusPath | ReactionBonusPath[],
   rootValue: RootValue,
   tracker?: Tracker
 ): void;
 export function applyModifier(
   desc: string | undefined,
   recipient: ResistanceReduction,
-  keys: (AttackElement | "def") | (AttackElement | "def")[],
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
   rootValue: RootValue,
   tracker?: Tracker
 ): void;
@@ -225,7 +229,7 @@ export function makeModApplier(
 ): (args: any) => void;
 export function makeModApplier(
   recipientName: "rxnBonus",
-  keys: ReactionBonusKey | ReactionBonusKey[],
+  keys: ReactionBonusPath | ReactionBonusPath[],
   rootValue: RootValue
 ): (args: any) => void;
 export function makeModApplier(
@@ -247,22 +251,29 @@ export function makeModApplier(
   };
 }
 
-export function getQuickenBuffDamage(charLv: Level, EM: number, rxnBnes: ReactionBonus) {
-  const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
-  const bonus = 1 + (5 * EM) / (EM + 1200);
-
-  return {
-    aggravate: Math.round(base * 1.15 * (bonus + rxnBnes.aggravate / 100)),
-    spread: Math.round(base * 1.25 * (bonus + rxnBnes.spread / 100)),
-  };
-}
-
 export function getRxnBonusesFromEM(EM = 0) {
   return {
     transformative: Math.round((16000 * EM) / (EM + 2000)) / 10,
     amplifying: Math.round((2780 * EM) / (EM + 1400)) / 10,
     quicken: Math.round((5000 * EM) / (EM + 1200)) / 10,
     shield: Math.round((4440 * EM) / (EM + 1400)) / 10,
+  };
+}
+
+export function getAmplifyingMultiplier(elmt: AttackElement, rxnBonus: ReactionBonus) {
+  return {
+    melt: (1 + rxnBonus.melt.pct / 100) * (elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1),
+    vaporize:
+      (1 + rxnBonus.vaporize.pct / 100) * (elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1),
+  };
+}
+
+export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
+  const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
+
+  return {
+    aggravate: Math.round(base * 1.15 * (rxnBonus.aggravate.pct / 100)),
+    spread: Math.round(base * 1.25 * (rxnBonus.spread.pct / 100)),
   };
 }
 

@@ -85,9 +85,10 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
           "Attributes",
           "Bonuses",
           "Debuffs on Target",
-          "Normal Attacks",
-          "Elemental Skill",
-          "Elemental Burst",
+          // "Normal Attacks",
+          // "Elemental Skill",
+          // "Elemental Burst",
+          "Reactions",
         ]}
         contentList={[
           <AttributesTracker totalAttr={totalAttr} />,
@@ -96,21 +97,22 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
             em={getTotalRecordValue(totalAttr?.em || [])}
           />,
           <DebuffsTracker resistReduct={result?.resistReduct} />,
-          <DamageTracker
-            records={result?.NAs}
-            calcDmgResult={dmgResult.NAs}
-            defMultDisplay={renderDefMultiplier("NA")}
-          />,
-          <DamageTracker
-            records={result?.ES}
-            calcDmgResult={dmgResult.ES}
-            defMultDisplay={renderDefMultiplier("ES")}
-          />,
-          <DamageTracker
-            records={result?.EB}
-            calcDmgResult={dmgResult.EB}
-            defMultDisplay={renderDefMultiplier("EB")}
-          />,
+          // <DamageTracker
+          //   records={result?.NAs}
+          //   calcDmgResult={dmgResult.NAs}
+          //   defMultDisplay={renderDefMultiplier("NA")}
+          // />,
+          // <DamageTracker
+          //   records={result?.ES}
+          //   calcDmgResult={dmgResult.ES}
+          //   defMultDisplay={renderDefMultiplier("ES")}
+          // />,
+          // <DamageTracker
+          //   records={result?.EB}
+          //   calcDmgResult={dmgResult.EB}
+          //   defMultDisplay={renderDefMultiplier("EB")}
+          // />,
+          <DamageTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
         ]}
       />
     </div>

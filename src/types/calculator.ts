@@ -19,7 +19,12 @@ import type {
   TransformativeReaction,
 } from "./global";
 import type { Tracker } from "@Calculators/types";
-import { ATTACK_ELEMENT_INFO_KEYS, ATTACK_PATTERN_INFO_KEYS, TALENT_TYPES } from "@Src/constants";
+import {
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERN_INFO_KEYS,
+  REACTION_BONUS_INFO_KEYS,
+  TALENT_TYPES,
+} from "@Src/constants";
 
 export type SetupType = "original" | "combined" | "complex";
 
@@ -190,10 +195,12 @@ export type AttacklementInfoKey = typeof ATTACK_ELEMENT_INFO_KEYS[number];
 export type AttacklementInfo = Record<AttacklementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
-export type ReactionBonusKey = Reaction | "infuse_melt" | "infuse_vaporize";
-export type ReactionBonus = Record<ReactionBonusKey, number>;
+export type ReactionBonusInfoKey = typeof REACTION_BONUS_INFO_KEYS[number];
+export type ReactionBonusInfo = Record<ReactionBonusInfoKey, number>;
+export type ReactionBonus = Record<Reaction, ReactionBonusInfo>;
 
-export type ResistanceReduction = Record<AttackElement | "def", number>;
+export type ResistanceReductionKey = AttackElement | "def";
+export type ResistanceReduction = Record<ResistanceReductionKey, number>;
 
 export type Infusion = {
   element: AttackElement;

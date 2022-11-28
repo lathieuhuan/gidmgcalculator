@@ -159,7 +159,7 @@ const liyueSets: DataArtifact[] = [
         ],
         applyBuff: makeModApplier(
           "rxnBonus",
-          ["overloaded", "burning", "burgeon", "melt", "vaporize"],
+          ["overloaded.pct", "burning.pct", "burgeon.pct", "melt.pct", "vaporize.pct"],
           [40, 40, 40, 15, 15]
         ),
       },

@@ -6,11 +6,7 @@ import { finalTalentLv, round2 } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs } from "../utils";
 
-const getNApctBonus = (args: {
-  char: CharInfo;
-  partyData: PartyData;
-  inputs?: ModifierInput[];
-}) => {
+const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: ModifierInput[] }) => {
   const level = finalTalentLv(args.char, "ES", args.partyData);
   let stacks = args.inputs[0] || 0;
   stacks = stacks === 4 ? 5 : stacks;

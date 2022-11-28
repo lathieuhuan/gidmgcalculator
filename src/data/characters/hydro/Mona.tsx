@@ -142,7 +142,13 @@ const Mona: DataCharacter = {
         applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
 
         if ((toSelf && checkCons[1](char)) || (!toSelf && inputs[1])) {
-          applyModifier(desc, rxnBonus, ["electroCharged", "swirl", "vaporize"], 15, tracker);
+          applyModifier(
+            desc,
+            rxnBonus,
+            ["electroCharged.pct", "swirl.pct", "vaporize.pct"],
+            15,
+            tracker
+          );
         }
         if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
           applyModifier(desc, totalAttr, "cRate", 15, tracker);

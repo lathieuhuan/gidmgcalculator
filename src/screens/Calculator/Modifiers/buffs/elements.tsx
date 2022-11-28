@@ -13,14 +13,13 @@ import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 import { renderAmpReactionDesc, renderModifiers, renderQuickenDesc } from "@Components/minors";
 import { Select } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
-import { getQuickenBuffDamage } from "@Calculators/utils";
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
 import { useState } from "react";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
   const { vision } = useSelector(selectCharData);
   const char = useSelector(selectChar);
-  const totalAttr = useSelector(selectTotalAttr);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
   const customInfusion = useSelector((state) => {
@@ -84,7 +83,7 @@ export default function ElementBuffs() {
     reaction: AmplifyingReaction
   ) => {
     const activated = elmtModCtrls[field] === reaction;
-    const bonusField = field === "reaction" ? reaction : (`infuse_${reaction}` as const);
+
     return (
       <ModifierTemplate
         key={reaction + (field === "infuse_reaction" ? "-external" : "")}
@@ -107,7 +106,7 @@ export default function ElementBuffs() {
             </span>
           </>
         }
-        desc={renderAmpReactionDesc(element, rxnBonus[bonusField])}
+        desc={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
       />
     );
   };
@@ -118,7 +117,7 @@ export default function ElementBuffs() {
     reaction: "spread" | "aggravate"
   ) => {
     const activated = elmtModCtrls[field] === reaction;
-    const quickenBuff = getQuickenBuffDamage(char.level, totalAttr.em, rxnBonus);
+
     return (
       <ModifierTemplate
         key={reaction + (field === "infuse_reaction" ? "-external" : "")}
@@ -141,7 +140,7 @@ export default function ElementBuffs() {
             </span>
           </>
         }
-        desc={renderQuickenDesc(element, quickenBuff[reaction])}
+        desc={renderQuickenDesc(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
       />
     );
   };

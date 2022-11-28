@@ -50,7 +50,7 @@ export default function calculateAll(
   const infusedElement =
     customInfusion.element !== "phys"
       ? customInfusion.element
-      : selfInfused
+      : selfInfused !== undefined
       ? dataChar.vision
       : "phys";
   const partyData = getPartyData(party);

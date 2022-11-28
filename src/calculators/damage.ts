@@ -8,7 +8,12 @@ import { charModIsInUse } from "@Data/characters/utils";
 import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
 import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
-import { applyModifier, getDefaultStatInfo, addTrackerRecord } from "./utils";
+import {
+  applyModifier,
+  getDefaultStatInfo,
+  addTrackerRecord,
+  getAmplifyingMultiplier,
+} from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
@@ -311,23 +316,28 @@ export default function getDamage({
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
       let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
+      let actualReaction = reaction;
       let rxnMult = 1;
 
       // check and infused
       if (resultKey === "NAs" && attElmt === "phys" && infusedElement !== "phys") {
         attElmt = infusedElement;
+        actualReaction = infuse_reaction || reaction;
+        // infused normal attacks want amplify reaction
+        // if (infuse_reaction === "melt" || infuse_reaction === "vaporize") {
+        //   rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[infuse_reaction];
+        // }
       }
 
-      if (attElmt !== "various" && attElmt !== "phys") {
-        // deal elemental dmg and want amplify reaction
-        if (reaction === "melt" || reaction === "vaporize") {
-          rxnMult = rxnBonus[reaction];
-        }
-        // infused normal attacks want amplify reaction
-        if (resultKey === "NAs" && (infuse_reaction === "melt" || infuse_reaction === "vaporize")) {
-          rxnMult = rxnBonus[`infuse_${infuse_reaction}`];
-        }
+      // deal elemental dmg and want amplify reaction
+      if (
+        attElmt !== "various" &&
+        attElmt !== "phys" &&
+        (actualReaction === "melt" || actualReaction === "vaporize")
+      ) {
+        rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
+      console.log(stat.name, attElmt, actualReaction);
 
       // TALENT DMG
       if (!stat.notAttack && resultKey === "NAs" && disabledNAs) {
@@ -361,52 +371,53 @@ export default function getDamage({
 
   const baseRxnDmg = BASE_REACTION_DAMAGE[bareLv(char.level)];
   // Special reaction buffs, one of its kind
-  let nilouA4BuffValue = 0;
-  let nahidaC2isInUse = false;
+  // let nilouA4BuffValue = 0;
+  // let nahidaC2isInUse = false;
 
-  switch (charData.name) {
-    case "Nilou": {
-      const { buffs } = findCharacter(char) || {};
-      if (
-        buffs &&
-        nilouA1isOn(partyData, charData) &&
-        charModIsInUse(buffs, char, selfBuffCtrls, 0)
-      ) {
-        nilouA4BuffValue = getNilouA4BuffValue(totalAttr.hp);
-      }
-      break;
-    }
-    case "Nahida":
-      const { buffs } = findCharacter(char) || {};
-      if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 3)) {
-        nahidaC2isInUse = true;
-      }
-      break;
-  }
+  // switch (charData.name) {
+  //   case "Nilou": {
+  //     const { buffs } = findCharacter(char) || {};
+  //     if (
+  //       buffs &&
+  //       nilouA1isOn(partyData, charData) &&
+  //       charModIsInUse(buffs, char, selfBuffCtrls, 0)
+  //     ) {
+  //       nilouA4BuffValue = getNilouA4BuffValue(totalAttr.hp);
+  //     }
+  //     break;
+  //   }
+  //   case "Nahida":
+  //     const { buffs } = findCharacter(char) || {};
+  //     if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 3)) {
+  //       nahidaC2isInUse = true;
+  //     }
+  //     break;
+  // }
 
-  for (const teammate of party) {
-    if (!teammate) {
-      continue;
-    }
-    switch (teammate.name) {
-      case "Nilou":
-        const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 0) || {};
+  // for (const teammate of party) {
+  //   if (!teammate) {
+  //     continue;
+  //   }
+  //   switch (teammate.name) {
+  //     case "Nilou":
+  //       const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 0) || {};
 
-        if (nilouA1isOn(partyData, charData) && activated) {
-          nilouA4BuffValue = getNilouA4BuffValue(inputs[0] || 0);
-        }
-        break;
-      case "Nahida": {
-        nahidaC2isInUse = !!findByIndex(teammate.buffCtrls, 3)?.activated;
-        break;
-      }
-    }
-  }
+  //       if (nilouA1isOn(partyData, charData) && activated) {
+  //         nilouA4BuffValue = getNilouA4BuffValue(inputs[0] || 0);
+  //       }
+  //       break;
+  //     case "Nahida": {
+  //       nahidaC2isInUse = !!findByIndex(teammate.buffCtrls, 3)?.activated;
+  //       break;
+  //     }
+  //   }
+  // }
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
 
-    const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
+    // const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
+    const specialPercent = rxnBonus[rxn].pct;
     const specialMult = 1 + specialPercent / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
     const base = baseRxnDmg * normalMult * specialMult * resMult;
@@ -424,19 +435,19 @@ export default function getDamage({
     // }
   }
 
-  if (nahidaC2isInUse) {
-    for (const rxn of ["burning", "bloom", "hyperbloom", "burgeon"] as const) {
-      const { [rxn]: rxnDmg } = finalResult.RXN;
+  // if (nahidaC2isInUse) {
+  //   for (const rxn of ["burning", "bloom", "hyperbloom", "burgeon"] as const) {
+  //     const { [rxn]: rxnDmg } = finalResult.RXN;
 
-      rxnDmg.crit = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 2);
-      rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
+  //     rxnDmg.crit = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 2);
+  //     rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
 
-      if (tracker) {
-        tracker.RXN[rxn].cRate = 0.2;
-        tracker.RXN[rxn].cDmg = 1;
-      }
-    }
-  }
+  //     if (tracker) {
+  //       tracker.RXN[rxn].cRate = 0.2;
+  //       tracker.RXN[rxn].cDmg = 1;
+  //     }
+  //   }
+  // }
 
   return finalResult;
 }

@@ -89,6 +89,8 @@ export const ATTACK_PATTERN_INFO_KEYS = [
 
 export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg", "flat"] as const;
 
+export const REACTION_BONUS_INFO_KEYS = ["cRate", "cDmg", "pct"] as const;
+
 export const VISION_ICONS = {
   pyro: "e/e8/Element_Pyro",
   cryo: "8/88/Element_Cryo",
