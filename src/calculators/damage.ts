@@ -266,7 +266,7 @@ export default function getDamage({
         : {};
 
       // CALCULATE BASE DAMAGE
-      let base;
+      let base: number | number[];
       const {
         isStatic,
         baseStatType = "atk",
@@ -282,7 +282,7 @@ export default function getDamage({
         talentBuff,
       } as TrackerDamageRecord;
 
-      const finalMult = (multBase: number) =>
+      const getFinalMult = (multBase: number) =>
         multBase * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[multType][level]) + xtraMult;
 
       const getBaseDamage = (percent: number) => {
@@ -296,16 +296,16 @@ export default function getDamage({
       };
 
       if (Array.isArray(multBase)) {
-        const percents = multBase.map(finalMult);
+        const finalMults = multBase.map(getFinalMult);
 
-        record.finalMult = percents;
-        base = percents.map(getBaseDamage);
+        record.finalMult = finalMults;
+        base = finalMults.map(getBaseDamage);
       } //
       else {
-        const percent = finalMult(multBase);
+        const finalMult = getFinalMult(multBase);
 
-        record.finalMult = percent;
-        base = getBaseDamage(percent);
+        record.finalMult = finalMult;
+        base = getBaseDamage(finalMult);
       }
 
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
@@ -415,9 +415,11 @@ export default function getDamage({
 
     // if (tracker) {
     //   tracker.RXN[rxn] = {
+    //     baseValue: baseRxnDmg,
     //     normalMult,
     //     specialMult,
     //     resMult,
+    //     talentBuff: {},
     //   };
     // }
   }

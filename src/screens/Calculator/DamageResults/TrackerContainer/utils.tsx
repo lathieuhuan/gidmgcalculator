@@ -31,10 +31,10 @@ export function renderRecord(
 }
 
 interface RenderDmgComponentArgs {
-  desc: string;
-  value: number;
+  desc: ReactNode;
+  value?: number;
   sign?: string;
-  nullValue?: number;
+  nullValue?: number | null;
   processor?: (value: number) => string | number;
 }
 export function renderDmgComponent({
@@ -44,7 +44,7 @@ export function renderDmgComponent({
   nullValue = 0,
   processor,
 }: RenderDmgComponentArgs) {
-  return value && value !== nullValue ? (
+  return value !== undefined && value !== nullValue ? (
     <>
       {" "}
       <Green>{sign}</Green> {desc} <Green>{processor ? processor(value) : value}</Green>
