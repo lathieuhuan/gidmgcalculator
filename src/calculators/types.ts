@@ -36,9 +36,9 @@ export type TrackerRecord = {
 
 export type TrackerDamageRecord = {
   baseValue: number;
-  baseStatType: "base_atk" | "hp" | "atk" | "def";
+  baseStatType?: "base_atk" | "hp" | "atk" | "def";
   finalMult: number | number[];
-  finalFlat: number;
+  finalFlat?: number;
   normalMult: number;
   specialMult?: number;
   rxnMult?: number;
@@ -47,7 +47,7 @@ export type TrackerDamageRecord = {
   cRate?: number;
   cDmg?: number;
   note?: string;
-  talentBuff: TalentBuff;
+  talentBuff?: TalentBuff;
 };
 
 export type Tracker = {

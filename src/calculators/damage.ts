@@ -113,7 +113,7 @@ function calcTalentDamage({
         break;
     }
     base += flat;
-    record.finalFlat += flat;
+    record.finalFlat = record.finalFlat || 0 + flat;
 
     if (normalMult !== 1) {
       base *= normalMult;
@@ -167,8 +167,7 @@ export default function getDamage({
 
   // APPLY CUSTOM DEBUFFS
   for (const { type, value } of customDebuffCtrls) {
-    resistReduct[type] += value;
-    // addTrackerRecord(tracker, type, "Custom Debuff", value);
+    applyModifier("Custom Debuff", resistReduct, type, value, tracker);
   }
 
   // APPLY SELF DEBUFFS
@@ -193,9 +192,9 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs } = findCharacter(teammate)!;
+      const { debuffs = [] } = findCharacter(teammate)!;
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
-        const debuff = findByIndex(debuffs || [], index);
+        const debuff = findByIndex(debuffs, index);
 
         if (activated && debuff?.applyDebuff) {
           debuff.applyDebuff({
@@ -416,21 +415,20 @@ export default function getDamage({
 
     // const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
     const specialPercent = rxnBonus[rxn].pct;
-    const specialMult = 1 + specialPercent / 100;
+    const finalMult = 1 + specialPercent / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
-    const base = baseRxnDmg * normalMult * specialMult * resMult;
+    const base = baseRxnDmg * normalMult * finalMult * resMult;
 
     finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
 
-    // if (tracker) {
-    //   tracker.RXN[rxn] = {
-    //     baseValue: baseRxnDmg,
-    //     normalMult,
-    //     specialMult,
-    //     resMult,
-    //     talentBuff: {},
-    //   };
-    // }
+    if (tracker) {
+      tracker.RXN[rxn] = {
+        baseValue: baseRxnDmg,
+        normalMult,
+        finalMult,
+        resMult,
+      };
+    }
   }
 
   // if (nahidaC2isInUse) {

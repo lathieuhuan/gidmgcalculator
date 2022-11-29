@@ -12,6 +12,8 @@ interface DamageTrackerProps {
   defMultDisplay?: ReactNode;
 }
 export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: DamageTrackerProps) {
+  console.log(records);
+
   return (
     <div className="space-y-1">
       {defMultDisplay}
@@ -33,24 +35,17 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
               {renderTalentBuff(record.talentBuff)}
 
               <li>
-                Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span>{" "}
-                {record.finalMult ? (
-                  <>
-                    {" "}
-                    = ({record.baseStatType.toUpperCase()} <Green>{record.baseValue}</Green>{" "}
-                    <Green>*</Green> Talent Mult.{" "}
-                    <Green>
-                      {renderDmgValue(record.finalMult, (value) => round2(value) + "%")}
-                    </Green>
-                    {renderDmgComponent({
-                      desc: "Flat Bonus",
-                      value: record.finalFlat,
-                      sign: "+",
-                      processor: Math.round,
-                    })}
-                    )
-                  </>
-                ) : null}
+                Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
+                {record.baseStatType?.toUpperCase()} <Green>{record.baseValue}</Green>{" "}
+                <Green>*</Green> Talent Mult.{" "}
+                <Green>{renderDmgValue(record.finalMult, (value) => round2(value) + "%")}</Green>
+                {renderDmgComponent({
+                  desc: "Flat Bonus",
+                  value: record.finalFlat,
+                  sign: "+",
+                  processor: Math.round,
+                })}
+                )
                 {renderDmgComponent({
                   desc: "Percent Mult.",
                   value: record.normalMult * 100,
@@ -106,7 +101,7 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
   );
 }
 
-function renderTalentBuff(talentBuff: TalentBuff) {
+function renderTalentBuff(talentBuff: TalentBuff = {}) {
   const entries = Object.entries(talentBuff);
 
   if (!entries.length) {
