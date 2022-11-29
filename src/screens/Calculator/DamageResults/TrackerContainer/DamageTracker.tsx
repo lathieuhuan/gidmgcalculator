@@ -3,6 +3,7 @@ import type { TrackerDamageRecord } from "@Calculators/types";
 import type { CalculatedDamageCluster, TalentBuff } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { percentSign, round2, round3 } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 import { renderDmgComponent, renderDmgValue } from "./utils";
 import { keyMap } from "./constants";
 
@@ -12,7 +13,7 @@ interface DamageTrackerProps {
   defMultDisplay?: ReactNode;
 }
 export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: DamageTrackerProps) {
-  console.log(records);
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-1">
@@ -30,18 +31,26 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
 
         return (
           <div key={i}>
-            <p className="font-medium">{attackName}</p>
+            <p className="font-medium">{t(attackName)}</p>
             <ul className="pl-4 text-lesser text-sm leading-6 list-disc">
               {renderTalentBuff(record.talentBuff)}
 
               <li>
                 Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
-                {record.baseStatType?.toUpperCase()} <Green>{record.baseValue}</Green>{" "}
-                <Green>*</Green> Talent Mult.{" "}
-                <Green>{renderDmgValue(record.finalMult, (value) => round2(value) + "%")}</Green>
+                {record.baseStatType ? t(record.baseStatType) + " " : null}
+                <Green>{record.baseValue}</Green>
+                {record.talentMult ? (
+                  <>
+                    {" "}
+                    <Green>*</Green> Talent Mult.{" "}
+                    <Green>
+                      {renderDmgValue(record.talentMult, (value) => round2(value) + "%")}
+                    </Green>
+                  </>
+                ) : null}
                 {renderDmgComponent({
                   desc: "Flat Bonus",
-                  value: record.finalFlat,
+                  value: record.totalFlat,
                   sign: "+",
                   processor: Math.round,
                 })}
@@ -75,24 +84,27 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
                 {record.note}
               </li>
 
-              {crit ? (
+              {cDmg ? (
                 <li>
                   Crit <span className="text-orange font-semibold">{renderDmgValue(crit)}</span> ={" "}
                   {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg}</Green>)
                 </li>
               ) : null}
 
-              <li>
-                Average <span className="text-orange font-semibold">{renderDmgValue(average)}</span>{" "}
-                = {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg}</Green>
-                {renderDmgComponent({
-                  desc: "Crit Rate",
-                  value: record.cRate,
-                  nullValue: null,
-                  processor: round3,
-                })}
-                )
-              </li>
+              {cDmg && record.cRate ? (
+                <li>
+                  Average{" "}
+                  <span className="text-orange font-semibold">{renderDmgValue(average)}</span> ={" "}
+                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg}</Green>
+                  {renderDmgComponent({
+                    desc: "Crit Rate",
+                    value: record.cRate,
+                    nullValue: null,
+                    processor: round3,
+                  })}
+                  )
+                </li>
+              ) : null}
             </ul>
           </div>
         );

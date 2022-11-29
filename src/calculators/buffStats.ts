@@ -38,9 +38,7 @@ import {
   applyModifier,
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
-  meltMult,
   addTrackerRecord,
-  vaporizeMult,
 } from "./utils";
 import { RESONANCE_STAT } from "./constants";
 
@@ -192,7 +190,7 @@ export default function getBuffedStats({
         const key = type as Reaction;
 
         rxnBonus[key].pct += value;
-        addTrackerRecord(tracker?.rxnBonus[key], "Custom buff", value);
+        addTrackerRecord(tracker?.rxnBonus[`${key}.pct`], "Custom buff", value);
         break;
       }
     }
@@ -226,24 +224,33 @@ export default function getBuffedStats({
   });
 
   // APPPLY TEAMMATE BUFFS
+
+  function applyTeammateBuffs(isFinal: boolean) {}
+
   for (const teammate of party) {
     if (!teammate) continue;
     const { name, weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
+      if (!activated) continue;
+
       const buff = findByIndex(buffs, index);
 
       if (buff) {
-        const applyFn = buff.applyBuff || buff.applyFinalBuff;
-        if (activated && applyFn) {
-          applyFn({
-            desc: `${name} / ${buff.src}`,
-            toSelf: false,
-            inputs,
-            charBuffCtrls: teammate.buffCtrls,
-            ...modifierArgs,
-          });
-        }
+        buff.applyBuff?.({
+          desc: `${name} / ${buff.src}`,
+          toSelf: false,
+          inputs,
+          charBuffCtrls: teammate.buffCtrls,
+          ...modifierArgs,
+        });
+        buff.applyFinalBuff?.({
+          desc: `${name} / ${buff.src}`,
+          toSelf: false,
+          inputs,
+          charBuffCtrls: teammate.buffCtrls,
+          ...modifierArgs,
+        });
       } else {
         console.log(`buff #${index} of teammate ${name} not found`);
       }
@@ -391,13 +398,6 @@ export default function getBuffedStats({
   if (reaction === "aggravate" || infuse_reaction === "aggravate") {
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
-
-  // const meltBonus = toMult(rxnBonus.melt.pct);
-  // const vapBonus = toMult(rxnBonus.vaporize.pct);
-  // rxnBonus.melt.pct = meltMult(dataChar.vision) * meltBonus;
-  // rxnBonus.vaporize.pct = vaporizeMult(dataChar.vision) * vapBonus;
-  // rxnBonus.infuse_melt.pct = meltMult(infusedElement) * meltBonus;
-  // rxnBonus.infuse_vaporize.pct = vaporizeMult(infusedElement) * vapBonus;
 
   return {
     totalAttr,

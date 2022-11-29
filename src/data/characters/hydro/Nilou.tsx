@@ -268,6 +268,12 @@ const Nilou: DataCharacter = {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },
+      applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, char, desc, tracker }) => {
+        if (toSelf ? checkAscs[4](char) : inputs[0]) {
+          const buffValue = getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0]);
+          applyModifier(desc, rxnBonus, "bloom.pct", buffValue, tracker);
+        }
+      },
     },
   ],
   debuffs: [

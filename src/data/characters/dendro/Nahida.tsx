@@ -3,7 +3,7 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier, ReactionBonusPath } from "@Calculators/utils";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
 function getEBBuffValue(char: CharInfo, partyData: PartyData) {
@@ -284,6 +284,22 @@ const Nahida: DataCharacter = {
       desc: () => Nahida.constellation[1].xtraDesc![0],
       isGranted: checkCons[2],
       affect: EModAffect.PARTY,
+      applyBuff: ({ rxnBonus, desc, tracker }) => {
+        applyModifier(
+          desc,
+          rxnBonus,
+          ["burning.cRate", "bloom.cRate", "hyperbloom.cRate", "burgeon.cRate"],
+          20,
+          tracker
+        );
+        applyModifier(
+          desc,
+          rxnBonus,
+          ["burning.cDmg", "bloom.cDmg", "hyperbloom.cDmg", "burgeon.cDmg"],
+          100,
+          tracker
+        );
+      },
     },
     {
       index: 4,

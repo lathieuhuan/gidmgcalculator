@@ -5,6 +5,7 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   ATTRIBUTE_STAT_TYPES,
   REACTIONS,
+  REACTION_BONUS_INFO_KEYS,
 } from "@Src/constants";
 import type {
   AttributeStat,
@@ -66,7 +67,9 @@ export function initTracker() {
   tracker.resistReduct.def = [];
 
   for (const reaction of REACTIONS) {
-    tracker.rxnBonus[reaction] = [];
+    for (const key of REACTION_BONUS_INFO_KEYS) {
+      tracker.rxnBonus[`${reaction}.${key}`] = [];
+    }
   }
 
   return tracker;
@@ -276,13 +279,6 @@ export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
     spread: Math.round(base * 1.25 * (rxnBonus.spread.pct / 100)),
   };
 }
-
-export const meltMult = (elmt: AttackElement) => {
-  return elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1;
-};
-export const vaporizeMult = (elmt: AttackElement) => {
-  return elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1;
-};
 
 export const getDefaultStatInfo = (
   key: "NAs" | "ES" | "EB",

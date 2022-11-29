@@ -4,16 +4,9 @@ import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@S
 
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-import { charModIsInUse } from "@Data/characters/utils";
-import { getNilouA4BuffValue, nilouA1isOn } from "@Data/characters/hydro/Nilou";
 
 import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
-import {
-  applyModifier,
-  getDefaultStatInfo,
-  addTrackerRecord,
-  getAmplifyingMultiplier,
-} from "./utils";
+import { applyModifier, getDefaultStatInfo, getAmplifyingMultiplier } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
@@ -84,7 +77,7 @@ function calcTalentDamage({
       (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
     );
 
-    record.finalFlat = flat;
+    record.totalFlat = flat;
     record.normalMult = normalMult;
     record.specialMult = specialMult;
     record.rxnMult = rxnMult;
@@ -113,7 +106,7 @@ function calcTalentDamage({
         break;
     }
     base += flat;
-    record.finalFlat = record.finalFlat || 0 + flat;
+    record.totalFlat = record.totalFlat || 0 + flat;
 
     if (normalMult !== 1) {
       base *= normalMult;
@@ -295,20 +288,20 @@ export default function getDamage({
           ? flat.base * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[flat.type][level])
           : 0;
 
-        record.finalFlat = flatBonus;
+        record.totalFlat = flatBonus;
         return result + flatBonus;
       };
 
       if (Array.isArray(multBase)) {
         const finalMults = multBase.map(getFinalMult);
 
-        record.finalMult = finalMults;
+        record.talentMult = finalMults;
         base = finalMults.map(getBaseDamage);
       } //
       else {
         const finalMult = getFinalMult(multBase);
 
-        record.finalMult = finalMult;
+        record.talentMult = finalMult;
         base = getBaseDamage(finalMult);
       }
 
@@ -367,66 +360,30 @@ export default function getDamage({
   });
 
   const baseRxnDmg = BASE_REACTION_DAMAGE[bareLv(char.level)];
-  // Special reaction buffs, one of its kind
-  // let nilouA4BuffValue = 0;
-  // let nahidaC2isInUse = false;
-
-  // switch (charData.name) {
-  //   case "Nilou": {
-  //     const { buffs } = findCharacter(char) || {};
-  //     if (
-  //       buffs &&
-  //       nilouA1isOn(partyData, charData) &&
-  //       charModIsInUse(buffs, char, selfBuffCtrls, 0)
-  //     ) {
-  //       nilouA4BuffValue = getNilouA4BuffValue(totalAttr.hp);
-  //     }
-  //     break;
-  //   }
-  //   case "Nahida":
-  //     const { buffs } = findCharacter(char) || {};
-  //     if (buffs && charModIsInUse(buffs, char, selfBuffCtrls, 3)) {
-  //       nahidaC2isInUse = true;
-  //     }
-  //     break;
-  // }
-
-  // for (const teammate of party) {
-  //   if (!teammate) {
-  //     continue;
-  //   }
-  //   switch (teammate.name) {
-  //     case "Nilou":
-  //       const { activated, inputs = [] } = findByIndex(teammate.buffCtrls, 0) || {};
-
-  //       if (nilouA1isOn(partyData, charData) && activated) {
-  //         nilouA4BuffValue = getNilouA4BuffValue(inputs[0] || 0);
-  //       }
-  //       break;
-  //     case "Nahida": {
-  //       nahidaC2isInUse = !!findByIndex(teammate.buffCtrls, 3)?.activated;
-  //       break;
-  //     }
-  //   }
-  // }
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
-    const { mult: normalMult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
-
-    // const specialPercent = rxnBonus[rxn] + (rxn === "bloom" ? nilouA4BuffValue : 0);
-    const specialPercent = rxnBonus[rxn].pct;
-    const finalMult = 1 + specialPercent / 100;
+    const { mult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
+    const normalMult = 1 + rxnBonus[rxn].pct / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
-    const base = baseRxnDmg * normalMult * finalMult * resMult;
+    const baseValue = baseRxnDmg * mult;
+    const nonCrit = baseValue * normalMult * resMult;
+    const cDmg = rxnBonus[rxn].cDmg / 100;
+    const cRate = rxnBonus[rxn].cRate / 100;
 
-    finalResult.RXN[rxn] = { nonCrit: base, crit: 0, average: base };
+    finalResult.RXN[rxn] = {
+      nonCrit,
+      crit: cDmg ? nonCrit * (1 + cDmg) : 0,
+      average: cRate ? nonCrit * (1 + cDmg * cRate) : 0,
+    };
 
     if (tracker) {
       tracker.RXN[rxn] = {
-        baseValue: baseRxnDmg,
+        baseStatType: "Base DMG",
+        baseValue: Math.round(baseValue),
         normalMult,
-        finalMult,
         resMult,
+        cDmg,
+        cRate,
       };
     }
   }
