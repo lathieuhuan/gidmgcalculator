@@ -168,7 +168,7 @@ export type CustomBuffCtrl = {
   value: number;
 };
 
-export type CustomDebuffCtrlType = AttackElement | "def";
+export type CustomDebuffCtrlType = ResistanceReductionKey;
 
 export type CustomDebuffCtrl = {
   type: CustomDebuffCtrlType;

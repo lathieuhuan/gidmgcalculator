@@ -1,17 +1,12 @@
 import type {
   AttackElementPath,
   AttackPatternPath,
+  ReactionBonusPath,
   ModRecipientKey,
   RecipientName,
 } from "@Calculators/utils";
-import type {
-  AttackElement,
-  AttributeStat,
-  Level,
-  ModifierInput,
-  ReactionBonusKey,
-} from "@Src/types";
 import { applyModifier } from "@Calculators/utils";
+import type { AttributeStat, Level, ResistanceReductionKey } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { bareLv, pickOne } from "@Src/utils";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
@@ -38,13 +33,13 @@ export function makeWpModApplier(
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "rxnBonus",
-  keys: ReactionBonusKey | ReactionBonusKey[],
+  keys: ReactionBonusPath | ReactionBonusPath[],
   baseBuffValue: NumOrArrayNum,
   divider?: NumOrArrayNum
 ): (args: any) => void;
 export function makeWpModApplier(
   recipientName: "resistReduct",
-  keys: (AttackElement | "def") | (AttackElement | "def")[],
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
   baseBuffValue: NumOrArrayNum,
   divider?: NumOrArrayNum
 ): (args: any) => void;

@@ -110,8 +110,8 @@ export type ModRecipientKey =
   | AttackPatternPath[]
   | AttackElementPath
   | AttackElementPath[]
-  | (AttackElement | "def")
-  | (AttackElement | "def")[];
+  | ResistanceReductionKey
+  | ResistanceReductionKey[];
 
 type RootValue = number | number[];
 
@@ -237,7 +237,7 @@ export function makeModApplier(
 ): (args: any) => void;
 export function makeModApplier(
   recipientName: "resistReduct",
-  keys: (AttackElement | "def") | (AttackElement | "def")[],
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
   rootValue: RootValue
 ): (args: any) => void;
 

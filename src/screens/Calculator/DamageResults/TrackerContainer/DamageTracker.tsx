@@ -57,8 +57,8 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
                 )
                 {renderDmgComponent({
                   desc: "Percent Mult.",
-                  value: record.normalMult * 100,
-                  processor: (value) => round2(value) + "%",
+                  value: record.normalMult,
+                  processor: (value) => round2(value * 100) + "%",
                 })}
                 {renderDmgComponent({
                   desc: "Special Mult.",

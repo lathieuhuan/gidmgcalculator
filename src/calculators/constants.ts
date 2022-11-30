@@ -1,5 +1,5 @@
 import type {
-  AttackElement,
+  ActualAttackElement,
   AttributeStat,
   ResonanceVision,
   TransformativeReaction,
@@ -31,7 +31,7 @@ export const BASE_REACTION_DAMAGE: Record<number, number> = {
 
 export const TRANSFORMATIVE_REACTION_INFO: Record<
   TransformativeReaction,
-  { mult: number; dmgType: AttackElement | "various" }
+  { mult: number; dmgType: ActualAttackElement }
 > = {
   bloom: { mult: 2, dmgType: "dendro" },
   hyperbloom: { mult: 3, dmgType: "dendro" },

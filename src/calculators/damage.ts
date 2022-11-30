@@ -388,19 +388,5 @@ export default function getDamage({
     }
   }
 
-  // if (nahidaC2isInUse) {
-  //   for (const rxn of ["burning", "bloom", "hyperbloom", "burgeon"] as const) {
-  //     const { [rxn]: rxnDmg } = finalResult.RXN;
-
-  //     rxnDmg.crit = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 2);
-  //     rxnDmg.average = applyToOneOrMany(rxnDmg.nonCrit, (n) => n * 1.2);
-
-  //     if (tracker) {
-  //       tracker.RXN[rxn].cRate = 0.2;
-  //       tracker.RXN[rxn].cDmg = 1;
-  //     }
-  //   }
-  // }
-
   return finalResult;
 }
