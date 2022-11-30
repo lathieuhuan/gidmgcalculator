@@ -105,8 +105,8 @@ const Nahida: DataCharacter = {
         },
         {
           name: "Karmic Oblivion DMG (C6)",
-          isStatic: true,
           multBase: 200,
+          multType: 0,
           getTalentBuff: ({ totalAttr, char }) => {
             const emPartDesc = `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Mult. 400%)`;
             return talentBuff([checkCons[6](char), "flat", emPartDesc, totalAttr.em * 4]);

@@ -85,9 +85,9 @@ const Gorou: DataCharacter = {
         {
           name: "Heal Amount (C4)",
           notAttack: "healing",
-          isStatic: true,
           baseStatType: "def",
           multBase: 50,
+          multType: 0,
         },
       ],
       // getExtraStats: () => [

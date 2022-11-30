@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import cn from "classnames";
 import { FaInfoCircle } from "react-icons/fa";
 
-import type { CalcArtSet, Vision, Weapon } from "@Src/types";
+import type { AmplifyingReaction, CalcArtSet, QuickenReaction, Vision, Weapon } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, getImgSrc } from "@Src/utils";
 import { Green, Button, CloseButton } from "@Src/styled-components";
@@ -246,10 +246,28 @@ export const renderNoItems = (type: string) => (
   </div>
 );
 
+export const renderAmpReactionHeading = (element: Vision, reaction: AmplifyingReaction) => (
+  <>
+    <span className="capitalize">{reaction}</span>{" "}
+    <span className="text-lesser font-normal">
+      (vs {element === "pyro" ? (reaction === "melt" ? "Cryo" : "Hydro") : "Pyro"})
+    </span>
+  </>
+);
+
 export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   <>
     Increases <span className={`text-${element} capitalize`}>{element} DMG</span> by{" "}
     <Green b>{round3(mult)}</Green> times.
+  </>
+);
+
+export const renderQuickenHeading = (element: Vision, reaction: QuickenReaction) => (
+  <>
+    <span className="capitalize">{reaction}</span>{" "}
+    <span className="text-lesser font-normal">
+      ({element === "electro" ? "Electro" : "Dendro"} on Quicken)
+    </span>
   </>
 );
 

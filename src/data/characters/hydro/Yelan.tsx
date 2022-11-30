@@ -83,9 +83,9 @@ const Yelan: DataCharacter = {
         { name: "Exquisite Throw DMG (1/3)", baseStatType: "hp", multBase: 4.87 },
         {
           name: "Additional Water Arrow DMG (C2)",
-          isStatic: true,
           baseStatType: "hp",
           multBase: 14,
+          multType: 0,
         },
       ],
       // otherStats: () => [

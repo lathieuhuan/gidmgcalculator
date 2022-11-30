@@ -78,7 +78,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
           <label className="mt-3 flex items-center">
             <span>Level</span>
             <input
-              className="ml-4 w-14 px-2 py-1 leading-none text-right font-bold textinput-common"
+              className="ml-4 w-14 px-2 py-1 leading-none text-right font-semibold textinput-common"
               value={target.level}
               onChange={(e) => {
                 const value = +e.target.value;

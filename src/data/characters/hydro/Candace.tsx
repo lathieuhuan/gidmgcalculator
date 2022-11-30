@@ -71,8 +71,8 @@ const Candace: DataCharacter = {
         {
           name: "Wave DMG (C6)",
           baseStatType: "hp",
-          isStatic: true,
           multBase: 15,
+          multType: 0,
         },
       ],
       // getExtraStats: () => [

@@ -10,7 +10,13 @@ import { resonanceRenderInfo, VISION_TYPES } from "@Src/constants";
 import { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
 import { ModifierTemplate, ModSelectOption } from "@Components/ModifierTemplate";
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
-import { renderAmpReactionDesc, renderModifiers, renderQuickenDesc } from "@Components/minors";
+import {
+  renderAmpReactionDesc,
+  renderAmpReactionHeading,
+  renderModifiers,
+  renderQuickenDesc,
+  renderQuickenHeading,
+} from "@Components/minors";
 import { Select } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
@@ -98,14 +104,7 @@ export default function ElementBuffs() {
             })
           );
         }}
-        heading={
-          <>
-            <span className="capitalize">{reaction}</span>{" "}
-            <span className="text-lesser font-normal">
-              (vs {element === "pyro" ? (reaction === "melt" ? "Cryo" : "Hydro") : "Pyro"})
-            </span>
-          </>
-        }
+        heading={renderAmpReactionHeading(element, reaction)}
         desc={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
       />
     );
@@ -132,14 +131,7 @@ export default function ElementBuffs() {
             })
           );
         }}
-        heading={
-          <>
-            <span className="capitalize">{reaction}</span>{" "}
-            <span className="text-lesser font-normal">
-              ({element === "electro" ? "Electro" : "Dendro"} on Quicken)
-            </span>
-          </>
-        }
+        heading={renderQuickenHeading(element, reaction)}
         desc={renderQuickenDesc(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
       />
     );

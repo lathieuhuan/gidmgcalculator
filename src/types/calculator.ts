@@ -49,7 +49,6 @@ export type CalcSetup = {
   elmtModCtrls: ElementModCtrl;
   customBuffCtrls: CustomBuffCtrl[];
   customDebuffCtrls: CustomDebuffCtrl[];
-
   customInfusion: Infusion;
 };
 

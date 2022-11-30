@@ -60,7 +60,7 @@ const Yanfei: DataCharacter = {
         { name: "2-Seal Charged Attack", multBase: 132.9 },
         { name: "3-Seal Charged Attack", multBase: 150.23 },
         { name: "4-Seal Charged Attack", multBase: 167.57 },
-        { name: "Extra Hit (A4)", isStatic: true, multBase: 80 },
+        { name: "Extra Hit (A4)", multBase: 80, multType: 0 },
       ],
     },
     PA: { stats: LIGHT_PAs },

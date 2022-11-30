@@ -68,8 +68,8 @@ const Cyno: DataCharacter = {
         },
         {
           name: "Duststalker Bolt DMG (A1)",
-          isStatic: true,
           multBase: 100,
+          multType: 0,
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff([checkAscs[4](char), "flat", [true, 4], totalAttr.em * 2.5]);
           },

@@ -22,7 +22,7 @@ import { SetupControl } from "./SetupControl";
 
 import { MAX_CALC_SETUPS } from "@Src/constants";
 import { useTabs } from "@Hooks/useTabs";
-import { findById, randomString } from "@Src/utils";
+import { findById } from "@Src/utils";
 
 import styles from "@Screens/Calculator/styles.module.scss";
 

@@ -90,9 +90,9 @@ const Sayu: DataCharacter = {
         {
           name: "Heal Amount (A1)",
           notAttack: "healing",
-          isStatic: true,
           baseStatType: "em",
           multBase: 120,
+          multType: 0,
           flat: { base: 300, type: 0 },
         },
       ],

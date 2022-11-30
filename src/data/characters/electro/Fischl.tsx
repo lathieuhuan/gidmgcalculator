@@ -40,18 +40,13 @@ const Fischl: DataCharacter = {
         { name: "3-Hit", multBase: 58.14 },
         { name: "4-Hit", multBase: 57.71 },
         { name: "5-Hit", multBase: 72.07 },
-        { name: "Oz's Joint Attack (C1)", isStatic: true, multBase: 22 },
+        { name: "Oz's Joint Attack (C1)", multBase: 22, multType: 0 },
       ],
     },
     CA: {
       stats: [
         ...BOW_CAs,
-        {
-          name: "Thundering Retribution (A1)",
-          isStatic: true,
-          attElmt: "electro",
-          multBase: 189.35,
-        },
+        { name: "Thundering Retribution (A1)", attElmt: "electro", multBase: 189.35, multType: 0 },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -66,16 +61,8 @@ const Fischl: DataCharacter = {
           multBase: 115.44,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
         },
-        {
-          name: "Thundering Retribution (A4)",
-          isStatic: true,
-          multBase: 80,
-        },
-        {
-          name: "Oz's Joint Attack (C6)",
-          isStatic: true,
-          multBase: 30,
-        },
+        { name: "Thundering Retribution (A4)", multBase: 80, multType: 0 },
+        { name: "Oz's Joint Attack (C6)", multBase: 30, multType: 0 },
       ],
       // getExtraStats: () => [
       //   { name: "Oz's Duration", value: "10s" },

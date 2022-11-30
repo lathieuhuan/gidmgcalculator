@@ -57,7 +57,7 @@ interface SelfDebuffsProps {
 export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfDebuffsProps) {
   const content: JSX.Element[] = [];
 
-  for (const { index, inputs } of selfDebuffCtrls) {
+  for (const { index, inputs = [] } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs, index);
 
     if (debuff) {
@@ -66,7 +66,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
           key={index}
           mutable={false}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char, partyData })}
+          desc={debuff.desc({ fromSelf: true, char, partyData, inputs })}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs}
         />
@@ -107,7 +107,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       );
     }
 
-    for (const { index, inputs } of teammate.debuffCtrls) {
+    for (const { index, inputs = [] } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
 
       if (debuff) {

@@ -10,7 +10,7 @@ interface ModifierWrapperProps {
 export function ModifierWrapper({ className, title, children }: ModifierWrapperProps) {
   return (
     <div className={cn("py-4 shrink-0", className)}>
-      <p className="mb-2 text-h5 text-center text-orange font-bold uppercase">{title}</p>
+      <p className="mb-2 text-lg text-center text-orange font-bold uppercase">{title}</p>
       <div className="custom-scrollbar">{children}</div>
     </div>
   );

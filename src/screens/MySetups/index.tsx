@@ -4,9 +4,10 @@ import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 
 import type {
   ArtifactAttribute,
+  AttackElement,
   CharData,
   DamageResult,
-  FinalInfusion,
+  Infusion,
   InnateBuff,
   ReactionBonus,
   TotalAttribute,
@@ -110,12 +111,12 @@ export default function MySetups() {
   };
 
   let charData = {} as CharData;
-  let finalInfusion: FinalInfusion;
   let totalAttr: TotalAttribute;
   let artAttr: ArtifactAttribute;
   let rxnBonus: ReactionBonus;
   let damage = {} as DamageResult;
   let innateBuffs: InnateBuff[] = [];
+  let infusedElement: AttackElement;
 
   if (chosenSetup) {
     const dataCharacter = findCharacter(chosenSetup.char);
@@ -127,11 +128,12 @@ export default function MySetups() {
 
     const result = calculateAll(chosenSetup, charData);
 
-    finalInfusion = result.finalInfusion;
+    // finalInfusion = result.finalInfusion;
     totalAttr = result.totalAttr;
     rxnBonus = result.rxnBonus;
     artAttr = result.artAttr;
     damage = result.dmgResult;
+    infusedElement = result.infusedElement;
   }
 
   const renderSetup = (setup: UsersSetup | UsersComplexSetup, index: number) => {
@@ -232,18 +234,6 @@ export default function MySetups() {
       case "MODIFIERS": {
         const partyData = getPartyData(party);
         const { buffs = [], debuffs = [] } = findCharacter(char) || {};
-        const quickenType = elmtModCtrls.spread
-          ? "spread"
-          : elmtModCtrls.aggravate
-          ? "aggravate"
-          : "";
-
-        const quickenBuff = quickenType
-          ? {
-              label: quickenType === "spread" ? "Spread" : "Aggravate",
-              value: getQuickenBuffDamage(char.level, totalAttr?.em || 0, rxnBonus)[quickenType],
-            }
-          : undefined;
 
         return (
           <div className="h-full px-4 flex space-x-4 overflow-auto">
@@ -280,11 +270,11 @@ export default function MySetups() {
                 ]}
                 contentList={[
                   <ElementBuffs
+                    charLv={char.level}
                     vision={charData?.vision}
                     elmtModCtrls={elmtModCtrls}
                     rxnBonus={rxnBonus}
-                    finalInfusion={finalInfusion}
-                    quickenBuff={quickenBuff}
+                    infusedElement={infusedElement}
                   />,
                   <SelfBuffs
                     char={char}
@@ -317,7 +307,7 @@ export default function MySetups() {
             <ModifierWrapper title="Target" className="w-68">
               <div className="h-full px-2">
                 {Object.entries(target).map(([key, value], i) => (
-                  <p key={i} className="mb-1 text-h6">
+                  <p key={i} className="mb-1">
                     <span
                       className={cn(
                         "mr-2 capitalize",
@@ -326,12 +316,9 @@ export default function MySetups() {
                     >
                       {t(key, { ns: "resistance" })}:
                     </span>
-                    <b>{value}</b>
+                    <span className="font-medium">{value}</span>
                   </p>
                 ))}
-                <div className="mt-6">
-                  <InfusionNotes infusion={finalInfusion} {...charData} />
-                </div>
               </div>
             </ModifierWrapper>
           </div>

@@ -50,10 +50,10 @@ const Beidou: DataCharacter = {
         { name: "Charged Attack Final", multBase: 101.82 },
         {
           name: "Extra Hit (C4)",
-          isStatic: true,
           attPatt: "none",
           attElmt: "electro",
           multBase: 20,
+          multType: 0,
         },
       ],
     },

@@ -2,6 +2,7 @@
   div {
     width: 4px;
     height: 4px;
+    border-radius: 50%;
     position: relative;
     margin: 0 auto;
     transition: all 300ms;
@@ -10,6 +11,7 @@
       content: "";
       width: 4px;
       height: 4px;
+      border-radius: 50%;
       background: inherit;
       position: absolute;
       right: 0;
@@ -28,10 +30,12 @@
   div {
     width: 16px;
     height: 2.5px;
+    border-radius: 0;
     &:before,
     &:after {
       width: 10px;
       height: 2px;
+      border-radius: 0;
     }
     &::before {
       top: -4px;

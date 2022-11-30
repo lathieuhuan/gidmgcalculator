@@ -100,6 +100,7 @@ export type StatInfo = {
   subAttPatt?: SubAttackPattern;
   attElmt?: ActualAttackElement;
   multBase: number | number[];
+  /** when 0 stat not scale with talent level */
   multType?: number;
   /** only on ES / EB */
   baseStatType?: BaseStatType;
@@ -110,7 +111,7 @@ export type StatInfo = {
   /**
    * If true, multBase and flat.base will not scale with talent level
    */
-  isStatic?: boolean;
+  // isStatic?: boolean;
   getTalentBuff?: GetTalentBuffFn;
   /** only on ES / EB */
   notAttack?: "healing" | "shield" | "other";

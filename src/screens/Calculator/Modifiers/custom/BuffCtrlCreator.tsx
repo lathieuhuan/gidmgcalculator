@@ -99,7 +99,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
                 }
               }}
             >
-              <p className={cn("text-h6 font-bold text-center", chosen && "text-black")}>
+              <p className={cn("text-h6 font-semibold text-center", chosen && "text-black")}>
                 {categoryName}
               </p>
             </button>
@@ -121,7 +121,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
         </Select>
         <input
           ref={inputRef}
-          className="ml-4 w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
+          className="ml-4 w-16 px-2 py-1 text-lg text-right font-semibold textinput-common"
           autoFocus
           value={config.value}
           onChange={(e) => onChangeValue(e.target.value)}

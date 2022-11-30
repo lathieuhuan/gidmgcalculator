@@ -43,9 +43,9 @@ const Dori: DataCharacter = {
         {
           name: "Heal on Normal Attacks hit (C6)",
           notAttack: "healing",
-          isStatic: true,
           baseStatType: "hp",
           multBase: 4,
+          multType: 0,
         },
       ],
     },

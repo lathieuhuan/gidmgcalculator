@@ -72,17 +72,17 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
     });
 
     const renderSpan = (text: string | number) => (
-      <span className={`font-bold text-${charInfo.vision}`}>{text}</span>
+      <span className={`font-medium text-${charInfo.vision}`}>{text}</span>
     );
 
     return (
-      <div className="flex justify-center">
-        <img className="w-24" src={getImgSrc(charInfo.icon)} alt={char.name} draggable={false} />
+      <div className="flex">
+        <img className="w-20" src={getImgSrc(charInfo.icon)} alt={char.name} draggable={false} />
 
-        <div className="ml-2 pt-2 flex-col justify-between">
-          <p className="text-h5">Level {renderSpan(char.level)}</p>
-          <p className="text-h6">Constellation {renderSpan(char.cons)}</p>
-          <p className="text-h6">
+        <div className="ml-4 pt-2 flex-col justify-between">
+          <p className="text-lg">Level {renderSpan(char.level)}</p>
+          <p>Constellation {renderSpan(char.cons)}</p>
+          <p>
             Talents: {renderSpan(talents[0])} / {renderSpan(talents[1])} / {renderSpan(talents[2])}
           </p>
         </div>
@@ -191,7 +191,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
       >
         <div className="w-68 lg:w-96 flex items-center">
           {!isOriginal && renderLinkButton(ID, setup.ID)}
-          <p className="text-h3 text-orange font-bold truncate">{setupName || setup.name}</p>
+          <p className="text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="mt-4 lg:mt-0 pb-4 flex space-x-6 justify-end">

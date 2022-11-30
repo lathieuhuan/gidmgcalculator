@@ -6,7 +6,6 @@ import type {
   CharInfo,
   CustomBuffCtrl,
   ElementModCtrl,
-  FinalInfusion,
   ModifierCtrl,
   Party,
   PartyData,
@@ -14,6 +13,9 @@ import type {
   TotalAttribute,
   Vision,
   InnateBuff,
+  Infusion,
+  Level,
+  AttackElement,
 } from "@Src/types";
 import { resonanceRenderInfo } from "@Src/constants";
 
@@ -21,69 +23,85 @@ import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { findByIndex, percentSign } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 
-import { renderAmpReactionDesc, renderModifiers } from "@Components/minors";
+import {
+  renderAmpReactionDesc,
+  renderAmpReactionHeading,
+  renderModifiers,
+  renderQuickenDesc,
+  renderQuickenHeading,
+} from "@Components/minors";
 import { ModifierTemplate } from "@Components/ModifierTemplate";
 import { Green } from "@Src/styled-components";
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
 
 interface ElementBuffsProps {
+  charLv: Level;
   elmtModCtrls: ElementModCtrl;
-  finalInfusion: FinalInfusion;
+  infusedElement: AttackElement;
   rxnBonus: ReactionBonus;
   vision: Vision;
-  quickenBuff?: {
-    label: string;
-    value: number;
-  };
 }
 export function ElementBuffs({
+  charLv,
   elmtModCtrls,
-  finalInfusion,
+  infusedElement,
   rxnBonus,
   vision,
-  quickenBuff,
 }: ElementBuffsProps) {
   const content = [];
-  const { resonances, ampRxn, infusion_ampRxn, spread, aggravate } = elmtModCtrls;
+  const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
   for (const { vision } of resonances) {
     const { name, desc } = resonanceRenderInfo[vision];
     content.push(<ModifierTemplate key={vision} mutable={false} heading={name} desc={desc} />);
   }
-  if (ampRxn) {
+
+  if (infusedElement !== "phys") {
     content.push(
       <ModifierTemplate
-        key="ampRxn"
+        key="infusion"
         mutable={false}
-        heading={ampRxn}
-        desc={renderAmpReactionDesc(vision, rxnBonus[ampRxn])}
-      />
-    );
-  }
-  if (infusion_ampRxn && finalInfusion.NA !== "phys") {
-    content.push(
-      <ModifierTemplate
-        key="infusion_ampRxn"
-        mutable={false}
-        heading={infusion_ampRxn + " (external infusion)"}
-        desc={renderAmpReactionDesc(finalInfusion.NA, rxnBonus[`infusion_${infusion_ampRxn}`])}
-      />
-    );
-  }
-  if (quickenBuff) {
-    content.push(
-      <ModifierTemplate
-        mutable={false}
-        key={quickenBuff.label}
-        heading={quickenBuff.label}
+        heading="Custom Infusion"
         desc={
           <>
-            Increase base <span className={`text-${vision} capitalize`}>{vision} DMG</span> by{" "}
-            <Green b>{quickenBuff.value}</Green>.
+            Infused with{" "}
+            <span className={`capitalize text-${infusedElement}`}>{infusedElement}.</span>
           </>
         }
       />
     );
   }
+
+  const addAttackReaction = (attReaction: "reaction" | "infuse_reaction") => {
+    const reation = attReaction === "reaction" ? reaction : infuse_reaction;
+    const element = attReaction === "reaction" ? vision : infusedElement;
+
+    if (element === "phys") {
+      return;
+    }
+
+    if (reation === "melt" || reation === "vaporize") {
+      content.push(
+        <ModifierTemplate
+          key={"amp-" + attReaction}
+          mutable={false}
+          heading={renderAmpReactionHeading(element, reation)}
+          desc={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
+        />
+      );
+    } else if (reation === "spread" || reation === "aggravate") {
+      <ModifierTemplate
+        key={"quicken-" + attReaction}
+        mutable={false}
+        heading={renderQuickenHeading(element, reation)}
+        desc={renderQuickenDesc(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
+      />;
+    }
+  };
+
+  addAttackReaction("reaction");
+  addAttackReaction("infuse_reaction");
+
   return renderModifiers(content, true, false);
 }
 
@@ -118,7 +136,7 @@ export function SelfBuffs({
     );
   });
 
-  for (const { index, inputs } of selfBuffCtrls) {
+  for (const { index, inputs = [] } of selfBuffCtrls) {
     const buff = findByIndex(buffs, index);
 
     if (buff) {

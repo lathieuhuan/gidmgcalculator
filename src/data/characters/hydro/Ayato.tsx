@@ -116,8 +116,8 @@ const Ayato: DataCharacter = {
         {
           name: "Extra Shunsuiken strike (1/2) (C6)",
           attPatt: "NA",
-          isStatic: true,
           multBase: 450,
+          multType: 0,
           getTalentBuff: ({ char, selfBuffCtrls }) => talentBuff(C1TalentBuff(char, selfBuffCtrls)),
         },
         {

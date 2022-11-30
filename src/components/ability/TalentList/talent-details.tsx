@@ -87,7 +87,7 @@ export function SkillAttributes({
             const defaultInfo = getDefaultStatInfo(talentType, weapon, vision);
             const { multBase, multType = defaultInfo.multType, baseStatType, flat } = stat;
 
-            return stat.isNotOfficial || stat.isStatic ? null : (
+            return stat.isNotOfficial || stat.multType === 0 ? null : (
               <Row key={i} className={styles.row}>
                 <p className={styles.leftCol}>{stat.name}</p>
                 <p className={styles.rightCol}>

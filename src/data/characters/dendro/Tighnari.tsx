@@ -51,9 +51,9 @@ const Tighnari: DataCharacter = {
         { name: "Clusterbloom Arrow DMG", subAttPatt: "FCA", multBase: 38.6, multType: 2 },
         {
           name: "Additional Clusterbloom Arrow DMG (C6)",
-          isStatic: true,
           subAttPatt: "FCA",
           multBase: 150,
+          multType: 0,
         },
       ],
     },

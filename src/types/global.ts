@@ -52,6 +52,8 @@ export type AttributeStat = typeof ATTRIBUTE_STAT_TYPES[number];
 
 export type AmplifyingReaction = "melt" | "vaporize";
 
+export type QuickenReaction = "spread" | "aggravate";
+
 export type Reaction = typeof REACTIONS[number];
 
 export type TransformativeReaction = typeof TRANSFORMATIVE_REACTIONS[number];

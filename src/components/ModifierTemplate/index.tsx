@@ -58,7 +58,7 @@ export function ModifierTemplate({
           return (
             <input
               type="text"
-              className="w-20 p-2 text-right textinput-common font-bold"
+              className="w-20 p-2 text-right textinput-common font-semibold"
               value={input}
               onChange={(e) => {
                 if (onChangeText) {
@@ -141,7 +141,7 @@ export function ModifierTemplate({
               onChange={onToggle}
             />
           )}
-          <span className="pl-1 font-bold text-lightgold">
+          <span className="pl-1 font-semibold text-lightgold">
             {mutable ? "" : "+"} {heading}
           </span>
         </label>

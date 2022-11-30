@@ -264,13 +264,7 @@ export default function getDamage({
 
       // CALCULATE BASE DAMAGE
       let base: number | number[];
-      const {
-        isStatic,
-        baseStatType = "atk",
-        multBase,
-        multType = defaultInfo.multType,
-        flat,
-      } = stat;
+      const { baseStatType = "atk", multBase, multType = defaultInfo.multType, flat } = stat;
 
       const xtraMult = talentBuff.mult?.value || 0;
       const record = {
@@ -280,12 +274,12 @@ export default function getDamage({
       } as TrackerDamageRecord;
 
       const getFinalMult = (multBase: number) =>
-        multBase * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[multType][level]) + xtraMult;
+        multBase * (multType ? TALENT_LV_MULTIPLIERS[multType][level] : 1) + xtraMult;
 
       const getBaseDamage = (percent: number) => {
         const result = (totalAttr[baseStatType] * percent) / 100;
         const flatBonus = flat
-          ? flat.base * (isStatic ? 1 : TALENT_LV_MULTIPLIERS[flat.type][level])
+          ? flat.base * (flat.type ? TALENT_LV_MULTIPLIERS[flat.type][level] : 1)
           : 0;
 
         record.totalFlat = flatBonus;
