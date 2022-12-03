@@ -13,7 +13,6 @@ import type {
   TotalAttribute,
   Vision,
   InnateBuff,
-  Infusion,
   Level,
   AttackElement,
 } from "@Src/types";
@@ -31,7 +30,6 @@ import {
   renderQuickenHeading,
 } from "@Components/minors";
 import { ModifierTemplate } from "@Components/ModifierTemplate";
-import { Green } from "@Src/styled-components";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
 
 interface ElementBuffsProps {

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
 
@@ -18,7 +18,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 import { findById, getImgSrc } from "@Src/utils";
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
@@ -26,7 +26,7 @@ import { CopySelect } from "./CopySelect";
 import { Select } from "@Src/styled-components";
 
 interface IModal {
-  type: "" | "CHARACTER" | "WEAPON" | "ARTIFACT";
+  type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
   teammateIndex: number | null;
 }
 
@@ -44,11 +44,10 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
+  const partyData = useMemo(() => getPartyData(party), [party]);
+
   const isOriginalSetup = findById(setupManageInfos, activeId)?.type === "original";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
-  const detailWeaponType = detailTeammate
-    ? findCharacter(detailTeammate)?.weapon || "sword"
-    : "sword";
 
   useEffect(() => {
     if (!detailTeammate) {
@@ -78,34 +77,27 @@ export default function SectionParty() {
       {party.length && party.every((teammate) => !teammate) ? <CopySelect /> : null}
 
       <div className="flex">
-        {party.map((teammate, teammateIndex) => {
+        {partyData.map((data, teammateIndex) => {
           const isExpanded = teammateIndex === detailSlot;
-          let button;
 
-          if (teammate) {
-            const { icon, vision } = findCharacter(teammate)!;
-
-            button = (
-              <button
-                className={cn(
-                  `w-18 h-18 bg-${vision} rounded-circle shrink-0 overflow-hidden`,
-                  !isExpanded && "zoomin-on-hover"
-                )}
-                onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
-              >
-                <img className="w-full h-full" src={getImgSrc(icon)} alt="" draggable={false} />
-              </button>
-            );
-          } else {
-            button = (
-              <button
-                className="w-18 h-18 rounded-circle flex-center text-2xl shrink-0 bg-darkblue-3 glow-on-hover"
-                onClick={onClickChangeTeammate(teammateIndex)}
-              >
-                <FaPlus className="text-default opacity-80" />
-              </button>
-            );
-          }
+          const button = data ? (
+            <button
+              className={cn(
+                `w-18 h-18 bg-${data.vision} rounded-circle shrink-0 overflow-hidden`,
+                !isExpanded && "zoomin-on-hover"
+              )}
+              onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
+            >
+              <img className="w-full h-full" src={getImgSrc(data.icon)} alt="" draggable={false} />
+            </button>
+          ) : (
+            <button
+              className="w-18 h-18 rounded-circle flex-center text-2xl shrink-0 bg-darkblue-3 glow-on-hover"
+              onClick={onClickChangeTeammate(teammateIndex)}
+            >
+              <FaPlus className="text-default opacity-80" />
+            </button>
+          );
 
           return (
             <div
@@ -192,21 +184,23 @@ export default function SectionParty() {
         onClose={closeModal}
       />
 
-      <Picker.Weapon
-        active={modal.type === "WEAPON" && modal.teammateIndex !== null}
-        weaponType={detailWeaponType}
-        onPickWeapon={({ code }) => {
-          if (detailSlot !== null) {
-            dispatch(
-              updateTeammateWeapon({
-                teammateIndex: detailSlot,
-                code,
-              })
-            );
-          }
-        }}
-        onClose={closeModal}
-      />
+      {detailSlot !== null && (
+        <Picker.Weapon
+          active={modal.type === "WEAPON" && modal.teammateIndex !== null}
+          weaponType={partyData[detailSlot]?.weapon || "sword"}
+          onPickWeapon={({ code }) => {
+            if (detailSlot !== null) {
+              dispatch(
+                updateTeammateWeapon({
+                  teammateIndex: detailSlot,
+                  code,
+                })
+              );
+            }
+          }}
+          onClose={closeModal}
+        />
+      )}
 
       <Picker.Artifact
         active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}

@@ -1,5 +1,5 @@
 import type { Artifact, CharData, PartyData, Weapon } from "@Src/types";
-import { findByCode, findByName, pickProps } from "@Src/utils";
+import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -45,23 +45,27 @@ export const getCharData = (char: HasName): CharData => {
 };
 
 export function getPartyData(party: (HasName | null)[]): PartyData {
-  return party.map((teammate) => {
-    if (teammate) {
-      const data = findCharacter(teammate);
+  const results: PartyData = [];
 
-      if (data) {
-        return {
-          code: data.code,
-          icon: data.icon,
-          name: data.name,
-          nation: data.nation,
-          vision: data.vision,
-          weapon: data.weapon,
-          EBcost: data.activeTalents.EB.energyCost,
-        };
-      }
+  for (const char of characters) {
+    const foundCharIndex = party.findIndex((teammate) => teammate?.name === char.name);
+
+    if (foundCharIndex !== -1) {
+      results[foundCharIndex] = {
+        code: char.code,
+        icon: char.icon,
+        name: char.name,
+        nation: char.nation,
+        vision: char.vision,
+        weapon: char.weapon,
+        EBcost: char.activeTalents.EB.energyCost,
+      };
     }
-
-    return null;
-  });
+  }
+  for (let i = 0; i < 3; i++) {
+    if (!results[i]) {
+      results[i] = null;
+    }
+  }
+  return results;
 }

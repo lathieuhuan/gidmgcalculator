@@ -3,6 +3,8 @@ import { useRef, useState, useEffect } from "react";
 import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 
 import type {
+  AbilityBuff,
+  AbilityDebuff,
   ArtifactAttribute,
   AttackElement,
   CharData,
@@ -21,15 +23,17 @@ import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/s
 import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 import { findCharacter, getPartyData } from "@Data/controllers";
 
-import { AttributeTable } from "@Components/AttributeTable";
-import { DamageDisplay } from "@Components/DamageDisplay";
 import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
 import { ConfirmTemplate, renderNoItems, SetBonus, TipsModal } from "@Components/minors";
 import { Button, IconButton, Green, Red } from "@Src/styled-components";
-import { SetupLayout } from "./SetupLayout";
+import { AttributeTable } from "@Components/AttributeTable";
+import { DamageDisplay } from "@Components/DamageDisplay";
+import { SetupExporter } from "@Components/SetupExporter";
+import { SetupTemplate } from "./SetupTemplate";
 import { ModifierWrapper } from "./components";
 import {
   MySetupArtifactPieces,
@@ -46,12 +50,10 @@ import {
   ArtifactDebuffs,
   CustomDebuffs,
   FirstCombine,
+  CombineMore,
 } from "./modals";
 
 import styles from "../styles.module.scss";
-import { CombineMore } from "./modals/combine-setups/CombineMore";
-import { SetupExporter } from "@Components/SetupExporter";
-import { useTranslation } from "@Hooks/useTranslation";
 
 export default function MySetups() {
   const dispatch = useDispatch();
@@ -81,9 +83,9 @@ export default function MySetups() {
 
       if (index !== -1) {
         if (window.innerWidth >= 1025) {
-          ref.current.scrollTop = 322 * index - (index ? 40 : 0);
+          ref.current.scrollTop = 262 * index - (index ? 40 : 0);
         } else {
-          ref.current.scrollTop = 581 * index;
+          ref.current.scrollTop = 462 * index;
         }
       }
     }
@@ -107,8 +109,11 @@ export default function MySetups() {
   let artAttr: ArtifactAttribute;
   let rxnBonus: ReactionBonus;
   let damage = {} as DamageResult;
-  let innateBuffs: InnateBuff[] = [];
   let infusedElement: AttackElement;
+
+  let innateBuffs: InnateBuff[] = [];
+  let buffs: AbilityBuff[] = [];
+  let debuffs: AbilityDebuff[] = [];
 
   if (chosenSetup) {
     const data = findCharacter(chosenSetup.char);
@@ -124,6 +129,8 @@ export default function MySetups() {
       EBcost: data.activeTalents.EB.energyCost,
     };
     innateBuffs = data.innateBuffs || [];
+    buffs = data.buffs || [];
+    debuffs = data.debuffs || [];
 
     const result = calculateAll(chosenSetup, charData);
 
@@ -143,7 +150,7 @@ export default function MySetups() {
       const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UsersSetup;
 
       setupDisplay = (
-        <SetupLayout
+        <SetupTemplate
           ID={ID}
           setupName={setup.name}
           setup={actualSetup}
@@ -152,7 +159,7 @@ export default function MySetups() {
         />
       );
     } else {
-      setupDisplay = <SetupLayout ID={ID} setup={setup} openModal={openModal} />;
+      setupDisplay = <SetupTemplate ID={ID} setup={setup} openModal={openModal} />;
     }
 
     return (
@@ -231,7 +238,6 @@ export default function MySetups() {
         );
       case "MODIFIERS": {
         const partyData = getPartyData(party);
-        const { buffs = [], debuffs = [] } = findCharacter(char) || {};
 
         return (
           <div className="h-full px-4 flex space-x-4 overflow-auto">
@@ -414,8 +420,8 @@ export default function MySetups() {
 
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
-      <div className={styles.warehouse}>
-        <div className={cn("h-10", styles["button-bar"])}>
+      <div className={styles.warehouse + " " + styles["setup-warehouse"]}>
+        <div className={"h-10 " + styles["button-bar"]}>
           <IconButton className="mr-4 w-7 h-7" variant="positive" onClick={openModal("TIPS")}>
             <FaInfo className="text-sm" />
           </IconButton>
@@ -428,7 +434,7 @@ export default function MySetups() {
           <div
             ref={ref}
             className={cn(
-              mySetups.length && "p-2",
+              mySetups.length && "p-1 pr-2",
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
           >

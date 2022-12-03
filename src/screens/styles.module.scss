@@ -3,6 +3,14 @@
   width: calc(100% - 3rem);
   height: 90%;
   margin-top: 2rem;
+
+  @media (min-width: 1050px) {
+    width: 1020px;
+    &.setup-warehouse {
+      width: 920px;
+    }
+  }
+
   .button-bar {
     position: absolute;
     bottom: calc(100% + 1rem);
@@ -15,7 +23,6 @@
     height: 100%;
     padding-bottom: 1.5rem;
     display: flex;
-    justify-content: center;
     overflow: auto;
   }
   .list {
@@ -42,8 +49,5 @@
         flex-basis: 16.66%;
       }
     }
-  }
-  @media (min-width: 1050px) {
-    width: 1020px;
   }
 }

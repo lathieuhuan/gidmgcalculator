@@ -65,7 +65,7 @@ const find = (key: string) => {
     if (value === undefined) {
       return undefined;
     }
-    return arr.find((item) => (item as any)[key] === value);
+    return arr.find((item) => (item as any)?.[key] === value);
   };
 };
 const findIndex = (key: string) => {
@@ -179,24 +179,3 @@ export function countWeapon(party: Party) {
   }
   return result;
 }
-
-// export function getPartyIcons(party: Party) {
-//   const icons: Record<string, { char: string; weapon: string; artifact: string }> = {};
-
-//   for (const teammate of party) {
-//     if (teammate) {
-//       const { weapon, artifact } = teammate;
-//       const { icon = "" } = findCharacter(teammate) || {};
-//       const weaponData = findWeapon(weapon);
-//       const artifactData = findArtifactPiece({ code: artifact.code, type: "flower" });
-
-//       icons[teammate.name] = {
-//         char: icon,
-//         weapon: weaponData?.icon || "",
-//         artifact: artifactData?.icon || "",
-//       };
-//     }
-//   }
-
-//   return icons;
-// }

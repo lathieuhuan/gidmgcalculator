@@ -92,7 +92,6 @@ export function restoreCalcSetup(data: CalcSetup) {
 
   const artBuffCtrls = artInfo.sets[0]?.bonusLv ? getArtifactBuffCtrls(true, artInfo.sets[0]) : [];
 
-  // #to-do restore subArtBuffCtrls & subArtDebuffCtrls
   const output: CalcSetup = {
     ...data,
     selfBuffCtrls: restoreModCtrls(selfBuffCtrls, data.selfBuffCtrls),
