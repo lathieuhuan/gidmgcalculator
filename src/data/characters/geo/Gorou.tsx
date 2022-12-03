@@ -10,7 +10,7 @@ const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS
 
 const countGeo = (charData: CharData, partyData: PartyData) => {
   return partyData.reduce(
-    (result, data) => (data.vision === "geo" ? result + 1 : result),
+    (result, data) => (data?.vision === "geo" ? result + 1 : result),
     charData.vision === "geo" ? 1 : 0
   );
 };

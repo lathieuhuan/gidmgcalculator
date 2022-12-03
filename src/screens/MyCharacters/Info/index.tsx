@@ -51,13 +51,14 @@ export default function Info() {
   if (!dataChar || !wpInfo) {
     return null;
   }
-  const { code, name, rarity, nation, vision, weapon, icon } = dataChar;
+  const { code, name, icon, rarity, nation, vision, weapon } = dataChar;
 
   const { totalAttr, artAttr } = getBaseStats({
     char,
     charData: {
       code,
       name,
+      icon,
       nation,
       vision,
       weapon,

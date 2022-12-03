@@ -3,12 +3,12 @@ import { Green } from "@Src/styled-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
-import { applyModifier, makeModApplier, ReactionBonusPath } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
 function getEBBuffValue(char: CharInfo, partyData: PartyData) {
   const pyroCount = partyData.reduce(
-    (result, data) => (data.vision === "pyro" ? result + 1 : result),
+    (result, data) => (data?.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
   const multBase = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;

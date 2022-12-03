@@ -110,14 +110,19 @@ const sumeruSets: DataArtifact[] = [
         ],
         applyBuff: ({ desc, totalAttr, charData, partyData, tracker }) => {
           if (partyData) {
-            const atkBuff = partyData.reduce(
-              (result, data) => result + (data.vision === charData.vision ? 14 : 0),
-              0
-            );
-            const emBuff = partyData.reduce(
-              (result, data) => result + (data.vision !== charData.vision ? 50 : 0),
-              0
-            );
+            let atkBuff = 0;
+            let emBuff = 0;
+
+            for (const teammate of partyData) {
+              if (teammate) {
+                if (teammate.vision === charData.vision) {
+                  atkBuff += 14;
+                } else {
+                  emBuff += 50;
+                }
+              }
+            }
+
             applyModifier(desc, totalAttr, ["atk_", "em"], [atkBuff, emBuff], tracker);
           }
         },

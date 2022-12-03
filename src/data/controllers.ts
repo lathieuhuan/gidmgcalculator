@@ -32,10 +32,11 @@ export const findWeapon = ({ code, type }: { type: Weapon } & HasCode) => {
 export const findMonster = ({ code }: { code: number }) => findByCode(monsters, code);
 
 export const getCharData = (char: HasName): CharData => {
-  const { code, name, vision, nation, weapon, activeTalents } = findCharacter(char)!;
+  const { code, name, icon, vision, nation, weapon, activeTalents } = findCharacter(char)!;
   return {
     code,
     name,
+    icon,
     vision,
     nation,
     weapon,
@@ -44,16 +45,23 @@ export const getCharData = (char: HasName): CharData => {
 };
 
 export function getPartyData(party: (HasName | null)[]): PartyData {
-  const result = [];
-  for (const tm of party) {
-    if (tm) {
-      const dataCharacter = findCharacter(tm)!;
+  return party.map((teammate) => {
+    if (teammate) {
+      const data = findCharacter(teammate);
 
-      result.push({
-        ...pickProps(dataCharacter, ["code", "name", "nation", "vision", "weapon"]),
-        EBcost: dataCharacter.activeTalents.EB.energyCost,
-      });
+      if (data) {
+        return {
+          code: data.code,
+          icon: data.icon,
+          name: data.name,
+          nation: data.nation,
+          vision: data.vision,
+          weapon: data.weapon,
+          EBcost: data.activeTalents.EB.energyCost,
+        };
+      }
     }
-  }
-  return result;
+
+    return null;
+  });
 }

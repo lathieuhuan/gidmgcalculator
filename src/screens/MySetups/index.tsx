@@ -7,7 +7,6 @@ import type {
   AttackElement,
   CharData,
   DamageResult,
-  Infusion,
   InnateBuff,
   ReactionBonus,
   TotalAttribute,
@@ -22,19 +21,13 @@ import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/s
 import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
-import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
+import { findCharacter, getPartyData } from "@Data/controllers";
 
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
 import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
-import {
-  ConfirmTemplate,
-  InfusionNotes,
-  renderNoItems,
-  SetBonus,
-  TipsModal,
-} from "@Components/minors";
+import { ConfirmTemplate, renderNoItems, SetBonus, TipsModal } from "@Components/minors";
 import { Button, IconButton, Green, Red } from "@Src/styled-components";
 import { SetupLayout } from "./SetupLayout";
 import { ModifierWrapper } from "./components";
@@ -58,7 +51,6 @@ import {
 import styles from "../styles.module.scss";
 import { CombineMore } from "./modals/combine-setups/CombineMore";
 import { SetupExporter } from "@Components/SetupExporter";
-import { getQuickenBuffDamage } from "@Calculators/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 
 export default function MySetups() {
@@ -119,16 +111,22 @@ export default function MySetups() {
   let infusedElement: AttackElement;
 
   if (chosenSetup) {
-    const dataCharacter = findCharacter(chosenSetup.char);
-    if (!dataCharacter) return null;
-    const { code, name, vision, nation, weapon, activeTalents } = dataCharacter;
+    const data = findCharacter(chosenSetup.char);
+    if (!data) return null;
 
-    charData = { code, name, vision, nation, weapon, EBcost: activeTalents.EB.energyCost };
-    innateBuffs = dataCharacter.innateBuffs || [];
+    charData = {
+      code: data.code,
+      name: data.name,
+      icon: data.icon,
+      vision: data.vision,
+      nation: data.nation,
+      weapon: data.weapon,
+      EBcost: data.activeTalents.EB.energyCost,
+    };
+    innateBuffs = data.innateBuffs || [];
 
     const result = calculateAll(chosenSetup, charData);
 
-    // finalInfusion = result.finalInfusion;
     totalAttr = result.totalAttr;
     rxnBonus = result.rxnBonus;
     artAttr = result.artAttr;
@@ -161,7 +159,7 @@ export default function MySetups() {
       <div
         key={ID}
         className={cn(
-          "px-2 pt-4 pb-2 rounded-lg bg-darkblue-3",
+          "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
           ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
         )}
         onClick={() => dispatch(chooseUsersSetup(ID))}
@@ -444,7 +442,7 @@ export default function MySetups() {
             {chosenSetup && (
               <>
                 <div>
-                  <p className="text-center truncate">{chosenSetup.name}</p>
+                  <p className="text-sm text-center truncate">{chosenSetup.name}</p>
                 </div>
                 <div className="mt-2 grow hide-scrollbar">
                   <DamageDisplay

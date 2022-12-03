@@ -23,9 +23,9 @@ export function CopySelect() {
   }
 
   const onClickCopyArtifacts = ({ value: sourceId }: { value: number }) => {
-    const { artInfo, artBuffCtrls, subArtBuffCtrls, subArtDebuffCtrls } = setupsById[sourceId];
+    const { artInfo, artBuffCtrls } = setupsById[sourceId];
 
-    dispatch(updateCalcSetup({ artInfo, artBuffCtrls, subArtBuffCtrls, subArtDebuffCtrls }));
+    dispatch(updateCalcSetup({ artInfo, artBuffCtrls }));
   };
 
   return copyOptions.length ? (

@@ -108,7 +108,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
       {hasRxnBonus || em ? (
         <div className={recordListStyles + (hasAttPattBonus || hasAttElmtBonus ? " pt-3" : "")}>
           {REACTIONS.map((reaction) => {
-            const records = rxnBonus?.[reaction] || [];
+            const records = rxnBonus?.[`${reaction}.pct`] || [];
             let bonusFromEM = 0;
 
             if (reaction === "melt" || reaction === "vaporize") {

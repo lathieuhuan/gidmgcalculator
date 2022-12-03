@@ -55,6 +55,7 @@ export type CalcSetup = {
 export type CharData = {
   code: number;
   name: string;
+  icon: string;
   nation: Nation;
   vision: Vision;
   weapon: Weapon;
@@ -220,7 +221,7 @@ export type CalculatedDamageCluster = {
 
 export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
-export type PartyData = CharData[];
+export type PartyData = (CharData | null)[];
 
 export type BuffModifierArgsWrapper = {
   char: CharInfo;

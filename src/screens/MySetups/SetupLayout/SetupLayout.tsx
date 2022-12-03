@@ -38,6 +38,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
   const dispatch = useDispatch();
 
   const isOriginal = type === "original";
+  // const partyIcons = useMemo(() => getPartyIcons(party), []);
 
   const renderLinkButton = (ID: number, displayedID: number) => {
     const uncombine = () => {
@@ -91,44 +92,57 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
   })();
 
   const teammatesDisplay = (
-    <div className="mt-6 w-68 flex justify-between">
+    <div className="mt-4 flex justify-between">
       {party.map((teammate, teammateIndex) => {
         if (!teammate) {
           return null;
         }
         const teammateSetupID = allIDs?.[teammate.name];
         const clickable = !isOriginal && teammateSetupID;
+        const { weapon, artifact } = teammate;
+        const teammateWp = findWeapon(weapon);
+        const teammateArt = findArtifactPiece({ code: artifact.code, type: "flower" });
 
         return (
-          <div
-            key={teammateIndex}
-            className={cn(
-              "w-20",
-              clickable
-                ? "rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
-                : "group relative"
-            )}
-          >
-            <CharacterPortrait
-              name={teammate.name}
-              onClickIcon={() => {
-                if (clickable) {
-                  dispatch(switchShownSetupInComplex({ complexID: ID, shownID: teammateSetupID }));
-                }
-              }}
-            />
-            {!clickable && (
-              <div className="absolute -bottom-1 -right-1 z-10 hidden group-hover:block">
-                <IconButton
-                  variant="positive"
-                  onClick={() => {
-                    // dispatch(startImportSetup({ importInfo: { setup, tmIndex }, type: 3 }));
-                  }}
-                >
-                  <FaCalculator />
-                </IconButton>
-              </div>
-            )}
+          <div key={teammateIndex}>
+            <div
+              className={cn(
+                "w-18 h-18",
+                clickable
+                  ? "rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
+                  : "group relative"
+              )}
+            >
+              <CharacterPortrait
+                name={teammate.name}
+                onClickIcon={() => {
+                  if (clickable) {
+                    dispatch(
+                      switchShownSetupInComplex({ complexID: ID, shownID: teammateSetupID })
+                    );
+                  }
+                }}
+              />
+              {!clickable && (
+                <div className="absolute -bottom-1 -right-1 z-10 hidden group-hover:block">
+                  <IconButton
+                    variant="positive"
+                    onClick={() => {
+                      // dispatch(startImportSetup({ importInfo: { setup, tmIndex }, type: 3 }));
+                    }}
+                  >
+                    <FaCalculator />
+                  </IconButton>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+              {teammateWp && <img className="w-10 h-10" src={getImgSrc(teammateWp.icon)} alt="" />}
+              {teammateArt && (
+                <img className="w-10 h-10" src={getImgSrc(teammateArt.icon)} alt="" />
+              )}
+            </div>
           </div>
         );
       })}
@@ -144,7 +158,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
       key?: number | string
     ) => {
       return (
-        <div key={key} className="p-1">
+        <div key={key}>
           <button
             className={cn(
               `p-1 rounded flex bg-gradient-${rarity}`,
@@ -152,14 +166,14 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
             )}
             onClick={onClick}
           >
-            <img style={{ width: "4.25rem" }} src={getImgSrc(icon)} alt="" />
+            <img className="w-14 h-14" src={getImgSrc(icon)} alt="" />
           </button>
         </div>
       );
     };
 
     return (
-      <div className="flex flex-wrap mx-auto" style={{ width: "15.75rem" }}>
+      <div className="grid grid-cols-3 gap-1">
         {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
 
         {setup.artInfo.pieces.map((artP, i) => {
@@ -194,7 +208,7 @@ export function SetupLayout({ ID, setup, setupName, allIDs, openModal }: SetupLa
           <p className="text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
-        <div className="mt-4 lg:mt-0 pb-4 flex space-x-6 justify-end">
+        <div className="mt-4 lg:mt-0 pb-2 flex space-x-6 justify-end">
           <IconButton
             className="p-2"
             variant="positive"

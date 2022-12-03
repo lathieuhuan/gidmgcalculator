@@ -36,7 +36,10 @@ export function countVision(partyData: PartyData, charData?: CharData) {
     result[charData.vision] = 1;
   }
   return partyData.reduce((count, teammateData) => {
-    count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
+    if (teammateData) {
+      count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
+    }
+
     return count;
   }, result);
 }

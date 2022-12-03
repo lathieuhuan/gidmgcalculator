@@ -17,7 +17,7 @@ const goldCatalysts: DataWeapon[] = [
     applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
       if (partyData) {
         const sameVision = partyData.reduce((result, data) => {
-          return data.vision === charData.vision ? result + 1 : result;
+          return data?.vision === charData.vision ? result + 1 : result;
         }, 0);
         const emBuffValue = sameVision * (24 + refi * 8);
         const elmtDmgBuffValue = (partyData.length - sameVision) * (6 + refi * 4);

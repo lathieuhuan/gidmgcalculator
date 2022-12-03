@@ -27,11 +27,12 @@ export const desertSeries: Pick<
     {
       index: 1,
       affect: EModAffect.TEAMMATE,
-      inputConfig: {
-        labels: ["Elemental Mastery"],
-        renderTypes: ["text"],
-        initialValues: [0],
-      },
+      inputConfigs: [
+        {
+          label: "Elemental Mastery",
+          type: "text",
+        },
+      ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const buffValue = applyPercent(inputs[0] || 0, ((18 + refi * 6) * 3) / 10);
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);
@@ -66,11 +67,12 @@ export const royalSeries: SeriesInfo = {
     {
       index: 0,
       affect: EModAffect.SELF,
-      inputConfig: {
-        labels: ["Stacks"],
-        renderTypes: ["stacks"],
-        initialValues: [5],
-      },
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 5,
+        },
+      ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const buffValue = (6 + refi * 2) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
@@ -95,11 +97,12 @@ export const blackcliffSeries: SeriesInfo = {
     {
       index: 0,
       affect: EModAffect.SELF,
-      inputConfig: {
-        labels: ["Stacks"],
-        renderTypes: ["stacks"],
-        initialValues: [3],
-      },
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 3,
+        },
+      ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const buffValue = (9 + refi * 3) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
@@ -181,11 +184,16 @@ export const liyueSeries: SeriesInfo = {
     {
       index: 0,
       affect: EModAffect.SELF,
-      inputConfig: {
-        labels: ["Stacks", "Protected by a Shield"],
-        renderTypes: ["stacks", "check"],
-        initialValues: [5],
-      },
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 5,
+        },
+        {
+          label: "Protected by a Shield",
+          type: "check",
+        },
+      ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const buffValue = (3 + refi) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
@@ -216,7 +224,7 @@ export const lithicSeries: SeriesInfo = {
   applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
     if (partyData) {
       const stacks = partyData.reduce(
-        (result, data) => (data.nation === "liyue" ? result + 1 : result),
+        (result, data) => (data?.nation === "liyue" ? result + 1 : result),
         charData.nation === "liyue" ? 1 : 0
       );
       const bnValues = [(6 + refi) * stacks, (2 + refi) * stacks];
@@ -279,7 +287,10 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
 export const watatsumiSeries: SeriesInfo = {
   applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
     if (partyData && attPattBonus) {
-      const maxEnergy = partyData.reduce((result, data) => result + data.EBcost, charData.EBcost);
+      const maxEnergy = partyData.reduce(
+        (result, data) => result + (data?.EBcost || 0),
+        charData.EBcost
+      );
       const buffValue = round2(maxEnergy * (0.09 + refi * 0.03));
       applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
     }
