@@ -85,10 +85,10 @@ export function ComplexSelect({
     <div id={`gidc-complex-select-${selectId}_wrapper`} className="shrink-0 relative">
       <button
         id={`gidc-complex-select-${selectId}_select`}
-        className="w-full py-1 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
+        className="w-full py-0.5 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
         onClick={() => toggleDropdown(dropdownType === "OPTIONS" ? "" : "OPTIONS")}
       >
-        <span className="w-full text-xl font-bold text-center relative z-10">{label}</span>
+        <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
         <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
       </button>
 

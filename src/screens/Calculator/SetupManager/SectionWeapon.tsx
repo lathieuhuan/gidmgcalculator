@@ -36,7 +36,7 @@ export default function SectionWeapon() {
       </div>
 
       <div className="ml-2 overflow-hidden">
-        <p className={`text-h4 text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
+        <p className={`text-xl text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
         <div className="mt-1 pl-1 flex flex-wrap">
           <p className="mr-1">Level</p>
           <Select

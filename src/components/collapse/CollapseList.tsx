@@ -14,7 +14,7 @@ export function CollapseList({ headingList, contentList }: CollapseListProps) {
         <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
           <p
             className={cn(
-              "mb-2 pt-1 px-6 cursor-pointer font-bold text-lg leading-relaxed transition duration-200",
+              "mb-2 pt-1 px-6 cursor-pointer font-bold leading-relaxed transition duration-200",
               expanded[i] ? "bg-dullyellow text-black" : "bg-darkblue-3"
             )}
             onClick={() =>

@@ -27,7 +27,7 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
           type="button"
           disabled={disabled}
           className={cn(
-            "py-1 w-1/2 flex-center text-black font-bold",
+            "py-0.5 w-1/2 flex-center text-black font-bold",
             i === activeIndex
               ? level === 1
                 ? "bg-orange"
@@ -36,7 +36,7 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
           )}
           onClick={() => setActiveIndex(i)}
         >
-          <span>{text}</span>
+          {text}
         </button>
       ))}
     </div>

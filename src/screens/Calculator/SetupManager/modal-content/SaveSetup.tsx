@@ -22,12 +22,12 @@ export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
 
   return (
     <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow">
-      <p className="mb-2 mx-auto text-h5 text-orange font-bold">
+      <p className="mb-2 mx-auto text-xl text-orange font-bold">
         {existed ? "Modify OLD" : "Save NEW"} Setup
       </p>
       <input
         type="text"
-        className="mt-1 mb-8 px-4 pt-4 pb-2 text-2xl text-center textinput-common font-medium"
+        className="mt-1 mb-8 px-4 pt-4 pb-2 text-1.5xl text-center textinput-common font-semibold"
         autoFocus
         value={input}
         onChange={(e) => {

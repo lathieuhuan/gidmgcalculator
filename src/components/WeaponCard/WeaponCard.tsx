@@ -30,7 +30,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
-      <p className={`text-h2 text-rarity-${rarity} font-bold`}>{wpData.name}</p>
+      <p className={`text-2.5xl text-rarity-${rarity} font-bold`}>{wpData.name}</p>
       <div className="mt-2 flex">
         {/* left */}
         <div className="flex flex-col grow justify-between">
@@ -66,7 +66,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
 
           <div className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}>
             <p>Base ATK</p>
-            <p className={`text-rarity-${rarity} text-h2`}>
+            <p className={`text-rarity-${rarity} text-2.5xl`}>
               {wpMainStatAtLv(wpData.mainStatScale, level)}
             </p>
           </div>

@@ -18,8 +18,8 @@ import { ComplexSelect } from "@Components/ComplexSelect";
 import { Modal } from "@Components/modals";
 import { SaveSetup } from "../modal-content";
 
-import styles from "./styles.module.scss";
 import { findById } from "@Src/utils";
+import styles from "./styles.module.scss";
 
 export function SetupSelect() {
   const dispatch = useDispatch();

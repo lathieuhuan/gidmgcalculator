@@ -116,7 +116,12 @@ export function ArtifactCard({
             </Select>
           </div>
         )}
-        <p className={cn(`text-rarity-${rarity} text-h3 font-bold`, mutable ? "pl-8" : "pl-2")}>
+        <p
+          className={cn(
+            `text-rarity-${rarity} text-2xl leading-7 font-bold`,
+            mutable ? "pl-8" : "pl-2"
+          )}
+        >
           {possibleMainStatTypes[mainStatType]?.[rarity][artPiece.level]}
           {percentSign(mainStatType)}
         </p>

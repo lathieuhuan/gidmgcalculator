@@ -32,6 +32,12 @@ module.exports = {
       },
       fontSize: {
         "1.5xl": "1.375rem",
+        "2.5xl": [
+          "1.75rem",
+          {
+            lineHeight: 1.2,
+          },
+        ],
         "3.5xl": "2rem",
         h2: [
           "1.75rem",
