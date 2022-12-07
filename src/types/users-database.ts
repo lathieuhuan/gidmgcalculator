@@ -17,13 +17,17 @@ export type UsersCharacter = CharInfo & {
 
 export type UsersWeapon = CalcWeapon & {
   owner: string | null;
+  setupIDs?: number[];
 };
 
 export type UsersArtifact = CalcArtPiece & {
   owner: string | null;
+  setupIDs?: number[];
 };
 
-export type UsersSetupCalcInfo = CalcSetup & {
+export type UsersSetupCalcInfo = Omit<CalcSetup, "weapon" | "artInfo"> & {
+  weaponID: number;
+  artifactIDs: (number | null)[];
   target: Target;
 };
 

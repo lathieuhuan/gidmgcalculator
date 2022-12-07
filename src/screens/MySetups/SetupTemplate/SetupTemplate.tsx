@@ -9,7 +9,7 @@ import {
   FaUnlink,
   FaWrench,
 } from "react-icons/fa";
-import type { Rarity, UsersSetup } from "@Src/types";
+import type { CalcArtPieces, CalcWeapon, Rarity, UsersSetup } from "@Src/types";
 import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
@@ -30,10 +30,20 @@ interface SetupLayoutProps {
   ID: number;
   setup: UsersSetup;
   setupName?: string;
+  weapon: CalcWeapon | null;
+  artPieces: CalcArtPieces;
   allIDs?: Record<string, number>;
   openModal: (type: MySetupModalType, ID?: number) => () => void;
 }
-export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: SetupLayoutProps) {
+export function SetupTemplate({
+  ID,
+  setup,
+  setupName,
+  weapon,
+  artPieces,
+  allIDs,
+  openModal,
+}: SetupLayoutProps) {
   const { type, char, party } = setup;
   const dispatch = useDispatch();
 
@@ -48,7 +58,7 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
       }, 10);
     };
 
-    return window.innerWidth > 1050 ? (
+    return window.innerWidth > 1025 ? (
       <button
         className="w-8 h-8 mr-2 rounded-circle text-default hover:bg-darkred flex-center group"
         onClick={uncombine}
@@ -76,7 +86,7 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
     );
 
     return (
-      <div className="flex">
+      <div className="mx-auto lg:mx-0 flex">
         <img
           className="w-20 h-20"
           src={getImgSrc(charInfo.icon)}
@@ -97,7 +107,10 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
 
   const teammatesDisplay = useMemo(
     () => (
-      <div className="mt-4 flex space-x-4" style={{ width: "15.5rem" }}>
+      <div
+        className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")}
+        style={{ width: "15.5rem" }}
+      >
         {party.map((teammate, teammateIndex) => {
           if (!teammate) {
             return null;
@@ -149,7 +162,7 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
   );
 
   const gearsDisplay = useMemo(() => {
-    const weaponData = findWeapon(setup.weapon);
+    const weaponData = weapon ? findWeapon(weapon) : undefined;
 
     const renderGearIcon = (
       { beta, icon, rarity }: { beta?: boolean; icon: string; rarity?: Rarity },
@@ -171,10 +184,10 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
     };
 
     return (
-      <div className="mt-3 grid grid-cols-3 gap-1">
+      <div className="mt-3 mx-auto grid grid-cols-3 gap-1">
         {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
 
-        {setup.artInfo.pieces.map((artP, i) => {
+        {artPieces.map((artP, i) => {
           if (artP) {
             const artifactData = findArtifactPiece(artP);
             return artifactData
@@ -201,7 +214,7 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
         className="px-2 flex justify-between flex-col lg:flex-row"
         onDoubleClick={() => console.log(setup)}
       >
-        <div className="w-68 lg:w-auto flex items-center" style={{ maxWidth: "22.5rem" }}>
+        <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
           {!isOriginal && renderLinkButton(ID, setup.ID)}
           <p className="text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
         </div>
@@ -242,14 +255,14 @@ export function SetupTemplate({ ID, setup, setupName, allIDs, openModal }: Setup
       </div>
 
       <div className="px-4 pt-4 pb-3 rounded-lg bg-darkblue-1 flex flex-col lg:flex-row">
-        <div>
+        <div className="flex flex-col">
           {mainCharacterDisplay}
           {teammatesDisplay}
         </div>
 
         <div className="hidden lg:block w-0.5 mx-4 bg-darkblue-3" />
 
-        <div className="mt-4 lg:mt-0">
+        <div className="mt-4 lg:mt-0 flex flex-col">
           <div className="flex justify-center space-x-4">
             <button
               className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl"

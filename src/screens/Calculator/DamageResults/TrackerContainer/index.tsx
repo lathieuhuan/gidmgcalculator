@@ -40,7 +40,7 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
     if (trackerState === "OPEN") {
       const tracker = initTracker();
 
-      calculateAll({ ...activeSetup, target }, charData, tracker);
+      calculateAll(activeSetup, target, charData, tracker);
       setResult(tracker);
     }
   }, [trackerState]);

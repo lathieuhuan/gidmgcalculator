@@ -38,13 +38,13 @@ const selectChosenInfo = createSelector(
       pieces,
       sets: getArtifactSets(pieces),
     };
-    return [char, findById(myWps, weaponID), artInfo] as const;
+    return { char, wpInfo: findById(myWps, weaponID), artInfo };
   }
 );
 
 export default function Info() {
   const [removing, setRemoving] = useState(false);
-  const [char, wpInfo, artInfo] = useSelector(selectChosenInfo);
+  const { char, wpInfo, artInfo } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
   const dataChar = findCharacter(char);
@@ -86,7 +86,14 @@ export default function Info() {
         <div className="flex">
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
-            {!isMobile && <p className={`text-3xl text-${vision} font-black`}>{name}</p>}
+            {!isMobile && (
+              <p
+                className={`text-3xl text-${vision} font-black`}
+                onDoubleClick={() => console.log(char, wpInfo, artInfo)}
+              >
+                {name}
+              </p>
+            )}
             <StarLine rarity={rarity} />
 
             <div className="ml-1 my-1 flex">

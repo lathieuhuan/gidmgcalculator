@@ -5,11 +5,17 @@ import type { PickedChar } from "./calculatorSlice/reducer-types";
 
 import { initSessionWithChar, updateAllArtPieces } from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
-import { saveSetup } from "./usersDatabaseSlice";
+import {
+  addArtifact,
+  addWeapon,
+  saveSetup,
+  updateUsersArtifact,
+  updateUsersWeapon,
+} from "./usersDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
-import { findById } from "@Src/utils";
-import { cleanCalcSetup } from "@Src/utils/setup";
+import { findById, indexById } from "@Src/utils";
+import { cleanupCalcSetup } from "@Src/utils/setup";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
@@ -43,17 +49,61 @@ export const pickEquippedArtSet =
 
 export const saveSetupThunk = (ID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
-    const { calculator } = getState();
+    const {
+      calculator,
+      database: { myWps, myArts },
+    } = getState();
+    const { weapon, artInfo } = calculator.setupsById[ID];
+    const foundWpIndex = indexById(myWps, weapon.ID);
+
+    if (foundWpIndex !== -1) {
+      dispatch(
+        updateUsersWeapon({
+          index: foundWpIndex,
+          ...myWps[foundWpIndex],
+          setupIDs: (myWps[foundWpIndex].setupIDs || []).concat(ID),
+        })
+      );
+    } else {
+      dispatch(
+        addWeapon({
+          ...weapon,
+          owner: null,
+          setupIDs: [ID],
+        })
+      );
+    }
+
+    for (const artPiece of artInfo.pieces) {
+      if (artPiece) {
+        const foundIndex = indexById(myArts, artPiece.ID);
+
+        if (foundIndex !== -1) {
+          dispatch(
+            updateUsersArtifact({
+              index: foundIndex,
+              ...myArts[foundIndex],
+              setupIDs: (myArts[foundIndex].setupIDs || []).concat(ID),
+            })
+          );
+        } else {
+          dispatch(
+            addArtifact({
+              ...artPiece,
+              owner: null,
+              setupIDs: [ID],
+            })
+          );
+        }
+      }
+    }
 
     batch(() => {
       dispatch(
         saveSetup({
           ID,
           name,
-          data: {
-            ...cleanCalcSetup(calculator.setupsById[ID]),
-            target: calculator.target,
-          },
+          data: cleanupCalcSetup(calculator, ID),
         })
       );
       dispatch(

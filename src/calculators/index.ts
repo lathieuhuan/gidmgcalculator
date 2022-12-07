@@ -1,4 +1,4 @@
-import type { CharData, UsersSetupCalcInfo } from "@Src/types";
+import type { CalcSetup, CharData, Target, UsersSetupCalcInfo } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";
@@ -20,8 +20,8 @@ export default function calculateAll(
     customBuffCtrls,
     customDebuffCtrls,
     customInfusion,
-    target,
-  }: UsersSetupCalcInfo,
+  }: CalcSetup,
+  target: Target,
   charData: CharData,
   tracker?: Tracker
 ) {

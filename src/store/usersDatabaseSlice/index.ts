@@ -188,8 +188,8 @@ export const usersDatabaseSlice = createSlice({
       state.myWps.unshift(action.payload);
     },
     updateUsersWeapon: (state, action: UpdateUsersWeaponAction) => {
-      const { ID, ...newInfo } = action.payload;
-      const weaponIndex = indexById(state.myWps, ID);
+      const { ID, index, ...newInfo } = action.payload;
+      const weaponIndex = index ?? indexById(state.myWps, ID);
 
       if (weaponIndex !== -1) {
         state.myWps[weaponIndex] = {
@@ -277,8 +277,8 @@ export const usersDatabaseSlice = createSlice({
       state.myArts.unshift(action.payload);
     },
     updateUsersArtifact: (state, action: UpdateUsersArtifactAction) => {
-      const { ID, ...newInfo } = action.payload;
-      const artifactIndex = indexById(state.myArts, ID);
+      const { ID, index, ...newInfo } = action.payload;
+      const artifactIndex = index ?? indexById(state.myArts, ID);
 
       if (artifactIndex !== -1) {
         state.myArts[artifactIndex] = {

@@ -35,16 +35,19 @@ export type RemoveArtifactAction = PayloadAction<{
   type: Artifact;
 }>;
 
-export type UpdateUsersWeaponAction = PayloadAction<{
-  ID: number;
-  level?: Level;
-  refi?: number;
-}>;
+export type UpdateUsersWeaponAction = PayloadAction<
+  Partial<Omit<UsersWeapon, "ID">> & {
+    index?: number;
+    ID: number;
+  }
+>;
 
 export type UpdateUsersArtifactAction = PayloadAction<{
+  index?: number;
   ID: number;
   level?: number;
   mainStatType?: ArtPieceMainStat;
+  setupIDs?: number[];
 }>;
 
 export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: Weapon }>;

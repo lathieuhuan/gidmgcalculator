@@ -1,11 +1,13 @@
-import type { CalcSetup, ModifierInput, Party } from "@Src/types";
+import type { CalcSetup, ModifierInput, Party, UsersSetupCalcInfo } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
+import { CalculatorState } from "@Store/calculatorSlice/types";
 
-export function cleanCalcSetup(data: CalcSetup): CalcSetup {
-  const { buffs = [], debuffs = [] } = findCharacter(data.char) || {};
+export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): UsersSetupCalcInfo {
+  const { char, weapon, artInfo, ...data } = calculator.setupsById[setupID];
+  const { buffs = [], debuffs = [] } = findCharacter(char) || {};
   const party: Party = [];
 
   for (const teammate of data.party) {
@@ -24,14 +26,20 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
   }
 
   return {
+    char,
     ...data,
+    weaponID: weapon.ID,
+    artifactIDs: artInfo.pieces.reduce(
+      (IDs: (number | null)[], piece) => IDs.concat(piece?.ID || null),
+      []
+    ),
     selfBuffCtrls: data.selfBuffCtrls.filter((ctrl) => {
       const buff = findByIndex(buffs, ctrl.index);
-      return buff ? ctrl.activated && (!buff.isGranted || buff.isGranted(data.char)) : false;
+      return buff ? ctrl.activated && (!buff.isGranted || buff.isGranted(char)) : false;
     }),
     selfDebuffCtrls: data.selfDebuffCtrls.filter((ctrl) => {
       const debuff = findByIndex(debuffs, ctrl.index);
-      return debuff ? ctrl.activated && (!debuff.isGranted || debuff.isGranted(data.char)) : false;
+      return debuff ? ctrl.activated && (!debuff.isGranted || debuff.isGranted(char)) : false;
     }),
     wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
     party,
@@ -39,6 +47,7 @@ export function cleanCalcSetup(data: CalcSetup): CalcSetup {
     artDebuffCtrls: data.artDebuffCtrls.filter((ctrl) => ctrl.activated),
     customBuffCtrls: data.customBuffCtrls.filter((ctrl) => ctrl.value),
     customDebuffCtrls: data.customDebuffCtrls.filter((ctrl) => ctrl.value),
+    target: calculator.target,
   };
 }
 

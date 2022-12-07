@@ -7,6 +7,7 @@ import type {
   AbilityDebuff,
   ArtifactAttribute,
   AttackElement,
+  CalcArtPiece,
   CharData,
   DamageResult,
   InnateBuff,
@@ -19,7 +20,12 @@ import type { MySetupModalType, MySetupModal } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { chooseUsersSetup, removeSetup } from "@Store/usersDatabaseSlice";
-import { selectChosenSetupID, selectMySetups } from "@Store/usersDatabaseSlice/selectors";
+import {
+  selectChosenSetupID,
+  selectMyArts,
+  selectMySetups,
+  selectMyWps,
+} from "@Store/usersDatabaseSlice/selectors";
 import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
@@ -51,15 +57,21 @@ import {
   CustomDebuffs,
   FirstCombine,
   CombineMore,
-} from "./modals";
+} from "./modal-content";
 
 import styles from "../styles.module.scss";
+import { getArtifactSets } from "@Store/calculatorSlice/utils";
+import { useSetupItemInfos } from "./hooks";
 
 export default function MySetups() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const mySetups = useSelector(selectMySetups);
+  const myWps = useSelector(selectMyWps);
+  const myArts = useSelector(selectMyArts);
   const chosenSetupID = useSelector(selectChosenSetupID);
+
+  const { infos, getSetupItemInfos } = useSetupItemInfos();
 
   const ref = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<MySetupModal>({
@@ -116,8 +128,26 @@ export default function MySetups() {
   let debuffs: AbilityDebuff[] = [];
 
   if (chosenSetup) {
-    const data = findCharacter(chosenSetup.char);
+    const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
+    const data = findCharacter(char);
     if (!data) return null;
+
+    const weapon = findById(myWps, weaponID)!;
+
+    const artPieces = artifactIDs.reduce((pieces: CalcArtPiece[], ID) => {
+      const foundArt = ID ? findById(myArts, ID) : undefined;
+
+      if (foundArt) {
+        return pieces.concat(foundArt);
+      }
+
+      return pieces;
+    }, []);
+
+    const artInfo = {
+      pieces: artPieces,
+      sets: getArtifactSets(artPieces),
+    };
 
     charData = {
       code: data.code,
@@ -132,7 +162,16 @@ export default function MySetups() {
     buffs = data.buffs || [];
     debuffs = data.debuffs || [];
 
-    const result = calculateAll(chosenSetup, charData);
+    const result = calculateAll(
+      {
+        char,
+        weapon,
+        artInfo,
+        ...rest,
+      },
+      target,
+      charData
+    );
 
     totalAttr = result.totalAttr;
     rxnBonus = result.rxnBonus;
@@ -144,22 +183,25 @@ export default function MySetups() {
   const renderSetup = (setup: UsersSetup | UsersComplexSetup, index: number) => {
     if (setup.type === "combined") return null;
     const { ID } = setup;
-    let setupDisplay: JSX.Element;
+    let setupDisplay: JSX.Element | null;
 
     if (setup.type === "complex") {
       const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UsersSetup;
 
-      setupDisplay = (
+      setupDisplay = infos[actualSetup.ID] ? (
         <SetupTemplate
           ID={ID}
           setupName={setup.name}
           setup={actualSetup}
+          {...infos[actualSetup.ID]}
           allIDs={setup.allIDs}
           openModal={openModal}
         />
-      );
+      ) : null;
     } else {
-      setupDisplay = <SetupTemplate ID={ID} setup={setup} openModal={openModal} />;
+      setupDisplay = infos[ID] ? (
+        <SetupTemplate ID={ID} setup={setup} {...infos[ID]} openModal={openModal} />
+      ) : null;
     }
 
     return (
@@ -192,9 +234,8 @@ export default function MySetups() {
     }
 
     const {
+      ID,
       char,
-      weapon,
-      artInfo,
       party,
       selfBuffCtrls,
       selfDebuffCtrls,
@@ -207,11 +248,14 @@ export default function MySetups() {
       target,
     } = chosenSetup;
 
+    const { weapon, artPieces } = infos[ID];
+    const artSets = getArtifactSets(artPieces);
+
     switch (modal.type) {
       case "WEAPON":
-        return <MySetupWeapon weapon={weapon} />;
+        return weapon ? <MySetupWeapon weapon={weapon} /> : null;
       case "ARTIFACTS":
-        return <MySetupArtifactPieces pieces={artInfo.pieces} />;
+        return <MySetupArtifactPieces pieces={artPieces} />;
       case "STATS":
         return (
           <div className="h-full flex divide-x-2 divide-darkblue-2">
@@ -231,7 +275,7 @@ export default function MySetups() {
 
             <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
               <div className="h-full hide-scrollbar">
-                <SetBonus sets={artInfo.sets} />
+                <SetBonus sets={artSets} />
               </div>
             </div>
           </div>
@@ -296,13 +340,15 @@ export default function MySetups() {
                     partyData={partyData}
                     totalAttr={totalAttr}
                   />,
-                  <WeaponBuffs
-                    weapon={weapon}
-                    wpBuffCtrls={wpBuffCtrls}
-                    totalAttr={totalAttr}
-                    party={party}
-                  />,
-                  <ArtifactBuffs sets={artInfo.sets} artBuffCtrls={artBuffCtrls} party={party} />,
+                  weapon ? (
+                    <WeaponBuffs
+                      weapon={weapon}
+                      wpBuffCtrls={wpBuffCtrls}
+                      totalAttr={totalAttr}
+                      party={party}
+                    />
+                  ) : null,
+                  <ArtifactBuffs sets={artSets} artBuffCtrls={artBuffCtrls} party={party} />,
                   <CustomBuffs customBuffCtrls={customBuffCtrls} />,
                 ]}
               />
@@ -434,7 +480,7 @@ export default function MySetups() {
           <div
             ref={ref}
             className={cn(
-              mySetups.length && "p-1 pr-2",
+              mySetups.length && "p-1 pr-3",
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
           >

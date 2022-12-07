@@ -27,13 +27,7 @@ export function calculate(state: CalculatorState, all?: boolean) {
     const allIds = all ? setupManageInfos.map(({ ID }) => ID) : [activeId];
 
     for (const id of allIds) {
-      const results = calculateAll(
-        {
-          ...setupsById[id],
-          target,
-        },
-        charData
-      );
+      const results = calculateAll(setupsById[id], target, charData);
       state.statsById[id] = {
         infusedElement: results.infusedElement,
         totalAttrs: results.totalAttr,
