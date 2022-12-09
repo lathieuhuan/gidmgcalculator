@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { memo } from "react";
 import { useSelector } from "@Store/hooks";
 
@@ -13,23 +13,25 @@ function Calculator() {
   const touched = useSelector((state) => state.calculator.setupManageInfos.length !== 0);
 
   return (
-    <div className={cn("pb-1 flex items-center overflow-auto", styles.calculator)}>
+    <div className={clsx("pb-1 flex items-center overflow-auto", styles.calculator)}>
       <div className="h-98/100 flex space-x-2">
         {/* Panel 1 */}
-        <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>
+        <div className={clsx("px-6 py-4 bg-darkblue-1", styles.card)}>
           <OverviewChar touched={touched} />
         </div>
 
         {/* Panel 2 */}
-        <div className={cn("px-6 py-4 bg-darkblue-1", styles.card)}>{touched && <Modifiers />}</div>
+        <div className={clsx("px-6 py-4 bg-darkblue-1", styles.card)}>
+          {touched && <Modifiers />}
+        </div>
 
         {/* Panel 3 */}
-        <div className={cn("p-4 relative bg-darkblue-3 overflow-hidden", styles.card)}>
+        <div className={clsx("p-4 relative bg-darkblue-3 overflow-hidden", styles.card)}>
           {touched && <SetupManager />}
         </div>
 
         {/* Panel 4 */}
-        <div className={cn("px-4 pt-2 pb-6 bg-darkblue-3 relative", styles.card)}>
+        <div className={clsx("px-4 pt-2 pb-6 bg-darkblue-3 relative", styles.card)}>
           {touched && <DamageResults />}
         </div>
       </div>

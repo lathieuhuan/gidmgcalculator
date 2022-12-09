@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 import type { Artifact, CalcArtPiece } from "@Src/types";
 import { findByCode, getImgSrc } from "@Src/utils";
@@ -68,7 +68,7 @@ export function useArtifactSetFilter({
                 }}
               >
                 <div
-                  className={cn(
+                  className={clsx(
                     "p-1 rounded-circle",
                     set.chosen ? "shadow-3px-2px shadow-green bg-darkblue-1" : "bg-transparent"
                   )}

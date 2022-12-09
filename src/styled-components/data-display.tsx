@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { Vision } from "@Src/types";
-import cn from "classnames";
 import type { HTMLAttributes } from "react";
 
 type SpanExtraColor =
@@ -17,7 +17,7 @@ interface SpanProps extends HTMLAttributes<HTMLSpanElement> {
 }
 const makeSpan = (color: `text-${Vision | SpanExtraColor}`) => {
   return ({ className, b, ...rest }: SpanProps) => (
-    <span className={cn(color, b && "font-bold", className)} {...rest} />
+    <span className={clsx(color, b && "font-bold", className)} {...rest} />
   );
 };
 

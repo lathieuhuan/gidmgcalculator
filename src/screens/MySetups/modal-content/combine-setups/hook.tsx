@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 
 import { CharacterPortrait } from "@Components/minors";
@@ -46,7 +46,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
           return (
             <div
               key={ID}
-              className={cn(
+              className={clsx(
                 "mb-2 p-4 rounded-lg bg-darkblue-1 flex flex-col md1:flex-row md1:items-center",
                 !picked && !notFull && "opacity-50",
                 picked && "shadow-green"

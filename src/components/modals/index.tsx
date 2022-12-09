@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import ReactDOM from "react-dom";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import { useCloseWithEsc } from "@Hooks/useCloseWithEsc";
@@ -53,14 +53,14 @@ export function Modal({
     ? ReactDOM.createPortal(
         <div className="fixed full-stretch z-50">
           <div
-            className={cn(
+            className={clsx(
               "w-full h-full bg-black transition duration-150 ease-linear",
               state.animate ? "opacity-60" : "opacity-20"
             )}
             onClick={closeModal}
           />
           <div
-            className={cn(
+            className={clsx(
               "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transition duration-150 ease-linear",
               state.animate ? "opacity-100 scale-100" : "opacity-0 scale-95",
               withDefaultStyle &&

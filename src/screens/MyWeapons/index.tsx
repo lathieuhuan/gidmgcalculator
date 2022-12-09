@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import type { Weapon } from "@Src/types";
@@ -60,7 +60,7 @@ export default function MyWeapons() {
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
       <div className={styles.warehouse}>
-        <div className={cn("w-full", styles["button-bar"])}>
+        <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar
             className="mr-4 space-x-4"
             texts={["Add", "Sort"]}
@@ -72,7 +72,7 @@ export default function MyWeapons() {
           ) : (
             <Fragment>
               <IconButton
-                className={cn("ml-1", filterDropped ? "bg-green" : "bg-white")}
+                className={clsx("ml-1", filterDropped ? "bg-green" : "bg-white")}
                 onClick={() => setFilterDropped(!filterDropped)}
               >
                 <FaEllipsisH />

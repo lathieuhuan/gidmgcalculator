@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { ModifierInput } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
 
@@ -9,7 +9,7 @@ interface ModifierWrapperProps {
 }
 export function ModifierWrapper({ className, title, children }: ModifierWrapperProps) {
   return (
-    <div className={cn("py-4 shrink-0", className)}>
+    <div className={clsx("py-4 shrink-0", className)}>
       <p className="mb-2 text-lg text-center text-orange font-bold uppercase">{title}</p>
       <div className="custom-scrollbar">{children}</div>
     </div>
@@ -54,7 +54,7 @@ export function renderSetters(
     }
     return (
       <div key={i} className="flex justify-end align-center">
-        <p className={cn(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
+        <p className={clsx(renderTypes[i] === "check" ? "mr-4" : "mr-2", "text-right")}>{label}</p>
         {setterValue}
       </div>
     );

@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useMemo } from "react";
 import {
   FaCalculator,
@@ -124,7 +124,7 @@ export function SetupTemplate({
           return (
             <div
               key={teammateIndex}
-              className={cn(
+              className={clsx(
                 "w-18 h-18",
                 clickable
                   ? "rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
@@ -172,7 +172,7 @@ export function SetupTemplate({
       return (
         <button
           key={key}
-          className={cn(
+          className={clsx(
             `p-1 rounded flex bg-gradient-${rarity}`,
             onClick ? "glow-on-hover" : "cursor-default !opacity-50"
           )}

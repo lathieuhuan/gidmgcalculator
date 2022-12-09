@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { type RefObject, useState } from "react";
 
 import { changeArtPiece } from "@Store/calculatorSlice";
@@ -64,15 +64,18 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
           return (
             <div
               key={index}
-              className={cn(
+              className={clsx(
                 "w-1/5",
                 index === activeTabIndex ? "border-2 border-white" : "border border-transparent"
               )}
             >
               <div
-                className={cn(`bg-gradient-${artPiece ? artPiece.rarity || 5 : 1} cursor-pointer`, {
-                  "p-2 opacity-80": !artPiece,
-                })}
+                className={clsx(
+                  `bg-gradient-${artPiece ? artPiece.rarity || 5 : 1} cursor-pointer`,
+                  {
+                    "p-2 opacity-80": !artPiece,
+                  }
+                )}
                 onClick={() => onClickTab(index)}
               >
                 <img src={getImgSrc(icon)} alt={type} draggable={false} />

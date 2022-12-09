@@ -1,22 +1,29 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { ButtonHTMLAttributes } from "react";
 
-const bgColorByVariant = {
+const bgColorByVariant: Record<string, string> = {
   positive: "bg-lightgold",
   neutral: "bg-green",
   negative: "bg-darkred",
   default: "bg-default",
 };
 
+const colorByVariant: Record<string, string> = {
+  positive: "text-lightgold",
+  neutral: "text-green",
+  negative: "text-darkred",
+  default: "text-default",
+};
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  boneOnly?: boolean;
   noGlow?: boolean;
-  variant?: "positive" | "neutral" | "negative" | "default";
+  variant?: "positive" | "neutral" | "negative" | "default" | "custom";
 }
-export const buttonStyles = ({ noGlow, disabled, variant = "default" }: ButtonProps) => {
-  return cn(
-    bgColorByVariant[variant],
-    variant === "negative" ? "text-default" : "text-black",
-    !noGlow && "glow-on-hover",
-    disabled && "!opacity-50 cursor-default"
+export const buttonStyles = ({ boneOnly, noGlow, disabled, variant = "default" }: ButtonProps) => {
+  return clsx(
+    boneOnly ? colorByVariant[variant] : bgColorByVariant[variant],
+    boneOnly || variant === "custom" ? "" : variant === "negative" ? "text-default" : "text-black",
+    disabled ? "opacity-50 cursor-default" : !noGlow && "glow-on-hover"
   );
 };

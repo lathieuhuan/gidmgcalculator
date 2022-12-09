@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
 import isEqual from "react-fast-compare";
@@ -27,7 +27,7 @@ function OutdateWarn({ className, info, existedInfo }: OutdateWarnProps) {
   }
 
   return (
-    <div className={cn("absolute flex group", className)}>
+    <div className={clsx("absolute flex group", className)}>
       <FaCircle size="1.5rem" color="red" />
       <span className="small-tooltip top-full right-0 origin-top-right group-hover:scale-100 text-lightred">
         This item has changed in the database!

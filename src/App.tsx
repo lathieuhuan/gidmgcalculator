@@ -92,7 +92,7 @@ function App() {
         <Calculator />
 
         {atScreen !== EScreen.CALCULATOR && (
-          <div className="absolute full-stretch z-20">{renderTabContent()}</div>
+          <div className="absolute full-stretch z-30">{renderTabContent()}</div>
         )}
       </div>
 

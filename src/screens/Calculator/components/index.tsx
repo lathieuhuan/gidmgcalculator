@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import { FaCopy } from "react-icons/fa";
 import { Select } from "@Src/styled-components";
@@ -30,7 +30,7 @@ export const CopySection = <TOption extends Option>({
   };
 
   return (
-    <div className={cn("flex justify-end", className)}>
+    <div className={clsx("flex justify-end", className)}>
       <Select
         className="px-1 rounded-l bg-default font-bold text-black"
         value={chosenLabel}

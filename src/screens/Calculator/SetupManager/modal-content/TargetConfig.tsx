@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { ChangeEventHandler, useState, useEffect } from "react";
 import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
 import type { Target, Vision } from "@Src/types";
@@ -95,7 +95,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
       style={{ height: "90vh" }}
     >
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="text-h4 text-orange font-bold">Target Config</p>
+      <p className="text-1.5xl text-orange font-bold">Target Config</p>
 
       <div className="py-4 grow flex custom-scrollbar">
         <div className="w-80 flex flex-col shrink-0">
@@ -153,7 +153,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
 
               <div
                 id="monster-list"
-                className={cn(
+                className={clsx(
                   "flex flex-col custom-scrollbar rounded-b duration-200 ease-in-out",
                   monsterListOn && "grow"
                 )}
@@ -163,7 +163,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                   return (
                     <button
                       key={monster.code}
-                      className={cn(
+                      className={clsx(
                         "text-black flex justify-between cursor-default group font-medium",
                         monster.code === chosenMonster.code
                           ? "bg-lesser"
@@ -235,14 +235,12 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
         <div className="mx-4" />
 
         <div className="w-80 shrink-0 flex flex-col">
-          <p className="text-orange font-bold text-h5">Resistances</p>
-
           <div className="mt-2 pr-4 space-y-4 grow custom-scrollbar">
             {ATTACK_ELEMENTS.map((attElmt) => {
               return (
                 <div key={attElmt} className="flex justify-between items-center">
                   <p
-                    className={cn(
+                    className={clsx(
                       "text-h6",
                       attElmt === "phys" ? "text-default" : `text-${attElmt}`
                     )}

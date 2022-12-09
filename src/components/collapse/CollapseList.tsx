@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { type ReactNode, useState } from "react";
-import cn from "classnames";
 import { CollapseSpace } from "./CollapseSpace";
 
 interface CollapseListProps {
@@ -13,7 +13,7 @@ export function CollapseList({ headingList, contentList }: CollapseListProps) {
       {headingList.map((heading, i) => (
         <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
           <p
-            className={cn(
+            className={clsx(
               "mb-2 pt-1 px-6 cursor-pointer font-bold leading-relaxed transition duration-200",
               expanded[i] ? "bg-dullyellow text-black" : "bg-darkblue-3"
             )}

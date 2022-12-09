@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment, useState } from "react";
 
 import { useSelector } from "@Store/hooks";
@@ -59,7 +59,7 @@ function Options({ onClose }: { onClose: () => void }) {
           <div className="w-full border-b border-default" />
           <div className="p-4">
             <p
-              className={cn(
+              className={clsx(
                 "mt-1 text-h6 font-b text-center",
                 messageType === 1 ? "text-lightred" : "text-green"
               )}

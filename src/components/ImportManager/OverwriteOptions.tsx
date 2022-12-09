@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import type { UsersSetup } from "@Src/types";
 
@@ -107,8 +107,8 @@ export function OverrideOptions({
                           <tbody>
                             <tr className={tableStyles.row}>
                               <th className={tableStyles.th} />
-                              <th className={cn("text-lightgold", tableStyles.th)}>Old</th>
-                              <th className={cn("text-lightgold", tableStyles.th)}>New</th>
+                              <th className={clsx("text-lightgold", tableStyles.th)}>Old</th>
+                              <th className={clsx("text-lightgold", tableStyles.th)}>New</th>
                             </tr>
 
                             {Object.keys(object1).map((type, i) => {
@@ -140,7 +140,7 @@ export function OverrideOptions({
                               return (
                                 <tr key={i} className={tableStyles.row}>
                                   <td
-                                    className={cn(
+                                    className={clsx(
                                       "capitalize " + tableStyles.td,
                                       object1[type] !== object2?.[type] && "text-lightred"
                                     )}

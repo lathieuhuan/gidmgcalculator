@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
@@ -23,7 +23,7 @@ import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
 import { CopySelect } from "./CopySelect";
-import { Select } from "@Src/styled-components";
+import { IconButton, Select } from "@Src/styled-components";
 
 interface IModal {
   type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
@@ -82,7 +82,7 @@ export default function SectionParty() {
 
           const button = data ? (
             <button
-              className={cn(
+              className={clsx(
                 `w-18 h-18 bg-${data.vision} rounded-circle shrink-0 overflow-hidden`,
                 !isExpanded && "zoomin-on-hover"
               )}
@@ -106,7 +106,7 @@ export default function SectionParty() {
               style={{ height: "5.25rem" }}
             >
               <div
-                className={cn(
+                className={clsx(
                   "flex items-end text-xl shrink-0 overflow-hidden transition-size",
                   isExpanded ? "h-11" : "h-3"
                 )}
@@ -299,7 +299,7 @@ function TeammateDetail({
           </button>
 
           <p
-            className={cn(
+            className={clsx(
               "mt-1 grow font-medium truncate",
               artifactSetName ? "text-default text-lg" : "text-lesser"
             )}
@@ -307,12 +307,13 @@ function TeammateDetail({
             {artifactSetName || "No artifact buff / debuff"}
           </p>
           {artifactSetName && (
-            <button
-              className="self-start pt-2 pr-1 shrink-0 text-xl hover:text-darkred"
+            <IconButton
+              className="mt-1 self-start text-xl hover:text-darkred"
+              boneOnly
               onClick={onClickRemoveArtifact}
             >
               <FaTimes />
-            </button>
+            </IconButton>
           )}
         </div>
       </div>

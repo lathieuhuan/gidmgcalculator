@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Level, Rarity } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
@@ -32,14 +32,14 @@ export function ItemThumb({
     const { icon = "", sideIcon } = findCharacter({ name: owner }) || {};
     return (
       <div
-        className={cn(
+        className={clsx(
           "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/50 border-2 border-white rounded-circle",
           styles["side-icon"],
           !sideIcon && "beta overflow-hidden"
         )}
       >
         <img
-          className={cn(
+          className={clsx(
             "w-10 max-w-none -translate-x-2 -translate-y-4",
             !sideIcon && "-translate-y-2"
           )}
@@ -55,7 +55,7 @@ export function ItemThumb({
     <div
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      className={cn(
+      className={clsx(
         styles.thumb,
         (clicked || noDecoration) && styles.clicked,
         chosen && styles.chosen
@@ -64,7 +64,7 @@ export function ItemThumb({
       {owner && !noDecoration && renderSideIcon(owner)}
 
       <div
-        className={cn(
+        className={clsx(
           "bg-default rounded flex flex-col cursor-pointer relative",
           styles["hover-shadow-white"],
           chosen ? "glowing" : "shadow-common"
@@ -72,7 +72,7 @@ export function ItemThumb({
       >
         {refi !== undefined ? (
           <p
-            className={cn(
+            className={clsx(
               "absolute top-1 left-1 rounded px-1 text-sm font-bold",
               refi === 5 ? "bg-black text-orange" : "bg-black/60 text-default"
             )}

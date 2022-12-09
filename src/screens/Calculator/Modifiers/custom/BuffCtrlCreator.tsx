@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
@@ -86,7 +86,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           return (
             <button
               key={categoryName}
-              className={cn(
+              className={clsx(
                 "px-4 py-1",
                 !index && "rounded-t-lg md1:rounded-tr-none md1:rounded-l-lg",
                 index === 3 && "rounded-b-lg md1:rounded-bl-none md1:rounded-r-lg",
@@ -99,7 +99,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
                 }
               }}
             >
-              <p className={cn("text-h6 font-semibold text-center", chosen && "text-black")}>
+              <p className={clsx("text-h6 font-semibold text-center", chosen && "text-black")}>
                 {categoryName}
               </p>
             </button>

@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { FaLongArrowAltUp } from "react-icons/fa";
 
 import {
@@ -68,7 +68,7 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
               return (
                 <td
                   key={j}
-                  className={cn("relative group", tableStyles.td, diff && "pr-5")}
+                  className={clsx("relative group", tableStyles.td, diff && "pr-5")}
                   style={{ minWidth: diff ? "5rem" : "auto" }}
                 >
                   {displayValue(thisValue)}
@@ -76,13 +76,13 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
                   {diff ? (
                     <>
                       <FaLongArrowAltUp
-                        className={cn(
+                        className={clsx(
                           "absolute top-1/2 right-1.5 -translate-y-1/2",
                           diff > 0 ? "text-green" : "text-red-400 rotate-180"
                         )}
                       />
                       <span
-                        className={cn(
+                        className={clsx(
                           "absolute bottom-1/2 right-5 z-10 mb-2.5 pt-1 px-2 pb-0.5 rounded font-bold bg-black shadow-white-glow hidden group-hover:block",
                           diff > 0 ? "text-green" : "text-red-400"
                         )}

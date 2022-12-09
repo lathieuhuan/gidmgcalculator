@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { FaBalanceScaleLeft, FaCopy, FaTrashAlt } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 
@@ -63,7 +63,7 @@ export function SetupControl({
 
         <div className="flex space-x-3">
           <button
-            className={cn(
+            className={clsx(
               "w-8 h-8 rounded-circle flex-center text-2xl",
               isStandard
                 ? "bg-green text-black"
@@ -77,7 +77,7 @@ export function SetupControl({
             <SiTarget />
           </button>
           <button
-            className={cn(
+            className={clsx(
               "w-8 h-8 rounded-circle flex-center text-xl",
               setup.isCompared && "bg-green text-black"
             )}

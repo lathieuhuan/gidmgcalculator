@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment } from "react";
 import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
 import { EScreen } from "@Src/constants";
@@ -22,7 +22,7 @@ export function IntroButton({ className }: { className?: string }) {
 
   return (
     <button
-      className={cn("group", navButtonStyles.base, className)}
+      className={clsx("group", navButtonStyles.base, className)}
       onClick={() => dispatch(updateUI({ introOn: true }))}
     >
       <FaInfoCircle className="mr-2 group-hover:text-lightgold" size="1.125rem" />
@@ -33,7 +33,10 @@ export function IntroButton({ className }: { className?: string }) {
 
 export function renderDownloadButton(className: string, onClick: () => void) {
   return (
-    <button className={cn(navButtonStyles.base, navButtonStyles.idle, className)} onClick={onClick}>
+    <button
+      className={clsx(navButtonStyles.base, navButtonStyles.idle, className)}
+      onClick={onClick}
+    >
       <FaDownload />
       <span className="ml-2">Download</span>
     </button>
@@ -42,7 +45,10 @@ export function renderDownloadButton(className: string, onClick: () => void) {
 
 export function renderUploadButton(className: string, onClick: () => void) {
   return (
-    <button className={cn(navButtonStyles.base, navButtonStyles.idle, className)} onClick={onClick}>
+    <button
+      className={clsx(navButtonStyles.base, navButtonStyles.idle, className)}
+      onClick={onClick}
+    >
       <FaUpload />
       <span className="ml-2">Upload</span>
     </button>
@@ -68,7 +74,7 @@ export function Tabs({ className, onClick }: TabsProps) {
       ].map((tab, i) => (
         <button
           key={i}
-          className={cn(
+          className={clsx(
             "font-bold",
             className,
             navButtonStyles.base,

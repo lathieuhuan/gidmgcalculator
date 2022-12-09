@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
-import cn from "classnames";
 import useHeight from "@Hooks/useHeight";
 
 interface CollapseSpaceProps {
@@ -13,7 +13,7 @@ export function CollapseSpace({ active, className, children }: CollapseSpaceProp
 
   return (
     <div
-      className={cn("hide-scrollbar", className)}
+      className={clsx("hide-scrollbar", className)}
       style={{
         height: active ? Math.ceil(height) + 4 : 0,
         transition: `height ${duration}ms ease-in-out`,

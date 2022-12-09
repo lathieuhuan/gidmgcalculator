@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState, type ButtonHTMLAttributes } from "react";
 import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
@@ -94,7 +94,7 @@ export function SetupSelect() {
     return (
       <button
         key={index}
-        className={cn(
+        className={clsx(
           "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-lesser disabled:text-black",
           className
         )}
@@ -127,7 +127,7 @@ export function SetupSelect() {
                   children: <FaBalanceScaleLeft className="text-1.5xl" />,
                 },
                 {
-                  className: cn(isAtMax && "bg-lesser"),
+                  className: clsx(isAtMax && "bg-lesser"),
                   disabled: isAtMax,
                   onClick: onClickCopySetup(ID),
                   children: <FaCopy />,
@@ -157,7 +157,7 @@ export function SetupSelect() {
                   </div>
 
                   {renderSuffixButton({
-                    className: cn(
+                    className: clsx(
                       styles["more-actions-btn"],
                       i === moreActionsIndex && styles.active + " bg-green"
                     ),

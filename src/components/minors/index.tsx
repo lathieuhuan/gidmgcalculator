@@ -1,6 +1,6 @@
-import type { HTMLAttributes, ReactNode } from "react";
-import cn from "classnames";
+import clsx from "clsx";
 import { FaInfoCircle } from "react-icons/fa";
+import type { HTMLAttributes, ReactNode } from "react";
 
 import type { AmplifyingReaction, CalcArtSet, QuickenReaction, Vision, Weapon } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
@@ -10,7 +10,7 @@ import { Modal, ModalControl } from "@Components/modals";
 
 export const BetaMark = ({ className, ...rest }: HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
+    className={clsx(
       "rounded px-1 bg-white text-red-500 border-2 border-red-500 text-xs font-bold cursor-default",
       className
     )}
@@ -28,11 +28,11 @@ interface InfoSignProps {
 }
 export const InfoSign = (props: InfoSignProps) => {
   if (props.active) {
-    return <CloseButton className={cn("h-6 w-6 text-sm", props.className)} />;
+    return <CloseButton className={clsx("text-sm", props.className)} size="h-6 w-6" />;
   }
   return (
     <button
-      className={cn(
+      className={clsx(
         "h-6 w-6 text-2xl block rounded-circle",
         props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold",
         props.className
@@ -51,7 +51,7 @@ export const SeeDetails = (props: SeeDetailsProps) => {
   const { className, active, ...rest } = props;
   return (
     <p
-      className={cn(
+      className={clsx(
         "cursor-pointer",
         active ? "text-green" : "text-default hover:text-lightgold",
         className
@@ -81,7 +81,7 @@ export const ButtonBar = ({
 }: ButtonBarProps) => {
   return (
     <div
-      className={cn(
+      className={clsx(
         "flex justify-center",
         !className?.includes("space-x-") && "space-x-8",
         className
@@ -113,12 +113,12 @@ interface StarLineProps {
 }
 export const StarLine = ({ rarity, className }: StarLineProps) => {
   return (
-    <div className={cn("flex items-center", className)}>
+    <div className={clsx("flex items-center", className)}>
       {[...Array(rarity)].map((_, i) => (
         <svg
           key={i}
           viewBox="0 0 24 24"
-          className={cn("w-5 h-5", rarity === 5 ? "fill-rarity-5" : "fill-rarity-4")}
+          className={clsx("w-5 h-5", rarity === 5 ? "fill-rarity-5" : "fill-rarity-4")}
         >
           <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
         </svg>
@@ -134,14 +134,14 @@ interface SharedSpaceProps {
   atLeft: boolean;
 }
 export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSpaceProps) {
-  const childClassName = cn(
+  const childClassName = clsx(
     "absolute top-0 w-full h-full duration-200 ease-linear",
     atLeft ? "translate-x-0" : "-translate-x-full"
   );
   return (
-    <div className={cn("relative w-full h-full overflow-hidden", className)}>
-      <div className={cn(childClassName, "left-0")}>{leftPart}</div>
-      <div className={cn(childClassName, "left-full")}>{rightPart}</div>
+    <div className={clsx("relative w-full h-full overflow-hidden", className)}>
+      <div className={clsx(childClassName, "left-0")}>{leftPart}</div>
+      <div className={clsx(childClassName, "left-full")}>{rightPart}</div>
     </div>
   );
 }
@@ -176,7 +176,7 @@ export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSl
 
   return (
     <div
-      className={cn(
+      className={clsx(
         `zoomin-on-hover overflow-hidden rounded-circle ${bgColorByCode[code] || "bg-darkblue-3"}`,
         className
       )}
@@ -222,7 +222,7 @@ export function SetBonus({ noTitle, sets }: SetBonusProps) {
           );
         })
       ) : (
-        <p className="text-lesser font-bold">No Set Bonus</p>
+        <p className="text-lesser font-medium">No Set Bonus</p>
       )}
     </div>
   );
@@ -311,7 +311,7 @@ export function InfusionNotes({ vision, weapon }: InfusionNotesProps) {
         return (
           <p key={i} className="mt-1">
             <b>{attPatt}</b> deal{" "}
-            <span className={cn(attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
+            <span className={clsx(attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
               {attElmt} DMG
             </span>
             .
@@ -357,7 +357,7 @@ export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmT
     <div className="p-4 rounded-lg bg-darkblue-3">
       <p className="py-2 text-center text-1.5xl text-default">{message}</p>
       <ButtonBar
-        className={cn("mt-4 flex-wrap", mid && "space-x-4")}
+        className={clsx("mt-4 flex-wrap", mid && "space-x-4")}
         texts={texts}
         handlers={handlers}
         autoFocusIndex={texts.length - 1}

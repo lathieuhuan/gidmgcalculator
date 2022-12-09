@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import type { ArtifactAttribute, UsersWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
@@ -51,7 +51,7 @@ export default function Gears(props: GearsProps) {
 
   const detailsComponent = activeDetails !== -1 && (
     <GearsDetails
-      className={cn(
+      className={clsx(
         "h-full",
         onSmallDevice ? "" : "px-3 py-4 border-l-2 border-darkblue-2 rounded-r-lg bg-darkblue-1"
       )}

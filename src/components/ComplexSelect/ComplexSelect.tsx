@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { MdMoreHoriz } from "react-icons/md";
@@ -105,7 +105,7 @@ export function ComplexSelect({
       ) : null}
 
       <div
-        className={cn(
+        className={clsx(
           "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-size duration-100 ease-linear",
           dropdownType !== "" && "border border-white"
         )}

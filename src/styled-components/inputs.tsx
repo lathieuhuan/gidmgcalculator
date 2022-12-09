@@ -1,5 +1,5 @@
-import cn from "classnames";
-import type { InputHTMLAttributes, SelectHTMLAttributes, ButtonHTMLAttributes } from "react";
+import clsx from "clsx";
+import type { SelectHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
@@ -8,7 +8,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={cn(
+      className={clsx(
         "px-4 py-1 rounded-2xl shadow-common text-base font-bold leading-base",
         buttonStyles(props),
         className
@@ -18,17 +18,12 @@ export const Button = (props: ButtonProps) => {
   );
 };
 
-export const IconButton = (props: ButtonProps) => {
-  const { className, variant, noGlow, ...rest } = props;
+export const IconButton = (props: ButtonProps & { size?: string }) => {
+  const { className, variant, noGlow, size = "h-8 w-8", ...rest } = props;
   return (
     <button
       type="button"
-      className={cn(
-        "rounded-circle flex-center shrink-0",
-        (!className || !className.includes("w-") || !className.includes("h-")) && "h-8 w-8",
-        buttonStyles(props),
-        className
-      )}
+      className={clsx("rounded-circle flex-center shrink-0", buttonStyles(props), size, className)}
       {...rest}
     />
   );
@@ -47,7 +42,7 @@ export const IconToggleButton = ({
   return (
     <button
       type="button"
-      className={cn(
+      className={clsx(
         "rounded-circle flex-center shrink-0",
         (!className || !className.includes("w-") || !className.includes("h-")) && "h-8 w-8",
         disabled ? disabledColor : `${color} glow-on-hover`,
@@ -60,13 +55,14 @@ export const IconToggleButton = ({
 };
 
 export interface CloseButtonProps {
+  size?: string;
   noGlow?: boolean;
   className?: string;
   onClick?: () => void;
 }
-export const CloseButton = ({ className, ...rest }: CloseButtonProps) => {
+export const CloseButton = ({ className, size = "w-7 h-7", ...rest }: CloseButtonProps) => {
   return (
-    <IconButton className={cn("w-7 h-7", className)} variant="negative" {...rest}>
+    <IconButton className={className} size={size} variant="negative" {...rest}>
       <FaTimes />
     </IconButton>
   );
@@ -75,7 +71,7 @@ export const CloseButton = ({ className, ...rest }: CloseButtonProps) => {
 export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
   return (
     <select
-      className={cn(
+      className={clsx(
         "leading-base block outline-none",
         !className?.includes("bg-") && "bg-transparent",
         className

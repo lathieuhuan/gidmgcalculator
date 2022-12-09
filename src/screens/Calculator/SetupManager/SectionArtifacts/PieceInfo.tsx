@@ -89,7 +89,7 @@ export default function PieceInfo({
               </Select>
             </div>
           )}
-          <p className={`pl-8 text-h3 text-rarity-${rarity} font-bold`}>
+          <p className={`pl-8 text-2xl leading-7 text-rarity-${rarity} font-bold`}>
             {mainStatValues[level] + percentSign(mainStatType)}
           </p>
         </div>

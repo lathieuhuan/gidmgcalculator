@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
@@ -94,7 +94,7 @@ export default function MyArtifacts() {
   return (
     <div className="pt-8 h-full flex-center bg-darkblue-2">
       <div className={styles.warehouse}>
-        <div className={cn("w-full", styles["button-bar"])}>
+        <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar
             className="mr-4 space-x-4"
             texts={["Add", "Sort"]}
@@ -106,7 +106,7 @@ export default function MyArtifacts() {
 
           <div className="flex cursor-pointer">
             <button
-              className={cn(
+              className={clsx(
                 "pl-4 py-1 bg-lightgold glow-on-hover",
                 isFiltered ? "pr-2 rounded-l-2xl" : "pr-4 rounded-2xl"
               )}

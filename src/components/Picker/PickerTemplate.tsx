@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import type { DataType, Filter, PickerItem } from "./types";
 
@@ -85,7 +85,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
               return (
                 <div
                   key={item.code.toString() + item.rarity}
-                  className={classNames(
+                  className={clsx(
                     "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%]",
                     { hidden: filter.type && !filteredNames.includes(item.name) }
                   )}

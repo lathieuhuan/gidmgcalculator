@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { type ReactNode, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
@@ -57,7 +57,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                     setConsLv(i + 1);
                   }}
                 >
-                  <p className={cn("px-2 text-h6 font-bold", char.cons < i + 1 && "opacity-50")}>
+                  <p className={clsx("px-2 text-h6 font-bold", char.cons < i + 1 && "opacity-50")}>
                     {cons.name}
                   </p>
                   <InfoSign className="ml-auto" />
@@ -143,7 +143,7 @@ function ConstellationDetailDesc({ charName, beta, consLv, desc }: IConstellatio
   }
 
   return (
-    <p className={cn("mt-4", status === "loading" && "py-4 flex justify-center")}>
+    <p className={clsx("mt-4", status === "loading" && "py-4 flex justify-center")}>
       {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
       {status === "error" && "Error. Rebooting... Please comeback later."}
       {status === "idle" && descArr[consLv - 1]}

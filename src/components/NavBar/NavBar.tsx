@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { FaBars } from "react-icons/fa";
 import { Modal } from "@Components/modals";
 import {
@@ -35,7 +35,7 @@ export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownlo
       <div className="flex lg:hidden">
         <div className="mr-auto relative">
           <button
-            className={cn(
+            className={clsx(
               "flex-center",
               mobileNavButtonStyles.base,
               menuActive ? mobileNavButtonStyles.active : mobileNavButtonStyles.idle
@@ -50,7 +50,7 @@ export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownlo
             className="rounded flex flex-col shadow-white-glow text-default"
             onClose={() => setMenuActive(false)}
           >
-            <IntroButton className={cn(navMobileMenuOptionStyles, "rounded-t bg-darkblue-3")} />
+            <IntroButton className={clsx(navMobileMenuOptionStyles, "rounded-t bg-darkblue-3")} />
             <Tabs className={navMobileMenuOptionStyles} onClick={() => setMenuActive(false)} />
             {renderUploadButton(navMobileMenuOptionStyles, onClickUpload)}
             {renderDownloadButton(navMobileMenuOptionStyles, onClickDownload)}

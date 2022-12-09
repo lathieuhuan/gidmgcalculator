@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { CharInfo, Party, Talent, Vision, Weapon } from "@Src/types";
 import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
@@ -92,7 +92,7 @@ export function PassiveTalent({ talentInfo, active, vision, onClickInfoSign }: P
     <div className="flex">
       <AbilityIcon className="my-2 mr-2" active={active} img={talentInfo.image} vision={vision} />
       <div className="grow flex items-center">
-        <div className={cn("px-2", !active && "opacity-50")}>
+        <div className={clsx("px-2", !active && "opacity-50")}>
           <p className="font-bold">{talentInfo.name}</p>
           <div className="flex">
             <p className="mr-2">Lv.</p>

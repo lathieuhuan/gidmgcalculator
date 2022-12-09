@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { ReactNode } from "react";
 
 interface StatsTableProps {
@@ -16,7 +16,7 @@ interface RowProps {
 StatsTable.Row = ({ className, children, onClick }: RowProps) => {
   return (
     <div
-      className={cn(
+      className={clsx(
         "flex justify-between pt-1 px-2 font-semibold odd:bg-darkblue-2 hover:bg-darkerred",
         className
       )}

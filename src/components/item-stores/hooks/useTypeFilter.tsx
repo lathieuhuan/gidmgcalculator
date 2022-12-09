@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { useState } from "react";
-import cn from "classnames";
 import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 
@@ -33,7 +33,7 @@ export function useTypeFilter({ itemType, initialTypes = [] }: IUseTypeFilterArg
         return (
           <button
             key={i}
-            className={cn(
+            className={clsx(
               "mr-4 glow-on-hover rounded-circle transition duration-150",
               itemType === "artifact" && "p-1",
               active && (itemType === "weapon" ? "shadow-3px-3px shadow-green" : "bg-green")
@@ -41,7 +41,7 @@ export function useTypeFilter({ itemType, initialTypes = [] }: IUseTypeFilterArg
             onClick={() => onClickIcon(active, index, type)}
           >
             <img
-              className={cn(itemType === "weapon" ? "w-10" : "w-8")}
+              className={clsx(itemType === "weapon" ? "w-10" : "w-8")}
               src={getImgSrc(src)}
               alt=""
               draggable={false}

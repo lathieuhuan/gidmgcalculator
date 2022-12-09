@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Modal, ModalControl } from "@Components/modals";
 import { Button, CloseButton } from "@Src/styled-components";
@@ -99,11 +99,11 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
     <Fragment>
       <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
 
-      <div className={cn("flex flex-col items-center", styles.option)}>
+      <div className={clsx("flex flex-col items-center", styles.option)}>
         <p className="px-4 py-2 text-h5 text-default text-center">Load from Local Storage</p>
 
         {message?.uploadCase === "auto" && (
-          <p className={cn("mb-2 text-h6 font-bold text-center", messageColor)}>
+          <p className={clsx("mb-2 text-h6 font-bold text-center", messageColor)}>
             {
               {
                 success: "Successfully loaded data from Local Storage",
@@ -130,13 +130,13 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
       </div>
 
       <div className="w-full border-b border-default" />
-      <div className={cn("flex flex-col items-center", styles.option)}>
+      <div className={clsx("flex flex-col items-center", styles.option)}>
         <p className="px-4 py-2 text-h5 text-default text-center">
           Upload a .TXT file or a .JSON file in GOOD format
         </p>
 
         {message?.uploadCase === "manual" && (
-          <p className={cn("mb-2 font-bold text-center", messageColor)}>
+          <p className={clsx("mb-2 font-bold text-center", messageColor)}>
             {message.result === "success" ? "Successfully uploaded your File" : failMessage}
           </p>
         )}

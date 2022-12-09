@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { ReactNode } from "react";
 import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
@@ -150,7 +150,7 @@ export function ModifierTemplate({
 
       {inputConfigs.length ? (
         <div
-          className={cn("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}
+          className={clsx("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}
         >
           {
             //

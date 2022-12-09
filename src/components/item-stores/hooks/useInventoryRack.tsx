@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
@@ -107,14 +107,14 @@ export function useInventoryRack({
 
   const rack = (
     <div className="w-full flex flex-col" style={{ minWidth: "22rem" }}>
-      <div className={cn("hide-scrollbar", listClassName)}>
+      <div className={clsx("hide-scrollbar", listClassName)}>
         {filteredIds.length ? (
           <div className="flex flex-wrap">
             {items.map((item) => {
               return (
                 <div
                   key={item.ID}
-                  className={cn(itemClassName, { hidden: !IDsOnPage.includes(item.ID) })}
+                  className={clsx(itemClassName, { hidden: !IDsOnPage.includes(item.ID) })}
                   onDoubleClick={() => console.log(item)}
                 >
                   <ItemThumb
@@ -140,7 +140,7 @@ export function useInventoryRack({
         <div className="pt-2 pb-1 flex-center space-x-2">
           <button onClick={goBack}>
             <FaCaretRight
-              className={cn("rotate-180", pageNo > 0 ? "glow-on-hover" : "opacity-50")}
+              className={clsx("rotate-180", pageNo > 0 ? "glow-on-hover" : "opacity-50")}
               size="1.75rem"
             />
           </button>

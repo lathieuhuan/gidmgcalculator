@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
 import type { ArtifactAttribute, ArtPieceMainStat, UsersWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
@@ -59,7 +59,7 @@ export function GearsDetails({
   switch (activeDetails) {
     case "weapon":
       return (
-        <div className={cn("flex flex-col", className)} style={style}>
+        <div className={clsx("flex flex-col", className)} style={style}>
           <div className="px-1 grow hide-scrollbar">
             <WeaponCard
               weapon={wpInfo}
@@ -76,7 +76,7 @@ export function GearsDetails({
 
     case "setBonus":
       return (
-        <div className={cn("flex", className)} style={style}>
+        <div className={clsx("flex", className)} style={style}>
           <div className="px-1 hide-scrollbar">
             <SetBonus sets={sets} />
           </div>
@@ -85,7 +85,7 @@ export function GearsDetails({
 
     case "statsBonus":
       return (
-        <div className={cn("flex", className)} style={style}>
+        <div className={clsx("flex", className)} style={style}>
           <div className="custom-scrollbar">
             <AttributeTable attributes={artAttr} />
           </div>

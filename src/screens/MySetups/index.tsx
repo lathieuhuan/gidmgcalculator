@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 
@@ -207,7 +207,7 @@ export default function MySetups() {
     return (
       <div
         key={ID}
-        className={cn(
+        className={clsx(
           "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
           ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
         )}
@@ -229,9 +229,7 @@ export default function MySetups() {
   };
 
   const renderModalContent = () => {
-    if (!chosenSetup) {
-      return null;
-    }
+    if (!chosenSetup) return null;
 
     const {
       ID,
@@ -359,7 +357,7 @@ export default function MySetups() {
                 {Object.entries(target).map(([key, value], i) => (
                   <p key={i} className="mb-1">
                     <span
-                      className={cn(
+                      className={clsx(
                         "mr-2 capitalize",
                         key === "level" ? "text-lightgold" : `text-${key}`
                       )}
@@ -468,7 +466,12 @@ export default function MySetups() {
     <div className="pt-8 h-full flex-center bg-darkblue-2">
       <div className={styles.warehouse + " " + styles["setup-warehouse"]}>
         <div className={"h-10 " + styles["button-bar"]}>
-          <IconButton className="mr-4 w-7 h-7" variant="positive" onClick={openModal("TIPS")}>
+          <IconButton
+            className="mr-4"
+            variant="positive"
+            size="w-7 h-7"
+            onClick={openModal("TIPS")}
+          >
             <FaInfo className="text-sm" />
           </IconButton>
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
@@ -479,7 +482,7 @@ export default function MySetups() {
         <div className={styles.body}>
           <div
             ref={ref}
-            className={cn(
+            className={clsx(
               mySetups.length && "p-1 pr-3",
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
@@ -511,7 +514,7 @@ export default function MySetups() {
 
       <Modal
         active={modal.type !== ""}
-        className={cn(modalClassName[modal.type], "text-default")}
+        className={clsx(modalClassName[modal.type], "text-default")}
         style={{
           height: ["STATS", "MODIFIERS", "FIRST_COMBINE", "COMBINE_MORE"].includes(modal.type)
             ? "85%"

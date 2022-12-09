@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { memo } from "react";
-import cn from "classnames";
 import { BetaMark } from "@Components/minors";
 import { VISION_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
@@ -13,13 +13,13 @@ interface ItemProps {
 }
 function Item({ item, pickedAmount, onClickItem }: ItemProps) {
   return (
-    <div className={cn("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
+    <div className={clsx("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
       <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
         {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
 
         <div className="relative">
           <div
-            className={cn(
+            className={clsx(
               `overflow-hidden flex bg-gradient-${item.rarity} rounded-t-lg`,
               item.vision ? "pt-4" : "p-1"
             )}
@@ -36,7 +36,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
       </div>
       {item.vision && (
         <div
-          className={cn(
+          className={clsx(
             "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow",
             item.cons !== undefined && "flex rounded-2xl pl-1.5"
           )}

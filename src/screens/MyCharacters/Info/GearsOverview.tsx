@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { ItemThumb } from "@Components/ItemThumb";
 import { InfoSign } from "@Components/minors";
 import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
@@ -8,7 +8,7 @@ import { getImgSrc } from "@Src/utils";
 import { ArtifactInfo, Details } from "./types";
 
 const bonusStyles = (active: boolean) => {
-  return cn("p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2");
+  return clsx("p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2");
 };
 
 interface GearsOverviewProps {
@@ -86,7 +86,7 @@ export function GearsOverview({
       </div>
 
       <div
-        className={cn("mt-3", bonusStyles(activeDetails === "setBonus"))}
+        className={clsx("mt-3", bonusStyles(activeDetails === "setBonus"))}
         onClick={() => {
           if (sets.length) toggleDetails("setBonus");
         }}
@@ -114,7 +114,7 @@ export function GearsOverview({
       </div>
 
       <div
-        className={cn("mt-2", bonusStyles(activeDetails === "statsBonus"))}
+        className={clsx("mt-2", bonusStyles(activeDetails === "statsBonus"))}
         onClick={() => toggleDetails("statsBonus")}
       >
         <p className="text-h6 text-orange font-bold">Artifact Details</p>

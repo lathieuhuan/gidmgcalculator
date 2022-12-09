@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState, useRef } from "react";
 
 import type { UsersSetup } from "@Src/types";
@@ -28,7 +28,7 @@ export function SetupExporter({ data, onClose }: SetupExporterProps) {
         />
 
         {status > 0 && (
-          <p className={cn("mt-2 text-center", status === 1 ? "text-green" : "text-lightred")}>
+          <p className={clsx("mt-2 text-center", status === 1 ? "text-green" : "text-lightred")}>
             {status === 1
               ? "Successfully copied to Clipboard."
               : "We're sorry. Your browser does not allow/support this function."}

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import cn from "classnames";
+import clsx from "clsx";
 import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
@@ -14,11 +14,11 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export function AbilityIcon({ className, img, vision, active = true, onClick }: AbilityImgProps) {
-  const tw = cn("transition-opacity duration-150 ease-in-out", !active && "opacity-50");
+  const tw = clsx("transition-opacity duration-150 ease-in-out", !active && "opacity-50");
 
   return img ? (
     <img
-      className={cn(tw, "min-w-13 h-13", className)}
+      className={clsx(tw, "min-w-13 h-13", className)}
       src={getImgSrc(img)}
       alt=""
       draggable={false}
@@ -26,7 +26,7 @@ export function AbilityIcon({ className, img, vision, active = true, onClick }: 
     />
   ) : (
     <div
-      className={cn(
+      className={clsx(
         tw,
         `min-w-13 h-13 rounded-full bg-${vision} flex-center`,
         styles[vision],
@@ -58,7 +58,7 @@ export function SlideShow({
   onClickNext,
 }: SlideShowProps) {
   return (
-    <div className={cn("flex-center relative", forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
+    <div className={clsx("flex-center relative", forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
       {topLeftNote}
       <div className="relative">
         <div className="w-14 h-14 overflow-hidden relative">
@@ -90,13 +90,13 @@ interface CaretProps {
 function Caret({ toRight, onClick }: CaretProps) {
   return (
     <button
-      className={cn(
+      className={clsx(
         "absolute top-2 text-[2.5rem] text-darkblue-3 hover:text-lightgold flex-center cursor-pointer",
         toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 left right-full"
       )}
       onClick={onClick}
     >
-      <FaCaretRight className={cn(!toRight && "rotate-180")} />
+      <FaCaretRight className={clsx(!toRight && "rotate-180")} />
     </button>
   );
 }

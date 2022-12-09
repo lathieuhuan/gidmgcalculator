@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 import { Filter } from "./types";
@@ -18,7 +18,7 @@ export default function CharFilter(props: CharFilterProps) {
             return (
               <img
                 key={i}
-                className={cn("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10", {
+                className={clsx("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10", {
                   "ml-6": i,
                   "border-3 border-white": chosen,
                 })}
@@ -39,10 +39,13 @@ export default function CharFilter(props: CharFilterProps) {
             return (
               <img
                 key={i}
-                className={cn("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11", {
-                  "ml-6": i,
-                  "border-3 border-white": chosen,
-                })}
+                className={clsx(
+                  "cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11",
+                  {
+                    "ml-6": i,
+                    "border-3 border-white": chosen,
+                  }
+                )}
                 src={getImgSrc(src)}
                 alt={wpType}
                 draggable={false}

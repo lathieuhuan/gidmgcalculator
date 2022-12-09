@@ -1,6 +1,6 @@
+import clsx from "clsx";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import cn from "classnames";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { getRxnBonusesFromEM } from "@Calculators/utils";
@@ -30,7 +30,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
           <StatsTable.Row key={type} className="group">
             <p>{t(type)}</p>
             <div className="relative">
-              <p className={cn("mr-2", { "group-hover:hidden": baseAttr })}>
+              <p className={clsx("mr-2", { "group-hover:hidden": baseAttr })}>
                 {Math.round(attributes[type])}
               </p>
               {baseAttr && (
@@ -91,7 +91,7 @@ function EmSection({ em }: EmSectionProps) {
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretDown
-            className={cn(
+            className={clsx(
               "duration-150 ease-linear",
               dropped ? "text-green" : "text-default rotate-90"
             )}

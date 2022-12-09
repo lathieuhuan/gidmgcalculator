@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { UsersComplexSetup, UsersSetup } from "@Src/types";
 
 import { findById } from "@Src/utils";
@@ -61,7 +61,7 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
 
   return (
     <div className="h-full pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
-      <p className={cn("pr-4 text-center", isError ? "text-lightred" : "text-lightgold")}>
+      <p className={clsx("pr-4 text-center", isError ? "text-lightred" : "text-lightgold")}>
         {isError ? (
           "These 2 Setups feature the same Character."
         ) : (

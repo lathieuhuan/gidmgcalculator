@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment } from "react";
 import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type {
@@ -66,7 +66,8 @@ export function ArtifactCard({
             </div>
             <div className="mt-1 flex flex-col items-center">
               <IconButton
-                className="!bg-black !text-orange text-3.5xl"
+                className="bg-black text-orange text-3.5xl"
+                variant="custom"
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance && enhance(Math.min(artPiece.level + 4, maxLevel))}
               >
@@ -97,7 +98,7 @@ export function ArtifactCard({
 
       <div className="mt-2 ml-6">
         {["flower", "plume"].includes(artPiece.type) || !mutable ? (
-          <p className={cn("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
+          <p className={clsx("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
@@ -117,7 +118,7 @@ export function ArtifactCard({
           </div>
         )}
         <p
-          className={cn(
+          className={clsx(
             `text-rarity-${rarity} text-2xl leading-7 font-bold`,
             mutable ? "pl-8" : "pl-2"
           )}
@@ -127,7 +128,7 @@ export function ArtifactCard({
         </p>
       </div>
 
-      <div className={cn(mutable && "px-2")}>
+      <div className={clsx(mutable && "px-2")}>
         <ArtifactSubstats
           mutable={mutable}
           rarity={rarity}
@@ -177,7 +178,7 @@ export function ArtifactSubstats({
             <FaChevronDown className="absolute left-3 top-2.5" />
 
             <Select
-              className={cn(
+              className={clsx(
                 "pt-2 pb-1 pr-2 pl-10 relative z-10 appearance-none",
                 statTypeCount[type] === 1 ? "text-default" : "text-red-500"
               )}
@@ -197,7 +198,7 @@ export function ArtifactSubstats({
             <span>+</span>
 
             <input
-              className={cn(
+              className={clsx(
                 "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right text-last-right",
                 isValid ? "text-default" : "text-red-500"
               )}
@@ -214,7 +215,10 @@ export function ArtifactSubstats({
             <p className={space}>•</p>
             <p>
               <span
-                className={cn("mr-1", statTypeCount[type] === 1 ? "text-default" : "text-red-500")}
+                className={clsx(
+                  "mr-1",
+                  statTypeCount[type] === 1 ? "text-default" : "text-red-500"
+                )}
               >
                 {t(type)}
               </span>

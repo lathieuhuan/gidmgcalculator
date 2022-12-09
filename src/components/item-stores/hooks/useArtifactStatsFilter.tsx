@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
 
@@ -66,7 +66,7 @@ export function useArtifactStatsFilter({
       <div className="mt-1 flex justify-center">
         <div className="w-52 px-4 bg-darkblue-1">
           <Select
-            className={cn(
+            className={clsx(
               "w-full p-1 text-center text-last-center",
               filter.main === "All" ? "text-default" : "text-green"
             )}
@@ -91,7 +91,7 @@ export function useArtifactStatsFilter({
 
               {(!i || filter.subs[i - 1] !== "All") && (
                 <Select
-                  className={cn(
+                  className={clsx(
                     "w-full p-1 text-center text-last-center",
                     filter.subs[i] === "All" ? "text-default" : "text-green"
                   )}
@@ -116,8 +116,9 @@ export function useArtifactStatsFilter({
   const renderArtifactStatsFilter = () => (
     <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-darkblue-2 relative">
       <IconButton
-        className="w-6 h-6 text-sm absolute bottom-3 left-3"
+        className="text-sm absolute bottom-3 left-3"
         variant={atInfo ? "negative" : "default"}
+        size="w-6 h-6"
         onClick={() => setAtInfo(!atInfo)}
       >
         <Icon />

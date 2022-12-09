@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import type { CalcWeapon, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
@@ -35,8 +35,8 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* left */}
         <div className="flex flex-col grow justify-between">
           {/*  */}
-          <div className={cn("pt-1 grow flex items-center", groupStyles)}>
-            <p className="mr-2 text-h6 font-bold">Level</p>
+          <div className={clsx("pt-1 grow flex items-center", groupStyles)}>
+            <p className="mr-2 text-h6 font-semibold">Level</p>
             {mutable ? (
               <Select
                 className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
@@ -53,20 +53,18 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {subStat ? (
-            <div
-              className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}
-            >
-              <p>{t(subStat.type)}</p>
-              <p className={`text-rarity-${rarity} text-h3`}>
+            <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
+              <p className="font-semibold">{t(subStat.type)}</p>
+              <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
                 {wpSubStatAtLv(subStat.scale, level)}
                 {percentSign(subStat.type)}
               </p>
             </div>
           ) : null}
 
-          <div className={cn("grow mt-1 pt-1 font-bold flex flex-col justify-center", groupStyles)}>
-            <p>Base ATK</p>
-            <p className={`text-rarity-${rarity} text-2.5xl`}>
+          <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
+            <p className="font-semibold">Base ATK</p>
+            <p className={`text-rarity-${rarity} text-2.5xl font-bold`}>
               {wpMainStatAtLv(wpData.mainStatScale, level)}
             </p>
           </div>
@@ -80,8 +78,8 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {rarity >= 3 && (
-            <div className={cn("mt-2 py-1 flex flex-col items-center", groupStyles)}>
-              <p className="text-center font-bold">Refinement</p>
+            <div className={clsx("mt-2 py-1 flex flex-col items-center", groupStyles)}>
+              <p className="text-center font-semibold">Refinement</p>
               {mutable ? (
                 <Select
                   className={`text-lg text-rarity-${rarity} font-bold`}

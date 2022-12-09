@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { FaInfoCircle, FaPlus, FaTimes } from "react-icons/fa";
 import type { ConfigOption } from "./types";
@@ -195,12 +195,12 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         <FaTimes />
       </button>
 
-      <p className="mt-2 mb-3 text-h3 text-center text-orange font-bold">SETTINGS</p>
+      <p className="my-2 text-2xl text-center text-orange font-bold">SETTINGS</p>
       <div className="relative">
         {tabs}
         {activeIndex === 1 && (
           <button
-            className="w-40 h-8 absolute top-0 right-0 pr-2 flex items-center justify-end text-2xl text-black"
+            className="w-40 h-full absolute top-0 right-0 pr-1 flex items-center justify-end text-2xl text-black"
             onClick={() => setTipsOn(true)}
           >
             <FaInfoCircle />
@@ -277,7 +277,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         onClick={tryApplyNewSettings}
       >
         <span
-          className={cn(
+          className={clsx(
             "w-60 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 text-center small-tooltip bottom-full origin-bottom-center text-lightred",
             errorCode !== "" && "group-hover:scale-100"
           )}
@@ -322,7 +322,7 @@ export default function Settings({ height, ...rest }: SettingsProps) {
   return (
     <CollapseAndMount
       active={active}
-      className={cn("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
+      className={clsx("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}
     >

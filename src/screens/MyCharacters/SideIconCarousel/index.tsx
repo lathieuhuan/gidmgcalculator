@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { RefObject, useEffect, useState } from "react";
 import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
@@ -53,7 +53,7 @@ export default function SideIconCarousel({
 
   return (
     <div className="w-full flex justify-center bg-darkblue-2">
-      <div className={cn(styles["side-icon-carousel"])}>
+      <div className={clsx(styles["side-icon-carousel"])}>
         {characterNames.length ? (
           <div className="absolute top-8 right-full flex">
             <IconButton className="mr-4 text-xl" variant="positive" onClick={onCliceSort}>
@@ -78,19 +78,19 @@ export default function SideIconCarousel({
                 return (
                   <div
                     key={name}
-                    className={cn(
+                    className={clsx(
                       "mx-1 border-b-3 border-transparent cursor-pointer",
                       name === chosenChar && styles["active-cell"]
                     )}
                     onClick={() => dispatch(chooseCharacter(name))}
                   >
                     <div
-                      className={cn(
+                      className={clsx(
                         "rounded-circle border-3 border-lesser/30  bg-black/30",
                         styles["icon-wrapper"],
                         sideIcon
-                          ? cn("m-2", styles["side-icon-wrapper"])
-                          : cn("m-1 overflow-hidden", styles["beta-icon-wrapper"])
+                          ? clsx("m-2", styles["side-icon-wrapper"])
+                          : clsx("m-1 overflow-hidden", styles["beta-icon-wrapper"])
                       )}
                     >
                       <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />

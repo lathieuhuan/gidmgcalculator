@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import type { BaseStatType, GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
@@ -48,7 +48,7 @@ export function SkillAttributes({
   return (
     <div className="mt-2">
       <div
-        className={cn("py-2 flex-center bg-darkblue-1 sticky -top-1", isStatic ? "pr-4" : "pl-4")}
+        className={clsx("py-2 flex-center bg-darkblue-1 sticky -top-1", isStatic ? "pr-4" : "pl-4")}
       >
         {!isStatic && (
           <>
@@ -137,7 +137,7 @@ function getValue(
   } else {
     result = Math.round(result);
   }
-  return cn(result + (isPct ? "%" : ""), baseStatType);
+  return clsx(result + (isPct ? "%" : ""), baseStatType);
 }
 
 interface LevelButtonProps {
@@ -148,7 +148,7 @@ interface LevelButtonProps {
 export const LevelButton = ({ levelUp, onMouseDown, onMouseUp }: LevelButtonProps) => {
   return (
     <button
-      className={cn(
+      className={clsx(
         "absolute top-2 flex px-2 rounded border-2 border-darkblue-3 text-darkblue-3 text-1.5xl hover:border-green hover:text-green",
         levelUp ? "right-10" : "left-10"
       )}
@@ -156,7 +156,7 @@ export const LevelButton = ({ levelUp, onMouseDown, onMouseUp }: LevelButtonProp
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
     >
-      <FaCaretDown className={cn(levelUp && "rotate-180")} />
+      <FaCaretDown className={clsx(levelUp && "rotate-180")} />
     </button>
   );
 };

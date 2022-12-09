@@ -1,16 +1,15 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaChevronDown, FaEdit, FaTimes } from "react-icons/fa";
 
 import { findMonster } from "@Data/controllers";
-
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
+import { updateTarget } from "@Store/calculatorSlice";
 
 import { Modal } from "@Components/modals";
 import { TargetConfig } from "./modal-content";
-import { Select } from "@Src/styled-components";
-import { updateTarget } from "@Store/calculatorSlice";
+import { IconButton, Select } from "@Src/styled-components";
 
 interface SectionTargetProps {
   isAtFront?: boolean;
@@ -41,21 +40,22 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
   return (
     <Fragment>
       <div
-        className={cn(
+        className={clsx(
           "px-4 py-3 rounded-xl bg-darkblue-1 cursor-default relative",
           isAtFront && "border-2 border-lesser"
         )}
       >
         <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-lesser space-y-1">
-          <button className="w-8 h-8 flex-center hover:text-darkred" onClick={onMove}>
+          <IconButton className="hover:text-darkred" boneOnly onClick={onMove}>
             <FaTimes />
-          </button>
-          <button
-            className="w-8 h-8 pl-1 flex-center hover:text-lightgold"
+          </IconButton>
+          <IconButton
+            className="pl-1 hover:text-lightgold"
+            boneOnly
             onClick={() => setConfigOn(true)}
           >
             <FaEdit />
-          </button>
+          </IconButton>
         </div>
         <p className="text-sm text-lightred">Target</p>
 

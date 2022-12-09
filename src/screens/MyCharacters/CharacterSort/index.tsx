@@ -1,6 +1,6 @@
-import cn from "classnames";
+import clsx from "clsx";
 import { DragEventHandler, useState } from "react";
-import { FaSort } from "react-icons/fa";
+import { FaSort, FaTimes } from "react-icons/fa";
 
 import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -10,7 +10,7 @@ import { findCharacter } from "@Data/controllers";
 import { splitLv } from "@Src/utils";
 
 import { Modal, ModalControl } from "@Components/modals";
-import { Button, CloseButton } from "@Src/styled-components";
+import { Button, IconButton } from "@Src/styled-components";
 import { ButtonBar } from "@Components/minors";
 
 const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
@@ -54,10 +54,16 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="px-2 py-4 rounded-lg bg-darkblue-2">
-      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="text-h4 text-orange text-center">Sort by</p>
+      <IconButton
+        className="absolute top-1 right-1 text-xl hover:text-darkred"
+        boneOnly
+        onClick={onClose}
+      >
+        <FaTimes />
+      </IconButton>
+      <p className="text-1.5xl text-orange text-center">Sort by</p>
       <ButtonBar
-        className="mt-4 space-x-4"
+        className="mt-3 space-x-4"
         texts={["Name", "Level", "Rarity"]}
         variants={["neutral", "neutral", "neutral"]}
         handlers={[
@@ -95,7 +101,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
             <div
               key={i}
               id={i.toString()}
-              className={cn(
+              className={clsx(
                 "px-2 py-1 flex items-center cursor-default select-none hover:bg-darkblue-1",
                 i === dropIndex && "border-t border-white"
               )}
