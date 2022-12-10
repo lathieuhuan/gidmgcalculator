@@ -100,7 +100,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       content.push(
         <p
           key={name}
-          className={`pt-2 -mb-1 text-h6 text-${vision} font-bold text-center uppercase`}
+          className={`pt-2 -mb-1 text-lg text-${vision} font-bold text-center uppercase`}
         >
           {name}
         </p>

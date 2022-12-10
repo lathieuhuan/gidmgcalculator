@@ -99,7 +99,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
                 }
               }}
             >
-              <p className={clsx("text-h6 font-semibold text-center", chosen && "text-black")}>
+              <p className={clsx("text-lg font-semibold text-center", chosen && "text-black")}>
                 {categoryName}
               </p>
             </button>

@@ -36,7 +36,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
-            <p className="text-h6 font-bold">No Setups available for choosing...</p>
+            <p className="text-lg font-bold">No Setups available for choosing...</p>
           </div>
         )}
         {options.map((setup) => {
@@ -55,7 +55,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
               onClick={() => onClickOption(ID, picked)}
             >
               <div className="md1:w-40 md1:mr-4">
-                <p className="text-h6 font-bold text-orange cursor-default">{setup.name}</p>
+                <p className="text-lg font-bold text-orange cursor-default">{setup.name}</p>
               </div>
               <div className="mt-2 md1:mt-0 flex space-x-4">
                 <div className="w-16 rounded-circle shadow-3px-2px shadow-orange">

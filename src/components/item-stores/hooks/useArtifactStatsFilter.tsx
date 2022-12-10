@@ -62,7 +62,7 @@ export function useArtifactStatsFilter({
 
   const workMode = (
     <div className="h-full flex flex-col">
-      <p className="mt-2 text-h6 text-orange font-bold">Main Stat</p>
+      <p className="mt-2 text-lg text-orange font-bold">Main Stat</p>
       <div className="mt-1 flex justify-center">
         <div className="w-52 px-4 bg-darkblue-1">
           <Select
@@ -82,7 +82,7 @@ export function useArtifactStatsFilter({
         </div>
       </div>
 
-      <p className="mt-2 text-h6 text-orange font-bold">Sub Stats</p>
+      <p className="mt-2 text-lg text-orange font-bold">Sub Stats</p>
       <div className="flex flex-col items-center">
         {[1, 2, 3, 4].map((n, i) => {
           return (

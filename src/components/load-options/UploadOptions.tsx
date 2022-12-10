@@ -100,10 +100,10 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
       <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
 
       <div className={clsx("flex flex-col items-center", styles.option)}>
-        <p className="px-4 py-2 text-h5 text-default text-center">Load from Local Storage</p>
+        <p className="px-4 py-2 text-xl text-default text-center">Load from Local Storage</p>
 
         {message?.uploadCase === "auto" && (
-          <p className={clsx("mb-2 text-h6 font-bold text-center", messageColor)}>
+          <p className={clsx("mb-2 text-lg font-bold text-center", messageColor)}>
             {
               {
                 success: "Successfully loaded data from Local Storage",
@@ -131,7 +131,7 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
 
       <div className="w-full border-b border-default" />
       <div className={clsx("flex flex-col items-center", styles.option)}>
-        <p className="px-4 py-2 text-h5 text-default text-center">
+        <p className="px-4 py-2 text-xl text-default text-center">
           Upload a .TXT file or a .JSON file in GOOD format
         </p>
 

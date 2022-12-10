@@ -97,7 +97,7 @@ export default function Info() {
             <StarLine rarity={rarity} />
 
             <div className="ml-1 my-1 flex">
-              <p className="mr-1 text-h5">Level</p>
+              <p className="mr-1 pt-1 text-xl">Level</p>
               <Select
                 className={`text-right text-last-right text-xl text-${vision} font-bold`}
                 value={char.level}

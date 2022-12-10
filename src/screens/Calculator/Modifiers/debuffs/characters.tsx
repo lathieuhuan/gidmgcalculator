@@ -158,7 +158,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   return (
     <>
       <p
-        className={`text-h6 text-${vision} font-bold text-center uppercase`}
+        className={`text-lg text-${vision} font-bold text-center uppercase`}
         style={{ marginTop: "-0.25rem" }}
       >
         {teammate.name}

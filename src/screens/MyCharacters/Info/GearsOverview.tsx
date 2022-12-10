@@ -92,7 +92,7 @@ export function GearsOverview({
         }}
       >
         <div>
-          <p className="text-h6 text-orange font-bold">Set Bonus</p>
+          <p className="text-lg text-orange font-bold">Set Bonus</p>
           <div className="mt-1 pl-2">
             {sets.length ? (
               <>
@@ -117,7 +117,7 @@ export function GearsOverview({
         className={clsx("mt-2", bonusStyles(activeDetails === "statsBonus"))}
         onClick={() => toggleDetails("statsBonus")}
       >
-        <p className="text-h6 text-orange font-bold">Artifact Details</p>
+        <p className="text-lg text-orange font-bold">Artifact Details</p>
         <InfoSign active={activeDetails === "statsBonus"} />
       </div>
     </div>

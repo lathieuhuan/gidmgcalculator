@@ -39,42 +39,6 @@ module.exports = {
           },
         ],
         "3.5xl": "2rem",
-        h2: [
-          "1.75rem",
-          {
-            lineHeight: "1.2",
-          },
-        ],
-        h3: [
-          "1.5rem",
-          {
-            lineHeight: "1.167",
-          },
-        ],
-        h4: [
-          "1.375rem",
-          {
-            lineHeight: "1.235",
-          },
-        ],
-        h5: [
-          "1.25rem",
-          {
-            lineHeight: "1.334",
-          },
-        ],
-        h6: [
-          "1.125rem",
-          {
-            lineHeight: "1.6",
-          },
-        ],
-        "subtitle-1": [
-          "0.875rem",
-          {
-            lineHeight: "1.43",
-          },
-        ],
       },
       lineHeight: {
         tighter: 1.15,

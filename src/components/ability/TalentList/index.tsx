@@ -175,9 +175,9 @@ function Details({
           onClickNext={() => {
             if (position < Object.keys(activeTalents).length - 1) changePosition(position + 1);
           }}
-          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-subtitle-1">{t(type)}</p>}
+          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(type)}</p>}
         />
-        <p className={`text-h5 font-bold text-${vision} text-center`}>{name}</p>
+        <p className={`text-xl font-bold text-${vision} text-center`}>{name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div>

@@ -242,7 +242,7 @@ export const renderModifiers = (
 
 export const renderNoItems = (type: string) => (
   <div className="w-full pt-8 flex-center">
-    <p className="text-h5 font-bold text-lightred">No {type} to display</p>
+    <p className="text-xl font-bold text-lightred">No {type} to display</p>
   </div>
 );
 
@@ -305,7 +305,7 @@ export function InfusionNotes({ vision, weapon }: InfusionNotesProps) {
 
   return (
     <div className="mt-2 pr-2">
-      <p className="text-h6 text-lightgold">Notes:</p>
+      <p className="text-lg text-lightgold">Notes:</p>
 
       {notes.map(([attPatt, attElmt], i) => {
         return (

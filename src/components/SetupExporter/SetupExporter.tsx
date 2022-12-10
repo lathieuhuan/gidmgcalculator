@@ -18,7 +18,7 @@ export function SetupExporter({ data, onClose }: SetupExporterProps) {
   return (
     <div className="px-6 pt-4 pb-6 rounded-lg bg-darkblue-1 shadow-white-glow">
       <div className="w-75">
-        <p className="mb-2 px-2 text-h5 text-orange text-center font-bold">Share "{data.name}"</p>
+        <p className="mb-2 px-2 text-xl text-orange text-center font-bold">Share "{data.name}"</p>
         <textarea
           ref={inputRef}
           className="w-full p-2 text-black rounded resize-none"

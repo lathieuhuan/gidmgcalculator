@@ -36,7 +36,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
         <div className="flex flex-col grow justify-between">
           {/*  */}
           <div className={clsx("pt-1 grow flex items-center", groupStyles)}>
-            <p className="mr-2 text-h6 font-semibold">Level</p>
+            <p className="mr-2 text-lg font-semibold">Level</p>
             {mutable ? (
               <Select
                 className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
@@ -48,7 +48,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
                 ))}
               </Select>
             ) : (
-              <p className={`text-h6 text-rarity-${rarity} font-bold`}>{level}</p>
+              <p className={`text-lg text-rarity-${rarity} font-bold`}>{level}</p>
             )}
           </div>
 
@@ -91,14 +91,14 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
                   ))}
                 </Select>
               ) : (
-                <p className={`text-h6 text-rarity-${rarity} font-bold`}>{refi}</p>
+                <p className={`text-lg text-rarity-${rarity} font-bold`}>{refi}</p>
               )}
             </div>
           )}
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-h6 font-bold text-orange">{wpData.passiveName}</p>
+        <p className="text-lg font-bold text-orange">{wpData.passiveName}</p>
         <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p>
       </div>
     </div>

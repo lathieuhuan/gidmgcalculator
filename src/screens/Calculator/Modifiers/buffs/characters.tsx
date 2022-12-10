@@ -199,7 +199,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   });
   return (
     <div>
-      <p className={`-mt-1 text-h6 text-${vision} font-bold text-center uppercase`}>
+      <p className={`-mt-1 text-lg text-${vision} font-bold text-center uppercase`}>
         {teammate.name}
       </p>
       <div className="mt-1 space-y-3">{subContent}</div>

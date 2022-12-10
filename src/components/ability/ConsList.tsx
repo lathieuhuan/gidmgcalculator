@@ -27,7 +27,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
 
   if (!constellation.length) {
     return (
-      <p className="pt-4 px-4 text-h5 text-center">
+      <p className="pt-4 px-4 text-xl text-center">
         The time has not yet come for this person's corner of the night sky to light up.
       </p>
     );
@@ -57,7 +57,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                     setConsLv(i + 1);
                   }}
                 >
-                  <p className={clsx("px-2 text-h6 font-bold", char.cons < i + 1 && "opacity-50")}>
+                  <p className={clsx("px-2 text-lg font-bold", char.cons < i + 1 && "opacity-50")}>
                     {cons.name}
                   </p>
                   <InfoSign className="ml-auto" />
@@ -80,8 +80,8 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                 onClickNext={() => setConsLv(consLv + 1)}
               />
               <div className="py-2 cons_details">
-                <p className={`text-h5 text-${vision} font-bold`}>{name}</p>
-                <p className="text-h6">
+                <p className={`text-xl text-${vision} font-bold`}>{name}</p>
+                <p className="text-lg">
                   Constellation Lv. <Green b>{consLv}</Green>
                 </p>
                 {atDetails && (

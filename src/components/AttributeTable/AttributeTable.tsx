@@ -100,7 +100,7 @@ function EmSection({ em }: EmSectionProps) {
         <p className="mr-2">{em}</p>
       </StatsTable.Row>
       <CollapseSpace active={dropped}>
-        <ul className="px-2 pb-1 text-subtitle-1 flex flex-col space-y-1">
+        <ul className="px-2 pb-1 text-sm flex flex-col space-y-1">
           <li>
             - Increases damage dealt by Vaporize and Melt by{" "}
             <Green>{rxnBonusFromEM.amplifying}%</Green>.

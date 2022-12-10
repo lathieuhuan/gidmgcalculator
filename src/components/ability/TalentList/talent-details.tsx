@@ -11,7 +11,7 @@ import { Select } from "@Src/styled-components";
 
 const { Row } = StatsTable;
 const styles = {
-  row: "pb-1 text-subtitle-1",
+  row: "pb-1 text-sm",
   leftCol: "pr-8 text-dullyellow",
   rightCol: "font-bold text-right",
 };
@@ -65,9 +65,9 @@ export function SkillAttributes({
           </>
         )}
 
-        <p className="text-h6">Lv.</p>
+        <p className="text-lg">Lv.</p>
         {isStatic ? (
-          <p className="px-1 text-h6 font-bold">1</p>
+          <p className="px-1 text-lg font-bold">1</p>
         ) : (
           <Select
             className="pr-2 text-lg font-bold text-default text-right text-last-right"

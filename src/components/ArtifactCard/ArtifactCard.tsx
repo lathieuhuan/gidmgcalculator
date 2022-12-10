@@ -44,7 +44,7 @@ export function ArtifactCard({
   return (
     <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
       <div className={`px-4 pt-2 pb-1 bg-rarity-${rarity}`}>
-        <p className="text-h5 font-bold text-black truncate">{name}</p>
+        <p className="text-xl font-bold text-black truncate">{name}</p>
       </div>
       <div className="mt-4 mx-4 flex">
         {mutable ? (
@@ -74,7 +74,7 @@ export function ArtifactCard({
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
-                className="mt-6 px-1.5 py-1 rounded font-black bg-orange"
+                className="mt-6 px-1.5 pt-2 rounded bg-orange"
                 disabled={artPiece.level === maxLevel}
                 onClick={() => enhance && enhance(maxLevel)}
               >
@@ -85,7 +85,7 @@ export function ArtifactCard({
         ) : (
           <div className="w-[9.75rem]">
             <div className="px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-full">
-              <p className={`text-h6 text-rarity-${rarity} font-bold`}>{"+" + artPiece.level}</p>
+              <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + artPiece.level}</p>
             </div>
           </div>
         )}
@@ -98,7 +98,7 @@ export function ArtifactCard({
 
       <div className="mt-2 ml-6">
         {["flower", "plume"].includes(artPiece.type) || !mutable ? (
-          <p className={clsx("pt-1 text-h6", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
+          <p className={clsx("pt-1 text-lg", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />

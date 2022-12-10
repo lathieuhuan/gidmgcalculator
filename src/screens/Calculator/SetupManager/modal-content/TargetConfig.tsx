@@ -133,7 +133,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               ) : null}
 
               <label className="ml-auto flex items-center">
-                <span className="mr-4 text-h6 text-lightgold">Level</span>
+                <span className="mr-4 text-lg text-lightgold">Level</span>
                 <input
                   className="w-16 p-2 text-right textinput-common font-bold"
                   value={target.level}
@@ -241,7 +241,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 <div key={attElmt} className="flex justify-between items-center">
                   <p
                     className={clsx(
-                      "text-h6",
+                      "text-lg",
                       attElmt === "phys" ? "text-default" : `text-${attElmt}`
                     )}
                   >

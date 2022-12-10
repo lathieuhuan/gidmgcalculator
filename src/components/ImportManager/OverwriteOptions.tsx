@@ -71,7 +71,7 @@ export function OverrideOptions({
   return (
     <div className="p-4 bg-darkblue-3 relative">
       <div className="py-2">
-        <p className="text-h5 text-center">
+        <p className="text-xl text-center">
           We detect difference(s) between the Calculator and this Setup. Choose what you want to
           overwrite.
         </p>
@@ -91,10 +91,10 @@ export function OverrideOptions({
                         checked={ticked[i]}
                         onChange={onChangeTickedOption(i)}
                       />
-                      <span className="ml-4 text-h6">{text}</span>
+                      <span className="ml-4 text-lg">{text}</span>
                     </label>
                     <SeeDetails
-                      className="ml-2 text-h6"
+                      className="ml-2 text-lg"
                       active={expandedIndex === i}
                       onClick={onClickSeeDetails(i)}
                     />

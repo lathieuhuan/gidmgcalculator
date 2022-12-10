@@ -56,7 +56,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
               <p className={`text-3xl truncate text-${vision} font-black`}>{char.name}</p>
               <StarLine className="mt-1" rarity={rarity} />
               <div className="mt-1 flex items-center">
-                <p className="mr-1 text-h6">Level</p>
+                <p className="mr-1 text-lg">Level</p>
                 <Select
                   className={`text-lg text-${vision} font-bold text-last-right`}
                   value={char.level}

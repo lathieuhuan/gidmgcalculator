@@ -98,10 +98,10 @@ function App() {
 
       <Modal
         active={isError}
-        className="p-4 w-80 rounded-lg flex flex-col bg-darkblue-1"
+        className="p-4 small-modal flex flex-col bg-darkblue-1"
         onClose={closeError}
       >
-        <p className="text-h5 text-center text-lightred">
+        <p className="text-xl text-center text-lightred">
           An Error has occurred and prevented the calculation process.
         </p>
         <Button className="mt-4 mx-auto" variant="positive" onClick={closeError}>

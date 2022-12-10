@@ -186,7 +186,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
 
     if (buffs.length) {
       content.push(
-        <p key={name} className={`text-h6 text-${vision} font-bold text-center uppercase`}>
+        <p key={name} className={`text-lg text-${vision} font-bold text-center uppercase`}>
           {name}
         </p>
       );

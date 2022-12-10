@@ -53,7 +53,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
               ) : null}
               <FaChevronDown
                 className={
-                  "ml-2 text-subtitle-1 text-black duration-150 ease-linear" +
+                  "ml-2 text-sm text-black duration-150 ease-linear" +
                   (closedItems[index] ? " rotate-90" : "")
                 }
               />

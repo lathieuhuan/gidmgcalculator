@@ -47,7 +47,7 @@ function Options({ onClose }: { onClose: () => void }) {
       <CloseButton className="ml-auto mr-2 mb-2" onClick={onClose} />
 
       <div className={styles.option} onClick={trySaveToLocalStorage}>
-        <p className="mt-1 text-h5 font-bold text-lightgold">Save to Local Storage</p>
+        <p className="mt-1 text-xl font-bold text-lightgold">Save to Local Storage</p>
         <p className="mt-1 text-default">
           • Your Database stays in this Browser only and will be removed if you clear the Local
           Storage.
@@ -60,7 +60,7 @@ function Options({ onClose }: { onClose: () => void }) {
           <div className="p-4">
             <p
               className={clsx(
-                "mt-1 text-h6 font-b text-center",
+                "mt-1 text-lg font-b text-center",
                 messageType === 1 ? "text-lightred" : "text-green"
               )}
             >
@@ -82,7 +82,7 @@ function Options({ onClose }: { onClose: () => void }) {
 
       <div className="w-full border-b border-default" />
       <div className={styles.option} onClick={() => downloadToDevice(downloadData)}>
-        <p className="mt-1 text-h5 font-bold text-lightgold">Download a .TXT file</p>
+        <p className="mt-1 text-xl font-bold text-lightgold">Download a .TXT file</p>
         <p className="mt-1 text-default">
           • Please DO NOT modify this file if you don't understand how it works.
         </p>

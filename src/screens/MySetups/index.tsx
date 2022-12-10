@@ -258,14 +258,14 @@ export default function MySetups() {
         return (
           <div className="h-full flex divide-x-2 divide-darkblue-2">
             <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-              <p className="text-h6 text-orange font-bold">Final Attributes</p>
+              <p className="text-lg text-orange font-bold">Final Attributes</p>
               <div className="mt-1 hide-scrollbar">
                 <AttributeTable attributes={totalAttr} />
               </div>
             </div>
 
             <div className="w-80 pt-2 px-4 pb-4 flex flex-col" style={{ minWidth: "20rem" }}>
-              <p className="text-h6 text-orange font-bold">Artifact Stats</p>
+              <p className="text-lg text-orange font-bold">Artifact Stats</p>
               <div className="mt-1 hide-scrollbar">
                 <AttributeTable attributes={artAttr} />
               </div>
