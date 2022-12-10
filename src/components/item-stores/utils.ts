@@ -1,4 +1,4 @@
-import type { ArtPieceMainStat, CalcArtPieceSubStat, UsersArtifact } from "@Src/types";
+import type { ArtPieceMainStat, CalcArtPieceSubStat, UserArtifact } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
 export interface StatsFilter {
@@ -14,7 +14,7 @@ export function initArtifactStatsFilter(): StatsFilter {
 }
 
 export function filterArtIdsBySetsAndStats(
-  artifacts: UsersArtifact[],
+  artifacts: UserArtifact[],
   setCodes: number[],
   stats: StatsFilter
 ) {
@@ -22,8 +22,8 @@ export function filterArtIdsBySetsAndStats(
     ? artifacts.filter((p) => setCodes.includes(p.code))
     : [...artifacts];
 
-  function compareMainStat(a: UsersArtifact, b: UsersArtifact) {
-    const mainStatValue = (p: UsersArtifact) => {
+  function compareMainStat(a: UserArtifact, b: UserArtifact) {
+    const mainStatValue = (p: UserArtifact) => {
       return ARTIFACT_MAIN_STATS[p.type][p.mainStatType]?.[p.rarity || 5][p.level] || 0;
     };
     return mainStatValue(b) - mainStatValue(a);
@@ -43,7 +43,7 @@ export function filterArtIdsBySetsAndStats(
       requires.every((rq) => p.subStats.map((ss) => ss.type).includes(rq))
     );
 
-    const getValue = (p: UsersArtifact, type: CalcArtPieceSubStat) => {
+    const getValue = (p: UserArtifact, type: CalcArtPieceSubStat) => {
       return p.subStats.find((s) => s.type === type)?.value || 0;
     };
 

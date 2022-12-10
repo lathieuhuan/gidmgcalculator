@@ -7,7 +7,7 @@ import {
   selectMyChars,
   selectMySetups,
   selectMyWps,
-} from "@Store/usersDatabaseSlice/selectors";
+} from "@Store/userDatabaseSlice/selectors";
 import { downloadToDevice, styles } from "./common";
 
 import { ButtonBar } from "@Components/minors";

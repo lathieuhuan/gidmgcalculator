@@ -1,4 +1,4 @@
-import type { ConvertUsersDataArgs } from "./types";
+import type { ConvertUserDataArgs } from "./types";
 import { toVersion3_0 } from "./toVersion3_0";
 
 const ERROR = {
@@ -6,7 +6,7 @@ const ERROR = {
   databaseTooOld: "Your database are too old and cannot be converted to the current version",
 };
 
-export function convertUsersData(data: ConvertUsersDataArgs) {
+export function convertUserData(data: ConvertUserDataArgs) {
   const version = +data.version;
 
   if (isNaN(version)) {

@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { useState, ChangeEventHandler, KeyboardEventHandler } from "react";
-import type { UsersSetup } from "@Src/types";
+import type { UserSetup } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectMySetups } from "@Store/usersDatabaseSlice/selectors";
-import { combineSetups } from "@Store/usersDatabaseSlice";
+import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { combineSetups } from "@Store/userDatabaseSlice";
 import { findById } from "@Src/utils";
 import { useCombineManager } from "./hook";
 
@@ -22,7 +22,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
       setup.party.length === 3 &&
       setup.party.every((teammate) => teammate)
     );
-  }) as UsersSetup[];
+  }) as UserSetup[];
 
   const { isError, pickedIDs, combineMenu, setIsError } = useCombineManager({
     options: setupOptions,

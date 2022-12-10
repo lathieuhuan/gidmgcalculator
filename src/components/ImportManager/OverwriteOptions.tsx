@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { UsersSetup } from "@Src/types";
+import type { UserSetup } from "@Src/types";
 
 import { useSelector } from "@Store/hooks";
 import {
@@ -16,7 +16,7 @@ import { CollapseSpace } from "@Components/collapse";
 
 interface OverrideOptions {
   pendingCode: number;
-  importedSetup?: UsersSetup;
+  importedSetup?: UserSetup;
   addImportedSetup: (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => void;
   endImport: () => void;
 }

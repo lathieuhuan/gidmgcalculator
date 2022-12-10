@@ -9,9 +9,9 @@ import {
   addArtifact,
   addWeapon,
   saveSetup,
-  updateUsersArtifact,
-  updateUsersWeapon,
-} from "./usersDatabaseSlice";
+  updateUserArtifact,
+  updateUserWeapon,
+} from "./userDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
 import { findById, indexById } from "@Src/utils";
@@ -58,7 +58,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
 
     if (foundWpIndex !== -1) {
       dispatch(
-        updateUsersWeapon({
+        updateUserWeapon({
           index: foundWpIndex,
           ...myWps[foundWpIndex],
           setupIDs: (myWps[foundWpIndex].setupIDs || []).concat(ID),
@@ -80,7 +80,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
 
         if (foundIndex !== -1) {
           dispatch(
-            updateUsersArtifact({
+            updateUserArtifact({
               index: foundIndex,
               ...myArts[foundIndex],
               setupIDs: (myArts[foundIndex].setupIDs || []).concat(ID),

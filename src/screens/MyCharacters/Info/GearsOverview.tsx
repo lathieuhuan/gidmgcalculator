@@ -3,7 +3,7 @@ import { ItemThumb } from "@Components/ItemThumb";
 import { InfoSign } from "@Components/minors";
 import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import { UsersWeapon } from "@Src/types";
+import { UserWeapon } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 import { ArtifactInfo, Details } from "./types";
 
@@ -12,7 +12,7 @@ const bonusStyles = (active: boolean) => {
 };
 
 interface GearsOverviewProps {
-  wpInfo: UsersWeapon;
+  wpInfo: UserWeapon;
   artInfo: ArtifactInfo;
   activeDetails: Details;
   toggleDetails: (newDetails: Details) => void;

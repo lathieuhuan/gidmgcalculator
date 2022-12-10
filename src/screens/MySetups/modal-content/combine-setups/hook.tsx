@@ -3,8 +3,8 @@ import { useState } from "react";
 
 import { CharacterPortrait } from "@Components/minors";
 
-import type { UsersSetup } from "@Src/types";
-export type SetupOptions = Array<Pick<UsersSetup, "ID" | "type" | "name" | "char" | "party">>;
+import type { UserSetup } from "@Src/types";
+export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
 
 interface UseCombineManagerArgs {
   options: SetupOptions;

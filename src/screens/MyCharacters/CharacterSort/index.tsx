@@ -4,8 +4,8 @@ import { FaSort, FaTimes } from "react-icons/fa";
 
 import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { sortCharacters } from "@Store/usersDatabaseSlice";
-import { selectMyChars } from "@Store/usersDatabaseSlice/selectors";
+import { sortCharacters } from "@Store/userDatabaseSlice";
+import { selectMyChars } from "@Store/userDatabaseSlice/selectors";
 import { findCharacter } from "@Data/controllers";
 import { splitLv } from "@Src/utils";
 

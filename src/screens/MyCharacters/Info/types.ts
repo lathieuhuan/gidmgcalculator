@@ -1,8 +1,8 @@
-import { CalcArtSet, UsersArtifact } from "@Src/types";
+import { CalcArtSet, UserArtifact } from "@Src/types";
 
 export type Details = "weapon" | "setBonus" | "statsBonus" | number;
 
 export type ArtifactInfo = {
-  pieces: (UsersArtifact | null)[];
+  pieces: (UserArtifact | null)[];
   sets: CalcArtSet[];
 };

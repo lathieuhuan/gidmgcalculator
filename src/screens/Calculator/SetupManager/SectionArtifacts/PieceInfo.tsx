@@ -5,7 +5,7 @@ import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
-import { addArtifact, overwriteArtifact } from "@Store/usersDatabaseSlice";
+import { addArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
 
 import { findById, percentSign } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";

@@ -78,7 +78,11 @@ export default function SetupManager() {
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setPrePickerOn(true)}
           >
-            <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
+            <img
+              src={getImgSrc("6/6a/Icon_Inventory_Artifacts")}
+              alt="artifact"
+              draggable={false}
+            />
           </button>
         </div>
       </div>
@@ -139,7 +143,7 @@ export default function SetupManager() {
 
       <Picker.Character
         active={modal.type === "CHARACTERS"}
-        sourceType="usersData"
+        sourceType="userData"
         onPickCharacter={({ artifactIDs }) => {
           if (artifactIDs) {
             dispatch(pickEquippedArtSet(artifactIDs));

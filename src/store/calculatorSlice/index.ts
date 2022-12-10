@@ -9,7 +9,7 @@ import type {
   PartiallyOptional,
   Resonance,
   Target,
-  UsersSetup,
+  UserSetup,
 } from "@Src/types";
 import type { CalculatorState } from "./types";
 import type {
@@ -127,7 +127,7 @@ export const calculatorSlice = createSlice({
 
       calculate(state);
     },
-    initSessionWithSetup: (state, action: PayloadAction<UsersSetup>) => {
+    initSessionWithSetup: (state, action: PayloadAction<UserSetup>) => {
       const { ID, type, target, ...setupInfo } = action.payload;
 
       state.charData = getCharData(setupInfo.char);

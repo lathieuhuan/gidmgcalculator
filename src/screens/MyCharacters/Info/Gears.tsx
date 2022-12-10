@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { ArtifactAttribute, UsersWeapon } from "@Src/types";
+import type { ArtifactAttribute, UserWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
 
 import { useDispatch } from "@Store/hooks";
-import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/usersDatabaseSlice";
+import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
 import { CloseButton } from "@Src/styled-components";
@@ -14,7 +14,7 @@ import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
 
 interface GearsProps {
-  wpInfo: UsersWeapon;
+  wpInfo: UserWeapon;
   artInfo: ArtifactInfo;
   artAttr: ArtifactAttribute;
 }

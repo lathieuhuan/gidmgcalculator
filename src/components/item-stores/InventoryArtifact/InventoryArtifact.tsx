@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import type { Artifact, CalcArtPiece, UsersArtifact } from "@Src/types";
+import type { Artifact, CalcArtPiece, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
+import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { findById } from "@Src/utils";
 import { useInventoryRack } from "../hooks";
@@ -31,7 +31,7 @@ interface ArtifactInventoryProps {
   currentPieces: (CalcArtPiece | null)[];
   owner: string | null;
   buttonText: string;
-  onClickButton: (chosen: UsersArtifact) => void;
+  onClickButton: (chosen: UserArtifact) => void;
   onClose: () => void;
 }
 function ArtifactInventory({

@@ -1,5 +1,5 @@
 import { EScreen } from "@Src/constants";
-import { UsersSetup } from "@Src/types";
+import { UserSetup } from "@Src/types";
 
 export interface UIState {
   atScreen: EScreen;
@@ -10,5 +10,5 @@ export interface UIState {
 
 export type ImportInfo = {
   type: "" | "EDIT_SETUP" | "IMPORT_OUTSIDE";
-  data?: UsersSetup;
+  data?: UserSetup;
 };

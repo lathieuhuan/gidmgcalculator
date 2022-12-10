@@ -1,17 +1,17 @@
 import clsx from "clsx";
-import type { UsersComplexSetup, UsersSetup } from "@Src/types";
+import type { UserComplexSetup, UserSetup } from "@Src/types";
 
 import { findById } from "@Src/utils";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { addSetupToComplex } from "@Store/usersDatabaseSlice";
-import { selectMySetups } from "@Store/usersDatabaseSlice/selectors";
-import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
+import { addSetupToComplex } from "@Store/userDatabaseSlice";
+import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { isUserSetup } from "@Store/userDatabaseSlice/utils";
 import { useCombineManager } from "./hook";
 
 import { ButtonBar } from "@Components/minors";
 
 interface CombineMoreProps {
-  targetSetup: UsersComplexSetup;
+  targetSetup: UserComplexSetup;
   allChars: string[];
   onClose: () => void;
 }
@@ -29,7 +29,7 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
       setup.party.every((teammate) => teammate && allChars.includes(teammate.name)) &&
       remainChars.includes(setup.char.name)
     );
-  }) as UsersSetup[];
+  }) as UserSetup[];
 
   const { isError, pickedIDs, combineMenu, setIsError } = useCombineManager({
     options: setupOptions,
@@ -43,7 +43,7 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
       for (const pickedID of pickedIDs) {
         const setup = findById(mySetups, pickedID);
 
-        if (setup && isUsersSetup(setup)) {
+        if (setup && isUserSetup(setup)) {
           const { name } = setup.char;
 
           if (existedNames.includes(name)) {

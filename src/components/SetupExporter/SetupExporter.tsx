@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { useState, useRef } from "react";
 
-import type { UsersSetup } from "@Src/types";
+import type { UserSetup } from "@Src/types";
 import { ButtonBar } from "@Components/minors";
 
 interface SetupExporterProps {
-  data: UsersSetup;
+  data: UserSetup;
   onClose: () => void;
 }
 export function SetupExporter({ data, onClose }: SetupExporterProps) {

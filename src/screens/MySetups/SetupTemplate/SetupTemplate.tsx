@@ -9,7 +9,7 @@ import {
   FaUnlink,
   FaWrench,
 } from "react-icons/fa";
-import type { CalcArtPieces, CalcWeapon, Rarity, UsersSetup } from "@Src/types";
+import type { CalcArtPieces, CalcWeapon, Rarity, UserSetup } from "@Src/types";
 import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
@@ -17,10 +17,10 @@ import { useDispatch } from "@Store/hooks";
 import { finalTalentLv, getImgSrc } from "@Src/utils";
 import { updateImportInfo } from "@Store/uiSlice";
 import {
-  chooseUsersSetup,
+  chooseUserSetup,
   switchShownSetupInComplex,
   uncombineSetups,
-} from "@Store/usersDatabaseSlice";
+} from "@Store/userDatabaseSlice";
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 
 import { CharacterPortrait } from "@Components/minors";
@@ -28,7 +28,7 @@ import { IconButton } from "@Src/styled-components";
 
 interface SetupLayoutProps {
   ID: number;
-  setup: UsersSetup;
+  setup: UserSetup;
   setupName?: string;
   weapon: CalcWeapon | null;
   artPieces: CalcArtPieces;
@@ -54,7 +54,7 @@ export function SetupTemplate({
       dispatch(uncombineSetups(ID));
 
       setTimeout(() => {
-        dispatch(chooseUsersSetup(displayedID));
+        dispatch(chooseUserSetup(displayedID));
       }, 10);
     };
 

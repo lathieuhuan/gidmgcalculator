@@ -7,7 +7,7 @@ import type { CalcArtPieces, CalcWeapon } from "@Src/types";
 
 import { findById } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
-import { selectMyArts, selectMyWps } from "@Store/usersDatabaseSlice/selectors";
+import { selectMyArts, selectMyWps } from "@Store/userDatabaseSlice/selectors";
 
 import { WeaponCard } from "@Components/WeaponCard";
 import { ArtifactCard } from "@Components/ArtifactCard";

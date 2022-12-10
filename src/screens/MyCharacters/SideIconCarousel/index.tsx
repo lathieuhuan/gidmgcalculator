@@ -4,8 +4,8 @@ import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { findCharacter } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
-import { chooseCharacter } from "@Store/usersDatabaseSlice";
-import { selectChosenChar } from "@Store/usersDatabaseSlice/selectors";
+import { chooseCharacter } from "@Store/userDatabaseSlice";
+import { selectChosenChar } from "@Store/userDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import { IconButton } from "@Src/styled-components";
@@ -119,7 +119,7 @@ export default function SideIconCarousel({
 
       <Picker.Character
         active={gridviewOn}
-        sourceType="usersData"
+        sourceType="userData"
         onPickCharacter={({ name }) => {
           dispatch(chooseCharacter(name));
           scrollList(name);

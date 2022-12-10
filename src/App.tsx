@@ -3,8 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice";
 import { updateCalculator } from "@Store/calculatorSlice";
-import { addUsersDatabase } from "@Store/usersDatabaseSlice";
-import { convertUsersData } from "./utils/convertUsersData";
+import { addUserDatabase } from "@Store/userDatabaseSlice";
+import { convertUserData } from "./utils/convertUserData";
 import { EScreen } from "./constants";
 
 import Calculator from "@Screens/Calculator";
@@ -30,10 +30,10 @@ function App() {
   const atScreen = useSelector(selectAtScreen);
   const isError = useSelector((state) => state.calculator.isError);
 
-  const checkAndAddUsersData = useCallback(
+  const checkAndAddUserData = useCallback(
     (data: any) => {
-      const { version, outdates, ...database } = convertUsersData(data);
-      dispatch(addUsersDatabase(JSON.parse(JSON.stringify(database))));
+      const { version, outdates, ...database } = convertUserData(data);
+      dispatch(addUserDatabase(JSON.parse(JSON.stringify(database))));
 
       if (outdates.length) {
         setOutdates(outdates);
@@ -52,7 +52,7 @@ function App() {
   //   const data = localStorage.getItem("GDC_Data");
   //   if (data) {
   //     try {
-  //       checkAndAddUsersData(JSON.parse(data));
+  //       checkAndAddUserData(JSON.parse(data));
   //     } catch (err) {
   //       console.log(err);
   //     }
@@ -114,7 +114,7 @@ function App() {
       <UploadOptions
         active={loadOptionType === "UP"}
         outdates={outdates}
-        uploadUsersDatabase={checkAndAddUsersData}
+        uploadUserDatabase={checkAndAddUserData}
         onSuccess={() => setNavBarMenuActive(false)}
         onClose={() => setLoadOptionType("")}
       />

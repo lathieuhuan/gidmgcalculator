@@ -9,13 +9,13 @@ import {
   removeWeapon,
   sortWeapons,
   swapWeaponOwner,
-  updateUsersWeapon,
-} from "@Store/usersDatabaseSlice";
+  updateUserWeapon,
+} from "@Store/userDatabaseSlice";
 import {
   selectFilteredWeaponIDs,
   selectMyWps,
   selectWeaponById,
-} from "@Store/usersDatabaseSlice/selectors";
+} from "@Store/userDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
@@ -97,8 +97,8 @@ export default function MyWeapons() {
                   <WeaponCard
                     weapon={weapon}
                     mutable
-                    upgrade={(level) => dispatch(updateUsersWeapon({ ID: weapon.ID, level }))}
-                    refine={(refi) => dispatch(updateUsersWeapon({ ID: weapon.ID, refi }))}
+                    upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
+                    refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
                   />
                 ) : null}
               </div>
@@ -144,7 +144,7 @@ export default function MyWeapons() {
       {weapon && (
         <Picker.Character
           active={modalType === "EQUIP_CHARACTER"}
-          sourceType="usersData"
+          sourceType="userData"
           filter={({ name, weapon: weaponType }) => {
             return weaponType === weapon.type && name !== weapon.owner;
           }}

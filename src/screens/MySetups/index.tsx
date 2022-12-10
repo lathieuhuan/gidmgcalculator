@@ -13,20 +13,20 @@ import type {
   InnateBuff,
   ReactionBonus,
   TotalAttribute,
-  UsersComplexSetup,
-  UsersSetup,
+  UserComplexSetup,
+  UserSetup,
 } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { chooseUsersSetup, removeSetup } from "@Store/usersDatabaseSlice";
+import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
 import {
   selectChosenSetupID,
   selectMyArts,
   selectMySetups,
   selectMyWps,
-} from "@Store/usersDatabaseSlice/selectors";
-import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
+} from "@Store/userDatabaseSlice/selectors";
+import { isUserSetup } from "@Store/userDatabaseSlice/utils";
 import calculateAll from "@Src/calculators";
 import { findById, indexById } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
@@ -82,7 +82,7 @@ export default function MySetups() {
   const chosenSetup = (() => {
     const setup = findById(mySetups, chosenSetupID);
     return setup && setup.type === "complex"
-      ? (findById(mySetups, setup.shownID) as UsersSetup)
+      ? (findById(mySetups, setup.shownID) as UserSetup)
       : setup;
   })();
 
@@ -180,13 +180,13 @@ export default function MySetups() {
     infusedElement = result.infusedElement;
   }
 
-  const renderSetup = (setup: UsersSetup | UsersComplexSetup, index: number) => {
+  const renderSetup = (setup: UserSetup | UserComplexSetup, index: number) => {
     if (setup.type === "combined") return null;
     const { ID } = setup;
     let setupDisplay: JSX.Element | null;
 
     if (setup.type === "complex") {
-      const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UsersSetup;
+      const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UserSetup;
 
       setupDisplay = infos[actualSetup.ID] ? (
         <SetupTemplate
@@ -211,7 +211,7 @@ export default function MySetups() {
           "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
           ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
         )}
-        onClick={() => dispatch(chooseUsersSetup(ID))}
+        onClick={() => dispatch(chooseUserSetup(ID))}
       >
         {setupDisplay}
       </div>
@@ -374,10 +374,8 @@ export default function MySetups() {
       }
       case "REMOVE_SETUP": {
         const removedSetup = findById(mySetups, modal.ID);
+        if (!removedSetup) return null;
 
-        if (!removedSetup) {
-          return null;
-        }
         return (
           <ConfirmTemplate
             message={
@@ -428,12 +426,12 @@ export default function MySetups() {
         return <FirstCombine onClose={closeModal} />;
       case "COMBINE_MORE": {
         const targetSetup = findById(mySetups, modal.ID);
-        if (!targetSetup || isUsersSetup(targetSetup)) {
+        if (!targetSetup || isUserSetup(targetSetup)) {
           return null;
         }
 
         const shownSetup = findById(mySetups, targetSetup.shownID);
-        if (!shownSetup || !isUsersSetup(shownSetup)) {
+        if (!shownSetup || !isUserSetup(shownSetup)) {
           return null;
         }
 
@@ -452,7 +450,7 @@ export default function MySetups() {
       case "SHARE_SETUP": {
         const targetSetup = findById(mySetups, modal.ID);
 
-        if (targetSetup && isUsersSetup(targetSetup)) {
+        if (targetSetup && isUserSetup(targetSetup)) {
           return <SetupExporter data={targetSetup} onClose={closeModal} />;
         }
         return null;

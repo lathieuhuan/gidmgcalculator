@@ -1,10 +1,10 @@
-import type { UsersWeapon, Weapon } from "@Src/types";
+import type { UserWeapon, Weapon } from "@Src/types";
 
 import {
   selectFilteredWeaponIDs,
   selectMyWps,
   selectWeaponById,
-} from "@Store/usersDatabaseSlice/selectors";
+} from "@Store/userDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "../hooks";
 
@@ -22,7 +22,7 @@ interface WeaponInventoryProps {
   weaponType: Weapon;
   owner?: string | null;
   buttonText: string;
-  onClickButton: (chosen: UsersWeapon) => void;
+  onClickButton: (chosen: UserWeapon) => void;
   onClose: () => void;
 }
 function WeaponInventory({

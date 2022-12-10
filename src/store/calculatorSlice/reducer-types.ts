@@ -2,12 +2,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
   CalcArtPieceSubStatInfo,
-  UsersCharacter,
-  UsersArtifact,
-  UsersWeapon,
+  UserCharacter,
+  UserArtifact,
+  UserWeapon,
   Vision,
   Weapon,
-  UsersSetup,
+  UserSetup,
   CalcSetupManageInfo,
   ArtPieceMainStat,
   CalcSetup,
@@ -22,13 +22,13 @@ export type UpdateCalculatorAction = PayloadAction<
   Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds" | "isError">>
 >;
 
-export type PickedChar = Partial<UsersCharacter> & {
+export type PickedChar = Partial<UserCharacter> & {
   name: string;
 };
 export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
-  myWps: UsersWeapon[];
-  myArts: UsersArtifact[];
+  myWps: UserWeapon[];
+  myArts: UserArtifact[];
 }>;
 
 export type AddTeammateAction = PayloadAction<{
@@ -152,7 +152,7 @@ export type ApplySettingsAction = PayloadAction<{
 }>;
 
 export type ImportSetupAction = PayloadAction<{
-  data: UsersSetup;
+  data: UserSetup;
   shouldOverwriteChar: boolean;
   shouldOverwriteTarget: boolean;
 }>;

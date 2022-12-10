@@ -1,11 +1,11 @@
-import type { CalcSetup, ModifierInput, Party, UsersSetupCalcInfo } from "@Src/types";
+import type { CalcSetup, ModifierInput, Party, UserSetupCalcInfo } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
 import { CalculatorState } from "@Store/calculatorSlice/types";
 
-export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): UsersSetupCalcInfo {
+export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): UserSetupCalcInfo {
   const { char, weapon, artInfo, ...data } = calculator.setupsById[setupID];
   const { buffs = [], debuffs = [] } = findCharacter(char) || {};
   const party: Party = [];

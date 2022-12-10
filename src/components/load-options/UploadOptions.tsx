@@ -10,11 +10,11 @@ type MessageState =
 
 interface UploadOptionsProps {
   outdates: any[];
-  uploadUsersDatabase: (data: any) => void;
+  uploadUserDatabase: (data: any) => void;
   onSuccess: () => void;
   onClose: () => void;
 }
-function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOptionsProps) {
+function Options({ outdates, uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps) {
   const [message, setMessage] = useState<MessageState | null>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
     if (data) {
       data = JSON.parse(data);
       try {
-        uploadUsersDatabase(data);
+        uploadUserDatabase(data);
         setMessage({
           uploadCase: "auto",
           result: "success",
@@ -67,7 +67,7 @@ function Options({ outdates, uploadUsersDatabase, onSuccess, onClose }: UploadOp
           let data = JSON.parse((event.target?.result as string) || "");
           // if (isJson) data = convertToGOOD(data);
 
-          uploadUsersDatabase(data);
+          uploadUserDatabase(data);
           setMessage({
             uploadCase: "manual",
             result: "success",

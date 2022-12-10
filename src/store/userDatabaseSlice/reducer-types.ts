@@ -5,27 +5,27 @@ import type {
   CalcArtPieceSubStatInfo,
   Level,
   PartiallyRequired,
-  UsersArtifact,
-  UsersCharacter,
-  UsersComplexSetup,
-  UsersSetup,
-  UsersSetupCalcInfo,
-  UsersWeapon,
+  UserArtifact,
+  UserCharacter,
+  UserComplexSetup,
+  UserSetup,
+  UserSetupCalcInfo,
+  UserWeapon,
   Weapon,
 } from "@Src/types";
 
-export type AddUsersDatabaseAction = PayloadAction<{
-  Characters: UsersCharacter[];
-  Weapons: UsersWeapon[];
-  Artifacts: UsersArtifact[];
-  Setups: (UsersSetup | UsersComplexSetup)[];
+export type AddUserDatabaseAction = PayloadAction<{
+  Characters: UserCharacter[];
+  Weapons: UserWeapon[];
+  Artifacts: UserArtifact[];
+  Setups: (UserSetup | UserComplexSetup)[];
 }>;
 
-export type UpdateUsersCharacterAction = PayloadAction<
-  PartiallyRequired<Partial<UsersCharacter>, "name">
+export type UpdateUserCharacterAction = PayloadAction<
+  PartiallyRequired<Partial<UserCharacter>, "name">
 >;
 
-export type UpdateUsersArtifactSubStatAction = PayloadAction<
+export type UpdateUserArtifactSubStatAction = PayloadAction<
   { ID: number; subStatIndex: number } & Partial<CalcArtPieceSubStatInfo>
 >;
 
@@ -35,14 +35,14 @@ export type RemoveArtifactAction = PayloadAction<{
   type: Artifact;
 }>;
 
-export type UpdateUsersWeaponAction = PayloadAction<
-  Partial<Omit<UsersWeapon, "ID">> & {
+export type UpdateUserWeaponAction = PayloadAction<
+  Partial<Omit<UserWeapon, "ID">> & {
     index?: number;
     ID: number;
   }
 >;
 
-export type UpdateUsersArtifactAction = PayloadAction<{
+export type UpdateUserArtifactAction = PayloadAction<{
   index?: number;
   ID: number;
   level?: number;
@@ -79,7 +79,7 @@ export type SwitchArtifactAction = PayloadAction<
 export type SaveSetupAction = PayloadAction<{
   ID: number;
   name: string;
-  data: UsersSetupCalcInfo;
+  data: UserSetupCalcInfo;
 }>;
 
 export type CombineSetupsAction = PayloadAction<{

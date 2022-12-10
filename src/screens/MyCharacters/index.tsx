@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 
-import { addCharacter, chooseCharacter } from "@Store/usersDatabaseSlice";
-import { selectChosenChar, selectMyChars } from "@Store/usersDatabaseSlice/selectors";
+import { addCharacter, chooseCharacter } from "@Store/userDatabaseSlice";
+import { selectChosenChar, selectMyChars } from "@Store/userDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 import { Button, Select } from "@Src/styled-components";

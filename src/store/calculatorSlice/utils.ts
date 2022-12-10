@@ -4,8 +4,8 @@ import type {
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
-  UsersArtifact,
-  UsersWeapon,
+  UserArtifact,
+  UserWeapon,
   Weapon,
   CalcSetupManageInfo,
   ArtifactDebuffCtrl,
@@ -43,8 +43,8 @@ export function calculate(state: CalculatorState, all?: boolean) {
 
 export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
-  myWps: UsersWeapon[],
-  myArts: UsersArtifact[]
+  myWps: UserWeapon[],
+  myArts: UserArtifact[]
 ) {
   let rootID = Date.now();
   const char: CharInfo = { ...initCharInfo(info), name };

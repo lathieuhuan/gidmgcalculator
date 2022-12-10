@@ -1,15 +1,15 @@
 import { useState } from "react";
-import type { CalcArtPieces, UsersWeapon } from "@Src/types";
+import type { CalcArtPieces, UserWeapon } from "@Src/types";
 
 import { findById } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
-import { selectMyArts, selectMySetups, selectMyWps } from "@Store/usersDatabaseSlice/selectors";
-import { isUsersSetup } from "@Store/usersDatabaseSlice/utils";
+import { selectMyArts, selectMySetups, selectMyWps } from "@Store/userDatabaseSlice/selectors";
+import { isUserSetup } from "@Store/userDatabaseSlice/utils";
 
 type SetupItemInfos = Record<
   string,
   {
-    weapon: UsersWeapon | null;
+    weapon: UserWeapon | null;
     artPieces: CalcArtPieces;
   }
 >;
@@ -23,7 +23,7 @@ export function useSetupItemInfos() {
     const result: SetupItemInfos = {};
 
     for (const setup of mySetups) {
-      if (isUsersSetup(setup)) {
+      if (isUserSetup(setup)) {
         result[setup.ID] = {
           weapon: findById(myWps, setup.weaponID) || null,
           artPieces: setup.artifactIDs.map((ID) => findById(myArts, ID) || null),

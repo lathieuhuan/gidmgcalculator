@@ -1,7 +1,7 @@
 import { ConfirmModal } from "@Components/minors";
 import { ModalControl } from "@Components/modals";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
-import { UsersArtifact, UsersWeapon } from "@Src/types";
+import { UserArtifact, UserWeapon } from "@Src/types";
 
 export function renderEquippedChar(owner: string) {
   return (
@@ -12,15 +12,15 @@ export function renderEquippedChar(owner: string) {
 }
 
 const isWeapon = (
-  item: UsersWeapon | UsersArtifact,
+  item: UserWeapon | UserArtifact,
   itemType: "weapon" | "artifact"
-): item is UsersWeapon => {
+): item is UserWeapon => {
   return itemType === "weapon";
 };
 
 interface ItemConfirmRemoveProps extends ModalControl {
   itemType: "weapon" | "artifact";
-  item: UsersWeapon | UsersArtifact;
+  item: UserWeapon | UserArtifact;
   filteredIds: number[];
   removeItem: (args: { ID: number; owner: string | null; type: string }) => void;
   updateChosenID: (newID: number) => void;

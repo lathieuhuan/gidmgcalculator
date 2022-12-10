@@ -3,18 +3,18 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import { ARTIFACT_ICONS } from "@Src/constants";
-import { Artifact, ArtPieceMainStat, UsersArtifact } from "@Src/types";
+import { Artifact, ArtPieceMainStat, UserArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
   addArtifact,
-  updateUsersArtifactSubStat,
+  updateUserArtifactSubStat,
   removeArtifact,
   sortArtifacts,
   swapArtifactOwner,
-  updateUsersArtifact,
-} from "@Store/usersDatabaseSlice";
-import { selectArtifactById, selectMyArts } from "@Store/usersDatabaseSlice/selectors";
+  updateUserArtifact,
+} from "@Store/userDatabaseSlice";
+import { selectArtifactById, selectMyArts } from "@Store/userDatabaseSlice/selectors";
 
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 import {
@@ -37,7 +37,7 @@ const selectFilteredArtifactIds = createSelector(
   (_: unknown, types: Artifact[]) => types,
   (_: unknown, __: unknown, codes: number[]) => codes,
   (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
-  (myArts: UsersArtifact[], types: Artifact[], codes: number[], stats: StatsFilter) => {
+  (myArts: UserArtifact[], types: Artifact[], codes: number[], stats: StatsFilter) => {
     const result = types.length ? myArts.filter((p) => types.includes(p.type)) : myArts;
     return filterArtIdsBySetsAndStats(result, codes, stats);
   }
@@ -140,10 +140,10 @@ export default function MyArtifacts() {
                   <ArtifactCard
                     artPiece={artifact}
                     mutable
-                    enhance={(level) => dispatch(updateUsersArtifact({ ID: artifact.ID, level }))}
+                    enhance={(level) => dispatch(updateUserArtifact({ ID: artifact.ID, level }))}
                     changeMainStatType={(type) =>
                       dispatch(
-                        updateUsersArtifact({
+                        updateUserArtifact({
                           ID: artifact.ID,
                           mainStatType: type as ArtPieceMainStat,
                         })
@@ -151,7 +151,7 @@ export default function MyArtifacts() {
                     }
                     changeSubStat={(subStatIndex, changes) => {
                       dispatch(
-                        updateUsersArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
+                        updateUserArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
                       );
                     }}
                   />
@@ -209,7 +209,7 @@ export default function MyArtifacts() {
 
       <Picker.Character
         active={modalType === "EQUIP_CHARACTER" && !!artifact}
-        sourceType="usersData"
+        sourceType="userData"
         filter={({ name }) => name !== artifact?.owner}
         onPickCharacter={({ name }) => {
           if (artifact?.owner) {

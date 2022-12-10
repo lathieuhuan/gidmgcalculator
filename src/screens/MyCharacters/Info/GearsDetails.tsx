@@ -1,14 +1,14 @@
 import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
-import type { ArtifactAttribute, ArtPieceMainStat, UsersWeapon } from "@Src/types";
+import type { ArtifactAttribute, ArtPieceMainStat, UserWeapon } from "@Src/types";
 import type { ArtifactInfo, Details } from "./types";
 
 import { useDispatch } from "@Store/hooks";
 import {
-  updateUsersArtifactSubStat,
-  updateUsersArtifact,
-  updateUsersWeapon,
-} from "@Store/usersDatabaseSlice";
+  updateUserArtifactSubStat,
+  updateUserArtifact,
+  updateUserWeapon,
+} from "@Store/userDatabaseSlice";
 
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { AttributeTable } from "@Components/AttributeTable";
@@ -20,7 +20,7 @@ interface GearsDetailsProps {
   className: string;
   style: CSSProperties;
   activeDetails: Details;
-  wpInfo: UsersWeapon;
+  wpInfo: UserWeapon;
   artInfo: ArtifactInfo;
   artAttr: ArtifactAttribute;
   onClickSwitchWeapon: () => void;
@@ -64,8 +64,8 @@ export function GearsDetails({
             <WeaponCard
               weapon={wpInfo}
               mutable
-              upgrade={(level) => dispatch(updateUsersWeapon({ ID: wpInfo.ID, level }))}
-              refine={(refi) => dispatch(updateUsersWeapon({ ID: wpInfo.ID, refi }))}
+              upgrade={(level) => dispatch(updateUserWeapon({ ID: wpInfo.ID, level }))}
+              refine={(refi) => dispatch(updateUserWeapon({ ID: wpInfo.ID, refi }))}
             />
           </div>
           <Button className="mt-4 mx-auto" variant="positive" onClick={onClickSwitchWeapon}>
@@ -101,10 +101,10 @@ export function GearsDetails({
               <ArtifactCard
                 artPiece={artPiece}
                 mutable
-                enhance={(level) => dispatch(updateUsersArtifact({ ID: artPiece.ID, level }))}
+                enhance={(level) => dispatch(updateUserArtifact({ ID: artPiece.ID, level }))}
                 changeMainStatType={(type) =>
                   dispatch(
-                    updateUsersArtifact({
+                    updateUserArtifact({
                       ID: artPiece.ID,
                       mainStatType: type as ArtPieceMainStat,
                     })
@@ -112,7 +112,7 @@ export function GearsDetails({
                 }
                 changeSubStat={(subStatIndex, changes) => {
                   dispatch(
-                    updateUsersArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
+                    updateUserArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
                   );
                 }}
               />

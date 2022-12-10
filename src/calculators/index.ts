@@ -1,4 +1,4 @@
-import type { CalcSetup, CharData, Target, UsersSetupCalcInfo } from "@Src/types";
+import type { CalcSetup, CharData, Target } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";

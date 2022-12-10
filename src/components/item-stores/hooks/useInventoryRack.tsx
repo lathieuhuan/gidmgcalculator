@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
-import { Artifact, UsersArtifact, UsersWeapon, Level, Rarity, Weapon } from "@Src/types";
+import { Artifact, UserArtifact, UserWeapon, Level, Rarity, Weapon } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { ItemThumb } from "@Components/ItemThumb";
 import { renderNoItems } from "@Components/minors";
@@ -39,7 +39,7 @@ const itemLimit = 120;
 interface UseInventoryRackArgs {
   listClassName?: string;
   itemClassName?: string;
-  items: UsersWeapon[] | UsersArtifact[];
+  items: UserWeapon[] | UserArtifact[];
   itemType: "weapon" | "artifact";
   filteredIds: number[];
 }

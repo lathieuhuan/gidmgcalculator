@@ -1,4 +1,4 @@
-import type { ConvertUsersDataArgs } from "./types";
+import type { ConvertUserDataArgs } from "./types";
 import type {
   ArtPieceMainStat,
   CharInfo,
@@ -8,11 +8,10 @@ import type {
   CustomDebuffCtrlType,
   Resonance,
   Teammate,
-  UsersArtifact,
-  UsersCharacter,
-  UsersComplexSetup,
-  UsersSetup,
-  UsersWeapon,
+  UserArtifact,
+  UserCharacter,
+  UserSetup,
+  UserWeapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
 import { getArtifactSets } from "@Store/calculatorSlice/utils";
@@ -21,7 +20,7 @@ const ERROR = {
   //
 };
 
-export function toVersion3_0(data: Omit<ConvertUsersDataArgs, "version">) {
+export function toVersion3_0(data: Omit<ConvertUserDataArgs, "version">) {
   const Characters = data.Characters.map(convertCharacter);
   const Weapons = data.Weapons.map(convertWeapon);
   const Artifacts = data.Artifacts.map(convertArtifact);
@@ -52,19 +51,19 @@ function convertCharInfo(char: any): CharInfo {
   return { name, level, NAs, ES, EB, cons };
 }
 
-function convertCharacter(char: any): UsersCharacter {
+function convertCharacter(char: any): UserCharacter {
   const { weaponID, artIDs: artifactIDs = [], ...charInfo } = char;
 
   return { ...convertCharInfo(charInfo), weaponID, artifactIDs };
 }
 
-function convertWeapon(weapon: any): UsersWeapon {
+function convertWeapon(weapon: any): UserWeapon {
   const { ID, type, code, level, refinement: refi, user: owner } = weapon;
 
   return { ID, type: type.toLowerCase(), code, level, refi, owner };
 }
 
-function convertArtifact(artifact: any): UsersArtifact {
+function convertArtifact(artifact: any): UserArtifact {
   const { ID, type, code, rarity = 5, level, mainSType, subS, user: owner = null } = artifact;
 
   const mainStatType = mapVerson3_0[mainSType] as ArtPieceMainStat;
@@ -78,7 +77,7 @@ function convertArtifact(artifact: any): UsersArtifact {
   return { ID, type, code, rarity, level, mainStatType, subStats, owner };
 }
 
-function convertSetup(setup: any): UsersSetup {
+function convertSetup(setup: any): UserSetup {
   console.log(setup);
 
   const {

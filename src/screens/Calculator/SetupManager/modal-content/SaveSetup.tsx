@@ -4,7 +4,7 @@ import type { CalcSetupManageInfo } from "@Src/types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { saveSetupThunk } from "@Store/thunks";
 import { selectCharData } from "@Store/calculatorSlice/selectors";
-import { selectMySetups } from "@Store/usersDatabaseSlice/selectors";
+import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
 
 import { ButtonBar } from "@Components/minors";
 import { findById } from "@Src/utils";

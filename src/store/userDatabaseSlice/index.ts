@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtPiece,
-  UsersArtifact,
-  UsersComplexSetup,
-  UsersDatabaseState,
-  UsersWeapon,
+  UserArtifact,
+  UserComplexSetup,
+  UserDatabaseState,
+  UserWeapon,
   Weapon,
 } from "@Src/types";
 import type {
-  AddUsersDatabaseAction,
-  UpdateUsersArtifactSubStatAction,
+  AddUserDatabaseAction,
+  UpdateUserArtifactSubStatAction,
   RemoveArtifactAction,
   RemoveWeaponAction,
   SaveSetupAction,
   SwitchArtifactAction,
   SwitchWeaponAction,
   UnequipArtifactAction,
-  UpdateUsersArtifactAction,
-  UpdateUsersCharacterAction,
-  UpdateUsersWeaponAction,
+  UpdateUserArtifactAction,
+  UpdateUserCharacterAction,
+  UpdateUserWeaponAction,
   CombineSetupsAction,
   AddSetupToComplexAction,
   SwitchShownSetupInComplexAction,
@@ -28,9 +28,9 @@ import { ARTIFACT_TYPES } from "@Src/constants";
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
 import { findArtifactSet, findWeapon } from "@Data/controllers";
-import { isUsersSetup } from "./utils";
+import { isUserSetup } from "./utils";
 
-const initialState: UsersDatabaseState = {
+const initialState: UserDatabaseState = {
   myChars: [],
   myWps: [],
   myArts: [],
@@ -39,11 +39,11 @@ const initialState: UsersDatabaseState = {
   chosenSetupID: 0,
 };
 
-export const usersDatabaseSlice = createSlice({
-  name: "users-database",
+export const userDatabaseSlice = createSlice({
+  name: "user-database",
   initialState,
   reducers: {
-    addUsersDatabase: (state, action: AddUsersDatabaseAction) => {
+    addUserDatabase: (state, action: AddUserDatabaseAction) => {
       const { Characters, Weapons, Artifacts, Setups } = action.payload;
       state.myChars = Characters;
       state.myWps = Weapons;
@@ -89,7 +89,7 @@ export const usersDatabaseSlice = createSlice({
     sortCharacters: (state, action: PayloadAction<number[]>) => {
       state.myChars = action.payload.map((index) => state.myChars[index]);
     },
-    updateUsersCharacter: (state, action: UpdateUsersCharacterAction) => {
+    updateUserCharacter: (state, action: UpdateUserCharacterAction) => {
       const { name, ...newInfo } = action.payload;
       const charIndex = indexByName(state.myChars, name);
 
@@ -100,7 +100,7 @@ export const usersDatabaseSlice = createSlice({
         };
       }
     },
-    removeUsersCharacter: (state, action: PayloadAction<string>) => {
+    removeUserCharacter: (state, action: PayloadAction<string>) => {
       const { myChars, myWps, myArts } = state;
       const name = action.payload;
       let charIndex = indexByName(myChars, name);
@@ -184,10 +184,10 @@ export const usersDatabaseSlice = createSlice({
       }
     },
     // WEAPON
-    addWeapon: (state, action: PayloadAction<UsersWeapon>) => {
+    addWeapon: (state, action: PayloadAction<UserWeapon>) => {
       state.myWps.unshift(action.payload);
     },
-    updateUsersWeapon: (state, action: UpdateUsersWeaponAction) => {
+    updateUserWeapon: (state, action: UpdateUserWeaponAction) => {
       const { ID, index, ...newInfo } = action.payload;
       const weaponIndex = index ?? indexById(state.myWps, ID);
 
@@ -273,10 +273,10 @@ export const usersDatabaseSlice = createSlice({
       }
     },
     // ARTIFACT
-    addArtifact: (state, action: PayloadAction<UsersArtifact>) => {
+    addArtifact: (state, action: PayloadAction<UserArtifact>) => {
       state.myArts.unshift(action.payload);
     },
-    updateUsersArtifact: (state, action: UpdateUsersArtifactAction) => {
+    updateUserArtifact: (state, action: UpdateUserArtifactAction) => {
       const { ID, index, ...newInfo } = action.payload;
       const artifactIndex = index ?? indexById(state.myArts, ID);
 
@@ -287,7 +287,7 @@ export const usersDatabaseSlice = createSlice({
         };
       }
     },
-    updateUsersArtifactSubStat: (state, action: UpdateUsersArtifactSubStatAction) => {
+    updateUserArtifactSubStat: (state, action: UpdateUserArtifactSubStatAction) => {
       const { ID, subStatIndex, ...changeInfo } = action.payload;
       const artifact = findById(state.myArts, ID);
       if (artifact) {
@@ -372,7 +372,7 @@ export const usersDatabaseSlice = createSlice({
       }
     },
     // SETUP
-    chooseUsersSetup: (state, action: PayloadAction<number>) => {
+    chooseUserSetup: (state, action: PayloadAction<number>) => {
       state.chosenSetupID = action.payload;
     },
     saveSetup: (state, action: SaveSetupAction) => {
@@ -439,7 +439,7 @@ export const usersDatabaseSlice = createSlice({
         if (setup) {
           setup.type = "combined";
 
-          if (isUsersSetup(setup)) {
+          if (isUserSetup(setup)) {
             allIDs[setup.char.name] = ID;
           }
         }
@@ -458,7 +458,7 @@ export const usersDatabaseSlice = createSlice({
       const { complexID, shownID } = action.payload;
       const complexSetup = findById(state.mySetups, complexID);
 
-      if (complexSetup && !isUsersSetup(complexSetup)) {
+      if (complexSetup && !isUserSetup(complexSetup)) {
         complexSetup.shownID = shownID;
       }
     },
@@ -466,13 +466,13 @@ export const usersDatabaseSlice = createSlice({
       const { complexID, pickedIDs } = action.payload;
       const complexSetup = mySetups.find(
         (setup) => setup.ID === complexID && setup.type === "complex"
-      ) as UsersComplexSetup;
+      ) as UserComplexSetup;
 
       if (complexSetup) {
         pickedIDs.forEach((ID) => {
           const setup = findById(mySetups, ID);
 
-          if (setup && isUsersSetup(setup)) {
+          if (setup && isUserSetup(setup)) {
             setup.type = "combined";
             complexSetup.allIDs[setup.char.name] = ID;
           }
@@ -483,7 +483,7 @@ export const usersDatabaseSlice = createSlice({
       const index = indexById(mySetups, action.payload);
       const targetSetup = mySetups[index];
 
-      if (targetSetup && !isUsersSetup(targetSetup)) {
+      if (targetSetup && !isUserSetup(targetSetup)) {
         for (const ID of Object.values(targetSetup.allIDs)) {
           const combinedSetup = findById(mySetups, ID);
 
@@ -498,34 +498,34 @@ export const usersDatabaseSlice = createSlice({
 });
 
 export const {
-  addUsersDatabase,
+  addUserDatabase,
   addCharacter,
   chooseCharacter,
   sortCharacters,
-  updateUsersCharacter,
-  removeUsersCharacter,
+  updateUserCharacter,
+  removeUserCharacter,
   switchWeapon,
   switchArtifact,
   unequipArtifact,
   addWeapon,
   swapWeaponOwner,
-  updateUsersWeapon,
+  updateUserWeapon,
   sortWeapons,
   removeWeapon,
   addArtifact,
-  updateUsersArtifact,
-  updateUsersArtifactSubStat,
+  updateUserArtifact,
+  updateUserArtifactSubStat,
   swapArtifactOwner,
   overwriteArtifact,
   sortArtifacts,
   removeArtifact,
-  chooseUsersSetup,
+  chooseUserSetup,
   saveSetup,
   removeSetup,
   combineSetups,
   switchShownSetupInComplex,
   addSetupToComplex,
   uncombineSetups,
-} = usersDatabaseSlice.actions;
+} = userDatabaseSlice.actions;
 
-export default usersDatabaseSlice.reducer;
+export default userDatabaseSlice.reducer;

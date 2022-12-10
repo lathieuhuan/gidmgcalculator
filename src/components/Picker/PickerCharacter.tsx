@@ -9,7 +9,7 @@ import { useSelector } from "@Store/hooks";
 import { PickerTemplate } from "./PickerTemplate";
 
 export interface PickerCharacterProps {
-  sourceType: "mixed" | "appData" | "usersData";
+  sourceType: "mixed" | "appData" | "userData";
   needMassAdd?: boolean;
   filter?: (character: DataCharacter) => boolean;
   onPickCharacter: (character: PickerItem) => void;
@@ -53,7 +53,7 @@ export function PickerCharacter({
           data.push(pickProps(character, fields));
         }
       }
-    } else if (sourceType === "usersData") {
+    } else if (sourceType === "userData") {
       for (const { name, cons, artifactIDs } of myChars) {
         const found = findCharacter({ name });
 

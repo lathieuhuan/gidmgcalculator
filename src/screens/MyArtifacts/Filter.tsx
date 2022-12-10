@@ -8,7 +8,7 @@ import {
   useTypeFilter,
 } from "@Components/item-stores/hooks";
 
-import { selectMyArts } from "@Store/usersDatabaseSlice/selectors";
+import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
 import { hasDupStat, StatsFilter } from "@Components/item-stores/utils";
 
 import { ButtonBar } from "@Components/minors";

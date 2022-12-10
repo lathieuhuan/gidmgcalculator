@@ -1,43 +1,43 @@
 import type { CalcArtPiece, CalcSetup, CalcWeapon, SetupType, Target } from "./calculator";
 import type { CharInfo } from "./global";
 
-export type UsersDatabaseState = {
-  myChars: UsersCharacter[];
-  myWps: UsersWeapon[];
-  myArts: UsersArtifact[];
-  mySetups: (UsersSetup | UsersComplexSetup)[];
+export type UserDatabaseState = {
+  myChars: UserCharacter[];
+  myWps: UserWeapon[];
+  myArts: UserArtifact[];
+  mySetups: (UserSetup | UserComplexSetup)[];
   chosenChar: string;
   chosenSetupID: number;
 };
 
-export type UsersCharacter = CharInfo & {
+export type UserCharacter = CharInfo & {
   weaponID: number;
   artifactIDs: (number | null)[];
 };
 
-export type UsersWeapon = CalcWeapon & {
+export type UserWeapon = CalcWeapon & {
   owner: string | null;
   setupIDs?: number[];
 };
 
-export type UsersArtifact = CalcArtPiece & {
+export type UserArtifact = CalcArtPiece & {
   owner: string | null;
   setupIDs?: number[];
 };
 
-export type UsersSetupCalcInfo = Omit<CalcSetup, "weapon" | "artInfo"> & {
+export type UserSetupCalcInfo = Omit<CalcSetup, "weapon" | "artInfo"> & {
   weaponID: number;
   artifactIDs: (number | null)[];
   target: Target;
 };
 
-export type UsersSetup = UsersSetupCalcInfo & {
+export type UserSetup = UserSetupCalcInfo & {
   ID: number;
   type: Exclude<SetupType, "complex">;
   name: string;
 };
 
-export type UsersComplexSetup = {
+export type UserComplexSetup = {
   ID: number;
   type: "complex";
   name: string;

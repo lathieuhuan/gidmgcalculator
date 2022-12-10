@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
 export const Button = (props: ButtonProps) => {
-  const { className, variant, noGlow, ...rest } = props;
+  const { className, variant, noGlow, boneOnly, ...rest } = props;
   return (
     <button
       type="button"
@@ -19,7 +19,7 @@ export const Button = (props: ButtonProps) => {
 };
 
 export const IconButton = (props: ButtonProps & { size?: string }) => {
-  const { className, variant, noGlow, size = "h-8 w-8", ...rest } = props;
+  const { className, variant, noGlow, boneOnly, size = "h-8 w-8", ...rest } = props;
   return (
     <button
       type="button"
