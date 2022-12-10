@@ -5,7 +5,7 @@ import type { Weapon } from "@Src/types";
 import { WEAPON_ICONS } from "@Src/constants";
 
 import {
-  addWeapon,
+  addUserWeapon,
   removeWeapon,
   sortWeapons,
   swapWeaponOwner,
@@ -135,7 +135,7 @@ export default function MyWeapons() {
         weaponType={weaponPicker.type}
         onPickWeapon={(item) => {
           const ID = Date.now();
-          dispatch(addWeapon({ ID, ...item, owner: null }));
+          dispatch(addUserWeapon({ ID, ...item, owner: null }));
           setChosenID(ID);
         }}
         onClose={() => setWeaponPicker((prev) => ({ ...prev, active: false }))}

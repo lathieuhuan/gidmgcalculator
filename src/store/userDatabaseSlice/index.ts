@@ -184,7 +184,7 @@ export const userDatabaseSlice = createSlice({
       }
     },
     // WEAPON
-    addWeapon: (state, action: PayloadAction<UserWeapon>) => {
+    addUserWeapon: (state, action: PayloadAction<UserWeapon>) => {
       state.myWps.unshift(action.payload);
     },
     updateUserWeapon: (state, action: UpdateUserWeaponAction) => {
@@ -273,7 +273,7 @@ export const userDatabaseSlice = createSlice({
       }
     },
     // ARTIFACT
-    addArtifact: (state, action: PayloadAction<UserArtifact>) => {
+    addUserArtifact: (state, action: PayloadAction<UserArtifact>) => {
       state.myArts.unshift(action.payload);
     },
     updateUserArtifact: (state, action: UpdateUserArtifactAction) => {
@@ -408,24 +408,48 @@ export const userDatabaseSlice = createSlice({
     },
     removeSetup: (state, action: PayloadAction<number>) => {
       const removedID = action.payload;
-      const { mySetups } = state;
+      const { mySetups, myWps, myArts } = state;
+      const removedIndex = indexById(mySetups, removedID);
 
-      const visibleIDs = mySetups.reduce((result, setup) => {
-        if (setup.type !== "combined") {
-          result.push(setup.ID);
+      if (removedIndex !== -1) {
+        const visibleIDs = mySetups.reduce((result: number[], setup) => {
+          if (setup.type !== "combined") {
+            result.push(setup.ID);
+          }
+          return result;
+        }, []);
+        const setup = mySetups[removedIndex];
+
+        // Disconnect weapon & artifacts from removed setup
+        if (isUserSetup(setup)) {
+          const { weaponID, artifactIDs } = setup;
+          const foundWeapon = findById(myWps, weaponID);
+
+          if (foundWeapon) {
+            foundWeapon.setupIDs = foundWeapon.setupIDs?.filter((ID) => ID !== removedID);
+          }
+
+          for (const ID of artifactIDs) {
+            if (!ID) continue;
+            const foundArtPiece = findById(myArts, ID);
+
+            if (foundArtPiece) {
+              foundArtPiece.setupIDs = foundArtPiece.setupIDs?.filter((ID) => ID !== removedID);
+            }
+          }
         }
-        return result;
-      }, [] as number[]);
 
-      mySetups.splice(indexById(mySetups, removedID), 1);
+        mySetups.splice(removedIndex, 1);
 
-      const removedIndexInVisible = visibleIDs.indexOf(removedID);
-      const lastIndex = visibleIDs.length - 1;
-      const newID =
-        removedIndexInVisible === lastIndex
-          ? visibleIDs[lastIndex - 1] || 0
-          : visibleIDs[removedIndexInVisible + 1];
-      state.chosenSetupID = newID;
+        // Choose new setup
+        const removedIndexInVisible = visibleIDs.indexOf(removedID);
+        const lastIndex = visibleIDs.length - 1;
+
+        state.chosenSetupID =
+          removedIndexInVisible === lastIndex
+            ? visibleIDs[lastIndex - 1] || 0
+            : visibleIDs[removedIndexInVisible + 1];
+      }
     },
     combineSetups: (state, action: CombineSetupsAction) => {
       const { pickedIDs, name } = action.payload;
@@ -507,12 +531,12 @@ export const {
   switchWeapon,
   switchArtifact,
   unequipArtifact,
-  addWeapon,
+  addUserWeapon,
   swapWeaponOwner,
   updateUserWeapon,
   sortWeapons,
   removeWeapon,
-  addArtifact,
+  addUserArtifact,
   updateUserArtifact,
   updateUserArtifactSubStat,
   swapArtifactOwner,

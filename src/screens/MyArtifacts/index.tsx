@@ -7,7 +7,7 @@ import { Artifact, ArtPieceMainStat, UserArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
-  addArtifact,
+  addUserArtifact,
   updateUserArtifactSubStat,
   removeArtifact,
   sortArtifacts,
@@ -201,7 +201,7 @@ export default function MyArtifacts() {
         artifactType={pickArtifactModal.type}
         onPickArtifact={(newItem) => {
           const ID = Date.now();
-          dispatch(addArtifact({ ID, ...newItem, owner: null }));
+          dispatch(addUserArtifact({ ID, ...newItem, owner: null }));
           setChosenID(ID);
         }}
         onClose={() => setPickArtifactModal((prev) => ({ ...prev, isActive: false }))}

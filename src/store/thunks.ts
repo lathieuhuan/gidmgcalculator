@@ -6,8 +6,8 @@ import type { PickedChar } from "./calculatorSlice/reducer-types";
 import { initSessionWithChar, updateAllArtPieces } from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
 import {
-  addArtifact,
-  addWeapon,
+  addUserArtifact,
+  addUserWeapon,
   saveSetup,
   updateUserArtifact,
   updateUserWeapon,
@@ -57,16 +57,21 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
     const foundWpIndex = indexById(myWps, weapon.ID);
 
     if (foundWpIndex !== -1) {
+      let newSetupIDs = myWps[foundWpIndex].setupIDs;
+
+      if (newSetupIDs && newSetupIDs.every((setupID) => setupID !== ID)) {
+        newSetupIDs = newSetupIDs.concat(ID);
+      }
       dispatch(
         updateUserWeapon({
           index: foundWpIndex,
           ...myWps[foundWpIndex],
-          setupIDs: (myWps[foundWpIndex].setupIDs || []).concat(ID),
+          setupIDs: newSetupIDs,
         })
       );
     } else {
       dispatch(
-        addWeapon({
+        addUserWeapon({
           ...weapon,
           owner: null,
           setupIDs: [ID],
@@ -79,16 +84,21 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
         const foundIndex = indexById(myArts, artPiece.ID);
 
         if (foundIndex !== -1) {
+          let newSetupIDs = myArts[foundIndex].setupIDs;
+
+          if (newSetupIDs && newSetupIDs.every((setupID) => setupID !== ID)) {
+            newSetupIDs = newSetupIDs.concat(ID);
+          }
           dispatch(
             updateUserArtifact({
               index: foundIndex,
               ...myArts[foundIndex],
-              setupIDs: (myArts[foundIndex].setupIDs || []).concat(ID),
+              setupIDs: newSetupIDs,
             })
           );
         } else {
           dispatch(
-            addArtifact({
+            addUserArtifact({
               ...artPiece,
               owner: null,
               setupIDs: [ID],

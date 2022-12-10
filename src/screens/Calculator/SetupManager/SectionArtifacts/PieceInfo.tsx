@@ -5,7 +5,7 @@ import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
-import { addArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
+import { addUserArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
 
 import { findById, percentSign } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";
@@ -168,7 +168,7 @@ function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
     if (existedArtPiece) {
       setType(2);
     } else {
-      dispatch(addArtifact({ owner: null, ...pieceInfo }));
+      dispatch(addUserArtifact({ owner: null, ...pieceInfo }));
       setType(1);
     }
   }, []);
@@ -209,7 +209,8 @@ function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
           ? undefined
           : {
               text: "Duplicate",
-              onClick: () => dispatch(addArtifact({ owner: null, ...pieceInfo, ID: Date.now() })),
+              onClick: () =>
+                dispatch(addUserArtifact({ owner: null, ...pieceInfo, ID: Date.now() })),
             }
       }
       right={{
