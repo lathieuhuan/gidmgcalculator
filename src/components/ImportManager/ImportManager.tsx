@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
-import type { UserSetup } from "@Src/types";
+import type { CalcSetup } from "@Src/types";
 import type { ImportInfo } from "@Store/uiSlice/types";
 
 import { EScreen } from "@Src/constants";
@@ -22,7 +22,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
 
   const [pendingCode, setPendingCode] = useState(0);
 
-  let importedSetup: UserSetup;
+  let importedSetup: CalcSetup;
 
   switch (type) {
     case "EDIT_SETUP":

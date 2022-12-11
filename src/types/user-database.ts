@@ -1,4 +1,4 @@
-import type { CalcArtPiece, CalcSetup, CalcWeapon, SetupType, Target } from "./calculator";
+import type { CalcArtifact, CalcSetup, CalcWeapon, SetupType, Target } from "./calculator";
 import type { CharInfo } from "./global";
 
 export type UserDatabaseState = {
@@ -20,12 +20,14 @@ export type UserWeapon = CalcWeapon & {
   setupIDs?: number[];
 };
 
-export type UserArtifact = CalcArtPiece & {
+export type UserArtifact = CalcArtifact & {
   owner: string | null;
   setupIDs?: number[];
 };
 
-export type UserSetupCalcInfo = Omit<CalcSetup, "weapon" | "artInfo"> & {
+export type UserArtifacts = (UserArtifact | null)[];
+
+export type UserSetupCalcInfo = Omit<CalcSetup, "weapon" | "artifacts"> & {
   weaponID: number;
   artifactIDs: (number | null)[];
   target: Target;

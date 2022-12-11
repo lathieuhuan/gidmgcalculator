@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaCopy } from "react-icons/fa";
 import { Select } from "@Src/styled-components";
 
-type Option = {
+export type Option = {
   value: string | number;
   label: string;
 };

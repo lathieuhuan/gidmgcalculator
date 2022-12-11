@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { CalcArtPieces, UserWeapon } from "@Src/types";
+import type { UserArtifacts, UserWeapon } from "@Src/types";
 
 import { findById } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
@@ -10,23 +10,23 @@ type SetupItemInfos = Record<
   string,
   {
     weapon: UserWeapon | null;
-    artPieces: CalcArtPieces;
+    artifacts: UserArtifacts;
   }
 >;
 
-export function useSetupItemInfos() {
+export function useSetupItems() {
   const mySetups = useSelector(selectMySetups);
   const myWps = useSelector(selectMyWps);
   const myArts = useSelector(selectMyArts);
 
-  const getSetupItemInfos = () => {
+  const getSetupItems = () => {
     const result: SetupItemInfos = {};
 
     for (const setup of mySetups) {
       if (isUserSetup(setup)) {
         result[setup.ID] = {
           weapon: findById(myWps, setup.weaponID) || null,
-          artPieces: setup.artifactIDs.map((ID) => findById(myArts, ID) || null),
+          artifacts: setup.artifactIDs.map((ID) => findById(myArts, ID) || null),
         };
       }
     }
@@ -34,10 +34,10 @@ export function useSetupItemInfos() {
     return result;
   };
 
-  const [infos, setInfos] = useState<SetupItemInfos>(getSetupItemInfos());
+  const [record, setRecord] = useState<SetupItemInfos>(getSetupItems());
 
   return {
-    infos,
-    getSetupItemInfos: () => setInfos(getSetupItemInfos()),
+    itemsBySetupID: record,
+    getSetupItems: () => setRecord(getSetupItems()),
   };
 }

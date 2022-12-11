@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
-import type { CalcArtPiece, ArtPieceMainStat } from "@Src/types";
+import type { CalcArtifact, ArtifactMainStat } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeArtPiece, updateArtPiece } from "@Store/calculatorSlice";
+import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
 import { addUserArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
 
 import { findById, percentSign } from "@Src/utils";
@@ -16,30 +16,30 @@ import { ArtifactSubstats } from "@Components/ArtifactCard";
 import { Modal } from "@Components/modals";
 import { ConfirmTemplate } from "@Components/minors";
 
-interface PieceInfoProps {
-  pieceInfo: CalcArtPiece;
+interface ArtifactInfoProps {
+  artifact: CalcArtifact;
   pieceIndex: number;
   onClickRemovePiece: () => void;
   onClickChangePiece: () => void;
 }
-export default function PieceInfo({
-  pieceInfo,
+export function ArtifactInfo({
+  artifact,
   pieceIndex,
   onClickRemovePiece,
   onClickChangePiece,
-}: PieceInfoProps) {
+}: ArtifactInfoProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [saving, setSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const { type, rarity = 5, level, mainStatType } = pieceInfo;
+  const { type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
   const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
   const maxLevel = rarity === 5 ? 20 : 16;
 
   return (
-    <div className="pt-4" onDoubleClick={() => console.log(pieceInfo)}>
+    <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
       <div className="pl-6 flex items-start">
         {/*  */}
         <div className="mb-2 rounded-circle bg-darkblue-3">
@@ -48,7 +48,7 @@ export default function PieceInfo({
             value={level}
             onChange={(e) => {
               dispatch(
-                updateArtPiece({
+                updateArtifact({
                   pieceIndex,
                   level: +e.target.value,
                 })
@@ -74,9 +74,9 @@ export default function PieceInfo({
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(
-                    updateArtPiece({
+                    updateArtifact({
                       pieceIndex,
-                      mainStatType: e.target.value as ArtPieceMainStat,
+                      mainStatType: e.target.value as ArtifactMainStat,
                     })
                   )
                 }
@@ -100,10 +100,10 @@ export default function PieceInfo({
           mutable
           rarity={rarity}
           mainStatType={mainStatType}
-          subStats={pieceInfo.subStats}
+          subStats={artifact.subStats}
           changeSubStat={(subStatIndex, changeInfo) => {
             dispatch(
-              updateArtPiece({
+              updateArtifact({
                 pieceIndex,
                 subStat: {
                   index: subStatIndex,
@@ -119,22 +119,22 @@ export default function PieceInfo({
         <IconButton
           variant="negative"
           onClick={() => {
-            dispatch(changeArtPiece({ pieceIndex, newPiece: null }));
+            dispatch(changeArtifact({ pieceIndex, newPiece: null }));
             onClickRemovePiece();
           }}
         >
           <FaTrashAlt />
         </IconButton>
 
-        <IconButton variant="neutral" onClick={() => setSaving(true)}>
+        <IconButton variant="neutral" onClick={() => setIsSaving(true)}>
           <FaSave />
         </IconButton>
 
         <IconButton
           className="font-bold"
-          disabled={pieceInfo.level === maxLevel}
+          disabled={artifact.level === maxLevel}
           variant="neutral"
-          onClick={() => dispatch(updateArtPiece({ pieceIndex, level: maxLevel }))}
+          onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
         >
           {maxLevel}
         </IconButton>
@@ -144,31 +144,31 @@ export default function PieceInfo({
         </IconButton>
       </div>
 
-      <Modal active={saving} className="small-modal" onClose={() => setSaving(false)}>
-        <ConfirmSaving pieceInfo={pieceInfo} onClose={() => setSaving(false)} />
+      <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
+        <ConfirmSaving artifact={artifact} onClose={() => setIsSaving(false)} />
       </Modal>
     </div>
   );
 }
 
 interface ConfirmSavingProps {
-  pieceInfo: CalcArtPiece;
+  artifact: CalcArtifact;
   onClose: () => void;
 }
-function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
+function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   const [type, setType] = useState(0);
   const dispatch = useDispatch();
 
   const existedArtPiece = findById(
     useSelector((state) => state.database.myArts),
-    pieceInfo.ID
+    artifact.ID
   );
 
   useEffect(() => {
     if (existedArtPiece) {
       setType(2);
     } else {
-      dispatch(addUserArtifact({ owner: null, ...pieceInfo }));
+      dispatch(addUserArtifact({ owner: null, ...artifact }));
       setType(1);
     }
   }, []);
@@ -182,7 +182,7 @@ function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
 
   if (existedArtPiece) {
     const { owner, ...info } = existedArtPiece;
-    noChange = isEqual(pieceInfo, info);
+    noChange = isEqual(artifact, info);
   }
 
   const extraInfo = existedArtPiece?.owner ? (
@@ -210,12 +210,12 @@ function ConfirmSaving({ pieceInfo, onClose }: ConfirmSavingProps) {
           : {
               text: "Duplicate",
               onClick: () =>
-                dispatch(addUserArtifact({ owner: null, ...pieceInfo, ID: Date.now() })),
+                dispatch(addUserArtifact({ owner: null, ...artifact, ID: Date.now() })),
             }
       }
       right={{
         onClick: () => {
-          successful || noChange ? onClose() : dispatch(overwriteArtifact(pieceInfo));
+          successful || noChange ? onClose() : dispatch(overwriteArtifact(artifact));
         },
       }}
       onClose={onClose}

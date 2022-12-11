@@ -4,9 +4,9 @@ import type { Artifact } from "@Src/types";
 import type { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
-import { changeArtPiece, changeWeapon } from "@Store/calculatorSlice";
+import { changeArtifact, changeWeapon } from "@Store/calculatorSlice";
 import { updateUI } from "@Store/uiSlice";
-import { selectArtInfo, selectCharData } from "@Store/calculatorSlice/selectors";
+import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selectors";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Hooks/useHeight";
@@ -28,7 +28,7 @@ export default function SetupManager() {
   const dispatch = useDispatch();
 
   const charData = useSelector(selectCharData);
-  const artPieces = useSelector(selectArtInfo)?.pieces;
+  const artifacts = useSelector(selectArtifacts);
 
   const [modal, setModal] = useState<ModalInfo>({
     type: "",
@@ -128,11 +128,11 @@ export default function SetupManager() {
         active={["flower", "plume", "sands", "goblet", "circlet"].includes(modal.type)}
         owner={charData.name}
         artifactType={modal.type as Artifact}
-        currentPieces={artPieces}
+        currentArtifacts={artifacts}
         buttonText="Pick"
         onClickButton={({ owner, ...pieceInfo }) => {
           dispatch(
-            changeArtPiece({
+            changeArtifact({
               pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as Artifact),
               newPiece: pieceInfo,
             })

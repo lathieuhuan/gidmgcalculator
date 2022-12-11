@@ -17,8 +17,8 @@ export const selectSetupManageInfos = (state: RootState) => state.calculator.set
 export const selectChar = (state: RootState) =>
   state.calculator.setupsById[state.calculator.activeId]?.char;
 
-export const selectArtInfo = (state: RootState) =>
-  state.calculator.setupsById[state.calculator.activeId]?.artInfo;
+export const selectArtifacts = (state: RootState) =>
+  state.calculator.setupsById[state.calculator.activeId]?.artifacts;
 
 export const selectWeapon = (state: RootState) =>
   state.calculator.setupsById[state.calculator.activeId]?.weapon;

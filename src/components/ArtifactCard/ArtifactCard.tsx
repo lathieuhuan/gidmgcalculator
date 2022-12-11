@@ -2,10 +2,10 @@ import clsx from "clsx";
 import { Fragment } from "react";
 import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type {
-  CalcArtPiece,
-  ArtPieceMainStat,
-  CalcArtPieceSubStat,
-  CalcArtPieceSubStatInfo,
+  CalcArtifact,
+  ArtifactMainStat,
+  ArtifactSubStat,
+  ArtifactSubStatInfo,
   Rarity,
 } from "@Src/types";
 
@@ -20,12 +20,12 @@ import { Button, IconButton, Select } from "@Src/styled-components";
 import { BetaMark } from "@Components/minors";
 
 interface ArtifactCardProps extends ArtifactCardCommonProps {
-  artPiece?: CalcArtPiece;
+  artifact?: CalcArtifact;
   enhance?: (level: number) => void;
   changeMainStatType?: (type: string) => void;
 }
 export function ArtifactCard({
-  artPiece,
+  artifact,
   mutable,
   space,
   enhance,
@@ -33,17 +33,16 @@ export function ArtifactCard({
   changeSubStat,
 }: ArtifactCardProps) {
   const { t } = useTranslation();
+  if (!artifact) return null;
 
-  if (!artPiece) return null;
-
-  const { beta, name, icon = "" } = findArtifactPiece(artPiece) || {};
-  const { rarity = 5, mainStatType } = artPiece;
-  const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artPiece.type];
+  const { beta, name, icon = "" } = findArtifactPiece(artifact) || {};
+  const { rarity = 5, mainStatType } = artifact;
+  const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
 
   return (
-    <div className="w-full" onDoubleClick={() => console.log(artPiece)}>
-      <div className={`px-4 pt-2 pb-1 bg-rarity-${rarity}`}>
+    <div className="w-full" onDoubleClick={() => console.log(artifact)}>
+      <div className={`px-4 pt-1 bg-rarity-${rarity}`}>
         <p className="text-xl font-bold text-black truncate">{name}</p>
       </div>
       <div className="mt-4 mx-4 flex">
@@ -53,7 +52,7 @@ export function ArtifactCard({
               <div className="rounded-circle bg-darkblue-3">
                 <Select
                   className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
-                  value={"+" + artPiece.level}
+                  value={"+" + artifact.level}
                   onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
                 >
                   {[...Array(maxLevel + 1).keys()].map((_, lv) => (
@@ -68,14 +67,14 @@ export function ArtifactCard({
               <IconButton
                 className="bg-black text-orange text-3.5xl"
                 variant="custom"
-                disabled={artPiece.level === maxLevel}
-                onClick={() => enhance && enhance(Math.min(artPiece.level + 4, maxLevel))}
+                disabled={artifact.level === maxLevel}
+                onClick={() => enhance && enhance(Math.min(artifact.level + 4, maxLevel))}
               >
                 <FaArrowAltCircleUp />
               </IconButton>
               <Button
                 className="mt-6 px-1.5 pt-2 rounded bg-orange"
-                disabled={artPiece.level === maxLevel}
+                disabled={artifact.level === maxLevel}
                 onClick={() => enhance && enhance(maxLevel)}
               >
                 MAX
@@ -85,7 +84,7 @@ export function ArtifactCard({
         ) : (
           <div className="w-[9.75rem]">
             <div className="px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-full">
-              <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + artPiece.level}</p>
+              <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + artifact.level}</p>
             </div>
           </div>
         )}
@@ -97,7 +96,7 @@ export function ArtifactCard({
       </div>
 
       <div className="mt-2 ml-6">
-        {["flower", "plume"].includes(artPiece.type) || !mutable ? (
+        {["flower", "plume"].includes(artifact.type) || !mutable ? (
           <p className={clsx("pt-1 text-lg", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
@@ -123,7 +122,7 @@ export function ArtifactCard({
             mutable ? "pl-8" : "pl-2"
           )}
         >
-          {possibleMainStatTypes[mainStatType]?.[rarity][artPiece.level]}
+          {possibleMainStatTypes[mainStatType]?.[rarity][artifact.level]}
           {percentSign(mainStatType)}
         </p>
       </div>
@@ -133,7 +132,7 @@ export function ArtifactCard({
           mutable={mutable}
           rarity={rarity}
           mainStatType={mainStatType}
-          subStats={artPiece.subStats}
+          subStats={artifact.subStats}
           space={space}
           changeSubStat={changeSubStat}
         />
@@ -145,13 +144,13 @@ export function ArtifactCard({
 interface ArtifactCardCommonProps {
   mutable?: boolean;
   space?: string;
-  changeSubStat?: (index: number, changes: Partial<CalcArtPieceSubStatInfo>) => void;
+  changeSubStat?: (index: number, changes: Partial<ArtifactSubStatInfo>) => void;
 }
 
 interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
   rarity: Rarity;
-  mainStatType: ArtPieceMainStat;
-  subStats: CalcArtPieceSubStatInfo[];
+  mainStatType: ArtifactMainStat;
+  subStats: ArtifactSubStatInfo[];
 }
 export function ArtifactSubstats({
   mainStatType,
@@ -185,7 +184,7 @@ export function ArtifactSubstats({
               style={{ fontSize: "1.0625rem" }}
               value={type}
               onChange={(e) =>
-                changeSubStat && changeSubStat(i, { type: e.target.value as CalcArtPieceSubStat })
+                changeSubStat && changeSubStat(i, { type: e.target.value as ArtifactSubStat })
               }
             >
               {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (

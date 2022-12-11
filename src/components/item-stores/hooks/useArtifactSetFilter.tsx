@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import type { Artifact, CalcArtPiece } from "@Src/types";
+import type { Artifact, CalcArtifact } from "@Src/types";
 import { findByCode, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 import { Button } from "@Src/styled-components";
@@ -13,7 +13,7 @@ type TempSetsState = {
 
 interface UseArtifactSetFilterArgs {
   artifactType?: Artifact;
-  artifacts: CalcArtPiece[];
+  artifacts: CalcArtifact[];
   codes: number[];
 }
 export function useArtifactSetFilter({

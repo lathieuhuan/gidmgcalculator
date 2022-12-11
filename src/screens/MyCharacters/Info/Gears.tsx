@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { ArtifactAttribute, UserWeapon } from "@Src/types";
-import type { ArtifactInfo, Details } from "./types";
+import type { ArtifactAttribute, UserArtifacts, UserWeapon } from "@Src/types";
+import type { DetailsType } from "./types";
 
 import { useDispatch } from "@Store/hooks";
 import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
@@ -12,24 +12,26 @@ import { SharedSpace } from "@Components/minors";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface GearsProps {
-  wpInfo: UserWeapon;
-  artInfo: ArtifactInfo;
+  weapon: UserWeapon;
+  artifacts: UserArtifacts;
   artAttr: ArtifactAttribute;
 }
 export default function Gears(props: GearsProps) {
-  const { wpInfo, artInfo } = props;
+  const { weapon, artifacts } = props;
+  const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const [activeDetails, setActiveDetails] = useState<Details>(-1);
+  const [activeDetails, setActiveDetails] = useState<DetailsType>(-1);
   const [showingDetails, setShowingDetails] = useState(false);
   const [inventoryCode, setInventoryCode] = useState(-1);
 
   const dispatch = useDispatch();
-  const oldOwner = wpInfo.owner;
+  const oldOwner = weapon.owner;
   const onSmallDevice = window.innerWidth < 686;
 
-  const toggleDetails = (type: Details) => {
+  const toggleDetails = (type: DetailsType) => {
     if (activeDetails === type) {
       setShowingDetails(false);
       setTimeout(() => setActiveDetails(-1), 200);
@@ -41,8 +43,9 @@ export default function Gears(props: GearsProps) {
 
   const overviewComponent = (
     <GearsOverview
-      wpInfo={wpInfo}
-      artInfo={artInfo}
+      weapon={weapon}
+      artifacts={artifacts}
+      setBonuses={setBonuses}
       activeDetails={activeDetails}
       toggleDetails={toggleDetails}
       onClickEmptyArtIcon={setInventoryCode}
@@ -58,6 +61,7 @@ export default function Gears(props: GearsProps) {
       style={{ width: onSmallDevice ? undefined : "20.25rem" }}
       activeDetails={activeDetails}
       {...props}
+      setBonuses={setBonuses}
       onClickSwitchWeapon={() => setInventoryCode(5)}
       onClickSwitchArtifact={() => {
         if (typeof activeDetails === "number") {
@@ -66,16 +70,16 @@ export default function Gears(props: GearsProps) {
       }}
       onClickUnequipArtifact={() => {
         if (typeof activeDetails === "number") {
-          const artPiece = artInfo.pieces[activeDetails];
+          const activeArtifact = artifacts[activeDetails];
 
-          if (artPiece) {
+          if (activeArtifact) {
             setShowingDetails(false);
             setTimeout(() => {
               setActiveDetails(-1);
               dispatch(
                 unequipArtifact({
-                  owner: artPiece.owner,
-                  artifactID: artPiece.ID,
+                  owner: activeArtifact.owner,
+                  artifactID: activeArtifact.ID,
                   artifactIndex: activeDetails,
                 })
               );
@@ -119,11 +123,11 @@ export default function Gears(props: GearsProps) {
       <InventoryWeapon
         active={inventoryCode === 5}
         owner={oldOwner}
-        weaponType={wpInfo.type}
+        weaponType={weapon.type}
         buttonText="Switch"
         onClickButton={({ owner, ID }) => {
           if (oldOwner) {
-            dispatch(switchWeapon({ newOwner: owner, newID: ID, oldOwner, oldID: wpInfo.ID }));
+            dispatch(switchWeapon({ newOwner: owner, newID: ID, oldOwner, oldID: weapon.ID }));
           }
         }}
         onClose={() => setInventoryCode(-1)}
@@ -131,7 +135,7 @@ export default function Gears(props: GearsProps) {
 
       <InventoryArtifact
         active={inventoryCode >= 0 && inventoryCode < 5}
-        currentPieces={artInfo.pieces}
+        currentArtifacts={artifacts}
         artifactType={ARTIFACT_TYPES[inventoryCode]}
         owner={oldOwner}
         buttonText="Switch"
@@ -142,7 +146,7 @@ export default function Gears(props: GearsProps) {
                 newOwner: owner,
                 newID: ID,
                 oldOwner,
-                oldID: artInfo.pieces[inventoryCode]?.ID || 0,
+                oldID: artifacts[inventoryCode]?.ID || 0,
                 artifactIndex: inventoryCode,
               })
             );

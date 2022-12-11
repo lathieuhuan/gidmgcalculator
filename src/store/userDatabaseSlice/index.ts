@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
-  CalcArtPiece,
+  CalcArtifact,
   UserArtifact,
   UserComplexSetup,
   UserDatabaseState,
@@ -330,7 +330,7 @@ export const userDatabaseSlice = createSlice({
         }
       }
     },
-    overwriteArtifact: ({ myArts }, action: PayloadAction<CalcArtPiece>) => {
+    overwriteArtifact: ({ myArts }, action: PayloadAction<CalcArtifact>) => {
       const { ID, ...info } = action.payload;
       const index = indexById(myArts, ID);
 

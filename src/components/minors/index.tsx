@@ -2,7 +2,13 @@ import clsx from "clsx";
 import { FaInfoCircle } from "react-icons/fa";
 import type { HTMLAttributes, ReactNode } from "react";
 
-import type { AmplifyingReaction, CalcArtSet, QuickenReaction, Vision, Weapon } from "@Src/types";
+import type {
+  AmplifyingReaction,
+  ArtifactSetBonus,
+  QuickenReaction,
+  Vision,
+  Weapon,
+} from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, getImgSrc } from "@Src/utils";
 import { Green, Button, CloseButton } from "@Src/styled-components";
@@ -192,17 +198,17 @@ export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSl
   );
 }
 
-interface SetBonusProps {
+interface RenderSetBonusesOption {
   noTitle?: boolean;
-  sets: CalcArtSet[];
 }
-export function SetBonus({ noTitle, sets }: SetBonusProps) {
+export function renderSetBonuses(setBonuses: ArtifactSetBonus[], options?: RenderSetBonusesOption) {
+  const { noTitle } = options || {};
   return (
     <div>
       {noTitle ? null : <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>}
 
-      {sets.length > 0 ? (
-        sets.map(({ code, bonusLv }, index) => {
+      {setBonuses.length > 0 ? (
+        setBonuses.map(({ code, bonusLv }, index) => {
           const content = [];
           const artData = findArtifactSet({ code })!;
 

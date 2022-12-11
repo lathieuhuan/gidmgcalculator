@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import type { Artifact, CalcArtPiece, UserArtifact } from "@Src/types";
+import type { Artifact, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
 import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
@@ -28,7 +28,7 @@ const selectArtifactsByType = createSelector(
 
 interface ArtifactInventoryProps {
   artifactType: Artifact;
-  currentPieces: (CalcArtPiece | null)[];
+  currentArtifacts: (CalcArtifact | null)[];
   owner: string | null;
   buttonText: string;
   onClickButton: (chosen: UserArtifact) => void;
@@ -36,7 +36,7 @@ interface ArtifactInventoryProps {
 }
 function ArtifactInventory({
   artifactType,
-  currentPieces,
+  currentArtifacts,
   owner,
   buttonText,
   onClickButton,
@@ -61,8 +61,8 @@ function ArtifactInventory({
     filteredIds,
   });
 
-  const currentArt = currentPieces[ARTIFACT_TYPES.indexOf(artifactType)];
-  const chosenArt = findById(data, chosenID);
+  const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
+  const chosenArtifact = findById(data, chosenID);
 
   return (
     <div className="h-full flex flex-col">
@@ -88,13 +88,13 @@ function ArtifactInventory({
 
           <div className="flex flex-col justify-between">
             <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
-              {currentArt ? (
+              {currentArtifact ? (
                 <div
                   className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"
                   style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
-                    <ArtifactCard artPiece={currentArt} mutable={false} space="mx-3" />
+                    <ArtifactCard artifact={currentArtifact} mutable={false} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
                       <p className="text-orange text-center">Current equipment</p>
@@ -104,23 +104,23 @@ function ArtifactInventory({
               ) : null}
 
               <div className="w-64 hide-scrollbar">
-                {chosenArt ? (
-                  <ArtifactCard artPiece={chosenArt} mutable={false} space="mx-3" />
+                {chosenArtifact ? (
+                  <ArtifactCard artifact={chosenArtifact} mutable={false} space="mx-3" />
                 ) : null}
               </div>
 
-              {chosenArt && chosenArt.owner !== owner ? (
+              {chosenArtifact && chosenArtifact.owner !== owner ? (
                 <ButtonBar
                   className="mt-6"
                   variants={[comparing ? "neutral" : "default", "positive"]}
                   texts={["Compare", buttonText]}
-                  disabled={[!currentArt]}
+                  disabled={[!currentArtifact]}
                   handlers={[
                     () => {
-                      if (currentArt) setComparing(!comparing);
+                      if (currentArtifact) setComparing(!comparing);
                     },
                     () => {
-                      onClickButton(chosenArt);
+                      onClickButton(chosenArtifact);
                       onClose();
                     },
                   ]}
@@ -128,7 +128,7 @@ function ArtifactInventory({
               ) : null}
             </div>
 
-            {chosenArt?.owner ? renderEquippedChar(chosenArt.owner) : null}
+            {chosenArtifact?.owner ? renderEquippedChar(chosenArtifact.owner) : null}
           </div>
         </div>
       </div>

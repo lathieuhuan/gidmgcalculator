@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AttackElement,
-  CalcArtPiece,
+  CalcArtifact,
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
@@ -15,7 +15,7 @@ import type { CalculatorState } from "./types";
 import type {
   AddTeammateAction,
   ApplySettingsAction,
-  ChangeArtPieceAction,
+  ChangeArtifactAction,
   ChangeModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   ImportSetupAction,
@@ -23,7 +23,7 @@ import type {
   RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
   ToggleTeammateModCtrlAction,
-  UpdateArtPieceAction,
+  UpdateArtifactAction,
   UpdateCalculatorAction,
   UpdateCalcSetupAction,
   UpdateCustomBuffCtrlsAction,
@@ -40,7 +40,7 @@ import {
   calculate,
   getArtDebuffCtrls,
   getArtifactBuffCtrls,
-  getArtifactSets,
+  getArtifactSetBonuses,
   getNewSetupName,
   getSetupManageInfo,
   getWeaponBuffCtrls,
@@ -111,7 +111,7 @@ export const calculatorSlice = createSlice({
           selfDebuffCtrls: selfDebuffCtrls,
           weapon: result.weapon,
           wpBuffCtrls: result.wpBuffCtrls,
-          artInfo: result.artInfo,
+          artifacts: result.artifacts,
           artBuffCtrls: result.artBuffCtrls,
           artDebuffCtrls: getArtDebuffCtrls(),
           party: [null, null, null],
@@ -354,25 +354,21 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     // ARTIFACTS
-    changeArtPiece: (state, action: ChangeArtPieceAction) => {
+    changeArtifact: (state, action: ChangeArtifactAction) => {
       const { pieceIndex, newPiece, isFresh } = action.payload;
       const setup = state.setupsById[state.activeId];
-      const { artInfo } = setup;
-
-      const piece = artInfo.pieces[pieceIndex];
+      const piece = setup.artifacts[pieceIndex];
+      const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
+      const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
       if (piece && newPiece && isFresh && state.configs.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } else {
-        artInfo.pieces[pieceIndex] = newPiece;
+        setup.artifacts[pieceIndex] = newPiece;
       }
 
-      const oldSets = artInfo.sets;
-      artInfo.sets = getArtifactSets(artInfo.pieces);
-
-      const oldBonusLevel = oldSets[0]?.bonusLv;
-      const newSetBonus = artInfo.sets[0];
+      const newSetBonus = getArtifactSetBonuses(setup.artifacts)[0];
 
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
@@ -384,9 +380,9 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
-    updateArtPiece: (state, action: UpdateArtPieceAction) => {
+    updateArtifact: (state, action: UpdateArtifactAction) => {
       const { pieceIndex, level, mainStatType, subStat } = action.payload;
-      const piece = state.setupsById[state.activeId].artInfo.pieces[pieceIndex];
+      const piece = state.setupsById[state.activeId].artifacts[pieceIndex];
 
       if (piece) {
         if (level !== undefined) {
@@ -405,12 +401,12 @@ export const calculatorSlice = createSlice({
       }
       calculate(state);
     },
-    updateAllArtPieces: (state, action: PayloadAction<(CalcArtPiece | null)[]>) => {
+    updateAllArtifact: (state, action: PayloadAction<(CalcArtifact | null)[]>) => {
       const pieces = action.payload;
-      const sets = getArtifactSets(pieces);
+      const setBonuses = getArtifactSetBonuses(pieces);
       const setup = state.setupsById[state.activeId];
-      setup.artInfo = { pieces, sets };
-      setup.artBuffCtrls = sets[0]?.bonusLv ? getArtifactBuffCtrls(true, sets[0]) : [];
+      setup.artifacts = pieces;
+      setup.artBuffCtrls = setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [];
 
       calculate(state);
     },
@@ -590,10 +586,7 @@ export const calculatorSlice = createSlice({
                 ...newWeapon,
               },
               wpBuffCtrls,
-              artInfo: {
-                pieces: [null, null, null, null, null],
-                sets: [],
-              },
+              artifacts: [null, null, null, null, null],
               artBuffCtrls: [],
               artDebuffCtrls: getArtDebuffCtrls(),
               party: [null, null, null],
@@ -647,9 +640,9 @@ export const {
   updateTeammateArtifact,
   changeWeapon,
   updateWeapon,
-  updateArtPiece,
-  changeArtPiece,
-  updateAllArtPieces,
+  updateArtifact,
+  changeArtifact,
+  updateAllArtifact,
   updateResonance,
   toggleModCtrl,
   changeModCtrlInput,

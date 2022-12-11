@@ -1,34 +1,37 @@
 import clsx from "clsx";
+import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
+import type { DetailsType } from "./types";
+
 import { ItemThumb } from "@Components/ItemThumb";
 import { InfoSign } from "@Components/minors";
 import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
-import { UserWeapon } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
-import { ArtifactInfo, Details } from "./types";
 
 const bonusStyles = (active: boolean) => {
   return clsx("p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2");
 };
 
 interface GearsOverviewProps {
-  wpInfo: UserWeapon;
-  artInfo: ArtifactInfo;
-  activeDetails: Details;
-  toggleDetails: (newDetails: Details) => void;
+  weapon: UserWeapon;
+  artifacts: UserArtifacts;
+  setBonuses: ArtifactSetBonus[];
+  activeDetails: DetailsType;
+  toggleDetails: (newDetailsType: DetailsType) => void;
   onClickEmptyArtIcon: (artifactIndex: number) => void;
 }
 export function GearsOverview({
-  wpInfo,
-  artInfo: { pieces, sets },
+  weapon,
+  artifacts,
+  setBonuses,
   activeDetails,
   toggleDetails,
   onClickEmptyArtIcon,
 }: GearsOverviewProps) {
   //
   const renderWeaponThumb = () => {
-    const { type, code, ...rest } = wpInfo;
-    const dataWeapon = findWeapon(wpInfo);
+    const { type, code, ...rest } = weapon;
+    const dataWeapon = findWeapon(weapon);
 
     if (!dataWeapon) {
       return null;
@@ -52,16 +55,16 @@ export function GearsOverview({
       <div className="flex flex-wrap">
         {renderWeaponThumb()}
 
-        {pieces.map((artP, i) =>
-          artP ? (
+        {artifacts.map((artifact, i) =>
+          artifact ? (
             <div key={i} className="p-1 w-1/3">
               <ItemThumb
                 noDecoration
                 item={{
-                  rarity: artP.rarity,
-                  level: artP.level,
-                  icon: findArtifactPiece(artP)?.icon || "",
-                  owner: artP.owner,
+                  rarity: artifact.rarity,
+                  level: artifact.level,
+                  icon: findArtifactPiece(artifact)?.icon || "",
+                  owner: artifact.owner,
                 }}
                 chosen={window.innerWidth < 686 ? false : activeDetails === i}
                 onMouseUp={() => toggleDetails(i)}
@@ -88,20 +91,21 @@ export function GearsOverview({
       <div
         className={clsx("mt-3", bonusStyles(activeDetails === "setBonus"))}
         onClick={() => {
-          if (sets.length) toggleDetails("setBonus");
+          if (setBonuses.length) toggleDetails("setBonus");
         }}
       >
         <div>
           <p className="text-lg text-orange font-bold">Set Bonus</p>
           <div className="mt-1 pl-2">
-            {sets.length ? (
+            {setBonuses.length ? (
               <>
                 <p className="text-green font-bold">
-                  {findArtifactSet({ code: sets[0].code })?.name} ({sets[0].bonusLv * 2 + 2})
+                  {findArtifactSet({ code: setBonuses[0].code })?.name} (
+                  {setBonuses[0].bonusLv * 2 + 2})
                 </p>
-                {sets[1] ? (
+                {setBonuses[1] ? (
                   <p className="mt-1 text-green font-bold">
-                    {findArtifactSet({ code: sets[1].code })?.name} (2)
+                    {findArtifactSet({ code: setBonuses[1].code })?.name} (2)
                   </p>
                 ) : null}
               </>
@@ -110,14 +114,14 @@ export function GearsOverview({
             )}
           </div>
         </div>
-        {sets.length !== 0 && <InfoSign active={activeDetails === "setBonus"} />}
+        {setBonuses.length !== 0 && <InfoSign active={activeDetails === "setBonus"} />}
       </div>
 
       <div
         className={clsx("mt-2", bonusStyles(activeDetails === "statsBonus"))}
         onClick={() => toggleDetails("statsBonus")}
       >
-        <p className="text-lg text-orange font-bold">Artifact Details</p>
+        <p className="text-lg text-orange font-bold">Artifact DetailsType</p>
         <InfoSign active={activeDetails === "statsBonus"} />
       </div>
     </div>

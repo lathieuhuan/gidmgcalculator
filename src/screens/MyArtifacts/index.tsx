@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import { ARTIFACT_ICONS } from "@Src/constants";
-import { Artifact, ArtPieceMainStat, UserArtifact } from "@Src/types";
+import { Artifact, ArtifactMainStat, UserArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -138,14 +138,14 @@ export default function MyArtifacts() {
               <div className="w-75 hide-scrollbar" style={{ height: "26.5rem" }}>
                 {artifact ? (
                   <ArtifactCard
-                    artPiece={artifact}
+                    artifact={artifact}
                     mutable
                     enhance={(level) => dispatch(updateUserArtifact({ ID: artifact.ID, level }))}
                     changeMainStatType={(type) =>
                       dispatch(
                         updateUserArtifact({
                           ID: artifact.ID,
-                          mainStatType: type as ArtPieceMainStat,
+                          mainStatType: type as ArtifactMainStat,
                         })
                       )
                     }

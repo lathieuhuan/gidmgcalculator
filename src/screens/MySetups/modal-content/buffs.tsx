@@ -1,6 +1,6 @@
 import type {
   AbilityBuff,
-  CalcArtSet,
+  ArtifactSetBonus,
   CharData,
   CalcWeapon,
   CharInfo,
@@ -278,13 +278,13 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
 }
 
 interface ArtifactBuffsProps {
-  sets: CalcArtSet[];
+  setBonuses: ArtifactSetBonus[];
   artBuffCtrls: ModifierCtrl[];
   party: Party;
 }
-export function ArtifactBuffs({ sets, artBuffCtrls, party }: ArtifactBuffsProps) {
+export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffsProps) {
   const content = [];
-  const mainCode = sets[0]?.code;
+  const mainCode = setBonuses[0]?.code;
 
   for (const { index, inputs = [] } of artBuffCtrls) {
     const artifactData = findArtifactSet({ code: mainCode });

@@ -1,9 +1,9 @@
 import type {
   AttackElementBonus,
   AttackPatternBonus,
-  CalcArtInfo,
   CharData,
   CalcWeapon,
+  CalcArtifacts,
   CharInfo,
   CustomBuffCtrl,
   ElementModCtrl,
@@ -86,7 +86,7 @@ export type GetBuffedStatsArgs = {
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-  artInfo: CalcArtInfo;
+  artifacts: CalcArtifacts;
   artBuffCtrls: ModifierCtrl[];
   elmtModCtrls: ElementModCtrl;
   party: Party;

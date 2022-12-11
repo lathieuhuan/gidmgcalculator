@@ -14,7 +14,7 @@ import type {
   UserWeapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
-import { getArtifactSets } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 const ERROR = {
   //
@@ -126,7 +126,7 @@ function convertSetup(setup: any): UserSetup {
 
   const artInfo = {
     pieces: artPieces,
-    sets: getArtifactSets(artPieces),
+    sets: getArtifactSetBonuses(artPieces),
   };
 
   //

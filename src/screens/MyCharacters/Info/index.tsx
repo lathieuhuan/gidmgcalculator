@@ -16,7 +16,7 @@ import {
   selectMyChars,
   selectMyWps,
 } from "@Store/userDatabaseSlice/selectors";
-import { getArtifactSets } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 import { ConsList, TalentList } from "@Components/ability";
 import { ConfirmTemplate, StarLine } from "@Components/minors";
@@ -24,7 +24,6 @@ import { AttributeTable } from "@Components/AttributeTable";
 import { Modal } from "@Components/modals";
 import { IconButton, Select } from "@Src/styled-components";
 import Gears from "./Gears";
-import { ArtifactInfo } from "./types";
 
 const selectChosenInfo = createSelector(
   selectMyChars,
@@ -33,25 +32,25 @@ const selectChosenInfo = createSelector(
   selectChosenChar,
   (myChars, myWps, myArts, chosen) => {
     const { weaponID, artifactIDs, ...char } = findByName(myChars, chosen)!;
-    const pieces = artifactIDs.map((ID) => (ID ? findById(myArts, ID)! : null));
-    const artInfo: ArtifactInfo = {
-      pieces,
-      sets: getArtifactSets(pieces),
+
+    return {
+      char,
+      weapon: findById(myWps, weaponID),
+      artifacts: artifactIDs.map((ID) => (ID ? findById(myArts, ID)! : null)),
     };
-    return { char, wpInfo: findById(myWps, weaponID), artInfo };
   }
 );
 
 export default function Info() {
   const [removing, setRemoving] = useState(false);
-  const { char, wpInfo, artInfo } = useSelector(selectChosenInfo);
+  const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
   const dataChar = findCharacter(char);
-  if (!dataChar || !wpInfo) {
+  if (!dataChar || !weapon) {
     return null;
   }
-  const { code, name, icon, rarity, nation, vision, weapon } = dataChar;
+  const { code, name, icon, rarity, nation, vision } = dataChar;
 
   const { totalAttr, artAttr } = getBaseStats({
     char,
@@ -61,11 +60,11 @@ export default function Info() {
       icon,
       nation,
       vision,
-      weapon,
+      weapon: dataChar.weapon,
       EBcost: dataChar.activeTalents.EB.energyCost,
     },
-    weapon: wpInfo,
-    artifact: artInfo,
+    weapon,
+    artifacts,
   });
   const isMobile = window.innerWidth <= 700;
 
@@ -89,7 +88,7 @@ export default function Info() {
             {!isMobile && (
               <p
                 className={`text-3xl text-${vision} font-black`}
-                onDoubleClick={() => console.log(char, wpInfo, artInfo)}
+                onDoubleClick={() => console.log(char, weapon, artifacts)}
               >
                 {name}
               </p>
@@ -118,7 +117,7 @@ export default function Info() {
         </div>
       </div>
 
-      <Gears wpInfo={wpInfo} artInfo={artInfo} artAttr={artAttr} />
+      <Gears weapon={weapon} artifacts={artifacts} artAttr={artAttr} />
 
       <div className="ml-2 p-4 rounded-lg bg-darkblue-1">
         <div className="h-full w-75">

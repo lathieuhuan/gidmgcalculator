@@ -41,7 +41,7 @@ export type CalcSetup = {
 
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-  artInfo: CalcArtInfo;
+  artifacts: CalcArtifacts;
   artBuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];
 
@@ -79,40 +79,35 @@ export type CalcWeapon = {
 };
 
 // ARTIFACTS starts
-export type ArtPieceMainStat =
+export type ArtifactMainStat =
   | Exclude<CoreStat, "def">
   | ArtifactPercentStat
   | "em"
   | AttackElement
   | "healBn";
 
-export type CalcArtPieceSubStat = CoreStat | ArtifactPercentStat | "em";
+export type ArtifactSubStat = CoreStat | ArtifactPercentStat | "em";
 
-export type CalcArtPieceSubStatInfo = {
-  type: CalcArtPieceSubStat;
+export type ArtifactSubStatInfo = {
+  type: ArtifactSubStat;
   value: number;
 };
 
-export type CalcArtPiece = {
+export type CalcArtifact = {
   ID: number;
   code: number;
   type: Artifact;
   rarity: Rarity;
   level: number;
-  mainStatType: ArtPieceMainStat;
-  subStats: CalcArtPieceSubStatInfo[];
+  mainStatType: ArtifactMainStat;
+  subStats: ArtifactSubStatInfo[];
 };
 
-export type CalcArtPieces = (CalcArtPiece | null)[];
+export type CalcArtifacts = (CalcArtifact | null)[];
 
-export type CalcArtSet = {
+export type ArtifactSetBonus = {
   code: number;
   bonusLv: number;
-};
-
-export type CalcArtInfo = {
-  pieces: CalcArtPieces;
-  sets: CalcArtSet[];
 };
 
 export type ArtifactDebuffCtrl = ModifierCtrl & {

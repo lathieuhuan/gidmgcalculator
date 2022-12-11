@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-  CalcArtPiece,
-  CalcArtPieceSubStatInfo,
+  CalcArtifact,
+  ArtifactSubStatInfo,
   UserCharacter,
   UserArtifact,
   UserWeapon,
@@ -9,7 +9,7 @@ import type {
   Weapon,
   UserSetup,
   CalcSetupManageInfo,
-  ArtPieceMainStat,
+  ArtifactMainStat,
   CalcSetup,
   CustomBuffCtrl,
   CustomDebuffCtrl,
@@ -123,19 +123,19 @@ type CustomModCtrlPath = {
 
 export type RemoveCustomModCtrlAction = PayloadAction<CustomModCtrlPath>;
 
-export type ChangeArtPieceAction = PayloadAction<{
+export type ChangeArtifactAction = PayloadAction<{
   pieceIndex: number;
-  newPiece: CalcArtPiece | null;
+  newPiece: CalcArtifact | null;
   isFresh?: boolean;
 }>;
 
-export type UpdateArtPieceAction = PayloadAction<{
+export type UpdateArtifactAction = PayloadAction<{
   pieceIndex: number;
   level?: number;
-  mainStatType?: ArtPieceMainStat;
+  mainStatType?: ArtifactMainStat;
   subStat?: {
     index: number;
-    newInfo: Partial<CalcArtPieceSubStatInfo>;
+    newInfo: Partial<ArtifactSubStatInfo>;
   };
 }>;
 

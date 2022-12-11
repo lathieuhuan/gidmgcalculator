@@ -7,14 +7,15 @@ import {
   updateResonance,
   updateCalcSetup,
 } from "@Store/calculatorSlice";
-import { selectArtInfo, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
+import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
+import { Green } from "@Src/styled-components";
 import { renderModifiers } from "@Components/minors";
 import { ModifierTemplate } from "@Components/ModifierTemplate";
-import { Green } from "@Src/styled-components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -70,7 +71,8 @@ export function ArtifactDebuffs() {
   const artDebuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].artDebuffCtrls;
   });
-  const { code, bonusLv } = useSelector(selectArtInfo).sets[0] || {};
+  const artifacts = useSelector(selectArtifacts);
+  const { code, bonusLv } = getArtifactSetBonuses(artifacts || [])[0] || {};
   const party = useSelector(selectParty);
 
   const usedArtCodes = party.reduce(

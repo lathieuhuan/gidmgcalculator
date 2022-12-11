@@ -2,24 +2,25 @@ import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Store/calculatorSlice";
-import { selectArtInfo, selectParty } from "@Store/calculatorSlice/selectors";
+import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 
 import { ModifierTemplate } from "@Components/ModifierTemplate";
 import { renderModifiers } from "@Components/minors";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 export default function ArtifactBuffs() {
   const dispatch = useDispatch();
-  const { sets } = useSelector(selectArtInfo);
+  const artifacts = useSelector(selectArtifacts);
   const artBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].artBuffCtrls;
   });
   const party = useSelector(selectParty);
 
   const content: JSX.Element[] = [];
-  const mainCode = sets[0]?.code;
+  const mainCode = getArtifactSetBonuses(artifacts)[0]?.code;
 
   artBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const { name, buffs } = findArtifactSet({ code: mainCode })!;

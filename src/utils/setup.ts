@@ -1,12 +1,16 @@
 import type { CalcSetup, ModifierInput, Party, UserSetupCalcInfo } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
-import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
+import {
+  getArtifactBuffCtrls,
+  getArtifactSetBonuses,
+  getWeaponBuffCtrls,
+} from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
 import { CalculatorState } from "@Store/calculatorSlice/types";
 
 export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): UserSetupCalcInfo {
-  const { char, weapon, artInfo, ...data } = calculator.setupsById[setupID];
+  const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
   const { buffs = [], debuffs = [] } = findCharacter(char) || {};
   const party: Party = [];
 
@@ -29,7 +33,7 @@ export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): 
     char,
     ...data,
     weaponID: weapon.ID,
-    artifactIDs: artInfo.pieces.reduce(
+    artifactIDs: artifacts.reduce(
       (IDs: (number | null)[], piece) => IDs.concat(piece?.ID || null),
       []
     ),
@@ -76,10 +80,8 @@ export function restoreCalcSetup(data: CalcSetup) {
     return newCtrls;
   }
 
-  const { char, weapon, artInfo } = data;
-
-  const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(char.name, true);
-  const wpBuffCtrls = getWeaponBuffCtrls(true, weapon);
+  const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(data.char.name, true);
+  const wpBuffCtrls = getWeaponBuffCtrls(true, data.weapon);
   const party: Party = [];
 
   for (const index of [0, 1, 2]) {
@@ -99,7 +101,8 @@ export function restoreCalcSetup(data: CalcSetup) {
     }
   }
 
-  const artBuffCtrls = artInfo.sets[0]?.bonusLv ? getArtifactBuffCtrls(true, artInfo.sets[0]) : [];
+  const setBonuses = getArtifactSetBonuses(data.artifacts);
+  const artBuffCtrls = setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [];
 
   const output: CalcSetup = {
     ...data,

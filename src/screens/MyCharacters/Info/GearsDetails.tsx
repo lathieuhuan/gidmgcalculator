@@ -1,7 +1,13 @@
 import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
-import type { ArtifactAttribute, ArtPieceMainStat, UserWeapon } from "@Src/types";
-import type { ArtifactInfo, Details } from "./types";
+import type {
+  ArtifactAttribute,
+  ArtifactMainStat,
+  ArtifactSetBonus,
+  UserArtifacts,
+  UserWeapon,
+} from "@Src/types";
+import type { DetailsType } from "./types";
 
 import { useDispatch } from "@Store/hooks";
 import {
@@ -12,16 +18,17 @@ import {
 
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { AttributeTable } from "@Components/AttributeTable";
-import { ButtonBar, SetBonus } from "@Components/minors";
+import { ButtonBar, renderSetBonuses } from "@Components/minors";
 import { WeaponCard } from "@Components/WeaponCard";
 import { Button } from "@Src/styled-components";
 
 interface GearsDetailsProps {
   className: string;
   style: CSSProperties;
-  activeDetails: Details;
-  wpInfo: UserWeapon;
-  artInfo: ArtifactInfo;
+  activeDetails: DetailsType;
+  weapon: UserWeapon;
+  artifacts: UserArtifacts;
+  setBonuses: ArtifactSetBonus[];
   artAttr: ArtifactAttribute;
   onClickSwitchWeapon: () => void;
   onClickSwitchArtifact: () => void;
@@ -32,16 +39,15 @@ export function GearsDetails({
   className,
   style,
   activeDetails,
-  wpInfo,
-  artInfo,
+  weapon,
+  artifacts,
+  setBonuses,
   artAttr,
   onClickSwitchWeapon,
   onClickSwitchArtifact,
   onClickUnequipArtifact,
   onCloseDetails,
 }: GearsDetailsProps) {
-  const { pieces, sets } = artInfo;
-  const { owner } = wpInfo;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -49,12 +55,12 @@ export function GearsDetails({
       (typeof activeDetails === "number" &&
         activeDetails >= 0 &&
         activeDetails < 5 &&
-        !pieces[activeDetails]) ||
-      (activeDetails === "setBonus" && !sets.length)
+        !artifacts[activeDetails]) ||
+      (activeDetails === "setBonus" && !setBonuses.length)
     ) {
       onCloseDetails();
     }
-  }, [activeDetails, owner]);
+  }, [activeDetails, weapon.owner]);
 
   switch (activeDetails) {
     case "weapon":
@@ -62,10 +68,10 @@ export function GearsDetails({
         <div className={clsx("flex flex-col", className)} style={style}>
           <div className="px-1 grow hide-scrollbar">
             <WeaponCard
-              weapon={wpInfo}
+              weapon={weapon}
               mutable
-              upgrade={(level) => dispatch(updateUserWeapon({ ID: wpInfo.ID, level }))}
-              refine={(refi) => dispatch(updateUserWeapon({ ID: wpInfo.ID, refi }))}
+              upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
+              refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
             />
           </div>
           <Button className="mt-4 mx-auto" variant="positive" onClick={onClickSwitchWeapon}>
@@ -77,9 +83,7 @@ export function GearsDetails({
     case "setBonus":
       return (
         <div className={clsx("flex", className)} style={style}>
-          <div className="px-1 hide-scrollbar">
-            <SetBonus sets={sets} />
-          </div>
+          <div className="px-1 hide-scrollbar">{renderSetBonuses(setBonuses)}</div>
         </div>
       );
 
@@ -93,26 +97,27 @@ export function GearsDetails({
       );
 
     default:
-      const artPiece = pieces[activeDetails];
-      if (activeDetails !== -1 && artPiece) {
+      const activeArtifact = artifacts[activeDetails];
+
+      if (activeDetails !== -1 && activeArtifact) {
         return (
           <div className={className} style={style}>
             <div className="pb-2 hide-scrollbar">
               <ArtifactCard
-                artPiece={artPiece}
+                artifact={activeArtifact}
                 mutable
-                enhance={(level) => dispatch(updateUserArtifact({ ID: artPiece.ID, level }))}
+                enhance={(level) => dispatch(updateUserArtifact({ ID: activeArtifact.ID, level }))}
                 changeMainStatType={(type) =>
                   dispatch(
                     updateUserArtifact({
-                      ID: artPiece.ID,
-                      mainStatType: type as ArtPieceMainStat,
+                      ID: activeArtifact.ID,
+                      mainStatType: type as ArtifactMainStat,
                     })
                   )
                 }
                 changeSubStat={(subStatIndex, changes) => {
                   dispatch(
-                    updateUserArtifactSubStat({ ID: artPiece.ID, subStatIndex, ...changes })
+                    updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes })
                   );
                 }}
               />

@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { type RefObject, useState } from "react";
 
-import { changeArtPiece } from "@Store/calculatorSlice";
-import { selectArtInfo } from "@Store/calculatorSlice/selectors";
+import { changeArtifact } from "@Store/calculatorSlice";
+import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 import { findArtifactPiece } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
@@ -10,7 +10,7 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 import { CollapseSpace } from "@Components/collapse";
 import { Picker } from "@Components/Picker";
-import PieceInfo from "./PieceInfo";
+import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
 interface SectionArtifactsProps {
@@ -19,7 +19,7 @@ interface SectionArtifactsProps {
 export default function SectionArtifacts({ containerRef }: SectionArtifactsProps) {
   const dispatch = useDispatch();
 
-  const { pieces = [] } = useSelector(selectArtInfo);
+  const artifacts = useSelector(selectArtifacts);
 
   const [activeTabIndex, setActiveTabIndex] = useState(-1);
   const [artifactPicker, setArtifactPicker] = useState({
@@ -27,7 +27,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
     slot: 0,
   });
 
-  const pieceInfo = pieces[activeTabIndex];
+  const activeArtifact = artifacts[activeTabIndex];
 
   const scrollContainer = () => {
     setTimeout(() => {
@@ -38,7 +38,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
   const onClickTab = (tabIndex: number) => {
     // there's already a piece at tabIndex (or pieceInfo !== null after this excution)
-    if (pieces[tabIndex]) {
+    if (artifacts[tabIndex]) {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
       scrollContainer();
@@ -52,11 +52,11 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
   return (
     <div className="py-3 border-2 border-lesser rounded-xl bg-darkblue-1">
-      {pieces.length && pieces.every((piece) => piece === null) ? <CopySelect /> : null}
+      {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
 
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {
-          const artPiece = pieces[index];
+          const artPiece = artifacts[index];
           const icon = artPiece
             ? findArtifactPiece({ code: artPiece.code, type })?.icon || ""
             : ARTIFACT_ICONS[type];
@@ -86,9 +86,9 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
       </div>
 
       <CollapseSpace active={activeTabIndex !== -1}>
-        {pieceInfo && (
-          <PieceInfo
-            pieceInfo={pieceInfo}
+        {activeArtifact && (
+          <ArtifactInfo
+            artifact={activeArtifact}
             pieceIndex={activeTabIndex}
             onClickRemovePiece={() => setActiveTabIndex(-1)}
             onClickChangePiece={() => {
@@ -106,7 +106,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
         artifactType={ARTIFACT_TYPES[artifactPicker.slot]}
         onPickArtifact={(item) => {
           dispatch(
-            changeArtPiece({
+            changeArtifact({
               pieceIndex: artifactPicker.slot,
               newPiece: { ID: Date.now(), ...item },
               isFresh: true,

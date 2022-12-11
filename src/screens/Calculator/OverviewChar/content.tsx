@@ -1,12 +1,11 @@
 import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 import {
-  selectArtInfo,
+  selectArtifacts,
   selectChar,
   selectParty,
   selectTotalAttr,
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
-
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Hooks/useTabs";
 import { addArtAttr } from "@Calculators/baseStats";
@@ -14,7 +13,8 @@ import { addArtAttr } from "@Calculators/baseStats";
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
 import { AttributeTable } from "@Components/AttributeTable";
-import { SetBonus, SharedSpace } from "@Components/minors";
+import { renderSetBonuses, SharedSpace } from "@Components/minors";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {
@@ -40,10 +40,10 @@ const contentByTab: Record<string, () => JSX.Element> = {
     );
   },
   Artifacts() {
-    const { pieces, sets } = useSelector(selectArtInfo);
+    const artifacts = useSelector(selectArtifacts);
     const totalAttr = useSelector(selectTotalAttr);
 
-    const artAttr = addArtAttr({ pieces, totalAttr: { ...totalAttr } });
+    const artAttr = addArtAttr({ artifacts, totalAttr: { ...totalAttr } });
 
     const { activeIndex, tabs } = useTabs({
       level: 2,
@@ -63,7 +63,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
             }
             rightPart={
               <div className="h-full hide-scrollbar">
-                <SetBonus noTitle sets={sets} />
+                {renderSetBonuses(getArtifactSetBonuses(artifacts), { noTitle: true })}
               </div>
             }
           />

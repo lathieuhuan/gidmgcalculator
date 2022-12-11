@@ -5,7 +5,7 @@ import type {
   Weapon,
   ModifierCtrl,
   Target,
-  CalcArtPiece,
+  CalcArtifact,
   CalcWeapon,
   ElementModCtrl,
   Monster,
@@ -39,7 +39,7 @@ interface InitArtPiece {
   code: number;
   rarity: Rarity;
 }
-export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArtPiece, "ID"> {
+export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArtifact, "ID"> {
   return {
     type,
     code,

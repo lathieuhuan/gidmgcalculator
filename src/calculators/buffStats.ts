@@ -23,7 +23,7 @@ import type {
   ReactionBonus,
   ReactionBonusInfo,
 } from "@Src/types";
-import { findByIndex, toMult } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
   addArtAttr,
@@ -41,6 +41,7 @@ import {
   addTrackerRecord,
 } from "./utils";
 import { RESONANCE_STAT } from "./constants";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface ApplySelfBuffs {
   isFinal: boolean;
@@ -94,7 +95,7 @@ export default function getBuffedStats({
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
-  artInfo: { pieces, sets },
+  artifacts,
   artBuffCtrls,
   elmtModCtrls: { resonances, reaction, infuse_reaction },
   party,
@@ -105,7 +106,8 @@ export default function getBuffedStats({
 }: GetBuffedStatsArgs) {
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
-  const artAttr = addArtAttr({ pieces, totalAttr, tracker });
+  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
+  const setBonuses = getArtifactSetBonuses(artifacts);
   const usedWpMods: UsedCode[] = [];
   const usedArtMods: UsedCode[] = [];
 
@@ -166,7 +168,7 @@ export default function getBuffedStats({
 
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
   applyWpPassiveBuffs({ isFinal: false, weaponData, refi, modifierArgs });
-  applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
+  applyArtPassiveBuffs({ isFinal: false, setBonuses, modifierArgs });
 
   // APPLY CUSTOM BUFFS
   for (const { category, type, value } of customBuffCtrls) {
@@ -319,7 +321,7 @@ export default function getBuffedStats({
   }
 
   // APPLY ARTIFACT BUFFS
-  const mainArtCode = sets[0]?.code;
+  const mainArtCode = setBonuses[0]?.code;
   if (mainArtCode) {
     for (const { index, activated, inputs = [] } of artBuffCtrls) {
       const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
@@ -337,7 +339,7 @@ export default function getBuffedStats({
 
   calcFinalTotalAttrs(totalAttr);
 
-  applyArtPassiveBuffs({ isFinal: true, sets, modifierArgs });
+  applyArtPassiveBuffs({ isFinal: true, setBonuses, modifierArgs });
   applyWpPassiveBuffs({ isFinal: true, weaponData, refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
@@ -367,7 +369,7 @@ export default function getBuffedStats({
 
   // APPLY ARTIFACT FINAL BUFFS
   for (const ctrl of artBuffCtrls) {
-    const { name, buffs } = findArtifactSet({ code: sets[0].code }) || {};
+    const { name, buffs } = findArtifactSet({ code: setBonuses[0].code }) || {};
     const { applyFinalBuff } = buffs?.[ctrl.index] || {};
 
     if (ctrl.activated && applyFinalBuff) {

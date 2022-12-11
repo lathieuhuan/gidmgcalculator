@@ -1,6 +1,6 @@
 import type {
-  CalcArtPiece,
-  CalcArtSet,
+  CalcArtifact,
+  ArtifactSetBonus,
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
@@ -64,7 +64,7 @@ export function parseAndInitData(
     wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
   }
 
-  const pieces = artifactIDs.map((id) => {
+  const artifacts = artifactIDs.map((id) => {
     const artPiece = findById(myArts, id);
     if (artPiece) {
       const { owner, ...info } = artPiece;
@@ -72,14 +72,14 @@ export function parseAndInitData(
     }
     return null;
   });
-  const sets = getArtifactSets(pieces);
+  const setBonuses = getArtifactSetBonuses(artifacts);
 
   return {
     char,
     weapon,
     wpBuffCtrls,
-    artInfo: { pieces, sets },
-    artBuffCtrls: sets[0]?.bonusLv ? getArtifactBuffCtrls(true, sets[0]) : [],
+    artifacts,
+    artBuffCtrls: setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [],
   };
 }
 
@@ -117,7 +117,7 @@ export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
   const buffCtrls: ModifierCtrl[] = [];
 
   for (const buff of buffs) {
-    if (buff.affect !== EModAffect.SELF) {
+    if (buff.affect !== (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
       const node: ModifierCtrl = {
         index: buff.index,
         activated: false,
@@ -145,10 +145,11 @@ export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number
     return [];
   }
   const { buffs = [] } = findArtifactSet({ code: hasCode.code }) || {};
+
   return getModCtrls(buffs, forSelf);
 }
 
-export function getArtifactSets(pieces: (CalcArtPiece | null)[] = []): CalcArtSet[] {
+export function getArtifactSetBonuses(pieces: (CalcArtifact | null)[] = []): ArtifactSetBonus[] {
   const sets = [];
   const count: Record<number, number> = {};
 

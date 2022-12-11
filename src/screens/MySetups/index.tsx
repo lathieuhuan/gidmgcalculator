@@ -7,12 +7,12 @@ import type {
   AbilityDebuff,
   ArtifactAttribute,
   AttackElement,
-  CalcArtPiece,
   CharData,
   DamageResult,
   InnateBuff,
   ReactionBonus,
   TotalAttribute,
+  UserArtifact,
   UserComplexSetup,
   UserSetup,
 } from "@Src/types";
@@ -34,7 +34,7 @@ import { findCharacter, getPartyData } from "@Data/controllers";
 
 import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
-import { ConfirmTemplate, renderNoItems, SetBonus, TipsModal } from "@Components/minors";
+import { ConfirmTemplate, renderNoItems, renderSetBonuses, TipsModal } from "@Components/minors";
 import { Button, IconButton, Green, Red } from "@Src/styled-components";
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
@@ -42,7 +42,7 @@ import { SetupExporter } from "@Components/SetupExporter";
 import { SetupTemplate } from "./SetupTemplate";
 import { ModifierWrapper } from "./components";
 import {
-  MySetupArtifactPieces,
+  MySetupArtifacts,
   MySetupWeapon,
   ArtifactBuffs,
   CustomBuffs,
@@ -60,8 +60,8 @@ import {
 } from "./modal-content";
 
 import styles from "../styles.module.scss";
-import { getArtifactSets } from "@Store/calculatorSlice/utils";
-import { useSetupItemInfos } from "./hooks";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { useSetupItems } from "./hooks";
 
 export default function MySetups() {
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ export default function MySetups() {
   const myArts = useSelector(selectMyArts);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
-  const { infos, getSetupItemInfos } = useSetupItemInfos();
+  const { itemsBySetupID } = useSetupItems();
 
   const ref = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<MySetupModal>({
@@ -134,20 +134,15 @@ export default function MySetups() {
 
     const weapon = findById(myWps, weaponID)!;
 
-    const artPieces = artifactIDs.reduce((pieces: CalcArtPiece[], ID) => {
+    const artifacts = artifactIDs.reduce((results: UserArtifact[], ID) => {
       const foundArt = ID ? findById(myArts, ID) : undefined;
 
       if (foundArt) {
-        return pieces.concat(foundArt);
+        return results.concat(foundArt);
       }
 
-      return pieces;
+      return results;
     }, []);
-
-    const artInfo = {
-      pieces: artPieces,
-      sets: getArtifactSets(artPieces),
-    };
 
     charData = {
       code: data.code,
@@ -166,7 +161,7 @@ export default function MySetups() {
       {
         char,
         weapon,
-        artInfo,
+        artifacts,
         ...rest,
       },
       target,
@@ -186,21 +181,29 @@ export default function MySetups() {
     let setupDisplay: JSX.Element | null;
 
     if (setup.type === "complex") {
-      const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID) as UserSetup;
+      const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID);
+      if (!actualSetup || !isUserSetup(actualSetup)) return null;
 
-      setupDisplay = infos[actualSetup.ID] ? (
+      setupDisplay = itemsBySetupID[actualSetup.ID] ? (
         <SetupTemplate
+          key={actualSetup.ID}
           ID={ID}
           setupName={setup.name}
           setup={actualSetup}
-          {...infos[actualSetup.ID]}
+          {...itemsBySetupID[actualSetup.ID]}
           allIDs={setup.allIDs}
           openModal={openModal}
         />
       ) : null;
     } else {
-      setupDisplay = infos[ID] ? (
-        <SetupTemplate ID={ID} setup={setup} {...infos[ID]} openModal={openModal} />
+      setupDisplay = itemsBySetupID[ID] ? (
+        <SetupTemplate
+          key={ID}
+          ID={ID}
+          setup={setup}
+          {...itemsBySetupID[ID]}
+          openModal={openModal}
+        />
       ) : null;
     }
 
@@ -246,14 +249,14 @@ export default function MySetups() {
       target,
     } = chosenSetup;
 
-    const { weapon, artPieces } = infos[ID];
-    const artSets = getArtifactSets(artPieces);
+    const { weapon, artifacts } = itemsBySetupID[ID];
+    const setBonuses = getArtifactSetBonuses(artifacts);
 
     switch (modal.type) {
       case "WEAPON":
         return weapon ? <MySetupWeapon weapon={weapon} /> : null;
       case "ARTIFACTS":
-        return <MySetupArtifactPieces pieces={artPieces} />;
+        return <MySetupArtifacts artifacts={artifacts} />;
       case "STATS":
         return (
           <div className="h-full flex divide-x-2 divide-darkblue-2">
@@ -272,9 +275,7 @@ export default function MySetups() {
             </div>
 
             <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-              <div className="h-full hide-scrollbar">
-                <SetBonus sets={artSets} />
-              </div>
+              <div className="h-full hide-scrollbar">{renderSetBonuses(setBonuses)}</div>
             </div>
           </div>
         );
@@ -346,7 +347,11 @@ export default function MySetups() {
                       party={party}
                     />
                   ) : null,
-                  <ArtifactBuffs sets={artSets} artBuffCtrls={artBuffCtrls} party={party} />,
+                  <ArtifactBuffs
+                    setBonuses={setBonuses}
+                    artBuffCtrls={artBuffCtrls}
+                    party={party}
+                  />,
                   <CustomBuffs customBuffCtrls={customBuffCtrls} />,
                 ]}
               />

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateCalcSetup } from "@Store/calculatorSlice";
 import { selectCalcSetupsById, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 
-import { CopySection } from "@Screens/Calculator/components";
+import { CopySection, type Option } from "@Screens/Calculator/components";
 
 export function CopySelect() {
   const dispatch = useDispatch();
@@ -10,22 +10,21 @@ export function CopySelect() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const setupsById = useSelector(selectCalcSetupsById);
 
-  const allArtInfos = setupManageInfos.map(({ ID }) => setupsById[ID].artInfo);
-  const copyOptions = [];
-
-  for (const index in allArtInfos) {
-    if (allArtInfos[index].pieces.some((piece) => piece !== null)) {
-      copyOptions.push({
+  const allArtifacts = setupManageInfos.map(({ ID }) => setupsById[ID].artifacts);
+  const copyOptions = allArtifacts.reduce((results: Option[], artifacts, index) => {
+    if (artifacts.some((artifact) => artifact !== null)) {
+      results.push({
         label: setupManageInfos[index].name,
         value: setupManageInfos[index].ID,
       });
     }
-  }
+    return results;
+  }, []);
 
-  const onClickCopyArtifacts = ({ value: sourceId }: { value: number }) => {
-    const { artInfo, artBuffCtrls } = setupsById[sourceId];
+  const onClickCopyArtifacts = ({ value: sourceId }: Option) => {
+    const { artifacts, artBuffCtrls } = setupsById[sourceId];
 
-    dispatch(updateCalcSetup({ artInfo, artBuffCtrls }));
+    dispatch(updateCalcSetup({ artifacts, artBuffCtrls }));
   };
 
   return copyOptions.length ? (

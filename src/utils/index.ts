@@ -6,7 +6,7 @@ import {
   OTHER_PERCENT_STAT_TYPES,
   VISION_TYPES,
 } from "@Src/constants";
-import { findArtifactPiece, findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findCharacter } from "@Data/controllers";
 
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 

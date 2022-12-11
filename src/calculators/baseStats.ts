@@ -1,10 +1,9 @@
 import type {
   ArtifactAttribute,
-  CalcArtInfo,
-  CalcArtPieces,
-  CalcArtSet,
   CharData,
   CalcWeapon,
+  CalcArtifacts,
+  ArtifactSetBonus,
   CharInfo,
   DataWeapon,
   Level,
@@ -19,6 +18,7 @@ import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { addOrInit, addTrackerRecord, applyModifier } from "./utils";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;
@@ -81,18 +81,18 @@ export function initiateTotalAttr({ char, weapon, weaponData, tracker }: Initiat
 }
 
 interface AddArtAttrArgs {
-  pieces: CalcArtPieces;
+  artifacts: CalcArtifacts;
   totalAttr: TotalAttribute;
   tracker?: Tracker;
 }
-export function addArtAttr({ pieces, totalAttr, tracker }: AddArtAttrArgs): ArtifactAttribute {
+export function addArtAttr({ artifacts, totalAttr, tracker }: AddArtAttrArgs): ArtifactAttribute {
   const artAttr = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
 
-  for (const artPiece of pieces) {
-    if (!artPiece) continue;
+  for (const artifact of artifacts) {
+    if (!artifact) continue;
 
-    const { type, mainStatType, subStats } = artPiece;
-    const mainStat = artifactMainStatValue(artPiece);
+    const { type, mainStatType, subStats } = artifact;
+    const mainStat = artifactMainStatValue(artifact);
 
     addOrInit(artAttr, mainStatType, mainStat);
     addTrackerRecord(tracker?.totalAttr[mainStatType], type, mainStat);
@@ -138,11 +138,11 @@ export function addWeaponSubStat({
 
 interface ApplyArtPassiveBuffs {
   isFinal: boolean;
-  sets: CalcArtSet[];
+  setBonuses: ArtifactSetBonus[];
   modifierArgs: BaseModifierArgsWrapper;
 }
-export function applyArtPassiveBuffs({ isFinal, sets, modifierArgs }: ApplyArtPassiveBuffs) {
-  for (const { code, bonusLv } of sets) {
+export function applyArtPassiveBuffs({ isFinal, setBonuses, modifierArgs }: ApplyArtPassiveBuffs) {
+  for (const { code, bonusLv } of setBonuses) {
     //
     for (let i = 0; i <= bonusLv; i++) {
       const artData = findArtifactSet({ code });
@@ -193,22 +193,18 @@ interface GetBaseStatsArgs {
   charData: CharData;
   char: CharInfo;
   weapon: CalcWeapon;
-  artifact: CalcArtInfo;
+  artifacts: CalcArtifacts;
 }
-export default function getBaseStats({
-  charData,
-  char,
-  weapon,
-  artifact: { pieces, sets },
-}: GetBaseStatsArgs) {
+export default function getBaseStats({ charData, char, weapon, artifacts }: GetBaseStatsArgs) {
   //
   const weaponData = findWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weaponData, weapon });
-  const artAttr = addArtAttr({ pieces, totalAttr });
+  const artAttr = addArtAttr({ artifacts, totalAttr });
+  const setBonuses = getArtifactSetBonuses(artifacts);
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level });
 
   const modifierArgs = { totalAttr, charData };
-  applyArtPassiveBuffs({ isFinal: false, sets, modifierArgs });
+  applyArtPassiveBuffs({ isFinal: false, setBonuses, modifierArgs });
   applyWpPassiveBuffs({
     isFinal: false,
     weaponData,

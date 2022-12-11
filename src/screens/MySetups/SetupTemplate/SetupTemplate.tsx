@@ -9,7 +9,7 @@ import {
   FaUnlink,
   FaWrench,
 } from "react-icons/fa";
-import type { CalcArtPieces, CalcWeapon, Rarity, UserSetup } from "@Src/types";
+import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { MySetupModalType } from "../types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
@@ -25,13 +25,14 @@ import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Dat
 
 import { CharacterPortrait } from "@Components/minors";
 import { IconButton } from "@Src/styled-components";
+import { renderGearIcon } from "./utils";
 
 interface SetupLayoutProps {
   ID: number;
   setup: UserSetup;
   setupName?: string;
-  weapon: CalcWeapon | null;
-  artPieces: CalcArtPieces;
+  weapon: UserWeapon | null;
+  artifacts: UserArtifacts;
   allIDs?: Record<string, number>;
   openModal: (type: MySetupModalType, ID?: number) => () => void;
 }
@@ -40,7 +41,7 @@ export function SetupTemplate({
   setup,
   setupName,
   weapon,
-  artPieces,
+  artifacts,
   allIDs,
   openModal,
 }: SetupLayoutProps) {
@@ -73,40 +74,42 @@ export function SetupTemplate({
     );
   };
 
-  const mainCharacterDisplay = (() => {
+  const display = useMemo(() => {
+    let mainCharacter = null;
     const charInfo = findCharacter(char);
-    if (!charInfo) return null;
+    const weaponData = weapon ? findWeapon(weapon) : undefined;
 
-    const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
-      return finalTalentLv(char, talentType, getPartyData(party));
-    });
+    if (charInfo) {
+      const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
+        return finalTalentLv(char, talentType, getPartyData(party));
+      });
 
-    const renderSpan = (text: string | number) => (
-      <span className={`font-medium text-${charInfo.vision}`}>{text}</span>
-    );
+      const renderSpan = (text: string | number) => (
+        <span className={`font-medium text-${charInfo.vision}`}>{text}</span>
+      );
 
-    return (
-      <div className="mx-auto lg:mx-0 flex">
-        <img
-          className="w-20 h-20"
-          src={getImgSrc(charInfo.icon)}
-          alt={char.name}
-          draggable={false}
-        />
+      mainCharacter = (
+        <div className="mx-auto lg:mx-0 flex">
+          <img
+            className="w-20 h-20"
+            src={getImgSrc(charInfo.icon)}
+            alt={char.name}
+            draggable={false}
+          />
 
-        <div className="ml-4 flex-col justify-between">
-          <p className="text-lg">Level {renderSpan(char.level)}</p>
-          <p>Constellation {renderSpan(char.cons)}</p>
-          <p>
-            Talents: {renderSpan(talents[0])} / {renderSpan(talents[1])} / {renderSpan(talents[2])}
-          </p>
+          <div className="ml-4 flex-col justify-between">
+            <p className="text-lg">Level {renderSpan(char.level)}</p>
+            <p>Constellation {renderSpan(char.cons)}</p>
+            <p>
+              Talents: {renderSpan(talents[0])} / {renderSpan(talents[1])} /{" "}
+              {renderSpan(talents[2])}
+            </p>
+          </div>
         </div>
-      </div>
-    );
-  })();
+      );
+    }
 
-  const teammatesDisplay = useMemo(
-    () => (
+    const teammate = (
       <div
         className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")}
         style={{ width: "15.5rem" }}
@@ -157,45 +160,21 @@ export function SetupTemplate({
           );
         })}
       </div>
-    ),
-    []
-  );
+    );
 
-  const gearsDisplay = useMemo(() => {
-    const weaponData = weapon ? findWeapon(weapon) : undefined;
-
-    const renderGearIcon = (
-      { beta, icon, rarity }: { beta?: boolean; icon: string; rarity?: Rarity },
-      onClick?: () => void,
-      key?: number | string
-    ) => {
-      return (
-        <button
-          key={key}
-          className={clsx(
-            `p-1 rounded flex bg-gradient-${rarity}`,
-            onClick ? "glow-on-hover" : "cursor-default !opacity-50"
-          )}
-          onClick={onClick}
-        >
-          <img className="w-14 h-14" src={getImgSrc(icon)} alt="" />
-        </button>
-      );
-    };
-
-    return (
+    const gears = (
       <div className="mt-3 mx-auto grid grid-cols-3 gap-1">
         {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
 
-        {artPieces.map((artP, i) => {
-          if (artP) {
-            const artifactData = findArtifactPiece(artP);
+        {artifacts.map((artifact, i) => {
+          if (artifact) {
+            const artifactData = findArtifactPiece(artifact);
             return artifactData
               ? renderGearIcon(
                   {
                     icon: artifactData.icon,
                     beta: artifactData.beta,
-                    rarity: artP.rarity || 5,
+                    rarity: artifact.rarity || 5,
                   },
                   openModal("ARTIFACTS"),
                   i
@@ -206,7 +185,13 @@ export function SetupTemplate({
         })}
       </div>
     );
-  }, [setup.ID]);
+
+    return {
+      mainCharacter,
+      teammate,
+      gears,
+    };
+  }, []);
 
   return (
     <>
@@ -224,7 +209,20 @@ export function SetupTemplate({
             className="p-2"
             variant="positive"
             onClick={() => {
-              dispatch(updateImportInfo({ type: "EDIT_SETUP", data: setup }));
+              if (weapon) {
+                const { weaponID, artifactIDs, ...rest } = setup;
+
+                dispatch(
+                  updateImportInfo({
+                    type: "EDIT_SETUP",
+                    data: {
+                      ...rest,
+                      weapon,
+                      artifacts,
+                    },
+                  })
+                );
+              }
             }}
           >
             <FaWrench />
@@ -256,8 +254,8 @@ export function SetupTemplate({
 
       <div className="px-4 pt-4 pb-3 rounded-lg bg-darkblue-1 flex flex-col lg:flex-row">
         <div className="flex flex-col">
-          {mainCharacterDisplay}
-          {teammatesDisplay}
+          {display.mainCharacter}
+          {display.teammate}
         </div>
 
         <div className="hidden lg:block w-0.5 mx-4 bg-darkblue-3" />
@@ -278,7 +276,7 @@ export function SetupTemplate({
             </button>
           </div>
 
-          {gearsDisplay}
+          {display.gears}
         </div>
       </div>
     </>

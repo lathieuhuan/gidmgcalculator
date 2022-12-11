@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
 import isEqual from "react-fast-compare";
 
-import type { CalcArtPieces, CalcWeapon } from "@Src/types";
+import type { CalcArtifacts, CalcWeapon, UserArtifacts } from "@Src/types";
 
 import { findById } from "@Src/utils";
 import { useSelector } from "@Store/hooks";
@@ -52,25 +52,25 @@ export function MySetupWeapon({ weapon }: { weapon: CalcWeapon }) {
   );
 }
 
-interface MySetupArtifactPiecesProps {
-  pieces: CalcArtPieces;
+interface MySetupArtifactsProps {
+  artifacts: UserArtifacts;
 }
-export function MySetupArtifactPieces({ pieces }: MySetupArtifactPiecesProps) {
+export function MySetupArtifacts({ artifacts }: MySetupArtifactsProps) {
   const myArts = useSelector(selectMyArts);
 
   return (
     <Fragment>
-      {pieces.map((piece, i) => {
-        if (piece) {
-          const existed = piece.ID ? findById(myArts, piece.ID) : undefined;
+      {artifacts.map((artifact, i) => {
+        if (artifact) {
+          const existed = artifact.ID ? findById(myArts, artifact.ID) : undefined;
 
           return (
             <div key={i} className="px-1 relative" style={{ width: "14.5rem" }}>
               {existed && (
-                <OutdateWarn className="top-0.5 right-2" info={piece} existedInfo={existed} />
+                <OutdateWarn className="top-0.5 right-2" info={artifact} existedInfo={existed} />
               )}
 
-              <ArtifactCard mutable={false} artPiece={piece} space="mx-2" />
+              <ArtifactCard mutable={false} artifact={artifact} space="mx-2" />
 
               {existed && renderEquippedChar(existed.owner || "None")}
             </div>

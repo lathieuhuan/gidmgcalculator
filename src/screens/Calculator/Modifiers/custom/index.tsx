@@ -12,7 +12,7 @@ import {
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
-import { deepCopy, processNumInput } from "@Src/utils";
+import { processNumInput } from "@Src/utils";
 
 import { CopySection } from "@Screens/Calculator/components";
 import { Modal } from "@Components/modals";

@@ -3,7 +3,7 @@ import { batch } from "react-redux";
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 
-import { initSessionWithChar, updateAllArtPieces } from "./calculatorSlice";
+import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
 import {
   addUserArtifact,
@@ -44,7 +44,7 @@ export const pickEquippedArtSet =
       return null;
     });
 
-    dispatch(updateAllArtPieces(artPieces));
+    dispatch(updateAllArtifact(artPieces));
   };
 
 export const saveSetupThunk = (ID: number, name: string): AppThunk => {
@@ -53,7 +53,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
       calculator,
       database: { myWps, myArts },
     } = getState();
-    const { weapon, artInfo } = calculator.setupsById[ID];
+    const { weapon, artifacts } = calculator.setupsById[ID];
     const foundWpIndex = indexById(myWps, weapon.ID);
 
     if (foundWpIndex !== -1) {
@@ -79,9 +79,9 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
       );
     }
 
-    for (const artPiece of artInfo.pieces) {
-      if (artPiece) {
-        const foundIndex = indexById(myArts, artPiece.ID);
+    for (const artifact of artifacts) {
+      if (artifact) {
+        const foundIndex = indexById(myArts, artifact.ID);
 
         if (foundIndex !== -1) {
           let newSetupIDs = myArts[foundIndex].setupIDs;
@@ -99,7 +99,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
         } else {
           dispatch(
             addUserArtifact({
-              ...artPiece,
+              ...artifact,
               owner: null,
               setupIDs: [ID],
             })
