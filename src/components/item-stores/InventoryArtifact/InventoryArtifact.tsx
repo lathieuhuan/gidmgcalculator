@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import type { Artifact, CalcArtifact, UserArtifact } from "@Src/types";
@@ -87,7 +88,12 @@ function ArtifactInventory({
           {inventoryRack}
 
           <div className="flex flex-col justify-between">
-            <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
+            <div
+              className={clsx(
+                "p-4 rounded-lg bg-darkblue-1 flex flex-col relative",
+                !chosenArtifact && "h-full"
+              )}
+            >
               {currentArtifact ? (
                 <div
                   className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"

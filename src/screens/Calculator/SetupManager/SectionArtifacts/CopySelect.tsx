@@ -23,8 +23,21 @@ export function CopySelect() {
 
   const onClickCopyArtifacts = ({ value: sourceId }: Option) => {
     const { artifacts, artBuffCtrls } = setupsById[sourceId];
+    let rootID = Date.now();
 
-    dispatch(updateCalcSetup({ artifacts, artBuffCtrls }));
+    dispatch(
+      updateCalcSetup({
+        artifacts: artifacts.map((artifact) =>
+          artifact
+            ? {
+                ...artifact,
+                ID: rootID++,
+              }
+            : null
+        ),
+        artBuffCtrls,
+      })
+    );
   };
 
   return copyOptions.length ? (

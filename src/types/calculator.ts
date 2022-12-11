@@ -95,6 +95,10 @@ export type ArtifactSubStatInfo = {
 
 export type CalcArtifact = {
   ID: number;
+  /**
+   * New artifact, not from user database
+   */
+  isNew?: boolean;
   code: number;
   type: Artifact;
   rarity: Rarity;

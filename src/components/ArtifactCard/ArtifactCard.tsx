@@ -181,7 +181,6 @@ export function ArtifactSubstats({
                 "pt-2 pb-1 pr-2 pl-10 relative z-10 appearance-none",
                 statTypeCount[type] === 1 ? "text-default" : "text-red-500"
               )}
-              style={{ fontSize: "1.0625rem" }}
               value={type}
               onChange={(e) =>
                 changeSubStat && changeSubStat(i, { type: e.target.value as ArtifactSubStat })

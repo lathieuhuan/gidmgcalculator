@@ -12,7 +12,7 @@ import type {
 } from "./calculator";
 import type { Tracker } from "@Calculators/types";
 
-type ArtPieceData = {
+type ArtTypeData = {
   name: string;
   icon: string;
 };
@@ -22,11 +22,11 @@ export type DataArtifact = {
   beta?: boolean;
   name: string;
   variants: Rarity[];
-  flower: ArtPieceData;
-  plume: ArtPieceData;
-  sands: ArtPieceData;
-  goblet: ArtPieceData;
-  circlet: ArtPieceData;
+  flower: ArtTypeData;
+  plume: ArtTypeData;
+  sands: ArtTypeData;
+  goblet: ArtTypeData;
+  circlet: ArtTypeData;
   setBonuses: [SetBonus, SetBonus];
   buffs?: ArtifactBuff[];
   debuffs?: ArtifactDebuff[];

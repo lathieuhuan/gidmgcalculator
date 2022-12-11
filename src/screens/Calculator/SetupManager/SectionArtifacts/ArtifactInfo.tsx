@@ -97,10 +97,11 @@ export function ArtifactInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
-          mutable
+          mutable={artifact.isNew}
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
+          space="mx-4"
           changeSubStat={(subStatIndex, changeInfo) => {
             dispatch(
               updateArtifact({

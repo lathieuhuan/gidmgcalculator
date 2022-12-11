@@ -20,7 +20,7 @@ export type UserWeapon = CalcWeapon & {
   setupIDs?: number[];
 };
 
-export type UserArtifact = CalcArtifact & {
+export type UserArtifact = Omit<CalcArtifact, "isNew"> & {
   owner: string | null;
   setupIDs?: number[];
 };

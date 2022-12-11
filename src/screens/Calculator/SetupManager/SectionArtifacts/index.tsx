@@ -30,14 +30,14 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
   const activeArtifact = artifacts[activeTabIndex];
 
   const scrollContainer = () => {
-    setTimeout(() => {
-      const container = containerRef?.current;
-      if (container) container.scrollTop = 9999;
-    }, 200);
+    // setTimeout(() => {
+    //   const container = containerRef?.current;
+    //   if (container) container.scrollTop = 9999;
+    // }, 200);
   };
 
   const onClickTab = (tabIndex: number) => {
-    // there's already a piece at tabIndex (or pieceInfo !== null after this excution)
+    // there's already an artifact at tabIndex (or artifact !== null after this excution)
     if (artifacts[tabIndex]) {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
@@ -108,8 +108,11 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
           dispatch(
             changeArtifact({
               pieceIndex: artifactPicker.slot,
-              newPiece: { ID: Date.now(), ...item },
-              isFresh: true,
+              newPiece: {
+                ID: Date.now(),
+                ...item,
+                isNew: true,
+              },
             })
           );
           setActiveTabIndex(artifactPicker.slot);

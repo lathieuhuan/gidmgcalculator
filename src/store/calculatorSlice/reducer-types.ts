@@ -126,7 +126,6 @@ export type RemoveCustomModCtrlAction = PayloadAction<CustomModCtrlPath>;
 export type ChangeArtifactAction = PayloadAction<{
   pieceIndex: number;
   newPiece: CalcArtifact | null;
-  isFresh?: boolean;
 }>;
 
 export type UpdateArtifactAction = PayloadAction<{

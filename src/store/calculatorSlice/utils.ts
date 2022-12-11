@@ -149,13 +149,13 @@ export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number
   return getModCtrls(buffs, forSelf);
 }
 
-export function getArtifactSetBonuses(pieces: (CalcArtifact | null)[] = []): ArtifactSetBonus[] {
+export function getArtifactSetBonuses(artifacts: (CalcArtifact | null)[] = []): ArtifactSetBonus[] {
   const sets = [];
   const count: Record<number, number> = {};
 
-  for (const artP of pieces) {
-    if (artP) {
-      const { code } = artP;
+  for (const artifact of artifacts) {
+    if (artifact) {
+      const { code } = artifact;
       count[code] = (count[code] || 0) + 1;
 
       if (count[code] === 2) {

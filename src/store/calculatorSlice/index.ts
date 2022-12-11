@@ -183,6 +183,7 @@ export const calculatorSlice = createSlice({
       const sourceId = action.payload;
       const { comparedIds, setupManageInfos, setupsById } = state;
       const ID = Date.now();
+      let rootID = ID;
 
       if (setupsById[sourceId]) {
         setupManageInfos.push({
@@ -190,7 +191,17 @@ export const calculatorSlice = createSlice({
           name: getNewSetupName(setupManageInfos),
           type: "original",
         });
-        setupsById[ID] = setupsById[sourceId];
+        setupsById[ID] = {
+          ...setupsById[sourceId],
+          artifacts: setupsById[sourceId].artifacts.map((artifact) =>
+            artifact
+              ? {
+                  ...artifact,
+                  ID: rootID++,
+                }
+              : null
+          ),
+        };
 
         if (comparedIds.includes(sourceId)) {
           state.comparedIds.push(ID);
@@ -355,15 +366,16 @@ export const calculatorSlice = createSlice({
     },
     // ARTIFACTS
     changeArtifact: (state, action: ChangeArtifactAction) => {
-      const { pieceIndex, newPiece, isFresh } = action.payload;
+      const { pieceIndex, newPiece } = action.payload;
       const setup = state.setupsById[state.activeId];
       const piece = setup.artifacts[pieceIndex];
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && isFresh && state.configs.keepArtStatsOnSwitch) {
+      if (piece && newPiece && newPiece.isNew && state.configs.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
+        piece.isNew = newPiece.isNew;
       } else {
         setup.artifacts[pieceIndex] = newPiece;
       }
