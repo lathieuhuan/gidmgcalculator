@@ -9,8 +9,8 @@ import type {
   PartyData,
   ReactionBonus,
   TotalAttribute,
+  Tracker,
 } from "./calculator";
-import type { Tracker } from "@Calculators/types";
 
 export type DataWeapon = {
   code: number;

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import type { TrackerDamageRecord } from "@Calculators/types";
-import type { CalculatedDamageCluster, TalentBuff } from "@Src/types";
+import type { CalculatedDamageCluster, TalentBuff, TrackerDamageRecord } from "@Src/types";
 import { Green } from "@Src/styled-components";
 import { percentSign, round2, round3 } from "@Src/utils";
 import { useTranslation } from "@Hooks/useTranslation";

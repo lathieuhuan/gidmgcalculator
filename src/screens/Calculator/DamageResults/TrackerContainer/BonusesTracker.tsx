@@ -1,6 +1,4 @@
-import type { Tracker } from "@Calculators/types";
-import { getRxnBonusesFromEM } from "@Calculators/utils";
-import { useTranslation } from "@Hooks/useTranslation";
+import type { Tracker } from "@Src/types";
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -9,6 +7,8 @@ import {
   REACTIONS,
 } from "@Src/constants";
 import { round1, percentSign } from "@Src/utils";
+import { getRxnBonusesFromEM } from "@Calculators/utils";
+import { useTranslation } from "@Hooks/useTranslation";
 import { keyMap } from "./constants";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 

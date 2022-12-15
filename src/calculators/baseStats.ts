@@ -9,8 +9,9 @@ import type {
   Level,
   TotalAttribute,
   CoreStat,
+  Tracker,
 } from "@Src/types";
-import type { Tracker, BaseModifierArgsWrapper } from "./types";
+import type { BaseModifierArgsWrapper } from "./types";
 
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 import { applyPercent, ascsFromLv, toMult } from "@Src/utils";

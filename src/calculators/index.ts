@@ -1,9 +1,8 @@
-import type { CalcSetup, CharData, Target } from "@Src/types";
+import type { CalcSetup, CharData, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { findCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
-import type { Tracker } from "./types";
 
 export default function calculateAll(
   {

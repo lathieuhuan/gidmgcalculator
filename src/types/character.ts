@@ -17,12 +17,12 @@ import type {
   PartyData,
   ResistanceReduction,
   AttackPatternBonus,
-  AttackPatternInfoKey,
   TotalAttribute,
   ModifierInput,
   BuffModifierArgsWrapper,
+  TalentBuff,
+  Tracker,
 } from "./calculator";
-import type { Tracker } from "@Calculators/types";
 import { EModAffect } from "@Src/constants";
 
 export type DataCharacter = {
@@ -81,8 +81,6 @@ type GetTalentBuffArgs = {
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
 };
-
-export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
 export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff;
 

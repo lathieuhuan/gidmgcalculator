@@ -24,10 +24,11 @@ import type {
   Level,
   ResistanceReductionKey,
   ReactionBonusInfoKey,
+  Tracker,
+  TrackerRecord,
 } from "@Src/types";
 import { bareLv, pickOne, turnArray } from "@Src/utils";
 import { BASE_REACTION_DAMAGE } from "./constants";
-import type { Tracker, TrackerRecord } from "./types";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
   obj: T,

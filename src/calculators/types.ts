@@ -22,47 +22,9 @@ import type {
   CustomDebuffCtrl,
   ActualAttackPattern,
   ActualAttackElement,
-  AttributeStat,
-  AttackPatternBonusKey,
-  AttackPatternInfoKey,
-  AttacklementInfoKey,
-  Reaction,
-  ReactionBonusInfoKey,
-  ResistanceReductionKey,
+  Tracker,
+  TrackerDamageRecord,
 } from "@Src/types";
-
-export type TrackerRecord = {
-  desc: string;
-  value: number;
-};
-
-export type TrackerDamageRecord = {
-  baseValue: number;
-  baseStatType?: string;
-  talentMult?: number | number[];
-  totalFlat?: number;
-  normalMult: number;
-  specialMult?: number;
-  rxnMult?: number;
-  defMult?: number;
-  resMult?: number;
-  cRate?: number;
-  cDmg?: number;
-  note?: string;
-  talentBuff?: TalentBuff;
-};
-
-export type Tracker = {
-  totalAttr: Record<AttributeStat, TrackerRecord[]>;
-  attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
-  attElmtBonus: Record<`${AttackElement}.${AttacklementInfoKey}`, TrackerRecord[]>;
-  rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
-  resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
-  NAs: Record<string, TrackerDamageRecord>;
-  ES: Record<string, TrackerDamageRecord>;
-  EB: Record<string, TrackerDamageRecord>;
-  RXN: Record<string, TrackerDamageRecord>;
-};
 
 export type UsedCode = {
   itemCode: number;

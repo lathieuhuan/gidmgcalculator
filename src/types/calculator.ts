@@ -18,7 +18,6 @@ import type {
   ResonanceVision,
   TransformativeReaction,
 } from "./global";
-import type { Tracker } from "@Calculators/types";
 import {
   ATTACK_ELEMENT_INFO_KEYS,
   ATTACK_PATTERN_INFO_KEYS,
@@ -240,4 +239,41 @@ export type DebuffModifierArgsWrapper = {
   attPattBonus: AttackPatternBonus;
   partyData: PartyData;
   tracker?: Tracker;
+};
+
+export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
+
+// Tracker
+
+export type TrackerRecord = {
+  desc: string;
+  value: number;
+};
+
+export type TrackerDamageRecord = {
+  baseValue: number;
+  baseStatType?: string;
+  talentMult?: number | number[];
+  totalFlat?: number;
+  normalMult: number;
+  specialMult?: number;
+  rxnMult?: number;
+  defMult?: number;
+  resMult?: number;
+  cRate?: number;
+  cDmg?: number;
+  note?: string;
+  talentBuff?: TalentBuff;
+};
+
+export type Tracker = {
+  totalAttr: Record<AttributeStat, TrackerRecord[]>;
+  attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
+  attElmtBonus: Record<`${AttackElement}.${AttacklementInfoKey}`, TrackerRecord[]>;
+  rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
+  resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
+  NAs: Record<string, TrackerDamageRecord>;
+  ES: Record<string, TrackerDamageRecord>;
+  EB: Record<string, TrackerDamageRecord>;
+  RXN: Record<string, TrackerDamageRecord>;
 };

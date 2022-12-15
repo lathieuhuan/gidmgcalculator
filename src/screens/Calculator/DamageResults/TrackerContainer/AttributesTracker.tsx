@@ -1,9 +1,9 @@
-import type { Tracker } from "@Calculators/types";
-import { useTranslation } from "@Hooks/useTranslation";
-import { useSelector } from "@Store/hooks";
-import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import type { Tracker } from "@Src/types";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES, OTHER_PERCENT_STAT_TYPES } from "@Src/constants";
 import { applyPercent, percentSign, round1 } from "@Src/utils";
+import { useSelector } from "@Store/hooks";
+import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { useTranslation } from "@Hooks/useTranslation";
 import { recordListStyles, renderHeading, renderRecord } from "./utils";
 
 const OTHER_STATS = [

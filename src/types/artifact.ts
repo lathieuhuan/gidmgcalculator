@@ -9,8 +9,8 @@ import type {
   ReactionBonus,
   TotalAttribute,
   DebuffModifierArgsWrapper,
+  Tracker,
 } from "./calculator";
-import type { Tracker } from "@Calculators/types";
 
 type ArtTypeData = {
   name: string;

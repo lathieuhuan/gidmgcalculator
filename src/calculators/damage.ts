@@ -1,11 +1,16 @@
-import type { DamageResult, ResistanceReduction, DebuffModifierArgsWrapper } from "@Src/types";
+import type {
+  DamageResult,
+  ResistanceReduction,
+  DebuffModifierArgsWrapper,
+  TrackerDamageRecord,
+} from "@Src/types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
 
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 
-import type { CalcTalentStatArgs, GetDamageArgs, TrackerDamageRecord } from "./types";
+import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
 import { applyModifier, getDefaultStatInfo, getAmplifyingMultiplier } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
