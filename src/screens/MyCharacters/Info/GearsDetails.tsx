@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
 import type {
   ArtifactAttribute,
-  ArtifactMainStat,
+  ArtifactMainStatType,
   ArtifactSetBonus,
   UserArtifacts,
   UserWeapon,
@@ -111,7 +111,7 @@ export function GearsDetails({
                   dispatch(
                     updateUserArtifact({
                       ID: activeArtifact.ID,
-                      mainStatType: type as ArtifactMainStat,
+                      mainStatType: type as ArtifactMainStatType,
                     })
                   )
                 }

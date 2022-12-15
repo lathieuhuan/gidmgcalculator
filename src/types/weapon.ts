@@ -12,6 +12,9 @@ import type {
   Tracker,
 } from "./calculator";
 
+/**
+ * Weapon in app data
+ */
 export type DataWeapon = {
   code: number;
   beta?: boolean;

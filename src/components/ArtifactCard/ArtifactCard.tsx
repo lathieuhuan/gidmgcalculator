@@ -3,9 +3,9 @@ import { Fragment } from "react";
 import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type {
   CalcArtifact,
-  ArtifactMainStat,
+  ArtifactMainStatType,
+  ArtifactSubStatType,
   ArtifactSubStat,
-  ArtifactSubStatInfo,
   Rarity,
 } from "@Src/types";
 
@@ -144,13 +144,13 @@ export function ArtifactCard({
 interface ArtifactCardCommonProps {
   mutable?: boolean;
   space?: string;
-  changeSubStat?: (index: number, changes: Partial<ArtifactSubStatInfo>) => void;
+  changeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
 
 interface ArtifactSubstatsProps extends ArtifactCardCommonProps {
   rarity: Rarity;
-  mainStatType: ArtifactMainStat;
-  subStats: ArtifactSubStatInfo[];
+  mainStatType: ArtifactMainStatType;
+  subStats: ArtifactSubStat[];
 }
 export function ArtifactSubstats({
   mainStatType,
@@ -183,7 +183,7 @@ export function ArtifactSubstats({
               )}
               value={type}
               onChange={(e) =>
-                changeSubStat && changeSubStat(i, { type: e.target.value as ArtifactSubStat })
+                changeSubStat && changeSubStat(i, { type: e.target.value as ArtifactSubStatType })
               }
             >
               {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (

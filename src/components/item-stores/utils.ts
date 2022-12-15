@@ -1,9 +1,9 @@
-import type { ArtifactMainStat, ArtifactSubStat, UserArtifact } from "@Src/types";
+import type { ArtifactMainStatType, ArtifactSubStatType, UserArtifact } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
 export interface StatsFilter {
-  main: "All" | ArtifactMainStat;
-  subs: ("All" | ArtifactSubStat)[];
+  main: "All" | ArtifactMainStatType;
+  subs: ("All" | ArtifactSubStatType)[];
 }
 
 export function initArtifactStatsFilter(): StatsFilter {
@@ -37,13 +37,13 @@ export function filterArtIdsBySetsAndStats(
   }
 
   if (stats.subs[0] !== "All") {
-    const requires = stats.subs.filter((s) => s !== "All") as ArtifactSubStat[];
+    const requires = stats.subs.filter((s) => s !== "All") as ArtifactSubStatType[];
 
     result = result.filter((p) =>
       requires.every((rq) => p.subStats.map((ss) => ss.type).includes(rq))
     );
 
-    const getValue = (artifact: UserArtifact, type: ArtifactSubStat) => {
+    const getValue = (artifact: UserArtifact, type: ArtifactSubStatType) => {
       return artifact.subStats.find((stat) => stat.type === type)?.value || 0;
     };
 

@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtifact,
-  ArtifactSubStatInfo,
+  ArtifactSubStat,
   UserCharacter,
   UserArtifact,
   UserWeapon,
@@ -9,7 +9,7 @@ import type {
   WeaponType,
   UserSetup,
   CalcSetupManageInfo,
-  ArtifactMainStat,
+  ArtifactMainStatType,
   CalcSetup,
   CustomBuffCtrl,
   CustomDebuffCtrl,
@@ -131,10 +131,10 @@ export type ChangeArtifactAction = PayloadAction<{
 export type UpdateArtifactAction = PayloadAction<{
   pieceIndex: number;
   level?: number;
-  mainStatType?: ArtifactMainStat;
+  mainStatType?: ArtifactMainStatType;
   subStat?: {
     index: number;
-    newInfo: Partial<ArtifactSubStatInfo>;
+    newInfo: Partial<ArtifactSubStat>;
   };
 }>;
 

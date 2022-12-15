@@ -79,6 +79,44 @@ export type ModInputConfig = {
 };
 
 /**
+ * weapon used for calculation
+ */
+export type Weapon = {
+  ID: number;
+  type: WeaponType;
+  code: number;
+  level: Level;
+  refi: number;
+};
+
+export type ArtifactMainStatType =
+  | Exclude<CoreStat, "def">
+  | ArtifactPercentStat
+  | "em"
+  | AttackElement
+  | "healBn";
+
+export type ArtifactSubStatType = CoreStat | ArtifactPercentStat | "em";
+
+export type ArtifactSubStat = {
+  type: ArtifactSubStatType;
+  value: number;
+};
+
+/**
+ * artifact used for calculation
+ */
+export type Artifact = {
+  ID: number;
+  code: number;
+  type: ArtifactType;
+  rarity: Rarity;
+  level: number;
+  mainStatType: ArtifactMainStatType;
+  subStats: ArtifactSubStat[];
+};
+
+/**
  * utility generic
  */
 export type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

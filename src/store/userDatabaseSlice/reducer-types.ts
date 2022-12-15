@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-  ArtifactMainStat,
-  ArtifactSubStatInfo,
+  ArtifactMainStatType,
+  ArtifactSubStat,
   PartiallyRequired,
   UserArtifact,
   UserCharacter,
@@ -25,7 +25,7 @@ export type UpdateUserCharacterAction = PayloadAction<
 >;
 
 export type UpdateUserArtifactSubStatAction = PayloadAction<
-  { ID: number; subStatIndex: number } & Partial<ArtifactSubStatInfo>
+  { ID: number; subStatIndex: number } & Partial<ArtifactSubStat>
 >;
 
 export type RemoveArtifactAction = PayloadAction<{
@@ -45,7 +45,7 @@ export type UpdateUserArtifactAction = PayloadAction<{
   index?: number;
   ID: number;
   level?: number;
-  mainStatType?: ArtifactMainStat;
+  mainStatType?: ArtifactMainStatType;
   setupIDs?: number[];
 }>;
 

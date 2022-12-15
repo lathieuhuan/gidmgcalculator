@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
 
-import type { ArtifactType, ArtifactMainStat, ArtifactSubStat } from "@Src/types";
+import type { ArtifactType, ArtifactMainStatType, ArtifactSubStatType } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import { StatsFilter } from "../utils";
@@ -43,13 +43,13 @@ export function useArtifactStatsFilter({
   const subStatOptions = ["All", ...CORE_STAT_TYPES, ...ARTIFACT_PERCENT_STAT_TYPES, "em"];
 
   const onChangeMainStat: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | ArtifactMainStat }));
+    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | ArtifactMainStatType }));
   };
 
   const onChangeSubStat = (newStat: string, index: number) => {
     setFilter((prev) => {
       const newSubs = [...prev.subs];
-      newSubs[index] = newStat as "All" | ArtifactSubStat;
+      newSubs[index] = newStat as "All" | ArtifactSubStatType;
 
       if (newStat === "All") {
         for (let k = index; k < 4; k++) {

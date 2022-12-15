@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
-import type { CalcArtifact, ArtifactMainStat } from "@Src/types";
+import type { CalcArtifact, ArtifactMainStatType } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
@@ -76,7 +76,7 @@ export function ArtifactInfo({
                   dispatch(
                     updateArtifact({
                       pieceIndex,
-                      mainStatType: e.target.value as ArtifactMainStat,
+                      mainStatType: e.target.value as ArtifactMainStatType,
                     })
                   )
                 }

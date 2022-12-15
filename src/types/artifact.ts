@@ -17,6 +17,9 @@ type ArtTypeData = {
   icon: string;
 };
 
+/**
+ * Artifact in app data
+ */
 export type DataArtifact = {
   code: number;
   beta?: boolean;

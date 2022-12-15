@@ -1,14 +1,11 @@
 import type {
   AttackElement,
   AttackPattern,
-  Level,
   Nation,
   Vision,
   WeaponType,
-  ArtifactType,
   Reaction,
   CharInfo,
-  Rarity,
   ArtifactPercentStat,
   CoreStat,
   AttributeStat,
@@ -17,6 +14,8 @@ import type {
   BaseStat,
   ResonanceVision,
   TransformativeReaction,
+  Weapon,
+  Artifact,
 } from "./global";
 import {
   ATTACK_ELEMENT_INFO_KEYS,
@@ -69,41 +68,18 @@ export type ModifierCtrl = {
   inputs?: ModifierInput[];
 };
 
-export type CalcWeapon = {
-  ID: number;
-  type: WeaponType;
-  code: number;
-  level: Level;
-  refi: number;
+export type CalcWeapon = Weapon & {
+  /**
+   * New weapon, not from user database
+   */
+  isNew?: boolean;
 };
 
-// ARTIFACTS starts
-export type ArtifactMainStat =
-  | Exclude<CoreStat, "def">
-  | ArtifactPercentStat
-  | "em"
-  | AttackElement
-  | "healBn";
-
-export type ArtifactSubStat = CoreStat | ArtifactPercentStat | "em";
-
-export type ArtifactSubStatInfo = {
-  type: ArtifactSubStat;
-  value: number;
-};
-
-export type CalcArtifact = {
-  ID: number;
+export type CalcArtifact = Artifact & {
   /**
    * New artifact, not from user database
    */
   isNew?: boolean;
-  code: number;
-  type: ArtifactType;
-  rarity: Rarity;
-  level: number;
-  mainStatType: ArtifactMainStat;
-  subStats: ArtifactSubStatInfo[];
 };
 
 export type CalcArtifacts = (CalcArtifact | null)[];
@@ -116,7 +92,6 @@ export type ArtifactSetBonus = {
 export type ArtifactDebuffCtrl = ModifierCtrl & {
   code: number;
 };
-// ARTIFACTS ends
 
 // PARTY starts
 export type TeammateWeapon = {

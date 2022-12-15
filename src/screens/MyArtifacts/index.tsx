@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import { ARTIFACT_ICONS } from "@Src/constants";
-import type { ArtifactType, ArtifactMainStat, UserArtifact } from "@Src/types";
+import type { ArtifactType, ArtifactMainStatType, UserArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -146,7 +146,7 @@ export default function MyArtifacts() {
                       dispatch(
                         updateUserArtifact({
                           ID: artifact.ID,
-                          mainStatType: type as ArtifactMainStat,
+                          mainStatType: type as ArtifactMainStatType,
                         })
                       )
                     }
