@@ -11,7 +11,7 @@ const Fischl: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [770, 20, 50],
     [1979, 53, 128],

@@ -13,7 +13,7 @@ const Amber: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "pyro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [793, 19, 50],
     [2038, 48, 129],

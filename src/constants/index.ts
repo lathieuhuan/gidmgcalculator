@@ -1,4 +1,4 @@
-import { Weapon } from "@Src/types";
+import { WeaponType } from "@Src/types";
 
 export * from "./maps";
 
@@ -141,7 +141,7 @@ export const REACTIONS = [
 
 export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;
 
-export const DEFAULT_WEAPON_CODE: Record<Weapon, number> = {
+export const DEFAULT_WEAPON_CODE: Record<WeaponType, number> = {
   bow: 11,
   catalyst: 36,
   claymore: 59,

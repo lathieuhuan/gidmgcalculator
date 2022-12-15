@@ -13,7 +13,7 @@ const Xiangling: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "pyro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [912, 19, 56],
     [2342, 48, 144],

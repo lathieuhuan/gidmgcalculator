@@ -13,7 +13,7 @@ const Keqing: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "electro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1020, 25, 62],
     [2646, 65, 161],

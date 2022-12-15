@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { Weapon } from "@Src/types";
+import { WeaponType } from "@Src/types";
 import { findById } from "@Src/utils";
 import { RootState } from "..";
 
@@ -12,7 +12,7 @@ export const selectChosenSetupID = (state: RootState) => state.database.chosenSe
 
 export const selectFilteredWeaponIDs = createSelector(
   selectMyWps,
-  (_: unknown, types: Weapon[]) => types,
+  (_: unknown, types: WeaponType[]) => types,
   (myWps, types) => {
     const result = types.length ? myWps.filter((wp) => types.includes(wp.type)) : myWps;
     return result.map(({ ID }) => ID);

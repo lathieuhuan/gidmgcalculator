@@ -15,7 +15,7 @@ const HuTao: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "pyro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [1211, 8, 68],
     [3141, 21, 177],

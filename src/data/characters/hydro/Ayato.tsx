@@ -54,7 +54,7 @@ const Ayato: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "hydro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1068, 23, 60],
     [2770, 60, 155],

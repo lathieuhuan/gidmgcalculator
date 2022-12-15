@@ -13,7 +13,7 @@ const Diona: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [802, 18, 50],
     [2061, 46, 129],

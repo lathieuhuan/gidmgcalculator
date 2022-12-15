@@ -23,7 +23,7 @@ const Gorou: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "geo",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [802, 15, 54],
     [2061, 39, 140],

@@ -13,7 +13,7 @@ const Candace: DataCharacter = {
   rarity: 4,
   nation: "sumeru",
   vision: "hydro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [912, 18, 57],
     [2342, 46, 147],

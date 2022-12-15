@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
-import { Filter } from "./types";
+import type { Filter } from "./types";
 
 export interface CharFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;
@@ -35,7 +35,7 @@ export default function CharFilter(props: CharFilterProps) {
 
         <div className="flex overflow-auto hide-scrollbar">
           {Object.entries(WEAPON_ICONS).map(([wpType, src], i) => {
-            const chosen = type === "weapon" && value === wpType;
+            const chosen = type === "weaponType" && value === wpType;
             return (
               <img
                 key={i}
@@ -50,7 +50,7 @@ export default function CharFilter(props: CharFilterProps) {
                 alt={wpType}
                 draggable={false}
                 onClick={() => {
-                  onClickOption(chosen, { type: "weapon", value: wpType });
+                  onClickOption(chosen, { type: "weaponType", value: wpType });
                 }}
               />
             );

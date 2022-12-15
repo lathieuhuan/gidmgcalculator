@@ -21,7 +21,7 @@ const Aloy: DataCharacter = {
   rarity: 5,
   nation: "outland",
   vision: "cryo",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [848, 18, 53],
     [2201, 47, 137],

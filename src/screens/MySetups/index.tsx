@@ -150,7 +150,7 @@ export default function MySetups() {
       icon: data.icon,
       vision: data.vision,
       nation: data.nation,
-      weapon: data.weapon,
+      weaponType: data.weaponType,
       EBcost: data.activeTalents.EB.energyCost,
     };
     innateBuffs = data.innateBuffs || [];

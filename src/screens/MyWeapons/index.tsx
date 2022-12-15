@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import type { Weapon } from "@Src/types";
+import type { WeaponType } from "@Src/types";
 import { WEAPON_ICONS } from "@Src/constants";
 
 import {
@@ -33,7 +33,7 @@ type ModalType = "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType | null>(null);
   const [filterDropped, setFilterDropped] = useState(false);
-  const [weaponPicker, setWeaponPicker] = useState<{ active: boolean; type: Weapon }>({
+  const [weaponPicker, setWeaponPicker] = useState<{ active: boolean; type: WeaponType }>({
     active: false,
     type: "sword",
   });
@@ -42,7 +42,7 @@ export default function MyWeapons() {
 
   const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
   const filteredIds = useSelector((state) =>
-    selectFilteredWeaponIDs(state, filteredTypes as Weapon[])
+    selectFilteredWeaponIDs(state, filteredTypes as WeaponType[])
   );
 
   const [invRack, chosenID, setChosenID] = useInventoryRack({
@@ -122,7 +122,7 @@ export default function MyWeapons() {
         onClickChoice={(weaponType) => {
           setWeaponPicker({
             active: true,
-            type: weaponType as Weapon,
+            type: weaponType as WeaponType,
           });
           closeModal();
         }}
@@ -145,7 +145,7 @@ export default function MyWeapons() {
         <Picker.Character
           active={modalType === "EQUIP_CHARACTER"}
           sourceType="userData"
-          filter={({ name, weapon: weaponType }) => {
+          filter={({ name, weaponType }) => {
             return weaponType === weapon.type && name !== weapon.owner;
           }}
           onPickCharacter={({ name }) => {
@@ -164,7 +164,7 @@ export default function MyWeapons() {
           itemType="weapon"
           filteredIds={filteredIds}
           removeItem={(item) => {
-            dispatch(removeWeapon({ ...item, type: item.type as Weapon }));
+            dispatch(removeWeapon({ ...item, type: item.type as WeaponType }));
           }}
           updateChosenID={setChosenID}
           onClose={closeModal}

@@ -13,7 +13,7 @@ const Yelan: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "hydro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [1125, 19, 43],
     [2918, 49, 111],

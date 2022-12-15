@@ -28,7 +28,7 @@ const Bennett: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "pyro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1039, 16, 65],
     [2670, 41, 166],

@@ -96,7 +96,7 @@ const Raiden: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "electro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [1005, 26, 61],
     [2606, 68, 159],

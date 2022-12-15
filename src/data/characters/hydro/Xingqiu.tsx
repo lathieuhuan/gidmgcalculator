@@ -13,7 +13,7 @@ const Xingqiu: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "hydro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [857, 17, 64],
     [2202, 43, 163],

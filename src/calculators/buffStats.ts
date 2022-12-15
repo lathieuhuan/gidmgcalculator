@@ -227,11 +227,9 @@ export default function getBuffedStats({
 
   // APPPLY TEAMMATE BUFFS
 
-  function applyTeammateBuffs(isFinal: boolean) {}
-
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weapon: weaponType, buffs = [] } = findCharacter(teammate)!;
+    const { name, weaponType, buffs = [] } = findCharacter(teammate)!;
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;

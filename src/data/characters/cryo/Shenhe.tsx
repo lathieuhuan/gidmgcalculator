@@ -25,7 +25,7 @@ const Shenhe: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "cryo",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [1011, 24, 65],
     [2624, 61, 168],

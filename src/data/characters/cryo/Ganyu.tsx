@@ -18,7 +18,7 @@ const Ganyu: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "cryo",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [763, 26, 49],
     [1978, 68, 127],

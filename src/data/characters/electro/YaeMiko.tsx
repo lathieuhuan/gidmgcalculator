@@ -13,7 +13,7 @@ const YaeMiko: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "electro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [807, 26, 44],
     [2095, 69, 115],

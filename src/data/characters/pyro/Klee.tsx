@@ -13,7 +13,7 @@ const Klee: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "pyro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [801, 24, 48],
     [2077, 63, 124],

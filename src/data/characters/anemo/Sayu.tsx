@@ -27,7 +27,7 @@ const Sayu: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "anemo",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [994, 20, 62],
     [2553, 53, 160],

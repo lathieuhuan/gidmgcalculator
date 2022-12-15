@@ -3,7 +3,6 @@ import type {
   Artifact,
   ArtifactMainStat,
   ArtifactSubStatInfo,
-  Level,
   PartiallyRequired,
   UserArtifact,
   UserCharacter,
@@ -11,7 +10,7 @@ import type {
   UserSetup,
   UserSetupCalcInfo,
   UserWeapon,
-  Weapon,
+  WeaponType,
 } from "@Src/types";
 
 export type AddUserDatabaseAction = PayloadAction<{
@@ -50,7 +49,7 @@ export type UpdateUserArtifactAction = PayloadAction<{
   setupIDs?: number[];
 }>;
 
-export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: Weapon }>;
+export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: WeaponType }>;
 
 export type UnequipArtifactAction = PayloadAction<{
   owner: string | null;

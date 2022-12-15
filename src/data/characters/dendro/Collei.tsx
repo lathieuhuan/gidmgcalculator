@@ -13,7 +13,7 @@ const Collei: DataCharacter = {
   rarity: 4,
   nation: "sumeru",
   vision: "dendro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [821, 17, 50],
     [2108, 43, 129],

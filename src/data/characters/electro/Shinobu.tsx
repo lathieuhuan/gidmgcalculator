@@ -21,7 +21,7 @@ const Shinobu: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "electro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1030, 18, 63],
     [2647, 46, 162],

@@ -6,7 +6,7 @@ import type {
   ModifierCtrl,
   UserArtifact,
   UserWeapon,
-  Weapon,
+  WeaponType,
   CalcSetupManageInfo,
   ArtifactDebuffCtrl,
   ModInputConfig,
@@ -59,7 +59,7 @@ export function parseAndInitData(
     wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
   } //
   else {
-    const newWp = initWeapon({ type: findCharacter(char)!.weapon });
+    const newWp = initWeapon({ type: findCharacter(char)?.weaponType || "sword" });
     weapon = { ...newWp, ID: rootID++ };
     wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
   }
@@ -83,7 +83,7 @@ export function parseAndInitData(
   };
 }
 
-export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: Weapon; code: number }) {
+export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
   const result: ModifierCtrl[] = [];
   const { buffs = [] } = findWeapon(weapon) || {};
 

@@ -118,7 +118,7 @@ export default function SetupManager() {
 
       <InventoryWeapon
         active={modal.type === "WEAPONS"}
-        weaponType={charData.weapon}
+        weaponType={charData.weaponType}
         buttonText="Pick"
         onClickButton={({ owner, ...wpInfo }) => dispatch(changeWeapon(wpInfo))}
         onClose={closeModal}

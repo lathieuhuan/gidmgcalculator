@@ -23,7 +23,7 @@ const Nilou: DataCharacter = {
   rarity: 5,
   nation: "sumeru",
   vision: "hydro",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1182, 18, 57],
     [3066, 46, 147],

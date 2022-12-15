@@ -14,7 +14,7 @@ const Ayaka: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "cryo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1001, 27, 61],
     [2597, 69, 158],

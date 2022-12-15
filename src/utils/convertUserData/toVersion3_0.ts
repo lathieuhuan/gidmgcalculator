@@ -110,10 +110,10 @@ function convertSetup(setup: any): UserSetup {
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
 
   // #to-do
-  // const subWpComplexBuffCtrls: Partial<Record<Weapon, SubWeaponBuffCtrl[]>> = {};
+  // const subWpComplexBuffCtrls: Partial<Record<WeaponType, SubWeaponBuffCtrl[]>> = {};
 
   // for (const [key, value] of Object.entries(subWpMCs.BCs || {})) {
-  //   const weaponType = key.toLowerCase() as Weapon;
+  //   const weaponType = key.toLowerCase() as WeaponType;
   //   const subWeaponBuffCtrls = (value as any).map(({ refinement: refi, ...rest }: any) => {
   //     return { refi, ...rest };
   //   });

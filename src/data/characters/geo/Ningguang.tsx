@@ -13,7 +13,7 @@ const Ningguang: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "geo",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [821, 18, 48],
     [2108, 46, 123],

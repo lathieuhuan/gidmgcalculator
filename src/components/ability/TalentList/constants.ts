@@ -1,6 +1,6 @@
-import type { Vision, Weapon } from "@Src/types";
+import type { Vision, WeaponType } from "@Src/types";
 
-export const NORMAL_ATTACK_ICONS: Partial<Record<`${Weapon}_${Vision}`, string>> = {
+export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, string>> = {
   bow_pyro: "7/7f/Bow_Pyro",
   bow_cryo: "a/a9/Bow_Cryo",
   bow_hydro: "6/62/Bow_Hydro",

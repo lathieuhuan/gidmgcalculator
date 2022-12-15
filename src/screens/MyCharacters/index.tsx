@@ -78,9 +78,9 @@ export default function MyCharacters() {
         sourceType="appData"
         needMassAdd
         filter={({ name }) => !characterNames.includes(name)}
-        onPickCharacter={({ name, weapon }) => {
-          if (weapon) {
-            dispatch(addCharacter({ name, weapon }));
+        onPickCharacter={({ name, weaponType }) => {
+          if (weaponType) {
+            dispatch(addCharacter({ name, weaponType }));
           }
           if (characterListRef.current) characterListRef.current.scrollLeft = 0;
         }}

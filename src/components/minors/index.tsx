@@ -7,7 +7,7 @@ import type {
   ArtifactSetBonus,
   QuickenReaction,
   Vision,
-  Weapon,
+  WeaponType,
 } from "@Src/types";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 import { round3, getImgSrc } from "@Src/utils";
@@ -285,12 +285,12 @@ export const renderQuickenDesc = (element: Vision, value: number) => (
 );
 
 interface InfusionNotesProps {
-  weapon: Weapon;
+  weaponType: WeaponType;
   vision: Vision;
 }
-export function InfusionNotes({ vision, weapon }: InfusionNotesProps) {
+export function InfusionNotes({ vision, weaponType }: InfusionNotesProps) {
   // let notes: [string, AttackElement][] =
-  //   weapon === "catalyst"
+  //   weaponType === "catalyst"
   //     ? [
   //         ["NA", vision],
   //         ["CA", vision],
@@ -304,7 +304,7 @@ export function InfusionNotes({ vision, weapon }: InfusionNotesProps) {
     ["PA", vision],
   ];
 
-  if (weapon === "bow") {
+  if (weaponType === "bow") {
     notes[1][0] = "AS";
     notes.splice(2, 0, ["CAS", vision]);
   }

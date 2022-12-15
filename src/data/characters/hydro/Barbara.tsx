@@ -13,7 +13,7 @@ const Barbara: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "hydro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [821, 13, 56],
     [2108, 34, 144],

@@ -13,7 +13,7 @@ const Albedo: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "geo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1030, 20, 68],
     [2671, 51, 177],

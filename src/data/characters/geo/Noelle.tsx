@@ -14,7 +14,7 @@ const Noelle: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "geo",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1012, 16, 67],
     [2600, 41, 172],

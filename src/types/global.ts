@@ -28,7 +28,7 @@ export type Rarity = 1 | 2 | 3 | 4 | 5;
 
 export type Level = typeof LEVELS[number];
 
-export type Weapon = typeof WEAPON_TYPES[number];
+export type WeaponType = typeof WEAPON_TYPES[number];
 
 export type Artifact = typeof ARTIFACT_TYPES[number];
 

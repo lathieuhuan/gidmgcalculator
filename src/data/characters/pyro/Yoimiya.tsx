@@ -19,7 +19,7 @@ const Yoimiya: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "pyro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [791, 25, 48],
     [2053, 65, 124],

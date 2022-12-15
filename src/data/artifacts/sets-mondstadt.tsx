@@ -47,7 +47,7 @@ const mondstadtSets: DataArtifact[] = [
         ),
         applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
           const supported = ["sword", "claymore", "polearm"];
-          if (attPattBonus && supported.includes(charData.weapon)) {
+          if (attPattBonus && supported.includes(charData.weaponType)) {
             applyModifier(desc, attPattBonus, "NA.pct", 35, tracker);
           }
         },
@@ -95,7 +95,7 @@ const mondstadtSets: DataArtifact[] = [
           </>
         ),
         applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
-          if (attPattBonus && ["Catalyst", "Bow"].includes(charData.weapon)) {
+          if (attPattBonus && ["Catalyst", "Bow"].includes(charData.weaponType)) {
             applyModifier(desc, attPattBonus, "CA.pct", 35, tracker);
           }
         },

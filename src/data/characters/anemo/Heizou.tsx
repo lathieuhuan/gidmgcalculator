@@ -13,7 +13,7 @@ const Heizou: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "anemo",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [894, 19, 57],
     [2296, 48, 147],

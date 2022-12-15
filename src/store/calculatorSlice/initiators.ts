@@ -2,7 +2,7 @@ import type {
   Artifact,
   CharInfo,
   Rarity,
-  Weapon,
+  WeaponType,
   ModifierCtrl,
   Target,
   CalcArtifact,
@@ -27,7 +27,7 @@ export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
 }
 
 interface InitWeapon {
-  type: Weapon;
+  type: WeaponType;
   code?: number;
 }
 export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID"> {
@@ -105,11 +105,11 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
 
 interface IInitTeammateArgs {
   name: string;
-  weapon: Weapon;
+  weaponType: WeaponType;
 }
-export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
+export function initTeammate({ name, weaponType }: IInitTeammateArgs): Teammate {
   const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
-  const weaponCode = DEFAULT_WEAPON_CODE[weapon];
+  const weaponCode = DEFAULT_WEAPON_CODE[weaponType];
 
   return {
     name,
@@ -117,7 +117,7 @@ export function initTeammate({ name, weapon }: IInitTeammateArgs): Teammate {
     debuffCtrls,
     weapon: {
       code: weaponCode,
-      type: weapon,
+      type: weaponType,
       refi: 1,
       buffCtrls: [],
     },

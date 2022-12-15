@@ -1,9 +1,9 @@
-import type { Rarity, Vision, Weapon } from "@Src/types";
+import type { Rarity, Vision, WeaponType } from "@Src/types";
 
 export type DataType = "character" | "weapon" | "artifact";
 
 export type Filter = {
-  type: "vision" | "weapon" | "";
+  type: "vision" | "weaponType" | "";
   value: string;
 };
 
@@ -14,7 +14,7 @@ export type PickerItem = {
   icon: string;
   rarity: Rarity;
   vision?: Vision;
-  weapon?: Weapon;
+  weaponType?: WeaponType;
   cons?: number;
   artifactIDs?: (number | null)[];
 };

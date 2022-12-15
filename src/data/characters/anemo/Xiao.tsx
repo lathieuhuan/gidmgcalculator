@@ -20,7 +20,7 @@ const Xiao: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "anemo",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [991, 27, 62],
     [2572, 71, 161],

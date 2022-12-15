@@ -17,7 +17,7 @@ const Cyno: DataCharacter = {
   rarity: 5,
   nation: "sumeru",
   vision: "electro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [972, 25, 67],
     [2522, 64, 174],

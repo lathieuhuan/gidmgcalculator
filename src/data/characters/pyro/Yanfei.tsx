@@ -19,7 +19,7 @@ const Yanfei: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "pyro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [784, 20, 49],
     [2014, 52, 126],

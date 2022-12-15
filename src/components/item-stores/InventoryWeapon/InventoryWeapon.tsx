@@ -1,4 +1,4 @@
-import type { UserWeapon, Weapon } from "@Src/types";
+import type { UserWeapon, WeaponType } from "@Src/types";
 
 import {
   selectFilteredWeaponIDs,
@@ -19,7 +19,7 @@ import styles from "../styles.module.scss";
 const { Text, CloseButton } = ModalHeader;
 
 interface WeaponInventoryProps {
-  weaponType: Weapon;
+  weaponType: WeaponType;
   owner?: string | null;
   buttonText: string;
   onClickButton: (chosen: UserWeapon) => void;

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { CharInfo, Party, Talent, Vision, Weapon } from "@Src/types";
+import type { CharInfo, Party, Talent, Vision, WeaponType } from "@Src/types";
 import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
 import { NORMAL_ATTACK_ICONS } from "./constants";
@@ -16,7 +16,7 @@ interface ActiveTalentProps {
   talentType: Talent;
   talentLv: number;
   char: CharInfo;
-  weapon: Weapon;
+  weaponType: WeaponType;
   vision: Vision;
   party?: Party;
   onChangeLevel?: (newLv: number) => void;
@@ -27,7 +27,7 @@ export function ActiveTalent({
   talentType,
   talentLv,
   char,
-  weapon,
+  weaponType,
   vision,
   party,
   onChangeLevel,
@@ -42,7 +42,7 @@ export function ActiveTalent({
         className="my-2 mr-2"
         img={
           talentInfo.image === undefined
-            ? NORMAL_ATTACK_ICONS[`${weapon}_${vision}`]!
+            ? NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`]!
             : talentInfo.image
         }
         vision={vision}

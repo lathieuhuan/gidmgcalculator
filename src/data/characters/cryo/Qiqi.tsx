@@ -13,7 +13,7 @@ const Qiqi: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "cryo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [963, 22, 72],
     [2498, 58, 186],

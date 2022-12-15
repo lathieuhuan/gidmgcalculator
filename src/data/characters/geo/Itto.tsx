@@ -19,7 +19,7 @@ const Itto: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "geo",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1001, 18, 75],
     [2597, 46, 194],

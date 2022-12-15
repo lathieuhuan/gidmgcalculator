@@ -6,7 +6,7 @@ import type {
   UserArtifact,
   UserWeapon,
   Vision,
-  Weapon,
+  WeaponType,
   UserSetup,
   CalcSetupManageInfo,
   ArtifactMainStat,
@@ -34,7 +34,7 @@ export type InitSessionWithCharAction = PayloadAction<{
 export type AddTeammateAction = PayloadAction<{
   name: string;
   vision: Vision;
-  weapon: Weapon;
+  weaponType: WeaponType;
   teammateIndex: number;
 }>;
 
@@ -84,7 +84,7 @@ export type ToggleTeammateModCtrlAction = PayloadAction<ToggleTeammateModCtrlPat
 export type ChangeTeammateModCtrlInputAction = PayloadAction<ToggleTeammateModCtrlPath & InputInfo>;
 
 export type ToggleSubWpModCtrlPath = {
-  weaponType: Weapon;
+  weaponType: WeaponType;
   ctrlIndex: number;
 };
 

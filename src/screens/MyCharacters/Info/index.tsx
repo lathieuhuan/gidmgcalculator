@@ -60,7 +60,7 @@ export default function Info() {
       icon,
       nation,
       vision,
-      weapon: dataChar.weapon,
+      weaponType: dataChar.weaponType,
       EBcost: dataChar.activeTalents.EB.energyCost,
     },
     weapon,

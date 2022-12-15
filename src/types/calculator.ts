@@ -5,7 +5,7 @@ import type {
   Level,
   Nation,
   Vision,
-  Weapon,
+  WeaponType,
   Reaction,
   CharInfo,
   Rarity,
@@ -58,7 +58,7 @@ export type CharData = {
   icon: string;
   nation: Nation;
   vision: Vision;
-  weapon: Weapon;
+  weaponType: WeaponType;
   EBcost: number;
 };
 
@@ -72,7 +72,7 @@ export type ModifierCtrl = {
 
 export type CalcWeapon = {
   ID: number;
-  type: Weapon;
+  type: WeaponType;
   code: number;
   level: Level;
   refi: number;
@@ -122,7 +122,7 @@ export type ArtifactDebuffCtrl = ModifierCtrl & {
 // PARTY starts
 export type TeammateWeapon = {
   code: number;
-  type: Weapon;
+  type: WeaponType;
   refi: number;
   buffCtrls: ModifierCtrl[];
 };

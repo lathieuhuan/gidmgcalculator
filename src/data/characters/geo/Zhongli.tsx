@@ -14,7 +14,7 @@ const Zhongli: DataCharacter = {
   rarity: 5,
   nation: "liyue",
   vision: "geo",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [1144, 20, 57],
     [2967, 51, 149],

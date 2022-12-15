@@ -3,7 +3,7 @@ import { memo } from "react";
 import { BetaMark } from "@Components/minors";
 import { VISION_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
-import { PickerItem } from "./types";
+import type { PickerItem } from "./types";
 
 interface ItemProps {
   massAdd: boolean;

@@ -13,7 +13,7 @@ const Dori: DataCharacter = {
   rarity: 4,
   nation: "sumeru",
   vision: "electro",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1039, 19, 61],
     [2670, 48, 156],

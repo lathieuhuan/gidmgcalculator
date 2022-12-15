@@ -18,7 +18,7 @@ const Razor: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1003, 20, 63],
     [2577, 50, 162],

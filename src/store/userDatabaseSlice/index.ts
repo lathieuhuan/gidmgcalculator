@@ -5,7 +5,7 @@ import type {
   UserComplexSetup,
   UserDatabaseState,
   UserWeapon,
-  Weapon,
+  WeaponType,
 } from "@Src/types";
 import type {
   AddUserDatabaseAction,
@@ -66,8 +66,8 @@ export const userDatabaseSlice = createSlice({
       }
     },
     // CHARACTER
-    addCharacter: (state, action: PayloadAction<{ name: string; weapon: Weapon }>) => {
-      const { name, weapon } = action.payload;
+    addCharacter: (state, action: PayloadAction<{ name: string; weaponType: WeaponType }>) => {
+      const { name, weaponType } = action.payload;
       const weaponID = Date.now();
 
       state.chosenChar = name;
@@ -80,7 +80,7 @@ export const userDatabaseSlice = createSlice({
       state.myWps.unshift({
         ID: weaponID,
         owner: name,
-        ...initWeapon({ type: weapon }),
+        ...initWeapon({ type: weaponType }),
       });
     },
     chooseCharacter: (state, action: PayloadAction<string>) => {

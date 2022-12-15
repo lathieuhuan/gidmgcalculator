@@ -21,7 +21,7 @@ const Kazuha: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "anemo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1039, 23, 63],
     [2695, 60, 163],

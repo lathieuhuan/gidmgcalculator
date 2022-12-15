@@ -26,7 +26,7 @@ const Mona: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "hydro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [810, 22, 51],
     [2102, 58, 132],

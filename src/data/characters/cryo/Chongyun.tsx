@@ -13,7 +13,7 @@ const Chongyun: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "cryo",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [921, 19, 54],
     [2366, 48, 140],
@@ -97,7 +97,7 @@ const Chongyun: DataCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.ACTIVE_UNIT,
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
-        if (["sword", "claymore", "polearm"].includes(charData.weapon))
+        if (["sword", "claymore", "polearm"].includes(charData.weaponType))
           applyModifier(desc, totalAttr, "naAtkSpd", 8, tracker);
       },
     },

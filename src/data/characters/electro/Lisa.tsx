@@ -12,7 +12,7 @@ const Lisa: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [802, 19, 48],
     [2061, 50, 123],

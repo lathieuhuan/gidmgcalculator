@@ -35,7 +35,7 @@ const Eula: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "cryo",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1030, 27, 58],
     [2671, 69, 152],

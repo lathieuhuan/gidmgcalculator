@@ -173,11 +173,11 @@ export default function SectionParty() {
         filter={({ name }) => {
           return name !== charData.name && party.every((tm) => name !== tm?.name);
         }}
-        onPickCharacter={({ name, vision, weapon }) => {
+        onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 
-          if (vision && weapon && teammateIndex !== null) {
-            dispatch(addTeammate({ name, vision, weapon, teammateIndex }));
+          if (vision && weaponType && teammateIndex !== null) {
+            dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
             setDetailSlot(teammateIndex);
           }
         }}
@@ -187,7 +187,7 @@ export default function SectionParty() {
       {detailSlot !== null && (
         <Picker.Weapon
           active={modal.type === "WEAPON" && modal.teammateIndex !== null}
-          weaponType={partyData[detailSlot]?.weapon || "sword"}
+          weaponType={partyData[detailSlot]?.weaponType || "sword"}
           onPickWeapon={({ code }) => {
             if (detailSlot !== null) {
               dispatch(

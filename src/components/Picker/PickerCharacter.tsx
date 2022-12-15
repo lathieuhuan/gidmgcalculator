@@ -32,7 +32,7 @@ export function PickerCharacter({
       "icon",
       "rarity",
       "vision",
-      "weapon",
+      "weaponType",
     ];
     const data: PickerItem[] = [];
 

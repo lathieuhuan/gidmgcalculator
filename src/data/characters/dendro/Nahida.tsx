@@ -23,7 +23,7 @@ const Nahida: DataCharacter = {
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [807, 23, 49],
     [2092, 60, 127],

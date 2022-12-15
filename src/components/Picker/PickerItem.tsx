@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { PickerItem } from "./types";
-import type { Artifact, Weapon } from "@Src/types";
+import type { Artifact, WeaponType } from "@Src/types";
 
 import artifacts from "@Data/artifacts";
 import weapons from "@Data/weapons";
@@ -11,7 +11,7 @@ import { EModAffect } from "@Src/constants";
 
 export interface PickerWeaponProps {
   type?: string;
-  weaponType: Weapon;
+  weaponType: WeaponType;
   needMassAdd?: boolean;
   onPickWeapon: (info: ReturnType<typeof initWeapon>) => void;
   onClose: () => void;

@@ -22,7 +22,7 @@ const Sara: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "electro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [802, 16, 53],
     [2061, 42, 135],

@@ -13,7 +13,7 @@ const Jean: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "anemo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [1144, 19, 60],
     [2967, 48, 155],

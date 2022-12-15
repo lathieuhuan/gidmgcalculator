@@ -25,7 +25,8 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
   const [position, setPosition] = useState(-1);
   const [atDetails, setAtDetails] = useState(false);
 
-  const { code, vision, weapon, NAsConfig, activeTalents, passiveTalents } = findCharacter(char)!;
+  const { code, vision, weaponType, NAsConfig, activeTalents, passiveTalents } =
+    findCharacter(char)!;
   const numOfActives = Object.keys(activeTalents).length;
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
                 talentInfo={talentInfo}
                 talentType={talentType}
                 talentLv={talentType === "altSprint" ? 1 : char[talentType]}
-                {...{ party, vision, weapon }}
+                {...{ party, vision, weaponType }}
                 onChangeLevel={talentType !== "altSprint" ? onChangeLevelOf(talentType) : undefined}
                 onClickInfoSign={() => toDetailsAt(TALENT_TYPES.indexOf(talentType))}
               />
@@ -78,7 +79,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
         position === -1 || position >= numOfActives + passiveTalents.length ? null : (
           <Details
             position={position}
-            {...{ vision, weapon, NAsConfig, activeTalents, passiveTalents }}
+            {...{ vision, weaponType, NAsConfig, activeTalents, passiveTalents }}
             changePosition={setPosition}
             close={() => {
               setAtDetails(false);
@@ -94,7 +95,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
 interface DetailsProps
   extends Pick<
     DataCharacter,
-    "weapon" | "vision" | "NAsConfig" | "activeTalents" | "passiveTalents"
+    "weaponType" | "vision" | "NAsConfig" | "activeTalents" | "passiveTalents"
   > {
   position: number;
   changePosition: (position: number) => void;
@@ -102,7 +103,7 @@ interface DetailsProps
 }
 function Details({
   position,
-  weapon,
+  weaponType,
   vision,
   NAsConfig,
   activeTalents,
@@ -118,7 +119,7 @@ function Details({
   //   { text: "Skill Attributes", clickable: atActiveTalent },
   // ]);
   const { NA, CA, PA, ES, EB, altSprint } = activeTalents;
-  const images = [NORMAL_ATTACK_ICONS[`${weapon}_${vision}`]!, ES.image, EB.image];
+  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`]!, ES.image, EB.image];
 
   if (altSprint) {
     images.push(altSprint.image);
@@ -185,7 +186,7 @@ function Details({
         <SkillAttributes
           stats={stats}
           talentType={type}
-          {...{ weapon, vision }}
+          {...{ weaponType, vision }}
           energyCost={type === "EB" ? EB.energyCost : undefined}
           getExtraStats={getExtraStats}
         />

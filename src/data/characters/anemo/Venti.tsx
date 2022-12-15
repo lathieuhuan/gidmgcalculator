@@ -13,7 +13,7 @@ const Venti: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "anemo",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [820, 20, 52],
     [2127, 53, 135],

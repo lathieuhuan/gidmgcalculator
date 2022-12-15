@@ -11,7 +11,7 @@ const Tartaglia: DataCharacter = {
   rarity: 5,
   nation: "snezhnaya",
   vision: "hydro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [1020, 23, 63],
     [2646, 61, 165],

@@ -15,7 +15,7 @@ const Thoma: DataCharacter = {
   rarity: 4,
   nation: "inazuma",
   vision: "pyro",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [866, 17, 63],
     [2225, 43, 162],

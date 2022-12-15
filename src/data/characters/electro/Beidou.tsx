@@ -13,7 +13,7 @@ const Beidou: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "electro",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1094, 19, 54],
     [2811, 48, 140],

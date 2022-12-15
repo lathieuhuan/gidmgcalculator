@@ -1,7 +1,14 @@
 import clsx from "clsx";
 import { useRef, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import type { BaseStatType, GetExtraStatsFn, StatInfo, Talent, Vision, Weapon } from "@Src/types";
+import type {
+  BaseStatType,
+  GetExtraStatsFn,
+  StatInfo,
+  Talent,
+  Vision,
+  WeaponType,
+} from "@Src/types";
 
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { getDefaultStatInfo } from "@Calculators/utils";
@@ -20,7 +27,7 @@ interface SkillAttributesProps {
   stats: StatInfo[];
   talentType: Talent;
   vision: Vision;
-  weapon: Weapon;
+  weaponType: WeaponType;
   energyCost?: number;
   getExtraStats?: GetExtraStatsFn;
 }
@@ -28,7 +35,7 @@ export function SkillAttributes({
   stats,
   talentType,
   vision,
-  weapon,
+  weaponType,
   energyCost,
   getExtraStats,
 }: SkillAttributesProps) {
@@ -84,7 +91,7 @@ export function SkillAttributes({
       <StatsTable>
         {!isStatic &&
           stats.map((stat, i) => {
-            const defaultInfo = getDefaultStatInfo(talentType, weapon, vision);
+            const defaultInfo = getDefaultStatInfo(talentType, weaponType, vision);
             const { multBase, multType = defaultInfo.multType, baseStatType, flat } = stat;
 
             return stat.isNotOfficial || stat.multType === 0 ? null : (

@@ -13,7 +13,7 @@ const Xinyan: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "pyro",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [939, 21, 67],
     [2413, 54, 172],

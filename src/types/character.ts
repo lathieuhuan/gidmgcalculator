@@ -5,7 +5,7 @@ import type {
   Vision,
   Nation,
   Rarity,
-  Weapon,
+  WeaponType,
   CharInfo,
   NormalAttack,
   ArtifactPercentStat,
@@ -35,7 +35,7 @@ export type DataCharacter = {
   rarity: Rarity;
   nation: Nation;
   vision: Vision;
-  weapon: Weapon;
+  weaponType: WeaponType;
   stats: number[][];
   bonusStat: {
     type: AttackElement | ArtifactPercentStat | "em" | "healBn";

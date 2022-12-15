@@ -82,7 +82,7 @@ export const TRAVELER_INFO = {
   sideIcon: "3/35/Character_Lumine_Side_Icon",
   rarity: 5 as const,
   nation: "outland" as const,
-  weapon: "sword" as const,
+  weaponType: "sword" as const,
   stats: [
     [912, 18, 57],
     [2342, 46, 147],

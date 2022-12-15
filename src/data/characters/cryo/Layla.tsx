@@ -17,7 +17,7 @@ const Layla: DataCharacter = {
   rarity: 4,
   nation: "sumeru",
   vision: "cryo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [930, 18, 55],
     [2389, 47, 141],

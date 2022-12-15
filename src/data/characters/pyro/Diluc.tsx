@@ -13,7 +13,7 @@ const Diluc: DataCharacter = {
   rarity: 5,
   nation: "mondstadt",
   vision: "pyro",
-  weapon: "claymore",
+  weaponType: "claymore",
   stats: [
     [1011, 26, 61],
     [2621, 68, 158],

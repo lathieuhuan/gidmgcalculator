@@ -235,14 +235,14 @@ export const calculatorSlice = createSlice({
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
-      const { name, vision, weapon: weaponType, teammateIndex } = action.payload;
+      const { name, vision, weaponType, teammateIndex } = action.payload;
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
       const oldVisionCount = countVision(getPartyData(party), state.charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
-      party[teammateIndex] = initTeammate({ name, weapon: weaponType });
+      party[teammateIndex] = initTeammate({ name, weaponType });
 
       const newVisionCount = countVision(getPartyData(party), state.charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error

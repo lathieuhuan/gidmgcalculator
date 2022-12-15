@@ -29,7 +29,7 @@ const YunJin: DataCharacter = {
   rarity: 4,
   nation: "liyue",
   vision: "geo",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [894, 16, 62],
     [2296, 41, 158],

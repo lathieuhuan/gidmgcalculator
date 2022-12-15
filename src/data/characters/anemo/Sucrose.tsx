@@ -13,7 +13,7 @@ const Sucrose: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "anemo",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [775, 14, 59],
     [1991, 37, 151],

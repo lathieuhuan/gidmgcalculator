@@ -20,7 +20,7 @@ import type {
   AttackElementBonus,
   AttacklementInfoKey,
   Vision,
-  Weapon,
+  WeaponType,
   Level,
   ResistanceReductionKey,
   ReactionBonusInfoKey,
@@ -282,13 +282,13 @@ export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
 
 export const getDefaultStatInfo = (
   key: "NAs" | "ES" | "EB",
-  weapon: Weapon,
+  weaponType: WeaponType,
   vision: Vision
 ): {
   attElmt: AttackElement;
   multType: number;
 } => {
-  const attElmt = key === "NAs" && weapon !== "catalyst" ? "phys" : vision;
+  const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
 
   return {
     attElmt,

@@ -13,7 +13,7 @@ const Tighnari: DataCharacter = {
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",
-  weapon: "bow",
+  weaponType: "bow",
   stats: [
     [845, 21, 49],
     [2170, 54, 126],

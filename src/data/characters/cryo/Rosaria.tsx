@@ -13,7 +13,7 @@ const Rosaria: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",
-  weapon: "polearm",
+  weaponType: "polearm",
   stats: [
     [1030, 20, 60],
     [2647, 52, 163],

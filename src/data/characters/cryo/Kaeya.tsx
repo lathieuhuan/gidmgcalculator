@@ -13,7 +13,7 @@ const Kaeya: DataCharacter = {
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",
-  weapon: "sword",
+  weaponType: "sword",
   stats: [
     [976, 19, 66],
     [2506, 48, 171],

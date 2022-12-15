@@ -1,4 +1,4 @@
-import type { CharInfo, Level, Party, PartyData, Talent, Weapon } from "@Src/types";
+import type { CharInfo, Level, Party, PartyData, Talent, WeaponType } from "@Src/types";
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -164,14 +164,14 @@ export const finalTalentLv = (
 };
 
 export function countWeapon(party: Party) {
-  const result = {} as Partial<Record<Weapon, number>>;
+  const result = {} as Partial<Record<WeaponType, number>>;
 
   for (const teammate of party) {
     if (teammate) {
       const teammateData = findCharacter(teammate);
 
       if (teammateData) {
-        result[teammateData.weapon] = (result[teammateData.weapon] || 0) + 1;
+        result[teammateData.weaponType] = (result[teammateData.weaponType] || 0) + 1;
       } else {
         console.log(`Teamate name ${teammate.name} not found`);
       }

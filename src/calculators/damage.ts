@@ -149,7 +149,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { activeTalents, weapon, vision, debuffs } = dataChar;
+  const { activeTalents, weaponType, vision, debuffs } = dataChar;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -247,7 +247,7 @@ export default function getDamage({
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const talent = activeTalents[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getDefaultStatInfo(resultKey, weapon, vision);
+    const defaultInfo = getDefaultStatInfo(resultKey, weaponType, vision);
     const level = finalTalentLv(char, resultKey, partyData);
 
     for (const stat of talent.stats) {

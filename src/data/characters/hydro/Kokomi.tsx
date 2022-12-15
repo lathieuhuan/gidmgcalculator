@@ -15,7 +15,7 @@ const Kokomi: DataCharacter = {
   rarity: 5,
   nation: "inazuma",
   vision: "hydro",
-  weapon: "catalyst",
+  weaponType: "catalyst",
   stats: [
     [1049, 18, 51],
     [2720, 47, 133],
