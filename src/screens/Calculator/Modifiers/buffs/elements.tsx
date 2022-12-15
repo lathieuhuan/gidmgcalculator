@@ -1,26 +1,38 @@
+import { useState } from "react";
+import type { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
+
+// Constant
+import { resonanceRenderInfo, VISION_TYPES } from "@Src/constants";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Selector
 import {
   selectChar,
   selectCharData,
   selectElmtModCtrls,
   selectRxnBonus,
-  selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
-import { resonanceRenderInfo, VISION_TYPES } from "@Src/constants";
-import { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
-import { ModifierTemplate, ModSelectOption } from "@Components/ModifierTemplate";
+
+// Action
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
+
+// Component
+import { Select } from "@Src/styled-components";
 import {
+  ModifierTemplate,
+  type ModSelectOption,
   renderAmpReactionDesc,
   renderAmpReactionHeading,
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-} from "@Components/minors";
-import { Select } from "@Src/styled-components";
+} from "@Components/template";
 import { twInputStyles } from "@Screens/Calculator/components";
+
+// Util
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
-import { useState } from "react";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
@@ -240,5 +252,5 @@ export default function ElementBuffs() {
     addAttackReaction("infuse_reaction");
   }
 
-  return renderModifiers(content, true);
+  return renderModifiers(content, "buffs");
 }

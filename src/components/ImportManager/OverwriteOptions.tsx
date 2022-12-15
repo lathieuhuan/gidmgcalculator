@@ -10,8 +10,8 @@ import {
   selectTarget,
 } from "@Store/calculatorSlice/selectors";
 
-import { tableStyles } from "@Src/styled-components";
-import { ButtonBar, SeeDetails } from "@Components/minors";
+// Component
+import { ButtonBar, SeeDetails, tableStyles } from "@Src/styled-components";
 import { CollapseSpace } from "@Components/collapse";
 
 interface OverrideOptions {
@@ -166,8 +166,10 @@ export function OverrideOptions({
       </div>
       <ButtonBar
         className={expandedIndex === pendingCode % 10 ? "mt-2" : "mt-4"}
-        texts={["Cancel", "Confirm"]}
-        handlers={[endImport, onConfirm]}
+        buttons={[
+          { text: "Cancel", onClick: endImport },
+          { text: "Confirm", onClick: onConfirm },
+        ]}
       />
     </div>
   );

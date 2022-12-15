@@ -1,28 +1,38 @@
 import { useState } from "react";
 import { FaUserSlash } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
-
 import type { Level } from "@Src/types";
+
+// Constant
 import { LEVELS } from "@Src/constants";
+
+// Calculator
 import getBaseStats from "@Calculators/baseStats";
+
+// Util
 import { findById, findByName, getImgSrc } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
 import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSlice";
+
+// Selector
 import {
   selectChosenChar,
   selectMyArts,
   selectMyChars,
   selectMyWps,
 } from "@Store/userDatabaseSlice/selectors";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
+// Component
+import { IconButton, Select, StarLine } from "@Src/styled-components";
 import { ConsList, TalentList } from "@Components/ability";
-import { ConfirmTemplate, StarLine } from "@Components/minors";
+import { ConfirmTemplate } from "@Components/minors";
 import { AttributeTable } from "@Components/AttributeTable";
 import { Modal } from "@Components/modals";
-import { IconButton, Select } from "@Src/styled-components";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(

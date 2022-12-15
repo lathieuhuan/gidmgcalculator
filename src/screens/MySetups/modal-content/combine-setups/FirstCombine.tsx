@@ -2,13 +2,21 @@ import clsx from "clsx";
 import { useState, ChangeEventHandler, KeyboardEventHandler } from "react";
 import type { UserSetup } from "@Src/types";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+// Selector
 import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+
+// Action
 import { combineSetups } from "@Store/userDatabaseSlice";
+
+// Util
 import { findById } from "@Src/utils";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hook";
 
-import { ButtonBar } from "@Components/minors";
+// Component
+import { ButtonBar } from "@Src/styled-components";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
@@ -107,8 +115,10 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
         />
         <ButtonBar
           className="mt-4"
-          texts={["Cancel", "Combine"]}
-          handlers={[onClose, tryCombine]}
+          buttons={[
+            { text: "Cancel", onClick: onClose },
+            { text: "Combine", onClick: tryCombine },
+          ]}
         />
       </div>
     </div>

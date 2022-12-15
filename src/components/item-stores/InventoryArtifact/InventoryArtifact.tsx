@@ -2,17 +2,25 @@ import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
+
+// Constant
 import { ARTIFACT_TYPES } from "@Src/constants";
 
+// Selector
 import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
+
+// Hook
 import { useSelector } from "@Store/hooks";
-import { findById } from "@Src/utils";
 import { useInventoryRack } from "../hooks";
+
+// Util
+import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 
+// Conponent
+import { ButtonBar } from "@Src/styled-components";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { ModalHeader } from "@Components/ModalHeader";
-import { ButtonBar } from "@Components/minors";
 import { Modal, ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 import { ArtifactFilter } from "../ArtifactFilter";
@@ -118,16 +126,21 @@ function ArtifactInventory({
               {chosenArtifact && chosenArtifact.owner !== owner ? (
                 <ButtonBar
                   className="mt-6"
-                  variants={[comparing ? "neutral" : "default", "positive"]}
-                  texts={["Compare", buttonText]}
-                  disabled={[!currentArtifact]}
-                  handlers={[
-                    () => {
-                      if (currentArtifact) setComparing(!comparing);
+                  buttons={[
+                    {
+                      text: "Compare",
+                      variant: comparing ? "neutral" : "default",
+                      disabled: !currentArtifact,
+                      onClick: () => {
+                        if (currentArtifact) setComparing(!comparing);
+                      },
                     },
-                    () => {
-                      onClickButton(chosenArtifact);
-                      onClose();
+                    {
+                      text: buttonText,
+                      onClick: () => {
+                        onClickButton(chosenArtifact);
+                        onClose();
+                      },
                     },
                   ]}
                 />

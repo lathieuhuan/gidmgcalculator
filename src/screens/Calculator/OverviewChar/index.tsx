@@ -2,20 +2,28 @@ import { useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 import type { Level } from "@Src/types";
 
+// Constant
+import { LEVELS } from "@Src/constants";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { startCalculation } from "@Store/thunks";
+
+// Util
+import { getImgSrc } from "@Src/utils";
+import { findCharacter } from "@Data/controllers";
+
+// Action & Thunk
 import { updateCharacter } from "@Store/calculatorSlice";
+import { startCalculation } from "@Store/thunks";
+
+// Selector
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
-import { Button, IconButton, Select } from "@Src/styled-components";
-import { BetaMark, StarLine } from "@Components/minors";
+// Component
+import { Button, IconButton, Select, BetaMark, StarLine } from "@Src/styled-components";
 import { Picker } from "@Components/Picker";
 import { ComplexSelect } from "@Components/ComplexSelect";
 import contentByTab from "./content";
-
-import { LEVELS } from "@Src/constants";
-import { getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
 
 interface OverviewCharProps {
   touched: boolean;

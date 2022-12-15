@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import type { Level } from "@Src/types";
+
+// Constant
 import { LEVELS } from "@Src/constants";
 
+// Action
 import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
+
+// Selector
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
+
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Util
 import { findWeapon } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
 
+// Component
 import { Picker } from "@Components/Picker";
-import { BetaMark } from "@Components/minors";
-import { Select } from "@Src/styled-components";
+import { Select, BetaMark } from "@Src/styled-components";
 
 export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);

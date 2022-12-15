@@ -1,15 +1,22 @@
 import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
-import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
+// Action
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
+
+// Util
 import { percentSign, processNumInput } from "@Src/utils";
+
+// Hook
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
-import { Select } from "@Src/styled-components";
-import { ButtonBar } from "@Components/minors";
+// Component
+import { Select, ButtonBar } from "@Src/styled-components";
+
+// Constant
+import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
 
@@ -133,7 +140,13 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
         />
         <span className="ml-2">{config.category > 1 ? "%" : percentSign(config.type)}</span>
       </div>
-      <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
+      <ButtonBar
+        className="mt-8"
+        buttons={[
+          { text: "Cancel", onClick: onClose },
+          { text: "Confirm", onClick: onConfirm },
+        ]}
+      />
     </Fragment>
   );
 }

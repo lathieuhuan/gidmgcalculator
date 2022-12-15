@@ -2,10 +2,13 @@ import clsx from "clsx";
 import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
-import { ARTIFACT_ICONS } from "@Src/constants";
 import type { ArtifactType, ArtifactMainStatType, UserArtifact } from "@Src/types";
+import type { StatsFilter } from "@Components/item-stores/utils";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+// Constant
+import { ARTIFACT_ICONS } from "@Src/constants";
+
+// Action
 import {
   addUserArtifact,
   updateUserArtifactSubStat,
@@ -14,19 +17,23 @@ import {
   swapArtifactOwner,
   updateUserArtifact,
 } from "@Store/userDatabaseSlice";
+
+// Selector
 import { selectArtifactById, selectMyArts } from "@Store/userDatabaseSlice/selectors";
 
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
-import {
-  filterArtIdsBySetsAndStats,
-  initArtifactStatsFilter,
-  StatsFilter,
-} from "@Components/item-stores/utils";
+
+// Util
+import { filterArtIdsBySetsAndStats, initArtifactStatsFilter } from "@Components/item-stores/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
+// Component
+import { ButtonBar } from "@Src/styled-components";
 import { Picker, PrePicker } from "@Components/Picker";
 import { ArtifactCard } from "@Components/ArtifactCard";
-import { ButtonBar, ConfirmModal } from "@Components/minors";
+import { ConfirmModal } from "@Components/minors";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 
@@ -98,9 +105,10 @@ export default function MyArtifacts() {
         <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar
             className="mr-4 space-x-4"
-            texts={["Add", "Sort"]}
-            variants={["positive", "positive"]}
-            handlers={[openModal("PICK_ARTIFACT_TYPE"), () => dispatch(sortArtifacts())]}
+            buttons={[
+              { text: "Add", variant: "positive", onClick: openModal("PICK_ARTIFACT_TYPE") },
+              { text: "Sort", onClick: () => dispatch(sortArtifacts()) },
+            ]}
           />
 
           {window.innerWidth >= 600 && renderTypeFilter()}
@@ -161,8 +169,10 @@ export default function MyArtifacts() {
               {artifact ? (
                 <ButtonBar
                   className="mt-4"
-                  texts={["Remove", "Equip"]}
-                  handlers={[openModal("REMOVE_ARTIFACT"), openModal("EQUIP_CHARACTER")]}
+                  buttons={[
+                    { text: "Remove", onClick: openModal("REMOVE_ARTIFACT") },
+                    { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
+                  ]}
                 />
               ) : null}
             </div>
@@ -228,7 +238,9 @@ export default function MyArtifacts() {
           item={artifact}
           itemType="artifact"
           filteredIds={filteredIds}
-          removeItem={(item) => dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }))}
+          removeItem={(item) =>
+            dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }))
+          }
           updateChosenID={setChosenID}
           onClose={closeModal}
         />

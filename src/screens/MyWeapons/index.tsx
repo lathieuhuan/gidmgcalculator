@@ -2,8 +2,11 @@ import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import type { WeaponType } from "@Src/types";
+
+// Constant
 import { WEAPON_ICONS } from "@Src/constants";
 
+// Action
 import {
   addUserWeapon,
   removeWeapon,
@@ -11,18 +14,22 @@ import {
   swapWeaponOwner,
   updateUserWeapon,
 } from "@Store/userDatabaseSlice";
+
+// Selector
 import {
   selectFilteredWeaponIDs,
   selectMyWps,
   selectWeaponById,
 } from "@Store/userDatabaseSlice/selectors";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
-import { IconButton } from "@Src/styled-components";
+// Component
+import { IconButton, ButtonBar } from "@Src/styled-components";
 import { Picker, PrePicker } from "@Components/Picker";
 import { WeaponCard } from "@Components/WeaponCard";
-import { ButtonBar } from "@Components/minors";
 import { CollapseSpace } from "@Components/collapse";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 
@@ -63,9 +70,18 @@ export default function MyWeapons() {
         <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar
             className="mr-4 space-x-4"
-            texts={["Add", "Sort"]}
-            variants={["positive", "positive"]}
-            handlers={[openModal("PICK_WEAPON_TYPE"), () => dispatch(sortWeapons())]}
+            buttons={[
+              {
+                text: "Add",
+                variant: "positive",
+                onClick: openModal("PICK_WEAPON_TYPE"),
+              },
+              {
+                text: "Sort",
+                variant: "positive",
+                onClick: () => dispatch(sortWeapons()),
+              },
+            ]}
           />
           {window.innerWidth >= 500 ? (
             renderTypeFilter()
@@ -105,8 +121,10 @@ export default function MyWeapons() {
               {weapon ? (
                 <ButtonBar
                   className="mt-4"
-                  texts={["Remove", "Equip"]}
-                  handlers={[openModal("REMOVE_WEAPON"), openModal("EQUIP_CHARACTER")]}
+                  buttons={[
+                    { text: "Remove", onClick: openModal("REMOVE_WEAPON") },
+                    { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
+                  ]}
                 />
               ) : null}
             </div>

@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import { memo } from "react";
-import { BetaMark } from "@Components/minors";
-import { VISION_ICONS } from "@Src/constants";
-import { getImgSrc } from "@Src/utils";
 import type { PickerItem } from "./types";
+
+import { VISION_ICONS } from "@Src/constants";
+import { BetaMark } from "@Src/styled-components";
+import { getImgSrc } from "@Src/utils";
 
 interface ItemProps {
   massAdd: boolean;

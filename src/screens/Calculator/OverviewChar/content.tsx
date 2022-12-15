@@ -1,4 +1,10 @@
+// Calculator
+import { addArtAttr } from "@Calculators/baseStats";
+
+// Action
 import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
+
+// Selector
 import {
   selectArtifacts,
   selectChar,
@@ -6,14 +12,17 @@ import {
   selectTotalAttr,
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Hooks/useTabs";
-import { addArtAttr } from "@Calculators/baseStats";
 
+// Component
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
 import { AttributeTable } from "@Components/AttributeTable";
-import { renderSetBonuses, SharedSpace } from "@Components/minors";
+import { SharedSpace } from "@Components/minors";
+import { SetBonusesDisplay } from "@Components/template";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 const contentByTab: Record<string, () => JSX.Element> = {
@@ -63,7 +72,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
             }
             rightPart={
               <div className="h-full hide-scrollbar">
-                {renderSetBonuses(getArtifactSetBonuses(artifacts), { noTitle: true })}
+                <SetBonusesDisplay setBonuses={getArtifactSetBonuses(artifacts)} noTitle />
               </div>
             }
           />

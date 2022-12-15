@@ -2,14 +2,19 @@ import clsx from "clsx";
 import type { ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-import { ItemThumb } from "@Components/ItemThumb";
-import { InfoSign } from "@Components/minors";
-import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
+// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
+
+// Util
 import { getImgSrc } from "@Src/utils";
+import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
+
+// Component
+import { InfoSign } from "@Src/styled-components";
+import { ItemThumb } from "@Components/ItemThumb";
 
 const bonusStyles = (active: boolean) => {
-  return clsx("p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2");
+  return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2"];
 };
 
 interface GearsOverviewProps {

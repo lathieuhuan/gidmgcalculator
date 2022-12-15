@@ -1,14 +1,22 @@
 import clsx from "clsx";
 import type { UserComplexSetup, UserSetup } from "@Src/types";
 
-import { findById } from "@Src/utils";
-import { useDispatch, useSelector } from "@Store/hooks";
+// Action
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
+
+// Selector
 import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+
+// Util
+import { findById } from "@Src/utils";
 import { isUserSetup } from "@Store/userDatabaseSlice/utils";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hook";
 
-import { ButtonBar } from "@Components/minors";
+// Component
+import { ButtonBar } from "@Src/styled-components";
 
 interface CombineMoreProps {
   targetSetup: UserComplexSetup;
@@ -73,7 +81,13 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
 
       {combineMenu}
 
-      <ButtonBar className="mt-4" texts={["Cancel", "Combine"]} handlers={[onClose, tryCombine]} />
+      <ButtonBar
+        className="mt-4"
+        buttons={[
+          { text: "Cancel", onClick: onClose },
+          { text: "Combine", onClick: tryCombine },
+        ]}
+      />
     </div>
   );
 }

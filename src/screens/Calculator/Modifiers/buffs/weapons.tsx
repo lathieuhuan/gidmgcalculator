@@ -1,15 +1,21 @@
 import type { ModifierInput } from "@Src/types";
+import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
-import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
-import { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
+// Action
+import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
+
+// Selector
+import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
+
+// Util
 import { findWeapon } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 
-import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Components/ModifierTemplate";
+// Component
+import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 export default function WeaponBuffs() {
   const dispatch = useDispatch();
@@ -116,5 +122,5 @@ export default function WeaponBuffs() {
     });
   });
 
-  return renderModifiers(content, true);
+  return renderModifiers(content, "buffs");
 }

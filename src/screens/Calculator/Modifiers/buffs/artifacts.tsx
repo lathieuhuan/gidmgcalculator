@@ -1,14 +1,21 @@
 import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
 import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Store/calculatorSlice";
+
+// Selector
 import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
+// Util
 import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
 
-import { ModifierTemplate } from "@Components/ModifierTemplate";
-import { renderModifiers } from "@Components/minors";
+// Component
+import { ModifierTemplate, renderModifiers } from "@Components/template";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 export default function ArtifactBuffs() {
@@ -103,5 +110,5 @@ export default function ArtifactBuffs() {
     });
   });
 
-  return renderModifiers(content, true);
+  return renderModifiers(content, "buffs");
 }

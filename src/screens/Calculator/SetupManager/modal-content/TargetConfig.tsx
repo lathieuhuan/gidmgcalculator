@@ -4,19 +4,27 @@ import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
 import type { Target, Vision } from "@Src/types";
 import type { DataMonster } from "@Data/monsters/types";
 
-import monsters from "@Data/monsters";
-import { findMonster } from "@Data/controllers";
+// Constant
 import { ATTACK_ELEMENTS } from "@Src/constants";
+import monsters from "@Data/monsters";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+// Action
 import { updateMonster, updateTarget } from "@Store/calculatorSlice";
+
+// Selector
 import { selectTarget } from "@Store/calculatorSlice/selectors";
+
+// Util
 import { indexByCode, turnArray } from "@Src/utils";
+import { findMonster } from "@Data/controllers";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
-import { Button, CloseButton } from "@Src/styled-components";
+// Component
+import { Button, CloseButton, InfoSign } from "@Src/styled-components";
 import { twInputStyles } from "@Screens/Calculator/components";
-import { InfoSign } from "@Components/minors";
 
 interface TargetConfigProps {
   onClose: () => void;

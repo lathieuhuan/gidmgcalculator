@@ -16,21 +16,27 @@ import type {
   Level,
   AttackElement,
 } from "@Src/types";
+
+// Constant
 import { resonanceRenderInfo } from "@Src/constants";
 
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
-import { findByIndex, percentSign } from "@Src/utils";
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
 
+// Util
+import { findByIndex, percentSign } from "@Src/utils";
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
+import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+
+// Component
 import {
+  ModifierTemplate,
   renderAmpReactionDesc,
   renderAmpReactionHeading,
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-} from "@Components/minors";
-import { ModifierTemplate } from "@Components/ModifierTemplate";
-import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
+} from "@Components/template";
 
 interface ElementBuffsProps {
   charLv: Level;
@@ -100,7 +106,7 @@ export function ElementBuffs({
   addAttackReaction("reaction");
   addAttackReaction("infuse_reaction");
 
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }
 
 interface SelfBuffsProps {
@@ -159,7 +165,7 @@ export function SelfBuffs({
     }
   }
 
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }
 
 interface PartyBuffsProps {
@@ -217,7 +223,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       }
     }
   }
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }
 
 interface WeaponBuffsProps {
@@ -274,7 +280,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
     }
   });
 
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }
 
 interface ArtifactBuffsProps {
@@ -330,7 +336,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
       }
     }
   }
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }
 
 interface CustomBuffsProps {
@@ -349,5 +355,5 @@ export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
     </div>
   ));
 
-  return renderModifiers(content, true, false);
+  return renderModifiers(content, "buffs", false);
 }

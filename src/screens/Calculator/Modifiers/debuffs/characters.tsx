@@ -3,20 +3,27 @@ import type {
   ToggleModCtrlPath,
   ToggleTeammateModCtrlPath,
 } from "@Store/calculatorSlice/reducer-types";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
 import {
   changeModCtrlInput,
   changeTeammateModCtrlInput,
   toggleModCtrl,
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
+
+// Selector
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 
+// Util
 import { findCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
-import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Components/ModifierTemplate";
+// Component
+import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -74,7 +81,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
       );
     }
   });
-  return renderModifiers(content, false);
+  return renderModifiers(content, "debuffs");
 }
 
 export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
@@ -92,7 +99,7 @@ export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
         />
       );
   });
-  return renderModifiers(content, false);
+  return renderModifiers(content, "debuffs");
 }
 
 interface TeammateDebuffsProps {

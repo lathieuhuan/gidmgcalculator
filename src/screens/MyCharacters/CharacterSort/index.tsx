@@ -1,17 +1,24 @@
 import clsx from "clsx";
 import { DragEventHandler, useState } from "react";
 import { FaSort, FaTimes } from "react-icons/fa";
-
 import { createSelector } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { sortCharacters } from "@Store/userDatabaseSlice";
-import { selectMyChars } from "@Store/userDatabaseSlice/selectors";
-import { findCharacter } from "@Data/controllers";
-import { splitLv } from "@Src/utils";
 
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
+import { sortCharacters } from "@Store/userDatabaseSlice";
+
+// Selector
+import { selectMyChars } from "@Store/userDatabaseSlice/selectors";
+
+// Util
+import { splitLv } from "@Src/utils";
+import { findCharacter } from "@Data/controllers";
+
+// Component
 import { Modal, ModalControl } from "@Components/modals";
-import { Button, IconButton } from "@Src/styled-components";
-import { ButtonBar } from "@Components/minors";
+import { Button, IconButton, ButtonBar } from "@Src/styled-components";
 
 const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   myChars.map((char, index) => {
@@ -61,37 +68,51 @@ function SortInner({ onClose }: { onClose: () => void }) {
       >
         <FaTimes />
       </IconButton>
+
       <p className="text-1.5xl text-orange text-center">Sort by</p>
       <ButtonBar
         className="mt-3 space-x-4"
-        texts={["Name", "Level", "Rarity"]}
-        variants={["neutral", "neutral", "neutral"]}
-        handlers={[
-          () =>
-            setList((prev) => {
-              const newList = [...prev];
-              newList.sort((a, b) => a.name.localeCompare(b.name));
-              return newList;
-            }),
-          () =>
-            setList((prev) => {
-              const newList = [...prev];
-              return newList.sort((a, b) => {
-                const [fA, sA] = splitLv(a);
-                const [fB, sB] = splitLv(b);
-                if (fA !== fB) {
-                  return fB - fA;
-                }
-                return sB - sA;
+        buttons={[
+          {
+            text: "Name",
+            variant: "neutral",
+            onClick: () => {
+              setList((prev) => {
+                const newList = [...prev];
+                newList.sort((a, b) => a.name.localeCompare(b.name));
+                return newList;
               });
-            }),
-          () =>
-            setList((prev) => {
-              const newList = [...prev];
-              return newList.sort((a, b) => {
-                return b.rarity - a.rarity;
+            },
+          },
+          {
+            text: "Level",
+            variant: "neutral",
+            onClick: () => {
+              setList((prev) => {
+                const newList = [...prev];
+                return newList.sort((a, b) => {
+                  const [fA, sA] = splitLv(a);
+                  const [fB, sB] = splitLv(b);
+                  if (fA !== fB) {
+                    return fB - fA;
+                  }
+                  return sB - sA;
+                });
               });
-            }),
+            },
+          },
+          {
+            text: "Rarity",
+            variant: "neutral",
+            onClick: () => {
+              setList((prev) => {
+                const newList = [...prev];
+                return newList.sort((a, b) => {
+                  return b.rarity - a.rarity;
+                });
+              });
+            },
+          },
         ]}
       />
 

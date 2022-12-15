@@ -4,8 +4,7 @@ import { getPartyData } from "@Data/controllers";
 import { totalXtraTalentLv } from "@Src/utils";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
-import { Select } from "@Src/styled-components";
-import { InfoSign } from "@Components/minors";
+import { Select, InfoSign } from "@Src/styled-components";
 import { AbilityIcon } from "../components";
 
 interface ActiveTalentProps {

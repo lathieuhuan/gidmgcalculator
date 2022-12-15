@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 import type { ModifierInput, ModInputConfig } from "@Src/types";
+
 import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
-import { twInputStyles } from "@Screens/Calculator/components";
 import { Select } from "@Src/styled-components";
+import { twInputStyles } from "@Screens/Calculator/components";
 
 export type ModSelectOption = {
   label: string | number;

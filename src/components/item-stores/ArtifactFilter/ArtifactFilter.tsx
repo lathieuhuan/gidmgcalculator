@@ -4,9 +4,8 @@ import type { ArtifactType, CalcArtifact } from "@Src/types";
 import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
-import { ButtonBar } from "@Components/minors";
 import { CollapseAndMount } from "@Components/collapse";
-import { Button } from "@Src/styled-components";
+import { Button, ButtonBar } from "@Src/styled-components";
 
 interface ArtifactFilterProps extends FilterProps {
   filterOn: boolean;
@@ -71,18 +70,20 @@ function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
 
         <ButtonBar
           className="mt-4 pb-2"
-          texts={["Cancel", "Confirm"]}
-          handlers={[
-            onClose,
-            () => {
-              if (hasDupStat(artifactStatsFilter)) {
-                setIsError(true);
-                return;
-              }
+          buttons={[
+            { text: "Cancel", onClick: onClose },
+            {
+              text: "Confirm",
+              onClick: () => {
+                if (hasDupStat(artifactStatsFilter)) {
+                  setIsError(true);
+                  return;
+                }
 
-              filter.setStats(artifactStatsFilter);
-              filter.setCodes(filteredTempCodes);
-              onClose();
+                filter.setStats(artifactStatsFilter);
+                filter.setCodes(filteredTempCodes);
+                onClose();
+              },
             },
           ]}
         />

@@ -1,14 +1,21 @@
 import { Fragment, useState, useRef } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
-import { ATTACK_ELEMENTS } from "@Src/constants";
 
-import { useDispatch } from "@Store/hooks";
+// Action
 import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
+
+// Util
 import { processNumInput } from "@Src/utils";
+
+// Hook
+import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
-import { Select } from "@Src/styled-components";
-import { ButtonBar } from "@Components/minors";
+// Component
+import { Select, ButtonBar } from "@Src/styled-components";
+
+// Constant
+import { ATTACK_ELEMENTS } from "@Src/constants";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;
@@ -73,7 +80,13 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
         />
         <span className="ml-2">%</span>
       </div>
-      <ButtonBar className="mt-8" texts={["Cancel", "Confirm"]} handlers={[onClose, onConfirm]} />
+      <ButtonBar
+        className="mt-8"
+        buttons={[
+          { text: "Cancel", onClick: onClose },
+          { text: "Confirm", onClick: onConfirm },
+        ]}
+      />
     </Fragment>
   );
 }

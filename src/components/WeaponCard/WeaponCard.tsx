@@ -1,14 +1,19 @@
 import clsx from "clsx";
 import type { CalcWeapon, Level } from "@Src/types";
+
+// Constant
 import { LEVELS } from "@Src/constants";
 
+// Util
 import { percentSign, getImgSrc } from "@Src/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
+
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
 
-import { Select } from "@Src/styled-components";
-import { BetaMark } from "../minors";
+// Component
+import { Select, BetaMark } from "@Src/styled-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 

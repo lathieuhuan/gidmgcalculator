@@ -10,13 +10,16 @@ import type {
   Resonance,
 } from "@Src/types";
 
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
-import { findArtifactSet, findCharacter } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
 
-import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Components/ModifierTemplate";
+// Util
+import { findByIndex } from "@Src/utils";
+import { findArtifactSet, findCharacter } from "@Data/controllers";
+
+// Component
 import { Green } from "@Src/styled-components";
+import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
@@ -45,7 +48,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
     content.push(<ModifierTemplate key="geo" mutable={false} heading={name} desc={desc} />);
   }
 
-  return renderModifiers(content, false, false);
+  return renderModifiers(content, "debuffs", false);
 }
 
 interface SelfDebuffsProps {
@@ -73,7 +76,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
       );
     }
   }
-  return renderModifiers(content, false, false);
+  return renderModifiers(content, "debuffs", false);
 }
 
 interface PartyDebuffsProps {
@@ -124,7 +127,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       }
     }
   }
-  return renderModifiers(content, false, false);
+  return renderModifiers(content, "debuffs", false);
 }
 
 interface ArtifactDebuffsProps {
@@ -154,7 +157,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
       );
     }
   }
-  return renderModifiers(content, false, false);
+  return renderModifiers(content, "debuffs", false);
 }
 
 interface CustomDebuffsProps {
@@ -169,5 +172,5 @@ export function CustomDebuffs({ customDebuffCtrls }: CustomDebuffsProps) {
       <p className="w-12 shrink-0 text-orange text-right">{value}%</p>
     </div>
   ));
-  return renderModifiers(content, false, false);
+  return renderModifiers(content, "debuffs", false);
 }

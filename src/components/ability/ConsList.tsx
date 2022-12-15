@@ -6,8 +6,8 @@ import type { CharInfo } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
 
-import { Green, CloseButton } from "@Src/styled-components";
-import { InfoSign, SharedSpace } from "@Components/minors";
+import { Green, CloseButton, InfoSign } from "@Src/styled-components";
+import { SharedSpace } from "@Components/minors";
 import { AbilityIcon, SlideShow } from "./components";
 
 interface ConsListProps {

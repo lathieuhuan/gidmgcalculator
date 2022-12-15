@@ -1,12 +1,20 @@
 import { useState } from "react";
 import type { CalcSetupManageInfo } from "@Src/types";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Thunk
 import { saveSetupThunk } from "@Store/thunks";
+
+// Selector
 import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
 
-import { ButtonBar } from "@Components/minors";
+// Component
+import { ButtonBar } from "@Src/styled-components";
+
+// Util
 import { findById } from "@Src/utils";
 
 interface SaveSetupProps {
@@ -42,12 +50,14 @@ export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
         }}
       />
       <ButtonBar
-        texts={["Cancel", "Confirm"]}
-        handlers={[
-          onClose,
-          () => {
-            dispatch(saveSetupThunk(ID, input));
-            onClose();
+        buttons={[
+          { text: "Cancel", onClick: onClose },
+          {
+            text: "Confirm",
+            onClick: () => {
+              dispatch(saveSetupThunk(ID, input));
+              onClose();
+            },
           },
         ]}
       />

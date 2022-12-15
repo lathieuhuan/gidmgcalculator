@@ -3,24 +3,32 @@ import type {
   ToggleModCtrlPath,
   ToggleTeammateModCtrlPath,
 } from "@Store/calculatorSlice/reducer-types";
+
+// Selector
 import {
   selectChar,
   selectCharData,
   selectParty,
   selectTotalAttr,
 } from "@Store/calculatorSlice/selectors";
+
+// Action
 import {
   changeModCtrlInput,
   changeTeammateModCtrlInput,
   toggleModCtrl,
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Util
 import { findCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
-import { renderModifiers } from "@Components/minors";
-import { ModifierTemplate } from "@Components/ModifierTemplate";
+// Component
+import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -102,7 +110,7 @@ export function SelfBuffs() {
       );
     }
   });
-  return renderModifiers(content, true);
+  return renderModifiers(content, "buffs");
 }
 
 export function PartyBuffs() {
@@ -122,7 +130,7 @@ export function PartyBuffs() {
       );
     }
   });
-  return renderModifiers(content, true);
+  return renderModifiers(content, "buffs");
 }
 
 interface TeammateBuffsProps {

@@ -9,15 +9,20 @@ import type {
   Rarity,
 } from "@Src/types";
 
+// Constant
 import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
-import { percentSign, processNumInput, getImgSrc } from "@Src/utils";
+
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
+
+// Util
+import { percentSign, processNumInput, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
-import { Button, IconButton, Select } from "@Src/styled-components";
-import { BetaMark } from "@Components/minors";
+// Component
+import { Button, IconButton, Select, BetaMark } from "@Src/styled-components";
 
 interface ArtifactCardProps extends ArtifactCardCommonProps {
   artifact?: CalcArtifact;

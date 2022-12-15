@@ -9,18 +9,22 @@ import type {
 } from "@Src/types";
 import type { DetailsType } from "./types";
 
+// Hook
 import { useDispatch } from "@Store/hooks";
+
+// Action
 import {
   updateUserArtifactSubStat,
   updateUserArtifact,
   updateUserWeapon,
 } from "@Store/userDatabaseSlice";
 
+// Component
+import { Button, ButtonBar } from "@Src/styled-components";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { AttributeTable } from "@Components/AttributeTable";
-import { ButtonBar, renderSetBonuses } from "@Components/minors";
+import { SetBonusesDisplay } from "@Components/template";
 import { WeaponCard } from "@Components/WeaponCard";
-import { Button } from "@Src/styled-components";
 
 interface GearsDetailsProps {
   className: string;
@@ -83,7 +87,9 @@ export function GearsDetails({
     case "setBonus":
       return (
         <div className={clsx("flex", className)} style={style}>
-          <div className="px-1 hide-scrollbar">{renderSetBonuses(setBonuses)}</div>
+          <div className="px-1 hide-scrollbar">
+            <SetBonusesDisplay setBonuses={setBonuses} />
+          </div>
         </div>
       );
 
@@ -124,8 +130,10 @@ export function GearsDetails({
             </div>
             <ButtonBar
               className="mt-6"
-              texts={["Unequip", "Switch"]}
-              handlers={[onClickUnequipArtifact, onClickSwitchArtifact]}
+              buttons={[
+                { text: "Unequip", onClick: onClickUnequipArtifact },
+                { text: "Switch", onClick: onClickSwitchArtifact },
+              ]}
             />
           </div>
         );

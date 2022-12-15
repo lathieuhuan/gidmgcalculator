@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import { useState, useRef } from "react";
-
 import type { UserSetup } from "@Src/types";
-import { ButtonBar } from "@Components/minors";
+import { ButtonBar } from "@Src/styled-components";
 
 interface SetupExporterProps {
   data: UserSetup;
@@ -37,16 +36,18 @@ export function SetupExporter({ data, onClose }: SetupExporterProps) {
 
         <ButtonBar
           className="mt-4"
-          texts={["Cancel", "Copy"]}
-          handlers={[
-            onClose,
-            () => {
-              if (inputRef.current) {
-                navigator.clipboard.writeText(inputRef.current.value).then(
-                  () => setStatus(1),
-                  () => setStatus(2)
-                );
-              }
+          buttons={[
+            { text: "Cancel", onClick: onClose },
+            {
+              text: "Copy",
+              onClick: () => {
+                if (inputRef.current) {
+                  navigator.clipboard.writeText(inputRef.current.value).then(
+                    () => setStatus(1),
+                    () => setStatus(2)
+                  );
+                }
+              },
             },
           ]}
         />

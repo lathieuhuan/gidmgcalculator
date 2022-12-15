@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
-
 import type {
   AbilityBuff,
   AbilityDebuff,
@@ -18,23 +17,36 @@ import type {
 } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+// Calculator
+import calculateAll from "@Src/calculators";
+
+// Action
 import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
+
+// Selector
 import {
   selectChosenSetupID,
   selectMyArts,
   selectMySetups,
   selectMyWps,
 } from "@Store/userDatabaseSlice/selectors";
-import { isUserSetup } from "@Store/userDatabaseSlice/utils";
-import calculateAll from "@Src/calculators";
-import { findById, indexById } from "@Src/utils";
-import { useTranslation } from "@Hooks/useTranslation";
-import { findCharacter, getPartyData } from "@Data/controllers";
 
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+import { useTranslation } from "@Hooks/useTranslation";
+import { useSetupItems } from "./hooks";
+
+// Util
+import { findById, indexById } from "@Src/utils";
+import { findCharacter, getPartyData } from "@Data/controllers";
+import { isUserSetup } from "@Store/userDatabaseSlice/utils";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+
+// Component
 import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
-import { ConfirmTemplate, renderNoItems, renderSetBonuses, TipsModal } from "@Components/minors";
+import { ConfirmTemplate, renderNoItems, TipsModal } from "@Components/minors";
+import { SetBonusesDisplay } from "@Components/template";
 import { Button, IconButton, Green, Red } from "@Src/styled-components";
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
@@ -60,8 +72,6 @@ import {
 } from "./modal-content";
 
 import styles from "../styles.module.scss";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
-import { useSetupItems } from "./hooks";
 
 export default function MySetups() {
   const dispatch = useDispatch();
@@ -275,7 +285,9 @@ export default function MySetups() {
             </div>
 
             <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-              <div className="h-full hide-scrollbar">{renderSetBonuses(setBonuses)}</div>
+              <div className="h-full hide-scrollbar">
+                <SetBonusesDisplay setBonuses={setBonuses} />
+              </div>
             </div>
           </div>
         );

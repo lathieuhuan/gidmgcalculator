@@ -8,11 +8,12 @@ import {
   selectMySetups,
   selectMyWps,
 } from "@Store/userDatabaseSlice/selectors";
-import { downloadToDevice, styles } from "./common";
 
-import { ButtonBar } from "@Components/minors";
+// Component
+import { CloseButton, ButtonBar } from "@Src/styled-components";
 import { Modal, ModalControl } from "@Components/modals";
-import { CloseButton } from "@Src/styled-components";
+
+import { downloadToDevice, styles } from "./common";
 
 function Options({ onClose }: { onClose: () => void }) {
   const [messageType, setMessageType] = useState(0);
@@ -72,8 +73,10 @@ function Options({ onClose }: { onClose: () => void }) {
             {messageType === 1 && (
               <ButtonBar
                 className="my-2"
-                texts={["Cancel", "Confirm"]}
-                handlers={[onClose, saveToLocalStorage]}
+                buttons={[
+                  { text: "Cancel", onClick: onClose },
+                  { text: "Confirm", onClick: saveToLocalStorage },
+                ]}
               />
             )}
           </div>

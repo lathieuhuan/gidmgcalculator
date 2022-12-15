@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ArtifactType } from "@Src/types";
+import type { StatsFilter } from "@Components/item-stores/utils";
 
+// Hook
 import { useSelector } from "@Store/hooks";
 import {
   useArtifactSetFilter,
@@ -8,10 +10,14 @@ import {
   useTypeFilter,
 } from "@Components/item-stores/hooks";
 
+// Selector
 import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
-import { hasDupStat, StatsFilter } from "@Components/item-stores/utils";
 
-import { ButtonBar } from "@Components/minors";
+// Util
+import { hasDupStat } from "@Components/item-stores/utils";
+
+// Component
+import { ButtonBar } from "@Src/styled-components";
 import { Modal, ModalControl } from "@Components/modals";
 
 interface FilterProps {
@@ -54,18 +60,20 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
 
       <ButtonBar
         className="mt-4"
-        texts={["Cancel", "Confirm"]}
-        handlers={[
-          onClose,
-          () => {
-            if (hasDupStat(artifactStatsFilter)) {
-              setIsError(true);
-              return;
-            }
-            setTypes(filteredTypes as ArtifactType[]);
-            setCodes(filteredTempCodes);
-            setStats(artifactStatsFilter);
-            onClose();
+        buttons={[
+          { text: "Cancel", onClick: onClose },
+          {
+            text: "Confirm",
+            onClick: () => {
+              if (hasDupStat(artifactStatsFilter)) {
+                setIsError(true);
+                return;
+              }
+              setTypes(filteredTypes as ArtifactType[]);
+              setCodes(filteredTempCodes);
+              setStats(artifactStatsFilter);
+              onClose();
+            },
           },
         ]}
       />

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import type { SelectHTMLAttributes, ButtonHTMLAttributes } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaInfoCircle, FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
 export const Button = (props: ButtonProps) => {
@@ -56,6 +56,44 @@ export const IconToggleButton = ({
   );
 };
 
+interface InfoSignProps {
+  className?: string;
+  active?: boolean;
+  selfHover?: boolean;
+  onClick?: () => void;
+}
+export const InfoSign = (props: InfoSignProps) => {
+  if (props.active) {
+    return <CloseButton className={clsx("text-sm", props.className)} size="h-6 w-6" />;
+  }
+  return (
+    <button
+      className={clsx(
+        "h-6 w-6 text-2xl block rounded-circle",
+        props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold",
+        props.className
+      )}
+      onClick={props.onClick}
+    >
+      <FaInfoCircle />
+    </button>
+  );
+};
+
+export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
+  return (
+    <select
+      className={clsx(
+        "leading-base block outline-none",
+        !className?.includes("bg-") && "bg-transparent",
+        className
+      )}
+      {...rest}
+    />
+  );
+};
+
+// Level 2
 export interface CloseButtonProps {
   size?: string;
   noGlow?: boolean;
@@ -70,15 +108,42 @@ export const CloseButton = ({ className, size = "w-7 h-7", ...rest }: CloseButto
   );
 };
 
-export const Select = ({ className, ...rest }: SelectHTMLAttributes<HTMLSelectElement>) => {
+interface ButtonBarProps {
+  className?: string;
+  buttons: Array<{
+    text: string;
+    disabled?: boolean;
+    variant?: "positive" | "negative" | "neutral" | "default";
+    onClick?: () => void;
+  }>;
+  autoFocusIndex?: number;
+}
+export const ButtonBar = ({ className, buttons, autoFocusIndex }: ButtonBarProps) => {
   return (
-    <select
+    <div
       className={clsx(
-        "leading-base block outline-none",
-        !className?.includes("bg-") && "bg-transparent",
+        "flex justify-center",
+        !className?.includes("space-x-") && "space-x-8",
         className
       )}
-      {...rest}
-    />
+    >
+      {buttons.map((button, i) => {
+        return (
+          <Button
+            key={i}
+            className="button-focus-shadow"
+            disabled={button.disabled}
+            variant={
+              button.variant ||
+              (i ? (i === buttons.length - 1 ? "positive" : "neutral") : "negative")
+            }
+            onClick={button.onClick}
+            autoFocus={i === autoFocusIndex}
+          >
+            {button.text}
+          </Button>
+        );
+      })}
+    </div>
   );
 };
