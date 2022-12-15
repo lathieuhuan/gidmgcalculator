@@ -13,6 +13,7 @@ import type {
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { getDefaultStatInfo } from "@Calculators/utils";
 
+// Component
 import { StatsTable } from "@Components/StatsTable";
 import { Select } from "@Src/styled-components";
 

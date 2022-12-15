@@ -205,7 +205,7 @@ export function renderSetBonuses(setBonuses: ArtifactSetBonus[], options?: Rende
   const { noTitle } = options || {};
   return (
     <div>
-      {noTitle ? null : <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>}
+      {!noTitle && <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>}
 
       {setBonuses.length > 0 ? (
         setBonuses.map(({ code, bonusLv }, index) => {

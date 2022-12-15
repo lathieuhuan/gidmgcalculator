@@ -31,12 +31,14 @@ export const IconButton = (props: ButtonProps & { size?: string }) => {
 
 interface IconToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabledColor?: string;
+  size?: string;
 }
 export const IconToggleButton = ({
   className,
   disabled,
   color = "text-black bg-lightgold",
   disabledColor = "text-lesser bg-transparent",
+  size = "h-8 w-8",
   ...rest
 }: IconToggleButtonProps) => {
   return (
@@ -44,7 +46,7 @@ export const IconToggleButton = ({
       type="button"
       className={clsx(
         "rounded-circle flex-center shrink-0",
-        (!className || !className.includes("w-") || !className.includes("h-")) && "h-8 w-8",
+        size,
         disabled ? disabledColor : `${color} glow-on-hover`,
         className
       )}

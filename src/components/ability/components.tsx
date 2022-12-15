@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import clsx from "clsx";
+import type { ReactNode } from "react";
 import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
 import type { Vision } from "@Src/types";
@@ -14,11 +14,11 @@ interface AbilityImgProps {
   onClick?: () => void;
 }
 export function AbilityIcon({ className, img, vision, active = true, onClick }: AbilityImgProps) {
-  const tw = clsx("transition-opacity duration-150 ease-in-out", !active && "opacity-50");
+  const commonClassNames = ["transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
 
   return img ? (
     <img
-      className={clsx(tw, "min-w-13 h-13", className)}
+      className={clsx("min-w-13 h-13", commonClassNames, className)}
       src={getImgSrc(img)}
       alt=""
       draggable={false}
@@ -27,9 +27,9 @@ export function AbilityIcon({ className, img, vision, active = true, onClick }: 
   ) : (
     <div
       className={clsx(
-        tw,
         `min-w-13 h-13 rounded-full bg-${vision} flex-center`,
         styles[vision],
+        commonClassNames,
         className
       )}
       onClick={onClick}

@@ -1,7 +1,7 @@
+import type { UserArtifact, UserWeapon } from "@Src/types";
+import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { ConfirmModal } from "@Components/minors";
 import { ModalControl } from "@Components/modals";
-import { findArtifactPiece, findWeapon } from "@Data/controllers";
-import { UserArtifact, UserWeapon } from "@Src/types";
 
 export function renderEquippedChar(owner: string) {
   return (

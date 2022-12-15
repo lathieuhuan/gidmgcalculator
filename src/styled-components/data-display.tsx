@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Vision } from "@Src/types";
 import type { HTMLAttributes } from "react";
+import type { Vision } from "@Src/types";
 
 type SpanExtraColor =
   | "gold"

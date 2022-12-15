@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import type { CharInfo, DataCharacter, GetExtraStatsFn, Party, StatInfo, Talent } from "@Src/types";
 
+// Constant
 import { TALENT_TYPES } from "@Src/constants";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
+// Util
 import { ascsFromLv } from "@Src/utils";
-import { useTranslation } from "@Hooks/useTranslation";
 import { findCharacter } from "@Data/controllers";
 
+// Hook
+import { useTranslation } from "@Hooks/useTranslation";
+// import { useTabs } from "@Hooks/useTabs";
+
+// Component
 import { CloseButton } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
-import { SlideShow } from "@Components/ability/components";
+import { SlideShow } from "../components";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { SkillAttributes } from "./talent-details";
-
-// import { useTabs } from "@Hooks/useTabs";
 
 interface TalentListProps {
   char: CharInfo;
@@ -81,7 +85,7 @@ export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
             position={position}
             {...{ vision, weaponType, NAsConfig, activeTalents, passiveTalents }}
             changePosition={setPosition}
-            close={() => {
+            onClose={() => {
               setAtDetails(false);
               setTimeout(() => setPosition(-1), 200);
             }}
@@ -99,7 +103,7 @@ interface DetailsProps
   > {
   position: number;
   changePosition: (position: number) => void;
-  close: () => void;
+  onClose: () => void;
 }
 function Details({
   position,
@@ -109,7 +113,7 @@ function Details({
   activeTalents,
   passiveTalents,
   changePosition,
-  close,
+  onClose,
 }: DetailsProps) {
   const { t } = useTranslation();
   // // for when details for passiveTalents are available
@@ -193,7 +197,7 @@ function Details({
       </div>
 
       <div className="mt-4">
-        <CloseButton className="mx-auto glow-on-hover" onClick={close} />
+        <CloseButton className="mx-auto glow-on-hover" onClick={onClose} />
       </div>
     </div>
   );

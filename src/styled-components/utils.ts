@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import type { ButtonHTMLAttributes } from "react";
 
 const bgColorByVariant: Record<string, string> = {
@@ -21,9 +20,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "positive" | "neutral" | "negative" | "default" | "custom";
 }
 export const buttonStyles = ({ boneOnly, noGlow, disabled, variant = "default" }: ButtonProps) => {
-  return clsx(
+  return [
     boneOnly ? colorByVariant[variant] : bgColorByVariant[variant],
     boneOnly || variant === "custom" ? "" : variant === "negative" ? "text-default" : "text-black",
-    disabled ? "opacity-50 cursor-default" : !noGlow && "glow-on-hover"
-  );
+    disabled ? "opacity-50 cursor-default" : !noGlow && "glow-on-hover",
+  ];
 };
