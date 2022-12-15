@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Artifact, CalcArtifact } from "@Src/types";
+import type { ArtifactType, CalcArtifact } from "@Src/types";
 
 import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
@@ -25,7 +25,7 @@ export function ArtifactFilter({ filterOn, ...rest }: ArtifactFilterProps) {
 }
 
 interface FilterProps {
-  artifactType: Artifact;
+  artifactType: ArtifactType;
   artifacts: CalcArtifact[];
   filter: {
     stats: StatsFilter;

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
 
-import type { Artifact, ArtifactMainStat, ArtifactSubStat } from "@Src/types";
+import type { ArtifactType, ArtifactMainStat, ArtifactSubStat } from "@Src/types";
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import { StatsFilter } from "../utils";
@@ -20,7 +20,7 @@ const MAIN_STAT_TYPES = [
 ];
 
 interface UseArtifactStatsFilterArgs {
-  artifactType?: Artifact;
+  artifactType?: ArtifactType;
   stats: StatsFilter;
   isError: boolean;
 }

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import type { Artifact, CalcArtifact, UserArtifact } from "@Src/types";
+import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
 import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
@@ -23,12 +23,12 @@ const { Text, CloseButton, FilterButton } = ModalHeader;
 
 const selectArtifactsByType = createSelector(
   selectMyArts,
-  (_: unknown, type: Artifact) => type,
+  (_: unknown, type: ArtifactType) => type,
   (myArts, type) => myArts.filter((p) => p.type === type)
 );
 
 interface ArtifactInventoryProps {
-  artifactType: Artifact;
+  artifactType: ArtifactType;
   currentArtifacts: (CalcArtifact | null)[];
   owner: string | null;
   buttonText: string;

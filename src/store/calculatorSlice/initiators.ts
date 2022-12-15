@@ -1,8 +1,8 @@
 import type {
-  Artifact,
   CharInfo,
   Rarity,
   WeaponType,
+  ArtifactType,
   ModifierCtrl,
   Target,
   CalcArtifact,
@@ -35,7 +35,7 @@ export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID"> {
 }
 
 interface InitArtPiece {
-  type: Artifact;
+  type: ArtifactType;
   code: number;
   rarity: Rarity;
 }

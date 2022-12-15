@@ -1,6 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-  Artifact,
   ArtifactMainStat,
   ArtifactSubStatInfo,
   PartiallyRequired,
@@ -11,6 +10,7 @@ import type {
   UserSetupCalcInfo,
   UserWeapon,
   WeaponType,
+  ArtifactType,
 } from "@Src/types";
 
 export type AddUserDatabaseAction = PayloadAction<{
@@ -31,7 +31,7 @@ export type UpdateUserArtifactSubStatAction = PayloadAction<
 export type RemoveArtifactAction = PayloadAction<{
   ID: number;
   owner: string | null;
-  type: Artifact;
+  type: ArtifactType;
 }>;
 
 export type UpdateUserWeaponAction = PayloadAction<
@@ -49,7 +49,11 @@ export type UpdateUserArtifactAction = PayloadAction<{
   setupIDs?: number[];
 }>;
 
-export type RemoveWeaponAction = PayloadAction<{ ID: number; owner: string | null; type: WeaponType }>;
+export type RemoveWeaponAction = PayloadAction<{
+  ID: number;
+  owner: string | null;
+  type: WeaponType;
+}>;
 
 export type UnequipArtifactAction = PayloadAction<{
   owner: string | null;

@@ -30,7 +30,7 @@ export type Level = typeof LEVELS[number];
 
 export type WeaponType = typeof WEAPON_TYPES[number];
 
-export type Artifact = typeof ARTIFACT_TYPES[number];
+export type ArtifactType = typeof ARTIFACT_TYPES[number];
 
 export type Vision = typeof VISION_TYPES[number];
 

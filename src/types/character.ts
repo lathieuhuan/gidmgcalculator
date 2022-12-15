@@ -22,8 +22,8 @@ import type {
   ModifierInput,
   BuffModifierArgsWrapper,
 } from "./calculator";
+import type { Tracker } from "@Calculators/types";
 import { EModAffect } from "@Src/constants";
-import { Tracker } from "@Calculators/types";
 
 export type DataCharacter = {
   code: number;

@@ -1,9 +1,9 @@
-import type { Artifact } from "@Src/types";
+import type { ArtifactType } from "@Src/types";
 
 export type ModalType =
   | "CHARACTERS"
   | "WEAPONS"
-  | Artifact
+  | ArtifactType
   | "SHARE_SETUP"
   | "NOTICE_MOVE_TARGET"
   | "";

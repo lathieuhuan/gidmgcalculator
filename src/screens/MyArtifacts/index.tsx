@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import { ARTIFACT_ICONS } from "@Src/constants";
-import { Artifact, ArtifactMainStat, UserArtifact } from "@Src/types";
+import type { ArtifactType, ArtifactMainStat, UserArtifact } from "@Src/types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import {
@@ -34,10 +34,10 @@ import styles from "../styles.module.scss";
 
 const selectFilteredArtifactIds = createSelector(
   selectMyArts,
-  (_: unknown, types: Artifact[]) => types,
+  (_: unknown, types: ArtifactType[]) => types,
   (_: unknown, __: unknown, codes: number[]) => codes,
   (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
-  (myArts: UserArtifact[], types: Artifact[], codes: number[], stats: StatsFilter) => {
+  (myArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
     const result = types.length ? myArts.filter((p) => types.includes(p.type)) : myArts;
     return filterArtIdsBySetsAndStats(result, codes, stats);
   }
@@ -49,12 +49,13 @@ export default function MyArtifacts() {
   const dispatch = useDispatch();
 
   const [modalType, setModalType] = useState<ModalType | null>(null);
-  const [pickArtifactModal, setPickArtifactModal] = useState<{ isActive: boolean; type: Artifact }>(
-    {
-      isActive: false,
-      type: "flower",
-    }
-  );
+  const [pickArtifactModal, setPickArtifactModal] = useState<{
+    isActive: boolean;
+    type: ArtifactType;
+  }>({
+    isActive: false,
+    type: "flower",
+  });
   const [newOwner, setNewOwner] = useState<string | null>(null);
 
   const [codes, setCodes] = useState<number[]>([]);
@@ -65,7 +66,7 @@ export default function MyArtifacts() {
   });
 
   const filteredIds = useSelector((state) =>
-    selectFilteredArtifactIds(state, filteredTypes as Artifact[], codes, stats)
+    selectFilteredArtifactIds(state, filteredTypes as ArtifactType[], codes, stats)
   );
   const [invRack, chosenID, setChosenID] = useInventoryRack({
     listClassName: styles.list,
@@ -173,7 +174,7 @@ export default function MyArtifacts() {
 
       <Filter
         active={modalType === "FITLER"}
-        types={filteredTypes as Artifact[]}
+        types={filteredTypes as ArtifactType[]}
         codes={codes}
         stats={stats}
         setTypes={setFilteredType}
@@ -188,7 +189,7 @@ export default function MyArtifacts() {
         onClickChoice={(artType) => {
           setPickArtifactModal({
             isActive: true,
-            type: artType as Artifact,
+            type: artType as ArtifactType,
           });
           closeModal();
         }}
@@ -227,7 +228,7 @@ export default function MyArtifacts() {
           item={artifact}
           itemType="artifact"
           filteredIds={filteredIds}
-          removeItem={(item) => dispatch(removeArtifact({ ...item, type: item.type as Artifact }))}
+          removeItem={(item) => dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }))}
           updateChosenID={setChosenID}
           onClose={closeModal}
         />

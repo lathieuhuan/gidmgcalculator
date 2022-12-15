@@ -1,4 +1,4 @@
-import type { Artifact, CharData, PartyData, WeaponType } from "@Src/types";
+import type { ArtifactType, CharData, PartyData, WeaponType } from "@Src/types";
 import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
@@ -14,7 +14,7 @@ export const findArtifactSet = ({ code }: HasCode) => {
   return code ? findByCode(artifacts, code) : undefined;
 };
 
-export function findArtifactPiece({ code, type }: { type: Artifact } & HasCode) {
+export function findArtifactPiece({ code, type }: { type: ArtifactType } & HasCode) {
   const targetSet = findByCode(artifacts, code);
 
   if (targetSet) {

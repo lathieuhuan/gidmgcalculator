@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { FaCog } from "react-icons/fa";
-import type { Artifact } from "@Src/types";
+import type { ArtifactType } from "@Src/types";
 import type { ModalInfo } from "./types";
 
 import { pickEquippedArtSet } from "@Store/thunks";
@@ -97,7 +97,7 @@ export default function SetupManager() {
         active={prePickerOn}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artifactType) => {
-          setModal({ type: artifactType as Artifact });
+          setModal({ type: artifactType as ArtifactType });
           setPrePickerOn(false);
         }}
         onClose={() => setPrePickerOn(false)}
@@ -127,13 +127,13 @@ export default function SetupManager() {
       <InventoryArtifact
         active={["flower", "plume", "sands", "goblet", "circlet"].includes(modal.type)}
         owner={charData.name}
-        artifactType={modal.type as Artifact}
+        artifactType={modal.type as ArtifactType}
         currentArtifacts={artifacts}
         buttonText="Pick"
         onClickButton={({ owner, ...pieceInfo }) => {
           dispatch(
             changeArtifact({
-              pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as Artifact),
+              pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as ArtifactType),
               newPiece: pieceInfo,
             })
           );

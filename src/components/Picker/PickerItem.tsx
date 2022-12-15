@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { PickerItem } from "./types";
-import type { Artifact, WeaponType } from "@Src/types";
+import type { ArtifactType, WeaponType } from "@Src/types";
 
 import artifacts from "@Data/artifacts";
 import weapons from "@Data/weapons";
@@ -41,7 +41,7 @@ export function PickerWeapon({
 
 export interface PickerArtifactProps {
   type?: string;
-  artifactType: Artifact;
+  artifactType: ArtifactType;
   needMassAdd?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
   onPickArtifact: (info: ReturnType<typeof initArtPiece>) => void;

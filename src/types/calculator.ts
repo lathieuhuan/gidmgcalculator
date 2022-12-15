@@ -1,11 +1,11 @@
 import type {
-  Artifact,
   AttackElement,
   AttackPattern,
   Level,
   Nation,
   Vision,
   WeaponType,
+  ArtifactType,
   Reaction,
   CharInfo,
   Rarity,
@@ -100,7 +100,7 @@ export type CalcArtifact = {
    */
   isNew?: boolean;
   code: number;
-  type: Artifact;
+  type: ArtifactType;
   rarity: Rarity;
   level: number;
   mainStatType: ArtifactMainStat;

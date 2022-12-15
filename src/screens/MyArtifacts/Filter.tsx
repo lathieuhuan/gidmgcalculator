@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Artifact } from "@Src/types";
+import type { ArtifactType } from "@Src/types";
 
 import { useSelector } from "@Store/hooks";
 import {
@@ -15,10 +15,10 @@ import { ButtonBar } from "@Components/minors";
 import { Modal, ModalControl } from "@Components/modals";
 
 interface FilterProps {
-  types: Artifact[];
+  types: ArtifactType[];
   codes: number[];
   stats: StatsFilter;
-  setTypes: (newTypes: Artifact[]) => void;
+  setTypes: (newTypes: ArtifactType[]) => void;
   setCodes: (newCodes: number[]) => void;
   setStats: (newStats: StatsFilter) => void;
   onClose: () => void;
@@ -62,7 +62,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
               setIsError(true);
               return;
             }
-            setTypes(filteredTypes as Artifact[]);
+            setTypes(filteredTypes as ArtifactType[]);
             setCodes(filteredTempCodes);
             setStats(artifactStatsFilter);
             onClose();

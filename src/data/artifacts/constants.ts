@@ -1,4 +1,4 @@
-import { Artifact, AttackElement, AttributeStat } from "@Src/types";
+import { ArtifactType, AttackElement, AttributeStat } from "@Src/types";
 
 // ATK and HP and Elemental DMG
 const percent1 = {
@@ -31,7 +31,7 @@ const EM = {
 };
 
 export const ARTIFACT_MAIN_STATS: Record<
-  Artifact,
+  ArtifactType,
   Partial<Record<AttributeStat | AttackElement, { [k: number]: number[] }>>
 > = {
   flower: {

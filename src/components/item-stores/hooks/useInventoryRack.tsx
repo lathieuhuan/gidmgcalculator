@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
-import { Artifact, UserArtifact, UserWeapon, Level, Rarity, WeaponType } from "@Src/types";
+import { UserArtifact, UserWeapon, Level, Rarity, WeaponType, ArtifactType } from "@Src/types";
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 import { ItemThumb } from "@Components/ItemThumb";
 import { renderNoItems } from "@Components/minors";
@@ -22,7 +22,7 @@ function getWeaponInfo({ type, code, owner, refi, level }: GetWeaponInfoArgs) {
 }
 
 interface GetArtifactInfoArgs extends GetItemInfoArgs {
-  type: Artifact;
+  type: ArtifactType;
   rarity: Rarity;
 }
 function getArtifactInfo({ code, type, owner, rarity, level }: GetArtifactInfoArgs) {
