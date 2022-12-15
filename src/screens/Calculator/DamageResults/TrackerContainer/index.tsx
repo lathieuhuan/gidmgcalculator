@@ -78,7 +78,10 @@ export default function TrackerContainer({ trackerState }: ITrackerContainerProp
   };
 
   return (
-    <div className="mt-2 grow custom-scrollbar cursor-default">
+    <div
+      className="mt-2 grow custom-scrollbar cursor-default"
+      onDoubleClick={() => console.log(result)}
+    >
       <CollapseList
         headingList={[
           "Attributes",

@@ -295,8 +295,8 @@ export const calculatorSlice = createSlice({
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
             return resonance.vision !== vision;
           });
-          calculate(state);
         }
+        calculate(state);
       }
     },
     updateTeammateWeapon: (state, action: UpdateTeammateWeaponAction) => {
@@ -548,7 +548,7 @@ export const calculatorSlice = createSlice({
       state.comparedIds = [];
 
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
-      const newWeapon = initWeapon({ type: charData.weapon });
+      const newWeapon = initWeapon({ type: charData.weaponType });
       const wpBuffCtrls = getWeaponBuffCtrls(true, newWeapon);
       const elmtModCtrls = initElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
