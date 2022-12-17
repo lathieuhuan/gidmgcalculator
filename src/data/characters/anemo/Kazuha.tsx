@@ -124,7 +124,7 @@ const Kazuha: DataCharacter = {
         { label: "Element Swirled", type: "anemoable" },
         { label: "Elemental Mastery", type: "text", max: 9999, for: "teammate" },
       ],
-      applyBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
+      applyFinalBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
         const elmtIndex = inputs[0] || 0;
         const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
         applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], buffValue, tracker);

@@ -18,7 +18,7 @@ interface ISetBonusesDisplayProps {
 export function SetBonusesDisplay({ setBonuses, noTitle }: ISetBonusesDisplayProps) {
   return (
     <div>
-      {!noTitle && <p className="text-lg leading-relaxed text-orange font-bold">Set Bonus</p>}
+      {!noTitle && <p className="text-lg leading-relaxed text-orange font-semibold">Set bonus</p>}
 
       {setBonuses.length > 0 ? (
         setBonuses.map(({ code, bonusLv }, index) => {

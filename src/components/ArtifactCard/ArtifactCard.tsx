@@ -44,6 +44,7 @@ export function ArtifactCard({
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
+  const isDisabledLevelup = artifact.level === maxLevel;
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artifact)}>
@@ -72,18 +73,21 @@ export function ArtifactCard({
               <IconButton
                 className="bg-black text-orange text-3.5xl"
                 variant="custom"
-                disabled={artifact.level === maxLevel}
+                disabled={isDisabledLevelup}
                 onClick={() => enhance && enhance(Math.min(artifact.level + 4, maxLevel))}
               >
                 <FaArrowAltCircleUp />
               </IconButton>
-              <Button
-                className="mt-6 px-1.5 pt-2 rounded bg-orange"
-                disabled={artifact.level === maxLevel}
+              <button
+                className={clsx(
+                  "mt-6 px-1.5 py-1 rounded bg-orange text-base text-black font-bold leading-base",
+                  isDisabledLevelup ? "opacity-50 cursor-default" : "glow-on-hover"
+                )}
+                disabled={isDisabledLevelup}
                 onClick={() => enhance && enhance(maxLevel)}
               >
                 MAX
-              </Button>
+              </button>
             </div>
           </div>
         ) : (

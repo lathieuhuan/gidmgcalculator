@@ -105,10 +105,10 @@ export default function Info() {
             )}
             <StarLine rarity={rarity} />
 
-            <div className="ml-1 my-1 flex">
-              <p className="mr-1 pt-1 text-xl">Level</p>
+            <div className="ml-1 my-1 flex text-lg">
+              <p className="mr-1">Level</p>
               <Select
-                className={`text-right text-last-right text-xl text-${vision} font-bold`}
+                className={`text-right text-last-right text-${vision} font-semibold`}
                 value={char.level}
                 onChange={(e) =>
                   dispatch(updateUserCharacter({ name, level: e.target.value as Level }))

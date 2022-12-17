@@ -76,7 +76,7 @@ export function GearsOverview({
               />
             </div>
           ) : (
-            <div key={i} className="p-1 w-1/3 h-32">
+            <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>
               <button
                 className="p-4 h-full flex-center rounded bg-darkblue-3 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
@@ -100,22 +100,22 @@ export function GearsOverview({
         }}
       >
         <div>
-          <p className="text-lg text-orange font-bold">Set Bonus</p>
+          <p className="text-lg text-orange font-semibold">Set bonus</p>
           <div className="mt-1 pl-2">
             {setBonuses.length ? (
               <>
-                <p className="text-green font-bold">
+                <p className="text-green font-medium">
                   {findArtifactSet({ code: setBonuses[0].code })?.name} (
                   {setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
-                  <p className="mt-1 text-green font-bold">
+                  <p className="mt-1 text-green font-medium">
                     {findArtifactSet({ code: setBonuses[1].code })?.name} (2)
                   </p>
                 ) : null}
               </>
             ) : (
-              <p className="text-lesser font-bold">No Set Bonus</p>
+              <p className="text-lesser font-semibold">No Set bonus</p>
             )}
           </div>
         </div>
@@ -126,7 +126,7 @@ export function GearsOverview({
         className={clsx("mt-2", bonusStyles(activeDetails === "statsBonus"))}
         onClick={() => toggleDetails("statsBonus")}
       >
-        <p className="text-lg text-orange font-bold">Artifact DetailsType</p>
+        <p className="text-lg text-orange font-semibold">Artifact details</p>
         <InfoSign active={activeDetails === "statsBonus"} />
       </div>
     </div>
