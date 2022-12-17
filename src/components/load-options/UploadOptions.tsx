@@ -1,8 +1,12 @@
 import clsx from "clsx";
 import { Fragment, useEffect, useRef, useState } from "react";
+
+// Util
+import { downloadToDevice, styles } from "./utils";
+
+// Component
 import { Modal, ModalControl } from "@Components/modals";
 import { Button, CloseButton } from "@Src/styled-components";
-import { downloadToDevice, styles } from "./common";
 
 type MessageState =
   | { uploadCase: "auto"; result: "success" | "fail" | "no_data" }

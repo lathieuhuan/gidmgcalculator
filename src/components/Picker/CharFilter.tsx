@@ -1,7 +1,11 @@
 import clsx from "clsx";
-import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
-import { getImgSrc } from "@Src/utils";
 import type { Filter } from "./types";
+
+// Constant
+import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
+
+// Util
+import { getImgSrc } from "@Src/utils";
 
 export interface CharFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;

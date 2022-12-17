@@ -1,10 +1,15 @@
 import { useState } from "react";
 import type { UserArtifacts, UserWeapon } from "@Src/types";
 
+// Util
 import { findById } from "@Src/utils";
-import { useSelector } from "@Store/hooks";
-import { selectMyArts, selectMySetups, selectMyWps } from "@Store/userDatabaseSlice/selectors";
 import { isUserSetup } from "@Store/userDatabaseSlice/utils";
+
+// Hook
+import { useSelector } from "@Store/hooks";
+
+// Selector
+import { selectMyArts, selectMySetups, selectMyWps } from "@Store/userDatabaseSlice/selectors";
 
 type SetupItemInfos = Record<
   string,

@@ -1,8 +1,12 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
+
+// Util
 import { findByCode, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
+
+// Component
 import { Button } from "@Src/styled-components";
 
 type TempSetsState = {

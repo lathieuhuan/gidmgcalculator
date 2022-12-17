@@ -2,12 +2,20 @@ import clsx from "clsx";
 import { RefObject, useEffect, useState } from "react";
 import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
-import { findCharacter } from "@Data/controllers";
+// Util
 import { getImgSrc } from "@Src/utils";
+import { findCharacter } from "@Data/controllers";
+
+// Action
 import { chooseCharacter } from "@Store/userDatabaseSlice";
+
+// Selector
 import { selectChosenChar } from "@Store/userDatabaseSlice/selectors";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 
+// Component
 import { IconButton } from "@Src/styled-components";
 import { Picker } from "@Components/Picker";
 

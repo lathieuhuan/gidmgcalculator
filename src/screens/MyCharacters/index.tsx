@@ -1,10 +1,16 @@
 import { useRef, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 
+// Action
 import { addCharacter, chooseCharacter } from "@Store/userDatabaseSlice";
+
+// Selector
 import { selectChosenChar, selectMyChars } from "@Store/userDatabaseSlice/selectors";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 
+// Component
 import { Button, Select } from "@Src/styled-components";
 import { Picker } from "@Components/Picker";
 import CharacterSort from "./CharacterSort";

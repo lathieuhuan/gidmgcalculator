@@ -1,8 +1,14 @@
 import clsx from "clsx";
 import { Fragment } from "react";
 import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
+
+// Constant
 import { EScreen } from "@Src/constants";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action & Selector
 import { selectAtScreen, updateUI } from "@Store/uiSlice";
 
 export const navButtonStyles = {

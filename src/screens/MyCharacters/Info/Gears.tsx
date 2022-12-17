@@ -3,16 +3,24 @@ import { useState } from "react";
 import type { ArtifactAttribute, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-import { useDispatch } from "@Store/hooks";
-import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
+// Constant
 import { ARTIFACT_TYPES } from "@Src/constants";
 
+// Hook
+import { useDispatch } from "@Store/hooks";
+
+// Action
+import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
+
+// Util
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+
+// Component
 import { CloseButton } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface GearsProps {
   weapon: UserWeapon;

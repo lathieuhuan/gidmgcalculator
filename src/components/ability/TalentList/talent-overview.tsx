@@ -1,9 +1,14 @@
 import clsx from "clsx";
 import type { CharInfo, Party, Talent, Vision, WeaponType } from "@Src/types";
-import { getPartyData } from "@Data/controllers";
-import { totalXtraTalentLv } from "@Src/utils";
+
+// Constant
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
+// Util
+import { totalXtraTalentLv } from "@Src/utils";
+import { getPartyData } from "@Data/controllers";
+
+// Component
 import { Select, InfoSign } from "@Src/styled-components";
 import { AbilityIcon } from "../components";
 

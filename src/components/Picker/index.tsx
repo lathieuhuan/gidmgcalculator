@@ -1,6 +1,11 @@
 import { Modal, ModalControl } from "@Components/modals";
-import { PickerCharacter, PickerCharacterProps } from "./PickerCharacter";
-import { PickerArtifact, PickerArtifactProps, PickerWeapon, PickerWeaponProps } from "./PickerItem";
+import { PickerCharacter, type PickerCharacterProps } from "./PickerCharacter";
+import {
+  PickerArtifact,
+  PickerWeapon,
+  type PickerArtifactProps,
+  type PickerWeaponProps,
+} from "./PickerItem";
 export * from "./PrePicker";
 
 const Picker = {

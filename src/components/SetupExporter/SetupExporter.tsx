@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { useState, useRef } from "react";
 import type { UserSetup } from "@Src/types";
+
+// Component
 import { ButtonBar } from "@Src/styled-components";
 
 interface SetupExporterProps {

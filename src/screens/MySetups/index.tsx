@@ -45,8 +45,8 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 // Component
 import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
-import { ConfirmTemplate, renderNoItems, TipsModal } from "@Components/minors";
-import { SetBonusesDisplay } from "@Components/template";
+import { renderNoItems } from "@Components/minors";
+import { SetBonusesDisplay, ConfirmTemplate, TipsModal } from "@Components/template";
 import { Button, IconButton, Green, Red } from "@Src/styled-components";
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
@@ -400,44 +400,46 @@ export default function MySetups() {
                 Remove "<b>{removedSetup.name}</b>"?
               </>
             }
-            right={{ onClick: () => modal.ID && dispatch(removeSetup(modal.ID)) }}
+            buttons={[
+              undefined,
+              {
+                onClick: () => {
+                  if (modal.ID) dispatch(removeSetup(modal.ID));
+                },
+              },
+            ]}
             onClose={closeModal}
           />
         );
       }
       case "TIPS":
         return (
-          <TipsModal
-            active
-            content={
-              <div className="space-y-2" style={{ lineHeight: 1.7 }}>
-                <p>
-                  - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
-                  <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red>{" "}
-                  of it to the Calculator, so don't forget to save the modified copy if you want to
-                  apply the changes to that Setup.
-                </p>
-                <p>
-                  - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members.
-                  On this complex, switch to teammates' Setups by pressing their icons. Break the
-                  complex into individual Setups again by pressing the link / chain icon{" "}
-                  <FaUnlink className="inline-block" /> before its name.
-                </p>
-                <p>
-                  - You cannot change teammates when modifying the copy of a Setup that is in a
-                  complex. However you can make a copy of that copy in the Calculator and work on
-                  it.
-                </p>
-                <p>
-                  - You can build <Green>teammate's Setups</Green> based on a saved Setup by
-                  hovering over teammate's icon and press the calculator icon{" "}
-                  <FaCalculator className="inline-block" /> that would appear. Party members and
-                  Target will be the same. Some Modifiers will remain activated.
-                </p>
-              </div>
-            }
-            onClose={closeModal}
-          />
+          <TipsModal active onClose={closeModal}>
+            <div className="space-y-2" style={{ lineHeight: 1.7 }}>
+              <p>
+                - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
+                <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red>{" "}
+                of it to the Calculator, so don't forget to save the modified copy if you want to
+                apply the changes to that Setup.
+              </p>
+              <p>
+                - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members.
+                On this complex, switch to teammates' Setups by pressing their icons. Break the
+                complex into individual Setups again by pressing the link / chain icon{" "}
+                <FaUnlink className="inline-block" /> before its name.
+              </p>
+              <p>
+                - You cannot change teammates when modifying the copy of a Setup that is in a
+                complex. However you can make a copy of that copy in the Calculator and work on it.
+              </p>
+              <p>
+                - You can build <Green>teammate's Setups</Green> based on a saved Setup by hovering
+                over teammate's icon and press the calculator icon{" "}
+                <FaCalculator className="inline-block" /> that would appear. Party members and
+                Target will be the same. Some Modifiers will remain activated.
+              </p>
+            </div>
+          </TipsModal>
         );
       case "FIRST_COMBINE":
         return <FirstCombine onClose={closeModal} />;

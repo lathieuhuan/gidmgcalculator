@@ -2,27 +2,36 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { FaInfoCircle, FaPlus, FaTimes } from "react-icons/fa";
 import type { ConfigOption } from "./types";
+import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
+// Constant
+import { MAX_CALC_SETUPS } from "@Src/constants";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+import { useTabs } from "@Hooks/useTabs";
+
+// Util
+import { findById } from "@Src/utils";
+import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
+
+// Action
 import { applySettings } from "@Store/calculatorSlice";
+import { updateUI } from "@Store/uiSlice";
+
+// Selector
 import {
   selectComparedIds,
   selectStandardId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
-import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
-import { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
-import { updateUI } from "@Store/uiSlice";
 
+// Component
 import { Button, Green } from "@Src/styled-components";
-import { TipsModal } from "@Components/minors";
+import { TipsModal } from "@Components/template";
 import { CollapseAndMount } from "@Components/collapse";
 import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
-
-import { MAX_CALC_SETUPS } from "@Src/constants";
-import { useTabs } from "@Hooks/useTabs";
-import { findById } from "@Src/utils";
 
 import styles from "@Screens/Calculator/styles.module.scss";
 
@@ -289,27 +298,23 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         <span>Apply</span>
       </Button>
 
-      <TipsModal
-        active={tipsOn}
-        content={
-          <div className="space-y-2 text-default">
-            <p>
-              - Be careful when the Calculator is under the effect of{" "}
-              <Green>Separate Character's Info</Green> (level, constellation, talents) on each
-              Setup. It can make things complicated.
-            </p>
-            <p>
-              - When Separate Character's Info is deactivated. Info on the Standard Setup will be
-              used for others.
-            </p>
-            <p>
-              - Separate Character's Info will be reset to not activated at the start of every
-              calculating session.
-            </p>
-          </div>
-        }
-        onClose={() => setTipsOn(false)}
-      />
+      <TipsModal active={tipsOn} onClose={() => setTipsOn(false)}>
+        <div className="space-y-2 text-default">
+          <p>
+            - Be careful when the Calculator is under the effect of{" "}
+            <Green>Separate Character's Info</Green> (level, constellation, talents) on each Setup.
+            It can make things complicated.
+          </p>
+          <p>
+            - When Separate Character's Info is deactivated. Info on the Standard Setup will be used
+            for others.
+          </p>
+          <p>
+            - Separate Character's Info will be reset to not activated at the start of every
+            calculating session.
+          </p>
+        </div>
+      </TipsModal>
     </div>
   );
 }

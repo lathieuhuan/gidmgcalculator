@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { FaExpandArrowsAlt, FaMinus, FaSearch, FaTimes } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
+// Component
 import { Modal } from "@Components/modals";
 import TrackerContainer from "./TrackerContainer";
 import { TrackerState } from "./types";

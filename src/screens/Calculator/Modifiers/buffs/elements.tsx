@@ -18,6 +18,9 @@ import {
 // Action
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 
+// Util
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
+
 // Component
 import { Select } from "@Src/styled-components";
 import {
@@ -30,9 +33,6 @@ import {
   renderQuickenHeading,
 } from "@Components/template";
 import { twInputStyles } from "@Screens/Calculator/components";
-
-// Util
-import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();

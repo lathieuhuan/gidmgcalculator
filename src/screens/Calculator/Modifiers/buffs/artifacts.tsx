@@ -11,12 +11,12 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Stor
 import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { findArtifactSet } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { findArtifactSet } from "@Data/controllers";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Components/template";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 export default function ArtifactBuffs() {
   const dispatch = useDispatch();

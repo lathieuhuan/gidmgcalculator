@@ -17,13 +17,15 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Hooks/useTabs";
 
+// Util
+import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+
 // Component
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
 import { AttributeTable } from "@Components/AttributeTable";
 import { SharedSpace } from "@Components/minors";
 import { SetBonusesDisplay } from "@Components/template";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {

@@ -1,9 +1,11 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
 import { FaCaretRight, FaQuestion } from "react-icons/fa";
-
+import type { ReactNode } from "react";
 import type { Vision } from "@Src/types";
+
+// Util
 import { getImgSrc } from "@Src/utils";
+
 import styles from "./styles.module.scss";
 
 interface AbilityImgProps {

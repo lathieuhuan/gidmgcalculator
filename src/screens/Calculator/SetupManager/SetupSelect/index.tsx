@@ -4,21 +4,31 @@ import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import type { ModalInfo } from "./types";
 
+// Constant
+import { MAX_CALC_SETUPS } from "@Src/constants";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
 import { duplicateCalcSetup, updateCalculator } from "@Store/calculatorSlice";
+
+// Selector
 import {
   selectActiveId,
   selectComparedIds,
   selectStandardId,
   selectSetupManageInfos,
 } from "@Store/calculatorSlice/selectors";
-import { MAX_CALC_SETUPS } from "@Src/constants";
 
+// Util
+import { findById } from "@Src/utils";
+
+// Component
 import { ComplexSelect } from "@Components/ComplexSelect";
 import { Modal } from "@Components/modals";
 import { SaveSetup } from "../modal-content";
 
-import { findById } from "@Src/utils";
 import styles from "./styles.module.scss";
 
 export function SetupSelect() {

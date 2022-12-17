@@ -2,13 +2,18 @@ import clsx from "clsx";
 import { Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
 import isEqual from "react-fast-compare";
+import type { CalcWeapon, UserArtifacts } from "@Src/types";
 
-import type { CalcArtifacts, CalcWeapon, UserArtifacts } from "@Src/types";
-
+// Util
 import { findById } from "@Src/utils";
+
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Selector
 import { selectMyArts, selectMyWps } from "@Store/userDatabaseSlice/selectors";
 
+// Component
 import { WeaponCard } from "@Components/WeaponCard";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { renderEquippedChar } from "@Components/item-stores/components";

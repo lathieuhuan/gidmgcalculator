@@ -1,11 +1,15 @@
 import { useState } from "react";
 import type { ArtifactType, CalcArtifact } from "@Src/types";
 
+// Hook
 import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
+
+// Util
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
-import { CollapseAndMount } from "@Components/collapse";
+// Component
 import { Button, ButtonBar } from "@Src/styled-components";
+import { CollapseAndMount } from "@Components/collapse";
 
 interface ArtifactFilterProps extends FilterProps {
   filterOn: boolean;

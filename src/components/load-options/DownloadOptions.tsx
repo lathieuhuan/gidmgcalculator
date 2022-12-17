@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
 
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Selector
 import {
   selectMyArts,
   selectMyChars,
@@ -9,11 +12,12 @@ import {
   selectMyWps,
 } from "@Store/userDatabaseSlice/selectors";
 
+// Util
+import { downloadToDevice, styles } from "./utils";
+
 // Component
 import { CloseButton, ButtonBar } from "@Src/styled-components";
 import { Modal, ModalControl } from "@Components/modals";
-
-import { downloadToDevice, styles } from "./common";
 
 function Options({ onClose }: { onClose: () => void }) {
   const [messageType, setMessageType] = useState(0);

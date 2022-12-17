@@ -1,6 +1,9 @@
 import { Fragment, useState, useRef } from "react";
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 
+// Constant
+import { ATTACK_ELEMENTS } from "@Src/constants";
+
 // Action
 import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
 
@@ -13,9 +16,6 @@ import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
 import { Select, ButtonBar } from "@Src/styled-components";
-
-// Constant
-import { ATTACK_ELEMENTS } from "@Src/constants";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;

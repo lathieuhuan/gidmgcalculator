@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import { FaBalanceScaleLeft, FaCopy, FaTrashAlt } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
-
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
+
+// Component
 import { IconButton } from "@Src/styled-components";
 
 interface SetupControlProps {

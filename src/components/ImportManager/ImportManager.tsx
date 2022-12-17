@@ -3,15 +3,25 @@ import isEqual from "react-fast-compare";
 import type { CalcSetup } from "@Src/types";
 import type { ImportInfo } from "@Store/uiSlice/types";
 
+// Constant
 import { EScreen } from "@Src/constants";
-import { restoreCalcSetup } from "@Src/utils/setup";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
-import { selectChar } from "@Store/calculatorSlice/selectors";
-import { updateImportInfo, updateUI } from "@Store/uiSlice";
 
+// Util
+import { restoreCalcSetup } from "@Src/utils/setup";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+
+// Selector
+import { selectChar } from "@Store/calculatorSlice/selectors";
+
+// Action
+import { updateImportInfo, updateUI } from "@Store/uiSlice";
+import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
+
+// Component
 import { Modal } from "@Components/modals";
-import { ConfirmTemplate } from "@Components/minors";
+import { ConfirmTemplate } from "@Components/template";
 import { OverrideOptions } from "./OverwriteOptions";
 
 function Importing({ type, data }: Required<ImportInfo>) {
@@ -108,8 +118,8 @@ function Importing({ type, data }: Required<ImportInfo>) {
               : "The number of Setups on Calculator has reach the limit of 4.") +
             " Start a new session?"
           }
+          buttons={[undefined, { onClick: startNewSession }]}
           onClose={endImport}
-          right={{ onClick: startNewSession }}
         />
       );
     default:

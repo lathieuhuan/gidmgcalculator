@@ -1,13 +1,23 @@
 import clsx from "clsx";
 import { type RefObject, useState } from "react";
 
-import { changeArtifact } from "@Store/calculatorSlice";
-import { selectArtifacts } from "@Store/calculatorSlice/selectors";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { findArtifactPiece } from "@Data/controllers";
-import { getImgSrc } from "@Src/utils";
+// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
+// Action
+import { changeArtifact } from "@Store/calculatorSlice";
+
+// Selector
+import { selectArtifacts } from "@Store/calculatorSlice/selectors";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+
+// Util
+import { getImgSrc } from "@Src/utils";
+import { findArtifactPiece } from "@Data/controllers";
+
+// Component
 import { CollapseSpace } from "@Components/collapse";
 import { Picker } from "@Components/Picker";
 import { ArtifactInfo } from "./ArtifactInfo";

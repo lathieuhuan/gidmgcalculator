@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { memo } from "react";
+
+// Hook
 import { useSelector } from "@Store/hooks";
 
+// Component
 import OverviewChar from "./OverviewChar";
 import Modifiers from "./Modifiers";
 import DamageResults from "./DamageResults";

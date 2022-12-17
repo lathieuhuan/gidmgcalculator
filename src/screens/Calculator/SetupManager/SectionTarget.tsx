@@ -2,11 +2,19 @@ import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaChevronDown, FaEdit, FaTimes } from "react-icons/fa";
 
+// Util
 import { findMonster } from "@Data/controllers";
+
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Selector
 import { selectTarget } from "@Store/calculatorSlice/selectors";
+
+// Action
 import { updateTarget } from "@Store/calculatorSlice";
 
+// Component
 import { Modal } from "@Components/modals";
 import { TargetConfig } from "./modal-content";
 import { IconButton, Select } from "@Src/styled-components";

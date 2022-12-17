@@ -33,7 +33,7 @@ import { findArtifactPiece } from "@Data/controllers";
 import { ButtonBar } from "@Src/styled-components";
 import { Picker, PrePicker } from "@Components/Picker";
 import { ArtifactCard } from "@Components/ArtifactCard";
-import { ConfirmModal } from "@Components/minors";
+import { ConfirmModal } from "@Components/template";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 
@@ -256,7 +256,7 @@ export default function MyArtifacts() {
               ". Swap?
             </>
           }
-          right={{ onClick: () => swapOwner(newOwner!) }}
+          buttons={[undefined, { onClick: () => swapOwner(newOwner!) }]}
           onClose={() => setNewOwner(null)}
         />
       )}

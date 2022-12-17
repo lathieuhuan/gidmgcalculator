@@ -2,7 +2,10 @@ import clsx from "clsx";
 import { useState } from "react";
 import type { UserSetup } from "@Src/types";
 
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Selector
 import {
   selectCalcConfigs,
   selectCalcSetupsById,

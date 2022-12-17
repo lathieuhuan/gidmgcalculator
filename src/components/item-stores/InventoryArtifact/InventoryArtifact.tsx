@@ -20,8 +20,7 @@ import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 // Conponent
 import { ButtonBar } from "@Src/styled-components";
 import { ArtifactCard } from "@Components/ArtifactCard";
-import { ModalHeader } from "@Components/ModalHeader";
-import { Modal, ModalControl } from "@Components/modals";
+import { Modal, ModalHeader, type ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 import { ArtifactFilter } from "../ArtifactFilter";
 

@@ -1,14 +1,21 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
+
+// Constant
+import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
+
+// Util
 import { getRxnBonusesFromEM } from "@Calculators/utils";
 
+// Hook
+import { useTranslation } from "@Hooks/useTranslation";
+
+// Component
 import { Green } from "@Src/styled-components";
 import { StatsTable } from "@Components/StatsTable";
 import { CollapseSpace } from "@Components/collapse";
-import { useTranslation } from "@Hooks/useTranslation";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;

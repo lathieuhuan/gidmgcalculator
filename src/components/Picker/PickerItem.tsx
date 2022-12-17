@@ -2,12 +2,19 @@ import { useMemo } from "react";
 import type { PickerItem } from "./types";
 import type { ArtifactType, WeaponType } from "@Src/types";
 
+// Data
 import artifacts from "@Data/artifacts";
 import weapons from "@Data/weapons";
+
+// Util
 import { pickProps } from "@Src/utils";
 import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
-import { PickerTemplate } from "./PickerTemplate";
+
+// Constant
 import { EModAffect } from "@Src/constants";
+
+// Component
+import { PickerTemplate } from "./PickerTemplate";
 
 export interface PickerWeaponProps {
   type?: string;

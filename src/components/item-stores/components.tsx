@@ -1,7 +1,11 @@
 import type { UserArtifact, UserWeapon } from "@Src/types";
+import type { ModalControl } from "@Components/modals";
+
+// Util
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
-import { ConfirmModal } from "@Components/minors";
-import { ModalControl } from "@Components/modals";
+
+// Component
+import { ConfirmModal } from "@Components/template";
 
 export function renderEquippedChar(owner: string) {
   return (
@@ -50,17 +54,20 @@ export function ItemConfirmRemove({
           ) : null}
         </>
       }
-      right={{
-        onClick: () => {
-          const index = filteredIds.indexOf(ID);
-          removeItem({ ID, owner, type });
+      buttons={[
+        undefined,
+        {
+          onClick: () => {
+            const index = filteredIds.indexOf(ID);
+            removeItem({ ID, owner, type });
 
-          if (index !== -1 && filteredIds.length > 1) {
-            const move = index < filteredIds.length - 1 ? 1 : -1;
-            updateChosenID(filteredIds[index + move]);
-          }
+            if (index !== -1 && filteredIds.length > 1) {
+              const move = index < filteredIds.length - 1 ? 1 : -1;
+              updateChosenID(filteredIds[index + move]);
+            }
+          },
         },
-      }}
+      ]}
       onClose={onClose}
     />
   );

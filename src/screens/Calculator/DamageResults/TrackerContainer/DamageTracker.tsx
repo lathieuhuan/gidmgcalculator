@@ -1,10 +1,18 @@
 import type { ReactNode } from "react";
 import type { CalculatedDamageCluster, TalentBuff, TrackerDamageRecord } from "@Src/types";
-import { Green } from "@Src/styled-components";
-import { percentSign, round2, round3 } from "@Src/utils";
-import { useTranslation } from "@Hooks/useTranslation";
-import { renderDmgComponent, renderDmgValue } from "./utils";
+
+// Constant
 import { keyMap } from "./constants";
+
+// Component
+import { Green } from "@Src/styled-components";
+
+// Hook
+import { useTranslation } from "@Hooks/useTranslation";
+
+// Util
+import { percentSign, round2, round3 } from "@Src/utils";
+import { renderDmgComponent, renderDmgValue } from "./utils";
 
 interface DamageTrackerProps {
   records?: Record<string, TrackerDamageRecord>;

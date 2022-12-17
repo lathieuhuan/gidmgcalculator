@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from "@Store/hooks";
 // Thunk
 import { saveSetupThunk } from "@Store/thunks";
 
+// Util
+import { findById } from "@Src/utils";
+
 // Selector
 import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
 import { ButtonBar } from "@Src/styled-components";
-
-// Util
-import { findById } from "@Src/utils";
 
 interface SaveSetupProps {
   setup: CalcSetupManageInfo;

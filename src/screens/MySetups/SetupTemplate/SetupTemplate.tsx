@@ -11,18 +11,28 @@ import {
 } from "react-icons/fa";
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { MySetupModalType } from "../types";
+
+// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
+// Hook
 import { useDispatch } from "@Store/hooks";
-import { finalTalentLv, getImgSrc } from "@Src/utils";
+
+// Action
 import { updateImportInfo } from "@Store/uiSlice";
+
+// Selector
 import {
   chooseUserSetup,
   switchShownSetupInComplex,
   uncombineSetups,
 } from "@Store/userDatabaseSlice";
+
+// Util
+import { finalTalentLv, getImgSrc } from "@Src/utils";
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 
+// Component
 import { CharacterPortrait } from "@Components/minors";
 import { IconButton } from "@Src/styled-components";
 import { renderGearIcon } from "./utils";

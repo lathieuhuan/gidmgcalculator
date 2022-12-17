@@ -1,5 +1,7 @@
 import clsx from "clsx";
 import { FaBars } from "react-icons/fa";
+
+// Component
 import { Modal } from "@Components/modals";
 import {
   IntroButton,

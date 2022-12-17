@@ -11,8 +11,8 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/
 import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { findWeapon } from "@Data/controllers";
 import { deepCopy, findByIndex } from "@Src/utils";
+import { findWeapon } from "@Data/controllers";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Components/template";

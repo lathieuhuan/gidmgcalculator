@@ -1,7 +1,12 @@
+// Hook
+import { useSelector } from "@Store/hooks";
+
+// Util
+import { findById } from "@Src/utils";
+
+// Component
 import { Results } from "./Results";
 import { Header } from "./Header";
-import { useSelector } from "@Store/hooks";
-import { findById } from "@Src/utils";
 
 export default function DamageResults() {
   const activeSetupName = useSelector((state) => {

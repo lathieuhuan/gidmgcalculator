@@ -2,6 +2,9 @@ import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
 import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 
+// Constant
+import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
+
 // Action
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 
@@ -14,9 +17,6 @@ import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
 import { Select, ButtonBar } from "@Src/styled-components";
-
-// Constant
-import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
 

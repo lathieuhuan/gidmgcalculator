@@ -1,17 +1,20 @@
 import type { UserWeapon, WeaponType } from "@Src/types";
 
+// Selector
 import {
   selectFilteredWeaponIDs,
   selectMyWps,
   selectWeaponById,
 } from "@Store/userDatabaseSlice/selectors";
+
+// Hook
 import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "../hooks";
 
-import { WeaponCard } from "@Components/WeaponCard";
-import { ModalHeader } from "@Components/ModalHeader";
-import { Modal, ModalControl } from "@Components/modals";
+// Component
 import { Button } from "@Src/styled-components";
+import { WeaponCard } from "@Components/WeaponCard";
+import { Modal, ModalHeader, type ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 
 import styles from "../styles.module.scss";

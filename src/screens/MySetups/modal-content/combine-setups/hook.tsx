@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import { useState } from "react";
-
+import type { UserSetup } from "@Src/types";
 import { CharacterPortrait } from "@Components/minors";
 
-import type { UserSetup } from "@Src/types";
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
 
 interface UseCombineManagerArgs {

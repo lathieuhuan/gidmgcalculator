@@ -1,25 +1,33 @@
 import { useState } from "react";
 import { FaTimes, FaPlus, FaTrashAlt } from "react-icons/fa";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+import { useTranslation } from "@Hooks/useTranslation";
+
+// Selector
 import {
   selectActiveId,
   selectSetupManageInfos,
   selectCalcSetupsById,
 } from "@Store/calculatorSlice/selectors";
+
+// Action
 import {
   updateCustomBuffCtrls,
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
+
+// Util
 import { processNumInput } from "@Src/utils";
 
+// Component
+import { IconToggleButton } from "@Src/styled-components";
 import { CopySection } from "@Screens/Calculator/components";
 import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
-import { useTranslation } from "@Hooks/useTranslation";
-import { IconToggleButton } from "@Src/styled-components";
 
 interface CustomModifiersProps {
   isBuffs: boolean;

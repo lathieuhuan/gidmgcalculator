@@ -1,6 +1,9 @@
-import { Modal, ModalControl } from "@Components/modals";
-import { CloseButton } from "@Src/styled-components";
+// Util
 import { getImgSrc } from "@Src/utils";
+
+// Component
+import { Modal, type ModalControl } from "@Components/modals";
+import { CloseButton } from "@Src/styled-components";
 
 interface PrePickerProps extends ModalControl {
   choices: Record<string, string>;

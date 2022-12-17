@@ -10,7 +10,10 @@ import type {
   WeaponType,
 } from "@Src/types";
 
+// Constant
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
+
+// Util
 import { getDefaultStatInfo } from "@Calculators/utils";
 
 // Component

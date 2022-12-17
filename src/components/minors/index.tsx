@@ -26,19 +26,6 @@ export function SharedSpace({ className, leftPart, rightPart, atLeft }: SharedSp
   );
 }
 
-interface TipsModalProps extends ModalControl {
-  content: JSX.Element;
-}
-export function TipsModal({ active, content, onClose }: TipsModalProps) {
-  return (
-    <Modal active={active} className="p-4" withDefaultStyle onClose={onClose}>
-      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="mb-2 text-1.5xl text-orange font-bold">TIPs</p>
-      {content}
-    </Modal>
-  );
-}
-
 interface CharFilledSlotProps {
   className?: string;
   name: string;
@@ -119,57 +106,5 @@ export function InfusionNotes({ vision, weaponType }: InfusionNotesProps) {
         );
       })}
     </div>
-  );
-}
-
-interface ButtonInfo {
-  text?: string;
-  onClick?: () => void;
-}
-interface ConfirmTemplateProps {
-  message: string | JSX.Element;
-  left?: ButtonInfo;
-  mid?: Required<ButtonInfo>;
-  right: ButtonInfo;
-  onClose: () => void;
-}
-export function ConfirmTemplate({ message, left, mid, right, onClose }: ConfirmTemplateProps) {
-  const texts = [left?.text || "Cancel", right?.text || "Confirm"];
-  const handlers = [
-    () => {
-      if (left?.onClick) left.onClick();
-      onClose();
-    },
-    () => {
-      if (right.onClick) right.onClick();
-      onClose();
-    },
-  ];
-  if (mid) {
-    texts.splice(1, 0, mid.text);
-    handlers.splice(1, 0, () => {
-      mid.onClick();
-      onClose();
-    });
-  }
-
-  return (
-    <div className="p-4 rounded-lg bg-darkblue-3">
-      <p className="py-2 text-center text-1.5xl text-default">{message}</p>
-      {/* <ButtonBar
-        className={clsx("mt-4 flex-wrap", mid && "space-x-4")}
-        texts={texts}
-        handlers={handlers}
-        autoFocusIndex={texts.length - 1}
-      /> */}
-    </div>
-  );
-}
-
-export function ConfirmModal({ active, onClose, ...rest }: ModalControl & ConfirmTemplateProps) {
-  return (
-    <Modal active={active} className="small-modal" onClose={onClose}>
-      <ConfirmTemplate {...rest} onClose={onClose} />
-    </Modal>
   );
 }

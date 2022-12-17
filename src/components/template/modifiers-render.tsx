@@ -1,5 +1,5 @@
 import { Green } from "@Src/styled-components";
-import { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
+import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
 import { round3 } from "@Src/utils";
 
 export const renderModifiers = (

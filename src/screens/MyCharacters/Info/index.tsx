@@ -30,7 +30,7 @@ import {
 // Component
 import { IconButton, Select, StarLine } from "@Src/styled-components";
 import { ConsList, TalentList } from "@Components/ability";
-import { ConfirmTemplate } from "@Components/minors";
+import { ConfirmTemplate } from "@Components/template";
 import { AttributeTable } from "@Components/AttributeTable";
 import { Modal } from "@Components/modals";
 import Gears from "./Gears";
@@ -163,7 +163,7 @@ export default function Info() {
               Remove <b>{name}</b>?
             </>
           }
-          right={{ onClick: () => dispatch(removeUserCharacter(name)) }}
+          buttons={[undefined, { onClick: () => dispatch(removeUserCharacter(name)) }]}
           onClose={() => setRemoving(false)}
         />
       </Modal>

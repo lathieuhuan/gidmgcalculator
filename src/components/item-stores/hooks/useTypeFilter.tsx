@@ -1,6 +1,10 @@
 import clsx from "clsx";
 import { useState } from "react";
+
+// Constant
 import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
+
+// Util
 import { getImgSrc } from "@Src/utils";
 
 interface IUseTypeFilterArgs {

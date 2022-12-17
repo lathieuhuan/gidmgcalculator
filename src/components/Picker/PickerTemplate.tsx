@@ -2,8 +2,9 @@ import clsx from "clsx";
 import { useState } from "react";
 import type { DataType, Filter, PickerItem } from "./types";
 
+// Component
 import { CollapseSpace } from "@Components/collapse";
-import { ModalHeader } from "@Components/ModalHeader";
+import { ModalHeader } from "@Components/modals";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 

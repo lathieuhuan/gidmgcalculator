@@ -1,14 +1,18 @@
 import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
-
 import type { ArtifactType, ArtifactMainStatType, ArtifactSubStatType } from "@Src/types";
+import type { StatsFilter } from "../utils";
+
+// Constant
 import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
-import { StatsFilter } from "../utils";
 
-import { Green, IconButton, Select } from "@Src/styled-components";
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
+
+// Component
+import { Green, IconButton, Select } from "@Src/styled-components";
 
 const MAIN_STAT_TYPES = [
   "hp",

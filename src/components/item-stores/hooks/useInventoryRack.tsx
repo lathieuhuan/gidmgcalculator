@@ -1,8 +1,12 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
-import { UserArtifact, UserWeapon, Level, Rarity, WeaponType, ArtifactType } from "@Src/types";
+import type { UserArtifact, UserWeapon, Level, Rarity, WeaponType, ArtifactType } from "@Src/types";
+
+// Util
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
+
+// Component
 import { ItemThumb } from "@Components/ItemThumb";
 import { renderNoItems } from "@Components/minors";
 

@@ -2,15 +2,21 @@ import { useState, useMemo } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import type { CharInfo, DamageResult, Party } from "@Src/types";
 
+// Consant
 import { EStatDamageKey } from "@Src/constants";
-import { displayValue, getTableKeys } from "./utils";
 
-import { CollapseSpace } from "@Components/collapse";
-import { tableStyles } from "@Src/styled-components";
-import { CompareTable } from "./CompareTable";
+// Hook
+import { useTranslation } from "@Hooks/useTranslation";
+
+// Util
 import { finalTalentLv } from "@Src/utils";
 import { getPartyData } from "@Data/controllers";
-import { useTranslation } from "@Hooks/useTranslation";
+import { displayValue, getTableKeys } from "./utils";
+
+// Component
+import { tableStyles } from "@Src/styled-components";
+import { CollapseSpace } from "@Components/collapse";
+import { CompareTable } from "./CompareTable";
 
 interface DamageDisplayProps {
   char: CharInfo;

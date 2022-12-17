@@ -1,11 +1,15 @@
 import clsx from "clsx";
 import { type ReactNode, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
 import type { CharInfo } from "@Src/types";
+
+// Constant
 import { GENSHIN_DEV_URL } from "@Src/constants";
+
+// Util
 import { findCharacter } from "@Data/controllers";
 
+// Conponent
 import { Green, CloseButton, InfoSign } from "@Src/styled-components";
 import { SharedSpace } from "@Components/minors";
 import { AbilityIcon, SlideShow } from "./components";

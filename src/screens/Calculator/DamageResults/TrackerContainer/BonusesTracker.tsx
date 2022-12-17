@@ -1,4 +1,6 @@
 import type { Tracker } from "@Src/types";
+
+// Constant
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -6,11 +8,15 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
+import { keyMap } from "./constants";
+
+// Util
 import { round1, percentSign } from "@Src/utils";
 import { getRxnBonusesFromEM } from "@Calculators/utils";
-import { useTranslation } from "@Hooks/useTranslation";
-import { keyMap } from "./constants";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
+
+// Hook
+import { useTranslation } from "@Hooks/useTranslation";
 
 interface BonusesTrackerProps
   extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {

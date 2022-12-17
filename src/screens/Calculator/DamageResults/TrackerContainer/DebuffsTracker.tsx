@@ -1,6 +1,12 @@
-import { ATTACK_ELEMENTS } from "@Src/constants";
 import type { ResistanceReduction, Tracker } from "@Src/types";
+
+// Constant
+import { ATTACK_ELEMENTS } from "@Src/constants";
+
+// Hook
 import { useTranslation } from "@Hooks/useTranslation";
+
+// Util
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 function getResMultEquation(value: number) {

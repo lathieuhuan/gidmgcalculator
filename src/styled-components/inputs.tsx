@@ -108,14 +108,15 @@ export const CloseButton = ({ className, size = "w-7 h-7", ...rest }: CloseButto
   );
 };
 
+export interface ButtonBarButton {
+  text: string;
+  disabled?: boolean;
+  variant?: "positive" | "negative" | "neutral" | "default";
+  onClick?: () => void;
+}
 interface ButtonBarProps {
   className?: string;
-  buttons: Array<{
-    text: string;
-    disabled?: boolean;
-    variant?: "positive" | "negative" | "neutral" | "default";
-    onClick?: () => void;
-  }>;
+  buttons: ButtonBarButton[];
   autoFocusIndex?: number;
 }
 export const ButtonBar = ({ className, buttons, autoFocusIndex }: ButtonBarProps) => {

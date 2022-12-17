@@ -3,13 +3,18 @@ import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
 import {
   addTeammate,
   removeTeammate,
   updateTeammateArtifact,
   updateTeammateWeapon,
 } from "@Store/calculatorSlice";
+
+// Selector
 import {
   selectCharData,
   selectActiveId,
@@ -17,13 +22,15 @@ import {
   selectParty,
 } from "@Store/calculatorSlice/selectors";
 
+// Util
 import { findById, getImgSrc } from "@Src/utils";
 import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 
+// Component
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
-import { CopySelect } from "./CopySelect";
 import { IconButton, Select } from "@Src/styled-components";
+import { CopySelect } from "./CopySelect";
 
 interface IModal {
   type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";

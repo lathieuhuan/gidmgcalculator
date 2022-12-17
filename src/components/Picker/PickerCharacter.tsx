@@ -2,10 +2,17 @@ import { useMemo } from "react";
 import type { DataCharacter } from "@Src/types";
 import type { PickerItem } from "./types";
 
+// Data
 import characters from "@Data/characters";
-import { findCharacter } from "@Data/controllers";
+
+// Util
 import { findByName, pickProps } from "@Src/utils";
+import { findCharacter } from "@Data/controllers";
+
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Component
 import { PickerTemplate } from "./PickerTemplate";
 
 export interface PickerCharacterProps {

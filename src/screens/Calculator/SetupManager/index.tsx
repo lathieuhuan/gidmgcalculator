@@ -3,20 +3,29 @@ import { FaCog } from "react-icons/fa";
 import type { ArtifactType } from "@Src/types";
 import type { ModalInfo } from "./types";
 
-import { pickEquippedArtSet } from "@Store/thunks";
-import { changeArtifact, changeWeapon } from "@Store/calculatorSlice";
-import { updateUI } from "@Store/uiSlice";
-import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selectors";
-
-import { useDispatch, useSelector } from "@Store/hooks";
-import useHeight from "@Hooks/useHeight";
-import { getImgSrc } from "@Src/utils";
+// Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
+// Util
+import { getImgSrc } from "@Src/utils";
+
+// Action & Thunk
+import { updateUI } from "@Store/uiSlice";
+import { changeArtifact, changeWeapon } from "@Store/calculatorSlice";
+import { pickEquippedArtSet } from "@Store/thunks";
+
+// Selector
+import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selectors";
+
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+import useHeight from "@Hooks/useHeight";
+
+// Component
 import { Button, IconButton } from "@Src/styled-components";
 import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
-import { ConfirmModal } from "@Components/minors";
+import { ConfirmModal } from "@Components/template";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
@@ -155,9 +164,12 @@ export default function SetupManager() {
       <ConfirmModal
         active={modal.type === "NOTICE_MOVE_TARGET"}
         message="Move Target Overview to Settings/Configs?"
-        right={{
-          onClick: () => setTargetAtFront(false),
-        }}
+        buttons={[
+          undefined,
+          {
+            onClick: () => setTargetAtFront(false),
+          },
+        ]}
         onClose={closeModal}
       />
     </div>

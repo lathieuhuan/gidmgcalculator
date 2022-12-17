@@ -1,7 +1,10 @@
 import clsx from "clsx";
-import { Level, Rarity } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
+import type { Level, Rarity } from "@Src/types";
+
+// Util
 import { getImgSrc } from "@Src/utils";
+import { findCharacter } from "@Data/controllers";
+
 import styles from "./styles.module.scss";
 
 interface ItemThumbProps {

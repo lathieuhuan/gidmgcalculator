@@ -3,18 +3,25 @@ import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 import type { CalcArtifact, ArtifactMainStatType } from "@Src/types";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+// Constant
+import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
+
+// Action
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
 import { addUserArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
 
+// Util
 import { findById, percentSign } from "@Src/utils";
-import { useTranslation } from "@Hooks/useTranslation";
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
+import { useTranslation } from "@Hooks/useTranslation";
+
+// Component
 import { IconButton, Select } from "@Src/styled-components";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
 import { Modal } from "@Components/modals";
-import { ConfirmTemplate } from "@Components/minors";
+import { ConfirmTemplate } from "@Components/template";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -178,7 +185,7 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
     return null;
   }
 
-  const successful = type === 1;
+  const isSuccess = type === 1;
   let noChange = false;
 
   if (existedArtPiece) {
@@ -192,7 +199,7 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
     </>
   ) : null;
 
-  const message = successful ? (
+  const message = isSuccess ? (
     <>Successfully saved to My Artifacts.</>
   ) : (
     <>
@@ -204,21 +211,24 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   return (
     <ConfirmTemplate
       message={message}
-      left={successful ? { text: "Close" } : undefined}
-      mid={
-        successful
-          ? undefined
-          : {
-              text: "Duplicate",
-              onClick: () =>
-                dispatch(addUserArtifact({ owner: null, ...artifact, ID: Date.now() })),
-            }
-      }
-      right={{
-        onClick: () => {
-          successful || noChange ? onClose() : dispatch(overwriteArtifact(artifact));
+      buttons={[
+        {
+          text: isSuccess ? "Close" : "Cancel",
         },
-      }}
+        !isSuccess && {
+          text: "Duplicate",
+          onClick: () => {
+            dispatch(addUserArtifact({ owner: null, ...artifact, ID: Date.now() }));
+          },
+        },
+        {
+          onClick: () => {
+            if (!isSuccess && !noChange) {
+              dispatch(overwriteArtifact(artifact));
+            }
+          },
+        },
+      ]}
       onClose={onClose}
     />
   );
