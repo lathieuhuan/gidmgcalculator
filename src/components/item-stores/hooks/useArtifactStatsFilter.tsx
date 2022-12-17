@@ -12,7 +12,8 @@ import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Green, IconButton, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { Green, IconButton } from "@Components/atoms";
 
 const MAIN_STAT_TYPES = [
   "hp",

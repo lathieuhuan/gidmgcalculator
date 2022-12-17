@@ -33,8 +33,7 @@ import { finalTalentLv, getImgSrc } from "@Src/utils";
 import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
 
 // Component
-import { CharacterPortrait } from "@Components/minors";
-import { IconButton } from "@Src/styled-components";
+import { CharacterPortrait, IconButton } from "@Components/atoms";
 import { renderGearIcon } from "./utils";
 
 interface SetupLayoutProps {

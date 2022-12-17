@@ -1,5 +1,5 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
-import { Green, Lightgold, Pyro, Rose } from "@Src/styled-components";
+import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv, round2 } from "@Src/utils";

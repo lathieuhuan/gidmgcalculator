@@ -23,7 +23,7 @@ import {
 import { processNumInput } from "@Src/utils";
 
 // Component
-import { IconToggleButton } from "@Src/styled-components";
+import { IconToggleButton } from "@Components/atoms";
 import { CopySection } from "@Screens/Calculator/components";
 import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";

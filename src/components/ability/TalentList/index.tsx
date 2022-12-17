@@ -14,8 +14,8 @@ import { useTranslation } from "@Hooks/useTranslation";
 // import { useTabs } from "@Hooks/useTabs";
 
 // Component
-import { CloseButton } from "@Src/styled-components";
-import { SharedSpace } from "@Components/minors";
+import { CloseButton } from "@Components/atoms";
+import { SharedSpace } from "@Components/layout";
 import { SlideShow } from "../components";
 import { ActiveTalent, PassiveTalent } from "./talent-overview";
 import { SkillAttributes } from "./talent-details";

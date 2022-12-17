@@ -14,8 +14,10 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { ButtonBar, SeeDetails, tableStyles } from "@Src/styled-components";
+import { tableStyles } from "@Src/styled-components";
 import { CollapseSpace } from "@Components/collapse";
+import { SeeDetails } from "@Components/atoms";
+import { ButtonBar } from "@Components/molecules";
 
 interface OverrideOptions {
   pendingCode: number;

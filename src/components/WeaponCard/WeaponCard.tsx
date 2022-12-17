@@ -13,7 +13,8 @@ import { findWeapon } from "@Data/controllers";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Select, BetaMark } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { BetaMark } from "@Components/atoms";
 
 const groupStyles = "bg-darkblue-2 px-2";
 

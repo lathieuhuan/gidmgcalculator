@@ -18,7 +18,7 @@ import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
 
 // Conponent
-import { ButtonBar } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { Modal, ModalHeader, type ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";

@@ -10,7 +10,7 @@ import { getImgSrc } from "@Src/utils";
 import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controllers";
 
 // Component
-import { InfoSign } from "@Src/styled-components";
+import { InfoSign } from "@Components/atoms";
 import { ItemThumb } from "@Components/ItemThumb";
 
 const bonusStyles = (active: boolean) => {

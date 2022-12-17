@@ -5,7 +5,7 @@ import type {
   ModifierInput,
   PartyData,
 } from "@Src/types";
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs } from "../constants";
 import { finalTalentLv } from "@Src/utils";

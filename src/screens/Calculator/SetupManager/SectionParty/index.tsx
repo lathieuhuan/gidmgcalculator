@@ -29,7 +29,8 @@ import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 // Component
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
-import { IconButton, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
 import { CopySelect } from "./CopySelect";
 
 interface IModal {

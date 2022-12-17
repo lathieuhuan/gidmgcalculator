@@ -17,8 +17,9 @@ import { splitLv } from "@Src/utils";
 import { findCharacter } from "@Data/controllers";
 
 // Component
-import { Modal, ModalControl } from "@Components/modals";
-import { Button, IconButton, ButtonBar } from "@Src/styled-components";
+import { Modal, type ModalControl } from "@Components/modals";
+import { Button, IconButton } from "@Components/atoms";
+import { ButtonBar } from "@Components/molecules";
 
 const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
   myChars.map((char, index) => {

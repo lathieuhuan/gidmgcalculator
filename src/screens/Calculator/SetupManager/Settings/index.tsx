@@ -27,7 +27,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, Green } from "@Src/styled-components";
+import { Button, Green } from "@Components/atoms";
 import { TipsModal } from "@Components/template";
 import { CollapseAndMount } from "@Components/collapse";
 import SectionTarget from "../SectionTarget";

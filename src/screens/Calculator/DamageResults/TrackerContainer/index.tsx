@@ -2,15 +2,22 @@ import { useEffect, useState } from "react";
 import type { AttackPattern, Tracker } from "@Src/types";
 import type { TrackerState } from "../types";
 
+// Hook
 import { useSelector } from "@Store/hooks";
+
+// Selector
 import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
+// Calculator
 import calculateAll from "@Calculators/index";
+
+// Util
 import { initTracker } from "@Calculators/utils";
 import { bareLv } from "@Src/utils";
 import { getTotalRecordValue } from "./utils";
 
-import { Green, Lesser } from "@Src/styled-components";
+// Component
+import { Green, Lesser } from "@Components/atoms";
 import { CollapseList } from "@Components/collapse";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";

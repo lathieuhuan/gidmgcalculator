@@ -1,4 +1,4 @@
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 
 export const resonanceRenderInfo = {
   pyro: {

@@ -1,5 +1,5 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
-import { Green, Lightgold, Red } from "@Src/styled-components";
+import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv, round2 } from "@Src/utils";

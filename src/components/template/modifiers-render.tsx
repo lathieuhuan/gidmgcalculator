@@ -1,4 +1,4 @@
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
 import { round3 } from "@Src/utils";
 

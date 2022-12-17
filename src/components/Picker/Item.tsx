@@ -9,7 +9,7 @@ import { VISION_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { BetaMark } from "@Src/styled-components";
+import { BetaMark } from "@Components/atoms";
 
 interface ItemProps {
   massAdd: boolean;

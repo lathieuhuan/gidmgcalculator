@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import useHeight from "@Hooks/useHeight";
 
 // Component
-import { Button, IconButton } from "@Src/styled-components";
+import { Button, IconButton } from "@Components/atoms";
 import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { ConfirmModal } from "@Components/template";

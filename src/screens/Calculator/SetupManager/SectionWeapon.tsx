@@ -20,7 +20,8 @@ import { getImgSrc } from "@Src/utils";
 
 // Component
 import { Picker } from "@Components/Picker";
-import { Select, BetaMark } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { BetaMark } from "@Components/atoms";
 
 export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);

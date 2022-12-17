@@ -4,7 +4,7 @@ import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { IconButton } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;

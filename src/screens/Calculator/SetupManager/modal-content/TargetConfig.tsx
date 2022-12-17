@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Button, CloseButton, InfoSign } from "@Src/styled-components";
+import { Button, CloseButton, InfoSign } from "@Components/atoms";
 import { twInputStyles } from "@Screens/Calculator/components";
 
 interface TargetConfigProps {

@@ -20,9 +20,10 @@ import { startCalculation } from "@Store/thunks";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, IconButton, Select, BetaMark, StarLine } from "@Src/styled-components";
+import { Button, IconButton, Select } from "@Src/styled-components";
 import { Picker } from "@Components/Picker";
 import { ComplexSelect } from "@Components/ComplexSelect";
+import { BetaMark, StarLine } from "@Components/atoms";
 import contentByTab from "./content";
 
 interface OverviewCharProps {

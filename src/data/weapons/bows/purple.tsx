@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Cryo, Gold, Green, Red } from "@Src/styled-components";
+import { Cryo, Gold, Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import {
   blackcliffSeries,

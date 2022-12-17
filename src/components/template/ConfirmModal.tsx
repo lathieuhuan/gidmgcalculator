@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 // Component
-import { ButtonBar, type ButtonBarButton } from "@Src/styled-components";
+import { ButtonBar, type ButtonBarButton } from "@Components/molecules";
 import { Modal, type ModalControl } from "@Components/modals";
 
 interface ConfirmTemplateProps {

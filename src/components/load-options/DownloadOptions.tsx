@@ -16,7 +16,8 @@ import {
 import { downloadToDevice, styles } from "./utils";
 
 // Component
-import { CloseButton, ButtonBar } from "@Src/styled-components";
+import { CloseButton } from "@Components/atoms";
+import { ButtonBar } from "@Components/molecules";
 import { Modal, ModalControl } from "@Components/modals";
 
 function Options({ onClose }: { onClose: () => void }) {

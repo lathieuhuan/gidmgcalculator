@@ -30,7 +30,7 @@ import { filterArtIdsBySetsAndStats, initArtifactStatsFilter } from "@Components
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { ButtonBar } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 import { Picker, PrePicker } from "@Components/Picker";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { ConfirmModal } from "@Components/template";

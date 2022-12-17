@@ -5,7 +5,7 @@ import type { CalculatedDamageCluster, TalentBuff, TrackerDamageRecord } from "@
 import { keyMap } from "./constants";
 
 // Component
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 
 // Hook
 import { useTranslation } from "@Hooks/useTranslation";

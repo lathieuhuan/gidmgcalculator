@@ -17,7 +17,8 @@ import { updateTarget } from "@Store/calculatorSlice";
 // Component
 import { Modal } from "@Components/modals";
 import { TargetConfig } from "./modal-content";
-import { IconButton, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
 
 interface SectionTargetProps {
   isAtFront?: boolean;

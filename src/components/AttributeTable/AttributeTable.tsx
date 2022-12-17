@@ -13,7 +13,7 @@ import { getRxnBonusesFromEM } from "@Calculators/utils";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 import { StatsTable } from "@Components/StatsTable";
 import { CollapseSpace } from "@Components/collapse";
 

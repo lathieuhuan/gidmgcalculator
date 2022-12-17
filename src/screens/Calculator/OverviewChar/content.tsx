@@ -24,7 +24,7 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 import { ConsList, TalentList } from "@Components/ability";
 import { WeaponCard } from "@Components/WeaponCard";
 import { AttributeTable } from "@Components/AttributeTable";
-import { SharedSpace } from "@Components/minors";
+import { SharedSpace } from "@Components/layout";
 import { SetBonusesDisplay } from "@Components/template";
 
 const contentByTab: Record<string, () => JSX.Element> = {

@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Green, Rose } from "@Src/styled-components";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";

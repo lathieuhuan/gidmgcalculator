@@ -4,8 +4,8 @@ import type { ArtifactSetBonus } from "@Src/types";
 import { findArtifactSet } from "@Data/controllers";
 
 // Component
+import { CloseButton } from "@Components/atoms";
 import { Modal, type ModalControl } from "../modals";
-import { CloseButton } from "@Src/styled-components";
 
 export * from "./modifiers-render";
 export * from "./ModifierTemplate";

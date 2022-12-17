@@ -12,7 +12,7 @@ import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "../hooks";
 
 // Component
-import { Button } from "@Src/styled-components";
+import { Button } from "@Components/atoms";
 import { WeaponCard } from "@Components/WeaponCard";
 import { Modal, ModalHeader, type ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";

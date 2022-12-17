@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import type { UserSetup } from "@Src/types";
 
 // Component
-import { ButtonBar } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 
 interface SetupExporterProps {
   data: UserSetup;

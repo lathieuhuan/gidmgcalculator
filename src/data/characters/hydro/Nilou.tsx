@@ -1,5 +1,5 @@
 import type { CharData, DataCharacter, PartyData } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Src/styled-components";
+import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round1 } from "@Src/utils";

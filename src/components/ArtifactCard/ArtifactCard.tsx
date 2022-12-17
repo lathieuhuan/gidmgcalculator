@@ -22,7 +22,8 @@ import { percentSign, processNumInput, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { Button, IconButton, Select, BetaMark } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { BetaMark, IconButton } from "@Components/atoms";
 
 interface ArtifactCardProps extends ArtifactCardCommonProps {
   artifact?: CalcArtifact;

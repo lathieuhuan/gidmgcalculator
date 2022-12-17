@@ -10,8 +10,8 @@ import { GENSHIN_DEV_URL } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
 
 // Conponent
-import { Green, CloseButton, InfoSign } from "@Src/styled-components";
-import { SharedSpace } from "@Components/minors";
+import { Green, CloseButton, InfoSign } from "@Components/atoms";
+import { SharedSpace } from "@Components/layout";
 import { AbilityIcon, SlideShow } from "./components";
 
 interface ConsListProps {

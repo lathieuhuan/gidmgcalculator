@@ -20,7 +20,8 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button, ButtonBar } from "@Src/styled-components";
+import { Button } from "@Components/atoms";
+import { ButtonBar } from "@Components/molecules";
 import { ArtifactCard } from "@Components/ArtifactCard";
 import { AttributeTable } from "@Components/AttributeTable";
 import { SetBonusesDisplay } from "@Components/template";

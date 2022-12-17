@@ -1,5 +1,5 @@
 import type { AttributeStat, CharData, DataCharacter, PartyData } from "@Src/types";
-import { Geo, Green, Red } from "@Src/styled-components";
+import { Geo, Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { finalTalentLv } from "@Src/utils";

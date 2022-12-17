@@ -27,7 +27,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
 // Component
-import { IconButton, ButtonBar } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
+import { ButtonBar } from "@Components/molecules";
 import { Picker, PrePicker } from "@Components/Picker";
 import { WeaponCard } from "@Components/WeaponCard";
 import { CollapseSpace } from "@Components/collapse";

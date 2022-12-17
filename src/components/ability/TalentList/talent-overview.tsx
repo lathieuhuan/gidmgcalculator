@@ -9,7 +9,8 @@ import { totalXtraTalentLv } from "@Src/utils";
 import { getPartyData } from "@Data/controllers";
 
 // Component
-import { Select, InfoSign } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { InfoSign } from "@Components/atoms";
 import { AbilityIcon } from "../components";
 
 interface ActiveTalentProps {

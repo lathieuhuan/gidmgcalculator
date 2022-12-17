@@ -47,7 +47,7 @@ import { CollapseList } from "@Components/collapse";
 import { Modal } from "@Components/modals";
 import { renderNoItems } from "@Components/minors";
 import { SetBonusesDisplay, ConfirmTemplate, TipsModal } from "@Components/template";
-import { Button, IconButton, Green, Red } from "@Src/styled-components";
+import { Button, IconButton, Green, Red } from "@Components/atoms";
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
 import { SetupExporter } from "@Components/SetupExporter";

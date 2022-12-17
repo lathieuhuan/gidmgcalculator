@@ -6,7 +6,7 @@ import type {
   ModifierInput,
   PartyData,
 } from "@Src/types";
-import { Green, Hydro } from "@Src/styled-components";
+import { Green, Hydro } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
 import { applyPercent, finalTalentLv } from "@Src/utils";

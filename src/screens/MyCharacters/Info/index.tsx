@@ -28,11 +28,12 @@ import {
 } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { IconButton, Select, StarLine } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
 import { ConsList, TalentList } from "@Components/ability";
 import { ConfirmTemplate } from "@Components/template";
 import { AttributeTable } from "@Components/AttributeTable";
 import { Modal } from "@Components/modals";
+import { IconButton, StarLine } from "@Components/atoms";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(

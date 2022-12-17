@@ -21,7 +21,7 @@ import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 export function ElementDebuffs() {

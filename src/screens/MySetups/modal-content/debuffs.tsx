@@ -18,7 +18,7 @@ import { findByIndex } from "@Src/utils";
 import { findArtifactSet, findCharacter } from "@Data/controllers";
 
 // Component
-import { Green } from "@Src/styled-components";
+import { Green } from "@Components/atoms";
 import { ModifierTemplate, renderModifiers } from "@Components/template";
 
 interface ElementDebuffsProps {

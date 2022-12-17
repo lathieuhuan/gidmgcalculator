@@ -1,6 +1,6 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Hydro, Lightgold } from "@Src/styled-components";
-import { EModAffect, NORMAL_ATTACKS } from "@Src/constants";
+import { Green, Hydro, Lightgold } from "@Components/atoms";
+import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Calculators/utils";
 import { checkAscs, checkCons } from "../utils";

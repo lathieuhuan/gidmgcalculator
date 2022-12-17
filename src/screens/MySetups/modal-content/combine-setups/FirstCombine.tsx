@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hook";
 
 // Component
-import { ButtonBar } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();

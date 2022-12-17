@@ -16,7 +16,8 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Select, ButtonBar } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
 

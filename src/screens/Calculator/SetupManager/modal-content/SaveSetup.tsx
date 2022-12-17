@@ -15,7 +15,7 @@ import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ButtonBar } from "@Src/styled-components";
+import { ButtonBar } from "@Components/molecules";
 
 interface SaveSetupProps {
   setup: CalcSetupManageInfo;

@@ -11,7 +11,8 @@ import { selectChosenChar, selectMyChars } from "@Store/userDatabaseSlice/select
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { Button, Select } from "@Src/styled-components";
+import { Select } from "@Src/styled-components";
+import { Button } from "@Components/atoms";
 import { Picker } from "@Components/Picker";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";

@@ -16,7 +16,7 @@ import { selectChosenChar } from "@Store/userDatabaseSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { IconButton } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
 import { Picker } from "@Components/Picker";
 
 import styles from "../styles.module.scss";
