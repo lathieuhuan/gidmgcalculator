@@ -9,7 +9,6 @@ import { totalXtraTalentLv } from "@Src/utils";
 import { getPartyData } from "@Data/controllers";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { InfoSign } from "@Components/atoms";
 import { AbilityIcon } from "../components";
 
@@ -60,8 +59,8 @@ export function ActiveTalent({
             {talentType === "altSprint" ? (
               <p className={`ml-1 text-${vision} font-bold`}>1</p>
             ) : (
-              <Select
-                className={`text-${vision} font-bold`}
+              <select
+                className={`styled-select bg-transparent text-${vision} font-bold`}
                 value={talentLv}
                 onChange={(e) => onChangeLevel && onChangeLevel(+e.target.value)}
               >
@@ -70,7 +69,7 @@ export function ActiveTalent({
                     {i + 1}
                   </option>
                 ))}
-              </Select>
+              </select>
             )}
             {!!xtraLv && <p className="ml-2 font-bold text-green">+{xtraLv}</p>}
           </div>

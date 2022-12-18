@@ -20,7 +20,7 @@ import { startCalculation } from "@Store/thunks";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, IconButton, Select } from "@Src/styled-components";
+import { Button, IconButton } from "@Components/atoms";
 import { Picker } from "@Components/Picker";
 import { ComplexSelect } from "@Components/ComplexSelect";
 import { BetaMark, StarLine } from "@Components/atoms";
@@ -66,8 +66,8 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
               <StarLine className="mt-1" rarity={rarity} />
               <div className="mt-1 flex items-center">
                 <p className="mr-1 text-lg">Level</p>
-                <Select
-                  className={`text-lg text-${vision} font-bold text-last-right`}
+                <select
+                  className={`styled-select bg-transparent text-lg text-${vision} font-bold text-last-right`}
                   value={char.level}
                   onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
                 >
@@ -76,7 +76,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
                       {LEVELS[LEVELS.length - 1 - index]}
                     </option>
                   ))}
-                </Select>
+                </select>
                 <p
                   className={`ml-2 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-darkblue-2 text-${vision} leading-none font-bold cursor-default`}
                 >

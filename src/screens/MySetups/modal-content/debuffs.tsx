@@ -1,4 +1,3 @@
-import { resonanceRenderInfo } from "@Src/constants";
 import type {
   AbilityDebuff,
   ArtifactDebuffCtrl,
@@ -19,7 +18,7 @@ import { findArtifactSet, findCharacter } from "@Data/controllers";
 
 // Component
 import { Green } from "@Components/atoms";
-import { ModifierTemplate, renderModifiers } from "@Components/template";
+import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components/template";
 
 interface ElementDebuffsProps {
   superconduct: boolean;

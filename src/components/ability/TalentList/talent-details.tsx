@@ -18,7 +18,6 @@ import { getDefaultStatInfo } from "@Calculators/utils";
 
 // Component
 import { StatsTable } from "@Components/StatsTable";
-import { Select } from "@Src/styled-components";
 
 const { Row } = StatsTable;
 const styles = {
@@ -80,15 +79,15 @@ export function SkillAttributes({
         {isStatic ? (
           <p className="px-1 text-lg font-bold">1</p>
         ) : (
-          <Select
-            className="pr-2 text-lg font-bold text-default text-right text-last-right"
+          <select
+            className="styled-select pr-2 text-lg font-bold text-default text-right text-last-right bg-transparent"
             value={level}
             onChange={(e) => setLevel(+e.target.value)}
           >
             {[...Array(15).keys()].map((_, i) => (
               <option key={i}>{i + 1}</option>
             ))}
-          </Select>
+          </select>
         )}
       </div>
 

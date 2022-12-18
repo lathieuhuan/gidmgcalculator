@@ -15,7 +15,6 @@ import { useSelector } from "@Store/hooks";
 import { EStatDamageKey } from "@Src/constants";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { DamageDisplay } from "@Components/DamageDisplay";
 
 interface IResultsProps {
@@ -42,15 +41,15 @@ export function Results({ activeSetupName }: IResultsProps) {
       {comparing ? (
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
-          <Select
-            className="text-center text-lightgold"
+          <select
+            className="styled-select bg-transparent text-center text-lightgold"
             value={focus}
             onChange={(e) => setFocus(e.target.value as EStatDamageKey)}
           >
             {Object.values(EStatDamageKey).map((opt) => (
               <option key={opt}>{opt}</option>
             ))}
-          </Select>
+          </select>
         </div>
       ) : (
         <p className="mx-4 my-2 font-bold text-center">{activeSetupName.toUpperCase()}</p>

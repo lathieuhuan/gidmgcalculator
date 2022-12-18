@@ -1,24 +1,35 @@
 import { useCallback, useEffect, useState } from "react";
 
+// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+// Selector
 import { selectAtScreen } from "@Store/uiSlice";
+
+// Action
 import { updateCalculator } from "@Store/calculatorSlice";
 import { addUserDatabase } from "@Store/userDatabaseSlice";
+
+// Util
 import { convertUserData } from "./utils/convertUserData";
+
+// Constant
 import { EScreen } from "./constants";
 
+// Screen
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
 
+// Component
 import { NavBar } from "@Components/NavBar";
 import { Modal } from "@Components/modals";
 import DownloadOptions from "@Components/load-options/DownloadOptions";
 import UploadOptions from "@Components/load-options/UploadOptions";
 import { ImportManager } from "@Components/ImportManager";
-import { Button } from "./styled-components";
+import { Button } from "@Components/atoms";
 
 function App() {
   const dispatch = useDispatch();

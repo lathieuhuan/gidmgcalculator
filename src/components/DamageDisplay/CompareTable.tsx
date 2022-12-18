@@ -16,10 +16,10 @@ import { useSelector } from "@Store/hooks";
 
 // Util
 import { findById } from "@Src/utils";
-import { displayValue, TableKey } from "./utils";
+import { displayValue, type TableKey } from "./utils";
 
 // Component
-import { tableStyles } from "@Src/styled-components";
+import { tableStyles } from "@Components/atoms";
 
 interface CompareTableProps {
   focus: EStatDamageKey;

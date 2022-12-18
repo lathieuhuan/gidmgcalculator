@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  option {
+    color: black;
+  }
+  button,
+  input,
+  select {
+    outline: none;
+  }
+  .textinput-common {
+    @apply leading-tight text-black rounded bg-default focus:bg-green;
+  }
+  .styled-select {
+    @apply leading-base block;
+  }
+  .small-modal {
+    @apply rounded-lg shadow-white-glow max-w-95;
+    width: 22rem;
+  }
+  .small-tooltip {
+    @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;
+  }
+}
+
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+  .full-stretch {
+    @apply top-0 bottom-0 right-0 left-0;
+  }
+  .glow-on-hover {
+    @apply opacity-90 hover:opacity-100;
+  }
+}

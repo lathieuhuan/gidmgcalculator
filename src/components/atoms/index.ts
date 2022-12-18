@@ -4,3 +4,4 @@ export * from "./SeeDetails";
 export * from "./span";
 export * from "./buttons";
 export * from "./CharacterPortrait";
+export * from "./tw-styles";

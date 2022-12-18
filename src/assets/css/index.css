@@ -1,39 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  option {
-    color: black;
-  }
-  button,
-  input {
-    outline: none;
-  }
-  .textinput-common {
-    @apply leading-tight text-black rounded bg-default focus:bg-green;
-  }
-}
-
-@layer utilities {
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-  .full-stretch {
-    @apply top-0 bottom-0 right-0 left-0;
-  }
-  .glow-on-hover {
-    @apply opacity-90 hover:opacity-100;
-  }
-  .small-modal {
-    @apply rounded-lg shadow-white-glow max-w-95;
-    width: 22rem;
-  }
-  .small-tooltip {
-    @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;
-  }
-}
-
 body {
   font-family: "Nunito", "Helvetica", "Roboto", "Arial", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -121,4 +85,20 @@ body {
   to {
     box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
   }
+}
+
+.bg-gradient-1 {
+  background-image: linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a);
+}
+.bg-gradient-2 {
+  background-image: linear-gradient(to bottom, #5ca862, #61c370, #63dd7e);
+}
+.bg-gradient-3 {
+  background-image: linear-gradient(to bottom, #5d8fa8, #72aae3, #8bb6ff);
+}
+.bg-gradient-4 {
+  background-image: linear-gradient(to bottom, #7e4da6, #9b4cc6, #bd44e4);
+}
+.bg-gradient-5 {
+  background-image: linear-gradient(to bottom, #a68746, #c5a03c, #e3bb2c);
 }

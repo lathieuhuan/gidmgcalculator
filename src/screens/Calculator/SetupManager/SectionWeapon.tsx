@@ -20,7 +20,6 @@ import { getImgSrc } from "@Src/utils";
 
 // Component
 import { Picker } from "@Components/Picker";
-import { Select } from "@Src/styled-components";
 import { BetaMark } from "@Components/atoms";
 
 export default function SectionWeapon() {
@@ -49,8 +48,8 @@ export default function SectionWeapon() {
         <p className={`text-xl text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
         <div className="mt-1 pl-1 flex flex-wrap">
           <p className="mr-1">Level</p>
-          <Select
-            className={`text-rarity-${rarity} text-right`}
+          <select
+            className={`styled-select bg-transparent text-rarity-${rarity} text-right`}
             value={weapon.level}
             onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
           >
@@ -62,13 +61,13 @@ export default function SectionWeapon() {
                 </option>
               );
             })}
-          </Select>
+          </select>
         </div>
         {rarity >= 3 && (
           <div className="mt-1 pl-1 flex flex-wrap">
             <p className="mr-2">Refinement rank</p>
-            <Select
-              className={`text-rarity-${rarity}`}
+            <select
+              className={`styled-select bg-transparent text-rarity-${rarity}`}
               value={weapon.refi}
               onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
             >
@@ -77,7 +76,7 @@ export default function SectionWeapon() {
                   {level}
                 </option>
               ))}
-            </Select>
+            </select>
           </div>
         )}
       </div>

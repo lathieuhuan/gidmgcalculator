@@ -17,7 +17,6 @@ import { updateTarget } from "@Store/calculatorSlice";
 // Component
 import { Modal } from "@Components/modals";
 import { TargetConfig } from "./modal-content";
-import { Select } from "@Src/styled-components";
 import { IconButton } from "@Components/atoms";
 
 interface SectionTargetProps {
@@ -72,11 +71,11 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
           {monsterData?.names ? (
             <div className="flex items-center relative">
               <FaChevronDown className="absolute top-1 left-0" />
-              <Select className="pl-6 pr-2 py-1 leading-none relative z-10 appearance-none text-lg ">
+              <select className="pl-6 pr-2 py-1 styled-select bg-transparent leading-none relative z-10 appearance-none text-lg">
                 {monsterData.names.map((name, i) => {
                   return <option key={i}>{name}</option>;
                 })}
-              </Select>
+              </select>
             </div>
           ) : (
             <p className="text-lg">{monsterData?.title}</p>

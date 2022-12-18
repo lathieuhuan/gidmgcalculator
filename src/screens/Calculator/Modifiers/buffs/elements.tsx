@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
 
 // Constant
-import { resonanceRenderInfo, VISION_TYPES } from "@Src/constants";
+import { VISION_TYPES } from "@Src/constants";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -22,9 +22,9 @@ import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
 
 // Component
-import { Select } from "@Src/styled-components";
 import {
   ModifierTemplate,
+  resonanceRenderInfo,
   type ModSelectOption,
   renderAmpReactionDesc,
   renderAmpReactionHeading,
@@ -215,8 +215,8 @@ export default function ElementBuffs() {
       />
       <div className="pt-2 pb-1 pr-1 flex items-center justify-end">
         <span className="mr-4 text-base leading-6 text-right">Element</span>
-        <Select
-          className={twInputStyles.select + " capitalize"}
+        <select
+          className={twInputStyles.select + " styled-select capitalize"}
           value={infusedValue}
           disabled={!isInfused}
           onChange={(e) => {
@@ -243,7 +243,7 @@ export default function ElementBuffs() {
               {opt.label}
             </option>
           ))}
-        </Select>
+        </select>
       </div>
     </div>
   );

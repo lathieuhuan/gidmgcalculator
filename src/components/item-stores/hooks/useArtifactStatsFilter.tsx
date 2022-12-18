@@ -12,7 +12,6 @@ import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { Green, IconButton } from "@Components/atoms";
 
 const MAIN_STAT_TYPES = [
@@ -70,9 +69,9 @@ export function useArtifactStatsFilter({
       <p className="mt-2 text-lg text-orange font-bold">Main Stat</p>
       <div className="mt-1 flex justify-center">
         <div className="w-52 px-4 bg-darkblue-1">
-          <Select
+          <select
             className={clsx(
-              "w-full p-1 text-center text-last-center",
+              "w-full p-1 styled-select bg-transparent text-center text-last-center",
               filter.main === "All" ? "text-default" : "text-green"
             )}
             value={filter.main}
@@ -83,7 +82,7 @@ export function useArtifactStatsFilter({
                 {t(type)}
               </option>
             ))}
-          </Select>
+          </select>
         </div>
       </div>
 
@@ -95,9 +94,9 @@ export function useArtifactStatsFilter({
               <p className="mr-1 mt-1 text-orange">{n}</p>
 
               {(!i || filter.subs[i - 1] !== "All") && (
-                <Select
+                <select
                   className={clsx(
-                    "w-full p-1 text-center text-last-center",
+                    "w-full p-1 styled-select bg-transparent text-center text-last-center",
                     filter.subs[i] === "All" ? "text-default" : "text-green"
                   )}
                   value={filter.subs[i]}
@@ -108,7 +107,7 @@ export function useArtifactStatsFilter({
                       {t(type)}
                     </option>
                   ))}
-                </Select>
+                </select>
               )}
             </div>
           );

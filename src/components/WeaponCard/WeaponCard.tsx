@@ -13,7 +13,6 @@ import { findWeapon } from "@Data/controllers";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { BetaMark } from "@Components/atoms";
 
 const groupStyles = "bg-darkblue-2 px-2";
@@ -44,15 +43,15 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           <div className={clsx("pt-1 grow flex items-center", groupStyles)}>
             <p className="mr-2 text-lg font-semibold">Level</p>
             {mutable ? (
-              <Select
-                className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
+              <select
+                className={`styled-select bg-transparent text-lg text-rarity-${rarity} font-bold text-last-right`}
                 value={level}
                 onChange={(e) => upgrade && upgrade(e.target.value as Level)}
               >
                 {selectLevels.map((_, index) => (
                   <option key={index}>{selectLevels[selectLevels.length - 1 - index]}</option>
                 ))}
-              </Select>
+              </select>
             ) : (
               <p className={`text-lg text-rarity-${rarity} font-bold`}>{level}</p>
             )}
@@ -87,15 +86,15 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             <div className={clsx("mt-2 py-1 flex flex-col items-center", groupStyles)}>
               <p className="text-center font-semibold">Refinement</p>
               {mutable ? (
-                <Select
-                  className={`text-lg text-rarity-${rarity} font-bold`}
+                <select
+                  className={`styled-select bg-transparent text-lg text-rarity-${rarity} font-bold`}
                   value={refi}
                   onChange={(e) => refine && refine(+e.target.value)}
                 >
                   {[1, 2, 3, 4, 5].map((level) => (
                     <option key={level}>{level}</option>
                   ))}
-                </Select>
+                </select>
               ) : (
                 <p className={`text-lg text-rarity-${rarity} font-bold`}>{refi}</p>
               )}

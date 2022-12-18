@@ -11,7 +11,6 @@ import { selectChosenChar, selectMyChars } from "@Store/userDatabaseSlice/select
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { Button } from "@Components/atoms";
 import { Picker } from "@Components/Picker";
 import CharacterSort from "./CharacterSort";
@@ -39,15 +38,15 @@ export default function MyCharacters() {
         <div className="py-4 flex bg-darkblue-2">
           {characterNames.length ? (
             <div className="w-full flex-center relative">
-              <Select
-                className="px-2 py-1 text-black rounded bg-white text-2xl leading-base text-center text-last-center font-bold"
+              <select
+                className="px-2 py-1 block text-black rounded bg-white text-2xl leading-base text-center text-last-center font-bold"
                 value={chosenChar}
                 onChange={(e) => dispatch(chooseCharacter(e.target.value))}
               >
                 {characterNames.map((name, i) => (
                   <option key={i}>{name}</option>
                 ))}
-              </Select>
+              </select>
               <Button
                 className="ml-6"
                 variant="positive"

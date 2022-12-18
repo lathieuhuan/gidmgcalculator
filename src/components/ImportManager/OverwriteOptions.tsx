@@ -14,9 +14,8 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { tableStyles } from "@Src/styled-components";
 import { CollapseSpace } from "@Components/collapse";
-import { SeeDetails } from "@Components/atoms";
+import { SeeDetails, tableStyles } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 interface OverrideOptions {

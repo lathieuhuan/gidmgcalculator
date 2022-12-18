@@ -28,7 +28,6 @@ import {
 } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { ConsList, TalentList } from "@Components/ability";
 import { ConfirmTemplate } from "@Components/template";
 import { AttributeTable } from "@Components/AttributeTable";
@@ -108,8 +107,8 @@ export default function Info() {
 
             <div className="ml-1 my-1 flex text-lg">
               <p className="mr-1">Level</p>
-              <Select
-                className={`text-right text-last-right text-${vision} font-semibold`}
+              <select
+                className={`styled-select bg-transparent text-right text-last-right text-${vision} font-semibold`}
                 value={char.level}
                 onChange={(e) =>
                   dispatch(updateUserCharacter({ name, level: e.target.value as Level }))
@@ -118,7 +117,7 @@ export default function Info() {
                 {LEVELS.map((lv, i) => (
                   <option key={i}>{lv}</option>
                 ))}
-              </Select>
+              </select>
             </div>
           </div>
         </div>

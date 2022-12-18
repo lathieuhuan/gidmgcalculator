@@ -17,9 +17,6 @@ import type {
   AttackElement,
 } from "@Src/types";
 
-// Constant
-import { resonanceRenderInfo } from "@Src/constants";
-
 // Hook
 import { useTranslation } from "@Hooks/useTranslation";
 
@@ -31,6 +28,7 @@ import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 // Component
 import {
   ModifierTemplate,
+  resonanceRenderInfo,
   renderAmpReactionDesc,
   renderAmpReactionHeading,
   renderModifiers,

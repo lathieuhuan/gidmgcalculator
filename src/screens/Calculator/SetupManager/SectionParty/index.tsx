@@ -29,7 +29,6 @@ import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 // Component
 import { Picker } from "@Components/Picker";
 import { CollapseSpace } from "@Components/collapse";
-import { Select } from "@Src/styled-components";
 import { IconButton } from "@Components/atoms";
 import { CopySelect } from "./CopySelect";
 
@@ -268,8 +267,8 @@ function TeammateDetail({
               {weaponData.rarity >= 3 && (
                 <div className="flex items-center">
                   <span>Refinement</span>
-                  <Select
-                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
+                  <select
+                    className={`ml-2 pr-1 styled-select bg-transparent text-rarity-${weaponData.rarity} text-right`}
                     value={weapon.refi}
                     onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
                   >
@@ -280,7 +279,7 @@ function TeammateDetail({
                         </option>
                       );
                     })}
-                  </Select>
+                  </select>
                 </div>
               )}
             </div>

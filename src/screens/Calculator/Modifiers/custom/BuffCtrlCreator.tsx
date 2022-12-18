@@ -16,7 +16,6 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { ButtonBar } from "@Components/molecules";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
@@ -116,8 +115,8 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
       </div>
 
       <div className="mx-auto mt-8 flex items-center">
-        <Select
-          className="pr-2 text-default text-right text-last-right"
+        <select
+          className="pr-2 styled-select bg-transparent text-default text-right text-last-right"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
@@ -126,7 +125,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
               {t(option)}
             </option>
           ))}
-        </Select>
+        </select>
         <input
           ref={inputRef}
           className="ml-4 w-16 px-2 py-1 text-lg text-right font-semibold textinput-common"

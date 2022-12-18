@@ -14,7 +14,7 @@ import { getPartyData } from "@Data/controllers";
 import { displayValue, getTableKeys } from "./utils";
 
 // Component
-import { tableStyles } from "@Src/styled-components";
+import { tableStyles } from "@Components/atoms";
 import { CollapseSpace } from "@Components/collapse";
 import { CompareTable } from "./CompareTable";
 

@@ -1,7 +1,3 @@
-import { WeaponType } from "@Src/types";
-
-export * from "./maps";
-
 export const MAX_CALC_SETUPS = 4;
 
 export const GENSHIN_DEV_URL = "https://api.genshin.dev";
@@ -141,7 +137,7 @@ export const REACTIONS = [
 
 export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;
 
-export const DEFAULT_WEAPON_CODE: Record<WeaponType, number> = {
+export const DEFAULT_WEAPON_CODE = {
   bow: 11,
   catalyst: 36,
   claymore: 59,

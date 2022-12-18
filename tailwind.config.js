@@ -75,13 +75,6 @@ module.exports = {
           5: "#ffd700",
         },
       },
-      backgroundImage: {
-        "gradient-5": "linear-gradient(to bottom, #a68746, #c5a03c, #e3bb2c)",
-        "gradient-4": "linear-gradient(to bottom, #7e4da6, #9b4cc6, #bd44e4)",
-        "gradient-3": "linear-gradient(to bottom, #5d8fa8, #72aae3, #8bb6ff)",
-        "gradient-2": "linear-gradient(to bottom, #5ca862, #61c370, #63dd7e)",
-        "gradient-1": "linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a)",
-      },
       width: {
         15: "3.75rem",
         18: "4.5rem",

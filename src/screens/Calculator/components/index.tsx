@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaCopy } from "react-icons/fa";
-import { Select } from "@Src/styled-components";
 
 export type Option = {
   value: string | number;
@@ -31,8 +30,8 @@ export const CopySection = <TOption extends Option>({
 
   return (
     <div className={clsx("flex justify-end", className)}>
-      <Select
-        className="px-1 rounded-l bg-default font-bold text-black"
+      <select
+        className="px-1 styled-select bg-transparent rounded-l bg-default font-bold text-black"
         value={chosenLabel}
         onChange={(e) => setChosenLabel(e.target.value)}
       >
@@ -41,7 +40,7 @@ export const CopySection = <TOption extends Option>({
             {option.label}
           </option>
         ))}
-      </Select>
+      </select>
       <button
         className="w-8 h-8 bg-lightgold text-black rounded-r flex-center glow-on-hover"
         onClick={onClick}

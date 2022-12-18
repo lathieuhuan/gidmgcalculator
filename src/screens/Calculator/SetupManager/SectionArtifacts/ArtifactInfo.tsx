@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
-import { IconButton, Select } from "@Src/styled-components";
+import { IconButton } from "@Components/atoms";
 import { ArtifactSubstats } from "@Components/ArtifactCard";
 import { Modal } from "@Components/modals";
 import { ConfirmTemplate } from "@Components/template";
@@ -50,8 +50,8 @@ export function ArtifactInfo({
       <div className="pl-6 flex items-start">
         {/*  */}
         <div className="mb-2 rounded-circle bg-darkblue-3">
-          <Select
-            className={`px-2 pt-2 pb-1 text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
+          <select
+            className={`px-2 pt-2 pb-1 block bg-transparent text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
             value={level}
             onChange={(e) => {
               dispatch(
@@ -67,7 +67,7 @@ export function ArtifactInfo({
                 +{lv}
               </option>
             ))}
-          </Select>
+          </select>
         </div>
 
         <div className="ml-4">
@@ -76,8 +76,8 @@ export function ArtifactInfo({
           ) : (
             <div className="py-1 relative">
               <FaChevronDown className="absolute top-2 left-1 scale-110" />
-              <Select
-                className="pl-8 text-lg text-default appearance-none"
+              <select
+                className="pl-8 styled-select bg-transparent text-lg text-default appearance-none"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(
@@ -93,7 +93,7 @@ export function ArtifactInfo({
                     {t(type)}
                   </option>
                 ))}
-              </Select>
+              </select>
             </div>
           )}
           <p className={`pl-8 text-2xl leading-7 text-rarity-${rarity} font-bold`}>

@@ -22,7 +22,6 @@ import { percentSign, processNumInput, getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { Select } from "@Src/styled-components";
 import { BetaMark, IconButton } from "@Components/atoms";
 
 interface ArtifactCardProps extends ArtifactCardCommonProps {
@@ -57,8 +56,8 @@ export function ArtifactCard({
           <div className="mr-6 pr-2 grow flex justify-between">
             <div>
               <div className="rounded-circle bg-darkblue-3">
-                <Select
-                  className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
+                <select
+                  className={`px-2 pt-2 pb-1 styled-select bg-transparent text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
                   value={"+" + artifact.level}
                   onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
                 >
@@ -67,7 +66,7 @@ export function ArtifactCard({
                       +{lv}
                     </option>
                   ))}
-                </Select>
+                </select>
               </div>
             </div>
             <div className="mt-1 flex flex-col items-center">
@@ -111,8 +110,8 @@ export function ArtifactCard({
         ) : (
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
-            <Select
-              className="pl-8 text-lg text-default appearance-none relative z-10"
+            <select
+              className="pl-8 styled-select bg-transparent text-lg text-default appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
@@ -123,7 +122,7 @@ export function ArtifactCard({
                   </option>
                 );
               })}
-            </Select>
+            </select>
           </div>
         )}
         <p
@@ -186,9 +185,9 @@ export function ArtifactSubstats({
           <div key={i} className="mt-2 flex items-center bg-darkblue-2 relative">
             <FaChevronDown className="absolute left-3 top-2.5" />
 
-            <Select
+            <select
               className={clsx(
-                "pt-2 pb-1 pr-2 pl-10 relative z-10 appearance-none",
+                "pt-2 pb-1 pr-2 pl-10 styled-select bg-transparent relative z-10 appearance-none",
                 statTypeCount[type] === 1 ? "text-default" : "text-red-500"
               )}
               value={type}
@@ -201,7 +200,7 @@ export function ArtifactSubstats({
                   {t(type)}
                 </option>
               ))}
-            </Select>
+            </select>
 
             <span>+</span>
 
