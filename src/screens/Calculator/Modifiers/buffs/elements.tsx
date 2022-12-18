@@ -32,7 +32,6 @@ import {
   renderQuickenDesc,
   renderQuickenHeading,
 } from "@Components/template";
-import { twInputStyles } from "@Screens/Calculator/components";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
@@ -216,7 +215,7 @@ export default function ElementBuffs() {
       <div className="pt-2 pb-1 pr-1 flex items-center justify-end">
         <span className="mr-4 text-base leading-6 text-right">Element</span>
         <select
-          className={twInputStyles.select + " styled-select capitalize"}
+          className="styled-select capitalize"
           value={infusedValue}
           disabled={!isInfused}
           onChange={(e) => {

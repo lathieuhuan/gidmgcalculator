@@ -49,7 +49,7 @@ export default function SectionWeapon() {
         <div className="mt-1 pl-1 flex flex-wrap">
           <p className="mr-1">Level</p>
           <select
-            className={`styled-select bg-transparent text-rarity-${rarity} text-right`}
+            className={`text-rarity-${rarity} text-right`}
             value={weapon.level}
             onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
           >
@@ -67,7 +67,7 @@ export default function SectionWeapon() {
           <div className="mt-1 pl-1 flex flex-wrap">
             <p className="mr-2">Refinement rank</p>
             <select
-              className={`styled-select bg-transparent text-rarity-${rarity}`}
+              className={`text-rarity-${rarity}`}
               value={weapon.refi}
               onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
             >

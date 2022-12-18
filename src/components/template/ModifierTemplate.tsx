@@ -6,7 +6,6 @@ import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
 
 // Component
-import { twInputStyles } from "@Screens/Calculator/components";
 import { Green } from "@Components/atoms";
 
 export type ModSelectOption = {
@@ -165,7 +164,7 @@ export function ModifierTemplate({
         if (mutable) {
           return (
             <select
-              className={"styled-select bg-transparent " + twInputStyles.select}
+              className="styled-select"
               value={input}
               onChange={(e) => onSelectOption && onSelectOption(+e.target.value, index)}
             >

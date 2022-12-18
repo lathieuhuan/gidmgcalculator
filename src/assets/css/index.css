@@ -46,13 +46,6 @@ body {
   overflow: auto;
 }
 
-.zoomin-on-hover:hover {
-  transform: scale(1.05);
-}
-.zoomin-on-hover:hover img {
-  transform: scale(1.2);
-}
-
 .button-focus-shadow:focus {
   box-shadow: 0 0 2px 2px black, 0 0 2px 4px white;
 }
@@ -73,20 +66,6 @@ body {
   text-align-last: center;
 }
 
-.glowing {
-  -webkit-animation: glow 0.5s ease-in-out infinite alternate;
-  -moz-animation: glow 0.5s ease-in-out infinite alternate;
-  animation: glow 0.5s ease-in-out infinite alternate;
-}
-@keyframes glow {
-  from {
-    box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
-  }
-  to {
-    box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
-  }
-}
-
 .bg-gradient-1 {
   background-image: linear-gradient(to bottom, #6c6969, #8c8989, #9c9a9a);
 }
@@ -101,4 +80,33 @@ body {
 }
 .bg-gradient-5 {
   background-image: linear-gradient(to bottom, #a68746, #c5a03c, #e3bb2c);
+}
+
+@media (min-width: 440px) {
+  .glow-on-hover {
+    opacity: 0.9;
+  }
+  .glow-on-hover:hover {
+    opacity: 1;
+  }
+  .zoomin-on-hover:hover {
+    transform: scale(1.05);
+  }
+  .zoomin-on-hover:hover img {
+    transform: scale(1.2);
+  }
+}
+
+.glowing {
+  -webkit-animation: glow 0.5s ease-in-out infinite alternate;
+  -moz-animation: glow 0.5s ease-in-out infinite alternate;
+  animation: glow 0.5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from {
+    box-shadow: 0 0 0 1px #fff, 0 0 1px 1px #fff, 0 0 2px 1px #fff, 0 0 3px 1px #fff;
+  }
+  to {
+    box-shadow: 0 0 2px 1px #fff, 0 0 3px 2px #fff, 0 0 4px 3px #fff, 0 0 5px 4px #fff;
+  }
 }

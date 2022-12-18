@@ -51,7 +51,7 @@ export function ArtifactInfo({
         {/*  */}
         <div className="mb-2 rounded-circle bg-darkblue-3">
           <select
-            className={`px-2 pt-2 pb-1 block bg-transparent text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
+            className={`px-2 pt-2 pb-1 text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
             value={level}
             onChange={(e) => {
               dispatch(
@@ -72,12 +72,12 @@ export function ArtifactInfo({
 
         <div className="ml-4">
           {type === "flower" || type === "plume" ? (
-            <p className="pl-8 pt-1 text-lg">{t(mainStatType)}</p>
+            <p className="pl-8 py-1 text-lg">{t(mainStatType)}</p>
           ) : (
             <div className="py-1 relative">
               <FaChevronDown className="absolute top-2 left-1 scale-110" />
               <select
-                className="pl-8 styled-select bg-transparent text-lg text-default appearance-none"
+                className="pl-8 text-lg text-default appearance-none"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(

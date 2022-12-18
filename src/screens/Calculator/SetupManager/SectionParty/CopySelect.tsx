@@ -34,6 +34,6 @@ export function CopySelect() {
   };
 
   return copyOptions.length ? (
-    <CopySection className="mb-4 px-4" options={copyOptions} onClickCopy={onClickCopyParty} />
+    <CopySection className="mt-3 mb-1 px-4" options={copyOptions} onClickCopy={onClickCopyParty} />
   ) : null;
 }

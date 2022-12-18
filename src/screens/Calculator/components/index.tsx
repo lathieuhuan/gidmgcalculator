@@ -31,7 +31,7 @@ export const CopySection = <TOption extends Option>({
   return (
     <div className={clsx("flex justify-end", className)}>
       <select
-        className="px-1 styled-select bg-transparent rounded-l bg-default font-bold text-black"
+        className="px-1 rounded-l bg-default font-bold text-black"
         value={chosenLabel}
         onChange={(e) => setChosenLabel(e.target.value)}
       >
@@ -49,8 +49,4 @@ export const CopySection = <TOption extends Option>({
       </button>
     </div>
   );
-};
-
-export const twInputStyles = {
-  select: "px-2 py-1 !bg-default text-black rounded font-bold outline-none",
 };

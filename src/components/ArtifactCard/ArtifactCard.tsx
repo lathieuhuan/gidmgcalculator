@@ -57,7 +57,7 @@ export function ArtifactCard({
             <div>
               <div className="rounded-circle bg-darkblue-3">
                 <select
-                  className={`px-2 pt-2 pb-1 styled-select bg-transparent text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
+                  className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
                   value={"+" + artifact.level}
                   onChange={(e) => enhance && enhance(+e.target.value.slice(1))}
                 >
@@ -109,9 +109,9 @@ export function ArtifactCard({
           <p className={clsx("pt-1 text-lg", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
-            <FaChevronDown className="absolute left-1 top-1" size="1.25rem" />
+            <FaChevronDown className="absolute left-1 top-2" size="1.25rem" />
             <select
-              className="pl-8 styled-select bg-transparent text-lg text-default appearance-none relative z-10"
+              className="pl-8 text-lg text-default appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => changeMainStatType && changeMainStatType(e.target.value)}
             >
@@ -187,7 +187,7 @@ export function ArtifactSubstats({
 
             <select
               className={clsx(
-                "pt-2 pb-1 pr-2 pl-10 styled-select bg-transparent relative z-10 appearance-none",
+                "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none",
                 statTypeCount[type] === 1 ? "text-default" : "text-red-500"
               )}
               value={type}

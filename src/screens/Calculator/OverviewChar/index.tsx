@@ -67,7 +67,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
               <div className="mt-1 flex items-center">
                 <p className="mr-1 text-lg">Level</p>
                 <select
-                  className={`styled-select bg-transparent text-lg text-${vision} font-bold text-last-right`}
+                  className={`text-lg text-${vision} font-bold text-right text-last-right`}
                   value={char.level}
                   onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
                 >

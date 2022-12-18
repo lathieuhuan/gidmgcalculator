@@ -108,7 +108,7 @@ export default function Info() {
             <div className="ml-1 my-1 flex text-lg">
               <p className="mr-1">Level</p>
               <select
-                className={`styled-select bg-transparent text-right text-last-right text-${vision} font-semibold`}
+                className={`text-right text-last-right text-${vision} font-semibold`}
                 value={char.level}
                 onChange={(e) =>
                   dispatch(updateUserCharacter({ name, level: e.target.value as Level }))

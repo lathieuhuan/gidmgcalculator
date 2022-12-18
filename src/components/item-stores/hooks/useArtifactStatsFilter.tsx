@@ -71,7 +71,7 @@ export function useArtifactStatsFilter({
         <div className="w-52 px-4 bg-darkblue-1">
           <select
             className={clsx(
-              "w-full p-1 styled-select bg-transparent text-center text-last-center",
+              "w-full p-1 text-center text-last-center",
               filter.main === "All" ? "text-default" : "text-green"
             )}
             value={filter.main}
@@ -96,7 +96,7 @@ export function useArtifactStatsFilter({
               {(!i || filter.subs[i - 1] !== "All") && (
                 <select
                   className={clsx(
-                    "w-full p-1 styled-select bg-transparent text-center text-last-center",
+                    "w-full p-1 text-center text-last-center",
                     filter.subs[i] === "All" ? "text-default" : "text-green"
                   )}
                   value={filter.subs[i]}

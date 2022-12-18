@@ -24,7 +24,6 @@ import { useTranslation } from "@Hooks/useTranslation";
 
 // Component
 import { Button, CloseButton, InfoSign } from "@Components/atoms";
-import { twInputStyles } from "@Screens/Calculator/components";
 
 interface TargetConfigProps {
   onClose: () => void;
@@ -209,7 +208,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 <p className="mr-4 text-default">Variant</p>
 
                 <select
-                  className={twInputStyles.select + " capitalize"}
+                  className="styled-select capitalize"
                   value={variantType}
                   onChange={onChangeElementVariant}
                 >

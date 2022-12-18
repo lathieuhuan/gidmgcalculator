@@ -44,7 +44,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             <p className="mr-2 text-lg font-semibold">Level</p>
             {mutable ? (
               <select
-                className={`styled-select bg-transparent text-lg text-rarity-${rarity} font-bold text-last-right`}
+                className={`text-lg text-rarity-${rarity} font-bold text-last-right`}
                 value={level}
                 onChange={(e) => upgrade && upgrade(e.target.value as Level)}
               >
@@ -87,7 +87,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
               <p className="text-center font-semibold">Refinement</p>
               {mutable ? (
                 <select
-                  className={`styled-select bg-transparent text-lg text-rarity-${rarity} font-bold`}
+                  className={`text-lg text-rarity-${rarity} font-bold`}
                   value={refi}
                   onChange={(e) => refine && refine(+e.target.value)}
                 >

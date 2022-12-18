@@ -80,7 +80,7 @@ export function SkillAttributes({
           <p className="px-1 text-lg font-bold">1</p>
         ) : (
           <select
-            className="styled-select pr-2 text-lg font-bold text-default text-right text-last-right bg-transparent"
+            className="pr-2 text-lg font-bold text-right text-last-right"
             value={level}
             onChange={(e) => setLevel(+e.target.value)}
           >

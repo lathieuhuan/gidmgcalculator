@@ -42,7 +42,7 @@ export function Results({ activeSetupName }: IResultsProps) {
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
           <select
-            className="styled-select bg-transparent text-center text-lightgold"
+            className="text-center text-lightgold"
             value={focus}
             onChange={(e) => setFocus(e.target.value as EStatDamageKey)}
           >

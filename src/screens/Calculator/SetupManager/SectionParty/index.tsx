@@ -268,7 +268,7 @@ function TeammateDetail({
                 <div className="flex items-center">
                   <span>Refinement</span>
                   <select
-                    className={`ml-2 pr-1 styled-select bg-transparent text-rarity-${weaponData.rarity} text-right`}
+                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
                     value={weapon.refi}
                     onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
                   >

@@ -39,7 +39,7 @@ export default function MyCharacters() {
           {characterNames.length ? (
             <div className="w-full flex-center relative">
               <select
-                className="px-2 py-1 block text-black rounded bg-white text-2xl leading-base text-center text-last-center font-bold"
+                className="styled-select py-0 text-1.5xl leading-base text-center text-last-center"
                 value={chosenChar}
                 onChange={(e) => dispatch(chooseCharacter(e.target.value))}
               >

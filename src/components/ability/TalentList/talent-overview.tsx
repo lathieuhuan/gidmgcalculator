@@ -60,7 +60,7 @@ export function ActiveTalent({
               <p className={`ml-1 text-${vision} font-bold`}>1</p>
             ) : (
               <select
-                className={`styled-select bg-transparent text-${vision} font-bold`}
+                className={`text-${vision} font-bold`}
                 value={talentLv}
                 onChange={(e) => onChangeLevel && onChangeLevel(+e.target.value)}
               >

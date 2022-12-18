@@ -56,7 +56,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
     <Fragment>
       <div className="mx-auto mt-4 px-2 flex items-center">
         <select
-          className="pr-2 styled-select bg-transparent text-default text-right text-last-right"
+          className="pr-2 text-default text-right text-last-right"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >
