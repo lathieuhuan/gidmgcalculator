@@ -15,15 +15,14 @@ import {
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTabs } from "@Hooks/useTabs";
+import { useTabs } from "@Src/hooks";
 
 // Util
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { ConsList } from "@Components/ability";
-import { TalentList } from "@Components/organisms";
-import { WeaponCard } from "@Components/WeaponCard";
+import { WeaponCard } from "@Components/molecules";
+import { TalentList, ConsList } from "@Components/organisms";
 import { AttributeTable } from "@Components/AttributeTable";
 import { SharedSpace } from "@Components/layout";
 import { SetBonusesDisplay } from "@Components/template";
@@ -102,7 +101,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
       <TalentList
         key={char.name}
         char={char}
-        onChangeLevelOf={(type) => (level) => {
+        onChangeTalentLevel={(type, level) => {
           dispatch(updateCharacter({ [type]: level }));
         }}
         party={party}

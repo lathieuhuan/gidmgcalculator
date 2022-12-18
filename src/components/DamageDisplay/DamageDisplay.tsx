@@ -6,7 +6,7 @@ import type { CharInfo, DamageResult, Party } from "@Src/types";
 import { EStatDamageKey } from "@Src/constants";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { finalTalentLv } from "@Src/utils";
@@ -14,8 +14,7 @@ import { getPartyData } from "@Data/controllers";
 import { displayValue, getTableKeys } from "./utils";
 
 // Component
-import { tableStyles } from "@Components/atoms";
-import { CollapseSpace } from "@Components/collapse";
+import { CollapseSpace, tableStyles } from "@Components/atoms";
 import { CompareTable } from "./CompareTable";
 
 interface DamageDisplayProps {

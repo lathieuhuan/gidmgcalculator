@@ -3,7 +3,7 @@ import { FaTimes, FaPlus, FaTrashAlt } from "react-icons/fa";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Selector
 import {

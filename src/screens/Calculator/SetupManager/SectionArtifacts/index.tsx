@@ -18,7 +18,7 @@ import { getImgSrc } from "@Src/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { CollapseSpace } from "@Components/collapse";
+import { CollapseSpace } from "@Components/atoms";
 import { Picker } from "@Components/Picker";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";

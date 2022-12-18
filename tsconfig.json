@@ -25,7 +25,6 @@
       "@Components/*": ["src/components/*"],
       "@Data/*": ["src/data/*"],
       "@Store/*": ["src/store/*"],
-      "@Hooks/*": ["src/hooks/*"],
       "@Screens/*": ["src/screens/*"],
       "@Src/*": ["src/*"]
     }

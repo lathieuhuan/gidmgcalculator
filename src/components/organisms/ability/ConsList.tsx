@@ -12,7 +12,7 @@ import { findCharacter } from "@Data/controllers";
 // Conponent
 import { Green, CloseButton, InfoSign } from "@Components/atoms";
 import { SharedSpace } from "@Components/layout";
-import { AbilityIcon, SlideShow } from "./components";
+import { AbilityIcon, SlideShow } from "./molecules";
 
 interface ConsListProps {
   char: CharInfo;

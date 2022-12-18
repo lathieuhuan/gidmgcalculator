@@ -13,7 +13,7 @@ import { useInventoryRack } from "../hooks";
 
 // Component
 import { Button } from "@Components/atoms";
-import { WeaponCard } from "@Components/WeaponCard";
+import { WeaponCard } from "@Components/molecules";
 import { Modal, ModalHeader, type ModalControl } from "@Components/modals";
 import { renderEquippedChar } from "../components";
 

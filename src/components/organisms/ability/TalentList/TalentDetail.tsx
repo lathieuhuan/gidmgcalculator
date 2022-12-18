@@ -10,11 +10,10 @@ import { NORMAL_ATTACK_ICONS } from "./constants";
 import { getDefaultStatInfo } from "@Calculators/utils";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
-import { CloseButton } from "@Components/atoms";
-import { StatsTable } from "@Components/StatsTable";
+import { CloseButton, StatsTable } from "@Components/atoms";
 import { SlideShow } from "../molecules";
 
 const { Row } = StatsTable;
@@ -24,21 +23,26 @@ const styles = {
   rightCol: "font-bold text-right",
 };
 
-interface DetailsProps {
+interface TalentDetailProps {
   dataChar: DataCharacter;
-  position: number;
-  changePosition: (position: number) => void;
+  detailIndex: number;
+  onChangeDetailIndex: (newIndex: number) => void;
   onClose: () => void;
 }
-export function TalentDetail({ dataChar, position, changePosition, onClose }: DetailsProps) {
+export function TalentDetail({
+  dataChar,
+  detailIndex,
+  onChangeDetailIndex,
+  onClose,
+}: TalentDetailProps) {
   const { t } = useTranslation();
-  const { weaponType, vision, NAsConfig, activeTalents, passiveTalents } = dataChar;
+  const { weaponType, vision, NAsConfig, activeTalents } = dataChar;
 
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
 
   // // for when details for passiveTalents are available
-  // const atActiveTalent = position < Object.keys(activeTalents).length;
+  // const atActiveTalent = detailIndex < Object.keys(activeTalents).length;
   // const [switcher, tab, setTab] = useSwitcher([
   //   { text: "Talent Info", clickable: true },
   //   { text: "Skill Attributes", clickable: atActiveTalent },
@@ -89,30 +93,30 @@ export function TalentDetail({ dataChar, position, changePosition, onClose }: De
     });
   }
 
-  const { talentType, talentName, talentStats, getExtraStats } = talentInfoByPosition[position];
+  const { talentType, talentName, talentStats, getExtraStats } = talentInfoByPosition[detailIndex];
   const isStatic = talentType === "altSprint";
 
-  const onMouseDownLevelButton = (goUp: boolean) => {
+  const onMouseDownLevelButton = (isLevelUp: boolean) => {
     const adjustLevel = () => {
-      setTalentLevel((prev) => (goUp ? Math.min(prev + 1, 15) : Math.max(prev - 1, 1)));
+      setTalentLevel((prev) => (isLevelUp ? Math.min(prev + 1, 15) : Math.max(prev - 1, 1)));
     };
 
     adjustLevel();
     intervalRef.current = setInterval(adjustLevel, 200);
   };
 
-  const renderLevelButton = (islevelUp: boolean) => {
+  const renderLevelButton = (isLevelUp: boolean) => {
     return (
       <button
         className={
           "absolute top-2 flex px-2 rounded border-2 border-darkblue-3 text-darkblue-3 text-1.5xl hover:border-green hover:text-green " +
-          (islevelUp ? "right-10" : "left-10")
+          (isLevelUp ? "right-10" : "left-10")
         }
-        onMouseDown={() => onMouseDownLevelButton(islevelUp)}
+        onMouseDown={() => onMouseDownLevelButton(isLevelUp)}
         onMouseUp={() => clearInterval(intervalRef.current)}
         onMouseLeave={() => clearInterval(intervalRef.current)}
       >
-        <FaCaretDown className={islevelUp ? "rotate-180" : ""} />
+        <FaCaretDown className={isLevelUp ? "rotate-180" : ""} />
       </button>
     );
   };
@@ -138,14 +142,15 @@ export function TalentDetail({ dataChar, position, changePosition, onClose }: De
       <div className="flex-grow hide-scrollbar">
         <SlideShow
           forTalent
-          currentIndex={position}
+          currentIndex={detailIndex}
           images={images}
           vision={vision}
           onClickBack={() => {
-            if (position >= 1) changePosition(position - 1);
+            if (detailIndex >= 1) onChangeDetailIndex(detailIndex - 1);
           }}
           onClickNext={() => {
-            if (position < Object.keys(activeTalents).length - 1) changePosition(position + 1);
+            if (detailIndex < Object.keys(activeTalents).length - 1)
+              onChangeDetailIndex(detailIndex + 1);
           }}
           topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talentType)}</p>}
         />

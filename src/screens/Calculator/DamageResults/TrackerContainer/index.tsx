@@ -18,7 +18,7 @@ import { getTotalRecordValue } from "./utils";
 
 // Component
 import { Green, Lesser } from "@Components/atoms";
-import { CollapseList } from "@Components/collapse";
+import { CollapseList } from "@Components/molecules";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";

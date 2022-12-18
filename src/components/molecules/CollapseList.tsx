@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { type ReactNode, useState } from "react";
-import { CollapseSpace } from "./CollapseSpace";
+import { CollapseSpace } from "../atoms";
 
 interface CollapseListProps {
   headingList: string[];

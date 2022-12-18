@@ -16,7 +16,7 @@ import { getRxnBonusesFromEM } from "@Calculators/utils";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 interface BonusesTrackerProps
   extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {

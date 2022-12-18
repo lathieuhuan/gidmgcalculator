@@ -25,7 +25,7 @@ import {
 import { findById } from "@Src/utils";
 
 // Component
-import { ComplexSelect } from "@Components/ComplexSelect";
+import { ComplexSelect } from "@Components/molecules";
 import { Modal } from "@Components/modals";
 import { SaveSetup } from "../modal-content";
 

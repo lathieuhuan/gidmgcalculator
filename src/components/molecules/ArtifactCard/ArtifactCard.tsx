@@ -15,7 +15,7 @@ import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, processNumInput, getImgSrc } from "@Src/utils";

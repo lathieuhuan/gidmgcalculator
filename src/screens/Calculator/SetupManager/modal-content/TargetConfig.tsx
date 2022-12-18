@@ -20,7 +20,7 @@ import { findMonster } from "@Data/controllers";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
 import { Button, CloseButton, InfoSign } from "@Components/atoms";

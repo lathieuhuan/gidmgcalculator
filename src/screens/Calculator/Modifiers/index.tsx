@@ -1,9 +1,15 @@
+// Hook
 import { useSelector } from "@Store/hooks";
-import { useTabs } from "@Hooks/useTabs";
+import { useTabs } from "@Src/hooks";
+
+// Selector
 import { selectParty } from "@Store/calculatorSlice/selectors";
+
+// Util
 import { getPartyData } from "@Data/controllers";
 
-import { CollapseList } from "@Components/collapse";
+// Component
+import { CollapseList } from "@Components/molecules";
 import ElementBuffs from "./buffs/elements";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";

@@ -8,9 +8,8 @@ import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
 // Component
-import { Button } from "@Components/atoms";
+import { Button, CollapseAndMount } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { CollapseAndMount } from "@Components/collapse";
 
 interface ArtifactFilterProps extends FilterProps {
   filterOn: boolean;

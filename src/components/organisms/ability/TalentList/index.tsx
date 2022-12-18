@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { CharInfo, Party } from "@Src/types";
 
 // Util
 import { findCharacter } from "@Data/controllers";
-
-// Hook
-// import { useTabs } from "@Hooks/useTabs";
 
 // Component
 import { SharedSpace } from "@Components/layout";
@@ -15,44 +12,42 @@ import { TalentOverview } from "./TalentOverview";
 interface TalentListProps {
   char: CharInfo;
   party?: Party;
-  onChangeLevelOf: (talentType: "NAs" | "ES" | "EB") => (newLevel: number) => void;
+  onChangeTalentLevel: (talentType: "NAs" | "ES" | "EB", newLevel: number) => void;
 }
-export function TalentList({ char, party, onChangeLevelOf }: TalentListProps) {
-  const [position, setPosition] = useState(-1);
-  const [atDetails, setAtDetails] = useState(false);
+export function TalentList({ char, party, onChangeTalentLevel }: TalentListProps) {
+  const [atDetail, setAtDetail] = useState(false);
+  const [detailIndex, setDetailIndex] = useState(-1);
 
   const dataChar = findCharacter(char)!;
   const numOfActives = Object.keys(dataChar.activeTalents).length;
 
-  const toDetailsAt = (newPosition: number) => {
-    setAtDetails(true);
-    setPosition(newPosition);
-  };
-
   return (
     <SharedSpace
-      atLeft={!atDetails}
+      atLeft={!atDetail}
       leftPart={
         <TalentOverview
           char={char}
           dataChar={dataChar}
           party={party}
-          onChangeLevel={(talentType, newLevel) => onChangeLevelOf(talentType)(newLevel)}
-          onClickInfoSign={toDetailsAt}
+          onChangeLevel={onChangeTalentLevel}
+          onClickInfoSign={(newIndex) => {
+            setAtDetail(true);
+            setDetailIndex(newIndex);
+          }}
         />
       }
       rightPart={
-        position === -1 || position >= numOfActives + dataChar.passiveTalents.length ? null : (
+        detailIndex !== -1 && detailIndex < numOfActives + dataChar.passiveTalents.length ? (
           <TalentDetail
             dataChar={dataChar}
-            position={position}
-            changePosition={setPosition}
+            detailIndex={detailIndex}
+            onChangeDetailIndex={setDetailIndex}
             onClose={() => {
-              setAtDetails(false);
-              setTimeout(() => setPosition(-1), 200);
+              setAtDetail(false);
+              setTimeout(() => setDetailIndex(-1), 200);
             }}
           />
-        )
+        ) : null
       }
     />
   );

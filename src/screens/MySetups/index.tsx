@@ -33,7 +33,7 @@ import {
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Util
@@ -43,11 +43,11 @@ import { isUserSetup } from "@Store/userDatabaseSlice/utils";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { CollapseList } from "@Components/collapse";
+import { Button, IconButton, Green, Red } from "@Components/atoms";
+import { CollapseList } from "@Components/molecules";
 import { Modal } from "@Components/modals";
 import { renderNoItems } from "@Components/minors";
 import { SetBonusesDisplay, ConfirmTemplate, TipsModal } from "@Components/template";
-import { Button, IconButton, Green, Red } from "@Components/atoms";
 import { AttributeTable } from "@Components/AttributeTable";
 import { DamageDisplay } from "@Components/DamageDisplay";
 import { SetupExporter } from "@Components/SetupExporter";

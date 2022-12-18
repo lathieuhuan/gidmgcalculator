@@ -10,12 +10,10 @@ import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import { getRxnBonusesFromEM } from "@Calculators/utils";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Green } from "@Components/atoms";
-import { StatsTable } from "@Components/StatsTable";
-import { CollapseSpace } from "@Components/collapse";
+import { Green, StatsTable, CollapseSpace } from "@Components/atoms";
 
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;

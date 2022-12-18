@@ -21,11 +21,9 @@ import {
 
 // Component
 import { Button } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
-import { ArtifactCard } from "@Components/ArtifactCard";
+import { ButtonBar, ArtifactCard, WeaponCard } from "@Components/molecules";
 import { AttributeTable } from "@Components/AttributeTable";
 import { SetBonusesDisplay } from "@Components/template";
-import { WeaponCard } from "@Components/WeaponCard";
 
 interface GearsDetailsProps {
   className: string;

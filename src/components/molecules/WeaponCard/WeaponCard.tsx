@@ -10,7 +10,7 @@ import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { findWeapon } from "@Data/controllers";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
 import { BetaMark } from "@Components/atoms";

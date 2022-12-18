@@ -9,7 +9,7 @@ import { recordListStyles, renderHeading, renderRecord } from "./utils";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Selector
 import { selectTotalAttr } from "@Store/calculatorSlice/selectors";

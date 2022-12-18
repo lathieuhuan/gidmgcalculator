@@ -7,7 +7,7 @@ import type { UserArtifact, UserWeapon, Level, Rarity, WeaponType, ArtifactType 
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
 
 // Component
-import { ItemThumb } from "@Components/ItemThumb";
+import { ItemThumb } from "@Components/molecules";
 import { renderNoItems } from "@Components/minors";
 
 interface GetItemInfoArgs {

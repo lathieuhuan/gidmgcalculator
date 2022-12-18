@@ -9,7 +9,7 @@ import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
 import { Green, IconButton } from "@Components/atoms";

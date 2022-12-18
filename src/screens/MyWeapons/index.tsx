@@ -27,11 +27,9 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 
 // Component
-import { IconButton } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
+import { IconButton, CollapseSpace } from "@Components/atoms";
+import { ButtonBar, WeaponCard } from "@Components/molecules";
 import { Picker, PrePicker } from "@Components/Picker";
-import { WeaponCard } from "@Components/WeaponCard";
-import { CollapseSpace } from "@Components/collapse";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 
 import styles from "../styles.module.scss";

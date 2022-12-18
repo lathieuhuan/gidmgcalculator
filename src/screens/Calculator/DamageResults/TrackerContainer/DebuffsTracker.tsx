@@ -4,7 +4,7 @@ import type { ResistanceReduction, Tracker } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";

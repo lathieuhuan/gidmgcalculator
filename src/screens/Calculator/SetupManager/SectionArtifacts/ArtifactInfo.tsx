@@ -15,11 +15,11 @@ import { findById, percentSign } from "@Src/utils";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
 import { IconButton } from "@Components/atoms";
-import { ArtifactSubstats } from "@Components/ArtifactCard";
+import { ArtifactSubstats } from "@Components/molecules/ArtifactCard";
 import { Modal } from "@Components/modals";
 import { ConfirmTemplate } from "@Components/template";
 

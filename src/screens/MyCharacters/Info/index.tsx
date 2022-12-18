@@ -28,12 +28,11 @@ import {
 } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ConsList } from "@Components/ability";
 import { ConfirmTemplate } from "@Components/template";
 import { AttributeTable } from "@Components/AttributeTable";
 import { Modal } from "@Components/modals";
 import { IconButton, StarLine } from "@Components/atoms";
-import { TalentList } from "@Components/organisms";
+import { TalentList, ConsList } from "@Components/organisms";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(
@@ -151,7 +150,7 @@ export default function Info() {
           <TalentList
             key={char.name}
             char={char}
-            onChangeLevelOf={(type) => (level) => {
+            onChangeTalentLevel={(type, level) => {
               dispatch(updateUserCharacter({ name: char.name, [type]: level }));
             }}
           />

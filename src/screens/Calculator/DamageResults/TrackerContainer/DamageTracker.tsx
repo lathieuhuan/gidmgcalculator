@@ -8,7 +8,7 @@ import { keyMap } from "./constants";
 import { Green } from "@Components/atoms";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, round2, round3 } from "@Src/utils";

@@ -14,8 +14,7 @@ import { useSelector } from "@Store/hooks";
 import { selectMyArts, selectMyWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { WeaponCard } from "@Components/WeaponCard";
-import { ArtifactCard } from "@Components/ArtifactCard";
+import { ArtifactCard, WeaponCard } from "@Components/molecules";
 import { renderEquippedChar } from "@Components/item-stores/components";
 
 interface OutdateWarnProps {

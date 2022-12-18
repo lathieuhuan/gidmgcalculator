@@ -19,7 +19,7 @@ import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selector
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import useHeight from "@Hooks/useHeight";
+import { useHeight } from "@Src/hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";

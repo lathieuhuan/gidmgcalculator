@@ -11,7 +11,7 @@ import { findArtifactPiece, findArtifactSet, findWeapon } from "@Data/controller
 
 // Component
 import { InfoSign } from "@Components/atoms";
-import { ItemThumb } from "@Components/ItemThumb";
+import { ItemThumb } from "@Components/molecules";
 
 const bonusStyles = (active: boolean) => {
   return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2"];

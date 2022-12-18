@@ -30,9 +30,8 @@ import { filterArtIdsBySetsAndStats, initArtifactStatsFilter } from "@Components
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { ButtonBar } from "@Components/molecules";
+import { ButtonBar, ArtifactCard } from "@Components/molecules";
 import { Picker, PrePicker } from "@Components/Picker";
-import { ArtifactCard } from "@Components/ArtifactCard";
 import { ConfirmModal } from "@Components/template";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";

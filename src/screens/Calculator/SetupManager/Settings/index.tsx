@@ -9,7 +9,7 @@ import { MAX_CALC_SETUPS } from "@Src/constants";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTabs } from "@Hooks/useTabs";
+import { useTabs } from "@Src/hooks";
 
 // Util
 import { findById } from "@Src/utils";
@@ -27,9 +27,8 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, Green } from "@Components/atoms";
+import { CollapseAndMount, Button, Green } from "@Components/atoms";
 import { TipsModal } from "@Components/template";
-import { CollapseAndMount } from "@Components/collapse";
 import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
 

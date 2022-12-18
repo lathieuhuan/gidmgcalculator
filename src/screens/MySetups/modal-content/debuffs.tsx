@@ -10,7 +10,7 @@ import type {
 } from "@Src/types";
 
 // Hook
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex } from "@Src/utils";

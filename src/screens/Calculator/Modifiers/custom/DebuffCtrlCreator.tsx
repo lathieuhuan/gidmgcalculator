@@ -12,7 +12,7 @@ import { processNumInput } from "@Src/utils";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
-import { useTranslation } from "@Hooks/useTranslation";
+import { useTranslation } from "@Src/hooks";
 
 // Component
 import { ButtonBar } from "@Components/molecules";
