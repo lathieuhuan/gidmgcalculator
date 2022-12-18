@@ -21,7 +21,8 @@ import { useTabs } from "@Hooks/useTabs";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { ConsList, TalentList } from "@Components/ability";
+import { ConsList } from "@Components/ability";
+import { TalentList } from "@Components/organisms";
 import { WeaponCard } from "@Components/WeaponCard";
 import { AttributeTable } from "@Components/AttributeTable";
 import { SharedSpace } from "@Components/layout";
@@ -99,6 +100,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
 
     return (
       <TalentList
+        key={char.name}
         char={char}
         onChangeLevelOf={(type) => (level) => {
           dispatch(updateCharacter({ [type]: level }));
