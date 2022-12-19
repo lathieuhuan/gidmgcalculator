@@ -24,8 +24,8 @@ import { processNumInput } from "@Src/utils";
 
 // Component
 import { IconToggleButton } from "@Components/atoms";
+import { Modal } from "@Components/molecules";
 import { CopySection } from "@Screens/Calculator/components";
-import { Modal } from "@Components/modals";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
 

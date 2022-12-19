@@ -17,8 +17,7 @@ import { downloadToDevice, styles } from "./utils";
 
 // Component
 import { CloseButton } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
-import { Modal, ModalControl } from "@Components/modals";
+import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
 function Options({ onClose }: { onClose: () => void }) {
   const [messageType, setMessageType] = useState(0);
@@ -99,7 +98,7 @@ function Options({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default function DownloadOptions({ active, onClose }: ModalControl) {
+export function DownloadOptions({ active, onClose }: ModalControl) {
   return (
     <Modal
       active={active}

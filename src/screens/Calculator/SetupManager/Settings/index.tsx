@@ -28,7 +28,7 @@ import {
 
 // Component
 import { CollapseAndMount, Button, Green } from "@Components/atoms";
-import { TipsModal } from "@Components/template";
+import { TipsModal } from "@Components/organisms";
 import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
 

@@ -10,8 +10,7 @@ import { GENSHIN_DEV_URL } from "@Src/constants";
 import { findCharacter } from "@Data/controllers";
 
 // Conponent
-import { Green, CloseButton, InfoSign } from "@Components/atoms";
-import { SharedSpace } from "@Components/layout";
+import { Green, CloseButton, InfoSign, SharedSpace } from "@Components/atoms";
 import { AbilityIcon, SlideShow } from "./molecules";
 
 interface ConsListProps {

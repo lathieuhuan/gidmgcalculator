@@ -1,15 +1,5 @@
 import type { ArtifactSetBonus } from "@Src/types";
-
-// Util
 import { findArtifactSet } from "@Data/controllers";
-
-// Component
-import { CloseButton } from "@Components/atoms";
-import { Modal, type ModalControl } from "../modals";
-
-export * from "./modifiers-render";
-export * from "./ModifierTemplate";
-export * from "./ConfirmModal";
 
 interface ISetBonusesDisplayProps {
   setBonuses: ArtifactSetBonus[];
@@ -44,18 +34,5 @@ export function SetBonusesDisplay({ setBonuses, noTitle }: ISetBonusesDisplayPro
         <p className="text-lesser font-medium">No Set Bonus</p>
       )}
     </div>
-  );
-}
-
-interface TipsModalProps extends ModalControl {
-  children: JSX.Element;
-}
-export function TipsModal({ active, children, onClose }: TipsModalProps) {
-  return (
-    <Modal active={active} className="p-4" withDefaultStyle onClose={onClose}>
-      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>
-      {children}
-    </Modal>
   );
 }

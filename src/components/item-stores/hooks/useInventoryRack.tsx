@@ -8,7 +8,6 @@ import { findArtifactPiece, findWeapon } from "@Data/controllers";
 
 // Component
 import { ItemThumb } from "@Components/molecules";
-import { renderNoItems } from "@Components/minors";
 
 interface GetItemInfoArgs {
   code: number;
@@ -136,7 +135,9 @@ export function useInventoryRack({
             })}
           </div>
         ) : (
-          renderNoItems(itemType)
+          <div className="w-full pt-8 flex-center">
+            <p className="text-xl font-bold text-lightred">No {itemType} to display</p>
+          </div>
         )}
       </div>
 

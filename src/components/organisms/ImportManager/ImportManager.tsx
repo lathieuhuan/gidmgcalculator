@@ -20,8 +20,7 @@ import { updateImportInfo, updateUI } from "@Store/uiSlice";
 import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
 
 // Component
-import { Modal } from "@Components/modals";
-import { ConfirmTemplate } from "@Components/template";
+import { ConfirmModalBody, Modal } from "@Components/molecules";
 import { OverrideOptions } from "./OverwriteOptions";
 
 function Importing({ type, data }: Required<ImportInfo>) {
@@ -111,7 +110,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
     case 1:
     case 2:
       return (
-        <ConfirmTemplate
+        <ConfirmModalBody
           message={
             (pendingCode === 1
               ? "We're calculating another Character."

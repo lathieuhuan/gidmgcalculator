@@ -23,7 +23,7 @@ import { findCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components/template";
+import { ModifierTemplate, renderModifiers } from "@Components/molecules";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();

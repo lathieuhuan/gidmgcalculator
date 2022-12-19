@@ -16,8 +16,7 @@ import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDataba
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { CloseButton } from "@Components/atoms";
-import { SharedSpace } from "@Components/layout";
+import { CloseButton, SharedSpace } from "@Components/atoms";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";

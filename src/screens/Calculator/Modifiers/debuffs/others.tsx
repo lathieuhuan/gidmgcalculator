@@ -22,7 +22,7 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
 import { Green } from "@Components/atoms";
-import { ModifierTemplate, renderModifiers } from "@Components/template";
+import { ModifierTemplate, renderModifiers } from "@Components/molecules";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();

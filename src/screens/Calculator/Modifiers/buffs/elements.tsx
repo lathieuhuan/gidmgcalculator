@@ -25,13 +25,13 @@ import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/util
 import {
   ModifierTemplate,
   resonanceRenderInfo,
-  type ModSelectOption,
   renderAmpReactionDesc,
   renderAmpReactionHeading,
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-} from "@Components/template";
+  type ModSelectOption,
+} from "@Components/molecules";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();

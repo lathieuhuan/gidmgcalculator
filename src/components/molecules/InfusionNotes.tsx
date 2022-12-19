@@ -1,12 +1,4 @@
-import clsx from "clsx";
-
 import type { Vision, WeaponType } from "@Src/types";
-
-export const renderNoItems = (type: string) => (
-  <div className="w-full pt-8 flex-center">
-    <p className="text-xl font-bold text-lightred">No {type} to display</p>
-  </div>
-);
 
 interface InfusionNotesProps {
   weaponType: WeaponType;
@@ -41,7 +33,7 @@ export function InfusionNotes({ vision, weaponType }: InfusionNotesProps) {
         return (
           <p key={i} className="mt-1">
             <b>{attPatt}</b> deal{" "}
-            <span className={clsx(attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
+            <span className={attElmt === "phys" ? "text-default" : `text-${attElmt}`}>
               {attElmt} DMG
             </span>
             .

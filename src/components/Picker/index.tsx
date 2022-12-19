@@ -1,4 +1,4 @@
-import { Modal, ModalControl } from "@Components/modals";
+import { Modal, type ModalControl } from "@Components/molecules";
 import { PickerCharacter, type PickerCharacterProps } from "./PickerCharacter";
 import {
   PickerArtifact,

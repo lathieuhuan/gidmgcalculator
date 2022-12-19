@@ -18,7 +18,7 @@ import { findArtifactSet, findCharacter } from "@Data/controllers";
 
 // Component
 import { Green } from "@Components/atoms";
-import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components/template";
+import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components/molecules";
 
 interface ElementDebuffsProps {
   superconduct: boolean;

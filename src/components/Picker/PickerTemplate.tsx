@@ -4,7 +4,7 @@ import type { DataType, Filter, PickerItem } from "./types";
 
 // Component
 import { CollapseSpace } from "@Components/atoms";
-import { ModalHeader } from "@Components/modals";
+import { ModalHeader } from "@Components/molecules";
 import CharFilter from "./CharFilter";
 import MemoItem from "./Item";
 

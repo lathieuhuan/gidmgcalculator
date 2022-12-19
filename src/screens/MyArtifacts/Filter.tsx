@@ -17,8 +17,7 @@ import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
 import { hasDupStat } from "@Components/item-stores/utils";
 
 // Component
-import { ButtonBar } from "@Components/molecules";
-import { Modal, type ModalControl } from "@Components/modals";
+import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
 interface FilterProps {
   types: ArtifactType[];

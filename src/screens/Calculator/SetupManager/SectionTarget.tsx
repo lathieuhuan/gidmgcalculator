@@ -15,9 +15,9 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { Modal } from "@Components/modals";
-import { TargetConfig } from "./modal-content";
 import { IconButton } from "@Components/atoms";
+import { Modal } from "@Components/molecules";
+import { TargetConfig } from "./modal-content";
 
 interface SectionTargetProps {
   isAtFront?: boolean;

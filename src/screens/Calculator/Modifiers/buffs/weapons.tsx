@@ -15,7 +15,7 @@ import { deepCopy, findByIndex } from "@Src/utils";
 import { findWeapon } from "@Data/controllers";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components/template";
+import { ModifierTemplate, renderModifiers } from "@Components/molecules";
 
 export default function WeaponBuffs() {
   const dispatch = useDispatch();

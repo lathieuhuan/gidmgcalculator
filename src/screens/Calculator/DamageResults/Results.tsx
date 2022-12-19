@@ -15,7 +15,7 @@ import { useSelector } from "@Store/hooks";
 import { EStatDamageKey } from "@Src/constants";
 
 // Component
-import { DamageDisplay } from "@Components/DamageDisplay";
+import { DamageDisplay } from "@Components/organisms";
 
 interface IResultsProps {
   activeSetupName: string;

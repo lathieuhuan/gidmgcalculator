@@ -44,12 +44,14 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
 import { Button, IconButton, Green, Red } from "@Components/atoms";
-import { CollapseList } from "@Components/molecules";
-import { Modal } from "@Components/modals";
-import { renderNoItems } from "@Components/minors";
-import { SetBonusesDisplay, ConfirmTemplate, TipsModal } from "@Components/template";
-import { AttributeTable } from "@Components/AttributeTable";
-import { DamageDisplay } from "@Components/DamageDisplay";
+import {
+  CollapseList,
+  AttributeTable,
+  Modal,
+  ConfirmModalBody,
+  SetBonusesDisplay,
+} from "@Components/molecules";
+import { DamageDisplay, TipsModal } from "@Components/organisms";
 import { SetupExporter } from "@Components/SetupExporter";
 import { SetupTemplate } from "./SetupTemplate";
 import { ModifierWrapper } from "./components";
@@ -394,7 +396,7 @@ export default function MySetups() {
         if (!removedSetup) return null;
 
         return (
-          <ConfirmTemplate
+          <ConfirmModalBody
             message={
               <>
                 Remove "<b>{removedSetup.name}</b>"?
@@ -504,7 +506,13 @@ export default function MySetups() {
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
           >
-            {mySetups.length ? mySetups.map(renderSetup) : renderNoItems("setups")}
+            {mySetups.length ? (
+              mySetups.map(renderSetup)
+            ) : (
+              <div className="w-full pt-8 flex-center">
+                <p className="text-xl font-bold text-lightred">No setups to display</p>
+              </div>
+            )}
           </div>
 
           <div

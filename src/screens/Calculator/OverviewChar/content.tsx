@@ -21,11 +21,9 @@ import { useTabs } from "@Src/hooks";
 import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
-import { WeaponCard } from "@Components/molecules";
+import { SharedSpace } from "@Components/atoms";
+import { WeaponCard, AttributeTable, SetBonusesDisplay } from "@Components/molecules";
 import { TalentList, ConsList } from "@Components/organisms";
-import { AttributeTable } from "@Components/AttributeTable";
-import { SharedSpace } from "@Components/layout";
-import { SetBonusesDisplay } from "@Components/template";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {

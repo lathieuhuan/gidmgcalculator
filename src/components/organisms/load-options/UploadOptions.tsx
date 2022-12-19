@@ -5,8 +5,8 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { downloadToDevice, styles } from "./utils";
 
 // Component
-import { Modal, type ModalControl } from "@Components/modals";
 import { Button, CloseButton } from "@Components/atoms";
+import { Modal, type ModalControl } from "@Components/molecules";
 
 type MessageState =
   | { uploadCase: "auto"; result: "success" | "fail" | "no_data" }
@@ -160,11 +160,7 @@ function Options({ outdates, uploadUserDatabase, onSuccess, onClose }: UploadOpt
   );
 }
 
-export default function UploadOptions({
-  active,
-  onClose,
-  ...rest
-}: ModalControl & UploadOptionsProps) {
+export function UploadOptions({ active, onClose, ...rest }: ModalControl & UploadOptionsProps) {
   return (
     <Modal
       active={active}

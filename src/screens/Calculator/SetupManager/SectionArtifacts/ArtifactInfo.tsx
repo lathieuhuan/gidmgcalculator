@@ -19,9 +19,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Component
 import { IconButton } from "@Components/atoms";
-import { ArtifactSubstats } from "@Components/molecules/ArtifactCard";
-import { Modal } from "@Components/modals";
-import { ConfirmTemplate } from "@Components/template";
+import { ArtifactSubstats, ConfirmModalBody, Modal } from "@Components/molecules";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -209,7 +207,7 @@ function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
   );
 
   return (
-    <ConfirmTemplate
+    <ConfirmModalBody
       message={message}
       buttons={[
         {

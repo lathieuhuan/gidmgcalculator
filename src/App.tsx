@@ -24,12 +24,9 @@ import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
 
 // Component
-import { NavBar } from "@Components/NavBar";
-import { Modal } from "@Components/modals";
-import DownloadOptions from "@Components/load-options/DownloadOptions";
-import UploadOptions from "@Components/load-options/UploadOptions";
-import { ImportManager } from "@Components/ImportManager";
 import { Button } from "@Components/atoms";
+import { Modal } from "@Components/molecules";
+import { NavBar, DownloadOptions, UploadOptions, ImportManager } from "@Components/organisms";
 
 function App() {
   const dispatch = useDispatch();

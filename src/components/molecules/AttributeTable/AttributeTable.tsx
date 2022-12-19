@@ -24,23 +24,23 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
   if (!attributes) {
     return null;
   }
-  const em = attributes.em || 0;
 
   return (
     <StatsTable>
       {CORE_STAT_TYPES.map((type) => {
-        const baseAttr = attributes[`base_${type}`];
+        const baseAttr = attributes?.[`base_${type}`] || 0;
+        const totalAttr = attributes?.[type] || 0;
 
         return (
           <StatsTable.Row key={type} className="group">
             <p>{t(type)}</p>
             <div className="relative">
               <p className={clsx("mr-2", { "group-hover:hidden": baseAttr })}>
-                {Math.round(attributes[type])}
+                {Math.round(totalAttr)}
               </p>
               {baseAttr && (
                 <p className="mr-2 hidden whitespace-nowrap group-hover:block group-hover:absolute group-hover:top-0 group-hover:right-0">
-                  {baseAttr} + <Green>{Math.round(attributes[type] - baseAttr)}</Green>
+                  {baseAttr} + <Green>{Math.round(totalAttr - baseAttr)}</Green>
                 </p>
               )}
             </div>
@@ -48,13 +48,13 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
         );
       })}
 
-      <EmSection em={em} />
+      <EmSection em={attributes?.em || 0} />
 
       {(["cRate", "cDmg", "healBn", "er", "shStr"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
             <p>{t(type)}</p>
-            <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
+            <p className="mr-2">{Math.round((attributes?.[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
       })}
@@ -63,7 +63,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
         return (
           <StatsTable.Row key={type}>
             <p>{t(type)}</p>
-            <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
+            <p className="mr-2">{Math.round((attributes?.[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
       })}
@@ -72,7 +72,7 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
         return (
           <StatsTable.Row key={type}>
             <p>{t(type)}</p>
-            <p className="mr-2">{Math.round((attributes[type] || 0) * 10) / 10}%</p>
+            <p className="mr-2">{Math.round((attributes?.[type] || 0) * 10) / 10}%</p>
           </StatsTable.Row>
         );
       })}

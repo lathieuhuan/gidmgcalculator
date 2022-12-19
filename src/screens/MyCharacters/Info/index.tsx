@@ -28,10 +28,8 @@ import {
 } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { ConfirmTemplate } from "@Components/template";
-import { AttributeTable } from "@Components/AttributeTable";
-import { Modal } from "@Components/modals";
 import { IconButton, StarLine } from "@Components/atoms";
+import { AttributeTable, ConfirmModalBody, Modal } from "@Components/molecules";
 import { TalentList, ConsList } from "@Components/organisms";
 import Gears from "./Gears";
 
@@ -158,7 +156,7 @@ export default function Info() {
       </div>
 
       <Modal active={removing} className="small-modal" onClose={() => setRemoving(false)}>
-        <ConfirmTemplate
+        <ConfirmModalBody
           message={
             <>
               Remove <b>{name}</b>?

@@ -31,8 +31,8 @@ import { findArtifactPiece } from "@Data/controllers";
 
 // Component
 import { ButtonBar, ArtifactCard } from "@Components/molecules";
+import { ConfirmModal } from "@Components/organisms";
 import { Picker, PrePicker } from "@Components/Picker";
-import { ConfirmModal } from "@Components/template";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 

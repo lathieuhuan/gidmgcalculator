@@ -2,16 +2,9 @@ import clsx from "clsx";
 import { FaBars } from "react-icons/fa";
 
 // Component
-import { Modal } from "@Components/modals";
-import {
-  IntroButton,
-  mobileNavButtonStyles,
-  renderDownloadButton,
-  renderUploadButton,
-  Tabs,
-} from "./components";
-
-const navMobileMenuOptionStyles = "px-6 py-2 border-b border-white/40 last:rounded-b";
+import { Modal } from "@Components/molecules";
+import { IntroButton, DownloadButton, UploadButton, navButtonMobileStyles } from "./atoms";
+import { NavTabs } from "./molecules";
 
 interface NavBarProps {
   menuActive: boolean;
@@ -20,17 +13,19 @@ interface NavBarProps {
   onClickDownload: () => void;
 }
 export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownload }: NavBarProps) {
+  const optionClassName = "px-6 py-2 border-b border-white/40 last:rounded-b";
+
   return (
     <div className="bg-black/60">
       <div className="hidden lg:flex justify-between">
         <div className="flex">
-          <Tabs className="px-2 py-1" />
+          <NavTabs className="px-2 py-1" />
         </div>
 
         <div className="px-1 flex bg-darkblue-3">
           <IntroButton className="px-2 py-1" />
-          {renderDownloadButton("px-2 py-1", onClickDownload)}
-          {renderUploadButton("px-2 py-1", onClickUpload)}
+          <DownloadButton className="px-2 py-1" onClick={onClickDownload} />
+          <UploadButton className="px-2 py-1" onClick={onClickUpload} />
         </div>
       </div>
 
@@ -39,8 +34,8 @@ export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownlo
           <button
             className={clsx(
               "flex-center",
-              mobileNavButtonStyles.base,
-              menuActive ? mobileNavButtonStyles.active : mobileNavButtonStyles.idle
+              navButtonMobileStyles.base,
+              menuActive ? navButtonMobileStyles.active : navButtonMobileStyles.idle
             )}
             onClick={() => setMenuActive(true)}
           >
@@ -52,10 +47,10 @@ export function NavBar({ menuActive, setMenuActive, onClickUpload, onClickDownlo
             className="rounded flex flex-col shadow-white-glow text-default"
             onClose={() => setMenuActive(false)}
           >
-            <IntroButton className={clsx(navMobileMenuOptionStyles, "rounded-t bg-darkblue-3")} />
-            <Tabs className={navMobileMenuOptionStyles} onClick={() => setMenuActive(false)} />
-            {renderUploadButton(navMobileMenuOptionStyles, onClickUpload)}
-            {renderDownloadButton(navMobileMenuOptionStyles, onClickDownload)}
+            <IntroButton className={optionClassName + " rounded-t bg-darkblue-3"} />
+            <NavTabs className={optionClassName} onClickTab={() => setMenuActive(false)} />
+            <DownloadButton className={optionClassName} onClick={onClickUpload} />
+            <UploadButton className={optionClassName} onClick={onClickDownload} />
           </Modal>
         </div>
       </div>

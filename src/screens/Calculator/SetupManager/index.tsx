@@ -23,9 +23,9 @@ import { useHeight } from "@Src/hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
+import { ConfirmModal } from "@Components/organisms";
 import { PrePicker, Picker } from "@Components/Picker";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
-import { ConfirmModal } from "@Components/template";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
