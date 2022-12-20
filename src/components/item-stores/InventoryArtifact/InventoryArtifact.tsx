@@ -25,8 +25,8 @@ import {
   ModalHeader,
   type ModalControl,
 } from "@Components/molecules";
-import { renderEquippedChar } from "../components";
 import { ArtifactFilter } from "../ArtifactFilter";
+import { renderEquippedChar } from "../components";
 
 import styles from "../styles.module.scss";
 

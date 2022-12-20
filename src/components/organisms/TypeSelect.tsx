@@ -5,12 +5,12 @@ import { getImgSrc } from "@Src/utils";
 import { CloseButton } from "@Components/atoms";
 import { Modal, type ModalControl } from "@Components/molecules";
 
-interface PrePickerProps extends ModalControl {
+interface TypeSelectProps extends ModalControl {
   choices: Record<string, string>;
   footer?: JSX.Element;
   onClickChoice: (choice: string) => void;
 }
-export function PrePicker({ active, choices, onClickChoice, onClose, footer }: PrePickerProps) {
+export function TypeSelect({ active, choices, onClickChoice, onClose, footer }: TypeSelectProps) {
   return (
     <Modal
       active={active}

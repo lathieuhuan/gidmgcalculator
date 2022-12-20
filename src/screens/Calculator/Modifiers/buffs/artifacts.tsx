@@ -110,5 +110,5 @@ export default function ArtifactBuffs() {
     });
   });
 
-  return renderModifiers(content, "buffs");
+  return renderModifiers(content, "buffs", true);
 }

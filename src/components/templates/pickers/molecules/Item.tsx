@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { memo } from "react";
-import type { PickerItem } from "./types";
+import type { PickerItem } from "../types";
 
 // Constant
 import { VISION_ICONS } from "@Src/constants";
@@ -60,8 +60,6 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
   );
 }
 
-const MemoItem = memo(Item, (prev, next) => {
+export const MemoItem = memo(Item, (prev, next) => {
   return prev.massAdd === next.massAdd && prev.pickedAmount === next.pickedAmount;
 });
-
-export default MemoItem;

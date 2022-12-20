@@ -122,5 +122,5 @@ export default function WeaponBuffs() {
     });
   });
 
-  return renderModifiers(content, "buffs");
+  return renderModifiers(content, "buffs", true);
 }

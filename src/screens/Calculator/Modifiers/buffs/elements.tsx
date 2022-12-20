@@ -251,5 +251,5 @@ export default function ElementBuffs() {
     addAttackReaction("infuse_reaction");
   }
 
-  return renderModifiers(content, "buffs");
+  return renderModifiers(content, "buffs", true);
 }

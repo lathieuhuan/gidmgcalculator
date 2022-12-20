@@ -22,7 +22,7 @@ import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 // Component
 import { Button, IconButton, BetaMark, StarLine } from "@Components/atoms";
 import { ComplexSelect } from "@Components/molecules";
-import { Picker } from "@Components/Picker";
+import { PickerCharacter } from "@Components/templates";
 import contentByTab from "./content";
 
 interface OverviewCharProps {
@@ -108,7 +108,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
         </div>
       )}
 
-      <Picker.Character
+      <PickerCharacter
         active={pickerOn}
         sourceType="mixed"
         onPickCharacter={(pickedChar) => dispatch(startCalculation(pickedChar))}

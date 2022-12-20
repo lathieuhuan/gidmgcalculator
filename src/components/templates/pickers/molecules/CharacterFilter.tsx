@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { Filter } from "./types";
+import type { Filter } from "../types";
 
 // Constant
 import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
@@ -7,10 +7,10 @@ import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
 // Util
 import { getImgSrc } from "@Src/utils";
 
-export interface CharFilterProps extends Filter {
+interface CharacterFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;
 }
-export default function CharFilter(props: CharFilterProps) {
+export function CharacterFilter(props: CharacterFilterProps) {
   const { type, value, onClickOption } = props;
 
   return (

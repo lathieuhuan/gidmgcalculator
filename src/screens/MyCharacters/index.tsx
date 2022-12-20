@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
 import { Button } from "@Components/atoms";
-import { Picker } from "@Components/Picker";
+import { PickerCharacter } from "@Components/templates";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 import Info from "./Info";
@@ -79,7 +79,7 @@ export default function MyCharacters() {
         </div>
       </div>
 
-      <Picker.Character
+      <PickerCharacter
         active={modalType === "ADD_CHARACTER"}
         sourceType="appData"
         needMassAdd

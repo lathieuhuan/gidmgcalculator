@@ -28,7 +28,7 @@ import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
 
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
-import { Picker } from "@Components/Picker";
+import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
 
 interface IModal {
@@ -173,7 +173,7 @@ export default function SectionParty() {
         )}
       </CollapseSpace>
 
-      <Picker.Character
+      <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
         sourceType="appData"
         filter={({ name }) => {
@@ -191,7 +191,7 @@ export default function SectionParty() {
       />
 
       {detailSlot !== null && (
-        <Picker.Weapon
+        <PickerWeapon
           active={modal.type === "WEAPON" && modal.teammateIndex !== null}
           weaponType={partyData[detailSlot]?.weaponType || "sword"}
           onPickWeapon={({ code }) => {
@@ -208,7 +208,7 @@ export default function SectionParty() {
         />
       )}
 
-      <Picker.Artifact
+      <PickerArtifact
         active={modal.type === "ARTIFACT" && modal.teammateIndex !== null}
         artifactType="flower"
         forFeature="TEAMMATE_MODIFIERS"

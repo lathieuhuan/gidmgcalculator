@@ -19,8 +19,8 @@ import { findWeapon } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { Picker } from "@Components/Picker";
 import { BetaMark } from "@Components/atoms";
+import { PickerWeapon } from "@Components/templates";
 
 export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);
@@ -81,7 +81,7 @@ export default function SectionWeapon() {
         )}
       </div>
 
-      <Picker.Weapon
+      <PickerWeapon
         active={pickerOn}
         weaponType={weapon.type}
         onPickWeapon={(item) => dispatch(changeWeapon({ ID: Date.now(), ...item }))}

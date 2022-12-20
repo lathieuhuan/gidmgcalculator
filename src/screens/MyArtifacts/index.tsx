@@ -31,8 +31,8 @@ import { findArtifactPiece } from "@Data/controllers";
 
 // Component
 import { ButtonBar, ArtifactCard } from "@Components/molecules";
-import { ConfirmModal } from "@Components/organisms";
-import { Picker, PrePicker } from "@Components/Picker";
+import { ConfirmModal, TypeSelect } from "@Components/organisms";
+import { PickerArtifact, PickerCharacter } from "@Components/templates";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 
@@ -192,7 +192,7 @@ export default function MyArtifacts() {
         onClose={closeModal}
       />
 
-      <PrePicker
+      <TypeSelect
         active={modalType === "PICK_ARTIFACT_TYPE"}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artType) => {
@@ -205,7 +205,7 @@ export default function MyArtifacts() {
         onClose={closeModal}
       />
 
-      <Picker.Artifact
+      <PickerArtifact
         active={pickArtifactModal.isActive}
         needMassAdd
         artifactType={pickArtifactModal.type}
@@ -217,7 +217,7 @@ export default function MyArtifacts() {
         onClose={() => setPickArtifactModal((prev) => ({ ...prev, isActive: false }))}
       />
 
-      <Picker.Character
+      <PickerCharacter
         active={modalType === "EQUIP_CHARACTER" && !!artifact}
         sourceType="userData"
         filter={({ name }) => name !== artifact?.owner}

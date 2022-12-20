@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { DataType, Filter, PickerItem } from "./types";
+import type { DataType, Filter, PickerItem } from "../types";
 
 // Component
 import { CollapseSpace } from "@Components/atoms";
 import { ModalHeader } from "@Components/molecules";
-import CharFilter from "./CharFilter";
-import MemoItem from "./Item";
+import { CharacterFilter } from "../molecules/CharacterFilter";
+import { MemoItem } from "../molecules/Item";
 
 const { FilterButton, CloseButton, Text } = ModalHeader;
 
@@ -46,7 +46,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
               <div className="absolute w-full top-full left-0 z-50">
                 <div className="rounded-b-lg bg-darkblue-3 shadow-common">
                   <CollapseSpace active={filterOn}>
-                    <CharFilter
+                    <CharacterFilter
                       {...filter}
                       onClickOption={(isChosen, newFilter) => {
                         setFilter(isChosen ? DEFAULT_FILTER : newFilter);

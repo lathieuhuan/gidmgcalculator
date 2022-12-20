@@ -110,7 +110,7 @@ export function SelfBuffs() {
       );
     }
   });
-  return renderModifiers(content, "buffs");
+  return renderModifiers(content, "buffs", true);
 }
 
 export function PartyBuffs() {

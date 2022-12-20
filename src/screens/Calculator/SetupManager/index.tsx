@@ -23,8 +23,8 @@ import { useHeight } from "@Src/hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
-import { ConfirmModal } from "@Components/organisms";
-import { PrePicker, Picker } from "@Components/Picker";
+import { ConfirmModal, TypeSelect } from "@Components/organisms";
+import { PickerCharacter } from "@Components/templates";
 import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
@@ -102,7 +102,7 @@ export default function SetupManager() {
         onMoveTarget={() => setTargetAtFront(true)}
       />
 
-      <PrePicker
+      <TypeSelect
         active={prePickerOn}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artifactType) => {
@@ -111,7 +111,7 @@ export default function SetupManager() {
         }}
         onClose={() => setPrePickerOn(false)}
         footer={
-          <div className="mt-6 flex justify-center">
+          <div className="mt-4 flex justify-center">
             <Button
               variant="positive"
               onClick={() => {
@@ -150,7 +150,7 @@ export default function SetupManager() {
         onClose={closeModal}
       />
 
-      <Picker.Character
+      <PickerCharacter
         active={modal.type === "CHARACTERS"}
         sourceType="userData"
         onPickCharacter={({ artifactIDs }) => {

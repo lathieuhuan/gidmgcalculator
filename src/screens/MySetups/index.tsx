@@ -51,8 +51,7 @@ import {
   ConfirmModalBody,
   SetBonusesDisplay,
 } from "@Components/molecules";
-import { DamageDisplay, TipsModal } from "@Components/organisms";
-import { SetupExporter } from "@Components/SetupExporter";
+import { DamageDisplay, TipsModal, SetupExporter } from "@Components/organisms";
 import { SetupTemplate } from "./SetupTemplate";
 import { ModifierWrapper } from "./components";
 import {

@@ -29,10 +29,11 @@ import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar, WeaponCard } from "@Components/molecules";
-import { Picker, PrePicker } from "@Components/Picker";
+import { PickerCharacter, PickerWeapon } from "@Components/templates";
 import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 
 import styles from "../styles.module.scss";
+import { TypeSelect } from "@Components/organisms";
 
 type ModalType = "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 
@@ -133,7 +134,7 @@ export default function MyWeapons() {
         </div>
       </div>
 
-      <PrePicker
+      <TypeSelect
         active={modalType === "PICK_WEAPON_TYPE"}
         choices={WEAPON_ICONS}
         onClickChoice={(weaponType) => {
@@ -146,7 +147,7 @@ export default function MyWeapons() {
         onClose={closeModal}
       />
 
-      <Picker.Weapon
+      <PickerWeapon
         active={weaponPicker.active}
         needMassAdd
         weaponType={weaponPicker.type}
@@ -159,7 +160,7 @@ export default function MyWeapons() {
       />
 
       {weapon && (
-        <Picker.Character
+        <PickerCharacter
           active={modalType === "EQUIP_CHARACTER"}
           sourceType="userData"
           filter={({ name, weaponType }) => {

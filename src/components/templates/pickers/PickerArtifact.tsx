@@ -1,52 +1,21 @@
 import { useMemo } from "react";
+import type { ArtifactType } from "@Src/types";
 import type { PickerItem } from "./types";
-import type { ArtifactType, WeaponType } from "@Src/types";
-
-// Data
-import artifacts from "@Data/artifacts";
-import weapons from "@Data/weapons";
-
-// Util
-import { pickProps } from "@Src/utils";
-import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
 
 // Constant
 import { EModAffect } from "@Src/constants";
 
+// Util
+import { initArtPiece } from "@Store/calculatorSlice/initiators";
+
+// Data
+import artifacts from "@Data/artifacts";
+
 // Component
-import { PickerTemplate } from "./PickerTemplate";
+import { Modal, type ModalControl } from "@Components/molecules";
+import { PickerTemplate } from "./organisms/PickerTemplate";
 
-export interface PickerWeaponProps {
-  type?: string;
-  weaponType: WeaponType;
-  needMassAdd?: boolean;
-  onPickWeapon: (info: ReturnType<typeof initWeapon>) => void;
-  onClose: () => void;
-}
-export function PickerWeapon({
-  weaponType,
-  needMassAdd,
-  onPickWeapon,
-  onClose,
-}: PickerWeaponProps) {
-  const data = useMemo(() => {
-    return weapons[weaponType].map((weapon) =>
-      pickProps(weapon, ["code", "name", "beta", "icon", "rarity"])
-    );
-  }, []);
-
-  return (
-    <PickerTemplate
-      dataType="weapon"
-      needMassAdd={needMassAdd}
-      data={data}
-      onPickItem={({ code }) => onPickWeapon(initWeapon({ type: weaponType, code }))}
-      onClose={onClose}
-    />
-  );
-}
-
-export interface PickerArtifactProps {
+interface PickerArtifactCoreProps {
   type?: string;
   artifactType: ArtifactType;
   needMassAdd?: boolean;
@@ -54,13 +23,13 @@ export interface PickerArtifactProps {
   onPickArtifact: (info: ReturnType<typeof initArtPiece>) => void;
   onClose: () => void;
 }
-export function PickerArtifact({
+function PickerArtifactCore({
   artifactType,
   needMassAdd,
   forFeature,
   onPickArtifact,
   onClose,
-}: PickerArtifactProps) {
+}: PickerArtifactCoreProps) {
   const [gold, purple] = useMemo(() => {
     switch (forFeature) {
       case "TEAMMATE_MODIFIERS":
@@ -110,3 +79,15 @@ export function PickerArtifact({
     />
   );
 }
+
+export const PickerArtifact = ({
+  active,
+  onClose,
+  ...rest
+}: PickerArtifactCoreProps & ModalControl) => {
+  return (
+    <Modal active={active} withDefaultStyle onClose={onClose}>
+      <PickerArtifactCore {...rest} onClose={onClose} />
+    </Modal>
+  );
+};

@@ -81,7 +81,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
       );
     }
   });
-  return renderModifiers(content, "debuffs");
+  return renderModifiers(content, "debuffs", true);
 }
 
 export function PartyDebuffs({ partyData }: { partyData: PartyData }) {

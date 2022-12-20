@@ -19,7 +19,7 @@ import { findArtifactPiece } from "@Data/controllers";
 
 // Component
 import { CollapseSpace } from "@Components/atoms";
-import { Picker } from "@Components/Picker";
+import { PickerArtifact } from "@Components/templates";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
@@ -111,7 +111,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
         )}
       </CollapseSpace>
 
-      <Picker.Artifact
+      <PickerArtifact
         active={artifactPicker.active}
         artifactType={ARTIFACT_TYPES[artifactPicker.slot]}
         onPickArtifact={(item) => {

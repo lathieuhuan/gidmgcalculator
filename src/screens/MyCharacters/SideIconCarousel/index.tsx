@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
 import { IconButton } from "@Components/atoms";
-import { Picker } from "@Components/Picker";
+import { PickerCharacter } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
@@ -125,7 +125,7 @@ export default function SideIconCarousel({
         </button>
       </div>
 
-      <Picker.Character
+      <PickerCharacter
         active={gridviewOn}
         sourceType="userData"
         onPickCharacter={({ name }) => {

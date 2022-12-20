@@ -141,5 +141,5 @@ export function ArtifactDebuffs() {
       />
     );
   });
-  return renderModifiers(content, "debuffs");
+  return renderModifiers(content, "debuffs", true);
 }

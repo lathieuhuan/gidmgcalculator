@@ -11,22 +11,6 @@ import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 import { Button, CollapseAndMount } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
-interface ArtifactFilterProps extends FilterProps {
-  filterOn: boolean;
-}
-export function ArtifactFilter({ filterOn, ...rest }: ArtifactFilterProps) {
-  return (
-    <CollapseAndMount
-      className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-darkblue-3 flex justify-center"
-      active={filterOn}
-      activeHeight="28.35rem"
-      duration={150}
-    >
-      <Filter {...rest} />
-    </CollapseAndMount>
-  );
-}
-
 interface FilterProps {
   artifactType: ArtifactType;
   artifacts: CalcArtifact[];
@@ -95,5 +79,21 @@ function Filter({ artifactType, artifacts, filter, onClose }: FilterProps) {
 
       {renderArtifactSetFilter()}
     </div>
+  );
+}
+
+interface ArtifactFilterProps extends FilterProps {
+  filterOn: boolean;
+}
+export function ArtifactFilter({ filterOn, ...rest }: ArtifactFilterProps) {
+  return (
+    <CollapseAndMount
+      className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-darkblue-3 flex justify-center"
+      active={filterOn}
+      activeHeight="28.35rem"
+      duration={150}
+    >
+      <Filter {...rest} />
+    </CollapseAndMount>
   );
 }
