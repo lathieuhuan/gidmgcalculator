@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { type RefObject, useState } from "react";
+import { type RefObject, useState, useEffect } from "react";
 
 // Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
@@ -39,19 +39,19 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
   const activeArtifact = artifacts[activeTabIndex];
 
-  const scrollContainer = () => {
-    // setTimeout(() => {
-    //   const container = containerRef?.current;
-    //   if (container) container.scrollTop = 9999;
-    // }, 200);
-  };
+  useEffect(() => {
+    if (activeTabIndex >= 0) {
+      setTimeout(() => {
+        document.querySelector("#calculator-artifacts")?.scrollIntoView();
+      }, 200);
+    }
+  }, [activeTabIndex]);
 
   const onClickTab = (tabIndex: number) => {
     // there's already an artifact at tabIndex (or artifact !== null after this excution)
     if (artifacts[tabIndex]) {
       // if click on the activeTab close it, otherwise change tab
       setActiveTabIndex(tabIndex === activeTabIndex ? -1 : tabIndex);
-      scrollContainer();
     } else {
       setArtifactPicker({
         active: true,
@@ -61,7 +61,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
   };
 
   return (
-    <div className="py-3 border-2 border-lesser rounded-xl bg-darkblue-1">
+    <div id="calculator-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-darkblue-1">
       {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
 
       <div className="flex">
@@ -82,9 +82,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
               <div
                 className={clsx(
                   `bg-gradient-${artPiece ? artPiece.rarity || 5 : 1} cursor-pointer`,
-                  {
-                    "p-2 opacity-80": !artPiece,
-                  }
+                  !artPiece && "p-2 opacity-80"
                 )}
                 onClick={() => onClickTab(index)}
               >
@@ -126,7 +124,6 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             })
           );
           setActiveTabIndex(artifactPicker.slot);
-          scrollContainer();
         }}
         onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />
