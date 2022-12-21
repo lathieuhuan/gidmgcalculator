@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import type { ArtifactType, ArtifactMainStatType, UserArtifact } from "@Src/types";
-import type { StatsFilter } from "@Components/item-stores/utils";
+import type { StatsFilter } from "@Components/templates/inventories/utils";
 
 // Constant
 import { ARTIFACT_ICONS } from "@Src/constants";
@@ -23,17 +23,20 @@ import { selectArtifactById, selectMyArts } from "@Store/userDatabaseSlice/selec
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
+import { useInventoryRack, useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Util
-import { filterArtIdsBySetsAndStats, initArtifactStatsFilter } from "@Components/item-stores/utils";
+import {
+  filterArtIdsBySetsAndStats,
+  initArtifactStatsFilter,
+} from "@Components/templates/inventories/utils";
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
+import { OwnerLabel } from "@Components/atoms";
 import { ButtonBar, ArtifactCard } from "@Components/molecules";
-import { ConfirmModal, TypeSelect } from "@Components/organisms";
+import { ConfirmModal, TypeSelect, ItemRemoveConfirm } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter } from "@Components/templates";
-import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -176,7 +179,7 @@ export default function MyArtifacts() {
               ) : null}
             </div>
 
-            {artifact?.owner ? renderEquippedChar(artifact.owner) : null}
+            <OwnerLabel owner={artifact?.owner} />
           </div>
         </div>
       </div>
@@ -232,7 +235,7 @@ export default function MyArtifacts() {
       />
 
       {artifact && (
-        <ItemConfirmRemove
+        <ItemRemoveConfirm
           active={modalType === "REMOVE_ARTIFACT"}
           item={artifact}
           itemType="artifact"

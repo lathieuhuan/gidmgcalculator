@@ -17,7 +17,7 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
 import { CloseButton, SharedSpace } from "@Components/atoms";
-import { InventoryWeapon, InventoryArtifact } from "@Components/item-stores";
+import { InventoryWeapon, InventoryArtifact } from "@Components/templates";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
 
@@ -101,7 +101,7 @@ export default function Gears(props: GearsProps) {
   return (
     <>
       {onSmallDevice ? (
-        <div className="ml-2 h-full w-75 px-4 rounded-lg bg-darkblue-1 box-content">
+        <div className="ml-2 w-75 h-full px-4 shrink-0 rounded-lg bg-darkblue-1 box-content">
           <SharedSpace
             atLeft={!showingDetails}
             leftPart={overviewComponent}

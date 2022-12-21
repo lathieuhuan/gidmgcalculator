@@ -93,7 +93,12 @@ export function TalentDetail({
     });
   }
 
-  const { talentType, talentName, talentStats, getExtraStats } = talentInfoByPosition[detailIndex];
+  const {
+    talentType = "NAs",
+    talentName = "",
+    talentStats = [],
+    getExtraStats,
+  } = talentInfoByPosition[detailIndex] || {};
   const isStatic = talentType === "altSprint";
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
@@ -139,7 +144,7 @@ export function TalentDetail({
 
   return (
     <div className="h-full flex flex-col relative">
-      <div className="flex-grow hide-scrollbar">
+      <div className={"flex-grow hide-scrollbar " + (!talentName && "hidden")}>
         <SlideShow
           forTalent
           currentIndex={detailIndex}

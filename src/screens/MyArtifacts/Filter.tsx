@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ArtifactType } from "@Src/types";
-import type { StatsFilter } from "@Components/item-stores/utils";
+import type { StatsFilter } from "@Components/templates/inventories/utils";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -8,13 +8,13 @@ import {
   useArtifactSetFilter,
   useArtifactStatsFilter,
   useTypeFilter,
-} from "@Components/item-stores/hooks";
+} from "@Components/templates/inventories/hooks";
 
 // Selector
 import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
 
 // Util
-import { hasDupStat } from "@Components/item-stores/utils";
+import { hasDupStat } from "@Components/templates/inventories/utils";
 
 // Component
 import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";

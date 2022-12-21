@@ -38,11 +38,11 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
               <p className={clsx("mr-2", { "group-hover:hidden": baseAttr })}>
                 {Math.round(totalAttr)}
               </p>
-              {baseAttr && (
+              {baseAttr ? (
                 <p className="mr-2 hidden whitespace-nowrap group-hover:block group-hover:absolute group-hover:top-0 group-hover:right-0">
                   {baseAttr} + <Green>{Math.round(totalAttr - baseAttr)}</Green>
                 </p>
-              )}
+              ) : null}
             </div>
           </StatsTable.Row>
         );

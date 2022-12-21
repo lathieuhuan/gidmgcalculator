@@ -9,14 +9,13 @@ import {
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useInventoryRack } from "../hooks";
+import { useInventoryRack } from "./hooks";
 
 // Component
-import { Button } from "@Components/atoms";
+import { Button, OwnerLabel } from "@Components/atoms";
 import { WeaponCard, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { renderEquippedChar } from "../components";
 
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 
 const { Text, CloseButton } = ModalHeader;
 
@@ -59,7 +58,10 @@ function WeaponInventory({
           {inventoryRack}
 
           <div className="flex flex-col justify-between">
-            <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
+            <div
+              className="p-4 rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar"
+              style={{ minHeight: "28rem" }}
+            >
               <div className="w-68 grow hide-scrollbar">
                 <WeaponCard weapon={chosenWp} mutable={false} />
               </div>
@@ -79,7 +81,7 @@ function WeaponInventory({
               ) : null}
             </div>
 
-            {chosenWp?.owner ? renderEquippedChar(chosenWp.owner) : null}
+            <OwnerLabel owner={chosenWp?.owner} />
           </div>
         </div>
       </div>

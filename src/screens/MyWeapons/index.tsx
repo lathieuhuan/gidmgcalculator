@@ -24,16 +24,15 @@ import {
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useInventoryRack, useTypeFilter } from "@Components/item-stores/hooks";
+import { useInventoryRack, useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Component
-import { IconButton, CollapseSpace } from "@Components/atoms";
+import { IconButton, CollapseSpace, OwnerLabel } from "@Components/atoms";
 import { ButtonBar, WeaponCard } from "@Components/molecules";
+import { ItemRemoveConfirm, TypeSelect } from "@Components/organisms";
 import { PickerCharacter, PickerWeapon } from "@Components/templates";
-import { ItemConfirmRemove, renderEquippedChar } from "@Components/item-stores/components";
 
 import styles from "../styles.module.scss";
-import { TypeSelect } from "@Components/organisms";
 
 type ModalType = "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 
@@ -129,7 +128,7 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            {weapon?.owner ? renderEquippedChar(weapon.owner) : null}
+            <OwnerLabel owner={weapon?.owner} />
           </div>
         </div>
       </div>
@@ -176,7 +175,7 @@ export default function MyWeapons() {
       )}
 
       {weapon && (
-        <ItemConfirmRemove
+        <ItemRemoveConfirm
           active={modalType === "REMOVE_WEAPON"}
           item={weapon}
           itemType="weapon"

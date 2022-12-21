@@ -11,13 +11,14 @@ import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useInventoryRack } from "../hooks";
+import { useInventoryRack } from "./hooks";
 
 // Util
 import { findById } from "@Src/utils";
-import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "../utils";
+import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "./utils";
 
 // Conponent
+import { OwnerLabel } from "@Components/atoms";
 import {
   ButtonBar,
   ArtifactCard,
@@ -25,10 +26,9 @@ import {
   ModalHeader,
   type ModalControl,
 } from "@Components/molecules";
-import { ArtifactFilter } from "../ArtifactFilter";
-import { renderEquippedChar } from "../components";
+import { ArtifactFilter } from "./organisms/ArtifactFilter";
 
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 
 const { Text, CloseButton, FilterButton } = ModalHeader;
 
@@ -150,7 +150,7 @@ function ArtifactInventory({
               ) : null}
             </div>
 
-            {chosenArtifact?.owner ? renderEquippedChar(chosenArtifact.owner) : null}
+            <OwnerLabel owner={chosenArtifact?.owner} />
           </div>
         </div>
       </div>
