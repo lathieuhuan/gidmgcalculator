@@ -3,8 +3,8 @@ import type { StatInfo } from "@Src/types";
 export enum EModSrc {
   ES = "Elemental Skill",
   EB = "Elemental Burst",
-  A1 = "Ascension 1 Passive Talent",
-  A4 = "Ascension 4 Passive Talent",
+  A1 = "Ascension 1",
+  A4 = "Ascension 4",
   C1 = "Constellation 1",
   C2 = "Constellation 2",
   C4 = "Constellation 4",

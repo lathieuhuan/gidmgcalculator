@@ -73,9 +73,8 @@ function calcTalentDamage({
         (attElmt !== "various" && type === "cDmg" ? attElmtBonus[attElmt][type] : 0)
       );
     };
-    const xtraCritDmg = attElmt !== "various" ? attElmtBonus[attElmt].cDmg : 0;
     const cRate = Math.min(Math.max(totalCrit("cRate"), 0), 100) / 100;
-    const cDmg = (totalCrit("cDmg") + xtraCritDmg) / 100;
+    const cDmg = totalCrit("cDmg") / 100;
 
     base = applyToOneOrMany(
       base,

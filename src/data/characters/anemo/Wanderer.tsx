@@ -1,10 +1,10 @@
-import { applyModifier } from "@Calculators/utils";
+import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { finalTalentLv, round1, round3 } from "@Src/utils";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { applyModifier } from "@Calculators/utils";
+import { finalTalentLv, round1, round3 } from "@Src/utils";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
   return charBuffCtrls.find(({ index }) => index === 1)?.inputs?.includes(2);
@@ -55,20 +55,14 @@ const Wanderer: DataCharacter = {
         { name: "3-Hit (1/2)", multBase: 47.64 },
         {
           name: "Wind Arrow DMG (A4) (1/4)",
+          attPatt: "none",
           multBase: 35,
           multType: 0,
           isNotOfficial: true,
-          //   getTalentBuff: ({ char }) => {
-          //     const ESisOn
-          //     return talentBuff([checkCons[2](char), "mult", [false, 2], 200]);
-          //   },
-          //   getTlBnes: ({ char, selfMCs }) => {
-          //     if (checkAscs[4](char)) {
-          //       const ESisOn = checkCharMC(Wanderer.buffs, char, selfMCs.BCs, 0);
-          //       const bnValue = ESisOn && checkCons[1](char) ? 60 : 35;
-          //       return makeTlBnes(true, "mult", [1, 4], bnValue);
-          //     }
-          //   },
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const ESisOn = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
+            return talentBuff([ESisOn && checkAscs[4](char), "mult", [true, 4], 25]);
+          },
         },
       ],
     },
@@ -203,13 +197,13 @@ const Wanderer: DataCharacter = {
       index: 0,
       src: EModSrc.ES,
       desc: ({ char, partyData }) => {
-        const { NA, CA } = getESBuffValue(char, partyData) || [];
+        const { NA, CA } = getESBuffValue(char, partyData);
         return (
           <>
-            Increases <Green>Normal Attack DMG</Green> by <Green b>{1 + round3(NA / 100)}</Green>{" "}
-            times and <Green>Charged Attack DMG</Green> by <Green b>{1 + round3(CA / 100)}</Green>{" "}
+            Increases <Green>Normal Attack DMG</Green> by <Green b>{round3(1 + NA / 100)}</Green>{" "}
+            times and <Green>Charged Attack DMG</Green> by <Green b>{round3(1 + CA / 100)}</Green>{" "}
             times.
-            <br /> At <Lightgold>C1</Lightgold>, increases{" "}
+            <br />• At <Lightgold>C1</Lightgold>, increases{" "}
             <Green>Normal and Charged Attack SPD</Green> by <Green b>10%</Green>, increases{" "}
             <Green>Wind Arrow DMG</Green> [~A4] by <Green b>25%</Green> of <Green>ATK</Green>.
           </>
@@ -230,7 +224,7 @@ const Wanderer: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          {Wanderer.passiveTalents[0]} {Wanderer.passiveTalents[1]}
+          {Wanderer.passiveTalents[0].xtraDesc?.[0]} {Wanderer.passiveTalents[0].xtraDesc?.[1]}
         </>
       ),
       isGranted: checkAscs[1],
@@ -270,7 +264,7 @@ const Wanderer: DataCharacter = {
       desc: ({ charBuffCtrls }) => {
         return (
           <>
-            {Wanderer.constellation[1]}{" "}
+            {Wanderer.constellation[1].desc}{" "}
             <Red>Kuugoryoku Points cap: {isInfusedHydroES(charBuffCtrls) ? 120 : 100}.</Red>
           </>
         );

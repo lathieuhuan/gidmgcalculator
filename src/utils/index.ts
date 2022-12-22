@@ -155,6 +155,7 @@ export function totalXtraTalentLv(
   return result;
 }
 
+// #to-check cannot use this in data characters (circular dependencies)
 export const finalTalentLv = (
   char: CharInfo,
   talentType: Exclude<Talent, "altSprint">,
