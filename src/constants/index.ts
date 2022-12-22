@@ -144,3 +144,12 @@ export const DEFAULT_WEAPON_CODE = {
   polearm: 84,
   sword: 108,
 };
+
+export const DEFAULT_MODIFIER_INITIAL_VALUES: Record<string, number> = {
+  check: 0,
+  text: 0,
+  select: 1,
+  stacks: 1,
+  anemoable: 0,
+  dendroable: 0,
+};

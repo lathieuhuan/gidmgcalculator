@@ -15,11 +15,10 @@ import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
-import { EModAffect } from "@Src/constants";
+import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
 import { findById } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
-import { INITIAL_VALUES } from "./constants";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -83,6 +82,7 @@ export function parseAndInitData(
   };
 }
 
+// #to-check necessary (?) cause find weapon
 export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
   const result: ModifierCtrl[] = [];
   const { buffs = [] } = findWeapon(weapon) || {};
@@ -97,7 +97,9 @@ export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType;
       const initialValues = [];
 
       for (const config of buff.inputConfigs) {
-        initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+        initialValues.push(
+          config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
+        );
       }
       if (initialValues.length) {
         node.inputs = initialValues;
@@ -127,7 +129,9 @@ export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
 
         for (const config of buff.inputConfigs) {
           if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-            initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+            initialValues.push(
+              config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
+            );
           }
         }
         if (initialValues.length) {

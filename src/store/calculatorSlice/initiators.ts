@@ -12,8 +12,12 @@ import type {
   Teammate,
 } from "@Src/types";
 import { findCharacter } from "@Data/controllers";
-import { ATTACK_ELEMENTS, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
-import { INITIAL_VALUES } from "./constants";
+import {
+  ATTACK_ELEMENTS,
+  DEFAULT_WEAPON_CODE,
+  DEFAULT_MODIFIER_INITIAL_VALUES,
+  EModAffect,
+} from "@Src/constants";
 
 type InitCharInfo = Omit<CharInfo, "name">;
 export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
@@ -71,7 +75,9 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
 
       for (const config of buff.inputConfigs) {
         if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+          initialValues.push(
+            config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
+          );
         }
       }
       if (initialValues.length) {
@@ -91,7 +97,9 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
 
       for (const config of debuff.inputConfigs) {
         if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(config.initialValue ?? INITIAL_VALUES[config.type] ?? 0);
+          initialValues.push(
+            config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
+          );
         }
       }
       if (initialValues.length) {

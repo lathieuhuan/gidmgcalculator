@@ -73,6 +73,7 @@ export type ModInputConfig = {
   label?: string;
   type: ModInputType;
   for?: "self" | "teammate";
+  /** See DEFAULT_MODIFIER_INITIAL_VALUES */
   initialValue?: number;
   max?: number;
   options?: string[];

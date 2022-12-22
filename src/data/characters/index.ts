@@ -50,6 +50,7 @@ import Tartaglia from "./hydro/Tartaglia";
 import Tighnari from "./dendro/Tighnari";
 import Thoma from "./pyro/Thoma";
 import Venti from "./anemo/Venti";
+import Wanderer from "./anemo/Wanderer";
 import Xiangling from "./pyro/Xiangling";
 import Xiao from "./anemo/Xiao";
 import Xingqiu from "./hydro/Xingqiu";
@@ -114,6 +115,7 @@ const characters = [
   Tighnari,
   Thoma,
   Venti,
+  Wanderer,
   Xiangling,
   Xiao,
   Xingqiu,

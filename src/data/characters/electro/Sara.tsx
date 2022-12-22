@@ -124,6 +124,7 @@ const Sara: DataCharacter = {
           : obj.inputs;
         const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;
+
         applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
 
         if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs[2])) {
