@@ -8,14 +8,14 @@ import { findCharacter } from "@Data/controllers";
 import styles from "./styles.module.scss";
 
 interface ItemThumbProps {
-  noDecoration?: boolean;
   item: {
     beta?: boolean;
     icon: string;
     rarity: Rarity;
     level: Level | number;
     refi?: number;
-    owner: string | null;
+    owner?: string | null;
+    setupIDs?: number[];
   };
   clicked?: boolean;
   chosen: boolean;
@@ -23,7 +23,6 @@ interface ItemThumbProps {
   onMouseDown?: () => void;
 }
 export function ItemThumb({
-  noDecoration,
   item: { beta, icon, rarity, level, refi, owner },
   clicked,
   chosen,
@@ -56,15 +55,11 @@ export function ItemThumb({
 
   return (
     <div
+      className={clsx(styles.thumb, clicked && styles.clicked, chosen && styles.chosen)}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      className={clsx(
-        styles.thumb,
-        (clicked || noDecoration) && styles.clicked,
-        chosen && styles.chosen
-      )}
     >
-      {owner && !noDecoration && renderSideIcon(owner)}
+      {owner && renderSideIcon(owner)}
 
       <div
         className={clsx(

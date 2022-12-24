@@ -16,11 +16,13 @@ export const randomString = (n: number) => {
     .slice(2, 2 + n);
 };
 
-export function pickProps<M, T extends keyof M>(obj: M, keys: T[]): Pick<M, T> {
-  return keys.reduce((accumulator, key) => {
-    accumulator[key] = obj[key];
-    return accumulator;
-  }, {} as Pick<M, T>);
+export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
+  const result = {} as Pick<M, T>;
+
+  for (const key of keys) {
+    result[key] = obj[key];
+  }
+  return result;
 }
 
 export const getImgSrc = (src: string) => {

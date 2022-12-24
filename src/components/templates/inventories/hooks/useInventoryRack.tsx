@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaCaretRight } from "react-icons/fa";
-import type { UserArtifact, UserWeapon, Level, Rarity, WeaponType, ArtifactType } from "@Src/types";
+import type { UserArtifact, UserWeapon } from "@Src/types";
 
 // Util
 import { findArtifactPiece, findWeapon } from "@Data/controllers";
@@ -9,35 +9,21 @@ import { findArtifactPiece, findWeapon } from "@Data/controllers";
 // Component
 import { ItemThumb } from "@Components/molecules";
 
-interface GetItemInfoArgs {
-  code: number;
-  owner: string | null;
-  level: Level | number;
+function getWeaponInfo({ type, code, owner, refi, level, setupIDs }: UserWeapon) {
+  const { beta, name, icon = "", rarity = 5 } = findWeapon({ type, code }) || {};
+  return { beta, name, icon, rarity, level, refi, owner, setupIDs };
 }
 
-interface GetWeaponInfoArgs extends GetItemInfoArgs {
-  type: WeaponType;
-  refi: number;
-}
-function getWeaponInfo({ type, code, owner, refi, level }: GetWeaponInfoArgs) {
-  const { beta, name, icon, rarity } = findWeapon({ type, code })!;
-  return { beta, name, icon, rarity, level, owner, refi };
-}
-
-interface GetArtifactInfoArgs extends GetItemInfoArgs {
-  type: ArtifactType;
-  rarity: Rarity;
-}
-function getArtifactInfo({ code, type, owner, rarity, level }: GetArtifactInfoArgs) {
+function getArtifactInfo({ code, type, owner, rarity, level, setupIDs }: UserArtifact) {
   const { beta, name, icon = "" } = findArtifactPiece({ code, type }) || {};
-  return { beta, name, icon, rarity, level, owner };
+  return { beta, name, icon, rarity, level, owner, setupIDs };
 }
 
-function isWeapon(item: GetWeaponInfoArgs | GetArtifactInfoArgs): item is GetWeaponInfoArgs {
-  return !!(item as GetWeaponInfoArgs).refi;
+function isWeapon(item: UserWeapon | UserArtifact): item is UserWeapon {
+  return (item as UserWeapon).refi !== undefined;
 }
 
-const itemLimit = 120;
+const itemLimit = 60;
 
 interface UseInventoryRackArgs {
   listClassName?: string;
@@ -60,6 +46,7 @@ export function useInventoryRack({
   const deadEnd = Math.ceil(filteredIds.length / itemLimit) - 1;
 
   let IDsOnPage: number[];
+
   if (filteredIds.length > itemLimit) {
     IDsOnPage = [];
     let i = itemLimit * pageNo;

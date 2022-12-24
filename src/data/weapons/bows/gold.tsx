@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Calculators/utils";
@@ -242,16 +242,16 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            Increases <Green>Normal Attack</Green> and <Green>Charged Attack DMG</Green> by{" "}
+            Increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
             <Green b>{9 + refi * 3}%</Green>. {this.extra![0]}
           </>
         );
       },
       extra: [
         <>
-          After a <Green>Normal or Charged Attack</Green> is fired, DMG dealt increases by a further{" "}
+          After a Normal or Charged Attack is fired, <Green>DMG</Green> dealt increases by a further{" "}
           <Green b>{6 + refi * 2}%</Green> every 0.1 seconds the arrow is in the air for up to{" "}
-          <Green b>5</Green> times.
+          <Rose>5 times</Rose>.
         </>,
       ],
     }),

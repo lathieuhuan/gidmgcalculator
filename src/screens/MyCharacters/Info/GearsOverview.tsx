@@ -46,8 +46,7 @@ export function GearsOverview({
     return (
       <div className="p-1 w-1/3">
         <ItemThumb
-          noDecoration
-          item={{ beta, icon, rarity, ...rest }}
+          item={{ beta, icon, rarity, ...rest, owner: undefined }}
           chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
           onMouseUp={() => toggleDetails("weapon")}
         />
@@ -64,12 +63,11 @@ export function GearsOverview({
           artifact ? (
             <div key={i} className="p-1 w-1/3">
               <ItemThumb
-                noDecoration
                 item={{
                   rarity: artifact.rarity,
                   level: artifact.level,
                   icon: findArtifactPiece(artifact)?.icon || "",
-                  owner: artifact.owner,
+                  setupIDs: artifact.setupIDs,
                 }}
                 chosen={window.innerWidth < 686 ? false : activeDetails === i}
                 onMouseUp={() => toggleDetails(i)}
