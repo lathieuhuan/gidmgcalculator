@@ -34,8 +34,8 @@ import { findArtifactPiece } from "@Data/controllers";
 
 // Component
 import { OwnerLabel } from "@Components/atoms";
-import { ButtonBar, ArtifactCard } from "@Components/molecules";
-import { ConfirmModal, TypeSelect, ItemRemoveConfirm } from "@Components/organisms";
+import { ButtonBar } from "@Components/molecules";
+import { ArtifactCard, ConfirmModal, TypeSelect, ItemRemoveConfirm } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter } from "@Components/templates";
 import { Filter } from "./Filter";
 
@@ -151,8 +151,8 @@ export default function MyArtifacts() {
                   <ArtifactCard
                     artifact={artifact}
                     mutable
-                    enhance={(level) => dispatch(updateUserArtifact({ ID: artifact.ID, level }))}
-                    changeMainStatType={(type) =>
+                    onEnhance={(level) => dispatch(updateUserArtifact({ ID: artifact.ID, level }))}
+                    onChangeMainStatType={(type) =>
                       dispatch(
                         updateUserArtifact({
                           ID: artifact.ID,
@@ -160,7 +160,7 @@ export default function MyArtifacts() {
                         })
                       )
                     }
-                    changeSubStat={(subStatIndex, changes) => {
+                    onChangeSubStat={(subStatIndex, changes) => {
                       dispatch(
                         updateUserArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
                       );

@@ -18,8 +18,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton } from "@Components/atoms";
-import { ArtifactSubstats, ConfirmModalBody, Modal } from "@Components/molecules";
+import { IconButton, ArtifactLevelSelect } from "@Components/atoms";
+import { ConfirmModalBody, Modal, ArtifactSubstats } from "@Components/molecules";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -38,7 +38,7 @@ export function ArtifactInfo({
 
   const [isSaving, setIsSaving] = useState(false);
 
-  const { type, rarity = 5, level, mainStatType } = artifact;
+  const { isNew, type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
   const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
   const maxLevel = rarity === 5 ? 20 : 16;
@@ -46,27 +46,15 @@ export function ArtifactInfo({
   return (
     <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
       <div className="pl-6 flex items-start">
-        {/*  */}
-        <div className="mb-2 rounded-circle bg-darkblue-3">
-          <select
-            className={`px-2 pt-2 pb-1 text-lg leading-snug text-rarity-${rarity} font-bold cursor-pointer appearance-none`}
-            value={level}
-            onChange={(e) => {
-              dispatch(
-                updateArtifact({
-                  pieceIndex,
-                  level: +e.target.value,
-                })
-              );
-            }}
-          >
-            {[...Array(rarity === 5 ? 21 : 17)].map((_, lv) => (
-              <option key={lv} className="text-base" value={lv}>
-                +{lv}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ArtifactLevelSelect
+          mutable={isNew}
+          rarity={rarity}
+          level={level}
+          maxLevel={rarity === 5 ? 20 : 16}
+          onChangeLevel={(level) => {
+            dispatch(updateArtifact({ pieceIndex, level }));
+          }}
+        />
 
         <div className="ml-4">
           {type === "flower" || type === "plume" ? (
@@ -102,12 +90,12 @@ export function ArtifactInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
-          mutable={artifact.isNew}
+          mutable={isNew}
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
           space="mx-4"
-          changeSubStat={(subStatIndex, changeInfo) => {
+          onChangeSubStat={(subStatIndex, changeInfo) => {
             dispatch(
               updateArtifact({
                 pieceIndex,
@@ -138,7 +126,7 @@ export function ArtifactInfo({
 
         <IconButton
           className="font-bold"
-          disabled={artifact.level === maxLevel}
+          disabled={level === maxLevel || !isNew}
           variant="neutral"
           onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
         >

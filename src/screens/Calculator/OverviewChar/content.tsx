@@ -22,8 +22,8 @@ import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 // Component
 import { SharedSpace } from "@Components/atoms";
-import { WeaponCard, AttributeTable, SetBonusesDisplay } from "@Components/molecules";
-import { TalentList, ConsList } from "@Components/organisms";
+import { AttributeTable, SetBonusesDisplay } from "@Components/molecules";
+import { WeaponCard, TalentList, ConsList } from "@Components/organisms";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {
@@ -41,7 +41,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
       <div className="h-full hide-scrollbar">
         <WeaponCard
           weapon={weapon}
-          mutable
+          mutable={weapon.isNew}
           upgrade={(level) => dispatch(updateWeapon({ level }))}
           refine={(refi) => dispatch(updateWeapon({ refi }))}
         />

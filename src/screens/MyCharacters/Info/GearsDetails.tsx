@@ -21,13 +21,8 @@ import {
 
 // Component
 import { Button } from "@Components/atoms";
-import {
-  ButtonBar,
-  ArtifactCard,
-  WeaponCard,
-  AttributeTable,
-  SetBonusesDisplay,
-} from "@Components/molecules";
+import { ButtonBar, AttributeTable, SetBonusesDisplay } from "@Components/molecules";
+import { WeaponCard, ArtifactCard } from "@Components/organisms";
 
 interface GearsDetailsProps {
   className: string;
@@ -115,16 +110,18 @@ export function GearsDetails({
               <ArtifactCard
                 artifact={activeArtifact}
                 mutable
-                enhance={(level) => dispatch(updateUserArtifact({ ID: activeArtifact.ID, level }))}
-                changeMainStatType={(type) =>
+                onEnhance={(level) => {
+                  dispatch(updateUserArtifact({ ID: activeArtifact.ID, level }));
+                }}
+                onChangeMainStatType={(type) => {
                   dispatch(
                     updateUserArtifact({
                       ID: activeArtifact.ID,
                       mainStatType: type as ArtifactMainStatType,
                     })
-                  )
-                }
-                changeSubStat={(subStatIndex, changes) => {
+                  );
+                }}
+                onChangeSubStat={(subStatIndex, changes) => {
                   dispatch(
                     updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes })
                   );

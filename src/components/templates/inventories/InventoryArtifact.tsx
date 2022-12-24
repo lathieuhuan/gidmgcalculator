@@ -19,13 +19,8 @@ import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "./utils";
 
 // Conponent
 import { OwnerLabel } from "@Components/atoms";
-import {
-  ButtonBar,
-  ArtifactCard,
-  Modal,
-  ModalHeader,
-  type ModalControl,
-} from "@Components/molecules";
+import { ButtonBar, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
+import { ArtifactCard } from "@Components/organisms";
 import { ArtifactFilter } from "./organisms/ArtifactFilter";
 
 import styles from "./styles.module.scss";
@@ -111,7 +106,7 @@ function ArtifactInventory({
                   style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
-                    <ArtifactCard artifact={currentArtifact} mutable={false} space="mx-3" />
+                    <ArtifactCard artifact={currentArtifact} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
                       <p className="text-orange text-center">Current equipment</p>
@@ -121,9 +116,7 @@ function ArtifactInventory({
               ) : null}
 
               <div className="w-64 hide-scrollbar">
-                {chosenArtifact ? (
-                  <ArtifactCard artifact={chosenArtifact} mutable={false} space="mx-3" />
-                ) : null}
+                {chosenArtifact ? <ArtifactCard artifact={chosenArtifact} space="mx-3" /> : null}
               </div>
 
               {chosenArtifact && chosenArtifact.owner !== owner ? (

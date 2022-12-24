@@ -36,7 +36,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
           )}
         </div>
-        <p className="px-1 rounded-b-lg truncate bg-default text-black font-bold text-center">
+        <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-default text-black font-bold text-center">
           {item.name}
         </p>
       </div>

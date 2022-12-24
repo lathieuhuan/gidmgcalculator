@@ -3,7 +3,12 @@ import { batch } from "react-redux";
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 
-import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
+import {
+  initSessionWithChar,
+  updateAllArtifact,
+  updateArtifact,
+  updateWeapon,
+} from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
 import {
   addUserArtifact,
@@ -59,16 +64,15 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
     if (foundWpIndex !== -1) {
       let newSetupIDs = myWps[foundWpIndex].setupIDs;
 
-      if (newSetupIDs && newSetupIDs.every((setupID) => setupID !== ID)) {
-        newSetupIDs = newSetupIDs.concat(ID);
+      if (newSetupIDs && !newSetupIDs.includes(ID)) {
+        dispatch(
+          updateUserWeapon({
+            index: foundWpIndex,
+            ...myWps[foundWpIndex],
+            setupIDs: newSetupIDs.concat(ID),
+          })
+        );
       }
-      dispatch(
-        updateUserWeapon({
-          index: foundWpIndex,
-          ...myWps[foundWpIndex],
-          setupIDs: newSetupIDs,
-        })
-      );
     } else {
       dispatch(
         addUserWeapon({
@@ -79,23 +83,24 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
       );
     }
 
-    for (const artifact of artifacts) {
+    dispatch(updateWeapon({ isNew: false }));
+
+    artifacts.forEach((artifact, artifactIndex) => {
       if (artifact) {
         const foundIndex = indexById(myArts, artifact.ID);
 
         if (foundIndex !== -1) {
           let newSetupIDs = myArts[foundIndex].setupIDs;
 
-          if (newSetupIDs && newSetupIDs.every((setupID) => setupID !== ID)) {
-            newSetupIDs = newSetupIDs.concat(ID);
+          if (newSetupIDs && !newSetupIDs.includes(ID)) {
+            dispatch(
+              updateUserArtifact({
+                index: foundIndex,
+                ...myArts[foundIndex],
+                setupIDs: newSetupIDs.concat(ID),
+              })
+            );
           }
-          dispatch(
-            updateUserArtifact({
-              index: foundIndex,
-              ...myArts[foundIndex],
-              setupIDs: newSetupIDs,
-            })
-          );
         } else {
           dispatch(
             addUserArtifact({
@@ -105,8 +110,10 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
             })
           );
         }
+
+        dispatch(updateArtifact({ pieceIndex: artifactIndex, isNew: false }));
       }
-    }
+    });
 
     batch(() => {
       dispatch(

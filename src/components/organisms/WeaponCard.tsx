@@ -19,7 +19,7 @@ const groupStyles = "bg-darkblue-2 px-2";
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;
-  mutable: boolean;
+  mutable?: boolean;
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
@@ -103,7 +103,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-bold text-orange">{wpData.passiveName}</p>
+        <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
         <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p>
       </div>
     </div>

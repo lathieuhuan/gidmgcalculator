@@ -28,8 +28,8 @@ import { useInventoryRack, useTypeFilter } from "@Components/templates/inventori
 
 // Component
 import { IconButton, CollapseSpace, OwnerLabel } from "@Components/atoms";
-import { ButtonBar, WeaponCard } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect } from "@Components/organisms";
+import { ButtonBar } from "@Components/molecules";
+import { ItemRemoveConfirm, TypeSelect, WeaponCard } from "@Components/organisms";
 import { PickerCharacter, PickerWeapon } from "@Components/templates";
 
 import styles from "../styles.module.scss";

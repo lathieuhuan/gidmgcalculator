@@ -393,16 +393,14 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateArtifact: (state, action: UpdateArtifactAction) => {
-      const { pieceIndex, level, mainStatType, subStat } = action.payload;
+      const { pieceIndex, isNew, level, mainStatType, subStat } = action.payload;
       const piece = state.setupsById[state.activeId].artifacts[pieceIndex];
 
       if (piece) {
-        if (level !== undefined) {
-          piece.level = level;
-        }
-        if (mainStatType) {
-          piece.mainStatType = mainStatType;
-        }
+        piece.isNew = isNew ?? piece.isNew;
+        piece.level = level ?? piece.level;
+        piece.mainStatType = mainStatType ?? piece.mainStatType;
+
         if (subStat) {
           const { index, newInfo } = subStat;
           piece.subStats[index] = {

@@ -1,6 +1,4 @@
 export * from "./ButtonBar";
-export * from "./ArtifactCard";
-export * from "./WeaponCard";
 export * from "./ComplexSelect";
 export * from "./ItemThumb";
 export * from "./CollapseList";
@@ -10,3 +8,4 @@ export * from "./ModifierTemplate";
 export * from "./modifiers";
 export * from "./SetBonusesDisplay";
 export * from "./ConfirmModalBody";
+export * from "./ArtifactSubstats";

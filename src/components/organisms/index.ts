@@ -6,3 +6,5 @@ export * from "./DamageDisplay";
 export * from "./ImportManager";
 export * from "./TypeSelect";
 export * from "./SetupExporter";
+export * from "./WeaponCard";
+export * from "./ArtifactCard";

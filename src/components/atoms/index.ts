@@ -5,6 +5,7 @@ export * from "./CharacterPortrait";
 export * from "./SharedSpace";
 export * from "./StatsTable";
 export * from "./OwnerLabel";
+export * from "./ArtifactLevelSelect";
 export * from "./buttons";
 export * from "./span";
 export * from "./collapse";

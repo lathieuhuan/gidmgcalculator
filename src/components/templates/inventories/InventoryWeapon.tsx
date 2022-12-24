@@ -13,7 +13,8 @@ import { useInventoryRack } from "./hooks";
 
 // Component
 import { Button, OwnerLabel } from "@Components/atoms";
-import { WeaponCard, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
+import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
+import { WeaponCard } from "@Components/organisms";
 
 import styles from "./styles.module.scss";
 
@@ -63,7 +64,7 @@ function WeaponInventory({
               style={{ minHeight: "28rem" }}
             >
               <div className="w-68 grow hide-scrollbar">
-                <WeaponCard weapon={chosenWp} mutable={false} />
+                <WeaponCard weapon={chosenWp} />
               </div>
 
               {chosenWp && chosenWp.owner !== owner ? (
