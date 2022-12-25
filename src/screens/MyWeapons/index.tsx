@@ -27,9 +27,9 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useInventoryRack, useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Component
-import { IconButton, CollapseSpace, OwnerLabel } from "@Components/atoms";
+import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect, WeaponCard } from "@Components/organisms";
+import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel } from "@Components/organisms";
 import { PickerCharacter, PickerWeapon } from "@Components/templates";
 
 import styles from "../styles.module.scss";
@@ -128,7 +128,7 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel owner={weapon?.owner} />
+            <OwnerLabel owner={weapon?.owner} setupIDs={weapon?.setupIDs} />
           </div>
         </div>
       </div>

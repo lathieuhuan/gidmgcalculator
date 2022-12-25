@@ -1,24 +1,8 @@
 import clsx from "clsx";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
-import type {
-  AbilityBuff,
-  AbilityDebuff,
-  ArtifactAttribute,
-  AttackElement,
-  CharData,
-  DamageResult,
-  InnateBuff,
-  ReactionBonus,
-  TotalAttribute,
-  UserArtifact,
-  UserComplexSetup,
-  UserSetup,
-} from "@Src/types";
+import type { UserComplexSetup, UserSetup } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
-
-// Calculator
-import calculateAll from "@Src/calculators";
 
 // Action
 import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
@@ -37,40 +21,17 @@ import { useTranslation } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Util
-import { findById, indexById } from "@Src/utils";
-import { findCharacter, getPartyData } from "@Data/controllers";
 import { isUserSetup } from "@Store/userDatabaseSlice/utils";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { findById, indexById } from "@Src/utils";
+import { calculateChosenSetup } from "./utils";
 
 // Component
 import { Button, IconButton, Green, Red } from "@Components/atoms";
-import {
-  CollapseList,
-  AttributeTable,
-  Modal,
-  ConfirmModalBody,
-  SetBonusesDisplay,
-} from "@Components/molecules";
+import { Modal, ConfirmModalBody } from "@Components/molecules";
 import { DamageDisplay, TipsModal, SetupExporter } from "@Components/organisms";
 import { SetupTemplate } from "./SetupTemplate";
-import { ModifierWrapper } from "./components";
-import {
-  MySetupArtifacts,
-  MySetupWeapon,
-  ArtifactBuffs,
-  CustomBuffs,
-  PartyBuffs,
-  ElementBuffs,
-  SelfBuffs,
-  WeaponBuffs,
-  ElementDebuffs,
-  SelfDebuffs,
-  PartyDebuffs,
-  ArtifactDebuffs,
-  CustomDebuffs,
-  FirstCombine,
-  CombineMore,
-} from "./modal-content";
+import { SetupModal } from "./SetupModal";
+import { FirstCombine, CombineMore } from "./modal-content";
 
 import styles from "../styles.module.scss";
 
@@ -127,64 +88,7 @@ export default function MySetups() {
     setModal((prev) => ({ ...prev, type: "" }));
   };
 
-  let charData = {} as CharData;
-  let totalAttr: TotalAttribute;
-  let artAttr: ArtifactAttribute;
-  let rxnBonus: ReactionBonus;
-  let damage = {} as DamageResult;
-  let infusedElement: AttackElement;
-
-  let innateBuffs: InnateBuff[] = [];
-  let buffs: AbilityBuff[] = [];
-  let debuffs: AbilityDebuff[] = [];
-
-  if (chosenSetup) {
-    const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-    const data = findCharacter(char);
-    if (!data) return null;
-
-    const weapon = findById(myWps, weaponID)!;
-
-    const artifacts = artifactIDs.reduce((results: UserArtifact[], ID) => {
-      const foundArt = ID ? findById(myArts, ID) : undefined;
-
-      if (foundArt) {
-        return results.concat(foundArt);
-      }
-
-      return results;
-    }, []);
-
-    charData = {
-      code: data.code,
-      name: data.name,
-      icon: data.icon,
-      vision: data.vision,
-      nation: data.nation,
-      weaponType: data.weaponType,
-      EBcost: data.activeTalents.EB.energyCost,
-    };
-    innateBuffs = data.innateBuffs || [];
-    buffs = data.buffs || [];
-    debuffs = data.debuffs || [];
-
-    const result = calculateAll(
-      {
-        char,
-        weapon,
-        artifacts,
-        ...rest,
-      },
-      target,
-      charData
-    );
-
-    totalAttr = result.totalAttr;
-    rxnBonus = result.rxnBonus;
-    artAttr = result.artAttr;
-    damage = result.dmgResult;
-    infusedElement = result.infusedElement;
-  }
+  const calcInfo = useMemo(() => calculateChosenSetup(chosenSetup, myWps, myArts), [chosenSetupID]);
 
   const renderSetup = (setup: UserSetup | UserComplexSetup, index: number) => {
     if (setup.type === "combined") return null;
@@ -245,151 +149,7 @@ export default function MySetups() {
   const renderModalContent = () => {
     if (!chosenSetup) return null;
 
-    const {
-      ID,
-      char,
-      party,
-      selfBuffCtrls,
-      selfDebuffCtrls,
-      wpBuffCtrls,
-      artBuffCtrls,
-      artDebuffCtrls,
-      elmtModCtrls,
-      customBuffCtrls,
-      customDebuffCtrls,
-      target,
-    } = chosenSetup;
-
-    const { weapon, artifacts } = itemsBySetupID[ID];
-    const setBonuses = getArtifactSetBonuses(artifacts);
-
     switch (modal.type) {
-      case "WEAPON":
-        return weapon ? <MySetupWeapon weapon={weapon} /> : null;
-      case "ARTIFACTS":
-        return <MySetupArtifacts artifacts={artifacts} />;
-      case "STATS":
-        return (
-          <div className="h-full flex divide-x-2 divide-darkblue-2">
-            <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-              <p className="text-lg text-orange font-bold">Final Attributes</p>
-              <div className="mt-1 hide-scrollbar">
-                <AttributeTable attributes={totalAttr} />
-              </div>
-            </div>
-
-            <div className="w-80 pt-2 px-4 pb-4 flex flex-col" style={{ minWidth: "20rem" }}>
-              <p className="text-lg text-orange font-bold">Artifact Stats</p>
-              <div className="mt-1 hide-scrollbar">
-                <AttributeTable attributes={artAttr} />
-              </div>
-            </div>
-
-            <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-              <div className="h-full hide-scrollbar">
-                <SetBonusesDisplay setBonuses={setBonuses} />
-              </div>
-            </div>
-          </div>
-        );
-      case "MODIFIERS": {
-        const partyData = getPartyData(party);
-
-        return (
-          <div className="h-full px-4 flex space-x-4 overflow-auto">
-            <ModifierWrapper title="Debuffs used" className="w-75 flex flex-col">
-              <CollapseList
-                headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
-                contentList={[
-                  <ElementDebuffs
-                    superconduct={elmtModCtrls.superconduct}
-                    resonances={elmtModCtrls.resonances}
-                  />,
-                  <SelfDebuffs
-                    char={char}
-                    selfDebuffCtrls={selfDebuffCtrls}
-                    debuffs={debuffs}
-                    partyData={partyData}
-                  />,
-                  <PartyDebuffs char={char} party={party} partyData={partyData} />,
-                  <ArtifactDebuffs artDebuffCtrls={artDebuffCtrls} />,
-                  <CustomDebuffs customDebuffCtrls={customDebuffCtrls} />,
-                ]}
-              />
-            </ModifierWrapper>
-
-            <ModifierWrapper title="Buffs used" className="w-75 flex flex-col">
-              <CollapseList
-                headingList={[
-                  "Resonance & Reactions",
-                  "Self",
-                  "Party",
-                  "Weapons",
-                  "Artifacts",
-                  "Custom",
-                ]}
-                contentList={[
-                  <ElementBuffs
-                    charLv={char.level}
-                    vision={charData?.vision}
-                    elmtModCtrls={elmtModCtrls}
-                    rxnBonus={rxnBonus}
-                    infusedElement={infusedElement}
-                  />,
-                  <SelfBuffs
-                    char={char}
-                    charData={charData}
-                    totalAttr={totalAttr}
-                    selfBuffCtrls={selfBuffCtrls}
-                    partyData={partyData}
-                    buffs={buffs}
-                    innateBuffs={innateBuffs}
-                  />,
-                  <PartyBuffs
-                    char={char}
-                    charData={charData}
-                    party={party}
-                    partyData={partyData}
-                    totalAttr={totalAttr}
-                  />,
-                  weapon ? (
-                    <WeaponBuffs
-                      weapon={weapon}
-                      wpBuffCtrls={wpBuffCtrls}
-                      totalAttr={totalAttr}
-                      party={party}
-                    />
-                  ) : null,
-                  <ArtifactBuffs
-                    setBonuses={setBonuses}
-                    artBuffCtrls={artBuffCtrls}
-                    party={party}
-                  />,
-                  <CustomBuffs customBuffCtrls={customBuffCtrls} />,
-                ]}
-              />
-            </ModifierWrapper>
-
-            <ModifierWrapper title="Target" className="w-68">
-              <div className="h-full px-2">
-                {Object.entries(target).map(([key, value], i) => (
-                  <p key={i} className="mb-1">
-                    <span
-                      className={clsx(
-                        "mr-2 capitalize",
-                        key === "level" ? "text-lightgold" : `text-${key}`
-                      )}
-                    >
-                      {t(key, { ns: "resistance" })}:
-                    </span>
-                    <span className="font-medium">{value}</span>
-                  </p>
-                ))}
-              </div>
-            </ModifierWrapper>
-          </div>
-        );
-      }
       case "REMOVE_SETUP": {
         const removedSetup = findById(mySetups, modal.ID);
         if (!removedSetup) return null;
@@ -475,8 +235,17 @@ export default function MySetups() {
         }
         return null;
       }
-      default:
+      case "":
         return null;
+      default:
+        return (
+          <SetupModal
+            type={modal.type}
+            chosenSetup={chosenSetup}
+            calcInfo={calcInfo}
+            {...itemsBySetupID[chosenSetup.ID]}
+          />
+        );
     }
   };
 
@@ -518,7 +287,7 @@ export default function MySetups() {
             className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3 flex flex-col"
             style={{ width: "21.75rem" }}
           >
-            {chosenSetup && (
+            {chosenSetup && calcInfo?.damage && (
               <>
                 <div>
                   <p className="text-sm text-center truncate">{chosenSetup.name}</p>
@@ -527,7 +296,7 @@ export default function MySetups() {
                   <DamageDisplay
                     char={chosenSetup.char}
                     party={chosenSetup.party}
-                    damageResult={damage}
+                    damageResult={calcInfo?.damage}
                   />
                 </div>
               </>

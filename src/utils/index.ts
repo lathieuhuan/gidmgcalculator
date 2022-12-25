@@ -211,6 +211,7 @@ export function userItemToCalcItem(
 interface IOptions {
   ID?: number;
   owner?: string;
+  setupIDs?: number[];
 }
 export function calcItemToUserItem(item: CalcArtifact, options?: IOptions): UserArtifact;
 export function calcItemToUserItem(item: CalcWeapon, options?: IOptions): UserWeapon;
@@ -219,11 +220,12 @@ export function calcItemToUserItem(
   options?: IOptions
 ): UserArtifact | UserWeapon {
   const { oriID, ...rest } = item;
-  const { ID = item.ID, owner = null } = options || {};
+  const { ID = item.ID, owner = null, setupIDs } = options || {};
 
   return {
     ...rest,
     ID,
     owner,
+    ...(setupIDs ? { setupIDs } : undefined),
   };
 }

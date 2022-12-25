@@ -8,3 +8,4 @@ export * from "./TypeSelect";
 export * from "./SetupExporter";
 export * from "./WeaponCard";
 export * from "./ArtifactCard";
+export * from "./OwnerLabel";

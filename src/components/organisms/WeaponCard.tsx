@@ -26,7 +26,6 @@ interface WeaponCardProps {
 }
 export function WeaponCard({ weapon, mutable = true, upgrade, refine }: WeaponCardProps) {
   const { t } = useTranslation();
-
   if (!weapon) return null;
 
   const wpData = findWeapon(weapon)!;

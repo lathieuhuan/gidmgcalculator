@@ -14,7 +14,7 @@ import {
 } from "./userDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
-import { findById, indexById, userItemToCalcItem } from "@Src/utils";
+import { calcItemToUserItem, findById, indexById, userItemToCalcItem } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
 
 export const startCalculation =
@@ -47,7 +47,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
       database: { myWps, myArts },
     } = getState();
     const { weapon, artifacts } = calculator.setupsById[ID];
-    const foundWpIndex = indexById(myWps, weapon.ID);
+    const foundWpIndex = weapon.oriID ? indexById(myWps, weapon.oriID) : -1;
 
     if (foundWpIndex !== -1) {
       let newSetupIDs = myWps[foundWpIndex].setupIDs;
@@ -62,13 +62,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
         );
       }
     } else {
-      dispatch(
-        addUserWeapon({
-          ...weapon,
-          owner: null,
-          setupIDs: [ID],
-        })
-      );
+      dispatch(addUserWeapon(calcItemToUserItem(weapon, { setupIDs: [ID] })));
     }
 
     artifacts.forEach((artifact, artifactIndex) => {

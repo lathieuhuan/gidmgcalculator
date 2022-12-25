@@ -18,9 +18,8 @@ import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "./utils";
 
 // Conponent
-import { OwnerLabel } from "@Components/atoms";
 import { ButtonBar, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { ArtifactCard } from "@Components/organisms";
+import { ArtifactCard, OwnerLabel } from "@Components/organisms";
 import { ArtifactFilter } from "./organisms/ArtifactFilter";
 
 import styles from "./styles.module.scss";

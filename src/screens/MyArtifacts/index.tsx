@@ -33,9 +33,14 @@ import {
 import { findArtifactPiece } from "@Data/controllers";
 
 // Component
-import { OwnerLabel } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { ArtifactCard, ConfirmModal, TypeSelect, ItemRemoveConfirm } from "@Components/organisms";
+import {
+  ArtifactCard,
+  OwnerLabel,
+  ConfirmModal,
+  TypeSelect,
+  ItemRemoveConfirm,
+} from "@Components/organisms";
 import { PickerArtifact, PickerCharacter } from "@Components/templates";
 import { Filter } from "./Filter";
 

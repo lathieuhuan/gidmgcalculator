@@ -2,16 +2,18 @@ import { Fragment } from "react";
 import type { UserArtifacts, UserWeapon } from "@Src/types";
 
 // Component
-import { OwnerLabel } from "@Components/atoms";
-import { WeaponCard, ArtifactCard } from "@Components/organisms";
+import { WeaponCard, ArtifactCard, OwnerLabel } from "@Components/organisms";
 
-export function MySetupWeapon({ weapon }: { weapon: UserWeapon }) {
+interface MySetupWeaponProps {
+  weapon: UserWeapon;
+}
+export function MySetupWeapon({ weapon }: MySetupWeaponProps) {
   return (
     <div className="relative">
       <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
         <WeaponCard weapon={weapon} />
       </div>
-      <OwnerLabel owner={weapon?.owner} />
+      <OwnerLabel owner={weapon?.owner} setupIDs={weapon?.setupIDs} />
     </div>
   );
 }
@@ -27,7 +29,7 @@ export function MySetupArtifacts({ artifacts }: MySetupArtifactsProps) {
           return (
             <div key={i} className="px-1" style={{ width: "14.5rem" }}>
               <ArtifactCard artifact={artifact} space="mx-2" />
-              <OwnerLabel owner={artifact?.owner} />
+              <OwnerLabel owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
             </div>
           );
         }

@@ -12,9 +12,9 @@ import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "./hooks";
 
 // Component
-import { Button, OwnerLabel } from "@Components/atoms";
+import { Button } from "@Components/atoms";
 import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { WeaponCard } from "@Components/organisms";
+import { WeaponCard, OwnerLabel } from "@Components/organisms";
 
 import styles from "./styles.module.scss";
 

@@ -173,7 +173,9 @@ export function SetupTemplate({
 
     const gears = (
       <div className="mt-3 mx-auto grid grid-cols-3 gap-1">
-        {weaponData ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon") : null}
+        {weaponData
+          ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon")
+          : renderGearIcon({ icon: "7/7b/Icon_Inventory_Weapons" }, undefined, "weapon")}
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
@@ -217,6 +219,7 @@ export function SetupTemplate({
           <IconButton
             className="p-2"
             variant="positive"
+            disabled={!weapon}
             onClick={() => {
               if (weapon) {
                 const { weaponID, artifactIDs, ...rest } = setup;
