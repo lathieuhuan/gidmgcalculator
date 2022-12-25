@@ -8,10 +8,10 @@ import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 
 // Action
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
-import { addUserArtifact, overwriteArtifact } from "@Store/userDatabaseSlice";
+import { addUserArtifact, updateUserArtifact } from "@Store/userDatabaseSlice";
 
 // Util
-import { findById, percentSign } from "@Src/utils";
+import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -138,7 +138,11 @@ export function ArtifactInfo({
       </div>
 
       <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
-        <ConfirmSaving artifact={artifact} onClose={() => setIsSaving(false)} />
+        <ConfirmSaving
+          artifact={artifact}
+          pieceIndex={pieceIndex}
+          onClose={() => setIsSaving(false)}
+        />
       </Modal>
     </div>
   );
@@ -146,70 +150,72 @@ export function ArtifactInfo({
 
 interface ConfirmSavingProps {
   artifact: CalcArtifact;
+  pieceIndex: number;
   onClose: () => void;
 }
-function ConfirmSaving({ artifact, onClose }: ConfirmSavingProps) {
-  const [type, setType] = useState(0);
+function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
   const dispatch = useDispatch();
+  const [state, setState] = useState<"SUCCESS" | "PENDING" | "">("");
 
-  const existedArtPiece = findById(
+  const existedArtifact = findById(
     useSelector((state) => state.database.myArts),
-    artifact.ID
+    artifact.oriID
   );
 
   useEffect(() => {
-    if (existedArtPiece) {
-      setType(2);
+    if (existedArtifact) {
+      setState("PENDING");
     } else {
-      dispatch(addUserArtifact({ owner: null, ...artifact }));
-      setType(1);
+      dispatch(addUserArtifact(calcItemToUserItem(artifact)));
+      dispatch(updateArtifact({ pieceIndex, oriID: artifact.ID }));
+      setState("SUCCESS");
     }
   }, []);
 
-  if (type === 0) {
+  if (state === "") {
     return null;
   }
 
-  const isSuccess = type === 1;
-  let noChange = false;
+  const noChange = existedArtifact
+    ? isEqual(artifact, {
+        ...userItemToCalcItem(existedArtifact),
+        ID: artifact.ID,
+      })
+    : false;
 
-  if (existedArtPiece) {
-    const { owner, ...info } = existedArtPiece;
-    noChange = isEqual(artifact, info);
-  }
-
-  const extraInfo = existedArtPiece?.owner ? (
+  const extraInfo = existedArtifact?.owner ? (
     <>
-      , currently used by <b>{existedArtPiece.owner}</b>
+      , and currently used by <b>{existedArtifact.owner}</b>
     </>
   ) : null;
 
-  const message = isSuccess ? (
-    <>Successfully saved to My Artifacts.</>
-  ) : (
-    <>
-      This one is already in My Artifacts{extraInfo}.{" "}
-      {noChange ? "Nothing has changed." : "Do you want to overwrite its Stats?"}
-    </>
-  );
+  const message =
+    state === "SUCCESS" ? (
+      "Successfully saved to My Artifacts."
+    ) : (
+      <>
+        This artifact is already saved{extraInfo}.{" "}
+        {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite?"}
+      </>
+    );
 
   return (
     <ConfirmModalBody
       message={message}
       buttons={[
         {
-          text: isSuccess ? "Close" : "Cancel",
+          text: state === "SUCCESS" ? "Close" : "Cancel",
         },
-        !isSuccess && {
+        state !== "SUCCESS" && {
           text: "Duplicate",
           onClick: () => {
-            dispatch(addUserArtifact({ owner: null, ...artifact, ID: Date.now() }));
+            dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
           },
         },
         {
           onClick: () => {
-            if (!isSuccess && !noChange) {
-              dispatch(overwriteArtifact(artifact));
+            if (state !== "SUCCESS" && !noChange) {
+              dispatch(updateUserArtifact(calcItemToUserItem(artifact)));
             }
           },
         },

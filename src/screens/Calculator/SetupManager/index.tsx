@@ -7,7 +7,7 @@ import type { ModalInfo } from "./types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Util
-import { getImgSrc } from "@Src/utils";
+import { getImgSrc, userItemToCalcItem } from "@Src/utils";
 
 // Action & Thunk
 import { updateUI } from "@Store/uiSlice";
@@ -118,7 +118,7 @@ export default function SetupManager() {
                 setPrePickerOn(false);
               }}
             >
-              Pick Equipped Set
+              Pick equipped set
             </Button>
           </div>
         }
@@ -128,21 +128,22 @@ export default function SetupManager() {
         active={modal.type === "WEAPONS"}
         weaponType={charData.weaponType}
         buttonText="Pick"
-        onClickButton={({ owner, ...wpInfo }) => dispatch(changeWeapon(wpInfo))}
+        onClickButton={(weapon) => {
+          dispatch(changeWeapon(userItemToCalcItem(weapon)));
+        }}
         onClose={closeModal}
       />
 
       <InventoryArtifact
         active={["flower", "plume", "sands", "goblet", "circlet"].includes(modal.type)}
-        owner={charData.name}
         artifactType={modal.type as ArtifactType}
         currentArtifacts={artifacts}
         buttonText="Pick"
-        onClickButton={({ owner, ...pieceInfo }) => {
+        onClickButton={(artifact) => {
           dispatch(
             changeArtifact({
               pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as ArtifactType),
-              newPiece: pieceInfo,
+              newPiece: userItemToCalcItem(artifact),
             })
           );
         }}

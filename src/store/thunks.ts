@@ -3,12 +3,7 @@ import { batch } from "react-redux";
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 
-import {
-  initSessionWithChar,
-  updateAllArtifact,
-  updateArtifact,
-  updateWeapon,
-} from "./calculatorSlice";
+import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
 import {
   addUserArtifact,
@@ -19,7 +14,7 @@ import {
 } from "./userDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
-import { findById, indexById } from "@Src/utils";
+import { findById, indexById, userItemToCalcItem } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
 
 export const startCalculation =
@@ -37,19 +32,12 @@ export const pickEquippedArtSet =
   (artifactIDs: (number | null)[]): AppThunk =>
   (dispatch, getState) => {
     const { myArts } = getState().database;
-    const artPieces = artifactIDs.map((id) => {
-      if (id) {
-        const foundArtPiece = findById(myArts, id);
-
-        if (foundArtPiece) {
-          const { owner, ...info } = foundArtPiece;
-          return info;
-        }
-      }
-      return null;
+    const artifacts = artifactIDs.map((id) => {
+      const artifact = id ? findById(myArts, id) : undefined;
+      return artifact ? userItemToCalcItem(artifact) : null;
     });
 
-    dispatch(updateAllArtifact(artPieces));
+    dispatch(updateAllArtifact(artifacts));
   };
 
 export const saveSetupThunk = (ID: number, name: string): AppThunk => {

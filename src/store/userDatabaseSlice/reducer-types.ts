@@ -41,13 +41,12 @@ export type UpdateUserWeaponAction = PayloadAction<
   }
 >;
 
-export type UpdateUserArtifactAction = PayloadAction<{
-  index?: number;
-  ID: number;
-  level?: number;
-  mainStatType?: ArtifactMainStatType;
-  setupIDs?: number[];
-}>;
+export type UpdateUserArtifactAction = PayloadAction<
+  Partial<UserArtifact> & {
+    index?: number;
+    ID: number;
+  }
+>;
 
 export type RemoveWeaponAction = PayloadAction<{
   ID: number;

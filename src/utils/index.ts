@@ -1,4 +1,15 @@
-import type { CharInfo, Level, Party, PartyData, Talent, WeaponType } from "@Src/types";
+import type {
+  CalcArtifact,
+  CalcWeapon,
+  CharInfo,
+  Level,
+  Party,
+  PartyData,
+  Talent,
+  UserArtifact,
+  UserWeapon,
+  WeaponType,
+} from "@Src/types";
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -181,4 +192,38 @@ export function countWeapon(party: Party) {
     }
   }
   return result;
+}
+
+export function userItemToCalcItem(item: UserWeapon, newID?: number): CalcWeapon;
+export function userItemToCalcItem(item: UserArtifact, newID?: number): CalcArtifact;
+export function userItemToCalcItem(
+  item: UserWeapon | UserArtifact,
+  newID = Date.now()
+): CalcWeapon | CalcArtifact {
+  const { owner, setupIDs, ID, ...info } = item;
+  return {
+    ID: newID,
+    oriID: ID,
+    ...info,
+  };
+}
+
+interface IOptions {
+  ID?: number;
+  owner?: string;
+}
+export function calcItemToUserItem(item: CalcArtifact, options?: IOptions): UserArtifact;
+export function calcItemToUserItem(item: CalcWeapon, options?: IOptions): UserWeapon;
+export function calcItemToUserItem(
+  item: CalcArtifact | CalcWeapon,
+  options?: IOptions
+): UserArtifact | UserWeapon {
+  const { oriID, ...rest } = item;
+  const { ID = item.ID, owner = null } = options || {};
+
+  return {
+    ...rest,
+    ID,
+    owner,
+  };
 }

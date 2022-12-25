@@ -36,7 +36,7 @@ const selectArtifactsByType = createSelector(
 interface ArtifactInventoryProps {
   artifactType: ArtifactType;
   currentArtifacts: (CalcArtifact | null)[];
-  owner: string | null;
+  owner?: string | null;
   buttonText: string;
   onClickButton: (chosen: UserArtifact) => void;
   onClose: () => void;
@@ -106,7 +106,7 @@ function ArtifactInventory({
                   style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
-                    <ArtifactCard artifact={currentArtifact} space="mx-3" />
+                    <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
                       <p className="text-orange text-center">Current equipment</p>
@@ -116,7 +116,9 @@ function ArtifactInventory({
               ) : null}
 
               <div className="w-64 hide-scrollbar">
-                {chosenArtifact ? <ArtifactCard artifact={chosenArtifact} space="mx-3" /> : null}
+                {chosenArtifact ? (
+                  <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" />
+                ) : null}
               </div>
 
               {chosenArtifact && chosenArtifact.owner !== owner ? (

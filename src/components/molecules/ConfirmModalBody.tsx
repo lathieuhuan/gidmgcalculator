@@ -3,6 +3,7 @@ import { ButtonBar, ButtonBarButton } from "./ButtonBar";
 export interface ConfirmModalBodyProps {
   message: string | JSX.Element;
   buttons: (Partial<ButtonBarButton> | undefined | false)[];
+  /** Default to true */
   closeOnClickButton?: boolean;
   onClose: () => void;
 }

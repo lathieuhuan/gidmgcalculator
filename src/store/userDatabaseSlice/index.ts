@@ -288,12 +288,12 @@ export const userDatabaseSlice = createSlice({
       }
     },
     updateUserArtifactSubStat: (state, action: UpdateUserArtifactSubStatAction) => {
-      const { ID, subStatIndex, ...changeInfo } = action.payload;
+      const { ID, subStatIndex, ...newInfo } = action.payload;
       const artifact = findById(state.myArts, ID);
       if (artifact) {
         artifact.subStats[subStatIndex] = {
           ...artifact.subStats[subStatIndex],
-          ...changeInfo,
+          ...newInfo,
         };
       }
     },
@@ -328,14 +328,6 @@ export const userDatabaseSlice = createSlice({
           }
           artifactIDs[index] = artifactID;
         }
-      }
-    },
-    overwriteArtifact: ({ myArts }, action: PayloadAction<CalcArtifact>) => {
-      const { ID, ...info } = action.payload;
-      const index = indexById(myArts, ID);
-
-      if (myArts[index]) {
-        myArts[index] = { ...myArts[index], ...info };
       }
     },
     sortArtifacts: (state) => {
@@ -540,7 +532,6 @@ export const {
   updateUserArtifact,
   updateUserArtifactSubStat,
   swapArtifactOwner,
-  overwriteArtifact,
   sortArtifacts,
   removeArtifact,
   chooseUserSetup,

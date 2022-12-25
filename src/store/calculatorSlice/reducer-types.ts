@@ -130,6 +130,7 @@ export type ChangeArtifactAction = PayloadAction<{
 
 export type UpdateArtifactAction = PayloadAction<{
   pieceIndex: number;
+  oriID?: number;
   level?: number;
   mainStatType?: ArtifactMainStatType;
   subStat?: {

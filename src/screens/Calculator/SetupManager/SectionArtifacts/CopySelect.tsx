@@ -29,7 +29,7 @@ export function CopySelect() {
 
   const onClickCopyArtifacts = ({ value: sourceId }: Option) => {
     const { artifacts, artBuffCtrls } = setupsById[sourceId];
-    let rootID = Date.now();
+    let seedID = Date.now();
 
     dispatch(
       updateCalcSetup({
@@ -37,7 +37,7 @@ export function CopySelect() {
           artifact
             ? {
                 ...artifact,
-                ID: rootID++,
+                ID: seedID++,
               }
             : null
         ),

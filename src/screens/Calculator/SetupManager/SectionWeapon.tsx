@@ -33,10 +33,10 @@ export default function SectionWeapon() {
   return (
     <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-darkblue-1 flex items-start">
       <div
-        className={`shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
+        className={`w-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}
       >
-        <img src={getImgSrc(icon)} alt="" style={{ width: "5.625rem" }} draggable={false} />
+        <img src={getImgSrc(icon)} alt="" draggable={false} />
         {beta && <BetaMark className="absolute -top-1 -left-1" />}
       </div>
 

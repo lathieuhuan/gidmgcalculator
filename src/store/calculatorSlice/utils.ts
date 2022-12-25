@@ -14,10 +14,10 @@ import type {
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findArtifactSet, findWeapon } from "@Data/controllers";
 import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
-import { findById } from "@Src/utils";
+import { findById, userItemToCalcItem } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
@@ -46,7 +46,7 @@ export function parseAndInitData(
   myArts: UserArtifact[],
   weaponType: WeaponType
 ) {
-  let rootID = Date.now();
+  let seedID = Date.now();
   const char: CharInfo = { ...initCharInfo(info), name };
 
   let weapon: CalcWeapon;
@@ -54,26 +54,21 @@ export function parseAndInitData(
   const existedWp = findById(myWps, weaponID);
 
   if (existedWp) {
-    const { owner, setupIDs, ...weaponInfo } = existedWp;
-    weapon = weaponInfo;
+    weapon = userItemToCalcItem(existedWp, seedID++);
     wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
   } //
   else {
     const newWp = initWeapon({ type: weaponType });
     weapon = {
+      ID: seedID++,
       ...newWp,
-      ID: rootID++,
     };
     wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
   }
 
   const artifacts = artifactIDs.map((id) => {
-    const artPiece = findById(myArts, id);
-    if (artPiece) {
-      const { owner, ...info } = artPiece;
-      return info;
-    }
-    return null;
+    const artifact = id ? findById(myArts, id) : undefined;
+    return artifact ? userItemToCalcItem(artifact, seedID++) : null;
   });
   const setBonuses = getArtifactSetBonuses(artifacts);
 

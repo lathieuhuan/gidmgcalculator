@@ -184,7 +184,7 @@ export const calculatorSlice = createSlice({
       const sourceId = action.payload;
       const { comparedIds, setupManageInfos, setupsById } = state;
       const ID = Date.now();
-      let rootID = ID;
+      let seedID = ID;
 
       if (setupsById[sourceId]) {
         setupManageInfos.push({
@@ -198,7 +198,7 @@ export const calculatorSlice = createSlice({
             artifact
               ? {
                   ...artifact,
-                  ID: rootID++,
+                  ID: seedID++,
                 }
               : null
           ),
@@ -393,10 +393,11 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateArtifact: (state, action: UpdateArtifactAction) => {
-      const { pieceIndex, level, mainStatType, subStat } = action.payload;
+      const { pieceIndex, oriID, level, mainStatType, subStat } = action.payload;
       const piece = state.setupsById[state.activeId].artifacts[pieceIndex];
 
       if (piece) {
+        piece.oriID = oriID ?? piece.oriID;
         piece.level = level ?? piece.level;
         piece.mainStatType = mainStatType ?? piece.mainStatType;
 
