@@ -119,7 +119,6 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
               newPiece: {
                 ID: Date.now(),
                 ...item,
-                isNew: true,
               },
             })
           );

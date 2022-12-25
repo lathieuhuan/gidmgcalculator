@@ -92,7 +92,8 @@ export const calculatorSlice = createSlice({
     },
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
-      const result = parseAndInitData(pickedChar, myWps, myArts);
+      const charData = getCharData(pickedChar);
+      const result = parseAndInitData(pickedChar, myWps, myArts, charData.weaponType);
       const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
       const setupManageInfo = getSetupManageInfo({});
       const { ID } = setupManageInfo;
@@ -102,7 +103,7 @@ export const calculatorSlice = createSlice({
       state.standardId = 0;
       state.configs.separateCharInfo = false;
 
-      state.charData = getCharData(result.char);
+      state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
       state.setupsById = {
         [ID]: {
@@ -372,10 +373,9 @@ export const calculatorSlice = createSlice({
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && newPiece.isNew && state.configs.keepArtStatsOnSwitch) {
+      if (piece && newPiece && state.configs.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
-        piece.isNew = newPiece.isNew;
       } else {
         setup.artifacts[pieceIndex] = newPiece;
       }
@@ -393,11 +393,10 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateArtifact: (state, action: UpdateArtifactAction) => {
-      const { pieceIndex, isNew, level, mainStatType, subStat } = action.payload;
+      const { pieceIndex, level, mainStatType, subStat } = action.payload;
       const piece = state.setupsById[state.activeId].artifacts[pieceIndex];
 
       if (piece) {
-        piece.isNew = isNew ?? piece.isNew;
         piece.level = level ?? piece.level;
         piece.mainStatType = mainStatType ?? piece.mainStatType;
 

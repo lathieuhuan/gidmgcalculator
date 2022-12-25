@@ -83,8 +83,6 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
       );
     }
 
-    dispatch(updateWeapon({ isNew: false }));
-
     artifacts.forEach((artifact, artifactIndex) => {
       if (artifact) {
         const foundIndex = indexById(myArts, artifact.ID);
@@ -110,8 +108,6 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
             })
           );
         }
-
-        dispatch(updateArtifact({ pieceIndex: artifactIndex, isNew: false }));
       }
     });
 

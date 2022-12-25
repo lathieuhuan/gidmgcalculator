@@ -70,16 +70,16 @@ export type ModifierCtrl = {
 
 export type CalcWeapon = Weapon & {
   /**
-   * New weapon, not from user database
+   * The original ID when the weapon comes from user database
    */
-  isNew?: boolean;
+  oriID?: number;
 };
 
 export type CalcArtifact = Artifact & {
   /**
-   * New artifact, not from user database
+   * The original ID when the artifact comes from user database
    */
-  isNew?: boolean;
+  oriID?: number;
 };
 
 export type CalcArtifacts = (CalcArtifact | null)[];

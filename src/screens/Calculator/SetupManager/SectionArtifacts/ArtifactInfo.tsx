@@ -38,7 +38,7 @@ export function ArtifactInfo({
 
   const [isSaving, setIsSaving] = useState(false);
 
-  const { isNew, type, rarity = 5, level, mainStatType } = artifact;
+  const { type, rarity = 5, level, mainStatType } = artifact;
   const availableMainStatTypes = ARTIFACT_MAIN_STATS[type];
   const mainStatValues = availableMainStatTypes[mainStatType]![rarity];
   const maxLevel = rarity === 5 ? 20 : 16;
@@ -47,7 +47,7 @@ export function ArtifactInfo({
     <div className="pt-4" onDoubleClick={() => console.log(artifact)}>
       <div className="pl-6 flex items-start">
         <ArtifactLevelSelect
-          mutable={isNew}
+          mutable
           rarity={rarity}
           level={level}
           maxLevel={rarity === 5 ? 20 : 16}
@@ -90,7 +90,6 @@ export function ArtifactInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
-          mutable={isNew}
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
@@ -126,7 +125,7 @@ export function ArtifactInfo({
 
         <IconButton
           className="font-bold"
-          disabled={level === maxLevel || !isNew}
+          disabled={level === maxLevel}
           variant="neutral"
           onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
         >

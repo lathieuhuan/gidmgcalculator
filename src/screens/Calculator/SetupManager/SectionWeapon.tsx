@@ -43,47 +43,38 @@ export default function SectionWeapon() {
       <div className="ml-2 overflow-hidden">
         <p className={`text-xl text-rarity-${rarity} font-bold text-ellipsis`}>{name}</p>
         <div className="mt-1 pl-1 flex flex-wrap">
-          <p className="mr-1">
-            Level {!weapon.isNew && <span className={`text-rarity-${rarity}`}>{weapon.level}</span>}
-          </p>
-          {weapon.isNew && (
-            <select
-              className={`text-rarity-${rarity} text-right`}
-              value={weapon.level}
-              disabled={name === ""}
-              onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
-            >
-              {selectLevels.map((_, index) => {
-                const value = selectLevels[selectLevels.length - 1 - index];
-                return (
-                  <option key={index} value={value}>
-                    {value}
-                  </option>
-                );
-              })}
-            </select>
-          )}
+          <p className="mr-1">Level</p>
+          <select
+            className={`text-rarity-${rarity} text-right`}
+            value={weapon.level}
+            disabled={name === ""}
+            onChange={(e) => dispatch(updateWeapon({ level: e.target.value as Level }))}
+          >
+            {selectLevels.map((_, index) => {
+              const value = selectLevels[selectLevels.length - 1 - index];
+              return (
+                <option key={index} value={value}>
+                  {value}
+                </option>
+              );
+            })}
+          </select>
         </div>
         {rarity >= 3 && (
           <div className="mt-1 pl-1 flex flex-wrap">
-            <p className="mr-2">
-              Refinement rank{" "}
-              {!weapon.isNew && <span className={`text-rarity-${rarity}`}>{weapon.refi}</span>}
-            </p>
-            {weapon.isNew && (
-              <select
-                className={`text-rarity-${rarity}`}
-                value={weapon.refi}
-                disabled={name === ""}
-                onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
-              >
-                {[1, 2, 3, 4, 5].map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-            )}
+            <p className="mr-2">Refinement rank</p>
+            <select
+              className={`text-rarity-${rarity}`}
+              value={weapon.refi}
+              disabled={name === ""}
+              onChange={(e) => dispatch(updateWeapon({ refi: +e.target.value }))}
+            >
+              {[1, 2, 3, 4, 5].map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
           </div>
         )}
       </div>
@@ -91,7 +82,14 @@ export default function SectionWeapon() {
       <PickerWeapon
         active={pickerOn}
         weaponType={weapon.type}
-        onPickWeapon={(item) => dispatch(changeWeapon({ ID: Date.now(), ...item }))}
+        onPickWeapon={(item) => {
+          dispatch(
+            changeWeapon({
+              ID: Date.now(),
+              ...item,
+            })
+          );
+        }}
         onClose={() => setPickerOn(false)}
       />
     </div>

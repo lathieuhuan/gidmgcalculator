@@ -43,7 +43,8 @@ export function calculate(state: CalculatorState, all?: boolean) {
 export function parseAndInitData(
   { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
   myWps: UserWeapon[],
-  myArts: UserArtifact[]
+  myArts: UserArtifact[],
+  weaponType: WeaponType
 ) {
   let rootID = Date.now();
   const char: CharInfo = { ...initCharInfo(info), name };
@@ -53,13 +54,16 @@ export function parseAndInitData(
   const existedWp = findById(myWps, weaponID);
 
   if (existedWp) {
-    const { owner, ...weaponInfo } = existedWp;
+    const { owner, setupIDs, ...weaponInfo } = existedWp;
     weapon = weaponInfo;
     wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
   } //
   else {
-    const newWp = initWeapon({ type: findCharacter(char)?.weaponType || "sword" });
-    weapon = { ...newWp, ID: rootID++ };
+    const newWp = initWeapon({ type: weaponType });
+    weapon = {
+      ...newWp,
+      ID: rootID++,
+    };
     wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
   }
 

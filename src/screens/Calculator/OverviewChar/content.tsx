@@ -41,7 +41,6 @@ const contentByTab: Record<string, () => JSX.Element> = {
       <div className="h-full hide-scrollbar">
         <WeaponCard
           weapon={weapon}
-          mutable={weapon.isNew}
           upgrade={(level) => dispatch(updateWeapon({ level }))}
           refine={(refi) => dispatch(updateWeapon({ refi }))}
         />
