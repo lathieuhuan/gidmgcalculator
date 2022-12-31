@@ -31,16 +31,23 @@ import type {
   UpdateTeammateWeaponAction,
   UpdateTeammateArtifactAction,
 } from "./reducer-types";
+import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import monsters from "@Data/monsters";
 
 import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
-
-import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { bareLv, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
+import { countVision } from "@Data/characters/utils";
+import {
+  bareLv,
+  deepCopy,
+  findByCode,
+  findById,
+  turnArray,
+  getArtifactSetBonuses,
+} from "@Src/utils";
 import {
   calculate,
   getArtDebuffCtrls,
   getArtifactBuffCtrls,
-  getArtifactSetBonuses,
   getNewSetupName,
   getSetupManageInfo,
   getWeaponBuffCtrls,
@@ -55,8 +62,6 @@ import {
   initTarget,
   initTeammate,
 } from "./initiators";
-import monsters from "@Data/monsters";
-import { countVision } from "@Data/characters/utils";
 
 const defaultChar = {
   name: "Albedo",
@@ -92,13 +97,19 @@ export const calculatorSlice = createSlice({
     },
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, myWps, myArts } = action.payload;
-      const charData = getCharData(pickedChar);
-      const result = parseAndInitData(pickedChar, myWps, myArts, charData.weaponType);
-      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
       const setupManageInfo = getSetupManageInfo({});
-      const { ID } = setupManageInfo;
+      const { ID: setupID } = setupManageInfo;
+      const charData = getCharData(pickedChar);
+      const result = parseAndInitData({
+        pickedChar,
+        myWps,
+        myArts,
+        weaponType: charData.weaponType,
+        seedID: setupID + 1,
+      });
+      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
 
-      state.activeId = ID;
+      state.activeId = setupID;
       state.comparedIds = [];
       state.standardId = 0;
       state.configs.separateCharInfo = false;
@@ -106,7 +117,7 @@ export const calculatorSlice = createSlice({
       state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
       state.setupsById = {
-        [ID]: {
+        [setupID]: {
           char: result.char,
           selfBuffCtrls: selfBuffCtrls,
           selfDebuffCtrls: selfDebuffCtrls,
@@ -393,11 +404,10 @@ export const calculatorSlice = createSlice({
       calculate(state);
     },
     updateArtifact: (state, action: UpdateArtifactAction) => {
-      const { pieceIndex, oriID, level, mainStatType, subStat } = action.payload;
+      const { pieceIndex, level, mainStatType, subStat } = action.payload;
       const piece = state.setupsById[state.activeId].artifacts[pieceIndex];
 
       if (piece) {
-        piece.oriID = oriID ?? piece.oriID;
         piece.level = level ?? piece.level;
         piece.mainStatType = mainStatType ?? piece.mainStatType;
 

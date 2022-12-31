@@ -17,8 +17,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { findArtifactSet } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { findByIndex, getArtifactSetBonuses } from "@Src/utils";
 
 // Component
 import { Green } from "@Components/atoms";

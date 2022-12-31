@@ -6,7 +6,6 @@ import type {
   WeaponType,
   Reaction,
   CharInfo,
-  ArtifactPercentStat,
   CoreStat,
   AttributeStat,
   PartiallyRequired,

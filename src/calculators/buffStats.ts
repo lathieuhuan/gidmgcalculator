@@ -1,14 +1,3 @@
-import {
-  AMPLIFYING_REACTIONS,
-  ATTACK_ELEMENTS,
-  ATTACK_ELEMENT_INFO_KEYS,
-  ATTACK_PATTERNS,
-  ATTACK_PATTERN_INFO_KEYS,
-  QUICKEN_REACTIONS,
-  REACTIONS,
-  REACTION_BONUS_INFO_KEYS,
-  TRANSFORMATIVE_REACTIONS,
-} from "@Src/constants";
 import type {
   AttackElementBonus,
   AttacklementInfo,
@@ -23,7 +12,22 @@ import type {
   ReactionBonus,
   ReactionBonusInfo,
 } from "@Src/types";
-import { findByIndex } from "@Src/utils";
+import type { GetBuffedStatsArgs, UsedCode } from "./types";
+
+import {
+  AMPLIFYING_REACTIONS,
+  ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
+  QUICKEN_REACTIONS,
+  REACTIONS,
+  REACTION_BONUS_INFO_KEYS,
+  TRANSFORMATIVE_REACTIONS,
+} from "@Src/constants";
+import { RESONANCE_STAT } from "./constants";
+
+import { findByIndex, getArtifactSetBonuses } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
 import {
   addArtAttr,
@@ -33,15 +37,12 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import type { GetBuffedStatsArgs, UsedCode } from "./types";
 import {
   applyModifier,
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
   addTrackerRecord,
 } from "./utils";
-import { RESONANCE_STAT } from "./constants";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface ApplySelfBuffs {
   isFinal: boolean;

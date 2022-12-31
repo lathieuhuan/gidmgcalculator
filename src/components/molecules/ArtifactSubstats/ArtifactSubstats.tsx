@@ -19,7 +19,6 @@ import { useTranslation } from "@Src/hooks";
 import { percentSign, processNumInput } from "@Src/utils";
 
 export interface ArtifactSubstatsProps {
-  /** Default to true */
   mutable?: boolean;
   space?: string;
   rarity: Rarity;
@@ -28,7 +27,7 @@ export interface ArtifactSubstatsProps {
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
 export function ArtifactSubstats({
-  mutable = true,
+  mutable,
   mainStatType,
   subStats,
   rarity,

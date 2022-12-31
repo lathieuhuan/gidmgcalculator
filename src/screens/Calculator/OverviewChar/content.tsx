@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Src/hooks";
 
 // Util
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Src/utils";
 
 // Component
 import { SharedSpace } from "@Components/atoms";

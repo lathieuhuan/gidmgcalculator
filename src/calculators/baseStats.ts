@@ -12,14 +12,14 @@ import type {
   Tracker,
 } from "@Src/types";
 import type { BaseModifierArgsWrapper } from "./types";
-
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
-import { applyPercent, ascsFromLv, toMult } from "@Src/utils";
+
+// Util
+import { applyPercent, ascsFromLv, toMult, getArtifactSetBonuses } from "@Src/utils";
 import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
-import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
+import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { addOrInit, addTrackerRecord, applyModifier } from "./utils";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;

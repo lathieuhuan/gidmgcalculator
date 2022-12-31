@@ -13,7 +13,7 @@ import { useDispatch } from "@Store/hooks";
 import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
 
 // Util
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Src/utils";
 
 // Component
 import { CloseButton, SharedSpace } from "@Components/atoms";

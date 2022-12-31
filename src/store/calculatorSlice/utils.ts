@@ -1,6 +1,4 @@
 import type {
-  CalcArtifact,
-  ArtifactSetBonus,
   CalcWeapon,
   CharInfo,
   ModifierCtrl,
@@ -17,8 +15,9 @@ import type { CalculatorState } from "./types";
 import { findArtifactSet, findWeapon } from "@Data/controllers";
 import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
-import { findById, userItemToCalcItem } from "@Src/utils";
+import { findById, getArtifactSetBonuses, userItemToCalcItem } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
+import { info } from "console";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -40,13 +39,20 @@ export function calculate(state: CalculatorState, all?: boolean) {
   }
 }
 
-export function parseAndInitData(
-  { name, weaponID, artifactIDs = [null, null, null, null, null], ...info }: PickedChar,
-  myWps: UserWeapon[],
-  myArts: UserArtifact[],
-  weaponType: WeaponType
-) {
-  let seedID = Date.now();
+type ParseAndInitDataArgs = {
+  pickedChar: PickedChar;
+  myWps: UserWeapon[];
+  myArts: UserArtifact[];
+  weaponType: WeaponType;
+  seedID: number;
+};
+export function parseAndInitData({
+  pickedChar: { name, weaponID, artifactIDs = [null, null, null, null, null], ...info },
+  myWps,
+  myArts,
+  weaponType,
+  seedID,
+}: ParseAndInitDataArgs) {
   const char: CharInfo = { ...initCharInfo(info), name };
 
   let weapon: CalcWeapon;
@@ -70,43 +76,15 @@ export function parseAndInitData(
     const artifact = id ? findById(myArts, id) : undefined;
     return artifact ? userItemToCalcItem(artifact, seedID++) : null;
   });
-  const setBonuses = getArtifactSetBonuses(artifacts);
+  const firstSetBonus = getArtifactSetBonuses(artifacts)[0];
 
   return {
     char,
     weapon,
     wpBuffCtrls,
     artifacts,
-    artBuffCtrls: setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [],
+    artBuffCtrls: firstSetBonus?.bonusLv ? getArtifactBuffCtrls(true, firstSetBonus) : [],
   };
-}
-
-// #to-check necessary (?) cause find weapon
-export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
-  const result: ModifierCtrl[] = [];
-  const { buffs = [] } = findWeapon(weapon) || {};
-
-  for (const buff of buffs) {
-    if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
-      continue;
-    }
-    const node: ModifierCtrl = { activated: false, index: buff.index };
-
-    if (buff.inputConfigs) {
-      const initialValues = [];
-
-      for (const config of buff.inputConfigs) {
-        initialValues.push(
-          config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
-        );
-      }
-      if (initialValues.length) {
-        node.inputs = initialValues;
-      }
-    }
-    result.push(node);
-  }
-  return result;
 }
 
 interface IModifier {
@@ -143,32 +121,18 @@ export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
   return buffCtrls;
 }
 
+// #to-check necessary (?) cause find weapon
+export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
+  const { buffs = [] } = findWeapon(weapon) || {};
+  return getModCtrls(buffs, forSelf);
+}
+
 export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
   if (!hasCode?.code) {
     return [];
   }
   const { buffs = [] } = findArtifactSet({ code: hasCode.code }) || {};
-
   return getModCtrls(buffs, forSelf);
-}
-
-export function getArtifactSetBonuses(artifacts: (CalcArtifact | null)[] = []): ArtifactSetBonus[] {
-  const sets = [];
-  const count: Record<number, number> = {};
-
-  for (const artifact of artifacts) {
-    if (artifact) {
-      const { code } = artifact;
-      count[code] = (count[code] || 0) + 1;
-
-      if (count[code] === 2) {
-        sets.push({ code, bonusLv: 0 });
-      } else if (count[code] === 4) {
-        sets[0].bonusLv = 1;
-      }
-    }
-  }
-  return sets;
 }
 
 export function getArtDebuffCtrls(): ArtifactDebuffCtrl[] {

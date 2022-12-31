@@ -41,11 +41,11 @@ export function OwnerLabel({ owner, setupIDs }: OwnerLabelProps) {
   return owner === undefined ? null : (
     <div className="mt-4 pl-4 font-bold text-black bg-[#ffe7bb] flex justify-between">
       <p className="py-1">Equipped: {owner || "None"}</p>
-      {setupIDs && (
+      {setupIDs?.length ? (
         <button className="w-8 h-8 flex-center" onClick={() => setIsVisibleList(true)}>
           <FaPuzzlePiece className="w-5 h-5" />
         </button>
-      )}
+      ) : null}
 
       <Modal
         active={isVisibleList}

@@ -159,7 +159,7 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
 
   const existedArtifact = findById(
     useSelector((state) => state.database.myArts),
-    artifact.oriID
+    artifact.ID
   );
 
   useEffect(() => {
@@ -167,7 +167,6 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
       setState("PENDING");
     } else {
       dispatch(addUserArtifact(calcItemToUserItem(artifact)));
-      dispatch(updateArtifact({ pieceIndex, oriID: artifact.ID }));
       setState("SUCCESS");
     }
   }, []);

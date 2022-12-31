@@ -1,6 +1,6 @@
 import type { ConvertUserDataArgs } from "./types";
 import type {
-  ArtPieceMainStat,
+  ArtifactMainStatType,
   CharInfo,
   CustomBuffCtrl,
   CustomBuffCtrlType,
@@ -14,7 +14,7 @@ import type {
   UserWeapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Src/utils";
 
 const ERROR = {
   //
@@ -66,7 +66,7 @@ function convertWeapon(weapon: any): UserWeapon {
 function convertArtifact(artifact: any): UserArtifact {
   const { ID, type, code, rarity = 5, level, mainSType, subS, user: owner = null } = artifact;
 
-  const mainStatType = mapVerson3_0[mainSType] as ArtPieceMainStat;
+  const mainStatType = mapVerson3_0[mainSType] as ArtifactMainStatType;
   const subStats = subS.map((stat: any) => {
     return {
       type: mapVerson3_0[stat.type],

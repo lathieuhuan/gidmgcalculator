@@ -14,7 +14,7 @@ import {
 } from "./userDatabaseSlice";
 
 import { EScreen } from "@Src/constants";
-import { calcItemToUserItem, findById, indexById, userItemToCalcItem } from "@Src/utils";
+import { findById, indexById, calcItemToUserItem, userItemToCalcItem } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
 import isEqual from "react-fast-compare";
 
@@ -23,10 +23,10 @@ export const startCalculation =
   (dispatch, getState) => {
     const { myWps, myArts } = getState().database;
 
-    batch(() => {
-      dispatch(initSessionWithChar({ pickedChar, myWps, myArts }));
-      dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
-    });
+    dispatch(initSessionWithChar({ pickedChar, myWps, myArts }));
+    // batch(() => {
+    //   dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
+    // });
   };
 
 export const pickEquippedArtSet =
@@ -41,48 +41,60 @@ export const pickEquippedArtSet =
     dispatch(updateAllArtifact(artifacts));
   };
 
-export const saveSetupThunk = (setuppID: number, name: string): AppThunk => {
+export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const {
       calculator,
       database: { myWps, myArts },
     } = getState();
-    const { weapon, artifacts } = calculator.setupsById[setuppID];
+    const { weapon, artifacts } = calculator.setupsById[setupID];
     let seedID = Date.now();
     let weaponID = weapon.ID;
     const foundWpIndex = indexById(myWps, weapon.ID);
 
-    if (foundWpIndex !== -1) {
+    if (foundWpIndex === -1) {
+      dispatch(
+        addUserWeapon(
+          calcItemToUserItem(weapon, {
+            setupIDs: [setupID],
+          })
+        )
+      );
+    } else {
       // weapon existed and nothing changes
       if (isEqual(weapon, userItemToCalcItem(myWps[foundWpIndex]))) {
         let newSetupIDs = myWps[foundWpIndex].setupIDs || [];
 
-        if (!newSetupIDs.includes(setuppID)) {
+        if (!newSetupIDs.includes(setupID)) {
           dispatch(
             updateUserWeapon({
               index: foundWpIndex,
-              ...myWps[foundWpIndex],
-              setupIDs: newSetupIDs.concat(setuppID),
+              ID: weapon.ID,
+              setupIDs: newSetupIDs.concat(setupID),
             })
           );
         }
       } else {
+        // remove setupID from existed weapon
+        dispatch(
+          updateUserWeapon({
+            index: foundWpIndex,
+            ID: weapon.ID,
+            setupIDs: myWps[foundWpIndex].setupIDs?.filter((ID) => ID !== setupID),
+          })
+        );
+
         weaponID = seedID++;
 
         dispatch(
           addUserWeapon(
-            calcItemToUserItem(
-              {
-                ...weapon,
-                ID: weaponID,
-              },
-              { setupIDs: [setuppID] }
-            )
+            calcItemToUserItem(weapon, {
+              ID: weaponID,
+              setupIDs: [setupID],
+            })
           )
         );
       }
-    } else {
-      dispatch(addUserWeapon(calcItemToUserItem(weapon, { setupIDs: [setuppID] })));
     }
 
     artifacts.forEach((artifact, artifactIndex) => {
@@ -92,12 +104,12 @@ export const saveSetupThunk = (setuppID: number, name: string): AppThunk => {
         if (foundIndex !== -1) {
           let newSetupIDs = myArts[foundIndex].setupIDs;
 
-          if (newSetupIDs && !newSetupIDs.includes(setuppID)) {
+          if (newSetupIDs && !newSetupIDs.includes(setupID)) {
             dispatch(
               updateUserArtifact({
                 index: foundIndex,
                 ...myArts[foundIndex],
-                setupIDs: newSetupIDs.concat(setuppID),
+                setupIDs: newSetupIDs.concat(setupID),
               })
             );
           }
@@ -106,7 +118,7 @@ export const saveSetupThunk = (setuppID: number, name: string): AppThunk => {
             addUserArtifact({
               ...artifact,
               owner: null,
-              setupIDs: [setuppID],
+              setupIDs: [setupID],
             })
           );
         }
@@ -116,9 +128,9 @@ export const saveSetupThunk = (setuppID: number, name: string): AppThunk => {
     batch(() => {
       dispatch(
         saveSetup({
-          ID: setuppID,
+          ID: setupID,
           name,
-          data: cleanupCalcSetup(calculator, setuppID, { weaponID }),
+          data: cleanupCalcSetup(calculator, setupID, { weaponID }),
         })
       );
       dispatch(

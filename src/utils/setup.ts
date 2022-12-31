@@ -1,12 +1,8 @@
 import type { CalcSetup, ModifierInput, Party, UserSetupCalcInfo } from "@Src/types";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
-import {
-  getArtifactBuffCtrls,
-  getArtifactSetBonuses,
-  getWeaponBuffCtrls,
-} from "@Store/calculatorSlice/utils";
+import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { findCharacter } from "@Data/controllers";
-import { deepCopy, findByIndex } from "./index";
+import { deepCopy, findByIndex, getArtifactSetBonuses } from "./index";
 import { CalculatorState } from "@Store/calculatorSlice/types";
 
 interface CleanupCalcSetupOptions {

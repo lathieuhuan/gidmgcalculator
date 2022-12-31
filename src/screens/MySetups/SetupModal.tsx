@@ -7,7 +7,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { getPartyData } from "@Data/controllers";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { getArtifactSetBonuses } from "@Src/utils";
 import { calculateChosenSetup } from "./utils";
 
 // Component

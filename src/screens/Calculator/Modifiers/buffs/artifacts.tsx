@@ -11,8 +11,7 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Stor
 import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { deepCopy, findByIndex } from "@Src/utils";
-import { getArtifactSetBonuses } from "@Store/calculatorSlice/utils";
+import { deepCopy, findByIndex, getArtifactSetBonuses } from "@Src/utils";
 import { findArtifactSet } from "@Data/controllers";
 
 // Component
