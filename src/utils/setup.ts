@@ -9,9 +9,10 @@ import type {
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
 import { findDataCharacter } from "@Data/controllers";
-import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
-import { deepCopy, findByIndex, getArtifactSetBonuses } from "./index";
+import { deepCopy, findByIndex } from "./pure-utils";
+import { getArtifactSetBonuses } from "./calculation";
+import { createCharModCtrls } from "./creators";
 
 export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
   return ["original", "combined"].includes(setup.type);
@@ -93,7 +94,7 @@ export function restoreCalcSetup(data: CalcSetup) {
     return newCtrls;
   }
 
-  const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(data.char.name, true);
+  const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(data.char.name, true);
   const wpBuffCtrls = getWeaponBuffCtrls(true, data.weapon);
   const party: Party = [];
 
@@ -101,7 +102,7 @@ export function restoreCalcSetup(data: CalcSetup) {
     const teammate = data.party[index];
 
     if (teammate) {
-      const [buffCtrls, debuffCtrls] = initCharModCtrls(teammate.name, false);
+      const [buffCtrls, debuffCtrls] = createCharModCtrls(teammate.name, false);
       party.push({
         name: teammate.name,
         buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),

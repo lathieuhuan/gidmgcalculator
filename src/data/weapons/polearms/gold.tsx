@@ -3,7 +3,7 @@ import { Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
 const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {

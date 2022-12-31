@@ -2,8 +2,8 @@ import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/type
 import { Anemo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyModifier } from "@Calculators/utils";
-import { finalTalentLv, round1, round3 } from "@Src/utils";
+import { round1, round3 } from "@Src/utils";
+import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
@@ -11,7 +11,12 @@ const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
 };
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv(char, "ES", partyData);
+  const level = finalTalentLv({
+    char,
+    talents: Wanderer.activeTalents,
+    talentType: "ES",
+    partyData,
+  });
   return {
     NA: round1(32.98 * TALENT_LV_MULTIPLIERS[5][level]),
     CA: round1(26.39 * TALENT_LV_MULTIPLIERS[5][level]),

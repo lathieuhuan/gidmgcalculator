@@ -2,8 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
-import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
 const getEBBuffValue = (level: number) => {
@@ -118,12 +117,23 @@ const Razor: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           Raises Razor's <Green>ATK SPD</Green> by{" "}
-          <Green b>{getEBBuffValue(finalTalentLv(char, "EB", partyData))}%</Green>.
+          <Green b>
+            {getEBBuffValue(
+              finalTalentLv({ char, talents: Razor.activeTalents, talentType: "EB", partyData })
+            )}
+            %
+          </Green>
+          .
         </>
       ),
       affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv(char, "EB", partyData);
+        const level = finalTalentLv({
+          char,
+          talents: Razor.activeTalents,
+          talentType: "EB",
+          partyData,
+        });
         applyModifier(desc, totalAttr, "naAtkSpd", getEBBuffValue(level), tracker);
       },
     },

@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import type { UserSetup } from "@Src/types";
 import { CharacterPortrait } from "@Components/atoms";
+import { findDataCharacter } from "@Data/controllers";
 
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
 
@@ -41,6 +42,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
         {options.map((setup) => {
           const { ID } = setup;
           const picked = pickedIDs.includes(ID);
+          const { code = 0, icon = "" } = findDataCharacter(setup.char) || {};
 
           return (
             <div
@@ -58,13 +60,15 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
               </div>
               <div className="mt-2 md1:mt-0 flex space-x-4">
                 <div className="w-16 rounded-circle shadow-3px-2px shadow-orange">
-                  <CharacterPortrait name={setup.char.name} />
+                  <CharacterPortrait {...{ code, icon }} />
                 </div>
                 {setup.party.map((teammate, j) => {
                   if (teammate) {
+                    const { code = 0, icon = "" } = findDataCharacter(teammate) || {};
+
                     return (
                       <div key={j} className="w-16 rounded-circle">
-                        <CharacterPortrait name={teammate.name} />
+                        <CharacterPortrait {...{ code, icon }} />
                       </div>
                     );
                   }

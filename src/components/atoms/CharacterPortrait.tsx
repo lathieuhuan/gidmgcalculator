@@ -1,14 +1,13 @@
 import clsx from "clsx";
 import { getImgSrc } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
 
 interface CharFilledSlotProps {
   className?: string;
-  name: string;
+  code: number;
+  icon: string;
   onClickIcon?: () => void;
 }
-export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSlotProps) {
-  const { code, icon } = findDataCharacter({ name })!;
+export function CharacterPortrait({ className, code, icon, onClickIcon }: CharFilledSlotProps) {
   // for the traveler
   const bgColorByCode: Record<number, string> = {
     1: "bg-anemo",
@@ -27,7 +26,7 @@ export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSl
       <img
         className="w-full rounded-circle"
         src={getImgSrc(icon)}
-        alt={name}
+        alt=""
         draggable={false}
         onClick={onClickIcon}
       />

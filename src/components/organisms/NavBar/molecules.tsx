@@ -8,7 +8,10 @@ import { EScreen } from "@Src/constants";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action & Selector
-import { selectAtScreen, updateUI } from "@Store/uiSlice";
+import { updateUI } from "@Store/uiSlice";
+import { selectAtScreen } from "@Store/uiSlice/selectors";
+
+// Style
 import { navButtonStyles } from "./atoms";
 
 interface INavTabsProps {

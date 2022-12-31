@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakSeries } from "../series";
 import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
 const otherBows: DataWeapon[] = [

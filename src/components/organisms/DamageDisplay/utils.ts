@@ -14,22 +14,24 @@ type ReactionKey = {
 export type TableKey = AttackPatternKey | ReactionKey;
 
 export function getTableKeys(charName: string) {
-  const charData = findDataCharacter({ name: charName });
-  if (!charData) {
-    return [];
+  const dataChar = findDataCharacter({ name: charName });
+  if (!dataChar) {
+    return {
+      tableKeys: [],
+    };
   }
   const NAs: AttackPatternKey = {
     main: "NAs",
     subs: [],
   };
   for (const na of NORMAL_ATTACKS) {
-    NAs.subs = NAs.subs.concat(charData.activeTalents[na].stats.map(({ name }) => name));
+    NAs.subs = NAs.subs.concat(dataChar.activeTalents[na].stats.map(({ name }) => name));
   }
 
   const result: TableKey[] = [NAs];
 
   for (const attPatt of ["ES", "EB"] as const) {
-    const { stats } = charData.activeTalents[attPatt];
+    const { stats } = dataChar.activeTalents[attPatt];
     result.push({
       main: attPatt,
       subs: stats.map(({ name }) => name),
@@ -41,7 +43,10 @@ export function getTableKeys(charName: string) {
     subs: [...TRANSFORMATIVE_REACTIONS],
   });
 
-  return result;
+  return {
+    tableKeys: result,
+    dataChar,
+  };
 }
 
 export function displayValue(value: number | number[]) {

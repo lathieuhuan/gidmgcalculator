@@ -45,15 +45,7 @@ export type DataCharacter = {
     name: string;
     getExtraStats?: GetExtraStatsFn;
   };
-  activeTalents: {
-    NA: NormalAttacks;
-    CA: NormalAttacks;
-    PA: NormalAttacks;
-    ES: ElementalSkill;
-    EB: ElementalBurst;
-    // #to-check
-    altSprint?: NoStatsAbility;
-  };
+  activeTalents: ActiveTalents;
   passiveTalents: NoStatsAbility[];
   constellation: NoStatsAbility[];
   innateBuffs?: InnateBuff[];
@@ -138,6 +130,16 @@ type NoStatsAbility = {
   image: string;
   desc?: JSX.Element;
   xtraDesc?: JSX.Element[];
+};
+
+export type ActiveTalents = {
+  NA: NormalAttacks;
+  CA: NormalAttacks;
+  PA: NormalAttacks;
+  ES: ElementalSkill;
+  EB: ElementalBurst;
+  // #to-check
+  altSprint?: NoStatsAbility;
 };
 
 export type InnateBuff = {

@@ -3,7 +3,7 @@ import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 

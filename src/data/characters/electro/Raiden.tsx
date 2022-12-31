@@ -11,8 +11,13 @@ import type {
 import { Electro, Green, Lightgold, Red } from "@Components/atoms";
 import { ATTACK_PATTERNS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { finalTalentLv, round1, round2 } from "@Src/utils";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
+import { round1, round2 } from "@Src/utils";
+import {
+  finalTalentLv,
+  applyModifier,
+  makeModApplier,
+  type AttackPatternPath,
+} from "@Src/utils/calculation";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
 export const isshinBonusMults = [
@@ -48,12 +53,19 @@ const getBuffValue = {
     inputs: ModifierInput[],
     partyData: PartyData
   ) => {
-    const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;
+    const level = toSelf
+      ? finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "ES", partyData })
+      : inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
     return [round1(EBcost * mult), `${level} / ${round2(mult)}% * ${EBcost} Energy Cost`] as const;
   },
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
-    const level = finalTalentLv(char, "EB", partyData);
+    const level = finalTalentLv({
+      char,
+      talents: Raiden.activeTalents,
+      talentType: "EB",
+      partyData,
+    });
     const totalEnergySpent = findInput(selfBuffCtrls, 1, 0);
     const electroEnergySpent = findInput(selfBuffCtrls, 1, 1);
     let bonusEnergySpent = 0;
@@ -80,7 +92,9 @@ const getBuffValue = {
     if (otherEC < 0) {
       return 0;
     }
-    const level = EBlevel || finalTalentLv(char, "EB", partyData);
+    const level =
+      EBlevel ||
+      finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "EB", partyData });
     const electroResolve = countResolve(electroEC, level);
     const otherResolve = countResolve(otherEC, level);
     return round1(electroResolve * 0.8 + otherResolve * 0.2);

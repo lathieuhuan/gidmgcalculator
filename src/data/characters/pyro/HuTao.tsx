@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const HuTao: DataCharacter = {
@@ -137,7 +137,12 @@ const HuTao: DataCharacter = {
       ),
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv(char, "ES", partyData);
+        const level = finalTalentLv({
+          char,
+          talents: HuTao.activeTalents,
+          talentType: "ES",
+          partyData,
+        });
         let buffValue = applyPercent(totalAttr.hp, 3.84 * TALENT_LV_MULTIPLIERS[5][level]);
         buffValue = Math.min(buffValue, totalAttr.base_atk * 4);
         applyModifier(desc, totalAttr, "atk", buffValue, tracker);

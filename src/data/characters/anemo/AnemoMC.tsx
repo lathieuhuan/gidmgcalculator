@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 import { VISION_TYPES } from "@Src/constants";
 

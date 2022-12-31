@@ -2,7 +2,7 @@ import type { DataArtifact } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
 const mondstadtSets: DataArtifact[] = [
   {

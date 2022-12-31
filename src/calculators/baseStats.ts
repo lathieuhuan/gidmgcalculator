@@ -15,11 +15,12 @@ import type { BaseModifierArgsWrapper } from "./types";
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 
 // Util
-import { applyPercent, ascsFromLv, toMult, getArtifactSetBonuses } from "@Src/utils";
+import { applyPercent, ascsFromLv, toMult } from "@Src/utils";
+import { getArtifactSetBonuses, applyModifier } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
-import { addOrInit, addTrackerRecord, applyModifier } from "./utils";
+import { addOrInit, addTrackerRecord } from "./utils";
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EScreen } from "@Src/constants";
-import type { RootState } from "../index";
 import type { ImportInfo, UIState } from "./types";
 
 const initialState: UIState = {
@@ -29,7 +28,5 @@ export const uiSlice = createSlice({
 });
 
 export const { updateUI, updateImportInfo } = uiSlice.actions;
-
-export const selectAtScreen = (state: RootState) => state.ui.atScreen;
 
 export default uiSlice.reducer;

@@ -2,8 +2,8 @@ import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from 
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent, round2 } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, modIsActivated, countVision, talentBuff, checkCons } from "../utils";
 
 const getA4BuffValue = (
@@ -163,7 +163,9 @@ const YunJin: DataCharacter = {
       applyFinalBuff: (obj) => {
         const { toSelf, inputs = [], char, partyData } = obj;
         const DEF = toSelf ? obj.totalAttr.def : inputs[0] || 0;
-        const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[1] || 1;
+        const level = toSelf
+          ? finalTalentLv({ char, talents: YunJin.activeTalents, talentType: "EB", partyData })
+          : inputs[1] || 1;
         let desc = `${obj.desc} / Lv. ${level}`;
         let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraMult = getA4BuffValue(toSelf, char, obj.charBuffCtrls, obj.charData, partyData);

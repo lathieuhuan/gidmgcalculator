@@ -1,17 +1,12 @@
 import { useMemo } from "react";
-import type { PickerItem } from "./types";
-import type { ArtifactType, WeaponType } from "@Src/types";
+import type { WeaponType } from "@Src/types";
 
 // Data
-import artifacts from "@Data/artifacts";
 import weapons from "@Data/weapons";
 
 // Util
 import { pickProps } from "@Src/utils";
-import { initArtPiece, initWeapon } from "@Store/calculatorSlice/initiators";
-
-// Constant
-import { EModAffect } from "@Src/constants";
+import { createWeapon } from "@Src/utils/creators";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
@@ -21,7 +16,7 @@ interface PickerWeaponCoreProps {
   type?: string;
   weaponType: WeaponType;
   needMassAdd?: boolean;
-  onPickWeapon: (info: ReturnType<typeof initWeapon>) => void;
+  onPickWeapon: (info: ReturnType<typeof createWeapon>) => void;
   onClose: () => void;
 }
 function PickerWeaponCore({
@@ -41,7 +36,7 @@ function PickerWeaponCore({
       dataType="weapon"
       needMassAdd={needMassAdd}
       data={data}
-      onPickItem={({ code }) => onPickWeapon(initWeapon({ type: weaponType, code }))}
+      onPickItem={({ code }) => onPickWeapon(createWeapon({ type: weaponType, code }))}
       onClose={onClose}
     />
   );

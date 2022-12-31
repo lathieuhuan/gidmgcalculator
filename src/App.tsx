@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Selector
-import { selectAtScreen } from "@Store/uiSlice";
+import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Action
 import { updateCalculator } from "@Store/calculatorSlice";

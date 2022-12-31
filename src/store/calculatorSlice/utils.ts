@@ -15,8 +15,9 @@ import type { CalculatorState } from "./types";
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
-import { findById, getArtifactSetBonuses, userItemToCalcItem } from "@Src/utils";
-import { initCharInfo, initWeapon } from "./initiators";
+import { findById, userItemToCalcItem } from "@Src/utils";
+import { getArtifactSetBonuses } from "@Src/utils/calculation";
+import { createCharInfo, createWeapon } from "@Src/utils/creators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -52,7 +53,7 @@ export function parseAndInitData({
   weaponType,
   seedID,
 }: ParseAndInitDataArgs) {
-  const char: CharInfo = { ...initCharInfo(info), name };
+  const char: CharInfo = { ...createCharInfo(info), name };
 
   let weapon: CalcWeapon;
   let wpBuffCtrls: ModifierCtrl[];
@@ -63,7 +64,7 @@ export function parseAndInitData({
     wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
   } //
   else {
-    const newWp = initWeapon({ type: weaponType });
+    const newWp = createWeapon({ type: weaponType });
     weapon = {
       ID: seedID++,
       ...newWp,

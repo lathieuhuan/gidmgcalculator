@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
 const Sucrose: DataCharacter = {

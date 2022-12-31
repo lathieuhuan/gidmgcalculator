@@ -3,7 +3,7 @@ import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round1 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, countVision, talentBuff } from "../utils";
 
 export function nilouA1isOn(partyData: PartyData, charData: CharData) {

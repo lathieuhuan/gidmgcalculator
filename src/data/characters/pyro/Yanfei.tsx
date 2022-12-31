@@ -2,12 +2,12 @@ import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { finalTalentLv, round1 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { round1 } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv(char, "EB", partyData);
+  const level = finalTalentLv({ char, talents: Yanfei.activeTalents, talentType: "EB", partyData });
   return round1(33.4 * TALENT_LV_MULTIPLIERS[5][level]);
 };
 

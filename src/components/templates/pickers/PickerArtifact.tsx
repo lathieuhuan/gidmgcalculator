@@ -6,7 +6,7 @@ import type { PickerItem } from "./types";
 import { EModAffect } from "@Src/constants";
 
 // Util
-import { initArtPiece } from "@Store/calculatorSlice/initiators";
+import { createArtifact } from "@Src/utils/creators";
 
 // Data
 import artifacts from "@Data/artifacts";
@@ -20,7 +20,7 @@ interface PickerArtifactCoreProps {
   artifactType: ArtifactType;
   needMassAdd?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
-  onPickArtifact: (info: ReturnType<typeof initArtPiece>) => void;
+  onPickArtifact: (info: ReturnType<typeof createArtifact>) => void;
   onClose: () => void;
 }
 function PickerArtifactCore({
@@ -73,7 +73,7 @@ function PickerArtifactCore({
       needMassAdd={needMassAdd}
       data={[...gold, ...purple]}
       onPickItem={({ code, rarity }) =>
-        onPickArtifact(initArtPiece({ type: artifactType, code, rarity }))
+        onPickArtifact(createArtifact({ type: artifactType, code, rarity }))
       }
       onClose={onClose}
     />

@@ -2,8 +2,7 @@ import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/type
 import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { finalTalentLv } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
@@ -12,7 +11,9 @@ const getEBBuffValue = ({
   partyData,
   inputs,
 }: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 0;
+  const level = toSelf
+    ? finalTalentLv({ char, talents: Mona.activeTalents, talentType: "EB", partyData })
+    : inputs[0] || 0;
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
 

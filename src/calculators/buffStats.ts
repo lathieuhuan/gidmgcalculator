@@ -27,7 +27,8 @@ import {
 } from "@Src/constants";
 import { RESONANCE_STAT } from "./constants";
 
-import { findByIndex, getArtifactSetBonuses } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
+import { getArtifactSetBonuses, applyModifier } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import {
   addArtAttr,
@@ -37,12 +38,7 @@ import {
   calcFinalTotalAttrs,
   initiateTotalAttr,
 } from "./baseStats";
-import {
-  applyModifier,
-  getQuickenBuffDamage,
-  getRxnBonusesFromEM,
-  addTrackerRecord,
-} from "./utils";
+import { getQuickenBuffDamage, getRxnBonusesFromEM, addTrackerRecord } from "./utils";
 
 interface ApplySelfBuffs {
   isFinal: boolean;

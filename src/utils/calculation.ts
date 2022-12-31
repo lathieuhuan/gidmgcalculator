@@ -1,6 +1,26 @@
-import type { ArtifactSetBonus, CalcArtifacts, CharInfo, PartyData, Talent } from "@Src/types";
-import { findDataCharacter } from "@Data/controllers";
-import { findByName } from "./pure-utils";
+import type {
+  ActiveTalents,
+  ArtifactSetBonus,
+  AttackElement,
+  AttackElementBonus,
+  AttacklementInfoKey,
+  AttackPatternBonus,
+  AttackPatternBonusKey,
+  AttackPatternInfoKey,
+  AttributeStat,
+  CalcArtifacts,
+  CharInfo,
+  PartyData,
+  Reaction,
+  ReactionBonus,
+  ReactionBonusInfoKey,
+  ResistanceReduction,
+  ResistanceReductionKey,
+  Talent,
+  TotalAttribute,
+  Tracker,
+} from "@Src/types";
+import { findByName, pickOne, turnArray } from "./pure-utils";
 
 export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
   const sets = [];
@@ -21,31 +41,190 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
   return sets;
 }
 
-export function totalXtraTalentLv(
-  char: CharInfo,
-  talentType: Exclude<Talent, "altSprint">,
-  partyData?: PartyData
-) {
+interface TotalXtraTalentArgs {
+  talents: ActiveTalents;
+  talentType: Talent;
+  char: CharInfo;
+  partyData?: PartyData;
+}
+export function totalXtraTalentLv({ talents, talentType, char, partyData }: TotalXtraTalentArgs) {
   let result = 0;
 
   if (talentType === "NAs") {
     if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
       result++;
     }
-  } else {
-    const talent = findDataCharacter(char)!.activeTalents[talentType];
-    if (talent.xtraLvAtCons && char.cons >= talent.xtraLvAtCons) {
+  } else if (talentType === "ES" || talentType === "EB") {
+    const { xtraLvAtCons } = talents[talentType];
+
+    if (xtraLvAtCons && char.cons > xtraLvAtCons) {
       result += 3;
     }
   }
   return result;
 }
 
-// #to-check cannot use this in data characters (circular dependencies)
-export const finalTalentLv = (
-  char: CharInfo,
-  talentType: Exclude<Talent, "altSprint">,
-  partyData?: PartyData
-) => {
-  return char[talentType] + totalXtraTalentLv(char, talentType, partyData);
+export const finalTalentLv = (args: TotalXtraTalentArgs) => {
+  const talentLv = args.talentType === "altSprint" ? 0 : args.char[args.talentType];
+  return talentLv + totalXtraTalentLv(args);
 };
+
+export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey}`;
+
+export type AttackElementPath = `${AttackElement}.${AttacklementInfoKey}`;
+
+export type ReactionBonusPath = `${Reaction}.${ReactionBonusInfoKey}`;
+
+export type ModRecipient =
+  | TotalAttribute
+  | ReactionBonus
+  | AttackPatternBonus
+  | AttackElementBonus
+  | ResistanceReduction;
+
+export type ModRecipientKey =
+  | AttributeStat
+  | AttributeStat[]
+  | ReactionBonusPath
+  | ReactionBonusPath[]
+  | AttackPatternPath
+  | AttackPatternPath[]
+  | AttackElementPath
+  | AttackElementPath[]
+  | ResistanceReductionKey
+  | ResistanceReductionKey[];
+
+type RootValue = number | number[];
+
+export function applyModifier(
+  desc: string | undefined,
+  recipient: TotalAttribute,
+  keys: AttributeStat | AttributeStat[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: AttackPatternBonus,
+  keys: AttackPatternPath | AttackPatternPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: AttackElementBonus,
+  keys: AttackElementPath | AttackElementPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: ReactionBonus,
+  keys: ReactionBonusPath | ReactionBonusPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: ResistanceReduction,
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+
+export function applyModifier(
+  desc: string | undefined = "",
+  recipient: ModRecipient,
+  keys: ModRecipientKey,
+  rootValue: RootValue,
+  tracker?: Tracker
+) {
+  const keyOfTracker = (): keyof Tracker => {
+    if ("atk" in recipient) {
+      return "totalAttr";
+    } else if ("all" in recipient) {
+      return "attPattBonus";
+    } else if ("bloom" in recipient) {
+      return "rxnBonus";
+    } else if ("def" in recipient) {
+      return "resistReduct";
+    } else {
+      return "attElmtBonus";
+    }
+  };
+
+  turnArray(keys).forEach((key, i) => {
+    const [field, subField] = key.split(".");
+    const value = pickOne(rootValue, i);
+    const node = {
+      desc,
+      value,
+    };
+    // recipient: TotalAttribute, ReactionBonus, ResistanceReduction
+    if (subField === undefined) {
+      (recipient as any)[field] += value;
+      if (tracker) {
+        (tracker as any)[keyOfTracker()][field].push(node);
+      }
+    } else {
+      (recipient as any)[field][subField] += value;
+      if (tracker) {
+        (tracker as any)[keyOfTracker()][key].push(node);
+      }
+    }
+  });
+}
+
+export type RecipientName =
+  | "totalAttr"
+  | "attPattBonus"
+  | "attElmtBonus"
+  | "rxnBonus"
+  | "resistReduct";
+
+interface ModApplierArgs {
+  totalAttr: TotalAttribute;
+  attPattBonus: AttackPatternBonus;
+  rxnBonus: ReactionBonus;
+  desc: string;
+  tracker: Tracker;
+}
+
+export function makeModApplier(
+  recipientName: "totalAttr",
+  keys: AttributeStat | AttributeStat[],
+  rootValue: RootValue
+): (args: any) => void;
+export function makeModApplier(
+  recipientName: "attPattBonus",
+  keys: AttackPatternPath | AttackPatternPath[],
+  rootValue: RootValue
+): (args: any) => void;
+export function makeModApplier(
+  recipientName: "attElmtBonus",
+  keys: AttackElementPath | AttackElementPath[],
+  rootValue: RootValue
+): (args: any) => void;
+export function makeModApplier(
+  recipientName: "rxnBonus",
+  keys: ReactionBonusPath | ReactionBonusPath[],
+  rootValue: RootValue
+): (args: any) => void;
+export function makeModApplier(
+  recipientName: "resistReduct",
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
+  rootValue: RootValue
+): (args: any) => void;
+
+export function makeModApplier(
+  recipientName: RecipientName,
+  keys: ModRecipientKey,
+  rootValue: RootValue
+) {
+  return (args: ModApplierArgs) => {
+    const recipient = (args as any)[recipientName];
+    if (recipient) {
+      applyModifier(args.desc, recipient, keys as any, rootValue, args.tracker);
+    }
+  };
+}

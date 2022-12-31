@@ -9,7 +9,7 @@ import { EStatDamageKey } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { finalTalentLv } from "@Src/utils";
+import { finalTalentLv } from "@Src/utils/calculation";
 import { getPartyData } from "@Data/controllers";
 import { displayValue, getTableKeys } from "./utils";
 
@@ -27,7 +27,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
   const { t } = useTranslation();
 
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const tableKeys = useMemo(() => getTableKeys(char.name), [char.name]);
+  const { tableKeys, dataChar } = useMemo(() => getTableKeys(char.name), [char.name]);
 
   const toggleTable = (index: number) => () => {
     setClosedItems((prev) => {
@@ -42,7 +42,15 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
       {tableKeys.map((key, index) => {
         const standardValues = damageResult[key.main];
         const isReactionDmg = key.main === "RXN";
-        const talentLevel = !isReactionDmg ? finalTalentLv(char, key.main, getPartyData(party)) : 0;
+        const talentLevel =
+          !isReactionDmg && dataChar
+            ? finalTalentLv({
+                char,
+                talents: dataChar.activeTalents,
+                talentType: key.main,
+                partyData: getPartyData(party),
+              })
+            : 0;
 
         return (
           <div key={key.main} className="flex flex-col">

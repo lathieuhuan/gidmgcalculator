@@ -3,7 +3,7 @@ import { Green, Rose } from "@Components/atoms";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier, AttackPatternPath } from "@Calculators/utils";
+import { applyModifier, AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
 const Zhongli: DataCharacter = {

@@ -2,12 +2,17 @@ import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/typ
 import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { round2 } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
 const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: ModifierInput[] }) => {
-  const level = finalTalentLv(args.char, "ES", args.partyData);
+  const level = finalTalentLv({
+    char: args.char,
+    talents: Aloy.activeTalents,
+    talentType: "ES",
+    partyData: args.partyData,
+  });
   let stacks = args.inputs[0] || 0;
   stacks = stacks === 4 ? 5 : stacks;
   return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks);

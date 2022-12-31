@@ -1,7 +1,7 @@
 import type { DataArtifact } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
 const sumeruSets: DataArtifact[] = [
   {

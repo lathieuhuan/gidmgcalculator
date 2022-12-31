@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const DendroMC: DataCharacter = {

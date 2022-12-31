@@ -24,10 +24,10 @@ import type {
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
-import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { createCharInfo, createWeapon } from "@Src/utils/creators";
 
 const initialState: UserDatabaseState = {
   userChars: [],
@@ -72,14 +72,14 @@ export const userDatabaseSlice = createSlice({
       state.chosenChar = name;
       state.userChars.unshift({
         name,
-        ...initCharInfo({}),
+        ...createCharInfo(),
         weaponID,
         artifactIDs: [null, null, null, null, null],
       });
       state.userWps.unshift({
         ID: weaponID,
         owner: name,
-        ...initWeapon({ type: weaponType }),
+        ...createWeapon({ type: weaponType }),
       });
     },
     chooseCharacter: (state, action: PayloadAction<string>) => {
@@ -263,7 +263,7 @@ export const userDatabaseSlice = createSlice({
         userWps.unshift({
           ID: newWpID,
           owner,
-          ...initWeapon({ type }),
+          ...createWeapon({ type }),
         });
 
         const ownerInfo = findByName(userChars, owner);

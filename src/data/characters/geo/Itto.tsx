@@ -2,8 +2,8 @@ import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Geo, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA4TalentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
@@ -151,7 +151,12 @@ const Itto: DataCharacter = {
       ),
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv(char, "EB", partyData);
+        const level = finalTalentLv({
+          char,
+          talents: Itto.activeTalents,
+          talentType: "EB",
+          partyData,
+        });
         const buffValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
         applyModifier(desc, totalAttr, ["atk", "naAtkSpd"], [buffValue, 10], tracker);
       },

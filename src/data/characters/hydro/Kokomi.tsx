@@ -2,8 +2,13 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, AttackPatternPath, makeModApplier } from "@Calculators/utils";
+import { applyPercent } from "@Src/utils";
+import {
+  finalTalentLv,
+  applyModifier,
+  makeModApplier,
+  type AttackPatternPath,
+} from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const Kokomi: DataCharacter = {
@@ -135,7 +140,7 @@ const Kokomi: DataCharacter = {
       applyFinalBuff: (obj) => {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
-        const level = finalTalentLv(char, "EB", obj.partyData);
+        const level = finalTalentLv({ ...obj, talents: Kokomi.activeTalents, talentType: "EB" });
 
         const buffValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];

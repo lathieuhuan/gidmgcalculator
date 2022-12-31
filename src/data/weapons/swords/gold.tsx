@@ -4,7 +4,7 @@ import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
 const mistsplitterBuffValuesByStack = (refi: number) => [

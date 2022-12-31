@@ -4,14 +4,14 @@ import type {
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
 } from "@Src/types";
+import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
-import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
 
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-
-import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
-import { applyModifier, getDefaultStatInfo, getAmplifyingMultiplier } from "./utils";
+import { applyToOneOrMany, bareLv, findByIndex, toMult } from "@Src/utils";
+import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
+import { getDefaultStatInfo, getAmplifyingMultiplier } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
@@ -252,7 +252,12 @@ export default function getDamage({
     const talent = activeTalents[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getDefaultStatInfo(resultKey, weaponType, vision);
-    const level = finalTalentLv(char, resultKey, partyData);
+    const level = finalTalentLv({
+      talents: dataChar.activeTalents,
+      talentType: resultKey,
+      char,
+      partyData,
+    });
 
     for (const stat of talent.stats) {
       const talentBuff = stat.getTalentBuff

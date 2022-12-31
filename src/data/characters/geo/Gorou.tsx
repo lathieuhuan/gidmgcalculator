@@ -2,8 +2,7 @@ import type { AttributeStat, CharData, DataCharacter, PartyData } from "@Src/typ
 import { Geo, Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
@@ -194,7 +193,7 @@ const Gorou: DataCharacter = {
       ],
       applyBuff: (obj) => {
         const level = obj.toSelf
-          ? finalTalentLv(obj.char, "ES", obj.partyData)
+          ? finalTalentLv({ ...obj, talents: Gorou.activeTalents, talentType: "ES" })
           : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
         const buffValues = [getESBuffValue(level)];

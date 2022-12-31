@@ -12,7 +12,6 @@ import {
   ATTACK_ELEMENTS,
   OTHER_PERCENT_STAT_TYPES,
 } from "@Src/constants";
-import { findDataCharacter } from "@Data/controllers";
 
 export const percentSign = (stat: string) => {
   if (
@@ -37,23 +36,6 @@ export const ascsFromLv = (lv: Level) => {
   const maxLv = +lv.slice(-2);
   return maxLv === 20 ? 0 : maxLv / 10 - 3;
 };
-
-export function countWeapon(party: Party) {
-  const result = {} as Partial<Record<WeaponType, number>>;
-
-  for (const teammate of party) {
-    if (teammate) {
-      const teammateData = findDataCharacter(teammate);
-
-      if (teammateData) {
-        result[teammateData.weaponType] = (result[teammateData.weaponType] || 0) + 1;
-      } else {
-        console.log(`Teamate name ${teammate.name} not found`);
-      }
-    }
-  }
-  return result;
-}
 
 export function userItemToCalcItem(item: UserWeapon, newID?: number): CalcWeapon;
 export function userItemToCalcItem(item: UserArtifact, newID?: number): CalcArtifact;

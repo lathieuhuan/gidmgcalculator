@@ -19,31 +19,36 @@ import {
   EModAffect,
 } from "@Src/constants";
 
-type InitCharInfo = Omit<CharInfo, "name">;
-export function initCharInfo(info: Partial<InitCharInfo>): InitCharInfo {
+type PartialCharInfo = Omit<CharInfo, "name">;
+
+export function createCharInfo(info?: Partial<PartialCharInfo>): PartialCharInfo {
   return {
-    level: info.level || "1/20",
-    NAs: info.NAs || 1,
-    ES: info.ES || 1,
-    EB: info.EB || 1,
-    cons: info.cons || 0,
+    level: info?.level || "1/20",
+    NAs: info?.NAs || 1,
+    ES: info?.ES || 1,
+    EB: info?.EB || 1,
+    cons: info?.cons || 0,
   };
 }
 
-interface InitWeapon {
+interface CreateWeaponArgs {
   type: WeaponType;
   code?: number;
 }
-export function initWeapon({ type, code }: InitWeapon): Omit<CalcWeapon, "ID"> {
+export function createWeapon({ type, code }: CreateWeaponArgs): Omit<CalcWeapon, "ID"> {
   return { type, code: code || DEFAULT_WEAPON_CODE[type], level: "1/20", refi: 1 };
 }
 
-interface InitArtPiece {
+interface CreateArtifactArgs {
   type: ArtifactType;
   code: number;
   rarity: Rarity;
 }
-export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArtifact, "ID"> {
+export function createArtifact({
+  type,
+  code,
+  rarity,
+}: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
   return {
     type,
     code,
@@ -59,7 +64,7 @@ export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArt
   };
 }
 
-export function initCharModCtrls(name: string, forSelf: boolean) {
+export function createCharModCtrls(name: string, forSelf: boolean) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
   const { buffs = [], debuffs = [] } = findDataCharacter({ name }) || {};
@@ -111,12 +116,12 @@ export function initCharModCtrls(name: string, forSelf: boolean) {
   return [buffCtrls, debuffCtrls];
 }
 
-interface IInitTeammateArgs {
+interface CreateTeammateArgs {
   name: string;
   weaponType: WeaponType;
 }
-export function initTeammate({ name, weaponType }: IInitTeammateArgs): Teammate {
-  const [buffCtrls, debuffCtrls] = initCharModCtrls(name, false);
+export function createTeammate({ name, weaponType }: CreateTeammateArgs): Teammate {
+  const [buffCtrls, debuffCtrls] = createCharModCtrls(name, false);
   const weaponCode = DEFAULT_WEAPON_CODE[weaponType];
 
   return {
@@ -137,19 +142,19 @@ export function initTeammate({ name, weaponType }: IInitTeammateArgs): Teammate 
   };
 }
 
-export const initElmtModCtrls = (): ElementModCtrl => ({
+export const createElmtModCtrls = (): ElementModCtrl => ({
   infuse_reaction: null,
   reaction: null,
   superconduct: false,
   resonances: [],
 });
 
-export const initMonster = (): Monster => ({
+export const createMonster = (): Monster => ({
   code: 0,
   variantType: null,
 });
 
-export function initTarget() {
+export function createTarget() {
   const result = { level: 1 } as Target;
   for (const elmt of ATTACK_ELEMENTS) {
     result[elmt] = 10;

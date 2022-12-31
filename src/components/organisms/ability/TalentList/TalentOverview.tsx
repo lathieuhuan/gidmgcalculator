@@ -7,13 +7,14 @@ import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
 import { getPartyData } from "@Data/controllers";
-import { ascsFromLv, totalXtraTalentLv } from "@Src/utils";
+import { ascsFromLv } from "@Src/utils";
+import { totalXtraTalentLv } from "@Src/utils/calculation";
 
 // Component
 import { InfoSign } from "@Components/atoms";
 import { AbilityIcon } from "../molecules";
 
-interface ITalentOverviewProps {
+interface TalentOverviewProps {
   char: CharInfo;
   dataChar: DataCharacter;
   party?: Party;
@@ -26,33 +27,36 @@ export function TalentOverview({
   party,
   onChangeLevel,
   onClickInfoSign,
-}: ITalentOverviewProps) {
+}: TalentOverviewProps) {
   const { vision, weaponType, NAsConfig, activeTalents, passiveTalents } = dataChar;
   const partyData = party ? getPartyData(party) : undefined;
 
   return (
     <div className="h-full hide-scrollbar flex flex-col space-y-3">
       {TALENT_TYPES.map((talentType, i) => {
-        const talent: { name: string; image?: string } | undefined =
-          talentType === "NAs" ? { name: NAsConfig.name } : activeTalents[talentType];
+        const talentName = talentType === "NAs" ? NAsConfig.name : activeTalents[talentType]?.name;
+        const talentImg = talentType === "NAs" ? undefined : activeTalents[talentType]?.image;
+        const xtraLv = totalXtraTalentLv({
+          talents: activeTalents,
+          talentType,
+          char,
+          partyData,
+        });
 
-        const xtraLv =
-          talentType === "altSprint" ? 0 : totalXtraTalentLv(char, talentType, partyData);
-
-        return talent ? (
+        return talentName ? (
           <div key={i} className="flex">
             <AbilityIcon
               className="my-2 mr-2"
               img={
-                talent.image === undefined
+                talentImg === undefined
                   ? NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`]!
-                  : talent.image
+                  : talentImg
               }
               vision={vision}
             />
             <div className="grow flex items-center">
               <div className="px-2">
-                <p className="font-bold">{talent.name}</p>
+                <p className="font-bold">{talentName}</p>
                 <div className="flex items-center">
                   <p className="mr-1">Lv.</p>
                   {talentType === "altSprint" ? (

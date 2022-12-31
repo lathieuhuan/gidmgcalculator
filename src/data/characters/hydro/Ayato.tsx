@@ -9,8 +9,8 @@ import type {
 import { Green, Hydro } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { MEDIUM_PAs, EModSrc, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import {
   charModIsInUse,
   checkCons,
@@ -26,7 +26,12 @@ const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]): TalentBuff
 
 const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, totalAttr }) => {
   if (modIsActivated(selfBuffCtrls, 0)) {
-    const level = finalTalentLv(char, "ES", partyData);
+    const level = finalTalentLv({
+      char,
+      talents: Ayato.activeTalents,
+      talentType: "ES",
+      partyData,
+    });
     const finalMult = 0.56 * +findInput(selfBuffCtrls, 0, 0) * TALENT_LV_MULTIPLIERS[7][level];
     const flat = applyPercent(totalAttr.hp, finalMult);
 
@@ -41,7 +46,14 @@ const getEBBuffValue = (
   partyData: PartyData,
   inputs: ModifierInput[]
 ) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 1;
+  const level = toSelf
+    ? finalTalentLv({
+        char,
+        talents: Ayato.activeTalents,
+        talentType: "EB",
+        partyData,
+      })
+    : inputs[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;
 };
 
@@ -128,7 +140,12 @@ const Ayato: DataCharacter = {
           multBase: 0,
           multType: 7,
           getTalentBuff: ({ char, selfBuffCtrls, partyData }) => {
-            const level = finalTalentLv(char, "ES", partyData);
+            const level = finalTalentLv({
+              char,
+              talents: Ayato.activeTalents,
+              talentType: "ES",
+              partyData,
+            });
             const stacks = findInput(selfBuffCtrls, 0, 0);
             return {
               mult: {

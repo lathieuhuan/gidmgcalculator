@@ -2,8 +2,8 @@ import type { DataCharacter } from "@Src/types";
 import { Geo, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
 
 const Noelle: DataCharacter = {
@@ -149,7 +149,12 @@ const Noelle: DataCharacter = {
       ),
       affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv(char, "EB", partyData);
+        const level = finalTalentLv({
+          char,
+          talents: Noelle.activeTalents,
+          talentType: "EB",
+          partyData,
+        });
         const mult = 40 * TALENT_LV_MULTIPLIERS[2][level] + (checkCons[6](char) ? 50 : 0);
         applyModifier(desc, totalAttr, "atk", applyPercent(totalAttr.def, mult), tracker);
       },

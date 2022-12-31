@@ -2,12 +2,17 @@ import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { round2 } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv(char, "ES", partyData);
+  const level = finalTalentLv({
+    char,
+    talents: Yoimiya.activeTalents,
+    talentType: "ES",
+    partyData,
+  });
   return round2(37.91 * TALENT_LV_MULTIPLIERS[5][level]);
 };
 

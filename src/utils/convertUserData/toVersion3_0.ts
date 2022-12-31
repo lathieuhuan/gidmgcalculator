@@ -14,7 +14,7 @@ import type {
   UserWeapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
-import { getArtifactSetBonuses } from "@Src/utils";
+import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 const ERROR = {
   //

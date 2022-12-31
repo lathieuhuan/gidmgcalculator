@@ -36,14 +36,17 @@ import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
 import { countVision } from "@Data/characters/utils";
+import { bareLv, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
+import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import {
-  bareLv,
-  deepCopy,
-  findByCode,
-  findById,
-  turnArray,
-  getArtifactSetBonuses,
-} from "@Src/utils";
+  createCharInfo,
+  createCharModCtrls,
+  createElmtModCtrls,
+  createMonster,
+  createTarget,
+  createTeammate,
+  createWeapon,
+} from "@Src/utils/creators";
 import {
   calculate,
   getArtDebuffCtrls,
@@ -53,19 +56,10 @@ import {
   getWeaponBuffCtrls,
   parseAndInitData,
 } from "./utils";
-import {
-  initCharInfo,
-  initWeapon,
-  initCharModCtrls,
-  initElmtModCtrls,
-  initMonster,
-  initTarget,
-  initTeammate,
-} from "./initiators";
 
 const defaultChar = {
   name: "Albedo",
-  ...initCharInfo({}),
+  ...createCharInfo(),
 };
 
 const initialState: CalculatorState = {
@@ -80,8 +74,8 @@ const initialState: CalculatorState = {
   setupManageInfos: [],
   setupsById: {},
   statsById: {},
-  target: initTarget(),
-  monster: initMonster(),
+  target: createTarget(),
+  monster: createMonster(),
   isError: false,
 };
 
@@ -107,7 +101,7 @@ export const calculatorSlice = createSlice({
         weaponType: charData.weaponType,
         seedID: setupID + 1,
       });
-      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(result.char.name, true);
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(result.char.name, true);
 
       state.activeId = setupID;
       state.comparedIds = [];
@@ -127,7 +121,7 @@ export const calculatorSlice = createSlice({
           artBuffCtrls: result.artBuffCtrls,
           artDebuffCtrls: getArtDebuffCtrls(),
           party: [null, null, null],
-          elmtModCtrls: initElmtModCtrls(),
+          elmtModCtrls: createElmtModCtrls(),
           customBuffCtrls: [],
           customDebuffCtrls: [],
           customInfusion: { element: "phys" },
@@ -135,7 +129,7 @@ export const calculatorSlice = createSlice({
       };
       // calculate will repopulate statsById
       state.statsById = {};
-      state.monster = initMonster();
+      state.monster = createMonster();
 
       calculate(state);
     },
@@ -150,7 +144,7 @@ export const calculatorSlice = createSlice({
       // calculate will repopulate statsById
       state.statsById = {};
       state.target = target;
-      state.monster = initMonster();
+      state.monster = createMonster();
       state.configs.separateCharInfo = false;
       state.activeId = ID;
       // #to-do: add to compare when comparing setups of the same character
@@ -254,7 +248,7 @@ export const calculatorSlice = createSlice({
       const oldVisionCount = countVision(getPartyData(party), state.charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
-      party[teammateIndex] = initTeammate({ name, weaponType });
+      party[teammateIndex] = createTeammate({ name, weaponType });
 
       const newVisionCount = countVision(getPartyData(party), state.charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
@@ -555,10 +549,10 @@ export const calculatorSlice = createSlice({
       // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];
 
-      const [selfBuffCtrls, selfDebuffCtrls] = initCharModCtrls(charData.name, true);
-      const newWeapon = initWeapon({ type: charData.weaponType });
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(charData.name, true);
+      const newWeapon = createWeapon({ type: charData.weaponType });
       const wpBuffCtrls = getWeaponBuffCtrls(true, newWeapon);
-      const elmtModCtrls = initElmtModCtrls();
+      const elmtModCtrls = createElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
 
       for (const { ID, name, type, status, originId, isCompared } of newSetupManageInfos) {

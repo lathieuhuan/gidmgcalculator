@@ -2,8 +2,8 @@ import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/typ
 import { Anemo, Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv, round1, round2 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyPercent, round1, round2 } from "@Src/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 interface IGetWindGiftBuffValueArgs {
@@ -13,7 +13,9 @@ interface IGetWindGiftBuffValueArgs {
   partyData: PartyData;
 }
 const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: IGetWindGiftBuffValueArgs) => {
-  const level = toSelf ? finalTalentLv(char, "EB", partyData) : inputs[0] || 0;
+  const level = toSelf
+    ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
+    : inputs[0] || 0;
   return level ? round1(18 * TALENT_LV_MULTIPLIERS[2][level]) : 0;
 };
 
@@ -204,7 +206,9 @@ const Faruzan: DataCharacter = {
       }) => {
         if (toSelf ? checkAscs[4](char) : inputs[1]) {
           const ATK = toSelf ? totalAttr.base_atk : inputs[2] || 0;
-          const level = toSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 1;
+          const level = toSelf
+            ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
+            : inputs[0] || 1;
           const mult = 32;
           const finalDesc = desc + ` / Lv. ${level} / ${round2(mult)}% of ${ATK} Base ATK`;
 

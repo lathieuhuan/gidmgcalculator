@@ -8,8 +8,7 @@ import type {
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVIER_PAs } from "../constants";
-import { finalTalentLv } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
@@ -23,7 +22,9 @@ const getESDebuffValue = (
   inputs: ModifierInput[],
   partyData: PartyData
 ) => {
-  const level = fromSelf ? finalTalentLv(char, "ES", partyData) : inputs[0] || 0;
+  const level = fromSelf
+    ? finalTalentLv({ char, talents: Eula.activeTalents, talentType: "ES", partyData })
+    : inputs[0] || 0;
   return level ? Math.min(15 + level, 25) : 0;
 };
 

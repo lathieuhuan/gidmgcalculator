@@ -4,8 +4,8 @@ import type {
   ReactionBonusPath,
   ModRecipientKey,
   RecipientName,
-} from "@Calculators/utils";
-import { applyModifier } from "@Calculators/utils";
+} from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import type { AttributeStat, Level, ResistanceReductionKey } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { bareLv, pickOne } from "@Src/utils";

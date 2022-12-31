@@ -3,7 +3,7 @@ import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
 import { round2, round3 } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
 function getEBBuffValue(char: CharInfo, partyData: PartyData) {

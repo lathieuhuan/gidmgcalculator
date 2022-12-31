@@ -2,7 +2,7 @@ import type { DataArtifact } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Calculators/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { NCPA_PERCENTS } from "@Data/constants";
 
 const inazumaSets: DataArtifact[] = [

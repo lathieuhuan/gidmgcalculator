@@ -2,8 +2,8 @@ import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, finalTalentLv, round2 } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { applyPercent, round2 } from "@Src/utils";
+import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
 const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {
@@ -120,7 +120,10 @@ const Sara: DataCharacter = {
       ],
       applyBuff: (obj) => {
         const buffValueArgs = obj.toSelf
-          ? [obj.totalAttr.base_atk, finalTalentLv(obj.char, "ES", obj.partyData)]
+          ? [
+              obj.totalAttr.base_atk,
+              finalTalentLv({ ...obj, talents: Sara.activeTalents, talentType: "ES" }),
+            ]
           : obj.inputs;
         const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;

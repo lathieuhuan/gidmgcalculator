@@ -29,7 +29,8 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Util
-import { finalTalentLv, getImgSrc } from "@Src/utils";
+import { getImgSrc } from "@Src/utils";
+import { finalTalentLv } from "@Src/utils/calculation";
 import {
   findDataArtifact,
   findDataCharacter,
@@ -90,23 +91,28 @@ export function SetupTemplate({
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charInfo = findDataCharacter(char);
+    const dataChar = findDataCharacter(char);
     const weaponData = weapon ? findDataWeapon(weapon) : undefined;
 
-    if (charInfo) {
+    if (dataChar) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
-        return finalTalentLv(char, talentType, getPartyData(party));
+        return finalTalentLv({
+          char,
+          talents: dataChar.activeTalents,
+          talentType,
+          partyData: getPartyData(party),
+        });
       });
 
       const renderSpan = (text: string | number) => (
-        <span className={`font-medium text-${charInfo.vision}`}>{text}</span>
+        <span className={`font-medium text-${dataChar.vision}`}>{text}</span>
       );
 
       mainCharacter = (
         <div className="mx-auto lg:mx-0 flex">
           <img
             className="w-20 h-20"
-            src={getImgSrc(charInfo.icon)}
+            src={getImgSrc(dataChar.icon)}
             alt={char.name}
             draggable={false}
           />
@@ -129,9 +135,9 @@ export function SetupTemplate({
         style={{ width: "15.5rem" }}
       >
         {party.map((teammate, teammateIndex) => {
-          if (!teammate) {
-            return null;
-          }
+          const dataTeammate = teammate && findDataCharacter(teammate);
+          if (!dataTeammate) return null;
+
           const teammateSetupID = allIDs?.[teammate.name];
           const clickable = !isOriginal && teammateSetupID;
           // const { weapon, artifact } = teammate;
@@ -149,7 +155,8 @@ export function SetupTemplate({
               )}
             >
               <CharacterPortrait
-                name={teammate.name}
+                code={dataTeammate.code}
+                icon={dataTeammate.icon}
                 onClickIcon={() => {
                   if (clickable) {
                     dispatch(

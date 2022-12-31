@@ -11,7 +11,7 @@ import {
   watatsumiSeries,
 } from "../series";
 import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Calculators/utils";
+import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
 const purplePolearms: DataWeapon[] = [
