@@ -1,3 +1,4 @@
+import { BASE_REACTION_DAMAGE } from "@Calculators/constants";
 import type {
   ActiveTalents,
   ArtifactSetBonus,
@@ -10,6 +11,7 @@ import type {
   AttributeStat,
   CalcArtifacts,
   CharInfo,
+  Level,
   PartyData,
   Reaction,
   ReactionBonus,
@@ -21,6 +23,7 @@ import type {
   Tracker,
 } from "@Src/types";
 import { findByName, pickOne, turnArray } from "./pure-utils";
+import { bareLv } from "./utils";
 
 export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
   const sets = [];
@@ -226,5 +229,31 @@ export function makeModApplier(
     if (recipient) {
       applyModifier(args.desc, recipient, keys as any, rootValue, args.tracker);
     }
+  };
+}
+
+export function getRxnBonusesFromEM(EM = 0) {
+  return {
+    transformative: Math.round((16000 * EM) / (EM + 2000)) / 10,
+    amplifying: Math.round((2780 * EM) / (EM + 1400)) / 10,
+    quicken: Math.round((5000 * EM) / (EM + 1200)) / 10,
+    shield: Math.round((4440 * EM) / (EM + 1400)) / 10,
+  };
+}
+
+export function getAmplifyingMultiplier(elmt: AttackElement, rxnBonus: ReactionBonus) {
+  return {
+    melt: (1 + rxnBonus.melt.pct / 100) * (elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1),
+    vaporize:
+      (1 + rxnBonus.vaporize.pct / 100) * (elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1),
+  };
+}
+
+export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
+  const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
+
+  return {
+    aggravate: Math.round(base * 1.15 * (rxnBonus.aggravate.pct / 100)),
+    spread: Math.round(base * 1.25 * (rxnBonus.spread.pct / 100)),
   };
 }

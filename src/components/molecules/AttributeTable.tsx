@@ -7,7 +7,7 @@ import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 
 // Util
-import { getRxnBonusesFromEM } from "@Calculators/utils";
+import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 
 // Hook
 import { useTranslation } from "@Src/hooks";

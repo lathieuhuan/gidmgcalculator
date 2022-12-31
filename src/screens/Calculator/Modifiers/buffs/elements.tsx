@@ -19,7 +19,7 @@ import {
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 
 // Util
-import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 
 // Component
 import {

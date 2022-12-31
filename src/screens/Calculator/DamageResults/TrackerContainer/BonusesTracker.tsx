@@ -12,7 +12,7 @@ import { keyMap } from "./constants";
 
 // Util
 import { round1, percentSign } from "@Src/utils";
-import { getRxnBonusesFromEM } from "@Calculators/utils";
+import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 // Hook

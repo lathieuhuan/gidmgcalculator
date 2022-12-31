@@ -10,8 +10,8 @@ import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 import { applyToOneOrMany, bareLv, findByIndex, toMult } from "@Src/utils";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
-import { getDefaultStatInfo, getAmplifyingMultiplier } from "./utils";
+import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { getDefaultStatInfo } from "./utils";
 import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({

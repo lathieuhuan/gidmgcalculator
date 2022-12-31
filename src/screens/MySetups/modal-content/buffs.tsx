@@ -22,7 +22,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex, percentSign } from "@Src/utils";
-import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
+import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 
 // Component
