@@ -11,7 +11,7 @@ import type {
   Monster,
   Teammate,
 } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 import {
   ATTACK_ELEMENTS,
   DEFAULT_WEAPON_CODE,
@@ -62,7 +62,7 @@ export function initArtPiece({ type, code, rarity }: InitArtPiece): Omit<CalcArt
 export function initCharModCtrls(name: string, forSelf: boolean) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = findCharacter({ name }) || {};
+  const { buffs = [], debuffs = [] } = findDataCharacter({ name }) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {

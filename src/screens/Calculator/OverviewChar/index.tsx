@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Action & Thunk
 import { updateCharacter } from "@Store/calculatorSlice";
@@ -37,7 +37,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
   const [pickerOn, setPickerOn] = useState(false);
 
   const Content = contentByTab[activeTab];
-  const { beta, icon, vision, rarity } = findCharacter(charData)!;
+  const { beta, icon, vision, rarity } = findDataCharacter(charData)!;
 
   const onClickCharImg = () => setPickerOn(true);
 

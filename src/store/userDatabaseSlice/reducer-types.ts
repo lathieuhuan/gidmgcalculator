@@ -34,18 +34,10 @@ export type RemoveArtifactAction = PayloadAction<{
   type: ArtifactType;
 }>;
 
-export type UpdateUserWeaponAction = PayloadAction<
-  Partial<Omit<UserWeapon, "ID">> & {
-    index?: number;
-    ID: number;
-  }
->;
+export type UpdateUserWeaponAction = PayloadAction<PartiallyRequired<Partial<UserWeapon>, "ID">>;
 
 export type UpdateUserArtifactAction = PayloadAction<
-  Partial<UserArtifact> & {
-    index?: number;
-    ID: number;
-  }
+  PartiallyRequired<Partial<UserArtifact>, "ID">
 >;
 
 export type RemoveWeaponAction = PayloadAction<{

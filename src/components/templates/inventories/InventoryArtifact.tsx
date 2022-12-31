@@ -7,7 +7,7 @@ import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
 // Selector
-import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -27,9 +27,9 @@ import styles from "./styles.module.scss";
 const { Text, CloseButton, FilterButton } = ModalHeader;
 
 const selectArtifactsByType = createSelector(
-  selectMyArts,
+  selectUserArts,
   (_: unknown, type: ArtifactType) => type,
-  (myArts, type) => myArts.filter((p) => p.type === type)
+  (userArts, type) => userArts.filter((p) => p.type === type)
 );
 
 interface ArtifactInventoryProps {

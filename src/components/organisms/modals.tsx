@@ -1,5 +1,5 @@
 import type { UserArtifact, UserWeapon } from "@Src/types";
-import { findArtifactPiece, findWeapon } from "@Data/controllers";
+import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
 // Component
 import { CloseButton } from "@Components/atoms";
@@ -55,7 +55,7 @@ export function ItemRemoveConfirm({
   onClose,
 }: ItemRemoveConfirmProps) {
   const { ID, owner, type } = item;
-  const itemData = isWeapon(item, itemType) ? findWeapon(item) : findArtifactPiece(item);
+  const itemData = isWeapon(item, itemType) ? findDataWeapon(item) : findDataArtifact(item);
 
   return (
     <ConfirmModal

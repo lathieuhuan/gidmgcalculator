@@ -27,7 +27,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const target = useSelector((state) => state.calculator.target);
-  const { myChars, myWps, myArts, mySetups } = useSelector((state) => state.database);
+  const { userChars, userWps, userArts, mySetups } = useSelector((state) => state.database);
 
   const [pendingCode, setPendingCode] = useState(0);
 
@@ -45,7 +45,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
       break;
     default:
       // #to-check
-      // importedSetup = createTmSetup(data, myChars, myWps, myArts);
+      // importedSetup = createTmSetup(data, userChars, userWps, userArts);
       importedSetup = data;
   }
 

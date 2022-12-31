@@ -1,7 +1,8 @@
 import { batch } from "react-redux";
-
+import isEqual from "react-fast-compare";
 import type { AppThunk } from "./index";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
+import { EScreen } from "@Src/constants";
 
 import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
 import { updateUI } from "./uiSlice";
@@ -13,17 +14,15 @@ import {
   updateUserWeapon,
 } from "./userDatabaseSlice";
 
-import { EScreen } from "@Src/constants";
-import { findById, indexById, calcItemToUserItem, userItemToCalcItem } from "@Src/utils";
+import { findById, calcItemToUserItem, userItemToCalcItem } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
-import isEqual from "react-fast-compare";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
   (dispatch, getState) => {
-    const { myWps, myArts } = getState().database;
+    const { userWps, userArts } = getState().database;
 
-    dispatch(initSessionWithChar({ pickedChar, myWps, myArts }));
+    dispatch(initSessionWithChar({ pickedChar, userWps, userArts }));
     // batch(() => {
     //   dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
     // });
@@ -32,9 +31,9 @@ export const startCalculation =
 export const pickEquippedArtSet =
   (artifactIDs: (number | null)[]): AppThunk =>
   (dispatch, getState) => {
-    const { myArts } = getState().database;
+    const { userArts } = getState().database;
     const artifacts = artifactIDs.map((id) => {
-      const artifact = id ? findById(myArts, id) : undefined;
+      const artifact = id ? findById(userArts, id) : undefined;
       return artifact ? userItemToCalcItem(artifact) : null;
     });
 
@@ -45,14 +44,16 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const {
       calculator,
-      database: { myWps, myArts },
+      database: { userWps, userArts },
     } = getState();
+
     const { weapon, artifacts } = calculator.setupsById[setupID];
     let seedID = Date.now();
     let weaponID = weapon.ID;
-    const foundWpIndex = indexById(myWps, weapon.ID);
+    const artifactIDs = artifacts.map((artifact) => artifact?.ID ?? null);
+    const userWeapon = findById(userWps, weapon.ID);
 
-    if (foundWpIndex === -1) {
+    if (!userWeapon) {
       dispatch(
         addUserWeapon(
           calcItemToUserItem(weapon, {
@@ -61,29 +62,20 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
         )
       );
     } else {
-      // weapon existed and nothing changes
-      if (isEqual(weapon, userItemToCalcItem(myWps[foundWpIndex]))) {
-        let newSetupIDs = myWps[foundWpIndex].setupIDs || [];
+      // Nothing changes => add setupID
+      if (isEqual(weapon, userItemToCalcItem(userWeapon))) {
+        const newSetupIDs = userWeapon.setupIDs || [];
 
         if (!newSetupIDs.includes(setupID)) {
           dispatch(
             updateUserWeapon({
-              index: foundWpIndex,
-              ID: weapon.ID,
+              ID: userWeapon.ID,
               setupIDs: newSetupIDs.concat(setupID),
             })
           );
         }
       } else {
-        // remove setupID from existed weapon
-        dispatch(
-          updateUserWeapon({
-            index: foundWpIndex,
-            ID: weapon.ID,
-            setupIDs: myWps[foundWpIndex].setupIDs?.filter((ID) => ID !== setupID),
-          })
-        );
-
+        // Add new weapon
         weaponID = seedID++;
 
         dispatch(
@@ -94,31 +86,58 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
             })
           )
         );
+
+        // Remove setupID from existed weapon
+        dispatch(
+          updateUserWeapon({
+            ID: userWeapon.ID,
+            setupIDs: userWeapon.setupIDs?.filter((ID) => ID !== setupID),
+          })
+        );
       }
     }
 
     artifacts.forEach((artifact, artifactIndex) => {
-      if (artifact) {
-        const foundIndex = indexById(myArts, artifact.ID);
+      if (!artifact) return;
+      const userArtifact = findById(userArts, artifact.ID);
 
-        if (foundIndex !== -1) {
-          let newSetupIDs = myArts[foundIndex].setupIDs;
+      if (!userArtifact) {
+        dispatch(
+          addUserArtifact(
+            calcItemToUserItem(artifact, {
+              setupIDs: [setupID],
+            })
+          )
+        );
+      } else {
+        if (isEqual(artifact, userItemToCalcItem(userArtifact))) {
+          const newSetupIDs = userArtifact.setupIDs || [];
 
-          if (newSetupIDs && !newSetupIDs.includes(setupID)) {
+          if (!newSetupIDs.includes(setupID)) {
             dispatch(
               updateUserArtifact({
-                index: foundIndex,
-                ...myArts[foundIndex],
+                ID: userArtifact.ID,
                 setupIDs: newSetupIDs.concat(setupID),
               })
             );
           }
         } else {
+          const artifactID = seedID++;
+          artifactIDs[artifactIndex] = artifactID;
+
           dispatch(
-            addUserArtifact({
-              ...artifact,
-              owner: null,
-              setupIDs: [setupID],
+            addUserArtifact(
+              calcItemToUserItem(artifact, {
+                ID: artifactID,
+                setupIDs: [setupID],
+              })
+            )
+          );
+
+          dispatch(
+            updateUserArtifact({
+              ID: userArtifact.ID,
+              setupIDs: userArtifact.setupIDs?.filter((ID) => ID !== setupID),
             })
           );
         }
@@ -130,7 +149,7 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
         saveSetup({
           ID: setupID,
           name,
-          data: cleanupCalcSetup(calculator, setupID, { weaponID }),
+          data: cleanupCalcSetup(calculator, setupID, { weaponID, artifactIDs }),
         })
       );
       dispatch(

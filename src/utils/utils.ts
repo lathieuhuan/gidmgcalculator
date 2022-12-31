@@ -12,7 +12,7 @@ import {
   ATTACK_ELEMENTS,
   OTHER_PERCENT_STAT_TYPES,
 } from "@Src/constants";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 export const percentSign = (stat: string) => {
   if (
@@ -43,7 +43,7 @@ export function countWeapon(party: Party) {
 
   for (const teammate of party) {
     if (teammate) {
-      const teammateData = findCharacter(teammate);
+      const teammateData = findDataCharacter(teammate);
 
       if (teammateData) {
         result[teammateData.weaponType] = (result[teammateData.weaponType] || 0) + 1;

@@ -1,21 +1,21 @@
 import type { CharData, UserArtifact, UserSetup, UserWeapon } from "@Src/types";
 import calculateAll from "@Calculators/index";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 import { findById } from "@Src/utils";
 
 export const calculateChosenSetup = (
   chosenSetup: UserSetup | undefined,
-  myWps: UserWeapon[],
-  myArts: UserArtifact[]
+  userWps: UserWeapon[],
+  userArts: UserArtifact[]
 ) => {
   if (chosenSetup) {
     const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-    const data = findCharacter(char);
-    const weapon = findById(myWps, weaponID);
+    const data = findDataCharacter(char);
+    const weapon = findById(userWps, weaponID);
 
     if (data && weapon) {
       const artifacts = artifactIDs.reduce((results: UserArtifact[], ID) => {
-        const foundArt = ID ? findById(myArts, ID) : undefined;
+        const foundArt = ID ? findById(userArts, ID) : undefined;
 
         if (foundArt) {
           return results.concat(foundArt);

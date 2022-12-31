@@ -7,7 +7,7 @@ import type {
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { applyToOneOrMany, bareLv, finalTalentLv, findByIndex, toMult } from "@Src/utils";
 
-import { findArtifactSet, findCharacter } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
 
 import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
@@ -189,7 +189,7 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs = [] } = findCharacter(teammate)!;
+      const { debuffs = [] } = findDataCharacter(teammate)!;
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs, index);
 
@@ -208,7 +208,7 @@ export default function getDamage({
   // APPLY ARTIFACT DEBUFFS
   for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
-      const { name, debuffs = [] } = findArtifactSet({ code }) || {};
+      const { name, debuffs = [] } = findDataArtifactSet({ code }) || {};
       if (name) {
         debuffs[index]?.applyDebuff({
           desc: `${name} / 4-piece activated`,

@@ -10,7 +10,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc } from "@Src/utils";
-import { findArtifactPiece } from "@Data/controllers";
+import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { BetaMark, IconButton, ArtifactLevelSelect } from "@Components/atoms";
@@ -33,7 +33,7 @@ export function ArtifactCard({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const { beta, name, icon = "" } = findArtifactPiece(artifact) || {};
+  const { beta, name, icon = "" } = findDataArtifact(artifact) || {};
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;

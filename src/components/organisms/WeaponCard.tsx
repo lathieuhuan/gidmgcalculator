@@ -7,7 +7,7 @@ import { LEVELS } from "@Src/constants";
 // Util
 import { percentSign, getImgSrc } from "@Src/utils";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
-import { findWeapon } from "@Data/controllers";
+import { findDataWeapon } from "@Data/controllers";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -27,7 +27,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { t } = useTranslation();
   if (!weapon) return null;
 
-  const wpData = findWeapon(weapon)!;
+  const wpData = findDataWeapon(weapon)!;
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;

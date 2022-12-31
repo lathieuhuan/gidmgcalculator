@@ -3,7 +3,7 @@ import type { UserWeapon, WeaponType } from "@Src/types";
 // Selector
 import {
   selectFilteredWeaponIDs,
-  selectMyWps,
+  selectUserWps,
   selectWeaponById,
 } from "@Store/userDatabaseSlice/selectors";
 
@@ -39,7 +39,7 @@ function WeaponInventory({
   const [inventoryRack, chosenID] = useInventoryRack({
     listClassName: styles["inventory-list"],
     itemClassName: styles.item,
-    items: useSelector(selectMyWps),
+    items: useSelector(selectUserWps),
     itemType: "weapon",
     filteredIds,
   });

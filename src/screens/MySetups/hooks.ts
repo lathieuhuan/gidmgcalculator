@@ -3,13 +3,13 @@ import type { UserArtifacts, UserWeapon } from "@Src/types";
 
 // Util
 import { findById } from "@Src/utils";
-import { isUserSetup } from "@Store/userDatabaseSlice/utils";
+import { isUserSetup } from "@Src/utils/setup";
 
 // Hook
 import { useSelector } from "@Store/hooks";
 
 // Selector
-import { selectMyArts, selectMySetups, selectMyWps } from "@Store/userDatabaseSlice/selectors";
+import { selectUserArts, selectMySetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 type SetupItemInfos = Record<
   string,
@@ -21,8 +21,8 @@ type SetupItemInfos = Record<
 
 export function useSetupItems() {
   const mySetups = useSelector(selectMySetups);
-  const myWps = useSelector(selectMyWps);
-  const myArts = useSelector(selectMyArts);
+  const userWps = useSelector(selectUserWps);
+  const userArts = useSelector(selectUserArts);
 
   const getSetupItems = () => {
     const result: SetupItemInfos = {};
@@ -30,8 +30,8 @@ export function useSetupItems() {
     for (const setup of mySetups) {
       if (isUserSetup(setup)) {
         result[setup.ID] = {
-          weapon: findById(myWps, setup.weaponID) || null,
-          artifacts: setup.artifactIDs.map((ID) => findById(myArts, ID) || null),
+          weapon: findById(userWps, setup.weaponID) || null,
+          artifacts: setup.artifactIDs.map((ID) => findById(userArts, ID) || null),
         };
       }
     }

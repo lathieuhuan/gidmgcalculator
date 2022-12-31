@@ -19,7 +19,7 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Selector
-import { selectArtifactById, selectMyArts } from "@Store/userDatabaseSlice/selectors";
+import { selectArtifactById, selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -30,7 +30,7 @@ import {
   filterArtIdsBySetsAndStats,
   initArtifactStatsFilter,
 } from "@Components/templates/inventories/utils";
-import { findArtifactPiece } from "@Data/controllers";
+import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { ButtonBar } from "@Components/molecules";
@@ -47,12 +47,12 @@ import { Filter } from "./Filter";
 import styles from "../styles.module.scss";
 
 const selectFilteredArtifactIds = createSelector(
-  selectMyArts,
+  selectUserArts,
   (_: unknown, types: ArtifactType[]) => types,
   (_: unknown, __: unknown, codes: number[]) => codes,
   (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
-  (myArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
-    const result = types.length ? myArts.filter((p) => types.includes(p.type)) : myArts;
+  (userArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
+    const result = types.length ? userArts.filter((p) => types.includes(p.type)) : userArts;
     return filterArtIdsBySetsAndStats(result, codes, stats);
   }
 );
@@ -85,7 +85,7 @@ export default function MyArtifacts() {
   const [invRack, chosenID, setChosenID] = useInventoryRack({
     listClassName: styles.list,
     itemClassName: styles.item,
-    items: useSelector(selectMyArts),
+    items: useSelector(selectUserArts),
     itemType: "artifact",
     filteredIds,
   });
@@ -259,7 +259,7 @@ export default function MyArtifacts() {
           message={
             <>
               <b>{artifact.owner}</b> is currently using "
-              <b>{findArtifactPiece(artifact)?.name || "<name missing>"}</b>
+              <b>{findDataArtifact(artifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }

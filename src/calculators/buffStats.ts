@@ -28,7 +28,7 @@ import {
 import { RESONANCE_STAT } from "./constants";
 
 import { findByIndex, getArtifactSetBonuses } from "@Src/utils";
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import {
   addArtAttr,
   addWeaponSubStat,
@@ -105,7 +105,7 @@ export default function getBuffedStats({
   infusedElement,
   tracker,
 }: GetBuffedStatsArgs) {
-  const weaponData = findWeapon(weapon)!;
+  const weaponData = findDataWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
   const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
   const setBonuses = getArtifactSetBonuses(artifacts);
@@ -230,7 +230,7 @@ export default function getBuffedStats({
 
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weaponType, buffs = [] } = findCharacter(teammate)!;
+    const { name, weaponType, buffs = [] } = findDataCharacter(teammate)!;
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;
@@ -260,7 +260,7 @@ export default function getBuffedStats({
     // #to-check: should be applied before main weapon buffs?
     (() => {
       const { code, refi } = teammate.weapon;
-      const { name, buffs = [] } = findWeapon({ code, type: weaponType }) || {};
+      const { name, buffs = [] } = findDataWeapon({ code, type: weaponType }) || {};
 
       for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
         const buff = findByIndex(buffs, index);
@@ -282,7 +282,7 @@ export default function getBuffedStats({
 
     (() => {
       const { code } = teammate.artifact;
-      const { name, buffs = [] } = findArtifactSet({ code }) || {};
+      const { name, buffs = [] } = findDataArtifactSet({ code }) || {};
 
       for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
         const buff = findByIndex(buffs, index);
@@ -323,7 +323,7 @@ export default function getBuffedStats({
   const mainArtCode = setBonuses[0]?.code;
   if (mainArtCode) {
     for (const { index, activated, inputs = [] } of artBuffCtrls) {
-      const { name, buffs } = findArtifactSet({ code: mainArtCode }) || {};
+      const { name, buffs } = findDataArtifactSet({ code: mainArtCode }) || {};
       const { applyBuff } = buffs?.[index] || {};
 
       if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
@@ -368,7 +368,7 @@ export default function getBuffedStats({
 
   // APPLY ARTIFACT FINAL BUFFS
   for (const ctrl of artBuffCtrls) {
-    const { name, buffs } = findArtifactSet({ code: setBonuses[0].code }) || {};
+    const { name, buffs } = findDataArtifactSet({ code: setBonuses[0].code }) || {};
     const { applyFinalBuff } = buffs?.[ctrl.index] || {};
 
     if (ctrl.activated && applyFinalBuff) {

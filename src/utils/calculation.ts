@@ -1,5 +1,5 @@
 import type { ArtifactSetBonus, CalcArtifacts, CharInfo, PartyData, Talent } from "@Src/types";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 import { findByName } from "./pure-utils";
 
 export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
@@ -33,7 +33,7 @@ export function totalXtraTalentLv(
       result++;
     }
   } else {
-    const talent = findCharacter(char)!.activeTalents[talentType];
+    const talent = findDataCharacter(char)!.activeTalents[talentType];
     if (talent.xtraLvAtCons && char.cons >= talent.xtraLvAtCons) {
       result += 3;
     }

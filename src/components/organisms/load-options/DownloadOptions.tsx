@@ -6,10 +6,10 @@ import { useSelector } from "@Store/hooks";
 
 // Selector
 import {
-  selectMyArts,
-  selectMyChars,
+  selectUserArts,
+  selectUserChars,
   selectMySetups,
-  selectMyWps,
+  selectUserWps,
 } from "@Store/userDatabaseSlice/selectors";
 
 // Util
@@ -21,16 +21,16 @@ import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
 function Options({ onClose }: { onClose: () => void }) {
   const [messageType, setMessageType] = useState(0);
-  const myChars = useSelector(selectMyChars);
-  const myWps = useSelector(selectMyWps);
-  const myArts = useSelector(selectMyArts);
+  const userChars = useSelector(selectUserChars);
+  const userWps = useSelector(selectUserWps);
+  const userArts = useSelector(selectUserArts);
   const mySetups = useSelector(selectMySetups);
 
   const downloadData = JSON.stringify({
     version: 2.1,
-    Characters: myChars,
-    Weapons: myWps,
-    Artifacts: myArts,
+    Characters: userChars,
+    Weapons: userWps,
+    Artifacts: userArts,
     Setups: mySetups,
   });
 

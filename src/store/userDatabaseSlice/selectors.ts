@@ -3,30 +3,30 @@ import { WeaponType } from "@Src/types";
 import { findById } from "@Src/utils";
 import { RootState } from "..";
 
-export const selectMyWps = (state: RootState) => state.database.myWps;
-export const selectMyArts = (state: RootState) => state.database.myArts;
-export const selectMyChars = (state: RootState) => state.database.myChars;
+export const selectUserWps = (state: RootState) => state.database.userWps;
+export const selectUserArts = (state: RootState) => state.database.userArts;
+export const selectUserChars = (state: RootState) => state.database.userChars;
 export const selectMySetups = (state: RootState) => state.database.mySetups;
 export const selectChosenChar = (state: RootState) => state.database.chosenChar;
 export const selectChosenSetupID = (state: RootState) => state.database.chosenSetupID;
 
 export const selectFilteredWeaponIDs = createSelector(
-  selectMyWps,
+  selectUserWps,
   (_: unknown, types: WeaponType[]) => types,
-  (myWps, types) => {
-    const result = types.length ? myWps.filter((wp) => types.includes(wp.type)) : myWps;
+  (userWps, types) => {
+    const result = types.length ? userWps.filter((wp) => types.includes(wp.type)) : userWps;
     return result.map(({ ID }) => ID);
   }
 );
 
 export const selectWeaponById = createSelector(
-  selectMyWps,
+  selectUserWps,
   (_: unknown, ID: number) => ID,
-  (myWps, ID) => findById(myWps, ID)
+  (userWps, ID) => findById(userWps, ID)
 );
 
 export const selectArtifactById = createSelector(
-  selectMyArts,
+  selectUserArts,
   (_: unknown, ID: number) => ID,
-  (myArts, ID) => findById(myArts, ID)
+  (userArts, ID) => findById(userArts, ID)
 );

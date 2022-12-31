@@ -24,7 +24,7 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
-import { findCharacter, getPartyData } from "@Data/controllers";
+import { findDataCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
@@ -40,7 +40,7 @@ export function SelfBuffs() {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
 
-  const { innateBuffs = [], buffs = [] } = findCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = findDataCharacter(char) || {};
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
@@ -145,7 +145,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const charData = useSelector(selectCharData);
 
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findCharacter(teammate)!;
+  const { buffs = [], vision } = findDataCharacter(teammate)!;
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs = [] } = ctrl;

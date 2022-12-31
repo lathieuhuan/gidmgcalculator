@@ -14,7 +14,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex } from "@Src/utils";
-import { findArtifactSet, findCharacter } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 
 // Component
 import { Green } from "@Components/atoms";
@@ -91,7 +91,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       continue;
     }
 
-    const teammateData = findCharacter(teammate);
+    const teammateData = findDataCharacter(teammate);
     if (!teammateData) {
       continue;
     }
@@ -136,7 +136,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
   for (const { code, index, inputs } of artDebuffCtrls) {
-    const artifactData = findArtifactSet({ code });
+    const artifactData = findDataArtifactSet({ code });
     if (!artifactData) {
       continue;
     }

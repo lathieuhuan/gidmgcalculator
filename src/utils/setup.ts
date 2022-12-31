@@ -1,12 +1,25 @@
-import type { CalcSetup, ModifierInput, Party, UserSetupCalcInfo } from "@Src/types";
+import type {
+  CalcSetup,
+  ModifierInput,
+  Party,
+  UserComplexSetup,
+  UserSetup,
+  UserSetupCalcInfo,
+} from "@Src/types";
+import type { CalculatorState } from "@Store/calculatorSlice/types";
+
+import { findDataCharacter } from "@Data/controllers";
 import { initCharModCtrls } from "@Store/calculatorSlice/initiators";
 import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
-import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex, getArtifactSetBonuses } from "./index";
-import { CalculatorState } from "@Store/calculatorSlice/types";
+
+export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
+  return ["original", "combined"].includes(setup.type);
+}
 
 interface CleanupCalcSetupOptions {
   weaponID?: number;
+  artifactIDs?: (number | null)[];
 }
 export function cleanupCalcSetup(
   calculator: CalculatorState,
@@ -14,7 +27,7 @@ export function cleanupCalcSetup(
   options?: CleanupCalcSetupOptions
 ): UserSetupCalcInfo {
   const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
-  const { buffs = [], debuffs = [] } = findCharacter(char) || {};
+  const { buffs = [], debuffs = [] } = findDataCharacter(char) || {};
   const party: Party = [];
 
   for (const teammate of data.party) {
@@ -36,10 +49,7 @@ export function cleanupCalcSetup(
     char,
     ...data,
     weaponID: options?.weaponID || weapon.ID,
-    artifactIDs: artifacts.reduce(
-      (IDs: (number | null)[], piece) => IDs.concat(piece?.ID || null),
-      []
-    ),
+    artifactIDs: options?.artifactIDs || artifacts.map((artifact) => artifact?.ID ?? null),
     selfBuffCtrls: data.selfBuffCtrls.filter((ctrl) => {
       const buff = findByIndex(buffs, ctrl.index);
       return buff ? ctrl.activated && (!buff.isGranted || buff.isGranted(char)) : false;

@@ -11,7 +11,7 @@ import {
 } from "@Components/templates/inventories/hooks";
 
 // Selector
-import { selectMyArts } from "@Store/userDatabaseSlice/selectors";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { hasDupStat } from "@Components/templates/inventories/utils";
@@ -30,7 +30,7 @@ interface FilterProps {
 }
 function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClose }: FilterProps) {
   const [isError, setIsError] = useState(false);
-  const myArts = useSelector(selectMyArts);
+  const userArts = useSelector(selectUserArts);
 
   const { filteredTypes, renderTypeFilter } = useTypeFilter({
     itemType: "artifact",
@@ -41,7 +41,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
     isError,
   });
   const { filteredTempCodes, renderArtifactSetFilter } = useArtifactSetFilter({
-    artifacts: myArts,
+    artifacts: userArts,
     codes,
   });
 

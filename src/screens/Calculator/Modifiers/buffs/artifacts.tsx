@@ -12,7 +12,7 @@ import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { deepCopy, findByIndex, getArtifactSetBonuses } from "@Src/utils";
-import { findArtifactSet } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Components/molecules";
@@ -29,7 +29,7 @@ export default function ArtifactBuffs() {
   const mainCode = getArtifactSetBonuses(artifacts)[0]?.code;
 
   artBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { name, buffs } = findArtifactSet({ code: mainCode })!;
+    const { name, buffs } = findDataArtifactSet({ code: mainCode })!;
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
 
@@ -62,7 +62,7 @@ export default function ArtifactBuffs() {
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
     const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [] } = findArtifactSet(teammate.artifact) || {};
+    const { name, buffs = [] } = findDataArtifactSet(teammate.artifact) || {};
     if (!name) return;
 
     const updateArtifactInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {

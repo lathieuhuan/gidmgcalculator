@@ -10,9 +10,9 @@ import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
 // Selector
 import {
   selectChosenSetupID,
-  selectMyArts,
+  selectUserArts,
   selectMySetups,
-  selectMyWps,
+  selectUserWps,
 } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
@@ -21,8 +21,8 @@ import { useTranslation } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Util
-import { isUserSetup } from "@Store/userDatabaseSlice/utils";
 import { findById, indexById } from "@Src/utils";
+import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 // Component
@@ -39,8 +39,8 @@ export default function MySetups() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const mySetups = useSelector(selectMySetups);
-  const myWps = useSelector(selectMyWps);
-  const myArts = useSelector(selectMyArts);
+  const userWps = useSelector(selectUserWps);
+  const userArts = useSelector(selectUserArts);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
   const { itemsBySetupID } = useSetupItems();
@@ -88,7 +88,10 @@ export default function MySetups() {
     setModal((prev) => ({ ...prev, type: "" }));
   };
 
-  const calcInfo = useMemo(() => calculateChosenSetup(chosenSetup, myWps, myArts), [chosenSetupID]);
+  const calcInfo = useMemo(
+    () => calculateChosenSetup(chosenSetup, userWps, userArts),
+    [chosenSetupID]
+  );
 
   const renderSetup = (setup: UserSetup | UserComplexSetup, index: number) => {
     if (setup.type === "combined") return null;

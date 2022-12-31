@@ -24,7 +24,7 @@ import {
 
 // Util
 import { findById, getImgSrc } from "@Src/utils";
-import { findArtifactSet, findWeapon, getPartyData } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
@@ -243,8 +243,8 @@ function TeammateDetail({
   onClickRemoveArtifact,
 }: ITeammateDetailProps) {
   const { weapon, artifact } = teammate;
-  const weaponData = findWeapon(weapon);
-  const { name: artifactSetName, flower } = findArtifactSet(artifact) || {};
+  const weaponData = findDataWeapon(weapon);
+  const { name: artifactSetName, flower } = findDataArtifactSet(artifact) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (

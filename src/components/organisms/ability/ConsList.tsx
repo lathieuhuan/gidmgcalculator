@@ -7,7 +7,7 @@ import type { CharInfo } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Util
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Conponent
 import { Green, CloseButton, InfoSign, SharedSpace } from "@Components/atoms";
@@ -21,7 +21,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const { code, beta, vision, constellation } = findCharacter(char)!;
+  const { code, beta, vision, constellation } = findDataCharacter(char)!;
   const { name, desc } = constellation[consLv - 1] || {};
 
   useEffect(() => {

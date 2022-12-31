@@ -4,7 +4,7 @@ import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Action
 import { chooseCharacter } from "@Store/userDatabaseSlice";
@@ -77,7 +77,7 @@ export default function SideIconCarousel({
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
-                const databaseChar = findCharacter({ name });
+                const databaseChar = findDataCharacter({ name });
                 if (!databaseChar) {
                   return null;
                 }

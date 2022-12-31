@@ -12,7 +12,7 @@ import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSli
 
 // Util
 import { deepCopy, findByIndex } from "@Src/utils";
-import { findWeapon } from "@Data/controllers";
+import { findDataWeapon } from "@Data/controllers";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Components/molecules";
@@ -26,7 +26,7 @@ export default function WeaponBuffs() {
   });
   const party = useSelector(selectParty);
 
-  const { name, buffs: mainBuffs = [] } = findWeapon(weapon)!;
+  const { name, buffs: mainBuffs = [] } = findDataWeapon(weapon)!;
   const content: JSX.Element[] = [];
 
   weaponBuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
@@ -74,7 +74,7 @@ export default function WeaponBuffs() {
 
     const { weapon } = teammate;
     const { code, refi, buffCtrls } = weapon;
-    const { name, buffs = [] } = findWeapon(weapon) || {};
+    const { name, buffs = [] } = findDataWeapon(weapon) || {};
 
     const updateWeaponInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
       const newBuffCtrls = deepCopy(buffCtrls);

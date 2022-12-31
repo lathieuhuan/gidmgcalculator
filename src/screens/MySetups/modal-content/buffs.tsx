@@ -23,7 +23,7 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, percentSign } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Calculators/utils";
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 
 // Component
 import {
@@ -181,7 +181,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       continue;
     }
 
-    const teammateData = findCharacter(teammate);
+    const teammateData = findDataCharacter(teammate);
     if (!teammateData) {
       continue;
     }
@@ -234,7 +234,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
   const content = [];
 
   for (const { index, inputs = [] } of wpBuffCtrls) {
-    const weaponData = findWeapon(weapon);
+    const weaponData = findDataWeapon(weapon);
     if (!weaponData) {
       continue;
     }
@@ -258,7 +258,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
 
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
-    const { name, buffs = [] } = findWeapon(teammate.weapon) || {};
+    const { name, buffs = [] } = findDataWeapon(teammate.weapon) || {};
 
     for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
       const buff = findByIndex(buffs, index);
@@ -291,7 +291,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   const mainCode = setBonuses[0]?.code;
 
   for (const { index, inputs = [] } of artBuffCtrls) {
-    const artifactData = findArtifactSet({ code: mainCode });
+    const artifactData = findDataArtifactSet({ code: mainCode });
     if (!artifactData) {
       continue;
     }
@@ -315,7 +315,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   for (const teammate of party) {
     if (!teammate) continue;
     const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [] } = findArtifactSet(teammate.artifact) || {};
+    const { name, buffs = [] } = findDataArtifactSet(teammate.artifact) || {};
 
     for (const { index, inputs = [] } of buffCtrls) {
       const buff = findByIndex(buffs, index);

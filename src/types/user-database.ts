@@ -2,9 +2,9 @@ import type { CalcArtifact, CalcSetup, CalcWeapon, SetupType, Target } from "./c
 import type { CharInfo } from "./global";
 
 export type UserDatabaseState = {
-  myChars: UserCharacter[];
-  myWps: UserWeapon[];
-  myArts: UserArtifact[];
+  userChars: UserCharacter[];
+  userWps: UserWeapon[];
+  userArts: UserArtifact[];
   mySetups: (UserSetup | UserComplexSetup)[];
   chosenChar: string;
   chosenSetupID: number;

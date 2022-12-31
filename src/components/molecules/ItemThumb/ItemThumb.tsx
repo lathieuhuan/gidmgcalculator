@@ -3,7 +3,7 @@ import type { Level, Rarity } from "@Src/types";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 import styles from "./styles.module.scss";
 
@@ -31,7 +31,7 @@ export function ItemThumb({
 }: ItemThumbProps) {
   //
   const renderSideIcon = (owner: string) => {
-    const { icon = "", sideIcon } = findCharacter({ name: owner }) || {};
+    const { icon = "", sideIcon } = findDataCharacter({ name: owner }) || {};
     return (
       <div
         className={clsx(

@@ -4,18 +4,18 @@ import { FaCaretRight } from "react-icons/fa";
 import type { UserArtifact, UserWeapon } from "@Src/types";
 
 // Util
-import { findArtifactPiece, findWeapon } from "@Data/controllers";
+import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
 // Component
 import { ItemThumb } from "@Components/molecules";
 
 function getWeaponInfo({ type, code, owner, refi, level, setupIDs }: UserWeapon) {
-  const { beta, name, icon = "", rarity = 5 } = findWeapon({ type, code }) || {};
+  const { beta, name, icon = "", rarity = 5 } = findDataWeapon({ type, code }) || {};
   return { beta, name, icon, rarity, level, refi, owner, setupIDs };
 }
 
 function getArtifactInfo({ code, type, owner, rarity, level, setupIDs }: UserArtifact) {
-  const { beta, name, icon = "" } = findArtifactPiece({ code, type }) || {};
+  const { beta, name, icon = "" } = findDataArtifact({ code, type }) || {};
   return { beta, name, icon, rarity, level, owner, setupIDs };
 }
 

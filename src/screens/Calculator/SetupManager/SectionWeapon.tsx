@@ -15,7 +15,7 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Util
-import { findWeapon } from "@Data/controllers";
+import { findDataWeapon } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
 
 // Component
@@ -27,7 +27,7 @@ export default function SectionWeapon() {
   const weapon = useSelector(selectWeapon);
   const [pickerOn, setPickerOn] = useState(false);
 
-  const { beta, name = "", icon = "", rarity = 5 } = findWeapon(weapon) || {};
+  const { beta, name = "", icon = "", rarity = 5 } = findDataWeapon(weapon) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (

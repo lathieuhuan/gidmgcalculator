@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 interface CharFilledSlotProps {
   className?: string;
@@ -8,7 +8,7 @@ interface CharFilledSlotProps {
   onClickIcon?: () => void;
 }
 export function CharacterPortrait({ className, name, onClickIcon }: CharFilledSlotProps) {
-  const { code, icon } = findCharacter({ name })!;
+  const { code, icon } = findDataCharacter({ name })!;
   // for the traveler
   const bgColorByCode: Record<number, string> = {
     1: "bg-anemo",

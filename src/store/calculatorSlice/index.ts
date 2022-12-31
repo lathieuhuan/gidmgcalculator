@@ -34,7 +34,7 @@ import type {
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
 
-import { findCharacter, getCharData, getPartyData } from "@Data/controllers";
+import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
 import { countVision } from "@Data/characters/utils";
 import {
   bareLv,
@@ -96,14 +96,14 @@ export const calculatorSlice = createSlice({
       };
     },
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
-      const { pickedChar, myWps, myArts } = action.payload;
+      const { pickedChar, userWps, userArts } = action.payload;
       const setupManageInfo = getSetupManageInfo({});
       const { ID: setupID } = setupManageInfo;
       const charData = getCharData(pickedChar);
       const result = parseAndInitData({
         pickedChar,
-        myWps,
-        myArts,
+        userWps,
+        userArts,
         weaponType: charData.weaponType,
         seedID: setupID + 1,
       });
@@ -261,7 +261,7 @@ export const calculatorSlice = createSlice({
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const { vision: oldVision } = findCharacter(oldTeammate) || {};
+        const { vision: oldVision } = findDataCharacter(oldTeammate) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -299,7 +299,7 @@ export const calculatorSlice = createSlice({
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = findCharacter(teammate)!;
+        const { vision } = findDataCharacter(teammate)!;
         party[teammateIndex] = null;
         const newVisionCount = countVision(getPartyData(party), state.charData);
 

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
-  CalcArtifact,
   UserArtifact,
   UserComplexSetup,
   UserDatabaseState,
@@ -26,14 +25,14 @@ import type {
 import { ARTIFACT_TYPES } from "@Src/constants";
 
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
+import { isUserSetup } from "@Src/utils/setup";
 import { initCharInfo, initWeapon } from "@Store/calculatorSlice/initiators";
-import { findArtifactSet, findWeapon } from "@Data/controllers";
-import { isUserSetup } from "./utils";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 const initialState: UserDatabaseState = {
-  myChars: [],
-  myWps: [],
-  myArts: [],
+  userChars: [],
+  userWps: [],
+  userArts: [],
   mySetups: [],
   chosenChar: "",
   chosenSetupID: 0,
@@ -45,9 +44,9 @@ export const userDatabaseSlice = createSlice({
   reducers: {
     addUserDatabase: (state, action: AddUserDatabaseAction) => {
       const { Characters, Weapons, Artifacts, Setups } = action.payload;
-      state.myChars = Characters;
-      state.myWps = Weapons;
-      state.myArts = Artifacts;
+      state.userChars = Characters;
+      state.userWps = Weapons;
+      state.userArts = Artifacts;
       state.mySetups = Setups;
 
       if (Characters.length) {
@@ -71,13 +70,13 @@ export const userDatabaseSlice = createSlice({
       const weaponID = Date.now();
 
       state.chosenChar = name;
-      state.myChars.unshift({
+      state.userChars.unshift({
         name,
         ...initCharInfo({}),
         weaponID,
         artifactIDs: [null, null, null, null, null],
       });
-      state.myWps.unshift({
+      state.userWps.unshift({
         ID: weaponID,
         owner: name,
         ...initWeapon({ type: weaponType }),
@@ -87,96 +86,96 @@ export const userDatabaseSlice = createSlice({
       state.chosenChar = action.payload;
     },
     sortCharacters: (state, action: PayloadAction<number[]>) => {
-      state.myChars = action.payload.map((index) => state.myChars[index]);
+      state.userChars = action.payload.map((index) => state.userChars[index]);
     },
     updateUserCharacter: (state, action: UpdateUserCharacterAction) => {
       const { name, ...newInfo } = action.payload;
-      const charIndex = indexByName(state.myChars, name);
+      const charIndex = indexByName(state.userChars, name);
 
       if (charIndex !== -1) {
-        state.myChars[charIndex] = {
-          ...state.myChars[charIndex],
+        state.userChars[charIndex] = {
+          ...state.userChars[charIndex],
           ...newInfo,
         };
       }
     },
     removeUserCharacter: (state, action: PayloadAction<string>) => {
-      const { myChars, myWps, myArts } = state;
+      const { userChars, userWps, userArts } = state;
       const name = action.payload;
-      let charIndex = indexByName(myChars, name);
-      const char = myChars[charIndex];
+      let charIndex = indexByName(userChars, name);
+      const char = userChars[charIndex];
 
       if (char) {
         const { weaponID, artifactIDs } = char;
-        const wpInfo = findById(myWps, weaponID);
+        const wpInfo = findById(userWps, weaponID);
         if (wpInfo) {
           wpInfo.owner = null;
         }
         for (const id of artifactIDs) {
           if (id) {
-            const artInfo = findById(myArts, id);
+            const artInfo = findById(userArts, id);
             if (artInfo) {
               artInfo.owner = null;
             }
           }
         }
-        myChars.splice(charIndex, 1);
-        if (charIndex === myChars.length) {
+        userChars.splice(charIndex, 1);
+        if (charIndex === userChars.length) {
           charIndex--;
         }
-        state.chosenChar = myChars[charIndex]?.name || "";
+        state.chosenChar = userChars[charIndex]?.name || "";
       }
     },
-    switchWeapon: ({ myWps, myChars }, action: SwitchWeaponAction) => {
+    switchWeapon: ({ userWps, userChars }, action: SwitchWeaponAction) => {
       const { newOwner, newID, oldOwner, oldID } = action.payload;
 
-      const newWeaponInfo = findById(myWps, newID);
+      const newWeaponInfo = findById(userWps, newID);
       if (newWeaponInfo) {
         newWeaponInfo.owner = oldOwner;
       }
 
-      const oldWeaponInfo = findById(myWps, oldID);
+      const oldWeaponInfo = findById(userWps, oldID);
       if (oldWeaponInfo) {
         oldWeaponInfo.owner = newOwner;
       }
 
-      const oldOwnerInfo = findByName(myChars, oldOwner);
+      const oldOwnerInfo = findByName(userChars, oldOwner);
       if (oldOwnerInfo) {
         oldOwnerInfo.weaponID = newID;
       }
 
-      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      const newOwnerInfo = newOwner ? findByName(userChars, newOwner) : undefined;
       if (newOwnerInfo) {
         newOwnerInfo.weaponID = oldID;
       }
     },
-    switchArtifact: ({ myArts, myChars }, action: SwitchArtifactAction) => {
+    switchArtifact: ({ userArts, userChars }, action: SwitchArtifactAction) => {
       const { newOwner, newID, oldOwner, oldID, artifactIndex } = action.payload;
 
-      const newArtInfo = findById(myArts, newID);
+      const newArtInfo = findById(userArts, newID);
       if (newArtInfo) {
         newArtInfo.owner = oldOwner;
       }
 
-      const oldArtInfo = findById(myArts, oldID);
+      const oldArtInfo = findById(userArts, oldID);
       if (oldArtInfo) {
         oldArtInfo.owner = newOwner;
       }
 
-      const oldOwnerInfo = findByName(myChars, oldOwner);
+      const oldOwnerInfo = findByName(userChars, oldOwner);
       if (oldOwnerInfo) {
         oldOwnerInfo.artifactIDs[artifactIndex] = newID;
       }
 
-      const newOwnerInfo = newOwner ? findByName(myChars, newOwner) : undefined;
+      const newOwnerInfo = newOwner ? findByName(userChars, newOwner) : undefined;
       if (newOwnerInfo) {
         newOwnerInfo.artifactIDs[artifactIndex] = oldID;
       }
     },
     unequipArtifact: (state, action: UnequipArtifactAction) => {
       const { owner, artifactID, artifactIndex } = action.payload;
-      const ownerInfo = owner ? findByName(state.myChars, owner) : undefined;
-      const artifactInfo = findById(state.myArts, artifactID);
+      const ownerInfo = owner ? findByName(state.userChars, owner) : undefined;
+      const artifactInfo = findById(state.userArts, artifactID);
 
       if (ownerInfo && artifactInfo) {
         ownerInfo.artifactIDs[artifactIndex] = null;
@@ -185,39 +184,40 @@ export const userDatabaseSlice = createSlice({
     },
     // WEAPON
     addUserWeapon: (state, action: PayloadAction<UserWeapon>) => {
-      state.myWps.unshift(action.payload);
+      state.userWps.unshift(action.payload);
     },
+    /** Require index (prioritized) or ID */
     updateUserWeapon: (state, action: UpdateUserWeaponAction) => {
-      const { ID, index, ...newInfo } = action.payload;
-      const weaponIndex = index ?? indexById(state.myWps, ID);
+      const { ID, ...newInfo } = action.payload;
+      const weaponIndex = indexById(state.userWps, ID);
 
       if (weaponIndex !== -1) {
-        state.myWps[weaponIndex] = {
-          ...state.myWps[weaponIndex],
+        state.userWps[weaponIndex] = {
+          ...state.userWps[weaponIndex],
           ...newInfo,
         };
       }
     },
     swapWeaponOwner: (
-      { myChars, myWps },
+      { userChars, userWps },
       action: PayloadAction<{ newOwner: string; weaponID: number }>
     ) => {
       const { newOwner, weaponID } = action.payload;
-      const weaponInfo = findById(myWps, weaponID);
+      const weaponInfo = findById(userWps, weaponID);
 
       if (weaponInfo) {
         const oldOwner = weaponInfo.owner;
         weaponInfo.owner = newOwner;
 
-        const newOwnerInfo = findByName(myChars, newOwner);
+        const newOwnerInfo = findByName(userChars, newOwner);
         if (newOwnerInfo) {
-          const newOwnerWeaponInfo = findById(myWps, newOwnerInfo.weaponID);
+          const newOwnerWeaponInfo = findById(userWps, newOwnerInfo.weaponID);
           if (newOwnerWeaponInfo) {
             newOwnerWeaponInfo.owner = oldOwner;
           }
         }
         if (oldOwner) {
-          const oldOwnerInfo = findByName(myChars, oldOwner);
+          const oldOwnerInfo = findByName(userChars, oldOwner);
           if (oldOwnerInfo) {
             oldOwnerInfo.weaponID = weaponID;
           }
@@ -228,9 +228,9 @@ export const userDatabaseSlice = createSlice({
       }
     },
     sortWeapons: (state) => {
-      state.myWps.sort((a, b) => {
-        const rA = findWeapon(a)?.rarity || 4;
-        const rB = findWeapon(b)?.rarity || 4;
+      state.userWps.sort((a, b) => {
+        const rA = findDataWeapon(a)?.rarity || 4;
+        const rB = findDataWeapon(b)?.rarity || 4;
         if (rA !== rB) {
           return rB - rA;
         }
@@ -254,19 +254,19 @@ export const userDatabaseSlice = createSlice({
         return sB - sA;
       });
     },
-    removeWeapon: ({ myWps, myChars }, action: RemoveWeaponAction) => {
+    removeWeapon: ({ userWps, userChars }, action: RemoveWeaponAction) => {
       const { ID, owner, type } = action.payload;
-      myWps.splice(indexById(myWps, ID), 1);
+      userWps.splice(indexById(userWps, ID), 1);
 
       if (owner) {
         const newWpID = Date.now();
-        myWps.unshift({
+        userWps.unshift({
           ID: newWpID,
           owner,
           ...initWeapon({ type }),
         });
 
-        const ownerInfo = findByName(myChars, owner);
+        const ownerInfo = findByName(userChars, owner);
         if (ownerInfo) {
           ownerInfo.weaponID = newWpID;
         }
@@ -274,22 +274,22 @@ export const userDatabaseSlice = createSlice({
     },
     // ARTIFACT
     addUserArtifact: (state, action: PayloadAction<UserArtifact>) => {
-      state.myArts.unshift(action.payload);
+      state.userArts.unshift(action.payload);
     },
     updateUserArtifact: (state, action: UpdateUserArtifactAction) => {
-      const { ID, index, ...newInfo } = action.payload;
-      const artifactIndex = index ?? indexById(state.myArts, ID);
+      const { ID, ...newInfo } = action.payload;
+      const artifactIndex = indexById(state.userArts, ID);
 
       if (artifactIndex !== -1) {
-        state.myArts[artifactIndex] = {
-          ...state.myArts[artifactIndex],
+        state.userArts[artifactIndex] = {
+          ...state.userArts[artifactIndex],
           ...newInfo,
         };
       }
     },
     updateUserArtifactSubStat: (state, action: UpdateUserArtifactSubStatAction) => {
       const { ID, subStatIndex, ...newInfo } = action.payload;
-      const artifact = findById(state.myArts, ID);
+      const artifact = findById(state.userArts, ID);
       if (artifact) {
         artifact.subStats[subStatIndex] = {
           ...artifact.subStats[subStatIndex],
@@ -298,30 +298,30 @@ export const userDatabaseSlice = createSlice({
       }
     },
     swapArtifactOwner: (
-      { myChars, myArts },
+      { userChars, userArts },
       action: PayloadAction<{ newOwner: string; artifactID: number }>
     ) => {
       const { newOwner, artifactID } = action.payload;
-      const artifactInfo = findById(myArts, artifactID);
+      const artifactInfo = findById(userArts, artifactID);
 
       if (artifactInfo) {
         const oldOwner = artifactInfo.owner;
         artifactInfo.owner = newOwner;
 
-        const newOwnerInfo = findByName(myChars, newOwner);
+        const newOwnerInfo = findByName(userChars, newOwner);
         if (newOwnerInfo) {
           const { artifactIDs } = newOwnerInfo;
           const index = ARTIFACT_TYPES.indexOf(artifactInfo.type);
 
           if (artifactIDs[index]) {
-            const newOwnerArtifactInfo = findById(myArts, artifactIDs[index]);
+            const newOwnerArtifactInfo = findById(userArts, artifactIDs[index]);
             if (newOwnerArtifactInfo) {
               newOwnerArtifactInfo.owner = oldOwner;
             }
           }
 
           if (oldOwner) {
-            const oldOwnerInfo = findByName(myChars, oldOwner);
+            const oldOwnerInfo = findByName(userChars, oldOwner);
             if (oldOwnerInfo) {
               oldOwnerInfo.artifactIDs[index] = artifactIDs[index];
             }
@@ -331,7 +331,7 @@ export const userDatabaseSlice = createSlice({
       }
     },
     sortArtifacts: (state) => {
-      state.myArts.sort((a, b) => {
+      state.userArts.sort((a, b) => {
         if (a.level !== b.level) {
           return b.level - a.level;
         }
@@ -345,19 +345,19 @@ export const userDatabaseSlice = createSlice({
           };
           return type[b.type] - type[a.type];
         }
-        const aName = findArtifactSet({ code: a.code })?.name || "";
-        const bName = findArtifactSet({ code: b.code })?.name || "";
+        const aName = findDataArtifactSet({ code: a.code })?.name || "";
+        const bName = findDataArtifactSet({ code: b.code })?.name || "";
         return bName.localeCompare(aName);
       });
     },
-    removeArtifact: ({ myArts, myChars }, action: RemoveArtifactAction) => {
+    removeArtifact: ({ userArts, userChars }, action: RemoveArtifactAction) => {
       const { ID, owner, type } = action.payload;
-      myArts.splice(indexById(myArts, ID), 1);
+      userArts.splice(indexById(userArts, ID), 1);
 
       if (owner) {
         const index = ARTIFACT_TYPES.indexOf(type);
 
-        const ownerInfo = findByName(myChars, owner);
+        const ownerInfo = findByName(userChars, owner);
         if (ownerInfo) {
           ownerInfo.artifactIDs[index] = null;
         }
@@ -400,7 +400,7 @@ export const userDatabaseSlice = createSlice({
     },
     removeSetup: (state, action: PayloadAction<number>) => {
       const removedID = action.payload;
-      const { mySetups, myWps, myArts } = state;
+      const { mySetups, userWps, userArts } = state;
       const removedIndex = indexById(mySetups, removedID);
 
       if (removedIndex !== -1) {
@@ -415,7 +415,7 @@ export const userDatabaseSlice = createSlice({
         // Disconnect weapon & artifacts from removed setup
         if (isUserSetup(setup)) {
           const { weaponID, artifactIDs } = setup;
-          const foundWeapon = findById(myWps, weaponID);
+          const foundWeapon = findById(userWps, weaponID);
 
           if (foundWeapon) {
             foundWeapon.setupIDs = foundWeapon.setupIDs?.filter((ID) => ID !== removedID);
@@ -423,7 +423,7 @@ export const userDatabaseSlice = createSlice({
 
           for (const ID of artifactIDs) {
             if (!ID) continue;
-            const foundArtPiece = findById(myArts, ID);
+            const foundArtPiece = findById(userArts, ID);
 
             if (foundArtPiece) {
               foundArtPiece.setupIDs = foundArtPiece.setupIDs?.filter((ID) => ID !== removedID);

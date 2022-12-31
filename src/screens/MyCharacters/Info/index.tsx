@@ -11,7 +11,7 @@ import getBaseStats from "@Calculators/baseStats";
 
 // Util
 import { findById, findByName, getImgSrc } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -22,9 +22,9 @@ import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSli
 // Selector
 import {
   selectChosenChar,
-  selectMyArts,
-  selectMyChars,
-  selectMyWps,
+  selectUserArts,
+  selectUserChars,
+  selectUserWps,
 } from "@Store/userDatabaseSlice/selectors";
 
 // Component
@@ -34,17 +34,17 @@ import { TalentList, ConsList } from "@Components/organisms";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(
-  selectMyChars,
-  selectMyWps,
-  selectMyArts,
+  selectUserChars,
+  selectUserWps,
+  selectUserArts,
   selectChosenChar,
-  (myChars, myWps, myArts, chosen) => {
-    const { weaponID, artifactIDs, ...char } = findByName(myChars, chosen)!;
+  (userChars, userWps, userArts, chosen) => {
+    const { weaponID, artifactIDs, ...char } = findByName(userChars, chosen)!;
 
     return {
       char,
-      weapon: findById(myWps, weaponID),
-      artifacts: artifactIDs.map((ID) => (ID ? findById(myArts, ID)! : null)),
+      weapon: findById(userWps, weaponID),
+      artifacts: artifactIDs.map((ID) => (ID ? findById(userArts, ID)! : null)),
     };
   }
 );
@@ -54,7 +54,7 @@ export default function Info() {
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
-  const dataChar = findCharacter(char);
+  const dataChar = findDataCharacter(char);
   if (!dataChar || !weapon) {
     return null;
   }

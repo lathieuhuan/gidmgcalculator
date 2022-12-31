@@ -1,5 +1,5 @@
 import type { ArtifactSetBonus } from "@Src/types";
-import { findArtifactSet } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 
 interface ISetBonusesDisplayProps {
   setBonuses: ArtifactSetBonus[];
@@ -13,7 +13,7 @@ export function SetBonusesDisplay({ setBonuses, noTitle }: ISetBonusesDisplayPro
       {setBonuses.length > 0 ? (
         setBonuses.map(({ code, bonusLv }, index) => {
           const content = [];
-          const artData = findArtifactSet({ code })!;
+          const artData = findDataArtifactSet({ code })!;
 
           for (let i = 0; i <= bonusLv; i++) {
             const { desc } = artData.setBonuses[i];

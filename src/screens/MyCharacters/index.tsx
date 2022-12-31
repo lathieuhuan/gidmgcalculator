@@ -5,7 +5,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { addCharacter, chooseCharacter } from "@Store/userDatabaseSlice";
 
 // Selector
-import { selectChosenChar, selectMyChars } from "@Store/userDatabaseSlice/selectors";
+import { selectChosenChar, selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,8 +17,8 @@ import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 import Info from "./Info";
 
-const selectCharacterNames = createSelector(selectMyChars, (myChars) =>
-  myChars.map(({ name }) => name)
+const selectCharacterNames = createSelector(selectUserChars, (userChars) =>
+  userChars.map(({ name }) => name)
 );
 
 type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;

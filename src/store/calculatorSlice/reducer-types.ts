@@ -27,8 +27,8 @@ export type PickedChar = Partial<UserCharacter> & {
 };
 export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
-  myWps: UserWeapon[];
-  myArts: UserArtifact[];
+  userWps: UserWeapon[];
+  userArts: UserArtifact[];
 }>;
 
 export type AddTeammateAction = PayloadAction<{

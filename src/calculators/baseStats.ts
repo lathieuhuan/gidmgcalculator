@@ -16,7 +16,7 @@ import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "
 
 // Util
 import { applyPercent, ascsFromLv, toMult, getArtifactSetBonuses } from "@Src/utils";
-import { findArtifactSet, findCharacter, findWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
 import { artifactMainStatValue } from "@Data/artifacts/utils";
 import { addOrInit, addTrackerRecord, applyModifier } from "./utils";
@@ -28,7 +28,7 @@ interface InitiateTotalAttrArgs {
   tracker?: Tracker;
 }
 export function initiateTotalAttr({ char, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
-  const charData = findCharacter(char)!;
+  const charData = findDataCharacter(char)!;
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
@@ -146,7 +146,7 @@ export function applyArtPassiveBuffs({ isFinal, setBonuses, modifierArgs }: Appl
   for (const { code, bonusLv } of setBonuses) {
     //
     for (let i = 0; i <= bonusLv; i++) {
-      const artData = findArtifactSet({ code });
+      const artData = findDataArtifactSet({ code });
 
       if (artData) {
         const { applyBuff, applyFinalBuff } = artData.setBonuses[i];
@@ -198,7 +198,7 @@ interface GetBaseStatsArgs {
 }
 export default function getBaseStats({ charData, char, weapon, artifacts }: GetBaseStatsArgs) {
   //
-  const weaponData = findWeapon(weapon)!;
+  const weaponData = findDataWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weaponData, weapon });
   const artAttr = addArtAttr({ artifacts, totalAttr });
   const setBonuses = getArtifactSetBonuses(artifacts);

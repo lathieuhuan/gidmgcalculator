@@ -16,7 +16,7 @@ import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calcula
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
-import { findArtifactSet } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 import { findByIndex, getArtifactSetBonuses } from "@Src/utils";
 
 // Component
@@ -109,7 +109,7 @@ export function ArtifactDebuffs() {
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
     const { index, activated, inputs = [] } = ctrl;
-    const { name, debuffs = [] } = findArtifactSet(ctrl) || {};
+    const { name, debuffs = [] } = findDataArtifactSet(ctrl) || {};
     const debuff = findByIndex(debuffs, index);
 
     if (!debuff) return;

@@ -7,7 +7,7 @@ import characters from "@Data/characters";
 
 // Util
 import { findByName, pickProps } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -30,7 +30,7 @@ function PickerCharacterCore({
   onPickCharacter,
   onClose,
 }: PickerCharacterCoreProps) {
-  const myChars = useSelector((state) => state.database.myChars);
+  const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
     const fields: Array<keyof DataCharacter> = [
@@ -47,7 +47,7 @@ function PickerCharacterCore({
     if (sourceType === "mixed") {
       for (const character of characters) {
         const charData = pickProps(character, fields);
-        const existedChar = findByName(myChars, character.name);
+        const existedChar = findByName(userChars, character.name);
 
         if (existedChar) {
           data.push({ ...existedChar, ...charData });
@@ -62,8 +62,8 @@ function PickerCharacterCore({
         }
       }
     } else if (sourceType === "userData") {
-      for (const { name, cons, artifactIDs } of myChars) {
-        const found = findCharacter({ name });
+      for (const { name, cons, artifactIDs } of userChars) {
+        const found = findDataCharacter({ name });
 
         if (found) {
           if (!filter || filter(found)) {

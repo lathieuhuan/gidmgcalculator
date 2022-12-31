@@ -1,5 +1,4 @@
 import type { ArtifactType, CharData, PartyData, WeaponType } from "@Src/types";
-import { findByCode, findByName } from "@Src/utils";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -8,31 +7,36 @@ import weapons from "./weapons";
 type HasName = { name: string };
 type HasCode = { code: number };
 
-export const findCharacter = (char: HasName) => findByName(characters, char.name);
-
-export const findArtifactSet = ({ code }: HasCode) => {
-  return code ? findByCode(artifacts, code) : undefined;
+export const findDataCharacter = (char: HasName) => {
+  return characters.find((character) => character.name === char.name);
 };
 
-export function findArtifactPiece({ code, type }: { type: ArtifactType } & HasCode) {
-  const targetSet = findByCode(artifacts, code);
+export const findDataArtifactSet = ({ code }: HasCode) => {
+  // no artifact with code 0
+  return code ? artifacts.find((artifact) => artifact.code === code) : undefined;
+};
+
+export function findDataArtifact({ code, type }: { type: ArtifactType } & HasCode) {
+  const targetSet = findDataArtifactSet({ code });
 
   if (targetSet) {
     const { name, icon } = targetSet[type];
     return { beta: targetSet.beta, name, icon };
   }
-
   return undefined;
 }
 
-export const findWeapon = ({ code, type }: { type: WeaponType } & HasCode) => {
-  return code ? findByCode(weapons[type], code) : undefined;
+export const findDataWeapon = ({ code, type }: { type: WeaponType } & HasCode) => {
+  // no weapon with code 0
+  return code ? weapons[type].find((weapon) => weapon.code === code) : undefined;
 };
 
-export const findMonster = ({ code }: { code: number }) => findByCode(monsters, code);
+export const findMonster = ({ code }: { code: number }) => {
+  return monsters.find((monster) => monster.code === code);
+};
 
 export const getCharData = (char: HasName): CharData => {
-  const { code, name, icon, vision, nation, weaponType, activeTalents } = findCharacter(char)!;
+  const { code, name, icon, vision, nation, weaponType, activeTalents } = findDataCharacter(char)!;
   return {
     code,
     name,

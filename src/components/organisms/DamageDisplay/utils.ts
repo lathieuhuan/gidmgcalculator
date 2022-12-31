@@ -1,4 +1,4 @@
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 import { NORMAL_ATTACKS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 
 type AttackPatternKey = {
@@ -14,7 +14,7 @@ type ReactionKey = {
 export type TableKey = AttackPatternKey | ReactionKey;
 
 export function getTableKeys(charName: string) {
-  const charData = findCharacter({ name: charName });
+  const charData = findDataCharacter({ name: charName });
   if (!charData) {
     return [];
   }

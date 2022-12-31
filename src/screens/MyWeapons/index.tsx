@@ -18,7 +18,7 @@ import {
 // Selector
 import {
   selectFilteredWeaponIDs,
-  selectMyWps,
+  selectUserWps,
   selectWeaponById,
 } from "@Store/userDatabaseSlice/selectors";
 
@@ -54,7 +54,7 @@ export default function MyWeapons() {
   const [invRack, chosenID, setChosenID] = useInventoryRack({
     listClassName: styles.list,
     itemClassName: styles.item,
-    items: useSelector(selectMyWps),
+    items: useSelector(selectUserWps),
     itemType: "weapon",
     filteredIds,
   });

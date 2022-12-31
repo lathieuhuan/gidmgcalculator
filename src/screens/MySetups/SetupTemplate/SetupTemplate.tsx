@@ -30,7 +30,12 @@ import {
 
 // Util
 import { finalTalentLv, getImgSrc } from "@Src/utils";
-import { findArtifactPiece, findCharacter, findWeapon, getPartyData } from "@Data/controllers";
+import {
+  findDataArtifact,
+  findDataCharacter,
+  findDataWeapon,
+  getPartyData,
+} from "@Data/controllers";
 
 // Component
 import { CharacterPortrait, IconButton } from "@Components/atoms";
@@ -85,8 +90,8 @@ export function SetupTemplate({
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charInfo = findCharacter(char);
-    const weaponData = weapon ? findWeapon(weapon) : undefined;
+    const charInfo = findDataCharacter(char);
+    const weaponData = weapon ? findDataWeapon(weapon) : undefined;
 
     if (charInfo) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
@@ -130,8 +135,8 @@ export function SetupTemplate({
           const teammateSetupID = allIDs?.[teammate.name];
           const clickable = !isOriginal && teammateSetupID;
           // const { weapon, artifact } = teammate;
-          // const teammateWp = findWeapon(weapon);
-          // const teammateArt = findArtifactPiece({ code: artifact.code, type: "flower" });
+          // const teammateWp = findDataWeapon(weapon);
+          // const teammateArt = findDataArtifact({ code: artifact.code, type: "flower" });
 
           return (
             <div
@@ -179,7 +184,7 @@ export function SetupTemplate({
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = findArtifactPiece(artifact);
+            const artifactData = findDataArtifact(artifact);
             return artifactData
               ? renderGearIcon(
                   {

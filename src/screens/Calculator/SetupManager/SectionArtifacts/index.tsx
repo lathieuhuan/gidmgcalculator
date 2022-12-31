@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findArtifactPiece } from "@Data/controllers";
+import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { CollapseSpace } from "@Components/atoms";
@@ -68,7 +68,7 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
         {ARTIFACT_TYPES.map((type, index) => {
           const artPiece = artifacts[index];
           const icon = artPiece
-            ? findArtifactPiece({ code: artPiece.code, type })?.icon || ""
+            ? findDataArtifact({ code: artPiece.code, type })?.icon || ""
             : ARTIFACT_ICONS[type];
 
           return (

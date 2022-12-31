@@ -90,6 +90,7 @@ export function ArtifactInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
+          mutable
           rarity={rarity}
           mainStatType={mainStatType}
           subStats={artifact.subStats}
@@ -158,7 +159,7 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
   const [state, setState] = useState<"SUCCESS" | "PENDING" | "">("");
 
   const existedArtifact = findById(
-    useSelector((state) => state.database.myArts),
+    useSelector((state) => state.database.userArts),
     artifact.ID
   );
 

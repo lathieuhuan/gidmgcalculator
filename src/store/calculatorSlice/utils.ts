@@ -12,12 +12,11 @@ import type {
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
-import { findArtifactSet, findWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
 import { findById, getArtifactSetBonuses, userItemToCalcItem } from "@Src/utils";
 import { initCharInfo, initWeapon } from "./initiators";
-import { info } from "console";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -41,15 +40,15 @@ export function calculate(state: CalculatorState, all?: boolean) {
 
 type ParseAndInitDataArgs = {
   pickedChar: PickedChar;
-  myWps: UserWeapon[];
-  myArts: UserArtifact[];
+  userWps: UserWeapon[];
+  userArts: UserArtifact[];
   weaponType: WeaponType;
   seedID: number;
 };
 export function parseAndInitData({
   pickedChar: { name, weaponID, artifactIDs = [null, null, null, null, null], ...info },
-  myWps,
-  myArts,
+  userWps,
+  userArts,
   weaponType,
   seedID,
 }: ParseAndInitDataArgs) {
@@ -57,7 +56,7 @@ export function parseAndInitData({
 
   let weapon: CalcWeapon;
   let wpBuffCtrls: ModifierCtrl[];
-  const existedWp = findById(myWps, weaponID);
+  const existedWp = findById(userWps, weaponID);
 
   if (existedWp) {
     weapon = userItemToCalcItem(existedWp, seedID++);
@@ -73,7 +72,7 @@ export function parseAndInitData({
   }
 
   const artifacts = artifactIDs.map((id) => {
-    const artifact = id ? findById(myArts, id) : undefined;
+    const artifact = id ? findById(userArts, id) : undefined;
     return artifact ? userItemToCalcItem(artifact, seedID++) : null;
   });
   const firstSetBonus = getArtifactSetBonuses(artifacts)[0];
@@ -123,7 +122,7 @@ export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
 
 // #to-check necessary (?) cause find weapon
 export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
-  const { buffs = [] } = findWeapon(weapon) || {};
+  const { buffs = [] } = findDataWeapon(weapon) || {};
   return getModCtrls(buffs, forSelf);
 }
 
@@ -131,7 +130,7 @@ export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number
   if (!hasCode?.code) {
     return [];
   }
-  const { buffs = [] } = findArtifactSet({ code: hasCode.code }) || {};
+  const { buffs = [] } = findDataArtifactSet({ code: hasCode.code }) || {};
   return getModCtrls(buffs, forSelf);
 }
 

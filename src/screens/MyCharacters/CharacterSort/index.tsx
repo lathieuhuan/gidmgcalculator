@@ -10,19 +10,19 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { sortCharacters } from "@Store/userDatabaseSlice";
 
 // Selector
-import { selectMyChars } from "@Store/userDatabaseSlice/selectors";
+import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { splitLv } from "@Src/utils";
-import { findCharacter } from "@Data/controllers";
+import { findDataCharacter } from "@Data/controllers";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
 import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
-const selectCharacterToBeSorted = createSelector(selectMyChars, (myChars) =>
-  myChars.map((char, index) => {
-    const { name, rarity } = findCharacter(char)!;
+const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
+  userChars.map((char, index) => {
+    const { name, rarity } = findDataCharacter(char)!;
     return { name, level: char.level, rarity, index };
   })
 );

@@ -9,7 +9,7 @@ import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findById } from "@Src/utils";
-import { isUserSetup } from "@Store/userDatabaseSlice/utils";
+import { isUserSetup } from "@Src/utils/setup";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
