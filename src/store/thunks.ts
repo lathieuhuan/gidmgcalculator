@@ -16,6 +16,7 @@ import {
 import { EScreen } from "@Src/constants";
 import { calcItemToUserItem, findById, indexById, userItemToCalcItem } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
+import isEqual from "react-fast-compare";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
@@ -40,29 +41,48 @@ export const pickEquippedArtSet =
     dispatch(updateAllArtifact(artifacts));
   };
 
-export const saveSetupThunk = (ID: number, name: string): AppThunk => {
+export const saveSetupThunk = (setuppID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const {
       calculator,
       database: { myWps, myArts },
     } = getState();
-    const { weapon, artifacts } = calculator.setupsById[ID];
-    const foundWpIndex = weapon.oriID ? indexById(myWps, weapon.oriID) : -1;
+    const { weapon, artifacts } = calculator.setupsById[setuppID];
+    let seedID = Date.now();
+    let weaponID = weapon.ID;
+    const foundWpIndex = indexById(myWps, weapon.ID);
 
     if (foundWpIndex !== -1) {
-      let newSetupIDs = myWps[foundWpIndex].setupIDs;
+      // weapon existed and nothing changes
+      if (isEqual(weapon, userItemToCalcItem(myWps[foundWpIndex]))) {
+        let newSetupIDs = myWps[foundWpIndex].setupIDs || [];
 
-      if (newSetupIDs && !newSetupIDs.includes(ID)) {
+        if (!newSetupIDs.includes(setuppID)) {
+          dispatch(
+            updateUserWeapon({
+              index: foundWpIndex,
+              ...myWps[foundWpIndex],
+              setupIDs: newSetupIDs.concat(setuppID),
+            })
+          );
+        }
+      } else {
+        weaponID = seedID++;
+
         dispatch(
-          updateUserWeapon({
-            index: foundWpIndex,
-            ...myWps[foundWpIndex],
-            setupIDs: newSetupIDs.concat(ID),
-          })
+          addUserWeapon(
+            calcItemToUserItem(
+              {
+                ...weapon,
+                ID: weaponID,
+              },
+              { setupIDs: [setuppID] }
+            )
+          )
         );
       }
     } else {
-      dispatch(addUserWeapon(calcItemToUserItem(weapon, { setupIDs: [ID] })));
+      dispatch(addUserWeapon(calcItemToUserItem(weapon, { setupIDs: [setuppID] })));
     }
 
     artifacts.forEach((artifact, artifactIndex) => {
@@ -72,12 +92,12 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
         if (foundIndex !== -1) {
           let newSetupIDs = myArts[foundIndex].setupIDs;
 
-          if (newSetupIDs && !newSetupIDs.includes(ID)) {
+          if (newSetupIDs && !newSetupIDs.includes(setuppID)) {
             dispatch(
               updateUserArtifact({
                 index: foundIndex,
                 ...myArts[foundIndex],
-                setupIDs: newSetupIDs.concat(ID),
+                setupIDs: newSetupIDs.concat(setuppID),
               })
             );
           }
@@ -86,7 +106,7 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
             addUserArtifact({
               ...artifact,
               owner: null,
-              setupIDs: [ID],
+              setupIDs: [setuppID],
             })
           );
         }
@@ -96,9 +116,9 @@ export const saveSetupThunk = (ID: number, name: string): AppThunk => {
     batch(() => {
       dispatch(
         saveSetup({
-          ID,
+          ID: setuppID,
           name,
-          data: cleanupCalcSetup(calculator, ID),
+          data: cleanupCalcSetup(calculator, setuppID, { weaponID }),
         })
       );
       dispatch(

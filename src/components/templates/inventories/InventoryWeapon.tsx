@@ -64,7 +64,7 @@ function WeaponInventory({
               style={{ minHeight: "28rem" }}
             >
               <div className="w-68 grow hide-scrollbar">
-                <WeaponCard mutable={false} weapon={chosenWp} />
+                <WeaponCard weapon={chosenWp} />
               </div>
 
               {chosenWp && chosenWp.owner !== owner ? (

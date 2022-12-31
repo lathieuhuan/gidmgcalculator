@@ -70,8 +70,8 @@ export function GearsDetails({
         <div className={clsx("flex flex-col", className)} style={style}>
           <div className="px-1 grow hide-scrollbar">
             <WeaponCard
-              weapon={weapon}
               mutable
+              weapon={weapon}
               upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
               refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
             />

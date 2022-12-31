@@ -9,7 +9,14 @@ import { findCharacter } from "@Data/controllers";
 import { deepCopy, findByIndex } from "./index";
 import { CalculatorState } from "@Store/calculatorSlice/types";
 
-export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): UserSetupCalcInfo {
+interface CleanupCalcSetupOptions {
+  weaponID?: number;
+}
+export function cleanupCalcSetup(
+  calculator: CalculatorState,
+  setupID: number,
+  options?: CleanupCalcSetupOptions
+): UserSetupCalcInfo {
   const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
   const { buffs = [], debuffs = [] } = findCharacter(char) || {};
   const party: Party = [];
@@ -32,7 +39,7 @@ export function cleanupCalcSetup(calculator: CalculatorState, setupID: number): 
   return {
     char,
     ...data,
-    weaponID: weapon.ID,
+    weaponID: options?.weaponID || weapon.ID,
     artifactIDs: artifacts.reduce(
       (IDs: (number | null)[], piece) => IDs.concat(piece?.ID || null),
       []

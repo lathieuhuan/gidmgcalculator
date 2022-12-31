@@ -110,8 +110,8 @@ export default function MyWeapons() {
               <div className="w-75 grow hide-scrollbar">
                 {weapon ? (
                   <WeaponCard
-                    weapon={weapon}
                     mutable
+                    weapon={weapon}
                     upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
                     refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
                   />

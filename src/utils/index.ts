@@ -200,12 +200,8 @@ export function userItemToCalcItem(
   item: UserWeapon | UserArtifact,
   newID = Date.now()
 ): CalcWeapon | CalcArtifact {
-  const { owner, setupIDs, ID, ...info } = item;
-  return {
-    ID: newID,
-    oriID: ID,
-    ...info,
-  };
+  const { owner, setupIDs, ...info } = item;
+  return info;
 }
 
 interface IOptions {
@@ -219,11 +215,10 @@ export function calcItemToUserItem(
   item: CalcArtifact | CalcWeapon,
   options?: IOptions
 ): UserArtifact | UserWeapon {
-  const { oriID, ...rest } = item;
   const { ID = item.ID, owner = null, setupIDs } = options || {};
 
   return {
-    ...rest,
+    ...item,
     ID,
     owner,
     ...(setupIDs ? { setupIDs } : undefined),

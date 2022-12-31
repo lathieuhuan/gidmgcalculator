@@ -19,12 +19,11 @@ const groupStyles = "bg-darkblue-2 px-2";
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;
-  /** Default to true */
   mutable?: boolean;
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-export function WeaponCard({ weapon, mutable = true, upgrade, refine }: WeaponCardProps) {
+export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
   const { t } = useTranslation();
   if (!weapon) return null;
 

@@ -68,19 +68,9 @@ export type ModifierCtrl = {
   inputs?: ModifierInput[];
 };
 
-export type CalcWeapon = Weapon & {
-  /**
-   * The original ID when the weapon comes from user database
-   */
-  oriID?: number;
-};
+export type CalcWeapon = Weapon;
 
-export type CalcArtifact = Artifact & {
-  /**
-   * The original ID when the artifact comes from user database
-   */
-  oriID?: number;
-};
+export type CalcArtifact = Artifact;
 
 export type CalcArtifacts = (CalcArtifact | null)[];
 
