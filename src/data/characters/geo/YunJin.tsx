@@ -1,10 +1,11 @@
 import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, MEDIUM_PAs } from "../constants";
+import { applyPercent, round, countVision } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkAscs, modIsActivated, countVision, talentBuff, checkCons } from "../utils";
+import { checkAscs, modIsActivated, talentBuff, checkCons } from "../utils";
 
 const getA4BuffValue = (
   toSelf: boolean,
@@ -175,7 +176,7 @@ const YunJin: DataCharacter = {
           tlMult += xtraMult;
         }
         const buffValue = applyPercent(DEF, tlMult);
-        desc += ` / ${round2(tlMult)}% of ${DEF} DEF`;
+        desc += ` / ${round(tlMult, 2)}% of ${DEF} DEF`;
         applyModifier(desc, obj.attPattBonus, "NA.flat", buffValue, obj.tracker);
 
         if (toSelf ? checkCons[2](char) : inputs[2]) {

@@ -1,8 +1,9 @@
 import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round1, round3 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -18,8 +19,8 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
     partyData,
   });
   return {
-    NA: round1(32.98 * TALENT_LV_MULTIPLIERS[5][level]),
-    CA: round1(26.39 * TALENT_LV_MULTIPLIERS[5][level]),
+    NA: round(32.98 * TALENT_LV_MULTIPLIERS[5][level], 1),
+    CA: round(26.39 * TALENT_LV_MULTIPLIERS[5][level], 1),
   };
 };
 
@@ -205,8 +206,8 @@ const Wanderer: DataCharacter = {
         const { NA, CA } = getESBuffValue(char, partyData);
         return (
           <>
-            Increases <Green>Normal Attack DMG</Green> by <Green b>{round3(1 + NA / 100)}</Green>{" "}
-            times and <Green>Charged Attack DMG</Green> by <Green b>{round3(1 + CA / 100)}</Green>{" "}
+            Increases <Green>Normal Attack DMG</Green> by <Green b>{round(1 + NA / 100, 3)}</Green>{" "}
+            times and <Green>Charged Attack DMG</Green> by <Green b>{round(1 + CA / 100, 3)}</Green>{" "}
             times.
             <br />• At <Lightgold>C1</Lightgold>, increases{" "}
             <Green>Normal and Charged Attack SPD</Green> by <Green b>10%</Green>, increases{" "}

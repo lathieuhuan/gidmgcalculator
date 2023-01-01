@@ -1,5 +1,5 @@
 import type { ArtifactMainStatType, ArtifactSubStatType, UserArtifact } from "@Src/types";
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
+import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 export interface StatsFilter {
   main: "All" | ArtifactMainStatType;

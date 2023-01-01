@@ -27,6 +27,7 @@ import {
 } from "@Src/constants";
 import { RESONANCE_STAT } from "./constants";
 
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import {
   getArtifactSetBonuses,
@@ -34,7 +35,6 @@ import {
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import {
   addArtAttr,
   addWeaponSubStat,

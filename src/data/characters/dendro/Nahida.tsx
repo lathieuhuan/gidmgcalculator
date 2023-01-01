@@ -1,18 +1,22 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round2, round3 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
-function getEBBuffValue(char: CharInfo, partyData: PartyData) {
+function getEBBuff(char: CharInfo, partyData: PartyData) {
   const pyroCount = partyData.reduce(
     (result, data) => (data?.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
   const multBase = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
-  return [round2(multBase * TALENT_LV_MULTIPLIERS[2][char.EB]), pyroCount];
+  return {
+    value: round(multBase * TALENT_LV_MULTIPLIERS[2][char.EB], 2),
+    pyroCount,
+  };
 }
 
 const Nahida: DataCharacter = {
@@ -73,10 +77,10 @@ const Nahida: DataCharacter = {
             const excessEM = Math.max(totalAttr.em - 200, 0);
 
             if (EBisInUse) {
-              const [EBBuffValue] = getEBBuffValue(char, partyData);
-              if (EBBuffValue) {
-                buffValue += EBBuffValue;
-                desc.push(`Elemental Burst (${EBBuffValue})`);
+              const buff = getEBBuff(char, partyData);
+              if (buff.value) {
+                buffValue += buff.value;
+                desc.push(`Elemental Burst (${buff.value})`);
               }
             }
             if (A4isInUse) {
@@ -93,8 +97,9 @@ const Nahida: DataCharacter = {
               [
                 true,
                 "flat",
-                `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Talent Mult. ${round3(
-                  emPartMult
+                `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Talent Mult. ${round(
+                  emPartMult,
+                  3
                 )}%)`,
                 emPart,
               ],
@@ -128,9 +133,9 @@ const Nahida: DataCharacter = {
       // getExtraStats: (lv) => [
       //   {
       //     name: "Pyro: DMG Bonus",
-      //     value: `1 Character ${round2(
-      //       11.12 * TALENT_LV_MULTIPLIERS[2][lv]
-      //     )}% / 2 Characters ${round2(16.72 * TALENT_LV_MULTIPLIERS[2][lv])}%`,
+      //     value: `1 Character ${(
+      //       11.12 * TALENT_LV_MULTIPLIERS[2][lv], 2
+      //     )}% / 2 Characters ${round(16.72 * TALENT_LV_MULTIPLIERS[2][lv], 2)}%`,
       //   },
       //   {
       //     name: "Electro: CD Decrease",
@@ -245,11 +250,11 @@ const Nahida: DataCharacter = {
       index: 0,
       src: EModSrc.EB,
       desc: ({ char, partyData }) => {
-        const [buffValue, pyroCount] = getEBBuffValue(char, partyData);
+        const { value, pyroCount } = getEBBuff(char, partyData);
         return (
           <>
             Within the Shrine of Maya, <Green>Tri-Karma Purification DMG</Green> is increased by{" "}
-            <Green b>{buffValue}%</Green> ({pyroCount} Pyro teammates).
+            <Green b>{value}%</Green> ({pyroCount} Pyro teammates).
           </>
         );
       },

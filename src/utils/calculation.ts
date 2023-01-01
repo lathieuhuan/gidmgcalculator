@@ -1,4 +1,4 @@
-import { BASE_REACTION_DAMAGE } from "@Calculators/constants";
+import { BASE_REACTION_DAMAGE } from "@Src/constants";
 import type {
   ActiveTalents,
   ArtifactSetBonus,

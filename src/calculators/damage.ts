@@ -5,14 +5,21 @@ import type {
   TrackerDamageRecord,
 } from "@Src/types";
 import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
-import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 
+// Constant
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_PATTERNS,
+  TRANSFORMATIVE_REACTIONS,
+  BASE_REACTION_DAMAGE,
+} from "@Src/constants";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
+
+// Util
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
-import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
-import { applyToOneOrMany, bareLv, findByIndex, toMult } from "@Src/utils";
+import { applyToOneOrMany, bareLv, findByIndex, toMult, getDefaultAttPattInfo } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
-import { getDefaultStatInfo } from "./utils";
-import { BASE_REACTION_DAMAGE, TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 function calcTalentDamage({
   stat,
@@ -251,7 +258,7 @@ export default function getDamage({
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const talent = activeTalents[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getDefaultStatInfo(resultKey, weaponType, vision);
+    const defaultInfo = getDefaultAttPattInfo(resultKey, weaponType, vision);
     const level = finalTalentLv({
       talents: dataChar.activeTalents,
       talentType: resultKey,

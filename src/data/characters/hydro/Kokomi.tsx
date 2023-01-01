@@ -1,7 +1,8 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import {
   finalTalentLv,

@@ -1,7 +1,8 @@
 import type { DataCharacter } from "@Src/types";
 import { Geo, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, HEAVY_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";

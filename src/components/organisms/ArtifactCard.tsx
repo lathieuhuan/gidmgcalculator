@@ -3,7 +3,7 @@ import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type { CalcArtifact } from "@Src/types";
 
 // Constant
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
+import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Hook
 import { useTranslation } from "@Src/hooks";

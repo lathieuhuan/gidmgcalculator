@@ -1,8 +1,9 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
@@ -15,7 +16,7 @@ const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: Mod
   });
   let stacks = args.inputs[0] || 0;
   stacks = stacks === 4 ? 5 : stacks;
-  return round2(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks);
+  return round(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks, 2);
 };
 
 const Aloy: DataCharacter = {
@@ -74,12 +75,12 @@ const Aloy: DataCharacter = {
       //   {
       //     name: "Coil Normal Attack DMG Bonus",
       //     value: [1, 2, 3]
-      //       .map((stack) => round2(5.846 * TALENT_LV_MULTIPLIERS[5][lv] * stack) + "%")
+      //       .map((stack) => round(5.846 * TALENT_LV_MULTIPLIERS[5][lv] * stack, 2) + "%")
       //       .join(" / "),
       //   },
       //   {
       //     name: "Rushing Ice Normal Attack DMG Bonus",
-      //     value: round2(29.23 * TALENT_LV_MULTIPLIERS[5][lv]) + "%",
+      //     value: round(29.23 * TALENT_LV_MULTIPLIERS[5][lv], 2) + "%",
       //   },
       //   { name: "Rushing Ice Duration", value: "10s" },
       //   { name: "CD", value: "20s" },

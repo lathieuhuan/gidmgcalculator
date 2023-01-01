@@ -15,11 +15,16 @@ import type { BaseModifierArgsWrapper } from "./types";
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 
 // Util
-import { applyPercent, ascsFromLv, toMult } from "@Src/utils";
-import { getArtifactSetBonuses, applyModifier } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
-import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
-import { artifactMainStatValue } from "@Data/artifacts/utils";
+import {
+  applyPercent,
+  ascsFromLv,
+  toMult,
+  artifactMainStatValue,
+  weaponMainStatValue,
+  weaponSubStatValue,
+} from "@Src/utils";
+import { getArtifactSetBonuses, applyModifier } from "@Src/utils/calculation";
 import { addOrInit, addTrackerRecord } from "./utils";
 
 interface InitiateTotalAttrArgs {
@@ -75,7 +80,7 @@ export function initiateTotalAttr({ char, weapon, weaponData, tracker }: Initiat
   }
 
   // Weapon main stat
-  const weaponAtk = wpMainStatAtLv(weaponData.mainStatScale, weapon.level);
+  const weaponAtk = weaponMainStatValue(weaponData.mainStatScale, weapon.level);
   totalAttr.base_atk += weaponAtk;
   addTrackerRecord(tracker?.totalAttr.atk, "Weapon main stat", weaponAtk);
 
@@ -132,7 +137,7 @@ export function addWeaponSubStat({
 }: addWeaponSubStatArgs) {
   if (weaponData.subStat) {
     const { type, scale } = weaponData.subStat;
-    const value = wpSubStatAtLv(scale, wpLevel);
+    const value = weaponSubStatValue(scale, wpLevel);
 
     applyModifier(`${weaponData.name} sub-stat`, totalAttr, type, value, tracker);
   }

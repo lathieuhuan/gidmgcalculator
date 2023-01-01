@@ -35,8 +35,7 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
-import { countVision } from "@Data/characters/utils";
-import { bareLv, deepCopy, findByCode, findById, turnArray } from "@Src/utils";
+import { bareLv, deepCopy, findByCode, findById, turnArray, countVision } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import {
   createCharInfo,

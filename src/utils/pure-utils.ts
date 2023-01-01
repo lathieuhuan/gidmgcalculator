@@ -57,14 +57,10 @@ export const indexByIndex = findIndex("index");
 export const indexByCode = findIndex("code");
 export const indexByName = findIndex("name");
 
-export const roundMaker = (x: number) => (n: number) => {
+export const round = (n: number, x: number) => {
   const pow = Math.pow(10, x);
   return Math.round(n * pow) / pow;
 };
-
-export const round1 = roundMaker(1);
-export const round2 = roundMaker(2);
-export const round3 = roundMaker(3);
 
 export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 100);
 

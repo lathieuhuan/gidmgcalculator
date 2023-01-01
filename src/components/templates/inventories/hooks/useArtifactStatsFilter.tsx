@@ -5,8 +5,8 @@ import type { ArtifactType, ArtifactMainStatType, ArtifactSubStatType } from "@S
 import type { StatsFilter } from "../utils";
 
 // Constant
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
 import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
+import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Hook
 import { useTranslation } from "@Src/hooks";

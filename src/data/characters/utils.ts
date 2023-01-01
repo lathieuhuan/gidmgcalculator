@@ -30,20 +30,6 @@ export const checkCons = {
   6: makeConsChecker(6),
 };
 
-export function countVision(partyData: PartyData, charData?: CharData) {
-  const result: Partial<Record<Vision, number>> = {};
-  if (charData) {
-    result[charData.vision] = 1;
-  }
-  return partyData.reduce((count, teammateData) => {
-    if (teammateData) {
-      count[teammateData.vision] = (count[teammateData.vision] || 0) + 1;
-    }
-
-    return count;
-  }, result);
-}
-
 export const makeTrackerDesc = (isAscs: boolean, level: number) => {
   return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;
 };

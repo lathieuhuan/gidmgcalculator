@@ -1,3 +1,4 @@
+import type { Tracker, TrackerRecord } from "@Src/types";
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -7,7 +8,6 @@ import {
   REACTIONS,
   REACTION_BONUS_INFO_KEYS,
 } from "@Src/constants";
-import type { AttackElement, Vision, WeaponType, Tracker, TrackerRecord } from "@Src/types";
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
   obj: T,
@@ -67,19 +67,3 @@ export function addTrackerRecord(list: TrackerRecord[] | undefined, desc: string
     list.push({ desc, value });
   }
 }
-
-export const getDefaultStatInfo = (
-  key: "NAs" | "ES" | "EB",
-  weaponType: WeaponType,
-  vision: Vision
-): {
-  attElmt: AttackElement;
-  multType: number;
-} => {
-  const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
-
-  return {
-    attElmt,
-    multType: attElmt === "phys" ? 1 : 2,
-  };
-};

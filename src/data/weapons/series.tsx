@@ -1,7 +1,7 @@
 import type { DataWeapon } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { applyPercent, round2 } from "@Src/utils";
+import { applyPercent, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "./utils";
 
@@ -291,7 +291,7 @@ export const watatsumiSeries: SeriesInfo = {
         (result, data) => result + (data?.EBcost || 0),
         charData.EBcost
       );
-      const buffValue = round2(maxEnergy * (0.09 + refi * 0.03));
+      const buffValue = round(maxEnergy * (0.09 + refi * 0.03), 2);
       applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
     }
   },

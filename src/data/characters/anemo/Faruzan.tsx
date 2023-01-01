@@ -1,8 +1,9 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, round1, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
@@ -16,7 +17,7 @@ const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: IGetWindGiftB
   const level = toSelf
     ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
     : inputs[0] || 0;
-  return level ? round1(18 * TALENT_LV_MULTIPLIERS[2][level]) : 0;
+  return level ? round(18 * TALENT_LV_MULTIPLIERS[2][level], 1) : 0;
 };
 
 const Faruzan: DataCharacter = {
@@ -210,7 +211,7 @@ const Faruzan: DataCharacter = {
             ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
             : inputs[0] || 1;
           const mult = 32;
-          const finalDesc = desc + ` / Lv. ${level} / ${round2(mult)}% of ${ATK} Base ATK`;
+          const finalDesc = desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} Base ATK`;
 
           applyModifier(finalDesc, attElmtBonus, "anemo.flat", applyPercent(ATK, mult), tracker);
         }

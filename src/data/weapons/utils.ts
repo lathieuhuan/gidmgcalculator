@@ -1,3 +1,5 @@
+import type { AttributeStat, ResistanceReductionKey } from "@Src/types";
+import { pickOne } from "@Src/utils";
 import type {
   AttackElementPath,
   AttackPatternPath,
@@ -6,10 +8,6 @@ import type {
   RecipientName,
 } from "@Src/utils/calculation";
 import { applyModifier } from "@Src/utils/calculation";
-import type { AttributeStat, Level, ResistanceReductionKey } from "@Src/types";
-import { LEVELS } from "@Src/constants";
-import { bareLv, pickOne } from "@Src/utils";
-import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "./constants";
 
 type NumOrArrayNum = number | number[];
 
@@ -68,13 +66,3 @@ export function makeWpModApplier(
     }
   };
 }
-
-export const wpMainStatAtLv = (scale: string, lv: Level) => {
-  return BASE_ATTACK_TYPE[scale][LEVELS.indexOf(lv)];
-};
-
-export const wpSubStatAtLv = (scale: string, lv: Level) => {
-  const curLv = bareLv(lv);
-  const index = curLv === 1 ? 0 : curLv === 20 ? 1 : (curLv - 20) / 10;
-  return SUBSTAT_SCALE[scale][index];
-};

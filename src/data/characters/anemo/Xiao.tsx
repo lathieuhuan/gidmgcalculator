@@ -1,15 +1,16 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Anemo, Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, HEAVIER_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, HEAVIER_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, talents: Xiao.activeTalents, talentType: "EB", partyData });
-  return round2(58.45 * TALENT_LV_MULTIPLIERS[5][level]);
+  return round(58.45 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
 const Xiao: DataCharacter = {
@@ -69,7 +70,7 @@ const Xiao: DataCharacter = {
       // getExtraStats: (lv = 1) => [
       //   {
       //     name: "Normal/Charged/Plunging Attack DMG Bonus",
-      //     value: round2(58.45 * TALENT_LV_MULTIPLIERS[5][lv]) + "%",
+      //     value: round(58.45 * TALENT_LV_MULTIPLIERS[5][lv], 2) + "%",
       //   },
       //   {
       //     name: "Life Drain",

@@ -84,7 +84,7 @@ const Razor: DataCharacter = {
       // getExtraStats: (lv) => [
       //   {
       //     name: "Soul Companion DMG",
-      //     value: round1(24 * TALENT_LV_MULTIPLIERS[2][lv]) + "% Normal Attack DMG",
+      //     value: round(24 * TALENT_LV_MULTIPLIERS[2][lv], 1) + "% Normal Attack DMG",
       //   },
       //   {
       //     name: "Normal ATK SPD Bonus",

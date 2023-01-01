@@ -1,8 +1,9 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, MEDIUM_PAs } from "../constants";
+import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 import { NCPA_PERCENTS } from "@Data/constants";
@@ -128,7 +129,7 @@ const Shenhe: DataCharacter = {
           ? finalTalentLv({ ...obj, talents: Shenhe.activeTalents, talentType: "ES" })
           : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
-        const xtraDesc = ` / Lv. ${level} / ${round2(mult)}% of ${ATK} ATK`;
+        const xtraDesc = ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
 
         applyModifier(
           obj.desc + xtraDesc,

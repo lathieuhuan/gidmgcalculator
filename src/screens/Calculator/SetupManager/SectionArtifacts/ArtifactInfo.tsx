@@ -4,7 +4,7 @@ import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 import type { CalcArtifact, ArtifactMainStatType } from "@Src/types";
 
 // Constant
-import { ARTIFACT_MAIN_STATS } from "@Data/artifacts/constants";
+import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Action
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";

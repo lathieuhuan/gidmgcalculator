@@ -3,13 +3,13 @@ import { Anemo, Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModSrc } from "../constants";
-import { round2 } from "@Src/utils";
+import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
   const EM = toSelf ? totalAttr.em : inputs[1] || 0;
-  return round2(+EM * 0.04);
+  return round(+EM * 0.04, 2);
 };
 
 const Kazuha: DataCharacter = {

@@ -3,11 +3,11 @@ import { FaCaretDown } from "react-icons/fa";
 import type { BaseStatType, DataCharacter, GetExtraStatsFn, StatInfo, Talent } from "@Src/types";
 
 // Constant
-import { TALENT_LV_MULTIPLIERS } from "@Data/characters/constants";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { getDefaultStatInfo } from "@Calculators/utils";
+import { getDefaultAttPattInfo } from "@Src/utils";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -197,7 +197,7 @@ export function TalentDetail({
           <StatsTable>
             {!isStatic &&
               talentStats.map((stat, i) => {
-                const defaultInfo = getDefaultStatInfo(talentType, weaponType, vision);
+                const defaultInfo = getDefaultAttPattInfo(talentType, weaponType, vision);
                 const { multBase, multType = defaultInfo.multType, baseStatType, flat } = stat;
 
                 return stat.isNotOfficial || stat.multType === 0 ? null : (

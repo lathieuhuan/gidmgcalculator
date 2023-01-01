@@ -5,8 +5,7 @@ import type { CalcWeapon, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
 // Util
-import { percentSign, getImgSrc } from "@Src/utils";
-import { wpMainStatAtLv, wpSubStatAtLv } from "@Data/weapons/utils";
+import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
 // Hook
@@ -60,7 +59,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
               <p className="font-semibold">{t(subStat.type)}</p>
               <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
-                {wpSubStatAtLv(subStat.scale, level)}
+                {weaponSubStatValue(subStat.scale, level)}
                 {percentSign(subStat.type)}
               </p>
             </div>
@@ -69,7 +68,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
             <p className="font-semibold">Base ATK</p>
             <p className={`text-rarity-${rarity} text-2.5xl font-bold`}>
-              {wpMainStatAtLv(wpData.mainStatScale, level)}
+              {weaponMainStatValue(wpData.mainStatScale, level)}
             </p>
           </div>
         </div>

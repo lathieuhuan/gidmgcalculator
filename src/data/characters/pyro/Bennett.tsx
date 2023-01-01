@@ -1,8 +1,9 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, MEDIUM_PAs } from "../constants";
+import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
 
@@ -17,7 +18,7 @@ function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
     mult += 20;
     desc += ` / C1: 20% extra`;
   }
-  return [applyPercent(baseATK, mult), desc + ` / ${round2(mult)}% of ${baseATK} Base ATK`];
+  return [applyPercent(baseATK, mult), desc + ` / ${round(mult, 2)}% of ${baseATK} Base ATK`];
 }
 
 const Bennett: DataCharacter = {

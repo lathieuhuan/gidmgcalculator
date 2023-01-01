@@ -1,8 +1,9 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
@@ -13,7 +14,7 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
     talentType: "ES",
     partyData,
   });
-  return round2(37.91 * TALENT_LV_MULTIPLIERS[5][level]);
+  return round(37.91 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
 const Yoimiya: DataCharacter = {
@@ -70,7 +71,7 @@ const Yoimiya: DataCharacter = {
       // getExtraStats: (lv) => [
       //   {
       //     name: "Blazing Arrow DMG",
-      //     value: round2(100 + 37.91 * TALENT_LV_MULTIPLIERS[5][lv]) + "% Normal Attack DMG",
+      //     value: round(100 + 37.91 * TALENT_LV_MULTIPLIERS[5][lv], 2) + "% Normal Attack DMG",
       //   },
       //   { name: "Duration", value: "10s" },
       //   { name: "CD", value: "18s" },

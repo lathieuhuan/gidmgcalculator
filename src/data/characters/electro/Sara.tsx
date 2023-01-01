@@ -1,8 +1,9 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { applyPercent, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
@@ -10,7 +11,7 @@ const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {
   const baseATK = inputs[0] || 0;
   const level = inputs[1] || 1;
   const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];
-  return [applyPercent(baseATK, mult), `${level} / ${round2(mult)}% of ${baseATK} Base ATK`];
+  return [applyPercent(baseATK, mult), `${level} / ${round(mult, 2)}% of ${baseATK} Base ATK`];
 };
 
 const Sara: DataCharacter = {

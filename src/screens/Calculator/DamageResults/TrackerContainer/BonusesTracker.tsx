@@ -11,7 +11,7 @@ import {
 import { keyMap } from "./constants";
 
 // Util
-import { round1, percentSign } from "@Src/utils";
+import { round, percentSign } from "@Src/utils";
 import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
@@ -67,7 +67,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
                       {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
-                        {records.map(renderRecord((value) => round1(value) + percent))}
+                        {records.map(renderRecord((value) => round(value, 1) + percent))}
                       </div>
                     </div>
                   ) : null;
@@ -100,7 +100,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
                       {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
                       <div className="pl-2">
-                        {records.map(renderRecord((value) => round1(value) + percent))}
+                        {records.map(renderRecord((value) => round(value, 1) + percent))}
                       </div>
                     </div>
                   ) : null;
@@ -137,7 +137,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
                   -1
                 )}
 
-                {records.map(renderRecord((value) => round1(value) + "%"))}
+                {records.map(renderRecord((value) => round(value, 1) + "%"))}
               </div>
             ) : null;
           })}

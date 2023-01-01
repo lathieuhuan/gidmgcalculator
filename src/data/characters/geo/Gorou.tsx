@@ -1,7 +1,8 @@
 import type { AttributeStat, CharData, DataCharacter, PartyData } from "@Src/types";
 import { Geo, Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 

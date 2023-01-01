@@ -1,6 +1,6 @@
 import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
 import { Green } from "@Components/atoms";
-import { round3 } from "@Src/utils";
+import { round } from "@Src/utils";
 
 export const renderModifiers = (
   modifiers: JSX.Element[],
@@ -26,7 +26,7 @@ export const renderAmpReactionHeading = (element: Vision, reaction: AmplifyingRe
 export const renderAmpReactionDesc = (element: Vision, mult: number) => (
   <>
     Increases <span className={`text-${element} capitalize`}>{element} DMG</span> by{" "}
-    <Green b>{round3(mult)}</Green> times.
+    <Green b>{round(mult, 3)}</Green> times.
   </>
 );
 

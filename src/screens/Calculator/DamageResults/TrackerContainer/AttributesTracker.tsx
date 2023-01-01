@@ -4,7 +4,7 @@ import type { Tracker } from "@Src/types";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES, OTHER_PERCENT_STAT_TYPES } from "@Src/constants";
 
 // Util
-import { applyPercent, percentSign, round1 } from "@Src/utils";
+import { applyPercent, percentSign, round } from "@Src/utils";
 import { recordListStyles, renderHeading, renderRecord } from "./utils";
 
 // Hook
@@ -38,7 +38,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
             {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
 
             <div className="pl-2">
-              {records.map(renderRecord((value) => round1(value) + percent))}
+              {records.map(renderRecord((value) => round(value, 1) + percent))}
 
               {records_.map(
                 renderRecord(
@@ -60,7 +60,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
 
             {totalAttr?.[statType].length ? (
               <div className="pl-2">
-                {totalAttr?.[statType].map(renderRecord((value) => round1(value) + percent))}
+                {totalAttr?.[statType].map(renderRecord((value) => round(value, 1) + percent))}
               </div>
             ) : null}
           </div>

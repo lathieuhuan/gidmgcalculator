@@ -1,14 +1,15 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, LIGHT_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round1 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, talents: Yanfei.activeTalents, talentType: "EB", partyData });
-  return round1(33.4 * TALENT_LV_MULTIPLIERS[5][level]);
+  return round(33.4 * TALENT_LV_MULTIPLIERS[5][level], 1);
 };
 
 const Yanfei: DataCharacter = {
@@ -80,7 +81,7 @@ const Yanfei: DataCharacter = {
       //   { name: "Scarlet Seal Grant Interval", value: "1s" },
       //   {
       //     name: "Charged Attack DMG Bonus",
-      //     value: round1(33.4 * TALENT_LV_MULTIPLIERS[5][lv]) + "%",
+      //     value: round(33.4 * TALENT_LV_MULTIPLIERS[5][lv], 1) + "%",
       //   },
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "20s" },

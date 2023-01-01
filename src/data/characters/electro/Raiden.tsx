@@ -10,8 +10,9 @@ import type {
 } from "@Src/types";
 import { Electro, Green, Lightgold, Red } from "@Components/atoms";
 import { ATTACK_PATTERNS, EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs, TALENT_LV_MULTIPLIERS } from "../constants";
-import { round1, round2 } from "@Src/utils";
+import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { EModSrc, MEDIUM_PAs } from "../constants";
+import { round } from "@Src/utils";
 import {
   finalTalentLv,
   applyModifier,
@@ -36,7 +37,7 @@ const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuff
         return {
           mult: {
             desc: `Bonus from ${buffValue.stacks} Resolve, each gave ${buffValue[bonusType]}% extra multiplier`,
-            value: round2(buffValue.stacks * buffValue[bonusType]),
+            value: round(buffValue.stacks * buffValue[bonusType], 2),
           },
         };
       }
@@ -57,7 +58,11 @@ const getBuffValue = {
       ? finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "ES", partyData })
       : inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
-    return [round1(EBcost * mult), `${level} / ${round2(mult)}% * ${EBcost} Energy Cost`] as const;
+
+    return {
+      desc: `${level} / ${round(mult, 2)}% * ${EBcost} Energy Cost`,
+      value: round(EBcost * mult, 1),
+    };
   },
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
     const level = finalTalentLv({
@@ -76,14 +81,14 @@ const getBuffValue = {
 
     let stacks = countResolve(totalEnergySpent + bonusEnergySpent, level);
     return {
-      stacks: Math.min(round2(stacks), 60),
-      extraStacks: round2(countResolve(bonusEnergySpent, level)),
+      stacks: Math.min(round(stacks, 2), 60),
+      extraStacks: round(countResolve(bonusEnergySpent, level), 2),
       musouBonus: 3.89 * TALENT_LV_MULTIPLIERS[2][level],
       isshinBonus: isshinBonusMults[level],
     };
   },
   A4: (totalAttr: TotalAttribute) => {
-    return round1((totalAttr.er - 100) * 0.4);
+    return round((totalAttr.er - 100) * 0.4, 1);
   },
   C1: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData, EBlevel?: number) => {
     const electroEC = +findInput(selfBuffCtrls, 3, 0); // EC = energyCost
@@ -97,7 +102,7 @@ const getBuffValue = {
       finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "EB", partyData });
     const electroResolve = countResolve(electroEC, level);
     const otherResolve = countResolve(otherEC, level);
-    return round1(electroResolve * 0.8 + otherResolve * 0.2);
+    return round(electroResolve * 0.8 + otherResolve * 0.2, 1);
   },
 };
 
@@ -226,7 +231,7 @@ const Raiden: DataCharacter = {
       //   {
       //     name: "Resolve Bonus",
       //     value:
-      //       `${round2(3.89 * TALENT_LV_MULTIPLIERS[2][lv])}% Initial/` +
+      //       `${round(3.89 * TALENT_LV_MULTIPLIERS[2][lv], 2)}% Initial/` +
       //       `${isshinBonusMults[lv]}% ATK DMG per Stack`,
       //   },
       //   {
@@ -280,7 +285,7 @@ const Raiden: DataCharacter = {
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
           <Green>Energy Cost</Green> of the Elemental Burst during the eye's duration.{" "}
           <Red>
-            DMG Bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData)[0]}
+            DMG Bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData).value}
             %.
           </Red>
         </>
@@ -298,8 +303,8 @@ const Raiden: DataCharacter = {
       applyBuff: (obj) => {
         const { toSelf, char, charData, inputs, partyData } = obj;
         const result = getBuffValue.ES(toSelf, char, charData, inputs, partyData);
-        const desc = `${obj.desc} / Lv. ${result[1]}`;
-        applyModifier(desc, obj.attPattBonus, "EB.pct", result[0], obj.tracker);
+        const desc = `${obj.desc} / Lv. ${result.desc}`;
+        applyModifier(desc, obj.attPattBonus, "EB.pct", result.value, obj.tracker);
       },
     },
     {

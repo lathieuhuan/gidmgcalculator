@@ -2,8 +2,9 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { checkAscs, checkCons, countVision } from "../utils";
+import { checkAscs, checkCons } from "../utils";
 
 const Yelan: DataCharacter = {
   code: 51,

@@ -11,7 +11,7 @@ import { Green } from "@Components/atoms";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, round2, round3 } from "@Src/utils";
+import { percentSign, round } from "@Src/utils";
 import { renderDmgComponent, renderDmgValue } from "./utils";
 
 interface DamageTrackerProps {
@@ -34,7 +34,7 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
         }
 
         const nonCritDmg = renderDmgValue(nonCrit);
-        const cDmg = round3(record.cDmg || 0);
+        const cDmg = record.cDmg ? round(record.cDmg, 3) : 0;
 
         return (
           <div key={i}>
@@ -51,7 +51,7 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
                     {" "}
                     <Green>*</Green> Talent Mult.{" "}
                     <Green>
-                      {renderDmgValue(record.talentMult, (value) => round2(value) + "%")}
+                      {renderDmgValue(record.talentMult, (value) => round(value, 2) + "%")}
                     </Green>
                   </>
                 ) : null}
@@ -65,24 +65,24 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
                 {renderDmgComponent({
                   desc: "Percent Mult.",
                   value: record.normalMult,
-                  processor: (value) => round2(value * 100) + "%",
+                  processor: (value) => round(value * 100, 2) + "%",
                 })}
                 {renderDmgComponent({
                   desc: "Special Mult.",
                   value: record.specialMult,
                   nullValue: 1,
-                  processor: round3,
+                  processor: (value) => round(value, 3),
                 })}
                 {renderDmgComponent({
                   desc: "Reaction Mult.",
                   value: record.rxnMult,
                   nullValue: 1,
-                  processor: round3,
+                  processor: (value) => round(value, 3),
                 })}
                 {renderDmgComponent({
                   desc: "DEF Mult.",
                   value: record.defMult,
-                  processor: round3,
+                  processor: (value) => round(value, 3),
                 })}
                 {renderDmgComponent({
                   desc: "RES Mult.",
@@ -107,7 +107,7 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
                     desc: "Crit Rate",
                     value: record.cRate,
                     nullValue: null,
-                    processor: round3,
+                    processor: (value) => round(value, 3),
                   })}
                   )
                 </li>

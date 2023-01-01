@@ -2,9 +2,9 @@ import type { CharData, DataCharacter, PartyData } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { round1 } from "@Src/utils";
+import { round, countVision } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkAscs, checkCons, countVision, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
 export function nilouA1isOn(partyData: PartyData, charData: CharData) {
   const { dendro, hydro, ...rest } = countVision(partyData, charData);
@@ -12,7 +12,7 @@ export function nilouA1isOn(partyData: PartyData, charData: CharData) {
 }
 
 export function getNilouA4BuffValue(maxHP: number) {
-  return maxHP > 30000 ? round1(Math.min((maxHP / 1000 - 30) * 9, 400)) : 0;
+  return maxHP > 30000 ? round(Math.min((maxHP / 1000 - 30) * 9, 400), 1) : 0;
 }
 
 const Nilou: DataCharacter = {
@@ -232,7 +232,7 @@ const Nilou: DataCharacter = {
       desc: () => Nilou.constellation[5].desc,
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
-        const baseValue = round1(Math.min((totalAttr.hp / 1000) * 0.6, 30));
+        const baseValue = round(Math.min((totalAttr.hp / 1000) * 0.6, 30), 1);
         const buffValues = [baseValue, baseValue * 2];
         applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValues, tracker);
       },

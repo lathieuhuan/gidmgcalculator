@@ -2,13 +2,16 @@ import type { DataWeapon, TotalAttribute } from "@Src/types";
 import { Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
-import { applyPercent, findByCode, round1, round2, roundMaker } from "@Src/utils";
+import { applyPercent, findByCode, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const getStaffOfHomaBuffValue = (totalAttr: TotalAttribute, refi: number) => {
+const getStaffOfHomaBuff = (totalAttr: TotalAttribute, refi: number) => {
   const mult = 0.8 + refi * 0.2;
-  return [applyPercent(totalAttr.hp, mult), ` / ${round1(mult)}% of ${totalAttr.hp} HP`] as const;
+  return {
+    desc: ` / ${round(mult, 1)}% of ${totalAttr.hp} HP`,
+    value: applyPercent(totalAttr.hp, mult),
+  };
 };
 
 const goldPolearms: DataWeapon[] = [
@@ -37,7 +40,7 @@ const goldPolearms: DataWeapon[] = [
           const mult = 21 + refi * 7;
           const stacks = inputs[0] || 0;
           const buffValue = applyPercent(totalAttr.em, mult) * stacks;
-          const xtraDesc = ` / ${stacks} stacks / (each) ${round1(mult)}% of ${
+          const xtraDesc = ` / ${stacks} stacks / (each) ${round(mult, 1)}% of ${
             totalAttr.em
           } Elemental Mastery`;
 
@@ -138,17 +141,17 @@ const goldPolearms: DataWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "er", scale: "12%" },
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-      const ER = round1(totalAttr.er - 100);
+      const ER = round(totalAttr.er - 100, 1);
       const mult = 21 + refi * 7;
       let buffValue = (ER / 100) * mult;
-      let xtraDesc = ` / ${mult}% of ${ER}% Energy Recharge => ${round2(buffValue)}%`;
+      let xtraDesc = ` / ${mult}% of ${ER}% Energy Recharge => ${round(buffValue, 2)}%`;
       const limit = 70 + refi * 10;
 
       if (buffValue > limit) {
         buffValue = limit;
         xtraDesc += ` (limited to ${limit}%)`;
       }
-      xtraDesc += ` ATK = ${totalAttr.base_atk} * ${roundMaker(4)(buffValue / 100)}`;
+      xtraDesc += ` ATK = ${totalAttr.base_atk} * ${round(buffValue / 100, 4)}`;
       buffValue = applyPercent(totalAttr.base_atk, buffValue);
       applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
     },
@@ -197,13 +200,13 @@ const goldPolearms: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const [buffValue, xtraDesc] = getStaffOfHomaBuffValue(totalAttr, refi);
-          applyModifier(desc + xtraDesc, totalAttr, "atk", buffValue, tracker);
+          const buff = getStaffOfHomaBuff(totalAttr, refi);
+          applyModifier(desc + buff.desc, totalAttr, "atk", buff.value, tracker);
         },
         desc: ({ refi, totalAttr }) => (
           <>
             {findByCode(goldPolearms, 80)!.passiveDesc({ refi }).extra![0]}{" "}
-            <Red>ATK Bonus: {getStaffOfHomaBuffValue(totalAttr, refi)[0]}.</Red>
+            <Red>ATK Bonus: {getStaffOfHomaBuff(totalAttr, refi).value}.</Red>
           </>
         ),
       },
