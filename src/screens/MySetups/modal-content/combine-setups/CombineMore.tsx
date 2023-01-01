@@ -25,12 +25,12 @@ interface CombineMoreProps {
 }
 export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps) {
   const dispatch = useDispatch();
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
 
   const { name, allIDs } = targetSetup;
   const remainChars = allChars.filter((name) => !allIDs[name]);
 
-  const setupOptions = mySetups.filter((setup) => {
+  const setupOptions = userSetups.filter((setup) => {
     return (
       setup.type === "original" &&
       setup.party.length === 3 &&
@@ -49,7 +49,7 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
       const existedNames: string[] = [];
 
       for (const pickedID of pickedIDs) {
-        const setup = findById(mySetups, pickedID);
+        const setup = findById(userSetups, pickedID);
 
         if (setup && isUserSetup(setup)) {
           const { name } = setup.char;

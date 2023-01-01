@@ -33,7 +33,7 @@ const initialState: UserDatabaseState = {
   userChars: [],
   userWps: [],
   userArts: [],
-  mySetups: [],
+  userSetups: [],
   chosenChar: "",
   chosenSetupID: 0,
 };
@@ -47,7 +47,7 @@ export const userDatabaseSlice = createSlice({
       state.userChars = Characters;
       state.userWps = Weapons;
       state.userArts = Artifacts;
-      state.mySetups = Setups;
+      state.userSetups = Setups;
 
       if (Characters.length) {
         state.chosenChar = Characters[0].name;
@@ -368,13 +368,13 @@ export const userDatabaseSlice = createSlice({
       state.chosenSetupID = action.payload;
     },
     saveSetup: (state, action: SaveSetupAction) => {
-      const { mySetups } = state;
+      const { userSetups } = state;
       const { ID, name, data } = action.payload;
-      const existed = findById(mySetups, ID);
+      const existed = findById(userSetups, ID);
       let newChosenID;
 
       if (existed?.type === "combined") {
-        for (const setup of mySetups) {
+        for (const setup of userSetups) {
           if (setup.type === "complex" && setup.allIDs[existed.char.name] === ID) {
             newChosenID = setup.ID;
             setup.shownID = ID;
@@ -391,26 +391,26 @@ export const userDatabaseSlice = createSlice({
       };
 
       if (existed) {
-        mySetups[indexById(mySetups, ID)] = newSetup;
+        userSetups[indexById(userSetups, ID)] = newSetup;
       } else {
-        mySetups.unshift(newSetup);
+        userSetups.unshift(newSetup);
       }
 
       state.chosenSetupID = newChosenID || ID;
     },
     removeSetup: (state, action: PayloadAction<number>) => {
       const removedID = action.payload;
-      const { mySetups, userWps, userArts } = state;
-      const removedIndex = indexById(mySetups, removedID);
+      const { userSetups, userWps, userArts } = state;
+      const removedIndex = indexById(userSetups, removedID);
 
       if (removedIndex !== -1) {
-        const visibleIDs = mySetups.reduce((result: number[], setup) => {
+        const visibleIDs = userSetups.reduce((result: number[], setup) => {
           if (setup.type !== "combined") {
             result.push(setup.ID);
           }
           return result;
         }, []);
-        const setup = mySetups[removedIndex];
+        const setup = userSetups[removedIndex];
 
         // Disconnect weapon & artifacts from removed setup
         if (isUserSetup(setup)) {
@@ -431,7 +431,7 @@ export const userDatabaseSlice = createSlice({
           }
         }
 
-        mySetups.splice(removedIndex, 1);
+        userSetups.splice(removedIndex, 1);
 
         // Choose new setup
         const removedIndexInVisible = visibleIDs.indexOf(removedID);
@@ -445,12 +445,12 @@ export const userDatabaseSlice = createSlice({
     },
     combineSetups: (state, action: CombineSetupsAction) => {
       const { pickedIDs, name } = action.payload;
-      const { mySetups } = state;
+      const { userSetups } = state;
       const allIDs: Record<string, number> = {};
       const ID = Date.now();
 
       for (const ID of pickedIDs) {
-        const setup = findById(mySetups, ID);
+        const setup = findById(userSetups, ID);
 
         if (setup) {
           setup.type = "combined";
@@ -461,7 +461,7 @@ export const userDatabaseSlice = createSlice({
         }
       }
 
-      mySetups.unshift({
+      userSetups.unshift({
         name,
         ID,
         type: "complex",
@@ -472,21 +472,21 @@ export const userDatabaseSlice = createSlice({
     },
     switchShownSetupInComplex: (state, action: SwitchShownSetupInComplexAction) => {
       const { complexID, shownID } = action.payload;
-      const complexSetup = findById(state.mySetups, complexID);
+      const complexSetup = findById(state.userSetups, complexID);
 
       if (complexSetup && !isUserSetup(complexSetup)) {
         complexSetup.shownID = shownID;
       }
     },
-    addSetupToComplex: ({ mySetups }, action: AddSetupToComplexAction) => {
+    addSetupToComplex: ({ userSetups }, action: AddSetupToComplexAction) => {
       const { complexID, pickedIDs } = action.payload;
-      const complexSetup = mySetups.find(
+      const complexSetup = userSetups.find(
         (setup) => setup.ID === complexID && setup.type === "complex"
       ) as UserComplexSetup;
 
       if (complexSetup) {
         pickedIDs.forEach((ID) => {
-          const setup = findById(mySetups, ID);
+          const setup = findById(userSetups, ID);
 
           if (setup && isUserSetup(setup)) {
             setup.type = "combined";
@@ -495,19 +495,19 @@ export const userDatabaseSlice = createSlice({
         });
       }
     },
-    uncombineSetups: ({ mySetups }, action: PayloadAction<number>) => {
-      const index = indexById(mySetups, action.payload);
-      const targetSetup = mySetups[index];
+    uncombineSetups: ({ userSetups }, action: PayloadAction<number>) => {
+      const index = indexById(userSetups, action.payload);
+      const targetSetup = userSetups[index];
 
       if (targetSetup && !isUserSetup(targetSetup)) {
         for (const ID of Object.values(targetSetup.allIDs)) {
-          const combinedSetup = findById(mySetups, ID);
+          const combinedSetup = findById(userSetups, ID);
 
           if (combinedSetup) {
             combinedSetup.type = "original";
           }
         }
-        mySetups.splice(index, 1);
+        userSetups.splice(index, 1);
       }
     },
   },

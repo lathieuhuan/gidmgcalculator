@@ -1,8 +1,55 @@
+import type { Tracker, TrackerRecord } from "@Src/types";
 import type { ReactNode } from "react";
-import type { TrackerRecord } from "@Src/types";
 import { Green } from "@Components/atoms";
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
+  ATTRIBUTE_STAT_TYPES,
+  REACTIONS,
+  REACTION_BONUS_INFO_KEYS,
+} from "@Src/constants";
 
 export const recordListStyles = "columns-1 md2:columns-2 space-y-1";
+
+export function initTracker() {
+  const tracker = {
+    totalAttr: {},
+    attPattBonus: {},
+    attElmtBonus: {},
+    rxnBonus: {},
+    resistReduct: {},
+    NAs: {},
+    ES: {},
+    EB: {},
+    RXN: {},
+  } as Tracker;
+
+  for (const stat of ATTRIBUTE_STAT_TYPES) {
+    tracker.totalAttr[stat] = [];
+  }
+  for (const attPatt of [...ATTACK_PATTERNS, "all"] as const) {
+    for (const key of ATTACK_PATTERN_INFO_KEYS) {
+      tracker.attPattBonus[`${attPatt}.${key}`] = [];
+    }
+  }
+  for (const attElmt of ATTACK_ELEMENTS) {
+    for (const key of ATTACK_ELEMENT_INFO_KEYS) {
+      tracker.attElmtBonus[`${attElmt}.${key}`] = [];
+    }
+    tracker.resistReduct[attElmt] = [];
+  }
+  tracker.resistReduct.def = [];
+
+  for (const reaction of REACTIONS) {
+    for (const key of REACTION_BONUS_INFO_KEYS) {
+      tracker.rxnBonus[`${reaction}.${key}`] = [];
+    }
+  }
+
+  return tracker;
+}
 
 export function getTotalRecordValue(list: TrackerRecord[]) {
   return list.reduce((accumulator, record) => accumulator + record.value, 0);

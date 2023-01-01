@@ -14,7 +14,7 @@ import { findById } from "@Src/utils";
 import { Modal } from "@Components/molecules";
 
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
 
   return (
     <div className="flex flex-col overflow-auto">
@@ -23,7 +23,7 @@ const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
       </p>
       <ul className="mt-2 pl-4 list-disc overflow-auto custom-scrollbar">
         {setupIDs?.map((ID, i) => {
-          const { name } = findById(mySetups, ID) || {};
+          const { name } = findById(userSetups, ID) || {};
           return name ? <li key={i}>{name}</li> : null;
         })}
       </ul>

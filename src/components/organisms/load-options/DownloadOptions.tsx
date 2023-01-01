@@ -24,14 +24,14 @@ function Options({ onClose }: { onClose: () => void }) {
   const userChars = useSelector(selectUserChars);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
 
   const downloadData = JSON.stringify({
     version: 2.1,
     Characters: userChars,
     Weapons: userWps,
     Artifacts: userArts,
-    Setups: mySetups,
+    Setups: userSetups,
   });
 
   const saveToLocalStorage = () => {

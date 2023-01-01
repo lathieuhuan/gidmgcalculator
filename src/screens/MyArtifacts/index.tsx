@@ -184,7 +184,7 @@ export default function MyArtifacts() {
               ) : null}
             </div>
 
-            <OwnerLabel owner={artifact?.owner} />
+            <OwnerLabel owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
           </div>
         </div>
       </div>

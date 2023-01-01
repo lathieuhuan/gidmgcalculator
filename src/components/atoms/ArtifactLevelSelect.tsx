@@ -24,9 +24,9 @@ export function ArtifactLevelSelect({
           value={level}
           onChange={(e) => onChangeLevel?.(+e.target.value)}
         >
-          {[...Array(maxLevel + 1).keys()].map((_, lv) => (
-            <option key={lv} className="text-base" value={lv}>
-              +{lv}
+          {[...Array(maxLevel / 4 + 1).keys()].map((_, lv) => (
+            <option key={lv} className="text-base" value={lv * 4}>
+              +{lv * 4}
             </option>
           ))}
         </select>

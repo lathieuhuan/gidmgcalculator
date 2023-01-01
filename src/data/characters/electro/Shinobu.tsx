@@ -2,7 +2,7 @@ import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { makeModApplier } from "@Calculators/utils";
+import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA4TAlentBuff = (index: number): GetTalentBuffFn => {

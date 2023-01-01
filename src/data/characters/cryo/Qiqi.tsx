@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { makeModApplier } from "@Calculators/utils";
+import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
 const Qiqi: DataCharacter = {

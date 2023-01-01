@@ -5,7 +5,7 @@ export type UserDatabaseState = {
   userChars: UserCharacter[];
   userWps: UserWeapon[];
   userArts: UserArtifact[];
-  mySetups: (UserSetup | UserComplexSetup)[];
+  userSetups: (UserSetup | UserComplexSetup)[];
   chosenChar: string;
   chosenSetupID: number;
 };

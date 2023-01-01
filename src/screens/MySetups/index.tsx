@@ -38,7 +38,7 @@ import styles from "../styles.module.scss";
 export default function MySetups() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
   const chosenSetupID = useSelector(selectChosenSetupID);
@@ -52,16 +52,16 @@ export default function MySetups() {
   });
 
   const chosenSetup = (() => {
-    const setup = findById(mySetups, chosenSetupID);
+    const setup = findById(userSetups, chosenSetupID);
     return setup && setup.type === "complex"
-      ? (findById(mySetups, setup.shownID) as UserSetup)
+      ? (findById(userSetups, setup.shownID) as UserSetup)
       : setup;
   })();
 
   useEffect(() => {
     if (chosenSetupID && ref.current) {
       const index = indexById(
-        mySetups.filter((setup) => setup.type !== "combined"),
+        userSetups.filter((setup) => setup.type !== "combined"),
         chosenSetupID
       );
 
@@ -99,7 +99,7 @@ export default function MySetups() {
     let setupDisplay: JSX.Element | null;
 
     if (setup.type === "complex") {
-      const actualSetup = mySetups.find((mySetup) => mySetup.ID === setup.shownID);
+      const actualSetup = userSetups.find((mySetup) => mySetup.ID === setup.shownID);
       if (!actualSetup || !isUserSetup(actualSetup)) return null;
 
       setupDisplay = itemsBySetupID[actualSetup.ID] ? (
@@ -154,7 +154,7 @@ export default function MySetups() {
 
     switch (modal.type) {
       case "REMOVE_SETUP": {
-        const removedSetup = findById(mySetups, modal.ID);
+        const removedSetup = findById(userSetups, modal.ID);
         if (!removedSetup) return null;
 
         return (
@@ -208,12 +208,12 @@ export default function MySetups() {
       case "FIRST_COMBINE":
         return <FirstCombine onClose={closeModal} />;
       case "COMBINE_MORE": {
-        const targetSetup = findById(mySetups, modal.ID);
+        const targetSetup = findById(userSetups, modal.ID);
         if (!targetSetup || isUserSetup(targetSetup)) {
           return null;
         }
 
-        const shownSetup = findById(mySetups, targetSetup.shownID);
+        const shownSetup = findById(userSetups, targetSetup.shownID);
         if (!shownSetup || !isUserSetup(shownSetup)) {
           return null;
         }
@@ -231,7 +231,7 @@ export default function MySetups() {
         return <CombineMore targetSetup={targetSetup} allChars={allChars} onClose={closeModal} />;
       }
       case "SHARE_SETUP": {
-        const targetSetup = findById(mySetups, modal.ID);
+        const targetSetup = findById(userSetups, modal.ID);
 
         if (targetSetup && isUserSetup(targetSetup)) {
           return <SetupExporter data={targetSetup} onClose={closeModal} />;
@@ -273,12 +273,12 @@ export default function MySetups() {
           <div
             ref={ref}
             className={clsx(
-              mySetups.length && "p-1 pr-3",
+              userSetups.length && "p-1 pr-3",
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
             )}
           >
-            {mySetups.length ? (
-              mySetups.map(renderSetup)
+            {userSetups.length ? (
+              userSetups.map(renderSetup)
             ) : (
               <div className="w-full pt-8 flex-center">
                 <p className="text-xl font-bold text-lightred">No setups to display</p>

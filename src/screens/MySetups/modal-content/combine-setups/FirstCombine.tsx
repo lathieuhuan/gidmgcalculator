@@ -20,11 +20,11 @@ import { ButtonBar } from "@Components/molecules";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
 
   const [input, setInput] = useState("Team Setup");
 
-  const setupOptions = mySetups.filter((setup) => {
+  const setupOptions = userSetups.filter((setup) => {
     return (
       setup.type === "original" &&
       setup.party.length === 3 &&

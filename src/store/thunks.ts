@@ -15,7 +15,7 @@ import {
 } from "./userDatabaseSlice";
 
 import { findById, calcItemToUserItem, userItemToCalcItem } from "@Src/utils";
-import { cleanupCalcSetup } from "@Src/utils/setup";
+import { cleanupCalcSetup, isUserSetup } from "@Src/utils/setup";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
@@ -44,14 +44,16 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
   return (dispatch, getState) => {
     const {
       calculator,
-      database: { userWps, userArts },
+      database: { userSetups, userWps, userArts },
     } = getState();
 
     const { weapon, artifacts } = calculator.setupsById[setupID];
     let seedID = Date.now();
     let weaponID = weapon.ID;
     const artifactIDs = artifacts.map((artifact) => artifact?.ID ?? null);
+    const userSetup = findById(userSetups, setupID);
     const userWeapon = findById(userWps, weapon.ID);
+    const isOldSetup = userSetup && isUserSetup(userSetup);
 
     if (!userWeapon) {
       dispatch(
@@ -61,6 +63,19 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
           })
         )
       );
+
+      if (isOldSetup) {
+        const oldWeapon = findById(userWps, userSetup.weaponID);
+
+        if (oldWeapon) {
+          dispatch(
+            updateUserWeapon({
+              ID: userSetup.weaponID,
+              setupIDs: oldWeapon.setupIDs?.filter((ID) => ID !== setupID),
+            })
+          );
+        }
+      }
     } else {
       // Nothing changes => add setupID
       if (isEqual(weapon, userItemToCalcItem(userWeapon))) {
@@ -109,6 +124,20 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
             })
           )
         );
+
+        if (isOldSetup) {
+          const oldArtifactID = userSetup.artifactIDs[artifactIndex] || undefined;
+          const oldArtifact = findById(userArts, oldArtifactID);
+
+          if (oldArtifact) {
+            dispatch(
+              updateUserArtifact({
+                ID: oldArtifact.ID,
+                setupIDs: oldArtifact.setupIDs?.filter((ID) => ID !== setupID),
+              })
+            );
+          }
+        }
       } else {
         if (isEqual(artifact, userItemToCalcItem(userArtifact))) {
           const newSetupIDs = userArtifact.setupIDs || [];

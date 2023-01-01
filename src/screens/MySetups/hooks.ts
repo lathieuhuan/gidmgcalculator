@@ -20,14 +20,14 @@ type SetupItemInfos = Record<
 >;
 
 export function useSetupItems() {
-  const mySetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectMySetups);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
 
   const getSetupItems = () => {
     const result: SetupItemInfos = {};
 
-    for (const setup of mySetups) {
+    for (const setup of userSetups) {
       if (isUserSetup(setup)) {
         result[setup.ID] = {
           weapon: findById(userWps, setup.weaponID) || null,

@@ -12,9 +12,8 @@ import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculator
 import calculateAll from "@Calculators/index";
 
 // Util
-import { initTracker } from "@Calculators/utils";
 import { bareLv } from "@Src/utils";
-import { getTotalRecordValue } from "./utils";
+import { initTracker, getTotalRecordValue } from "./utils";
 
 // Component
 import { Green, Lesser } from "@Components/atoms";

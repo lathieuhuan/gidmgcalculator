@@ -27,7 +27,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const target = useSelector((state) => state.calculator.target);
-  const { userChars, userWps, userArts, mySetups } = useSelector((state) => state.database);
+  const { userChars, userWps, userArts, userSetups } = useSelector((state) => state.database);
 
   const [pendingCode, setPendingCode] = useState(0);
 
@@ -76,7 +76,7 @@ function Importing({ type, data }: Required<ImportInfo>) {
 
     if (char) {
       if (char.name === importedSetup.char.name) {
-        if (mySetups.length === 4) {
+        if (userSetups.length === 4) {
           delayExecute(() => setPendingCode(2));
         } else {
           const sameChar = isEqual(char, importedSetup.char);

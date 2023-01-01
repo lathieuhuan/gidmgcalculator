@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { makeModApplier } from "@Calculators/utils";
+import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
 const Lisa: DataCharacter = {
