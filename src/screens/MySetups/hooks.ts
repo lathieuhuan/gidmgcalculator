@@ -9,7 +9,11 @@ import { isUserSetup } from "@Src/utils/setup";
 import { useSelector } from "@Store/hooks";
 
 // Selector
-import { selectUserArts, selectMySetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
+import {
+  selectUserArts,
+  selectUserSetups,
+  selectUserWps,
+} from "@Store/userDatabaseSlice/selectors";
 
 type SetupItemInfos = Record<
   string,
@@ -20,7 +24,7 @@ type SetupItemInfos = Record<
 >;
 
 export function useSetupItems() {
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
 

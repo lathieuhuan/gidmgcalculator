@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
 // Selector
-import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -14,7 +14,7 @@ import { findById } from "@Src/utils";
 import { Modal } from "@Components/molecules";
 
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
 
   return (
     <div className="flex flex-col overflow-auto">

@@ -1,5 +1,6 @@
 import type {
   CalcSetup,
+  CalcSetupManageInfo,
   ModifierInput,
   Party,
   UserComplexSetup,
@@ -16,6 +17,35 @@ import { createCharModCtrls } from "./creators";
 
 export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
   return ["original", "combined"].includes(setup.type);
+}
+
+export function getSetupManageInfo({
+  name = "Setup 1",
+  ID = Date.now(),
+  type = "original",
+}: Partial<CalcSetupManageInfo>): CalcSetupManageInfo {
+  return {
+    name: name.trim(),
+    ID,
+    type,
+  };
+}
+
+export function getNewSetupName(setups: Array<{ name: string }>) {
+  const existedIndexes = [1, 2, 3, 4];
+
+  for (const { name } of setups) {
+    const parts = name.split(" ");
+
+    if (parts.length === 2 && parts[0] === "Setup" && !isNaN(+parts[1])) {
+      const i = existedIndexes.indexOf(+parts[1]);
+
+      if (i !== -1) {
+        existedIndexes.splice(i, 1);
+      }
+    }
+  }
+  return "Setup " + existedIndexes[0];
 }
 
 interface CleanupCalcSetupOptions {

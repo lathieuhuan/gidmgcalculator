@@ -29,7 +29,7 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Util
-import { getImgSrc } from "@Src/utils";
+import { getImgSrc, userItemToCalcItem } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 import {
   findDataArtifact,
@@ -234,16 +234,23 @@ export function SetupTemplate({
             disabled={!weapon}
             onClick={() => {
               if (weapon) {
-                const { weaponID, artifactIDs, ...rest } = setup;
+                const { weaponID, artifactIDs, ID, name, type, target, ...rest } = setup;
+                const { setupIDs, ...calcWeapon } = weapon;
 
                 dispatch(
                   updateImportInfo({
-                    type: "EDIT_SETUP",
-                    data: {
+                    importType: "EDIT_SETUP",
+                    ID,
+                    name,
+                    type,
+                    calcSetup: {
                       ...rest,
-                      weapon,
-                      artifacts,
+                      weapon: userItemToCalcItem(weapon),
+                      artifacts: artifacts.map((artifact) => {
+                        return artifact ? userItemToCalcItem(artifact) : null;
+                      }),
                     },
+                    target,
                   })
                 );
               }

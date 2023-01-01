@@ -12,7 +12,7 @@ import { findById } from "@Src/utils";
 
 // Selector
 import { selectCharData } from "@Store/calculatorSlice/selectors";
-import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
 import { ButtonBar } from "@Components/molecules";
@@ -21,12 +21,12 @@ interface SaveSetupProps {
   setup: CalcSetupManageInfo;
   onClose: () => void;
 }
-export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
+export function SaveSetup({ setup, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const charData = useSelector(selectCharData);
-  const existed = findById(useSelector(selectMySetups), ID);
+  const existed = findById(useSelector(selectUserSetups), setup.ID);
 
-  const [input, setInput] = useState(existed ? existed.name : charData.name + " - " + name);
+  const [input, setInput] = useState(existed ? existed.name : `${charData.name} setup`);
 
   return (
     <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow">
@@ -44,7 +44,7 @@ export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            dispatch(saveSetupThunk(ID, input));
+            dispatch(saveSetupThunk(setup.ID, input));
             onClose();
           }
         }}
@@ -55,7 +55,7 @@ export function SaveSetup({ setup: { name, ID }, onClose }: SaveSetupProps) {
           {
             text: "Confirm",
             onClick: () => {
-              dispatch(saveSetupThunk(ID, input));
+              dispatch(saveSetupThunk(setup.ID, input));
               onClose();
             },
           },

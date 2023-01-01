@@ -1,14 +1,9 @@
+import type { SetupImportInfo } from "@Src/types";
 import { EScreen } from "@Src/constants";
-import { CalcSetup } from "@Src/types";
 
 export interface UIState {
   atScreen: EScreen;
   introOn: boolean;
   settingsOn: boolean;
-  importInfo: ImportInfo;
+  importInfo: SetupImportInfo;
 }
-
-export type ImportInfo = {
-  type: "" | "EDIT_SETUP" | "IMPORT_OUTSIDE";
-  data?: CalcSetup;
-};

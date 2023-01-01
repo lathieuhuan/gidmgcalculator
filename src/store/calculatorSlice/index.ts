@@ -30,6 +30,7 @@ import type {
   UpdateCustomDebuffCtrlsAction,
   UpdateTeammateWeaponAction,
   UpdateTeammateArtifactAction,
+  InitSessionWithSetupAction,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
@@ -37,6 +38,7 @@ import monsters from "@Data/monsters";
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
 import { bareLv, deepCopy, findByCode, findById, turnArray, countVision } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
+import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 import {
   createCharInfo,
   createCharModCtrls,
@@ -50,10 +52,8 @@ import {
   calculate,
   getArtDebuffCtrls,
   getArtifactBuffCtrls,
-  getNewSetupName,
-  getSetupManageInfo,
   getWeaponBuffCtrls,
-  parseAndInitData,
+  parseUserCharData,
 } from "./utils";
 
 const defaultChar = {
@@ -93,14 +93,14 @@ export const calculatorSlice = createSlice({
       const setupManageInfo = getSetupManageInfo({});
       const { ID: setupID } = setupManageInfo;
       const charData = getCharData(pickedChar);
-      const result = parseAndInitData({
+      const data = parseUserCharData({
         pickedChar,
         userWps,
         userArts,
         weaponType: charData.weaponType,
         seedID: setupID + 1,
       });
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(result.char.name, true);
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(data.char.name, true);
 
       state.activeId = setupID;
       state.comparedIds = [];
@@ -111,13 +111,13 @@ export const calculatorSlice = createSlice({
       state.setupManageInfos = [setupManageInfo];
       state.setupsById = {
         [setupID]: {
-          char: result.char,
+          char: data.char,
           selfBuffCtrls: selfBuffCtrls,
           selfDebuffCtrls: selfDebuffCtrls,
-          weapon: result.weapon,
-          wpBuffCtrls: result.wpBuffCtrls,
-          artifacts: result.artifacts,
-          artBuffCtrls: result.artBuffCtrls,
+          weapon: data.weapon,
+          wpBuffCtrls: data.wpBuffCtrls,
+          artifacts: data.artifacts,
+          artBuffCtrls: data.artBuffCtrls,
           artDebuffCtrls: getArtDebuffCtrls(),
           party: [null, null, null],
           elmtModCtrls: createElmtModCtrls(),
@@ -132,13 +132,13 @@ export const calculatorSlice = createSlice({
 
       calculate(state);
     },
-    initSessionWithSetup: (state, action: PayloadAction<UserSetup>) => {
-      const { ID, type, target, ...setupInfo } = action.payload;
+    initSessionWithSetup: (state, action: InitSessionWithSetupAction) => {
+      const { ID = Date.now(), name, type, calcSetup, target } = action.payload;
 
-      state.charData = getCharData(setupInfo.char);
-      state.setupManageInfos = [getSetupManageInfo({ ID, type })];
+      state.charData = getCharData(calcSetup.char);
+      state.setupManageInfos = [getSetupManageInfo({ ID, name, type })];
       state.setupsById = {
-        [ID]: setupInfo,
+        [ID]: calcSetup,
       };
       // calculate will repopulate statsById
       state.statsById = {};
@@ -146,31 +146,28 @@ export const calculatorSlice = createSlice({
       state.monster = createMonster();
       state.configs.separateCharInfo = false;
       state.activeId = ID;
-      // #to-do: add to compare when comparing setups of the same character
       state.standardId = 0;
       state.comparedIds = [];
 
       calculate(state);
     },
     importSetup: (state, action: ImportSetupAction) => {
-      const { data, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
-      const { ID, type, name, target, ...importedsetup } = data;
-      const { setupManageInfos, setupsById } = state;
+      const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
+      const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
+      const { setupsById } = state;
       const { separateCharInfo } = state.configs;
 
       if (shouldOverwriteChar && separateCharInfo) {
         for (const setup of Object.values(setupsById)) {
-          setup.char = importedsetup.char;
+          setup.char = calcSetup.char;
         }
       }
       if (shouldOverwriteTarget) {
         state.target = target;
       }
 
-      state.setupManageInfos.push(
-        getSetupManageInfo({ name: getNewSetupName(setupManageInfos), ID, type })
-      );
-      state.setupsById[ID] = importedsetup;
+      state.setupManageInfos.push(getSetupManageInfo({ name, ID, type }));
+      state.setupsById[ID] = calcSetup;
       state.activeId = ID;
 
       calculate(state, shouldOverwriteChar || shouldOverwriteTarget);
@@ -187,29 +184,19 @@ export const calculatorSlice = createSlice({
     duplicateCalcSetup: (state, action: PayloadAction<number>) => {
       const sourceId = action.payload;
       const { comparedIds, setupManageInfos, setupsById } = state;
-      const ID = Date.now();
-      let seedID = ID;
 
       if (setupsById[sourceId]) {
+        const setupID = Date.now();
+
         setupManageInfos.push({
-          ID,
-          name: getNewSetupName(setupManageInfos),
+          ID: setupID,
+          name: "New setup",
           type: "original",
         });
-        setupsById[ID] = {
-          ...setupsById[sourceId],
-          artifacts: setupsById[sourceId].artifacts.map((artifact) =>
-            artifact
-              ? {
-                  ...artifact,
-                  ID: seedID++,
-                }
-              : null
-          ),
-        };
+        setupsById[setupID] = setupsById[sourceId];
 
         if (comparedIds.includes(sourceId)) {
-          state.comparedIds.push(ID);
+          state.comparedIds.push(setupID);
         }
         calculate(state, true);
       }

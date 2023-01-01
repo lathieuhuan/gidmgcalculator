@@ -144,6 +144,15 @@ export type Monster = {
   variantType: Vision | null;
 };
 
+export type SetupImportInfo = {
+  importType: "" | "EDIT_SETUP" | "IMPORT_OUTSIDE";
+  ID?: number;
+  name?: string;
+  type?: "original" | "combined";
+  calcSetup?: CalcSetup;
+  target?: Target;
+};
+
 export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;

@@ -3,7 +3,7 @@ import { useState, ChangeEventHandler, KeyboardEventHandler } from "react";
 import type { UserSetup } from "@Src/types";
 
 // Selector
-import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Action
 import { combineSetups } from "@Store/userDatabaseSlice";
@@ -20,7 +20,7 @@ import { ButtonBar } from "@Components/molecules";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
 
   const [input, setInput] = useState("Team Setup");
 

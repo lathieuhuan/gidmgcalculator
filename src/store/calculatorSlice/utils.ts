@@ -5,15 +5,14 @@ import type {
   UserArtifact,
   UserWeapon,
   WeaponType,
-  CalcSetupManageInfo,
   ArtifactDebuffCtrl,
   ModInputConfig,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
+import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
-import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 import calculateAll from "@Src/calculators";
 import { findById, userItemToCalcItem } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
@@ -46,7 +45,7 @@ type ParseAndInitDataArgs = {
   weaponType: WeaponType;
   seedID: number;
 };
-export function parseAndInitData({
+export function parseUserCharData({
   pickedChar: { name, weaponID, artifactIDs = [null, null, null, null, null], ...info },
   userWps,
   userArts,
@@ -140,33 +139,4 @@ export function getArtDebuffCtrls(): ArtifactDebuffCtrl[] {
     { code: 15, activated: false, index: 0, inputs: [0] },
     { code: 33, activated: false, index: 0 },
   ];
-}
-
-export const getSetupManageInfo = ({
-  name = "Setup 1",
-  ID = Date.now(),
-  type = "original",
-}: Partial<CalcSetupManageInfo>): CalcSetupManageInfo => {
-  return {
-    name: name.trim(),
-    ID,
-    type,
-  };
-};
-
-export function getNewSetupName(setups: Array<{ name: string }>) {
-  const existedIndexes = [1, 2, 3, 4];
-
-  for (const { name } of setups) {
-    const parts = name.split(" ");
-
-    if (parts.length === 2 && parts[0] === "Setup" && !isNaN(+parts[1])) {
-      const i = existedIndexes.indexOf(+parts[1]);
-
-      if (i !== -1) {
-        existedIndexes.splice(i, 1);
-      }
-    }
-  }
-  return "Setup " + existedIndexes[0];
 }

@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import {
   selectUserArts,
   selectUserChars,
-  selectMySetups,
+  selectUserSetups,
   selectUserWps,
 } from "@Store/userDatabaseSlice/selectors";
 
@@ -24,7 +24,7 @@ function Options({ onClose }: { onClose: () => void }) {
   const userChars = useSelector(selectUserChars);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
 
   const downloadData = JSON.stringify({
     version: 2.1,

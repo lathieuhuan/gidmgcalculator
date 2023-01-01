@@ -15,6 +15,9 @@ import type {
   CustomDebuffCtrl,
   TeammateWeapon,
   TeammateArtifact,
+  Target,
+  SetupImportInfo,
+  PartiallyRequired,
 } from "@Src/types";
 import type { CalcConfigurations, CalculatorState } from "./types";
 
@@ -29,6 +32,18 @@ export type InitSessionWithCharAction = PayloadAction<{
   pickedChar: PickedChar;
   userWps: UserWeapon[];
   userArts: UserArtifact[];
+}>;
+
+type InitSessionWithSetupPayload = PartiallyRequired<
+  Omit<SetupImportInfo, "importType">,
+  "calcSetup" | "target"
+>;
+export type InitSessionWithSetupAction = PayloadAction<InitSessionWithSetupPayload>;
+
+export type ImportSetupAction = PayloadAction<{
+  importInfo: InitSessionWithSetupPayload;
+  shouldOverwriteChar: boolean;
+  shouldOverwriteTarget: boolean;
 }>;
 
 export type AddTeammateAction = PayloadAction<{
@@ -148,10 +163,4 @@ export type ApplySettingsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newConfigs: CalcConfigurations;
   newStandardId: number;
-}>;
-
-export type ImportSetupAction = PayloadAction<{
-  data: UserSetup;
-  shouldOverwriteChar: boolean;
-  shouldOverwriteTarget: boolean;
 }>;

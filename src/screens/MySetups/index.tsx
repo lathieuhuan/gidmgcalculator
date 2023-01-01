@@ -11,7 +11,7 @@ import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
 import {
   selectChosenSetupID,
   selectUserArts,
-  selectMySetups,
+  selectUserSetups,
   selectUserWps,
 } from "@Store/userDatabaseSlice/selectors";
 
@@ -38,7 +38,7 @@ import styles from "../styles.module.scss";
 export default function MySetups() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
   const chosenSetupID = useSelector(selectChosenSetupID);

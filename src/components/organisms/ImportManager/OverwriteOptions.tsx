@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { UserSetup } from "@Src/types";
+import type { CharInfo, Target } from "@Src/types";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -19,13 +19,15 @@ import { ButtonBar } from "@Components/molecules";
 
 interface OverrideOptions {
   pendingCode: number;
-  importedSetup?: UserSetup;
+  importedChar: CharInfo;
+  importedTarget: Target;
   addImportedSetup: (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => void;
   endImport: () => void;
 }
 export function OverrideOptions({
   pendingCode,
-  importedSetup,
+  importedChar,
+  importedTarget,
   addImportedSetup,
   endImport,
 }: OverrideOptions) {
@@ -82,7 +84,7 @@ export function OverrideOptions({
           {["Character's Info.", "Target's Info."].map((text, i) => {
             if (pendingCode >= 300 || pendingCode % 10 === i) {
               const object1: any = i ? target : comparedChar;
-              const object2: any = i ? importedSetup?.target : importedSetup?.char;
+              const object2: any = i ? importedTarget : importedChar;
 
               return (
                 <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>

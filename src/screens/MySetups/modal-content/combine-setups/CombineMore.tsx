@@ -5,7 +5,7 @@ import type { UserComplexSetup, UserSetup } from "@Src/types";
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
 
 // Selector
-import { selectMySetups } from "@Store/userDatabaseSlice/selectors";
+import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findById } from "@Src/utils";
@@ -25,7 +25,7 @@ interface CombineMoreProps {
 }
 export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps) {
   const dispatch = useDispatch();
-  const userSetups = useSelector(selectMySetups);
+  const userSetups = useSelector(selectUserSetups);
 
   const { name, allIDs } = targetSetup;
   const remainChars = allChars.filter((name) => !allIDs[name]);

@@ -13,7 +13,7 @@ import { useTabs } from "@Src/hooks";
 
 // Util
 import { findById } from "@Src/utils";
-import { getNewSetupName, getSetupManageInfo } from "@Store/calculatorSlice/utils";
+import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 
 // Action
 import { applySettings } from "@Store/calculatorSlice";
@@ -71,7 +71,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   );
   const [tempStandardId, setTempStandardId] = useState(findById(tempSetups, standardId)?.ID || 0);
   const [tempConfigs, setTempConfigs] = useState(configs);
-  const [errorCode, setErrorCode] = useState<"DUPLICATE_SETUP_NAME" | "NO_SETUPS" | "">("");
+  const [errorCode, setErrorCode] = useState<"NO_SETUPS" | "">("");
   const [tipsOn, setTipsOn] = useState(false);
 
   const comparedSetups = tempSetups.filter((tempSetup) => {
@@ -121,11 +121,10 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   const copySetup = (index: number) => () => {
     if (tempSetups.length < MAX_CALC_SETUPS) {
       setTempSetups((prev) => {
-        let name = prev[index].name.trim();
         const newSetup: NewSetupManageInfo = {
           ...prev[index],
           ID: Date.now(),
-          name: name ? `${name} (copy)` : "Setup copy",
+          name: "New setup",
           type: "original",
           originId: prev[index].ID,
           status: "DUPLICATE",
@@ -162,21 +161,9 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   };
 
   const tryApplyNewSettings = () => {
-    if (!tempSetups.length) {
+    if (!tempSetups.filter((tempSetup) => tempSetup.status !== "REMOVED").length) {
       setErrorCode("NO_SETUPS");
       return;
-    }
-
-    const nameMap: Record<string, boolean> = {};
-    for (const tempSetup of tempSetups) {
-      const name = tempSetup.name.trim();
-
-      if (!name.length || nameMap[name]) {
-        setErrorCode("DUPLICATE_SETUP_NAME");
-        return;
-      } else {
-        nameMap[name] = true;
-      }
     }
 
     dispatch(
@@ -290,9 +277,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
             errorCode !== "" && "group-hover:scale-100"
           )}
         >
-          {errorCode === "NO_SETUPS"
-            ? "Please have atleast 1 Setup"
-            : errorCode === "DUPLICATE_SETUP_NAME" && "Please choose a unique name for each Setup."}
+          {errorCode === "NO_SETUPS" ? "Please have atleast 1 Setup" : ""}
         </span>
         <span>Apply</span>
       </Button>

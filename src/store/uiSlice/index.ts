@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { UIState } from "./types";
+import type { SetupImportInfo } from "@Src/types";
 import { EScreen } from "@Src/constants";
-import type { ImportInfo, UIState } from "./types";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
   importInfo: {
-    type: "",
+    importType: "",
   },
 };
 
@@ -21,7 +22,7 @@ export const uiSlice = createSlice({
         ...action.payload,
       };
     },
-    updateImportInfo: (state, action: PayloadAction<ImportInfo>) => {
+    updateImportInfo: (state, action: PayloadAction<SetupImportInfo>) => {
       state.importInfo = action.payload;
     },
   },
