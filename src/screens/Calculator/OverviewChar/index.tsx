@@ -103,7 +103,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
       ) : (
         <div className="w-full flex flex-col">
           <Button className="mx-auto" variant="positive" onClick={() => setPickerOn(true)}>
-            Choose a Character
+            Choose a character
           </Button>
         </div>
       )}

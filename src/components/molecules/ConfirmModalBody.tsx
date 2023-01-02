@@ -16,25 +16,17 @@ export function ConfirmModalBody({
   const renderButtons: ButtonBarButton[] = [];
 
   buttons.forEach((button, index) => {
-    if (!index || index === buttons.length - 1) {
-      const { text = index ? "Confirm" : "Cancel", onClick } = button || {};
+    const { text, variant, onClick } = button || {};
+    const buttonText = text || (index === buttons.length - 1 ? "Confirm" : !index ? "Cancel" : "");
 
-      renderButtons.push({
-        text,
-        onClick: () => {
-          onClick?.();
-          closeOnClickButton && onClose();
-        },
-      });
-    } else if (button) {
-      renderButtons.push({
-        text: button.text || "",
-        onClick: () => {
-          button.onClick?.();
-          closeOnClickButton && onClose();
-        },
-      });
-    }
+    renderButtons.push({
+      text: buttonText,
+      variant,
+      onClick: () => {
+        onClick?.();
+        closeOnClickButton && onClose();
+      },
+    });
   });
 
   return (

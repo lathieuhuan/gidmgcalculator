@@ -10,18 +10,13 @@ import { useSelector } from "@Store/hooks";
 // Util
 import { findById } from "@Src/utils";
 
-// Component
-import { Modal } from "@Components/molecules";
-
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
   const userSetups = useSelector(selectUserSetups);
 
   return (
     <div className="flex flex-col overflow-auto">
-      <p className="text-lg text-orange leading-6 font-medium">
-        This item is used on these setups:
-      </p>
-      <ul className="mt-2 pl-4 list-disc overflow-auto custom-scrollbar">
+      <p className="text-orange font-medium">This item is used on these setups:</p>
+      <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
         {setupIDs?.map((ID, i) => {
           const { name } = findById(userSetups, ID) || {};
           return name ? <li key={i}>{name}</li> : null;
@@ -36,25 +31,50 @@ interface OwnerLabelProps {
   setupIDs?: number[];
 }
 export function OwnerLabel({ owner, setupIDs }: OwnerLabelProps) {
-  const [isVisibleList, setIsVisibleList] = useState(false);
+  const [list, setList] = useState({
+    isVisible: false,
+    isMounted: false,
+  });
+
+  const onClickPuzzlePiece = () => {
+    setList((prevList) => {
+      return {
+        isVisible: !prevList.isVisible,
+        isMounted: prevList.isVisible ? prevList.isMounted : true,
+      };
+    });
+
+    setTimeout(() => {
+      setList((prevList) => {
+        if (!prevList.isVisible) {
+          return {
+            ...prevList,
+            isMounted: false,
+          };
+        }
+
+        return prevList;
+      });
+    }, 200);
+  };
 
   return owner === undefined ? null : (
-    <div className="mt-4 pl-4 font-bold text-black bg-[#ffe7bb] flex justify-between">
+    <div className="mt-4 pl-4 font-bold text-black bg-[#ffe7bb] flex justify-between relative">
       <p className="py-1">Equipped: {owner || "None"}</p>
       {setupIDs?.length ? (
-        <button className="w-8 h-8 flex-center" onClick={() => setIsVisibleList(true)}>
+        <button className="w-8 h-8 flex-center" onClick={onClickPuzzlePiece}>
           <FaPuzzlePiece className="w-5 h-5" />
         </button>
       ) : null}
 
-      <Modal
-        active={isVisibleList}
-        className="p-4 bg-darkblue-2 rounded-md shadow-white-glow max-w-95 flex flex-col overflow-auto"
-        style={{ maxHeight: "60vh", minWidth: 300 }}
-        onClose={() => setIsVisibleList(false)}
+      <div
+        className={
+          "absolute bottom-full right-2 mb-2 px-4 py-2 text-default small-tooltip origin-bottom-right shadow-white-glow " +
+          (list.isVisible ? "scale-100" : "scale-0")
+        }
       >
-        <SetupList setupIDs={setupIDs} />
-      </Modal>
+        {list.isMounted && <SetupList setupIDs={setupIDs} />}
+      </div>
     </div>
   );
 }

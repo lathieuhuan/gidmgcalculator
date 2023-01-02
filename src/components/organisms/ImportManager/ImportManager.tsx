@@ -147,7 +147,7 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
       return (
         <ConfirmModalBody
           message="This setup is already in the Calculator."
-          buttons={[undefined, undefined]}
+          buttons={[undefined]}
           onClose={endImport}
         />
       );

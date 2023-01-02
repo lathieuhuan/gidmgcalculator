@@ -29,7 +29,7 @@ export const ButtonBar = ({ className, buttons, autoFocusIndex }: ButtonBarProps
             disabled={button.disabled}
             variant={
               button.variant ||
-              (i ? (i === buttons.length - 1 ? "positive" : "neutral") : "negative")
+              (i === buttons.length - 1 ? "positive" : !i ? "negative" : "neutral")
             }
             onClick={button.onClick}
             autoFocus={i === autoFocusIndex}

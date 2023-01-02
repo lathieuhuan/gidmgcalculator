@@ -34,11 +34,7 @@ export function ArtifactLevelSelect({
     );
   }
   return (
-    <div
-      className={
-        "px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-circle cursor-default opacity-60 " + className
-      }
-    >
+    <div className={"px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-circle cursor-default " + className}>
       <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + level}</p>
     </div>
   );

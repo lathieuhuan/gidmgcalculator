@@ -57,12 +57,18 @@ const selectFilteredArtifactIds = createSelector(
   }
 );
 
-type ModalType = "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFACT" | "FITLER";
+type ModalType =
+  | ""
+  | "PICK_ARTIFACT_TYPE"
+  | "EQUIP_CHARACTER"
+  | "REMOVE_ARTIFACT"
+  | "FITLER"
+  | "CANNOT_REMOVE_WEAPON";
 
 export default function MyArtifacts() {
   const dispatch = useDispatch();
 
-  const [modalType, setModalType] = useState<ModalType | null>(null);
+  const [modalType, setModalType] = useState<ModalType>("");
   const [pickArtifactModal, setPickArtifactModal] = useState<{
     isActive: boolean;
     type: ArtifactType;
@@ -92,7 +98,7 @@ export default function MyArtifacts() {
   const artifact = useSelector((state) => selectArtifactById(state, chosenID));
 
   const openModal = (type: ModalType) => () => setModalType(type);
-  const closeModal = () => setModalType(null);
+  const closeModal = () => setModalType("");
 
   const swapOwner = (name: string) => {
     if (artifact) {
@@ -177,14 +183,19 @@ export default function MyArtifacts() {
                 <ButtonBar
                   className="mt-4"
                   buttons={[
-                    { text: "Remove", onClick: openModal("REMOVE_ARTIFACT") },
+                    {
+                      text: "Remove",
+                      onClick: openModal(
+                        artifact.setupIDs?.length ? "CANNOT_REMOVE_WEAPON" : "REMOVE_ARTIFACT"
+                      ),
+                    },
                     { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
                   ]}
                 />
               ) : null}
             </div>
 
-            <OwnerLabel owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
+            <OwnerLabel key={artifact?.ID} owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
           </div>
         </div>
       </div>
@@ -245,9 +256,9 @@ export default function MyArtifacts() {
           item={artifact}
           itemType="artifact"
           filteredIds={filteredIds}
-          removeItem={(item) =>
-            dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }))
-          }
+          removeItem={(item) => {
+            dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }));
+          }}
           updateChosenID={setChosenID}
           onClose={closeModal}
         />
@@ -267,6 +278,13 @@ export default function MyArtifacts() {
           onClose={() => setNewOwner(null)}
         />
       )}
+
+      <ConfirmModal
+        active={modalType === "CANNOT_REMOVE_WEAPON"}
+        message="This artifact cannot be deleted. It is used by some Setups."
+        buttons={[undefined]}
+        onClose={closeModal}
+      />
     </div>
   );
 }

@@ -66,9 +66,9 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
 
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {
-          const artPiece = artifacts[index];
-          const icon = artPiece
-            ? findDataArtifact({ code: artPiece.code, type })?.icon || ""
+          const artifact = artifacts[index];
+          const icon = artifact
+            ? findDataArtifact({ code: artifact.code, type })?.icon || ""
             : ARTIFACT_ICONS[type];
 
           return (
@@ -81,8 +81,8 @@ export default function SectionArtifacts({ containerRef }: SectionArtifactsProps
             >
               <div
                 className={clsx(
-                  `bg-gradient-${artPiece ? artPiece.rarity || 5 : 1} cursor-pointer`,
-                  !artPiece && "p-2 opacity-80"
+                  `bg-gradient-${artifact ? artifact.rarity || 5 : 1} cursor-pointer`,
+                  !artifact && "p-2 opacity-80"
                 )}
                 onClick={() => onClickTab(index)}
               >

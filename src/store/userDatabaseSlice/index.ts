@@ -423,10 +423,10 @@ export const userDatabaseSlice = createSlice({
 
           for (const ID of artifactIDs) {
             if (!ID) continue;
-            const foundArtPiece = findById(userArts, ID);
+            const foundArtifact = findById(userArts, ID);
 
-            if (foundArtPiece) {
-              foundArtPiece.setupIDs = foundArtPiece.setupIDs?.filter((ID) => ID !== removedID);
+            if (foundArtifact) {
+              foundArtifact.setupIDs = foundArtifact.setupIDs?.filter((ID) => ID !== removedID);
             }
           }
         }
