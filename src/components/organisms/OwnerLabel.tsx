@@ -46,14 +46,12 @@ export function OwnerLabel({ owner, setupIDs }: OwnerLabelProps) {
 
     setTimeout(() => {
       setList((prevList) => {
-        if (!prevList.isVisible) {
-          return {
-            ...prevList,
-            isMounted: false,
-          };
-        }
-
-        return prevList;
+        return prevList.isVisible
+          ? prevList
+          : {
+              ...prevList,
+              isMounted: false,
+            };
       });
     }, 200);
   };
