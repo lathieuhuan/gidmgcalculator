@@ -47,11 +47,11 @@ const Sara: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 36.89 },
-        { name: "2-Hit", multBase: 38.7 },
-        { name: "3-Hit", multBase: 48.5 },
-        { name: "4-Hit", multBase: 50.4 },
-        { name: "5-Hit", multBase: 58.05 },
+        { name: "1-Hit", multFactors: { root: 36.89 } },
+        { name: "2-Hit", multFactors: { root: 38.7 } },
+        { name: "3-Hit", multFactors: { root: 48.5 } },
+        { name: "4-Hit", multFactors: { root: 50.4 } },
+        { name: "5-Hit", multFactors: { root: 58.05 } },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -61,13 +61,11 @@ const Sara: DataCharacter = {
       image: "6/6a/Talent_Tengu_Stormcall",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Tengu Juurai: Ambush DMG", multBase: 125.76 },
+        { name: "Tengu Juurai: Ambush DMG", multFactors: { root: 125.76 } },
         {
           name: "ATK Bonus",
           notAttack: "other",
-          baseStatType: "base_atk",
-          multBase: 42.96,
-          multType: 2,
+          multFactors: { root: 42.96, attributeType: "base_atk" },
         },
       ],
       // getExtraStats: () => [
@@ -80,8 +78,8 @@ const Sara: DataCharacter = {
       image: "e/e8/Talent_Subjugation_Koukou_Sendou",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Tengu Juurai: Titanbreaker DMG", multBase: 409.6 },
-        { name: "Tengu Juurai: Stormcluster DMG", multBase: 34.12 },
+        { name: "Tengu Juurai: Titanbreaker DMG", multFactors: { root: 409.6 } },
+        { name: "Tengu Juurai: Stormcluster DMG", multFactors: { root: 34.12 } },
       ],
       // getExtraStats: () => [{ name: "CD", value: "20s" }],
       energyCost: 80,

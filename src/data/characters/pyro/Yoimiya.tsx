@@ -49,17 +49,17 @@ const Yoimiya: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multBase: 35.64, multType: 4 },
-        { name: "2-Hit", multBase: 68.38, multType: 4 },
-        { name: "3-Hit", multBase: 88.89, multType: 4 },
-        { name: "4-Hit (1/2)", multBase: 46.42, multType: 4 },
-        { name: "5-Hit", multBase: 105.86, multType: 4 },
+        { name: "1-Hit (1/2)", multFactors: { root: 35.64, scale: 4 } },
+        { name: "2-Hit", multFactors: { root: 68.38, scale: 4 } },
+        { name: "3-Hit", multFactors: { root: 88.89, scale: 4 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 46.42, scale: 4 } },
+        { name: "5-Hit", multFactors: { root: 105.86, scale: 4 } },
       ],
     },
     CA: {
       stats: [
         ...BOW_CAs,
-        { name: "Kindling Arrow", subAttPatt: "FCA", multBase: 16.4, multType: 2 },
+        { name: "Kindling Arrow", subAttPatt: "FCA", multFactors: { root: 16.4, scale: 2 } },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -82,8 +82,8 @@ const Yoimiya: DataCharacter = {
       image: "a/a7/Talent_Ryuukin_Saxifrage",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multBase: 127.2 },
-        { name: "Aurous Blaze Explosion", multBase: 122 },
+        { name: "Skill DMG", multFactors: { root: 127.2 } },
+        { name: "Aurous Blaze Explosion", multFactors: { root: 122 } },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "10s" },

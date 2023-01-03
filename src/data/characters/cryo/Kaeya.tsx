@@ -37,27 +37,27 @@ const Kaeya: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 53.75 },
-        { name: "2-Hit", multBase: 51.69 },
-        { name: "3-Hit", multBase: 65.27 },
-        { name: "4-Hit", multBase: 70.86 },
-        { name: "5-Hit", multBase: 88.24 },
+        { name: "1-Hit", multFactors: { root: 53.75 } },
+        { name: "2-Hit", multFactors: { root: 51.69 } },
+        { name: "3-Hit", multFactors: { root: 65.27 } },
+        { name: "4-Hit", multFactors: { root: 70.86 } },
+        { name: "5-Hit", multFactors: { root: 88.24 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: [55.04, 73.1] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 55.04 }, { root: 73.1 }] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Frostgnaw",
       image: "5/51/Talent_Frostgnaw",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multBase: 191.2 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 191.2 } }],
       // getExtraStats: () => [{ name: "CD", value: "6s" }],
     },
     EB: {
       name: "Glacial Waltz",
       image: "2/29/Talent_Glacial_Waltz",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 77.6 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 77.6 } }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "8s" },
       //   { name: "CD", value: "15s" },

@@ -38,31 +38,29 @@ const Zhongli: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 30.77 },
-        { name: "2-Hit", multBase: 31.15 },
-        { name: "3-Hit", multBase: 38.58 },
-        { name: "4-Hit", multBase: 42.94 },
-        { name: "5-Hit (1/4)", multBase: 10.75 },
-        { name: "6-Hit", multBase: 54.5 },
+        { name: "1-Hit", multFactors: { root: 30.77 } },
+        { name: "2-Hit", multFactors: { root: 31.15 } },
+        { name: "3-Hit", multFactors: { root: 38.58 } },
+        { name: "4-Hit", multFactors: { root: 42.94 } },
+        { name: "5-Hit (1/4)", multFactors: { root: 10.75 } },
+        { name: "6-Hit", multFactors: { root: 54.5 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 111.03 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 111.03 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Dominus Lapidis",
       image: "9/93/Talent_Dominus_Lapidis",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Stone Stele DMG", multBase: 16 },
-        { name: "Resonance DMG", multBase: 32 },
-        { name: "Hold DMG", multBase: 80 },
+        { name: "Stone Stele DMG", multFactors: { root: 16 } },
+        { name: "Resonance DMG", multFactors: { root: 32 } },
+        { name: "Hold DMG", multFactors: { root: 80 } },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 12.8,
-          multType: 2,
-          flat: { base: 1232, type: 3 },
+          multFactors: { root: 12.8, attributeType: "hp" },
+          flatFactor: { root: 1232 },
         },
       ],
       // getExtraStats: () => [
@@ -75,7 +73,7 @@ const Zhongli: DataCharacter = {
       name: "Planet Befall",
       image: "7/76/Talent_Planet_Befall",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 401.08, multType: 6 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 401.08, scale: 6 } }],
       // getExtraStats: (lv) => [
       //   { name: "Petrification Duration", value: Math.min(30 + lv, 40) / 10 + "s" },
       //   { name: "CD", value: "12s" },

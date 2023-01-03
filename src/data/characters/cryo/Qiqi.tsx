@@ -37,37 +37,33 @@ const Qiqi: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 37.75 },
-        { name: "2-Hit", multBase: 38.87 },
-        { name: "3-Hit (1/2)", multBase: 24.17 },
-        { name: "4-Hit (1/2)", multBase: 24.68 },
-        { name: "5-Hit", multBase: 63.04 },
+        { name: "1-Hit", multFactors: { root: 37.75 } },
+        { name: "2-Hit", multFactors: { root: 38.87 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 24.17 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 24.68 } },
+        { name: "5-Hit", multFactors: { root: 63.04 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack (1/2)", multBase: 64.33 }] },
+    CA: { stats: [{ name: "Charged Attack (1/2)", multFactors: { root: 64.33 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Adeptus Art: Herald of Frost",
       image: "7/7f/Talent_Adeptus_Art_Herald_of_Frost",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multBase: 96 },
-        { name: "Herald DMG", multBase: 36 },
+        { name: "Skill DMG", multFactors: { root: 96 } },
+        { name: "Herald DMG", multFactors: { root: 36 } },
         {
           name: "Regen. on Hit",
           notAttack: "healing",
-          baseStatType: "atk",
-          multBase: 10.56,
-          multType: 2,
-          flat: { base: 67, type: 3 },
+          multFactors: { root: 10.56 },
+          flatFactor: { root: 67 },
         },
         {
           name: "Continuous Regen.",
           notAttack: "healing",
-          baseStatType: "atk",
-          multBase: 69.6,
-          multType: 2,
-          flat: { base: 451, type: 3 },
+          multFactors: { root: 69.6 },
+          flatFactor: { root: 451 },
         },
       ],
       // getExtraStats: () => [
@@ -80,14 +76,12 @@ const Qiqi: DataCharacter = {
       image: "7/7c/Talent_Adeptus_Art_Preserver_of_Fortune",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 284.8 },
+        { name: "Skill DMG", multFactors: { root: 284.8 } },
         {
           name: "Healing",
           notAttack: "healing",
-          baseStatType: "atk",
-          multBase: 90,
-          multType: 2,
-          flat: { base: 577, type: 3 },
+          multFactors: { root: 90 },
+          flatFactor: { root: 577 },
         },
       ],
       // getExtraStats: () => [

@@ -38,22 +38,24 @@ const Layla: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 51.22 },
-        { name: "2-Hit", multBase: 48.48 },
-        { name: "3-Hit", multBase: 72.97 },
+        { name: "1-Hit", multFactors: { root: 51.22 } },
+        { name: "2-Hit", multFactors: { root: 48.48 } },
+        { name: "3-Hit", multFactors: { root: 72.97 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", multBase: [47.73, 52.55] }] },
+    CA: {
+      stats: [{ name: "Charged Attack DMG", multFactors: [{ root: 47.73 }, { root: 52.55 }] }],
+    },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Nights of Formal Focus",
       image: "9/90/Talent_Nights_of_Formal_Focus",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 12.8 },
+        { name: "Skill DMG", multFactors: { root: 12.8 } },
         {
           name: "Shooting Star DMG",
-          multBase: 14.72,
+          multFactors: { root: 14.72 },
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
               [checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
@@ -64,10 +66,8 @@ const Layla: DataCharacter = {
         {
           name: "Base Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 10.8,
-          multType: 2,
-          flat: { base: 1040, type: 3 },
+          multFactors: { root: 10.8, attributeType: "hp" },
+          flatFactor: { root: 1040 },
           getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 20]),
         },
       ],
@@ -77,7 +77,7 @@ const Layla: DataCharacter = {
       name: "Dream of the Star-Stream Shaker",
       image: "b/b4/Talent_Dream_of_the_Star-Stream_Shaker",
       xtraLvAtCons: 5,
-      stats: [{ name: "Starlight Slug DMG", baseStatType: "hp", multBase: 4.65 }],
+      stats: [{ name: "Starlight Slug DMG", multFactors: { root: 4.65, attributeType: "hp" } }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "12s" },
       //   { name: "CD", value: "15s" },

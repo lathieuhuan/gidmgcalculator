@@ -103,5 +103,7 @@ export function renderDmgValue(
   value: number | number[],
   callback: (value: number) => string | number = Math.round
 ) {
-  return Array.isArray(value) ? `[${value.map(callback).join(", ")}]` : callback(value);
+  return Array.isArray(value)
+    ? callback(value.reduce((total, num) => total + num, 0))
+    : callback(value);
 }

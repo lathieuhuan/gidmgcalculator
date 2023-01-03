@@ -19,7 +19,7 @@ const DendroMC: DataCharacter = {
       name: "Razorgrass Blade",
       image: "2/24/Talent_Razorgrass_Blade",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multBase: 230.4 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 230.4 } }],
       // getExtraStats: () => [{ name: "CD", value: "8s" }],
     },
     EB: {
@@ -27,8 +27,8 @@ const DendroMC: DataCharacter = {
       image: "a/af/Talent_Surgent_Manifestation",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Lea Lotus Lamp Attack DMG", multBase: 80.16 },
-        { name: "Explosion DMG", multBase: 400.8 },
+        { name: "Lea Lotus Lamp Attack DMG", multFactors: { root: 80.16 } },
+        { name: "Explosion DMG", multFactors: { root: 400.8 } },
       ],
       // getExtraStats: () => [
       //   { name: "Lea Lotus Lamp Duration", value: "12s" },

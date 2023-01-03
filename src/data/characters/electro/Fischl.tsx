@@ -35,18 +35,22 @@ const Fischl: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 44.12 },
-        { name: "2-Hit", multBase: 46.78 },
-        { name: "3-Hit", multBase: 58.14 },
-        { name: "4-Hit", multBase: 57.71 },
-        { name: "5-Hit", multBase: 72.07 },
-        { name: "Oz's Joint Attack (C1)", multBase: 22, multType: 0 },
+        { name: "1-Hit", multFactors: { root: 44.12 } },
+        { name: "2-Hit", multFactors: { root: 46.78 } },
+        { name: "3-Hit", multFactors: { root: 58.14 } },
+        { name: "4-Hit", multFactors: { root: 57.71 } },
+        { name: "5-Hit", multFactors: { root: 72.07 } },
+        { name: "Oz's Joint Attack (C1)", multFactors: { root: 22, scale: 0 } },
       ],
     },
     CA: {
       stats: [
         ...BOW_CAs,
-        { name: "Thundering Retribution (A1)", attElmt: "electro", multBase: 189.35, multType: 0 },
+        {
+          name: "Thundering Retribution (A1)",
+          attElmt: "electro",
+          multFactors: { root: 189.35, scale: 0 },
+        },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -55,14 +59,14 @@ const Fischl: DataCharacter = {
       image: "b/b3/Talent_Nightrider",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Oz's ATK", multBase: 88.8 },
+        { name: "Oz's ATK", multFactors: { root: 88.8 } },
         {
           name: "Summoning DMG",
-          multBase: 115.44,
+          multFactors: { root: 115.44 },
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
         },
-        { name: "Thundering Retribution (A4)", multBase: 80, multType: 0 },
-        { name: "Oz's Joint Attack (C6)", multBase: 30, multType: 0 },
+        { name: "Thundering Retribution (A4)", multFactors: { root: 80, scale: 0 } },
+        { name: "Oz's Joint Attack (C6)", multFactors: { root: 30, scale: 0 } },
       ],
       // getExtraStats: () => [
       //   { name: "Oz's Duration", value: "10s" },
@@ -73,7 +77,7 @@ const Fischl: DataCharacter = {
       name: "Midnight Phantasmagoria",
       image: "f/ff/Talent_Midnight_Phantasmagoria",
       xtraLvAtCons: 5,
-      stats: [{ name: "Falling Thunder", multBase: 208 }],
+      stats: [{ name: "Falling Thunder", multFactors: { root: 208 } }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,
     },

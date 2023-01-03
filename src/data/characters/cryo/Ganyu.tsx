@@ -42,30 +42,32 @@ const Ganyu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 31.73 },
-        { name: "2-Hit", multBase: 35.6 },
-        { name: "3-Hit", multBase: 45.49 },
-        { name: "4-Hit", multBase: 45.49 },
-        { name: "5-Hit", multBase: 48.25 },
-        { name: "6-Hit", multBase: 57.62 },
+        { name: "1-Hit", multFactors: { root: 31.73 } },
+        { name: "2-Hit", multFactors: { root: 35.6 } },
+        { name: "3-Hit", multFactors: { root: 45.49 } },
+        { name: "4-Hit", multFactors: { root: 45.49 } },
+        { name: "5-Hit", multFactors: { root: 48.25 } },
+        { name: "6-Hit", multFactors: { root: 57.62 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Aimed Shot", multBase: 43.86 },
-        { name: "Aimed Shot Charged Level 1", subAttPatt: "FCA", multBase: 124, multType: 2 },
+        { name: "Aimed Shot", multFactors: { root: 43.86 } },
+        {
+          name: "Aimed Shot Charged Level 1",
+          subAttPatt: "FCA",
+          multFactors: { root: 124, scale: 2 },
+        },
         {
           name: "Frostflake Arrow",
           subAttPatt: "FCA",
-          multBase: 128,
-          multType: 2,
+          multFactors: { root: 128, scale: 2 },
           getTalentBuff: getA1TalentBuff,
         },
         {
           name: "Frostflake Arrow Bloom",
           subAttPatt: "FCA",
-          multBase: 217.6,
-          multType: 2,
+          multFactors: { root: 217.6, scale: 2 },
           getTalentBuff: getA1TalentBuff,
         },
       ],
@@ -79,11 +81,9 @@ const Ganyu: DataCharacter = {
         {
           name: "Inherited HP",
           notAttack: "other",
-          baseStatType: "hp",
-          multBase: 120,
-          multType: 2,
+          multFactors: { root: 120, attributeType: "hp" },
         },
-        { name: "Skill DMG", multBase: 132 },
+        { name: "Skill DMG", multFactors: { root: 132 } },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },
@@ -94,7 +94,7 @@ const Ganyu: DataCharacter = {
       name: "Celestial Shower",
       image: "4/47/Talent_Celestial_Shower",
       xtraLvAtCons: 3,
-      stats: [{ name: "Ice shard DMG", multBase: 70.27 }],
+      stats: [{ name: "Ice shard DMG", multFactors: { root: 70.27 } }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "15s" },

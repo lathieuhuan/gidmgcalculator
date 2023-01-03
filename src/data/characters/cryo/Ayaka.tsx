@@ -38,20 +38,20 @@ const Ayaka: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 45.73 },
-        { name: "2-Hit", multBase: 48.68 },
-        { name: "3-Hit", multBase: 62.62 },
-        { name: "4-Hit (1/3)", multBase: 22.65 },
-        { name: "5-Hit", multBase: 78.18 },
+        { name: "1-Hit", multFactors: { root: 45.73 } },
+        { name: "2-Hit", multFactors: { root: 48.68 } },
+        { name: "3-Hit", multFactors: { root: 62.62 } },
+        { name: "4-Hit (1/3)", multFactors: { root: 22.65 } },
+        { name: "5-Hit", multFactors: { root: 78.18 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack (1/3)", multBase: 55.13 }] },
+    CA: { stats: [{ name: "Charged Attack (1/3)", multFactors: { root: 55.13 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Kamisato Art: Hyouka",
       image: "5/56/Talent_Kamisato_Art_Hyouka",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 239.2 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 239.2 } }],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
     EB: {
@@ -59,8 +59,8 @@ const Ayaka: DataCharacter = {
       image: "1/11/Talent_Kamisato_Art_Soumetsu",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Cutting DMG", multBase: 112.3 },
-        { name: "Bloom DMG", multBase: 168.45 },
+        { name: "Cutting DMG", multFactors: { root: 112.3 } },
+        { name: "Bloom DMG", multFactors: { root: 168.45 } },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "5s" },

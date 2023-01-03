@@ -1,5 +1,6 @@
 import type {
   AttackElement,
+  AttackPattern,
   CalcArtifact,
   CalcWeapon,
   CharData,
@@ -91,16 +92,17 @@ export function calcItemToUserItem(
 export const getDefaultAttPattInfo = (
   key: "NAs" | "ES" | "EB",
   weaponType: WeaponType,
-  vision: Vision
+  vision: Vision,
+  attPatt?: AttackPattern
 ): {
   attElmt: AttackElement;
-  multType: number;
+  scale: number;
 } => {
   const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
 
   return {
     attElmt,
-    multType: attElmt === "phys" ? 1 : 2,
+    scale: attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2,
   };
 };
 

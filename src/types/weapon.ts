@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { EModAffect } from "@Src/constants";
 import type { Rarity, ArtifactPercentStat, ModInputConfig } from "./global";
 import type {
   AttackPatternBonus,
@@ -11,6 +10,7 @@ import type {
   TotalAttribute,
   Tracker,
 } from "./calculator";
+import { EModAffect } from "@Src/constants";
 
 /**
  * Weapon in app data

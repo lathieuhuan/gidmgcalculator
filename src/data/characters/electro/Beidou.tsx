@@ -37,23 +37,22 @@ const Beidou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 71.12 },
-        { name: "2-Hit", multBase: 70.86 },
-        { name: "3-Hit", multBase: 88.32 },
-        { name: "4-Hit", multBase: 86.52 },
-        { name: "5-Hit", multBase: 112.14 },
+        { name: "1-Hit", multFactors: { root: 71.12 } },
+        { name: "2-Hit", multFactors: { root: 70.86 } },
+        { name: "3-Hit", multFactors: { root: 88.32 } },
+        { name: "4-Hit", multFactors: { root: 86.52 } },
+        { name: "5-Hit", multFactors: { root: 112.14 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multBase: 56.24 },
-        { name: "Charged Attack Final", multBase: 101.82 },
+        { name: "Charged Attack Spinning", multFactors: { root: 56.24 } },
+        { name: "Charged Attack Final", multFactors: { root: 101.82 } },
         {
           name: "Extra Hit (C4)",
           attPatt: "none",
           attElmt: "electro",
-          multBase: 20,
-          multType: 0,
+          multFactors: { root: 20, scale: 0 },
         },
       ],
     },
@@ -66,14 +65,12 @@ const Beidou: DataCharacter = {
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 14.4,
-          multType: 2,
-          flat: { base: 1386, type: 3 },
+          multFactors: { root: 14.4, attributeType: "hp" },
+          flatFactor: { root: 1386 },
         },
-        { name: "Base DMG", multBase: 121.6 },
-        { name: "DMG Bonus on Hit", multBase: 160 },
-        { name: "Full Counter", multBase: 441.6, isNotOfficial: true },
+        { name: "Base DMG", multFactors: { root: 121.6 } },
+        { name: "DMG Bonus on Hit", multFactors: { root: 160 } },
+        { name: "Full Counter", multFactors: { root: 441.6 }, isNotOfficial: true },
       ],
       // getExtraStats: () => [{ name: "CD", value: "7.5s" }],
     },
@@ -82,8 +79,8 @@ const Beidou: DataCharacter = {
       image: "3/33/Talent_Stormbreaker",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multBase: 121.6 },
-        { name: "Lightning DMG", multBase: 96 },
+        { name: "Skill DMG", multFactors: { root: 121.6 } },
+        { name: "Lightning DMG", multFactors: { root: 96 } },
       ],
       // getExtraStats: (lv) => [
       //   {

@@ -49,19 +49,19 @@ const Yanfei: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 58.34 },
-        { name: "2-Hit", multBase: 52.13 },
-        { name: "3-Hit", multBase: 76.01 },
+        { name: "1-Hit", multFactors: { root: 58.34 } },
+        { name: "2-Hit", multFactors: { root: 52.13 } },
+        { name: "3-Hit", multFactors: { root: 76.01 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack", multBase: 98.23 },
-        { name: "1-Seal Charged Attack", multBase: 115.56 },
-        { name: "2-Seal Charged Attack", multBase: 132.9 },
-        { name: "3-Seal Charged Attack", multBase: 150.23 },
-        { name: "4-Seal Charged Attack", multBase: 167.57 },
-        { name: "Extra Hit (A4)", multBase: 80, multType: 0 },
+        { name: "Charged Attack", multFactors: { root: 98.23 } },
+        { name: "1-Seal Charged Attack", multFactors: { root: 115.56 } },
+        { name: "2-Seal Charged Attack", multFactors: { root: 132.9 } },
+        { name: "3-Seal Charged Attack", multFactors: { root: 150.23 } },
+        { name: "4-Seal Charged Attack", multFactors: { root: 167.57 } },
+        { name: "Extra Hit (A4)", multFactors: { root: 80, scale: 0 } },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -69,14 +69,14 @@ const Yanfei: DataCharacter = {
       name: "Signed Edict",
       image: "a/a3/Talent_Signed_Edict",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multBase: 169.6 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 169.6 } }],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
     EB: {
       name: "Done Deal",
       image: "9/96/Talent_Done_Deal",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 182.4 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 182.4 } }],
       // getExtraStats: (lv) => [
       //   { name: "Scarlet Seal Grant Interval", value: "1s" },
       //   {

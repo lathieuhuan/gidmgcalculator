@@ -1,13 +1,19 @@
 import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import type { BaseStatType, DataCharacter, GetExtraStatsFn, StatInfo, Talent } from "@Src/types";
+import type {
+  TalentStatAttributeType,
+  DataCharacter,
+  GetExtraStatsFn,
+  TalentStat,
+  Talent,
+} from "@Src/types";
 
 // Constant
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { getDefaultAttPattInfo } from "@Src/utils";
+import { getDefaultAttPattInfo, turnArray } from "@Src/utils";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -60,7 +66,7 @@ export function TalentDetail({
   const talentInfoByPosition: Array<{
     talentType: Talent;
     talentName: string;
-    talentStats: StatInfo[];
+    talentStats: TalentStat[];
     getExtraStats?: GetExtraStatsFn;
   }> = [
     {
@@ -100,6 +106,7 @@ export function TalentDetail({
     getExtraStats,
   } = talentInfoByPosition[detailIndex] || {};
   const isStatic = talentType === "altSprint";
+  const defaultInfo = isStatic ? undefined : getDefaultAttPattInfo(talentType, weaponType, vision);
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
     const adjustLevel = () => {
@@ -131,7 +138,7 @@ export function TalentDetail({
     type: number,
     level: number,
     isPercent: boolean,
-    baseStatType?: BaseStatType
+    baseStatType?: TalentStatAttributeType
   ) => {
     let result = base * TALENT_LV_MULTIPLIERS[type][level];
     if (isPercent) {
@@ -195,27 +202,36 @@ export function TalentDetail({
           </div>
 
           <StatsTable>
-            {!isStatic &&
+            {defaultInfo &&
               talentStats.map((stat, i) => {
-                const defaultInfo = getDefaultAttPattInfo(talentType, weaponType, vision);
-                const { multBase, multType = defaultInfo.multType, baseStatType, flat } = stat;
+                if (stat.isNotOfficial) {
+                  return null;
+                }
 
-                return stat.isNotOfficial || stat.multType === 0 ? null : (
+                const { flatFactor } = stat;
+                const factors = turnArray(stat.multFactors).reduce(
+                  (accumulator: string[], factor) => {
+                    if (factor.scale !== 0) {
+                      const { root, scale = defaultInfo.scale, attributeType } = factor;
+                      accumulator.push(
+                        getDetailValue(root, scale, talentLevel, true, attributeType)
+                      );
+                    }
+                    return accumulator;
+                  },
+                  []
+                );
+
+                if (flatFactor) {
+                  factors.push(
+                    getDetailValue(flatFactor.root, flatFactor.scale || 3, talentLevel, false)
+                  );
+                }
+
+                return (
                   <Row key={i} className={styles.row}>
                     <p className={styles.leftCol}>{stat.name}</p>
-                    <p className={styles.rightCol}>
-                      {Array.isArray(multBase)
-                        ? multBase
-                            .map((mult) =>
-                              getDetailValue(mult, multType, talentLevel, true, baseStatType)
-                            )
-                            .join("+")
-                        : multBase
-                        ? getDetailValue(multBase, multType, talentLevel, true, baseStatType)
-                        : null}
-                      {multBase && flat && " + "}
-                      {flat && getDetailValue(flat.base, flat.type, talentLevel, false)}
-                    </p>
+                    <p className={styles.rightCol}>{factors.join(" + ")}</p>
                   </Row>
                 );
               })}

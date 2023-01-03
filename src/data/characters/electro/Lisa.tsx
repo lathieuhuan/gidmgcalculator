@@ -36,24 +36,24 @@ const Lisa: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 39.6 },
-        { name: "2-Hit", multBase: 35.92 },
-        { name: "3-Hit", multBase: 42.8 },
-        { name: "4-Hit", multBase: 54.96 },
+        { name: "1-Hit", multFactors: { root: 39.6 } },
+        { name: "2-Hit", multFactors: { root: 35.92 } },
+        { name: "3-Hit", multFactors: { root: 42.8 } },
+        { name: "4-Hit", multFactors: { root: 54.96 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 177.12 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 177.12 } }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Violet Arc",
       image: "c/c8/Talent_Violet_Arc",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multBase: 80 },
-        { name: "0-stack Hold", multBase: 320 },
-        { name: "1-stack Hold", multBase: 368 },
-        { name: "2-stack Hold", multBase: 424 },
-        { name: "3-stack Hold", multBase: 487.2 },
+        { name: "Press DMG", multFactors: { root: 80 } },
+        { name: "0-stack Hold", multFactors: { root: 320 } },
+        { name: "1-stack Hold", multFactors: { root: 368 } },
+        { name: "2-stack Hold", multFactors: { root: 424 } },
+        { name: "3-stack Hold", multFactors: { root: 487.2 } },
       ],
       // getExtraStats: () => [
       //   { name: "Press CD", value: "1s" },
@@ -64,7 +64,7 @@ const Lisa: DataCharacter = {
       name: "Lightning Rose",
       image: "f/fd/Talent_Lightning_Rose",
       xtraLvAtCons: 3,
-      stats: [{ name: "Discharge DMG", multBase: 36.56 }],
+      stats: [{ name: "Discharge DMG", multFactors: { root: 36.56 } }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "20s" },

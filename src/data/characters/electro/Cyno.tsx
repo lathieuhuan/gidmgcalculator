@@ -41,13 +41,13 @@ const Cyno: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 49.26 },
-        { name: "2-Hit", multBase: 47.92 },
-        { name: "3-Hit (1/2)", multBase: 29.31 },
-        { name: "4-Hit", multBase: 75.89 },
+        { name: "1-Hit", multFactors: { root: 49.26 } },
+        { name: "2-Hit", multFactors: { root: 47.92 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 29.31 } },
+        { name: "4-Hit", multFactors: { root: 75.89 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", multBase: 122.38 }] },
+    CA: { stats: [{ name: "Charged Attack DMG", multFactors: { root: 122.38 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Secret Rite: Chasmic Soulfarer",
@@ -56,11 +56,11 @@ const Cyno: DataCharacter = {
       stats: [
         {
           name: "Skill DMG",
-          multBase: 130.4,
+          multFactors: { root: 130.4 },
         },
         {
           name: "Mortuary Rite DMG",
-          multBase: 156.8,
+          multFactors: { root: 156.8 },
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const A1isInUse = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1);
             return talentBuff([A1isInUse, "pct", [true, 1], 35]);
@@ -68,8 +68,7 @@ const Cyno: DataCharacter = {
         },
         {
           name: "Duststalker Bolt DMG (A1)",
-          multBase: 100,
-          multType: 0,
+          multFactors: { root: 100, scale: 0 },
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff([checkAscs[4](char), "flat", [true, 4], totalAttr.em * 2.5]);
           },
@@ -84,47 +83,41 @@ const Cyno: DataCharacter = {
         {
           name: "1-Hit",
           attPatt: "NA",
-          multBase: 78.28,
-          multType: 7,
+          multFactors: { root: 78.28, scale: 7 },
           getTalentBuff: getA4talentBuff,
         },
         {
           name: "2-Hit",
           attPatt: "NA",
-          multBase: 82.47,
-          multType: 7,
+          multFactors: { root: 82.47, scale: 7 },
           getTalentBuff: getA4talentBuff,
         },
         {
           name: "3-Hit",
           attPatt: "NA",
-          multBase: 104.63,
-          multType: 7,
+          multFactors: { root: 104.63, scale: 7 },
           getTalentBuff: getA4talentBuff,
         },
         {
           name: "4-Hit (1/2)",
           attPatt: "NA",
-          multBase: 51.69,
-          multType: 7,
+          multFactors: { root: 51.69, scale: 7 },
           getTalentBuff: getA4talentBuff,
         },
         {
           name: "5-Hit",
           attPatt: "NA",
-          multBase: 130.84,
-          multType: 7,
+          multFactors: { root: 130.84, scale: 7 },
           getTalentBuff: getA4talentBuff,
         },
         {
           name: "Charged Attack DMG",
           attPatt: "CA",
-          multBase: 101.05,
-          multType: 7,
+          multFactors: { root: 101.05, scale: 7 },
         },
-        { name: "Plunge DMG", attPatt: "PA", multBase: 63.93, multType: 7 },
-        { name: "Low Plunge", attPatt: "PA", multBase: 127.84, multType: 7 },
-        { name: "High Plunge", attPatt: "PA", multBase: 159.68, multType: 7 },
+        { name: "Plunge DMG", attPatt: "PA", multFactors: { root: 63.93, scale: 7 } },
+        { name: "Low Plunge", attPatt: "PA", multFactors: { root: 127.84, scale: 7 } },
+        { name: "High Plunge", attPatt: "PA", multFactors: { root: 159.68, scale: 7 } },
       ],
       // getExtraStats: () => [
       //   { name: "Elemental Mastery Bonus", value: 100 },

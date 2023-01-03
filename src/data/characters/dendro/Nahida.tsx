@@ -12,9 +12,9 @@ function getEBBuff(char: CharInfo, partyData: PartyData) {
     (result, data) => (data?.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
-  const multBase = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
+  const root = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
   return {
-    value: round(multBase * TALENT_LV_MULTIPLIERS[2][char.EB], 2),
+    value: round(root * TALENT_LV_MULTIPLIERS[2][char.EB], 2),
     pyroCount,
   };
 }
@@ -34,7 +34,7 @@ const Nahida: DataCharacter = {
     [2784, 80, 169],
     [4165, 120, 253],
     [4656, 134, 283],
-    [5357, 157, 326],
+    [5357, 155, 326],
     [6012, 174, 366],
     [6721, 194, 409],
     [7212, 208, 439],
@@ -42,7 +42,7 @@ const Nahida: DataCharacter = {
     [8418, 243, 512],
     [9140, 264, 556],
     [9632, 278, 586],
-    [10360, 299, 640],
+    [10360, 299, 630],
   ],
   bonusStat: { type: "em", value: 28.8 },
   NAsConfig: {
@@ -51,24 +51,30 @@ const Nahida: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 40.3 },
-        { name: "2-Hit", multBase: 36.97 },
-        { name: "3-Hit", multBase: 45.87 },
-        { name: "4-Hit", multBase: 58.21 },
+        { name: "1-Hit", multFactors: { root: 40.3 } },
+        { name: "2-Hit", multFactors: { root: 36.97 } },
+        { name: "3-Hit", multFactors: { root: 45.87 } },
+        { name: "4-Hit", multFactors: { root: 58.21 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 132 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 132 } }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "All Schemes to Know",
       image: "7/72/Talent_All_Schemes_to_Know",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press DMG", multBase: 98.4 },
-        { name: "Hold DMG", multBase: 130.4 },
+        { name: "Press DMG", multFactors: { root: 98.4 } },
+        { name: "Hold DMG", multFactors: { root: 130.4 } },
         {
           name: "Tri-Karma Purification DMG",
-          multBase: 103.2,
+          multFactors: [
+            { root: 103.2 },
+            {
+              root: 206.4,
+              attributeType: "em",
+            },
+          ],
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
             let desc = [];
@@ -90,19 +96,8 @@ const Nahida: DataCharacter = {
                 desc.push(`A4 Passive Talent (${A4BuffValue})`);
               }
             }
-            const emPartMult = 206.4 * TALENT_LV_MULTIPLIERS[2][char.ES];
-            const emPart = Math.round((emPartMult / 100) * totalAttr.em);
 
             return talentBuff(
-              [
-                true,
-                "flat",
-                `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Talent Mult. ${round(
-                  emPartMult,
-                  3
-                )}%)`,
-                emPart,
-              ],
               [EBisInUse || A4isInUse, "pct", desc.join(" + "), buffValue],
               [A4isInUse, "cRate", [true, 4], Math.min(excessEM * 0.03, 24)]
             );
@@ -110,8 +105,7 @@ const Nahida: DataCharacter = {
         },
         {
           name: "Karmic Oblivion DMG (C6)",
-          multBase: 200,
-          multType: 0,
+          multFactors: { root: 200, scale: 0 },
           getTalentBuff: ({ totalAttr, char }) => {
             const emPartDesc = `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Mult. 400%)`;
             return talentBuff([checkCons[6](char), "flat", emPartDesc, totalAttr.em * 4]);

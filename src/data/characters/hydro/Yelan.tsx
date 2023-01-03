@@ -38,10 +38,10 @@ const Yelan: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 40.68 },
-        { name: "2-Hit", multBase: 39.04 },
-        { name: "3-Hit", multBase: 51.6 },
-        { name: "4-Hit (1/2)", multBase: 32.51 },
+        { name: "1-Hit", multFactors: { root: 40.68 } },
+        { name: "2-Hit", multFactors: { root: 39.04 } },
+        { name: "3-Hit", multFactors: { root: 51.6 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 32.51 } },
       ],
     },
     CA: {
@@ -49,17 +49,13 @@ const Yelan: DataCharacter = {
         ...BOW_CAs,
         {
           name: "Breakthrough Barb DMG",
-          baseStatType: "hp",
           subAttPatt: "FCA",
-          multBase: 11.58,
-          multType: 2,
+          multFactors: { root: 11.58, attributeType: "hp", scale: 2 },
         },
         {
           name: "Special Breakthrough Barb DMG (C6)",
-          baseStatType: "hp",
           subAttPatt: "FCA",
-          multBase: 18.0648,
-          multType: 2,
+          multFactors: { root: 18, attributeType: "hp", scale: 2 },
           isNotOfficial: true,
         },
       ],
@@ -69,7 +65,7 @@ const Yelan: DataCharacter = {
       name: "Lingering Lifeline",
       image: "5/59/Talent_Lingering_Lifeline",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", baseStatType: "hp", multBase: 22.61 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 22.61, attributeType: "hp" } }],
       // getExtraStats: () => [
       //   { name: "Max Duration (Hold)", value: "3s" },
       //   { name: "CD", value: "10" },
@@ -80,15 +76,14 @@ const Yelan: DataCharacter = {
       image: "b/bd/Talent_Depth-Clarion_Dice",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", multBase: 7.31 },
-        { name: "Exquisite Throw DMG (1/3)", baseStatType: "hp", multBase: 4.87 },
+        { name: "Skill DMG", multFactors: { root: 7.31 } },
+        { name: "Exquisite Throw DMG (1/3)", multFactors: { root: 4.87 } },
         {
           name: "Additional Water Arrow DMG (C2)",
-          baseStatType: "hp",
-          multBase: 14,
-          multType: 0,
+          multFactors: { root: 14, scale: 0 },
         },
       ],
+      multAttributeType: "hp",
       // otherStats: () => [
       //   { name: "Duration", value: "15s" },
       //   { name: "CD", value: "18s" },

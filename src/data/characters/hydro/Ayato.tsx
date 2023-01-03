@@ -91,14 +91,14 @@ const Ayato: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 44.96, multType: 7 },
-        { name: "2-Hit", multBase: 47.16, multType: 7 },
-        { name: "3-Hit", multBase: 58.61, multType: 7 },
-        { name: "4-Hit (1/2)", multBase: 29.45, multType: 7 },
-        { name: "5-Hit", multBase: 75.6, multType: 7 },
+        { name: "1-Hit", multFactors: { root: 44.96, scale: 7 } },
+        { name: "2-Hit", multFactors: { root: 47.16, scale: 7 } },
+        { name: "3-Hit", multFactors: { root: 58.61, scale: 7 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 29.45, scale: 7 } },
+        { name: "5-Hit", multFactors: { root: 75.6, scale: 7 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 129.53, multType: 7 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 129.53, scale: 7 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Kamisato Art: Kyouka",
@@ -108,38 +108,32 @@ const Ayato: DataCharacter = {
         {
           name: "Shunsuiken 1-Hit DMG",
           attPatt: "NA",
-          multBase: 52.89,
-          multType: 7,
+          multFactors: { root: 52.89, scale: 7 },
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 2-Hit DMG",
           attPatt: "NA",
-          multBase: 58.91,
-          multType: 7,
+          multFactors: { root: 58.91, scale: 7 },
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 3-Hit DMG",
           attPatt: "NA",
-          multBase: 64.93,
-          multType: 7,
+          multFactors: { root: 64.93, scale: 7 },
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Extra Shunsuiken strike (1/2) (C6)",
           attPatt: "NA",
-          multBase: 450,
-          multType: 0,
+          multFactors: { root: 450, scale: 0 },
           getTalentBuff: ({ char, selfBuffCtrls }) => talentBuff(C1TalentBuff(char, selfBuffCtrls)),
         },
         {
           name: "Namisen DMG Bonus",
           notAttack: "other",
           isNotOfficial: true,
-          baseStatType: "hp",
-          multBase: 0,
-          multType: 7,
+          multFactors: { root: 0, attributeType: "hp", scale: 7 },
           getTalentBuff: ({ char, selfBuffCtrls, partyData }) => {
             const level = finalTalentLv({
               char,
@@ -156,7 +150,7 @@ const Ayato: DataCharacter = {
             };
           },
         },
-        { name: "Water Illusion DMG", multBase: 101.48, multType: 7 },
+        { name: "Water Illusion DMG", multFactors: { root: 101.48, scale: 7 } },
       ],
       // getExtraStats: (lv) => [
       //   {
@@ -174,7 +168,7 @@ const Ayato: DataCharacter = {
       name: "Kamisato Art: Suiyuu",
       image: "e/e8/Talent_Kamisato_Art_Suiyuu",
       xtraLvAtCons: 5,
-      stats: [{ name: "Bloomwater Blade DMG", multBase: 66.46, multType: 2 }],
+      stats: [{ name: "Bloomwater Blade DMG", multFactors: { root: 66.46 } }],
       // getExtraStats: (lv) => [
       //   { name: "Normal Attack DMG Bonus", value: Math.min(lv + 10, 20) + "%" },
       //   { name: "Duration", value: "18s" },

@@ -19,7 +19,7 @@ const ElectroMC: DataCharacter = {
       name: "Lightning Blade",
       image: "0/03/Talent_Lightning_Blade",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 78.66 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 78.66 } }],
       // getExtraStats: (lv) => [
       //   {
       //     name: "Energy Regeneration	",
@@ -36,8 +36,8 @@ const ElectroMC: DataCharacter = {
       image: "a/a7/Talent_Bellowing_Thunder",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 114.4 },
-        { name: "Falling Thunder", multBase: 32.8 },
+        { name: "Skill DMG", multFactors: { root: 114.4 } },
+        { name: "Falling Thunder", multFactors: { root: 32.8 } },
       ],
       getExtraStats: (lv) => [
         { name: "Energy Regeneration", value: Math.min((7 + Math.ceil(lv / 3) * 1) / 10, 1) },

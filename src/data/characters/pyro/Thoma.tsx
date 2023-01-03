@@ -39,35 +39,31 @@ const Thoma: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 44.39, multType: 4 },
-        { name: "2-Hit", multBase: 43.63, multType: 4 },
-        { name: "3-Hit (1/2)", multBase: 26.79, multType: 4 },
-        { name: "4-Hit", multBase: 67.36, multType: 4 },
+        { name: "1-Hit", multFactors: { root: 44.39, scale: 4 } },
+        { name: "2-Hit", multFactors: { root: 43.63, scale: 4 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 26.79, scale: 4 } },
+        { name: "4-Hit", multFactors: { root: 67.36, scale: 4 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 112.75, multType: 4 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 112.75, scale: 4 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Blazing Blessing",
       image: "9/9b/Talent_Blazing_Blessing",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 146.4 },
+        { name: "Skill DMG", multFactors: { root: 146.4 } },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 7.2,
-          multType: 2,
-          flat: { base: 693, type: 3 },
+          multFactors: { root: 7.2, attributeType: "hp" },
+          flatFactor: { root: 693 },
         },
         {
           name: "Max Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 19.6,
-          multType: 2,
-          flat: { base: 1887, type: 3 },
+          multFactors: { root: 19.6, attributeType: "hp" },
+          flatFactor: { root: 1887 },
         },
       ],
       // getExtraStats: () => [
@@ -80,10 +76,10 @@ const Thoma: DataCharacter = {
       image: "e/e4/Talent_Crimson_Ooyoroi",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multBase: 88 },
+        { name: "Skill DMG", multFactors: { root: 88 } },
         {
           name: "Fiery Collapse DMG",
-          multBase: 58,
+          multFactors: { root: 58 },
           getTalentBuff: ({ char, totalAttr }) => {
             const buffValue = applyPercent(totalAttr.hp, 2.2);
             return talentBuff([checkAscs[4](char), "flat", [true, 4], buffValue]);
@@ -92,10 +88,8 @@ const Thoma: DataCharacter = {
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
-          baseStatType: "hp",
-          multBase: 1.14,
-          multType: 2,
-          flat: { base: 110, type: 3 },
+          multFactors: { root: 1.14, attributeType: "hp" },
+          flatFactor: { root: 110 },
         },
       ],
       // getExtraStats: () => [

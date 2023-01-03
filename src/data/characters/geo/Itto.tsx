@@ -48,25 +48,25 @@ const Itto: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 79.23 },
-        { name: "2-Hit", multBase: 76.37 },
-        { name: "3-Hit", multBase: 91.64 },
-        { name: "4-Hit", multBase: 117.22 },
+        { name: "1-Hit", multFactors: { root: 79.23 } },
+        { name: "2-Hit", multFactors: { root: 76.37 } },
+        { name: "3-Hit", multFactors: { root: 91.64 } },
+        { name: "4-Hit", multFactors: { root: 117.22 } },
       ],
     },
     CA: {
       stats: [
         {
           name: "Arataki Kesagiri Combo Slash DMG",
-          multBase: 91.16,
+          multFactors: { root: 91.16 },
           getTalentBuff: getA4TalentBuff,
         },
         {
           name: "Arataki Kesagiri Final Slash DMG",
-          multBase: 190.92,
+          multFactors: { root: 190.92 },
           getTalentBuff: getA4TalentBuff,
         },
-        { name: "Saichimonji Slash DMG", multBase: 90.47 },
+        { name: "Saichimonji Slash DMG", multFactors: { root: 90.47 } },
       ],
     },
     PA: { stats: HEAVIER_PAs },
@@ -74,7 +74,7 @@ const Itto: DataCharacter = {
       name: "Masatsu Zetsugi: Akaushi Burst!",
       image: "5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multBase: 307.2 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 307.2 } }],
       // getExtraStats: () => [
       //   { name: "Inherited HP", value: "100%" },
       //   { name: "Duration", value: "6s" },
@@ -85,7 +85,13 @@ const Itto: DataCharacter = {
       name: "Royal Descent: Behold, Itto the Evil!",
       image: "5/50/Talent_Royal_Descent_Behold%2C_Itto_the_Evil%21",
       xtraLvAtCons: 5,
-      stats: [{ name: "ATK Bonus", notAttack: "other", baseStatType: "def", multBase: 57.6 }],
+      stats: [
+        {
+          name: "ATK Bonus",
+          notAttack: "other",
+          multFactors: { root: 57.6, attributeType: "def" },
+        },
+      ],
       // getExtraStats: () => [
       //   { name: "ATK SPD Bonus", value: "10%" },
       //   { name: "Duration", value: "11s" },

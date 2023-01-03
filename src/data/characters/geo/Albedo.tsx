@@ -37,25 +37,24 @@ const Albedo: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 36.74 },
-        { name: "2-Hit", multBase: 36.74 },
-        { name: "3-Hit", multBase: 47.45 },
-        { name: "4-Hit", multBase: 49.75 },
-        { name: "5-Hit", multBase: 62.07 },
+        { name: "1-Hit", multFactors: { root: 36.74 } },
+        { name: "2-Hit", multFactors: { root: 36.74 } },
+        { name: "3-Hit", multFactors: { root: 47.45 } },
+        { name: "4-Hit", multFactors: { root: 49.75 } },
+        { name: "5-Hit", multFactors: { root: 62.07 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: [47.3, 60.2] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 47.3 }, { root: 60.2 }] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 130.4 },
+        { name: "Skill DMG", multFactors: { root: 130.4 } },
         {
           name: "Transient Blossom",
-          baseStatType: "def",
-          multBase: 133.6,
+          multFactors: { root: 133.6, attributeType: "def" },
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const A1isInUse = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
             return talentBuff([A1isInUse, "pct", [true, 1], 25]);
@@ -72,8 +71,8 @@ const Albedo: DataCharacter = {
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", multBase: 367.2 },
-        { name: "Fatal Blossom DMG", multBase: 72 },
+        { name: "Burst DMG", multFactors: { root: 367.2 } },
+        { name: "Fatal Blossom DMG", multFactors: { root: 72 } },
       ],
       // getExtraStats: (lv) => [{ name: "CD", value: "12s" }],
       energyCost: 40,

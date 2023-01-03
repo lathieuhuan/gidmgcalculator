@@ -61,8 +61,19 @@ export type GetExtraStatsFn = (level: number) => {
   value: ReactNode;
 }[];
 
-type NormalAttacks = {
-  stats: StatInfo[];
+type StatDefault = {
+  /**
+   * Common scale for stats' multFactors
+   */
+  multScale?: number;
+  /**
+   * Common attributeType for stats' multFactors
+   */
+  multAttributeType?: TalentStatAttributeType;
+};
+
+type NormalAttacks = StatDefault & {
+  stats: TalentStat[];
 };
 
 type GetTalentBuffArgs = {
@@ -76,7 +87,7 @@ type GetTalentBuffArgs = {
 
 export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff;
 
-export type BaseStatType = "base_atk" | "atk" | "def" | "hp" | "em";
+export type TalentStatAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
 export type ActualAttackPattern = AttackPattern | "none";
 
@@ -84,42 +95,47 @@ export type ActualAttackElement = AttackElement | "various";
 
 export type SubAttackPattern = "FCA";
 
-export type StatInfo = {
+type TalentStatMultFactor = {
+  root: number;
+  /** When 0 stat not scale off talent level */
+  scale?: number;
+  /** Calc default to 'atk'. Only on ES / EB */
+  attributeType?: TalentStatAttributeType;
+};
+
+export type TalentStat = {
   name: string;
   attPatt?: ActualAttackPattern;
   subAttPatt?: SubAttackPattern;
   attElmt?: ActualAttackElement;
-  multBase: number | number[];
-  /** when 0 stat not scale with talent level */
-  multType?: number;
-  /** only on ES / EB */
-  baseStatType?: BaseStatType;
+  /**
+   * Damage factors multiplying an attribute, scaling off talent level
+   */
+  multFactors: TalentStatMultFactor | TalentStatMultFactor[];
   /**
    * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
   isNotOfficial?: boolean;
-  /**
-   * If true, multBase and flat.base will not scale with talent level
-   */
-  // isStatic?: boolean;
   getTalentBuff?: GetTalentBuffFn;
   /** only on ES / EB */
   notAttack?: "healing" | "shield" | "other";
-
-  /** only on ES / EB */
-  flat?: {
-    base: number;
-    type: number;
+  /**
+   * Damage factor multiplying root, caling off talent level. Only on ES / EB
+   */
+  flatFactor?: {
+    root: number;
+    /** Calc default to 3 */
+    scale?: number;
   };
   /** only on ES / EB */
   getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };
 
-type ElementalSkill = {
+type ElementalSkill = StatDefault & {
   name: string;
   image: string;
   xtraLvAtCons?: 3 | 5;
-  stats: StatInfo[];
+  stats: TalentStat[];
   getExtraStats?: GetExtraStatsFn;
 };
 

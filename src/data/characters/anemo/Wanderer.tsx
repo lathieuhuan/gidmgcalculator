@@ -56,14 +56,13 @@ const Wanderer: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 68.71 },
-        { name: "2-Hit", multBase: 65.02 },
-        { name: "3-Hit (1/2)", multBase: 47.64 },
+        { name: "1-Hit", multFactors: { root: 68.71 } },
+        { name: "2-Hit", multFactors: { root: 65.02 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 47.64 } },
         {
           name: "Wind Arrow DMG (A4) (1/4)",
           attPatt: "none",
-          multBase: 35,
-          multType: 0,
+          multFactors: { root: 35, scale: 0 },
           isNotOfficial: true,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const ESisOn = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
@@ -73,21 +72,21 @@ const Wanderer: DataCharacter = {
       ],
     },
     CA: {
-      stats: [{ name: "Charged Attack", multBase: 132.08, multType: 2 }],
+      stats: [{ name: "Charged Attack", multFactors: { root: 132.08, scale: 2 } }],
     },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Hanega: Song of the Wind",
       image: "b/b0/Talent_Hanega_Song_of_the_Wind",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 95.2 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 95.2 } }],
       //   getExtraStats: () => [{ name: "CD", value: "15s" }],
     },
     EB: {
       name: "Kyougen: Five Ceremonial Plays",
       image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
       xtraLvAtCons: 3,
-      stats: [{ name: "Fudou Style Vacuum Slugger DMG (1/5)", multBase: 147.2 }],
+      stats: [{ name: "Fudou Style Vacuum Slugger DMG (1/5)", multFactors: { root: 147.2 } }],
       energyCost: 60,
     },
   },

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import type { CalculatedDamageCluster, TalentBuff, TrackerDamageRecord } from "@Src/types";
 
 // Constant
@@ -44,17 +44,24 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: D
 
               <li>
                 Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
-                {record.baseStatType ? t(record.baseStatType) + " " : null}
-                <Green>{record.baseValue}</Green>
-                {record.talentMult ? (
-                  <>
-                    {" "}
-                    <Green>*</Green> Talent Mult.{" "}
-                    <Green>
-                      {renderDmgValue(record.talentMult, (value) => round(value, 2) + "%")}
-                    </Green>
-                  </>
-                ) : null}
+                {record.multFactors.map((factor, i) => {
+                  return (
+                    <Fragment key={i}>
+                      {factor.desc ? t(factor.desc) + " " : null}
+                      <Green>{factor.value}</Green>
+                      {factor.talentMult ? (
+                        <>
+                          {" "}
+                          <Green>*</Green> Talent Mult.{" "}
+                          <Green>
+                            {renderDmgValue(factor.talentMult, (value) => round(value, 2) + "%")}
+                          </Green>
+                        </>
+                      ) : null}
+                      {record.multFactors[i + 1] ? " + " : ""}
+                    </Fragment>
+                  );
+                })}
                 {renderDmgComponent({
                   desc: "Flat Bonus",
                   value: record.totalFlat,

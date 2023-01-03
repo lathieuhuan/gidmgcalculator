@@ -45,32 +45,30 @@ const Shinobu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 48.76 },
-        { name: "2-Hit", multBase: 44.55 },
-        { name: "3-Hit", multBase: 59.34 },
-        { name: "4-Hit", multBase: 76.11 },
+        { name: "1-Hit", multFactors: { root: 48.76 } },
+        { name: "2-Hit", multFactors: { root: 44.55 } },
+        { name: "3-Hit", multFactors: { root: 59.34 } },
+        { name: "4-Hit", multFactors: { root: 76.11 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: [55.63, 66.77] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 55.63 }, { root: 66.77 }] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sanctifying Ring",
       image: "d/d7/Talent_Sanctifying_Ring",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 75.71 },
+        { name: "Skill DMG", multFactors: { root: 75.71 } },
         {
           name: "Grass Ring of Sanctification Healing",
           notAttack: "healing",
-          baseStatType: "hp",
-          multBase: 3,
-          multType: 2,
-          flat: { base: 289, type: 3 },
+          multFactors: { root: 3, attributeType: "hp" },
+          flatFactor: { root: 289 },
           getTalentBuff: getA4TAlentBuff(0),
         },
         {
           name: "Grass Ring of Sanctification DMG",
-          multBase: 25.24,
+          multFactors: { root: 25.24 },
           getTalentBuff: getA4TAlentBuff(1),
         },
       ],
@@ -85,10 +83,11 @@ const Shinobu: DataCharacter = {
       image: "4/47/Talent_Gyoei_Narukami_Kariyama_Rite",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Single Instance DMG", baseStatType: "hp", multBase: 3.6 },
-        { name: "Total DMG (HP > 50%)", baseStatType: "hp", multBase: 25.23 },
-        { name: "Total DMG", baseStatType: "hp", multBase: 43.26 },
+        { name: "Single Instance DMG", multFactors: { root: 3.6 } },
+        { name: "Total DMG (HP > 50%)", multFactors: { root: 25.23 } },
+        { name: "Total DMG", multFactors: { root: 43.26 } },
       ],
+      multAttributeType: "hp",
       // getExtraStats: () => [
       //   { name: "Duration", value: "2s/3.5s" },
       //   { name: "CD", value: "15s" },

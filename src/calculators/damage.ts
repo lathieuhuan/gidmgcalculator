@@ -18,7 +18,14 @@ import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
-import { applyToOneOrMany, bareLv, findByIndex, toMult, getDefaultAttPattInfo } from "@Src/utils";
+import {
+  applyToOneOrMany,
+  bareLv,
+  findByIndex,
+  toMult,
+  getDefaultAttPattInfo,
+  turnArray,
+} from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 
 function calcTalentDamage({
@@ -37,7 +44,6 @@ function calcTalentDamage({
   record,
 }: CalcTalentStatArgs) {
   if (base !== 0 && !stat.notAttack) {
-    // Validate infusedElement into attInfusion
     const flat =
       (talentBuff.flat?.value || 0) +
       attPattBonus.all.flat +
@@ -117,7 +123,7 @@ function calcTalentDamage({
         break;
     }
     base += flat;
-    record.totalFlat = record.totalFlat || 0 + flat;
+    record.totalFlat = (record.totalFlat || 0) + flat;
 
     if (normalMult !== 1) {
       base *= normalMult;
@@ -257,8 +263,9 @@ export default function getDamage({
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const talent = activeTalents[ATT_PATT];
+    const { multScale, multAttributeType } = talent;
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getDefaultAttPattInfo(resultKey, weaponType, vision);
+    const defaultInfo = getDefaultAttPattInfo(resultKey, weaponType, vision, ATT_PATT);
     const level = finalTalentLv({
       talents: dataChar.activeTalents,
       talentType: resultKey,
@@ -277,43 +284,6 @@ export default function getDamage({
             partyData,
           })
         : {};
-
-      // CALCULATE BASE DAMAGE
-      let base: number | number[];
-      const { baseStatType = "atk", multBase, multType = defaultInfo.multType, flat } = stat;
-
-      const xtraMult = talentBuff.mult?.value || 0;
-      const record = {
-        baseValue: totalAttr[baseStatType],
-        baseStatType,
-        talentBuff,
-      } as TrackerDamageRecord;
-
-      const getFinalMult = (multBase: number) =>
-        multBase * (multType ? TALENT_LV_MULTIPLIERS[multType][level] : 1) + xtraMult;
-
-      const getBaseDamage = (percent: number) => {
-        const result = (totalAttr[baseStatType] * percent) / 100;
-        const flatBonus = flat
-          ? flat.base * (flat.type ? TALENT_LV_MULTIPLIERS[flat.type][level] : 1)
-          : 0;
-
-        record.totalFlat = flatBonus;
-        return result + flatBonus;
-      };
-
-      if (Array.isArray(multBase)) {
-        const finalMults = multBase.map(getFinalMult);
-
-        record.talentMult = finalMults;
-        base = finalMults.map(getBaseDamage);
-      } //
-      else {
-        const finalMult = getFinalMult(multBase);
-
-        record.talentMult = finalMult;
-        base = getBaseDamage(finalMult);
-      }
 
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
@@ -339,8 +309,41 @@ export default function getDamage({
         rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
 
+      const { flatFactor } = stat;
+      const bases = [];
+      const record = {
+        multFactors: [],
+        normalMult: 1,
+      } as TrackerDamageRecord;
+
+      // CALCULATE BASE DAMAGE
+      for (const factor of turnArray(stat.multFactors)) {
+        const {
+          root,
+          attributeType = multAttributeType || "atk",
+          scale = multScale || defaultInfo.scale,
+        } = factor;
+
+        const finalMult =
+          root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult?.value || 0);
+
+        const flatBonus = flatFactor
+          ? flatFactor.root *
+            (flatFactor.scale === 0 ? 1 : TALENT_LV_MULTIPLIERS[flatFactor.scale || 3][level])
+          : 0;
+
+        record.multFactors.push({
+          value: totalAttr[attributeType],
+          desc: attributeType,
+          talentMult: finalMult,
+        });
+        record.totalFlat = flatBonus;
+
+        bases.push((totalAttr[attributeType] * finalMult) / 100 + flatBonus);
+      }
+
       // TALENT DMG
-      if (!stat.notAttack && resultKey === "NAs" && disabledNAs) {
+      if (resultKey === "NAs" && disabledNAs && !stat.notAttack) {
         finalResult[resultKey][stat.name] = {
           nonCrit: 0,
           crit: 0,
@@ -351,7 +354,7 @@ export default function getDamage({
           stat,
           attPatt,
           attElmt,
-          base,
+          base: bases.length > 1 ? bases : bases[0],
           char,
           target,
           talentBuff,
@@ -388,8 +391,7 @@ export default function getDamage({
 
     if (tracker) {
       tracker.RXN[rxn] = {
-        baseStatType: "Base DMG",
-        baseValue: Math.round(baseValue),
+        multFactors: [{ value: Math.round(baseValue), desc: "Base DMG" }],
         normalMult,
         resMult,
         cDmg,

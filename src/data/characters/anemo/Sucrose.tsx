@@ -37,19 +37,19 @@ const Sucrose: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 33.46 },
-        { name: "2-Hit", multBase: 30.62 },
-        { name: "3-Hit", multBase: 38.45 },
-        { name: "4-Hit", multBase: 47.92 },
+        { name: "1-Hit", multFactors: { root: 33.46 } },
+        { name: "2-Hit", multFactors: { root: 30.62 } },
+        { name: "3-Hit", multFactors: { root: 38.45 } },
+        { name: "4-Hit", multFactors: { root: 47.92 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 120.16 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 120.16 } }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Astable Anemohypostasis Creation - 6308",
       image: "7/76/Talent_Astable_Anemohypostasis_Creation_-_6308",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multBase: 211.2 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 211.2 } }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
     },
     EB: {
@@ -57,8 +57,8 @@ const Sucrose: DataCharacter = {
       image: "4/4d/Talent_Forbidden_Creation_-_Isomer_75_Type_II",
       xtraLvAtCons: 5,
       stats: [
-        { name: "DoT", multBase: 148 },
-        { name: "Additional Elemental DMG", multBase: 44 },
+        { name: "DoT", multFactors: { root: 148 } },
+        { name: "Additional Elemental DMG", multFactors: { root: 44 } },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

@@ -37,13 +37,13 @@ const Barbara: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 37.84 },
-        { name: "2-Hit", multBase: 35.52 },
-        { name: "3-Hit", multBase: 41.04 },
-        { name: "4-Hit", multBase: 55.2 },
+        { name: "1-Hit", multFactors: { root: 37.84 } },
+        { name: "2-Hit", multFactors: { root: 35.52 } },
+        { name: "3-Hit", multFactors: { root: 41.04 } },
+        { name: "4-Hit", multFactors: { root: 55.2 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 166.24 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 166.24 } }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Let the Show Begin♪",
@@ -53,20 +53,16 @@ const Barbara: DataCharacter = {
         {
           name: "HP Regen. per Hit",
           notAttack: "healing",
-          baseStatType: "hp",
-          multBase: 0.75,
-          multType: 2,
-          flat: { base: 72, type: 3 },
+          multFactors: { root: 0.75, attributeType: "hp" },
+          flatFactor: { root: 72 },
         },
         {
           name: "Continuous Regen.",
           notAttack: "healing",
-          baseStatType: "hp",
-          multBase: 4,
-          multType: 2,
-          flat: { base: 385, type: 3 },
+          multFactors: { root: 4, attributeType: "hp" },
+          flatFactor: { root: 385 },
         },
-        { name: "Droplet DMG", multBase: 58.4 },
+        { name: "Droplet DMG", multFactors: { root: 58.4 } },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },
@@ -81,10 +77,8 @@ const Barbara: DataCharacter = {
         {
           name: "Regeneration",
           notAttack: "healing",
-          baseStatType: "hp",
-          multBase: 17.6,
-          multType: 2,
-          flat: { base: 1694, type: 3 },
+          multFactors: { root: 17.6, attributeType: "hp" },
+          flatFactor: { root: 1694 },
         },
       ],
       // getExtraStats: () => [{ name: "CD", value: "20s" }],

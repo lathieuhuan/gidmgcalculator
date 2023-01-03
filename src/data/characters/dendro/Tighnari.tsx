@@ -37,23 +37,26 @@ const Tighnari: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 44.63 },
-        { name: "2-Hit", multBase: 41.97 },
-        { name: "3-Hit (1/2)", multBase: 26.45 },
-        { name: "4-Hit", multBase: 68.63 },
+        { name: "1-Hit", multFactors: { root: 44.63 } },
+        { name: "2-Hit", multFactors: { root: 41.97 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 26.45 } },
+        { name: "4-Hit", multFactors: { root: 68.63 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Aimed Shot", multBase: 43.86, multType: 7 },
-        { name: "Level 1 Aimed Shot", subAttPatt: "FCA", multBase: 124, multType: 2 },
-        { name: "Wreath Arrow DMG", subAttPatt: "FCA", multBase: 87.2, multType: 2 },
-        { name: "Clusterbloom Arrow DMG", subAttPatt: "FCA", multBase: 38.6, multType: 2 },
+        { name: "Aimed Shot", multFactors: { root: 43.86, scale: 7 } },
+        { name: "Level 1 Aimed Shot", subAttPatt: "FCA", multFactors: { root: 124, scale: 2 } },
+        { name: "Wreath Arrow DMG", subAttPatt: "FCA", multFactors: { root: 87.2, scale: 2 } },
+        {
+          name: "Clusterbloom Arrow DMG",
+          subAttPatt: "FCA",
+          multFactors: { root: 38.6, scale: 2 },
+        },
         {
           name: "Additional Clusterbloom Arrow DMG (C6)",
           subAttPatt: "FCA",
-          multBase: 150,
-          multType: 0,
+          multFactors: { root: 150, scale: 0 },
         },
       ],
     },
@@ -62,7 +65,7 @@ const Tighnari: DataCharacter = {
       name: "Vijnana-Phala Mine",
       image: "f/f9/Talent_Vijnana-Phala_Mine",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multBase: 149.6 }],
+      stats: [{ name: "Skill DMG", multFactors: { root: 149.6 } }],
       // getExtraStats: () => [
       //   { name: "Vijnana-Phala Field Duration", value: "8s" },
       //   { name: "Vijnana Penetrator Duration", value: "12s" },
@@ -74,8 +77,8 @@ const Tighnari: DataCharacter = {
       image: "3/30/Talent_Fashioner%27s_Tanglevine_Shaft",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Tanglevine Shaft DMG", multBase: 55.62 },
-        { name: "Secondary Tanglevine Shaft DMG", multBase: 67.98 },
+        { name: "Tanglevine Shaft DMG", multFactors: { root: 55.62 } },
+        { name: "Secondary Tanglevine Shaft DMG", multFactors: { root: 67.98 } },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

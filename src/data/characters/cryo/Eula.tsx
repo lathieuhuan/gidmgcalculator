@@ -60,17 +60,17 @@ const Eula: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 89.73 },
-        { name: "2-Hit", multBase: 93.55 },
-        { name: "3-Hit (1/2)", multBase: 56.8 },
-        { name: "4-Hit", multBase: 112.64 },
-        { name: "5-Hit (1/2)", multBase: 71.83 },
+        { name: "1-Hit", multFactors: { root: 89.73 } },
+        { name: "2-Hit", multFactors: { root: 93.55 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 56.8 } },
+        { name: "4-Hit", multFactors: { root: 112.64 } },
+        { name: "5-Hit (1/2)", multFactors: { root: 71.83 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multBase: 68.8 },
-        { name: "Charged Attack Final", multBase: 124.4 },
+        { name: "Charged Attack Spinning", multFactors: { root: 68.8 } },
+        { name: "Charged Attack Final", multFactors: { root: 124.4 } },
       ],
     },
     PA: { stats: HEAVIER_PAs.map((stat) => ({ ...stat, multType: 1 })) },
@@ -79,9 +79,9 @@ const Eula: DataCharacter = {
       image: "a/ae/Talent_Icetide_Vortex",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multBase: 146.4 },
-        { name: "Hold DMG", multBase: 245.6 },
-        { name: "Icewhirl Brand", multBase: 96 },
+        { name: "Press DMG", multFactors: { root: 146.4 } },
+        { name: "Hold DMG", multFactors: { root: 245.6 } },
+        { name: "Icewhirl Brand", multFactors: { root: 96 } },
       ],
       // getExtraStats: (lv) => [
       //   { name: "DEF bonus", value: "30% per Stack" },
@@ -99,19 +99,17 @@ const Eula: DataCharacter = {
       image: "a/af/Talent_Glacial_Illumination",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multBase: 245.6 },
+        { name: "Skill DMG", multFactors: { root: 245.6 } },
         {
           name: "Lightfall Sword Base DMG",
           attElmt: "phys",
-          multBase: 367.05,
-          multType: 1,
+          multFactors: { root: 367.05, scale: 1 },
           getTalentBuff: getC4TalentBuff,
         },
         {
           name: "DMG per Stack",
           attElmt: "phys",
-          multBase: 74.99,
-          multType: 1,
+          multFactors: { root: 74.99, scale: 1 },
           getTalentBuff: getC4TalentBuff,
         },
       ],

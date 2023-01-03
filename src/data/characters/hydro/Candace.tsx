@@ -37,13 +37,13 @@ const Candace: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 60.8 },
-        { name: "2-Hit", multBase: 61.15 },
-        { name: "3-Hit", multBase: [35.49, 43.37] },
-        { name: "4-Hit", multBase: 94.94 },
+        { name: "1-Hit", multFactors: { root: 60.8 } },
+        { name: "2-Hit", multFactors: { root: 61.15 } },
+        { name: "3-Hit", multFactors: [{ root: 35.49 }, { root: 43.37 }] },
+        { name: "4-Hit", multFactors: { root: 94.94 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", multBase: 124.18 }] },
+    CA: { stats: [{ name: "Charged Attack DMG", multFactors: { root: 124.18 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sacred Rite: Heron's Sanctum",
@@ -52,29 +52,27 @@ const Candace: DataCharacter = {
       stats: [
         {
           name: "Shield DMG Absorption",
-          baseStatType: "hp",
-          multBase: 12,
-          multType: 2,
-          flat: { base: 1156, type: 3 },
+          multFactors: { root: 12 },
+          flatFactor: { root: 1156 },
         },
-        { name: "Basic DMG", baseStatType: "hp", multBase: 12.43 },
-        { name: "Charged Up DMG", baseStatType: "hp", multBase: 20.43 },
+        { name: "Basic DMG", multFactors: { root: 12.43 } },
+        { name: "Charged Up DMG", multFactors: { root: 20.43 } },
       ],
+      multAttributeType: "hp",
     },
     EB: {
       name: "Sacred Rite: Wagtail's Tide",
       image: "1/1a/Talent_Sacred_Rite_Wagtail%27s_Tide",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "hp", multBase: 6.61 },
-        { name: "Wave Impact DMG", baseStatType: "hp", multBase: 6.61 },
+        { name: "Skill DMG", multFactors: { root: 6.61 } },
+        { name: "Wave Impact DMG", multFactors: { root: 6.61 } },
         {
           name: "Wave DMG (C6)",
-          baseStatType: "hp",
-          multBase: 15,
-          multType: 0,
+          multFactors: { root: 15, scale: 0 },
         },
       ],
+      multAttributeType: "hp",
       // getExtraStats: () => [
       //   { name: "Wave Instances", value: 3 },
       //   { name: "Duration", value: "9s" },

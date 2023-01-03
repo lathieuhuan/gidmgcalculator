@@ -14,7 +14,7 @@ import type {
   TotalAttribute,
   AttackElement,
   DataCharacter,
-  StatInfo,
+  TalentStat,
   Target,
   TalentBuff,
   ResistanceReduction,
@@ -59,7 +59,7 @@ export type GetBuffedStatsArgs = {
 };
 
 export interface CalcTalentStatArgs {
-  stat: StatInfo;
+  stat: TalentStat;
   attPatt: ActualAttackPattern;
   attElmt: ActualAttackElement;
   base: number | number[];

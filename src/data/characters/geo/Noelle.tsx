@@ -39,16 +39,16 @@ const Noelle: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 79.12 },
-        { name: "2-Hit", multBase: 73.36 },
-        { name: "3-Hit", multBase: 86.26 },
-        { name: "4-Hit", multBase: 113.43 },
+        { name: "1-Hit", multFactors: { root: 79.12 } },
+        { name: "2-Hit", multFactors: { root: 73.36 } },
+        { name: "3-Hit", multFactors: { root: 86.26 } },
+        { name: "4-Hit", multFactors: { root: 113.43 } },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multBase: 50.74 },
-        { name: "Charged Attack Final", multBase: 90.47 },
+        { name: "Charged Attack Spinning", multFactors: { root: 50.74 } },
+        { name: "Charged Attack Final", multFactors: { root: 90.47 } },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -57,22 +57,21 @@ const Noelle: DataCharacter = {
       image: "5/5a/Talent_Breastplate",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", baseStatType: "def", multBase: 120 },
+        { name: "Skill DMG", multFactors: { root: 120 } },
         {
           name: "DMG Absorption",
           notAttack: "shield",
-          baseStatType: "def",
-          multBase: 160,
-          flat: { base: 770, type: 3 },
+          multFactors: { root: 160 },
+          flatFactor: { root: 770 },
         },
         {
           name: "Healing",
           notAttack: "healing",
-          baseStatType: "def",
-          multBase: 21.28,
-          flat: { base: 103, type: 3 },
+          multFactors: { root: 21.28 },
+          flatFactor: { root: 103 },
         },
       ],
+      multAttributeType: "def",
       // getExtraStats: (lv) => [
       //   { name: "Healing Trigger Chance", value: (lv < 11 ? 49 + lv : lv === 11 ? 59 : 60) + "%" },
       //   { name: "Duration", value: "12s" },
@@ -84,14 +83,12 @@ const Noelle: DataCharacter = {
       image: "7/7c/Talent_Sweeping_Time",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", multBase: 67.2 },
-        { name: "Skill DMG", multBase: 92.8 },
+        { name: "Burst DMG", multFactors: { root: 67.2 } },
+        { name: "Skill DMG", multFactors: { root: 92.8 } },
         {
           name: "ATK Bonus",
           notAttack: "other",
-          baseStatType: "def",
-          multBase: 40,
-          multType: 2,
+          multFactors: { root: 40, attributeType: "def" },
           getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 50]),
         },
       ],

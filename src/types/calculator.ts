@@ -224,9 +224,11 @@ export type TrackerRecord = {
 };
 
 export type TrackerDamageRecord = {
-  baseValue: number;
-  baseStatType?: string;
-  talentMult?: number | number[];
+  multFactors: Array<{
+    desc?: string;
+    value: number;
+    talentMult?: number;
+  }>;
   totalFlat?: number;
   normalMult: number;
   specialMult?: number;

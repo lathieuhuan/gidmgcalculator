@@ -35,11 +35,11 @@ const Ningguang: DataCharacter = {
     name: "Sparkling Scatter",
   },
   activeTalents: {
-    NA: { stats: [{ name: "Normal Attack", multBase: 28 }] },
+    NA: { stats: [{ name: "Normal Attack", multFactors: { root: 28 } }] },
     CA: {
       stats: [
-        { name: "Charged Attack", multBase: 174.08 },
-        { name: "DMG per Star Jade", multBase: 49.6 },
+        { name: "Charged Attack", multFactors: { root: 174.08 } },
+        { name: "DMG per Star Jade", multFactors: { root: 49.6 } },
       ],
     },
     PA: { stats: LIGHT_PAs },
@@ -51,11 +51,9 @@ const Ningguang: DataCharacter = {
         {
           name: "Inherited HP",
           notAttack: "other",
-          baseStatType: "hp",
-          multBase: 50.1,
-          multType: 5,
+          multFactors: { root: 50.1, attributeType: "hp", scale: 5 },
         },
-        { name: "Skill DMG", multBase: 230.4 },
+        { name: "Skill DMG", multFactors: { root: 230.4 } },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
@@ -63,7 +61,7 @@ const Ningguang: DataCharacter = {
       name: "Starshatter",
       image: "4/47/Talent_Starshatter",
       xtraLvAtCons: 3,
-      stats: [{ name: "DMG per Gem", multBase: 86.96 }],
+      stats: [{ name: "DMG per Gem", multFactors: { root: 86.96 } }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,
     },

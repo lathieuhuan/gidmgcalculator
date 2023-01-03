@@ -40,20 +40,26 @@ const HuTao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multBase: 46.89, multType: 4 },
-        { name: "2-Hit", multBase: 48.25, multType: 4 },
-        { name: "3-Hit", multBase: 61.05, multType: 4 },
-        { name: "4-Hit", multBase: 65.64, multType: 4 },
-        { name: "5-Hit", multBase: [33.27, 35.2], multType: 4 },
-        { name: "6-Hit", multBase: 85.96, multType: 4 },
+        { name: "1-Hit", multFactors: { root: 46.89, scale: 4 } },
+        { name: "2-Hit", multFactors: { root: 48.25, scale: 4 } },
+        { name: "3-Hit", multFactors: { root: 61.05, scale: 4 } },
+        { name: "4-Hit", multFactors: { root: 65.64, scale: 4 } },
+        {
+          name: "5-Hit",
+          multFactors: [
+            { root: 33.27, scale: 4 },
+            { root: 35.2, scale: 4 },
+          ],
+        },
+        { name: "6-Hit", multFactors: { root: 85.96, scale: 4 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multBase: 135.96, multType: 4 }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 135.96, scale: 4 } }] },
     PA: {
       stats: [
-        { name: "Plunge DMG", multBase: 65.42, multType: 4 },
-        { name: "Low Plunge", multBase: 130.81, multType: 4 },
-        { name: "High Plunge", multBase: 163.39, multType: 4 },
+        { name: "Plunge DMG", multFactors: { root: 65.42, scale: 4 } },
+        { name: "Low Plunge", multFactors: { root: 130.81, scale: 4 } },
+        { name: "High Plunge", multFactors: { root: 163.39, scale: 4 } },
       ],
     },
     ES: {
@@ -64,12 +70,10 @@ const HuTao: DataCharacter = {
         {
           name: "ATK Increase",
           notAttack: "other",
-          baseStatType: "hp",
-          multBase: 3.84,
-          multType: 5,
+          multFactors: { root: 3.84, attributeType: "hp", scale: 5 },
           getLimit: ({ totalAttr }) => totalAttr.base_atk * 4,
         },
-        { name: "Blood Blossom DMG", multBase: 64 },
+        { name: "Blood Blossom DMG", multFactors: { root: 64 } },
       ],
       getExtraStats: () => [
         { name: "Activation Cost", value: "30% Current HP" },
@@ -83,15 +87,17 @@ const HuTao: DataCharacter = {
       image: "1/11/Talent_Spirit_Soother",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multBase: 303.27, multType: 5 },
-        { name: "Low HP Skill DMG", multBase: 379.09, multType: 5 },
-        { name: "HP Regen.", notAttack: "other", baseStatType: "hp", multBase: 6.26, multType: 5 },
+        { name: "Skill DMG", multFactors: { root: 303.27, scale: 5 } },
+        { name: "Low HP Skill DMG", multFactors: { root: 379.09, scale: 5 } },
+        {
+          name: "HP Regen.",
+          notAttack: "other",
+          multFactors: { root: 6.26, attributeType: "hp", scale: 5 },
+        },
         {
           name: "Low HP Regen.",
           notAttack: "other",
-          baseStatType: "hp",
-          multBase: 8.35,
-          multType: 5,
+          multFactors: { root: 8.35, attributeType: "hp", scale: 5 },
         },
       ],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
