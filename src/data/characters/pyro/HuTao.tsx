@@ -40,27 +40,26 @@ const HuTao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 46.89, scale: 4 } },
-        { name: "2-Hit", multFactors: { root: 48.25, scale: 4 } },
-        { name: "3-Hit", multFactors: { root: 61.05, scale: 4 } },
-        { name: "4-Hit", multFactors: { root: 65.64, scale: 4 } },
+        { name: "1-Hit", multFactors: { root: 46.89 } },
+        { name: "2-Hit", multFactors: { root: 48.25 } },
+        { name: "3-Hit", multFactors: { root: 61.05 } },
+        { name: "4-Hit", multFactors: { root: 65.64 } },
         {
           name: "5-Hit",
-          multFactors: [
-            { root: 33.27, scale: 4 },
-            { root: 35.2, scale: 4 },
-          ],
+          multFactors: [{ root: 33.27 }, { root: 35.2 }],
         },
-        { name: "6-Hit", multFactors: { root: 85.96, scale: 4 } },
+        { name: "6-Hit", multFactors: { root: 85.96 } },
       ],
+      multScale: 4,
     },
     CA: { stats: [{ name: "Charged Attack", multFactors: { root: 135.96, scale: 4 } }] },
     PA: {
       stats: [
-        { name: "Plunge DMG", multFactors: { root: 65.42, scale: 4 } },
-        { name: "Low Plunge", multFactors: { root: 130.81, scale: 4 } },
-        { name: "High Plunge", multFactors: { root: 163.39, scale: 4 } },
+        { name: "Plunge DMG", multFactors: { root: 65.42 } },
+        { name: "Low Plunge", multFactors: { root: 130.81 } },
+        { name: "High Plunge", multFactors: { root: 163.39 } },
       ],
+      multScale: 4,
     },
     ES: {
       name: "Guide to Afterlife",
@@ -75,31 +74,32 @@ const HuTao: DataCharacter = {
         },
         { name: "Blood Blossom DMG", multFactors: { root: 64 } },
       ],
-      getExtraStats: () => [
-        { name: "Activation Cost", value: "30% Current HP" },
-        { name: "Blood Blossom Durtion", value: "8s" },
-        { name: "Durtion", value: "9s" },
-        { name: "CD", value: "16s" },
-      ],
+      // getExtraStats: () => [
+      //   { name: "Activation Cost", value: "30% Current HP" },
+      //   { name: "Blood Blossom Durtion", value: "8s" },
+      //   { name: "Durtion", value: "9s" },
+      //   { name: "CD", value: "16s" },
+      // ],
     },
     EB: {
       name: "Spirit Soother",
       image: "1/11/Talent_Spirit_Soother",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 303.27, scale: 5 } },
-        { name: "Low HP Skill DMG", multFactors: { root: 379.09, scale: 5 } },
+        { name: "Skill DMG", multFactors: { root: 303.27 } },
+        { name: "Low HP Skill DMG", multFactors: { root: 379.09 } },
         {
           name: "HP Regen.",
           notAttack: "other",
-          multFactors: { root: 6.26, attributeType: "hp", scale: 5 },
+          multFactors: { root: 6.26, attributeType: "hp" },
         },
         {
           name: "Low HP Regen.",
           notAttack: "other",
-          multFactors: { root: 8.35, attributeType: "hp", scale: 5 },
+          multFactors: { root: 8.35, attributeType: "hp" },
         },
       ],
+      multScale: 5,
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,
     },

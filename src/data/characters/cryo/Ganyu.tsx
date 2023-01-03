@@ -56,21 +56,22 @@ const Ganyu: DataCharacter = {
         {
           name: "Aimed Shot Charged Level 1",
           subAttPatt: "FCA",
-          multFactors: { root: 124, scale: 2 },
+          multFactors: { root: 124 },
         },
         {
           name: "Frostflake Arrow",
           subAttPatt: "FCA",
-          multFactors: { root: 128, scale: 2 },
+          multFactors: { root: 128 },
           getTalentBuff: getA1TalentBuff,
         },
         {
           name: "Frostflake Arrow Bloom",
           subAttPatt: "FCA",
-          multFactors: { root: 217.6, scale: 2 },
+          multFactors: { root: 217.6 },
           getTalentBuff: getA1TalentBuff,
         },
       ],
+      multScale: 2,
     },
     PA: { stats: LIGHT_PAs },
     ES: {

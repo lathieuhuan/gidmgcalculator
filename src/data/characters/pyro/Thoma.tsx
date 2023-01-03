@@ -39,13 +39,13 @@ const Thoma: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.39, scale: 4 } },
-        { name: "2-Hit", multFactors: { root: 43.63, scale: 4 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 26.79, scale: 4 } },
-        { name: "4-Hit", multFactors: { root: 67.36, scale: 4 } },
+        { name: "1-Hit", multFactors: { root: 44.39 } },
+        { name: "2-Hit", multFactors: { root: 43.63 } },
+        { name: "3-Hit (1/2)", multFactors: { root: 26.79 } },
+        { name: "4-Hit", multFactors: { root: 67.36 } },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 112.75, scale: 4 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 112.75 } }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Blazing Blessing",

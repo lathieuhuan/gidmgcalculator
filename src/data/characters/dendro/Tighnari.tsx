@@ -46,12 +46,12 @@ const Tighnari: DataCharacter = {
     CA: {
       stats: [
         { name: "Aimed Shot", multFactors: { root: 43.86, scale: 7 } },
-        { name: "Level 1 Aimed Shot", subAttPatt: "FCA", multFactors: { root: 124, scale: 2 } },
-        { name: "Wreath Arrow DMG", subAttPatt: "FCA", multFactors: { root: 87.2, scale: 2 } },
+        { name: "Level 1 Aimed Shot", subAttPatt: "FCA", multFactors: { root: 124 } },
+        { name: "Wreath Arrow DMG", subAttPatt: "FCA", multFactors: { root: 87.2 } },
         {
           name: "Clusterbloom Arrow DMG",
           subAttPatt: "FCA",
-          multFactors: { root: 38.6, scale: 2 },
+          multFactors: { root: 38.6 },
         },
         {
           name: "Additional Clusterbloom Arrow DMG (C6)",
@@ -59,6 +59,7 @@ const Tighnari: DataCharacter = {
           multFactors: { root: 150, scale: 0 },
         },
       ],
+      multScale: 2,
     },
     PA: { stats: LIGHT_PAs },
     ES: {

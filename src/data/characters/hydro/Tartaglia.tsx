@@ -54,29 +54,24 @@ const Tartaglia: DataCharacter = {
       xtraLvAtCons: 3,
       stats: [
         { name: "Stance Change DMG", multFactors: { root: 72 } },
-        { name: "1-Hit", attPatt: "NA", multFactors: { root: 38.87, scale: 1 } },
-        { name: "2-Hit", attPatt: "NA", multFactors: { root: 41.62, scale: 1 } },
-        { name: "3-Hit", attPatt: "NA", multFactors: { root: 56.33, scale: 1 } },
-        { name: "4-Hit", attPatt: "NA", multFactors: { root: 59.94, scale: 1 } },
-        { name: "5-Hit", attPatt: "NA", multFactors: { root: 55.3, scale: 1 } },
+        { name: "1-Hit", attPatt: "NA", multFactors: { root: 38.87 } },
+        { name: "2-Hit", attPatt: "NA", multFactors: { root: 41.62 } },
+        { name: "3-Hit", attPatt: "NA", multFactors: { root: 56.33 } },
+        { name: "4-Hit", attPatt: "NA", multFactors: { root: 59.94 } },
+        { name: "5-Hit", attPatt: "NA", multFactors: { root: 55.3 } },
         {
           name: "6-Hit",
           attPatt: "NA",
-          multFactors: [
-            { root: 35.43, scale: 1 },
-            { root: 37.67, scale: 1 },
-          ],
+          multFactors: [{ root: 35.43 }, { root: 37.67 }],
         },
         {
           name: "Charged Attack",
           attPatt: "CA",
-          multFactors: [
-            { root: 60.2, scale: 1 },
-            { root: 71.98, scale: 1 },
-          ],
+          multFactors: [{ root: 60.2 }, { root: 71.98 }],
         },
-        { name: "Riptide Slash", multFactors: { root: 60.2 } },
+        { name: "Riptide Slash", multFactors: { root: 60.2, scale: 2 } },
       ],
+      multScale: 1,
       // getExtraStats: () => [
       //   { name: "Charged Attack Stamina Cost", value: 20 },
       //   { name: "Max Duration", value: "12s" },

@@ -102,7 +102,6 @@ const Nahida: DataCharacter = {
         },
         {
           name: "Karmic Oblivion DMG (C6)",
-          isNotOfficial: true,
           multFactors: [
             { root: 200, scale: 0 },
             { root: 400, scale: 0, attributeType: "em" },

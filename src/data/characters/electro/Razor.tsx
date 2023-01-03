@@ -41,17 +41,19 @@ const Razor: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 95.92, scale: 4 } },
-        { name: "2-Hit", multFactors: { root: 82.63, scale: 4 } },
-        { name: "3-Hit", multFactors: { root: 103.31, scale: 4 } },
-        { name: "4-Hit", multFactors: { root: 136.05, scale: 4 } },
+        { name: "1-Hit", multFactors: { root: 95.92 } },
+        { name: "2-Hit", multFactors: { root: 82.63 } },
+        { name: "3-Hit", multFactors: { root: 103.31 } },
+        { name: "4-Hit", multFactors: { root: 136.05 } },
       ],
+      multScale: 4,
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 62.54, scale: 7 } },
-        { name: "Charged Attack Final", multFactors: { root: 113.09, scale: 7 } },
+        { name: "Charged Attack Spinning", multFactors: { root: 62.54 } },
+        { name: "Charged Attack Final", multFactors: { root: 113.09 } },
       ],
+      multScale: 7,
     },
     PA: {
       stats: [

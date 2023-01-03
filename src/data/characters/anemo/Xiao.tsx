@@ -45,15 +45,16 @@ const Xiao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multFactors: { root: 27.54, scale: 4 } },
-        { name: "2-Hit", multFactors: { root: 56.94, scale: 4 } },
-        { name: "3-Hit", multFactors: { root: 68.55, scale: 4 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 37.66, scale: 4 } },
-        { name: "5-Hit", multFactors: { root: 71.54, scale: 4 } },
-        { name: "6-Hit", multFactors: { root: 95.83, scale: 4 } },
+        { name: "1-Hit (1/2)", multFactors: { root: 27.54 } },
+        { name: "2-Hit", multFactors: { root: 56.94 } },
+        { name: "3-Hit", multFactors: { root: 68.55 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 37.66 } },
+        { name: "5-Hit", multFactors: { root: 71.54 } },
+        { name: "6-Hit", multFactors: { root: 95.83 } },
       ],
+      multScale: 4,
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 121.09 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 121.09, scale: 4 } }] },
     PA: { stats: HEAVIER_PAs },
     ES: {
       name: "Lemniscatic Wind Cycling",

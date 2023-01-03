@@ -50,15 +50,16 @@ const Yelan: DataCharacter = {
         {
           name: "Breakthrough Barb DMG",
           subAttPatt: "FCA",
-          multFactors: { root: 11.58, attributeType: "hp", scale: 2 },
+          multFactors: { root: 11.58, attributeType: "hp" },
         },
         {
           name: "Special Breakthrough Barb DMG (C6)",
           subAttPatt: "FCA",
-          multFactors: { root: 18, attributeType: "hp", scale: 2 },
+          multFactors: { root: 18, attributeType: "hp" },
           isNotOfficial: true,
         },
       ],
+      multScale: 2,
     },
     PA: { stats: LIGHT_PAs },
     ES: {

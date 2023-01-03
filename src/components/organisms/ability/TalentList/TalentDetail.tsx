@@ -211,12 +211,14 @@ function processActiveTalents(
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
 
     for (const stat of stats) {
-      if (stat.isNotOfficial) {
-        continue;
-      }
+      const multFactors = turnArray(stat.multFactors);
       const factorStrings = [];
 
-      for (const factor of turnArray(stat.multFactors)) {
+      if (stat.isNotOfficial || multFactors.some((factor) => factor.scale === 0)) {
+        continue;
+      }
+
+      for (const factor of multFactors) {
         const {
           root,
           scale = multScale || defaultInfo.scale,

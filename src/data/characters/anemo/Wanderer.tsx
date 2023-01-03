@@ -63,7 +63,6 @@ const Wanderer: DataCharacter = {
           name: "Wind Arrow DMG (A4) (1/4)",
           attPatt: "none",
           multFactors: { root: 35, scale: 0 },
-          isNotOfficial: true,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const ESisOn = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
             return talentBuff([ESisOn && checkAscs[4](char), "mult", [true, 4], 25]);

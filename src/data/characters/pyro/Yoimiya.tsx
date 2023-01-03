@@ -49,12 +49,13 @@ const Yoimiya: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multFactors: { root: 35.64, scale: 4 } },
-        { name: "2-Hit", multFactors: { root: 68.38, scale: 4 } },
-        { name: "3-Hit", multFactors: { root: 88.89, scale: 4 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 46.42, scale: 4 } },
-        { name: "5-Hit", multFactors: { root: 105.86, scale: 4 } },
+        { name: "1-Hit (1/2)", multFactors: { root: 35.64 } },
+        { name: "2-Hit", multFactors: { root: 68.38 } },
+        { name: "3-Hit", multFactors: { root: 88.89 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 46.42 } },
+        { name: "5-Hit", multFactors: { root: 105.86 } },
       ],
+      multScale: 4,
     },
     CA: {
       stats: [

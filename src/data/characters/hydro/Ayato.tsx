@@ -91,12 +91,13 @@ const Ayato: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.96, scale: 7 } },
-        { name: "2-Hit", multFactors: { root: 47.16, scale: 7 } },
-        { name: "3-Hit", multFactors: { root: 58.61, scale: 7 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 29.45, scale: 7 } },
-        { name: "5-Hit", multFactors: { root: 75.6, scale: 7 } },
+        { name: "1-Hit", multFactors: { root: 44.96 } },
+        { name: "2-Hit", multFactors: { root: 47.16 } },
+        { name: "3-Hit", multFactors: { root: 58.61 } },
+        { name: "4-Hit (1/2)", multFactors: { root: 29.45 } },
+        { name: "5-Hit", multFactors: { root: 75.6 } },
       ],
+      multScale: 7,
     },
     CA: { stats: [{ name: "Charged Attack", multFactors: { root: 129.53, scale: 7 } }] },
     PA: { stats: MEDIUM_PAs },
@@ -108,19 +109,19 @@ const Ayato: DataCharacter = {
         {
           name: "Shunsuiken 1-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 52.89, scale: 7 },
+          multFactors: { root: 52.89 },
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 2-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 58.91, scale: 7 },
+          multFactors: { root: 58.91 },
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 3-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 64.93, scale: 7 },
+          multFactors: { root: 64.93 },
           getTalentBuff: getESTalentBuff,
         },
         {
@@ -133,7 +134,7 @@ const Ayato: DataCharacter = {
           name: "Namisen DMG Bonus",
           notAttack: "other",
           isNotOfficial: true,
-          multFactors: { root: 0, attributeType: "hp", scale: 7 },
+          multFactors: { root: 0, attributeType: "hp" },
           getTalentBuff: ({ char, selfBuffCtrls, partyData }) => {
             const level = finalTalentLv({
               char,
@@ -150,8 +151,9 @@ const Ayato: DataCharacter = {
             };
           },
         },
-        { name: "Water Illusion DMG", multFactors: { root: 101.48, scale: 7 } },
+        { name: "Water Illusion DMG", multFactors: { root: 101.48 } },
       ],
+      multScale: 7,
       // getExtraStats: (lv) => [
       //   {
       //     name: "Takimeguri Kanka Duration",

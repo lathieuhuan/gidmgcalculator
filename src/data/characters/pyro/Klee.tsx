@@ -63,7 +63,7 @@ const Klee: DataCharacter = {
       xtraLvAtCons: 5,
       stats: [
         { name: "Sparks 'n' Splash", multFactors: { root: 42.64 } },
-        { name: "Total Max DMG", multFactors: { root: 852 } },
+        { name: "Total Max DMG", isNotOfficial: true, multFactors: { root: 852 } },
       ],
       // getExtraStats: () => [
       //   { name: "Durtion", value: "10s" },

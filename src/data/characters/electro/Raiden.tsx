@@ -169,40 +169,37 @@ const Raiden: DataCharacter = {
       stats: [
         {
           name: "Musou no Hitotachi",
-          multFactors: { root: 400.8 },
+          multFactors: { root: 400.8, scale: 2 },
           getTalentBuff: getEBTalentBuff("musouBonus"),
         },
         {
           name: "1-Hit",
-          multFactors: { root: 44.74, scale: 4 },
+          multFactors: { root: 44.74 },
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "2-Hit",
-          multFactors: { root: 43.96, scale: 4 },
+          multFactors: { root: 43.96 },
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "3-Hit",
-          multFactors: { root: 53.82, scale: 4 },
+          multFactors: { root: 53.82 },
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "4-Hit (1/2)",
-          multFactors: { root: 30.89, scale: 4 },
+          multFactors: { root: 30.89 },
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "5-Hit",
-          multFactors: { root: 73.94, scale: 4 },
+          multFactors: { root: 73.94 },
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "Charged Attack",
-          multFactors: [
-            { root: 61.6, scale: 4 },
-            { root: 74.36, scale: 4 },
-          ],
+          multFactors: [{ root: 61.6 }, { root: 74.36 }],
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
@@ -221,6 +218,7 @@ const Raiden: DataCharacter = {
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
       ],
+      multScale: 4,
       // getExtraStats: (lv) => [
       //   {
       //     name: "Resolve Bonus",
