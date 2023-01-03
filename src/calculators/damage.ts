@@ -23,7 +23,7 @@ import {
   bareLv,
   findByIndex,
   toMult,
-  getDefaultAttPattInfo,
+  getTalentDefaultInfo,
   turnArray,
 } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
@@ -265,7 +265,7 @@ export default function getDamage({
     const talent = activeTalents[ATT_PATT];
     const { multScale, multAttributeType } = talent;
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
-    const defaultInfo = getDefaultAttPattInfo(resultKey, weaponType, vision, ATT_PATT);
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const level = finalTalentLv({
       talents: dataChar.activeTalents,
       talentType: resultKey,
@@ -314,13 +314,14 @@ export default function getDamage({
       const record = {
         multFactors: [],
         normalMult: 1,
+        talentBuff,
       } as TrackerDamageRecord;
 
       // CALCULATE BASE DAMAGE
       for (const factor of turnArray(stat.multFactors)) {
         const {
           root,
-          attributeType = multAttributeType || "atk",
+          attributeType = multAttributeType || defaultInfo.attributeType,
           scale = multScale || defaultInfo.scale,
         } = factor;
 
@@ -329,7 +330,9 @@ export default function getDamage({
 
         const flatBonus = flatFactor
           ? flatFactor.root *
-            (flatFactor.scale === 0 ? 1 : TALENT_LV_MULTIPLIERS[flatFactor.scale || 3][level])
+            (flatFactor.scale === 0
+              ? 1
+              : TALENT_LV_MULTIPLIERS[flatFactor.scale || defaultInfo.flatFactorScale][level])
           : 0;
 
         record.multFactors.push({

@@ -1,19 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import type {
-  TalentStatAttributeType,
-  DataCharacter,
-  GetExtraStatsFn,
-  TalentStat,
-  Talent,
-} from "@Src/types";
+import type { TalentStatAttributeType, DataCharacter, Talent } from "@Src/types";
 
 // Constant
+import { ATTACK_PATTERNS } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { getDefaultAttPattInfo, turnArray } from "@Src/utils";
+import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -42,7 +37,7 @@ export function TalentDetail({
   onClose,
 }: TalentDetailProps) {
   const { t } = useTranslation();
-  const { weaponType, vision, NAsConfig, activeTalents } = dataChar;
+  const { weaponType, vision, activeTalents } = dataChar;
 
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
@@ -53,8 +48,8 @@ export function TalentDetail({
   //   { text: "Talent Info", clickable: true },
   //   { text: "Skill Attributes", clickable: atActiveTalent },
   // ]);
-  const { NA, CA, PA, ES, EB, altSprint } = activeTalents;
-  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`]!, ES.image, EB.image];
+  const { ES, EB, altSprint } = activeTalents;
+  const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`] || "", ES.image, EB.image];
 
   if (altSprint) {
     images.push(altSprint.image);
@@ -63,50 +58,26 @@ export function TalentDetail({
   //   images.push(talent.image);
   // }
 
-  const talentInfoByPosition: Array<{
-    talentType: Talent;
-    talentName: string;
-    talentStats: TalentStat[];
-    getExtraStats?: GetExtraStatsFn;
-  }> = [
-    {
-      talentType: "NAs",
-      talentName: NAsConfig.name,
-      talentStats: [...NA.stats, ...CA.stats, ...PA.stats],
-      getExtraStats: NAsConfig.getExtraStats,
-    },
-    {
-      talentType: "ES",
-      talentName: ES.name,
-      talentStats: ES.stats,
-      getExtraStats: ES.getExtraStats,
-    },
-    {
-      talentType: "EB",
-      talentName: EB.name,
-      talentStats: EB.stats,
-      getExtraStats: EB.getExtraStats,
-    },
-    // { talentType: "A1 Passive", name: passiveTalents[0].name },
-    // { talentType: "A4 Passive", name: passiveTalents[1].name },
-  ];
-
-  if (altSprint) {
-    talentInfoByPosition.splice(3, 0, {
-      talentType: "altSprint" as const,
-      talentName: altSprint.name,
-      talentStats: [],
+  const talents = useMemo(() => {
+    return processActiveTalents(dataChar, talentLevel, {
+      atk: t("atk"),
+      base_atk: t("base_atk"),
+      def: t("def"),
+      em: t("em"),
+      hp: t("hp"),
     });
-  }
+  }, [talentLevel]);
 
-  const {
-    talentType = "NAs",
-    talentName = "",
-    talentStats = [],
-    getExtraStats,
-  } = talentInfoByPosition[detailIndex] || {};
-  const isStatic = talentType === "altSprint";
-  const defaultInfo = isStatic ? undefined : getDefaultAttPattInfo(talentType, weaponType, vision);
+  const talent = talents[detailIndex];
+  const isStatic = talent.type === "altSprint";
+
+  // if (altSprint) {
+  //   talentInfoByPosition.splice(3, 0, {
+  //     talentType: "altSprint" as const,
+  //     talentName: altSprint.name,
+  //     talentStats: [],
+  //   });
+  // }
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
     const adjustLevel = () => {
@@ -133,25 +104,9 @@ export function TalentDetail({
     );
   };
 
-  const getDetailValue = (
-    base: number,
-    type: number,
-    level: number,
-    isPercent: boolean,
-    baseStatType?: TalentStatAttributeType
-  ) => {
-    let result = base * TALENT_LV_MULTIPLIERS[type][level];
-    if (isPercent) {
-      result = Math.round(result * 100) / 100;
-    } else {
-      result = Math.round(result);
-    }
-    return `${result}${isPercent ? "%" : ""}${baseStatType ? ` ${baseStatType}` : ""}`;
-  };
-
   return (
     <div className="h-full flex flex-col relative">
-      <div className={"flex-grow hide-scrollbar " + (!talentName && "hidden")}>
+      <div className={"flex-grow hide-scrollbar" + (talent.name ? "" : " hidden")}>
         <SlideShow
           forTalent
           currentIndex={detailIndex}
@@ -164,10 +119,10 @@ export function TalentDetail({
             if (detailIndex < Object.keys(activeTalents).length - 1)
               onChangeDetailIndex(detailIndex + 1);
           }}
-          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talentType)}</p>}
+          topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talent.type)}</p>}
         />
 
-        <p className={`text-xl font-bold text-${vision} text-center`}>{talentName}</p>
+        <p className={`text-xl font-bold text-${vision} text-center`}>{talent.name}</p>
         <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div>
@@ -202,55 +157,14 @@ export function TalentDetail({
           </div>
 
           <StatsTable>
-            {defaultInfo &&
-              talentStats.map((stat, i) => {
-                if (stat.isNotOfficial) {
-                  return null;
-                }
-
-                const { flatFactor } = stat;
-                const factors = turnArray(stat.multFactors).reduce(
-                  (accumulator: string[], factor) => {
-                    if (factor.scale !== 0) {
-                      const { root, scale = defaultInfo.scale, attributeType } = factor;
-                      accumulator.push(
-                        getDetailValue(root, scale, talentLevel, true, attributeType)
-                      );
-                    }
-                    return accumulator;
-                  },
-                  []
-                );
-
-                if (flatFactor) {
-                  factors.push(
-                    getDetailValue(flatFactor.root, flatFactor.scale || 3, talentLevel, false)
-                  );
-                }
-
-                return (
-                  <Row key={i} className={styles.row}>
-                    <p className={styles.leftCol}>{stat.name}</p>
-                    <p className={styles.rightCol}>{factors.join(" + ")}</p>
-                  </Row>
-                );
-              })}
-
-            {getExtraStats
-              ? getExtraStats(talentLevel).map((stat, j) => (
-                  <Row key={"extra-" + j} className={styles.row}>
-                    <p className={styles.leftCol}>{stat.name}</p>
-                    <p className={styles.rightCol}>{stat.value}</p>
-                  </Row>
-                ))
-              : null}
-
-            {talentType === "EB" && (
-              <Row className={styles.row}>
-                <p className={styles.leftCol}>Energy Cost</p>
-                <p className={styles.rightCol}>{EB.energyCost}</p>
-              </Row>
-            )}
+            {talent.stats.map((stat, i) => {
+              return (
+                <Row key={i} className={styles.row}>
+                  <p className={styles.leftCol}>{stat.name}</p>
+                  <p className={styles.rightCol}>{stat.value}</p>
+                </Row>
+              );
+            })}
           </StatsTable>
         </div>
       </div>
@@ -260,4 +174,84 @@ export function TalentDetail({
       </div>
     </div>
   );
+}
+
+type ProcessedStat = {
+  name: string;
+  value: string | number;
+};
+
+interface ProcessedActiveTalent {
+  name: string;
+  type: Talent;
+  stats: ProcessedStat[];
+}
+function processActiveTalents(
+  dataChar: DataCharacter,
+  level: number,
+  label: Record<TalentStatAttributeType, string>
+): ProcessedActiveTalent[] {
+  const { vision, weaponType, activeTalents } = dataChar;
+  const { ES, EB } = activeTalents;
+
+  const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
+    NAs: {
+      name: dataChar.NAsConfig.name,
+      type: "NAs",
+      stats: [],
+    },
+    ES: { name: ES.name, type: "ES", stats: [] },
+    EB: { name: EB.name, type: "EB", stats: [] },
+  };
+
+  for (const attPatt of ATTACK_PATTERNS) {
+    const isElemental = attPatt === "ES" || attPatt === "EB";
+    const resultKey = isElemental ? attPatt : "NAs";
+    const { stats, multScale, multAttributeType } = activeTalents[attPatt];
+    const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
+
+    for (const stat of stats) {
+      if (stat.isNotOfficial) {
+        continue;
+      }
+      const factorStrings = [];
+
+      for (const factor of turnArray(stat.multFactors)) {
+        const {
+          root,
+          scale = multScale || defaultInfo.scale,
+          attributeType = multAttributeType,
+        } = factor;
+
+        if (scale) {
+          let string = round(root * TALENT_LV_MULTIPLIERS[scale][level], 2) + "%";
+
+          if (attributeType) {
+            string += ` ${label[attributeType]}`;
+          }
+
+          factorStrings.push(string);
+        }
+      }
+
+      if (stat.flatFactor) {
+        const { root, scale = defaultInfo.flatFactorScale } = stat.flatFactor;
+        factorStrings.push(Math.round(root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1)));
+      }
+
+      result[resultKey].stats.push({
+        name: stat.name,
+        value: factorStrings.join(" + "),
+      });
+    }
+  }
+
+  result.EB.stats.push({
+    name: "Energy cost",
+    value: EB.energyCost,
+  });
+
+  const results = [result.NAs, result.ES, result.EB];
+
+  return results;
 }

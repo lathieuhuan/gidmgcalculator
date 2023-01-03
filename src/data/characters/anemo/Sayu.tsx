@@ -108,7 +108,7 @@ const Sayu: DataCharacter = {
         {
           name: "Activation Healing",
           notAttack: "healing",
-          multFactors: { root: 92.16 },
+          multFactors: { root: 92.16, attributeType: "atk" },
           flatFactor: { root: 577 },
         },
         {
@@ -119,7 +119,7 @@ const Sayu: DataCharacter = {
         {
           name: "Daruma Healing",
           notAttack: "healing",
-          multFactors: { root: 79.87 },
+          multFactors: { root: 79.87, attributeType: "atk" },
           flatFactor: { root: 500 },
           getTalentBuff: getC6TalentBuff(1),
         },

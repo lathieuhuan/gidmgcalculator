@@ -67,13 +67,13 @@ const Jean: DataCharacter = {
         {
           name: "Activation Healing",
           notAttack: "healing",
-          multFactors: { root: 251.2 },
+          multFactors: { root: 251.2, attributeType: "atk" },
           flatFactor: { root: 1540 },
         },
         {
           name: "Continuous Regen.",
           notAttack: "healing",
-          multFactors: { root: 25.12 },
+          multFactors: { root: 25.12, attributeType: "atk" },
           flatFactor: { root: 154 },
         },
       ],

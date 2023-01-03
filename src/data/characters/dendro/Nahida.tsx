@@ -69,11 +69,8 @@ const Nahida: DataCharacter = {
         {
           name: "Tri-Karma Purification DMG",
           multFactors: [
-            { root: 103.2 },
-            {
-              root: 206.4,
-              attributeType: "em",
-            },
+            { root: 103.2, attributeType: "atk" },
+            { root: 206.4, attributeType: "em" },
           ],
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
@@ -99,17 +96,17 @@ const Nahida: DataCharacter = {
 
             return talentBuff(
               [EBisInUse || A4isInUse, "pct", desc.join(" + "), buffValue],
-              [A4isInUse, "cRate", [true, 4], Math.min(excessEM * 0.03, 24)]
+              [A4isInUse, "cRate", [true, 4], Math.min(round(excessEM * 0.03, 1), 24)]
             );
           },
         },
         {
           name: "Karmic Oblivion DMG (C6)",
-          multFactors: { root: 200, scale: 0 },
-          getTalentBuff: ({ totalAttr, char }) => {
-            const emPartDesc = `Elemental Mastery Part (Elemental Mastery ${totalAttr.em} * Mult. 400%)`;
-            return talentBuff([checkCons[6](char), "flat", emPartDesc, totalAttr.em * 4]);
-          },
+          isNotOfficial: true,
+          multFactors: [
+            { root: 200, scale: 0 },
+            { root: 400, scale: 0, attributeType: "em" },
+          ],
         },
       ],
       // getExtraStats: () => [

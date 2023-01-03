@@ -6,6 +6,7 @@ import type {
   CharData,
   Level,
   PartyData,
+  TalentStatAttributeType,
   UserArtifact,
   UserWeapon,
   Vision,
@@ -89,7 +90,7 @@ export function calcItemToUserItem(
   };
 }
 
-export const getDefaultAttPattInfo = (
+export const getTalentDefaultInfo = (
   key: "NAs" | "ES" | "EB",
   weaponType: WeaponType,
   vision: Vision,
@@ -97,12 +98,16 @@ export const getDefaultAttPattInfo = (
 ): {
   attElmt: AttackElement;
   scale: number;
+  attributeType: TalentStatAttributeType;
+  flatFactorScale: number;
 } => {
   const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;
 
   return {
     attElmt,
     scale: attPatt === "PA" ? 7 : attElmt === "phys" ? 1 : 2,
+    attributeType: "atk",
+    flatFactorScale: 3,
   };
 };
 
