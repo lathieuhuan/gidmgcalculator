@@ -45,24 +45,24 @@ const Kazuha: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.98 } },
-        { name: "2-Hit", multFactors: { root: 45.24 } },
-        { name: "3-Hit", multFactors: [{ root: 25.8 }, { root: 30.96 }] },
-        { name: "4-Hit", multFactors: { root: 60.72 } },
-        { name: "5-Hit (1/3)", multFactors: { root: 25.37 } },
+        { name: "1-Hit", multFactors: 44.98 },
+        { name: "2-Hit", multFactors: 45.24 },
+        { name: "3-Hit", multFactors: [25.8, 30.96] },
+        { name: "4-Hit", multFactors: 60.72 },
+        { name: "5-Hit (1/3)", multFactors: 25.37 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 43 }, { root: 74.65 }] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [43, 74.65] }] },
     PA: {
       stats: [
         {
           name: "Plunging Attack: Midare Ranzan",
           attElmt: "anemo",
-          multFactors: { root: 81.83 },
+          multFactors: 81.83,
         },
-        { name: "Plunge DMG", multFactors: { root: 81.83 } },
-        { name: "Low Plunge", multFactors: { root: 163.63 } },
-        { name: "High Plunge", multFactors: { root: 204.39 } },
+        { name: "Plunge DMG", multFactors: 81.83 },
+        { name: "Low Plunge", multFactors: 163.63 },
+        { name: "High Plunge", multFactors: 204.39 },
       ],
     },
     ES: {
@@ -70,8 +70,8 @@ const Kazuha: DataCharacter = {
       image: "2/22/Talent_Chihayaburu",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press DMG", multFactors: { root: 192 } },
-        { name: "Hold DMG", multFactors: { root: 260.8 } },
+        { name: "Press DMG", multFactors: 192 },
+        { name: "Hold DMG", multFactors: 260.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Press CD", value: "6s" },
@@ -83,9 +83,9 @@ const Kazuha: DataCharacter = {
       image: "0/06/Talent_Kazuha_Slash",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Slashing DMG", multFactors: { root: 262.4 } },
-        { name: "DoT", multFactors: { root: 120 } },
-        { name: "Additional Elemental DMG", attElmt: "various", multFactors: { root: 36 } },
+        { name: "Slashing DMG", multFactors: 262.4 },
+        { name: "DoT", multFactors: 120 },
+        { name: "Additional Elemental DMG", attElmt: "various", multFactors: 36 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,

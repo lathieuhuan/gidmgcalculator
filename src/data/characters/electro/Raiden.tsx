@@ -139,22 +139,22 @@ const Raiden: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 39.65 } },
-        { name: "2-Hit", multFactors: { root: 39.73 } },
-        { name: "3-Hit", multFactors: { root: 49.88 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 28.98 } },
-        { name: "5-Hit", multFactors: { root: 65.45 } },
+        { name: "1-Hit", multFactors: 39.65 },
+        { name: "2-Hit", multFactors: 39.73 },
+        { name: "3-Hit", multFactors: 49.88 },
+        { name: "4-Hit (1/2)", multFactors: 28.98 },
+        { name: "5-Hit", multFactors: 65.45 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 99.59 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 99.59 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Transcendence: Baleful Omen",
       image: "3/3c/Talent_Transcendence_Baleful_Omen",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 117.2 } },
-        { name: "Coordinated ATK DMG", multFactors: { root: 42 } },
+        { name: "Skill DMG", multFactors: 117.2 },
+        { name: "Coordinated ATK DMG", multFactors: 42 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "Duration", value: "25s" },
@@ -174,32 +174,32 @@ const Raiden: DataCharacter = {
         },
         {
           name: "1-Hit",
-          multFactors: { root: 44.74 },
+          multFactors: 44.74,
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "2-Hit",
-          multFactors: { root: 43.96 },
+          multFactors: 43.96,
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "3-Hit",
-          multFactors: { root: 53.82 },
+          multFactors: 53.82,
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
-          name: "4-Hit (1/2)",
-          multFactors: { root: 30.89 },
+          name: "4-Hit",
+          multFactors: [30.89, 30.98],
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "5-Hit",
-          multFactors: { root: 73.94 },
+          multFactors: 73.94,
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {
           name: "Charged Attack",
-          multFactors: [{ root: 61.6 }, { root: 74.36 }],
+          multFactors: [61.6, 74.36],
           getTalentBuff: getEBTalentBuff("isshinBonus"),
         },
         {

@@ -48,25 +48,25 @@ const Itto: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 79.23 } },
-        { name: "2-Hit", multFactors: { root: 76.37 } },
-        { name: "3-Hit", multFactors: { root: 91.64 } },
-        { name: "4-Hit", multFactors: { root: 117.22 } },
+        { name: "1-Hit", multFactors: 79.23 },
+        { name: "2-Hit", multFactors: 76.37 },
+        { name: "3-Hit", multFactors: 91.64 },
+        { name: "4-Hit", multFactors: 117.22 },
       ],
     },
     CA: {
       stats: [
         {
           name: "Arataki Kesagiri Combo Slash DMG",
-          multFactors: { root: 91.16 },
+          multFactors: 91.16,
           getTalentBuff: getA4TalentBuff,
         },
         {
           name: "Arataki Kesagiri Final Slash DMG",
-          multFactors: { root: 190.92 },
+          multFactors: 190.92,
           getTalentBuff: getA4TalentBuff,
         },
-        { name: "Saichimonji Slash DMG", multFactors: { root: 90.47 } },
+        { name: "Saichimonji Slash DMG", multFactors: 90.47 },
       ],
     },
     PA: { stats: HEAVIER_PAs },
@@ -74,7 +74,7 @@ const Itto: DataCharacter = {
       name: "Masatsu Zetsugi: Akaushi Burst!",
       image: "5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multFactors: { root: 307.2 } }],
+      stats: [{ name: "Skill DMG", multFactors: 307.2 }],
       // getExtraStats: () => [
       //   { name: "Inherited HP", value: "100%" },
       //   { name: "Duration", value: "6s" },

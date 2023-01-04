@@ -37,23 +37,23 @@ const Diluc: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 89.7 } },
-        { name: "2-Hit", multFactors: { root: 87.63 } },
-        { name: "3-Hit", multFactors: { root: 98.81 } },
-        { name: "4-Hit", multFactors: { root: 133.99 } },
+        { name: "1-Hit", multFactors: 89.7 },
+        { name: "2-Hit", multFactors: 87.63 },
+        { name: "3-Hit", multFactors: 98.81 },
+        { name: "4-Hit", multFactors: 133.99 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 68.8 } },
-        { name: "Charged Attack Final", multFactors: { root: 124.7 } },
+        { name: "Charged Attack Spinning", multFactors: 68.8 },
+        { name: "Charged Attack Final", multFactors: 124.7 },
       ],
     },
     PA: {
       stats: [
-        { name: "Plunge DMG", multFactors: { root: 89.51 } },
-        { name: "Low Plunge", multFactors: { root: 178.97 } },
-        { name: "High Plunge", multFactors: { root: 223.55 } },
+        { name: "Plunge DMG", multFactors: 89.51 },
+        { name: "Low Plunge", multFactors: 178.97 },
+        { name: "High Plunge", multFactors: 223.55 },
       ],
     },
     ES: {
@@ -61,9 +61,9 @@ const Diluc: DataCharacter = {
       image: "5/53/Talent_Searing_Onslaught",
       xtraLvAtCons: 3,
       stats: [
-        { name: "1-Hit DMG", multFactors: { root: 94.4 } },
-        { name: "2-Hit DMG", multFactors: { root: 97.6 } },
-        { name: "3-Hit DMG", multFactors: { root: 128.8 } },
+        { name: "1-Hit DMG", multFactors: 94.4 },
+        { name: "2-Hit DMG", multFactors: 97.6 },
+        { name: "3-Hit DMG", multFactors: 128.8 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
@@ -72,9 +72,9 @@ const Diluc: DataCharacter = {
       image: "f/f5/Talent_Dawn",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Splashing DMG", multFactors: { root: 204 } },
-        { name: "DoT", multFactors: { root: 60 } },
-        { name: "Explosion DMG", multFactors: { root: 204 } },
+        { name: "Splashing DMG", multFactors: 204 },
+        { name: "DoT", multFactors: 60 },
+        { name: "Explosion DMG", multFactors: 204 },
       ],
       // getExtraStats: () => [
       //   { name: "CD", value: "12s" },

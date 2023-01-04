@@ -49,11 +49,11 @@ const Yoimiya: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multFactors: { root: 35.64 } },
-        { name: "2-Hit", multFactors: { root: 68.38 } },
-        { name: "3-Hit", multFactors: { root: 88.89 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 46.42 } },
-        { name: "5-Hit", multFactors: { root: 105.86 } },
+        { name: "1-Hit (1/2)", multFactors: 35.64 },
+        { name: "2-Hit", multFactors: 68.38 },
+        { name: "3-Hit", multFactors: 88.89 },
+        { name: "4-Hit (1/2)", multFactors: 46.42 },
+        { name: "5-Hit", multFactors: 105.86 },
       ],
       multScale: 4,
     },
@@ -83,8 +83,8 @@ const Yoimiya: DataCharacter = {
       image: "a/a7/Talent_Ryuukin_Saxifrage",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 127.2 } },
-        { name: "Aurous Blaze Explosion", multFactors: { root: 122 } },
+        { name: "Skill DMG", multFactors: 127.2 },
+        { name: "Aurous Blaze Explosion", multFactors: 122 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "10s" },

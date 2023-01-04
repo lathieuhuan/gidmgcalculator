@@ -37,20 +37,20 @@ const Rosaria: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 52.46 } },
-        { name: "2-Hit", multFactors: { root: 51.6 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 31.82 } },
-        { name: "4-Hit", multFactors: { root: 69.66 } },
-        { name: "5-Hit", multFactors: [{ root: 41.62 }, { root: 43 }] },
+        { name: "1-Hit", multFactors: 52.46 },
+        { name: "2-Hit", multFactors: 51.6 },
+        { name: "3-Hit (1/2)", multFactors: 31.82 },
+        { name: "4-Hit", multFactors: 69.66 },
+        { name: "5-Hit", multFactors: [41.62, 43] },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 136.74 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 136.74 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Ravaging Confession",
       image: "c/ce/Talent_Ravaging_Confession",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multFactors: [{ root: 58.4 }, { root: 136 }] }],
+      stats: [{ name: "Skill DMG", multFactors: [58.4, 136] }],
       // getExtraStats: () => [{ name: "CD", value: "6s" }],
     },
     EB: {
@@ -58,8 +58,8 @@ const Rosaria: DataCharacter = {
       image: "2/26/Talent_Rites_of_Termination",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: [{ root: 104 }, { root: 152 }] },
-        { name: "Ice Lance DoT", multFactors: { root: 132 } },
+        { name: "Skill DMG", multFactors: [104, 152] },
+        { name: "Ice Lance DoT", multFactors: 132 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "8s" },

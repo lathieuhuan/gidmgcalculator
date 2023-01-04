@@ -39,16 +39,16 @@ const Noelle: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 79.12 } },
-        { name: "2-Hit", multFactors: { root: 73.36 } },
-        { name: "3-Hit", multFactors: { root: 86.26 } },
-        { name: "4-Hit", multFactors: { root: 113.43 } },
+        { name: "1-Hit", multFactors: 79.12 },
+        { name: "2-Hit", multFactors: 73.36 },
+        { name: "3-Hit", multFactors: 86.26 },
+        { name: "4-Hit", multFactors: 113.43 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 50.74 } },
-        { name: "Charged Attack Final", multFactors: { root: 90.47 } },
+        { name: "Charged Attack Spinning", multFactors: 50.74 },
+        { name: "Charged Attack Final", multFactors: 90.47 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -57,18 +57,18 @@ const Noelle: DataCharacter = {
       image: "5/5a/Talent_Breastplate",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 120 } },
+        { name: "Skill DMG", multFactors: 120 },
         {
           name: "DMG Absorption",
           notAttack: "shield",
-          multFactors: { root: 160 },
-          flatFactor: { root: 770 },
+          multFactors: 160,
+          flatFactor: 770,
         },
         {
           name: "Healing",
           notAttack: "healing",
-          multFactors: { root: 21.28 },
-          flatFactor: { root: 103 },
+          multFactors: 21.28,
+          flatFactor: 103,
         },
       ],
       multAttributeType: "def",
@@ -83,8 +83,8 @@ const Noelle: DataCharacter = {
       image: "7/7c/Talent_Sweeping_Time",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", multFactors: { root: 67.2 } },
-        { name: "Skill DMG", multFactors: { root: 92.8 } },
+        { name: "Burst DMG", multFactors: 67.2 },
+        { name: "Skill DMG", multFactors: 92.8 },
         {
           name: "ATK Bonus",
           notAttack: "other",

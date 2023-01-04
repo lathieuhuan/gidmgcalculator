@@ -47,15 +47,15 @@ const Faruzan: DataCharacter = {
   ],
   bonusStat: { type: "atk_", value: 6 },
   NAsConfig: {
-    name: "Turnaround Shooter",
+    name: "Parthian Shot",
   },
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.73 } },
-        { name: "2-Hit", multFactors: { root: 42.19 } },
-        { name: "3-Hit", multFactors: { root: 53.16 } },
-        { name: "4-Hit", multFactors: { root: 70.62 } },
+        { name: "1-Hit", multFactors: 44.73 },
+        { name: "2-Hit", multFactors: 42.19 },
+        { name: "3-Hit", multFactors: 53.16 },
+        { name: "4-Hit", multFactors: 70.62 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -65,15 +65,15 @@ const Faruzan: DataCharacter = {
       image: "4/46/Talent_Wind_Realm_of_Nasamjnin",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 148.8 } },
-        { name: "Pressurized Collapse Vortex DMG", multFactors: { root: 108 } },
+        { name: "Skill DMG", multFactors: 148.8 },
+        { name: "Pressurized Collapse Vortex DMG", multFactors: 108 },
       ],
     },
     EB: {
       name: "The Wind's Secret Ways",
       image: "f/fc/Talent_The_Wind%27s_Secret_Ways",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multFactors: { root: 377.6 } }],
+      stats: [{ name: "Skill DMG", multFactors: 377.6 }],
       energyCost: 80,
     },
   },

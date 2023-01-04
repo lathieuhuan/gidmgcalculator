@@ -37,23 +37,23 @@ const Heizou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 37.47 } },
-        { name: "2-Hit", multFactors: { root: 36.85 } },
-        { name: "3-Hit", multFactors: { root: 51.06 } },
-        { name: "4-Hit", multFactors: [{ root: 14.78 }, { root: 16.26 }, { root: 19.22 }] },
-        { name: "5-Hit", multFactors: { root: 61.45 } },
+        { name: "1-Hit", multFactors: 37.47 },
+        { name: "2-Hit", multFactors: 36.85 },
+        { name: "3-Hit", multFactors: 51.06 },
+        { name: "4-Hit", multFactors: [14.78, 16.26, 19.22] },
+        { name: "5-Hit", multFactors: 61.45 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 73 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 73 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Heartstopper Strike",
       image: "c/cb/Talent_Heartstopper_Strike",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 227.52 } },
-        { name: "Declension DMG Bonus / stack", multFactors: { root: 56.88 } },
-        { name: "Conviction DMG Bonus", multFactors: { root: 113.76 } },
+        { name: "Skill DMG", multFactors: 227.52 },
+        { name: "Declension DMG Bonus / stack", multFactors: 56.88 },
+        { name: "Conviction DMG Bonus", multFactors: 113.76 },
       ],
       // getExtraStats: () => [
       //   { name: "Declension Duration", value: "60s" },
@@ -65,8 +65,8 @@ const Heizou: DataCharacter = {
       image: "0/0a/Talent_Windmuster_Kick",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Fudou Style Vacuum Slugger DMG", multFactors: { root: 314.69 } },
-        { name: "Windmuster Iris DMG", multFactors: { root: 21.5 } },
+        { name: "Fudou Style Vacuum Slugger DMG", multFactors: 314.69 },
+        { name: "Windmuster Iris DMG", multFactors: 21.5 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

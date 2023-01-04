@@ -37,21 +37,21 @@ const Albedo: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 36.74 } },
-        { name: "2-Hit", multFactors: { root: 36.74 } },
-        { name: "3-Hit", multFactors: { root: 47.45 } },
-        { name: "4-Hit", multFactors: { root: 49.75 } },
-        { name: "5-Hit", multFactors: { root: 62.07 } },
+        { name: "1-Hit", multFactors: 36.74 },
+        { name: "2-Hit", multFactors: 36.74 },
+        { name: "3-Hit", multFactors: 47.45 },
+        { name: "4-Hit", multFactors: 49.75 },
+        { name: "5-Hit", multFactors: 62.07 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 47.3 }, { root: 60.2 }] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [47.3, 60.2] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 130.4 } },
+        { name: "Skill DMG", multFactors: 130.4 },
         {
           name: "Transient Blossom",
           multFactors: { root: 133.6, attributeType: "def" },
@@ -71,8 +71,8 @@ const Albedo: DataCharacter = {
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Burst DMG", multFactors: { root: 367.2 } },
-        { name: "Fatal Blossom DMG", multFactors: { root: 72 } },
+        { name: "Burst DMG", multFactors: 367.2 },
+        { name: "Fatal Blossom DMG", multFactors: 72 },
       ],
       // getExtraStats: (lv) => [{ name: "CD", value: "12s" }],
       energyCost: 40,

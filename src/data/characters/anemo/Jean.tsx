@@ -37,20 +37,20 @@ const Jean: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 48.33 } },
-        { name: "2-Hit", multFactors: { root: 45.58 } },
-        { name: "3-Hit", multFactors: { root: 60.29 } },
-        { name: "4-Hit", multFactors: { root: 65.88 } },
-        { name: "5-Hit", multFactors: { root: 79.21 } },
+        { name: "1-Hit", multFactors: 48.33 },
+        { name: "2-Hit", multFactors: 45.58 },
+        { name: "3-Hit", multFactors: 60.29 },
+        { name: "4-Hit", multFactors: 65.88 },
+        { name: "5-Hit", multFactors: 79.21 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 162.02 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 162.02 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Gale Blade",
       image: "2/24/Talent_Gale_Blade",
       xtraLvAtCons: 5,
-      stats: [{ name: "Skill DMG", multFactors: { root: 292 } }],
+      stats: [{ name: "Skill DMG", multFactors: 292 }],
       // getExtraStats: () => [
       //   { name: "Stamina Consumption", value: "20 per Second" },
       //   { name: "Max Duration", value: "5s" },
@@ -62,19 +62,19 @@ const Jean: DataCharacter = {
       image: "e/ef/Talent_Dandelion_Breeze",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Burst DMG", multFactors: { root: 424.8 } },
-        { name: "Entering/Exiting DMG", multFactors: { root: 78.4 } },
+        { name: "Burst DMG", multFactors: 424.8 },
+        { name: "Entering/Exiting DMG", multFactors: 78.4 },
         {
           name: "Activation Healing",
           notAttack: "healing",
           multFactors: { root: 251.2, attributeType: "atk" },
-          flatFactor: { root: 1540 },
+          flatFactor: 1540,
         },
         {
           name: "Continuous Regen.",
           notAttack: "healing",
           multFactors: { root: 25.12, attributeType: "atk" },
-          flatFactor: { root: 154 },
+          flatFactor: 154,
         },
       ],
       // getExtraStats: () => [{ name: "CD", value: "20s" }],

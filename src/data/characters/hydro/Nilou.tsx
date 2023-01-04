@@ -47,29 +47,29 @@ const Nilou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 50.31 } },
-        { name: "2-Hit", multFactors: { root: 45.44 } },
-        { name: "3-Hit", multFactors: { root: 70.35 } },
+        { name: "1-Hit", multFactors: 50.31 },
+        { name: "2-Hit", multFactors: 45.44 },
+        { name: "3-Hit", multFactors: 70.35 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 50.22 }, { root: 54.44 }] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [50.22, 54.44] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Dance of Haftkarsvar",
       image: "3/3e/Talent_Dance_of_Haftkarsvar",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 3.34 } },
-        { name: "Sword Dance 1-Hit DMG", multFactors: { root: 4.55 } },
-        { name: "Sword Dance 2-Hit DMG", multFactors: { root: 5.14 } },
+        { name: "Skill DMG", multFactors: 3.34 },
+        { name: "Sword Dance 1-Hit DMG", multFactors: 4.55 },
+        { name: "Sword Dance 2-Hit DMG", multFactors: 5.14 },
         {
           name: "Watery Moon DMG",
-          multFactors: { root: 7.17 },
+          multFactors: 7.17,
           getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 65]),
         },
-        { name: "Whirling Steps 1-Hit DMG", multFactors: { root: 3.26 } },
-        { name: "Whirling Steps 2-Hit DMG", multFactors: { root: 3.96 } },
-        { name: "Water Wheel DMG", multFactors: { root: 5.06 } },
+        { name: "Whirling Steps 1-Hit DMG", multFactors: 3.26 },
+        { name: "Whirling Steps 2-Hit DMG", multFactors: 3.96 },
+        { name: "Water Wheel DMG", multFactors: 5.06 },
       ],
       multAttributeType: "hp",
       // getExtraStats: () => [
@@ -84,8 +84,8 @@ const Nilou: DataCharacter = {
       image: "b/b9/Talent_Dance_of_Abzendegi_Distant_Dreams%2C_Listening_Spring",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 18.43 } },
-        { name: "Lingering Aeon DMG", multFactors: { root: 22.53 } },
+        { name: "Skill DMG", multFactors: 18.43 },
+        { name: "Lingering Aeon DMG", multFactors: 22.53 },
       ],
       multAttributeType: "hp",
       // getExtraStats: () => [{ name: "CD", value: "18s" }],

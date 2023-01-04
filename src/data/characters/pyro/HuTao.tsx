@@ -40,24 +40,24 @@ const HuTao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 46.89 } },
-        { name: "2-Hit", multFactors: { root: 48.25 } },
-        { name: "3-Hit", multFactors: { root: 61.05 } },
-        { name: "4-Hit", multFactors: { root: 65.64 } },
+        { name: "1-Hit", multFactors: 46.89 },
+        { name: "2-Hit", multFactors: 48.25 },
+        { name: "3-Hit", multFactors: 61.05 },
+        { name: "4-Hit", multFactors: 65.64 },
         {
           name: "5-Hit",
-          multFactors: [{ root: 33.27 }, { root: 35.2 }],
+          multFactors: [33.27, 35.2],
         },
-        { name: "6-Hit", multFactors: { root: 85.96 } },
+        { name: "6-Hit", multFactors: 85.96 },
       ],
       multScale: 4,
     },
     CA: { stats: [{ name: "Charged Attack", multFactors: { root: 135.96, scale: 4 } }] },
     PA: {
       stats: [
-        { name: "Plunge DMG", multFactors: { root: 65.42 } },
-        { name: "Low Plunge", multFactors: { root: 130.81 } },
-        { name: "High Plunge", multFactors: { root: 163.39 } },
+        { name: "Plunge DMG", multFactors: 65.42 },
+        { name: "Low Plunge", multFactors: 130.81 },
+        { name: "High Plunge", multFactors: 163.39 },
       ],
       multScale: 4,
     },
@@ -72,7 +72,7 @@ const HuTao: DataCharacter = {
           multFactors: { root: 3.84, attributeType: "hp", scale: 5 },
           getLimit: ({ totalAttr }) => totalAttr.base_atk * 4,
         },
-        { name: "Blood Blossom DMG", multFactors: { root: 64 } },
+        { name: "Blood Blossom DMG", multFactors: 64 },
       ],
       // getExtraStats: () => [
       //   { name: "Activation Cost", value: "30% Current HP" },
@@ -86,8 +86,8 @@ const HuTao: DataCharacter = {
       image: "1/11/Talent_Spirit_Soother",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 303.27 } },
-        { name: "Low HP Skill DMG", multFactors: { root: 379.09 } },
+        { name: "Skill DMG", multFactors: 303.27 },
+        { name: "Low HP Skill DMG", multFactors: 379.09 },
         {
           name: "HP Regen.",
           notAttack: "other",

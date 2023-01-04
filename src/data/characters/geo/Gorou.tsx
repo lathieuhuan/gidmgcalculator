@@ -47,10 +47,10 @@ const Gorou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 37.75 } },
-        { name: "2-Hit", multFactors: { root: 37.15 } },
-        { name: "3-Hit", multFactors: { root: 49.45 } },
-        { name: "4-Hit", multFactors: { root: 59 } },
+        { name: "1-Hit", multFactors: 37.75 },
+        { name: "2-Hit", multFactors: 37.15 },
+        { name: "3-Hit", multFactors: 49.45 },
+        { name: "4-Hit", multFactors: 59 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -60,7 +60,7 @@ const Gorou: DataCharacter = {
       image: "e/e6/Talent_Inuzaka_All-Round_Defense",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 107.2 } },
+        { name: "Skill DMG", multFactors: 107.2 },
         {
           name: "DEF Increase",
           notAttack: "other",
@@ -79,8 +79,8 @@ const Gorou: DataCharacter = {
       image: "f/f9/Talent_Juuga_Forward_Unto_Victory",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 98.22 } },
-        { name: "Crystal Collapse DMG", multFactors: { root: 61.3 } },
+        { name: "Skill DMG", multFactors: 98.22 },
+        { name: "Crystal Collapse DMG", multFactors: 61.3 },
         {
           name: "Heal Amount (C4)",
           notAttack: "healing",

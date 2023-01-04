@@ -21,32 +21,32 @@ export const BOW_CAs: TalentStat[] = [
 ];
 
 export const LIGHT_PAs: TalentStat[] = [
-  { name: "Plunge DMG", multFactors: { root: 56.83 } },
-  { name: "Low Plunge", multFactors: { root: 113.63 } },
-  { name: "High Plunge", multFactors: { root: 141.93 } },
+  { name: "Plunge DMG", multFactors: 56.83 },
+  { name: "Low Plunge", multFactors: 113.63 },
+  { name: "High Plunge", multFactors: 141.93 },
 ];
 
 // sword & polearm
 export const MEDIUM_PAs: TalentStat[] = [
-  { name: "Plunge DMG", multFactors: { root: 63.93 } },
-  { name: "Low Plunge", multFactors: { root: 127.84 } },
-  { name: "High Plunge", multFactors: { root: 159.68 } },
+  { name: "Plunge DMG", multFactors: 63.93 },
+  { name: "Low Plunge", multFactors: 127.84 },
+  { name: "High Plunge", multFactors: 159.68 },
 ];
 
 // claymore
 export const HEAVY_PAs: TalentStat[] = [
-  { name: "Plunge DMG", multFactors: { root: 74.59 } },
-  { name: "Low Plunge", multFactors: { root: 149.14 } },
-  { name: "High Plunge", multFactors: { root: 186.29 } },
+  { name: "Plunge DMG", multFactors: 74.59 },
+  { name: "Low Plunge", multFactors: 149.14 },
+  { name: "High Plunge", multFactors: 186.29 },
 ];
 
 // special
 
 // Xiao, Kazuha, Itto
 export const HEAVIER_PAs: TalentStat[] = [
-  { name: "Plunge DMG", multFactors: { root: 81.83 } },
-  { name: "Low Plunge", multFactors: { root: 163.63 } },
-  { name: "High Plunge", multFactors: { root: 204.39 } },
+  { name: "Plunge DMG", multFactors: 81.83 },
+  { name: "Low Plunge", multFactors: 163.63 },
+  { name: "High Plunge", multFactors: 204.39 },
 ];
 
 export const TRAVELER_INFO = {
@@ -81,15 +81,15 @@ export const TRAVELLER_NCPAs: {
 } = {
   NA: {
     stats: [
-      { name: "1-Hit", multFactors: { root: 44.46 } },
-      { name: "2-Hit", multFactors: { root: 43.43 } },
-      { name: "3-Hit", multFactors: { root: 52.98 } },
-      { name: "4-Hit", multFactors: { root: 58.31 } },
-      { name: "5-Hit", multFactors: { root: 70.78 } },
+      { name: "1-Hit", multFactors: 44.46 },
+      { name: "2-Hit", multFactors: 43.43 },
+      { name: "3-Hit", multFactors: 52.98 },
+      { name: "4-Hit", multFactors: 58.31 },
+      { name: "5-Hit", multFactors: 70.78 },
     ],
   },
   CA: {
-    stats: [{ name: "Charged Attack", multFactors: [{ root: 55.9 }, { root: 72.24 }] }],
+    stats: [{ name: "Charged Attack", multFactors: [55.9, 72.24] }],
   },
   PA: { stats: MEDIUM_PAs },
 };

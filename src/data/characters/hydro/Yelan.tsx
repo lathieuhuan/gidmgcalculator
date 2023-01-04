@@ -38,10 +38,10 @@ const Yelan: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 40.68 } },
-        { name: "2-Hit", multFactors: { root: 39.04 } },
-        { name: "3-Hit", multFactors: { root: 51.6 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 32.51 } },
+        { name: "1-Hit", multFactors: 40.68 },
+        { name: "2-Hit", multFactors: 39.04 },
+        { name: "3-Hit", multFactors: 51.6 },
+        { name: "4-Hit (1/2)", multFactors: 32.51 },
       ],
     },
     CA: {
@@ -77,8 +77,8 @@ const Yelan: DataCharacter = {
       image: "b/bd/Talent_Depth-Clarion_Dice",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 7.31 } },
-        { name: "Exquisite Throw DMG (1/3)", multFactors: { root: 4.87 } },
+        { name: "Skill DMG", multFactors: 7.31 },
+        { name: "Exquisite Throw DMG (1/3)", multFactors: 4.87 },
         {
           name: "Additional Water Arrow DMG (C2)",
           multFactors: { root: 14, scale: 0 },

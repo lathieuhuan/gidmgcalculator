@@ -7,7 +7,7 @@ import type {
 } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, HEAVIER_PAs } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
@@ -60,28 +60,28 @@ const Eula: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 89.73 } },
-        { name: "2-Hit", multFactors: { root: 93.55 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 56.8 } },
-        { name: "4-Hit", multFactors: { root: 112.64 } },
-        { name: "5-Hit (1/2)", multFactors: { root: 71.83 } },
+        { name: "1-Hit", multFactors: 89.73 },
+        { name: "2-Hit", multFactors: 93.55 },
+        { name: "3-Hit (1/2)", multFactors: 56.8 },
+        { name: "4-Hit", multFactors: 112.64 },
+        { name: "5-Hit (1/2)", multFactors: 71.83 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 68.8 } },
-        { name: "Charged Attack Final", multFactors: { root: 124.4 } },
+        { name: "Charged Attack Spinning", multFactors: 68.8 },
+        { name: "Charged Attack Final", multFactors: 124.4 },
       ],
     },
-    PA: { stats: HEAVIER_PAs.map((stat) => ({ ...stat, multType: 1 })) },
+    PA: { stats: HEAVY_PAs, multScale: 1 },
     ES: {
       name: "Icetide Vortex",
       image: "a/ae/Talent_Icetide_Vortex",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multFactors: { root: 146.4 } },
-        { name: "Hold DMG", multFactors: { root: 245.6 } },
-        { name: "Icewhirl Brand", multFactors: { root: 96 } },
+        { name: "Press DMG", multFactors: 146.4 },
+        { name: "Hold DMG", multFactors: 245.6 },
+        { name: "Icewhirl Brand", multFactors: 96 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "DEF bonus", value: "30% per Stack" },
@@ -99,7 +99,7 @@ const Eula: DataCharacter = {
       image: "a/af/Talent_Glacial_Illumination",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 245.6 } },
+        { name: "Skill DMG", multFactors: 245.6 },
         {
           name: "Lightfall Sword Base DMG",
           attElmt: "phys",

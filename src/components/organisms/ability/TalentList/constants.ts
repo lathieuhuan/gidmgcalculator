@@ -21,6 +21,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, stri
   claymore_anemo: "c/c7/Claymore_Anemo",
   polearm_pyro: "f/fe/Polearm_Pyro",
   polearm_cryo: "9/91/Polearm_Cryo",
+  polearm_hydro: "7/73/Polearm_Hydro",
   polearm_electro: "0/06/Polearm_Electro",
   polearm_anemo: "e/ee/Polearm_Anemo",
   polearm_geo: "9/99/Polearm_Geo",

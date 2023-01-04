@@ -38,29 +38,29 @@ const Zhongli: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 30.77 } },
-        { name: "2-Hit", multFactors: { root: 31.15 } },
-        { name: "3-Hit", multFactors: { root: 38.58 } },
-        { name: "4-Hit", multFactors: { root: 42.94 } },
-        { name: "5-Hit (1/4)", multFactors: { root: 10.75 } },
-        { name: "6-Hit", multFactors: { root: 54.5 } },
+        { name: "1-Hit", multFactors: 30.77 },
+        { name: "2-Hit", multFactors: 31.15 },
+        { name: "3-Hit", multFactors: 38.58 },
+        { name: "4-Hit", multFactors: 42.94 },
+        { name: "5-Hit (1/4)", multFactors: 10.75 },
+        { name: "6-Hit", multFactors: 54.5 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 111.03 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 111.03 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Dominus Lapidis",
       image: "9/93/Talent_Dominus_Lapidis",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Stone Stele DMG", multFactors: { root: 16 } },
-        { name: "Resonance DMG", multFactors: { root: 32 } },
-        { name: "Hold DMG", multFactors: { root: 80 } },
+        { name: "Stone Stele DMG", multFactors: 16 },
+        { name: "Resonance DMG", multFactors: 32 },
+        { name: "Hold DMG", multFactors: 80 },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 12.8, attributeType: "hp" },
-          flatFactor: { root: 1232 },
+          flatFactor: 1232,
         },
       ],
       // getExtraStats: () => [

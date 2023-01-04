@@ -35,11 +35,11 @@ const Fischl: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.12 } },
-        { name: "2-Hit", multFactors: { root: 46.78 } },
-        { name: "3-Hit", multFactors: { root: 58.14 } },
-        { name: "4-Hit", multFactors: { root: 57.71 } },
-        { name: "5-Hit", multFactors: { root: 72.07 } },
+        { name: "1-Hit", multFactors: 44.12 },
+        { name: "2-Hit", multFactors: 46.78 },
+        { name: "3-Hit", multFactors: 58.14 },
+        { name: "4-Hit", multFactors: 57.71 },
+        { name: "5-Hit", multFactors: 72.07 },
         { name: "Oz's Joint Attack (C1)", multFactors: { root: 22, scale: 0 } },
       ],
     },
@@ -59,10 +59,10 @@ const Fischl: DataCharacter = {
       image: "b/b3/Talent_Nightrider",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Oz's ATK", multFactors: { root: 88.8 } },
+        { name: "Oz's ATK", multFactors: 88.8 },
         {
           name: "Summoning DMG",
-          multFactors: { root: 115.44 },
+          multFactors: 115.44,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
         },
         { name: "Thundering Retribution (A4)", multFactors: { root: 80, scale: 0 } },
@@ -77,7 +77,7 @@ const Fischl: DataCharacter = {
       name: "Midnight Phantasmagoria",
       image: "f/ff/Talent_Midnight_Phantasmagoria",
       xtraLvAtCons: 5,
-      stats: [{ name: "Falling Thunder", multFactors: { root: 208 } }],
+      stats: [{ name: "Falling Thunder", multFactors: 208 }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,
     },

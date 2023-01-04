@@ -37,13 +37,13 @@ const Candace: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 60.8 } },
-        { name: "2-Hit", multFactors: { root: 61.15 } },
-        { name: "3-Hit", multFactors: [{ root: 35.49 }, { root: 43.37 }] },
-        { name: "4-Hit", multFactors: { root: 94.94 } },
+        { name: "1-Hit", multFactors: 60.8 },
+        { name: "2-Hit", multFactors: 61.15 },
+        { name: "3-Hit", multFactors: [35.49, 43.37] },
+        { name: "4-Hit", multFactors: 94.94 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack DMG", multFactors: { root: 124.18 } }] },
+    CA: { stats: [{ name: "Charged Attack DMG", multFactors: 124.18 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Sacred Rite: Heron's Sanctum",
@@ -52,11 +52,11 @@ const Candace: DataCharacter = {
       stats: [
         {
           name: "Shield DMG Absorption",
-          multFactors: { root: 12 },
-          flatFactor: { root: 1156 },
+          multFactors: 12,
+          flatFactor: 1156,
         },
-        { name: "Basic DMG", multFactors: { root: 12.43 } },
-        { name: "Charged Up DMG", multFactors: { root: 20.43 } },
+        { name: "Basic DMG", multFactors: 12 },
+        { name: "Charged Up DMG", multFactors: 19.04 },
       ],
       multAttributeType: "hp",
     },
@@ -65,8 +65,8 @@ const Candace: DataCharacter = {
       image: "1/1a/Talent_Sacred_Rite_Wagtail%27s_Tide",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 6.61 } },
-        { name: "Wave Impact DMG", multFactors: { root: 6.61 } },
+        { name: "Skill DMG", multFactors: 6.61 },
+        { name: "Wave Impact DMG", multFactors: 6.61 },
         {
           name: "Wave DMG (C6)",
           multFactors: { root: 15, scale: 0 },

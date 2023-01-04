@@ -37,20 +37,20 @@ const Klee: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 72.16 } },
-        { name: "2-Hit", multFactors: { root: 62.4 } },
-        { name: "3-Hit", multFactors: { root: 89.92 } },
+        { name: "1-Hit", multFactors: 72.16 },
+        { name: "2-Hit", multFactors: 62.4 },
+        { name: "3-Hit", multFactors: 89.92 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 157.36 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 157.36 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Jumpy Dumpty",
       image: "3/33/Talent_Jumpy_Dumpty",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Jumpy Dumpty", multFactors: { root: 95.2 } },
-        { name: "Mine DMG", multFactors: { root: 32.8 } },
+        { name: "Jumpy Dumpty", multFactors: 95.2 },
+        { name: "Mine DMG", multFactors: 32.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Mine Durtion", value: "15s" },
@@ -62,8 +62,8 @@ const Klee: DataCharacter = {
       image: "6/64/Talent_Sparks_%27n%27_Splash",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Sparks 'n' Splash", multFactors: { root: 42.64 } },
-        { name: "Total Max DMG", isNotOfficial: true, multFactors: { root: 852 } },
+        { name: "Sparks 'n' Splash", multFactors: 42.64 },
+        { name: "Total Max DMG", isNotOfficial: true, multFactors: 852 },
       ],
       // getExtraStats: () => [
       //   { name: "Durtion", value: "10s" },

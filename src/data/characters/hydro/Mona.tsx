@@ -51,21 +51,21 @@ const Mona: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 37.6 } },
-        { name: "2-Hit", multFactors: { root: 36 } },
-        { name: "3-Hit", multFactors: { root: 44.8 } },
-        { name: "4-Hit", multFactors: { root: 56.16 } },
+        { name: "1-Hit", multFactors: 37.6 },
+        { name: "2-Hit", multFactors: 36 },
+        { name: "3-Hit", multFactors: 44.8 },
+        { name: "4-Hit", multFactors: 56.16 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 149.72 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 149.72 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Mirror Reflection of Doom",
       image: "4/45/Talent_Mirror_Reflection_of_Doom",
       xtraLvAtCons: 5,
       stats: [
-        { name: "DoT", multFactors: { root: 32 } },
-        { name: "Explosion DMG", multFactors: { root: 132.8 } },
+        { name: "DoT", multFactors: 32 },
+        { name: "Explosion DMG", multFactors: 132.8 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
@@ -73,7 +73,7 @@ const Mona: DataCharacter = {
       name: "Stellaris Phantasm",
       image: "c/c4/Talent_Stellaris_Phantasm",
       xtraLvAtCons: 3,
-      stats: [{ name: "Bubble Explosion DMG", multFactors: { root: 442.4 } }],
+      stats: [{ name: "Bubble Explosion DMG", multFactors: 442.4 }],
       // getExtraStats: (lv) => [
       //   { name: "", value: "8s" },
       //   { name: "DMG Bonus", value: Math.min(40 + lv * 2, 60) + "%" },

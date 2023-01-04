@@ -45,12 +45,12 @@ const Xiao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multFactors: { root: 27.54 } },
-        { name: "2-Hit", multFactors: { root: 56.94 } },
-        { name: "3-Hit", multFactors: { root: 68.55 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 37.66 } },
-        { name: "5-Hit", multFactors: { root: 71.54 } },
-        { name: "6-Hit", multFactors: { root: 95.83 } },
+        { name: "1-Hit (1/2)", multFactors: 27.54 },
+        { name: "2-Hit", multFactors: 56.94 },
+        { name: "3-Hit", multFactors: 68.55 },
+        { name: "4-Hit (1/2)", multFactors: 37.66 },
+        { name: "5-Hit", multFactors: 71.54 },
+        { name: "6-Hit", multFactors: 95.83 },
       ],
       multScale: 4,
     },
@@ -60,7 +60,7 @@ const Xiao: DataCharacter = {
       name: "Lemniscatic Wind Cycling",
       image: "d/da/Talent_Lemniscatic_Wind_Cycling",
       xtraLvAtCons: 3,
-      stats: [{ name: "Skill DMG", multFactors: { root: 252.8 } }],
+      stats: [{ name: "Skill DMG", multFactors: 252.8 }],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
     EB: {

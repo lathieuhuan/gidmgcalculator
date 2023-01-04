@@ -54,28 +54,28 @@ const YunJin: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 40.51 } },
-        { name: "2-Hit", multFactors: { root: 40.25 } },
-        { name: "3-Hit", multFactors: [{ root: 22.96 }, { root: 27.52 }] },
-        { name: "4-Hit", multFactors: [{ root: 23.99 }, { root: 28.81 }] },
-        { name: "5-Hit", multFactors: { root: 67.34 } },
+        { name: "1-Hit", multFactors: 40.51 },
+        { name: "2-Hit", multFactors: 40.25 },
+        { name: "3-Hit", multFactors: [22.96, 27.52] },
+        { name: "4-Hit", multFactors: [23.99, 28.81] },
+        { name: "5-Hit", multFactors: 67.34 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 121.69 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 121.69 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Whirling Opener",
       image: "9/92/Talent_Opening_Flourish",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multFactors: { root: 149.12 } },
-        { name: "Charge Level 1 DMG", multFactors: { root: 260.96 } },
-        { name: "Charge Level 2 DMG", multFactors: { root: 372.8 } },
+        { name: "Press DMG", multFactors: 149.12 },
+        { name: "Charge Level 1 DMG", multFactors: 260.96 },
+        { name: "Charge Level 2 DMG", multFactors: 372.8 },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 12, attributeType: "hp" },
-          flatFactor: { root: 1155 },
+          flatFactor: 1155,
         },
       ],
       multAttributeType: "def",
@@ -86,7 +86,7 @@ const YunJin: DataCharacter = {
       image: "5/59/Talent_Cliffbreaker%27s_Banner",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 244 } },
+        { name: "Skill DMG", multFactors: 244 },
         {
           name: "DMG Increase",
           notAttack: "other",

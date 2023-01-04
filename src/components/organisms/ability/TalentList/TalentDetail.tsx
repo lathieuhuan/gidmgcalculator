@@ -207,25 +207,28 @@ function processActiveTalents(
   for (const attPatt of ATTACK_PATTERNS) {
     const isElemental = attPatt === "ES" || attPatt === "EB";
     const resultKey = isElemental ? attPatt : "NAs";
-    const { stats, multScale, multAttributeType } = activeTalents[attPatt];
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
+    const { stats, multScale = defaultInfo.scale, multAttributeType } = activeTalents[attPatt];
 
     for (const stat of stats) {
       const multFactors = turnArray(stat.multFactors);
       const factorStrings = [];
 
-      if (stat.isNotOfficial || multFactors.some((factor) => factor.scale === 0)) {
+      if (
+        stat.isNotOfficial ||
+        multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)
+      ) {
         continue;
       }
 
       for (const factor of multFactors) {
         const {
           root,
-          scale = multScale || defaultInfo.scale,
+          scale = multScale,
           attributeType = multAttributeType,
-        } = factor;
+        } = typeof factor === "number" ? { root: factor } : factor;
 
-        if (scale) {
+        if (scale && root) {
           let string = round(root * TALENT_LV_MULTIPLIERS[scale][level], 2) + "%";
 
           if (attributeType) {
@@ -236,8 +239,12 @@ function processActiveTalents(
         }
       }
 
-      if (stat.flatFactor) {
-        const { root, scale = defaultInfo.flatFactorScale } = stat.flatFactor;
+      const { flatFactor } = stat;
+
+      if (flatFactor) {
+        const { root, scale = defaultInfo.flatFactorScale } =
+          typeof flatFactor === "number" ? { root: flatFactor } : flatFactor;
+
         factorStrings.push(Math.round(root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1)));
       }
 

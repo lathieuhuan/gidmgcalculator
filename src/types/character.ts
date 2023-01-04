@@ -111,7 +111,7 @@ export type TalentStat = {
   /**
    * Damage factors multiplying an attribute, scaling off talent level
    */
-  multFactors: TalentStatMultFactor | TalentStatMultFactor[];
+  multFactors: number | number[] | TalentStatMultFactor | TalentStatMultFactor[];
   /**
    * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
@@ -122,11 +122,15 @@ export type TalentStat = {
   /**
    * Damage factor multiplying root, caling off talent level. Only on ES / EB
    */
-  flatFactor?: {
-    root: number;
-    /** Calc default to 3 */
-    scale?: number;
-  };
+  flatFactor?:
+    | number
+    | {
+        root: number;
+        /** Calc default to getTalentDefaultInfo's return.flatFactorScale.
+         * When 0 not scale off talent level.
+         */
+        scale?: number;
+      };
   /** only on ES / EB */
   getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };

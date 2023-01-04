@@ -263,9 +263,9 @@ export default function getDamage({
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
     const talent = activeTalents[ATT_PATT];
-    const { multScale, multAttributeType } = talent;
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
+    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
     const level = finalTalentLv({
       talents: dataChar.activeTalents,
       talentType: resultKey,
@@ -321,19 +321,21 @@ export default function getDamage({
       for (const factor of turnArray(stat.multFactors)) {
         const {
           root,
-          attributeType = multAttributeType || defaultInfo.attributeType,
-          scale = multScale || defaultInfo.scale,
-        } = factor;
+          attributeType = multAttributeType,
+          scale = multScale,
+        } = typeof factor === "number" ? { root: factor } : factor;
 
         const finalMult =
           root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult?.value || 0);
 
-        const flatBonus = flatFactor
-          ? flatFactor.root *
-            (flatFactor.scale === 0
-              ? 1
-              : TALENT_LV_MULTIPLIERS[flatFactor.scale || defaultInfo.flatFactorScale][level])
-          : 0;
+        let flatBonus = 0;
+
+        if (flatFactor) {
+          const { root, scale = defaultInfo.flatFactorScale } =
+            typeof flatFactor === "number" ? { root: flatFactor } : flatFactor;
+
+          flatBonus = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1);
+        }
 
         record.multFactors.push({
           value: totalAttr[attributeType],

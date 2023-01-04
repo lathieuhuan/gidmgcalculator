@@ -51,21 +51,21 @@ const Nahida: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 40.3 } },
-        { name: "2-Hit", multFactors: { root: 36.97 } },
-        { name: "3-Hit", multFactors: { root: 45.87 } },
-        { name: "4-Hit", multFactors: { root: 58.21 } },
+        { name: "1-Hit", multFactors: 40.3 },
+        { name: "2-Hit", multFactors: 36.97 },
+        { name: "3-Hit", multFactors: 45.87 },
+        { name: "4-Hit", multFactors: 58.41 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 132 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 132 }] },
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "All Schemes to Know",
       image: "7/72/Talent_All_Schemes_to_Know",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press DMG", multFactors: { root: 98.4 } },
-        { name: "Hold DMG", multFactors: { root: 130.4 } },
+        { name: "Press DMG", multFactors: 98.4 },
+        { name: "Hold DMG", multFactors: 130.4 },
         {
           name: "Tri-Karma Purification DMG",
           multFactors: [

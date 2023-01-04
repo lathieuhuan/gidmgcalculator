@@ -37,11 +37,11 @@ const Diona: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 36.12 } },
-        { name: "2-Hit", multFactors: { root: 33.54 } },
-        { name: "3-Hit", multFactors: { root: 45.58 } },
-        { name: "4-Hit", multFactors: { root: 43 } },
-        { name: "5-Hit", multFactors: { root: 53.75 } },
+        { name: "1-Hit", multFactors: 36.12 },
+        { name: "2-Hit", multFactors: 33.54 },
+        { name: "3-Hit", multFactors: 45.58 },
+        { name: "4-Hit", multFactors: 43 },
+        { name: "5-Hit", multFactors: 53.75 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -53,13 +53,13 @@ const Diona: DataCharacter = {
       stats: [
         {
           name: "DMG per Paw",
-          multFactors: { root: 41.92 },
+          multFactors: 41.92,
         },
         {
           name: "Base DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 7.2, attributeType: "hp" },
-          flatFactor: { root: 693 },
+          flatFactor: 693,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "pct", [false, 1], 15]),
         },
       ],
@@ -74,13 +74,13 @@ const Diona: DataCharacter = {
       image: "5/57/Talent_Signature_Mix",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 80 } },
-        { name: "Continuous DMG", multFactors: { root: 52.64 } },
+        { name: "Skill DMG", multFactors: 80 },
+        { name: "Continuous DMG", multFactors: 52.64 },
         {
           name: "HP Regen. Over Time",
           notAttack: "healing",
           multFactors: { root: 5.34, attributeType: "hp" },
-          flatFactor: { root: 513 },
+          flatFactor: 513,
         },
       ],
       // getExtraStats: () => [

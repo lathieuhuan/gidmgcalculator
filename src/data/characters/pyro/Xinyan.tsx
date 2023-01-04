@@ -37,16 +37,16 @@ const Xinyan: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 76.54 } },
-        { name: "2-Hit", multFactors: { root: 73.96 } },
-        { name: "3-Hit", multFactors: { root: 95.46 } },
-        { name: "4-Hit", multFactors: { root: 115.84 } },
+        { name: "1-Hit", multFactors: 76.54 },
+        { name: "2-Hit", multFactors: 73.96 },
+        { name: "3-Hit", multFactors: 95.46 },
+        { name: "4-Hit", multFactors: 115.84 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 62.55 } },
-        { name: "Charged Attack Final", multFactors: { root: 113.09 } },
+        { name: "Charged Attack Spinning", multFactors: 62.55 },
+        { name: "Charged Attack Final", multFactors: 113.09 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -55,25 +55,25 @@ const Xinyan: DataCharacter = {
       image: "8/85/Talent_Sweeping_Fervor",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Swing DMG", multFactors: { root: 169.6 } },
-        { name: "DoT", multFactors: { root: 33.6 } },
+        { name: "Swing DMG", multFactors: 169.6 },
+        { name: "DoT", multFactors: 33.6 },
         {
           name: "Shield Level 1 DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 104.04, attributeType: "def" },
-          flatFactor: { root: 501 },
+          flatFactor: 501,
         },
         {
           name: "Shield Level 2 DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 122.4, attributeType: "def" },
-          flatFactor: { root: 589 },
+          flatFactor: 589,
         },
         {
           name: "Shield Level 3 DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 144, attributeType: "def" },
-          flatFactor: { root: 693 },
+          flatFactor: 693,
         },
       ],
       // getExtraStats: () => [
@@ -89,10 +89,10 @@ const Xinyan: DataCharacter = {
         {
           name: "Physical Burst DMG",
           attElmt: "phys",
-          multFactors: { root: 340.8 },
+          multFactors: 340.8,
           getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "cRate", [false, 2], 100]),
         },
-        { name: "Pyro DoT", multFactors: { root: 40 } },
+        { name: "Pyro DoT", multFactors: 40 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "2s" },

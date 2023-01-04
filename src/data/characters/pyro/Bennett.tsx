@@ -53,24 +53,24 @@ const Bennett: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.55 } },
-        { name: "2-Hit", multFactors: { root: 42.7 } },
-        { name: "3-Hit", multFactors: { root: 54.61 } },
-        { name: "4-Hit", multFactors: { root: 59.68 } },
-        { name: "5-Hit", multFactors: { root: 71.9 } },
+        { name: "1-Hit", multFactors: 44.55 },
+        { name: "2-Hit", multFactors: 42.7 },
+        { name: "3-Hit", multFactors: 54.61 },
+        { name: "4-Hit", multFactors: 59.68 },
+        { name: "5-Hit", multFactors: 71.9 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: [{ root: 55.9 }, { root: 60.72 }] }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: [55.9, 60.72] }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Passion Overload",
       image: "6/66/Talent_Passion_Overload",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press", multFactors: { root: 137.6 } },
-        { name: "Charge Level 1", multFactors: [{ root: 84 }, { root: 92 }] },
-        { name: "Charge Level 2", multFactors: [{ root: 88 }, { root: 96 }] },
-        { name: "Explosion", multFactors: { root: 132 } },
+        { name: "Press", multFactors: 137.6 },
+        { name: "Charge Level 1", multFactors: [84, 92] },
+        { name: "Charge Level 2", multFactors: [88, 96] },
+        { name: "Explosion", multFactors: 132 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "5/7.5/10s" }],
     },
@@ -79,12 +79,12 @@ const Bennett: DataCharacter = {
       image: "a/a2/Talent_Fantastic_Voyage",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 232.8 } },
+        { name: "Skill DMG", multFactors: 232.8 },
         {
           name: "Regeneration",
           notAttack: "healing",
           multFactors: { root: 6, attributeType: "hp" },
-          flatFactor: { root: 577 },
+          flatFactor: 577,
         },
         {
           name: "ATK Bonus",

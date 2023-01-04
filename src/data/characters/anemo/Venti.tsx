@@ -35,12 +35,12 @@ const Venti: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit (1/2)", multFactors: { root: 20.38 } },
-        { name: "2-Hit", multFactors: { root: 44.38 } },
-        { name: "3-Hit", multFactors: { root: 52.37 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 26.06 } },
-        { name: "5-Hit", multFactors: { root: 50.65 } },
-        { name: "6-Hit", multFactors: { root: 70.95 } },
+        { name: "1-Hit (1/2)", multFactors: 20.38 },
+        { name: "2-Hit", multFactors: 44.38 },
+        { name: "3-Hit", multFactors: 52.37 },
+        { name: "4-Hit (1/2)", multFactors: 26.06 },
+        { name: "5-Hit", multFactors: 50.65 },
+        { name: "6-Hit", multFactors: 70.95 },
       ],
     },
     CA: { stats: BOW_CAs },
@@ -50,8 +50,8 @@ const Venti: DataCharacter = {
       image: "1/17/Talent_Skyward_Sonnet",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multFactors: { root: 276 } },
-        { name: "Hold DMG", multFactors: { root: 380 } },
+        { name: "Press DMG", multFactors: 276 },
+        { name: "Hold DMG", multFactors: 380 },
       ],
       // getExtraStats: () => [
       //   { name: "Press CD", value: "6s" },
@@ -63,8 +63,8 @@ const Venti: DataCharacter = {
       image: "3/32/Talent_Wind%27s_Grand_Ode",
       xtraLvAtCons: 3,
       stats: [
-        { name: "DoT", multFactors: { root: 37.6 } },
-        { name: "Addition Elemental DMG", attElmt: "various", multFactors: { root: 18.8 } },
+        { name: "DoT", multFactors: 37.6 },
+        { name: "Addition Elemental DMG", attElmt: "various", multFactors: 18.8 },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "8s" },

@@ -38,13 +38,13 @@ const Layla: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 51.22 } },
-        { name: "2-Hit", multFactors: { root: 48.48 } },
-        { name: "3-Hit", multFactors: { root: 72.97 } },
+        { name: "1-Hit", multFactors: 51.22 },
+        { name: "2-Hit", multFactors: 48.48 },
+        { name: "3-Hit", multFactors: 72.97 },
       ],
     },
     CA: {
-      stats: [{ name: "Charged Attack DMG", multFactors: [{ root: 47.73 }, { root: 52.55 }] }],
+      stats: [{ name: "Charged Attack DMG", multFactors: [47.73, 52.55] }],
     },
     PA: { stats: MEDIUM_PAs },
     ES: {
@@ -52,10 +52,10 @@ const Layla: DataCharacter = {
       image: "9/90/Talent_Nights_of_Formal_Focus",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 12.8 } },
+        { name: "Skill DMG", multFactors: 12.8 },
         {
           name: "Shooting Star DMG",
-          multFactors: { root: 14.72 },
+          multFactors: 14.72,
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
               [checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
@@ -67,7 +67,7 @@ const Layla: DataCharacter = {
           name: "Base Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 10.8, attributeType: "hp" },
-          flatFactor: { root: 1040 },
+          flatFactor: 1040,
           getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 20]),
         },
       ],

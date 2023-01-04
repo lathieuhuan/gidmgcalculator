@@ -91,11 +91,11 @@ const Ayato: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.96 } },
-        { name: "2-Hit", multFactors: { root: 47.16 } },
-        { name: "3-Hit", multFactors: { root: 58.61 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 29.45 } },
-        { name: "5-Hit", multFactors: { root: 75.6 } },
+        { name: "1-Hit", multFactors: 44.96 },
+        { name: "2-Hit", multFactors: 47.16 },
+        { name: "3-Hit", multFactors: 58.61 },
+        { name: "4-Hit (1/2)", multFactors: 29.45 },
+        { name: "5-Hit", multFactors: 75.6 },
       ],
       multScale: 7,
     },
@@ -109,19 +109,19 @@ const Ayato: DataCharacter = {
         {
           name: "Shunsuiken 1-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 52.89 },
+          multFactors: 52.89,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 2-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 58.91 },
+          multFactors: 58.91,
           getTalentBuff: getESTalentBuff,
         },
         {
           name: "Shunsuiken 3-Hit DMG",
           attPatt: "NA",
-          multFactors: { root: 64.93 },
+          multFactors: 64.93,
           getTalentBuff: getESTalentBuff,
         },
         {
@@ -151,7 +151,7 @@ const Ayato: DataCharacter = {
             };
           },
         },
-        { name: "Water Illusion DMG", multFactors: { root: 101.48 } },
+        { name: "Water Illusion DMG", multFactors: 101.48 },
       ],
       multScale: 7,
       // getExtraStats: (lv) => [
@@ -170,7 +170,7 @@ const Ayato: DataCharacter = {
       name: "Kamisato Art: Suiyuu",
       image: "e/e8/Talent_Kamisato_Art_Suiyuu",
       xtraLvAtCons: 5,
-      stats: [{ name: "Bloomwater Blade DMG", multFactors: { root: 66.46 } }],
+      stats: [{ name: "Bloomwater Blade DMG", multFactors: 66.46 }],
       // getExtraStats: (lv) => [
       //   { name: "Normal Attack DMG Bonus", value: Math.min(lv + 10, 20) + "%" },
       //   { name: "Duration", value: "18s" },

@@ -37,17 +37,17 @@ const Beidou: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 71.12 } },
-        { name: "2-Hit", multFactors: { root: 70.86 } },
-        { name: "3-Hit", multFactors: { root: 88.32 } },
-        { name: "4-Hit", multFactors: { root: 86.52 } },
-        { name: "5-Hit", multFactors: { root: 112.14 } },
+        { name: "1-Hit", multFactors: 71.12 },
+        { name: "2-Hit", multFactors: 70.86 },
+        { name: "3-Hit", multFactors: 88.32 },
+        { name: "4-Hit", multFactors: 86.52 },
+        { name: "5-Hit", multFactors: 112.14 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 56.24 } },
-        { name: "Charged Attack Final", multFactors: { root: 101.82 } },
+        { name: "Charged Attack Spinning", multFactors: 56.24 },
+        { name: "Charged Attack Final", multFactors: 101.82 },
         {
           name: "Extra Hit (C4)",
           attPatt: "none",
@@ -66,11 +66,11 @@ const Beidou: DataCharacter = {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 14.4, attributeType: "hp" },
-          flatFactor: { root: 1386 },
+          flatFactor: 1386,
         },
-        { name: "Base DMG", multFactors: { root: 121.6 } },
-        { name: "DMG Bonus on Hit", multFactors: { root: 160 } },
-        { name: "Full Counter", multFactors: { root: 441.6 }, isNotOfficial: true },
+        { name: "Base DMG", multFactors: 121.6 },
+        { name: "DMG Bonus on Hit", multFactors: 160 },
+        { name: "Full Counter", multFactors: 441.6, isNotOfficial: true },
       ],
       // getExtraStats: () => [{ name: "CD", value: "7.5s" }],
     },
@@ -79,8 +79,8 @@ const Beidou: DataCharacter = {
       image: "3/33/Talent_Stormbreaker",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 121.6 } },
-        { name: "Lightning DMG", multFactors: { root: 96 } },
+        { name: "Skill DMG", multFactors: 121.6 },
+        { name: "Lightning DMG", multFactors: 96 },
       ],
       // getExtraStats: (lv) => [
       //   {

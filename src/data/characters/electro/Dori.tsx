@@ -37,9 +37,9 @@ const Dori: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 90.21 } },
-        { name: "2-Hit", multFactors: [{ root: 41.07 }, { root: 43.12 }] },
-        { name: "3-Hit", multFactors: { root: 128.4 } },
+        { name: "1-Hit", multFactors: 90.21 },
+        { name: "2-Hit", multFactors: [41.07, 43.12] },
+        { name: "3-Hit", multFactors: 128.4 },
         {
           name: "Heal on Normal Attacks hit (C6)",
           notAttack: "healing",
@@ -49,8 +49,8 @@ const Dori: DataCharacter = {
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 62.55 } },
-        { name: "Charged Attack Final", multFactors: { root: 113.09 } },
+        { name: "Charged Attack Spinning", multFactors: 62.55 },
+        { name: "Charged Attack Final", multFactors: 113.09 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -59,8 +59,8 @@ const Dori: DataCharacter = {
       image: "c/c8/Talent_Spirit-Warding_Lamp_Troubleshooter_Cannon",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Troubleshooter Shot DMG", multFactors: { root: 147.28 } },
-        { name: "After-Sales Service Round DMG", multFactors: { root: 31.56 } },
+        { name: "Troubleshooter Shot DMG", multFactors: 147.28 },
+        { name: "After-Sales Service Round DMG", multFactors: 31.56 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
@@ -69,12 +69,12 @@ const Dori: DataCharacter = {
       image: "7/77/Talent_Alcazarzaray%27s_Exactitude",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Connector DMG", multFactors: { root: 15.88 } },
+        { name: "Connector DMG", multFactors: 15.88 },
         {
           name: "Continuous Healing",
           notAttack: "healing",
           multFactors: { root: 6.67, attributeType: "hp" },
-          flatFactor: { root: 642 },
+          flatFactor: 642,
         },
       ],
       // getExtraStats: (lv) => [

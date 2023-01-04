@@ -39,31 +39,31 @@ const Thoma: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 44.39 } },
-        { name: "2-Hit", multFactors: { root: 43.63 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 26.79 } },
-        { name: "4-Hit", multFactors: { root: 67.36 } },
+        { name: "1-Hit", multFactors: 44.39 },
+        { name: "2-Hit", multFactors: 43.63 },
+        { name: "3-Hit (1/2)", multFactors: 26.79 },
+        { name: "4-Hit", multFactors: 67.36 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 112.75 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 112.75 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Blazing Blessing",
       image: "9/9b/Talent_Blazing_Blessing",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 146.4 } },
+        { name: "Skill DMG", multFactors: 146.4 },
         {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 7.2, attributeType: "hp" },
-          flatFactor: { root: 693 },
+          flatFactor: 693,
         },
         {
           name: "Max Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 19.6, attributeType: "hp" },
-          flatFactor: { root: 1887 },
+          flatFactor: 1887,
         },
       ],
       // getExtraStats: () => [
@@ -76,10 +76,10 @@ const Thoma: DataCharacter = {
       image: "e/e4/Talent_Crimson_Ooyoroi",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 88 } },
+        { name: "Skill DMG", multFactors: 88 },
         {
           name: "Fiery Collapse DMG",
-          multFactors: { root: 58 },
+          multFactors: 58,
           getTalentBuff: ({ char, totalAttr }) => {
             const buffValue = applyPercent(totalAttr.hp, 2.2);
             return talentBuff([checkAscs[4](char), "flat", [true, 4], buffValue]);
@@ -89,7 +89,7 @@ const Thoma: DataCharacter = {
           name: "Shield DMG Absorption",
           notAttack: "shield",
           multFactors: { root: 1.14, attributeType: "hp" },
-          flatFactor: { root: 110 },
+          flatFactor: 110,
         },
       ],
       // getExtraStats: () => [

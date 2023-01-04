@@ -41,25 +41,25 @@ const Razor: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 95.92 } },
-        { name: "2-Hit", multFactors: { root: 82.63 } },
-        { name: "3-Hit", multFactors: { root: 103.31 } },
-        { name: "4-Hit", multFactors: { root: 136.05 } },
+        { name: "1-Hit", multFactors: 95.92 },
+        { name: "2-Hit", multFactors: 82.63 },
+        { name: "3-Hit", multFactors: 103.31 },
+        { name: "4-Hit", multFactors: 136.05 },
       ],
       multScale: 4,
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 62.54 } },
-        { name: "Charged Attack Final", multFactors: { root: 113.09 } },
+        { name: "Charged Attack Spinning", multFactors: 62.54 },
+        { name: "Charged Attack Final", multFactors: 113.09 },
       ],
       multScale: 7,
     },
     PA: {
       stats: [
-        { name: "Plunge DMG", multFactors: { root: 82.05 } },
-        { name: "Low Plunge", multFactors: { root: 164.06 } },
-        { name: "High Plunge", multFactors: { root: 204.92 } },
+        { name: "Plunge DMG", multFactors: 82.05 },
+        { name: "Low Plunge", multFactors: 164.06 },
+        { name: "High Plunge", multFactors: 204.92 },
       ],
     },
     ES: {
@@ -67,8 +67,8 @@ const Razor: DataCharacter = {
       image: "0/06/Talent_Claw_and_Thunder",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Press DMG", multFactors: { root: 199.2 } },
-        { name: "Hold DMG", multFactors: { root: 295.2 } },
+        { name: "Press DMG", multFactors: 199.2 },
+        { name: "Hold DMG", multFactors: 295.2 },
       ],
       // getExtraStats: () => [
       //   { name: "Energy Recharge Bonus", value: "20% per Electro Sigil" },
@@ -82,7 +82,7 @@ const Razor: DataCharacter = {
       name: "Lightning Fang",
       image: "3/3a/Talent_Lightning_Fang",
       xtraLvAtCons: 3,
-      stats: [{ name: "Burst DMG", multFactors: { root: 160 } }],
+      stats: [{ name: "Burst DMG", multFactors: 160 }],
       // getExtraStats: (lv) => [
       //   {
       //     name: "Soul Companion DMG",

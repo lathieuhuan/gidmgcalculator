@@ -52,23 +52,23 @@ const Shenhe: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 43.26 } },
-        { name: "2-Hit", multFactors: { root: 40.25 } },
-        { name: "3-Hit", multFactors: { root: 53.32 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 26.32 } },
-        { name: "5-Hit", multFactors: { root: 65.62 } },
+        { name: "1-Hit", multFactors: 43.26 },
+        { name: "2-Hit", multFactors: 40.25 },
+        { name: "3-Hit", multFactors: 53.32 },
+        { name: "4-Hit (1/2)", multFactors: 26.32 },
+        { name: "5-Hit", multFactors: 65.62 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack", multFactors: { root: 110.67 } }] },
+    CA: { stats: [{ name: "Charged Attack", multFactors: 110.67 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Spring Spirit Summoning",
       image: "6/6c/Talent_Spring_Spirit_Summoning",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Press Skill DMG", multFactors: { root: 139.2 } },
-        { name: "Hold Skill DMG", multFactors: { root: 188.8 } },
-        { name: "DMG Bonus", notAttack: "other", multFactors: { root: 45.66 } },
+        { name: "Press Skill DMG", multFactors: 139.2 },
+        { name: "Hold Skill DMG", multFactors: 188.8 },
+        { name: "DMG Bonus", notAttack: "other", multFactors: 45.66 },
       ],
       // getExtraStats: () => [
       //   { name: "Press/Hold Duration", value: "10s/15s" },
@@ -82,8 +82,8 @@ const Shenhe: DataCharacter = {
       image: "d/d5/Talent_Divine_Maiden%27s_Deliverance",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 100.8 } },
-        { name: "DoT", multFactors: { root: 33.12 } },
+        { name: "Skill DMG", multFactors: 100.8 },
+        { name: "DoT", multFactors: 33.12 },
       ],
       // getExtraStats: (lv) => [
       //   { name: "RES Decrease", value: Math.min(5 + lv, 15) + "%" },

@@ -37,33 +37,33 @@ const Qiqi: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 37.75 } },
-        { name: "2-Hit", multFactors: { root: 38.87 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 24.17 } },
-        { name: "4-Hit (1/2)", multFactors: { root: 24.68 } },
-        { name: "5-Hit", multFactors: { root: 63.04 } },
+        { name: "1-Hit", multFactors: 37.75 },
+        { name: "2-Hit", multFactors: 38.87 },
+        { name: "3-Hit (1/2)", multFactors: 24.17 },
+        { name: "4-Hit (1/2)", multFactors: 24.68 },
+        { name: "5-Hit", multFactors: 63.04 },
       ],
     },
-    CA: { stats: [{ name: "Charged Attack (1/2)", multFactors: { root: 64.33 } }] },
+    CA: { stats: [{ name: "Charged Attack (1/2)", multFactors: 64.33 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Adeptus Art: Herald of Frost",
       image: "7/7f/Talent_Adeptus_Art_Herald_of_Frost",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 96 } },
-        { name: "Herald DMG", multFactors: { root: 36 } },
+        { name: "Skill DMG", multFactors: 96 },
+        { name: "Herald DMG", multFactors: 36 },
         {
           name: "Regen. on Hit",
           notAttack: "healing",
-          multFactors: { root: 10.56 },
-          flatFactor: { root: 67 },
+          multFactors: { root: 10.56, attributeType: "atk" },
+          flatFactor: 67,
         },
         {
           name: "Continuous Regen.",
           notAttack: "healing",
-          multFactors: { root: 69.6 },
-          flatFactor: { root: 451 },
+          multFactors: { root: 69.6, attributeType: "atk" },
+          flatFactor: 451,
         },
       ],
       // getExtraStats: () => [
@@ -76,12 +76,12 @@ const Qiqi: DataCharacter = {
       image: "7/7c/Talent_Adeptus_Art_Preserver_of_Fortune",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Skill DMG", multFactors: { root: 284.8 } },
+        { name: "Skill DMG", multFactors: 284.8 },
         {
           name: "Healing",
           notAttack: "healing",
-          multFactors: { root: 90 },
-          flatFactor: { root: 577 },
+          multFactors: 90,
+          flatFactor: 577,
         },
       ],
       // getExtraStats: () => [

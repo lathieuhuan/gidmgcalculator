@@ -51,16 +51,16 @@ const Sayu: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: { root: 72.24 } },
-        { name: "2-Hit", multFactors: { root: 71.38 } },
-        { name: "3-Hit (1/2)", multFactors: { root: 43.43 } },
-        { name: "4-Hit", multFactors: { root: 98.13 } },
+        { name: "1-Hit", multFactors: 72.24 },
+        { name: "2-Hit", multFactors: 71.38 },
+        { name: "3-Hit (1/2)", multFactors: 43.43 },
+        { name: "4-Hit", multFactors: 98.13 },
       ],
     },
     CA: {
       stats: [
-        { name: "Charged Attack Spinning", multFactors: { root: 62.55 } },
-        { name: "Charged Attack Final", multFactors: { root: 113.09 } },
+        { name: "Charged Attack Spinning", multFactors: 62.55 },
+        { name: "Charged Attack Final", multFactors: 113.09 },
       ],
     },
     PA: { stats: HEAVY_PAs },
@@ -69,22 +69,22 @@ const Sayu: DataCharacter = {
       image: "4/4b/Talent_Yoohoo_Art_Fuuin_Dash",
       xtraLvAtCons: 5,
       stats: [
-        { name: "Fuufuu Windwheel DMG", multFactors: { root: 36 } },
-        { name: "Fuufuu Windwheel Elemental DMG", attElmt: "various", multFactors: { root: 16.8 } },
+        { name: "Fuufuu Windwheel DMG", multFactors: 36 },
+        { name: "Fuufuu Windwheel Elemental DMG", attElmt: "various", multFactors: 16.8 },
         {
           name: "Press Kick",
-          multFactors: { root: 158.4 },
+          multFactors: 158.4,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
 
             return talentBuff([isInUse, "pct", [false, 2], 3.3]);
           },
         },
-        { name: "Hold Kick", multFactors: { root: 217.6 }, getTalentBuff: getC2TalentBuff },
+        { name: "Hold Kick", multFactors: 217.6, getTalentBuff: getC2TalentBuff },
         {
           name: "Kick's Elemental DMG",
           attElmt: "various",
-          multFactors: { root: 76.16 },
+          multFactors: 76.16,
           getTalentBuff: getC2TalentBuff,
         },
         {
@@ -104,23 +104,23 @@ const Sayu: DataCharacter = {
       image: "b/be/Talent_Yoohoo_Art_Mujina_Flurry",
       xtraLvAtCons: 3,
       stats: [
-        { name: "Burst DMG", multFactors: { root: 116.8 } },
+        { name: "Burst DMG", multFactors: 116.8 },
         {
           name: "Activation Healing",
           notAttack: "healing",
           multFactors: { root: 92.16, attributeType: "atk" },
-          flatFactor: { root: 577 },
+          flatFactor: 577,
         },
         {
           name: "Daruma DMG",
-          multFactors: { root: 52 },
+          multFactors: 52,
           getTalentBuff: getC6TalentBuff(0),
         },
         {
           name: "Daruma Healing",
           notAttack: "healing",
           multFactors: { root: 79.87, attributeType: "atk" },
-          flatFactor: { root: 500 },
+          flatFactor: 500,
           getTalentBuff: getC6TalentBuff(1),
         },
       ],
