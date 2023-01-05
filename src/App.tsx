@@ -41,7 +41,7 @@ function App() {
   const checkAndAddUserData = useCallback(
     (data: any) => {
       const { version, outdates, ...database } = convertUserData(data);
-      dispatch(addUserDatabase(JSON.parse(JSON.stringify(database))));
+      dispatch(addUserDatabase(database));
 
       if (outdates.length) {
         setOutdates(outdates);

@@ -43,17 +43,17 @@ export const userDatabaseSlice = createSlice({
   initialState,
   reducers: {
     addUserDatabase: (state, action: AddUserDatabaseAction) => {
-      const { Characters, Weapons, Artifacts, Setups } = action.payload;
-      state.userChars = Characters;
-      state.userWps = Weapons;
-      state.userArts = Artifacts;
-      state.userSetups = Setups;
+      const { characters = [], weapons = [], artifacts = [], setups = [] } = action.payload;
+      state.userChars = characters;
+      state.userWps = weapons;
+      state.userArts = artifacts;
+      state.userSetups = setups;
 
-      if (Characters.length) {
-        state.chosenChar = Characters[0].name;
+      if (characters.length) {
+        state.chosenChar = characters[0].name;
       }
-      if (Setups.length) {
-        const firstSetup = Setups.find((setup) => setup.type !== "combined");
+      if (setups.length) {
+        const firstSetup = setups.find((setup) => setup.type !== "combined");
 
         if (firstSetup) {
           if (firstSetup.type === "original") {

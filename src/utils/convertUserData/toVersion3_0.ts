@@ -6,39 +6,70 @@ import type {
   CustomBuffCtrlType,
   CustomDebuffCtrl,
   CustomDebuffCtrlType,
+  DataWeapon,
+  ModifierCtrl,
+  ModInputConfig,
+  Party,
   Resonance,
-  Teammate,
   UserArtifact,
   UserCharacter,
   UserSetup,
   UserWeapon,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
-import { getArtifactSetBonuses } from "@Src/utils/calculation";
+import { findById, findByIndex } from "../pure-utils";
+import { createWeapon } from "../creators";
+import { findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { DEFAULT_WEAPON_CODE } from "@Src/constants";
 
 const ERROR = {
   //
 };
 
-export function toVersion3_0(data: Omit<ConvertUserDataArgs, "version">) {
-  const Characters = data.Characters.map(convertCharacter);
-  const Weapons = data.Weapons.map(convertWeapon);
-  const Artifacts = data.Artifacts.map(convertArtifact);
-  const Setups = data.Setups.filter((setup) => setup.type !== "complex").map(convertSetup);
+export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
+  let seedID = Date.now();
+  let weapons = data.Weapons.map(convertWeapon);
+  let artifacts = data.Artifacts.map(convertArtifact);
 
-  console.log(Setups);
+  const newWeapons: UserWeapon[] = [];
+  const characters = data.Characters.map((Character) => {
+    const { character, xtraWeapon } = convertCharacter(Character, weapons, artifacts, seedID);
+
+    if (xtraWeapon) {
+      newWeapons.push(xtraWeapon);
+    }
+
+    return character;
+  });
+
+  seedID += newWeapons.length;
+
+  const setups = data.Setups.filter((setup) => setup.type !== "complex").map((Setup) => {
+    const { setup, xtraWeapon } = convertSetup(Setup, weapons, artifacts, seedID);
+
+    if (xtraWeapon) {
+      newWeapons.push(xtraWeapon);
+    }
+
+    return setup;
+  });
+
+  if (newWeapons.length) {
+    weapons = weapons.concat(newWeapons);
+  }
+  // console.log(characters);
 
   return {
     version: 3,
-    Characters,
-    Weapons,
-    Artifacts,
-    Setups,
+    characters,
+    weapons,
+    artifacts,
+    // setups,
     outdates: [],
   };
-}
+};
 
-function convertCharInfo(char: any): CharInfo {
+const convertCharInfo = (char: any): CharInfo => {
   const {
     name,
     level = "1/20",
@@ -49,21 +80,15 @@ function convertCharInfo(char: any): CharInfo {
   } = char;
 
   return { name, level, NAs, ES, EB, cons };
-}
+};
 
-function convertCharacter(char: any): UserCharacter {
-  const { weaponID, artIDs: artifactIDs = [], ...charInfo } = char;
-
-  return { ...convertCharInfo(charInfo), weaponID, artifactIDs };
-}
-
-function convertWeapon(weapon: any): UserWeapon {
+const convertWeapon = (weapon: any): UserWeapon => {
   const { ID, type, code, level, refinement: refi, user: owner } = weapon;
 
   return { ID, type: type.toLowerCase(), code, level, refi, owner };
-}
+};
 
-function convertArtifact(artifact: any): UserArtifact {
+const convertArtifact = (artifact: any): UserArtifact => {
   const { ID, type, code, rarity = 5, level, mainSType, subS, user: owner = null } = artifact;
 
   const mainStatType = mapVerson3_0[mainSType] as ArtifactMainStatType;
@@ -75,41 +100,142 @@ function convertArtifact(artifact: any): UserArtifact {
   });
 
   return { ID, type, code, rarity, level, mainStatType, subStats, owner };
-}
+};
 
-function convertSetup(setup: any): UserSetup {
+interface IConvertCharacterResult {
+  character: UserCharacter;
+  xtraWeapon?: UserWeapon;
+}
+const convertCharacter = (
+  char: any,
+  weapons: UserWeapon[],
+  artifacts: UserArtifact[],
+  seedID: number
+): IConvertCharacterResult => {
+  const { weaponID, artIDs = [], ...charInfo } = char;
+  let finalWeaponID = weaponID;
+  let xtraWeapon: UserWeapon | undefined;
+  const artifactIDs: (number | null)[] = [];
+
+  if (!weaponID || !findById(weapons, weaponID)) {
+    finalWeaponID = seedID++;
+    const { weaponType = "sword" } = findDataCharacter(char) || {};
+
+    xtraWeapon = {
+      ID: finalWeaponID,
+      owner: char.name,
+      ...createWeapon({ type: weaponType, code: DEFAULT_WEAPON_CODE[weaponType] }),
+    };
+  }
+
+  for (const index of [0, 1, 2, 3, 4]) {
+    artifactIDs.push(artIDs[index] && findById(artifacts, artIDs[index]) ? artIDs[index] : null);
+  }
+
+  return {
+    character: { ...convertCharInfo(charInfo), weaponID: finalWeaponID, artifactIDs },
+    xtraWeapon,
+  };
+};
+
+interface ICleanModifiersRef {
+  index: number;
+  inputConfigs?: ModInputConfig[];
+}
+const cleanModifiers = (mods: ModifierCtrl[], refs: ICleanModifiersRef[]): ModifierCtrl[] => {
+  const result: ModifierCtrl[] = [];
+
+  for (const mod of mods) {
+    const ref = findByIndex(refs, mod.index);
+
+    if (ref) {
+      const { inputConfigs } = ref;
+      //
+    }
+  }
+
+  return [];
+};
+
+interface IConvertSetupResult {
+  setup: UserSetup;
+  xtraWeapon?: UserWeapon;
+}
+const convertSetup = (
+  setup: any,
+  weapons: UserWeapon[],
+  artifacts: UserArtifact[],
+  seedID: number
+): IConvertSetupResult => {
   console.log(setup);
 
-  const {
-    ID,
-    type,
-    name,
-    char,
-    weapon,
-    art,
-    party,
-    elmtMCs = {},
-    subWpMCs,
-    selfMCs,
-    customMCs = {},
-  } = setup;
+  const { weapon, art } = setup;
+  const { weaponType = "sword", buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
+  let weaponID: number;
+  let xtraWeapon: UserWeapon | undefined;
+  const artifactIDs: number[] = [];
+  const party: Party = [];
 
-  const resonances = elmtMCs.resonance
-    ? elmtMCs.resonance.reduce((result: Resonance[], { name, ...rest }: any) => {
-        const vision = mapVerson3_0[name];
+  const resonances =
+    setup.elmtMCs.resonance?.reduce((result: Resonance[], { name, ...rest }: any) => {
+      const vision = mapVerson3_0[name];
 
-        if (vision) {
-          result.push({ vision, ...rest });
-        }
+      if (vision) {
+        result.push({ vision, ...rest });
+      }
 
-        return result;
-      }, [])
-    : [];
+      return result;
+    }, []) || [];
 
   //
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
+  let dataWeapon: DataWeapon | undefined;
 
-  // #to-do
+  if (weaponInfo.ID && findById(weapons, weaponInfo.ID)) {
+    weaponID = weaponInfo.ID;
+    dataWeapon = findDataWeapon(weapon);
+  } else {
+    weaponID = seedID++;
+
+    xtraWeapon = {
+      ID: weaponID,
+      owner: null,
+      ...createWeapon({ type: weaponType, code: DEFAULT_WEAPON_CODE[weaponType] }),
+    };
+    dataWeapon = findDataWeapon(xtraWeapon);
+  }
+
+  for (const index of [0, 1, 2, 3, 4]) {
+    const artifact = art.pieces[index];
+
+    artifactIDs.push(artifact?.ID && findById(artifacts, artifact.ID) ? artifact.ID : null);
+  }
+
+  for (const teammate of setup.party) {
+    if (!teammate) {
+      party.push(null);
+    } else {
+      const { weaponType = "sword", buffs = [], debuffs = [] } = findDataCharacter(teammate) || {};
+
+      party.push({
+        name: teammate.name,
+        weapon: {
+          code: DEFAULT_WEAPON_CODE[weaponType],
+          type: weaponType,
+          refi: 1,
+          buffCtrls: [],
+        },
+        artifact: {
+          code: 0,
+          buffCtrls: [],
+          debuffCtrls: [],
+        },
+        buffCtrls: cleanModifiers(teammate.BCs, buffs),
+        debuffCtrls: cleanModifiers(teammate.BCs, debuffs),
+      });
+    }
+  }
+
   // const subWpComplexBuffCtrls: Partial<Record<WeaponType, SubWeaponBuffCtrl[]>> = {};
 
   // for (const [key, value] of Object.entries(subWpMCs.BCs || {})) {
@@ -122,15 +248,9 @@ function convertSetup(setup: any): UserSetup {
   // }
 
   //
-  const artPieces = art.pieces.map((piece: any) => (piece ? convertArtifact(piece) : null));
-
-  const artInfo = {
-    pieces: artPieces,
-    sets: getArtifactSetBonuses(artPieces),
-  };
 
   //
-  const { customBCs = [], customDCs = [] } = customMCs;
+  const { customBCs = [], customDCs = [] } = setup.customMCs || {};
 
   const customBuffCtrls: CustomBuffCtrl[] = customBCs.map((ctrl: any): CustomBuffCtrl => {
     return {
@@ -161,48 +281,34 @@ function convertSetup(setup: any): UserSetup {
   } = setup.target;
 
   return {
-    ID,
-    type: "original",
-    name,
-    char: convertCharInfo(char),
-    selfBuffCtrls: selfMCs?.BCs || [],
-    selfDebuffCtrls: selfMCs?.DCs || [],
+    setup: {
+      ID: setup.ID,
+      type: "original",
+      name: setup.name,
+      char: convertCharInfo(setup.char),
+      weaponID,
+      artifactIDs,
+      party,
 
-    elmtModCtrls: { ...elmtMCs, resonances },
-    party: party.map((teammate: any): Teammate | null => {
-      if (teammate) {
-        // #to-do
-        return {
-          name: teammate.name,
-          buffCtrls: teammate.BCs,
-          debuffCtrls: teammate.DCs,
-          weapon: {
-            code: 0,
-            refi: 1,
-            type: "bow",
-            buffCtrls: [],
-          },
-          artifact: {
-            code: 0,
-            buffCtrls: [],
-            debuffCtrls: [],
-          },
-        };
-      }
+      elmtModCtrls: {
+        infuse_reaction: null,
+        reaction: null,
+        resonances,
+        superconduct: !!setup.elmtMCs?.superconduct,
+      },
+      selfBuffCtrls: cleanModifiers(setup.selfMCs.BCs, buffs),
+      selfDebuffCtrls: cleanModifiers(setup.selfMCs.DCs, debuffs),
+      wpBuffCtrls: cleanModifiers(wpBuffCtrls, dataWeapon?.buffs || []),
+      artBuffCtrls: [],
+      artDebuffCtrls: [],
+      customBuffCtrls,
+      customDebuffCtrls,
 
-      return null;
-    }),
-
-    weapon: convertWeapon(weaponInfo),
-    wpBuffCtrls,
-
-    artInfo,
-    artBuffCtrls: art.BCs,
-    subArtBuffCtrls: art.subBCs,
-    subArtDebuffCtrls: art.subDCs,
-
-    customBuffCtrls,
-    customDebuffCtrls,
-    target: { level, pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
+      customInfusion: {
+        element: "phys",
+      },
+      target: { level, pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
+    },
+    xtraWeapon,
   };
-}
+};

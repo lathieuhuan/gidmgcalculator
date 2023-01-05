@@ -1,6 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
-  ArtifactMainStatType,
   ArtifactSubStat,
   PartiallyRequired,
   UserArtifact,
@@ -14,10 +13,10 @@ import type {
 } from "@Src/types";
 
 export type AddUserDatabaseAction = PayloadAction<{
-  Characters: UserCharacter[];
-  Weapons: UserWeapon[];
-  Artifacts: UserArtifact[];
-  Setups: (UserSetup | UserComplexSetup)[];
+  characters?: UserCharacter[];
+  weapons?: UserWeapon[];
+  artifacts?: UserArtifact[];
+  setups?: (UserSetup | UserComplexSetup)[];
 }>;
 
 export type UpdateUserCharacterAction = PayloadAction<
