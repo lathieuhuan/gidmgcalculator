@@ -15,12 +15,13 @@ import type {
   UserCharacter,
   UserSetup,
   UserWeapon,
+  Vision,
 } from "@Src/types";
 import { mapVerson3_0 } from "./constants";
 import { findById, findByIndex } from "../pure-utils";
 import { createWeapon } from "../creators";
 import { findDataCharacter, findDataWeapon } from "@Data/controllers";
-import { DEFAULT_WEAPON_CODE } from "@Src/constants";
+import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
 
 const ERROR = {
   //
@@ -57,14 +58,13 @@ export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   if (newWeapons.length) {
     weapons = weapons.concat(newWeapons);
   }
-  // console.log(characters);
 
   return {
     version: 3,
     characters,
     weapons,
     artifacts,
-    // setups,
+    setups,
     outdates: [],
   };
 };
@@ -138,23 +138,62 @@ const convertCharacter = (
   };
 };
 
+interface IOlModifierCtrl {
+  activated: boolean;
+  index: number;
+  inputs?: Array<boolean | number | string> | undefined;
+}
 interface ICleanModifiersRef {
   index: number;
   inputConfigs?: ModInputConfig[];
 }
-const cleanModifiers = (mods: ModifierCtrl[], refs: ICleanModifiersRef[]): ModifierCtrl[] => {
+const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): ModifierCtrl[] => {
   const result: ModifierCtrl[] = [];
 
   for (const mod of mods) {
     const ref = findByIndex(refs, mod.index);
+    if (!ref) continue;
 
-    if (ref) {
-      const { inputConfigs } = ref;
-      //
-    }
+    const inputs: number[] = [];
+    const { inputConfigs = [] } = ref;
+    console.log(ref);
+
+    inputConfigs.forEach((config, configIndex) => {
+      const input = mod.inputs?.[configIndex];
+      const { type, max, options } = config;
+      console.log(input);
+
+      if (typeof input === "boolean" && type === "check") {
+        return inputs.push(input ? 1 : 0);
+      }
+      if (typeof input === "number" && (type === "stacks" || type === "text")) {
+        return inputs.push(max ? Math.min(input, max) : input);
+      }
+      if (typeof input === "string") {
+        let inputIndex = -1;
+
+        if (type === "select" && options) {
+          inputIndex = options.indexOf(input);
+        } else if (type === "anemoable" || type === "dendroable") {
+          inputIndex = VISION_TYPES.indexOf(input as Vision);
+        }
+
+        if (inputIndex !== -1) {
+          return inputs.push(inputIndex);
+        }
+      }
+
+      inputs.push(DEFAULT_MODIFIER_INITIAL_VALUES[type] ?? 0);
+    });
+
+    result.push({
+      index: ref.index,
+      activated: mod.activated,
+      ...(inputs.length ? { inputs } : undefined),
+    });
   }
 
-  return [];
+  return result;
 };
 
 interface IConvertSetupResult {
@@ -167,8 +206,6 @@ const convertSetup = (
   artifacts: UserArtifact[],
   seedID: number
 ): IConvertSetupResult => {
-  console.log(setup);
-
   const { weapon, art } = setup;
   const { weaponType = "sword", buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
   let weaponID: number;
@@ -187,7 +224,6 @@ const convertSetup = (
       return result;
     }, []) || [];
 
-  //
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
   let dataWeapon: DataWeapon | undefined;
 
@@ -207,7 +243,6 @@ const convertSetup = (
 
   for (const index of [0, 1, 2, 3, 4]) {
     const artifact = art.pieces[index];
-
     artifactIDs.push(artifact?.ID && findById(artifacts, artifact.ID) ? artifact.ID : null);
   }
 
@@ -231,7 +266,7 @@ const convertSetup = (
           debuffCtrls: [],
         },
         buffCtrls: cleanModifiers(teammate.BCs, buffs),
-        debuffCtrls: cleanModifiers(teammate.BCs, debuffs),
+        debuffCtrls: cleanModifiers(teammate.DCs, debuffs),
       });
     }
   }
@@ -267,7 +302,6 @@ const convertSetup = (
     };
   });
 
-  //
   const {
     Level: level = 1,
     "Pyro RES": pyro,

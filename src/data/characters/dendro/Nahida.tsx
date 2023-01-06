@@ -305,7 +305,7 @@ const Nahida: DataCharacter = {
       inputConfigs: [
         {
           label: "Number of the affected",
-          type: "select",
+          type: "stacks",
           max: 4,
         },
       ],

@@ -58,7 +58,7 @@ const Sucrose: DataCharacter = {
       xtraLvAtCons: 5,
       stats: [
         { name: "DoT", multFactors: 148 },
-        { name: "Additional Elemental DMG", multFactors: 44 },
+        { name: "Additional Elemental DMG", multFactors: 44, attElmt: "various" },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

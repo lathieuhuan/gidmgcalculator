@@ -70,7 +70,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
           heading={debuff.src}
           desc={debuff.desc({ fromSelf: true, char, partyData, inputs })}
           inputs={inputs}
-          inputConfigs={debuff.inputConfigs}
+          inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
       );
     }

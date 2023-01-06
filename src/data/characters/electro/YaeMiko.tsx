@@ -106,7 +106,7 @@ const YaeMiko: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          When Sesshou Sakura thunderbolt [EB] hit opponents, the <Green>Electro DMG Bonus</Green>{" "}
+          When Sesshou Sakura thunderbolt [ES] hit opponents, the <Green>Electro DMG Bonus</Green>{" "}
           of all nearby party members is increased by <Green b>20%</Green> for 5s.
         </>
       ),

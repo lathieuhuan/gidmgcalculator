@@ -66,7 +66,7 @@ const Heizou: DataCharacter = {
       xtraLvAtCons: 5,
       stats: [
         { name: "Fudou Style Vacuum Slugger DMG", multFactors: 314.69 },
-        { name: "Windmuster Iris DMG", multFactors: 21.5 },
+        { name: "Windmuster Iris DMG", multFactors: 21.5, attElmt: "various" },
       ],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

@@ -127,10 +127,10 @@ export function SelfBuffs({
 }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, desc }, i) => {
+  innateBuffs.forEach(({ src, desc }, index) => {
     content.push(
       <ModifierTemplate
-        key={i}
+        key={"innate-" + index}
         mutable={false}
         heading={src}
         desc={desc({ charData, partyData, totalAttr })}
@@ -157,7 +157,7 @@ export function SelfBuffs({
             inputs,
           })}
           inputs={inputs}
-          inputConfigs={buff.inputConfigs}
+          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
       );
     }
