@@ -13,19 +13,12 @@ type MessageState =
   | { uploadCase: "manual"; result: "success" | "fail" };
 
 interface UploadOptionsProps {
-  outdates: any[];
   uploadUserDatabase: (data: any) => void;
   onSuccess: () => void;
   onClose: () => void;
 }
-function Options({ outdates, uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps) {
+function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps) {
   const [message, setMessage] = useState<MessageState | null>(null);
-
-  useEffect(() => {
-    if (outdates.length) {
-      onClose();
-    }
-  }, [outdates, onClose]);
 
   const tryToLoadFromLocalStorage = () => {
     let data = localStorage.getItem("GDC_Data");

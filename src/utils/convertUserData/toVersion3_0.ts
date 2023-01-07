@@ -17,15 +17,15 @@ import type {
   UserWeapon,
   Vision,
 } from "@Src/types";
+
+import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
 import { mapVerson3_0 } from "./constants";
+
+import { getArtDebuffCtrls } from "@Store/calculatorSlice/utils";
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createWeapon } from "../creators";
-import { findDataCharacter, findDataWeapon } from "@Data/controllers";
-import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
-
-const ERROR = {
-  //
-};
 
 export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   let seedID = Date.now();
@@ -33,6 +33,7 @@ export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   let artifacts = data.Artifacts.map(convertArtifact);
 
   const newWeapons: UserWeapon[] = [];
+  const newArtifacts: UserArtifact[] = [];
   const characters = data.Characters.map((Character) => {
     const { character, xtraWeapon } = convertCharacter(Character, weapons, artifacts, seedID);
 
@@ -46,10 +47,15 @@ export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   seedID += newWeapons.length;
 
   const setups = data.Setups.filter((setup) => setup.type !== "complex").map((Setup) => {
-    const { setup, xtraWeapon } = convertSetup(Setup, weapons, artifacts, seedID);
+    const { setup, xtraWeapon, xtraArtifacts } = convertSetup(Setup, weapons, artifacts, seedID++);
 
     if (xtraWeapon) {
       newWeapons.push(xtraWeapon);
+      seedID++;
+    }
+    if (xtraArtifacts.length) {
+      newArtifacts.push(...xtraArtifacts);
+      seedID += xtraArtifacts.length;
     }
 
     return setup;
@@ -58,6 +64,9 @@ export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   if (newWeapons.length) {
     weapons = weapons.concat(newWeapons);
   }
+  if (newArtifacts.length) {
+    artifacts = artifacts.concat(newArtifacts);
+  }
 
   return {
     version: 3,
@@ -65,7 +74,6 @@ export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
     weapons,
     artifacts,
     setups,
-    outdates: [],
   };
 };
 
@@ -156,12 +164,10 @@ const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): Mo
 
     const inputs: number[] = [];
     const { inputConfigs = [] } = ref;
-    console.log(ref);
 
     inputConfigs.forEach((config, configIndex) => {
       const input = mod.inputs?.[configIndex];
       const { type, max, options } = config;
-      console.log(input);
 
       if (typeof input === "boolean" && type === "check") {
         return inputs.push(input ? 1 : 0);
@@ -199,6 +205,7 @@ const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): Mo
 interface IConvertSetupResult {
   setup: UserSetup;
   xtraWeapon?: UserWeapon;
+  xtraArtifacts: UserArtifact[];
 }
 const convertSetup = (
   setup: any,
@@ -207,10 +214,11 @@ const convertSetup = (
   seedID: number
 ): IConvertSetupResult => {
   const { weapon, art } = setup;
-  const { weaponType = "sword", buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
+  const { buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
-  const artifactIDs: number[] = [];
+  const artifactIDs: (number | null)[] = [];
+  const xtraArtifacts: UserArtifact[] = [];
   const party: Party = [];
 
   const resonances =
@@ -224,50 +232,97 @@ const convertSetup = (
       return result;
     }, []) || [];
 
-  const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
+  // WEAPON
   let dataWeapon: DataWeapon | undefined;
+  const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
 
-  if (weaponInfo.ID && findById(weapons, weaponInfo.ID)) {
+  const existedWeapon = findById(weapons, weaponInfo.ID);
+
+  if (weaponInfo.ID && existedWeapon) {
     weaponID = weaponInfo.ID;
-    dataWeapon = findDataWeapon(weapon);
+    dataWeapon = findDataWeapon(existedWeapon);
+
+    if (!existedWeapon.setupIDs?.includes(setup.ID)) {
+      existedWeapon.setupIDs = (existedWeapon.setupIDs || []).concat(setup.ID);
+    }
   } else {
     weaponID = seedID++;
 
     xtraWeapon = {
+      ...convertWeapon(weapon),
       ID: weaponID,
       owner: null,
-      ...createWeapon({ type: weaponType, code: DEFAULT_WEAPON_CODE[weaponType] }),
+      setupIDs: [setup.ID],
     };
     dataWeapon = findDataWeapon(xtraWeapon);
   }
 
+  // ARTIFACTS
+  const finalArtifacts: UserArtifact[] = [];
+
   for (const index of [0, 1, 2, 3, 4]) {
     const artifact = art.pieces[index];
-    artifactIDs.push(artifact?.ID && findById(artifacts, artifact.ID) ? artifact.ID : null);
-  }
 
+    if (artifact) {
+      const existedArtifact = findById(artifacts, artifact.ID);
+
+      if (existedArtifact) {
+        artifactIDs.push(existedArtifact.ID);
+        finalArtifacts.push(existedArtifact);
+
+        if (!existedArtifact.setupIDs?.includes(setup.ID)) {
+          existedArtifact.setupIDs = (existedArtifact.setupIDs || []).concat(setup.ID);
+        }
+      } else {
+        const artifactID = seedID++;
+        artifactIDs.push(artifactID);
+
+        const xtraArtifact = {
+          ...convertArtifact(artifact),
+          ID: artifactID,
+          owner: null,
+          setupIDs: [setup.ID],
+        };
+
+        xtraArtifacts.push(xtraArtifact);
+        finalArtifacts.push(xtraArtifact);
+      }
+    } else {
+      artifactIDs.push(null);
+    }
+  }
+  const { code: setBonusesCode = 0 } = getArtifactSetBonuses(finalArtifacts)[0] || {};
+  const { buffs: artifactBuffs = [] } = findDataArtifactSet({ code: setBonusesCode }) || {};
+
+  // PARTY
   for (const teammate of setup.party) {
     if (!teammate) {
       party.push(null);
     } else {
-      const { weaponType = "sword", buffs = [], debuffs = [] } = findDataCharacter(teammate) || {};
+      const dataTeammate = findDataCharacter(teammate);
 
-      party.push({
-        name: teammate.name,
-        weapon: {
-          code: DEFAULT_WEAPON_CODE[weaponType],
-          type: weaponType,
-          refi: 1,
-          buffCtrls: [],
-        },
-        artifact: {
-          code: 0,
-          buffCtrls: [],
-          debuffCtrls: [],
-        },
-        buffCtrls: cleanModifiers(teammate.BCs, buffs),
-        debuffCtrls: cleanModifiers(teammate.DCs, debuffs),
-      });
+      if (!dataTeammate) {
+        party.push(null);
+      } else {
+        const { weaponType, buffs = [], debuffs = [] } = dataTeammate;
+
+        party.push({
+          name: teammate.name,
+          weapon: {
+            code: DEFAULT_WEAPON_CODE[weaponType],
+            type: weaponType,
+            refi: 1,
+            buffCtrls: [],
+          },
+          artifact: {
+            code: 0,
+            buffCtrls: [],
+            debuffCtrls: [],
+          },
+          buffCtrls: cleanModifiers(teammate.BCs, buffs),
+          debuffCtrls: cleanModifiers(teammate.DCs, debuffs),
+        });
+      }
     }
   }
 
@@ -314,6 +369,8 @@ const convertSetup = (
     "Physical RES": phys,
   } = setup.target;
 
+  console.log(setup);
+
   return {
     setup: {
       ID: setup.ID,
@@ -330,11 +387,11 @@ const convertSetup = (
         resonances,
         superconduct: !!setup.elmtMCs?.superconduct,
       },
-      selfBuffCtrls: cleanModifiers(setup.selfMCs.BCs, buffs),
-      selfDebuffCtrls: cleanModifiers(setup.selfMCs.DCs, debuffs),
+      selfBuffCtrls: cleanModifiers(setup.selfMCs?.BCs || [], buffs),
+      selfDebuffCtrls: cleanModifiers(setup.selfMCs?.DCs || [], debuffs),
       wpBuffCtrls: cleanModifiers(wpBuffCtrls, dataWeapon?.buffs || []),
-      artBuffCtrls: [],
-      artDebuffCtrls: [],
+      artBuffCtrls: cleanModifiers(setup.art?.BCs || [], artifactBuffs),
+      artDebuffCtrls: getArtDebuffCtrls(),
       customBuffCtrls,
       customDebuffCtrls,
 
@@ -344,5 +401,6 @@ const convertSetup = (
       target: { level, pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
     },
     xtraWeapon,
+    xtraArtifacts,
   };
 };

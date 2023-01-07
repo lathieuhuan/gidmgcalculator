@@ -17,16 +17,5 @@ export function convertUserData(data: ConvertUserDataArgs) {
     throw new Error(ERROR.databaseTooOld);
   }
 
-  if (version === 2.1) {
-    return toVersion3_0(data);
-  }
-
-  return {
-    version: 3,
-    Characters: [],
-    Weapons: [],
-    Artifacts: [],
-    Setups: [],
-    outdates: [],
-  };
+  return toVersion3_0(data);
 }

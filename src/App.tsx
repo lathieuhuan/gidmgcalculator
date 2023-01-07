@@ -33,19 +33,14 @@ function App() {
 
   const [loadOptionType, setLoadOptionType] = useState<"UP" | "DOWN" | "">("");
   const [navBarMenuActive, setNavBarMenuActive] = useState(false);
-  const [outdates, setOutdates] = useState([]);
 
   const atScreen = useSelector(selectAtScreen);
   const isError = useSelector((state) => state.calculator.isError);
 
   const checkAndAddUserData = useCallback(
     (data: any) => {
-      const { version, outdates, ...database } = convertUserData(data);
+      const { version, ...database } = convertUserData(data);
       dispatch(addUserDatabase(database));
-
-      if (outdates.length) {
-        setOutdates(outdates);
-      }
     },
     [dispatch]
   );
@@ -121,7 +116,6 @@ function App() {
 
       <UploadOptions
         active={loadOptionType === "UP"}
-        outdates={outdates}
         uploadUserDatabase={checkAndAddUserData}
         onSuccess={() => setNavBarMenuActive(false)}
         onClose={() => setLoadOptionType("")}
