@@ -1,9 +1,9 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { MEDIUM_PAs, EModSrc } from "../constants";
-import { checkAscs, charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
+import { checkAscs, charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Albedo: DataCharacter = {
   code: 29,
@@ -123,10 +123,9 @@ const Albedo: DataCharacter = {
       desc: () => (
         <>
           Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture:
-          Tectonic Tide consumes all stacks of Fatal Reckoning. Each stack consumed increases the
-          DMG dealt by <Green>Fatal Blossoms</Green> and{" "}
-          <Green>Rite of Progeniture: Tectonic Tide's burst DMG</Green> by <Green b>30%</Green> of
-          Albedo's <Green>DEF</Green>. This effect stacks up to <Green b>4</Green> times.
+          Tectonic Tide [EB] consumes all stacks, each increases Albedo's <Green>[EB] DMG</Green> by{" "}
+          <Green b>30%</Green> of his <Green>DEF</Green>. This effect stacks up to <Rose>4</Rose>{" "}
+          times.
         </>
       ),
       isGranted: checkCons[2],
@@ -137,8 +136,8 @@ const Albedo: DataCharacter = {
           max: 4,
         },
       ],
-      applyFinalBuff: ({ totalAttr, attPattBonus, charBuffCtrls, desc, tracker }) => {
-        const buffValue = totalAttr.def * 0.3 * +findInput(charBuffCtrls, 2, 0, 0);
+      applyFinalBuff: ({ totalAttr, attPattBonus, inputs, desc, tracker }) => {
+        const buffValue = totalAttr.def * 0.3 * (inputs[0] | 0);
         applyModifier(desc, attPattBonus, "EB.flat", Math.round(buffValue), tracker);
       },
     },

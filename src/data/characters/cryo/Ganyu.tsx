@@ -151,9 +151,9 @@ const Ganyu: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Opponents within Celestial Shower take increased DMG. This effect strengthens over time.
-          Increased <Green>DMG</Green> taken begins at <Green b>5%</Green> and increases by{" "}
-          <Green b>5%</Green> every 3s, up to a maximum of <Rose>25%</Rose>.
+          Opponents within Celestial Shower [EB] take increased DMG which begins at{" "}
+          <Green b>5%</Green> and increases by <Green b>5%</Green> every 3s. Maximum{" "}
+          <Rose>25%</Rose>.
         </>
       ),
       isGranted: checkCons[4],

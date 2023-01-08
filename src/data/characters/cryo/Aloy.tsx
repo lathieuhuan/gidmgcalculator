@@ -141,6 +141,9 @@ const Aloy: DataCharacter = {
           applyModifier(desc, obj.totalAttr, "cryo", 3.5 * (obj.inputs[1] || 0), tracker);
         }
       },
+      infuseConfig: {
+        overwritable: false,
+      },
     },
     {
       index: 2,

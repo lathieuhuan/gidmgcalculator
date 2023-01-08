@@ -19,9 +19,6 @@ export default function DamageResults() {
       <Header activeSetupName={activeSetupName} />
       <Results activeSetupName={activeSetupName} />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
-      {/* {trackerState > 0 && (
-        <Tracker trackerState={trackerState} setTrackerState={setTrackerState} />
-      )} */}
       {/* {window.innerWidth < 1050 && trackerState > 0 && (
         <MobileNavBtn
           className={cn({ showing: trackerState > 0 })}

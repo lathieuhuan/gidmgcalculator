@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -62,18 +62,6 @@ const ElectroMC: DataCharacter = {
     { name: "Clamor in the Wilds", image: "8/80/Constellation_Clamor_in_the_Wilds" },
     { name: "World-Shaker", image: "7/76/Constellation_World-Shaker" },
   ],
-  innateBuffs: [
-    {
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          Increases the <Green>Energy Recharge</Green> effect granted by Lightning Blade's Abundance
-          Amulet by <Green b>10%</Green> of the Traveler's <Green>Energy Recharge</Green>.
-        </>
-      ),
-      isGranted: checkAscs[4],
-    },
-  ],
   buffs: [
     {
       index: 0,
@@ -81,11 +69,13 @@ const ElectroMC: DataCharacter = {
       desc: () => (
         <>
           Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
+          <br />• At <Lightgold>A4</Lightgold>, increases the bonus by <Green b>10%</Green> of the
+          Traveler's <Green>Energy Recharge</Green>.
         </>
       ),
       affect: EModAffect.ONE_UNIT,
       inputConfigs: [
-        { label: "A4 Passive Talent", type: "check", for: "teammate" },
+        { label: "A4 Passive", type: "check", for: "teammate" },
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
       ],
       applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {

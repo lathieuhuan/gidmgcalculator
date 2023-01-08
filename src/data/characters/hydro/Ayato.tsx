@@ -6,7 +6,7 @@ import type {
   ModifierInput,
   PartyData,
 } from "@Src/types";
-import { Green, Hydro } from "@Components/atoms";
+import { Green, Hydro, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { MEDIUM_PAs, EModSrc } from "../constants";
@@ -204,10 +204,12 @@ const Ayato: DataCharacter = {
       src: EModSrc.ES,
       desc: () => (
         <>
-          • Causes DMG from his <Green>Normal Attacks</Green> to be converted into AoE{" "}
-          <Hydro>Hydro DMG</Hydro> (Shunsuiken). This cannot be overridden.
+          • Converts his <Green>Normal Attack DMG</Green> into AoE <Hydro>Hydro DMG</Hydro>{" "}
+          (Shunsuiken). Cannot be overridden.
           <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase{" "}
-          <Green>Shunsuiken DMG</Green> based on Ayato's <Green>current Max HP</Green>.
+          <Green>Shunsuiken DMG</Green> based on his <Green>current Max HP</Green>.
+          <br />• At <Lightgold>C2</Lightgold>, Ayato's <Green>Max HP</Green> is increased by{" "}
+          <Green b>50%</Green> when he has at least 3 Namisen stacks.
         </>
       ),
       affect: EModAffect.SELF,
@@ -218,6 +220,11 @@ const Ayato: DataCharacter = {
           max: 5,
         },
       ],
+      applyBuff: ({ char, totalAttr, inputs, desc, tracker }) => {
+        if (checkCons[2](char) && (inputs[0] || 0) >= 3) {
+          applyModifier(desc, totalAttr, "hp_", 50, tracker);
+        }
+      },
       infuseConfig: {
         overwritable: false,
         disabledNAs: true,
@@ -258,19 +265,6 @@ const Ayato: DataCharacter = {
       ),
       isGranted: checkCons[1],
       affect: EModAffect.SELF,
-    },
-    {
-      index: 4,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          When Ayato has at least 3 Namisen stacks, his <Green>Max HP</Green> is increased by{" "}
-          <Green b>50%</Green>.
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.SELF,
-      applyBuff: makeModApplier("totalAttr", "hp_", 50),
     },
     {
       index: 5,

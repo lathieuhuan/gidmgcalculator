@@ -45,7 +45,7 @@ export default function MySetups() {
 
   const { itemsBySetupID } = useSetupItems();
 
-  const ref = useRef<HTMLDivElement>(null);
+  // const ref = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<MySetupModal>({
     type: "",
     ID: 0,
@@ -59,20 +59,7 @@ export default function MySetups() {
   })();
 
   useEffect(() => {
-    if (chosenSetupID && ref.current) {
-      const index = indexById(
-        userSetups.filter((setup) => setup.type !== "combined"),
-        chosenSetupID
-      );
-
-      if (index !== -1) {
-        if (window.innerWidth >= 1025) {
-          ref.current.scrollTop = 262 * index - (index ? 40 : 0);
-        } else {
-          ref.current.scrollTop = 462 * index;
-        }
-      }
-    }
+    document.getElementById(`setup-${chosenSetupID}`)?.scrollIntoView();
   }, [chosenSetupID]);
 
   const openModal = (type: MySetupModalType, ID?: number) => () => {
@@ -128,6 +115,7 @@ export default function MySetups() {
     return (
       <div
         key={ID}
+        id={`setup-${ID}`}
         className={clsx(
           "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
           ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
@@ -271,7 +259,6 @@ export default function MySetups() {
 
         <div className={styles.body}>
           <div
-            ref={ref}
             className={clsx(
               userSetups.length && "p-1 pr-3",
               "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"

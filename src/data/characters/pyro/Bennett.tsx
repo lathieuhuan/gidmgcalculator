@@ -119,9 +119,9 @@ const Bennett: DataCharacter = {
       src: EModSrc.EB,
       desc: ({ toSelf, inputs }) => (
         <>
-          The character within its AoE gains an <Green>ATK Bonus</Green> based on Bennett's{" "}
-          <Green>Base ATK</Green>. At <Lightgold>C1</Lightgold>, the bonus is increased by an
-          additional <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
+          Increases <Green>ATK</Green> of the characters within its AoE based on Bennett's{" "}
+          <Green>Base ATK</Green>.<br />• At <Lightgold>C1</Lightgold>, the <Green>ATK Bonus</Green>{" "}
+          is further increased by <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
           <br />• At <Lightgold>C6</Lightgold>, the characters also gain a <Green b>15%</Green>{" "}
           <Green>Pyro DMG Bonus</Green>.

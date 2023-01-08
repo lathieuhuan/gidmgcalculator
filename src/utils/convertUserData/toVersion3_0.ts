@@ -181,7 +181,7 @@ const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): Mo
         if (type === "select" && options) {
           inputIndex = options.indexOf(input);
         } else if (type === "anemoable" || type === "dendroable") {
-          inputIndex = VISION_TYPES.indexOf(input as Vision);
+          inputIndex = VISION_TYPES.indexOf(input.toLowerCase() as Vision);
         }
 
         if (inputIndex !== -1) {

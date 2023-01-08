@@ -131,8 +131,8 @@ const Amber: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Fiery Rain increases all party members' <Green>Movement SPD</Green> and <Green>ATK</Green>{" "}
-          by <Green b>15%</Green> for 10s.
+          Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and{" "}
+          <Green>ATK</Green> by <Green b>15%</Green> for 10s.
         </>
       ),
       affect: EModAffect.PARTY,

@@ -114,7 +114,7 @@ const Diluc: DataCharacter = {
       },
       desc: () => (
         <>
-          The searing flames that run down his blade cause it to be <Pyro>Pyro</Pyro> infused.
+          After casting Dawn [EB], Diluc's Normal Attacks are infused with <Pyro>Pyro</Pyro>.
           <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green>{" "}
           <Green>Pyro DMG Bonus</Green> during this duration.
         </>
@@ -142,8 +142,8 @@ const Diluc: DataCharacter = {
       desc: () => (
         <>
           When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and{" "}
-          <Green>ATK SPD</Green> increases by <Green b>5%</Green> for 10s, up to{" "}
-          <Rose>3 times</Rose>.
+          <Green>ATK SPD</Green> increases by <Green b>5%</Green> for 10s, up to <Rose>3</Rose>{" "}
+          times.
         </>
       ),
       isGranted: checkCons[2],
@@ -178,7 +178,7 @@ const Diluc: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Within 6s after casting Searing Onslaught [ES], the next <Green b>2</Green>{" "}
+          Within 6s after casting Searing Onslaught [ES], the next <Rose>2</Rose>{" "}
           <Green>Normal Attacks</Green> will have their <Green>DMG and ATK SPD</Green> increased by{" "}
           <Green b>30%</Green>.
         </>

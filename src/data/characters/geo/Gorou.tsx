@@ -134,9 +134,8 @@ const Gorou: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Gorou skills receive DMG Bonuses based on his <Green>DEF</Green>:
-          <br />• Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by{" "}
-          <Green b>156%</Green> of DEF.
+          • Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by <Green b>156%</Green> of
+          DEF.
           <br />• Juuga: Forward Unto Victory <Green>[ES] DMG</Green> increased by{" "}
           <Green b>15.6%</Green> of DEF.
         </>
@@ -225,8 +224,8 @@ const Gorou: DataCharacter = {
         return (
           <>
             For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB],
-            increases all nearby party members' <Green>Geo CRIT DMG</Green> based on the buff level
-            of the skill's field:
+            increases all nearby party members' <Geo>Geo</Geo> <Green>CRIT DMG</Green> based on the
+            buff level of the skill's field:
             <br />
             <span className={n === 1 ? "" : "opacity-50"}>
               • "Standing Firm": <Green b>+10%</Green>

@@ -102,8 +102,8 @@ const Faruzan: DataCharacter = {
       },
       xtraDesc: [
         <>
-          When characters affected by Prayerful Wind's Gift [EB buff] deal <Anemo>Anemo DMG</Anemo>{" "}
-          to opponents, this DMG will be increased based on <Green b>32%</Green> of Faruzan's own{" "}
+          When characters affected by Prayerful Wind's Gift [~EB] deal <Anemo>Anemo DMG</Anemo> to
+          opponents, this DMG will be increased based on <Green b>32%</Green> of Faruzan's own{" "}
           <Green>ATK</Green>.
         </>,
       ],
@@ -180,8 +180,8 @@ const Faruzan: DataCharacter = {
             <Green b>{getWindGiftBuffValue(args)}%</Green>.
             <br />• At <Lightgold>A4</Lightgold>, increases <Anemo>Anemo DMG</Anemo> based on{" "}
             <Green b>32%</Green> of Faruzan's <Green>Base ATK</Green>.
-            <br />• At <Lightgold>C6</Lightgold>, increases <Green>Anemo CRIT DMG</Green> by{" "}
-            <Green b>40%</Green>.
+            <br />• At <Lightgold>C6</Lightgold>, increases <Anemo>Anemo</Anemo>{" "}
+            <Green>CRIT DMG</Green> by <Green b>40%</Green>.
           </>
         );
       },

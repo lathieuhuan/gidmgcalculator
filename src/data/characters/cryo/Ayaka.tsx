@@ -95,9 +95,8 @@ const Ayaka: DataCharacter = {
       src: "Alternate Sprint",
       desc: () => (
         <>
-          In Senho form, she moves swiftly upon water. When she reappears, Coldness condenses around
-          Ayaka's blade, <Green>infusing</Green> her attacks with <Cryo>Cryo</Cryo> for a brief
-          period.
+          When Ayaka reappears from Senho form, her attacks will be infused with <Cryo>Cryo</Cryo>{" "}
+          for a brief period.
         </>
       ),
       affect: EModAffect.SELF,
@@ -110,8 +109,8 @@ const Ayaka: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          After using Kamisato Art: Hyouka, Ayaka's <Green>Normal and Charged attacks</Green> deal{" "}
-          <Green b>30%</Green> increased <Green>DMG</Green> for 6s.
+          After using Kamisato Art: Hyouka [ES], Ayaka's{" "}
+          <Green>Normal and Charged attack DMG</Green> is increased by <Green b>30%</Green> for 6s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -151,8 +150,8 @@ const Ayaka: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Opponents damaged by Kamisato Art: Soumetsu's Frostflake Seki no To [EB] will have their{" "}
-          <Green>DEF</Green> decreased by <Green b>30%</Green> for 6s.
+          Opponents damaged by Frostflake Seki no To [~EB] will have their <Green>DEF</Green>{" "}
+          decreased by <Green b>30%</Green> for 6s.
         </>
       ),
       isGranted: checkCons[4],

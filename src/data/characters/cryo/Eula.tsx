@@ -142,8 +142,9 @@ const Eula: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          Every time Icetide Vortex's Grimheart stacks are consumed, Eula's{" "}
-          <Green>Physical DMG</Green> is increased by <Green b>30%</Green> for 6s.
+          Every time Grimheart stacks [~ES] are consumed, Eula's <Green>Physical DMG</Green> is
+          increased by <Green b>30%</Green> for 6s. Each stack consumed increases the duration by
+          6s.
         </>
       ),
       isGranted: checkCons[1],

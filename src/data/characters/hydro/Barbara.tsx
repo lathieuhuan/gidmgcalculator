@@ -107,7 +107,7 @@ const Barbara: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          During Let the Show Begin's [EB] duration, your active character gains a{" "}
+          During Let the Show Begin's [ES] duration, your active character gains a{" "}
           <Green b>15%</Green> <Green>Hydro DMG Bonus</Green>.
         </>
       ),

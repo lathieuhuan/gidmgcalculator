@@ -52,7 +52,7 @@ export function Results({ activeSetupName }: IResultsProps) {
           </select>
         </div>
       ) : (
-        <p className="mx-4 my-2 font-bold text-center">{activeSetupName.toUpperCase()}</p>
+        <p className="mx-4 my-2 font-bold text-center">{activeSetupName}</p>
       )}
       <div className="grow hide-scrollbar">
         <DamageDisplay

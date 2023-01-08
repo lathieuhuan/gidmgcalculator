@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier } from "@Src/utils/calculation";
@@ -43,10 +43,9 @@ const DendroMC: DataCharacter = {
       image: "5/55/Talent_Verdant_Overgrowth",
       desc: (
         <>
-          Lea Lotus Lamp will obtain one level of Overflowing Lotuslight every second it is on the
-          field, increasing the <Green>Elemental Mastery</Green> of active character(s) within its
-          AoE by <Green b>6</Green>. Overflowing Lotuslight has a maximum of <Green b>10</Green>{" "}
-          <Green>stacks</Green>.
+          Lea Lotus Lamp [~EB] will obtain one level of Overflowing Lotuslight every second it is on
+          the field, increasing the <Green>Elemental Mastery</Green> of active character(s) within
+          its AoE by <Green b>6</Green>. Maximum <Rose>10</Rose> stacks.
         </>
       ),
     },
@@ -55,9 +54,9 @@ const DendroMC: DataCharacter = {
       image: "5/55/Talent_Verdant_Luxury",
       desc: (
         <>
-          Every point of Elemental Mastery the Traveler possesses increases the DMG dealt by{" "}
-          <Green>Razorgrass Blade</Green> by <Green b>0.15%</Green> and the DMG dealt by{" "}
-          <Green>Surgent Manifestation</Green> by <Green b>0.1%</Green>.
+          Every point of Elemental Mastery the Traveler possesses increases Razorgrass Blade{" "}
+          <Green>[ES] DMG</Green> by <Green b>0.15%</Green> and Surgent Manifestation{" "}
+          <Green>[EB] DMG</Green> by <Green b>0.1%</Green>.
         </>
       ),
     },
@@ -68,19 +67,14 @@ const DendroMC: DataCharacter = {
       image: "1/16/Constellation_Symbiotic_Creeper",
       desc: (
         <>
-          After Razorgrass Blade hits an opponent, it will regenerate <Green b>3.5</Green>{" "}
-          <Green>Energy</Green> for the Traveler.
+          After Razorgrass Blade hits an opponent, it will regenerate 3.5 Energy for the Traveler.
         </>
       ),
     },
     {
       name: "Green Resilience",
       image: "f/f4/Constellation_Green_Resilience",
-      desc: (
-        <>
-          Lea Lotus Lamp's <Green>duration</Green> is increased by <Green>3s</Green>.
-        </>
-      ),
+      desc: <>Lea Lotus Lamp's duration is increased by 3s.</>,
     },
     { name: "Whirling Weeds", image: "3/3c/Constellation_Whirling_Weeds" },
     {
@@ -90,8 +84,6 @@ const DendroMC: DataCharacter = {
         <>
           After the Lea Lotus Lamp triggers a Lotuslight Transfiguration, it will obtain 5 stacks of
           the Overflowing Lotuslight effect from the Passive Talent "Verdant Overgrowth."
-          <br />
-          You must have unlocked this Passive Talent first.
         </>
       ),
     },
@@ -102,9 +94,9 @@ const DendroMC: DataCharacter = {
       desc: (
         <>
           The <Green>Dendro DMG Bonus</Green> of the character under the effect of Overflowing
-          Lotuslight as created by the Lea Lotus Lamp is increased by <Green b>12%</Green>. If the
-          Lamp has experienced a Lotuslight Transfiguration previously, the character will also gain{" "}
-          <Green b>12%</Green> <Green>DMG Bonus</Green> for the corresponding element.
+          Lotuslight [~EB] is increased by <Green b>12%</Green>. If the Lamp has experienced a
+          Lotuslight Transfiguration previously, the character will also gain <Green b>12%</Green>{" "}
+          <Green>DMG Bonus</Green> for the <Green>corresponding element</Green>.
         </>
       ),
     },

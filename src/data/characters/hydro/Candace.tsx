@@ -122,8 +122,8 @@ const Candace: DataCharacter = {
       image: "3/3b/Constellation_Moon-Piercing_Brilliance",
       desc: (
         <>
-          When Sacred Rite: Heron's Guard hits opponents, Candace's <Green>Max HP</Green> will be
-          increased by <Green>20%</Green> for 15s.
+          When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's <Green>Max HP</Green> will
+          be increased by <Green>20%</Green> for 15s.
         </>
       ),
     },
@@ -159,9 +159,9 @@ const Candace: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          Prayer of the Crimson Crown [EB] has the following properties:
-          <br />• Characters deal <Green b>20%</Green> increased Elemental DMG with their{" "}
-          <Green>Normal Attacks</Green>.
+          Prayer of the Crimson Crown [~EB] has the following properties:
+          <br />• Characters deal <Green b>20%</Green> increased{" "}
+          <Green>Elemental Normal Attack DMG</Green>.
           <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green>{" "}
           for every 1,000 points of Candace's <Green>Max HP</Green>.
         </>

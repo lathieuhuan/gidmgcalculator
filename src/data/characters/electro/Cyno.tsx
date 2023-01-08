@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Electro, Green } from "@Components/atoms";
+import { Electro, Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -144,11 +144,9 @@ const Cyno: DataCharacter = {
       },
       xtraDesc: [
         <>
-          When Cyno is in the Pactsworn Pathclearer state activated by Sacred Rite: Wolf's
-          Swiftness, Cyno will enter the Endseer stance at intervals. If he activates Secret Rite:
-          Chasmic Soulfarer whle affected by this stance, he will activate the Judication effect,
-          increasing the <Green>DMG</Green> of this <Green>Secret Rite: Chasmic Soulfarer</Green> by{" "}
-          <Green b>35%</Green>
+          When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at
+          intervals. If he activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> whle
+          affected by this stance, its <Green>DMG</Green> will be increased by <Green b>35%</Green>
         </>,
       ],
     },
@@ -157,11 +155,10 @@ const Cyno: DataCharacter = {
       image: "e/ed/Talent_Authority_Over_the_Nine_Bows",
       desc: (
         <>
-          Cyno's DMG values will be increased based on his Elemental Mastery as follows:
-          <br />• Pactsworn Pathclearer's <Green>Normal Attack DMG</Green> is increased by{" "}
-          <Green b>150%</Green> of his <Green>Elemental Mastery</Green>.
-          <br />• <Green>Duststalker Bolt DMG</Green> from his Ascension Talent Featherfall Judgment
-          is increased by <Green b>250%</Green> of his <Green>Elemental Mastery</Green>.
+          • Pactsworn Pathclearer's [EB] <Green>Normal Attack DMG</Green> is increased by{" "}
+          <Green b>150%</Green> of Cyno's <Green>Elemental Mastery</Green>.
+          <br />• <Green>Duststalker Bolt DMG</Green> [A1] is increased by <Green b>250%</Green> of
+          Cyno's <Green>Elemental Mastery</Green>.
         </>
       ),
     },
@@ -196,7 +193,7 @@ const Cyno: DataCharacter = {
         <>
           When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will
           increase by <Green b>10%</Green> for 4s. This effect can be triggered once every 0.1s. Max{" "}
-          <Green b>5</Green> <Green>stacks</Green>.
+          <Rose>5</Rose> stacks.
         </>
       ),
     },
@@ -206,10 +203,9 @@ const Cyno: DataCharacter = {
       image: "1/11/Constellation_Austerity_Forbidding_Guard",
       desc: (
         <>
-          When Cyno is in the Pactsworn Pathclearer state triggered by Sacred Rite: Wolf's
-          Swiftness, after he triggers Electro-Charged, Overloaded, Quicken, Hyperbloom, an Electro
-          Swirl or an Electro Crystallization reaction, he will restore 3 Elemental Energy for all
-          nearby party members (except himself).
+          When Cyno is in the Pactsworn Pathclearer state, after he triggers Electro-Charged,
+          Overloaded, Quicken, Hyperbloom, an Electro Swirl or an Electro Crystallization reaction,
+          he will restore 3 Elemental Energy for all nearby party members (except himself).
           <br />
           This effect can occur 5 times within one use of Sacred Rite: Wolf's Swiftness.
         </>

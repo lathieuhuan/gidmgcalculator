@@ -33,7 +33,7 @@ const HuTao: DataCharacter = {
     [14459, 99, 815],
     [15552, 106, 876],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cDmg", value: 9.6 },
   NAsConfig: {
     name: "Secret Spear of Wangsheng",
   },
