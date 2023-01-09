@@ -88,8 +88,8 @@ const Keqing: DataCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          After recasting Stellar Restoration while a Lightning Stiletto is present, Keqing's weapon
-          gains an <Electro>Electro infusion</Electro> for 5s.
+          After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing
+          gains an <Electro>Electro Infusion</Electro> for 5s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -131,8 +131,7 @@ const Keqing: DataCharacter = {
         <>
           When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst,
           Keqing gains a <Green b>6%</Green> <Green>Electro DMG Bonus</Green> for 8s. Effects
-          triggered by Normal Attacks, Charged Attacks, Elemental Skills and Elemental Bursts are
-          considered independent entities.
+          triggered by different sources are considered independent entities.
         </>
       ),
       isGranted: checkCons[6],

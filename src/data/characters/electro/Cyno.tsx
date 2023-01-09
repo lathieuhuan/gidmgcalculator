@@ -247,8 +247,7 @@ const Cyno: DataCharacter = {
         <>
           Under Pactsworn Pathclearer state:
           <br />• Cyno's <Green>Elemental Mastery</Green> is increased by <Green b>100</Green>.
-          <br />• Cyno's <Green>Normal, Charged, and Plunging Attacks</Green> will be converted to{" "}
-          <Electro>Electro DMG</Electro> that cannot be overriden.
+          <br />• Cyno gains an <Electro>Electro Infusion</Electro> that cannot be overriden.
         </>
       ),
       affect: EModAffect.SELF,

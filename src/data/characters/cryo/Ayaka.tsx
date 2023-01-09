@@ -95,8 +95,8 @@ const Ayaka: DataCharacter = {
       src: "Alternate Sprint",
       desc: () => (
         <>
-          When Ayaka reappears from Senho form, her attacks will be infused with <Cryo>Cryo</Cryo>{" "}
-          for a brief period.
+          When Ayaka reappears from Senho form, she gains a <Cryo>Cryo Infusion</Cryo> for a brief
+          period.
         </>
       ),
       affect: EModAffect.SELF,

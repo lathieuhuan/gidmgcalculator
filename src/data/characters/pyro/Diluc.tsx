@@ -114,7 +114,7 @@ const Diluc: DataCharacter = {
       },
       desc: () => (
         <>
-          After casting Dawn [EB], Diluc's Normal Attacks are infused with <Pyro>Pyro</Pyro>.
+          After casting Dawn [EB], Diluc gains a <Pyro>Pyro Infusion</Pyro>.
           <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green>{" "}
           <Green>Pyro DMG Bonus</Green> during this duration.
         </>

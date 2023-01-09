@@ -150,8 +150,7 @@ const Itto: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          • Converts Itto's <Green>Normal, Charged, and Plunging Attacks</Green> to{" "}
-          <Geo>Geo DMG</Geo>. This cannot be overridden.
+          • Grants Itto a <Geo>Geo Infusion</Geo> that cannot be overridden.
           <br />• Increases Itto's <Green>Normal Attack SPD</Green> by <Green b>10%</Green>. Also
           increases his <Green>ATK</Green> based on his <Green>DEF</Green>.
         </>

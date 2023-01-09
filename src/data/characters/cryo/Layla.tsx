@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -91,12 +91,10 @@ const Layla: DataCharacter = {
       image: "6/6d/Talent_Like_Nascent_Light",
       desc: (
         <>
-          While the Curtain of Slumber [~ES] is active, the Deep Sleep effect will activate each
-          time the Curtain gains a Night Star:
-          <br />• The <Green>Shield Strength</Green> of a character under the effect of the Curtain
-          of Slumber increases by <Green b>6%</Green>.
-          <br />• This effect can have a maximum of <Green b>4</Green> <Green>stacks</Green> and
-          persists until the Curtain of Slumber disappears.
+          While the Curtain of Slumber [~ES] is active, each time the Curtain gains a Night Star:
+          <br />• The <Green>Shield Strength</Green> of the character is increased by{" "}
+          <Green b>6%</Green>. Max <Rose>4</Rose> stacks.
+          <br />• This effect persists until the Curtain of Slumber disappears.
         </>
       ),
     },
@@ -105,8 +103,8 @@ const Layla: DataCharacter = {
       image: "3/32/Talent_Sweet_Slumber_Undisturbed",
       desc: (
         <>
-          The <Green>DMG</Green> dealt by the <Green>Shooting Stars</Green> [~ES] is increased by{" "}
-          <Green b>1.5%</Green> of Layla's <Green>Max HP</Green>.
+          <Green>Shooting Star DMG</Green> [~ES] is increased by <Green b>1.5%</Green> of Layla's{" "}
+          <Green>Max HP</Green>.
         </>
       ),
     },
@@ -162,10 +160,9 @@ const Layla: DataCharacter = {
       },
       xtraDesc: [
         <>
-          When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will grant all
-          nearby party members the Open Mind effect, causing their{" "}
-          <Green>Normal and Charged Attack DMG</Green> to increase based on <Green b>5%</Green> of
-          Layla's <Green>Max HP</Green>.
+          When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will increases{" "}
+          <Green>Normal and Charged Attack DMG</Green> of nearby party members based on{" "}
+          <Green b>5%</Green> of Layla's <Green>Max HP</Green>.
         </>,
       ],
     },
@@ -185,8 +182,8 @@ const Layla: DataCharacter = {
       },
       xtraDesc: [
         <>
-          Increases <Green>Shooting Stars</Green> [~ES] <Green>DMG</Green> and{" "}
-          <Green>Starlight Slugs</Green> [~EB] <Green>DMG</Green> by <Green b>40%</Green>.
+          Increases <Green>Shooting Star DMG</Green> [~ES] and <Green>Starlight Slug DMG</Green>{" "}
+          [~EB] by <Green b>40%</Green>.
         </>,
       ],
     },

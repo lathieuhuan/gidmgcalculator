@@ -194,9 +194,8 @@ const Nilou: DataCharacter = {
       },
       xtraDesc: [
         <>
-          <Green>DMG</Green> from her{" "}
-          <Green>Dance of the Lotus: Distant Dreams, Listening Spring</Green> will be increased by{" "}
-          <Green b>50%</Green> for 8s.
+          Dance of the Lotus: Distant Dreams, Listening Spring <Green>[EB] DMG</Green> will be
+          increased by <Green b>50%</Green> for 8s.
         </>,
       ],
     },
@@ -206,12 +205,9 @@ const Nilou: DataCharacter = {
       image: "9/93/Constellation_Frostbreaker%27s_Melody",
       desc: (
         <>
-          For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> and{" "}
-          <Green>CRIT DMG</Green> will increase by <Green b>0.6%</Green> and <Green b>1.2%</Green>{" "}
-          respectively.
-          <br />
-          The maximum increase in <Green>CRIT Rate</Green> and <Green>CRIT DMG</Green> is{" "}
-          <Green b>30%</Green> and <Green b>60%</Green> respectively.
+          For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> is increased by{" "}
+          <Green b>0.6%</Green> (max <Rose>30%</Rose>) and her <Green>CRIT DMG</Green> is increase
+          by <Green b>1.2%</Green> (max <Rose>60%</Rose>).
         </>
       ),
     },
@@ -221,12 +217,6 @@ const Nilou: DataCharacter = {
       src: EModSrc.C1,
       isGranted: checkCons[1],
       desc: () => Nilou.constellation[0].xtraDesc?.[0],
-    },
-    {
-      src: EModSrc.C4,
-      isGranted: checkCons[4],
-      desc: () => Nilou.constellation[3].xtraDesc?.[0],
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 50),
     },
     {
       src: EModSrc.C6,
@@ -275,6 +265,18 @@ const Nilou: DataCharacter = {
           applyModifier(desc, rxnBonus, "bloom.pct", buffValue, tracker);
         }
       },
+    },
+    {
+      index: 3,
+      src: EModSrc.C4,
+      affect: EModAffect.SELF,
+      desc: () => (
+        <>
+          After the third dance step of Pirouette state [~ES] hits opponents,{" "}
+          {Nilou.constellation[3].xtraDesc?.[0]}
+        </>
+      ),
+      applyBuff: makeModApplier("attPattBonus", "EB.pct", 50),
     },
   ],
   debuffs: [

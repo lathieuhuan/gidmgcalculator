@@ -138,8 +138,8 @@ const HuTao: DataCharacter = {
       src: EModSrc.ES,
       desc: () => (
         <>
-          Increases Hu Tao's <Green>ATK</Green> based on her <Green>Max HP</Green>, and convert her{" "}
-          <Green>attack DMG</Green> to <Pyro>Pyro DMG</Pyro>.
+          Increases Hu Tao's <Green>ATK</Green> based on her <Green>Max HP</Green>, and grants her a{" "}
+          <Pyro>Pyro Infusion</Pyro>.
         </>
       ),
       affect: EModAffect.SELF,

@@ -152,10 +152,10 @@ const Kazuha: DataCharacter = {
       src: EModSrc.C6,
       desc: ({ totalAttr }) => (
         <>
-          After using Chihayaburu or Kazuha Slash, Kazuha gains an <Anemo>Anemo Infusion</Anemo> for
-          5s. Each point of <Green>Elemental Mastery</Green> will increase Kazuha's{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> by <Green b>0.2%</Green>.{" "}
-          <Red>DMG Bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
+          After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an{" "}
+          <Anemo>Anemo Infusion</Anemo> for 5s. Each point of <Green>Elemental Mastery</Green> will
+          increase Kazuha's <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
+          <Green b>0.2%</Green>. <Red>DMG Bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
         </>
       ),
       isGranted: checkCons[6],

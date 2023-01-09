@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Geo, Green } from "@Components/atoms";
+import { Geo, Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -123,16 +123,6 @@ const Noelle: DataCharacter = {
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attPattBonus", "CA.pct", 15),
     },
-    {
-      src: EModSrc.C6,
-      desc: () => (
-        <>
-          Sweeping Time [EB] increases Noelle's <Green>ATK</Green> by an additional{" "}
-          <Green b>50%</Green> of her <Green>DEF</Green>.
-        </>
-      ),
-      isGranted: checkCons[6],
-    },
   ],
   buffs: [
     {
@@ -140,9 +130,9 @@ const Noelle: DataCharacter = {
       src: EModSrc.EB,
       desc: () => (
         <>
-          • Converts <Green>attack DMG</Green> to <Geo>Geo DMG</Geo> that cannot be overridden by
-          any other elemental infusion.
-          <br />• Increased <Green>ATK</Green> that scales based on her <Green>DEF</Green>.
+          • Grants Noelle a <Geo>Geo Infusion</Geo> that cannot be overridden.
+          <br />• Increases Noelle's <Green>ATK</Green> based on her <Green>DEF</Green>. At{" "}
+          <Lightgold>C6</Lightgold>, the multipler bonus is increased by <Green b>50%</Green>.
         </>
       ),
       affect: EModAffect.SELF,

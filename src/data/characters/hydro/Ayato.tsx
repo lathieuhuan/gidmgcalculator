@@ -204,8 +204,8 @@ const Ayato: DataCharacter = {
       src: EModSrc.ES,
       desc: () => (
         <>
-          • Converts his <Green>Normal Attack DMG</Green> into AoE <Hydro>Hydro DMG</Hydro>{" "}
-          (Shunsuiken). Cannot be overridden.
+          • Converts his Normal Attack DMG into AoE <Hydro>Hydro DMG</Hydro> (Shunsuiken) that
+          cannot be overridden.
           <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase{" "}
           <Green>Shunsuiken DMG</Green> based on his <Green>current Max HP</Green>.
           <br />• At <Lightgold>C2</Lightgold>, Ayato's <Green>Max HP</Green> is increased by{" "}

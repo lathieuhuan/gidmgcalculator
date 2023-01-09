@@ -124,8 +124,8 @@ const Xiao: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
-          <Green b>{getEBBuffValue(char, partyData)}%</Green> and converts them to{" "}
-          <Anemo>Anemo DMG</Anemo>.
+          <Green b>{getEBBuffValue(char, partyData)}%</Green> and grants him an{" "}
+          <Anemo>Anemo Infusion</Anemo> that cannot be overridden.
         </>
       ),
       affect: EModAffect.SELF,

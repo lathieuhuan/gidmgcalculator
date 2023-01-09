@@ -126,7 +126,7 @@ const Jean: DataCharacter = {
       ),
       isGranted: checkCons[2],
       affect: EModAffect.PARTY,
-      applyBuff: makeModApplier("totalAttr", ["naAtkSpd", "caAtkSpd"], 15),
+      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
     },
   ],
   debuffs: [

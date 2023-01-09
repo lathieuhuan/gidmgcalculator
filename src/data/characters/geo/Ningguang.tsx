@@ -97,7 +97,7 @@ const Ningguang: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          A character that passes through the Jade Screen will gain a <Green b>12%</Green>{" "}
+          A character that passes through the Jade Screen [~ES] will gain a <Green b>12%</Green>{" "}
           <Green>Geo DMG Bonus</Green> for 10s.
         </>
       ),

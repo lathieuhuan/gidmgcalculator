@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
@@ -192,9 +192,8 @@ const Nahida: DataCharacter = {
       image: "8/8b/Constellation_The_Stem_of_Manifest_Inference",
       desc: (
         <>
-          When 1/2/3/(4 or more) nearby opponents are affected by All Schemes to Know's Seeds of
-          Skandha, Nahida's <Green>Elemental Mastery</Green> will be increased by{" "}
-          <Green b>100/120/140/160</Green>.
+          When 1/2/3/(4 or more) nearby opponents are affected by Seeds of Skandha [~ES], Nahida's{" "}
+          <Green>Elemental Mastery</Green> will be increased by <Green b>100/120/140/160</Green>.
         </>
       ),
     },
@@ -226,10 +225,10 @@ const Nahida: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Each point of Nahida's Elemental Mastery beyond 200 will grant <Green b>0.1%</Green>{" "}
-          <Green>Bonus DMG</Green> and <Green b>0.03%</Green> <Green>CRIT Rate</Green> to{" "}
-          <Green>Tri-Karma Purification</Green>. A maximum of <Green b>80%</Green>{" "}
-          <Green>Bonus DMG</Green> and <Green b>24%</Green> <Green>CRIT Rate</Green>.
+          Each point of Nahida's <Green>Elemental Mastery</Green> beyond 200 will grant{" "}
+          <Green b>0.1%</Green> <Green>Bonus DMG</Green> (max <Rose>80%</Rose>) and{" "}
+          <Green b>0.03%</Green> <Green>CRIT Rate</Green> (max <Rose>24%</Rose>) to{" "}
+          <Green>Tri-Karma Purification</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -257,7 +256,7 @@ const Nahida: DataCharacter = {
         <>
           The Elemental Mastery of the active character within the Shrine of Maya will be increased
           by <Green>25%</Green> of the <Green>Elemental Mastery</Green> of the party member with the
-          highest Elemental Mastery. Max <Green>250</Green> <Green>Elemental Mastery</Green>.
+          highest Elemental Mastery. Maximum <Rose>250</Rose> Elemental Mastery.
         </>
       ),
       isGranted: checkAscs[1],

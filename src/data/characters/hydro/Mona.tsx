@@ -1,5 +1,5 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
-import { Green, Lightgold, Red } from "@Components/atoms";
+import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
@@ -163,7 +163,7 @@ const Mona: DataCharacter = {
         <>
           Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green>{" "}
           <Green>DMG increase</Green> of her next <Green>Charged Attack</Green> per second of
-          movement (up to <Green b>180%</Green>) for 8s.
+          movement (up to <Rose b>180%</Rose>) for 8s.
         </>
       ),
       isGranted: checkCons[6],

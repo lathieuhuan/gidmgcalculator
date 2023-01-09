@@ -310,8 +310,7 @@ const Raiden: DataCharacter = {
             based on the number of Chakra Desiderata's Resolve stacks consumed.{" "}
             <Red>Total Resolve: {stacks}.</Red>
             <br />
-            Normal, Charged, and Plunging Attacks will be <Green>infused</Green> with{" "}
-            <Electro>Electro DMG</Electro>, which cannot be overridden.
+            Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.
             <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from
             Electro characters by <Green b>80%</Green>, from characters of other visions by{" "}
             <Green b>20%</Green>. <Red>Extra Resolve: {extraStacks}</Red>
