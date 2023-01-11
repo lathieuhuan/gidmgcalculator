@@ -1,6 +1,7 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -22,7 +23,8 @@ const getA4BuffValue = (totalAttr: TotalAttribute) => Math.round(totalAttr.er * 
 const Mona: DataCharacter = {
   code: 16,
   name: "Mona",
-  icon: "a/a0/Character_Mona_Thumb",
+  // icon: "a/a0/Character_Mona_Thumb",
+  icon: CHARACTER_IMAGES.Mona,
   sideIcon: "1/1a/Character_Mona_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

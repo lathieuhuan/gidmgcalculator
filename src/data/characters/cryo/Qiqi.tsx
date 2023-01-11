@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkCons } from "../utils";
 const Qiqi: DataCharacter = {
   code: 7,
   name: "Qiqi",
-  icon: "d/d5/Character_Qiqi_Thumb",
+  // icon: "d/d5/Character_Qiqi_Thumb",
+  icon: CHARACTER_IMAGES.Qiqi,
   sideIcon: "1/1c/Character_Qiqi_Side_Icon",
   rarity: 5,
   nation: "liyue",

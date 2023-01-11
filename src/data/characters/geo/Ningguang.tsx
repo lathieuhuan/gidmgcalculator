@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
@@ -8,7 +9,8 @@ import { checkAscs } from "../utils";
 const Ningguang: DataCharacter = {
   code: 13,
   name: "Ningguang",
-  icon: "2/2b/Character_Ningguang_Thumb",
+  // icon: "2/2b/Character_Ningguang_Thumb",
+  icon: CHARACTER_IMAGES.Ningguang,
   sideIcon: "6/64/Character_Ningguang_Side_Icon",
   rarity: 4,
   nation: "liyue",

@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkCons } from "../utils";
 const Kaeya: DataCharacter = {
   code: 5,
   name: "Kaeya",
-  icon: "3/33/Character_Kaeya_Thumb",
+  // icon: "3/33/Character_Kaeya_Thumb",
+  icon: CHARACTER_IMAGES.Kaeya,
   sideIcon: "d/d0/Character_Kaeya_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

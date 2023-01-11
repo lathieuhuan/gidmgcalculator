@@ -1,6 +1,7 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
@@ -15,7 +16,8 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Yanfei: DataCharacter = {
   code: 34,
   name: "Yanfei",
-  icon: "1/1f/Character_Yanfei_Thumb",
+  // icon: "1/1f/Character_Yanfei_Thumb",
+  icon: CHARACTER_IMAGES.Yanfei,
   sideIcon: "4/4c/Character_Yanfei_Side_Icon",
   rarity: 4,
   nation: "liyue",

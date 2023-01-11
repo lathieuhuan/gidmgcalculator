@@ -6,7 +6,7 @@ import { EModSrc, HEAVIER_PAs } from "../constants";
 import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
-import { NCPA_PERCENTS } from "@Data/constants";
+import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, talents: Xiao.activeTalents, talentType: "EB", partyData });
@@ -16,7 +16,8 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Xiao: DataCharacter = {
   code: 30,
   name: "Xiao",
-  icon: "b/b9/Character_Xiao_Thumb",
+  // icon: "b/b9/Character_Xiao_Thumb",
+  icon: CHARACTER_IMAGES.Xiao,
   sideIcon: "8/83/Character_Xiao_Side_Icon",
   rarity: 5,
   nation: "liyue",

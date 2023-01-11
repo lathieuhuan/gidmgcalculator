@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -16,7 +17,8 @@ const Kokomi: DataCharacter = {
   code: 42,
   name: "Kokomi",
   GOOD: "SangonomiyaKokomi",
-  icon: "c/cc/Character_Sangonomiya_Kokomi_Thumb",
+  // icon: "c/cc/Character_Sangonomiya_Kokomi_Thumb",
+  icon: CHARACTER_IMAGES.Kokomi,
   sideIcon: "b/b4/Character_Sangonomiya_Kokomi_Side_Icon",
   rarity: 5,
   nation: "inazuma",

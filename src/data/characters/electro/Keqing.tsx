@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkAscs, checkCons } from "../utils";
 const Keqing: DataCharacter = {
   code: 9,
   name: "Keqing",
-  icon: "0/06/Character_Keqing_Thumb",
+  // icon: "0/06/Character_Keqing_Thumb",
+  icon: CHARACTER_IMAGES.Keqing,
   sideIcon: "b/ba/Character_Keqing_Side_Icon",
   rarity: 5,
   nation: "liyue",

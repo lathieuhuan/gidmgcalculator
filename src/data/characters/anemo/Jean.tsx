@@ -4,11 +4,13 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
+import { CHARACTER_IMAGES } from "@Data/constants";
 
 const Jean: DataCharacter = {
   code: 2,
   name: "Jean",
-  icon: "8/89/Character_Jean_Thumb",
+  // icon: "8/89/Character_Jean_Thumb",
+  icon: CHARACTER_IMAGES.Jean,
   sideIcon: "9/9e/Character_Jean_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

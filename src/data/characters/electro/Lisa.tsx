@@ -1,5 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
@@ -7,7 +8,8 @@ import { checkAscs } from "../utils";
 const Lisa: DataCharacter = {
   code: 10,
   name: "Lisa",
-  icon: "5/51/Character_Lisa_Thumb",
+  // icon: "5/51/Character_Lisa_Thumb",
+  icon: CHARACTER_IMAGES.Lisa,
   sideIcon: "e/e6/Character_Lisa_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

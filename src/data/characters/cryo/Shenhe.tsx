@@ -1,12 +1,12 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
-import { NCPA_PERCENTS } from "@Data/constants";
 
 const getEBDebuffValue = (
   fromSelf: boolean,
@@ -23,7 +23,8 @@ const getEBDebuffValue = (
 const Shenhe: DataCharacter = {
   code: 47,
   name: "Shenhe",
-  icon: "5/58/Character_Shenhe_Thumb",
+  // icon: "5/58/Character_Shenhe_Thumb",
+  icon: CHARACTER_IMAGES.Shenhe,
   sideIcon: "8/8d/Character_Shenhe_Side_Icon",
   rarity: 5,
   nation: "liyue",

@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Hydro, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkAscs, checkCons } from "../utils";
 const Candace: DataCharacter = {
   code: 58,
   name: "Candace",
-  icon: "b/bf/Character_Candace_Thumb",
+  // icon: "b/bf/Character_Candace_Thumb",
+  icon: CHARACTER_IMAGES.Candace,
   sideIcon: "9/95/Character_Candace_Side_Icon",
   rarity: 4,
   nation: "sumeru",

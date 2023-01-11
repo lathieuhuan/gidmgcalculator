@@ -1,6 +1,7 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
@@ -12,7 +13,8 @@ const getA4talentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
 const Cyno: DataCharacter = {
   code: 59,
   name: "Cyno",
-  icon: "d/d1/Character_Cyno_Thumb",
+  // icon: "d/d1/Character_Cyno_Thumb",
+  icon: CHARACTER_IMAGES.Cyno,
   sideIcon: "d/de/Character_Cyno_Side_Icon",
   rarity: 5,
   nation: "sumeru",

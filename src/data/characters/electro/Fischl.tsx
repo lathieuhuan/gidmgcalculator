@@ -1,12 +1,14 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons, talentBuff } from "../utils";
 
 const Fischl: DataCharacter = {
   code: 8,
   name: "Fischl",
-  icon: "1/14/Character_Fischl_Thumb",
+  // icon: "1/14/Character_Fischl_Thumb",
+  icon: CHARACTER_IMAGES.Fischl,
   sideIcon: "e/ec/Character_Fischl_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

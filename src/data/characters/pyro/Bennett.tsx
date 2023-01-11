@@ -1,6 +1,7 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
@@ -24,7 +25,8 @@ function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
 const Bennett: DataCharacter = {
   code: 19,
   name: "Bennett",
-  icon: "7/7b/Character_Bennett_Thumb",
+  // icon: "7/7b/Character_Bennett_Thumb",
+  icon: CHARACTER_IMAGES.Bennett,
   sideIcon: "3/3c/Character_Bennett_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

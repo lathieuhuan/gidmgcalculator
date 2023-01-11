@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { MEDIUM_PAs, EModSrc } from "../constants";
 import { checkAscs, charModIsInUse, checkCons, talentBuff } from "../utils";
@@ -8,7 +9,8 @@ import { checkAscs, charModIsInUse, checkCons, talentBuff } from "../utils";
 const Albedo: DataCharacter = {
   code: 29,
   name: "Albedo",
-  icon: "0/00/Character_Albedo_Thumb",
+  // icon: "0/00/Character_Albedo_Thumb",
+  icon: CHARACTER_IMAGES.Albedo,
   sideIcon: "1/12/Character_Albedo_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

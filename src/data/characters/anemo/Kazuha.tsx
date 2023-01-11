@@ -1,7 +1,7 @@
 import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { Anemo, Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { NCPA_PERCENTS } from "@Data/constants";
+import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
 import { EModSrc } from "../constants";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -16,7 +16,8 @@ const Kazuha: DataCharacter = {
   code: 35,
   name: "Kazuha",
   GOOD: "KaedeharaKazuha",
-  icon: "f/f0/Character_Kaedehara_Kazuha_Thumb",
+  // icon: "f/f0/Character_Kaedehara_Kazuha_Thumb",
+  icon: CHARACTER_IMAGES.Kazuha,
   sideIcon: "1/16/Character_Kaedehara_Kazuha_Side_Icon",
   rarity: 5,
   nation: "inazuma",

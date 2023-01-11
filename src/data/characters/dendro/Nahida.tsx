@@ -1,6 +1,7 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
@@ -22,7 +23,8 @@ function getEBBuff(char: CharInfo, partyData: PartyData) {
 const Nahida: DataCharacter = {
   code: 62,
   name: "Nahida",
-  icon: "c/cf/Character_Nahida_Thumb",
+  // icon: "c/cf/Character_Nahida_Thumb",
+  icon: CHARACTER_IMAGES.Nahida,
   sideIcon: "1/13/Character_Nahida_Side_Icon",
   rarity: 5,
   nation: "sumeru",

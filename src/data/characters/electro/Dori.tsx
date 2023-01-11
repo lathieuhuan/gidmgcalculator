@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Electro, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkCons } from "../utils";
 const Dori: DataCharacter = {
   code: 56,
   name: "Dori",
-  icon: "9/90/Character_Dori_Thumb",
+  // icon: "9/90/Character_Dori_Thumb",
+  icon: CHARACTER_IMAGES.Dori,
   sideIcon: "0/0f/Character_Dori_Side_Icon",
   rarity: 4,
   nation: "sumeru",

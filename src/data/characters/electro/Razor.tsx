@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -12,7 +13,8 @@ const getEBBuffValue = (level: number) => {
 const Razor: DataCharacter = {
   code: 11,
   name: "Razor",
-  icon: "1/1d/Character_Razor_Thumb",
+  // icon: "1/1d/Character_Razor_Thumb",
+  icon: CHARACTER_IMAGES.Razor,
   sideIcon: "5/57/Character_Razor_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

@@ -1,6 +1,7 @@
 import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round, countVision } from "@Src/utils";
@@ -25,7 +26,8 @@ const getA4BuffValue = (
 const YunJin: DataCharacter = {
   code: 48,
   name: "Yun Jin",
-  icon: "c/cb/Character_Yun_Jin_Thumb",
+  // icon: "c/cb/Character_Yun_Jin_Thumb",
+  icon: CHARACTER_IMAGES.YunJin,
   sideIcon: "9/9a/Character_Yun_Jin_Side_Icon",
   rarity: 4,
   nation: "liyue",

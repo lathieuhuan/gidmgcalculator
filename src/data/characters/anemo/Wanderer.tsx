@@ -6,6 +6,7 @@ import { EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { CHARACTER_IMAGES } from "@Data/constants";
 
 const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
   return charBuffCtrls.find(({ index }) => index === 1)?.inputs?.includes(2);
@@ -27,7 +28,8 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Wanderer: DataCharacter = {
   code: 63,
   name: "Wanderer",
-  icon: "f/f2/Character_Wanderer_Thumb",
+  // icon: "f/f2/Character_Wanderer_Thumb",
+  icon: CHARACTER_IMAGES.Wanderer,
   sideIcon: "5/54/Character_Wanderer_Side_Icon",
   rarity: 5,
   nation: "sumeru",

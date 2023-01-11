@@ -1,6 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -8,7 +9,8 @@ import { checkCons } from "../utils";
 const Barbara: DataCharacter = {
   code: 15,
   name: "Barbara",
-  icon: "7/72/Character_Barbara_Thumb",
+  // icon: "7/72/Character_Barbara_Thumb",
+  icon: CHARACTER_IMAGES.Barbara,
   sideIcon: "5/50/Character_Barbara_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

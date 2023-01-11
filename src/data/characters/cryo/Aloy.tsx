@@ -1,6 +1,7 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
@@ -22,7 +23,8 @@ const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: Mod
 const Aloy: DataCharacter = {
   code: 39,
   name: "Aloy",
-  icon: "6/6a/Character_Aloy_Thumb",
+  // icon: "6/6a/Character_Aloy_Thumb",
+  icon: CHARACTER_IMAGES.Aloy,
   sideIcon: "0/0c/Character_Aloy_Side_Icon",
   rarity: 5,
   nation: "outland",

@@ -1,6 +1,7 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
+import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
@@ -16,7 +17,8 @@ const getA4TAlentBuff = (index: number): GetTalentBuffFn => {
 const Shinobu: DataCharacter = {
   code: 52,
   name: "Shinobu",
-  icon: "3/37/Character_Kuki_Shinobu_Thumb",
+  // icon: "3/37/Character_Kuki_Shinobu_Thumb",
+  icon: CHARACTER_IMAGES.Shinobu,
   sideIcon: "3/38/Character_Kuki_Shinobu_Side_Icon",
   rarity: 4,
   nation: "inazuma",
