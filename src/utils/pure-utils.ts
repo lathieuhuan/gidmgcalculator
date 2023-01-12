@@ -16,9 +16,10 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
 }
 
 export const getImgSrc = (src: string) => {
-  return src.split("/")[0].length === 1
-    ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
-    : src;
+  return "";
+  // return src.split("/")[0].length === 1
+  //   ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
+  //   : src;
 };
 
 export const turnArray = <T>(subject: T | T[]): T[] => {
@@ -66,11 +67,7 @@ export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 1
 
 export const toMult = (n: number) => 1 + n / 100;
 
-export const genNumberSequenceOptions = (
-  max: number | undefined = 0,
-  startsAt0: boolean = false,
-  min: number = 1
-) => {
+export const genNumberSequenceOptions = (max: number | undefined = 0, startsAt0: boolean = false, min: number = 1) => {
   const result = [...Array(max)].map((_, i) => {
     const value = i + min;
     return { label: value, value };

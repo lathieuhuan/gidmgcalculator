@@ -60,7 +60,7 @@ export function totalXtraTalentLv({ talents, talentType, char, partyData }: Tota
   } else if (talentType === "ES" || talentType === "EB") {
     const { xtraLvAtCons } = talents[talentType];
 
-    if (xtraLvAtCons && char.cons > xtraLvAtCons) {
+    if (xtraLvAtCons && char.cons >= xtraLvAtCons) {
       result += 3;
     }
   }

@@ -116,12 +116,12 @@ const Zhongli: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Zhongli deals bonus DMG based on his <Green>Max HP</Green>:<br />•{" "}
-          <Green>Normal Attack, Charged Attack, and Plunging Attack DMG</Green> increased by{" "}
-          <Green b>1.39%</Green> of Max HP.
+          • <Green>Normal Attack, Charged Attack, and Plunging Attack DMG</Green> increased by{" "}
+          <Green b>1.39%</Green> of <Green>Max HP</Green>.
           <br />• Dominus Lapidis Stone Stele, resonance, and hold <Green>[ES] DMG</Green> increased
-          by <Green b>1.9%</Green> of Max HP.
-          <br />• Planet Befall <Green>[EB] DMG</Green> increased by <Green b>33%</Green> of Max HP.
+          by <Green b>1.9%</Green> of <Green>Max HP</Green>.
+          <br />• Planet Befall <Green>[EB] DMG</Green> increased by <Green b>33%</Green> of{" "}
+          <Green>Max HP</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -142,8 +142,8 @@ const Zhongli: DataCharacter = {
       desc: () => (
         <>
           When Jade Shield takes DMG, the characters have their <Green>Shield Strength</Green>{" "}
-          increased by <Green b>5%</Green> until the Jade Shield disappears. Max{" "}
-          <Rose>5 stacks</Rose>.
+          increased by <Green b>5%</Green> until the Jade Shield disappears. Max <Rose>5</Rose>{" "}
+          stacks.
         </>
       ),
       isGranted: checkAscs[1],

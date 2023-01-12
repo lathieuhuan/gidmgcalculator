@@ -5,17 +5,18 @@ import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
 function getEBBuff(char: CharInfo, partyData: PartyData) {
+  const level = finalTalentLv({ char, talents: Nahida.activeTalents, talentType: "EB", partyData });
   const pyroCount = partyData.reduce(
     (result, data) => (data?.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
   );
   const root = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
   return {
-    value: round(root * TALENT_LV_MULTIPLIERS[2][char.EB], 2),
+    value: round(root * TALENT_LV_MULTIPLIERS[2][level], 2),
     pyroCount,
   };
 }

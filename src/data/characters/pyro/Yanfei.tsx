@@ -140,7 +140,7 @@ const Yanfei: DataCharacter = {
       desc: () => (
         <>
           When Yanfei's Charged Attack consumes Scarlet Seals, each Scarlet Seal will increase her{" "}
-          <Green>Pyro DMG Bonus</Green> by <Green b>5%</Green>. This effect lasts for 6s.
+          <Green>Pyro DMG Bonus</Green> by <Green b>5%</Green> for 6s.
         </>
       ),
       isGranted: checkAscs[1],

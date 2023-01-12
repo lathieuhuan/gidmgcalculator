@@ -36,7 +36,7 @@ export default function SectionWeapon() {
         className={`w-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}
       >
-        <img src={getImgSrc(icon)} alt="" draggable={false} />
+        <img src={getImgSrc(icon)} alt={name} draggable={false} />
         {beta && <BetaMark className="absolute -top-1 -left-1" />}
       </div>
 

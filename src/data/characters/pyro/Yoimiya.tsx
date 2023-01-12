@@ -115,9 +115,9 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
-          During Niwabi Fire-Dance [ES], Yoimiya's <Green>Normal Attack DMG</Green> will be
-          increased by <Green b>{getESBuffValue(char, partyData)}%</Green> and converted to{" "}
-          <Pyro>Pyro DMG</Pyro>.
+          Yoimiya's <Green>Normal Attack DMG</Green> will be increased by{" "}
+          <Green b>{1 + round(getESBuffValue(char, partyData) / 100, 3)}</Green> times and converted
+          to Blazing Arrows dealing <Pyro>Pyro DMG</Pyro>.
           <br />• At <Lightgold>A1</Lightgold>, Normal Attacks on hit will increase Yoimiya's{" "}
           <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> for 3s. Maximum{" "}
           <Rose>10 stacks</Rose>.
@@ -174,7 +174,7 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When an opponent affected by Aurous Blaze is defeated within its duration, Yoimiya's{" "}
+          When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's{" "}
           <Green>ATK</Green> is increased by <Green b>20%</Green> for 20s.
         </>
       ),

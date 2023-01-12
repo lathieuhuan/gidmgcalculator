@@ -165,7 +165,8 @@ const Yelan: DataCharacter = {
       desc: () => (
         <>
           Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for
-          every opponent marked by Lifeline when the Lifeline explodes. Maximum <Rose>40%</Rose>.
+          every opponent marked by Lifeline [~ES] when the Lifeline explodes. Maximum{" "}
+          <Rose>40%</Rose>.
         </>
       ),
       isGranted: checkCons[4],

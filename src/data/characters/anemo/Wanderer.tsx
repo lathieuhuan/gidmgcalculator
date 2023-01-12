@@ -3,13 +3,13 @@ import { Anemo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { round } from "@Src/utils";
+import { round, findByIndex } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 import { CHARACTER_IMAGES } from "@Data/constants";
 
 const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
-  return charBuffCtrls.find(({ index }) => index === 1)?.inputs?.includes(2);
+  return findByIndex(charBuffCtrls, 1)?.inputs?.includes(2);
 };
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {

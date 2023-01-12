@@ -109,8 +109,10 @@ const Venti: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Skyward Sonnet decreases opponents' <Green>Anemo RES</Green> and{" "}
-          <Green>Physical RES</Green> by <Green b>12%</Green> for 10s.
+          Skyward Sonnet [ES] decreases opponents' <Green>Anemo RES</Green> and{" "}
+          <Green>Physical RES</Green> by <Green b>12%</Green> for 10s. Opponents launched by Skyward
+          Sonnet suffer an additional <Green b>12%</Green> <Green>Anemo RES</Green> and{" "}
+          <Green>Physical RES</Green> decrease while airborne.
         </>
       ),
       isGranted: checkCons[2],
