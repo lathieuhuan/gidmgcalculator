@@ -1,5 +1,5 @@
 import type { DataArtifact } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -153,8 +153,7 @@ const liyueSets: DataArtifact[] = [
         xtraDesc: [
           <>
             Using an Elemental Skill increases the <Green>2-Piece Set Bonus</Green> by{" "}
-            <Green b>50%</Green> of its starting value for 10s. Max <Green b>3</Green>{" "}
-            <Green>stacks</Green>.
+            <Green b>50%</Green> of its starting value for 10s. Max <Rose>3</Rose> stacks.
           </>,
         ],
         applyBuff: makeModApplier(

@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import {
   baneSeries2,
@@ -136,7 +136,7 @@ const purpleClaymores: DataWeapon[] = [
       core: (
         <>
           On hit, Normal or Charged Attacks increase <Green>ATK</Green> and <Green>DEF</Green> by{" "}
-          <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max <Green b>4</Green> stacks. Can only occur
+          <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur
           once every 0.5s.
         </>
       ),

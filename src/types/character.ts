@@ -113,6 +113,10 @@ export type TalentStat = {
    */
   multFactors: number | number[] | TalentStatMultFactor | TalentStatMultFactor[];
   /**
+   * Whether multFactors is sum or not
+   */
+  isWholeFactor?: boolean;
+  /**
    * If true, stat not listed in-game, just more calculation, e.g. total of all hits
    */
   isNotOfficial?: boolean;

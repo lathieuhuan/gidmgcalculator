@@ -64,7 +64,7 @@ type ApplyArtFinalBuffArgs = BuffModifierArgsWrapper & {
 
 export type ArtifactBuff = {
   index: number;
-  desc: () => JSX.Element;
+  desc: () => JSX.Element | undefined;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   applyBuff?: (args: ApplyArtBuffArgs) => void;
@@ -79,7 +79,7 @@ export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
 
 type ArtifactDebuff = {
   index: number;
-  desc: () => JSX.Element;
+  desc: () => JSX.Element | undefined;
   inputConfigs?: ModInputConfig[];
   applyDebuff: (args: ApplyArtDebuffArgs) => void;
 };

@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 import { applyPercent, findByCode } from "@Src/utils";
@@ -7,6 +7,58 @@ import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
 const goldCatalysts: DataWeapon[] = [
+  {
+    code: 147,
+    name: "Tullaytullah's Remembrance",
+    icon: "f/fc/Weapon_Tulaytullah%27s_Remembrance",
+    rarity: 5,
+    mainStatScale: "48",
+    subStat: { type: "cDmg", scale: "9.6%b" },
+    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd", 2.5),
+    buffs: [
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          { label: "Seconds passed", type: "text", max: 10 },
+          { label: "Normal attacks hit", type: "text", max: 10 },
+        ],
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
+          const stacks = (inputs[0] || 0) + (inputs[1] || 0) * 2;
+          const valuePerStack = (36 + refi * 12) / 10;
+          let bnValue = stacks * valuePerStack;
+          bnValue = Math.min(bnValue, valuePerStack * 10);
+          applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldCatalysts, 147)?.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+    passiveName: "Bygone Azure Teardrop",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            <Green>Normal Attack SPD</Green> is increased by <Green b>{7.5 + refi * 2.5}%</Green>.{" "}
+            {this.extra?.[0]} {this.extra?.[1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          After the wielder unleashes an Elemental Skill, <Green>Normal Attack DMG</Green> will
+          increase by <Green b>{(36 + refi * 12) / 10}%</Green> every second for 12s. After this
+          character hits an opponent with a Normal Attack during this duration,{" "}
+          <Green>Normal Attack DMG</Green> will be increased by{" "}
+          <Green b>{(72 + refi * 24) / 10}%</Green>. This increase can be triggered once every 0.3s.
+          Total maximum bonus is <Rose>48%</Rose>.
+        </>,
+        <>
+          The effect will be removed when the wielder leaves the field, and using the Elemental
+          Skill again will reset all DMG buffs.
+        </>,
+      ],
+    }),
+  },
   {
     code: 143,
     name: "A Thousand Floating Dreams",
@@ -46,7 +98,7 @@ const goldCatalysts: DataWeapon[] = [
             their Elemental Types are the same, increase <Green>Elemental Mastery</Green> by{" "}
             <Green b>{24 + refi * 8}</Green>. If not, increase the equipping character's{" "}
             <Green>DMG Bonus</Green> from their Elemental Type by <Green b>{6 + refi * 4}%</Green>.
-            Max <Green b>3</Green> <Green>stacks</Green>. {this.extra![0]}
+            Max <Rose>3</Rose> stacks. {this.extra![0]}
           </>
         );
       },
@@ -93,9 +145,9 @@ const goldCatalysts: DataWeapon[] = [
         <>
           Gains the Kagura Dance effect when using an Elemental Skill, causing the{" "}
           <Green>Elemental Skill DMG</Green> of the character wielding this weapon to increase by{" "}
-          <Green b>{9 + refi * 3}%</Green> for 16s. Max <Green b>3</Green> <Green>stacks</Green>.
-          This character will gain <Green b>{9 + refi * 3}%</Green>{" "}
-          <Green>All Elemental DMG Bonus</Green> when they possess 3 stacks.
+          <Green b>{9 + refi * 3}%</Green> for 16s. Max <Rose>3</Rose> stacks. This character will
+          gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green> when they
+          possess 3 stacks.
         </>
       ),
     }),
@@ -184,7 +236,7 @@ const goldCatalysts: DataWeapon[] = [
       extra: [
         <>
           When in battle, gain an <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> every 4s. Max <Green b>4</Green> stacks.
+          <Green>Elemental DMG Bonus</Green> every 4s. Max <Rose>4</Rose> stacks.
         </>,
         <>Lasts until the character falls or leaves combat.</>,
       ],

@@ -309,8 +309,8 @@ export default function getDamage({
         rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
 
+      let bases = [];
       const { flatFactor } = stat;
-      const bases = [];
       const record = {
         multFactors: [],
         normalMult: 1,
@@ -345,6 +345,10 @@ export default function getDamage({
         record.totalFlat = flatBonus;
 
         bases.push((totalAttr[attributeType] * finalMult) / 100 + flatBonus);
+      }
+
+      if (stat.isWholeFactor) {
+        bases = [bases.reduce((accumulator, base) => accumulator + base, 0)];
       }
 
       // TALENT DMG

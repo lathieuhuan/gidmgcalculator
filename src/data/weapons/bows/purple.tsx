@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Cryo, Gold, Green, Red } from "@Components/atoms";
+import { Cryo, Gold, Green, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import {
   blackcliffSeries,
@@ -218,7 +218,7 @@ const purpleBows: DataWeapon[] = [
         <>
           Dealing <Cryo>Cryo DMG</Cryo> to opponents increases this character's{" "}
           <Green>Normal and Charged Attack DMG</Green> by <Green b>10%</Green> for 6s. This effect
-          can have a maximum of <Green b>2</Green> <Green>stacks</Green>.
+          can have a maximum of <Green b>2</Green> stacks.
           <br />
           <Red>
             <span className="mr-4">•</span>
@@ -420,7 +420,7 @@ const purpleBows: DataWeapon[] = [
         <>
           Normal Attack and Charged Attack hits increase <Green>ATK</Green> by{" "}
           <Green b>{3 + refi}%</Green> and <Green>Normal ATK SPD</Green> by{" "}
-          <Green b>{0.9 + refi * 0.3}%</Green> for 6s. Max <Green b>4</Green> stacks. Can only occur
+          <Green b>{0.9 + refi * 0.3}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur
           once every 0.3s.
         </>
       ),

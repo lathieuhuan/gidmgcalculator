@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import {
   baneSeries2,
@@ -182,7 +182,7 @@ const purplePolearms: DataWeapon[] = [
       core: (
         <>
           After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Green b>2</Green> stacks.
+          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
         </>
       ),
     }),

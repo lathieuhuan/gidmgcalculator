@@ -131,7 +131,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
                 {renderRecord((value) => value + "%")(
                   {
-                    desc: "Bonus from Elemental Mastery",
+                    desc: "From Elemental Mastery",
                     value: bonusFromEM,
                   },
                   -1

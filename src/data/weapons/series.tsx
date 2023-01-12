@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
@@ -85,7 +85,7 @@ export const royalSeries: SeriesInfo = {
     core: (
       <>
         Upon dealing damage to an opponent, increases <Green>CRIT Rate</Green> by{" "}
-        <Green b>{6 + refi * 2}%</Green>. Max <Green b>5</Green> stacks. A CRIT hit removes all
+        <Green b>{6 + refi * 2}%</Green>. Max <Rose>5</Rose> stacks. A CRIT hit removes all
         existing stacks.
       </>
     ),
@@ -213,7 +213,7 @@ export const liyueSeries: SeriesInfo = {
     extra: [
       <>
         Scoring hits on opponents increases <Green>ATK</Green> by <Green b>{3 + refi}%</Green> for
-        8s. Max <Green b>5</Green> stacks. Can only occur once every 0.3s. While protected by a
+        8s. Max <Rose>5</Rose> stacks. Can only occur once every 0.3s. While protected by a
         shield, this ATK increase effect is increased by <Green>100%</Green>.
       </>,
     ],

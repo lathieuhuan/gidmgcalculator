@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import {
   blackcliffSeries,
@@ -53,8 +53,8 @@ const purpleCatalysts: DataWeapon[] = [
           <>
             Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
             <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK.
-            For every 0.3s, 1 stack of Wax and Wane can be gained. Max <Green b>5</Green>{" "}
-            <Green>stacks</Green>. {this.extra![0]}
+            For every 0.3s, 1 stack of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.{" "}
+            {this.extra![0]}
           </>
         );
       },
@@ -205,7 +205,7 @@ const purpleCatalysts: DataWeapon[] = [
       core: (
         <>
           Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> for 10s. Max <Green b>2</Green> stacks.
+          <Green>Elemental DMG Bonus</Green> for 10s. Max <Rose>2</Rose> stacks.
         </>
       ),
     }),

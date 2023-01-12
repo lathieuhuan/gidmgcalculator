@@ -172,7 +172,7 @@ const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): Mo
       if (typeof input === "boolean" && type === "check") {
         return inputs.push(input ? 1 : 0);
       }
-      if (typeof input === "number" && (type === "stacks" || type === "text")) {
+      if (typeof input === "number" && ["text", "stacks", "select"].includes(type)) {
         return inputs.push(max ? Math.min(input, max) : input);
       }
       if (typeof input === "string") {
@@ -368,8 +368,6 @@ const convertSetup = (
     "Geo RES": geo,
     "Physical RES": phys,
   } = setup.target;
-
-  console.log(setup);
 
   return {
     setup: {

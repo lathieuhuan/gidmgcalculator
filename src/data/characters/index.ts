@@ -1,4 +1,5 @@
 import Albedo from "./geo/Albedo";
+import Alhaitham from "./dendro/Alhaitham";
 import Aloy from "./cryo/Aloy";
 import Ayato from "./hydro/Ayato";
 import Amber from "./pyro/Amber";
@@ -58,6 +59,7 @@ import Xingqiu from "./hydro/Xingqiu";
 import Xinyan from "./pyro/Xinyan";
 import YaeMiko from "./electro/YaeMiko";
 import Yanfei from "./pyro/Yanfei";
+import Yaoyao from "./dendro/Yaoyao";
 import Yelan from "./hydro/Yelan";
 import Yoimiya from "./pyro/Yoimiya";
 import YunJin from "./geo/YunJin";
@@ -65,6 +67,7 @@ import Zhongli from "./geo/Zhongli";
 
 const characters = [
   Albedo,
+  Alhaitham,
   Aloy,
   Amber,
   AnemoMC,
@@ -124,6 +127,7 @@ const characters = [
   Xinyan,
   YaeMiko,
   Yanfei,
+  Yaoyao,
   Yelan,
   Yoimiya,
   YunJin,

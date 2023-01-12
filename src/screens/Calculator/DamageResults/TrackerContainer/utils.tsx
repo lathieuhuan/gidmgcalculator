@@ -10,6 +10,7 @@ import {
   REACTIONS,
   REACTION_BONUS_INFO_KEYS,
 } from "@Src/constants";
+import { round } from "@Src/utils";
 
 export const recordListStyles = "columns-1 md2:columns-2 space-y-1";
 
@@ -52,7 +53,10 @@ export function initTracker() {
 }
 
 export function getTotalRecordValue(list: TrackerRecord[]) {
-  return list.reduce((accumulator, record) => accumulator + record.value, 0);
+  return round(
+    list.reduce((accumulator, record) => accumulator + record.value, 0),
+    2
+  );
 }
 
 export function renderHeading(white: ReactNode, orange?: string | number) {

@@ -16,10 +16,9 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
 }
 
 export const getImgSrc = (src: string) => {
-  return "";
-  // return src.split("/")[0].length === 1
-  //   ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
-  //   : src;
+  return src.split("/")[0].length === 1
+    ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
+    : src;
 };
 
 export const turnArray = <T>(subject: T | T[]): T[] => {

@@ -47,6 +47,15 @@ export default function WeaponBuffs() {
         desc={buff.desc({ refi: weapon.refi, totalAttr })}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
+        onChangeText={(value, i) => {
+          dispatch(
+            changeModCtrlInput({
+              ...path,
+              inputIndex: i,
+              value,
+            })
+          );
+        }}
         onToggleCheck={(currentInput, i) => {
           dispatch(
             changeModCtrlInput({

@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
@@ -14,6 +14,44 @@ const mistsplitterBuffValuesByStack = (refi: number) => [
 ];
 
 const goldSwords: DataWeapon[] = [
+  {
+    code: 148,
+    beta: true,
+    name: "Light of Foliar Incision",
+    icon: "",
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "cDmg", scale: "19.2%" },
+    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
+    passiveName: "Whitemoon Bristle",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          <Green>CRIT Rate</Green> is increased by <Green b>{3 + refi}%</Green>.
+        </>
+      ),
+      extra: [
+        <>
+          When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained,
+          increasing <Green>Normal Attack and Elemental Skill DMG</Green> by{" "}
+          <Green b>{90 + refi * 30}%</Green> of <Green>Elemental Mastery</Green>. This effect will
+          disappear after <Rose>28</Rose> DMG instances or 12s.
+        </>,
+        <>You can obtain Foliar Incision once every 12s.</>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
+          const buffValue = totalAttr.em * (0.9 + 0.3 * refi);
+          applyModifier(desc, attPattBonus, ["NA.flat", "ES.flat"], buffValue, tracker);
+        },
+        desc: ({ refi }) => findByCode(goldSwords, 148)?.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+  },
   {
     code: 140,
     name: "Key of Hierophany",
@@ -70,7 +108,7 @@ const goldSwords: DataWeapon[] = [
           When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This
           effect increases the equipping character's <Green>Elemental Mastery</Green> by{" "}
           <Green b>{(9 + refi * 3) / 100}%</Green> of their <Green>Max HP</Green>. This effect can
-          trigger once every 0.3s. Max <Green b>3</Green> <Green>stacks</Green>.
+          trigger once every 0.3s. Max <Rose>3</Rose> stacks.
         </>,
         <>
           When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed,
@@ -113,8 +151,8 @@ const goldSwords: DataWeapon[] = [
           <>
             Obtain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. When
             other nearby party members use Elemental Skills, the character equipping this weapon
-            will gain 1 Wavespike stack. Max <Green b>2</Green> <Green>stacks</Green>. This effect
-            can be triggered once every 0.3s. {this.extra}
+            will gain 1 Wavespike stack. Max <Rose>2</Rose> stacks. This effect can be triggered
+            once every 0.3s. {this.extra}
           </>
         );
       },

@@ -1,5 +1,5 @@
 import type { DataWeapon, TotalAttribute } from "@Src/types";
-import { Green, Red } from "@Components/atoms";
+import { Green, Red, Rose } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 import { applyPercent, findByCode, round } from "@Src/utils";
@@ -63,8 +63,8 @@ const goldPolearms: DataWeapon[] = [
         <>
           When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be
           gained for 10s: the equipping character will gain <Green b>{21 + refi * 7}%</Green> of
-          their <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. Max <Green b>3</Green>{" "}
-          <Green>stacks</Green>.
+          their <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. Max <Rose>3</Rose>{" "}
+          stacks.
         </>,
       ],
     }),

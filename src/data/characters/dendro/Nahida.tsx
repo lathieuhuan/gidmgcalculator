@@ -75,6 +75,7 @@ const Nahida: DataCharacter = {
             { root: 103.2, attributeType: "atk" },
             { root: 206.4, attributeType: "em" },
           ],
+          isWholeFactor: true,
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
             let desc = [];
