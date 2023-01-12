@@ -112,13 +112,13 @@ const Tartaglia: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Tartaglia's <Green>Normal and Charged Attacks</Green> are converted to{" "}
           <Hydro>Hydro DMG</Hydro> that cannot be overridden.
         </>
       ),
-      affect: EModAffect.SELF,
       infuseConfig: {
         overwritable: false,
         disabledNAs: true,

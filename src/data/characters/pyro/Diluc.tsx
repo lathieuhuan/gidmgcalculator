@@ -128,6 +128,7 @@ const Diluc: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Diluc deals <Green b>15%</Green> <Green>more DMG</Green> to opponents whose HP is above
@@ -135,12 +136,12 @@ const Diluc: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "all.pct", 15),
     },
     {
       index: 3,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and{" "}
@@ -149,7 +150,6 @@ const Diluc: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
@@ -165,6 +165,7 @@ const Diluc: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the
@@ -172,12 +173,12 @@ const Diluc: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "ES.pct", 40),
     },
     {
       index: 5,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Within 6s after casting Searing Onslaught [ES], the next <Rose>2</Rose>{" "}
@@ -186,7 +187,6 @@ const Diluc: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct", 30, tracker);
         applyModifier(desc, totalAttr, "naAtkSpd", 30, tracker);

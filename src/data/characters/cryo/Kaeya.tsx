@@ -84,6 +84,7 @@ const Kaeya: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Kaeya's <Green>Normal and Charged Attack CRIT Rate</Green> against opponents affected by
@@ -91,7 +92,6 @@ const Kaeya: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", ["NA.cRate", "CA.cRate"], 15),
     },
   ],

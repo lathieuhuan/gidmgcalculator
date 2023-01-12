@@ -112,6 +112,7 @@ const Yoimiya: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
           During Niwabi Fire-Dance [ES], Yoimiya's <Green>Normal Attack DMG</Green> will be
@@ -122,7 +123,6 @@ const Yoimiya: DataCharacter = {
           <Rose>10 stacks</Rose>.
         </>
       ),
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Stacks (A4)",
@@ -131,7 +131,7 @@ const Yoimiya: DataCharacter = {
           max: 10,
         },
       ],
-      applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs = [], desc, tracker }) => {
+      applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs, desc, tracker }) => {
         const buffValue = getESBuffValue(char, partyData);
         applyModifier(desc, attPattBonus, "NA.specialMult", buffValue, tracker);
 
@@ -146,6 +146,7 @@ const Yoimiya: DataCharacter = {
     {
       index: 2,
       src: EModSrc.A4,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           Using Ryuukin Saxifrage causes nearby party members (excluding Yoimiya) to gain a{" "}
@@ -156,7 +157,6 @@ const Yoimiya: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.TEAMMATE,
       inputConfigs: [
         {
           type: "stacks",
@@ -171,6 +171,7 @@ const Yoimiya: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When an opponent affected by Aurous Blaze is defeated within its duration, Yoimiya's{" "}
@@ -178,12 +179,12 @@ const Yoimiya: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "atk_", 20),
     },
     {
       index: 4,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a{" "}
@@ -191,7 +192,6 @@ const Yoimiya: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "pyro", 25),
     },
   ],

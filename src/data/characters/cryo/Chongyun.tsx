@@ -89,6 +89,7 @@ const Chongyun: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           Sword, Claymore, or Polearm-wielding characters within Spirit Blade: Chonghua's Layered
@@ -97,7 +98,6 @@ const Chongyun: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
         if (["sword", "claymore", "polearm"].includes(charData.weaponType))
           applyModifier(desc, totalAttr, "naAtkSpd", 8, tracker);
@@ -106,6 +106,7 @@ const Chongyun: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Spirit Blade: Cloud-Parting Star <Green>[EB]</Green> deals <Green b>15%</Green>{" "}
@@ -114,7 +115,6 @@ const Chongyun: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "EB.pct", 15),
     },
   ],

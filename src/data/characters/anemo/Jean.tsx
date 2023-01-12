@@ -119,6 +119,7 @@ const Jean: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C2,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           When Jean picks up an Elemental Orb/Particle, all party members have their{" "}
@@ -127,7 +128,6 @@ const Jean: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
     },
   ],

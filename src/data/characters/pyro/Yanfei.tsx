@@ -122,13 +122,13 @@ const Yanfei: DataCharacter = {
     {
       index: 3,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
           Increases <Green>Charged Attack DMG</Green> by{" "}
           <Green b>{getEBBuffValue(char, partyData)}%</Green>.
         </>
       ),
-      affect: EModAffect.SELF,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "CA.pct", getEBBuffValue(char, partyData), tracker);
       },
@@ -136,6 +136,7 @@ const Yanfei: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Yanfei's Charged Attack consumes Scarlet Seals, each Scarlet Seal will increase her{" "}
@@ -143,7 +144,6 @@ const Yanfei: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
@@ -157,6 +157,7 @@ const Yanfei: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by <Green b>20%</Green> against
@@ -164,7 +165,6 @@ const Yanfei: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "CA.cRate", 20),
     },
   ],

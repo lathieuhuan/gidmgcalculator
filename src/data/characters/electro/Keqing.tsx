@@ -88,6 +88,7 @@ const Keqing: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing
@@ -95,7 +96,6 @@ const Keqing: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       infuseConfig: {
         overwritable: true,
       },
@@ -103,6 +103,7 @@ const Keqing: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After casting Starward Sword [EB], Keqing's <Green>CRIT Rate</Green> and{" "}
@@ -110,12 +111,12 @@ const Keqing: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", ["cRate", "er"], 15),
     },
     {
       index: 2,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           For 10s after Keqing triggers an Electro-related Elemental Reaction, her{" "}
@@ -123,12 +124,12 @@ const Keqing: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "atk_", 25),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst,
@@ -137,7 +138,6 @@ const Keqing: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",

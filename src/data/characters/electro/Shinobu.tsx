@@ -115,12 +115,11 @@ const Shinobu: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Sanctifying Ring's [ES] abilities will be boosted based on Shinobu's{" "}
-          <Green>Elemental Mastery</Green>:
+          Sanctifying Ring's [ES] abilities are boosted:
           <br />• <Green>Healing amount</Green> will be increased by <Green b>75%</Green> of{" "}
-          Elemental Mastery.
-          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of Elemental
-          Mastery.
+          <Green>Elemental Mastery</Green>.
+          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of{" "}
+          <Green>Elemental Mastery</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -130,6 +129,7 @@ const Shinobu: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Shinobu's HP is not higher than 50%, her <Green>Healing Bonus</Green> is increased by{" "}
@@ -137,12 +137,12 @@ const Shinobu: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "healBn", 15),
     },
     {
       index: 2,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Shinobu's HP drops below 25%, she will gain <Green b>150</Green>{" "}
@@ -150,7 +150,6 @@ const Shinobu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 150),
     },
   ],

@@ -154,6 +154,7 @@ const Xinyan: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           Characters shielded by Sweeping Fervor [ES] deal <Green b>15%</Green> increased{" "}
@@ -161,12 +162,12 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "phys", 15),
     },
     {
       index: 1,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Upon scoring a CRIT Hit, increases <Green>ATK SPD</Green> of Xinyan's{" "}
@@ -174,7 +175,6 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", ["naAtkSpd", "caAtkSpd"], 12),
     },
   ],

@@ -130,6 +130,7 @@ const Noelle: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           • Grants Noelle a <Geo>Geo Infusion</Geo> that cannot be overridden.
@@ -137,7 +138,6 @@ const Noelle: DataCharacter = {
           <Lightgold>C6</Lightgold>, the multipler bonus is increased by <Green b>50%</Green>.
         </>
       ),
-      affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,

@@ -53,6 +53,7 @@ const GeoMC: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Party members within the radius of Wake of Earth have their <Green>CRIT Rate</Green>{" "}
@@ -60,7 +61,6 @@ const GeoMC: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "cRate", 10),
     },
   ],

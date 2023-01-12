@@ -105,6 +105,7 @@ const Xingqiu: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen <Green>[ES] DMG</Green>{" "}
@@ -112,7 +113,6 @@ const Xingqiu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "ES.specialMult", 50),
     },
   ],

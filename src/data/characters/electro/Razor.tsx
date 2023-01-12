@@ -118,6 +118,7 @@ const Razor: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
           Raises Razor's <Green>ATK SPD</Green> by{" "}
@@ -130,7 +131,6 @@ const Razor: DataCharacter = {
           .
         </>
       ),
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
@@ -144,6 +144,7 @@ const Razor: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Picking up an Elemental Orb or Particle increases Razor's <Green>DMG</Green> by{" "}
@@ -151,12 +152,12 @@ const Razor: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "all.pct", 10),
     },
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Increases <Green>CRIT Rate</Green> against opponents with less than 30% HP by{" "}
@@ -164,7 +165,6 @@ const Razor: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "cRate", 10),
     },
   ],

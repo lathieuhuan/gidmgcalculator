@@ -180,6 +180,7 @@ const Dori: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           When Energy of the character connected to the Lamp Spirit{" "}
@@ -187,7 +188,6 @@ const Dori: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "er", 30),
     },
   ],

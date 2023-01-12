@@ -142,6 +142,7 @@ const Eula: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Every time Grimheart stacks [~ES] are consumed, Eula's <Green>Physical DMG</Green> is
@@ -150,12 +151,12 @@ const Eula: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "phys", 30),
     },
     {
       index: 1,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           <Green>Lightfall Swords DMG</Green> is increased by <Green b>25%</Green> against opponents
@@ -163,7 +164,6 @@ const Eula: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
     },
   ],
   debuffs: [

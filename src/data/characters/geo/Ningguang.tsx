@@ -97,6 +97,7 @@ const Ningguang: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           A character that passes through the Jade Screen [~ES] will gain a <Green b>12%</Green>{" "}
@@ -104,7 +105,6 @@ const Ningguang: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "geo", 12),
     },
   ],

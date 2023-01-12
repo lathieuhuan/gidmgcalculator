@@ -204,6 +204,7 @@ const Ayato: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           • Converts his Normal Attack DMG into AoE <Hydro>Hydro DMG</Hydro> (Shunsuiken) that
@@ -214,7 +215,6 @@ const Ayato: DataCharacter = {
           <Green b>50%</Green> when he has at least 3 Namisen stacks.
         </>
       ),
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Namisen stacks",
@@ -235,13 +235,13 @@ const Ayato: DataCharacter = {
     {
       index: 1,
       src: EModSrc.EB,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, char, partyData, inputs }) => (
         <>
           Increases the <Green>Normal Attack DMG</Green> of characters within its AoE by{" "}
           <Green b>{getEBBuffValue(toSelf, char, partyData, inputs)}%</Green>.
         </>
       ),
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           label: "Elemental Burst Level",
@@ -259,6 +259,7 @@ const Ayato: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           <Green>Shunsuiken DMG</Green> is increased by <Green b>40%</Green> against opponents with
@@ -266,11 +267,11 @@ const Ayato: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
     },
     {
       index: 5,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           After using Kamisato Art: Suiyuu [EB], all nearby party members will have{" "}
@@ -278,7 +279,6 @@ const Ayato: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
     },
   ],

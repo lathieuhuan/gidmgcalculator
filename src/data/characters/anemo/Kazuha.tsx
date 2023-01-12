@@ -109,7 +109,8 @@ const Kazuha: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C4,
-      desc: ({ toSelf, totalAttr, inputs = [] }) => {
+      affect: EModAffect.PARTY,
+      desc: ({ toSelf, totalAttr, inputs }) => {
         const elmtIndex = inputs[0] || 0;
         return (
           <>
@@ -117,19 +118,18 @@ const Kazuha: DataCharacter = {
             <Green>Elemental DMG Bonus</Green> to the element absorbed by Swirl for every point of{" "}
             <Green>Elemental Mastery</Green> he has for 8s.{" "}
             <Red className="capitalize">
-              {VISION_TYPES[elmtIndex]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs || [])}
+              {VISION_TYPES[elmtIndex]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs)}
               %.
             </Red>
           </>
         );
       },
       isGranted: checkAscs[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Element Swirled", type: "anemoable" },
         { label: "Elemental Mastery", type: "text", max: 9999, for: "teammate" },
       ],
-      applyFinalBuff: ({ toSelf, totalAttr, inputs = [], desc, tracker }) => {
+      applyFinalBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
         const elmtIndex = inputs[0] || 0;
         const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
         applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], buffValue, tracker);
@@ -138,6 +138,7 @@ const Kazuha: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Kazuha Slash's [EB] field increases the <Green>Elemental Mastery</Green> of him and
@@ -145,12 +146,12 @@ const Kazuha: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "em", 200),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: ({ totalAttr }) => (
         <>
           After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an{" "}
@@ -160,7 +161,6 @@ const Kazuha: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const buffValue = Math.round(totalAttr.em * 0.2);
         applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);

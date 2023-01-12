@@ -125,6 +125,7 @@ const Ganyu: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After firing a Frostflake Arrow, the <Green>CRIT Rate</Green> of subsequent{" "}
@@ -133,11 +134,11 @@ const Ganyu: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
     },
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           Celestial Shower [EB] grants a <Green b>20%</Green> <Green>Cryo DMG Bonus</Green> to
@@ -145,12 +146,12 @@ const Ganyu: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "cryo", 20),
     },
     {
       index: 2,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Opponents within Celestial Shower [EB] take increased DMG which begins at{" "}
@@ -159,7 +160,6 @@ const Ganyu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           type: "stacks",

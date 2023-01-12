@@ -122,6 +122,7 @@ const Mona: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.PARTY,
       desc: (obj) => (
         <>
           Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG</Green> taken by
@@ -133,7 +134,6 @@ const Mona: DataCharacter = {
           <Green b>15%</Green>.
         </>
       ),
-      affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
@@ -161,6 +161,7 @@ const Mona: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green>{" "}
@@ -169,7 +170,6 @@ const Mona: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",

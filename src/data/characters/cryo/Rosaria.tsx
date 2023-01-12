@@ -87,6 +87,7 @@ const Rosaria: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her{" "}
@@ -94,12 +95,12 @@ const Rosaria: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "cRate", 12),
     },
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.TEAMMATE,
       desc: ({ inputs }) => (
         <>
           Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party
@@ -109,7 +110,6 @@ const Rosaria: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.TEAMMATE,
       inputConfigs: [
         {
           label: "CRIT Rate",
@@ -126,6 +126,7 @@ const Rosaria: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Rosaria deals a CRIT Hit, her <Green>Normal Attack Speed and DMG</Green> increases by{" "}
@@ -133,7 +134,6 @@ const Rosaria: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct", 10, tracker);
         applyModifier(desc, totalAttr, "naAtkSpd", 10, tracker);

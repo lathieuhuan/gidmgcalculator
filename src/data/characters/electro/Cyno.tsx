@@ -245,6 +245,7 @@ const Cyno: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Under Pactsworn Pathclearer state:
@@ -252,7 +253,6 @@ const Cyno: DataCharacter = {
           <br />• Cyno gains an <Electro>Electro Infusion</Electro> that cannot be overriden.
         </>
       ),
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
         overwritable: false,
@@ -262,24 +262,24 @@ const Cyno: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => Cyno.passiveTalents[0].xtraDesc?.[0],
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
     },
     {
       index: 3,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => Cyno.constellation[0].xtraDesc?.[0],
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "naAtkSpd", 20),
     },
     {
       index: 4,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => Cyno.constellation[1].desc,
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",

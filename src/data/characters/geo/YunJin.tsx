@@ -161,7 +161,7 @@ const YunJin: DataCharacter = {
         { label: "Constrellation 6", type: "check", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, inputs = [], char, partyData } = obj;
+        const { toSelf, inputs, char, partyData } = obj;
         const DEF = toSelf ? obj.totalAttr.def : inputs[0] || 0;
         const level = toSelf
           ? finalTalentLv({ char, talents: YunJin.activeTalents, talentType: "EB", partyData })
@@ -189,6 +189,7 @@ const YunJin: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Yun Jin trigger the Crystallize Reaction, her <Green>DEF</Green> is increased by{" "}
@@ -196,7 +197,6 @@ const YunJin: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "def_", 20),
     },
   ],

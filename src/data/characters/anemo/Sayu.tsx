@@ -168,6 +168,7 @@ const Sayu: DataCharacter = {
     {
       index: 1,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Yoohoo Art: Fuuin Dash [ES] gains the following effects:
@@ -177,7 +178,6 @@ const Sayu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Seconds (max. 10)",

@@ -1,5 +1,5 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
-import { Green, Lightgold, Red } from "@Components/atoms";
+import { Electro, Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -104,16 +104,16 @@ const Sara: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, inputs }) => (
         <>
           Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
           Sara's <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK Bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
-          <br />• At <Lightgold>C6</Lightgold>, it also increases <Green>Electro Crit DMG</Green> by{" "}
-          <Green b>60%</Green>.
+          <br />• At <Lightgold>C6</Lightgold>, it also increases <Electro>Electro</Electro>{" "}
+          <Green>Crit DMG</Green> by <Green b>60%</Green>.
         </>
       ),
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },

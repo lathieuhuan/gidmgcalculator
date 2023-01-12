@@ -175,6 +175,7 @@ const Faruzan: DataCharacter = {
     {
       index: 0,
       src: "Prayerful Wind's Benefit",
+      affect: EModAffect.PARTY,
       desc: (args) => {
         return (
           <>
@@ -187,7 +188,6 @@ const Faruzan: DataCharacter = {
           </>
         );
       },
-      affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "text", max: 13, for: "teammate" },
         { label: "Ascension 4", type: "check", for: "teammate" },

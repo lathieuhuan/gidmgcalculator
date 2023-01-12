@@ -92,18 +92,19 @@ const Xiangling: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
+      affect: EModAffect.ONE_UNIT,
       desc: () => (
         <>
           Picking up a chili pepper increases <Green>ATK</Green> by <Green b>10%</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.ONE_UNIT,
       applyBuff: makeModApplier("totalAttr", "atk_", 10),
     },
     {
       index: 1,
       src: EModSrc.C6,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           For the duration of Pyronado, all party members receive a <Green b>15%</Green>{" "}
@@ -111,7 +112,6 @@ const Xiangling: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "pyro", 15),
     },
   ],

@@ -92,6 +92,7 @@ const Venti: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Venti picks up an Elemental Orb or Particle, he receives a <Green b>25%</Green>{" "}
@@ -99,7 +100,6 @@ const Venti: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "anemo", 25),
     },
   ],

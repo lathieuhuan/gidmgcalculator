@@ -97,31 +97,32 @@ const Albedo: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           <Green>Transient Blossoms</Green> deal <Green b>25%</Green> <Green>more DMG</Green> to
           opponents whose HP is below 50%.
         </>
       ),
-      affect: EModAffect.SELF,
       isGranted: checkAscs[1],
     },
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Using Rite of Progeniture: Tectonic Tide [EB] increases the{" "}
           <Green>Elemental Mastery</Green> of nearby party members by <Green b>125</Green> for 10s.
         </>
       ),
-      affect: EModAffect.PARTY,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "em", 125),
     },
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture:
@@ -131,7 +132,6 @@ const Albedo: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
@@ -146,26 +146,26 @@ const Albedo: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C4,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           Active party members within the Solar Isotoma [ES] field have their{" "}
           <Green>Plunging Attack DMG</Green> increased by <Green b>30%</Green>.
         </>
       ),
-      affect: EModAffect.ACTIVE_UNIT,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "PA.pct", 30),
     },
     {
       index: 4,
       src: EModSrc.C6,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           Active party members within the Solar Isotoma [ES] field who are protected by a shield
           created by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
         </>
       ),
-      affect: EModAffect.ACTIVE_UNIT,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "all.pct", 17),
     },

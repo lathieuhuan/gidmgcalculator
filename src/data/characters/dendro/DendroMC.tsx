@@ -117,9 +117,9 @@ const DendroMC: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => DendroMC.passiveTalents[0].desc,
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           type: "stacks",
@@ -133,9 +133,9 @@ const DendroMC: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => DendroMC.constellation[5].desc,
       isGranted: checkCons[6],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           label: "Element contact",

@@ -66,6 +66,7 @@ const ElectroMC: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.ONE_UNIT,
       desc: () => (
         <>
           Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
@@ -73,7 +74,6 @@ const ElectroMC: DataCharacter = {
           Traveler's <Green>Energy Recharge</Green>.
         </>
       ),
-      affect: EModAffect.ONE_UNIT,
       inputConfigs: [
         { label: "A4 Passive", type: "check", for: "teammate" },
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },

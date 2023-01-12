@@ -153,6 +153,7 @@ const Gorou: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, charData, inputs, partyData }) => {
         const numOfGeo = countGeo(charData, partyData);
         return (
@@ -181,7 +182,6 @@ const Gorou: DataCharacter = {
           </>
         );
       },
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -208,6 +208,7 @@ const Gorou: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           After using Juuga: Forward Unto Victory [EB], all nearby party members' <Green>DEF</Green>{" "}
@@ -215,12 +216,12 @@ const Gorou: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "def_", 25),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.PARTY,
       desc: ({ charData, partyData }) => {
         const n = countGeo(charData, partyData);
         return (
@@ -244,7 +245,6 @@ const Gorou: DataCharacter = {
         );
       },
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
       applyBuff: (obj) => {
         const buffValue = [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1];
         applyModifier(obj.desc, obj.attElmtBonus, "geo.cDmg", buffValue, obj.tracker);

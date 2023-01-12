@@ -107,6 +107,7 @@ const Aloy: DataCharacter = {
     {
       index: 0,
       src: "Coil stacks",
+      affect: EModAffect.SELF,
       desc: (args) => (
         <>
           Increases Aloy's <Green>Normal Attack DMG</Green>. When she has 4 Coil stacks, all stacks
@@ -120,7 +121,6 @@ const Aloy: DataCharacter = {
           <Rose>35%</Rose>.
         </>
       ),
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
@@ -150,6 +150,7 @@ const Aloy: DataCharacter = {
     {
       index: 2,
       src: EModSrc.A1,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           when Aloy receives the Coil effect, nearby party members' <Green>ATK</Green> is increased
@@ -157,7 +158,6 @@ const Aloy: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "atk_", 8),
     },
   ],

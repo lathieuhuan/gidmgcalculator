@@ -115,6 +115,7 @@ const Beidou: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After unleashing Tidecaller [ES] with its maximum DMG Bonus, Beidou's{" "}
@@ -123,7 +124,6 @@ const Beidou: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 15, tracker);
         applyModifier(desc, totalAttr, ["naAtkSpd", "caAtkSpd"], 15, tracker);

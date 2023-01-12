@@ -95,13 +95,13 @@ const Ayaka: DataCharacter = {
     {
       index: 0,
       src: "Alternate Sprint",
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Ayaka reappears from Senho form, she gains a <Cryo>Cryo Infusion</Cryo> for a brief
           period.
         </>
       ),
-      affect: EModAffect.SELF,
       infuseConfig: {
         overwritable: true,
       },
@@ -109,6 +109,7 @@ const Ayaka: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After using Kamisato Art: Hyouka [ES], Ayaka's{" "}
@@ -116,12 +117,12 @@ const Ayaka: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 30),
     },
     {
       index: 2,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains{" "}
@@ -129,12 +130,12 @@ const Ayaka: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "cryo", 18),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Ayaka gains Usurahi Butou every 10s, increasing her <Green>Charged Attack DMG</Green> by{" "}
@@ -142,7 +143,6 @@ const Ayaka: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "CA.pct", 298),
     },
   ],

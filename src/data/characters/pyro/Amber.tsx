@@ -106,38 +106,38 @@ const Amber: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Aimed Shot hits on weak spots increase <Green>ATK</Green> by <Green b>15%</Green> for 10s.
         </>
       ),
-      affect: EModAffect.SELF,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "atk_", 15),
     },
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Increases Baron Bunny <Green>[ES] DMG</Green> via manual detonation by{" "}
           <Green b>200%</Green>.
         </>
       ),
-      affect: EModAffect.SELF,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attPattBonus", "ES.pct", 200),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and{" "}
           <Green>ATK</Green> by <Green b>15%</Green> for 10s.
         </>
       ),
-      affect: EModAffect.PARTY,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "atk_", 15),
     },

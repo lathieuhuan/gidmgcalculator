@@ -86,6 +86,7 @@ const Sucrose: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           When Sucrose triggers a Swirl, all characters in the party with the matching element
@@ -93,12 +94,12 @@ const Sucrose: DataCharacter = {
           <Green b>50</Green> for 8s.
         </>
       ),
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 50),
     },
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.TEAMMATE,
       desc: ({ inputs }) => (
         <>
           When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type
@@ -108,7 +109,6 @@ const Sucrose: DataCharacter = {
           <Red>Elemental Mastery Bonus: {Math.round((inputs[0] || 0) * 0.2)}.</Red>
         </>
       ),
-      affect: EModAffect.TEAMMATE,
       inputConfigs: [
         {
           label: "Elemental Mastery",
@@ -123,6 +123,7 @@ const Sucrose: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all
@@ -131,7 +132,6 @@ const Sucrose: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Element Absorbed",

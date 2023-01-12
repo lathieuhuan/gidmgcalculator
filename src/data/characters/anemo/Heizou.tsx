@@ -91,18 +91,19 @@ const Heizou: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding
           Heizou) <Green>Elemental Mastery</Green> by <Green b>80</Green> for 10s.
         </>
       ),
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 80),
     },
     {
       index: 1,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           For 5s after Heizou takes the field, his <Green>Normal Attack SPD</Green> is increased by{" "}
@@ -110,12 +111,12 @@ const Heizou: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
     },
     {
       index: 2,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Each Declension stack increases Heartstopper Strike <Green>[ES] CRIT Rate</Green> by{" "}
@@ -124,7 +125,6 @@ const Heizou: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",

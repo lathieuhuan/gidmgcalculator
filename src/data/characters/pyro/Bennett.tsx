@@ -119,6 +119,7 @@ const Bennett: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, inputs }) => (
         <>
           Increases <Green>ATK</Green> of the characters within its AoE based on Bennett's{" "}
@@ -129,7 +130,6 @@ const Bennett: DataCharacter = {
           <Green>Pyro DMG Bonus</Green>.
         </>
       ),
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
@@ -137,7 +137,7 @@ const Bennett: DataCharacter = {
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {
-        const { toSelf, char, totalAttr, inputs = [] } = obj;
+        const { toSelf, char, totalAttr, inputs } = obj;
         const args = toSelf
           ? [
               totalAttr.base_atk,

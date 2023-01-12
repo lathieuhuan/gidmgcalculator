@@ -159,6 +159,7 @@ const Candace: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Prayer of the Crimson Crown [~EB] has the following properties:
@@ -168,7 +169,6 @@ const Candace: DataCharacter = {
           for every 1,000 points of Candace's <Green>Max HP</Green>.
         </>
       ),
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Max HP (A4)",
@@ -185,9 +185,9 @@ const Candace: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => Candace.constellation[1].desc,
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "hp_", 20),
     },
   ],

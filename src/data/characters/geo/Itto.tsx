@@ -150,6 +150,7 @@ const Itto: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           • Grants Itto a <Geo>Geo Infusion</Geo> that cannot be overridden.
@@ -157,7 +158,6 @@ const Itto: DataCharacter = {
           increases his <Green>ATK</Green> based on his <Green>DEF</Green>.
         </>
       ),
-      affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
@@ -175,6 +175,7 @@ const Itto: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           When the Raging Oni King state [EB] ends, all nearby party members gain{" "}
@@ -183,7 +184,6 @@ const Itto: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", ["def_", "atk_"], 20),
     },
   ],

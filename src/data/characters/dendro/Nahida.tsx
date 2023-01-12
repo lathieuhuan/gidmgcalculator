@@ -240,6 +240,7 @@ const Nahida: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => {
         const { value, pyroCount } = getEBBuff(char, partyData);
         return (
@@ -249,11 +250,11 @@ const Nahida: DataCharacter = {
           </>
         );
       },
-      affect: EModAffect.SELF,
     },
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           The Elemental Mastery of the active character within the Shrine of Maya will be increased
@@ -262,7 +263,6 @@ const Nahida: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           label: "Highest Elemental Mastery",
@@ -277,9 +277,9 @@ const Nahida: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C2,
+      affect: EModAffect.PARTY,
       desc: () => Nahida.constellation[1].xtraDesc![0],
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
       applyBuff: ({ rxnBonus, desc, tracker }) => {
         applyModifier(
           desc,
@@ -300,9 +300,9 @@ const Nahida: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C4,
+      affect: EModAffect.SELF,
       desc: () => Nahida.constellation[3].desc,
       isGranted: checkCons[4],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Number of the affected",
@@ -319,9 +319,9 @@ const Nahida: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
+      affect: EModAffect.PARTY,
       desc: () => Nahida.constellation[1].xtraDesc![1],
       isGranted: checkCons[2],
-      affect: EModAffect.PARTY,
       applyDebuff: makeModApplier("resistReduct", "def", 30),
     },
   ],

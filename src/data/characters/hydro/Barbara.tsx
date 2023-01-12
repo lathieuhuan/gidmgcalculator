@@ -107,6 +107,7 @@ const Barbara: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           During Let the Show Begin's [ES] duration, your active character gains a{" "}
@@ -114,7 +115,6 @@ const Barbara: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.ACTIVE_UNIT,
       applyBuff: makeModApplier("totalAttr", "hydro", 15),
     },
   ],

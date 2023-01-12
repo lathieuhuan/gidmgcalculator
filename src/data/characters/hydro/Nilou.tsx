@@ -235,7 +235,8 @@ const Nilou: DataCharacter = {
     {
       index: 0,
       src: "Golden Chalice's Bounty",
-      desc: ({ toSelf, totalAttr, inputs = [] }) => (
+      affect: EModAffect.PARTY,
+      desc: ({ toSelf, totalAttr, inputs }) => (
         <>
           Increases characters' <Green>Elemental Mastery</Green> by <Green b>100</Green> for 10s
           whenever they are hit by Dendro attacks. Also, triggering Bloom reaction will create
@@ -247,7 +248,6 @@ const Nilou: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Max HP (A4)",

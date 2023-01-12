@@ -86,6 +86,7 @@ const Collei: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is
@@ -93,12 +94,12 @@ const Collei: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "er", 20),
     },
     {
       index: 4,
       src: EModSrc.C4,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           Using Trump-Card Kitty [EB] will increase all nearby characters'{" "}
@@ -106,7 +107,6 @@ const Collei: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "em", 60),
     },
   ],

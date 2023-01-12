@@ -91,6 +91,7 @@ const Klee: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Explosive Spark is consumed by the next <Green>Charged Attacks</Green>, which costs no
@@ -98,12 +99,12 @@ const Klee: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "CA.pct", 50),
     },
     {
       index: 1,
       src: EModSrc.C6,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           When Sparks 'n' Splash [EB] is used, all party members will gain a <Green b>10%</Green>{" "}
@@ -111,7 +112,6 @@ const Klee: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "pyro", 10),
     },
   ],

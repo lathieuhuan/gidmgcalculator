@@ -119,8 +119,8 @@ const Thoma: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Crimson Ooyoroi's [EB] <Green>Fiery Collapse DMG</Green> is increased by{" "}
-          <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>.
+          <Green>Fiery Collapse DMG</Green> [~EB] is increased by <Green b>2.2%</Green> of Thoma's{" "}
+          <Green>Max HP</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -130,15 +130,15 @@ const Thoma: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           When your current active character obtains or refreshes a Blazing Barrier, this
           character's <Green>Shield Strength</Green> will increase by <Green b>5%</Green> for 6s.
-          Max <Rose>5 stacks</Rose>, each stack can be obtained once every 0.3 seconds.
+          Max <Rose>5</Rose> stacks, each stack can be obtained once every 0.3 seconds.
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           type: "stacks",
@@ -152,6 +152,7 @@ const Thoma: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
+      isGranted: checkCons[6],
       desc: () => (
         <>
           When a Blazing Barrier is obtained or refreshed, all party members'{" "}
@@ -159,7 +160,6 @@ const Thoma: DataCharacter = {
           <Green b>15%</Green> for 6s.
         </>
       ),
-      isGranted: checkCons[6],
       affect: EModAffect.PARTY,
       applyBuff: makeModApplier("attPattBonus", [...NCPA_PERCENTS], 15),
     },

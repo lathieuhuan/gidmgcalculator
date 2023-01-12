@@ -138,6 +138,7 @@ const Yelan: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A4,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           During Depth-Clarion Dice [EB], your own active character gains <Green b>1%</Green>{" "}
@@ -146,7 +147,6 @@ const Yelan: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           label: "Stacks (max 14)",
@@ -161,6 +161,7 @@ const Yelan: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for
@@ -168,7 +169,6 @@ const Yelan: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           type: "stacks",

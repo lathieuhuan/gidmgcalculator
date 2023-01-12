@@ -149,6 +149,7 @@ const Tighnari: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by{" "}
@@ -156,12 +157,12 @@ const Tighnari: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "em", 50),
     },
     {
       index: 3,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains{" "}
@@ -169,12 +170,12 @@ const Tighnari: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "dendro", 20),
     },
     {
       index: 4,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain{" "}
@@ -184,7 +185,6 @@ const Tighnari: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Trigger reactions",

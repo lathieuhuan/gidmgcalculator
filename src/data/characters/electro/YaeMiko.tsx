@@ -106,6 +106,7 @@ const YaeMiko: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => (
         <>
           When Sesshou Sakura thunderbolt [ES] hit opponents, the <Green>Electro DMG Bonus</Green>{" "}
@@ -113,12 +114,12 @@ const YaeMiko: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       applyBuff: makeModApplier("totalAttr", "electro", 20),
     },
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Sesshou Sakura's attacks will ignore <Green b>60%</Green> of the opponents'{" "}
@@ -126,7 +127,6 @@ const YaeMiko: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", "ES.defIgnore", 60),
     },
   ],

@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
-import { Anemo, Green, Rose } from "@Components/atoms";
+import { Anemo, Green, Lightgold, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVIER_PAs } from "../constants";
@@ -122,56 +122,47 @@ const Xiao: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
           Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
           <Green b>{getEBBuffValue(char, partyData)}%</Green> and grants him an{" "}
           <Anemo>Anemo Infusion</Anemo> that cannot be overridden.
+          <br />• At <Lightgold>A1</Lightgold>, Xiao's <Green>DMG</Green> is increased by{" "}
+          <Green b>5%</Green>, and a further <Green b>5%</Green> for every 3s the ability persists.
+          Max <Rose>25%</Rose>
         </>
       ),
-      affect: EModAffect.SELF,
-      applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
-        const buffValue = getEBBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
-      },
-      infuseConfig: {
-        overwritable: false,
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.A1,
-      desc: () => (
-        <>
-          With the effects of Bane of All Evil [EB], Xiao's <Green>DMG</Green> is increases by{" "}
-          <Green b>5%</Green>. DMG increases by a further <Green b>5%</Green> for every 3s the
-          ability persists. Max <Rose>25%</Rose>.
-        </>
-      ),
-      isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",
           max: 5,
         },
       ],
-      applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs[0] || 0), tracker);
+      applyBuff: ({ attPattBonus, char, partyData, inputs, desc, tracker }) => {
+        const buffValue = getEBBuffValue(char, partyData);
+        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
+
+        if (checkAscs[1](char)) {
+          applyModifier(desc, attPattBonus, "all.pct", 5 * (inputs[0] || 0), tracker);
+        }
+      },
+      infuseConfig: {
+        overwritable: false,
       },
     },
     {
       index: 2,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Using Lemniscatic Wind Cycling increases subsequent Lemniscatic Wind Cycling{" "}
           <Green>[ES] DMG</Green> by <Green b>15%</Green>. This effect lasts for 7s, and has a
-          maximum of <Rose>3 stacks</Rose>.
+          maximum of <Rose>3</Rose> stacks.
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           type: "stacks",

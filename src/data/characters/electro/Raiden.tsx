@@ -274,6 +274,7 @@ const Raiden: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.PARTY,
       desc: ({ toSelf, char, charData, inputs, partyData }) => (
         <>
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
@@ -284,7 +285,6 @@ const Raiden: DataCharacter = {
           </Red>
         </>
       ),
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -304,26 +304,34 @@ const Raiden: DataCharacter = {
     {
       index: 1,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: ({ char, charBuffCtrls, partyData }) => {
         const { stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
         return (
           <>
             Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased
             based on the number of Chakra Desiderata's Resolve stacks consumed.{" "}
-            <Red>Total Resolve: {stacks}.</Red>
+            <Red>Total Resolve: {stacks}</Red>
             <br />
             Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.
             <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from
             Electro characters by <Green b>80%</Green>, from characters of other visions by{" "}
             <Green b>20%</Green>. <Red>Extra Resolve: {extraStacks}</Red>
+            <br />• At <Lightgold>C2</Lightgold>, the Raiden Shogun's attacks ignore{" "}
+            <Green b>60%</Green> of opponents' <Green>DEF</Green>.
           </>
         );
       },
-      affect: EModAffect.SELF,
       inputConfigs: [
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
+      applyBuff: ({ char, attPattBonus, desc, tracker }) => {
+        if (checkCons[2](char)) {
+          const fields = ATTACK_PATTERNS.map((t) => `${t}.defIgnore`) as AttackPatternPath[];
+          applyModifier(desc, attPattBonus, fields, 60, tracker);
+        }
+      },
       infuseConfig: {
         overwritable: false,
         disabledNAs: true,
@@ -332,6 +340,7 @@ const Raiden: DataCharacter = {
     {
       index: 4,
       src: EModSrc.C4,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           When the Musou Isshin state expires, all nearby party members (excluding the Raiden
@@ -339,24 +348,7 @@ const Raiden: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "atk_", 30),
-    },
-    {
-      index: 5,
-      src: EModSrc.C2,
-      desc: () => (
-        <>
-          Under the Musou Isshin state, the Raiden Shogun's attacks ignore <Green b>60%</Green> of
-          opponents' <Green>DEF</Green>.
-        </>
-      ),
-      isGranted: checkCons[2],
-      affect: EModAffect.SELF,
-      applyBuff: ({ attPattBonus, desc, tracker }) => {
-        const fields = ATTACK_PATTERNS.map((t) => `${t}.defIgnore`) as AttackPatternPath[];
-        applyModifier(desc, attPattBonus, fields, 60, tracker);
-      },
     },
   ],
 };

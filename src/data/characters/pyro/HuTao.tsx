@@ -138,13 +138,13 @@ const HuTao: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Increases Hu Tao's <Green>ATK</Green> based on her <Green>Max HP</Green>, and grants her a{" "}
           <Pyro>Pyro Infusion</Pyro>.
         </>
       ),
-      affect: EModAffect.SELF,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
@@ -163,6 +163,7 @@ const HuTao: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will
@@ -170,12 +171,12 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.TEAMMATE,
       applyBuff: makeModApplier("totalAttr", "cRate", 12),
     },
     {
       index: 2,
       src: EModSrc.A4,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Hu Tao's HP is equal to or less than 50%, her <Green>Pyro DMG Bonus</Green> is
@@ -183,12 +184,12 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "pyro", 33),
     },
     {
       index: 5,
       src: EModSrc.C4,
+      affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
           Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all
@@ -197,12 +198,12 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      affect: EModAffect.TEAMMATE,
       applyFinalBuff: makeModApplier("totalAttr", "cRate", 12),
     },
     {
       index: 4,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her{" "}
@@ -210,7 +211,6 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "cRate", 100),
     },
   ],

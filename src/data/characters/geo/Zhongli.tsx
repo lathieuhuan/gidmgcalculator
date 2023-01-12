@@ -138,6 +138,7 @@ const Zhongli: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
           When Jade Shield takes DMG, the characters have their <Green>Shield Strength</Green>{" "}
@@ -146,7 +147,6 @@ const Zhongli: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           type: "stacks",

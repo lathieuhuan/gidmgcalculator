@@ -202,6 +202,7 @@ const Wanderer: DataCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
+      affect: EModAffect.SELF,
       desc: ({ char, partyData }) => {
         const { NA, CA } = getESBuffValue(char, partyData);
         return (
@@ -215,7 +216,6 @@ const Wanderer: DataCharacter = {
           </>
         );
       },
-      affect: EModAffect.SELF,
       applyBuff: ({ totalAttr, attPattBonus, char, partyData, desc, tracker }) => {
         const { NA, CA } = getESBuffValue(char, partyData);
         applyModifier(desc, attPattBonus, ["NA.specialMult", "CA.specialMult"], [NA, CA], tracker);
@@ -228,13 +228,13 @@ const Wanderer: DataCharacter = {
     {
       index: 1,
       src: EModSrc.A1,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           {Wanderer.passiveTalents[0].xtraDesc?.[0]} {Wanderer.passiveTalents[0].xtraDesc?.[1]}
         </>
       ),
       isGranted: checkAscs[1],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Infused element 1",
@@ -255,7 +255,7 @@ const Wanderer: DataCharacter = {
           options: ["Pyro", "Cryo", "Hydro"],
         },
       ],
-      applyBuff: ({ totalAttr, inputs = [], desc, tracker }) => {
+      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         if (inputs.includes(0)) {
           applyModifier(desc, totalAttr, "atk_", 30, tracker);
         }
@@ -267,6 +267,7 @@ const Wanderer: DataCharacter = {
     {
       index: 2,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: ({ charBuffCtrls }) => {
         return (
           <>
@@ -276,7 +277,6 @@ const Wanderer: DataCharacter = {
         );
       },
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       inputConfigs: [
         {
           label: "Current Kuugoryoku Points",

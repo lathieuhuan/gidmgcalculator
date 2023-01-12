@@ -126,6 +126,7 @@ const Kokomi: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
@@ -136,7 +137,6 @@ const Kokomi: DataCharacter = {
           increased by <Green b>10%</Green>.
         </>
       ),
-      affect: EModAffect.SELF,
       applyFinalBuff: (obj) => {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
@@ -159,6 +159,7 @@ const Kokomi: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C6,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           During Nereid's Ascension, Kokomi gains a <Green b>40%</Green>{" "}
@@ -167,7 +168,6 @@ const Kokomi: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("totalAttr", "hydro", 40),
     },
   ],

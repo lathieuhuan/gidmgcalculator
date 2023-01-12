@@ -110,6 +110,7 @@ const Qiqi: DataCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
+      affect: EModAffect.SELF,
       desc: () => (
         <>
           Qiqi's <Green>Normal and Charged Attack DMG</Green> against opponents affected by Cryo is
@@ -117,7 +118,6 @@ const Qiqi: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      affect: EModAffect.SELF,
       applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 15),
     },
   ],

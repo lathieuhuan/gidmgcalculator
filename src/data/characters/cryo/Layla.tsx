@@ -212,9 +212,9 @@ const Layla: DataCharacter = {
     {
       index: 0,
       src: EModSrc.A1,
+      affect: EModAffect.ACTIVE_UNIT,
       desc: () => Layla.passiveTalents[0].desc,
       isGranted: checkAscs[1],
-      affect: EModAffect.ACTIVE_UNIT,
       inputConfigs: [
         {
           type: "stacks",
@@ -228,9 +228,9 @@ const Layla: DataCharacter = {
     {
       index: 3,
       src: EModSrc.C4,
+      affect: EModAffect.PARTY,
       desc: () => Layla.constellation[3].xtraDesc![0],
       isGranted: checkCons[4],
-      affect: EModAffect.PARTY,
       inputConfigs: [
         {
           label: "Max HP",
