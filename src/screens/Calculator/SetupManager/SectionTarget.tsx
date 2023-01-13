@@ -26,20 +26,19 @@ interface SectionTargetProps {
 export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
-  const monster = useSelector((state) => state.calculator.monster);
-  const monsterData = findMonster(monster);
+  const dataMonster = findMonster(target);
 
   const [configOn, setConfigOn] = useState(false);
 
   let variantLabel = "";
 
-  if (monsterData?.variant) {
-    const { types } = monsterData.variant;
+  if (dataMonster?.variant) {
+    const { types } = dataMonster.variant;
 
     for (const type of types) {
-      if (typeof type === "string" && type === monster.variantType) {
+      if (typeof type === "string" && type === target.variantType) {
         variantLabel = `(${type})`;
-      } else if (typeof type === "object" && type.value === monster.variantType) {
+      } else if (typeof type === "object" && type.value === target.variantType) {
         variantLabel = type.label;
       }
     }
@@ -68,17 +67,17 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
         <p className="text-sm text-lightred">Target</p>
 
         <div className="mt-2 pr-6 flex flex-col items-start">
-          {monsterData?.names ? (
+          {dataMonster?.names ? (
             <div className="flex items-center relative">
               <FaChevronDown className="absolute top-1 left-0" />
               <select className="pl-6 pr-2 py-1 leading-none relative z-10 appearance-none text-lg">
-                {monsterData.names.map((name, i) => {
+                {dataMonster.names.map((name, i) => {
                   return <option key={i}>{name}</option>;
                 })}
               </select>
             </div>
           ) : (
-            <p className="text-lg">{monsterData?.title}</p>
+            <p className="text-lg">{dataMonster?.title}</p>
           )}
 
           {variantLabel && <p className="mt-1">{variantLabel}</p>}

@@ -5,11 +5,9 @@ import type {
   CalcSetupManageInfo,
   CalcWeapon,
   CharInfo,
-  Monster,
   PartiallyOptional,
   Resonance,
   Target,
-  UserSetup,
 } from "@Src/types";
 import type { CalculatorState } from "./types";
 import type {
@@ -36,14 +34,13 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
-import { bareLv, deepCopy, findByCode, findById, turnArray, countVision } from "@Src/utils";
+import { bareLv, deepCopy, findById, turnArray, countVision, findByCode } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 import {
   createCharInfo,
   createCharModCtrls,
   createElmtModCtrls,
-  createMonster,
   createTarget,
   createTeammate,
   createWeapon,
@@ -74,7 +71,6 @@ const initialState: CalculatorState = {
   setupsById: {},
   statsById: {},
   target: createTarget(),
-  monster: createMonster(),
   isError: false,
 };
 
@@ -128,7 +124,6 @@ export const calculatorSlice = createSlice({
       };
       // calculate will repopulate statsById
       state.statsById = {};
-      state.monster = createMonster();
 
       calculate(state);
     },
@@ -143,7 +138,6 @@ export const calculatorSlice = createSlice({
       // calculate will repopulate statsById
       state.statsById = {};
       state.target = target;
-      state.monster = createMonster();
       state.configs.separateCharInfo = false;
       state.activeId = ID;
       state.standardId = 0;
@@ -500,33 +494,63 @@ export const calculatorSlice = createSlice({
         ...state.target,
         ...action.payload,
       };
-      calculate(state);
-    },
-    updateMonster: (state, action: PayloadAction<Partial<Monster>>) => {
-      state.monster = {
-        ...state.monster,
-        ...action.payload,
-      };
-      const { code, variantType } = state.monster;
-      const monsterData = findByCode(monsters, code);
 
-      // not update target if monster code === 0 (custom monster)
-      if (monsterData && state.monster.code) {
-        const { resistance, variant } = monsterData;
+      const { target } = state;
+      const { code, variantType, inputs = [] } = target;
+      const dataMonster = findByCode(monsters, code);
+
+      // not update target if monster code === 0 (custom target)
+      if (dataMonster?.code) {
+        const { resistance, variant } = dataMonster;
         const { base, ...otherResist } = resistance;
+        const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
-          state.target[atkElmt] = base;
+          target.resistances[atkElmt] = base;
         }
         for (const [key, value] of Object.entries(otherResist)) {
-          state.target[key as AttackElement] = value;
+          target.resistances[key as AttackElement] = value;
         }
 
-        if (variantType && variant) {
-          state.target[variantType] += variant.change;
+        if (variantType && variant?.change) {
+          target.resistances[variantType] += variant.change;
         }
-        calculate(state, true);
+
+        const updateResistances = ([key, value]: [string, number]) => {
+          switch (key) {
+            case "base":
+              for (const attElmt of ATTACK_ELEMENTS) {
+                target.resistances[attElmt] += value;
+              }
+              break;
+            case "variant":
+              if (target.variantType) {
+                target.resistances[target.variantType] += value;
+              }
+              break;
+            default:
+              target.resistances[key as AttackElement] += value;
+          }
+        };
+
+        inputs.forEach((input, index) => {
+          const config = inputConfigs[index];
+          if (!config) return;
+
+          switch (config.type) {
+            case "check":
+              if (input) {
+                Object.entries(config.changes).forEach(updateResistances);
+              }
+              break;
+            case "select":
+              Object.entries(config.options[input].changes).forEach(updateResistances);
+              break;
+          }
+        });
       }
+
+      calculate(state, true);
     },
     applySettings: (state, action: ApplySettingsAction) => {
       const { newSetupManageInfos, newConfigs, newStandardId } = action.payload;
@@ -652,7 +676,6 @@ export const {
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
   updateTarget,
-  updateMonster,
   duplicateCalcSetup,
   applySettings,
 } = calculatorSlice.actions;

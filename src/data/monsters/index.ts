@@ -70,7 +70,7 @@ const monsters: DataMonster[] = [
     code: 8,
     title: "Perpetual Mechanical Array",
     resistance: { base: 10, phys: 70 },
-    states: { label: "stunned", changes: { base: -50 } },
+    states: { label: "Stunned", changes: { base: -50 } },
   },
   {
     code: 9,
@@ -80,7 +80,7 @@ const monsters: DataMonster[] = [
       types: ["pyro", "cryo", "electro"],
       change: 40,
     },
-    states: { label: "stunned", changes: { base: -25 } },
+    states: { label: "Stunned", changes: { base: -25 } },
   },
   {
     code: 10,
@@ -90,7 +90,7 @@ const monsters: DataMonster[] = [
       types: ["pyro", "cryo", "electro"],
       change: 60,
     },
-    states: { label: "stunned", changes: { base: -100 } },
+    states: { label: "Stunned", changes: { base: -100 } },
   },
   {
     code: 11,
@@ -128,25 +128,31 @@ const monsters: DataMonster[] = [
       types: ["pyro", "hydro", "cryo", "electro"],
       change: 20,
     },
-    states: { label: "countered (5s)", changes: { base: -50 } },
+    states: { label: "Countered (5s)", changes: { base: -50 } },
   },
   {
     code: 19,
     title: "Rifthound Whelp",
     resistance: { base: 20 },
-    states: { label: "enraged", changes: { variant: -30 } },
+    variant: {
+      types: ["electro", "geo"],
+    },
+    states: { label: "Enraged", changes: { variant: -30 } },
   },
   {
     code: 21,
     title: "Rifthound",
     resistance: { base: 25 },
-    states: { label: "enraged", changes: { variant: -65 } },
+    variant: {
+      types: ["electro", "geo"],
+    },
+    states: { label: "Enraged", changes: { variant: -65 } },
   },
   {
     code: 22,
     title: "Golden Wolflord",
     resistance: { base: 25 },
-    states: { label: "after Shield Phase", changes: { geo: -45 } },
+    states: { label: "After shield phase", changes: { geo: -45 } },
   },
   {
     code: 23,
@@ -204,31 +210,50 @@ const monsters: DataMonster[] = [
   {
     code: 35,
     title: "Mid-tier Eremites",
-    names: ["Desert Clearwater", "Sunfrost", "Daythunder"],
     resistance: { base: 10, phys: -20 },
-    states: { label: "stunned", changes: { variant: -60 } },
+    variant: {
+      types: [
+        { label: "Desert Clearwater", value: "hydro" },
+        { label: "Daythunder", value: "electro" },
+        { label: "Sunfrost", value: "cryo" },
+      ],
+    },
+    states: { label: "Stunned", changes: { variant: -60 } },
   },
   {
     code: 36,
     title: "High-tier Eremites",
-    names: ["Galehunter", "Stone Enchanter"],
     resistance: { base: 10, phys: -20 },
-    states: [
-      { label: "enhanced", changes: { base: 50 } },
-      { label: "stunned", changes: { variant: -60 } },
-    ],
+    variant: {
+      types: [
+        { label: "Galehunter", value: "anemo" },
+        { label: "Stone Enchanter", value: "geo" },
+      ],
+    },
+    inputConfigs: {
+      label: "Status",
+      type: "select",
+      options: [
+        { label: "Enhanced", changes: { base: 50 } },
+        { label: "Stunned", changes: { variant: -60 } },
+      ],
+    },
+    // states: [
+    //   { label: "Enhanced", changes: { base: 50 } },
+    //   { label: "Stunned", changes: { variant: -60 } },
+    // ],
   },
   {
     code: 28,
     title: "Childe Phase 1",
     resistance: { base: 0, hydro: 50 },
-    states: { label: "stunned", changes: { base: -30 } },
+    states: { label: "Stunned", changes: { base: -30 } },
   },
   {
     code: 29,
     title: "Childe Phase 2",
     resistance: { base: 0, electro: 50 },
-    states: { label: "stunned", changes: { base: -50 } },
+    states: { label: "Stunned", changes: { base: -50 } },
   },
   {
     code: 30,
@@ -249,7 +274,7 @@ const monsters: DataMonster[] = [
     code: 33,
     title: "The Shogun",
     resistance: { base: 10 },
-    states: { label: "stunned", changes: { base: -60 } },
+    states: { label: "Stunned", changes: { base: -60 } },
   },
 ];
 

@@ -1,21 +1,21 @@
 import clsx from "clsx";
-import { ChangeEventHandler, useState, useEffect } from "react";
-import { FaChevronDown, FaInfoCircle } from "react-icons/fa";
-import type { Target, Vision } from "@Src/types";
-import type { DataMonster } from "@Data/monsters/types";
+import { useState, useEffect, ChangeEvent } from "react";
+import { FaChevronDown } from "react-icons/fa";
+import type { AttackElement, Vision } from "@Src/types";
+import type { DataMonster, MonsterState } from "@Data/monsters/types";
 
 // Constant
 import { ATTACK_ELEMENTS } from "@Src/constants";
 import monsters from "@Data/monsters";
 
 // Action
-import { updateMonster, updateTarget } from "@Store/calculatorSlice";
+import { updateTarget } from "@Store/calculatorSlice";
 
 // Selector
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { indexByCode, turnArray } from "@Src/utils";
+import { turnArray } from "@Src/utils";
 import { findMonster } from "@Data/controllers";
 
 // Hook
@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Button, CloseButton, InfoSign } from "@Components/atoms";
+import { Button, CloseButton } from "@Components/atoms";
 
 interface TargetConfigProps {
   onClose: () => void;
@@ -33,67 +33,73 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
   const { t } = useTranslation();
 
   const target = useSelector(selectTarget);
-  const chosenMonster = useSelector((state) => state.calculator.monster);
-  const chosenMonsterData = findMonster(chosenMonster);
+  const dataMonster = findMonster(target);
 
   const [monsterListOn, setMonsterListOn] = useState(false);
-  const [detailsIndex, setDetailsIndex] = useState(0);
 
   useEffect(() => {
-    const list = document.querySelector("#monster-list");
-    const { code } = chosenMonster || {};
-
-    if (list && code) {
-      const chosenIndex = indexByCode(monsters, code);
-
-      list.scrollTop = chosenIndex * 32 + (chosenIndex > 1 ? Math.min(chosenIndex - 1, 4) * 20 : 0);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!monsterListOn) {
-      setDetailsIndex(0);
+    if (monsterListOn) {
+      document.querySelector(`#monster-${target.code}`)?.scrollIntoView();
     }
   }, [monsterListOn]);
 
-  if (!chosenMonsterData) {
+  if (!dataMonster) {
     return null;
   }
 
-  const { variantType } = chosenMonster;
-  const { title, variant, names = [], states = [] } = chosenMonsterData;
+  const { title, variant } = dataMonster;
+  const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
 
   const onClickMonster = (monster: DataMonster) => {
-    if (monster.code !== chosenMonster.code) {
-      let variantType = null;
+    if (monster.code !== target.code) {
+      let newVariantType;
+      let newInputs = monster.inputConfigs ? Array(turnArray(monster.states).length).fill(0) : [];
 
       if (monster.variant) {
         const firstVariant = monster.variant.types[0];
-        variantType = typeof firstVariant === "string" ? firstVariant : firstVariant.value;
+        newVariantType = typeof firstVariant === "string" ? firstVariant : firstVariant.value;
       }
 
       dispatch(
-        updateMonster({
+        updateTarget({
           code: monster.code,
-          variantType,
+          inputs: newInputs,
+          ...(newVariantType ? { variantType: newVariantType } : undefined),
         })
       );
     }
     setMonsterListOn(false);
   };
 
-  const onChangeElementVariant: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    dispatch(updateMonster({ variantType: e.target.value as Vision }));
+  const onChangeElementVariant = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(updateTarget({ variantType: e.target.value as Vision }));
   };
 
-  const onChangeTargetProp = (key: keyof Target): ChangeEventHandler<HTMLInputElement> => {
-    return (e) => {
+  const onChangeTargetProp = (key: "level" | AttackElement) => {
+    return (e: ChangeEvent<HTMLInputElement>) => {
       const value = +e.target.value;
 
-      if (!isNaN(value) && value >= (key === "level" ? 0 : -100) && value <= 100) {
-        dispatch(updateTarget({ [key]: Math.round(value) }));
+      if (isNaN(value) && value > 100) {
+        return;
+      }
+
+      if (key === "level" && value >= 0) {
+        dispatch(updateTarget({ level: Math.round(value) }));
+      } else {
+        if (value > -100) {
+          dispatch(updateTarget({ [key]: Math.round(value) }));
+        }
       }
     };
+  };
+
+  const onChangeTargetInputs = (value: number, index: number) => {
+    if (target.inputs) {
+      const newInputs = [...target.inputs];
+
+      newInputs[index] = value;
+      dispatch(updateTarget({ inputs: newInputs }));
+    }
   };
 
   return (
@@ -108,37 +114,6 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
         <div className="w-80 flex flex-col shrink-0">
           <div className="grow overflow-auto flex flex-col">
             <div className="flex">
-              {turnArray(states).length ? (
-                <div className="self-end group relative text-default">
-                  <InfoSign />
-                  <ul className="w-75 ml-2 mt-2 px-2 py-1 marker:mr-1 small-tooltip group-hover:scale-100 origin-top-left">
-                    {turnArray(states).map((state, i) => {
-                      const changes = Object.entries(state.changes)
-                        .map(([key, value]) => {
-                          const changeField = {
-                            base: "all Resistances",
-                            variant: "Resistance to their Element",
-                          }[key];
-
-                          return `${value > 0 ? "+" : ""}${value}% ${changeField || key}`;
-                        })
-                        .join(", ");
-
-                      return (
-                        <li
-                          key={i}
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              `• When <span class="text-lightred">${state.label}</span>, ` +
-                              `this target gets <span class="text-green">${changes}</span>.`,
-                          }}
-                        />
-                      );
-                    })}
-                  </ul>
-                </div>
-              ) : null}
-
               <label className="ml-auto flex items-center">
                 <span className="mr-4 text-lg text-lightgold">Level</span>
                 <input
@@ -149,9 +124,9 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               </label>
             </div>
 
-            <div className="mt-4 bg-default rounded text-black flex flex-col overflow-auto">
+            <div className="mt-4 rounded text-black bg-default relative">
               <button
-                className="px-2 pt-1 w-full rounded-t text-lg font-bold flex items-center"
+                className="px-2 pt-1 w-full rounded text-lg font-semibold flex items-center"
                 onClick={() => setMonsterListOn((prev) => !prev)}
               >
                 <span className="pr-2 truncate">{title}</span>
@@ -159,57 +134,41 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               </button>
 
               <div
-                id="monster-list"
-                className={clsx(
-                  "flex flex-col custom-scrollbar rounded-b duration-200 ease-in-out",
-                  monsterListOn && "grow"
-                )}
-                style={{ maxHeight: monsterListOn ? `${monsters.length * 2}rem` : 0 }}
+                className="absolute top-full z-10 mt-1 w-full bg-default custom-scrollbar rounded"
+                hidden={!monsterListOn}
+                style={{ maxHeight: "50vh" }}
               >
                 {monsters.map((monster, i) => {
                   return (
-                    <button
+                    <div
                       key={monster.code}
+                      id={`monster-${monster.code}`}
                       className={clsx(
-                        "text-black flex justify-between cursor-default group font-medium",
-                        monster.code === chosenMonster.code
+                        "px-2 py-1 flex flex-col text-black cursor-default",
+                        monster.code === target.code
                           ? "bg-lesser"
-                          : "hover:bg-blue-600 hover:text-default hover:font-bold"
+                          : "hover:bg-darkblue-3 hover:text-default hover:font-bold"
                       )}
                       onClick={() => onClickMonster(monster)}
                     >
-                      <p className="px-2 py-1 text-left flex flex-col">
-                        <span>{monster.title}</span>
-                        {monster.subtitle && (
-                          <span className="text-sm italic">{monster.subtitle}</span>
-                        )}
-                      </p>
-                      {monster.names && (
-                        <span
-                          className="h-full px-2 flex items-center text-xl"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDetailsIndex(i);
-                          }}
-                        >
-                          <FaInfoCircle />
-                        </span>
+                      <p>{monster.title}</p>
+                      {monster.subtitle && <p className="text-sm italic">* {monster.subtitle}</p>}
+                      {monster.names?.length && (
+                        <p className="text-sm italic">{monster.names.join(", ")}</p>
                       )}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
-
-              <button className="h-1 rounded-b" onClick={() => setMonsterListOn(true)} />
             </div>
 
-            {variant?.types.length && variantType ? (
+            {variant?.types.length && target.variantType ? (
               <div className="mt-4 flex justify-end items-center">
                 <p className="mr-4 text-default">Variant</p>
 
                 <select
                   className="styled-select capitalize"
-                  value={variantType}
+                  value={target.variantType}
                   onChange={onChangeElementVariant}
                 >
                   {variant.types.map((variantType, i) => {
@@ -226,12 +185,49 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               </div>
             ) : null}
 
-            {monsters[detailsIndex]?.names ? (
-              <p className="mt-3 text-default">
-                <span className="text-lightred">{monsters[detailsIndex].title}</span>:{" "}
-                {monsters[detailsIndex].names?.join(", ")}
-              </p>
-            ) : null}
+            {inputConfigs.map((config, index) => {
+              let inputElement;
+
+              switch (config.type) {
+                case "check":
+                  const checked = target.inputs?.[index] === 1;
+
+                  inputElement = (
+                    <input
+                      type="checkbox"
+                      className="mr-1.5 scale-150 lg:scale-180"
+                      checked={checked}
+                      onChange={() => onChangeTargetInputs(checked ? 0 : 1, index)}
+                    />
+                  );
+                  break;
+                case "select":
+                  inputElement = (
+                    <select
+                      className="px-4 py-2 text-black bg-default rounded"
+                      value={`${target.inputs?.[index] || 0}`}
+                      onChange={(e) => onChangeTargetInputs(+e.target.value, index)}
+                    >
+                      <option value={-1}>None</option>
+                      {config.options.map((option, optionIndex) => {
+                        return (
+                          <option key={optionIndex} value={optionIndex}>
+                            {option.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  );
+                  break;
+              }
+
+              return (
+                <div key={index} className="mt-4 flex justify-end">
+                  <label className="mr-4">{config.label}</label>
+                  {inputElement}
+                </div>
+              );
+            })}
           </div>
 
           <Button className="mt-3 mr-auto" variant="positive" onClick={onClose}>
@@ -256,8 +252,8 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                   </p>
                   <input
                     className="w-20 p-2 text-right textinput-common font-bold disabled:bg-lesser"
-                    disabled={chosenMonster.code !== 0}
-                    value={target[attElmt]}
+                    disabled={target.code !== 0}
+                    value={target.resistances[attElmt]}
                     onChange={onChangeTargetProp(attElmt)}
                   />
                 </div>

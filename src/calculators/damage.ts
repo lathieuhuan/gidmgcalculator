@@ -243,7 +243,7 @@ export default function getDamage({
 
   // CALCULATE RESISTANCE REDUCTION
   for (const key of [...ATTACK_ELEMENTS]) {
-    let RES = (target[key] - resistReduct[key]) / 100;
+    let RES = (target.resistances[key] - resistReduct[key]) / 100;
     resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
 

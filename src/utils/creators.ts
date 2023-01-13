@@ -8,7 +8,6 @@ import type {
   CalcArtifact,
   CalcWeapon,
   ElementModCtrl,
-  Monster,
   Teammate,
 } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
@@ -149,15 +148,10 @@ export const createElmtModCtrls = (): ElementModCtrl => ({
   resonances: [],
 });
 
-export const createMonster = (): Monster => ({
-  code: 0,
-  variantType: null,
-});
-
 export function createTarget() {
-  const result = { level: 1 } as Target;
+  const result = { code: 0, level: 1, resistances: {} } as Target;
   for (const elmt of ATTACK_ELEMENTS) {
-    result[elmt] = 10;
+    result.resistances[elmt] = 10;
   }
   return result;
 }

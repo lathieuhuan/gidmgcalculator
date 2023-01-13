@@ -137,11 +137,12 @@ export type CustomDebuffCtrl = {
   value: number;
 };
 
-export type Target = { level: number } & Record<AttackElement, number>;
-
-export type Monster = {
+export type Target = {
   code: number;
-  variantType: Vision | null;
+  level: number;
+  variantType?: Vision;
+  inputs?: number[];
+  resistances: Record<AttackElement, number>;
 };
 
 export type SetupImportInfo = {

@@ -32,7 +32,6 @@ export type CalculatorState = {
   >;
 
   target: Target;
-  monster: Monster;
 };
 
 export type CalcConfigurations = {

@@ -6,12 +6,29 @@ type MonsterResistance = Partial<Record<AttackElement, number>> & {
 
 type MonsterVariant = {
   types: Array<Vision | { label: string; value: Vision }>;
-  change: number;
+  change?: number;
 };
 
-type MonsterState = {
+export type MonsterState = {
   label: string;
-  changes: Partial<Record<"base" | "variant" | AttackElement, number>>;
+  changes: MonsterInputChanges;
+};
+
+type MonsterInputChanges = Partial<Record<"base" | "variant" | AttackElement, number>>;
+
+type MonsterInputCheckConfig = {
+  label: string;
+  type: "check";
+  changes: MonsterInputChanges;
+};
+
+type MonsterInputSelectConfig = {
+  label: string;
+  type: "select";
+  options: Array<{
+    label: string;
+    changes: MonsterInputChanges;
+  }>;
 };
 
 export type DataMonster = {
@@ -21,5 +38,9 @@ export type DataMonster = {
   names?: string[];
   resistance: MonsterResistance;
   variant?: MonsterVariant;
+  inputConfigs?:
+    | MonsterInputCheckConfig
+    | MonsterInputSelectConfig
+    | (MonsterInputCheckConfig | MonsterInputSelectConfig)[];
   states?: MonsterState | MonsterState[];
 };

@@ -124,18 +124,15 @@ export function ModifierTemplate({
         }
         return <p className="text-orange capitalize">{input}</p>;
       case "check":
-        if (mutable) {
-          const checked = input === 1;
-          return (
-            <input
-              type="checkbox"
-              className="mr-1 scale-180"
-              checked={checked}
-              onChange={() => onToggleCheck && onToggleCheck(input, index)}
-            />
-          );
-        }
-        return <input type="checkbox" className="mr-1 scale-180" checked={true} readOnly />;
+        return (
+          <input
+            type="checkbox"
+            className="mr-1 scale-150 lg:scale-180"
+            checked={input === 1}
+            readOnly={!mutable}
+            onChange={() => onToggleCheck && onToggleCheck(input, index)}
+          />
+        );
       default:
         let options: ModSelectOption[] = [];
 
