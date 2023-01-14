@@ -536,15 +536,18 @@ export const calculatorSlice = createSlice({
         inputs.forEach((input, index) => {
           const config = inputConfigs[index];
           if (!config) return;
+          const { type = "check" } = config;
 
-          switch (config.type) {
+          switch (type) {
             case "check":
-              if (input) {
+              if (input && config.changes) {
                 Object.entries(config.changes).forEach(updateResistances);
               }
               break;
             case "select":
-              Object.entries(config.options[input].changes).forEach(updateResistances);
+              if (input !== -1 && config.options) {
+                Object.entries(config.options[input].changes).forEach(updateResistances);
+              }
               break;
           }
         });

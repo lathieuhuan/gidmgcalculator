@@ -9,23 +9,13 @@ type MonsterVariant = {
   change?: number;
 };
 
-export type MonsterState = {
-  label: string;
-  changes: MonsterInputChanges;
-};
-
 type MonsterInputChanges = Partial<Record<"base" | "variant" | AttackElement, number>>;
 
-type MonsterInputCheckConfig = {
+type MonsterInputConfig = {
   label: string;
-  type: "check";
-  changes: MonsterInputChanges;
-};
-
-type MonsterInputSelectConfig = {
-  label: string;
-  type: "select";
-  options: Array<{
+  type?: "check" | "select";
+  changes?: MonsterInputChanges;
+  options?: Array<{
     label: string;
     changes: MonsterInputChanges;
   }>;
@@ -38,9 +28,5 @@ export type DataMonster = {
   names?: string[];
   resistance: MonsterResistance;
   variant?: MonsterVariant;
-  inputConfigs?:
-    | MonsterInputCheckConfig
-    | MonsterInputSelectConfig
-    | (MonsterInputCheckConfig | MonsterInputSelectConfig)[];
-  states?: MonsterState | MonsterState[];
+  inputConfigs?: MonsterInputConfig | MonsterInputConfig[];
 };

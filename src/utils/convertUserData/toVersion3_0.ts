@@ -326,20 +326,7 @@ const convertSetup = (
     }
   }
 
-  // const subWpComplexBuffCtrls: Partial<Record<WeaponType, SubWeaponBuffCtrl[]>> = {};
-
-  // for (const [key, value] of Object.entries(subWpMCs.BCs || {})) {
-  //   const weaponType = key.toLowerCase() as WeaponType;
-  //   const subWeaponBuffCtrls = (value as any).map(({ refinement: refi, ...rest }: any) => {
-  //     return { refi, ...rest };
-  //   });
-
-  //   subWpComplexBuffCtrls[weaponType] = subWeaponBuffCtrls;
-  // }
-
-  //
-
-  //
+  // CUSTOME MODIFIERS
   const { customBCs = [], customDCs = [] } = setup.customMCs || {};
 
   const customBuffCtrls: CustomBuffCtrl[] = customBCs.map((ctrl: any): CustomBuffCtrl => {
@@ -396,7 +383,11 @@ const convertSetup = (
       customInfusion: {
         element: "phys",
       },
-      target: { level, pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
+      target: {
+        level,
+        code: 0,
+        resistances: { pyro, hydro, dendro, electro, anemo, cryo, geo, phys },
+      },
     },
     xtraWeapon,
     xtraArtifacts,

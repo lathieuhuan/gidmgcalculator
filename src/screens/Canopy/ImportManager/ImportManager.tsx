@@ -12,7 +12,7 @@ import { restoreCalcSetup } from "@Src/utils/setup";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Selector
-import { selectChar } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Action
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
@@ -28,8 +28,8 @@ type ImportingProps = PartiallyRequired<SetupImportInfo, "importType" | "calcSet
 function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const currentTarget = useSelector((state) => state.calculator.target);
-  const userSetups = useSelector(selectUserSetups);
+  const currentTarget = useSelector(selectTarget);
+  const calcSetupInfos = useSelector(selectSetupManageInfos);
   // 0: initial | 1: different imported vs current | 2: reach MAX_CALC_SETUPS
   // 30: different char only | 31: different target only | 301: different both
   // 4: already existed
@@ -93,12 +93,9 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
 
     if (char) {
       if (char.name === importedSetup.char.name) {
-        if (userSetups.length === MAX_CALC_SETUPS) {
+        if (calcSetupInfos.length === MAX_CALC_SETUPS) {
           delayExecute(() => setPendingCode(2));
-        } else if (
-          manageInfo.ID &&
-          userSetups.some((userSetups) => userSetups.ID === manageInfo.ID)
-        ) {
+        } else if (manageInfo.ID && calcSetupInfos.some((info) => info.ID === manageInfo.ID)) {
           delayExecute(() => setPendingCode(4));
         } else {
           const sameChar = isEqual(char, importedSetup.char);

@@ -26,7 +26,8 @@ import MySetups from "@Screens/MySetups";
 // Component
 import { Button } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { NavBar, DownloadOptions, UploadOptions, ImportManager } from "@Components/organisms";
+import { NavBar, DownloadOptions, UploadOptions } from "@Components/organisms";
+import { ImportManager } from "@Screens/Canopy";
 
 function App() {
   const dispatch = useDispatch();

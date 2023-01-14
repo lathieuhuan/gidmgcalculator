@@ -83,8 +83,12 @@ export function OverrideOptions({
         <div>
           {["Character's Info.", "Target's Info."].map((text, i) => {
             if (pendingCode >= 300 || pendingCode % 10 === i) {
-              const object1: any = i ? target : comparedChar;
-              const object2: any = i ? importedTarget : importedChar;
+              const object1: any = i
+                ? { level: target?.level, ...target?.resistances }
+                : comparedChar;
+              const object2: any = i
+                ? { level: importedTarget?.level, ...importedTarget?.resistances }
+                : importedChar;
 
               return (
                 <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>
@@ -133,9 +137,9 @@ export function OverrideOptions({
                                 comparedCols = (
                                   <>
                                     <td className={tableStyles.td}>
-                                      {object1[type].length > 1
+                                      {object1[type]?.length > 1
                                         ? `[${object1[type].join(", ")}]`
-                                        : object1[type][0]}
+                                        : object1[type]}
                                     </td>
                                     <td className={tableStyles.td}>{object2?.[type]}</td>
                                   </>

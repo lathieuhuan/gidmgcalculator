@@ -1,12 +1,9 @@
 import clsx from "clsx";
-import { useState, useEffect, ChangeEvent } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import type { ChangeEvent } from "react";
 import type { AttackElement, Vision } from "@Src/types";
-import type { DataMonster, MonsterState } from "@Data/monsters/types";
 
 // Constant
 import { ATTACK_ELEMENTS } from "@Src/constants";
-import monsters from "@Data/monsters";
 
 // Action
 import { updateTarget } from "@Store/calculatorSlice";
@@ -15,15 +12,16 @@ import { updateTarget } from "@Store/calculatorSlice";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { turnArray } from "@Src/utils";
 import { findMonster } from "@Data/controllers";
+import { turnArray } from "@Src/utils";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
+import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
 import { Button, CloseButton } from "@Components/atoms";
+import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {
   onClose: () => void;
@@ -35,41 +33,12 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
   const target = useSelector(selectTarget);
   const dataMonster = findMonster(target);
 
-  const [monsterListOn, setMonsterListOn] = useState(false);
-
-  useEffect(() => {
-    if (monsterListOn) {
-      document.querySelector(`#monster-${target.code}`)?.scrollIntoView();
-    }
-  }, [monsterListOn]);
-
   if (!dataMonster) {
     return null;
   }
 
-  const { title, variant } = dataMonster;
+  const { variant } = dataMonster;
   const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
-
-  const onClickMonster = (monster: DataMonster) => {
-    if (monster.code !== target.code) {
-      let newVariantType;
-      let newInputs = monster.inputConfigs ? Array(turnArray(monster.states).length).fill(0) : [];
-
-      if (monster.variant) {
-        const firstVariant = monster.variant.types[0];
-        newVariantType = typeof firstVariant === "string" ? firstVariant : firstVariant.value;
-      }
-
-      dispatch(
-        updateTarget({
-          code: monster.code,
-          inputs: newInputs,
-          ...(newVariantType ? { variantType: newVariantType } : undefined),
-        })
-      );
-    }
-    setMonsterListOn(false);
-  };
 
   const onChangeElementVariant = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(updateTarget({ variantType: e.target.value as Vision }));
@@ -124,43 +93,20 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               </label>
             </div>
 
-            <div className="mt-4 rounded text-black bg-default relative">
-              <button
-                className="px-2 pt-1 w-full rounded text-lg font-semibold flex items-center"
-                onClick={() => setMonsterListOn((prev) => !prev)}
-              >
-                <span className="pr-2 truncate">{title}</span>
-                <FaChevronDown className="ml-auto" />
-              </button>
-
-              <div
-                className="absolute top-full z-10 mt-1 w-full bg-default custom-scrollbar rounded"
-                hidden={!monsterListOn}
-                style={{ maxHeight: "50vh" }}
-              >
-                {monsters.map((monster, i) => {
-                  return (
-                    <div
-                      key={monster.code}
-                      id={`monster-${monster.code}`}
-                      className={clsx(
-                        "px-2 py-1 flex flex-col text-black cursor-default",
-                        monster.code === target.code
-                          ? "bg-lesser"
-                          : "hover:bg-darkblue-3 hover:text-default hover:font-bold"
-                      )}
-                      onClick={() => onClickMonster(monster)}
-                    >
-                      <p>{monster.title}</p>
-                      {monster.subtitle && <p className="text-sm italic">* {monster.subtitle}</p>}
-                      {monster.names?.length && (
-                        <p className="text-sm italic">{monster.names.join(", ")}</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <ComboBox
+              className="mt-4"
+              targetCode={target.code}
+              targetTitle={dataMonster.title}
+              onSelectMonster={({ monsterCode, inputs, variantType }) => {
+                dispatch(
+                  updateTarget({
+                    code: monsterCode,
+                    inputs,
+                    ...(variantType ? { variantType } : undefined),
+                  })
+                );
+              }}
+            />
 
             {variant?.types.length && target.variantType ? (
               <div className="mt-4 flex justify-end items-center">
@@ -187,8 +133,9 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
 
             {inputConfigs.map((config, index) => {
               let inputElement;
+              const { type: configType = "check" } = config;
 
-              switch (config.type) {
+              switch (configType) {
                 case "check":
                   const checked = target.inputs?.[index] === 1;
 
@@ -204,12 +151,12 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 case "select":
                   inputElement = (
                     <select
-                      className="px-4 py-2 text-black bg-default rounded"
+                      className="styled-select"
                       value={`${target.inputs?.[index] || 0}`}
                       onChange={(e) => onChangeTargetInputs(+e.target.value, index)}
                     >
                       <option value={-1}>None</option>
-                      {config.options.map((option, optionIndex) => {
+                      {config.options?.map((option, optionIndex) => {
                         return (
                           <option key={optionIndex} value={optionIndex}>
                             {option.label}
@@ -222,7 +169,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
               }
 
               return (
-                <div key={index} className="mt-4 flex justify-end">
+                <div key={index} className="mt-4 flex justify-end items-center">
                   <label className="mr-4">{config.label}</label>
                   {inputElement}
                 </div>
