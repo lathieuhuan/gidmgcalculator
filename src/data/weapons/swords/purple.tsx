@@ -14,6 +14,41 @@ import { makeWpModApplier } from "../utils";
 
 const purpleSwords: DataWeapon[] = [
   {
+    code: 149,
+    name: "Toukabou Shigure",
+    icon: "b/b5/Weapon_Toukabou_Shigure",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "em", scale: "36" },
+    passiveName: "Kaidan: Rainfall Earthbinder",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one
+            of them for 10s. This effect can be triggered once every 15s. If this opponent is taken
+            out during Cursed Parasol's duration, Cursed Parasol's CD will be refreshed immediately.{" "}
+            {this.extra?.[0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          The character wielding this weapon will deal <Green b>{12 + refi * 4}%</Green> more{" "}
+          <Green>DMG</Green> to the opponent affected by Cursed Parasol.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 16),
+        desc: ({ refi }) => findByCode(purpleSwords, 149)?.passiveDesc({ refi }).extra?.[0],
+      },
+    ],
+  },
+  {
     code: 146,
     name: "Xiphos' Moonlight",
     icon: "8/8a/Weapon_Xiphos%27_Moonlight",

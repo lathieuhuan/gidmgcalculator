@@ -22,12 +22,12 @@ import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
+import { ImportManager } from "@Screens/Canopy";
 
 // Component
 import { Button } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { NavBar, DownloadOptions, UploadOptions } from "@Components/organisms";
-import { ImportManager } from "@Screens/Canopy";
 
 function App() {
   const dispatch = useDispatch();

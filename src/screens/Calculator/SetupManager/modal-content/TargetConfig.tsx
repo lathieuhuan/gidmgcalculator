@@ -56,7 +56,10 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
         dispatch(updateTarget({ level: Math.round(value) }));
       } else {
         if (value > -100) {
-          dispatch(updateTarget({ [key]: Math.round(value) }));
+          const newResistances = { ...target.resistances };
+
+          newResistances[key as Vision] = Math.round(value);
+          dispatch(updateTarget({ resistances: newResistances }));
         }
       }
     };
@@ -77,7 +80,9 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
       style={{ height: "90vh" }}
     >
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="text-1.5xl text-orange font-bold">Target Config</p>
+      <p className="text-1.5xl text-orange font-bold" onDoubleClick={() => console.log(target)}>
+        Target Config
+      </p>
 
       <div className="py-4 grow flex custom-scrollbar">
         <div className="w-80 flex flex-col shrink-0">
@@ -102,7 +107,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                   updateTarget({
                     code: monsterCode,
                     inputs,
-                    ...(variantType ? { variantType } : undefined),
+                    variantType,
                   })
                 );
               }}
