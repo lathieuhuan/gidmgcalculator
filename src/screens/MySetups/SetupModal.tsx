@@ -6,7 +6,7 @@ import type { MySetupModalType } from "./types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { findMonster, getPartyData } from "@Data/controllers";
+import { getPartyData } from "@Data/controllers";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { calculateChosenSetup } from "./utils";
 
@@ -29,7 +29,7 @@ import {
 } from "./modal-content";
 import { ModifierWrapper } from "./components";
 import { Lightgold } from "@Components/atoms";
-import { turnArray } from "@Src/utils";
+import { getTargetData } from "@Src/utils/setup";
 
 interface SetupModalProps {
   type: Extract<MySetupModalType, "STATS" | "MODIFIERS" | "WEAPON" | "ARTIFACTS">;
@@ -99,45 +99,7 @@ export function SetupModal({ type, chosenSetup, weapon, artifacts, calcInfo }: S
       );
     case "MODIFIERS":
       const partyData = getPartyData(party);
-      const dataMonster = findMonster(target);
-      let targetVariant = "";
-      const statuses: string[] = [];
-
-      if (target.variantType && dataMonster?.variant) {
-        for (const type of dataMonster.variant.types) {
-          if (typeof type === "string") {
-            if (type === target.variantType) {
-              targetVariant = target.variantType;
-              break;
-            }
-          } else if (type.value === target.variantType) {
-            targetVariant = type.label;
-            break;
-          }
-        }
-      }
-
-      if (target.inputs?.length && dataMonster?.inputConfigs) {
-        const inputConfigs = turnArray(dataMonster.inputConfigs);
-
-        target.inputs.forEach((input, index) => {
-          const { label, type = "check", options = [] } = inputConfigs[index] || {};
-
-          switch (type) {
-            case "check":
-              if (input) {
-                statuses.push(label);
-              }
-              break;
-            case "select":
-              const { label: selectedLabel } = options[input] || {};
-              if (selectedLabel) {
-                statuses.push(selectedLabel);
-              }
-              break;
-          }
-        });
-      }
+      const { title, variant, statuses } = getTargetData(target);
 
       return (
         <div className="h-full px-4 flex space-x-4 overflow-auto">
@@ -213,14 +175,18 @@ export function SetupModal({ type, chosenSetup, weapon, artifacts, calcInfo }: S
           <ModifierWrapper title="Target" className="w-68">
             <div className="h-full px-2">
               <p className="text-lg">
-                {dataMonster?.title} - Level: <Lightgold>{target.level}</Lightgold>
+                {title} - Level: <Lightgold>{target.level}</Lightgold>
               </p>
 
-              {targetVariant && (
-                <p className="capitalize">
-                  * {targetVariant} {statuses.length ? `(${statuses.join(", ")})` : ""}
-                </p>
-              )}
+              {variant && <p className="capitalize">{variant}</p>}
+
+              {statuses.length ? (
+                <ul className="my-2 pl-4 list-disc">
+                  {statuses.map((status, i) => {
+                    return <li key={i}>{status}</li>;
+                  })}
+                </ul>
+              ) : null}
 
               {Object.entries(target.resistances).map(([key, value], i) => (
                 <p key={i} className="mt-1">

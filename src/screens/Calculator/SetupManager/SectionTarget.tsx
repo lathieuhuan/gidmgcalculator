@@ -18,6 +18,7 @@ import { updateTarget } from "@Store/calculatorSlice";
 import { IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TargetConfig } from "./modal-content";
+import { getTargetData } from "@Src/utils/setup";
 
 interface SectionTargetProps {
   isAtFront?: boolean;
@@ -26,23 +27,9 @@ interface SectionTargetProps {
 export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
-  const dataMonster = findMonster(target);
+  const { title, names, variant, statuses } = getTargetData(target);
 
   const [configOn, setConfigOn] = useState(false);
-
-  let variantLabel = "";
-
-  if (dataMonster?.variant) {
-    const { types } = dataMonster.variant;
-
-    for (const type of types) {
-      if (typeof type === "string" && type === target.variantType) {
-        variantLabel = `(${type})`;
-      } else if (typeof type === "object" && type.value === target.variantType) {
-        variantLabel = type.label;
-      }
-    }
-  }
 
   return (
     <Fragment>
@@ -67,20 +54,28 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
         <p className="text-sm text-lightred">Target</p>
 
         <div className="mt-2 pr-6 flex flex-col items-start">
-          {dataMonster?.names ? (
+          {names ? (
             <div className="flex items-center relative">
               <FaChevronDown className="absolute top-1 left-0" />
               <select className="pl-6 pr-2 py-1 leading-none relative z-10 appearance-none text-lg">
-                {dataMonster.names.map((name, i) => {
+                {names.map((name, i) => {
                   return <option key={i}>{name}</option>;
                 })}
               </select>
             </div>
           ) : (
-            <p className="text-lg">{dataMonster?.title}</p>
+            <p className="text-lg">{title}</p>
           )}
 
-          {variantLabel && <p className="mt-1">{variantLabel}</p>}
+          {variant && <p className="mt-1">{variant}</p>}
+
+          {statuses.length ? (
+            <ul className="mt-1 pl-4 list-disc">
+              {statuses.map((status, i) => {
+                return <li key={i}>{status}</li>;
+              })}
+            </ul>
+          ) : null}
 
           <label className="mt-3 flex items-center">
             <span>Level</span>

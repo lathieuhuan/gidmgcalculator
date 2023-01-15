@@ -5,7 +5,7 @@ type MonsterResistance = Partial<Record<AttackElement, number>> & {
 };
 
 type MonsterVariant = {
-  types: Array<Vision | { label: string; value: Vision }>;
+  types: Vision[] | Array<{ label: string; value: Vision }>;
   change?: number;
 };
 
@@ -15,10 +15,13 @@ type MonsterInputConfig = {
   label: string;
   type?: "check" | "select";
   changes?: MonsterInputChanges;
-  options?: Array<{
-    label: string;
-    changes: MonsterInputChanges;
-  }>;
+  options?:
+    | Vision[]
+    | Array<{
+        label: string;
+        changes: MonsterInputChanges;
+      }>;
+  optionChange?: number;
 };
 
 export type DataMonster = {

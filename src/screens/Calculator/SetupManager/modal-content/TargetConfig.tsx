@@ -151,7 +151,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                 case "select":
                   inputElement = (
                     <select
-                      className="styled-select"
+                      className="styled-select capitalize"
                       value={`${target.inputs?.[index] || 0}`}
                       onChange={(e) => onChangeTargetInputs(+e.target.value, index)}
                     >
@@ -159,7 +159,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
                       {config.options?.map((option, optionIndex) => {
                         return (
                           <option key={optionIndex} value={optionIndex}>
-                            {option.label}
+                            {typeof option === "string" ? option : option.label}
                           </option>
                         );
                       })}

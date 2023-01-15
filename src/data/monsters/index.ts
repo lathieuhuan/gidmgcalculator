@@ -62,6 +62,43 @@ const monsters: DataMonster[] = [
     },
   },
   {
+    code: 37,
+    title: "Small Fungus (not dendro)",
+    resistance: { base: 10, dendro: 10 },
+    variant: {
+      types: ["pyro", "hydro", "electro", "cryo", "geo", "anemo"],
+      change: 10,
+    },
+  },
+  {
+    code: 38,
+    title: "Floating Dendro Fungus",
+    resistance: { base: 10, dendro: 25 },
+  },
+  {
+    code: 39,
+    title: "Large Fungus (not dendro)",
+    resistance: { base: 10, dendro: 20 },
+    variant: {
+      types: ["pyro", "hydro", "electro", "cryo", "geo", "anemo"],
+      change: 20,
+    },
+  },
+  {
+    code: 40,
+    title: "Winged Dendroshroom",
+    resistance: { base: 10, dendro: 40 },
+  },
+  {
+    code: 41,
+    title: "Jadeplume Terrorshroom",
+    resistance: { base: 25, dendro: 80 },
+    inputConfigs: {
+      label: "Stunned",
+      changes: { base: -25 },
+    },
+  },
+  {
     code: 7,
     title: "Ruin Guard / Ruin Grader",
     resistance: { base: 10, phys: 70 },
@@ -73,11 +110,51 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { base: -50 } },
   },
   {
+    code: 48,
+    title: "Ruin Serpent",
+    resistance: { base: 10, phys: 70 },
+    inputConfigs: { label: "Charging", changes: { base: 300 } },
+  },
+  {
+    code: 42,
+    title: "Ruin Drake",
+    resistance: { base: 10, phys: 50 },
+    inputConfigs: {
+      label: "Absorbed element",
+      type: "select",
+      options: ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"],
+      optionChange: 40,
+    },
+  },
+  {
+    code: 43,
+    title: "Aeonblight Drake",
+    resistance: { base: 10, phys: 70 },
+    inputConfigs: {
+      label: "Absorbed element",
+      type: "select",
+      options: ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"],
+      optionChange: 60,
+    },
+  },
+  {
+    code: 44,
+    title: "Primal Construct",
+    resistance: { base: 10 },
+    inputConfigs: { label: "Invisible", changes: { base: 50 } },
+  },
+  {
+    code: 45,
+    title: "ASIMON",
+    resistance: { base: 10 },
+    inputConfigs: { label: "Invisible", changes: { base: 200 } },
+  },
+  {
     code: 9,
     title: "Whopperflower",
     resistance: { base: 35, phys: 35 },
     variant: {
-      types: ["pyro", "cryo", "electro"],
+      types: ["pyro", "electro", "cryo"],
       change: 40,
     },
     inputConfigs: { label: "Stunned", changes: { base: -25 } },
@@ -87,7 +164,7 @@ const monsters: DataMonster[] = [
     title: "Regisvine",
     resistance: { base: 110, phys: 130 },
     variant: {
-      types: ["pyro", "cryo", "electro"],
+      types: ["pyro", "electro", "cryo"],
       change: 60,
     },
     inputConfigs: { label: "Stunned", changes: { base: -100 } },
@@ -116,7 +193,7 @@ const monsters: DataMonster[] = [
     title: "Geovishap",
     resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
-      types: ["pyro", "hydro", "cryo", "electro"],
+      types: ["pyro", "hydro", "electro", "cryo"],
       change: 20,
     },
   },
@@ -125,7 +202,7 @@ const monsters: DataMonster[] = [
     title: "Primo Geovishap",
     resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
-      types: ["pyro", "hydro", "cryo", "electro"],
+      types: ["pyro", "hydro", "electro", "cryo"],
       change: 20,
     },
     inputConfigs: { label: "Countered (5s)", changes: { base: -50 } },
@@ -186,9 +263,9 @@ const monsters: DataMonster[] = [
     variant: {
       types: [
         { label: "Fatui Pyro Agent", value: "pyro" },
+        { label: "Mirror Maiden", value: "hydro" },
         { label: "Fatui Electro Cicin Mage", value: "electro" },
         { label: "Fatui Cryo Cicin Mage", value: "cryo" },
-        { label: "Mirror Maiden", value: "hydro" },
       ],
       change: 40,
     },
@@ -271,6 +348,24 @@ const monsters: DataMonster[] = [
     title: "The Shogun",
     resistance: { base: 10 },
     inputConfigs: { label: "Stunned", changes: { base: -60 } },
+  },
+  {
+    code: 46,
+    title: "False God of Wisdom (Phase 1)",
+    resistance: { base: 10, electro: 50 },
+  },
+  {
+    code: 47,
+    title: "False God of Wisdom (Phase 2)",
+    resistance: { base: 30, electro: 90 },
+    inputConfigs: {
+      label: "Status",
+      type: "select",
+      options: [
+        { label: "Shielded", changes: { base: 200 } },
+        { label: "Stunned", changes: { base: -170 } },
+      ],
+    },
   },
 ];
 

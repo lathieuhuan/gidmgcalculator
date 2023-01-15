@@ -66,7 +66,7 @@ export const ComboBox = ({
     <div className={"relative " + (className || "")}>
       <label className="px-2 w-full text-black bg-default rounded font-semibold flex items-center peer">
         <input
-          className="p-2 bg-transparent grow placeholder:text-black focus:placeholder:text-rarity-1"
+          className="p-2 bg-transparent grow font-bold placeholder:text-black focus:placeholder:text-rarity-1"
           placeholder={targetTitle}
           value={keyword}
           maxLength={10}
@@ -96,7 +96,7 @@ export const ComboBox = ({
               key={monster.code}
               id={`monster-${monster.code}`}
               className={clsx(
-                "px-2 py-1 flex flex-col font-medium",
+                "px-2 py-1 flex flex-col font-semibold",
                 monster.code === targetCode
                   ? "bg-lesser"
                   : "hover:text-default hover:bg-darkblue-3 hover:font-bold"

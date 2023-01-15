@@ -546,7 +546,15 @@ export const calculatorSlice = createSlice({
               break;
             case "select":
               if (input !== -1 && config.options) {
-                Object.entries(config.options[input].changes).forEach(updateResistances);
+                const option = config.options[input];
+
+                if (typeof option === "string") {
+                  if (config.optionChange) {
+                    target.resistances[option] += config.optionChange;
+                  }
+                } else {
+                  Object.entries(option.changes).forEach(updateResistances);
+                }
               }
               break;
           }
