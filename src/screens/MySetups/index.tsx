@@ -17,7 +17,6 @@ import {
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Util
@@ -29,6 +28,7 @@ import { calculateChosenSetup } from "./utils";
 import { Button, IconButton, Green, Red } from "@Components/atoms";
 import { Modal, ConfirmModalBody } from "@Components/molecules";
 import { DamageDisplay, TipsModal, SetupExporter, ConfirmModal } from "@Components/organisms";
+import { WareHouse } from "@Components/templates";
 import { SetupTemplate } from "./SetupTemplate";
 import { SetupModal } from "./SetupModal";
 import { FirstCombine, CombineMore } from "./modal-content";
@@ -215,9 +215,9 @@ export default function MySetups() {
   };
 
   return (
-    <div className={styles['warehouse-wrapper']}>
-      <div className={styles.warehouse + " " + styles["setup-warehouse"]}>
-        <div className={"h-10 " + styles["button-bar"]}>
+    <WareHouse.Wrapper>
+      <WareHouse className={styles["setup-warehouse"]}>
+        <WareHouse.ButtonBar>
           <IconButton
             className="mr-4"
             variant="positive"
@@ -229,13 +229,13 @@ export default function MySetups() {
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
             Combine
           </Button>
-        </div>
+        </WareHouse.ButtonBar>
 
-        <div className={"custom-scrollbar " + styles.body}>
+        <WareHouse.Body className="pb-2 custom-scrollbar">
           <div
             className={clsx(
               userSetups.length && "p-1 pr-3",
-              "lg:grow shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-4"
+              "lg:grow shrink-0 flex flex-col items-start hide-scrollbar scroll-smooth space-y-4"
             )}
           >
             {userSetups.length ? (
@@ -266,8 +266,8 @@ export default function MySetups() {
               </>
             )}
           </div>
-        </div>
-      </div>
+        </WareHouse.Body>
+      </WareHouse>
 
       {/* <Modal
         active={modal.type !== ""}
@@ -328,6 +328,6 @@ export default function MySetups() {
           </p>
         </div>
       </TipsModal>
-    </div>
+    </WareHouse.Wrapper>
   );
 }

@@ -1,0 +1,20 @@
+.warehouse {
+  width: calc(100% - 3rem);
+
+  .body {
+    justify-content: start;
+  }
+
+  @media (min-width: 1025px) {
+    width: 1020px;
+    .body {
+      justify-content: start;
+    }
+  }
+
+  @media (min-width: 729px) {
+    .body {
+      justify-content: center;
+    }
+  }
+}

@@ -41,7 +41,7 @@ import {
   TypeSelect,
   ItemRemoveConfirm,
 } from "@Components/organisms";
-import { PickerArtifact, PickerCharacter } from "@Components/templates";
+import { PickerArtifact, PickerCharacter, WareHouse } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -113,9 +113,9 @@ export default function MyArtifacts() {
     stats.subs.some((s) => s !== "All");
 
   return (
-    <div className={styles["warehouse-wrapper"]}>
-      <div className={styles.warehouse}>
-        <div className={clsx("w-full", styles["button-bar"])}>
+    <WareHouse.Wrapper>
+      <WareHouse>
+        <WareHouse.ButtonBar>
           <ButtonBar
             className="mr-4 space-x-4"
             buttons={[
@@ -150,9 +150,9 @@ export default function MyArtifacts() {
               </div>
             )}
           </div>
-        </div>
+        </WareHouse.ButtonBar>
 
-        <div className={styles.body}>
+        <WareHouse.Body className="hide-scrollbar">
           {invRack}
 
           <div>
@@ -202,8 +202,8 @@ export default function MyArtifacts() {
               setupIDs={artifact?.setupIDs}
             />
           </div>
-        </div>
-      </div>
+        </WareHouse.Body>
+      </WareHouse>
 
       <Filter
         active={modalType === "FITLER"}
@@ -290,6 +290,6 @@ export default function MyArtifacts() {
         buttons={[undefined]}
         onClose={closeModal}
       />
-    </div>
+    </WareHouse.Wrapper>
   );
 }

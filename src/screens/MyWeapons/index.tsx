@@ -36,7 +36,7 @@ import {
   OwnerLabel,
   ConfirmModal,
 } from "@Components/organisms";
-import { PickerCharacter, PickerWeapon } from "@Components/templates";
+import { PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
@@ -75,9 +75,9 @@ export default function MyWeapons() {
   const closeModal = () => setModalType("");
 
   return (
-    <div className={styles['warehouse-wrapper']}>
-      <div className={styles.warehouse}>
-        <div className={clsx("w-full", styles["button-bar"])}>
+    <WareHouse.Wrapper>
+      <WareHouse>
+        <WareHouse.ButtonBar>
           <ButtonBar
             className="mr-4 space-x-4"
             buttons={[
@@ -112,8 +112,9 @@ export default function MyWeapons() {
               </CollapseSpace>
             </Fragment>
           )}
-        </div>
-        <div className={styles.body}>
+        </WareHouse.ButtonBar>
+
+        <WareHouse.Body className="hide-scrollbar">
           {invRack}
 
           <div className="flex flex-col">
@@ -146,8 +147,8 @@ export default function MyWeapons() {
 
             <OwnerLabel key={weapon?.ID} owner={weapon?.owner} setupIDs={weapon?.setupIDs} />
           </div>
-        </div>
-      </div>
+        </WareHouse.Body>
+      </WareHouse>
 
       <TypeSelect
         active={modalType === "PICK_WEAPON_TYPE"}
@@ -210,6 +211,6 @@ export default function MyWeapons() {
         buttons={[undefined]}
         onClose={closeModal}
       />
-    </div>
+    </WareHouse.Wrapper>
   );
 }
