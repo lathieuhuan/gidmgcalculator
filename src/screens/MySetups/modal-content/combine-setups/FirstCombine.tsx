@@ -96,7 +96,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="h-full pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
+    <div className="h-full pl-2 md2:pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
       <p className={clsx("pr-4 text-center", isError ? "text-lightred" : "text-lightgold")}>
         {isError
           ? "You cannot combine these Setups."
@@ -117,7 +117,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
           className="mt-4"
           buttons={[
             { text: "Cancel", onClick: onClose },
-            { text: "Combine", onClick: tryCombine },
+            { text: "Combine", disabled: !setupOptions.length, onClick: tryCombine },
           ]}
         />
       </div>

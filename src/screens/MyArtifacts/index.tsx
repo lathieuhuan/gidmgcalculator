@@ -113,7 +113,7 @@ export default function MyArtifacts() {
     stats.subs.some((s) => s !== "All");
 
   return (
-    <div className="pt-8 h-full flex-center bg-darkblue-2">
+    <div className={styles["warehouse-wrapper"]}>
       <div className={styles.warehouse}>
         <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar
@@ -155,9 +155,9 @@ export default function MyArtifacts() {
         <div className={styles.body}>
           {invRack}
 
-          <div className="flex flex-col justify-between">
+          <div>
             <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
-              <div className="w-75 hide-scrollbar" style={{ height: "26.5rem" }}>
+              <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
                 {artifact ? (
                   <ArtifactCard
                     artifact={artifact}
@@ -195,7 +195,12 @@ export default function MyArtifacts() {
               ) : null}
             </div>
 
-            <OwnerLabel key={artifact?.ID} owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
+            <OwnerLabel
+              key={artifact?.ID}
+              className="mt-4"
+              owner={artifact?.owner}
+              setupIDs={artifact?.setupIDs}
+            />
           </div>
         </div>
       </div>

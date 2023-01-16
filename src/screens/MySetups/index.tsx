@@ -21,23 +21,33 @@ import { useTranslation } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Util
-import { findById, indexById } from "@Src/utils";
+import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 // Component
 import { Button, IconButton, Green, Red } from "@Components/atoms";
 import { Modal, ConfirmModalBody } from "@Components/molecules";
-import { DamageDisplay, TipsModal, SetupExporter } from "@Components/organisms";
+import { DamageDisplay, TipsModal, SetupExporter, ConfirmModal } from "@Components/organisms";
 import { SetupTemplate } from "./SetupTemplate";
 import { SetupModal } from "./SetupModal";
 import { FirstCombine, CombineMore } from "./modal-content";
 
 import styles from "../styles.module.scss";
 
+const modalClassName: Record<string, string> = {
+  WEAPON: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+  ARTIFACTS: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+  STATS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+  MODIFIERS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
+  FIRST_COMBINE: "max-w-95",
+  SHARE_SETUP: "",
+  TIPS: "flex flex-col",
+  REMOVE_SETUP: "w-80 rounded-lg",
+};
+
 export default function MySetups() {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const userSetups = useSelector(selectUserSetups);
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
@@ -127,21 +137,10 @@ export default function MySetups() {
     );
   };
 
-  const modalClassName: Record<string, string> = {
-    WEAPON: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-    ARTIFACTS: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-    STATS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-    MODIFIERS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-    ADD_TO_COMPLEX: "",
-    SHARE_SETUP: "",
-    REMOVE_SETUP: "w-80 rounded-lg",
-  };
-
   const renderModalContent = () => {
-    if (!chosenSetup) return null;
-
     switch (modal.type) {
       case "REMOVE_SETUP": {
+        if (!chosenSetup) return null;
         const removedSetup = findById(userSetups, modal.ID);
         if (!removedSetup) return null;
 
@@ -165,34 +164,7 @@ export default function MySetups() {
         );
       }
       case "TIPS":
-        return (
-          <TipsModal active onClose={closeModal}>
-            <div className="space-y-2" style={{ lineHeight: 1.7 }}>
-              <p>
-                - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
-                <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red>{" "}
-                of it to the Calculator, so don't forget to save the modified copy if you want to
-                apply the changes to that Setup.
-              </p>
-              <p>
-                - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members.
-                On this complex, switch to teammates' Setups by pressing their icons. Break the
-                complex into individual Setups again by pressing the link / chain icon{" "}
-                <FaUnlink className="inline-block" /> before its name.
-              </p>
-              <p>
-                - You cannot change teammates when modifying the copy of a Setup that is in a
-                complex. However you can make a copy of that copy in the Calculator and work on it.
-              </p>
-              <p>
-                - You can build <Green>teammate's Setups</Green> based on a saved Setup by hovering
-                over teammate's icon and press the calculator icon{" "}
-                <FaCalculator className="inline-block" /> that would appear. Party members and
-                Target will be the same. Some Modifiers will remain activated.
-              </p>
-            </div>
-          </TipsModal>
-        );
+        return null;
       case "FIRST_COMBINE":
         return <FirstCombine onClose={closeModal} />;
       case "COMBINE_MORE": {
@@ -229,6 +201,8 @@ export default function MySetups() {
       case "":
         return null;
       default:
+        if (!chosenSetup) return null;
+
         return (
           <SetupModal
             type={modal.type}
@@ -241,7 +215,7 @@ export default function MySetups() {
   };
 
   return (
-    <div className="pt-8 h-full flex-center bg-darkblue-2">
+    <div className={styles['warehouse-wrapper']}>
       <div className={styles.warehouse + " " + styles["setup-warehouse"]}>
         <div className={"h-10 " + styles["button-bar"]}>
           <IconButton
@@ -257,17 +231,17 @@ export default function MySetups() {
           </Button>
         </div>
 
-        <div className={styles.body}>
+        <div className={"custom-scrollbar " + styles.body}>
           <div
             className={clsx(
               userSetups.length && "p-1 pr-3",
-              "lg:grow shrink-0 flex flex-col items-start overflow-auto scroll-smooth space-y-4"
+              "lg:grow shrink-0 flex flex-col items-start custom-scrollbar scroll-smooth space-y-4"
             )}
           >
             {userSetups.length ? (
               userSetups.map(renderSetup)
             ) : (
-              <div className="w-full pt-8 flex-center">
+              <div className="pt-8 flex-center" style={{ minWidth: 320 }}>
                 <p className="text-xl font-bold text-lightred">No setups to display</p>
               </div>
             )}
@@ -295,7 +269,7 @@ export default function MySetups() {
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         active={modal.type !== ""}
         className={clsx(modalClassName[modal.type], "text-default")}
         style={{
@@ -306,7 +280,54 @@ export default function MySetups() {
         onClose={closeModal}
       >
         {renderModalContent()}
-      </Modal>
+      </Modal> */}
+
+      {chosenSetup && (
+        <ConfirmModal
+          active={modal.type === "REMOVE_SETUP"}
+          message={
+            <>
+              Remove "<b>{chosenSetup.name}</b>"?
+            </>
+          }
+          buttons={[
+            undefined,
+            {
+              onClick: () => {
+                if (modal.ID) dispatch(removeSetup(modal.ID));
+              },
+            },
+          ]}
+          onClose={closeModal}
+        />
+      )}
+
+      <TipsModal active={modal.type === "TIPS"} onClose={closeModal}>
+        <div className="space-y-2" style={{ lineHeight: 1.7 }}>
+          <p>
+            - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
+            <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red> of it
+            to the Calculator, so don't forget to save the modified copy if you want to apply the
+            changes to that Setup.
+          </p>
+          <p>
+            - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members. On
+            this complex, switch to teammates' Setups by pressing their icons. Break the complex
+            into individual Setups again by pressing the link / chain icon{" "}
+            <FaUnlink className="inline-block" /> before its name.
+          </p>
+          <p>
+            - You cannot change teammates when modifying the copy of a Setup that is in a complex.
+            However you can make a copy of that copy in the Calculator and work on it.
+          </p>
+          <p>
+            - You can build <Green>teammate's Setups</Green> based on a saved Setup by hovering over
+            teammate's icon and press the calculator icon <FaCalculator className="inline-block" />{" "}
+            that would appear. Party members and Target will be the same. Some Modifiers will remain
+            activated.
+          </p>
+        </div>
+      </TipsModal>
     </div>
   );
 }

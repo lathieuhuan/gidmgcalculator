@@ -75,7 +75,7 @@ export default function MyWeapons() {
   const closeModal = () => setModalType("");
 
   return (
-    <div className="pt-8 h-full flex-center bg-darkblue-2">
+    <div className={styles['warehouse-wrapper']}>
       <div className={styles.warehouse}>
         <div className={clsx("w-full", styles["button-bar"])}>
           <ButtonBar

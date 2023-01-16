@@ -235,7 +235,6 @@ export function SetupTemplate({
             onClick={() => {
               if (weapon) {
                 const { weaponID, artifactIDs, ID, name, type, target, ...rest } = setup;
-                const { setupIDs, ...calcWeapon } = weapon;
 
                 dispatch(
                   updateImportInfo({

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
 // Selector
@@ -27,10 +27,12 @@ const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
 };
 
 interface OwnerLabelProps {
+  className?: string;
+  style?: CSSProperties;
   owner?: string | null;
   setupIDs?: number[];
 }
-export function OwnerLabel({ owner, setupIDs }: OwnerLabelProps) {
+export function OwnerLabel({ className, style, owner, setupIDs }: OwnerLabelProps) {
   const [list, setList] = useState({
     isVisible: false,
     isMounted: false,
@@ -57,7 +59,15 @@ export function OwnerLabel({ owner, setupIDs }: OwnerLabelProps) {
   };
 
   return owner === undefined ? null : (
-    <div className="mt-4 pl-4 font-bold text-black bg-[#ffe7bb] flex justify-between relative">
+    <div
+      className={
+        "mt-4 pl-4 font-bold text-black flex justify-between relative " + (className || "")
+      }
+      style={{
+        backgroundColor: "#FFE7BB",
+        ...style,
+      }}
+    >
       <p className="py-1">Equipped: {owner || "None"}</p>
       {setupIDs?.length ? (
         <button className="w-8 h-8 flex-center" onClick={onClickPuzzlePiece}>

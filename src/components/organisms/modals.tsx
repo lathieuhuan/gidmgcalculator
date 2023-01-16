@@ -23,10 +23,10 @@ interface TipsModalProps extends ModalControl {
 }
 export function TipsModal({ active, children, onClose }: TipsModalProps) {
   return (
-    <Modal active={active} className="p-4" withDefaultStyle onClose={onClose}>
+    <Modal active={active} className="pl-4 pr-2 py-4 flex flex-col" withDefaultStyle onClose={onClose}>
       <CloseButton className="absolute top-3 right-3" onClick={onClose} />
       <p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>
-      {children}
+      <div className="pr-2 grow custom-scrollbar">{children}</div>
     </Modal>
   );
 }

@@ -32,7 +32,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
   };
 
   const combineMenu = (
-    <div className="mt-2 pr-4 grow custom-scrollbar">
+    <div className="mt-2 md2:pr-4 grow custom-scrollbar">
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
