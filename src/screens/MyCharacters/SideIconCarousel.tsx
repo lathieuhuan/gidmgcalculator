@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { IconButton } from "@Components/atoms";
 import { PickerCharacter } from "@Components/templates";
 
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 
 interface TopBarProps {
   characterNames: string[];

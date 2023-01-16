@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { DragEventHandler, useState } from "react";
+import { DragEventHandler, useEffect, useState } from "react";
 import { FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
@@ -45,7 +45,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
     e.preventDefault();
   };
   const onDrop = () => {
-    if (dropIndex && dragIndex && dropIndex !== dragIndex) {
+    if (dropIndex !== null && dragIndex !== null && dropIndex !== dragIndex) {
       setList((prev) => {
         const newList = [...prev];
         newList.splice(
@@ -56,6 +56,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         return newList;
       });
     }
+
     setDropIndex(null);
   };
 
@@ -120,11 +121,11 @@ function SortInner({ onClose }: { onClose: () => void }) {
         <div>
           {list.map((char, i) => (
             <div
-              key={i}
+              key={char.name}
               id={i.toString()}
               className={clsx(
-                "px-2 py-1 flex items-center cursor-default select-none hover:bg-darkblue-1",
-                i === dropIndex && "border-t border-white"
+                "flex flex-col cursor-default select-none"
+                // i === dropIndex && "border-t border-white"
               )}
               draggable="true"
               onDragStart={onDragStart}
@@ -132,13 +133,19 @@ function SortInner({ onClose }: { onClose: () => void }) {
               onDragEnter={onDragEnter}
               onDrop={onDrop}
             >
-              <button className="w-8 h-8 mr-2 text-default  pointer-events-none ">
-                <FaSort size="1.25rem" />
-              </button>
-              <p className="pointer-events-none text-default">
-                <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
-                {char.level})
-              </p>
+              <div className="px-2 py-1 h-10" hidden={i !== dropIndex}>
+                <div className="bg-darkblue-3" />
+              </div>
+
+              <div className="px-2 py-1 flex items-center hover:bg-darkblue-1">
+                <div className="w-8 h-8 mr-2 flex-center text-default  pointer-events-none">
+                  <FaSort size="1.25rem" />
+                </div>
+                <p className="pointer-events-none text-default">
+                  <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
+                  {char.level})
+                </p>
+              </div>
             </div>
           ))}
         </div>

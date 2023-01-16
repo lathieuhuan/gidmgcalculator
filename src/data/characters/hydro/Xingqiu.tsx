@@ -10,7 +10,7 @@ const Xingqiu: DataCharacter = {
   code: 17,
   name: "Xingqiu",
   // icon: "4/4a/Character_Xingqiu_Thumb",
-  icon: CHARACTER_IMAGES.Xiangling,
+  icon: CHARACTER_IMAGES.Xingqiu,
   sideIcon: "4/4e/Character_Xingqiu_Side_Icon",
   rarity: 4,
   nation: "liyue",
