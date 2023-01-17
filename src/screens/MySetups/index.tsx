@@ -150,7 +150,12 @@ export default function MySetups() {
             style={{ width: "21.75rem" }}
           >
             {chosenSetup && (
-              <ChosenSetupInfo chosenSetup={chosenSetup} {...itemsBySetupID[chosenSetup.ID]} />
+              <ChosenSetupInfo
+                chosenSetup={chosenSetup}
+                {...itemsBySetupID[chosenSetup.ID]}
+                modal={modal}
+                onCloseModal={closeModal}
+              />
             )}
           </div>
         </WareHouse.Body>

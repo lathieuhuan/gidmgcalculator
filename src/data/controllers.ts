@@ -1,4 +1,4 @@
-import type { ArtifactType, CharData, PartyData, WeaponType } from "@Src/types";
+import type { ArtifactType, CharData, DataCharacter, PartyData, WeaponType } from "@Src/types";
 import artifacts from "./artifacts";
 import characters from "./characters";
 import monsters from "./monsters";
@@ -7,8 +7,8 @@ import weapons from "./weapons";
 type HasName = { name: string };
 type HasCode = { code: number };
 
-export const findDataCharacter = (char: HasName) => {
-  return characters.find((character) => character.name === char.name);
+export const findDataCharacter = (char: HasName): DataCharacter | undefined => {
+  return characters[char.name as keyof typeof characters];
 };
 
 export const findDataArtifactSet = ({ code }: HasCode) => {
@@ -49,27 +49,5 @@ export const getCharData = (char: HasName): CharData => {
 };
 
 export function getPartyData(party: (HasName | null)[]): PartyData {
-  const results: PartyData = [];
-
-  for (const char of characters) {
-    const foundCharIndex = party.findIndex((teammate) => teammate?.name === char.name);
-
-    if (foundCharIndex !== -1) {
-      results[foundCharIndex] = {
-        code: char.code,
-        icon: char.icon,
-        name: char.name,
-        nation: char.nation,
-        vision: char.vision,
-        weaponType: char.weaponType,
-        EBcost: char.activeTalents.EB.energyCost,
-      };
-    }
-  }
-  for (let i = 0; i < 3; i++) {
-    if (!results[i]) {
-      results[i] = null;
-    }
-  }
-  return results;
+  return party.map((teammate) => (teammate ? getCharData(teammate) || null : null));
 }

@@ -24,10 +24,11 @@ import {
 
 // Util
 import { findById, getImgSrc } from "@Src/utils";
-import { findDataArtifactSet, findDataWeapon, getPartyData } from "@Data/controllers";
+import { getPartyData } from "@Data/controllers";
 
 // Component
-import { IconButton, CollapseSpace } from "@Components/atoms";
+import { CollapseSpace } from "@Components/atoms";
+import { TeammateItems } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
 
@@ -145,31 +146,35 @@ export default function SectionParty() {
 
       <CollapseSpace active={detailSlot !== null}>
         {detailTeammate && (
-          <TeammateDetail
-            teammate={detailTeammate}
-            onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
-            onChangeWeaponRefinement={(refi: number) => {
-              if (detailSlot !== null) {
-                dispatch(
-                  updateTeammateWeapon({
-                    teammateIndex: detailSlot,
-                    refi,
-                  })
-                );
-              }
-            }}
-            onClickArtifact={() => setModal({ type: "ARTIFACT", teammateIndex: detailSlot })}
-            onClickRemoveArtifact={() => {
-              if (detailSlot !== null) {
-                dispatch(
-                  updateTeammateArtifact({
-                    teammateIndex: detailSlot,
-                    code: -1,
-                  })
-                );
-              }
-            }}
-          />
+          <div className="bg-darkblue-2 pt-2">
+            <TeammateItems
+              mutable
+              className="bg-darkblue-1 pt-10 px-2 pb-2"
+              teammate={detailTeammate}
+              onClickWeapon={() => setModal({ type: "WEAPON", teammateIndex: detailSlot })}
+              onChangeWeaponRefinement={(refi: number) => {
+                if (detailSlot !== null) {
+                  dispatch(
+                    updateTeammateWeapon({
+                      teammateIndex: detailSlot,
+                      refi,
+                    })
+                  );
+                }
+              }}
+              onClickArtifact={() => setModal({ type: "ARTIFACT", teammateIndex: detailSlot })}
+              onClickRemoveArtifact={() => {
+                if (detailSlot !== null) {
+                  dispatch(
+                    updateTeammateArtifact({
+                      teammateIndex: detailSlot,
+                      code: -1,
+                    })
+                  );
+                }
+              }}
+            />
+          </div>
         )}
       </CollapseSpace>
 
@@ -224,105 +229,6 @@ export default function SectionParty() {
         }}
         onClose={closeModal}
       />
-    </div>
-  );
-}
-
-interface ITeammateDetailProps {
-  teammate: Teammate;
-  onClickWeapon: () => void;
-  onChangeWeaponRefinement: (newRefinement: number) => void;
-  onClickArtifact: () => void;
-  onClickRemoveArtifact: () => void;
-}
-function TeammateDetail({
-  teammate,
-  onClickWeapon,
-  onChangeWeaponRefinement,
-  onClickArtifact,
-  onClickRemoveArtifact,
-}: ITeammateDetailProps) {
-  const { weapon, artifact } = teammate;
-  const weaponData = findDataWeapon(weapon);
-  const { name: artifactSetName, flower } = findDataArtifactSet(artifact) || {};
-  const { icon: artifactSetIcon = "" } = flower || {};
-
-  return (
-    <div className="bg-darkblue-2 pt-2">
-      <div className="bg-darkblue-1 pt-10 px-2 pb-2">
-        {weaponData && (
-          <div className="flex">
-            <button
-              className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
-              onClick={onClickWeapon}
-            >
-              <img src={getImgSrc(weaponData.icon)} alt="weapon" draggable={false} />
-            </button>
-
-            <div className="overflow-hidden">
-              <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
-                {weaponData.name}
-              </p>
-              {weaponData.rarity >= 3 && (
-                <div className="flex items-center">
-                  <span>Refinement</span>
-                  <select
-                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
-                    value={weapon.refi}
-                    onChange={(e) => onChangeWeaponRefinement(+e.target.value)}
-                  >
-                    {[...Array(5)].map((_, index) => {
-                      return (
-                        <option key={index} value={index + 1}>
-                          {index + 1}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-2 flex space-x-2">
-          <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
-            {artifactSetIcon ? (
-              <img
-                className="bg-darkblue-2 rounded"
-                src={getImgSrc(artifactSetIcon)}
-                alt="artifact"
-                draggable={false}
-              />
-            ) : (
-              <img
-                className="p-1"
-                src={getImgSrc("6/6a/Icon_Inventory_Artifacts")}
-                alt="artifact"
-                draggable={false}
-              />
-            )}
-          </button>
-
-          <p
-            className={clsx(
-              "mt-1 grow font-medium truncate",
-              artifactSetName ? "text-default text-lg" : "text-lesser"
-            )}
-          >
-            {artifactSetName || "No artifact buff / debuff"}
-          </p>
-          {artifactSetName && (
-            <IconButton
-              className="mt-1 self-start text-xl hover:text-darkred"
-              boneOnly
-              onClick={onClickRemoveArtifact}
-            >
-              <FaTimes />
-            </IconButton>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

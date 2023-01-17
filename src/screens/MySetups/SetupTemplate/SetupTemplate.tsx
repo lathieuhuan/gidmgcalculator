@@ -1,14 +1,5 @@
-import clsx from "clsx";
-import { useMemo } from "react";
-import {
-  FaCalculator,
-  FaLink,
-  FaPlus,
-  FaShareAlt,
-  FaTrashAlt,
-  FaUnlink,
-  FaWrench,
-} from "react-icons/fa";
+import { useMemo, useState } from "react";
+import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "react-icons/fa";
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { MySetupModalType } from "../types";
 
@@ -40,7 +31,9 @@ import {
 
 // Component
 import { CharacterPortrait, IconButton } from "@Components/atoms";
+import { Modal } from "@Components/molecules";
 import { renderGearIcon } from "./utils";
+import { TeammateDetail } from "./TeammateDetail";
 
 interface SetupLayoutProps {
   ID: number;
@@ -63,7 +56,19 @@ export function SetupTemplate({
   const { type, char, party } = setup;
   const dispatch = useDispatch();
 
+  const [teammateDetail, setTeammateDetail] = useState({
+    index: -1,
+    isCalculated: false,
+  });
+
   const isOriginal = type === "original";
+
+  const closeTeammateDetail = () => {
+    setTeammateDetail({
+      index: -1,
+      isCalculated: false,
+    });
+  };
 
   const renderLinkButton = (ID: number, displayedID: number) => {
     const uncombine = () => {
@@ -138,45 +143,28 @@ export function SetupTemplate({
           const dataTeammate = teammate && findDataCharacter(teammate);
           if (!dataTeammate) return null;
 
-          const teammateSetupID = allIDs?.[teammate.name];
-          const clickable = !isOriginal && teammateSetupID;
-          // const { weapon, artifact } = teammate;
-          // const teammateWp = findDataWeapon(weapon);
-          // const teammateArt = findDataArtifact({ code: artifact.code, type: "flower" });
+          const isCalculated = !isOriginal && !!allIDs?.[teammate.name];
 
           return (
             <div
-              key={teammateIndex}
-              className={clsx(
-                "w-18 h-18",
-                clickable
-                  ? "rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
-                  : "group relative"
-              )}
+              className={
+                "w-18 h-18 cursor-pointer" +
+                (isCalculated
+                  ? " rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
+                  : "")
+              }
             >
               <CharacterPortrait
+                key={teammateIndex}
                 code={dataTeammate.code}
                 icon={dataTeammate.icon}
-                onClickIcon={() => {
-                  if (clickable) {
-                    dispatch(
-                      switchShownSetupInComplex({ complexID: ID, shownID: teammateSetupID })
-                    );
-                  }
-                }}
+                onClickIcon={() =>
+                  setTeammateDetail({
+                    index: teammateIndex,
+                    isCalculated,
+                  })
+                }
               />
-              {!clickable && (
-                <div className="absolute -bottom-1 -right-1 z-10 hidden group-hover:block">
-                  <IconButton
-                    variant="positive"
-                    onClick={() => {
-                      // dispatch(startImportSetup({ importInfo: { setup, tmIndex }, type: 3 }));
-                    }}
-                  >
-                    <FaCalculator />
-                  </IconButton>
-                </div>
-              )}
             </div>
           );
         })}
@@ -309,6 +297,30 @@ export function SetupTemplate({
           {display.gears}
         </div>
       </div>
+
+      <Modal active={teammateDetail.index !== -1} onClose={closeTeammateDetail}>
+        {party[teammateDetail.index] && (
+          <TeammateDetail
+            teammate={party[teammateDetail.index]!}
+            isCalculated={teammateDetail.isCalculated}
+            onSwitchSetup={() => {
+              const { name } = party[teammateDetail.index] || {};
+              const shownID = allIDs && name ? allIDs[name] : undefined;
+
+              if (shownID) {
+                dispatch(
+                  switchShownSetupInComplex({
+                    complexID: ID,
+                    shownID,
+                  })
+                );
+              }
+            }}
+            onCalculateTeammateSetup={() => {}}
+            onClose={closeTeammateDetail}
+          />
+        )}
+      </Modal>
     </>
   );
 }

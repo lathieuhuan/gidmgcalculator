@@ -1,0 +1,117 @@
+import { FaTimes } from "react-icons/fa";
+import type { Teammate } from "@Src/types";
+
+// Util
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { getImgSrc } from "@Src/utils";
+
+// Component
+import { IconButton } from "@Components/atoms";
+
+interface ITeammateItemsProps {
+  className?: string;
+  mutable?: boolean;
+  teammate: Teammate;
+  onClickWeapon?: () => void;
+  onChangeWeaponRefinement?: (newRefinement: number) => void;
+  onClickArtifact?: () => void;
+  onClickRemoveArtifact?: () => void;
+}
+export const TeammateItems = ({
+  className,
+  mutable,
+  teammate,
+  onClickWeapon,
+  onChangeWeaponRefinement,
+  onClickArtifact,
+  onClickRemoveArtifact,
+}: ITeammateItemsProps) => {
+  const { weapon, artifact } = teammate;
+  const weaponData = findDataWeapon(weapon);
+  const { name: artifactSetName, flower } = findDataArtifactSet(artifact) || {};
+  const { icon: artifactSetIcon = "" } = flower || {};
+
+  return (
+    <div className={className}>
+      {weaponData && (
+        <div className="flex">
+          <button
+            className={`w-14 h-14 mr-2 rounded bg-gradient-${weaponData.rarity} shrink-0`}
+            disabled={!mutable}
+            onClick={onClickWeapon}
+          >
+            <img src={getImgSrc(weaponData.icon)} alt="weapon" draggable={false} />
+          </button>
+
+          <div className="overflow-hidden">
+            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
+              {weaponData.name}
+            </p>
+            {mutable ? (
+              weaponData.rarity >= 3 && (
+                <div className="flex items-center">
+                  <span>Refinement</span>
+                  <select
+                    className={`ml-2 pr-1 text-rarity-${weaponData.rarity} text-right`}
+                    value={weapon.refi}
+                    onChange={(e) => onChangeWeaponRefinement?.(+e.target.value)}
+                  >
+                    {[...Array(5)].map((_, index) => {
+                      return (
+                        <option key={index} value={index + 1}>
+                          {index + 1}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              )
+            ) : (
+              <p>
+                Refinement <span className={`text-rarity-${weaponData.rarity}`}>{weapon.refi}</span>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-2 flex space-x-2">
+        <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
+          {artifactSetIcon ? (
+            <img
+              className="bg-darkblue-2 rounded"
+              src={getImgSrc(artifactSetIcon)}
+              alt="artifact"
+              draggable={false}
+            />
+          ) : (
+            <img
+              className="p-1"
+              src={getImgSrc("6/6a/Icon_Inventory_Artifacts")}
+              alt="artifact"
+              draggable={false}
+            />
+          )}
+        </button>
+
+        <p
+          className={
+            "mt-1 grow font-medium truncate " +
+            (artifactSetName ? "text-default text-lg" : "text-lesser")
+          }
+        >
+          {artifactSetName || "No artifact buff / debuff"}
+        </p>
+        {artifactSetName && (
+          <IconButton
+            className="mt-1 self-start text-xl hover:text-darkred"
+            boneOnly
+            onClick={onClickRemoveArtifact}
+          >
+            <FaTimes />
+          </IconButton>
+        )}
+      </div>
+    </div>
+  );
+};

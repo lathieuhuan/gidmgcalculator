@@ -45,7 +45,7 @@ function PickerCharacterCore({
     const data: PickerItem[] = [];
 
     if (sourceType === "mixed") {
-      for (const character of characters) {
+      for (const character of Object.values(characters)) {
         const charData = pickProps(character, fields);
         const existedChar = findByName(userChars, character.name);
 
@@ -56,7 +56,7 @@ function PickerCharacterCore({
         }
       }
     } else if (sourceType === "appData") {
-      for (const character of characters) {
+      for (const character of Object.values(characters)) {
         if (!filter || filter(character)) {
           data.push(pickProps(character, fields));
         }

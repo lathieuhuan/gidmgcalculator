@@ -65,12 +65,12 @@ import Yoimiya from "./pyro/Yoimiya";
 import YunJin from "./geo/YunJin";
 import Zhongli from "./geo/Zhongli";
 
-const characters = [
+const characters = {
   Albedo,
   Alhaitham,
   Aloy,
   Amber,
-  AnemoMC,
+  "Anemo Traveler": AnemoMC,
   Ayaka,
   Ayato,
   Barbara,
@@ -80,16 +80,16 @@ const characters = [
   Chongyun,
   Collei,
   Cyno,
-  DendroMC,
+  "Dendro Traveler": DendroMC,
   Diluc,
   Diona,
   Dori,
-  ElectroMC,
+  "Electro Traveler": ElectroMC,
   Eula,
   Faruzan,
   Fischl,
   Ganyu,
-  GeoMC,
+  "Geo Traveler": GeoMC,
   Gorou,
   Heizou,
   HuTao,
@@ -125,13 +125,13 @@ const characters = [
   Xiao,
   Xingqiu,
   Xinyan,
-  YaeMiko,
+  "Yae Miko": YaeMiko,
   Yanfei,
   Yaoyao,
   Yelan,
   Yoimiya,
-  YunJin,
+  "Yun Jin": YunJin,
   Zhongli,
-];
+};
 
 export default characters;
