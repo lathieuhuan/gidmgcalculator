@@ -1,13 +1,13 @@
 export type MySetupModalType =
+  | "TIPS"
+  | "FIRST_COMBINE"
+  | "COMBINE_MORE"
   | "SHARE_SETUP"
   | "REMOVE_SETUP"
-  | "COMBINE_MORE"
-  | "FIRST_COMBINE"
   | "STATS"
   | "MODIFIERS"
   | "WEAPON"
   | "ARTIFACTS"
-  | "TIPS"
   | "";
 
 export type MySetupModal = {

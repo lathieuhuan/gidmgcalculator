@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import type { UserComplexSetup, UserSetup } from "@Src/types";
+import type { UserSetup } from "@Src/types";
 
 // Action
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
@@ -19,13 +18,32 @@ import { useCombineManager } from "./hook";
 import { ButtonBar } from "@Components/molecules";
 
 interface CombineMoreProps {
-  targetSetup: UserComplexSetup;
-  allChars: string[];
+  setupID: number;
   onClose: () => void;
 }
-export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps) {
+export function CombineMore({ setupID, onClose }: CombineMoreProps) {
   const dispatch = useDispatch();
   const userSetups = useSelector(selectUserSetups);
+
+  const targetSetup = findById(userSetups, setupID);
+  if (!targetSetup || isUserSetup(targetSetup)) {
+    return null;
+  }
+
+  const shownSetup = findById(userSetups, targetSetup.shownID);
+  if (!shownSetup || !isUserSetup(shownSetup)) {
+    return null;
+  }
+
+  const allChars = shownSetup.party.reduce(
+    (result, teammate) => {
+      if (teammate) {
+        result.push(teammate.name);
+      }
+      return result;
+    },
+    [shownSetup.char.name]
+  );
 
   const { name, allIDs } = targetSetup;
   const remainChars = allChars.filter((name) => !allIDs[name]);
@@ -69,7 +87,7 @@ export function CombineMore({ targetSetup, allChars, onClose }: CombineMoreProps
 
   return (
     <div className="h-full pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
-      <p className={clsx("pr-4 text-center", isError ? "text-lightred" : "text-lightgold")}>
+      <p className={"pr-4 text-center " + (isError ? "text-lightred" : "text-lightgold")}>
         {isError ? (
           "These 2 Setups feature the same Character."
         ) : (

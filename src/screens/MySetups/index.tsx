@@ -1,19 +1,14 @@
 import clsx from "clsx";
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 import type { UserComplexSetup, UserSetup } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
 
 // Action
-import { chooseUserSetup, removeSetup } from "@Store/userDatabaseSlice";
+import { chooseUserSetup } from "@Store/userDatabaseSlice";
 
 // Selector
-import {
-  selectChosenSetupID,
-  selectUserArts,
-  selectUserSetups,
-  selectUserWps,
-} from "@Store/userDatabaseSlice/selectors";
+import { selectChosenSetupID, selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -22,40 +17,25 @@ import { useSetupItems } from "./hooks";
 // Util
 import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
-import { calculateChosenSetup } from "./utils";
 
 // Component
 import { Button, IconButton, Green, Red } from "@Components/atoms";
-import { Modal, ConfirmModalBody } from "@Components/molecules";
-import { DamageDisplay, TipsModal, SetupExporter, ConfirmModal } from "@Components/organisms";
+import { Modal } from "@Components/molecules";
+import { TipsModal } from "@Components/organisms";
 import { WareHouse } from "@Components/templates";
 import { SetupTemplate } from "./SetupTemplate";
-import { SetupModal } from "./SetupModal";
+import { ChosenSetupInfo } from "./ChosenSetupInfo";
 import { FirstCombine, CombineMore } from "./modal-content";
 
 import styles from "../styles.module.scss";
 
-const modalClassName: Record<string, string> = {
-  WEAPON: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-  ARTIFACTS: "p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-  STATS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-  MODIFIERS: "hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95",
-  FIRST_COMBINE: "max-w-95",
-  SHARE_SETUP: "",
-  TIPS: "flex flex-col",
-  REMOVE_SETUP: "w-80 rounded-lg",
-};
-
 export default function MySetups() {
   const dispatch = useDispatch();
   const userSetups = useSelector(selectUserSetups);
-  const userWps = useSelector(selectUserWps);
-  const userArts = useSelector(selectUserArts);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
   const { itemsBySetupID } = useSetupItems();
 
-  // const ref = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<MySetupModal>({
     type: "",
     ID: 0,
@@ -84,11 +64,6 @@ export default function MySetups() {
   const closeModal = () => {
     setModal((prev) => ({ ...prev, type: "" }));
   };
-
-  const calcInfo = useMemo(
-    () => calculateChosenSetup(chosenSetup, userWps, userArts),
-    [chosenSetupID]
-  );
 
   const renderSetup = (setup: UserSetup | UserComplexSetup, index: number) => {
     if (setup.type === "combined") return null;
@@ -122,7 +97,7 @@ export default function MySetups() {
       ) : null;
     }
 
-    return (
+    return setupDisplay ? (
       <div
         key={ID}
         id={`setup-${ID}`}
@@ -134,84 +109,7 @@ export default function MySetups() {
       >
         {setupDisplay}
       </div>
-    );
-  };
-
-  const renderModalContent = () => {
-    switch (modal.type) {
-      case "REMOVE_SETUP": {
-        if (!chosenSetup) return null;
-        const removedSetup = findById(userSetups, modal.ID);
-        if (!removedSetup) return null;
-
-        return (
-          <ConfirmModalBody
-            message={
-              <>
-                Remove "<b>{removedSetup.name}</b>"?
-              </>
-            }
-            buttons={[
-              undefined,
-              {
-                onClick: () => {
-                  if (modal.ID) dispatch(removeSetup(modal.ID));
-                },
-              },
-            ]}
-            onClose={closeModal}
-          />
-        );
-      }
-      case "TIPS":
-        return null;
-      case "FIRST_COMBINE":
-        return <FirstCombine onClose={closeModal} />;
-      case "COMBINE_MORE": {
-        const targetSetup = findById(userSetups, modal.ID);
-        if (!targetSetup || isUserSetup(targetSetup)) {
-          return null;
-        }
-
-        const shownSetup = findById(userSetups, targetSetup.shownID);
-        if (!shownSetup || !isUserSetup(shownSetup)) {
-          return null;
-        }
-
-        const allChars = shownSetup.party.reduce(
-          (result, teammate) => {
-            if (teammate) {
-              result.push(teammate.name);
-            }
-            return result;
-          },
-          [shownSetup.char.name]
-        );
-
-        return <CombineMore targetSetup={targetSetup} allChars={allChars} onClose={closeModal} />;
-      }
-      case "SHARE_SETUP": {
-        const targetSetup = findById(userSetups, modal.ID);
-
-        if (targetSetup && isUserSetup(targetSetup)) {
-          return <SetupExporter data={targetSetup} onClose={closeModal} />;
-        }
-        return null;
-      }
-      case "":
-        return null;
-      default:
-        if (!chosenSetup) return null;
-
-        return (
-          <SetupModal
-            type={modal.type}
-            chosenSetup={chosenSetup}
-            calcInfo={calcInfo}
-            {...itemsBySetupID[chosenSetup.ID]}
-          />
-        );
-    }
+    ) : null;
   };
 
   return (
@@ -248,59 +146,15 @@ export default function MySetups() {
           </div>
 
           <div
-            className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3 flex flex-col"
+            className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3"
             style={{ width: "21.75rem" }}
           >
-            {chosenSetup && calcInfo?.damage && (
-              <>
-                <div>
-                  <p className="text-sm text-center truncate">{chosenSetup.name}</p>
-                </div>
-                <div className="mt-2 grow hide-scrollbar">
-                  <DamageDisplay
-                    char={chosenSetup.char}
-                    party={chosenSetup.party}
-                    damageResult={calcInfo?.damage}
-                  />
-                </div>
-              </>
+            {chosenSetup && (
+              <ChosenSetupInfo chosenSetup={chosenSetup} {...itemsBySetupID[chosenSetup.ID]} />
             )}
           </div>
         </WareHouse.Body>
       </WareHouse>
-
-      {/* <Modal
-        active={modal.type !== ""}
-        className={clsx(modalClassName[modal.type], "text-default")}
-        style={{
-          height: ["STATS", "MODIFIERS", "FIRST_COMBINE", "COMBINE_MORE"].includes(modal.type)
-            ? "85%"
-            : "auto",
-        }}
-        onClose={closeModal}
-      >
-        {renderModalContent()}
-      </Modal> */}
-
-      {chosenSetup && (
-        <ConfirmModal
-          active={modal.type === "REMOVE_SETUP"}
-          message={
-            <>
-              Remove "<b>{chosenSetup.name}</b>"?
-            </>
-          }
-          buttons={[
-            undefined,
-            {
-              onClick: () => {
-                if (modal.ID) dispatch(removeSetup(modal.ID));
-              },
-            },
-          ]}
-          onClose={closeModal}
-        />
-      )}
 
       <TipsModal active={modal.type === "TIPS"} onClose={closeModal}>
         <div className="space-y-2" style={{ lineHeight: 1.7 }}>
@@ -328,6 +182,19 @@ export default function MySetups() {
           </p>
         </div>
       </TipsModal>
+
+      <Modal
+        active={modal.type === "FIRST_COMBINE"}
+        className="max-w-95"
+        style={{ height: "85%" }}
+        onClose={closeModal}
+      >
+        <FirstCombine onClose={closeModal} />
+      </Modal>
+
+      <Modal active={modal.type === "COMBINE_MORE"} style={{ height: "85%" }} onClose={closeModal}>
+        {modal.ID && <CombineMore setupID={modal.ID} onClose={closeModal} />}
+      </Modal>
     </WareHouse.Wrapper>
   );
 }
