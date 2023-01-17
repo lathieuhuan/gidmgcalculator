@@ -59,7 +59,7 @@ function ArtifactInventory({
     () => filterArtIdsBySetsAndStats(data, codes, stats),
     [data, codes, stats]
   );
-  const [inventoryRack, chosenID] = useInventoryRack({
+  const { inventoryRack, chosenID } = useInventoryRack({
     listClassName: styles["inventory-list"],
     itemClassName: styles.item,
     items: data,

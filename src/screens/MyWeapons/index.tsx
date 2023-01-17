@@ -62,7 +62,7 @@ export default function MyWeapons() {
     selectFilteredWeaponIDs(state, filteredTypes as WeaponType[])
   );
 
-  const [invRack, chosenID, setChosenID] = useInventoryRack({
+  const { inventoryRack, chosenID, setChosenID } = useInventoryRack({
     listClassName: styles.list,
     itemClassName: styles.item,
     items: useSelector(selectUserWps),
@@ -115,7 +115,7 @@ export default function MyWeapons() {
         </WareHouse.ButtonBar>
 
         <WareHouse.Body className="hide-scrollbar">
-          {invRack}
+          {inventoryRack}
 
           <div className="flex flex-col">
             <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">

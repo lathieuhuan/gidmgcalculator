@@ -32,13 +32,13 @@ interface UseInventoryRackArgs {
   itemType: "weapon" | "artifact";
   filteredIds: number[];
 }
-export function useInventoryRack({
+export const useInventoryRack = ({
   listClassName,
   itemClassName,
   items,
   itemType,
   filteredIds,
-}: UseInventoryRackArgs) {
+}: UseInventoryRackArgs) => {
   const [chosenID, setChosenID] = useState(0);
   const [clickedID, setClickedID] = useState<number>(0);
   const [pageNo, setPageNo] = useState(0);
@@ -95,7 +95,7 @@ export function useInventoryRack({
     return () => document.removeEventListener("keydown", navigateWithArrow);
   }, [goBack, goNext]);
 
-  const rack = (
+  const inventoryRack = (
     <div className="w-full flex flex-col" style={{ minWidth: "22rem" }}>
       <div className={clsx("hide-scrollbar", listClassName)}>
         {filteredIds.length ? (
@@ -152,5 +152,9 @@ export function useInventoryRack({
     </div>
   );
 
-  return [rack, chosenID, setChosenID] as const;
-}
+  return {
+    inventoryRack,
+    chosenID,
+    setChosenID,
+  };
+};

@@ -88,7 +88,7 @@ export default function MyArtifacts() {
   const filteredIds = useSelector((state) =>
     selectFilteredArtifactIds(state, filteredTypes as ArtifactType[], codes, stats)
   );
-  const [invRack, chosenID, setChosenID] = useInventoryRack({
+  const { inventoryRack, chosenID, setChosenID } = useInventoryRack({
     listClassName: styles.list,
     itemClassName: styles.item,
     items: useSelector(selectUserArts),
@@ -153,7 +153,7 @@ export default function MyArtifacts() {
         </WareHouse.ButtonBar>
 
         <WareHouse.Body className="hide-scrollbar">
-          {invRack}
+          {inventoryRack}
 
           <div>
             <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">

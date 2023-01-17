@@ -36,7 +36,7 @@ function WeaponInventory({
 }: WeaponInventoryProps) {
   const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, [weaponType]));
 
-  const [inventoryRack, chosenID] = useInventoryRack({
+  const { inventoryRack, chosenID } = useInventoryRack({
     listClassName: styles["inventory-list"],
     itemClassName: styles.item,
     items: useSelector(selectUserWps),
