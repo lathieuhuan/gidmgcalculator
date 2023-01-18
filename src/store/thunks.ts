@@ -23,9 +23,6 @@ export const startCalculation =
     const { userWps, userArts } = getState().database;
 
     dispatch(initSessionWithChar({ pickedChar, userWps, userArts }));
-    // batch(() => {
-    //   dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
-    // });
   };
 
 export const pickEquippedArtSet =

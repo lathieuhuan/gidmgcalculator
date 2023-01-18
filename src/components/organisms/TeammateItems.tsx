@@ -76,10 +76,10 @@ export const TeammateItems = ({
       )}
 
       <div className="mt-2 flex space-x-2">
-        <button className="w-14 h-14 shrink-0" onClick={onClickArtifact}>
+        <button className="w-14 h-14 shrink-0" disabled={!mutable} onClick={onClickArtifact}>
           {artifactSetIcon ? (
             <img
-              className="bg-darkblue-2 rounded"
+              className="bg-darkblue-3 rounded"
               src={getImgSrc(artifactSetIcon)}
               alt="artifact"
               draggable={false}
@@ -102,7 +102,7 @@ export const TeammateItems = ({
         >
           {artifactSetName || "No artifact buff / debuff"}
         </p>
-        {artifactSetName && (
+        {artifactSetName && mutable && (
           <IconButton
             className="mt-1 self-start text-xl hover:text-darkred"
             boneOnly

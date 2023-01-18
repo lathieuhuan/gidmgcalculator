@@ -32,8 +32,8 @@ import {
 // Component
 import { CharacterPortrait, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { renderGearIcon } from "./utils";
-import { TeammateDetail } from "./TeammateDetail";
+import { TeammateDetail } from "../modal-content/TeammateDetail";
+import { GearIcon } from "./GearIcon";
 
 interface SetupLayoutProps {
   ID: number;
@@ -70,28 +70,16 @@ export function SetupTemplate({
     });
   };
 
-  const renderLinkButton = (ID: number, displayedID: number) => {
-    const uncombine = () => {
-      dispatch(uncombineSetups(ID));
+  const uncombine = () => {
+    dispatch(uncombineSetups(ID));
 
-      setTimeout(() => {
-        dispatch(chooseUserSetup(displayedID));
-      }, 10);
-    };
+    setTimeout(() => {
+      dispatch(chooseUserSetup(setup.ID));
+    }, 10);
+  };
 
-    return window.innerWidth > 1025 ? (
-      <button
-        className="w-8 h-8 mr-2 rounded-circle text-default hover:bg-darkred flex-center group"
-        onClick={uncombine}
-      >
-        <FaUnlink className="hidden group-hover:block" />
-        <FaLink className="block group-hover:hidden" />
-      </button>
-    ) : (
-      <IconButton className="mr-2" variant="negative" onClick={uncombine}>
-        <FaUnlink />
-      </IconButton>
-    );
+  const onCalculateTeammateSetup = () => {
+    //
   };
 
   const display = useMemo(() => {
@@ -147,6 +135,7 @@ export function SetupTemplate({
 
           return (
             <div
+              key={teammateIndex}
               className={
                 "w-18 h-18 cursor-pointer" +
                 (isCalculated
@@ -155,15 +144,14 @@ export function SetupTemplate({
               }
             >
               <CharacterPortrait
-                key={teammateIndex}
                 code={dataTeammate.code}
                 icon={dataTeammate.icon}
-                onClickIcon={() =>
+                onClickIcon={() => {
                   setTeammateDetail({
                     index: teammateIndex,
                     isCalculated,
-                  })
-                }
+                  });
+                }}
               />
             </div>
           );
@@ -172,47 +160,61 @@ export function SetupTemplate({
     );
 
     const gears = (
-      <div className="mt-3 mx-auto grid grid-cols-3 gap-1">
-        {weaponData
-          ? renderGearIcon(weaponData, openModal("WEAPON"), "weapon")
-          : renderGearIcon({ icon: "7/7b/Icon_Inventory_Weapons" }, undefined, "weapon")}
+      <div className="mt-4 mx-auto grid grid-cols-3 gap-1">
+        {weaponData ? (
+          <GearIcon item={weaponData} onClick={openModal("WEAPON")} />
+        ) : (
+          <GearIcon item={{ icon: "7/7b/Icon_Inventory_Weapons" }} />
+        )}
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
             const artifactData = findDataArtifact(artifact);
-            return artifactData
-              ? renderGearIcon(
-                  {
-                    icon: artifactData.icon,
-                    beta: artifactData.beta,
-                    rarity: artifact.rarity || 5,
-                  },
-                  openModal("ARTIFACTS"),
-                  i
-                )
-              : null;
+
+            return artifactData ? (
+              <GearIcon
+                key={i}
+                item={{
+                  icon: artifactData.icon,
+                  beta: artifactData.beta,
+                  rarity: artifact.rarity || 5,
+                }}
+                onClick={openModal("ARTIFACTS")}
+              />
+            ) : null;
           }
-          return renderGearIcon({ icon: ARTIFACT_ICONS[ARTIFACT_TYPES[i]] }, undefined, i);
+
+          return <GearIcon key={i} item={{ icon: ARTIFACT_ICONS[ARTIFACT_TYPES[i]] }} />;
         })}
       </div>
     );
 
-    return {
-      mainCharacter,
-      teammate,
-      gears,
-    };
+    return { mainCharacter, teammate, gears };
   }, []);
 
   return (
     <>
       <div
-        className="px-2 flex justify-between flex-col lg:flex-row"
+        className="pr-1 flex justify-between flex-col lg:flex-row"
         onDoubleClick={() => console.log(setup)}
       >
         <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
-          {!isOriginal && renderLinkButton(ID, setup.ID)}
-          <p className="text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
+          {isOriginal ? null : window.innerWidth > 1025 ? (
+            <button
+              className="w-8 h-8 rounded-circle text-default hover:text-darkred flex-center group"
+              onClick={uncombine}
+            >
+              <FaUnlink className="hidden group-hover:block" />
+              <FaLink className="block group-hover:hidden" />
+            </button>
+          ) : (
+            <IconButton boneOnly variant="negative" onClick={uncombine}>
+              <FaUnlink />
+            </IconButton>
+          )}
+          <p className="px-1 text-xl text-orange font-semibold truncate">
+            {setupName || setup.name}
+          </p>
         </div>
 
         <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
@@ -316,7 +318,7 @@ export function SetupTemplate({
                 );
               }
             }}
-            onCalculateTeammateSetup={() => {}}
+            onCalculateTeammateSetup={onCalculateTeammateSetup}
             onClose={closeTeammateDetail}
           />
         )}

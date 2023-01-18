@@ -68,15 +68,16 @@ export default function MySetups() {
   const renderSetup = (setup: UserSetup | UserComplexSetup, index: number) => {
     if (setup.type === "combined") return null;
     const { ID } = setup;
+    let key = 0;
     let setupDisplay: JSX.Element | null;
 
     if (setup.type === "complex") {
       const actualSetup = userSetups.find((mySetup) => mySetup.ID === setup.shownID);
       if (!actualSetup || !isUserSetup(actualSetup)) return null;
 
+      key = actualSetup.ID;
       setupDisplay = itemsBySetupID[actualSetup.ID] ? (
         <SetupTemplate
-          key={actualSetup.ID}
           ID={ID}
           setupName={setup.name}
           setup={actualSetup}
@@ -86,28 +87,23 @@ export default function MySetups() {
         />
       ) : null;
     } else {
+      key = ID;
       setupDisplay = itemsBySetupID[ID] ? (
-        <SetupTemplate
-          key={ID}
-          ID={ID}
-          setup={setup}
-          {...itemsBySetupID[ID]}
-          openModal={openModal}
-        />
+        <SetupTemplate ID={ID} setup={setup} {...itemsBySetupID[ID]} openModal={openModal} />
       ) : null;
     }
 
     return setupDisplay ? (
-      <div
-        key={ID}
-        id={`setup-${ID}`}
-        className={clsx(
-          "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
-          ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
-        )}
-        onClick={() => dispatch(chooseUserSetup(ID))}
-      >
-        {setupDisplay}
+      <div key={key} id={`setup-${ID}`} className="p-1">
+        <div
+          className={clsx(
+            "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
+            ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
+          )}
+          onClick={() => dispatch(chooseUserSetup(ID))}
+        >
+          {setupDisplay}
+        </div>
       </div>
     ) : null;
   };
@@ -133,7 +129,7 @@ export default function MySetups() {
           <div
             className={clsx(
               userSetups.length && "p-1 pr-3",
-              "lg:grow shrink-0 flex flex-col items-start hide-scrollbar scroll-smooth space-y-4"
+              "lg:grow shrink-0 flex flex-col items-start hide-scrollbar scroll-smooth space-y-3"
             )}
           >
             {userSetups.length ? (
