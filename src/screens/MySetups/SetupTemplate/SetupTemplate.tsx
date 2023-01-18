@@ -11,6 +11,7 @@ import { useDispatch } from "@Store/hooks";
 
 // Action
 import { updateImportInfo } from "@Store/uiSlice";
+import { makeTeammateSetup } from "@Store/thunks";
 
 // Selector
 import {
@@ -34,6 +35,7 @@ import { CharacterPortrait, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
+import { restoreCalcSetup } from "@Src/utils/setup";
 
 interface SetupLayoutProps {
   ID: number;
@@ -79,7 +81,15 @@ export function SetupTemplate({
   };
 
   const onCalculateTeammateSetup = () => {
-    //
+    if (weapon) {
+      dispatch(
+        makeTeammateSetup({
+          setup,
+          mainWeapon: weapon,
+          teammateIndex: teammateDetail.index,
+        })
+      );
+    }
   };
 
   const display = useMemo(() => {
@@ -226,19 +236,20 @@ export function SetupTemplate({
               if (weapon) {
                 const { weaponID, artifactIDs, ID, name, type, target, ...rest } = setup;
 
+                const calcSetup = restoreCalcSetup({
+                  ...rest,
+                  weapon: userItemToCalcItem(weapon),
+                  artifacts: artifacts.map((artifact) => {
+                    return artifact ? userItemToCalcItem(artifact) : null;
+                  }),
+                });
+
                 dispatch(
                   updateImportInfo({
-                    importType: "EDIT_SETUP",
                     ID,
                     name,
                     type,
-                    calcSetup: {
-                      ...rest,
-                      weapon: userItemToCalcItem(weapon),
-                      artifacts: artifacts.map((artifact) => {
-                        return artifact ? userItemToCalcItem(artifact) : null;
-                      }),
-                    },
+                    calcSetup,
                     target,
                   })
                 );

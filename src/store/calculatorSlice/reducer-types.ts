@@ -7,7 +7,6 @@ import type {
   UserWeapon,
   Vision,
   WeaponType,
-  UserSetup,
   CalcSetupManageInfo,
   ArtifactMainStatType,
   CalcSetup,
@@ -15,7 +14,6 @@ import type {
   CustomDebuffCtrl,
   TeammateWeapon,
   TeammateArtifact,
-  Target,
   SetupImportInfo,
   PartiallyRequired,
 } from "@Src/types";

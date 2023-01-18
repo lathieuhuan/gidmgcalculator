@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
-import { FaPlus, FaSyncAlt, FaTimes, FaUserSlash } from "react-icons/fa";
-import type { Teammate } from "@Src/types";
+import { FaPlus, FaSyncAlt, FaUserSlash } from "react-icons/fa";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";

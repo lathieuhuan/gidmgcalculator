@@ -11,10 +11,9 @@ import type {
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
 import { findDataCharacter, findMonster } from "@Data/controllers";
-import { getArtifactBuffCtrls, getWeaponBuffCtrls } from "@Store/calculatorSlice/utils";
 import { deepCopy, findByIndex, turnArray } from "./pure-utils";
 import { getArtifactSetBonuses } from "./calculation";
-import { createCharModCtrls } from "./creators";
+import { createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
 
 export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
   return ["original", "combined"].includes(setup.type);
@@ -108,7 +107,7 @@ type Restorable = {
   refi?: number;
 };
 
-export function restoreCalcSetup(data: CalcSetup) {
+export const restoreCalcSetup = (data: CalcSetup) => {
   function restoreModCtrls(newCtrls: Restorable[], refCtrls: Restorable[]) {
     for (const refCtrl of refCtrls) {
       const i = newCtrls.findIndex(({ code, index }) => {
@@ -125,15 +124,15 @@ export function restoreCalcSetup(data: CalcSetup) {
     return newCtrls;
   }
 
-  const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(data.char.name, true);
-  const wpBuffCtrls = getWeaponBuffCtrls(true, data.weapon);
+  const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
+  const wpBuffCtrls = createWeaponBuffCtrls(true, data.weapon);
   const party: Party = [];
 
   for (const index of [0, 1, 2]) {
     const teammate = data.party[index];
 
     if (teammate) {
-      const [buffCtrls, debuffCtrls] = createCharModCtrls(teammate.name, false);
+      const [buffCtrls, debuffCtrls] = createCharModCtrls(false, teammate.name);
       party.push({
         name: teammate.name,
         buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),
@@ -147,7 +146,7 @@ export function restoreCalcSetup(data: CalcSetup) {
   }
 
   const setBonuses = getArtifactSetBonuses(data.artifacts);
-  const artBuffCtrls = setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [];
+  const artBuffCtrls = setBonuses[0]?.bonusLv ? createArtifactBuffCtrls(true, setBonuses[0]) : [];
 
   const output: CalcSetup = {
     ...data,
@@ -159,7 +158,7 @@ export function restoreCalcSetup(data: CalcSetup) {
   };
 
   return output;
-}
+};
 
 export const getTargetData = (target: Target) => {
   const dataMonster = findMonster(target);

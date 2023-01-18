@@ -68,7 +68,8 @@ export const TeammateItems = ({
               )
             ) : (
               <p>
-                Refinement <span className={`text-rarity-${weaponData.rarity}`}>{weapon.refi}</span>
+                Refinement{" "}
+                <span className={`text-rarity-${weaponData.rarity} font-bold`}>{weapon.refi}</span>
               </p>
             )}
           </div>

@@ -5,18 +5,19 @@ import type {
   UserArtifact,
   UserWeapon,
   WeaponType,
-  ArtifactDebuffCtrl,
-  ModInputConfig,
 } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
-import { DEFAULT_MODIFIER_INITIAL_VALUES, EModAffect } from "@Src/constants";
 
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import calculateAll from "@Src/calculators";
 import { findById, userItemToCalcItem } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { createCharInfo, createWeapon } from "@Src/utils/creators";
+import {
+  createArtifactBuffCtrls,
+  createCharInfo,
+  createWeapon,
+  createWeaponBuffCtrls,
+} from "@Src/utils/creators";
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
@@ -60,7 +61,7 @@ export function parseUserCharData({
 
   if (existedWp) {
     weapon = userItemToCalcItem(existedWp, seedID++);
-    wpBuffCtrls = getWeaponBuffCtrls(true, existedWp);
+    wpBuffCtrls = createWeaponBuffCtrls(true, existedWp);
   } //
   else {
     const newWp = createWeapon({ type: weaponType });
@@ -68,7 +69,7 @@ export function parseUserCharData({
       ID: seedID++,
       ...newWp,
     };
-    wpBuffCtrls = getWeaponBuffCtrls(true, newWp);
+    wpBuffCtrls = createWeaponBuffCtrls(true, newWp);
   }
 
   const artifacts = artifactIDs.map((id) => {
@@ -82,61 +83,6 @@ export function parseUserCharData({
     weapon,
     wpBuffCtrls,
     artifacts,
-    artBuffCtrls: firstSetBonus?.bonusLv ? getArtifactBuffCtrls(true, firstSetBonus) : [],
+    artBuffCtrls: firstSetBonus?.bonusLv ? createArtifactBuffCtrls(true, firstSetBonus) : [],
   };
-}
-
-interface IModifier {
-  index: number;
-  affect: EModAffect;
-  inputConfigs?: ModInputConfig[];
-}
-export function getModCtrls(buffs: IModifier[], forSelf: boolean) {
-  const buffCtrls: ModifierCtrl[] = [];
-
-  for (const buff of buffs) {
-    if (buff.affect !== (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
-      const node: ModifierCtrl = {
-        index: buff.index,
-        activated: false,
-      };
-      if (buff.inputConfigs) {
-        const initialValues = [];
-
-        for (const config of buff.inputConfigs) {
-          if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-            initialValues.push(
-              config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
-            );
-          }
-        }
-        if (initialValues.length) {
-          node.inputs = initialValues;
-        }
-      }
-      buffCtrls.push(node);
-    }
-  }
-  return buffCtrls;
-}
-
-// #to-check necessary (?) cause find weapon
-export function getWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
-  const { buffs = [] } = findDataWeapon(weapon) || {};
-  return getModCtrls(buffs, forSelf);
-}
-
-export function getArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
-  if (!hasCode?.code) {
-    return [];
-  }
-  const { buffs = [] } = findDataArtifactSet({ code: hasCode.code }) || {};
-  return getModCtrls(buffs, forSelf);
-}
-
-export function getArtDebuffCtrls(): ArtifactDebuffCtrl[] {
-  return [
-    { code: 15, activated: false, index: 0, inputs: [0] },
-    { code: 33, activated: false, index: 0 },
-  ];
 }

@@ -38,20 +38,17 @@ import { bareLv, deepCopy, findById, turnArray, countVision, findByCode } from "
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 import {
+  createArtDebuffCtrls,
+  createArtifactBuffCtrls,
   createCharInfo,
   createCharModCtrls,
   createElmtModCtrls,
   createTarget,
   createTeammate,
   createWeapon,
+  createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import {
-  calculate,
-  getArtDebuffCtrls,
-  getArtifactBuffCtrls,
-  getWeaponBuffCtrls,
-  parseUserCharData,
-} from "./utils";
+import { calculate, parseUserCharData } from "./utils";
 
 const defaultChar = {
   name: "Albedo",
@@ -96,7 +93,7 @@ export const calculatorSlice = createSlice({
         weaponType: charData.weaponType,
         seedID: setupID + 1,
       });
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(data.char.name, true);
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
 
       state.activeId = setupID;
       state.comparedIds = [];
@@ -114,7 +111,7 @@ export const calculatorSlice = createSlice({
           wpBuffCtrls: data.wpBuffCtrls,
           artifacts: data.artifacts,
           artBuffCtrls: data.artBuffCtrls,
-          artDebuffCtrls: getArtDebuffCtrls(),
+          artDebuffCtrls: createArtDebuffCtrls(),
           party: [null, null, null],
           elmtModCtrls: createElmtModCtrls(),
           customBuffCtrls: [],
@@ -295,7 +292,7 @@ export const calculatorSlice = createSlice({
           ...newWeaponInfo,
         };
         if (newWeaponInfo.code) {
-          teammate.weapon.buffCtrls = getWeaponBuffCtrls(false, teammate.weapon);
+          teammate.weapon.buffCtrls = createWeaponBuffCtrls(false, teammate.weapon);
         }
         calculate(state);
       }
@@ -310,7 +307,7 @@ export const calculatorSlice = createSlice({
           ...newArtifactInfo,
         };
         if (newArtifactInfo.code) {
-          teammate.artifact.buffCtrls = getArtifactBuffCtrls(false, newArtifactInfo);
+          teammate.artifact.buffCtrls = createArtifactBuffCtrls(false, newArtifactInfo);
         }
         calculate(state);
       }
@@ -338,7 +335,7 @@ export const calculatorSlice = createSlice({
       const weapon = action.payload;
       const setup = state.setupsById[state.activeId];
       setup.weapon = weapon;
-      setup.wpBuffCtrls = getWeaponBuffCtrls(true, weapon);
+      setup.wpBuffCtrls = createWeaponBuffCtrls(true, weapon);
 
       calculate(state);
     },
@@ -369,7 +366,7 @@ export const calculatorSlice = createSlice({
 
       if (newSetBonus) {
         if (oldBonusLevel === 0 && newSetBonus.bonusLv) {
-          setup.artBuffCtrls = getArtifactBuffCtrls(true, newSetBonus);
+          setup.artBuffCtrls = createArtifactBuffCtrls(true, newSetBonus);
         } //
         else if (oldBonusLevel && !newSetBonus.bonusLv) {
           setup.artBuffCtrls = [];
@@ -400,7 +397,9 @@ export const calculatorSlice = createSlice({
       const setBonuses = getArtifactSetBonuses(pieces);
       const setup = state.setupsById[state.activeId];
       setup.artifacts = pieces;
-      setup.artBuffCtrls = setBonuses[0]?.bonusLv ? getArtifactBuffCtrls(true, setBonuses[0]) : [];
+      setup.artBuffCtrls = setBonuses[0]?.bonusLv
+        ? createArtifactBuffCtrls(true, setBonuses[0])
+        : [];
 
       calculate(state);
     },
@@ -570,9 +569,9 @@ export const calculatorSlice = createSlice({
       // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];
 
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(charData.name, true);
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, charData.name);
       const newWeapon = createWeapon({ type: charData.weaponType });
-      const wpBuffCtrls = getWeaponBuffCtrls(true, newWeapon);
+      const wpBuffCtrls = createWeaponBuffCtrls(true, newWeapon);
       const elmtModCtrls = createElmtModCtrls();
       const tempManageInfos: CalcSetupManageInfo[] = [];
 
@@ -623,7 +622,7 @@ export const calculatorSlice = createSlice({
               wpBuffCtrls,
               artifacts: [null, null, null, null, null],
               artBuffCtrls: [],
-              artDebuffCtrls: getArtDebuffCtrls(),
+              artDebuffCtrls: createArtDebuffCtrls(),
               party: [null, null, null],
               elmtModCtrls,
               customBuffCtrls: [],

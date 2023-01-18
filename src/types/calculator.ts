@@ -146,7 +146,6 @@ export type Target = {
 };
 
 export type SetupImportInfo = {
-  importType: "" | "EDIT_SETUP" | "IMPORT_OUTSIDE";
   ID?: number;
   name?: string;
   type?: "original" | "combined";

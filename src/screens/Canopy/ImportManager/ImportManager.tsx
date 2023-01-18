@@ -1,12 +1,9 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import type { PartiallyRequired, SetupImportInfo } from "@Src/types";
 
 // Constant
 import { EScreen, MAX_CALC_SETUPS } from "@Src/constants";
-
-// Util
-import { restoreCalcSetup } from "@Src/utils/setup";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -21,11 +18,10 @@ import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
 // Component
 import { ConfirmModalBody, Modal } from "@Components/molecules";
 import { OverrideOptions } from "./OverwriteOptions";
-import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
-type ImportingProps = PartiallyRequired<SetupImportInfo, "importType" | "calcSetup" | "target">;
+type ImportingProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
 
-function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingProps) {
+function Importing({ calcSetup, target, ...manageInfo }: ImportingProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const currentTarget = useSelector(selectTarget);
@@ -35,24 +31,8 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
   // 4: already existed
   const [pendingCode, setPendingCode] = useState(0);
 
-  const importedSetup = useMemo(() => {
-    switch (importType) {
-      case "EDIT_SETUP":
-        return {
-          ...calcSetup,
-          ...restoreCalcSetup(calcSetup),
-        };
-      case "IMPORT_OUTSIDE":
-        return calcSetup;
-      default:
-        // #to-check
-        // importedSetup = createTmSetup(data, userChars, userWps, userArts);
-        return calcSetup;
-    }
-  }, []);
-
   const endImport = () => {
-    dispatch(updateImportInfo({ importType: "" }));
+    dispatch(updateImportInfo({}));
   };
 
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
@@ -60,7 +40,7 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
       importSetup({
         importInfo: {
           ...manageInfo,
-          calcSetup: importedSetup,
+          calcSetup,
           target,
         },
         shouldOverwriteChar,
@@ -80,7 +60,7 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
     dispatch(
       initSessionWithSetup({
         ...manageInfo,
-        calcSetup: importedSetup,
+        calcSetup,
         target,
       })
     );
@@ -92,13 +72,13 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
     const delayExecute = (fn: Function) => setTimeout(fn, 100);
 
     if (char) {
-      if (char.name === importedSetup.char.name) {
+      if (char.name === calcSetup.char.name) {
         if (calcSetupInfos.length === MAX_CALC_SETUPS) {
           delayExecute(() => setPendingCode(2));
         } else if (manageInfo.ID && calcSetupInfos.some((info) => info.ID === manageInfo.ID)) {
           delayExecute(() => setPendingCode(4));
         } else {
-          const sameChar = isEqual(char, importedSetup.char);
+          const sameChar = isEqual(char, calcSetup.char);
           const sameTarget = isEqual(currentTarget, target);
 
           if (sameChar && sameTarget) {
@@ -152,7 +132,7 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
       return (
         <OverrideOptions
           pendingCode={pendingCode}
-          importedChar={importedSetup.char}
+          importedChar={calcSetup.char}
           importedTarget={target}
           addImportedSetup={addImportedSetup}
           endImport={endImport}
@@ -163,19 +143,15 @@ function Importing({ importType, calcSetup, target, ...manageInfo }: ImportingPr
 
 export function ImportManager() {
   const dispatch = useDispatch();
-  const { importType, calcSetup, target, ...rest } = useSelector((state) => state.ui.importInfo);
+  const { calcSetup, target, ...rest } = useSelector((state) => state.ui.importInfo);
 
   const onClose = () => {
-    dispatch(updateImportInfo({ importType: "" }));
+    dispatch(updateImportInfo({}));
   };
 
   return (
-    <Modal
-      active={Boolean(importType && calcSetup && target)}
-      className="small-modal"
-      onClose={onClose}
-    >
-      <Importing importType={importType!} calcSetup={calcSetup!} target={target!} {...rest} />
+    <Modal active={Boolean(calcSetup && target)} className="small-modal" onClose={onClose}>
+      <Importing calcSetup={calcSetup!} target={target!} {...rest} />
     </Modal>
   );
 }

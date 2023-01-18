@@ -1,11 +1,13 @@
 import { batch } from "react-redux";
 import isEqual from "react-fast-compare";
-import type { AppThunk } from "./index";
+import type { CalcArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
-import { EScreen } from "@Src/constants";
+import type { AppThunk } from "./index";
+import { ARTIFACT_TYPES, EScreen } from "@Src/constants";
 
+// Action
 import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
-import { updateUI } from "./uiSlice";
+import { updateImportInfo, updateUI } from "./uiSlice";
 import {
   addUserArtifact,
   addUserWeapon,
@@ -14,8 +16,27 @@ import {
   updateUserWeapon,
 } from "./userDatabaseSlice";
 
-import { findById, calcItemToUserItem, userItemToCalcItem } from "@Src/utils";
+// Util
+import {
+  findById,
+  calcItemToUserItem,
+  userItemToCalcItem,
+  findByCode,
+  findByName,
+  deepCopy,
+} from "@Src/utils";
 import { cleanupCalcSetup, isUserSetup } from "@Src/utils/setup";
+import {
+  createArtDebuffCtrls,
+  createArtifact,
+  createArtifactBuffCtrls,
+  createCharInfo,
+  createCharModCtrls,
+  createElmtModCtrls,
+  createWeapon,
+  createWeaponBuffCtrls,
+} from "@Src/utils/creators";
+import { findDataArtifactSet } from "@Data/controllers";
 
 export const startCalculation =
   (pickedChar: PickedChar): AppThunk =>
@@ -185,5 +206,102 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
         })
       );
     });
+  };
+};
+
+interface IMakeTeammateSetupArgs {
+  setup: UserSetup;
+  mainWeapon: UserWeapon;
+  teammateIndex: number;
+}
+export const makeTeammateSetup = ({
+  setup,
+  mainWeapon,
+  teammateIndex,
+}: IMakeTeammateSetupArgs): AppThunk => {
+  return (dispatch, getState) => {
+    const teammate = setup.party[teammateIndex];
+
+    if (teammate) {
+      const { userChars, userWps } = getState().database;
+      const { weapon, artifact } = teammate;
+      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, teammate.name);
+      let seedID = Date.now();
+
+      const similarWeapon = findByCode(userWps, teammate.weapon.code);
+      const actualWeapon = similarWeapon
+        ? userItemToCalcItem(similarWeapon)
+        : {
+            ID: seedID++,
+            ...createWeapon({
+              code: weapon.code,
+              type: weapon.type,
+            }),
+          };
+
+      let artifacts: CalcArtifacts = [null, null, null, null, null];
+
+      if (artifact.code) {
+        const { variants = [] } = findDataArtifactSet({ code: artifact.code }) || {};
+        const maxRarity = variants[variants.length - 1];
+
+        if (maxRarity) {
+          artifacts = ARTIFACT_TYPES.map((type) => ({
+            ID: seedID++,
+            ...createArtifact({
+              code: artifact.code,
+              rarity: maxRarity,
+              type,
+            }),
+          }));
+        }
+      }
+
+      const party = deepCopy(setup.party);
+      const [tmBuffCtrls, tmDebuffCtrls] = createCharModCtrls(false, teammate.name);
+
+      party[teammateIndex] = {
+        name: setup.char.name,
+        weapon: {
+          code: mainWeapon.code,
+          type: mainWeapon.type,
+          refi: mainWeapon.refi,
+          buffCtrls: createWeaponBuffCtrls(false, mainWeapon),
+        },
+        artifact: {
+          code: 0,
+          buffCtrls: [],
+          debuffCtrls: [],
+        },
+        buffCtrls: tmBuffCtrls,
+        debuffCtrls: tmDebuffCtrls,
+      };
+
+      dispatch(
+        updateImportInfo({
+          ID: seedID++,
+          name: "Setup 1",
+          target: setup.target,
+          calcSetup: {
+            char: {
+              name: teammate.name,
+              ...createCharInfo(findByName(userChars, teammate.name)),
+            },
+            selfBuffCtrls,
+            selfDebuffCtrls,
+            weapon: actualWeapon,
+            wpBuffCtrls: createWeaponBuffCtrls(true, actualWeapon),
+            artifacts,
+            artBuffCtrls: createArtifactBuffCtrls(true, { code: artifact.code }),
+            artDebuffCtrls: createArtDebuffCtrls(),
+            party,
+            elmtModCtrls: createElmtModCtrls(),
+            customBuffCtrls: [],
+            customDebuffCtrls: [],
+            customInfusion: { element: "phys" },
+          },
+        })
+      );
+    }
   };
 };

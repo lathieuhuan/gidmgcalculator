@@ -21,11 +21,10 @@ import type {
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
 import { mapVerson3_0 } from "./constants";
 
-import { getArtDebuffCtrls } from "@Store/calculatorSlice/utils";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
-import { createWeapon } from "../creators";
+import { createArtDebuffCtrls, createWeapon } from "../creators";
 
 export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   let seedID = Date.now();
@@ -376,7 +375,7 @@ const convertSetup = (
       selfDebuffCtrls: cleanModifiers(setup.selfMCs?.DCs || [], debuffs),
       wpBuffCtrls: cleanModifiers(wpBuffCtrls, dataWeapon?.buffs || []),
       artBuffCtrls: cleanModifiers(setup.art?.BCs || [], artifactBuffs),
-      artDebuffCtrls: getArtDebuffCtrls(),
+      artDebuffCtrls: createArtDebuffCtrls(),
       customBuffCtrls,
       customDebuffCtrls,
 

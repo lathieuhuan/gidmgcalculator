@@ -35,13 +35,14 @@ function PickerArtifactCore({
       case "TEAMMATE_MODIFIERS":
         return artifacts.reduce(
           (accumulator, set) => {
-            const { code, beta, name, buffs, debuffs } = set;
+            const { code, beta, name, buffs, debuffs, variants } = set;
 
             if (buffs?.some((buff) => buff.affect !== EModAffect.SELF) || debuffs?.length) {
+              const maxRarity = variants[variants.length - 1];
               const { icon } = set[artifactType];
-              const artifactData = { code, beta, name, icon, rarity: 5 as const };
+              const artifactData = { code, beta, name, icon, rarity: maxRarity || 5 };
 
-              accumulator[0].push(artifactData);
+              accumulator[maxRarity === 5 ? 0 : 1].push(artifactData);
             }
 
             return accumulator;
@@ -71,7 +72,7 @@ function PickerArtifactCore({
     <PickerTemplate
       dataType="artifact"
       needMassAdd={needMassAdd}
-      data={[...gold, ...purple]}
+      data={gold.concat(purple)}
       onPickItem={({ code, rarity }) =>
         onPickArtifact(createArtifact({ type: artifactType, code, rarity }))
       }

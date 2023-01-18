@@ -7,9 +7,7 @@ const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
-  importInfo: {
-    importType: "",
-  },
+  importInfo: {},
 };
 
 export const uiSlice = createSlice({

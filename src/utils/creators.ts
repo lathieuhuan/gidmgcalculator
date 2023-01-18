@@ -9,8 +9,10 @@ import type {
   CalcWeapon,
   ElementModCtrl,
   Teammate,
+  ModInputConfig,
+  ArtifactDebuffCtrl,
 } from "@Src/types";
-import { findDataCharacter } from "@Data/controllers";
+import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import {
   ATTACK_ELEMENTS,
   DEFAULT_WEAPON_CODE,
@@ -63,7 +65,7 @@ export function createArtifact({
   };
 }
 
-export function createCharModCtrls(name: string, forSelf: boolean) {
+export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
   const { buffs = [], debuffs = [] } = findDataCharacter({ name }) || {};
@@ -115,12 +117,69 @@ export function createCharModCtrls(name: string, forSelf: boolean) {
   return [buffCtrls, debuffCtrls];
 }
 
+interface IModifier {
+  index: number;
+  affect: EModAffect;
+  inputConfigs?: ModInputConfig[];
+}
+export function createModCtrls(forSelf: boolean, buffs: IModifier[]) {
+  const buffCtrls: ModifierCtrl[] = [];
+
+  for (const buff of buffs) {
+    if (buff.affect !== (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
+      const node: ModifierCtrl = {
+        index: buff.index,
+        activated: false,
+      };
+      if (buff.inputConfigs) {
+        const initialValues = [];
+
+        for (const config of buff.inputConfigs) {
+          if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
+            initialValues.push(
+              config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
+            );
+          }
+        }
+        if (initialValues.length) {
+          node.inputs = initialValues;
+        }
+      }
+      buffCtrls.push(node);
+    }
+  }
+  return buffCtrls;
+}
+
+export function createWeaponBuffCtrls(
+  forSelf: boolean,
+  weapon: { type: WeaponType; code: number }
+) {
+  const { buffs = [] } = findDataWeapon(weapon) || {};
+  return createModCtrls(forSelf, buffs);
+}
+
+export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
+  if (!hasCode?.code) {
+    return [];
+  }
+  const { buffs = [] } = findDataArtifactSet({ code: hasCode.code }) || {};
+  return createModCtrls(forSelf, buffs);
+}
+
+export function createArtDebuffCtrls(): ArtifactDebuffCtrl[] {
+  return [
+    { code: 15, activated: false, index: 0, inputs: [0] },
+    { code: 33, activated: false, index: 0 },
+  ];
+}
+
 interface CreateTeammateArgs {
   name: string;
   weaponType: WeaponType;
 }
 export function createTeammate({ name, weaponType }: CreateTeammateArgs): Teammate {
-  const [buffCtrls, debuffCtrls] = createCharModCtrls(name, false);
+  const [buffCtrls, debuffCtrls] = createCharModCtrls(false, name);
   const weaponCode = DEFAULT_WEAPON_CODE[weaponType];
 
   return {
