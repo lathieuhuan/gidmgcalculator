@@ -103,7 +103,7 @@ export function CombineMore({ setupID, onClose }: CombineMoreProps) {
         className="mt-4"
         buttons={[
           { text: "Cancel", onClick: onClose },
-          { text: "Combine", onClick: tryCombine },
+          { text: "Combine", disabled: !pickedIDs.length, onClick: tryCombine },
         ]}
       />
     </div>

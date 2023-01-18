@@ -200,7 +200,7 @@ export function SetupTemplate({
     );
 
     return { mainCharacter, teammate, gears };
-  }, []);
+  }, [`${ID}-${setup.ID}`]);
 
   return (
     <>

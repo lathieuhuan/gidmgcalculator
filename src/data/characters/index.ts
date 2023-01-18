@@ -108,7 +108,7 @@ const characters = {
   Ningguang,
   Noelle,
   Qiqi,
-  Raiden,
+  "Raiden Shogun": Raiden,
   Razor,
   Rosaria,
   Sara,

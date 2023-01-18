@@ -132,7 +132,7 @@ function Importing({ calcSetup, target, ...manageInfo }: ImportingProps) {
       return (
         <OverrideOptions
           pendingCode={pendingCode}
-          importedChar={calcSetup.char}
+          importedChar={calcSetup?.char}
           importedTarget={target}
           addImportedSetup={addImportedSetup}
           endImport={endImport}

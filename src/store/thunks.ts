@@ -280,7 +280,7 @@ export const makeTeammateSetup = ({
       dispatch(
         updateImportInfo({
           ID: seedID++,
-          name: "Setup 1",
+          name: "New setup",
           target: setup.target,
           calcSetup: {
             char: {

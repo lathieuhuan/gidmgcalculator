@@ -44,7 +44,7 @@ export const TeammateItems = ({
           </button>
 
           <div className="overflow-hidden">
-            <p className={`text-rarity-${weaponData.rarity} text-lg font-bold truncate`}>
+            <p className={`text-rarity-${weaponData.rarity} text-lg font-semibold truncate`}>
               {weaponData.name}
             </p>
             {mutable ? (
@@ -69,7 +69,9 @@ export const TeammateItems = ({
             ) : (
               <p>
                 Refinement{" "}
-                <span className={`text-rarity-${weaponData.rarity} font-bold`}>{weapon.refi}</span>
+                <span className={`ml-1 text-rarity-${weaponData.rarity} font-semibold`}>
+                  {weapon.refi}
+                </span>
               </p>
             )}
           </div>
