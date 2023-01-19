@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { FaChevronDown, FaEdit, FaTimes } from "react-icons/fa";
 
 // Util
-import { findMonster } from "@Data/controllers";
+import { getTargetData } from "@Src/utils/setup";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -18,7 +18,6 @@ import { updateTarget } from "@Store/calculatorSlice";
 import { IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TargetConfig } from "./modal-content";
-import { getTargetData } from "@Src/utils/setup";
 
 interface SectionTargetProps {
   isAtFront?: boolean;

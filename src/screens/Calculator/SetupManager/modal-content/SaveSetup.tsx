@@ -18,13 +18,13 @@ import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { ButtonBar } from "@Components/molecules";
 
 interface SaveSetupProps {
-  setup: CalcSetupManageInfo;
+  manageInfo: CalcSetupManageInfo;
   onClose: () => void;
 }
-export function SaveSetup({ setup, onClose }: SaveSetupProps) {
+export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
   const dispatch = useDispatch();
   const charData = useSelector(selectCharData);
-  const existed = findById(useSelector(selectUserSetups), setup.ID);
+  const existed = findById(useSelector(selectUserSetups), manageInfo.ID);
 
   const [input, setInput] = useState(existed ? existed.name : `${charData.name} setup`);
 
@@ -44,7 +44,7 @@ export function SaveSetup({ setup, onClose }: SaveSetupProps) {
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            dispatch(saveSetupThunk(setup.ID, input));
+            dispatch(saveSetupThunk(manageInfo.ID, input));
             onClose();
           }
         }}
@@ -55,7 +55,7 @@ export function SaveSetup({ setup, onClose }: SaveSetupProps) {
           {
             text: "Confirm",
             onClick: () => {
-              dispatch(saveSetupThunk(setup.ID, input));
+              dispatch(saveSetupThunk(manageInfo.ID, input));
               onClose();
             },
           },

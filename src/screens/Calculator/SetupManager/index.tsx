@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { FaCog } from "react-icons/fa";
 import type { ArtifactType } from "@Src/types";
-import type { ModalInfo } from "./types";
 
 // Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
@@ -32,35 +31,39 @@ import SectionTarget from "./SectionTarget";
 import Settings from "./Settings";
 import { SetupSelect } from "./SetupSelect";
 
+type ModalType =
+  | "CHARACTERS_PICKER"
+  | "WEAPONS_PICKER"
+  | ArtifactType
+  | "SHARE_SETUP_SUPPORTER"
+  | "MOVE_TARGET_NOTICE"
+  | "";
+
 export default function SetupManager() {
   const dispatch = useDispatch();
 
   const charData = useSelector(selectCharData);
   const artifacts = useSelector(selectArtifacts);
 
-  const [modal, setModal] = useState<ModalInfo>({
-    type: "",
-    index: undefined,
-  });
+  const [modalType, setModalType] = useState<ModalType>("");
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [targetAtFront, setTargetAtFront] = useState(true);
 
-  const bodyRef = useRef(null);
   const [ref, height] = useHeight();
 
-  const closeModal = () => setModal({ type: "", index: undefined });
+  const closeModal = () => setModalType("");
 
   return (
     <div ref={ref} className="h-full flex flex-col overflow-hidden">
       <SetupSelect />
 
-      <div ref={bodyRef} className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
+      <div className="mt-4 grow hide-scrollbar space-y-2 scroll-smooth">
         <SectionParty />
         <SectionWeapon />
-        <SectionArtifacts containerRef={bodyRef} />
+        <SectionArtifacts />
 
         {targetAtFront && (
-          <SectionTarget isAtFront onMove={() => setModal({ type: "NOTICE_MOVE_TARGET" })} />
+          <SectionTarget isAtFront onMove={() => setModalType("MOVE_TARGET_NOTICE")} />
         )}
       </div>
 
@@ -78,7 +81,7 @@ export default function SetupManager() {
         <div className="flex">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
-            onClick={() => setModal({ type: "WEAPONS" })}
+            onClick={() => setModalType("WEAPONS_PICKER")}
           >
             <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
@@ -105,7 +108,7 @@ export default function SetupManager() {
         active={prePickerOn}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artifactType) => {
-          setModal({ type: artifactType as ArtifactType });
+          setModalType(artifactType as ArtifactType);
           setPrePickerOn(false);
         }}
         onClose={() => setPrePickerOn(false)}
@@ -114,7 +117,7 @@ export default function SetupManager() {
             <Button
               variant="positive"
               onClick={() => {
-                setModal({ type: "CHARACTERS" });
+                setModalType("CHARACTERS_PICKER");
                 setPrePickerOn(false);
               }}
             >
@@ -125,7 +128,7 @@ export default function SetupManager() {
       />
 
       <InventoryWeapon
-        active={modal.type === "WEAPONS"}
+        active={modalType === "WEAPONS_PICKER"}
         weaponType={charData.weaponType}
         buttonText="Pick"
         onClickButton={(weapon) => {
@@ -135,14 +138,14 @@ export default function SetupManager() {
       />
 
       <InventoryArtifact
-        active={["flower", "plume", "sands", "goblet", "circlet"].includes(modal.type)}
-        artifactType={modal.type as ArtifactType}
+        active={["flower", "plume", "sands", "goblet", "circlet"].includes(modalType)}
+        artifactType={modalType as ArtifactType}
         currentArtifacts={artifacts}
         buttonText="Pick"
         onClickButton={(artifact) => {
           dispatch(
             changeArtifact({
-              pieceIndex: ARTIFACT_TYPES.indexOf(modal.type as ArtifactType),
+              pieceIndex: ARTIFACT_TYPES.indexOf(modalType as ArtifactType),
               newPiece: userItemToCalcItem(artifact),
             })
           );
@@ -151,7 +154,7 @@ export default function SetupManager() {
       />
 
       <PickerCharacter
-        active={modal.type === "CHARACTERS"}
+        active={modalType === "CHARACTERS_PICKER"}
         sourceType="userData"
         onPickCharacter={({ artifactIDs }) => {
           if (artifactIDs) {
@@ -162,7 +165,7 @@ export default function SetupManager() {
       />
 
       <ConfirmModal
-        active={modal.type === "NOTICE_MOVE_TARGET"}
+        active={modalType === "MOVE_TARGET_NOTICE"}
         message="Move Target Overview to Settings/Configs?"
         buttons={[
           undefined,

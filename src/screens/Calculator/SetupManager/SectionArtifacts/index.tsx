@@ -23,10 +23,7 @@ import { PickerArtifact } from "@Components/templates";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
-interface SectionArtifactsProps {
-  containerRef: RefObject<HTMLDivElement>;
-}
-export default function SectionArtifacts({ containerRef }: SectionArtifactsProps) {
+export default function SectionArtifacts() {
   const dispatch = useDispatch();
 
   const artifacts = useSelector(selectArtifacts);

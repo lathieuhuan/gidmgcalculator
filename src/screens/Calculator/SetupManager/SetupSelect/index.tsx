@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { useState, type ButtonHTMLAttributes } from "react";
 import { FaCopy, FaSave, FaBalanceScaleLeft } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
-import type { ModalInfo } from "./types";
 
 // Constant
 import { MAX_CALC_SETUPS } from "@Src/constants";
@@ -30,6 +29,11 @@ import { SaveSetup } from "../modal-content";
 
 import styles from "./styles.module.scss";
 
+type ModalInfo = {
+  type: "SAVE_SETUP" | "";
+  setupIndex?: number;
+};
+
 export function SetupSelect() {
   const dispatch = useDispatch();
 
@@ -40,13 +44,12 @@ export function SetupSelect() {
 
   const [modal, setModal] = useState<ModalInfo>({
     type: "",
-    index: undefined,
   });
   const [moreActionsIndex, setMoreActionsIndex] = useState(-1);
 
   const isAtMax = setupManageInfos.length === MAX_CALC_SETUPS;
 
-  const closeModal = () => setModal({ type: "", index: undefined });
+  const closeModal = () => setModal({ type: "" });
 
   const onCloseSetupSelect = () => {
     setMoreActionsIndex(-1);
@@ -92,8 +95,8 @@ export function SetupSelect() {
     setMoreActionsIndex(index === moreActionsIndex ? -1 : index);
   };
 
-  const onClickSaveSetup = (index: number) => {
-    setModal({ type: "SAVE_SETUP", index });
+  const onClickSaveSetup = (setupIndex: number) => {
+    setModal({ type: "SAVE_SETUP", setupIndex });
   };
 
   const renderSuffixButton = (
@@ -188,7 +191,7 @@ export function SetupSelect() {
         style={{ width: "30rem" }}
         onClose={closeModal}
       >
-        <SaveSetup setup={setupManageInfos[modal.index || 0]} onClose={closeModal} />
+        <SaveSetup manageInfo={setupManageInfos[modal.setupIndex || 0]} onClose={closeModal} />
       </Modal>
     </>
   );
