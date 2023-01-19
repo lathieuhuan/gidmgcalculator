@@ -34,12 +34,14 @@ export default function MySetups() {
   const userSetups = useSelector(selectUserSetups);
   const chosenSetupID = useSelector(selectChosenSetupID);
 
-  const { itemsBySetupID } = useSetupItems();
+  const { itemsBySetupID, getSetupItems } = useSetupItems();
 
   const [modal, setModal] = useState<MySetupModal>({
     type: "",
     ID: 0,
   });
+
+  useEffect(getSetupItems, [userSetups]);
 
   const chosenSetup = (() => {
     const setup = findById(userSetups, chosenSetupID);

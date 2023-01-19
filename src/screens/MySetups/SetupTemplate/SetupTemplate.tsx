@@ -23,6 +23,7 @@ import {
 // Util
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
+import { restoreCalcSetup } from "@Src/utils/setup";
 import {
   findDataArtifact,
   findDataCharacter,
@@ -35,14 +36,13 @@ import { CharacterPortrait, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
-import { restoreCalcSetup } from "@Src/utils/setup";
 
 interface SetupLayoutProps {
   ID: number;
   setup: UserSetup;
   setupName?: string;
   weapon: UserWeapon | null;
-  artifacts: UserArtifacts;
+  artifacts?: UserArtifacts;
   allIDs?: Record<string, number>;
   openModal: (type: MySetupModalType, ID?: number) => () => void;
 }
@@ -51,7 +51,7 @@ export function SetupTemplate({
   setup,
   setupName,
   weapon,
-  artifacts,
+  artifacts = [],
   allIDs,
   openModal,
 }: SetupLayoutProps) {

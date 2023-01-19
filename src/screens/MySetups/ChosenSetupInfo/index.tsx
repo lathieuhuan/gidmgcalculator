@@ -100,7 +100,7 @@ export const ChosenSetupInfo = ({
         className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95"
         onClose={onCloseModal}
       >
-        {artifacts.map((artifact, i) => {
+        {artifacts?.map((artifact, i) => {
           if (artifact) {
             return (
               <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>

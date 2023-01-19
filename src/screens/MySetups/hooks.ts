@@ -43,7 +43,7 @@ export function useSetupItems() {
     return result;
   };
 
-  const [record, setRecord] = useState<SetupItemInfos>(getSetupItems());
+  const [record, setRecord] = useState<SetupItemInfos>({});
 
   return {
     itemsBySetupID: record,
