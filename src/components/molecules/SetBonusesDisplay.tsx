@@ -1,11 +1,11 @@
 import type { ArtifactSetBonus } from "@Src/types";
 import { findDataArtifactSet } from "@Data/controllers";
 
-interface ISetBonusesDisplayProps {
+interface SetBonusesDisplayProps {
   setBonuses: ArtifactSetBonus[];
   noTitle?: boolean;
 }
-export function SetBonusesDisplay({ setBonuses, noTitle }: ISetBonusesDisplayProps) {
+export function SetBonusesDisplay({ setBonuses, noTitle }: SetBonusesDisplayProps) {
   return (
     <div>
       {!noTitle && <p className="text-lg leading-relaxed text-orange font-semibold">Set bonus</p>}

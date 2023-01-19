@@ -23,10 +23,10 @@ import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";
 import { DamageTracker } from "./DamageTracker";
 
-interface ITrackerContainerProps {
+interface TrackerContainerProps {
   trackerState: TrackerState;
 }
-export default function TrackerContainer({ trackerState }: ITrackerContainerProps) {
+export default function TrackerContainer({ trackerState }: TrackerContainerProps) {
   const activeSetup = useSelector((state) => {
     const { activeId, setupsById } = state.calculator;
     return setupsById[activeId];

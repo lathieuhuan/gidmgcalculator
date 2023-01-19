@@ -8,7 +8,7 @@ import { findDataCharacter } from "@Data/controllers";
 import { Button, CharacterPortrait, IconButton } from "@Components/atoms";
 import { TeammateItems } from "@Components/organisms";
 
-interface ITeammateDetailProps {
+interface TeammateDetailProps {
   teammate: Teammate;
   isCalculated: boolean;
   onSwitchSetup: () => void;
@@ -21,7 +21,7 @@ export const TeammateDetail = ({
   onSwitchSetup,
   onCalculateTeammateSetup,
   onClose,
-}: ITeammateDetailProps) => {
+}: TeammateDetailProps) => {
   const data = findDataCharacter(teammate);
   if (!data) return null;
 

@@ -8,7 +8,7 @@ import { getImgSrc } from "@Src/utils";
 // Component
 import { IconButton } from "@Components/atoms";
 
-interface ITeammateItemsProps {
+interface TeammateItemsProps {
   className?: string;
   mutable?: boolean;
   teammate: Teammate;
@@ -25,7 +25,7 @@ export const TeammateItems = ({
   onChangeWeaponRefinement,
   onClickArtifact,
   onClickRemoveArtifact,
-}: ITeammateItemsProps) => {
+}: TeammateItemsProps) => {
   const { weapon, artifact } = teammate;
   const weaponData = findDataWeapon(weapon);
   const { name: artifactSetName, flower } = findDataArtifactSet(artifact) || {};

@@ -113,13 +113,13 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
   );
 }
 
-interface IConstellationDetailDescProps {
+interface ConstellationDetailDescProps {
   charName: string;
   beta?: boolean;
   consLv: number;
   desc: ReactNode;
 }
-function ConstellationDetailDesc({ charName, beta, consLv, desc }: IConstellationDetailDescProps) {
+function ConstellationDetailDesc({ charName, beta, consLv, desc }: ConstellationDetailDescProps) {
   const [descArr, setDescArr] = useState([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
 

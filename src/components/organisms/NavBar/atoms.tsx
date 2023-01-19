@@ -15,12 +15,12 @@ export const navButtonMobileStyles = {
   active: "bg-darkblue-1 text-green",
 };
 
-interface IProps {
+interface ButtonProps {
   className?: string;
   onClick?: () => void;
 }
 
-export function IntroButton({ className }: IProps) {
+export function IntroButton({ className }: ButtonProps) {
   const dispatch = useDispatch();
 
   return (
@@ -34,7 +34,7 @@ export function IntroButton({ className }: IProps) {
   );
 }
 
-export function DownloadButton({ className, onClick }: IProps) {
+export function DownloadButton({ className, onClick }: ButtonProps) {
   return (
     <button
       className={clsx(navButtonStyles.base, navButtonStyles.idle, className)}
@@ -46,7 +46,7 @@ export function DownloadButton({ className, onClick }: IProps) {
   );
 }
 
-export function UploadButton({ className, onClick }: IProps) {
+export function UploadButton({ className, onClick }: ButtonProps) {
   return (
     <button
       className={clsx(navButtonStyles.base, navButtonStyles.idle, className)}

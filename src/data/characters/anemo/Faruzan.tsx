@@ -8,13 +8,13 @@ import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calcula
 import { checkAscs, checkCons } from "../utils";
 import { CHARACTER_IMAGES } from "@Data/constants";
 
-interface IGetWindGiftBuffValueArgs {
+interface GetWindGiftBuffValueArgs {
   toSelf: boolean;
   inputs: ModifierInput[];
   char: CharInfo;
   partyData: PartyData;
 }
-const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: IGetWindGiftBuffValueArgs) => {
+const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBuffValueArgs) => {
   const level = toSelf
     ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
     : inputs[0] || 0;

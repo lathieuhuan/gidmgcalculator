@@ -7,11 +7,11 @@ import { ARTIFACT_ICONS, WEAPON_ICONS } from "@Src/constants";
 // Util
 import { getImgSrc } from "@Src/utils";
 
-interface IUseTypeFilterArgs {
+interface UseTypeFilterArgs {
   itemType: "weapon" | "artifact";
   initialTypes?: string[];
 }
-export function useTypeFilter({ itemType, initialTypes = [] }: IUseTypeFilterArgs) {
+export function useTypeFilter({ itemType, initialTypes = [] }: UseTypeFilterArgs) {
   const [types, setTypes] = useState<string[]>(initialTypes);
 
   const icons = Object.entries(itemType === "weapon" ? WEAPON_ICONS : ARTIFACT_ICONS);

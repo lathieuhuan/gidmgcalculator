@@ -117,12 +117,12 @@ export function createCharModCtrls(forSelf: boolean, name: string) {
   return [buffCtrls, debuffCtrls];
 }
 
-interface IModifier {
+interface RefModifier {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
 }
-export function createModCtrls(forSelf: boolean, buffs: IModifier[]) {
+export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
   const buffCtrls: ModifierCtrl[] = [];
 
   for (const buff of buffs) {

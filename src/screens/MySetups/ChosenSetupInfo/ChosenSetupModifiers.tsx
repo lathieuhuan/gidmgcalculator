@@ -39,7 +39,7 @@ export const ModifierWrapper = ({ className = "", title, children }: ModifierWra
   );
 };
 
-interface IChosenSetupModifiersProps {
+interface ChosenSetupModifiersProps {
   chosenSetup: UserSetup;
   calcResult: NonNullable<ReturnType<typeof calculateChosenSetup>>;
   weapon: UserWeapon;
@@ -50,7 +50,7 @@ export const ChosenSetupModifiers = ({
   calcResult,
   weapon,
   setBonuses,
-}: IChosenSetupModifiersProps) => {
+}: ChosenSetupModifiersProps) => {
   const { t } = useTranslation();
 
   const {

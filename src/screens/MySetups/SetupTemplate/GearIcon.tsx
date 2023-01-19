@@ -1,11 +1,11 @@
 import type { Rarity } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
-interface IGearIconProps {
+interface GearIconProps {
   item: { beta?: boolean; icon: string; rarity?: Rarity };
   onClick?: () => void;
 }
-export const GearIcon = ({ item: { beta, icon, rarity }, onClick }: IGearIconProps) => {
+export const GearIcon = ({ item: { beta, icon, rarity }, onClick }: GearIconProps) => {
   return (
     <button
       className={

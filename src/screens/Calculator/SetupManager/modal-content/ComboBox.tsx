@@ -10,7 +10,7 @@ import monsters from "@Data/monsters";
 // Util
 import { turnArray } from "@Src/utils";
 
-interface IComboBoxProps {
+interface ComboBoxProps {
   className: string;
   targetCode: number;
   targetTitle: string;
@@ -21,7 +21,7 @@ export const ComboBox = ({
   targetCode,
   targetTitle,
   onSelectMonster,
-}: IComboBoxProps) => {
+}: ComboBoxProps) => {
   const [keyword, setKeyword] = useState("");
 
   const onFocusSearchInput = () => {

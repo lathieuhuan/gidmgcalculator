@@ -17,10 +17,10 @@ import { EStatDamageKey } from "@Src/constants";
 // Component
 import { DamageDisplay } from "@Components/organisms";
 
-interface IResultsProps {
+interface ResultsDisplayProps {
   activeSetupName: string;
 }
-export function Results({ activeSetupName }: IResultsProps) {
+export function ResultsDisplay({ activeSetupName }: ResultsDisplayProps) {
   const dmgResult = useSelector(selectDmgResult);
   const char = useSelector(selectChar);
   const party = useSelector(selectParty);

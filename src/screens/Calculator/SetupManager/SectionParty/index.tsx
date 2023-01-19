@@ -31,7 +31,7 @@ import { TeammateItems } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
 
-interface IModal {
+interface ModalState {
   type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
   teammateIndex: number | null;
 }
@@ -44,7 +44,7 @@ export default function SectionParty() {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
 
-  const [modal, setModal] = useState<IModal>({
+  const [modal, setModal] = useState<ModalState>({
     type: "",
     teammateIndex: null,
   });

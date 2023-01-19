@@ -7,10 +7,10 @@ import { Modal } from "@Components/molecules";
 import TrackerContainer from "./TrackerContainer";
 import { TrackerState } from "./types";
 
-interface IHeaderProps {
+interface HeaderProps {
   activeSetupName: string;
 }
-export function Header({ activeSetupName }: IHeaderProps) {
+export function Header({ activeSetupName }: HeaderProps) {
   const [menuDropped, setMenuDropped] = useState(false);
   const [enlargedOn, setEnlargedOn] = useState(false);
   const [trackerState, setTrackerState] = useState<TrackerState>("CLOSE");

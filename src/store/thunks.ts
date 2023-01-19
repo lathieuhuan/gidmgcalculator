@@ -209,7 +209,7 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
   };
 };
 
-interface IMakeTeammateSetupArgs {
+interface MakeTeammateSetupArgs {
   setup: UserSetup;
   mainWeapon: UserWeapon;
   teammateIndex: number;
@@ -218,7 +218,7 @@ export const makeTeammateSetup = ({
   setup,
   mainWeapon,
   teammateIndex,
-}: IMakeTeammateSetupArgs): AppThunk => {
+}: MakeTeammateSetupArgs): AppThunk => {
   return (dispatch, getState) => {
     const teammate = setup.party[teammateIndex];
 

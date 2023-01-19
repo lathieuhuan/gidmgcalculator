@@ -5,7 +5,7 @@ import { useSelector } from "@Store/hooks";
 import { findById } from "@Src/utils";
 
 // Component
-import { Results } from "./Results";
+import { ResultsDisplay } from "./ResultsDisplay";
 import { Header } from "./Header";
 
 export default function DamageResults() {
@@ -17,7 +17,7 @@ export default function DamageResults() {
   return (
     <div className="h-full">
       <Header activeSetupName={activeSetupName} />
-      <Results activeSetupName={activeSetupName} />
+      <ResultsDisplay activeSetupName={activeSetupName} />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
       {/* {window.innerWidth < 1050 && trackerState > 0 && (
         <MobileNavBtn

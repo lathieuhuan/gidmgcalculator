@@ -14,11 +14,11 @@ import { selectAtScreen } from "@Store/uiSlice/selectors";
 // Style
 import { navButtonStyles } from "./atoms";
 
-interface INavTabsProps {
+interface NavTabsProps {
   className?: string;
   onClickTab?: () => void;
 }
-export function NavTabs({ className, onClickTab }: INavTabsProps) {
+export function NavTabs({ className, onClickTab }: NavTabsProps) {
   const atScreen = useSelector(selectAtScreen);
   const dispatch = useDispatch();
 

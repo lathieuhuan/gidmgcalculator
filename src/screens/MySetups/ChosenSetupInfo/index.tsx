@@ -26,7 +26,7 @@ import {
 } from "@Components/organisms";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
 
-interface IChosenSetupInfoProps {
+interface ChosenSetupInfoProps {
   chosenSetup: UserSetup;
   weapon: UserWeapon | null;
   artifacts: UserArtifacts;
@@ -39,7 +39,7 @@ export const ChosenSetupInfo = ({
   artifacts,
   modal,
   onCloseModal,
-}: IChosenSetupInfoProps) => {
+}: ChosenSetupInfoProps) => {
   const dispatch = useDispatch();
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);

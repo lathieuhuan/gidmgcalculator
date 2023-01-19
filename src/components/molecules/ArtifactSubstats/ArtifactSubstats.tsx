@@ -76,6 +76,7 @@ export function ArtifactSubstats({
               )}
               style={{ fontSize: "1.0625rem" }}
               value={value}
+              onFocus={(e) => e.target.setSelectionRange(0, 5)}
               onChange={(e) => {
                 onChangeSubStat?.(i, { value: processNumInput(e.target.value, value) });
               }}

@@ -69,16 +69,16 @@ export function userItemToCalcItem(
   return info;
 }
 
-interface IOptions {
+interface Options {
   ID?: number;
   owner?: string;
   setupIDs?: number[];
 }
-export function calcItemToUserItem(item: CalcArtifact, options?: IOptions): UserArtifact;
-export function calcItemToUserItem(item: CalcWeapon, options?: IOptions): UserWeapon;
+export function calcItemToUserItem(item: CalcArtifact, options?: Options): UserArtifact;
+export function calcItemToUserItem(item: CalcWeapon, options?: Options): UserWeapon;
 export function calcItemToUserItem(
   item: CalcArtifact | CalcWeapon,
-  options?: IOptions
+  options?: Options
 ): UserArtifact | UserWeapon {
   const { ID = item.ID, owner = null, setupIDs } = options || {};
 

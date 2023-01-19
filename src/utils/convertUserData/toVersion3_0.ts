@@ -109,7 +109,7 @@ const convertArtifact = (artifact: any): UserArtifact => {
   return { ID, type, code, rarity, level, mainStatType, subStats, owner };
 };
 
-interface IConvertCharacterResult {
+interface ConvertCharacterResult {
   character: UserCharacter;
   xtraWeapon?: UserWeapon;
 }
@@ -118,7 +118,7 @@ const convertCharacter = (
   weapons: UserWeapon[],
   artifacts: UserArtifact[],
   seedID: number
-): IConvertCharacterResult => {
+): ConvertCharacterResult => {
   const { weaponID, artIDs = [], ...charInfo } = char;
   let finalWeaponID = weaponID;
   let xtraWeapon: UserWeapon | undefined;
@@ -145,16 +145,16 @@ const convertCharacter = (
   };
 };
 
-interface IOlModifierCtrl {
+interface OldModifierCtrl {
   activated: boolean;
   index: number;
   inputs?: Array<boolean | number | string> | undefined;
 }
-interface ICleanModifiersRef {
+interface CleanModifiersRef {
   index: number;
   inputConfigs?: ModInputConfig[];
 }
-const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): ModifierCtrl[] => {
+const cleanModifiers = (mods: OldModifierCtrl[], refs: CleanModifiersRef[]): ModifierCtrl[] => {
   const result: ModifierCtrl[] = [];
 
   for (const mod of mods) {
@@ -201,7 +201,7 @@ const cleanModifiers = (mods: IOlModifierCtrl[], refs: ICleanModifiersRef[]): Mo
   return result;
 };
 
-interface IConvertSetupResult {
+interface ConvertSetupResult {
   setup: UserSetup;
   xtraWeapon?: UserWeapon;
   xtraArtifacts: UserArtifact[];
@@ -211,7 +211,7 @@ const convertSetup = (
   weapons: UserWeapon[],
   artifacts: UserArtifact[],
   seedID: number
-): IConvertSetupResult => {
+): ConvertSetupResult => {
   const { weapon, art } = setup;
   const { buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
   let weaponID: number;
