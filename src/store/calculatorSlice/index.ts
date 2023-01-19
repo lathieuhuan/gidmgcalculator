@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AttackElement,
   CalcArtifact,
@@ -34,7 +34,15 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
-import { bareLv, deepCopy, findById, turnArray, countVision, findByCode } from "@Src/utils";
+import {
+  bareLv,
+  deepCopy,
+  findById,
+  turnArray,
+  countVision,
+  findByCode,
+  getCopyName,
+} from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 import {
@@ -178,10 +186,18 @@ export const calculatorSlice = createSlice({
 
       if (setupsById[sourceId]) {
         const setupID = Date.now();
+        let setupName = findById(setupManageInfos, sourceId)?.name;
+
+        if (setupName) {
+          setupName = getCopyName(
+            setupName,
+            setupManageInfos.map(({ name }) => name)
+          );
+        }
 
         setupManageInfos.push({
           ID: setupID,
-          name: "New setup",
+          name: setupName || "New Setup",
           type: "original",
         });
         setupsById[setupID] = setupsById[sourceId];
@@ -577,10 +593,11 @@ export const calculatorSlice = createSlice({
 
       for (const { ID, name, type, status, originId, isCompared } of newSetupManageInfos) {
         isCompared && state.comparedIds.push(ID);
+        const newSetupName = name.trim();
 
         switch (status) {
           case "REMOVED": {
-            // Delete later coz they can be used for ref of duplicate setups
+            // Store to delete later coz they can be used for ref of DUPLICATE case
             removedIds.push(ID);
             break;
           }
@@ -589,7 +606,7 @@ export const calculatorSlice = createSlice({
             if (oldInfo) {
               tempManageInfos.push({
                 ...oldInfo,
-                name: name,
+                name: newSetupName,
               });
             }
             break;
@@ -598,7 +615,7 @@ export const calculatorSlice = createSlice({
             if (originId && setupsById[originId]) {
               tempManageInfos.push({
                 ID,
-                name,
+                name: newSetupName,
                 type: "original",
               });
               setupsById[ID] = deepCopy(setupsById[originId]);
@@ -608,7 +625,7 @@ export const calculatorSlice = createSlice({
           case "NEW": {
             tempManageInfos.push({
               ID,
-              name,
+              name: newSetupName,
               type: "original",
             });
             setupsById[ID] = {

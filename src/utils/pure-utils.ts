@@ -16,7 +16,6 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
 }
 
 export const getImgSrc = (src: string) => {
-  // return "";
   return src.split("/")[0].length === 1
     ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
     : src;
@@ -79,7 +78,7 @@ export const genNumberSequenceOptions = (
   return startsAt0 ? [{ label: 0, value: 0 }].concat(result) : result;
 };
 
-export function processNumInput(input: string, before: number, max: number = 9999) {
+export const processNumInput = (input: string, before: number, max: number = 9999) => {
   if (input === "") {
     return 0;
   }
@@ -91,4 +90,47 @@ export function processNumInput(input: string, before: number, max: number = 999
     return Math.round(numInput * 10) / 10;
   }
   return before;
-}
+};
+
+/**
+ * originalName
+ * name
+ * name (1)
+ */
+
+const destructName = (name: string) => {
+  const lastWord = name.match(/\s+\(([1-9]+)\)$/);
+
+  if (lastWord?.index && lastWord[1]) {
+    return {
+      nameRoot: name.slice(0, lastWord.index),
+      version: lastWord[1],
+    };
+  }
+
+  return {
+    nameRoot: name,
+    version: null,
+  };
+};
+
+export const getCopyName = (originalName: string, existedNames: string[]) => {
+  const { nameRoot } = destructName(originalName);
+  const versions = [];
+
+  for (const existedName of existedNames) {
+    const destructed = destructName(existedName);
+
+    if (destructed.nameRoot === nameRoot && destructed.version) {
+      versions[+destructed.version] = true;
+    }
+  }
+
+  for (let i = 1; i <= 100; i++) {
+    if (!versions[i]) {
+      return nameRoot + ` (${i})`;
+    }
+  }
+
+  return undefined;
+};

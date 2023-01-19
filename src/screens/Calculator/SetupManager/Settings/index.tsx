@@ -74,9 +74,8 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   const [errorCode, setErrorCode] = useState<"NO_SETUPS" | "">("");
   const [tipsOn, setTipsOn] = useState(false);
 
-  const comparedSetups = tempSetups.filter((tempSetup) => {
-    return tempSetup.isCompared && tempSetup.status !== "REMOVED";
-  });
+  const displayedSetups = tempSetups.filter((tempSetup) => tempSetup.status !== "REMOVED");
+  const comparedSetups = displayedSetups.filter((tempSetup) => tempSetup.isCompared);
 
   useEffect(() => {
     if (comparedSetups.length === 0 && tempStandardId !== 0) {
@@ -119,7 +118,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   };
 
   const copySetup = (index: number) => () => {
-    if (tempSetups.length < MAX_CALC_SETUPS) {
+    if (displayedSetups.length < MAX_CALC_SETUPS) {
       setTempSetups((prev) => {
         const newSetup: NewSetupManageInfo = {
           ...prev[index],
@@ -228,7 +227,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
               })}
             </div>
 
-            {tempSetups.length < 4 && (
+            {displayedSetups.length < MAX_CALC_SETUPS && (
               <div className="mt-4">
                 <button
                   className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
