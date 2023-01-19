@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Src/hooks";
 
 // Util
-import { findById } from "@Src/utils";
+import { findById, getCopyName } from "@Src/utils";
 import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 
 // Action
@@ -120,10 +120,15 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
   const copySetup = (index: number) => () => {
     if (displayedSetups.length < MAX_CALC_SETUPS) {
       setTempSetups((prev) => {
+        const newSetupName = getCopyName(
+          prev[index].name,
+          displayedSetups.map(({ name }) => name)
+        );
+
         const newSetup: NewSetupManageInfo = {
           ...prev[index],
           ID: Date.now(),
-          name: "New setup",
+          name: newSetupName || "New setup",
           type: "original",
           originId: prev[index].ID,
           status: "DUPLICATE",

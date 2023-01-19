@@ -92,12 +92,6 @@ export const processNumInput = (input: string, before: number, max: number = 999
   return before;
 };
 
-/**
- * originalName
- * name
- * name (1)
- */
-
 const destructName = (name: string) => {
   const lastWord = name.match(/\s+\(([1-9]+)\)$/);
 

@@ -44,7 +44,7 @@ import {
   getCopyName,
 } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
+import { getSetupManageInfo } from "@Src/utils/setup";
 import {
   createArtDebuffCtrls,
   createArtifactBuffCtrls,
