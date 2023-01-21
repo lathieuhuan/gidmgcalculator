@@ -3,7 +3,6 @@ import type {
   CalcSetup,
   CalcSetupManageInfo,
   DamageResult,
-  Monster,
   ReactionBonus,
   Target,
   TotalAttribute,
@@ -16,7 +15,10 @@ export type CalculatorState = {
   comparedIds: number[];
 
   configs: CalcConfigurations;
-  isError: boolean;
+  message: {
+    type: "" | "error";
+    content: string;
+  };
 
   charData: CharData;
   setupManageInfos: CalcSetupManageInfo[];

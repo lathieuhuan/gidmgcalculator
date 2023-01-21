@@ -76,7 +76,10 @@ const initialState: CalculatorState = {
   setupsById: {},
   statsById: {},
   target: createTarget(),
-  isError: false,
+  message: {
+    type: "",
+    content: "",
+  },
 };
 
 export const calculatorSlice = createSlice({

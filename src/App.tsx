@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Action
-import { updateCalculator } from "@Store/calculatorSlice";
 import { addUserDatabase } from "@Store/userDatabaseSlice";
 
 // Util
@@ -22,11 +21,9 @@ import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
-import { ImportManager } from "@Screens/Canopy";
+import { ImportManager, MessageModal } from "@Screens/Canopy";
 
 // Component
-import { Button } from "@Components/atoms";
-import { Modal } from "@Components/molecules";
 import { NavBar, DownloadOptions, UploadOptions } from "@Components/organisms";
 
 function App() {
@@ -36,15 +33,11 @@ function App() {
   const [navBarMenuActive, setNavBarMenuActive] = useState(false);
 
   const atScreen = useSelector(selectAtScreen);
-  const isError = useSelector((state) => state.calculator.isError);
 
-  const checkAndAddUserData = useCallback(
-    (data: any) => {
-      const { version, ...database } = convertUserData(data);
-      dispatch(addUserDatabase(database));
-    },
-    [dispatch]
-  );
+  const checkAndAddUserData = useCallback((data: any) => {
+    const { version, ...database } = convertUserData(data);
+    dispatch(addUserDatabase(database));
+  }, []);
 
   // useEffect(() => {
   //   const beforeunloadAlert = (e: BeforeUnloadEvent) => {
@@ -66,8 +59,6 @@ function App() {
   //     window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
   //   };
   // }, []);
-
-  const closeError = () => dispatch(updateCalculator({ isError: false }));
 
   const renderTabContent = useCallback(() => {
     switch (atScreen) {
@@ -100,18 +91,7 @@ function App() {
         )}
       </div>
 
-      <Modal
-        active={isError}
-        className="p-4 small-modal flex flex-col bg-darkblue-1"
-        onClose={closeError}
-      >
-        <p className="text-xl text-center text-lightred">
-          An Error has occurred and prevented the calculation process.
-        </p>
-        <Button className="mt-4 mx-auto" variant="positive" onClick={closeError}>
-          Confirm
-        </Button>
-      </Modal>
+      <MessageModal />
 
       <DownloadOptions active={loadOptionType === "DOWN"} onClose={() => setLoadOptionType("")} />
 

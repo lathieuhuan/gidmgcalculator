@@ -20,7 +20,7 @@ import type {
 import type { CalcConfigurations, CalculatorState } from "./types";
 
 export type UpdateCalculatorAction = PayloadAction<
-  Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds" | "isError">>
+  Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds" | "message">>
 >;
 
 export type PickedChar = Partial<UserCharacter> & {

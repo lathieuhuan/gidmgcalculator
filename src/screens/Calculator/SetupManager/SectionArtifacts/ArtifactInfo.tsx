@@ -4,11 +4,15 @@ import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
 import type { CalcArtifact, ArtifactMainStatType } from "@Src/types";
 
 // Constant
+import { MAX_USER_ARTIFACTS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Action
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
 import { addUserArtifact, updateUserArtifact } from "@Store/userDatabaseSlice";
+
+// Selector
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
@@ -156,15 +160,15 @@ interface ConfirmSavingProps {
 }
 function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
   const dispatch = useDispatch();
-  const [state, setState] = useState<"SUCCESS" | "PENDING" | "">("");
+  const [state, setState] = useState<"SUCCESS" | "PENDING" | "EXCEED_MAX" | "">("");
 
-  const existedArtifact = findById(
-    useSelector((state) => state.database.userArts),
-    artifact.ID
-  );
+  const userArts = useSelector(selectUserArts);
+  const existedArtifact = findById(userArts, artifact.ID);
 
   useEffect(() => {
-    if (existedArtifact) {
+    if (userArts.length + 1 > MAX_USER_ARTIFACTS) {
+      setState("EXCEED_MAX");
+    } else if (existedArtifact) {
       setState("PENDING");
     } else {
       dispatch(addUserArtifact(calcItemToUserItem(artifact)));
@@ -172,55 +176,66 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
     }
   }, []);
 
-  if (state === "") {
-    return null;
-  }
+  switch (state) {
+    case "SUCCESS":
+    case "EXCEED_MAX":
+      return (
+        <ConfirmModalBody
+          message={
+            state === "SUCCESS"
+              ? "Successfully saved to My Artifacts."
+              : "You're having to many Artifacts. Please remove some of them first."
+          }
+          buttons={[undefined]}
+          onClose={onClose}
+        />
+      );
+    case "PENDING":
+      const ownerInfo = existedArtifact?.owner ? (
+        <>
+          , and currently used by <b>{existedArtifact.owner}</b>
+        </>
+      ) : null;
 
-  const noChange = existedArtifact
-    ? isEqual(artifact, {
-        ...userItemToCalcItem(existedArtifact),
-        ID: artifact.ID,
-      })
-    : false;
+      const noChange = existedArtifact
+        ? isEqual(artifact, {
+            ...userItemToCalcItem(existedArtifact),
+            ID: artifact.ID,
+          })
+        : false;
 
-  const extraInfo = existedArtifact?.owner ? (
-    <>
-      , and currently used by <b>{existedArtifact.owner}</b>
-    </>
-  ) : null;
-
-  const message =
-    state === "SUCCESS" ? (
-      "Successfully saved to My Artifacts."
-    ) : (
-      <>
-        This artifact is already saved{extraInfo}.{" "}
-        {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite?"}
-      </>
-    );
-
-  return (
-    <ConfirmModalBody
-      message={message}
-      buttons={[
+      const buttons = [
+        undefined,
         {
-          text: state === "SUCCESS" ? "Close" : "Cancel",
-        },
-        state !== "SUCCESS" && {
           text: "Duplicate",
           onClick: () => {
             dispatch(addUserArtifact(calcItemToUserItem(artifact, { ID: Date.now() })));
           },
         },
-        {
-          onClick: () => {
-            if (state !== "SUCCESS" && !noChange) {
-              dispatch(updateUserArtifact(calcItemToUserItem(artifact)));
-            }
-          },
-        },
-      ]}
-      onClose={onClose}
-    />
-  );
+      ];
+
+      if (!noChange) {
+        buttons.push({
+          text: "Confirm",
+          onClick: () => dispatch(updateUserArtifact(calcItemToUserItem(artifact))),
+        });
+      }
+
+      return (
+        <ConfirmModalBody
+          message={
+            <>
+              This artifact is already saved{ownerInfo}.{" "}
+              {noChange
+                ? "Nothing has changed."
+                : "Their stats are different. Do you want to overwrite"}
+            </>
+          }
+          buttons={buttons}
+          onClose={onClose}
+        />
+      );
+    default:
+      return null;
+  }
 }

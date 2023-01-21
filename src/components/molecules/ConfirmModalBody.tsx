@@ -2,6 +2,7 @@ import { ButtonBar, ButtonBarButton } from "./ButtonBar";
 
 export interface ConfirmModalBodyProps {
   message: string | JSX.Element;
+  bgColor?: string;
   buttons: (Partial<ButtonBarButton> | undefined | false)[];
   /** Default to true */
   closeOnClickButton?: boolean;
@@ -9,6 +10,7 @@ export interface ConfirmModalBodyProps {
 }
 export function ConfirmModalBody({
   message,
+  bgColor = "bg-darkblue-3",
   buttons,
   closeOnClickButton = true,
   onClose,
@@ -30,7 +32,7 @@ export function ConfirmModalBody({
   });
 
   return (
-    <div className="p-4 rounded-lg bg-darkblue-3">
+    <div className={"p-4 rounded-lg " + bgColor}>
       <p className="py-2 text-center text-1.5xl text-default">{message}</p>
       <ButtonBar
         className={"mt-4 flex-wrap" + (buttons.length > 2 ? " space-x-4" : "")}

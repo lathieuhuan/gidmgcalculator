@@ -3,10 +3,16 @@ import isEqual from "react-fast-compare";
 import type { CalcArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import type { PickedChar } from "./calculatorSlice/reducer-types";
 import type { AppThunk } from "./index";
-import { ARTIFACT_TYPES, EScreen } from "@Src/constants";
+import {
+  ARTIFACT_TYPES,
+  EScreen,
+  MAX_USER_ARTIFACTS,
+  MAX_USER_SETUPS,
+  MAX_USER_WEAPONS,
+} from "@Src/constants";
 
 // Action
-import { initSessionWithChar, updateAllArtifact } from "./calculatorSlice";
+import { initSessionWithChar, updateAllArtifact, updateCalculator } from "./calculatorSlice";
 import { updateImportInfo, updateUI } from "./uiSlice";
 import {
   addUserArtifact,
@@ -64,6 +70,26 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
       calculator,
       database: { userSetups, userWps, userArts },
     } = getState();
+    let excessType = "";
+
+    if (userSetups.filter(({ type }) => type !== "complex").length + 1 > MAX_USER_SETUPS) {
+      excessType = "Setup";
+    } else if (userWps.length + 1 > MAX_USER_WEAPONS) {
+      excessType = "Weapon";
+    } else if (userArts.length + 5 > MAX_USER_ARTIFACTS) {
+      excessType = "Artifact";
+    }
+
+    if (excessType) {
+      return dispatch(
+        updateCalculator({
+          message: {
+            type: "error",
+            content: `You're having to many ${excessType}s. Please remove some of them first.`,
+          },
+        })
+      );
+    }
 
     const { weapon, artifacts } = calculator.setupsById[setupID];
     let seedID = Date.now();
