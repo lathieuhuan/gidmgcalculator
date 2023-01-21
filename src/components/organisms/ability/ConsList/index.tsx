@@ -54,10 +54,7 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
                     onClick={() => onClickIcon(i)}
                   />
                 </div>
-                <div
-                  className="grow flex items-center group"
-                  onClick={() => onClickInfo(consLv + 1)}
-                >
+                <div className="grow flex items-center group" onClick={() => onClickInfo(i + 1)}>
                   <p className={clsx("px-2 text-lg font-bold", char.cons < i + 1 && "opacity-50")}>
                     {cons.name}
                   </p>
