@@ -36,6 +36,7 @@ const Ningguang: DataCharacter = {
   NAsConfig: {
     name: "Sparkling Scatter",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: { stats: [{ name: "Normal Attack", multFactors: 28 }] },
     CA: {
@@ -48,7 +49,6 @@ const Ningguang: DataCharacter = {
     ES: {
       name: "Jade Screen",
       image: "e/e8/Talent_Jade_Screen",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Inherited HP",
@@ -62,7 +62,6 @@ const Ningguang: DataCharacter = {
     EB: {
       name: "Starshatter",
       image: "4/47/Talent_Starshatter",
-      xtraLvAtCons: 3,
       stats: [{ name: "DMG per Gem", multFactors: 86.96 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

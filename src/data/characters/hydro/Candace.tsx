@@ -36,6 +36,7 @@ const Candace: DataCharacter = {
   NAsConfig: {
     name: "Gleaming Spear - Guardian Stance",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -50,7 +51,6 @@ const Candace: DataCharacter = {
     ES: {
       name: "Sacred Rite: Heron's Sanctum",
       image: "5/5d/Talent_Sacred_Rite_Heron%27s_Sanctum",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Shield DMG Absorption",
@@ -65,7 +65,6 @@ const Candace: DataCharacter = {
     EB: {
       name: "Sacred Rite: Wagtail's Tide",
       image: "1/1a/Talent_Sacred_Rite_Wagtail%27s_Tide",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 6.61 },
         { name: "Wave Impact DMG", multFactors: 6.61 },

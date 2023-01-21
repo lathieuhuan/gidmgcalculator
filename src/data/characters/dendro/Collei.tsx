@@ -50,14 +50,12 @@ const Collei: DataCharacter = {
     ES: {
       name: "Floral Brush",
       image: "8/88/Talent_Floral_Brush",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 151.2 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
     EB: {
       name: "Trump-Card Kitty",
       image: "2/2e/Talent_Trump-Card_Kitty",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Explosion DMG", multFactors: 201.82 },
         { name: "Leap DMG", multFactors: 43.25 },

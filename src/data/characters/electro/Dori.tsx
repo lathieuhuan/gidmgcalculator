@@ -36,6 +36,7 @@ const Dori: DataCharacter = {
   NAsConfig: {
     name: "Marvelous Sword-Dance (Modified)",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -59,7 +60,6 @@ const Dori: DataCharacter = {
     ES: {
       name: "Spirit-Warding Lamp: Troubleshooter Cannon",
       image: "c/c8/Talent_Spirit-Warding_Lamp_Troubleshooter_Cannon",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Troubleshooter Shot DMG", multFactors: 147.28 },
         { name: "After-Sales Service Round DMG", multFactors: 31.56 },
@@ -69,7 +69,6 @@ const Dori: DataCharacter = {
     EB: {
       name: "Alcazarzaray's Exactitude",
       image: "7/77/Talent_Alcazarzaray%27s_Exactitude",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Connector DMG", multFactors: 15.88 },
         {

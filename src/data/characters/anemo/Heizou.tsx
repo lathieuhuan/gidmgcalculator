@@ -51,7 +51,6 @@ const Heizou: DataCharacter = {
     ES: {
       name: "Heartstopper Strike",
       image: "c/cb/Talent_Heartstopper_Strike",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 227.52 },
         { name: "Declension DMG Bonus / stack", multFactors: 56.88 },
@@ -65,7 +64,6 @@ const Heizou: DataCharacter = {
     EB: {
       name: "Windmuster Kick",
       image: "0/0a/Talent_Windmuster_Kick",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Fudou Style Vacuum Slugger DMG", multFactors: 314.69 },
         { name: "Windmuster Iris DMG", multFactors: 21.5, attElmt: "various" },

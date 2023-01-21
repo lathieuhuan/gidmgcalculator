@@ -66,7 +66,6 @@ const HuTao: DataCharacter = {
     ES: {
       name: "Guide to Afterlife",
       image: "b/be/Talent_Guide_to_Afterlife",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "ATK Increase",
@@ -86,7 +85,6 @@ const HuTao: DataCharacter = {
     EB: {
       name: "Spirit Soother",
       image: "1/11/Talent_Spirit_Soother",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 303.27 },
         { name: "Low HP Skill DMG", multFactors: 379.09 },
@@ -148,7 +146,7 @@ const HuTao: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
-          talents: HuTao.activeTalents,
+          dataChar: HuTao,
           talentType: "ES",
           partyData,
         });

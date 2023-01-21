@@ -45,6 +45,7 @@ export type DataCharacter = {
     name: string;
     getExtraStats?: GetExtraStatsFn;
   };
+  isReverseXtraLv?: boolean;
   activeTalents: ActiveTalents;
   passiveTalents: NoStatsAbility[];
   constellation: NoStatsAbility[];
@@ -142,7 +143,6 @@ export type TalentStat = {
 type ElementalSkill = StatDefault & {
   name: string;
   image: string;
-  xtraLvAtCons?: 3 | 5;
   stats: TalentStat[];
   getExtraStats?: GetExtraStatsFn;
 };

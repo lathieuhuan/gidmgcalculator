@@ -36,6 +36,7 @@ const Jean: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,7 +52,6 @@ const Jean: DataCharacter = {
     ES: {
       name: "Gale Blade",
       image: "2/24/Talent_Gale_Blade",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 292 }],
       // getExtraStats: () => [
       //   { name: "Stamina Consumption", value: "20 per Second" },
@@ -62,7 +62,6 @@ const Jean: DataCharacter = {
     EB: {
       name: "Dandelion Breeze",
       image: "e/ef/Talent_Dandelion_Breeze",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Burst DMG", multFactors: 424.8 },
         { name: "Entering/Exiting DMG", multFactors: 78.4 },

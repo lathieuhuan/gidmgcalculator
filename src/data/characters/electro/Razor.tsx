@@ -40,6 +40,7 @@ const Razor: DataCharacter = {
   NAsConfig: {
     name: "Steel Fang",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -67,7 +68,6 @@ const Razor: DataCharacter = {
     ES: {
       name: "Claw and Thunder",
       image: "0/06/Talent_Claw_and_Thunder",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Press DMG", multFactors: 199.2 },
         { name: "Hold DMG", multFactors: 295.2 },
@@ -83,7 +83,6 @@ const Razor: DataCharacter = {
     EB: {
       name: "Lightning Fang",
       image: "3/3a/Talent_Lightning_Fang",
-      xtraLvAtCons: 3,
       stats: [{ name: "Burst DMG", multFactors: 160 }],
       // getExtraStats: (lv) => [
       //   {
@@ -123,10 +122,7 @@ const Razor: DataCharacter = {
         <>
           Raises Razor's <Green>ATK SPD</Green> by{" "}
           <Green b>
-            {getEBBuffValue(
-              finalTalentLv({ char, talents: Razor.activeTalents, talentType: "EB", partyData })
-            )}
-            %
+            {getEBBuffValue(finalTalentLv({ char, dataChar: Razor, talentType: "EB", partyData }))}%
           </Green>
           .
         </>
@@ -134,7 +130,7 @@ const Razor: DataCharacter = {
       applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
-          talents: Razor.activeTalents,
+          dataChar: Razor,
           talentType: "EB",
           partyData,
         });

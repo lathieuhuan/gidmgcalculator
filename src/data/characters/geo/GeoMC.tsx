@@ -13,12 +13,12 @@ const GeoMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Rockblade",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {
       name: "Starfell Sword",
       image: "0/05/Talent_Starfell_Sword",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 248 }],
       // getExtraStats: () => [
       //   { name: "Meteorite Duration", value: "30s" },
@@ -28,7 +28,6 @@ const GeoMC: DataCharacter = {
     EB: {
       name: "Wake of Earth",
       image: "5/5f/Talent_Wake_of_Earth",
-      xtraLvAtCons: 3,
       stats: [{ name: "DMG per Shockwave", multFactors: 148 }],
       // getExtraStats: () => [
       //   { name: "Stonewall Duration", value: "30s" },

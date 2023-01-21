@@ -60,7 +60,6 @@ const Gorou: DataCharacter = {
     ES: {
       name: "Inuzaka All-Round Defense",
       image: "e/e6/Talent_Inuzaka_All-Round_Defense",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 107.2 },
         {
@@ -79,7 +78,6 @@ const Gorou: DataCharacter = {
     EB: {
       name: "Juuga: Forward Unto Victory",
       image: "f/f9/Talent_Juuga_Forward_Unto_Victory",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 98.22 },
         { name: "Crystal Collapse DMG", multFactors: 61.3 },
@@ -193,7 +191,7 @@ const Gorou: DataCharacter = {
       ],
       applyBuff: (obj) => {
         const level = obj.toSelf
-          ? finalTalentLv({ ...obj, talents: Gorou.activeTalents, talentType: "ES" })
+          ? finalTalentLv({ ...obj, dataChar: Gorou, talentType: "ES" })
           : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
         const buffValues = [getESBuffValue(level)];

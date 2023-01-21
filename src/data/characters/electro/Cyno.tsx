@@ -40,6 +40,7 @@ const Cyno: DataCharacter = {
   NAsConfig: {
     name: "Invoker's Spear",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -54,7 +55,6 @@ const Cyno: DataCharacter = {
     ES: {
       name: "Secret Rite: Chasmic Soulfarer",
       image: "e/e3/Talent_Secret_Rite_Chasmic_Soulfarer",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Skill DMG",
@@ -80,7 +80,6 @@ const Cyno: DataCharacter = {
     EB: {
       name: "Sacred Rite: Wolf's Swiftness",
       image: "a/a0/Talent_Sacred_Rite_Wolf%27s_Swiftness",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "1-Hit",

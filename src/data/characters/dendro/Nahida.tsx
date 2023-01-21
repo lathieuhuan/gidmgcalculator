@@ -9,7 +9,7 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { checkAscs, checkCons, modIsActivated, talentBuff } from "../utils";
 
 function getEBBuff(char: CharInfo, partyData: PartyData) {
-  const level = finalTalentLv({ char, talents: Nahida.activeTalents, talentType: "EB", partyData });
+  const level = finalTalentLv({ char, dataChar: Nahida, talentType: "EB", partyData });
   const pyroCount = partyData.reduce(
     (result, data) => (data?.vision === "pyro" ? result + 1 : result),
     checkCons[1](char) ? 1 : 0
@@ -65,7 +65,6 @@ const Nahida: DataCharacter = {
     ES: {
       name: "All Schemes to Know",
       image: "7/72/Talent_All_Schemes_to_Know",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Press DMG", multFactors: 98.4 },
         { name: "Hold DMG", multFactors: 130.4 },
@@ -122,7 +121,6 @@ const Nahida: DataCharacter = {
     EB: {
       name: "Illusory Heart",
       image: "e/e9/Talent_Illusory_Heart",
-      xtraLvAtCons: 5,
       stats: [],
       // getExtraStats: (lv) => [
       //   {

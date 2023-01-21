@@ -36,6 +36,7 @@ const Qiqi: DataCharacter = {
   NAsConfig: {
     name: "Ancient Sword Art",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,7 +52,6 @@ const Qiqi: DataCharacter = {
     ES: {
       name: "Adeptus Art: Herald of Frost",
       image: "7/7f/Talent_Adeptus_Art_Herald_of_Frost",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 96 },
         { name: "Herald DMG", multFactors: 36 },
@@ -76,7 +76,6 @@ const Qiqi: DataCharacter = {
     EB: {
       name: "Adeptus Art: Preserver of Fortune",
       image: "7/7c/Talent_Adeptus_Art_Preserver_of_Fortune",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 284.8 },
         {

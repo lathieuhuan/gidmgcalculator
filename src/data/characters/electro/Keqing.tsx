@@ -36,6 +36,7 @@ const Keqing: DataCharacter = {
   NAsConfig: {
     name: "Yunlai Swordsmanship",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,7 +52,6 @@ const Keqing: DataCharacter = {
     ES: {
       name: "Stellar Restoration",
       image: "5/5a/Talent_Stellar_Restoration",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Lightning Stiletto", multFactors: 50.4 },
         { name: "Slashing / Thunderclap Slash DMG", multFactors: 168 },
@@ -61,7 +61,6 @@ const Keqing: DataCharacter = {
     EB: {
       name: "Starward Sword",
       image: "1/14/Talent_Starward_Sword",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 88 },
         { name: "Consecutive Slash (1/8)", multFactors: 24 },

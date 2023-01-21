@@ -46,7 +46,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
           !isReactionDmg && dataChar
             ? finalTalentLv({
                 char,
-                talents: dataChar.activeTalents,
+                dataChar,
                 talentType: key.main,
                 partyData: getPartyData(party),
               })

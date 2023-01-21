@@ -51,14 +51,12 @@ const Rosaria: DataCharacter = {
     ES: {
       name: "Ravaging Confession",
       image: "c/ce/Talent_Ravaging_Confession",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: [58.4, 136] }],
       // getExtraStats: () => [{ name: "CD", value: "6s" }],
     },
     EB: {
       name: "Rites of Termination",
       image: "2/26/Talent_Rites_of_Termination",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: [104, 152] },
         { name: "Ice Lance DoT", multFactors: 132 },

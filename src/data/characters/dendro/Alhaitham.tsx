@@ -49,7 +49,6 @@ const Alhaitham: DataCharacter = {
     ES: {
       name: "Universality: An Elaboration on Form",
       image: "2/29/Talent_Universality_An_Elaboration_on_Form",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "Rush Attack DMG",
@@ -76,7 +75,6 @@ const Alhaitham: DataCharacter = {
     EB: {
       name: "Particular Field: Fetters of Phenomena",
       image: "0/08/Talent_Particular_Field_Fetters_of_Phenomena",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Single-Instance DMG",

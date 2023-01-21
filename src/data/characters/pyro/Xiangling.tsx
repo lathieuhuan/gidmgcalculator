@@ -36,6 +36,7 @@ const Xiangling: DataCharacter = {
   NAsConfig: {
     name: "Dough-Fu",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,14 +52,12 @@ const Xiangling: DataCharacter = {
     ES: {
       name: "Guoba Attack",
       image: "a/a9/Talent_Guoba_Attack",
-      xtraLvAtCons: 5,
       stats: [{ name: "Flame DMG (1/4)", multFactors: 111.28 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
     },
     EB: {
       name: "Pyronado",
       image: "2/29/Talent_Pyronado",
-      xtraLvAtCons: 3,
       stats: [
         { name: "1-Hit Swing", multFactors: 72 },
         { name: "2-Hit Swing", multFactors: 88 },

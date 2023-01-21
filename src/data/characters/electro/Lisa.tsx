@@ -35,6 +35,7 @@ const Lisa: DataCharacter = {
   NAsConfig: {
     name: "Lightning Touch",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -49,7 +50,6 @@ const Lisa: DataCharacter = {
     ES: {
       name: "Violet Arc",
       image: "c/c8/Talent_Violet_Arc",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Press DMG", multFactors: 80 },
         { name: "0-stack Hold", multFactors: 320 },
@@ -65,7 +65,6 @@ const Lisa: DataCharacter = {
     EB: {
       name: "Lightning Rose",
       image: "f/fd/Talent_Lightning_Rose",
-      xtraLvAtCons: 3,
       stats: [{ name: "Discharge DMG", multFactors: 36.56 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },

@@ -36,6 +36,7 @@ const Chongyun: DataCharacter = {
   NAsConfig: {
     name: "Demonbane",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -55,7 +56,6 @@ const Chongyun: DataCharacter = {
     ES: {
       name: "Spirit Blade: Chonghua's Layered Frost",
       image: "a/aa/Talent_Spirit_Blade_Chonghua%27s_Layered_Frost",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 172.04 }],
       // getExtraStats: (lv) => [
       //   { name: "Infusion Duration", value: Math.min(19 + lv, 30) / 10 + "s" },
@@ -66,7 +66,6 @@ const Chongyun: DataCharacter = {
     EB: {
       name: "Spirit Blade: Cloud-Parting Star",
       image: "9/93/Talent_Spirit_Blade_Cloud-Parting_Star",
-      xtraLvAtCons: 3,
       stats: [{ name: "Blade DMG", multFactors: 142.4 }],
       // getExtraStats: () => [{ name: "CD", value: "12s" }],
       energyCost: 40,

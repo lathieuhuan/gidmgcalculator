@@ -36,6 +36,7 @@ const Xingqiu: DataCharacter = {
   NAsConfig: {
     name: "Guhua Style",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -53,7 +54,6 @@ const Xingqiu: DataCharacter = {
     ES: {
       name: "Guhua Sword: Fatal Rainscreen",
       image: "5/5d/Talent_Guhua_Sword_Fatal_Rainscreen",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: [168, 191.2] }],
       // getExtraStats: (lv) => [
       //   { name: "DMG Redution Ratio", value: Math.min(19 + lv, 29) + "%" },
@@ -64,7 +64,6 @@ const Xingqiu: DataCharacter = {
     EB: {
       name: "Guhua Sword: Raincutter",
       image: "2/23/Talent_Guhua_Sword_Raincutter",
-      xtraLvAtCons: 3,
       stats: [{ name: "Sword Rain", multFactors: 54.27 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },

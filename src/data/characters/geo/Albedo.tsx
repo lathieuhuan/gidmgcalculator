@@ -51,7 +51,6 @@ const Albedo: DataCharacter = {
     ES: {
       name: "Abiogenesis: Solar Isotoma",
       image: "0/0e/Talent_Abiogenesis_Solar_Isotoma",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 130.4 },
         {
@@ -71,7 +70,6 @@ const Albedo: DataCharacter = {
     EB: {
       name: "Rite of Progeniture: Tectonic Tide",
       image: "0/0a/Talent_Rite_of_Progeniture_Tectonic_Tide",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Burst DMG", multFactors: 367.2 },
         { name: "Fatal Blossom DMG", multFactors: 72 },

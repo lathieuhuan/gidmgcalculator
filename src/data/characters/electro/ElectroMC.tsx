@@ -13,12 +13,12 @@ const ElectroMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Thundershock",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {
       name: "Lightning Blade",
       image: "0/03/Talent_Lightning_Blade",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 78.66 }],
       // getExtraStats: (lv) => [
       //   {
@@ -34,7 +34,6 @@ const ElectroMC: DataCharacter = {
     EB: {
       name: "Bellowing Thunder",
       image: "a/a7/Talent_Bellowing_Thunder",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 114.4 },
         { name: "Falling Thunder", multFactors: 32.8 },

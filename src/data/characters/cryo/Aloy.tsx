@@ -11,7 +11,7 @@ import { checkAscs } from "../utils";
 const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: ModifierInput[] }) => {
   const level = finalTalentLv({
     char: args.char,
-    talents: Aloy.activeTalents,
+    dataChar: Aloy,
     talentType: "ES",
     partyData: args.partyData,
   });

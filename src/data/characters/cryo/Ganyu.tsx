@@ -41,6 +41,7 @@ const Ganyu: DataCharacter = {
   NAsConfig: {
     name: "Liutian Archery",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -79,7 +80,6 @@ const Ganyu: DataCharacter = {
     ES: {
       name: "Trail of the Qilin",
       image: "d/d1/Talent_Trail_of_the_Qilin",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Inherited HP",
@@ -96,7 +96,6 @@ const Ganyu: DataCharacter = {
     EB: {
       name: "Celestial Shower",
       image: "4/47/Talent_Celestial_Shower",
-      xtraLvAtCons: 3,
       stats: [{ name: "Ice shard DMG", multFactors: 70.27 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "15s" },

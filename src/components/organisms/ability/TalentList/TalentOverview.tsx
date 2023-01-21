@@ -37,7 +37,7 @@ export function TalentOverview({
         const talentName = talentType === "NAs" ? NAsConfig.name : activeTalents[talentType]?.name;
         const talentImg = talentType === "NAs" ? undefined : activeTalents[talentType]?.image;
         const xtraLv = totalXtraTalentLv({
-          talents: activeTalents,
+          dataChar,
           talentType,
           char,
           partyData,

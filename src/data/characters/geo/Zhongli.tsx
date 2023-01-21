@@ -53,7 +53,6 @@ const Zhongli: DataCharacter = {
     ES: {
       name: "Dominus Lapidis",
       image: "9/93/Talent_Dominus_Lapidis",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Stone Stele DMG", multFactors: 16 },
         { name: "Resonance DMG", multFactors: 32 },
@@ -74,7 +73,6 @@ const Zhongli: DataCharacter = {
     EB: {
       name: "Planet Befall",
       image: "7/76/Talent_Planet_Befall",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: { root: 401.08, scale: 6 } }],
       // getExtraStats: (lv) => [
       //   { name: "Petrification Duration", value: Math.min(30 + lv, 40) / 10 + "s" },

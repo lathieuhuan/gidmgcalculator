@@ -62,7 +62,6 @@ const Beidou: DataCharacter = {
     ES: {
       name: "Tidecaller",
       image: "9/92/Talent_Tidecaller",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "Shield DMG Absorption",
@@ -79,7 +78,6 @@ const Beidou: DataCharacter = {
     EB: {
       name: "Stormbreaker",
       image: "3/33/Talent_Stormbreaker",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 121.6 },
         { name: "Lightning DMG", multFactors: 96 },

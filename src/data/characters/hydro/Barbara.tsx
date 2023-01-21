@@ -36,6 +36,7 @@ const Barbara: DataCharacter = {
   NAsConfig: {
     name: "Whisper of Water",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -50,7 +51,6 @@ const Barbara: DataCharacter = {
     ES: {
       name: "Let the Show Begin♪",
       image: "9/95/Talent_Let_the_Show_Begin%E2%99%AA",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "HP Regen. per Hit",
@@ -74,7 +74,6 @@ const Barbara: DataCharacter = {
     EB: {
       name: "Shining Miracle♪",
       image: "c/cb/Talent_Shining_Miracle%E2%99%AA",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "Regeneration",

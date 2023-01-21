@@ -36,6 +36,7 @@ const Tighnari: DataCharacter = {
   NAsConfig: {
     name: "Khanda Barrier-Buster",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -67,7 +68,6 @@ const Tighnari: DataCharacter = {
     ES: {
       name: "Vijnana-Phala Mine",
       image: "f/f9/Talent_Vijnana-Phala_Mine",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 149.6 }],
       // getExtraStats: () => [
       //   { name: "Vijnana-Phala Field Duration", value: "8s" },
@@ -78,7 +78,6 @@ const Tighnari: DataCharacter = {
     EB: {
       name: "Fashioner's Tanglevine Shaft",
       image: "3/30/Talent_Fashioner%27s_Tanglevine_Shaft",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Tanglevine Shaft DMG", multFactors: 55.62 },
         { name: "Secondary Tanglevine Shaft DMG", multFactors: 67.98 },

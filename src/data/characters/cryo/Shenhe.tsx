@@ -15,7 +15,7 @@ const getEBDebuffValue = (
   partyData: PartyData
 ) => {
   const level = fromSelf
-    ? finalTalentLv({ char, talents: Shenhe.activeTalents, talentType: "EB", partyData })
+    ? finalTalentLv({ char, dataChar: Shenhe, talentType: "EB", partyData })
     : inputs[0] || 0;
   return level ? Math.min(5 + level, 15) : 0;
 };
@@ -65,7 +65,6 @@ const Shenhe: DataCharacter = {
     ES: {
       name: "Spring Spirit Summoning",
       image: "6/6c/Talent_Spring_Spirit_Summoning",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Press Skill DMG", multFactors: 139.2 },
         { name: "Hold Skill DMG", multFactors: 188.8 },
@@ -81,7 +80,6 @@ const Shenhe: DataCharacter = {
     EB: {
       name: "Divine Maiden's Deliverance",
       image: "d/d5/Talent_Divine_Maiden%27s_Deliverance",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 100.8 },
         { name: "DoT", multFactors: 33.12 },
@@ -127,7 +125,7 @@ const Shenhe: DataCharacter = {
         const { toSelf, inputs } = obj;
         const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
         const level = toSelf
-          ? finalTalentLv({ ...obj, talents: Shenhe.activeTalents, talentType: "ES" })
+          ? finalTalentLv({ ...obj, dataChar: Shenhe, talentType: "ES" })
           : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const xtraDesc = ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;

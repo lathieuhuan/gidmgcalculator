@@ -49,7 +49,6 @@ const YaeMiko: DataCharacter = {
     ES: {
       name: "Yakan Evocation: Sesshou Sakura",
       image: "9/93/Talent_Yakan_Evocation_Sesshou_Sakura",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Sesshou Sakura DMG Lv.1", multFactors: 60.67 },
         { name: "DMG Lv. 2", multFactors: 75.84 },
@@ -64,7 +63,6 @@ const YaeMiko: DataCharacter = {
     EB: {
       name: "Great Secret Art: Tenko Kenshin",
       image: "9/93/Talent_Great_Secret_Art_Tenko_Kenshin",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 260 },
         { name: "Tenko Thunderbolt DMG", multFactors: 333.82 },

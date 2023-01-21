@@ -9,7 +9,7 @@ import { checkAscs } from "../utils";
 import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, talents: Xiao.activeTalents, talentType: "EB", partyData });
+  const level = finalTalentLv({ char, dataChar: Xiao, talentType: "EB", partyData });
   return round(58.45 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
@@ -60,14 +60,12 @@ const Xiao: DataCharacter = {
     ES: {
       name: "Lemniscatic Wind Cycling",
       image: "d/da/Talent_Lemniscatic_Wind_Cycling",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 252.8 }],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
     EB: {
       name: "Bane of All Evil",
       image: "2/2f/Talent_Bane_of_All_Evil",
-      xtraLvAtCons: 5,
       stats: [],
       // getExtraStats: (lv = 1) => [
       //   {

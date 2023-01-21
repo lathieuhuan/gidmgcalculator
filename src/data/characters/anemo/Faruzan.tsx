@@ -16,7 +16,7 @@ interface GetWindGiftBuffValueArgs {
 }
 const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBuffValueArgs) => {
   const level = toSelf
-    ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
+    ? finalTalentLv({ char, dataChar: Faruzan, talentType: "EB", partyData })
     : inputs[0] || 0;
   return level ? round(18 * TALENT_LV_MULTIPLIERS[2][level], 1) : 0;
 };
@@ -65,7 +65,6 @@ const Faruzan: DataCharacter = {
     ES: {
       name: "Wind Realm of Nasamjnin",
       image: "4/46/Talent_Wind_Realm_of_Nasamjnin",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 148.8 },
         { name: "Pressurized Collapse Vortex DMG", multFactors: 108 },
@@ -74,7 +73,6 @@ const Faruzan: DataCharacter = {
     EB: {
       name: "The Wind's Secret Ways",
       image: "f/fc/Talent_The_Wind%27s_Secret_Ways",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 377.6 }],
       energyCost: 80,
     },
@@ -210,7 +208,7 @@ const Faruzan: DataCharacter = {
         if (toSelf ? checkAscs[4](char) : inputs[1]) {
           const ATK = toSelf ? totalAttr.base_atk : inputs[2] || 0;
           const level = toSelf
-            ? finalTalentLv({ char, talents: Faruzan.activeTalents, talentType: "EB", partyData })
+            ? finalTalentLv({ char, dataChar: Faruzan, talentType: "EB", partyData })
             : inputs[0] || 1;
           const mult = 32;
           const finalDesc = desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} Base ATK`;

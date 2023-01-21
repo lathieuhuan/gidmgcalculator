@@ -24,7 +24,7 @@ const getESDebuffValue = (
   partyData: PartyData
 ) => {
   const level = fromSelf
-    ? finalTalentLv({ char, talents: Eula.activeTalents, talentType: "ES", partyData })
+    ? finalTalentLv({ char, dataChar: Eula, talentType: "ES", partyData })
     : inputs[0] || 0;
   return level ? Math.min(15 + level, 25) : 0;
 };
@@ -59,6 +59,7 @@ const Eula: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework - Edel",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -79,7 +80,6 @@ const Eula: DataCharacter = {
     ES: {
       name: "Icetide Vortex",
       image: "a/ae/Talent_Icetide_Vortex",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Press DMG", multFactors: 146.4 },
         { name: "Hold DMG", multFactors: 245.6 },
@@ -99,7 +99,6 @@ const Eula: DataCharacter = {
     EB: {
       name: "Glacial Illumination",
       image: "a/af/Talent_Glacial_Illumination",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 245.6 },
         {

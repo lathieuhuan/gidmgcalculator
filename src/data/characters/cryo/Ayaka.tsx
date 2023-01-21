@@ -37,6 +37,7 @@ const Ayaka: DataCharacter = {
   NAsConfig: {
     name: "Kamisato Art: Kabuki",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -52,14 +53,12 @@ const Ayaka: DataCharacter = {
     ES: {
       name: "Kamisato Art: Hyouka",
       image: "5/56/Talent_Kamisato_Art_Hyouka",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 239.2 }],
       // getExtraStats: () => [{ name: "CD", value: "10s" }],
     },
     EB: {
       name: "Kamisato Art: Soumetsu",
       image: "1/11/Talent_Kamisato_Art_Soumetsu",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Cutting DMG", multFactors: 112.3 },
         { name: "Bloom DMG", multFactors: 168.45 },

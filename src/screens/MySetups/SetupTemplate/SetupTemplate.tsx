@@ -101,7 +101,7 @@ export function SetupTemplate({
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
         return finalTalentLv({
           char,
-          talents: dataChar.activeTalents,
+          dataChar,
           talentType,
           partyData: getPartyData(party),
         });

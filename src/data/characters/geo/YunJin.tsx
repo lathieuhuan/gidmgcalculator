@@ -53,6 +53,7 @@ const YunJin: DataCharacter = {
   NAsConfig: {
     name: "Cloud-Grazing Strike",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -68,7 +69,6 @@ const YunJin: DataCharacter = {
     ES: {
       name: "Whirling Opener",
       image: "9/92/Talent_Opening_Flourish",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Press DMG", multFactors: 149.12 },
         { name: "Charge Level 1 DMG", multFactors: 260.96 },
@@ -86,7 +86,6 @@ const YunJin: DataCharacter = {
     EB: {
       name: "Cliffbreaker's Banner",
       image: "5/59/Talent_Cliffbreaker%27s_Banner",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 244 },
         {
@@ -164,7 +163,7 @@ const YunJin: DataCharacter = {
         const { toSelf, inputs, char, partyData } = obj;
         const DEF = toSelf ? obj.totalAttr.def : inputs[0] || 0;
         const level = toSelf
-          ? finalTalentLv({ char, talents: YunJin.activeTalents, talentType: "EB", partyData })
+          ? finalTalentLv({ char, dataChar: YunJin, talentType: "EB", partyData })
           : inputs[1] || 1;
         let desc = `${obj.desc} / Lv. ${level}`;
         let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];

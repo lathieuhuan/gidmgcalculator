@@ -13,7 +13,7 @@ const getEBBuffValue = ({
   inputs,
 }: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
   const level = toSelf
-    ? finalTalentLv({ char, talents: Mona.activeTalents, talentType: "EB", partyData })
+    ? finalTalentLv({ char, dataChar: Mona, talentType: "EB", partyData })
     : inputs[0] || 0;
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
@@ -50,6 +50,7 @@ const Mona: DataCharacter = {
   NAsConfig: {
     name: "Ripple of Fate",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -64,7 +65,6 @@ const Mona: DataCharacter = {
     ES: {
       name: "Mirror Reflection of Doom",
       image: "4/45/Talent_Mirror_Reflection_of_Doom",
-      xtraLvAtCons: 5,
       stats: [
         { name: "DoT", multFactors: 32 },
         { name: "Explosion DMG", multFactors: 132.8 },
@@ -74,7 +74,6 @@ const Mona: DataCharacter = {
     EB: {
       name: "Stellaris Phantasm",
       image: "c/c4/Talent_Stellaris_Phantasm",
-      xtraLvAtCons: 3,
       stats: [{ name: "Bubble Explosion DMG", multFactors: 442.4 }],
       // getExtraStats: (lv) => [
       //   { name: "", value: "8s" },

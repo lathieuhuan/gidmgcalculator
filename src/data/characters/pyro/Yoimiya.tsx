@@ -9,12 +9,7 @@ import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calcula
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({
-    char,
-    talents: Yoimiya.activeTalents,
-    talentType: "ES",
-    partyData,
-  });
+  const level = finalTalentLv({ char, dataChar: Yoimiya, talentType: "ES", partyData });
   return round(37.91 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
@@ -69,7 +64,6 @@ const Yoimiya: DataCharacter = {
     ES: {
       name: "Niwabi Fire-Dance",
       image: "0/03/Talent_Niwabi_Fire-Dance",
-      xtraLvAtCons: 3,
       stats: [],
       // getExtraStats: (lv) => [
       //   {
@@ -83,7 +77,6 @@ const Yoimiya: DataCharacter = {
     EB: {
       name: "Ryuukin Saxifrage",
       image: "a/a7/Talent_Ryuukin_Saxifrage",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 127.2 },
         { name: "Aurous Blaze Explosion", multFactors: 122 },

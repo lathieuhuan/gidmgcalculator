@@ -57,7 +57,6 @@ const Noelle: DataCharacter = {
     ES: {
       name: "Breastplate",
       image: "5/5a/Talent_Breastplate",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 120 },
         {
@@ -83,7 +82,6 @@ const Noelle: DataCharacter = {
     EB: {
       name: "Sweeping Time",
       image: "7/7c/Talent_Sweeping_Time",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Burst DMG", multFactors: 67.2 },
         { name: "Skill DMG", multFactors: 92.8 },
@@ -141,7 +139,7 @@ const Noelle: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
-          talents: Noelle.activeTalents,
+          dataChar: Noelle,
           talentType: "EB",
           partyData,
         });

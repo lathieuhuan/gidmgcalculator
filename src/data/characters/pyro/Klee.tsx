@@ -49,7 +49,6 @@ const Klee: DataCharacter = {
     ES: {
       name: "Jumpy Dumpty",
       image: "3/33/Talent_Jumpy_Dumpty",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Jumpy Dumpty", multFactors: 95.2 },
         { name: "Mine DMG", multFactors: 32.8 },
@@ -62,7 +61,6 @@ const Klee: DataCharacter = {
     EB: {
       name: "Sparks 'n' Splash",
       image: "6/64/Talent_Sparks_%27n%27_Splash",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Sparks 'n' Splash", multFactors: 42.64 },
         { name: "Total Max DMG", isNotOfficial: true, multFactors: 852 },

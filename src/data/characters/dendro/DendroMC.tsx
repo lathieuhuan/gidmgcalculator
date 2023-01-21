@@ -18,14 +18,12 @@ const DendroMC: DataCharacter = {
     ES: {
       name: "Razorgrass Blade",
       image: "2/24/Talent_Razorgrass_Blade",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 230.4 }],
       // getExtraStats: () => [{ name: "CD", value: "8s" }],
     },
     EB: {
       name: "Surgent Manifestation",
       image: "a/af/Talent_Surgent_Manifestation",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Lea Lotus Lamp Attack DMG", multFactors: 80.16 },
         { name: "Explosion DMG", multFactors: 400.8 },

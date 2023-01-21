@@ -69,7 +69,6 @@ const Kazuha: DataCharacter = {
     ES: {
       name: "Chihayaburu",
       image: "2/22/Talent_Chihayaburu",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Press DMG", multFactors: 192 },
         { name: "Hold DMG", multFactors: 260.8 },
@@ -82,7 +81,6 @@ const Kazuha: DataCharacter = {
     EB: {
       name: "Kazuha Slash",
       image: "0/06/Talent_Kazuha_Slash",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Slashing DMG", multFactors: 262.4 },
         { name: "DoT", multFactors: 120 },

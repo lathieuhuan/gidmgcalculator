@@ -30,7 +30,7 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
   if (modIsActivated(selfBuffCtrls, 0)) {
     const level = finalTalentLv({
       char,
-      talents: Ayato.activeTalents,
+      dataChar: Ayato,
       talentType: "ES",
       partyData,
     });
@@ -49,12 +49,7 @@ const getEBBuffValue = (
   inputs: ModifierInput[]
 ) => {
   const level = toSelf
-    ? finalTalentLv({
-        char,
-        talents: Ayato.activeTalents,
-        talentType: "EB",
-        partyData,
-      })
+    ? finalTalentLv({ char, dataChar: Ayato, talentType: "EB", partyData })
     : inputs[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;
 };
@@ -106,7 +101,6 @@ const Ayato: DataCharacter = {
     ES: {
       name: "Kamisato Art: Kyouka",
       image: "5/5d/Talent_Kamisato_Art_Kyouka",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "Shunsuiken 1-Hit DMG",
@@ -140,7 +134,7 @@ const Ayato: DataCharacter = {
           getTalentBuff: ({ char, selfBuffCtrls, partyData }) => {
             const level = finalTalentLv({
               char,
-              talents: Ayato.activeTalents,
+              dataChar: Ayato,
               talentType: "ES",
               partyData,
             });
@@ -171,7 +165,6 @@ const Ayato: DataCharacter = {
     EB: {
       name: "Kamisato Art: Suiyuu",
       image: "e/e8/Talent_Kamisato_Art_Suiyuu",
-      xtraLvAtCons: 5,
       stats: [{ name: "Bloomwater Blade DMG", multFactors: 66.46 }],
       // getExtraStats: (lv) => [
       //   { name: "Normal Attack DMG Bonus", value: Math.min(lv + 10, 20) + "%" },

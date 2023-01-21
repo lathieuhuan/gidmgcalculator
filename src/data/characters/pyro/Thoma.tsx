@@ -51,7 +51,6 @@ const Thoma: DataCharacter = {
     ES: {
       name: "Blazing Blessing",
       image: "9/9b/Talent_Blazing_Blessing",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 146.4 },
         {
@@ -75,7 +74,6 @@ const Thoma: DataCharacter = {
     EB: {
       name: "Crimson Ooyoroi",
       image: "e/e4/Talent_Crimson_Ooyoroi",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 88 },
         {

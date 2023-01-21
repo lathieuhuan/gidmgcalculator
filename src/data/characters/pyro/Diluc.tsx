@@ -61,7 +61,6 @@ const Diluc: DataCharacter = {
     ES: {
       name: "Searing Onslaught",
       image: "5/53/Talent_Searing_Onslaught",
-      xtraLvAtCons: 3,
       stats: [
         { name: "1-Hit DMG", multFactors: 94.4 },
         { name: "2-Hit DMG", multFactors: 97.6 },
@@ -72,7 +71,6 @@ const Diluc: DataCharacter = {
     EB: {
       name: "Dawn",
       image: "f/f5/Talent_Dawn",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Splashing DMG", multFactors: 204 },
         { name: "DoT", multFactors: 60 },

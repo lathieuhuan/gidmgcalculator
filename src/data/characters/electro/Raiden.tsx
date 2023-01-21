@@ -56,7 +56,7 @@ const getBuffValue = {
     partyData: PartyData
   ) => {
     const level = toSelf
-      ? finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "ES", partyData })
+      ? finalTalentLv({ char, dataChar: Raiden, talentType: "ES", partyData })
       : inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
 
@@ -68,7 +68,7 @@ const getBuffValue = {
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
     const level = finalTalentLv({
       char,
-      talents: Raiden.activeTalents,
+      dataChar: Raiden,
       talentType: "EB",
       partyData,
     });
@@ -98,9 +98,7 @@ const getBuffValue = {
     if (otherEC < 0) {
       return 0;
     }
-    const level =
-      EBlevel ||
-      finalTalentLv({ char, talents: Raiden.activeTalents, talentType: "EB", partyData });
+    const level = EBlevel || finalTalentLv({ char, dataChar: Raiden, talentType: "EB", partyData });
     const electroResolve = countResolve(electroEC, level);
     const otherResolve = countResolve(otherEC, level);
     return round(electroResolve * 0.8 + otherResolve * 0.2, 1);
@@ -138,6 +136,7 @@ const Raiden: DataCharacter = {
   NAsConfig: {
     name: "Origin",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -153,7 +152,6 @@ const Raiden: DataCharacter = {
     ES: {
       name: "Transcendence: Baleful Omen",
       image: "3/3c/Talent_Transcendence_Baleful_Omen",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 117.2 },
         { name: "Coordinated ATK DMG", multFactors: 42 },
@@ -167,7 +165,6 @@ const Raiden: DataCharacter = {
     EB: {
       name: "Secret Art: Musou Shinsetsu",
       image: "e/e0/Talent_Secret_Art_Musou_Shinsetsu",
-      xtraLvAtCons: 3,
       stats: [
         {
           name: "Musou no Hitotachi",

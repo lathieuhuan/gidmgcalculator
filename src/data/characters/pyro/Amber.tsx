@@ -36,6 +36,7 @@ const Amber: DataCharacter = {
   NAsConfig: {
     name: "Sharpshooter",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,7 +52,6 @@ const Amber: DataCharacter = {
     ES: {
       name: "Explosive Puppet",
       image: "e/e0/Talent_Explosive_Puppet",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Inherited HP",
@@ -65,7 +65,6 @@ const Amber: DataCharacter = {
     EB: {
       name: "Fiery Rain",
       image: "6/6c/Talent_Fiery_Rain",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Each Wave DMG", multFactors: 28.08 },
         { name: "Total DMG", multFactors: 505.44 },

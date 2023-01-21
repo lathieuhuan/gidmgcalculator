@@ -15,7 +15,7 @@ const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({
     char,
-    talents: Wanderer.activeTalents,
+    dataChar: Wanderer,
     talentType: "ES",
     partyData,
   });
@@ -55,6 +55,7 @@ const Wanderer: DataCharacter = {
   NAsConfig: {
     name: "Yuuban Meigen",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -79,14 +80,12 @@ const Wanderer: DataCharacter = {
     ES: {
       name: "Hanega: Song of the Wind",
       image: "b/b0/Talent_Hanega_Song_of_the_Wind",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 95.2 }],
       //   getExtraStats: () => [{ name: "CD", value: "15s" }],
     },
     EB: {
       name: "Kyougen: Five Ceremonial Plays",
       image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
-      xtraLvAtCons: 3,
       stats: [{ name: "Fudou Style Vacuum Slugger DMG (1/5)", multFactors: 147.2 }],
       energyCost: 60,
     },

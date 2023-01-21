@@ -44,6 +44,7 @@ const Kokomi: DataCharacter = {
   NAsConfig: {
     name: "The Shape of Water",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -57,7 +58,6 @@ const Kokomi: DataCharacter = {
     ES: {
       name: "Kurage's Oath",
       image: "6/6e/Talent_Kurage%27s_Oath",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Regeneration",
@@ -75,7 +75,6 @@ const Kokomi: DataCharacter = {
     EB: {
       name: "Nereid's Ascension",
       image: "4/46/Talent_Nereid%27s_Ascension",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 10.42 },
         {
@@ -140,7 +139,7 @@ const Kokomi: DataCharacter = {
       applyFinalBuff: (obj) => {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
-        const level = finalTalentLv({ ...obj, talents: Kokomi.activeTalents, talentType: "EB" });
+        const level = finalTalentLv({ ...obj, dataChar: Kokomi, talentType: "EB" });
 
         const buffValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];

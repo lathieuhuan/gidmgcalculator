@@ -20,7 +20,7 @@ import { SlideShow } from "../molecules";
 const { Row } = StatsTable;
 const styles = {
   row: "pb-1 text-sm",
-  leftCol: "pr-8 text-dullyellow",
+  leftCol: "pr-6 text-dullyellow",
   rightCol: "font-bold text-right",
 };
 
@@ -42,12 +42,6 @@ export function TalentDetail({
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
 
-  // // for when details for passiveTalents are available
-  // const atActiveTalent = detailIndex < Object.keys(activeTalents).length;
-  // const [switcher, tab, setTab] = useSwitcher([
-  //   { text: "Talent Info", clickable: true },
-  //   { text: "Skill Attributes", clickable: atActiveTalent },
-  // ]);
   const { ES, EB, altSprint } = activeTalents;
   const images = [NORMAL_ATTACK_ICONS[`${weaponType}_${vision}`] || "", ES.image, EB.image];
 
@@ -70,14 +64,6 @@ export function TalentDetail({
 
   const talent = talents[detailIndex];
   const isStatic = talent.type === "altSprint";
-
-  // if (altSprint) {
-  //   talentInfoByPosition.splice(3, 0, {
-  //     talentType: "altSprint" as const,
-  //     talentName: altSprint.name,
-  //     talentStats: [],
-  //   });
-  // }
 
   const onMouseDownLevelButton = (isLevelUp: boolean) => {
     const adjustLevel = () => {
@@ -123,11 +109,11 @@ export function TalentDetail({
         />
 
         <p className={`text-xl font-bold text-${vision} text-center`}>{talent.name}</p>
-        <div className="mt-2 py-1 flex-center bg-default rounded-2xl">
+        {/* <div className="my-2 py-1 flex-center bg-default rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
-        </div>
+        </div> */}
 
-        <div className="mt-2">
+        <div>
           <div
             className={
               "py-2 flex-center bg-darkblue-1 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")

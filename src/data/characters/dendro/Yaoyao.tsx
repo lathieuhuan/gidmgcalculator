@@ -48,7 +48,6 @@ const Yaoyao: DataCharacter = {
     ES: {
       name: "Raphanus Sky Cluster",
       image: "2/25/Talent_Raphanus_Sky_Cluster",
-      xtraLvAtCons: 3,
       stats: [
         { name: "White Jade Radish DMG", multFactors: 29.92 },
         {
@@ -76,7 +75,6 @@ const Yaoyao: DataCharacter = {
     EB: {
       name: "Moonjade Descent",
       image: "c/ca/Talent_Moonjade_Descent",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 114.56 },
         { name: "Adeptal Legacy Radish DMG", multFactors: 72.16 },

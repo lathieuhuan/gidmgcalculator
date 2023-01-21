@@ -50,14 +50,12 @@ const Sucrose: DataCharacter = {
     ES: {
       name: "Astable Anemohypostasis Creation - 6308",
       image: "7/76/Talent_Astable_Anemohypostasis_Creation_-_6308",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 211.2 }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
     },
     EB: {
       name: "Forbidden Creation - Isomer 75 / Type II",
       image: "4/4d/Talent_Forbidden_Creation_-_Isomer_75_Type_II",
-      xtraLvAtCons: 5,
       stats: [
         { name: "DoT", multFactors: 148 },
         { name: "Additional Elemental DMG", multFactors: 44, attElmt: "various" },

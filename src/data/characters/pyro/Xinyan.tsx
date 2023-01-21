@@ -55,7 +55,6 @@ const Xinyan: DataCharacter = {
     ES: {
       name: "Sweeping Fervor",
       image: "8/85/Talent_Sweeping_Fervor",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Swing DMG", multFactors: 169.6 },
         { name: "DoT", multFactors: 33.6 },
@@ -86,7 +85,6 @@ const Xinyan: DataCharacter = {
     EB: {
       name: "Riff Revolution",
       image: "0/06/Talent_Riff_Revolution",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "Physical Burst DMG",

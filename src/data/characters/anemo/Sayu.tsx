@@ -50,6 +50,7 @@ const Sayu: DataCharacter = {
   NAsConfig: {
     name: "Shuumatsuban Ninja Blade",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -69,7 +70,6 @@ const Sayu: DataCharacter = {
     ES: {
       name: "Yoohoo Art: Fuuin Dash",
       image: "4/4b/Talent_Yoohoo_Art_Fuuin_Dash",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Fuufuu Windwheel DMG", multFactors: 36 },
         { name: "Fuufuu Windwheel Elemental DMG", attElmt: "various", multFactors: 16.8 },
@@ -104,7 +104,6 @@ const Sayu: DataCharacter = {
     EB: {
       name: "Yoohoo Art: Mujina Flurry",
       image: "b/be/Talent_Yoohoo_Art_Mujina_Flurry",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Burst DMG", multFactors: 116.8 },
         {

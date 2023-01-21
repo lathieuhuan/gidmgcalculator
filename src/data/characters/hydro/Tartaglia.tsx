@@ -53,7 +53,6 @@ const Tartaglia: DataCharacter = {
     ES: {
       name: "Foul Legacy: Raging Tide",
       image: "b/b5/Talent_Foul_Legacy_Raging_Tide",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Stance Change DMG", multFactors: { root: 72, scale: 2 } },
         { name: "1-Hit", attPatt: "NA", multFactors: 38.87 },
@@ -76,7 +75,6 @@ const Tartaglia: DataCharacter = {
     EB: {
       name: "Havoc: Obliteration",
       image: "0/03/Talent_Havoc_Obliteration",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Melee Skill DMG", multFactors: 464 },
         { name: "Range Skill DMG", multFactors: 378.4 },

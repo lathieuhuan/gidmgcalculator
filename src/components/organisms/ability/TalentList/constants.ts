@@ -25,6 +25,7 @@ export const NORMAL_ATTACK_ICONS: Partial<Record<`${WeaponType}_${Vision}`, stri
   polearm_electro: "0/06/Polearm_Electro",
   polearm_anemo: "e/ee/Polearm_Anemo",
   polearm_geo: "9/99/Polearm_Geo",
+  polearm_dendro: "a/ab/Polearm_Dendro",
   sword_pyro: "0/0d/Sword_Pyro",
   sword_cryo: "6/6a/Sword_Cryo",
   sword_hydro: "e/ea/Sword_Hydro",

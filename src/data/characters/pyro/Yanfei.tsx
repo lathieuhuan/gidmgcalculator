@@ -9,7 +9,7 @@ import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calcula
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, talents: Yanfei.activeTalents, talentType: "EB", partyData });
+  const level = finalTalentLv({ char, dataChar: Yanfei, talentType: "EB", partyData });
   return round(33.4 * TALENT_LV_MULTIPLIERS[5][level], 1);
 };
 
@@ -71,14 +71,12 @@ const Yanfei: DataCharacter = {
     ES: {
       name: "Signed Edict",
       image: "a/a3/Talent_Signed_Edict",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 169.6 }],
       // getExtraStats: () => [{ name: "CD", value: "9s" }],
     },
     EB: {
       name: "Done Deal",
       image: "9/96/Talent_Done_Deal",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 182.4 }],
       // getExtraStats: (lv) => [
       //   { name: "Scarlet Seal Grant Interval", value: "1s" },

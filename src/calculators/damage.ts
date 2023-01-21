@@ -267,7 +267,7 @@ export default function getDamage({
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
     const level = finalTalentLv({
-      talents: dataChar.activeTalents,
+      dataChar,
       talentType: resultKey,
       char,
       partyData,

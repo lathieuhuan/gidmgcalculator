@@ -36,6 +36,7 @@ const Diona: DataCharacter = {
   NAsConfig: {
     name: "Kätzlein Style",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -51,7 +52,6 @@ const Diona: DataCharacter = {
     ES: {
       name: "Icy Paws",
       image: "e/e9/Talent_Icy_Paws",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "DMG per Paw",
@@ -74,7 +74,6 @@ const Diona: DataCharacter = {
     EB: {
       name: "Signature Mix",
       image: "5/57/Talent_Signature_Mix",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 80 },
         { name: "Continuous DMG", multFactors: 52.64 },

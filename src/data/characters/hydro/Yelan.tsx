@@ -37,6 +37,7 @@ const Yelan: DataCharacter = {
   NAsConfig: {
     name: "Stealthy Bowshot",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -67,7 +68,6 @@ const Yelan: DataCharacter = {
     ES: {
       name: "Lingering Lifeline",
       image: "5/59/Talent_Lingering_Lifeline",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: { root: 22.61, attributeType: "hp" } }],
       // getExtraStats: () => [
       //   { name: "Max Duration (Hold)", value: "3s" },
@@ -77,7 +77,6 @@ const Yelan: DataCharacter = {
     EB: {
       name: "Depth-Clarion Dice",
       image: "b/bd/Talent_Depth-Clarion_Dice",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 7.31 },
         { name: "Exquisite Throw DMG (1/3)", multFactors: 4.87 },

@@ -33,7 +33,10 @@ const Venti: DataCharacter = {
     [10531, 263, 669],
   ],
   bonusStat: { type: "er", value: 8 },
-  NAsConfig: { name: "Divine Marksmanship" },
+  NAsConfig: {
+    name: "Divine Marksmanship",
+  },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -50,7 +53,6 @@ const Venti: DataCharacter = {
     ES: {
       name: "Skyward Sonnet",
       image: "1/17/Talent_Skyward_Sonnet",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Press DMG", multFactors: 276 },
         { name: "Hold DMG", multFactors: 380 },
@@ -63,7 +65,6 @@ const Venti: DataCharacter = {
     EB: {
       name: "Wind's Grand Ode",
       image: "3/32/Talent_Wind%27s_Grand_Ode",
-      xtraLvAtCons: 3,
       stats: [
         { name: "DoT", multFactors: 37.6 },
         { name: "Addition Elemental DMG", attElmt: "various", multFactors: 18.8 },

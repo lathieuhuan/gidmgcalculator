@@ -75,7 +75,6 @@ const Itto: DataCharacter = {
     ES: {
       name: "Masatsu Zetsugi: Akaushi Burst!",
       image: "5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 307.2 }],
       // getExtraStats: () => [
       //   { name: "Inherited HP", value: "100%" },
@@ -86,7 +85,6 @@ const Itto: DataCharacter = {
     EB: {
       name: "Royal Descent: Behold, Itto the Evil!",
       image: "5/50/Talent_Royal_Descent_Behold%2C_Itto_the_Evil%21",
-      xtraLvAtCons: 5,
       stats: [
         {
           name: "ATK Bonus",
@@ -161,7 +159,7 @@ const Itto: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
-          talents: Itto.activeTalents,
+          dataChar: Itto,
           talentType: "EB",
           partyData,
         });

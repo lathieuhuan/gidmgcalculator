@@ -46,6 +46,7 @@ const Sara: DataCharacter = {
   NAsConfig: {
     name: "Tengu Bowmanship",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -61,7 +62,6 @@ const Sara: DataCharacter = {
     ES: {
       name: "Tengu Stormcall",
       image: "6/6a/Talent_Tengu_Stormcall",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Tengu Juurai: Ambush DMG", multFactors: { root: 125.76 } },
         {
@@ -78,7 +78,6 @@ const Sara: DataCharacter = {
     EB: {
       name: "Subjugation: Koukou Sendou",
       image: "e/e8/Talent_Subjugation_Koukou_Sendou",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Tengu Juurai: Titanbreaker DMG", multFactors: { root: 409.6 } },
         { name: "Tengu Juurai: Stormcluster DMG", multFactors: { root: 34.12 } },
@@ -121,10 +120,7 @@ const Sara: DataCharacter = {
       ],
       applyBuff: (obj) => {
         const buffValueArgs = obj.toSelf
-          ? [
-              obj.totalAttr.base_atk,
-              finalTalentLv({ ...obj, talents: Sara.activeTalents, talentType: "ES" }),
-            ]
+          ? [obj.totalAttr.base_atk, finalTalentLv({ ...obj, dataChar: Sara, talentType: "ES" })]
           : obj.inputs;
         const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
         const desc = `${obj.desc} / Lv. ${xtraDesc}`;

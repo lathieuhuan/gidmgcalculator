@@ -67,7 +67,6 @@ const Bennett: DataCharacter = {
     ES: {
       name: "Passion Overload",
       image: "6/66/Talent_Passion_Overload",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Press", multFactors: 137.6 },
         { name: "Charge Level 1", multFactors: [84, 92] },
@@ -79,7 +78,6 @@ const Bennett: DataCharacter = {
     EB: {
       name: "Fantastic Voyage",
       image: "a/a2/Talent_Fantastic_Voyage",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 232.8 },
         {
@@ -141,7 +139,7 @@ const Bennett: DataCharacter = {
         const args = toSelf
           ? [
               totalAttr.base_atk,
-              finalTalentLv({ ...obj, talents: Bennett.activeTalents, talentType: "EB" }),
+              finalTalentLv({ ...obj, dataChar: Bennett, talentType: "EB" }),
               checkCons[1](char) ? 1 : 0,
             ]
           : inputs;

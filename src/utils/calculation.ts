@@ -11,6 +11,7 @@ import type {
   AttributeStat,
   CalcArtifacts,
   CharInfo,
+  DataCharacter,
   Level,
   PartyData,
   Reaction,
@@ -45,25 +46,39 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
 }
 
 interface TotalXtraTalentArgs {
-  talents: ActiveTalents;
-  talentType: Talent;
   char: CharInfo;
+  dataChar: DataCharacter;
+  talentType: Talent;
   partyData?: PartyData;
 }
-export function totalXtraTalentLv({ talents, talentType, char, partyData }: TotalXtraTalentArgs) {
+export function totalXtraTalentLv({ char, dataChar, talentType, partyData }: TotalXtraTalentArgs) {
   let result = 0;
 
-  if (talentType === "NAs") {
-    if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
-      result++;
-    }
-  } else if (talentType === "ES" || talentType === "EB") {
-    const { xtraLvAtCons } = talents[talentType];
-
-    if (xtraLvAtCons && char.cons >= xtraLvAtCons) {
-      result += 3;
-    }
+  switch (talentType) {
+    case "NAs":
+      if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
+        result++;
+      }
+      break;
+    case "ES":
+      if (dataChar.isReverseXtraLv) {
+        if (char.cons >= 5) {
+          result += 3;
+        }
+      } else if (char.cons >= 3) {
+        result += 3;
+      }
+      break;
+    case "EB":
+      if (dataChar.isReverseXtraLv) {
+        if (char.cons >= 3) {
+          result += 3;
+        }
+      } else if (char.cons >= 5) {
+        result += 3;
+      }
   }
+
   return result;
 }
 

@@ -58,7 +58,6 @@ const Shinobu: DataCharacter = {
     ES: {
       name: "Sanctifying Ring",
       image: "d/d7/Talent_Sanctifying_Ring",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 75.71 },
         {
@@ -83,7 +82,6 @@ const Shinobu: DataCharacter = {
     EB: {
       name: "Gyoei Narukami Kariyama Rite",
       image: "4/47/Talent_Gyoei_Narukami_Kariyama_Rite",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Single Instance DMG", multFactors: 3.6 },
         { name: "Total DMG (HP > 50%)", multFactors: 25.23 },

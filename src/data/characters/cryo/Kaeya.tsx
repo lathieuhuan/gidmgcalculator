@@ -51,14 +51,12 @@ const Kaeya: DataCharacter = {
     ES: {
       name: "Frostgnaw",
       image: "5/51/Talent_Frostgnaw",
-      xtraLvAtCons: 3,
       stats: [{ name: "Skill DMG", multFactors: 191.2 }],
       // getExtraStats: () => [{ name: "CD", value: "6s" }],
     },
     EB: {
       name: "Glacial Waltz",
       image: "2/29/Talent_Glacial_Waltz",
-      xtraLvAtCons: 5,
       stats: [{ name: "Skill DMG", multFactors: 77.6 }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "8s" },

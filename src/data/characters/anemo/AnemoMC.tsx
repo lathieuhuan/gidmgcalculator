@@ -13,12 +13,12 @@ const AnemoMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Ironwind",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {
       name: "Palm Vortex",
       image: "0/07/Talent_Palm_Vortex",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Initial Cutting", multFactors: 12 },
         { name: "Max Cutting", multFactors: 16.8 },
@@ -33,7 +33,6 @@ const AnemoMC: DataCharacter = {
     EB: {
       name: "Gust Surge",
       image: "9/98/Talent_Gust_Surge",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Tornado DMG", multFactors: 80.8 },
         { name: "Additional Elemental DMG", attElmt: "various", multFactors: 24.8 },

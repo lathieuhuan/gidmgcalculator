@@ -52,7 +52,6 @@ const Layla: DataCharacter = {
     ES: {
       name: "Nights of Formal Focus",
       image: "9/90/Talent_Nights_of_Formal_Focus",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 12.8 },
         {
@@ -78,7 +77,6 @@ const Layla: DataCharacter = {
     EB: {
       name: "Dream of the Star-Stream Shaker",
       image: "b/b4/Talent_Dream_of_the_Star-Stream_Shaker",
-      xtraLvAtCons: 5,
       stats: [{ name: "Starlight Slug DMG", multFactors: { root: 4.65, attributeType: "hp" } }],
       // getExtraStats: () => [
       //   { name: "Duration", value: "12s" },

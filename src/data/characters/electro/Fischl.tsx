@@ -59,7 +59,6 @@ const Fischl: DataCharacter = {
     ES: {
       name: "Nightrider",
       image: "b/b3/Talent_Nightrider",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Oz's ATK", multFactors: 88.8 },
         {
@@ -78,7 +77,6 @@ const Fischl: DataCharacter = {
     EB: {
       name: "Midnight Phantasmagoria",
       image: "f/ff/Talent_Midnight_Phantasmagoria",
-      xtraLvAtCons: 5,
       stats: [{ name: "Falling Thunder", multFactors: 208 }],
       // getExtraStats: () => [{ name: "CD", value: "15s" }],
       energyCost: 60,

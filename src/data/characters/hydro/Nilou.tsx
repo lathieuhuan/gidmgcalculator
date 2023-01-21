@@ -46,6 +46,7 @@ const Nilou: DataCharacter = {
   NAsConfig: {
     name: "Dance of Samser",
   },
+  isReverseXtraLv: true,
   activeTalents: {
     NA: {
       stats: [
@@ -59,7 +60,6 @@ const Nilou: DataCharacter = {
     ES: {
       name: "Dance of Haftkarsvar",
       image: "3/3e/Talent_Dance_of_Haftkarsvar",
-      xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 3.34 },
         { name: "Sword Dance 1-Hit DMG", multFactors: 4.55 },
@@ -84,7 +84,6 @@ const Nilou: DataCharacter = {
     EB: {
       name: "Dance of Abzendegi: Distant Dreams, Listening Spring",
       image: "b/b9/Talent_Dance_of_Abzendegi_Distant_Dreams%2C_Listening_Spring",
-      xtraLvAtCons: 3,
       stats: [
         { name: "Skill DMG", multFactors: 18.43 },
         { name: "Lingering Aeon DMG", multFactors: 22.53 },
