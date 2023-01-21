@@ -7,10 +7,9 @@ import { checkCons } from "../utils";
 
 const Yaoyao: DataCharacter = {
   code: 66,
-  beta: true,
   name: "Yaoyao",
-  icon: "",
-  sideIcon: "",
+  icon: "8/83/Yaoyao_Icon",
+  sideIcon: "d/d2/Character_Yaoyao_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "dendro",
@@ -38,7 +37,7 @@ const Yaoyao: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: 47.44 },
+        { name: "1-Hit", multFactors: 51 },
         { name: "2-Hit", multFactors: 47.44 },
         { name: "3-Hit", multFactors: [31.38, 32.95] },
         { name: "4-Hit", multFactors: 77.93 },
@@ -48,7 +47,7 @@ const Yaoyao: DataCharacter = {
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Raphanus Sky Cluster",
-      image: "",
+      image: "2/25/Talent_Raphanus_Sky_Cluster",
       xtraLvAtCons: 3,
       stats: [
         { name: "White Jade Radish DMG", multFactors: 29.92 },
@@ -76,7 +75,7 @@ const Yaoyao: DataCharacter = {
     },
     EB: {
       name: "Moonjade Descent",
-      image: "",
+      image: "c/ca/Talent_Moonjade_Descent",
       xtraLvAtCons: 5,
       stats: [
         { name: "Skill DMG", multFactors: 114.56 },
@@ -94,7 +93,7 @@ const Yaoyao: DataCharacter = {
   passiveTalents: [
     {
       name: "Starscatter",
-      image: "",
+      image: "d/d5/Talent_Starscatter",
       desc: (
         <>
           While affected by the Adeptal Legacy state [~EB], Yaoyao will constantly throw White Jade
@@ -105,7 +104,7 @@ const Yaoyao: DataCharacter = {
     },
     {
       name: "In Others' Shoes",
-      image: "",
+      image: "a/ab/Talent_In_Others%27_Shoes",
       desc: (
         <>
           When White Jade Radishes [~ES] explode, active characters within their AoE will regain HP
@@ -113,12 +112,12 @@ const Yaoyao: DataCharacter = {
         </>
       ),
     },
-    { name: "Tailing on Tiptoes", image: "" },
+    { name: "Tailing on Tiptoes", image: "8/89/Talent_Tailing_on_Tiptoes" },
   ],
   constellation: [
     {
       name: "Adeptus' Tutelage",
-      image: "",
+      image: "2/2a/Constellation_Adeptus%27_Tutelage",
       get desc() {
         return (
           <>
@@ -136,7 +135,7 @@ const Yaoyao: DataCharacter = {
     },
     {
       name: "Innocent",
-      image: "",
+      image: "3/3d/Constellation_Innocent",
       desc: (
         <>
           While affected by the Adeptal Legacy state [~EB], if White Jade Radish explosions damage
@@ -145,10 +144,10 @@ const Yaoyao: DataCharacter = {
         </>
       ),
     },
-    { name: "Loyal and Kind", image: "" },
+    { name: "Loyal and Kind", image: "6/66/Constellation_Loyal_and_Kind" },
     {
       name: "Winsome",
-      image: "",
+      image: "3/39/Constellation_Winsome",
       desc: (
         <>
           After using Raphanus Sky Cluster [ES] or Moonjade Descent [EB], Yaoyao's{" "}
@@ -157,10 +156,10 @@ const Yaoyao: DataCharacter = {
         </>
       ),
     },
-    { name: "Compassionate", image: "" },
+    { name: "Compassionate", image: "3/3d/Constellation_Compassionate" },
     {
       name: "Beneficent",
-      image: "",
+      image: "0/02/Constellation_Beneficent",
       desc: (
         <>
           For every 2 White Jade Radishes Yuegui: Throwing Mode [ES] throws out, it will also throw
