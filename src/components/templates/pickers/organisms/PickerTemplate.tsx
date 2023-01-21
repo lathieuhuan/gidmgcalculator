@@ -80,7 +80,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
 
       <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
-        <div className="pr-4 h-full custom-scrollbar">
+        <div className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               return (
@@ -97,6 +97,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
                     pickedAmount={amount.each[i]}
                     onClickItem={() => {
                       onPickItem(item);
+
                       if (!massAdd) {
                         onClose();
                       } else {

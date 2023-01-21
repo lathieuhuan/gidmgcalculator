@@ -96,8 +96,8 @@ export const useInventoryRack = ({
   }, [goBack, goNext]);
 
   const inventoryRack = (
-    <div className="w-full flex flex-col" style={{ minWidth: "22rem" }}>
-      <div className={clsx("hide-scrollbar", listClassName)}>
+    <div className="pr-2 w-full flex flex-col" style={{ minWidth: "22rem" }}>
+      <div className={clsx("custom-scrollbar", listClassName)}>
         {filteredIds.length ? (
           <div className="flex flex-wrap">
             {items.map((item) => {

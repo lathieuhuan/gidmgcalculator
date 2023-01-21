@@ -54,8 +54,8 @@ function WeaponInventory({
         </ModalHeader>
       </div>
 
-      <div className="pt-2 pr-4 pb-2 pl-2 flex-grow custom-scrollbar">
-        <div className="h-full pb-2 flex custom-scrollbar">
+      <div className="p-2 pr-4 grow hide-scrollbar">
+        <div className="h-full flex hide-scrollbar">
           {inventoryRack}
 
           <div className="flex flex-col justify-between">

@@ -1,15 +1,13 @@
-import clsx from "clsx";
 import { memo } from "react";
+import { FaUser } from "react-icons/fa";
+import { RiSwordFill } from "react-icons/ri";
 import type { PickerItem } from "../types";
 
 // Constant
 import { VISION_ICONS } from "@Src/constants";
 
-// Util
-import { getImgSrc } from "@Src/utils";
-
 // Component
-import { BetaMark } from "@Components/atoms";
+import { BetaMark, Image } from "@Components/atoms";
 
 interface ItemProps {
   massAdd: boolean;
@@ -19,18 +17,18 @@ interface ItemProps {
 }
 function Item({ item, pickedAmount, onClickItem }: ItemProps) {
   return (
-    <div className={clsx("relative", item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
+    <div className={"relative " + (item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
       <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
         {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
 
-        <div className="relative">
-          <div
-            className={clsx(
-              `overflow-hidden flex bg-gradient-${item.rarity} rounded-t-lg`,
-              item.vision ? "pt-4" : "p-1"
-            )}
-          >
-            <img src={getImgSrc(item.icon)} alt="" className="w-full h-full" draggable={false} />
+        <div
+          className={
+            `overflow-hidden relative bg-gradient-${item.rarity} rounded-t-lg ` +
+            (item.vision ? "pt-4" : "p-1")
+          }
+        >
+          <div className="aspect-square">
+            <Image src={item.icon} Placeholder={item.vision ? FaUser : RiSwordFill} />
           </div>
           {!!pickedAmount && (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
@@ -42,18 +40,13 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
       </div>
       {item.vision && (
         <div
-          className={clsx(
-            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow",
-            item.cons !== undefined && "flex rounded-2xl pl-1.5"
-          )}
+          className={
+            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow" +
+            (item.cons !== undefined ? " flex rounded-2xl pl-1.5" : "")
+          }
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
-          <img
-            className="w-5 h-5"
-            src={getImgSrc(VISION_ICONS[item.vision])}
-            alt="vision"
-            draggable={false}
-          />
+          <Image size="w-5 h-5" src={VISION_ICONS[item.vision]} />
         </div>
       )}
     </div>

@@ -88,7 +88,7 @@ function ArtifactInventory({
         </ModalHeader>
       </div>
 
-      <div className="pt-2 pr-4 pb-4 pl-2 flex-grow">
+      <div className="p-2 pr-4 grow hide-scrollbar">
         <div className="h-full flex hide-scrollbar">
           {inventoryRack}
 

@@ -1,9 +1,12 @@
 import clsx from "clsx";
+import { RiSwordFill } from "react-icons/ri";
 import type { Level, Rarity } from "@Src/types";
 
 // Util
-import { getImgSrc } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
+
+// Component
+import { Image } from "@Components/atoms";
 
 import styles from "./styles.module.scss";
 
@@ -36,18 +39,18 @@ export function ItemThumb({
       <div
         className={clsx(
           "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/50 border-2 border-white rounded-circle",
+          // isLoaded.ownerIcon ? [styles["side-icon"], !sideIcon && "beta overflow-hidden"] : "hidden"
           styles["side-icon"],
           !sideIcon && "beta overflow-hidden"
         )}
       >
-        <img
+        <Image
           className={clsx(
-            "w-10 max-w-none -translate-x-2 -translate-y-4",
+            "max-w-none -translate-x-2 -translate-y-4",
             !sideIcon && "-translate-y-2"
           )}
-          src={getImgSrc(sideIcon || icon)}
-          alt=""
-          draggable={false}
+          size="w-10 h-10"
+          src={sideIcon || icon}
         />
       </div>
     );
@@ -79,8 +82,12 @@ export function ItemThumb({
           </p>
         ) : null}
 
-        <div className={`bg-gradient-${rarity || 5} rounded-t rounded-br-2xl`}>
-          <img className="w-full" src={beta ? icon : getImgSrc(icon)} alt="" draggable={false} />
+        <div
+          className={
+            `bg-gradient-${rarity || 5} ` + "rounded-t rounded-br-2xl aspect-square overflow-hidden"
+          }
+        >
+          <Image src={icon} Placeholder={RiSwordFill} />
         </div>
 
         <div className="flex-center bg-default rounded-b">
