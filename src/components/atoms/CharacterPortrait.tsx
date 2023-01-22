@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { getImgSrc } from "@Src/utils";
+import { Image } from "./Image";
 
 interface CharFilledSlotProps {
   className?: string;
@@ -19,17 +19,13 @@ export function CharacterPortrait({ className, code, icon, onClickIcon }: CharFi
   return (
     <div
       className={clsx(
-        `zoomin-on-hover overflow-hidden rounded-circle ${bgColorByCode[code] || "bg-darkblue-3"}`,
+        "w-full h-full zoomin-on-hover overflow-hidden rounded-circle",
+        `${bgColorByCode[code] || "bg-darkblue-3"}`,
         className
       )}
+      onClick={onClickIcon}
     >
-      <img
-        className="w-full rounded-circle"
-        src={getImgSrc(icon)}
-        alt=""
-        draggable={false}
-        onClick={onClickIcon}
-      />
+      <Image src={icon} imgType="character" />
     </div>
   );
 }

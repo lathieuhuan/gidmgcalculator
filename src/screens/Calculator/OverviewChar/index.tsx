@@ -9,7 +9,6 @@ import { LEVELS } from "@Src/constants";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
-import { getImgSrc } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Action & Thunk
@@ -20,7 +19,7 @@ import { startCalculation } from "@Store/thunks";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, IconButton, BetaMark, StarLine } from "@Components/atoms";
+import { Button, IconButton, BetaMark, StarLine, Image } from "@Components/atoms";
 import { ComplexSelect } from "@Components/molecules";
 import { PickerCharacter } from "@Components/templates";
 import contentByTab from "./content";
@@ -46,18 +45,14 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
       {touched ? (
         <div className="h-full flex flex-col">
           <div className="mt-2 mb-1 pb-4 flex">
-            <div className="mr-4 relative" onClick={onClickCharImg}>
+            <div className="w-24 mr-4 relative aspect-square" onClick={onClickCharImg}>
               <IconButton className="absolute -top-2.5 -left-2.5 z-10 text-xl" variant="positive">
                 <FaSyncAlt />
               </IconButton>
 
               {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
-              <img
-                className="w-24 cursor-pointer"
-                src={getImgSrc(icon)}
-                alt={char.name}
-                draggable={false}
-              />
+
+              <Image className="cursor-pointer" src={icon} imgType="character" />
             </div>
 
             <div className="overflow-hidden">

@@ -76,7 +76,7 @@ export function GearsOverview({
           ) : (
             <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>
               <button
-                className="p-4 h-full flex-center rounded bg-darkblue-3 glow-on-hover"
+                className="p-4 w-full h-full flex-center rounded bg-darkblue-3 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
               >
                 <img

@@ -1,6 +1,4 @@
 import { memo } from "react";
-import { FaUser } from "react-icons/fa";
-import { RiSwordFill } from "react-icons/ri";
 import type { PickerItem } from "../types";
 
 // Constant
@@ -28,7 +26,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
           }
         >
           <div className="aspect-square">
-            <Image src={item.icon} Placeholder={item.vision ? FaUser : RiSwordFill} />
+            <Image src={item.icon} imgType={item.vision ? "character" : "weapon"} />
           </div>
           {!!pickedAmount && (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>

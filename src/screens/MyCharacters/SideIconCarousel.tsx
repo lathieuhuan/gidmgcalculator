@@ -118,7 +118,11 @@ export default function SideIconCarousel({
         </div>
 
         <button
-          className="absolute top-4 left-full ml-6 w-15 rounded-circle hover:shadow-3px-3px hover:shadow-white"
+          className="absolute top-4 left-full ml-6 rounded-circle hover:shadow-3px-3px hover:shadow-white"
+          style={{
+            width: 60,
+            height: 60,
+          }}
           onClick={onClickWish}
         >
           <img src={getImgSrc("4/48/System_Wish")} alt="wish" draggable={false} />

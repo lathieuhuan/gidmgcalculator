@@ -84,7 +84,7 @@ export function ArtifactCard({
         )}
 
         <div className={`bg-gradient-${rarity} relative rounded-lg shrink-0`}>
-          <img className="w-28" src={getImgSrc(icon)} alt="" draggable={false} />
+          <img className="w-28 h-28" src={getImgSrc(icon)} draggable={false} />
           {beta && <BetaMark className="absolute bottom-0 right-0" />}
         </div>
       </div>

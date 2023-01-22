@@ -78,7 +78,7 @@ export default function SectionArtifacts() {
             >
               <div
                 className={clsx(
-                  `bg-gradient-${artifact ? artifact.rarity || 5 : 1} cursor-pointer`,
+                  `h-full bg-gradient-${artifact ? artifact.rarity || 5 : 1} cursor-pointer`,
                   !artifact && "p-2 opacity-80"
                 )}
                 onClick={() => onClickTab(index)}

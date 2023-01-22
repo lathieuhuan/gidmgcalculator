@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { RiSwordFill } from "react-icons/ri";
 import type { Level, Rarity } from "@Src/types";
 
 // Util
@@ -87,7 +86,7 @@ export function ItemThumb({
             `bg-gradient-${rarity || 5} ` + "rounded-t rounded-br-2xl aspect-square overflow-hidden"
           }
         >
-          <Image src={icon} Placeholder={RiSwordFill} />
+          <Image src={icon} imgType={refi ? "weapon" : "artifact"} />
         </div>
 
         <div className="flex-center bg-default rounded-b">

@@ -83,7 +83,7 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                 <div className="custom-scrollbar">
                   <table className={"mb-2 w-full " + tableStyles.table}>
                     <colgroup>
-                      <col className="w-34" />
+                      <col style={{ width: "8.5rem" }} className="w-34" />
                       <col />
                       <col />
                       <col />

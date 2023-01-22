@@ -32,7 +32,7 @@ import {
 } from "@Data/controllers";
 
 // Component
-import { CharacterPortrait, IconButton } from "@Components/atoms";
+import { CharacterPortrait, IconButton, Image } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
@@ -113,12 +113,7 @@ export function SetupTemplate({
 
       mainCharacter = (
         <div className="mx-auto lg:mx-0 flex">
-          <img
-            className="w-20 h-20"
-            src={getImgSrc(dataChar.icon)}
-            alt={char.name}
-            draggable={false}
-          />
+          <Image size="w-20 h-20" src={dataChar.icon} imgType="character" />
 
           <div className="ml-4 flex-col justify-between">
             <p className="text-lg">Level {renderSpan(char.level)}</p>

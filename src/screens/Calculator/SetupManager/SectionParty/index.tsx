@@ -22,11 +22,11 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { findById, getImgSrc } from "@Src/utils";
+import { findById } from "@Src/utils";
 import { getPartyData } from "@Data/controllers";
 
 // Component
-import { CollapseSpace } from "@Components/atoms";
+import { CollapseSpace, Image } from "@Components/atoms";
 import { TeammateItems } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
@@ -94,7 +94,7 @@ export default function SectionParty() {
               )}
               onClick={() => setDetailSlot(isExpanded ? null : teammateIndex)}
             >
-              <img className="w-full h-full" src={getImgSrc(data.icon)} alt="" draggable={false} />
+              <Image src={data.icon} imgType="character" />
             </button>
           ) : (
             <button
