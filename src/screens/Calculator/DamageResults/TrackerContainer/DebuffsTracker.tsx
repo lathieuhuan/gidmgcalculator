@@ -37,7 +37,9 @@ export function DebuffsTracker({ resistReduct }: Partial<Pick<Tracker, "resistRe
                   totalResistReduct[attElmt] + "%"
                 )}
 
-                {records.map(renderRecord((value) => value + "%"))}
+                <ul className="pl-4 list-disc">
+                  {records.map(renderRecord((value) => value + "%"))}
+                </ul>
               </div>
             ) : null;
           })}
@@ -56,15 +58,20 @@ export function DebuffsTracker({ resistReduct }: Partial<Pick<Tracker, "resistRe
                   eval(`${getResMultEquation(actualResistance)}`)
                 )}
 
-                {renderRecord()(
-                  {
-                    desc: `RES base 10% - Reduction ${totalResistReduct[attElmt]}% = ${actualResistance}% or`,
-                    value: actualResistance / 100,
-                  },
-                  0
-                )}
+                <ul className="pl-4 list-disc">
+                  {renderRecord()(
+                    {
+                      desc: `RES base 10% - Reduction ${totalResistReduct[attElmt]}% = ${actualResistance}% or`,
+                      value: actualResistance / 100,
+                    },
+                    0
+                  )}
 
-                {renderRecord(getResMultEquation)({ desc: "Equation", value: actualResistance }, 1)}
+                  {renderRecord(getResMultEquation)(
+                    { desc: "Equation", value: actualResistance },
+                    1
+                  )}
+                </ul>
               </div>
             );
           })}

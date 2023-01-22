@@ -35,7 +35,7 @@ import {
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
-  const { vision } = useSelector(selectCharData);
+  const { vision, weaponType } = useSelector(selectCharData);
   const char = useSelector(selectChar);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
@@ -185,67 +185,70 @@ export default function ElementBuffs() {
     label: vision,
   }));
 
-  content.push(
-    <div key="custom-infusion">
-      <ModifierTemplate
-        heading="Custom Infusion"
-        desc={
-          <>
-            This infusion overwrites self infusion but does not overwrite elemental nature of
-            attacks{" "}
-            <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
-          </>
-        }
-        checked={isInfused}
-        onToggle={() => {
-          dispatch(
-            updateCalcSetup({
-              elmtModCtrls: {
-                ...elmtModCtrls,
-                infuse_reaction: isInfused ? null : elmtModCtrls.infuse_reaction,
-              },
-              customInfusion: {
-                ...customInfusion,
-                element: isInfused ? "phys" : infusedValue,
-              },
-            })
-          );
-        }}
-      />
-      <div className="pt-2 pb-1 pr-1 flex items-center justify-end">
-        <span className="mr-4 text-base leading-6 text-right">Element</span>
-        <select
-          className="styled-select capitalize"
-          value={infusedValue}
-          disabled={!isInfused}
-          onChange={(e) => {
-            if (isInfused) {
-              setInfusedValue(e.target.value as Vision);
-
-              dispatch(
-                updateCalcSetup({
-                  elmtModCtrls: {
-                    ...elmtModCtrls,
-                    infuse_reaction: null,
-                  },
-                  customInfusion: {
-                    ...customInfusion,
-                    element: e.target.value as Vision,
-                  },
-                })
-              );
-            }
+  if (weaponType !== "catalyst") {
+    content.push(
+      <div key="custom-infusion">
+        <ModifierTemplate
+          heading="Custom Infusion"
+          desc={
+            <>
+              This infusion overwrites self infusion but does not overwrite elemental nature of
+              attacks{" "}
+              <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>
+              .
+            </>
+          }
+          checked={isInfused}
+          onToggle={() => {
+            dispatch(
+              updateCalcSetup({
+                elmtModCtrls: {
+                  ...elmtModCtrls,
+                  infuse_reaction: isInfused ? null : elmtModCtrls.infuse_reaction,
+                },
+                customInfusion: {
+                  ...customInfusion,
+                  element: isInfused ? "phys" : infusedValue,
+                },
+              })
+            );
           }}
-        >
-          {infuseOptions.map((opt, i) => (
-            <option key={i} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        />
+        <div className="pt-2 pb-1 pr-1 flex items-center justify-end">
+          <span className="mr-4 text-base leading-6 text-right">Element</span>
+          <select
+            className="styled-select capitalize"
+            value={infusedValue}
+            disabled={!isInfused}
+            onChange={(e) => {
+              if (isInfused) {
+                setInfusedValue(e.target.value as Vision);
+
+                dispatch(
+                  updateCalcSetup({
+                    elmtModCtrls: {
+                      ...elmtModCtrls,
+                      infuse_reaction: null,
+                    },
+                    customInfusion: {
+                      ...customInfusion,
+                      element: e.target.value as Vision,
+                    },
+                  })
+                );
+              }
+            }}
+          >
+            {infuseOptions.map((opt, i) => (
+              <option key={i} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   if (infusedElement !== vision && infusedElement !== "phys") {
     addAttackReaction("infuse_reaction");

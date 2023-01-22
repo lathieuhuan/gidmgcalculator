@@ -16,6 +16,7 @@ import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
 
 const OTHER_STATS = [
   "em",
+  "er",
   "cRate",
   "cDmg",
   ...ATTACK_ELEMENTS,
@@ -37,7 +38,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
           <div key={statType} className="break-inside-avoid">
             {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
 
-            <div className="pl-2">
+            <ul className="pl-4 list-disc">
               {records.map(renderRecord((value) => round(value, 1) + percent))}
 
               {records_.map(
@@ -46,7 +47,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
                   (value) => `${value}% = ${calcTotalAttr[`base_${statType}`]} * ${value / 100} =`
                 )
               )}
-            </div>
+            </ul>
           </div>
         );
       })}
@@ -59,9 +60,9 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
             {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
 
             {totalAttr?.[statType].length ? (
-              <div className="pl-2">
+              <ul className="pl-4 list-disc">
                 {totalAttr?.[statType].map(renderRecord((value) => round(value, 1) + percent))}
-              </div>
+              </ul>
             ) : null}
           </div>
         );

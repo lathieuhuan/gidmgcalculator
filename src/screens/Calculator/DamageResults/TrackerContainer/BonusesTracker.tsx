@@ -66,9 +66,9 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
                     <div key={infoKey} className="pl-2">
                       {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
-                      <div className="pl-2">
+                      <ul className="pl-4 list-disc">
                         {records.map(renderRecord((value) => round(value, 1) + percent))}
-                      </div>
+                      </ul>
                     </div>
                   ) : null;
                 })}
@@ -99,9 +99,9 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
                     <div key={infoKey} className="mt-1 pl-2">
                       {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
 
-                      <div className="pl-2">
+                      <ul className="pl-4 list-disc">
                         {records.map(renderRecord((value) => round(value, 1) + percent))}
-                      </div>
+                      </ul>
                     </div>
                   ) : null;
                 })}
@@ -129,15 +129,17 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
               <div key={reaction} className="pl-2 break-inside-avoid">
                 {renderHeading(t(reaction), getTotalRecordValue(records) + bonusFromEM + "%")}
 
-                {renderRecord((value) => value + "%")(
-                  {
-                    desc: "From Elemental Mastery",
-                    value: bonusFromEM,
-                  },
-                  -1
-                )}
+                <ul className="pl-4 list-disc">
+                  {renderRecord((value) => value + "%")(
+                    {
+                      desc: "From Elemental Mastery",
+                      value: bonusFromEM,
+                    },
+                    -1
+                  )}
 
-                {records.map(renderRecord((value) => round(value, 1) + "%"))}
+                  {records.map(renderRecord((value) => round(value, 1) + "%"))}
+                </ul>
               </div>
             ) : null;
           })}
