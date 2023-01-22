@@ -1,11 +1,11 @@
 import type { InsHTMLAttributes, ParamHTMLAttributes } from "react";
-import { FaFilter, FaTimes } from "react-icons/fa";
-import { CloseButton, CloseButtonProps, IconButton } from "@Components/atoms";
+import { FaFilter } from "react-icons/fa";
+import { IconButton } from "@Components/atoms";
 
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={"relative h-full pl-6 flex items-center rounded-t-lg bg-orange " + className}
+      className={"h-11 relative grid grid-cols-3 rounded-t-lg bg-orange " + className}
       {...rest}
     />
   );
@@ -13,27 +13,12 @@ const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivEleme
 
 ModalHeader.Text = ({ className = "", ...rest }: ParamHTMLAttributes<HTMLParagraphElement>) => {
   return (
-    <div className="w-full h-11 flex-center">
+    <div className="w-full hidden md2:flex justify-center items-center">
       <p
-        className={
-          "pt-1 pr-10 hidden md1:block capitalize text-1.5xl text-center font-bold text-black " +
-          className
-        }
+        className={"pt-1 capitalize text-1.5xl text-center font-bold text-black " + className}
         {...rest}
       />
     </div>
-  );
-};
-
-ModalHeader.CloseButton = ({ className = "", ...rest }: CloseButtonProps) => {
-  return (
-    <IconButton
-      className={"absolute top-2 right-2 text-black text-xl " + className}
-      variant="custom"
-      {...rest}
-    >
-      <FaTimes />
-    </IconButton>
   );
 };
 
@@ -44,16 +29,18 @@ interface FilterButtonProps {
 }
 ModalHeader.FilterButton = (props: FilterButtonProps) => {
   return (
-    <button
+    <IconButton
       className={
-        "absolute top-1/2 left-5 w-7 h-7 -mt-3.5 rounded-circle flex-center text-sm !bg-black " +
+        "text-sm bg-black " +
         (props.active ? "text-green " : "text-default ") +
         (props.className || "")
       }
+      size="w-7 h-7"
+      variant="custom"
       onClick={props.onClick}
     >
       <FaFilter />
-    </button>
+    </IconButton>
   );
 };
 

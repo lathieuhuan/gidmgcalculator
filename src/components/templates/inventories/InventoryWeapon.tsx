@@ -1,3 +1,4 @@
+import { FaTimes } from "react-icons/fa";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
 // Selector
@@ -12,13 +13,11 @@ import { useSelector } from "@Store/hooks";
 import { useInventoryRack } from "./hooks";
 
 // Component
-import { Button } from "@Components/atoms";
+import { Button, IconButton } from "@Components/atoms";
 import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
 import { WeaponCard, OwnerLabel } from "@Components/organisms";
 
 import styles from "./styles.module.scss";
-
-const { Text, CloseButton } = ModalHeader;
 
 interface WeaponInventoryProps {
   weaponType: WeaponType;
@@ -49,8 +48,14 @@ function WeaponInventory({
     <div className="h-full flex flex-col">
       <div className="p-2">
         <ModalHeader>
-          <Text>{weaponType}</Text>
-          <CloseButton onClick={onClose} />
+          <div />
+          <ModalHeader.Text>{weaponType}</ModalHeader.Text>
+
+          <div className="flex justify-end items-center">
+            <IconButton className="mr-2 text-black text-xl" variant="custom" onClick={onClose}>
+              <FaTimes />
+            </IconButton>
+          </div>
         </ModalHeader>
       </div>
 

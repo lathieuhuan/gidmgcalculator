@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
+import { FaTimes } from "react-icons/fa";
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 
 // Constant
@@ -18,13 +19,14 @@ import { findById } from "@Src/utils";
 import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "./utils";
 
 // Conponent
+import { IconButton } from "@Components/atoms";
 import { ButtonBar, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
 import { ArtifactCard, OwnerLabel } from "@Components/organisms";
 import { ArtifactFilter } from "./organisms/ArtifactFilter";
 
 import styles from "./styles.module.scss";
 
-const { Text, CloseButton, FilterButton } = ModalHeader;
+const { Text, FilterButton } = ModalHeader;
 
 const selectArtifactsByType = createSelector(
   selectUserArts,
@@ -74,9 +76,17 @@ function ArtifactInventory({
     <div className="h-full flex flex-col">
       <div className="p-2">
         <ModalHeader>
-          <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
+          <div className="pl-5 flex items-center">
+            <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
+          </div>
+
           <Text>{artifactType}</Text>
-          <CloseButton onClick={onClose} />
+
+          <div className="flex justify-end items-center">
+            <IconButton className="mr-2 text-black text-xl" variant="custom" onClick={onClose}>
+              <FaTimes />
+            </IconButton>
+          </div>
 
           <ArtifactFilter
             filterOn={filterOn}
