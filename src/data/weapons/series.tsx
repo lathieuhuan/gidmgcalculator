@@ -14,32 +14,6 @@ export const desertSeries: Pick<
   rarity: 4,
   mainStatScale: "42",
   subStat: { type: "em", scale: "36" },
-  buffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
-      applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-        const buffValue = applyPercent(totalAttr.em, 18 + refi * 6);
-        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
-      },
-      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
-    },
-    {
-      index: 1,
-      affect: EModAffect.TEAMMATE,
-      inputConfigs: [
-        {
-          label: "Elemental Mastery",
-          type: "text",
-        },
-      ],
-      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = applyPercent(inputs[0] || 0, ((18 + refi * 6) * 3) / 10);
-        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
-      },
-      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
-    },
-  ],
   passiveDesc: ({ refi }) => ({
     get core() {
       return (
@@ -60,13 +34,50 @@ export const desertSeries: Pick<
       </>,
     ],
   }),
-};
-
-export const royalSeries: SeriesInfo = {
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
+      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
+      applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+        const buffValue = applyPercent(totalAttr.em, 18 + refi * 6);
+        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+      },
+    },
+    {
+      index: 1,
+      affect: EModAffect.TEAMMATE,
+      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
+      inputConfigs: [
+        {
+          label: "Elemental Mastery",
+          type: "text",
+        },
+      ],
+      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+        const buffValue = applyPercent(inputs[0] || 0, ((18 + refi * 6) * 3) / 10);
+        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+      },
+    },
+  ],
+};
+
+export const royalSeries: SeriesInfo = {
+  passiveName: "Focus",
+  passiveDesc: ({ refi }) => ({
+    core: (
+      <>
+        Upon dealing damage to an opponent, increases <Green>CRIT Rate</Green> by{" "}
+        <Green b>{6 + refi * 2}%</Green>. Max <Rose>5</Rose> stacks. A CRIT hit removes all existing
+        stacks.
+      </>
+    ),
+  }),
+  buffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      desc: ({ refi }) => royalSeries.passiveDesc({ refi }).core,
       inputConfigs: [
         {
           type: "stacks",
@@ -77,19 +88,8 @@ export const royalSeries: SeriesInfo = {
         const buffValue = (6 + refi * 2) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
       },
-      desc: ({ refi }) => royalSeries.passiveDesc({ refi }).core,
     },
   ],
-  passiveName: "Focus",
-  passiveDesc: ({ refi }) => ({
-    core: (
-      <>
-        Upon dealing damage to an opponent, increases <Green>CRIT Rate</Green> by{" "}
-        <Green b>{6 + refi * 2}%</Green>. Max <Rose>5</Rose> stacks. A CRIT hit removes all
-        existing stacks.
-      </>
-    ),
-  }),
 };
 
 export const blackcliffSeries: SeriesInfo = {
@@ -97,6 +97,7 @@ export const blackcliffSeries: SeriesInfo = {
     {
       index: 0,
       affect: EModAffect.SELF,
+      desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
       inputConfigs: [
         {
           type: "stacks",
@@ -107,7 +108,6 @@ export const blackcliffSeries: SeriesInfo = {
         const buffValue = (9 + refi * 3) * (inputs[0] || 0);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
-      desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
     },
   ],
   passiveName: "Press the Advantage",
@@ -179,11 +179,29 @@ export const dragonspineSeries: SeriesInfo = {
 };
 
 export const liyueSeries: SeriesInfo = {
+  passiveName: "Golden Majesty",
+  passiveDesc: ({ refi }) => ({
+    get core() {
+      return (
+        <>
+          Increases Shield Strength by {15 + refi * 5}%. {this.extra}
+        </>
+      );
+    },
+    extra: [
+      <>
+        Scoring hits on opponents increases <Green>ATK</Green> by <Green b>{3 + refi}%</Green> for
+        8s. Max <Rose>5</Rose> stacks. Can only occur once every 0.3s. While protected by a shield,
+        this ATK increase effect is increased by <Green>100%</Green>.
+      </>,
+    ],
+  }),
   applyBuff: makeWpModApplier("totalAttr", "shStr", 20),
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
+      desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],
       inputConfigs: [
         {
           type: "stacks",
@@ -198,39 +216,11 @@ export const liyueSeries: SeriesInfo = {
         const buffValue = (3 + refi) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       },
-      desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],
     },
   ],
-  passiveName: "Golden Majesty",
-  passiveDesc: ({ refi }) => ({
-    get core() {
-      return (
-        <>
-          Increases Shield Strength by {15 + refi * 5}%. {this.extra}
-        </>
-      );
-    },
-    extra: [
-      <>
-        Scoring hits on opponents increases <Green>ATK</Green> by <Green b>{3 + refi}%</Green> for
-        8s. Max <Rose>5</Rose> stacks. Can only occur once every 0.3s. While protected by a
-        shield, this ATK increase effect is increased by <Green>100%</Green>.
-      </>,
-    ],
-  }),
 };
 
 export const lithicSeries: SeriesInfo = {
-  applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
-    if (partyData) {
-      const stacks = partyData.reduce(
-        (result, data) => (data?.nation === "liyue" ? result + 1 : result),
-        charData.nation === "liyue" ? 1 : 0
-      );
-      const bnValues = [(6 + refi) * stacks, (2 + refi) * stacks];
-      applyModifier(desc, totalAttr, ["atk_", "cRate"], bnValues, tracker);
-    }
-  },
   passiveName: "Lithic Axiom - Unity",
   passiveDesc: ({ refi }) => ({
     core: (
@@ -242,17 +232,19 @@ export const lithicSeries: SeriesInfo = {
       </>
     ),
   }),
+  applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
+    if (partyData) {
+      const stacks = partyData.reduce(
+        (result, data) => (data?.nation === "liyue" ? result + 1 : result),
+        charData.nation === "liyue" ? 1 : 0
+      );
+      const bnValues = [(6 + refi) * stacks, (2 + refi) * stacks];
+      applyModifier(desc, totalAttr, ["atk_", "cRate"], bnValues, tracker);
+    }
+  },
 };
 
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
-  buffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
-      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
-      desc: ({ refi }) => baneSeries1(name, elements).passiveDesc({ refi }).core,
-    },
-  ],
   passiveName: `Bane of ${name}`,
   passiveDesc: ({ refi }) => ({
     core: (
@@ -262,17 +254,17 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
       </>
     ),
   }),
-});
-
-export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
-      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
-      desc: ({ refi }) => baneSeries2(name, elements).passiveDesc({ refi }).core,
+      desc: ({ refi }) => baneSeries1(name, elements).passiveDesc({ refi }).core,
+      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
     },
   ],
+});
+
+export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
   passiveName: `Bane of ${name}`,
   passiveDesc: ({ refi }) => ({
     core: (
@@ -282,19 +274,17 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
       </>
     ),
   }),
+  buffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      desc: ({ refi }) => baneSeries2(name, elements).passiveDesc({ refi }).core,
+      applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
+    },
+  ],
 });
 
 export const watatsumiSeries: SeriesInfo = {
-  applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
-    if (partyData && attPattBonus) {
-      const maxEnergy = partyData.reduce(
-        (result, data) => result + (data?.EBcost || 0),
-        charData.EBcost
-      );
-      const buffValue = round(maxEnergy * (0.09 + refi * 0.03), 2);
-      applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
-    }
-  },
   passiveName: "Watatsumi Wavewalker",
   passiveDesc: ({ refi }) => ({
     core: (
@@ -306,6 +296,16 @@ export const watatsumiSeries: SeriesInfo = {
       </>
     ),
   }),
+  applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
+    if (partyData && attPattBonus) {
+      const maxEnergy = partyData.reduce(
+        (result, data) => result + (data?.EBcost || 0),
+        charData.EBcost
+      );
+      const buffValue = round(maxEnergy * (0.09 + refi * 0.03), 2);
+      applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
+    }
+  },
 };
 
 export const cullTheWeakSeries: SeriesInfo = {

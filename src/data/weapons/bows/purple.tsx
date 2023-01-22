@@ -26,33 +26,32 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er", scale: "12%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "em", 60, 3),
-        desc: ({ refi }) => findByCode(purpleBows, 138)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Labyrinth Lord's Instruction",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
-            Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts,
-            increasing <Green>Elemental Mastery</Green> by <Green b>{40 + refi * 20}</Green> for
-            12s. {this.extra![0]}
+            {this.extra?.[0]} This effect will be removed when switching characters. When the
+            Teachings of the Forest effect ends or is removed, it will deal 100% of ATK as DMG to 1
+            nearby opponent. The Teachings of the Forest effect can be triggered once every 20s.
           </>
         );
       },
       extra: [
         <>
-          This effect will be removed when switching characters. When the Teachings of the Forest
-          effect ends or is removed, it will deal 100% of ATK as DMG to 1 nearby opponent. The
-          Teachings of the Forest effect can be triggered once every 20s.
+          Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts,
+          increasing <Green>Elemental Mastery</Green> by <Green b>{40 + refi * 20}</Green> for 12s.
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 138)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "em", 60, 3),
+      },
+    ],
   },
   {
     code: 126,
@@ -61,10 +60,35 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
+    passiveName: "Radiance of the Deeps",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} When attacks hit opponents, this weapon will switch to the next state.
+            This weapon can change states once every 7s. The character equipping this weapon can
+            still trigger the state switch while not on the field.
+          </>
+        );
+      },
+      extra: [
+        <>
+          Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase{" "}
+          <Green>DMG</Green> dealt by{" "}
+          <Green b>
+            {fadingTwilightBuffValuesByState(refi)
+              .map((pct) => pct + "%")
+              .join("/")}
+          </Green>{" "}
+          respectively.
+        </>,
+      ],
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 126)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             label: "State number",
@@ -77,33 +101,8 @@ const purpleBows: DataWeapon[] = [
           const buffValue = fadingTwilightBuffValuesByState(refi)[valueIndex];
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(purpleBows, 126)!.passiveDesc({ refi }).extra![0],
       },
     ],
-    passiveName: "Radiance of the Deeps",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase{" "}
-            <Green>DMG</Green> dealt by{" "}
-            <Green b>
-              {fadingTwilightBuffValuesByState(refi)
-                .map((pct) => pct + "%")
-                .join("/")}
-            </Green>{" "}
-            respectively. {this.extra![0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When attacks hit opponents, this weapon will switch to the next state. This weapon can
-          change states once every 7s. The character equipping this weapon can still trigger the
-          state switch while not on the field.
-        </>,
-      ],
-    }),
   },
   {
     code: 12,
@@ -112,10 +111,29 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
+    passiveName: "Oppidan Ambush",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} When the character is on the field for more than 4s, the
+            aforementioned DMG buff decreases by 4% per second until it reaches 0%.
+          </>
+        );
+      },
+      extra: [
+        <>
+          While the character equipped with this weapon is in the party but not on the field, their{" "}
+          <Green>DMG</Green> increases by <Green b>{1.5 + refi * 0.5}%</Green> every second up to a
+          max of <Rose>{15 + refi * 5}%</Rose>.
+        </>,
+      ],
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 12)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -126,27 +144,8 @@ const purpleBows: DataWeapon[] = [
           const buffValue = (1.5 + refi * 0.5) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(purpleBows, 12)!.passiveDesc({ refi }).extra![0],
       },
     ],
-    passiveName: "Oppidan Ambush",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            While the character equipped with this weapon is in the party but not on the field,
-            their <Green>DMG</Green> increases by <Green b>{1.5 + refi * 0.5}%</Green> every second
-            up to a max of <Green b>{15 + refi * 5}%</Green>. {this.extra![0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When the character is on the field for more than 4s, the aforementioned DMG buff decreases
-          by 4% per second until it reaches 0%.
-        </>,
-      ],
-    }),
   },
   {
     code: 13,
@@ -182,35 +181,13 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    applyBuff: ({ totalAttr, charData, desc, tracker }) => {
-      if (charData.code === 39) {
-        applyModifier(desc, totalAttr, "atk", 66, tracker);
-      }
-    },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 2,
-          },
-        ],
-        applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-          const buffValue = 10 * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleBows, 16)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "Strong Strike",
     passiveDesc: () => ({
       get core() {
         return (
           <>
             When <Gold>Aloy</Gold> equips Predator, <Green>ATK</Green> is increased by{" "}
-            <Green b>66</Green>. {this.extra![0]}
+            <Green b>66</Green>. {this.extra?.[0]}
           </>
         );
       },
@@ -227,6 +204,28 @@ const purpleBows: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: ({ totalAttr, charData, desc, tracker }) => {
+      if (charData.code === 39) {
+        applyModifier(desc, totalAttr, "atk", 66, tracker);
+      }
+    },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 16)?.passiveDesc({ refi }).extra?.[0],
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
+          const buffValue = 10 * (inputs[0] || 0);
+          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 17,
@@ -235,7 +234,6 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 24),
     passiveName: "Arrowless Song",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -245,6 +243,7 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 24),
   },
   {
     code: 18,
@@ -272,26 +271,12 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "phys", scale: "11.3%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 20),
-        desc: ({ refi }) => findByCode(purpleBows, 19)!.passiveDesc({ refi }).extra![0],
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
-        desc: ({ refi }) => findByCode(purpleBows, 19)!.passiveDesc({ refi }).extra![1],
-      },
-    ],
     passiveName: "Evernight Duet",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} {this.extra?.[1]}
           </>
         );
       },
@@ -306,6 +291,20 @@ const purpleBows: DataWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 19)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 20),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 19)?.passiveDesc({ refi }).extra?.[1],
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
+      },
+    ],
   },
   {
     code: 20,
@@ -323,14 +322,6 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
-        desc: ({ refi }) => findByCode(purpleBows, 21)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Windblume Wish",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -340,6 +331,14 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 21)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
+      },
+    ],
   },
   {
     code: 22,
@@ -348,12 +347,6 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-      if (attPattBonus) {
-        applyModifier(desc, attPattBonus, "NA.pct", 30 + refi * 10, tracker);
-        applyModifier("Rust passive penalty", attPattBonus, "CA.pct", -10, tracker);
-      }
-    },
     passiveName: "Rapid Firing",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -363,6 +356,12 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
+      if (attPattBonus) {
+        applyModifier(desc, attPattBonus, "NA.pct", 30 + refi * 10, tracker);
+        applyModifier("Rust passive penalty", attPattBonus, "CA.pct", -10, tracker);
+      }
+    },
   },
   {
     code: 23,
@@ -371,14 +370,6 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 36),
-        desc: ({ refi }) => findByCode(purpleBows, 23)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Unreturning",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -388,6 +379,14 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 23)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 36),
+      },
+    ],
   },
   {
     code: 24,
@@ -396,24 +395,6 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "phys", scale: "15%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 4,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const stacks = inputs[0] || 0;
-          const bnValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];
-          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd"], bnValues, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleBows, 24)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Infusion Arrow",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -425,6 +406,24 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 24)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const stacks = inputs[0] || 0;
+          const bnValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];
+          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd"], bnValues, tracker);
+        },
+      },
+    ],
   },
   {
     code: 25,
@@ -433,22 +432,13 @@ const purpleBows: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
-        desc: ({ refi }) => findByCode(purpleBows, 25)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "Full Draw",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
             Increases <Green>Normal Attack DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
-            <Green>Charged Attack DMG</Green> by <Green b>{9 + refi * 3}%</Green>.
+            <Green>Charged Attack DMG</Green> by <Green b>{9 + refi * 3}%</Green>. {this.extra?.[0]}
           </>
         );
       },
@@ -459,6 +449,15 @@ const purpleBows: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 25)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
+      },
+    ],
   },
   {
     code: 26,

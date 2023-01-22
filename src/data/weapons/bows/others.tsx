@@ -50,14 +50,6 @@ const otherBows: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "cDmg", scale: "10.2%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 24),
-        desc: ({ refi }) => findByCode(otherBows, 3)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Precise",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -66,6 +58,14 @@ const otherBows: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherBows, 3)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 24),
+      },
+    ],
   },
   {
     code: 4,
@@ -74,21 +74,6 @@ const otherBows: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "cRate", scale: "6.8%" },
-    applyBuff: ({ attPattBonus, desc, tracker }) => {
-      if (attPattBonus) {
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], -10, tracker);
-      }
-    },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 40 + refi * 6, tracker);
-        },
-        desc: ({ refi }) => findByCode(otherBows, 4)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Slingshot",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -99,6 +84,21 @@ const otherBows: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: ({ attPattBonus, desc, tracker }) => {
+      if (attPattBonus) {
+        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], -10, tracker);
+      }
+    },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherBows, 4)?.passiveDesc({ refi }).core,
+        applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
+          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 40 + refi * 6, tracker);
+        },
+      },
+    ],
   },
   {
     code: 10,
