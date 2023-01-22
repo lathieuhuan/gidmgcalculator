@@ -3,7 +3,7 @@ import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
+import { finalTalentLv, applyModifier, type ReactionBonusPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
@@ -140,17 +140,11 @@ const Mona: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, attPattBonus, rxnBonus, desc, tracker, ...rest }) => {
         const { toSelf, inputs, char } = rest;
-
         applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
 
         if ((toSelf && checkCons[1](char)) || (!toSelf && inputs[1])) {
-          applyModifier(
-            desc,
-            rxnBonus,
-            ["electroCharged.pct", "swirl.pct", "vaporize.pct"],
-            15,
-            tracker
-          );
+          const fields: ReactionBonusPath[] = ["electroCharged.pct", "swirl.pct", "vaporize.pct"];
+          applyModifier(desc, rxnBonus, fields, 15, tracker);
         }
         if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
           applyModifier(desc, totalAttr, "cRate", 15, tracker);

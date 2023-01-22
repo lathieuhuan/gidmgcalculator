@@ -122,21 +122,15 @@ const Shenhe: DataCharacter = {
         { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, inputs } = obj;
+        const { toSelf, inputs, attElmtBonus } = obj;
         const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
         const level = toSelf
           ? finalTalentLv({ ...obj, dataChar: Shenhe, talentType: "ES" })
           : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
-        const xtraDesc = ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
+        const finalDesc = obj.desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
 
-        applyModifier(
-          obj.desc + xtraDesc,
-          obj.attElmtBonus,
-          "cryo.flat",
-          applyPercent(ATK, mult),
-          obj.tracker
-        );
+        applyModifier(finalDesc, attElmtBonus, "cryo.flat", applyPercent(ATK, mult), obj.tracker);
       },
     },
     {

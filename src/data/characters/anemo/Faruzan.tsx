@@ -187,7 +187,7 @@ const Faruzan: DataCharacter = {
         );
       },
       inputConfigs: [
-        { label: "Elemental Burst Level", type: "text", max: 13, for: "teammate" },
+        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
         { label: "Ascension 4", type: "check", for: "teammate" },
         { label: "Base ATK (A4)", type: "text", max: 9999, for: "teammate" },
         { label: "Constellation 6", type: "check", for: "teammate" },
@@ -216,7 +216,8 @@ const Faruzan: DataCharacter = {
           applyModifier(finalDesc, attElmtBonus, "anemo.flat", applyPercent(ATK, mult), tracker);
         }
         if (toSelf ? checkCons[6](char) : inputs[3]) {
-          applyModifier(`Self / ${EModSrc.C6}`, attElmtBonus, "anemo.cDmg", 40, tracker);
+          const descC6 = `${toSelf ? "Self" : "Faruzan"} / ${EModSrc.C6}`;
+          applyModifier(descC6, attElmtBonus, "anemo.cDmg", 40, tracker);
         }
       },
     },

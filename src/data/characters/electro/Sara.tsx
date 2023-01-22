@@ -119,7 +119,8 @@ const Sara: DataCharacter = {
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {
-        const buffValueArgs = obj.toSelf
+        const { toSelf } = obj;
+        const buffValueArgs = toSelf
           ? [obj.totalAttr.base_atk, finalTalentLv({ ...obj, dataChar: Sara, talentType: "ES" })]
           : obj.inputs;
         const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
@@ -127,8 +128,10 @@ const Sara: DataCharacter = {
 
         applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
 
-        if ((obj.toSelf && checkCons[6](obj.char)) || (!obj.toSelf && obj.inputs[2])) {
-          applyModifier(`Self / ${EModSrc.C6}`, obj.attElmtBonus, "electro.cDmg", 60, obj.tracker);
+        if ((toSelf && checkCons[6](obj.char)) || (!toSelf && obj.inputs[2])) {
+          const descC6 = `${toSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
+
+          applyModifier(descC6, obj.attElmtBonus, "electro.cDmg", 60, obj.tracker);
         }
       },
     },

@@ -142,11 +142,10 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          Using Ryuukin Saxifrage causes nearby party members (excluding Yoimiya) to gain a{" "}
-          <Green b>10%</Green> <Green>ATK Bonus</Green> for 15s. Additionally, a further ATK Bonus
-          will be added on based on the number of "Tricks of the Trouble-Maker" (A1) stacks Yoimiya
-          possesses when using Ryuukin Saxifrage. Each stack increases this <Green>ATK Bonus</Green>{" "}
-          by <Green b>1%</Green>.
+          Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a{" "}
+          <Green b>10%</Green> <Green>ATK Bonus</Green> for 15s. A further <Green b>1%</Green>{" "}
+          <Green>ATK Bonus</Green> will be added for each "Tricks of the Trouble-Maker" [A1] stacks
+          Yoimiya possesses when using Ryuukin Saxifrage.
         </>
       ),
       isGranted: checkAscs[4],

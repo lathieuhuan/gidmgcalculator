@@ -148,7 +148,8 @@ const Bennett: DataCharacter = {
         applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);
 
         if (toSelf ? checkCons[6](char) : inputs[3]) {
-          applyModifier(desc, totalAttr, "pyro", 15, obj.tracker);
+          const descC6 = `${toSelf ? "Self" : "Bennet"} / ${EModSrc.C6}`;
+          applyModifier(descC6, totalAttr, "pyro", 15, obj.tracker);
         }
       },
     },

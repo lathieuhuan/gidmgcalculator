@@ -240,10 +240,12 @@ const Alhaitham: DataCharacter = {
         },
       ],
       applyBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
+        const stacks = inputs[0] || 0;
+
         if (toSelf) {
-          applyModifier(desc, totalAttr, "dendro", (3 - (inputs[0] || 0)) * 10, tracker);
+          applyModifier(desc, totalAttr, "dendro", (3 - stacks) * 10, tracker);
         } else {
-          applyModifier(desc, totalAttr, "em", (inputs[0] || 0) * 30, tracker);
+          applyModifier(desc, totalAttr, "em", stacks * 30, tracker);
         }
       },
     },
