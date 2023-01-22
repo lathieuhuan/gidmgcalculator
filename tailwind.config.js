@@ -76,9 +76,7 @@ module.exports = {
         },
       },
       width: {
-        15: "3.75rem",
         18: "4.5rem",
-        34: "8.5rem",
         68: "17rem",
         75: "18.75rem",
       },
