@@ -16,20 +16,21 @@ const mistsplitterBuffValuesByStack = (refi: number) => [
 const goldSwords: DataWeapon[] = [
   {
     code: 148,
-    beta: true,
     name: "Light of Foliar Incision",
-    icon: "",
+    icon: "d/de/Weapon_Light_of_Foliar_Incision",
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg", scale: "19.2%" },
-    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
     passiveName: "Whitemoon Bristle",
     passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          <Green>CRIT Rate</Green> is increased by <Green b>{3 + refi}%</Green>.
-        </>
-      ),
+      get core() {
+        return (
+          <>
+            <Green>CRIT Rate</Green> is increased by <Green b>{3 + refi}%</Green>. {this.extra?.[0]}{" "}
+            You can obtain Foliar Incision once every 12s.
+          </>
+        );
+      },
       extra: [
         <>
           When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained,
@@ -37,18 +38,18 @@ const goldSwords: DataWeapon[] = [
           <Green b>{90 + refi * 30}%</Green> of <Green>Elemental Mastery</Green>. This effect will
           disappear after <Rose>28</Rose> DMG instances or 12s.
         </>,
-        <>You can obtain Foliar Incision once every 12s.</>,
       ],
     }),
+    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 148)?.passiveDesc({ refi }).extra?.[0],
         applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
           const buffValue = totalAttr.em * (0.9 + 0.3 * refi);
           applyModifier(desc, attPattBonus, ["NA.flat", "ES.flat"], buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(goldSwords, 148)?.passiveDesc({ refi }).extra?.[0],
       },
     ],
   },
@@ -59,40 +60,6 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "hp_", scale: "14.4%" },
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
-        applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = applyPercent(totalAttr.hp, 0.09 + refi * 0.03) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, "em", buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
-      },
-      {
-        index: 1,
-        affect: EModAffect.TEAMMATE,
-        inputConfigs: [
-          {
-            label: "Max HP",
-            type: "text",
-            max: 99999,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = applyPercent(inputs[0] || 0, 0.15 + refi * 0.05);
-          applyModifier(desc, totalAttr, "em", buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
-      },
-    ],
     passiveName: "Sunken Song of the Sands",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -118,6 +85,45 @@ const goldSwords: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const stacks = inputs[0] || 0;
+          const mult = 0.09 + refi * 0.03;
+          const buffValue = applyPercent(totalAttr.hp, mult * stacks);
+          const xtraDesc = ` / ${stacks} stacks * ${mult}% of ${Math.round(totalAttr.hp)} HP`;
+          applyModifier(desc + xtraDesc, totalAttr, "em", buffValue, tracker);
+        },
+      },
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
+        inputConfigs: [
+          {
+            label: "Max HP",
+            type: "text",
+            max: 99999,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const mult = 0.15 + refi * 0.05;
+          const buffValue = applyPercent(inputs[0] || 0, mult);
+          const xtraDesc = ` / ${mult}% of ${inputs[0] || 0} HP`;
+          applyModifier(desc + xtraDesc, totalAttr, "em", buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 124,
@@ -126,11 +132,32 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
+    passiveName: "Honed Flow",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Obtain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. When
+            other nearby party members use Elemental Skills, the character equipping this weapon
+            will gain 1 Wavespike stack. Max <Rose>2</Rose> stacks. This effect can be triggered
+            once every 0.3s. When the character equipping this weapon uses an Elemental Skill, all
+            stacks of Wavespike will be consumed to gain Ripping Upheaval. {this.extra}
+          </>
+        );
+      },
+      extra: [
+        <>
+          <Green>Each stack</Green> of Wavepike consumed will increase{" "}
+          <Green>Normal Attack DMG</Green> by <Green b>{15 + refi * 5}%</Green> for 8s.
+        </>,
+      ],
+    }),
     applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     buffs: [
       {
         index: 1,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
         inputConfigs: [
           {
             type: "stacks",
@@ -141,30 +168,8 @@ const goldSwords: DataWeapon[] = [
           const buffValue = (15 + refi * 5) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(goldSwords, 124)!.passiveDesc({ refi }).extra![0],
       },
     ],
-    passiveName: "Honed Flow",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Obtain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. When
-            other nearby party members use Elemental Skills, the character equipping this weapon
-            will gain 1 Wavespike stack. Max <Rose>2</Rose> stacks. This effect can be triggered
-            once every 0.3s. {this.extra}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When the character equipping this weapon uses an Elemental Skill, all stacks of Wavespike
-          will be consumed to gain Ripping Upheaval. <Green>Each stack</Green> of Wavepike consumed
-          will increase <Green>Normal Attack DMG</Green> by <Green b>{15 + refi * 5}%</Green> for
-          8s.
-        </>,
-      ],
-    }),
   },
   {
     code: 101,
@@ -173,25 +178,6 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const valueIndex = (inputs[0] || 0) - 1;
-          const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
-          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "Mistsplitter's Edge",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -216,6 +202,25 @@ const goldSwords: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 101)!.passiveDesc({ refi }).extra![0],
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
+          const valueIndex = (inputs[0] || 0) - 1;
+          const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
+          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 102,
@@ -224,7 +229,6 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "phys", scale: "9%" },
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
     passiveName: "Falcon's Defiance",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -238,6 +242,7 @@ const goldSwords: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
   },
   {
     code: 103,
@@ -246,25 +251,14 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er", scale: "12%" },
-    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(desc, totalAttr, ["naAtkSpd", "caAtkSpd"], 10, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "Sky-Piercing Fang",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
             <Green>Crit Rate</Green> increased by <Green b>{3 + refi}%</Green>. And Normal and
-            Charged hits deal additional DMG equal to <Green b>{15 + refi * 5}%</Green> of ATK.
-            Skypiercing Might lasts for 12s. {this.extra}
+            Charged hits deal additional DMG equal to {15 + refi * 5}% of ATK. Skypiercing Might
+            lasts for 12s. {this.extra}
           </>
         );
       },
@@ -275,6 +269,17 @@ const goldSwords: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
+        applyBuff: ({ totalAttr, desc, tracker }) => {
+          applyModifier(desc, totalAttr, "naAtkSpd", 10, tracker);
+        },
+      },
+    ],
   },
   {
     code: 104,
@@ -283,6 +288,31 @@ const goldSwords: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "em", scale: "43" },
+    passiveName: "Revolutionary Chorale",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
+            <Green>DMG</Green> by <Green b>{7.5 + refi * 2.5}%</Green>. When triggering Elemental
+            Reactions, the character gains a Sigil of Rebellion. This effect can be triggered once
+            every 0.5s. When you possess 2 Sigils of Rebellion, all of them will be consumed and all
+            nearby party members will obtain the "Millennial Movement: Song of Resistance" effect
+            for 12s. {this.extra![0]} Of the many effects of the "Millennial Movement", buffs of the
+            same type will not stack.
+          </>
+        );
+      },
+      extra: [
+        <>
+          "Millennial Movement: Song of Resistance" increases{" "}
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
+          <Green b>{12 + refi * 4}%</Green> and increases <Green>ATK</Green> by{" "}
+          <Green b>{15 + refi * 5}%</Green>. Once this effect is triggered, you will not gain Sigils
+          of Rebellion for 20s.
+        </>,
+      ],
+    }),
     applyBuff: makeWpModApplier("attPattBonus", "all.pct", 10),
     buffs: [
       {
@@ -295,33 +325,6 @@ const goldSwords: DataWeapon[] = [
         desc: ({ refi }) => findByCode(goldSwords, 104)!.passiveDesc({ refi })!.extra![0],
       },
     ],
-    passiveName: "Revolutionary Chorale",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
-            <Green>DMG</Green> by <Green b>{7.5 + refi * 2.5}%</Green>. When triggering Elemental
-            Reactions, the character gains a Sigil of Rebellion. This effect can be triggered once
-            every 0.5s. When you possess 2 Sigils of Rebellion, all of them will be consumed and all
-            nearby party members will obtain the "Millennial Movement: Song of Resistance" effect
-            for 12s. {this.extra![0]} {this.extra![1]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          "Millennial Movement: Song of Resistance" increases{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
-          <Green b>{12 + refi * 4}%</Green> and increases <Green>ATK</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>. Once this effect is triggered, you will not gain Sigils
-          of Rebellion for 20s.
-        </>,
-        <>
-          Of the many effects of the "Millennial Movement", buffs of the same type will not stack.
-        </>,
-      ],
-    }),
   },
   {
     code: 105,
@@ -342,7 +345,7 @@ const goldSwords: DataWeapon[] = [
     applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;
-      const xtraDesc = ` / ${bnPct}% of ${totalAttr.hp} HP`;
+      const xtraDesc = ` / ${bnPct}% of ${Math.round(totalAttr.hp)} HP`;
       applyModifier(desc + xtraDesc, totalAttr, "atk", applyPercent(totalAttr.hp, bnPct), tracker);
     },
     passiveName: "Protector's Virtue",

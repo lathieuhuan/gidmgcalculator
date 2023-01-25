@@ -36,7 +36,7 @@ const purpleClaymores: DataWeapon[] = [
         index: 0,
         affect: EModAffect.ONE_UNIT,
         applyBuff: makeWpModApplier("totalAttr", "em", 60),
-        desc: ({ refi }) => findByCode(purpleClaymores, 136)!.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => findByCode(purpleClaymores, 136)?.passiveDesc({ refi }).extra?.[0],
       },
     ],
     passiveName: "Forest Sanctuary",
@@ -46,7 +46,7 @@ const purpleClaymores: DataWeapon[] = [
           <>
             After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
             Leaf of Consciousness will be created around the character for a maximum of 10s.{" "}
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} {this.extra?.[1]}
           </>
         );
       },
@@ -100,9 +100,8 @@ const purpleClaymores: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          On hit, Normal or Charged Attacks have a <Green>50% chance</Green> to deal an additional{" "}
-          <Green b>{180 + refi * 60}</Green> <Green>ATK</Green> DMG to opponents within a small AoE.
-          Can only occur once every 15s.
+          On hit, Normal or Charged Attacks have a 50% chance to deal an additional{" "}
+          {180 + refi * 60} ATK DMG to opponents within a small AoE. Can only occur once every 15s.
         </>
       ),
     }),
@@ -114,23 +113,6 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "def_", scale: "11.3%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 4,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleClaymores, 64)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Infusion Blade",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -141,6 +123,23 @@ const purpleClaymores: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 64)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
+          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 65,
@@ -167,10 +166,32 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate", scale: "6%" },
+    passiveName: "Wavesplitter",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} {this.extra?.[1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          Every 4s a character is on the field, they will deal <Green b>{5 + refi}%</Green>{" "}
+          <Green>more DMG</Green> and take {[0, 3, 2.7, 2.4, 2.2, 2][refi]}% more DMG. This effect
+          has a maximum of <Rose>5</Rose> stacks
+        </>,
+        <>
+          and will not be reset if the character leaves the field, but will be reduced by 1 stack
+          when the character takes DMG.
+        </>,
+      ],
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 67)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -181,32 +202,8 @@ const purpleClaymores: DataWeapon[] = [
           const buffValue = (5 + refi) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
         },
-        desc: ({ refi }) => (
-          <>{findByCode(purpleClaymores, 67)!.passiveDesc({ refi }).extra![0]}.</>
-        ),
       },
     ],
-    passiveName: "Wavesplitter",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra![0]} {this.extra![1]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Every 4s a character is on the field, they will deal <Green b>{5 + refi}%</Green>{" "}
-          <Green>more DMG</Green> and take {[0, 3, 2.7, 2.4, 2.2, 2][refi]}% more DMG. This effect
-          has a maximum of <Green b>5</Green> stacks
-        </>,
-        <>
-          and will not be reset if the character leaves the field, but will be reduced by 1 stack
-          when the character takes DMG.
-        </>,
-      ],
-    }),
   },
   {
     code: 68,
@@ -250,7 +247,7 @@ const purpleClaymores: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
-        desc: ({ refi }) => findByCode(purpleClaymores, 70)!.passiveDesc({ refi }).extra![0],
+        desc: ({ refi }) => findByCode(purpleClaymores, 70)?.passiveDesc({ refi }).extra?.[0],
       },
     ],
     passiveName: "Rebellious Guardian",
@@ -260,7 +257,7 @@ const purpleClaymores: DataWeapon[] = [
           <>
             Taking DMG generates a shield which absorbs DMG up to {17 + refi * 3}% of max HP. This
             shield lasts for 10s or until broken, and can only be triggered once every 45s.{" "}
-            {this.extra![0]}
+            {this.extra?.[0]}
           </>
         );
       },

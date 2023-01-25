@@ -36,8 +36,8 @@ const purplePolearms: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [3, 12]),
-        desc: ({ refi }) => findByCode(purplePolearms, 141)!.passiveDesc({ refi }).core,
+        desc: ({ refi }) => findByCode(purplePolearms, 141)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [12, 48]),
       },
     ],
   },
@@ -55,7 +55,8 @@ const purplePolearms: DataWeapon[] = [
           <>
             After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
             Leaf of Revival will be created around the character for a maximum of 10s.{" "}
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} Only 1 Leaf can be generated this way every 20s. This effect can still
+            be triggered if the character is not on the field.
           </>
         );
       },
@@ -64,18 +65,14 @@ const purplePolearms: DataWeapon[] = [
           When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green>{" "}
           <Green>ATK</Green> for 12s.
         </>,
-        <>
-          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the
-          character is not on the field.
-        </>,
       ],
     }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.ONE_UNIT,
+        desc: ({ refi }) => findByCode(purplePolearms, 135)?.passiveDesc({ refi }).extra?.[0],
         applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
-        desc: ({ refi }) => findByCode(purplePolearms, 135)!.passiveDesc({ refi }).extra?.[0],
       },
     ],
   },
@@ -100,7 +97,7 @@ const purplePolearms: DataWeapon[] = [
       core: (
         <>
           After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional{" "}
-          <Green b>{15 + refi * 5}%</Green> <Green>ATK</Green> as DMG for 5s.
+          {15 + refi * 5}% ATK as DMG for 5s.
         </>
       ),
     }),
@@ -121,19 +118,18 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
       core: (
         <>
           Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
           After Elemental Skill hits an opponent, the character loses 3 Energy but regenerates{" "}
-          <Green b>{2.5 + refi * 0.5}</Green> <Green>Energy</Green> every 2s for the next 6s. This
-          effect can occur once every 10s. Can be triggered even when the character is not on the
-          field.
+          {2.5 + refi * 0.5} Energy every 2s for the next 6s. This effect can occur once every 10s.
+          Can be triggered even when the character is not on the field.
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
   },
   {
     code: 89,
@@ -160,10 +156,20 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
+    passiveName: "Magic Affinity",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
+          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purplePolearms, 91)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
@@ -174,18 +180,8 @@ const purplePolearms: DataWeapon[] = [
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(purplePolearms, 91)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Magic Affinity",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
-        </>
-      ),
-    }),
   },
   {
     code: 92,
@@ -194,7 +190,6 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate"], [16, 6]),
     passiveName: "Shanty",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -204,6 +199,7 @@ const purplePolearms: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate"], [16, 6]),
   },
   {
     code: 93,
@@ -230,10 +226,22 @@ const purplePolearms: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "cRate", scale: "8%" },
+    passiveName: "Gladiator",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
+          <Green b>{12 + refi * 4}%</Green> and <Green>DEF</Green> is increased by{" "}
+          <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents nearby,{" "}
+          <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purplePolearms, 95)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             label: "Fewer than 2 opponents",
@@ -247,20 +255,8 @@ const purplePolearms: DataWeapon[] = [
             applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);
           }
         },
-        desc: ({ refi }) => findByCode(purplePolearms, 95)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Gladiator",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
-          <Green b>{12 + refi * 4}%</Green> and <Green>DEF</Green> is increased by{" "}
-          <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents nearby,{" "}
-          <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
-        </>
-      ),
-    }),
   },
   {
     code: 96,

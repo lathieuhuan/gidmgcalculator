@@ -30,14 +30,6 @@ const otherPolearms: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "cRate", scale: "5.1%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 24),
-        desc: ({ refi }) => findByCode(otherPolearms, 75)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Sharp",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -46,6 +38,14 @@ const otherPolearms: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherPolearms, 75)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 24),
+      },
+    ],
   },
   {
     code: 76,
@@ -54,14 +54,6 @@ const otherPolearms: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 40),
-        desc: ({ refi }) => findByCode(otherPolearms, 76)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Bane of the Soft",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -70,6 +62,14 @@ const otherPolearms: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherPolearms, 76)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 40),
+      },
+    ],
   },
   {
     code: 83,

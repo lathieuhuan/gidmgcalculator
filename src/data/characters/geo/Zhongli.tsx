@@ -125,10 +125,10 @@ const Zhongli: DataCharacter = {
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "PA.flat", "ES.flat", "EB.flat"];
-        const bnValues = [1.39, 1.39, 1.39, 1.9, 33].map((mult) =>
+        const buffValues = [1.39, 1.39, 1.39, 1.9, 33].map((mult) =>
           applyPercent(totalAttr.hp, mult)
         );
-        applyModifier(desc, attPattBonus, fields, bnValues, tracker);
+        applyModifier(desc, attPattBonus, fields, buffValues, tracker);
       },
     },
   ],

@@ -44,7 +44,8 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
               {records_.map(
                 renderRecord(
                   (value) => applyPercent(value, calcTotalAttr[`base_${statType}`]) + percent,
-                  (value) => `${value}% = ${calcTotalAttr[`base_${statType}`]} * ${value / 100} =`
+                  (value) =>
+                    `${value}% = ${calcTotalAttr[`base_${statType}`]} * ${round(value / 100, 4)} =`
                 )
               )}
             </ul>

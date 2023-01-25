@@ -27,14 +27,6 @@ const otherCatalysts: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "em", scale: "20" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-        desc: ({ refi }) => findByCode(otherCatalysts, 27)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Rapids",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -44,6 +36,14 @@ const otherCatalysts: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherCatalysts, 27)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+      },
+    ],
   },
   {
     code: 28,
@@ -52,16 +52,6 @@ const otherCatalysts: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "cRate", scale: "3.4%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 10 + refi * 2, tracker);
-        },
-        desc: ({ refi }) => findByCode(otherCatalysts, 28)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Rapids",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -71,6 +61,16 @@ const otherCatalysts: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherCatalysts, 28)?.passiveDesc({ refi }).core,
+        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+          applyModifier(desc, totalAttr, "atk_", 10 + refi * 2, tracker);
+        },
+      },
+    ],
   },
   {
     code: 29,
@@ -79,14 +79,6 @@ const otherCatalysts: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.ONE_UNIT,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
-        desc: ({ refi }) => findByCode(otherCatalysts, 29)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Legacy",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -97,6 +89,14 @@ const otherCatalysts: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.ONE_UNIT,
+        desc: ({ refi }) => findByCode(otherCatalysts, 29)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
+      },
+    ],
   },
   {
     code: 30,

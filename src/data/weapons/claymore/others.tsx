@@ -24,14 +24,6 @@ const otherClaymores: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 30, 6),
-        desc: ({ refi }) => findByCode(otherClaymores, 129)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Unbending",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -41,6 +33,14 @@ const otherClaymores: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherClaymores, 129)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 30, 6),
+      },
+    ],
   },
   {
     code: 50,
@@ -49,10 +49,21 @@ const otherClaymores: DataWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "phys", scale: "9.6%a" },
+    passiveName: "Courage",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          On hit, Normal or Charged Attacks increase <Green>ATK</Green> by{" "}
+          <Green b>{5 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every
+          0.5s.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherClaymores, 50)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
@@ -62,19 +73,8 @@ const otherClaymores: DataWeapon[] = [
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs[0] || 0), tracker);
         },
-        desc: ({ refi }) => findByCode(otherClaymores, 50)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Courage",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          On hit, Normal or Charged Attacks increase <Green>ATK</Green> by{" "}
-          <Green b>{5 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once
-          every 0.5s.
-        </>
-      ),
-    }),
   },
   {
     code: 51,

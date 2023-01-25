@@ -419,8 +419,8 @@ const purpleBows: DataWeapon[] = [
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const stacks = inputs[0] || 0;
-          const bnValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];
-          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd"], bnValues, tracker);
+          const buffValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];
+          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd"], buffValues, tracker);
         },
       },
     ],

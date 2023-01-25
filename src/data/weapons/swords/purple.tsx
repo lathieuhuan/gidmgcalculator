@@ -43,8 +43,8 @@ const purpleSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 16),
         desc: ({ refi }) => findByCode(purpleSwords, 149)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 16),
       },
     ],
   },
@@ -55,38 +55,13 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
-          applyModifier(desc, totalAttr, "er", buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
-      },
-      {
-        index: 1,
-        affect: EModAffect.TEAMMATE,
-        inputConfigs: [
-          {
-            label: "Elemental Mastery",
-            type: "text",
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = Math.round((inputs[0] || 0) * (27 + refi * 9) * 0.003) / 10;
-          applyModifier(desc, totalAttr, "er", buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
-      },
-    ],
     passiveName: "Jinni's Whisper",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
-            {this.extra?.[0]} {this.extra?.[1]}
+            {this.extra?.[0]} Multiple instances of this weapon can allow this buff to stack. This
+            effect will still trigger even if the character is not on the field.
           </>
         );
       },
@@ -95,14 +70,39 @@ const purpleSwords: DataWeapon[] = [
           The following effect will trigger every 10s: the equipping character will gain{" "}
           <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point
           of <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members
-          gaining <b>30%</b> of this buff for the same duration.
-        </>,
-        <>
-          Multiple instances of this weapon can allow this buff to stack. This effect will still
-          trigger even if the character is not on the field.
+          gaining <Green>30%</Green> of this buff for the same duration.
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+          const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
+          const finalDesc = desc + ` / ${(27 + refi * 9) / 1000}% * ${totalAttr.em} EM`;
+          applyModifier(finalDesc, totalAttr, "er", buffValue, tracker);
+        },
+      },
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
+        inputConfigs: [
+          {
+            label: "Elemental Mastery",
+            type: "text",
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const mult = (27 + refi * 9) / 1000;
+          const buffValue = Math.round((inputs[0] || 0) * mult * 3) / 10;
+          const finalDesc = desc + ` / ${mult}% * ${inputs[0] || 0} EM`;
+          applyModifier(finalDesc, totalAttr, "er", buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 142,
@@ -125,10 +125,10 @@ const purpleSwords: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 142)?.passiveDesc({ refi }).core,
         applyBuff: ({ totalAttr, desc, tracker }) => {
           applyModifier(desc, totalAttr, "atk_", 15, tracker);
         },
-        desc: ({ refi }) => findByCode(purpleSwords, 142)!.passiveDesc({ refi }).core,
       },
     ],
   },
@@ -139,14 +139,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.ONE_UNIT,
-        applyBuff: makeWpModApplier("totalAttr", "em", 60),
-        desc: ({ refi }) => findByCode(purpleSwords, 134)!.passiveDesc({ refi }).extra?.[0],
-      },
-    ],
     passiveName: "Forest Sanctuary",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -154,7 +146,9 @@ const purpleSwords: DataWeapon[] = [
           <>
             After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
             Leaf of Consciousness will be created around the character for a maximum of 10s.{" "}
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} Only 1 Leaf can be generated this way every 20s. This effect can still
+            be triggered if the character is not on the field. The Leaf of Consciousness' effect
+            cannot stack.
           </>
         );
       },
@@ -163,12 +157,16 @@ const purpleSwords: DataWeapon[] = [
           When picked up, the Leaf will grant the character <Green b>{45 + refi * 15}</Green>{" "}
           <Green>Elemental Mastery</Green> for 12s.
         </>,
-        <>
-          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the
-          character is not on the field. The Leaf of Consciousness' effect cannot stack.
-        </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.ONE_UNIT,
+        desc: ({ refi }) => findByCode(purpleSwords, 134)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "em", 60),
+      },
+    ],
   },
   {
     code: 109,
@@ -177,14 +175,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "45",
     subStat: { type: "em", scale: "12" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
-        desc: ({ refi }) => findByCode(purpleSwords, 109)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Itinerant Hero",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -194,6 +184,14 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 109)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
+      },
+    ],
   },
   {
     code: 110,
@@ -211,23 +209,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 4,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleSwords, 111)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Smashed Stone",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -238,6 +219,23 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 111)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const buffValue = (3 + refi * 1) * (inputs[0] || 0);
+          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 112,
@@ -246,7 +244,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [16, 6]),
     passiveName: "Undying Admiration",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -256,6 +253,7 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [16, 6]),
   },
   {
     code: 113,
@@ -264,7 +262,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate", scale: "6%" },
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 20),
     passiveName: "Justice",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -275,6 +272,7 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 20),
   },
   {
     code: 114,
@@ -288,9 +286,8 @@ const purpleSwords: DataWeapon[] = [
       core: (
         <>
           Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power
-          of music and deals <Green b>{75 + refi * 25}%</Green> <Green>ATK</Green> DMG to
-          surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained every
-          0.5s.
+          of music and deals {75 + refi * 25}% ATK DMG to surrounding enemies. Harmonics last up to
+          30s, and a maximum of 1 can be gained every 0.5s.
         </>
       ),
     }),
@@ -320,23 +317,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 2,
-          },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(purpleSwords, 117)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Infusion Stinger",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -347,6 +327,23 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 117)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
+          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
+          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 118,
@@ -360,10 +357,9 @@ const purpleSwords: DataWeapon[] = [
       core: (
         <>
           After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered
-          once every 5s. The Succession Seed lasts for 30s. Up to <Green b>3</Green> Succession
-          Seeds may exist simultaneously. After using an Elemental Burst, all Succession Seeds are
-          consumed and after 2s, the character regenerates <Green b>{4.5 + refi * 1.5}</Green>{" "}
-          <Green>Energy</Green> for each seed consumed.
+          once every 5s. The Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist
+          simultaneously. After using an Elemental Burst, all Succession Seeds are consumed and
+          after 2s, the character regenerates {4.5 + refi * 1.5} Energy for each seed consumed.
         </>
       ),
     }),
@@ -393,12 +389,6 @@ const purpleSwords: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "def_", scale: "15%" },
-    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
-      if (attPattBonus) {
-        const buffValue = applyPercent(totalAttr.def, 30 + refi * 10);
-        applyModifier(desc, attPattBonus, "ES.flat", buffValue, tracker);
-      }
-    },
     passiveName: "Spotless Heart",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -409,6 +399,14 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
+    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
+      if (attPattBonus) {
+        const mult = 30 + refi * 10;
+        const buffValue = applyPercent(totalAttr.def, mult);
+        const finalDesc = desc + ` / ${mult}% of ${Math.round(totalAttr.def)} DEF`;
+        applyModifier(finalDesc, attPattBonus, "ES.flat", buffValue, tracker);
+      }
+    },
   },
 ];
 

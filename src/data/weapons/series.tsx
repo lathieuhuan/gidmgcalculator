@@ -18,7 +18,8 @@ export const desertSeries: Pick<
     get core() {
       return (
         <>
-          {this.extra?.[0]} {this.extra?.[1]}
+          {this.extra?.[0]} Multiple instances of this weapon can allow this buff to stack. This
+          effect will still trigger even if the character is not on the field.
         </>
       );
     },
@@ -26,11 +27,7 @@ export const desertSeries: Pick<
       <>
         Every 10s, the equipping character will gain <Green b>{18 + refi * 6}%</Green> of their{" "}
         <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green> for 12s, with nearby party
-        members gaining <b>30%</b> of this buff for the same duration.
-      </>,
-      <>
-        Multiple instances of this weapon can allow this buff to stack. This effect will still
-        trigger even if the character is not on the field.
+        members gaining <Green>30%</Green> of this buff for the same duration.
       </>,
     ],
   }),
@@ -168,11 +165,10 @@ export const dragonspineSeries: SeriesInfo = {
   passiveDesc: ({ refi }) => ({
     core: (
       <>
-        Hitting an opponent with Normal and Charged Attacks has a <Green b>{50 + refi * 10}%</Green>{" "}
-        <Green>chance</Green> of forming and dropping an Everfrost Icicle above them, dealing{" "}
-        <Green b>{65 + refi * 15}%</Green> <Green>AoE ATK DMG</Green>. Opponents affected by Cryo
-        are dealt <Green b>{160 + refi * 40}%</Green> <Green>AoE ATK DMG</Green> instead by the
-        icicle. Can only occur once every 10s.
+        Hitting an opponent with Normal and Charged Attacks has a {50 + refi * 10}% chance of
+        forming and dropping an Everfrost Icicle above them, dealing {65 + refi * 15}% AoE ATK DMG.
+        Opponents affected by Cryo are dealt {160 + refi * 40}% AoE ATK DMG instead by the icicle.
+        Can only occur once every 10s.
       </>
     ),
   }),
@@ -238,8 +234,8 @@ export const lithicSeries: SeriesInfo = {
         (result, data) => (data?.nation === "liyue" ? result + 1 : result),
         charData.nation === "liyue" ? 1 : 0
       );
-      const bnValues = [(6 + refi) * stacks, (2 + refi) * stacks];
-      applyModifier(desc, totalAttr, ["atk_", "cRate"], bnValues, tracker);
+      const buffValues = [(6 + refi) * stacks, (2 + refi) * stacks];
+      applyModifier(desc, totalAttr, ["atk_", "cRate"], buffValues, tracker);
     }
   },
 };
@@ -298,12 +294,14 @@ export const watatsumiSeries: SeriesInfo = {
   }),
   applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
     if (partyData && attPattBonus) {
-      const maxEnergy = partyData.reduce(
+      const energyCap = partyData.reduce(
         (result, data) => result + (data?.EBcost || 0),
         charData.EBcost
       );
-      const buffValue = round(maxEnergy * (0.09 + refi * 0.03), 2);
-      applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
+      const mult = (9 + refi * 3) / 100;
+      const buffValue = round(energyCap * mult, 2);
+      const finalDesc = desc + ` / Energy Cap. ${energyCap} * ${mult}%`;
+      applyModifier(finalDesc, attPattBonus, "EB.pct", buffValue, tracker);
     }
   },
 };

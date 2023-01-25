@@ -28,10 +28,29 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er", scale: "10%" },
+    passiveName: "Full Circle",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} For every 6s that go by without an Elemental Reaction being triggered,
+            1 stack will be lost. This effect can be triggered even when the character is off-field.
+          </>
+        );
+      },
+      extra: [
+        <>
+          Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
+          <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK. For
+          every 0.3s, 1 stack of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.
+        </>,
+      ],
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 137)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -43,28 +62,8 @@ const purpleCatalysts: DataWeapon[] = [
           const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
           applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
         },
-        desc: ({ refi }) => findByCode(purpleCatalysts, 137)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Full Circle",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
-            <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK.
-            For every 0.3s, 1 stack of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.{" "}
-            {this.extra![0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          For every 6s that go by without an Elemental Reaction being triggered, 1 stack will be
-          lost. This effect can be triggered even when the character is off-field.
-        </>,
-      ],
-    }),
   },
   {
     code: 123,
@@ -78,7 +77,7 @@ const purpleCatalysts: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         applyBuff: makeWpModApplier("totalAttr", "er", 24),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 123)!.passiveDesc({ refi }).core,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 123)?.passiveDesc({ refi }).core,
       },
     ],
     passiveName: "People of the Faltering Light",
@@ -98,21 +97,13 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 37)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "Ever-Changing",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
             Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or
-            Alternate sprint by {12 + refi * 2} for 5s. {this.extra![0]}
+            Alternate sprint by {12 + refi * 2} for 5s. {this.extra?.[0]}
           </>
         );
       },
@@ -123,6 +114,14 @@ const purpleCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 37)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+      },
+    ],
   },
   {
     code: 38,
@@ -131,10 +130,22 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er", scale: "6.7%" },
+    passiveName: "Sakura Saiguu",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After the character equipped with this weapon triggers an Electro elemental reaction,
+          nearby party members of an Elemental Type involved in the elemental reaction receive a{" "}
+          <Green b>{7.5 + refi * 2.5}%</Green> <Green>Elemental DMG Bonus for their element</Green>,
+          lasting 6s. Elemental Bonuses gained in this way cannot be stacked.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 38)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             label: "Element",
@@ -152,20 +163,8 @@ const purpleCatalysts: DataWeapon[] = [
             applyModifier(desc, totalAttr, vision, 7.5 + refi * 2.5, tracker);
           }
         },
-        desc: ({ refi }) => findByCode(purpleCatalysts, 38)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Sakura Saiguu",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After the character equipped with this weapon triggers an Electro elemental reaction,
-          nearby party members of an Elemental Type involved in the elemental reaction receive a{" "}
-          <Green b>{7.5 + refi * 2.5}%</Green> Elemental DMG Bonus for <Green>their element</Green>,
-          lasting 6s. Elemental Bonuses gained in this way cannot be stacked.
-        </>
-      ),
-    }),
   },
   {
     code: 39,
@@ -183,10 +182,20 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
+    passiveName: "Infusion Scroll",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green>{" "}
+          <Green>Elemental DMG Bonus</Green> for 10s. Max <Rose>2</Rose> stacks.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 40)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
@@ -197,18 +206,8 @@ const purpleCatalysts: DataWeapon[] = [
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(purpleCatalysts, 40)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Infusion Scroll",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> for 10s. Max <Rose>2</Rose> stacks.
-        </>
-      ),
-    }),
   },
   {
     code: 41,
@@ -217,32 +216,6 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cDmg", scale: "12%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            label: "Theme Song",
-            type: "select",
-            initialValue: 0,
-            options: ["Recitative", "Aria", "Interlude"],
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffIndex = inputs[0] || 0;
-
-          if (buffIndex === 0) {
-            applyModifier(desc, totalAttr, "atk_", 45 + refi * 15, tracker);
-          } else if (buffIndex === 1) {
-            applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
-          } else {
-            applyModifier(desc, totalAttr, "em", 180 + refi * 60, tracker);
-          }
-        },
-        desc: ({ refi }) => findByCode(purpleCatalysts, 41)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Debut",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -255,6 +228,33 @@ const purpleCatalysts: DataWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 41)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            label: "Theme Song",
+            type: "select",
+            initialValue: 0,
+            options: ["Recitative", "Aria", "Interlude"],
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          switch (inputs[0] || 0) {
+            case 0:
+              applyModifier(desc, totalAttr, "atk_", 45 + refi * 15, tracker);
+              break;
+            case 1:
+              applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
+              break;
+            default:
+              applyModifier(desc, totalAttr, "em", 180 + refi * 60, tracker);
+          }
+        },
+      },
+    ],
   },
   {
     code: 42,
@@ -272,26 +272,12 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate", scale: "6%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 20),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 43)!.passiveDesc({ refi }).extra![0],
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 43)!.passiveDesc({ refi }).extra![1],
-      },
-    ],
     passiveName: "Solar Shine",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} {this.extra?.[1]}
           </>
         );
       },
@@ -306,6 +292,20 @@ const purpleCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 20),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
+      },
+    ],
   },
   {
     code: 44,
@@ -350,26 +350,12 @@ const purpleCatalysts: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 16),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 47)!.passiveDesc({ refi }).extra![0],
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 8),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 47)!.passiveDesc({ refi }).extra![1],
-      },
-    ],
     passiveName: "Dodoventure!",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
-            {this.extra![0]} {this.extra![1]}
+            {this.extra?.[0]} {this.extra?.[1]}
           </>
         );
       },
@@ -384,6 +370,20 @@ const purpleCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 16),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[1],
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 8),
+      },
+    ],
   },
   {
     code: 48,

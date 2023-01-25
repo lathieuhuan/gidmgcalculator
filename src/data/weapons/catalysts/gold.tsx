@@ -14,32 +14,14 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd", 2.5),
-    buffs: [
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          { label: "Seconds passed", type: "text", max: 10 },
-          { label: "Normal attacks hit", type: "text", max: 10 },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const stacks = (inputs[0] || 0) + (inputs[1] || 0) * 2;
-          const valuePerStack = (36 + refi * 12) / 10;
-          let bnValue = stacks * valuePerStack;
-          bnValue = Math.min(bnValue, valuePerStack * 10);
-          applyModifier(desc, attPattBonus, "NA.pct", bnValue, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldCatalysts, 147)?.passiveDesc({ refi }).extra?.[0],
-      },
-    ],
     passiveName: "Bygone Azure Teardrop",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (
           <>
             <Green>Normal Attack SPD</Green> is increased by <Green b>{7.5 + refi * 2.5}%</Green>.{" "}
-            {this.extra?.[0]} {this.extra?.[1]}
+            {this.extra?.[0]} The effect will be removed when the wielder leaves the field, and
+            using the Elemental Skill again will reset all DMG buffs.
           </>
         );
       },
@@ -52,12 +34,27 @@ const goldCatalysts: DataWeapon[] = [
           <Green b>{(72 + refi * 24) / 10}%</Green>. This increase can be triggered once every 0.3s.
           Total maximum bonus is <Rose>48%</Rose>.
         </>,
-        <>
-          The effect will be removed when the wielder leaves the field, and using the Elemental
-          Skill again will reset all DMG buffs.
-        </>,
       ],
     }),
+    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd", 2.5),
+    buffs: [
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldCatalysts, 147)?.passiveDesc({ refi }).extra?.[0],
+        inputConfigs: [
+          { label: "Seconds passed", type: "text", max: 10 },
+          { label: "Normal attacks hit", type: "text", max: 10 },
+        ],
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
+          const stacks = (inputs[0] || 0) + (inputs[1] || 0) * 2;
+          const valuePerStack = (36 + refi * 12) / 10;
+          let buffValue = stacks * valuePerStack;
+          buffValue = Math.min(buffValue, valuePerStack * 10);
+          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
+        },
+      },
+    ],
   },
   {
     code: 143,
@@ -66,28 +63,6 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "em", scale: "58" },
-    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      if (partyData) {
-        const sameVision = partyData.reduce((result, data) => {
-          return data?.vision === charData.vision ? result + 1 : result;
-        }, 0);
-        const emBuffValue = sameVision * (24 + refi * 8);
-        const elmtDmgBuffValue = (partyData.length - sameVision) * (6 + refi * 4);
-
-        applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
-        applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
-      }
-    },
-    buffs: [
-      {
-        index: 1,
-        affect: EModAffect.TEAMMATE,
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "em", 38 + refi * 2, tracker);
-        },
-        desc: ({ refi }) => findByCode(goldCatalysts, 143)!.passiveDesc({ refi }).extra![0],
-      },
-    ],
     passiveName: "A Thousand Nights' Dawnsong",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -98,7 +73,7 @@ const goldCatalysts: DataWeapon[] = [
             their Elemental Types are the same, increase <Green>Elemental Mastery</Green> by{" "}
             <Green b>{24 + refi * 8}</Green>. If not, increase the equipping character's{" "}
             <Green>DMG Bonus</Green> from their Elemental Type by <Green b>{6 + refi * 4}%</Green>.
-            Max <Rose>3</Rose> stacks. {this.extra![0]}
+            Max <Rose>3</Rose> stacks. {this.extra?.[0]}
           </>
         );
       },
@@ -110,6 +85,28 @@ const goldCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
+    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
+      if (partyData) {
+        const sameVision = partyData.reduce((result, data) => {
+          return data?.vision === charData.vision ? result + 1 : result;
+        }, 0);
+        const emBuffValue = sameVision * (24 + refi * 8);
+        const elmtDmgBuffValue = (partyData.filter(Boolean).length - sameVision) * (6 + refi * 4);
+
+        applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
+        applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
+      }
+    },
+    buffs: [
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        desc: ({ refi }) => findByCode(goldCatalysts, 143)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
+          applyModifier(desc, totalAttr, "em", 38 + refi * 2, tracker);
+        },
+      },
+    ],
   },
   {
     code: 122,
@@ -118,10 +115,23 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg", scale: "14.4%" },
+    passiveName: "Kagura Dance of the Sacred Sakura",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Gains the Kagura Dance effect when using an Elemental Skill, causing the{" "}
+          <Green>Elemental Skill DMG</Green> of the character wielding this weapon to increase by{" "}
+          <Green b>{9 + refi * 3}%</Green> for 16s. Max <Rose>3</Rose> stacks. This character will
+          gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green> when they
+          possess 3 stacks.
+        </>
+      ),
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldCatalysts, 122)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
@@ -136,21 +146,8 @@ const goldCatalysts: DataWeapon[] = [
             applyModifier(desc, totalAttr, [...VISION_TYPES], 9 + refi * 3, tracker);
           }
         },
-        desc: ({ refi }) => findByCode(goldCatalysts, 122)!.passiveDesc({ refi }).core,
       },
     ],
-    passiveName: "Kagura Dance of the Sacred Sakura",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Gains the Kagura Dance effect when using an Elemental Skill, causing the{" "}
-          <Green>Elemental Skill DMG</Green> of the character wielding this weapon to increase by{" "}
-          <Green b>{9 + refi * 3}%</Green> for 16s. Max <Rose>3</Rose> stacks. This character will
-          gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green> when they
-          possess 3 stacks.
-        </>
-      ),
-    }),
   },
   {
     code: 34,
@@ -159,13 +156,6 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
-    applyBuff: makeWpModApplier("totalAttr", "healBn", 10),
-    applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
-      if (attPattBonus) {
-        const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
-        applyModifier(desc, attPattBonus, "NA.flat", buffValue, tracker);
-      }
-    },
     passiveName: "Byakuya Kougetsu",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -178,6 +168,13 @@ const goldCatalysts: DataWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("totalAttr", "healBn", 10),
+    applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
+      if (attPattBonus) {
+        const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
+        applyModifier(desc, attPattBonus, "NA.flat", buffValue, tracker);
+      }
+    },
   },
   {
     code: 31,
@@ -186,19 +183,18 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "atk_", scale: "7.2%" },
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
     passiveName: "Wandering Clouds",
     passiveDesc: ({ refi }) => ({
       core: (
         <>
           Increases <Green>Elemental DMG Bonus</Green> by <Green b>{9 + refi * 3}%</Green>. Normal
-          Attack hits have a <Green>50% chance</Green> to earn the favor of the clouds. which
-          actively seek out nearby opponents to attack for 15s, dealing{" "}
-          <Green b>{120 + refi * 40}%</Green> <Green>ATK</Green> DMG. Can only occur once every{" "}
-          <Green>30s</Green>.
+          Attack hits have a 50% chance to earn the favor of the clouds. which actively seek out
+          nearby opponents to attack for 15s, dealing {120 + refi * 40}% ATK DMG. Can only occur
+          once every 30s.
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
   },
   {
     code: 32,
@@ -207,10 +203,28 @@ const goldCatalysts: DataWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },
+    passiveName: "Boundless Blessing",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Increases Movement SPD by 10%. {this.extra?.[0]} Lasts until the character falls or
+            leaves combat.
+          </>
+        );
+      },
+      extra: [
+        <>
+          When in battle, gain an <Green b>{6 + refi * 2}%</Green>{" "}
+          <Green>Elemental DMG Bonus</Green> every 4s. Max <Rose>4</Rose> stacks.
+        </>,
+      ],
+    }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldCatalysts, 32)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -221,26 +235,8 @@ const goldCatalysts: DataWeapon[] = [
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
-        desc: ({ refi }) => findByCode(goldCatalysts, 32)!.passiveDesc({ refi }).extra![0],
       },
     ],
-    passiveName: "Boundless Blessing",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Increases Movement SPD by 10%. {this.extra![0]} {this.extra![1]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When in battle, gain an <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> every 4s. Max <Rose>4</Rose> stacks.
-        </>,
-        <>Lasts until the character falls or leaves combat.</>,
-      ],
-    }),
   },
   {
     code: 33,
