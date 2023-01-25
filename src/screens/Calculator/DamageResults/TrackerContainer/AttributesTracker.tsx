@@ -58,7 +58,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
 
         return (
           <div key={statType} className="break-inside-avoid">
-            {renderHeading(t(statType), Math.round(calcTotalAttr[statType]) + percent)}
+            {renderHeading(t(statType), round(calcTotalAttr[statType], 2) + percent)}
 
             {totalAttr?.[statType].length ? (
               <ul className="pl-4 list-disc">

@@ -146,22 +146,8 @@ const purpleCatalysts: DataWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         desc: ({ refi }) => findByCode(purpleCatalysts, 38)?.passiveDesc({ refi }).core,
-        inputConfigs: [
-          {
-            label: "Element",
-            type: "select",
-            initialValue: 0,
-            options: ["Pyro", "Hydro", "Cryo", "Geo", "Anemo", "Dendro"],
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const { vision } = charData;
-          const optionIndex = inputs[0] || 0;
-          const elmtIndex = [0, 1, 3, 4, 5, 6][optionIndex];
-
-          if (vision === "electro" || vision === VISION_TYPES[elmtIndex]) {
-            applyModifier(desc, totalAttr, vision, 7.5 + refi * 2.5, tracker);
-          }
+        applyBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
+          applyModifier(desc, totalAttr, charData.vision, 7.5 + refi * 2.5, tracker);
         },
       },
     ],

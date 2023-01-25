@@ -8,7 +8,7 @@ import {
   royalSeries,
   sacrificialSeries,
 } from "../series";
-import { applyPercent, findByCode } from "@Src/utils";
+import { applyPercent, findByCode, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
@@ -96,8 +96,8 @@ const purpleSwords: DataWeapon[] = [
           },
         ],
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const mult = (27 + refi * 9) / 1000;
-          const buffValue = Math.round((inputs[0] || 0) * mult * 3) / 10;
+          const mult = (81 + refi * 27) / 10000;
+          const buffValue = round((inputs[0] || 0) * mult, 1);
           const finalDesc = desc + ` / ${mult}% * ${inputs[0] || 0} EM`;
           applyModifier(finalDesc, totalAttr, "er", buffValue, tracker);
         },

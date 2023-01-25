@@ -37,8 +37,10 @@ export const desertSeries: Pick<
       affect: EModAffect.SELF,
       desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
       applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-        const buffValue = applyPercent(totalAttr.em, 18 + refi * 6);
-        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+        const mult = 18 + refi * 6;
+        const buffValue = applyPercent(totalAttr.em, mult);
+        const finalDesc = desc + ` / ${mult}% of ${totalAttr.em} EM`;
+        applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
       },
     },
     {
@@ -52,8 +54,10 @@ export const desertSeries: Pick<
         },
       ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = applyPercent(inputs[0] || 0, ((18 + refi * 6) * 3) / 10);
-        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+        const mult = (54 + refi * 18) / 10;
+        const buffValue = applyPercent(inputs[0] || 0, mult);
+        const finalDesc = desc + ` / ${mult}% of ${inputs[0] || 0} EM`;
+        applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
       },
     },
   ],
