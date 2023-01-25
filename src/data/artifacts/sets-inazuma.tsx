@@ -1,5 +1,5 @@
 import type { DataArtifact } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -127,7 +127,7 @@ const inazumaSets: DataArtifact[] = [
             After using an Elemental Burst, this character will gain the Nascent Light effect,
             increasing their <Green>ATK</Green> by <Green b>8%</Green> for 16s. When the character's
             HP decreases, Their <Green>ATK</Green> will further increase by <Green b>10%</Green>.
-            This increase can occur this way a maximum of <Green b>4</Green> <Green>times</Green>.
+            This increase can occur this way a maximum of <Rose>4</Rose> times.
           </>,
         ],
       },
@@ -289,29 +289,29 @@ const inazumaSets: DataArtifact[] = [
         applyBuff: makeModApplier("totalAttr", "def_", 30),
       },
       {
-        desc: (
+        get desc() {
+          return (
+            <>
+              A character equipped with this Artifact set will obtain the Curiosity effect in the
+              following conditions: When on the field, the character gains 1 stack after hitting an
+              opponent with a Geo attack, triggering a maximum of once every 0.3s. When off the
+              field, the character gains 1 stack every 3s. {this.xtraDesc?.[0]} When 6 seconds pass
+              without gaining a Curiosity stack, 1 stack is lost.
+            </>
+          );
+        },
+        xtraDesc: [
           <>
-            A character equipped with this Artifact set will obtain the Curiosity effect in the
-            following conditions: When on the field, the character gains 1 stack after hitting an
-            opponent with a Geo attack, triggering a maximum of once every 0.3s. When off the field,
-            the character gains 1 stack every 3s. Curiosity can stack up to <Green b>4</Green>{" "}
-            <Green>times</Green>, each providing <Green b>6%</Green> <Green>DEF</Green> and a{" "}
-            <Green b>6%</Green> <Green>Geo DMG Bonus</Green>. When 6 seconds pass without gaining a
-            Curiosity stack, 1 stack is lost.
-          </>
-        ),
+            Curiosity can stack up to <Rose>4</Rose> times, each providing <Green b>6%</Green>{" "}
+            <Green>DEF</Green> and a <Green b>6%</Green> <Green>Geo DMG Bonus</Green>.
+          </>,
+        ],
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => (
-          <>
-            Curiosity can stack up to <Green b>4</Green> <Green>times</Green>, each providing{" "}
-            <Green b>6%</Green> <Green>DEF</Green> and a <Green b>6%</Green>{" "}
-            <Green>Geo DMG Bonus</Green>.
-          </>
-        ),
+        desc: () => findByCode(inazumaSets, 3)?.setBonuses[1].xtraDesc?.[0],
         affect: EModAffect.SELF,
         inputConfigs: [
           {

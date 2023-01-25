@@ -107,9 +107,9 @@ const sumeruSets: DataArtifact[] = [
         },
         xtraDesc: [
           <>
-            Additionally, when the equipping character triggers Bloom, Hyperbloom, or Burgeon, they
-            will gain another <Green b>25%</Green> bonus to the effect mentioned prior. Each stack
-            of this lasts 10s. Max <Rose>4</Rose> stacks.
+            When the equipping character triggers Bloom, Hyperbloom, or Burgeon, they will gain
+            another <Green b>10%</Green> <Green>DMG bonus</Green> to those reations. Max{" "}
+            <Rose>4</Rose> stacks. Each stack lasts 10s.
           </>,
         ],
         applyBuff: makeModApplier("rxnBonus", ["bloom.pct", "hyperbloom.pct", "burgeon.pct"], 40),
@@ -237,6 +237,13 @@ const sumeruSets: DataArtifact[] = [
             member with a different Elemental Type.
           </>,
         ],
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: () => findByCode(sumeruSets, 34)?.setBonuses[1].xtraDesc?.[0],
         applyBuff: ({ desc, totalAttr, charData, partyData, tracker }) => {
           if (partyData) {
             let atkBuff = 0;
@@ -251,7 +258,6 @@ const sumeruSets: DataArtifact[] = [
                 }
               }
             }
-
             applyModifier(desc, totalAttr, ["atk_", "em"], [atkBuff, emBuff], tracker);
           }
         },
