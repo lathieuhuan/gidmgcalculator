@@ -17,6 +17,12 @@ import { EStatDamageKey } from "@Src/constants";
 // Component
 import { DamageDisplay } from "@Components/organisms";
 
+const FOCUS_LABELS = {
+  [EStatDamageKey.AVERAGE]: "Average",
+  [EStatDamageKey.CRIT]: "Crit",
+  [EStatDamageKey.NON_CRIT]: "Non-crit",
+};
+
 interface ResultsDisplayProps {
   activeSetupName: string;
 }
@@ -42,12 +48,14 @@ export function ResultsDisplay({ activeSetupName }: ResultsDisplayProps) {
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
           <select
-            className="text-center text-lightgold"
+            className="text-lightgold"
             value={focus}
             onChange={(e) => setFocus(e.target.value as EStatDamageKey)}
           >
             {Object.values(EStatDamageKey).map((opt) => (
-              <option key={opt}>{opt}</option>
+              <option key={opt} value={opt}>
+                {FOCUS_LABELS[opt]}
+              </option>
             ))}
           </select>
         </div>

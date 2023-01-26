@@ -1,13 +1,17 @@
 // Hook
-import { useSelector } from "@Store/hooks";
+import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { findById } from "@Src/utils";
 
+// Action
+import { updateUI } from "@Store/uiSlice";
+
 // Component
-import { ResultsDisplay } from "./ResultsDisplay";
-import { Menu } from "./Menu";
+import { Modal } from "@Components/molecules";
 import { TrackerModal } from "../TrackerModal";
+import { Menu } from "./Menu";
+import { ResultsDisplay } from "./ResultsDisplay";
 
 export default function DamageResults() {
   const activeSetupName = useSelector((state) => {
@@ -19,17 +23,29 @@ export default function DamageResults() {
     <div className="h-full">
       <Menu />
       <ResultsDisplay activeSetupName={activeSetupName} />
-      {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
-      {/* {window.innerWidth < 1050 && trackerState > 0 && (
-        <MobileNavBtn
-          className={cn({ showing: trackerState > 0 })}
-          style={{ position: "fixed", top: 0, right: 0 }}
-          onClick={() => setTrackerState(1)}
-        >
-          <FaSearch size="1.25rem" />
-        </MobileNavBtn>
-      )} */}
+      <EnlargedDisplay activeSetupName={activeSetupName} />
       <TrackerModal activeSetupName={activeSetupName} />
     </div>
+  );
+}
+
+interface EnlargedDisplayProps {
+  activeSetupName: string;
+}
+function EnlargedDisplay({ activeSetupName }: EnlargedDisplayProps) {
+  const dispatch = useDispatch();
+  const resultsEnlarged = useSelector((state) => state.ui.resultsEnlarged);
+
+  return (
+    <Modal
+      active={resultsEnlarged}
+      className="p-4 pt-2 rounded-lg shadow-white-glow bg-darkblue-3 custom-scrollbar max-w-95"
+      style={{
+        height: "80vh",
+      }}
+      onClose={() => dispatch(updateUI({ resultsEnlarged: false }))}
+    >
+      <ResultsDisplay activeSetupName={activeSetupName} />
+    </Modal>
   );
 }
