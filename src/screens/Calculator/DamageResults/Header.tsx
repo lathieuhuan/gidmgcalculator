@@ -1,11 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { FaExpandArrowsAlt, FaMinus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
 // Component
-import { Modal } from "@Components/molecules";
-import TrackerContainer from "./TrackerContainer";
-import { TrackerState } from "./types";
+import { TrackerModal, type TrackerModalState } from "@Screens/Calculator/TrackerModal";
 
 interface HeaderProps {
   activeSetupName: string;
@@ -13,11 +11,11 @@ interface HeaderProps {
 export function Header({ activeSetupName }: HeaderProps) {
   const [menuDropped, setMenuDropped] = useState(false);
   const [enlargedOn, setEnlargedOn] = useState(false);
-  const [trackerState, setTrackerState] = useState<TrackerState>("CLOSE");
+  const [trackerState, setTrackerState] = useState<TrackerModalState>("CLOSE");
 
   useEffect(() => {
     const handleClickOutsideMenu = (e: any) => {
-      if (menuDropped && !e.target?.closest(`#gidc-damage-result-menu`)) {
+      if (menuDropped && !e.target?.closest(`#damage-result-menu`)) {
         setMenuDropped(false);
       }
     };
@@ -41,7 +39,7 @@ export function Header({ activeSetupName }: HeaderProps) {
 
   return (
     <Fragment>
-      <div id="gidc-damage-result-menu" className="absolute top-2 right-2 w-8">
+      <div id="damage-result-menu" className="absolute top-2 right-2 w-8">
         <button
           className={
             "w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green text-black" : "")
@@ -57,12 +55,15 @@ export function Header({ activeSetupName }: HeaderProps) {
             (menuDropped ? "" : " max-h-0")
           }
         >
-          <div className="py-1">
+          <div className="py-1 flex flex-col">
             {menuItems.map((item, i) => {
               return (
                 <button
                   key={i}
-                  className="px-2 py-1 flex items-center font-medium hover:bg-lesser"
+                  className={
+                    "px-2 py-1 flex items-center font-medium " +
+                    (!i && trackerState === "HIDDEN" ? "bg-green" : "hover:bg-lesser")
+                  }
                   onClick={() => {
                     item.onClick();
                     setMenuDropped(false);
@@ -77,35 +78,11 @@ export function Header({ activeSetupName }: HeaderProps) {
         </div>
       </div>
 
-      <Modal
-        active={trackerState === "OPEN"}
-        withDefaultStyle
-        onClose={() => setTrackerState("CLOSE")}
-      >
-        <div className="p-4 h-full relative flex flex-col">
-          <div className="absolute top-1 right-1 flex space-x-2 text-xl">
-            <button
-              className="w-8 h-8 flex-center hover:text-lightgold"
-              // onClick={() => setTrackerState("CLOSE")}
-            >
-              <FaMinus />
-            </button>
-            <button
-              className="w-8 h-8 flex-center hover:text-darkred"
-              onClick={() => setTrackerState("CLOSE")}
-            >
-              <FaTimes />
-            </button>
-          </div>
-
-          <p className="flex items-center md1:justify-center">
-            <span className="md1:text-xl md2:text-2xl text-orange font-bold">Tracking Results</span>{" "}
-            <span className="ml-2 text-lesser">({activeSetupName})</span>
-          </p>
-
-          <TrackerContainer trackerState={trackerState} />
-        </div>
-      </Modal>
+      <TrackerModal
+        activeSetupName={activeSetupName}
+        trackerState={trackerState}
+        onChangeTrackerState={setTrackerState}
+      />
     </Fragment>
   );
 }

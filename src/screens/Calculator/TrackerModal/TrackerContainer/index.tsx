@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AttackPattern, Tracker } from "@Src/types";
-import type { TrackerState } from "../types";
+import type { TrackerModalState } from "../types";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -24,7 +24,7 @@ import { DebuffsTracker } from "./DebuffsTracker";
 import { DamageTracker } from "./DamageTracker";
 
 interface TrackerContainerProps {
-  trackerState: TrackerState;
+  trackerState: TrackerModalState;
 }
 export default function TrackerContainer({ trackerState }: TrackerContainerProps) {
   const activeSetup = useSelector((state) => {

@@ -42,7 +42,7 @@ export function Modal({
       setTimeout(() => {
         setState((prev) => ({ ...prev, animate: true }));
       }, 50);
-    } else if (active === false && state.active) {
+    } else if (!active && state.active) {
       closeModal();
     }
   }, [active, state.active]);
