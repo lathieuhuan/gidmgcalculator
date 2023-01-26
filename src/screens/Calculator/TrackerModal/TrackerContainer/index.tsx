@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AttackPattern, Tracker } from "@Src/types";
-import type { TrackerModalState } from "../types";
+import type { TrackerModalState } from "@Store/uiSlice/types";
 
 // Hook
 import { useSelector } from "@Store/hooks";

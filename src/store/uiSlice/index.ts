@@ -7,6 +7,8 @@ const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   introOn: true,
   settingsOn: false,
+  resultsEnlarged: false,
+  trackerModalState: "CLOSE",
   importInfo: {},
 };
 

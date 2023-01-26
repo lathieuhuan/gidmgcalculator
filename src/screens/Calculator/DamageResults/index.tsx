@@ -6,7 +6,8 @@ import { findById } from "@Src/utils";
 
 // Component
 import { ResultsDisplay } from "./ResultsDisplay";
-import { Header } from "./Header";
+import { Menu } from "./Menu";
+import { TrackerModal } from "../TrackerModal";
 
 export default function DamageResults() {
   const activeSetupName = useSelector((state) => {
@@ -16,7 +17,7 @@ export default function DamageResults() {
 
   return (
     <div className="h-full">
-      <Header activeSetupName={activeSetupName} />
+      <Menu />
       <ResultsDisplay activeSetupName={activeSetupName} />
       {/* {enlarged && <EnlargedInner name={name} close={() => setEnlargedOn(false)} />} */}
       {/* {window.innerWidth < 1050 && trackerState > 0 && (
@@ -28,6 +29,7 @@ export default function DamageResults() {
           <FaSearch size="1.25rem" />
         </MobileNavBtn>
       )} */}
+      <TrackerModal activeSetupName={activeSetupName} />
     </div>
   );
 }
