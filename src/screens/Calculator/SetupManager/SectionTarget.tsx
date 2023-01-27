@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
-import { FaChevronDown, FaEdit, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaEdit } from "react-icons/fa";
 
 // Util
 import { getTargetData } from "@Src/utils/setup";
@@ -15,7 +15,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { IconButton } from "@Components/atoms";
+import { CloseButton, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TargetConfig } from "./modal-content";
 
@@ -39,9 +39,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
         )}
       >
         <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-lesser space-y-1">
-          <IconButton className="hover:text-darkred" boneOnly onClick={onMove}>
-            <FaTimes />
-          </IconButton>
+          <CloseButton boneOnly onClick={onMove} />
           <IconButton
             className="pl-1 hover:text-lightgold"
             boneOnly

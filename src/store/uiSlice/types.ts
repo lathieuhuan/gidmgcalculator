@@ -5,7 +5,6 @@ export type TrackerModalState = "HIDDEN" | "CLOSE" | "OPEN";
 
 export interface UIState {
   atScreen: EScreen;
-  introOn: boolean;
   settingsOn: boolean;
   resultsEnlarged: boolean;
   trackerModalState: TrackerModalState;

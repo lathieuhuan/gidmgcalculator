@@ -37,8 +37,7 @@ export function ItemThumb({
     return (
       <div
         className={clsx(
-          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/50 border-2 border-white rounded-circle",
-          // isLoaded.ownerIcon ? [styles["side-icon"], !sideIcon && "beta overflow-hidden"] : "hidden"
+          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
           styles["side-icon"],
           !sideIcon && "beta overflow-hidden"
         )}

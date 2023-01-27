@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 
@@ -6,76 +5,86 @@ import { FaBars } from "react-icons/fa";
 import { Modal } from "@Components/molecules";
 import { IntroButton, DownloadButton, UploadButton } from "./atoms";
 import { NavTabs } from "./molecules";
+import { Intro } from "./Intro";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
 
 export function NavBar() {
-  const [loadOptionType, setLoadOptionType] = useState<"UP" | "DOWN" | "">("");
+  const [modalType, setModalType] = useState<"UPLOAD" | "DOWNLOAD" | "INTRO" | "">("");
   const [navBarMenuActive, setNavBarMenuActive] = useState(false);
 
   const optionClassName = "px-6 py-2 border-b border-white/40 last:rounded-b";
 
-  const onClickUpload = () => setLoadOptionType("UP");
+  const onClickIntro = () => setModalType("INTRO");
 
-  const onClickDownload = () => setLoadOptionType("DOWN");
+  const onClickUpload = () => setModalType("UPLOAD");
 
-  const closeLoadOptions = () => setLoadOptionType("");
+  const onClickDownload = () => setModalType("DOWNLOAD");
+
+  const closeModal = () => setModalType("");
 
   return (
     <div className="bg-black/60">
-      <div className="hidden lg:flex justify-between">
+      {window.innerWidth > 1025 ? (
+        <div className="flex justify-between">
+          <div className="flex">
+            <NavTabs className="px-2 py-1" />
+          </div>
+
+          <div className="px-1 flex bg-darkblue-3">
+            <IntroButton className="px-2 py-1" onClick={onClickIntro} />
+            <DownloadButton className="px-2 py-1" onClick={onClickDownload} />
+            <UploadButton className="px-2 py-1" onClick={onClickUpload} />
+          </div>
+        </div>
+      ) : (
         <div className="flex">
-          <NavTabs className="px-2 py-1" />
+          <div className="ml-auto relative">
+            <button
+              className={
+                "flex-center w-10 h-10 text-2xl " +
+                (navBarMenuActive ? "bg-darkblue-1 text-green" : "bg-darkblue-3 text-default")
+              }
+              onClick={() => setNavBarMenuActive(true)}
+            >
+              <FaBars />
+            </button>
+          </div>
         </div>
+      )}
 
-        <div className="px-1 flex bg-darkblue-3">
-          <IntroButton className="px-2 py-1" />
-          <DownloadButton className="px-2 py-1" onClick={onClickDownload} />
-          <UploadButton className="px-2 py-1" onClick={onClickUpload} />
-        </div>
-      </div>
-
-      <div className="flex lg:hidden">
-        <div className="mr-auto relative">
-          <button
-            className={clsx(
-              "flex-center w-10 h-10 text-2xl",
-              navBarMenuActive ? "bg-darkblue-1 text-green" : "bg-darkblue-3 text-default"
-            )}
-            onClick={() => setNavBarMenuActive(true)}
-          >
-            <FaBars />
-          </button>
-        </div>
-      </div>
+      <Intro active={modalType === "INTRO"} onClose={closeModal} />
 
       <Modal
         active={navBarMenuActive}
         className="rounded flex flex-col shadow-white-glow text-default"
         onClose={() => setNavBarMenuActive(false)}
       >
-        <IntroButton className={optionClassName + " rounded-t bg-darkblue-3"} />
+        <IntroButton
+          className={optionClassName + " rounded-t bg-darkblue-3"}
+          onClick={onClickIntro}
+        />
         <NavTabs className={optionClassName} onClickTab={() => setNavBarMenuActive(false)} />
         <DownloadButton className={optionClassName} onClick={onClickUpload} />
         <UploadButton className={optionClassName} onClick={onClickDownload} />
       </Modal>
 
       <Modal
-        active={loadOptionType === "DOWN"}
+        active={modalType === "DOWNLOAD"}
         className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow max-w-95"
         style={{ width: "28rem" }}
-        onClose={closeLoadOptions}
+        onClose={closeModal}
       >
-        <DownloadOptions onClose={closeLoadOptions} />
+        <DownloadOptions onClose={closeModal} />
       </Modal>
 
       <Modal
-        active={loadOptionType === "UP"}
+        active={modalType === "UPLOAD"}
         className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow max-w-95"
         style={{ width: "28rem" }}
-        onClose={closeLoadOptions}
+        onClose={closeModal}
       >
-        <UploadOptions onClose={closeLoadOptions} />
+        <UploadOptions onClose={closeModal} />
       </Modal>
     </div>
   );

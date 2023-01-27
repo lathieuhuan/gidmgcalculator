@@ -33,6 +33,7 @@ export const Menu = () => {
     {
       icon: FaSearch,
       text: "Tracker",
+      className: "flex " + (trackerModalState === "HIDDEN" ? "bg-green" : "hover:bg-lesser"),
       onClick: () => {
         dispatch(
           updateUI({
@@ -44,6 +45,7 @@ export const Menu = () => {
     {
       icon: FaExpandArrowsAlt,
       text: "Expand",
+      className: "hover:bg-lesser hidden md1:flex",
       onClick: () => dispatch(updateUI({ resultsEnlarged: true })),
     },
   ];
@@ -73,10 +75,7 @@ export const Menu = () => {
             return (
               <button
                 key={i}
-                className={
-                  "px-2 py-1 flex items-center font-medium " +
-                  (!i && trackerModalState === "HIDDEN" ? "bg-green" : "hover:bg-lesser")
-                }
+                className={"px-2 py-1 items-center font-medium " + (item.className || "")}
                 onClick={() => {
                   item.onClick();
                   setMenuDropped(false);

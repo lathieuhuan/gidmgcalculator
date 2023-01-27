@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Cryo, Gold, Green, Red, Rose } from "@Components/atoms";
+import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import {
   blackcliffSeries,
@@ -186,7 +186,7 @@ const purpleBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            When <Gold>Aloy</Gold> equips Predator, <Green>ATK</Green> is increased by{" "}
+            When <Lightgold>Aloy</Lightgold> equips Predator, <Green>ATK</Green> is increased by{" "}
             <Green b>66</Green>. {this.extra?.[0]}
           </>
         );

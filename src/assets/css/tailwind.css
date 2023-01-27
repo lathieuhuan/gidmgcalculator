@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
+@layer base {
   option {
     color: black;
   }
@@ -14,6 +14,12 @@
   select {
     background: transparent;
   }
+  a {
+    @apply text-green;
+  }
+}
+
+@layer components {
   .textinput-common {
     @apply leading-tight text-black rounded bg-default focus:bg-green focus:placeholder:text-darkblue-3;
   }

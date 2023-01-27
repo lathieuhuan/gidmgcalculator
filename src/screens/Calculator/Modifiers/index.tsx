@@ -36,33 +36,51 @@ export default function Modifiers() {
         {activeIndex ? (
           <CollapseList
             key="buff"
-            headingList={[
-              "Resonance & Reactions",
-              "Self",
-              "Party",
-              "Weapons",
-              "Artifacts",
-              "Custom",
-            ]}
-            contentList={[
-              <ElementBuffs />,
-              <SelfBuffs />,
-              <PartyBuffs />,
-              <WeaponBuffs />,
-              <ArtifactBuffs />,
-              <CustomModifiers isBuffs />,
+            list={[
+              { heading: "Resonance & Reactions", body: <ElementBuffs /> },
+              {
+                heading: "Self",
+                body: <SelfBuffs />,
+              },
+              {
+                heading: "Party",
+                body: <PartyBuffs />,
+              },
+              {
+                heading: "Weapons",
+                body: <WeaponBuffs />,
+              },
+              {
+                heading: "Artifacts",
+                body: <ArtifactBuffs />,
+              },
+              {
+                heading: "Custom",
+                body: <CustomModifiers isBuffs />,
+              },
             ]}
           />
         ) : (
           <CollapseList
             key="debuff"
-            headingList={["Resonance & Reactions", "Self", "Party", "Artifacts", "Custom"]}
-            contentList={[
-              <ElementDebuffs />,
-              <SelfDebuffs partyData={partyData} />,
-              <PartyDebuffs partyData={partyData} />,
-              <ArtifactDebuffs />,
-              <CustomModifiers isBuffs={false} />,
+            list={[
+              { heading: "Resonance & Reactions", body: <ElementDebuffs /> },
+              {
+                heading: "Self",
+                body: <SelfDebuffs partyData={partyData} />,
+              },
+              {
+                heading: "Party",
+                body: <PartyDebuffs partyData={partyData} />,
+              },
+              {
+                heading: "Artifacts",
+                body: <ArtifactDebuffs />,
+              },
+              {
+                heading: "Custom",
+                body: <CustomModifiers isBuffs={false} />,
+              },
             ]}
           />
         )}

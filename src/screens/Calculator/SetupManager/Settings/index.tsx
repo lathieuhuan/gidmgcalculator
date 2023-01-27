@@ -294,11 +294,11 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
             It can make things complicated.
           </p>
           <p>
-            - When Separate Character's Info is deactivated. Info on the Standard Setup will be used
+            - When Separate Character's Info is deactivated. Info on the current Setup will be used
             for others.
           </p>
           <p>
-            - Separate Character's Info will be reset to not activated at the start of every
+            - Separate Character's Info will be reset to NOT activated at the start of every
             calculating session.
           </p>
         </div>

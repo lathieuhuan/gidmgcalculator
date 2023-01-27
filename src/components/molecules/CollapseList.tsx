@@ -3,14 +3,18 @@ import { type ReactNode, useState } from "react";
 import { CollapseSpace } from "../atoms";
 
 interface CollapseListProps {
-  headingList: string[];
-  contentList: ReactNode[];
+  list: Array<{
+    heading: string;
+    body: ReactNode;
+  }>;
+  // headingList: string[];
+  // contentList: ReactNode[];
 }
-export function CollapseList({ headingList, contentList }: CollapseListProps) {
+export function CollapseList({ list }: CollapseListProps) {
   const [expanded, setExpanded] = useState<(boolean | undefined)[]>([]);
   return (
     <div>
-      {headingList.map((heading, i) => (
+      {list.map(({ heading, body }, i) => (
         <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
           <p
             className={clsx(
@@ -28,7 +32,7 @@ export function CollapseList({ headingList, contentList }: CollapseListProps) {
             {heading}
           </p>
           <CollapseSpace active={!!expanded[i]}>
-            <div className="pr-4 pl-2">{contentList[i]}</div>
+            <div className="pr-4 pl-2">{body}</div>
           </CollapseSpace>
         </div>
       ))}

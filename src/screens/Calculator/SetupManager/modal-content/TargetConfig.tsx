@@ -79,7 +79,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
       className="pl-5 pr-2 pt-4 pb-2 bg-darkblue-1 flex flex-col rounded-lg shadow-white-glow overflow-auto"
       style={{ height: "90vh" }}
     >
-      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
+      <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
       <p className="text-1.5xl text-orange font-bold" onDoubleClick={() => console.log(target)}>
         Target Config
       </p>
@@ -216,7 +216,6 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
           <p className="mt-4 pr-1 text-default">
             You can search for your target's Resistances on{" "}
             <a
-              className="text-green"
               href="https://genshin-impact.fandom.com/wiki/Resistance#Base_Enemy_Resistances"
               rel="noreferrer"
               target="_blank"

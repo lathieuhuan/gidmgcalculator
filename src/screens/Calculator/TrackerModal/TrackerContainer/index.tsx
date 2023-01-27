@@ -89,38 +89,58 @@ export default function TrackerContainer({ trackerState }: TrackerContainerProps
       onDoubleClick={() => console.log(result)}
     >
       <CollapseList
-        headingList={[
-          "Attributes",
-          "Bonuses",
-          "Debuffs on Target",
-          "Normal Attacks",
-          "Elemental Skill",
-          "Elemental Burst",
-          "Reactions",
-        ]}
-        contentList={[
-          <AttributesTracker totalAttr={totalAttr} />,
-          <BonusesTracker
-            {...{ attPattBonus, attElmtBonus, rxnBonus }}
-            em={getTotalRecordValue(totalAttr?.em || [])}
-          />,
-          <DebuffsTracker resistReduct={result?.resistReduct} />,
-          <DamageTracker
-            records={result?.NAs}
-            calcDmgResult={dmgResult.NAs}
-            defMultDisplay={renderDefMultiplier("NA")}
-          />,
-          <DamageTracker
-            records={result?.ES}
-            calcDmgResult={dmgResult.ES}
-            defMultDisplay={renderDefMultiplier("ES")}
-          />,
-          <DamageTracker
-            records={result?.EB}
-            calcDmgResult={dmgResult.EB}
-            defMultDisplay={renderDefMultiplier("EB")}
-          />,
-          <DamageTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
+        list={[
+          {
+            heading: "Attributes",
+            body: <AttributesTracker totalAttr={totalAttr} />,
+          },
+          {
+            heading: "Bonuses",
+            body: (
+              <BonusesTracker
+                {...{ attPattBonus, attElmtBonus, rxnBonus }}
+                em={getTotalRecordValue(totalAttr?.em || [])}
+              />
+            ),
+          },
+          {
+            heading: "Debuffs on Target",
+            body: <DebuffsTracker resistReduct={result?.resistReduct} />,
+          },
+          {
+            heading: "Normal Attacks",
+            body: (
+              <DamageTracker
+                records={result?.NAs}
+                calcDmgResult={dmgResult.NAs}
+                defMultDisplay={renderDefMultiplier("NA")}
+              />
+            ),
+          },
+          {
+            heading: "Elemental Skill",
+            body: (
+              <DamageTracker
+                records={result?.ES}
+                calcDmgResult={dmgResult.ES}
+                defMultDisplay={renderDefMultiplier("ES")}
+              />
+            ),
+          },
+          {
+            heading: "Elemental Burst",
+            body: (
+              <DamageTracker
+                records={result?.EB}
+                calcDmgResult={dmgResult.EB}
+                defMultDisplay={renderDefMultiplier("EB")}
+              />
+            ),
+          },
+          {
+            heading: "Reactions",
+            body: <DamageTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
+          },
         ]}
       />
     </div>

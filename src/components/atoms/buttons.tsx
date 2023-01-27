@@ -83,12 +83,25 @@ export const InfoSign = (props: InfoSignProps) => {
 export interface CloseButtonProps {
   size?: string;
   noGlow?: boolean;
+  boneOnly?: boolean;
   className?: string;
   onClick?: () => void;
 }
-export const CloseButton = ({ className, size = "w-7 h-7", ...rest }: CloseButtonProps) => {
+export const CloseButton = ({ className, size, boneOnly, ...rest }: CloseButtonProps) => {
+  if (boneOnly) {
+    return (
+      <IconButton
+        className={"text-default hover:text-darkred text-xl " + className}
+        size={size || "w-8 h-8"}
+        variant="custom"
+        {...rest}
+      >
+        <FaTimes />
+      </IconButton>
+    );
+  }
   return (
-    <IconButton className={className} size={size} variant="negative" {...rest}>
+    <IconButton className={className} size={size || "w-7 h-7"} variant="negative" {...rest}>
       <FaTimes />
     </IconButton>
   );

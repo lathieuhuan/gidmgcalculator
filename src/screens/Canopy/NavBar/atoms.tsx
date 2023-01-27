@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
 import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
-import { useDispatch } from "@Store/hooks";
-import { updateUI } from "@Store/uiSlice";
 
 interface ButtonProps {
   className?: string;
@@ -32,14 +30,9 @@ export const NavButton = ({ className = "", isActive, ...rest }: NavButtonProps)
   );
 };
 
-export const IntroButton = ({ className = "" }: ButtonProps) => {
-  const dispatch = useDispatch();
-
+export const IntroButton = ({ className = "", onClick }: ButtonProps) => {
   return (
-    <NavButton
-      className={"group " + className}
-      onClick={() => dispatch(updateUI({ introOn: true }))}
-    >
+    <NavButton className={"group " + className} onClick={onClick}>
       <FaInfoCircle size="1.125rem" />
       <span className="ml-2">Introduction</span>
     </NavButton>
