@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const YaeMiko: DataCharacter = {
   code: 49,
   name: "Yae Miko",
   // icon: "5/57/Character_Yae_Miko_Thumb",
-  icon: CHARACTER_IMAGES.YaeMiko,
+  icon: "b/ba/Yae_Miko_Icon",
   sideIcon: "2/25/Character_Yae_Miko_Side_Icon",
   rarity: 5,
   nation: "inazuma",

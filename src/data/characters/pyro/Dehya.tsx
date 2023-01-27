@@ -8,8 +8,9 @@ import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Dehya: DataCharacter = {
   code: 68,
+  beta: true,
   name: "Dehya",
-  icon: "",
+  icon: "https://i.ibb.co/kGzXzJH/dehya.png",
   sideIcon: "",
   rarity: 5,
   nation: "sumeru",

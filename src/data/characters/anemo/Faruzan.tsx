@@ -6,7 +6,6 @@ import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
-import { CHARACTER_IMAGES } from "@Data/constants";
 
 interface GetWindGiftBuffValueArgs {
   toSelf: boolean;
@@ -25,7 +24,7 @@ const Faruzan: DataCharacter = {
   code: 64,
   name: "Faruzan",
   // icon: "a/a1/Character_Faruzan_Thumb",
-  icon: CHARACTER_IMAGES.Faruzan,
+  icon: "b/b2/Faruzan_Icon",
   sideIcon: "0/00/Character_Faruzan_Side_Icon",
   rarity: 4,
   nation: "sumeru",

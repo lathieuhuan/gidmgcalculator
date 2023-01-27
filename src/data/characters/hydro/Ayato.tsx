@@ -8,7 +8,6 @@ import type {
 } from "@Src/types";
 import { Green, Hydro, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { MEDIUM_PAs, EModSrc } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -59,7 +58,7 @@ const Ayato: DataCharacter = {
   name: "Ayato",
   GOOD: "KamisatoAyato",
   // icon: "a/a2/Character_Kamisato_Ayato_Thumb",
-  icon: CHARACTER_IMAGES.Ayato,
+  icon: "2/27/Kamisato_Ayato_Icon",
   sideIcon: "a/ab/Character_Kamisato_Ayato_Side_Icon",
   rarity: 5,
   nation: "inazuma",

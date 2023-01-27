@@ -1,7 +1,7 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
+import { NCPA_PERCENTS } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -11,7 +11,7 @@ const Thoma: DataCharacter = {
   code: 43,
   name: "Thoma",
   // icon: "8/8a/Character_Thoma_Thumb",
-  icon: CHARACTER_IMAGES.Thoma,
+  icon: "5/5b/Thoma_Icon",
   sideIcon: "4/46/Character_Thoma_Side_Icon",
   rarity: 4,
   nation: "inazuma",

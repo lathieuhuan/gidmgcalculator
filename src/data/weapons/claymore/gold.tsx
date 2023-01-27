@@ -10,7 +10,7 @@ const goldClaymores: DataWeapon[] = [
   {
     code: 151,
     name: "Beacon of the Reed Sea",
-    icon: "",
+    icon: "https://i.ibb.co/VtnjT3D/beacon-of-the-reed-sea.png",
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate", scale: "7.2%" },

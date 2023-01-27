@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
@@ -10,7 +9,7 @@ const Diona: DataCharacter = {
   code: 24,
   name: "Diona",
   // icon: "b/b9/Character_Diona_Thumb",
-  icon: CHARACTER_IMAGES.Diona,
+  icon: "4/40/Diona_Icon",
   sideIcon: "c/c2/Character_Diona_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

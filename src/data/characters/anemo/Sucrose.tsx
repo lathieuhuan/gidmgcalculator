@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Red } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Sucrose: DataCharacter = {
   code: 3,
   name: "Sucrose",
   // icon: "6/61/Character_Sucrose_Thumb",
-  icon: CHARACTER_IMAGES.Sucrose,
+  icon: "0/0e/Sucrose_Icon",
   sideIcon: "4/4f/Character_Sucrose_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

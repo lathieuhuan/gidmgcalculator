@@ -1,7 +1,7 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
+import { NCPA_PERCENTS } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
@@ -24,7 +24,7 @@ const Shenhe: DataCharacter = {
   code: 47,
   name: "Shenhe",
   // icon: "5/58/Character_Shenhe_Thumb",
-  icon: CHARACTER_IMAGES.Shenhe,
+  icon: "a/af/Shenhe_Icon",
   sideIcon: "8/8d/Character_Shenhe_Side_Icon",
   rarity: 5,
   nation: "liyue",

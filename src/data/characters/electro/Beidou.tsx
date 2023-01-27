@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Beidou: DataCharacter = {
   code: 6,
   name: "Beidou",
   // icon: "6/61/Character_Beidou_Thumb",
-  icon: CHARACTER_IMAGES.Beidou,
+  icon: "e/e1/Beidou_Icon",
   sideIcon: "5/54/Character_Beidou_Side_Icon",
   rarity: 4,
   nation: "liyue",

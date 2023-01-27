@@ -1,7 +1,6 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { round } from "@Src/utils";
@@ -17,7 +16,7 @@ const Yoimiya: DataCharacter = {
   code: 38,
   name: "Yoimiya",
   // icon: "0/05/Character_Yoimiya_Thumb",
-  icon: CHARACTER_IMAGES.Yoimiya,
+  icon: "8/88/Yoimiya_Icon",
   sideIcon: "5/5f/Character_Yoimiya_Side_Icon",
   rarity: 5,
   nation: "inazuma",

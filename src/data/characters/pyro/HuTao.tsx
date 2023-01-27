@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Pyro } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -13,7 +12,7 @@ const HuTao: DataCharacter = {
   name: "Hu Tao",
   GOOD: "HuTao",
   // icon: "a/a4/Character_Hu_Tao_Thumb",
-  icon: CHARACTER_IMAGES.HuTao,
+  icon: "e/e9/Hu_Tao_Icon",
   sideIcon: "7/78/Character_Hu_Tao_Side_Icon",
   rarity: 5,
   nation: "liyue",

@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Collei: DataCharacter = {
   code: 55,
   name: "Collei",
   // icon: "9/9e/Character_Collei_Thumb",
-  icon: CHARACTER_IMAGES.Collei,
+  icon: "a/a2/Collei_Icon",
   sideIcon: "a/a8/Character_Collei_Side_Icon",
   rarity: 4,
   nation: "sumeru",

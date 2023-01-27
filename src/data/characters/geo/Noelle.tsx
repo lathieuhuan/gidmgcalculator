@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Geo, Green, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -12,7 +11,7 @@ const Noelle: DataCharacter = {
   code: 14,
   name: "Noelle",
   // icon: "a/ab/Character_Noelle_Thumb",
-  icon: CHARACTER_IMAGES.Noelle,
+  icon: "8/8e/Noelle_Icon",
   sideIcon: "5/5e/Character_Noelle_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

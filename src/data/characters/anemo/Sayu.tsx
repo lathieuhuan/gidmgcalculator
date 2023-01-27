@@ -3,7 +3,6 @@ import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { charModIsInUse, checkCons, findInput, talentBuff } from "../utils";
-import { CHARACTER_IMAGES } from "@Data/constants";
 
 const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
@@ -24,7 +23,7 @@ const Sayu: DataCharacter = {
   code: 36,
   name: "Sayu",
   // icon: "e/ec/Character_Sayu_Thumb",
-  icon: CHARACTER_IMAGES.Sayu,
+  icon: "2/22/Sayu_Icon",
   sideIcon: "4/4a/Character_Sayu_Side_Icon",
   rarity: 4,
   nation: "inazuma",

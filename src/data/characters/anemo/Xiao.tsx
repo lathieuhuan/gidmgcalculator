@@ -2,11 +2,11 @@ import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { NCPA_PERCENTS } from "@Data/constants";
 import { EModSrc, HEAVIER_PAs } from "../constants";
 import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
-import { CHARACTER_IMAGES, NCPA_PERCENTS } from "@Data/constants";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, dataChar: Xiao, talentType: "EB", partyData });
@@ -17,7 +17,7 @@ const Xiao: DataCharacter = {
   code: 30,
   name: "Xiao",
   // icon: "b/b9/Character_Xiao_Thumb",
-  icon: CHARACTER_IMAGES.Xiao,
+  icon: "f/fd/Xiao_Icon",
   sideIcon: "8/83/Character_Xiao_Side_Icon",
   rarity: 5,
   nation: "liyue",

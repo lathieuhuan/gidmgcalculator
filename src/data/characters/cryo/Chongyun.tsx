@@ -4,13 +4,12 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
-import { CHARACTER_IMAGES } from "@Data/constants";
 
 const Chongyun: DataCharacter = {
   code: 4,
   name: "Chongyun",
   // icon: "6/68/Character_Chongyun_Thumb",
-  icon: CHARACTER_IMAGES.Chongyun,
+  icon: "3/35/Chongyun_Icon",
   sideIcon: "c/cc/Character_Chongyun_Side_Icon",
   rarity: 4,
   nation: "liyue",

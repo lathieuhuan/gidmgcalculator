@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
@@ -11,7 +10,7 @@ const Yelan: DataCharacter = {
   code: 51,
   name: "Yelan",
   // icon: "a/a8/Character_Yelan_Thumb",
-  icon: CHARACTER_IMAGES.Yelan,
+  icon: "d/d3/Yelan_Icon",
   sideIcon: "9/9c/Character_Yelan_Side_Icon",
   rarity: 5,
   nation: "liyue",

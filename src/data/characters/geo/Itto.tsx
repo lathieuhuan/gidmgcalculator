@@ -1,7 +1,6 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Geo, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVIER_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
@@ -17,7 +16,7 @@ const Itto: DataCharacter = {
   name: "Itto",
   GOOD: "AratakiItto",
   // icon: "7/79/Character_Arataki_Itto_Thumb",
-  icon: CHARACTER_IMAGES.Itto,
+  icon: "7/7b/Arataki_Itto_Icon",
   sideIcon: "f/fe/Character_Arataki_Itto_Side_Icon",
   rarity: 5,
   nation: "inazuma",

@@ -20,7 +20,7 @@ const purpleClaymores: DataWeapon[] = [
   {
     code: 150,
     name: "Mailed Flower",
-    icon: "9/9b/Weapon_Missive_Windspear",
+    icon: "https://i.ibb.co/C2PZphf/mailed-flower.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },

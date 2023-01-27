@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
@@ -10,7 +9,7 @@ const Xinyan: DataCharacter = {
   code: 27,
   name: "Xinyan",
   // icon: "9/9d/Character_Xinyan_Thumb",
-  icon: CHARACTER_IMAGES.Xinyan,
+  icon: "2/24/Xinyan_Icon",
   sideIcon: "3/32/Character_Xinyan_Side_Icon",
   rarity: 4,
   nation: "liyue",

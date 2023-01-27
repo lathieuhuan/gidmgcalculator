@@ -1,7 +1,6 @@
 import type { AttributeStat, CharData, DataCharacter, PartyData } from "@Src/types";
 import { Geo, Green, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -20,7 +19,7 @@ const Gorou: DataCharacter = {
   code: 44,
   name: "Gorou",
   // icon: "5/56/Character_Gorou_Thumb",
-  icon: CHARACTER_IMAGES.Gorou,
+  icon: "f/fe/Gorou_Icon",
   sideIcon: "6/67/Character_Gorou_Side_Icon",
   rarity: 4,
   nation: "inazuma",

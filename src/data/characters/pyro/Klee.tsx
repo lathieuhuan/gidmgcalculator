@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Klee: DataCharacter = {
   code: 23,
   name: "Klee",
   // icon: "c/c3/Character_Klee_Thumb",
-  icon: CHARACTER_IMAGES.Klee,
+  icon: "9/9c/Klee_Icon",
   sideIcon: "c/c2/Character_Klee_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

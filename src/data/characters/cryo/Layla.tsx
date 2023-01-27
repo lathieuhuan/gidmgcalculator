@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -11,7 +10,7 @@ const Layla: DataCharacter = {
   code: 61,
   name: "Layla",
   // icon: "9/93/Character_Layla_Thumb",
-  icon: CHARACTER_IMAGES.Layla,
+  icon: "1/1a/Layla_Icon",
   sideIcon: "9/90/Character_Layla_Side_Icon",
   rarity: 4,
   nation: "sumeru",

@@ -1,7 +1,6 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier, type ReactionBonusPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -24,7 +23,7 @@ const Mona: DataCharacter = {
   code: 16,
   name: "Mona",
   // icon: "a/a0/Character_Mona_Thumb",
-  icon: CHARACTER_IMAGES.Mona,
+  icon: "4/41/Mona_Icon",
   sideIcon: "1/1a/Character_Mona_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

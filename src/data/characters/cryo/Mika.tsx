@@ -27,7 +27,7 @@ const Mika: DataCharacter = {
   code: 67,
   beta: true,
   name: "Mika",
-  icon: "",
+  icon: "https://i.ibb.co/PjXsMSt/mika.png",
   sideIcon: "",
   rarity: 4,
   nation: "mondstadt",

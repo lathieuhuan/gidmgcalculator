@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Cryo, Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -11,7 +10,7 @@ const Ayaka: DataCharacter = {
   name: "Ayaka",
   GOOD: "KamisatoAyaka",
   // icon: "f/fd/Character_Kamisato_Ayaka_Thumb",
-  icon: CHARACTER_IMAGES.Ayaka,
+  icon: "5/51/Kamisato_Ayaka_Icon",
   sideIcon: "c/c4/Character_Kamisato_Ayaka_Side_Icon",
   rarity: 5,
   nation: "inazuma",

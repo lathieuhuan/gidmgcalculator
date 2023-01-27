@@ -1,4 +1,3 @@
-import { CHARACTER_IMAGES } from "@Data/constants";
 import type { TalentStat } from "@Src/types";
 
 export enum EModSrc {
@@ -52,7 +51,7 @@ export const HEAVIER_PAs: TalentStat[] = [
 
 export const TRAVELER_INFO = {
   // icon: "7/71/Character_Traveler_Thumb",
-  icon: CHARACTER_IMAGES.Traveler,
+  icon: "5/59/Traveler_Icon",
   sideIcon: "3/35/Character_Lumine_Side_Icon",
   rarity: 5 as const,
   nation: "outland" as const,

@@ -1,7 +1,6 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
 import { Electro, Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
@@ -20,7 +19,7 @@ const Sara: DataCharacter = {
   name: "Kujou Sara",
   GOOD: "KujouSara",
   // icon: "9/96/Character_Kujou_Sara_Thumb",
-  icon: CHARACTER_IMAGES.Sara,
+  icon: "d/df/Kujou_Sara_Icon",
   sideIcon: "9/92/Character_Kujou_Sara_Side_Icon",
   rarity: 4,
   nation: "inazuma",

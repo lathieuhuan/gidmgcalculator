@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Venti: DataCharacter = {
   code: 22,
   name: "Venti",
   // icon: "8/8d/Character_Venti_Thumb",
-  icon: CHARACTER_IMAGES.Venti,
+  icon: "f/f1/Venti_Icon",
   sideIcon: "f/f7/Character_Venti_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, AttackPatternPath } from "@Src/utils/calculation";
@@ -11,7 +10,7 @@ const Zhongli: DataCharacter = {
   code: 25,
   name: "Zhongli",
   // icon: "c/c2/Character_Zhongli_Thumb",
-  icon: CHARACTER_IMAGES.Zhongli,
+  icon: "a/a6/Zhongli_Icon",
   sideIcon: "e/e1/Character_Zhongli_Side_Icon",
   rarity: 5,
   nation: "liyue",

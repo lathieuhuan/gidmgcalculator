@@ -1,7 +1,6 @@
 import type { AttributeStat, DataCharacter } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Diluc: DataCharacter = {
   code: 20,
   name: "Diluc",
   // icon: "0/02/Character_Diluc_Thumb",
-  icon: CHARACTER_IMAGES.Diluc,
+  icon: "3/3d/Diluc_Icon",
   sideIcon: "a/af/Character_Diluc_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

@@ -7,7 +7,6 @@ import type {
 } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
@@ -33,7 +32,7 @@ const Eula: DataCharacter = {
   code: 33,
   name: "Eula",
   // icon: "d/d3/Character_Eula_Thumb",
-  icon: CHARACTER_IMAGES.Eula,
+  icon: "a/af/Eula_Icon",
   sideIcon: "0/0d/Character_Eula_Side_Icon",
   rarity: 5,
   nation: "mondstadt",

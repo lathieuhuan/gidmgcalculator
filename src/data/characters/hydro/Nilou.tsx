@@ -1,7 +1,6 @@
 import type { CharData, DataCharacter, PartyData } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round, countVision } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
@@ -20,7 +19,7 @@ const Nilou: DataCharacter = {
   code: 60,
   name: "Nilou",
   // icon: "a/a5/Character_Nilou_Thumb",
-  icon: CHARACTER_IMAGES.Nilou,
+  icon: "5/58/Nilou_Icon",
   sideIcon: "a/a9/Character_Nilou_Side_Icon",
   rarity: 5,
   nation: "sumeru",

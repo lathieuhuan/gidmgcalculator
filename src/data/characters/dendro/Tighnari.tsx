@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Tighnari: DataCharacter = {
   code: 54,
   name: "Tighnari",
   // icon: "9/91/Character_Tighnari_Thumb",
-  icon: CHARACTER_IMAGES.Tighnari,
+  icon: "8/87/Tighnari_Icon",
   sideIcon: "a/a4/Character_Tighnari_Side_Icon",
   rarity: 5,
   nation: "sumeru",

@@ -6,7 +6,6 @@ import { EModSrc, LIGHT_PAs } from "../constants";
 import { round, findByIndex } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
-import { CHARACTER_IMAGES } from "@Data/constants";
 
 const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
   return findByIndex(charBuffCtrls, 1)?.inputs?.includes(2);
@@ -29,7 +28,7 @@ const Wanderer: DataCharacter = {
   code: 63,
   name: "Wanderer",
   // icon: "f/f2/Character_Wanderer_Thumb",
-  icon: CHARACTER_IMAGES.Wanderer,
+  icon: "f/f8/Wanderer_Icon",
   sideIcon: "5/54/Character_Wanderer_Side_Icon",
   rarity: 5,
   nation: "sumeru",

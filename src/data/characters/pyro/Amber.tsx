@@ -1,7 +1,6 @@
 import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
@@ -10,7 +9,7 @@ const Amber: DataCharacter = {
   code: 18,
   name: "Amber",
   // icon: "c/c6/Character_Amber_Thumb",
-  icon: CHARACTER_IMAGES.Amber,
+  icon: "7/75/Amber_Icon",
   sideIcon: "4/4f/Character_Amber_Side_Icon",
   rarity: 4,
   nation: "mondstadt",

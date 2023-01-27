@@ -1,14 +1,13 @@
 import type { DataCharacter } from "@Src/types";
 import { Green, Hydro } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import { CHARACTER_IMAGES } from "@Data/constants";
 import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 
 const Tartaglia: DataCharacter = {
   code: 26,
   name: "Tartaglia",
   // icon: "5/53/Character_Tartaglia_Thumb",
-  icon: CHARACTER_IMAGES.Tartaglia,
+  icon: "8/85/Tartaglia_Icon",
   sideIcon: "c/ca/Character_Tartaglia_Side_Icon",
   rarity: 5,
   nation: "snezhnaya",

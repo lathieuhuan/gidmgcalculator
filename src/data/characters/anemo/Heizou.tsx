@@ -4,13 +4,12 @@ import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
-import { CHARACTER_IMAGES } from "@Data/constants";
 
 const Heizou: DataCharacter = {
   code: 53,
   name: "Heizou",
   // icon: "e/e4/Character_Shikanoin_Heizou_Thumb",
-  icon: CHARACTER_IMAGES.Heizou,
+  icon: "2/20/Shikanoin_Heizou_Icon",
   sideIcon: "8/89/Character_Shikanoin_Heizou_Side_Icon",
   rarity: 4,
   nation: "inazuma",
