@@ -12,6 +12,7 @@ import Candace from "./hydro/Candace";
 import Collei from "./dendro/Collei";
 import Chongyun from "./cryo/Chongyun";
 import Cyno from "./electro/Cyno";
+import Dehya from "./pyro/Dehya";
 import DendroMC from "./dendro/DendroMC";
 import Diluc from "./pyro/Diluc";
 import Diona from "./cryo/Diona";
@@ -34,6 +35,7 @@ import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
 import Layla from "./cryo/Layla";
 import Lisa from "./electro/Lisa";
+import Mika from "./cryo/Mika";
 import Mona from "./hydro/Mona";
 import Nahida from "./dendro/Nahida";
 import Nilou from "./hydro/Nilou";
@@ -80,6 +82,7 @@ const characters = {
   Chongyun,
   Collei,
   Cyno,
+  Dehya,
   "Dendro Traveler": DendroMC,
   Diluc,
   Diona,
@@ -102,6 +105,7 @@ const characters = {
   Kokomi,
   Layla,
   Lisa,
+  Mika,
   Mona,
   Nahida,
   Nilou,

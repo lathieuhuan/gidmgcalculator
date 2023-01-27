@@ -130,7 +130,6 @@ const Sara: DataCharacter = {
 
         if ((toSelf && checkCons[6](obj.char)) || (!toSelf && obj.inputs[2])) {
           const descC6 = `${toSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
-
           applyModifier(descC6, obj.attElmtBonus, "electro.cDmg", 60, obj.tracker);
         }
       },

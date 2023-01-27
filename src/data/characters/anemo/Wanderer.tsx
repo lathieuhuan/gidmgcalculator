@@ -67,8 +67,8 @@ const Wanderer: DataCharacter = {
           attPatt: "none",
           multFactors: { root: 35, scale: 0 },
           getTalentBuff: ({ char, selfBuffCtrls }) => {
-            const ESisOn = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
-            return talentBuff([ESisOn && checkAscs[4](char), "mult", [true, 4], 25]);
+            const ESisInUse = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
+            return talentBuff([ESisInUse && checkAscs[4](char), "mult", [true, 4], 25]);
           },
         },
       ],
