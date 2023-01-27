@@ -8,6 +8,61 @@ import { makeWpModApplier } from "../utils";
 
 const goldClaymores: DataWeapon[] = [
   {
+    code: 151,
+    name: "Beacon of the Reed Sea",
+    icon: "",
+    rarity: 5,
+    mainStatScale: "46",
+    subStat: { type: "cRate", scale: "7.2%" },
+    passiveName: "Desert Watch",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After an Elemental Skill hits an opponent, your ATK will be increased by {15 + refi * 5}%
+          for 8s. After you take DMG, your ATK will be increased by {15 + refi * 5}% for 8s. The 2
+          aforementioned effects can be triggered even when the character is not on the field.
+          Additionally, when not protected by a shield, your character's Max HP will be increased by{" "}
+          {24 + refi * 8}%.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => (
+          <>
+            After an Elemental Skill hits an opponent, your <Green>ATK</Green> will be increased by{" "}
+            <Green b>{15 + refi * 5}%</Green> for 8s.
+          </>
+        ),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => (
+          <>
+            After you take DMG, your <Green>ATK</Green> will be increased by{" "}
+            <Green b>{15 + refi * 5}%</Green> for 8s.
+          </>
+        ),
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+      },
+      {
+        index: 2,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => (
+          <>
+            When not protected by a shield, your character's <Green>Max HP</Green> will be increased
+            by <Green b>{24 + refi * 8}%</Green>.
+          </>
+        ),
+        applyBuff: makeWpModApplier("totalAttr", "hp_", 32),
+      },
+    ],
+  },
+  {
     code: 53,
     name: "Song of Broken Pines",
     icon: "d/dd/Weapon_Song_of_Broken_Pines",

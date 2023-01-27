@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -41,7 +41,7 @@ function App() {
   //   };
   // }, []);
 
-  const renderTabContent = useCallback(() => {
+  const renderTabContent = () => {
     switch (atScreen) {
       case EScreen.MY_CHARACTERS:
         return <MyCharacters />;
@@ -54,7 +54,7 @@ function App() {
       default:
         return null;
     }
-  }, [atScreen]);
+  };
 
   return (
     <div className="App h-screen text-default bg-default flex flex-col">

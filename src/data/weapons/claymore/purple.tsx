@@ -18,6 +18,32 @@ import { makeWpModApplier } from "../utils";
 
 const purpleClaymores: DataWeapon[] = [
   {
+    code: 150,
+    name: "Mailed Flower",
+    icon: "9/9b/Weapon_Missive_Windspear",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "em", scale: "24" },
+    passiveName: "Whispers of Wind and Flower",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction,{" "}
+          <Green>ATK</Green> is increased by <Green b>{9 + refi * 3}%</Green> and{" "}
+          <Green>Elemental Mastery</Green> is increased by <Green b>{36 + refi * 12}</Green>.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 150)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [12, 48]),
+      },
+    ],
+  },
+  {
     code: 145,
     name: "Makhaira Aquamarine",
     icon: "9/90/Weapon_Makhaira_Aquamarine",
