@@ -11,14 +11,14 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 import { selectAtScreen } from "@Store/uiSlice/selectors";
 
-// Style
-import { navButtonStyles } from "./atoms";
+// Component
+import { NavButton } from "./atoms";
 
 interface NavTabsProps {
   className?: string;
   onClickTab?: () => void;
 }
-export function NavTabs({ className, onClickTab }: NavTabsProps) {
+export function NavTabs({ className = "", onClickTab }: NavTabsProps) {
   const atScreen = useSelector(selectAtScreen);
   const dispatch = useDispatch();
 
@@ -31,21 +31,17 @@ export function NavTabs({ className, onClickTab }: NavTabsProps) {
         EScreen.MY_SETUPS,
         EScreen.CALCULATOR,
       ].map((tab, i) => (
-        <button
+        <NavButton
           key={i}
-          className={clsx(
-            "font-bold",
-            className,
-            navButtonStyles.base,
-            tab === atScreen ? navButtonStyles.active : navButtonStyles.idle
-          )}
+          className={"font-bold " + className}
+          isActive={tab === atScreen}
           onClick={() => {
             dispatch(updateUI({ atScreen: tab }));
             onClickTab?.();
           }}
         >
           {tab}
-        </button>
+        </NavButton>
       ))}
     </Fragment>
   );

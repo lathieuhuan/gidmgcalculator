@@ -13,13 +13,14 @@ import {
 } from "@Store/userDatabaseSlice/selectors";
 
 // Util
-import { downloadToDevice, styles } from "./utils";
+import { downloadToDevice } from "./utils";
 
 // Component
 import { CloseButton } from "@Components/atoms";
-import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
+import { ButtonBar } from "@Components/molecules";
+import { LoadOption } from "./atoms";
 
-function Options({ onClose }: { onClose: () => void }) {
+export function DownloadOptions({ onClose }: { onClose: () => void }) {
   const [messageType, setMessageType] = useState(0);
   const userChars = useSelector(selectUserChars);
   const userWps = useSelector(selectUserWps);
@@ -51,13 +52,13 @@ function Options({ onClose }: { onClose: () => void }) {
     <Fragment>
       <CloseButton className="ml-auto mr-2 mb-2" onClick={onClose} />
 
-      <div className={styles.option} onClick={trySaveToLocalStorage}>
+      <LoadOption onClick={trySaveToLocalStorage}>
         <p className="mt-1 text-xl font-bold text-lightgold">Save to Local Storage</p>
         <p className="mt-1 text-default">
           • Your Database stays in this Browser only and will be removed if you clear the Local
           Storage.
         </p>
-      </div>
+      </LoadOption>
 
       {!!messageType && (
         <>
@@ -88,25 +89,13 @@ function Options({ onClose }: { onClose: () => void }) {
       )}
 
       <div className="w-full border-b border-default" />
-      <div className={styles.option} onClick={() => downloadToDevice(downloadData)}>
+
+      <LoadOption onClick={() => downloadToDevice(downloadData)}>
         <p className="mt-1 text-xl font-bold text-lightgold">Download a .TXT file</p>
         <p className="mt-1 text-default">
           • Please DO NOT modify this file if you don't understand how it works.
         </p>
-      </div>
+      </LoadOption>
     </Fragment>
-  );
-}
-
-export function DownloadOptions({ active, onClose }: ModalControl) {
-  return (
-    <Modal
-      active={active}
-      className={styles.wrapper + " max-w-95"}
-      style={{ width: "28rem" }}
-      onClose={onClose}
-    >
-      <Options onClose={onClose} />
-    </Modal>
   );
 }

@@ -1,16 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useSelector } from "@Store/hooks";
 
 // Selector
 import { selectAtScreen } from "@Store/uiSlice/selectors";
-
-// Action
-import { addUserDatabase } from "@Store/userDatabaseSlice";
-
-// Util
-import { convertUserData } from "./utils/convertUserData";
 
 // Constant
 import { EScreen } from "./constants";
@@ -21,23 +15,10 @@ import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
-import { ImportManager, MessageModal } from "@Screens/Canopy";
-
-// Component
-import { NavBar, DownloadOptions, UploadOptions } from "@Components/organisms";
+import { ImportManager, MessageModal, NavBar } from "@Screens/Canopy";
 
 function App() {
-  const dispatch = useDispatch();
-
-  const [loadOptionType, setLoadOptionType] = useState<"UP" | "DOWN" | "">("");
-  const [navBarMenuActive, setNavBarMenuActive] = useState(false);
-
   const atScreen = useSelector(selectAtScreen);
-
-  const checkAndAddUserData = useCallback((data: any) => {
-    const { version, ...database } = convertUserData(data);
-    dispatch(addUserDatabase(database));
-  }, []);
 
   // useEffect(() => {
   //   const beforeunloadAlert = (e: BeforeUnloadEvent) => {
@@ -77,12 +58,8 @@ function App() {
 
   return (
     <div className="App h-screen text-default bg-default flex flex-col">
-      <NavBar
-        menuActive={navBarMenuActive}
-        setMenuActive={setNavBarMenuActive}
-        onClickUpload={() => setLoadOptionType("UP")}
-        onClickDownload={() => setLoadOptionType("DOWN")}
-      />
+      <NavBar />
+
       <div className="grow flex-center relative">
         <Calculator />
 
@@ -92,16 +69,6 @@ function App() {
       </div>
 
       <MessageModal />
-
-      <DownloadOptions active={loadOptionType === "DOWN"} onClose={() => setLoadOptionType("")} />
-
-      <UploadOptions
-        active={loadOptionType === "UP"}
-        uploadUserDatabase={checkAndAddUserData}
-        onSuccess={() => setNavBarMenuActive(false)}
-        onClose={() => setLoadOptionType("")}
-      />
-
       <ImportManager />
     </div>
   );

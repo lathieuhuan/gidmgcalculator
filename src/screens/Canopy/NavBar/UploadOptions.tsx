@@ -1,24 +1,36 @@
 import clsx from "clsx";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
+
+// Hook
+import { useDispatch } from "@Store/hooks";
 
 // Util
-import { downloadToDevice, styles } from "./utils";
+import { convertUserData } from "@Src/utils/convertUserData";
+import { downloadToDevice } from "./utils";
+
+// Action
+import { addUserDatabase } from "@Store/userDatabaseSlice";
 
 // Component
 import { Button, CloseButton } from "@Components/atoms";
-import { Modal, type ModalControl } from "@Components/molecules";
+import { LoadOption } from "./atoms";
 
 type MessageState =
   | { uploadCase: "auto"; result: "success" | "fail" | "no_data" }
   | { uploadCase: "manual"; result: "success" | "fail" };
 
 interface UploadOptionsProps {
-  uploadUserDatabase: (data: any) => void;
-  onSuccess: () => void;
   onClose: () => void;
 }
-function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps) {
+export function UploadOptions({ onClose }: UploadOptionsProps) {
+  const dispatch = useDispatch();
+
   const [message, setMessage] = useState<MessageState | null>(null);
+
+  const checkAndAddUserData = (data: any) => {
+    const { version, ...database } = convertUserData(data);
+    dispatch(addUserDatabase(database));
+  };
 
   const tryToLoadFromLocalStorage = () => {
     let data = localStorage.getItem("GDC_Data");
@@ -26,7 +38,7 @@ function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps)
     if (data) {
       data = JSON.parse(data);
       try {
-        uploadUserDatabase(data);
+        checkAndAddUserData(data);
         setMessage({
           uploadCase: "auto",
           result: "success",
@@ -64,15 +76,14 @@ function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps)
           let data = JSON.parse((event.target?.result as string) || "");
           // if (isJson) data = convertToGOOD(data);
 
-          uploadUserDatabase(data);
+          checkAndAddUserData(data);
+
           setMessage({
             uploadCase: "manual",
             result: "success",
           });
 
-          if (typeof onSuccess === "function") {
-            onSuccess();
-          }
+          onClose();
         } catch (err) {
           console.log(err);
 
@@ -96,7 +107,7 @@ function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps)
     <Fragment>
       <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
 
-      <div className={clsx("flex flex-col items-center", styles.option)}>
+      <LoadOption className="flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">Load from Local Storage</p>
 
         {message?.uploadCase === "auto" && (
@@ -124,10 +135,11 @@ function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps)
         >
           {uploadFromLocalStorageFailed ? "Download Database" : "Load"}
         </Button>
-      </div>
+      </LoadOption>
 
       <div className="w-full border-b border-default" />
-      <div className={clsx("flex flex-col items-center", styles.option)}>
+
+      <LoadOption className="flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">
           Upload a .TXT file or a .JSON file in GOOD format
         </p>
@@ -148,20 +160,7 @@ function Options({ uploadUserDatabase, onSuccess, onClose }: UploadOptionsProps)
         <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>
           Choose File
         </Button>
-      </div>
+      </LoadOption>
     </Fragment>
-  );
-}
-
-export function UploadOptions({ active, onClose, ...rest }: ModalControl & UploadOptionsProps) {
-  return (
-    <Modal
-      active={active}
-      className={styles.wrapper + " max-w-95"}
-      style={{ width: "28rem" }}
-      onClose={onClose}
-    >
-      <Options {...rest} onClose={onClose} />
-    </Modal>
   );
 }
