@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
-import type { TrackerModalState } from "./types";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
@@ -10,7 +9,7 @@ import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { TrackerModal } from "../TrackerModal";
+import { TrackerModal, type TrackerModalState } from "../TrackerModal";
 
 interface MenuProps {
   activeSetupName: string;
