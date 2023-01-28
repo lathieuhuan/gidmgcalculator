@@ -110,7 +110,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { base: -50 } },
   },
   {
-    code: 48,
+    code: 12,
     title: "Ruin Serpent",
     resistance: { base: 10, phys: 70 },
     inputConfigs: { label: "Charging", changes: { base: 300 } },
@@ -138,13 +138,13 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 44,
+    code: 20,
     title: "Primal Construct",
     resistance: { base: 10 },
     inputConfigs: { label: "Invisible", changes: { base: 50 } },
   },
   {
-    code: 45,
+    code: 18,
     title: "ASIMON",
     resistance: { base: 10 },
     inputConfigs: { label: "Invisible", changes: { base: 200 } },
@@ -350,12 +350,12 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { base: -60 } },
   },
   {
-    code: 46,
+    code: 14,
     title: "False God of Wisdom (Phase 1)",
     resistance: { base: 10, electro: 50 },
   },
   {
-    code: 47,
+    code: 13,
     title: "False God of Wisdom (Phase 2)",
     resistance: { base: 30, electro: 90 },
     inputConfigs: {

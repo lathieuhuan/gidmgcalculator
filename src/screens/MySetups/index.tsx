@@ -21,7 +21,7 @@ import { isUserSetup } from "@Src/utils/setup";
 // Component
 import { Button, IconButton, Green, Red } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { TipsModal } from "@Components/organisms";
+import { StandardModal } from "@Components/organisms";
 import { WareHouse } from "@Components/templates";
 import { SetupTemplate } from "./SetupTemplate";
 import { ChosenSetupInfo } from "./ChosenSetupInfo";
@@ -159,8 +159,12 @@ export default function MySetups() {
         </WareHouse.Body>
       </WareHouse>
 
-      <TipsModal active={modal.type === "TIPS"} onClose={closeModal}>
-        <div className="space-y-2" style={{ lineHeight: 1.7 }}>
+      <StandardModal
+        active={modal.type === "TIPS"}
+        title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
+        onClose={closeModal}
+      >
+        <div className="space-y-2">
           <p>
             - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
             <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red> of it
@@ -184,7 +188,7 @@ export default function MySetups() {
             activated.
           </p>
         </div>
-      </TipsModal>
+      </StandardModal>
 
       <Modal
         active={modal.type === "FIRST_COMBINE"}

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { UserArtifact, UserWeapon } from "@Src/types";
 import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
@@ -18,15 +19,17 @@ export function ConfirmModal({ active, onClose, ...rest }: ModalControl & Confir
   );
 }
 
-interface TipsModalProps extends ModalControl {
+interface StandardModalProps extends ModalControl {
+  title: ReactNode;
   children: JSX.Element;
 }
-export function TipsModal({ active, children, onClose }: TipsModalProps) {
+export function StandardModal({ active, title, children, onClose }: StandardModalProps) {
   return (
-    <Modal active={active} className="pl-4 pr-2 py-4 flex flex-col" withDefaultStyle onClose={onClose}>
-      <CloseButton className="absolute top-3 right-3" onClick={onClose} />
-      <p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>
-      <div className="pr-2 grow custom-scrollbar">{children}</div>
+    <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
+      <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
+      {/* <p className="mb-2 text-1.5xl text-orange font-bold">{title}</p> */}
+      {title}
+      <div className="grow custom-scrollbar">{children}</div>
     </Modal>
   );
 }

@@ -6,13 +6,14 @@ import { useClickOutside } from "@Src/hooks/useClickOutside";
 
 // Component
 import { Modal } from "@Components/molecules";
-import { IntroButton, DownloadButton, UploadButton } from "./atoms";
+import { IntroButton, DownloadButton, UploadButton, GuidesButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { Intro } from "./Intro";
+import { Guides } from "./Guides";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
 
-type ModalType = "UPLOAD" | "DOWNLOAD" | "INTRO";
+type ModalType = "INTRO" | "TUTORIAL" | "UPLOAD" | "DOWNLOAD";
 
 export function NavBar() {
   const ref = useRef<HTMLDivElement>(null);
@@ -61,6 +62,7 @@ export function NavBar() {
           >
             <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
               <IntroButton onClick={openModal("INTRO")} />
+              <GuidesButton onClick={openModal("TUTORIAL")} />
 
               {isLargeView ? null : (
                 <NavTabs
@@ -78,6 +80,8 @@ export function NavBar() {
       </div>
 
       <Intro active={modalType === "INTRO"} onClose={closeModal} />
+
+      <Guides active={modalType === "TUTORIAL"} onClose={closeModal} />
 
       <Modal
         active={modalType === "DOWNLOAD"}

@@ -1,24 +1,23 @@
-import { CloseButton, Lightgold } from "@Components/atoms";
-import { CollapseList, Modal, type ModalControl } from "@Components/molecules";
+import { Lightgold } from "@Components/atoms";
+import { CollapseList, type ModalControl } from "@Components/molecules";
+import { StandardModal } from "@Components/organisms";
 import { About } from "./About";
 import { Notes } from "./Notes";
-import { Tutorial } from "./Tutorial";
 import { UPDATES } from "./updates";
 
-export const Intro = ({ active, onClose }: ModalControl) => {
+export const Intro = (props: ModalControl) => {
   return (
-    <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
-      <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
-      <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-        WELCOME to GI DMG Calculator <sup className="text-base text-lesser">(v3.0.0)</sup>
-      </h1>
+    <StandardModal
+      title={
+        <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
+          Welcome to GI DMG Calculator <sup className="text-base text-lesser">(v3.0.0)</sup>
+        </h1>
+      }
+      {...props}
+    >
       <div className="grow custom-scrollbar">
         <CollapseList
           list={[
-            {
-              heading: "Tutorial",
-              body: <Tutorial />,
-            },
             {
               heading: "Updates",
               body: (
@@ -100,6 +99,6 @@ export const Intro = ({ active, onClose }: ModalControl) => {
           </p>
         </div>
       </div>
-    </Modal>
+    </StandardModal>
   );
 };

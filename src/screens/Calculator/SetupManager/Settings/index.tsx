@@ -28,7 +28,7 @@ import {
 
 // Component
 import { CollapseAndMount, Button, Green } from "@Components/atoms";
-import { TipsModal } from "@Components/organisms";
+import { StandardModal } from "@Components/organisms";
 import SectionTarget from "../SectionTarget";
 import { SetupControl } from "./SetupControl";
 
@@ -286,7 +286,11 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
         <span>Apply</span>
       </Button>
 
-      <TipsModal active={tipsOn} onClose={() => setTipsOn(false)}>
+      <StandardModal
+        active={tipsOn}
+        title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
+        onClose={() => setTipsOn(false)}
+      >
         <div className="space-y-2 text-default">
           <p>
             - Be careful when the Calculator is under the effect of{" "}
@@ -302,7 +306,7 @@ function HiddenSettings({ shouldShowTarget, onMoveTarget }: HiddenSettingsProps)
             calculating session.
           </p>
         </div>
-      </TipsModal>
+      </StandardModal>
     </div>
   );
 }

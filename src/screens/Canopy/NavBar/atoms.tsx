@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { FaDownload, FaInfoCircle, FaUpload } from "react-icons/fa";
+import { FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
 
 interface ButtonProps {
   className?: string;
@@ -34,6 +34,10 @@ const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProp
 
 export const IntroButton = (props: ButtonProps) => {
   return <ActionButton label="Introduction" icon={<FaInfoCircle size="1.125rem" />} {...props} />;
+};
+
+export const GuidesButton = (props: ButtonProps) => {
+  return <ActionButton label="Guides" icon={<FaQuestionCircle />} {...props} />;
 };
 
 export const DownloadButton = (props: ButtonProps) => {

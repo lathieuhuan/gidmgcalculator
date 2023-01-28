@@ -10,3 +10,4 @@ export * from "./buttons";
 export * from "./span";
 export * from "./collapse";
 export * from "./tw-styles";
+export * from "./svgs";
