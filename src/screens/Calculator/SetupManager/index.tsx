@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaCog } from "react-icons/fa";
+import { IoDocumentText } from "react-icons/io5";
 import type { ArtifactType } from "@Src/types";
 
 // Constant
@@ -28,7 +28,7 @@ import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
 import SectionTarget from "./SectionTarget";
-import Settings from "./Settings";
+import HighManager from "./HighManager";
 import { SetupSelect } from "./SetupSelect";
 
 type ModalType =
@@ -73,9 +73,9 @@ export default function SetupManager() {
         <IconButton
           className="mx-auto text-lg"
           variant="positive"
-          onClick={() => dispatch(updateUI({ settingsOn: true }))}
+          onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
         >
-          <FaCog />
+          <IoDocumentText />
         </IconButton>
 
         <div className="flex">
@@ -98,11 +98,7 @@ export default function SetupManager() {
         </div>
       </div>
 
-      <Settings
-        height={height}
-        shouldShowTarget={!targetAtFront}
-        onMoveTarget={() => setTargetAtFront(true)}
-      />
+      <HighManager height={height} />
 
       <TypeSelect
         active={prePickerOn}

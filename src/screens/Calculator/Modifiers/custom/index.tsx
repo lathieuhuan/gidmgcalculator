@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaTimes, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaPlus, FaTrashAlt } from "react-icons/fa";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -23,7 +23,7 @@ import {
 import { processNumInput } from "@Src/utils";
 
 // Component
-import { IconToggleButton } from "@Components/atoms";
+import { CloseButton, IconToggleButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { CopySection } from "@Screens/Calculator/components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
@@ -103,15 +103,14 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       <div className="mt-6 space-y-4" style={{ marginLeft: "-0.5rem" }}>
         {modCtrls.map(({ type, value }, ctrlIndex) => (
           <div key={ctrlIndex} className="flex items-center">
-            <button
-              className="mr-2 text-lesser text-xl hover:text-darkred"
+            <CloseButton
+              boneOnly
+              className="text-1.5xl"
               onClick={() => {
                 dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
               }}
-            >
-              <FaTimes />
-            </button>
-            <p className="pr-2">
+            />
+            <p className="pl-1 pr-2">
               {t(type, { ns: isBuffs ? "common" : "resistance" })} {!isBuffs && "reduction"}
             </p>
 

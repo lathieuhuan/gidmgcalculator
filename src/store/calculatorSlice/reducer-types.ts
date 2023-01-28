@@ -17,7 +17,7 @@ import type {
   SetupImportInfo,
   PartiallyRequired,
 } from "@Src/types";
-import type { CalcConfigurations, CalculatorState } from "./types";
+import type { CalculatorState } from "./types";
 
 export type UpdateCalculatorAction = PayloadAction<
   Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds" | "message">>
@@ -159,6 +159,5 @@ export type NewSetupManageInfo = CalcSetupManageInfo & {
 
 export type ApplySettingsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
-  newConfigs: CalcConfigurations;
   newStandardId: number;
 }>;

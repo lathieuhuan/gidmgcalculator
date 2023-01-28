@@ -67,7 +67,7 @@ const initialState: CalculatorState = {
   activeId: 0,
   standardId: 0,
   comparedIds: [],
-  configs: {
+  settings: {
     separateCharInfo: false,
     keepArtStatsOnSwitch: false,
   },
@@ -109,7 +109,7 @@ export const calculatorSlice = createSlice({
       state.activeId = setupID;
       state.comparedIds = [];
       state.standardId = 0;
-      state.configs.separateCharInfo = false;
+      state.settings.separateCharInfo = false;
 
       state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
@@ -146,7 +146,7 @@ export const calculatorSlice = createSlice({
       // calculate will repopulate statsById
       state.statsById = {};
       state.target = target;
-      state.configs.separateCharInfo = false;
+      state.settings.separateCharInfo = false;
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
@@ -157,7 +157,7 @@ export const calculatorSlice = createSlice({
       const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
-      const { separateCharInfo } = state.configs;
+      const { separateCharInfo } = state.settings;
 
       if (shouldOverwriteChar && separateCharInfo) {
         for (const setup of Object.values(setupsById)) {
@@ -235,13 +235,13 @@ export const calculatorSlice = createSlice({
     },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
-      const { configs, setupsById, target } = state;
+      const { settings, setupsById, target } = state;
       const { level } = action.payload;
 
       if (level && target.level === 1) {
         target.level = bareLv(level);
       }
-      if (configs.separateCharInfo) {
+      if (settings.separateCharInfo) {
         const currentSetup = setupsById[state.activeId];
         currentSetup.char = {
           ...currentSetup.char,
@@ -255,7 +255,7 @@ export const calculatorSlice = createSlice({
           };
         }
       }
-      calculate(state, !configs.separateCharInfo);
+      calculate(state, !settings.separateCharInfo);
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
@@ -396,7 +396,7 @@ export const calculatorSlice = createSlice({
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && state.configs.keepArtStatsOnSwitch) {
+      if (piece && newPiece && state.settings.keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } else {
@@ -604,7 +604,7 @@ export const calculatorSlice = createSlice({
       calculate(state, true);
     },
     applySettings: (state, action: ApplySettingsAction) => {
-      const { newSetupManageInfos, newConfigs, newStandardId } = action.payload;
+      const { newSetupManageInfos, newStandardId } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
       const removedIds = [];
       // Reset comparedIds before repopulate with newSetupManageInfos
@@ -684,19 +684,19 @@ export const calculatorSlice = createSlice({
       const activeSetup = findById(tempManageInfos, activeId);
       const newActiveId = activeSetup ? activeSetup.ID : tempManageInfos[0].ID;
 
-      if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
-        const activeChar = setupsById[newActiveId].char;
+      // if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
+      //   const activeChar = setupsById[newActiveId].char;
 
-        for (const setup of Object.values(setupsById)) {
-          setup.char = activeChar;
-        }
-      }
+      //   for (const setup of Object.values(setupsById)) {
+      //     setup.char = activeChar;
+      //   }
+      // }
 
       state.activeId = newActiveId;
       state.comparedIds = state.comparedIds.length === 1 ? [] : state.comparedIds;
       state.standardId = state.comparedIds.length ? newStandardId : 0;
       state.setupManageInfos = tempManageInfos;
-      state.configs = newConfigs;
+      // state.configs = newConfigs;
 
       calculate(state, true);
     },

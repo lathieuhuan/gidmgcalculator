@@ -5,9 +5,8 @@ import { EScreen } from "@Src/constants";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
-  settingsOn: false,
+  highManagerWorking: false,
   resultsEnlarged: false,
-  trackerModalState: "CLOSE",
   importInfo: {},
 };
 

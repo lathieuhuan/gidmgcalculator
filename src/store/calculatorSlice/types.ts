@@ -14,7 +14,7 @@ export type CalculatorState = {
   standardId: number;
   comparedIds: number[];
 
-  configs: CalcConfigurations;
+  settings: AppSettings;
   message: {
     type: "" | "error";
     content: string;
@@ -36,7 +36,7 @@ export type CalculatorState = {
   target: Target;
 };
 
-export type CalcConfigurations = {
+export type AppSettings = {
   separateCharInfo: boolean;
   keepArtStatsOnSwitch: boolean;
 };

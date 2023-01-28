@@ -1,19 +1,27 @@
 import { useState, useRef } from "react";
-import { FaBars } from "react-icons/fa";
+import {
+  FaBars,
+  FaCog,
+  FaDownload,
+  FaInfoCircle,
+  FaQuestionCircle,
+  FaUpload,
+} from "react-icons/fa";
 
 // Hook
 import { useClickOutside } from "@Src/hooks/useClickOutside";
 
 // Component
 import { Modal } from "@Components/molecules";
-import { IntroButton, DownloadButton, UploadButton, GuidesButton } from "./atoms";
+import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { Intro } from "./Intro";
 import { Guides } from "./Guides";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
+import { Settings } from "./Settings";
 
-type ModalType = "INTRO" | "GUIDES" | "UPLOAD" | "DOWNLOAD";
+type ModalType = "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD";
 
 export function NavBar() {
   const ref = useRef<HTMLDivElement>(null);
@@ -61,9 +69,16 @@ export function NavBar() {
             }
           >
             <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
-              <IntroButton onClick={openModal("INTRO")} />
-              <GuidesButton onClick={openModal("GUIDES")} />
-
+              <ActionButton
+                label="Introduction"
+                icon={<FaInfoCircle size="1.125rem" />}
+                onClick={openModal("INTRO")}
+              />
+              <ActionButton
+                label="Guides"
+                icon={<FaQuestionCircle />}
+                onClick={openModal("GUIDES")}
+              />
               {isLargeView ? null : (
                 <NavTabs
                   className="px-4 py-2"
@@ -71,9 +86,13 @@ export function NavBar() {
                   onClickTab={closeMenu}
                 />
               )}
-
-              <DownloadButton onClick={openModal("DOWNLOAD")} />
-              <UploadButton onClick={openModal("UPLOAD")} />
+              <ActionButton label="Settings" icon={<FaCog />} onClick={openModal("SETTINGS")} />
+              <ActionButton
+                label="Download"
+                icon={<FaDownload />}
+                onClick={openModal("DOWNLOAD")}
+              />
+              <ActionButton label="Upload" icon={<FaUpload />} onClick={openModal("UPLOAD")} />
             </div>
           </div>
         </div>
@@ -82,6 +101,10 @@ export function NavBar() {
       <Intro active={modalType === "INTRO"} onClose={closeModal} />
 
       <Guides active={modalType === "GUIDES"} onClose={closeModal} />
+
+      <Modal active={modalType === "SETTINGS"} onClose={closeModal}>
+        <Settings />
+      </Modal>
 
       <Modal
         active={modalType === "DOWNLOAD"}

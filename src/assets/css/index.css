@@ -83,10 +83,10 @@ body {
 }
 
 @media (min-width: 440px) {
-  .glow-on-hover {
+  .glow-on-hover:not(:disabled) {
     opacity: 0.9;
   }
-  .glow-on-hover:hover {
+  .glow-on-hover:not(:disabled):hover {
     opacity: 1;
   }
   .zoomin-on-hover:hover {

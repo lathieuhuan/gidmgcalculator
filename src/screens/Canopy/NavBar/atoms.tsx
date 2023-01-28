@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
 
 interface ButtonProps {
   className?: string;
@@ -17,7 +16,7 @@ interface ActionButtonProps extends ButtonProps {
   icon: ReactNode;
   label: string;
 }
-const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProps) => {
+export const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProps) => {
   return (
     <button
       className={
@@ -30,22 +29,6 @@ const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProp
       <span className="ml-2">{label}</span>
     </button>
   );
-};
-
-export const IntroButton = (props: ButtonProps) => {
-  return <ActionButton label="Introduction" icon={<FaInfoCircle size="1.125rem" />} {...props} />;
-};
-
-export const GuidesButton = (props: ButtonProps) => {
-  return <ActionButton label="Guides" icon={<FaQuestionCircle />} {...props} />;
-};
-
-export const DownloadButton = (props: ButtonProps) => {
-  return <ActionButton label="Download" icon={<FaDownload />} {...props} />;
-};
-
-export const UploadButton = (props: ButtonProps) => {
-  return <ActionButton label="Upload" icon={<FaUpload />} {...props} />;
 };
 
 interface ListProps {

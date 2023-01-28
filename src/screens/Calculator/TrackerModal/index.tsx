@@ -5,22 +5,24 @@ import { FaMinus, FaTimes } from "react-icons/fa";
 
 // Hook
 import { useCloseWithEsc } from "@Src/hooks";
-import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action & Selector
-import { updateUI } from "@Store/uiSlice";
-import { selectTrackerModalState } from "@Store/uiSlice/selectors";
+import { useDispatch } from "@Store/hooks";
 
 // Component
 import { ModalBody } from "@Components/molecules/Modal";
 import TrackerContainer from "./TrackerContainer";
+import { TrackerModalState } from "../DamageResults/types";
 
 interface TrackerModalProps {
+  trackerState: TrackerModalState;
   activeSetupName: string;
+  onChangeTrackerModalState: (newState: TrackerModalState) => void;
 }
-export function TrackerModal({ activeSetupName }: TrackerModalProps) {
+export function TrackerModal({
+  trackerState,
+  activeSetupName,
+  onChangeTrackerModalState,
+}: TrackerModalProps) {
   const dispatch = useDispatch();
-  const trackerModalState = useSelector(selectTrackerModalState);
 
   const [state, setState] = useState({
     active: false,
@@ -34,16 +36,12 @@ export function TrackerModal({ activeSetupName }: TrackerModalProps) {
     setTimeout(() => {
       setState((prev) => ({ ...prev, active: false }));
 
-      dispatch(
-        updateUI({
-          trackerModalState: "CLOSE",
-        })
-      );
+      onChangeTrackerModalState("CLOSE");
     }, 150);
   };
 
   useEffect(() => {
-    if (trackerModalState === "OPEN") {
+    if (trackerState === "OPEN") {
       setState((prev) => ({
         ...prev,
         active: true,
@@ -55,9 +53,9 @@ export function TrackerModal({ activeSetupName }: TrackerModalProps) {
       }, 50);
     } //
     else if (state.active) {
-      if (trackerModalState === "CLOSE") {
+      if (trackerState === "CLOSE") {
         closeModal();
-      } else if (trackerModalState === "HIDDEN") {
+      } else if (trackerState === "HIDDEN") {
         setState((prev) => ({ ...prev, animate: false }));
 
         setTimeout(() => {
@@ -65,10 +63,10 @@ export function TrackerModal({ activeSetupName }: TrackerModalProps) {
         }, 150);
       }
     }
-  }, [trackerModalState, state.active]);
+  }, [trackerState, state.active]);
 
   useCloseWithEsc(() => {
-    if (trackerModalState === "OPEN") {
+    if (trackerState === "OPEN") {
       closeModal();
     }
   });
@@ -88,25 +86,13 @@ export function TrackerModal({ activeSetupName }: TrackerModalProps) {
               <div className="absolute top-1 right-1 flex space-x-2 text-xl">
                 <button
                   className="w-8 h-8 flex-center hover:text-lightgold"
-                  onClick={() => {
-                    dispatch(
-                      updateUI({
-                        trackerModalState: "HIDDEN",
-                      })
-                    );
-                  }}
+                  onClick={() => onChangeTrackerModalState("HIDDEN")}
                 >
                   <FaMinus />
                 </button>
                 <button
                   className="w-8 h-8 flex-center hover:text-darkred"
-                  onClick={() => {
-                    dispatch(
-                      updateUI({
-                        trackerModalState: "CLOSE",
-                      })
-                    );
-                  }}
+                  onClick={() => onChangeTrackerModalState("CLOSE")}
                 >
                   <FaTimes />
                 </button>
@@ -119,7 +105,7 @@ export function TrackerModal({ activeSetupName }: TrackerModalProps) {
                 <span className="ml-2 text-lesser">({activeSetupName})</span>
               </p>
 
-              <TrackerContainer trackerState={trackerModalState} />
+              <TrackerContainer trackerState={trackerState} />
             </div>
           </ModalBody>
         </div>,

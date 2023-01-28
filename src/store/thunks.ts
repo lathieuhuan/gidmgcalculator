@@ -228,7 +228,7 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
       dispatch(
         updateUI({
           atScreen: EScreen.MY_SETUPS,
-          settingsOn: false,
+          highManagerWorking: false,
         })
       );
     });

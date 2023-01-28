@@ -50,7 +50,7 @@ function Importing({ calcSetup, target, ...manageInfo }: ImportingProps) {
     dispatch(
       updateUI({
         atScreen: EScreen.CALCULATOR,
-        settingsOn: false,
+        highManagerWorking: false,
       })
     );
     endImport();

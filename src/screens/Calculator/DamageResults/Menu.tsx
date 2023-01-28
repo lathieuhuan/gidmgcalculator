@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { MdMoreVert } from "react-icons/md";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
+import { MdMoreVert } from "react-icons/md";
+import type { TrackerModalState } from "./types";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 
 // Action & Selector
 import { updateUI } from "@Store/uiSlice";
-import { selectTrackerModalState } from "@Store/uiSlice/selectors";
 
-export const Menu = () => {
+// Component
+import { TrackerModal } from "../TrackerModal";
+
+interface MenuProps {
+  activeSetupName: string;
+}
+export const Menu = ({ activeSetupName }: MenuProps) => {
   const dispatch = useDispatch();
-  const trackerModalState = useSelector(selectTrackerModalState);
 
+  const [trackerModalState, setTrackerModalState] = useState<TrackerModalState>("CLOSE");
   const [menuDropped, setMenuDropped] = useState(false);
 
   useEffect(() => {
@@ -35,11 +41,7 @@ export const Menu = () => {
       text: "Tracker",
       className: "flex " + (trackerModalState === "HIDDEN" ? "bg-green" : "hover:bg-lesser"),
       onClick: () => {
-        dispatch(
-          updateUI({
-            trackerModalState: ["CLOSE", "HIDDEN"].includes(trackerModalState) ? "OPEN" : "CLOSE",
-          })
-        );
+        setTrackerModalState(["CLOSE", "HIDDEN"].includes(trackerModalState) ? "OPEN" : "CLOSE");
       },
     },
     {
@@ -88,6 +90,12 @@ export const Menu = () => {
           })}
         </div>
       </div>
+
+      <TrackerModal
+        activeSetupName={activeSetupName}
+        trackerState={trackerModalState}
+        onChangeTrackerModalState={setTrackerModalState}
+      />
     </div>
   );
 };

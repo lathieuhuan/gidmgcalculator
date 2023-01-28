@@ -9,7 +9,6 @@ import { updateUI } from "@Store/uiSlice";
 
 // Component
 import { Modal } from "@Components/molecules";
-import { TrackerModal } from "../TrackerModal";
 import { Menu } from "./Menu";
 import { ResultsDisplay } from "./ResultsDisplay";
 
@@ -21,10 +20,9 @@ export default function DamageResults() {
 
   return (
     <div className="h-full">
-      <Menu />
+      <Menu activeSetupName={activeSetupName} />
       <ResultsDisplay activeSetupName={activeSetupName} />
       <EnlargedDisplay activeSetupName={activeSetupName} />
-      <TrackerModal activeSetupName={activeSetupName} />
     </div>
   );
 }
