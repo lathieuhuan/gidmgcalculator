@@ -13,46 +13,33 @@ export const LoadOption = ({ className = "", ...rest }: LoadOptionProps) => {
   return <div className={"pt-2 pb-3 px-4 hover:bg-darkblue-1 " + className} {...rest} />;
 };
 
-interface NavButtonProps extends ButtonProps {
-  isActive?: boolean;
-  children: ReactNode;
+interface ActionButtonProps extends ButtonProps {
+  icon: ReactNode;
+  label: string;
 }
-export const NavButton = ({ className = "", isActive, ...rest }: NavButtonProps) => {
+const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProps) => {
   return (
     <button
       className={
-        "flex items-center font-bold " +
-        (isActive ? "bg-darkblue-1 text-orange " : "bg-darkblue-3 hover:text-lightgold ") +
+        "px-4 py-2 flex items-center font-bold hover:text-default hover:bg-darkblue-1 cursor-default " +
         className
       }
-      {...rest}
-    />
+      onClick={onClick}
+    >
+      {icon}
+      <span className="ml-2">{label}</span>
+    </button>
   );
 };
 
-export const IntroButton = ({ className = "", onClick }: ButtonProps) => {
-  return (
-    <NavButton className={"group " + className} onClick={onClick}>
-      <FaInfoCircle size="1.125rem" />
-      <span className="ml-2">Introduction</span>
-    </NavButton>
-  );
+export const IntroButton = (props: ButtonProps) => {
+  return <ActionButton label="Introduction" icon={<FaInfoCircle size="1.125rem" />} {...props} />;
 };
 
-export const DownloadButton = ({ className, onClick }: ButtonProps) => {
-  return (
-    <NavButton className={className} onClick={onClick}>
-      <FaDownload />
-      <span className="ml-2">Download</span>
-    </NavButton>
-  );
+export const DownloadButton = (props: ButtonProps) => {
+  return <ActionButton label="Download" icon={<FaDownload />} {...props} />;
 };
 
-export const UploadButton = ({ className, onClick }: ButtonProps) => {
-  return (
-    <NavButton className={className} onClick={onClick}>
-      <FaUpload />
-      <span className="ml-2">Upload</span>
-    </NavButton>
-  );
+export const UploadButton = (props: ButtonProps) => {
+  return <ActionButton label="Upload" icon={<FaUpload />} {...props} />;
 };

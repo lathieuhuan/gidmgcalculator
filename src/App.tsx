@@ -57,10 +57,8 @@ function App() {
   };
 
   return (
-    <div className="App h-screen text-default bg-default flex flex-col">
-      <NavBar />
-
-      <div className="grow flex-center relative">
+    <div className="App h-screen pt-8 text-default bg-default">
+      <div className="h-full flex-center relative">
         <Calculator />
 
         {atScreen !== EScreen.CALCULATOR && (
@@ -68,6 +66,7 @@ function App() {
         )}
       </div>
 
+      <NavBar />
       <MessageModal />
       <ImportManager />
     </div>

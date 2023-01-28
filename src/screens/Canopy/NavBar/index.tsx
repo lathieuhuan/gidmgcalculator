@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaBars } from "react-icons/fa";
+
+// Hook
+import { useClickOutside } from "@Src/hooks/useClickOutside";
 
 // Component
 import { Modal } from "@Components/molecules";
@@ -9,65 +12,72 @@ import { Intro } from "./Intro";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
 
+type ModalType = "UPLOAD" | "DOWNLOAD" | "INTRO";
+
 export function NavBar() {
-  const [modalType, setModalType] = useState<"UPLOAD" | "DOWNLOAD" | "INTRO" | "">("");
-  const [navBarMenuActive, setNavBarMenuActive] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const [modalType, setModalType] = useState<ModalType | "">("");
+  const [menuDropped, setMenuDropped] = useState(false);
 
-  const optionClassName = "px-6 py-2 border-b border-white/40 last:rounded-b";
+  const isLargeView = window.innerWidth >= 1025;
 
-  const onClickIntro = () => setModalType("INTRO");
+  const closeMenu = () => setMenuDropped(false);
 
-  const onClickUpload = () => setModalType("UPLOAD");
+  useClickOutside(ref, closeMenu);
 
-  const onClickDownload = () => setModalType("DOWNLOAD");
+  const openModal = (type: ModalType) => () => {
+    setModalType(type);
+    closeMenu();
+  };
 
   const closeModal = () => setModalType("");
 
   return (
-    <div className="bg-black/60">
-      {window.innerWidth > 1025 ? (
-        <div className="flex justify-between">
-          <div className="flex">
-            <NavTabs className="px-2 py-1" />
-          </div>
-
-          <div className="px-1 flex bg-darkblue-3">
-            <IntroButton className="px-2 py-1" onClick={onClickIntro} />
-            <DownloadButton className="px-2 py-1" onClick={onClickDownload} />
-            <UploadButton className="px-2 py-1" onClick={onClickUpload} />
-          </div>
-        </div>
-      ) : (
+    <div className="absolute top-0 left-0 right-0 bg-black/60">
+      <div className="flex justify-between">
         <div className="flex">
-          <div className="ml-auto relative">
-            <button
-              className={
-                "flex-center w-10 h-10 text-2xl " +
-                (navBarMenuActive ? "bg-darkblue-1 text-green" : "bg-darkblue-3 text-default")
-              }
-              onClick={() => setNavBarMenuActive(true)}
-            >
-              <FaBars />
-            </button>
+          {isLargeView ? (
+            <NavTabs
+              className="px-2 py-1"
+              activeClassName="bg-darkblue-1 text-orange"
+              idleClassName="bg-darkblue-3 hover:text-lightgold"
+            />
+          ) : null}
+        </div>
+
+        <div ref={ref} className="relative text-default">
+          <button
+            className="w-8 h-8 flex-center bg-darkblue-3 text-xl"
+            onClick={() => setMenuDropped(!menuDropped)}
+          >
+            <FaBars />
+          </button>
+
+          <div
+            className={
+              "absolute top-full right-0 z-30 origin-top-right transition-transform duration-200 pt-2 pr-2 " +
+              (menuDropped ? "scale-100" : "scale-0")
+            }
+          >
+            <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
+              <IntroButton onClick={openModal("INTRO")} />
+
+              {isLargeView ? null : (
+                <NavTabs
+                  className="px-4 py-2"
+                  activeClassName="bg-darkblue-1 text-default"
+                  onClickTab={closeMenu}
+                />
+              )}
+
+              <DownloadButton onClick={openModal("DOWNLOAD")} />
+              <UploadButton onClick={openModal("UPLOAD")} />
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
       <Intro active={modalType === "INTRO"} onClose={closeModal} />
-
-      <Modal
-        active={navBarMenuActive}
-        className="rounded flex flex-col shadow-white-glow text-default"
-        onClose={() => setNavBarMenuActive(false)}
-      >
-        <IntroButton
-          className={optionClassName + " rounded-t bg-darkblue-3"}
-          onClick={onClickIntro}
-        />
-        <NavTabs className={optionClassName} onClickTab={() => setNavBarMenuActive(false)} />
-        <DownloadButton className={optionClassName} onClick={onClickUpload} />
-        <UploadButton className={optionClassName} onClick={onClickDownload} />
-      </Modal>
 
       <Modal
         active={modalType === "DOWNLOAD"}

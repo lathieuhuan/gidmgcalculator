@@ -1,5 +1,5 @@
 import { memo } from "react";
-import type { PickerItem } from "../types";
+import type { DataType, PickerItem } from "../types";
 
 // Constant
 import { VISION_ICONS } from "@Src/constants";
@@ -10,10 +10,11 @@ import { BetaMark, Image } from "@Components/atoms";
 interface ItemProps {
   massAdd: boolean;
   item: PickerItem;
+  itemType: DataType;
   pickedAmount: number;
   onClickItem: () => void;
 }
-function Item({ item, pickedAmount, onClickItem }: ItemProps) {
+function Item({ item, itemType, pickedAmount, onClickItem }: ItemProps) {
   return (
     <div className={"relative " + (item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
       <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
@@ -26,7 +27,7 @@ function Item({ item, pickedAmount, onClickItem }: ItemProps) {
           }
         >
           <div className="aspect-square">
-            <Image src={item.icon} imgType={item.vision ? "character" : "weapon"} />
+            <Image src={item.icon} imgType={itemType} />
           </div>
           {!!pickedAmount && (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>

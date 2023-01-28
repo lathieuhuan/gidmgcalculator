@@ -113,6 +113,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
                 >
                   <MemoItem
                     item={item}
+                    itemType={dataType}
                     massAdd={massAdd}
                     pickedAmount={amount.each[i]}
                     onClickItem={() => {
