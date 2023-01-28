@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import { MdMoreHoriz } from "react-icons/md";
 
-type DropdownType = "OPTIONS" | "ACTIONS" | "";
+// Hook
+import { useClickOutside } from "@Src/hooks/useClickOutside";
 
 type RenderJXS = (args: { closeSelect: () => void }) => JSX.Element;
 
@@ -13,12 +13,11 @@ interface ComplexSelectProps {
   options?: Array<{
     label: string;
     value?: string | number;
-    renderSuffix?: RenderJXS;
-    renderMoreActions?: RenderJXS;
+    renderActions?: RenderJXS;
   }>;
   optionHeight?: number;
   onChange?: (value: string | number) => void;
-  onCloseSelect?: () => void;
+  onToggleDropdown?: (shouldDrop: boolean) => void;
 }
 export function ComplexSelect({
   selectId,
@@ -26,31 +25,20 @@ export function ComplexSelect({
   options = [],
   optionHeight = 2.25,
   onChange,
-  onCloseSelect,
+  onToggleDropdown,
 }: ComplexSelectProps) {
-  const [dropdownType, setDropdownType] = useState<DropdownType>("");
+  const ref = useRef<HTMLDivElement>(null);
+  const [isDropped, setIsDropped] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutsideSelect = (e: any) => {
-      if (dropdownType !== "" && !e.target?.closest(`#gidc-complex-select-${selectId}_wrapper`)) {
-        toggleDropdown("");
-      }
-    };
-    document.body.addEventListener("click", handleClickOutsideSelect);
+  useClickOutside(ref, () => toggleDropdown(false));
 
-    return () => document.body.removeEventListener("click", handleClickOutsideSelect);
-  }, [dropdownType]);
+  const toggleDropdown = (newIsDropped: boolean) => {
+    setIsDropped(newIsDropped);
+    onToggleDropdown?.(newIsDropped);
 
-  const toggleDropdown = (dropdownType: DropdownType) => {
-    setDropdownType(dropdownType);
+    const setupSelect = document.querySelector(`#complex-select-${selectId}_select`);
 
-    if (dropdownType === "") {
-      onCloseSelect && onCloseSelect();
-    }
-
-    const setupSelect = document.querySelector(`#gidc-complex-select-${selectId}_select`);
-
-    if (dropdownType !== "") {
+    if (newIsDropped) {
       setupSelect?.classList.remove("rounded-t-2.5xl", "rounded-b-2.5xl");
       setupSelect?.classList.add("rounded-t-lg");
     } else {
@@ -62,76 +50,59 @@ export function ComplexSelect({
   };
 
   const onClickOption = (newValue: string | number) => () => {
-    toggleDropdown("");
+    toggleDropdown(false);
 
-    if (onChange && newValue !== value) {
-      onChange(newValue);
+    if (newValue !== value) {
+      onChange?.(newValue);
     }
   };
 
-  const { label, renderMoreActions } = options.find((option) => option.value === value) || {};
-
-  const heightByDropdownType = {
-    "": 0,
-    OPTIONS: `${options.length * optionHeight + 0.0625}rem`,
-    ACTIONS: `${optionHeight}rem`,
-  };
+  const { label } = options.find((option) => option.value === value) || {};
+  const dropHeight = options.reduce(
+    (accumulator, option) => accumulator + (option.renderActions ? 72 : 36),
+    0
+  );
 
   const renderKit = {
-    closeSelect: () => toggleDropdown(""),
+    closeSelect: () => toggleDropdown(false),
   };
 
   return (
-    <div id={`gidc-complex-select-${selectId}_wrapper`} className="shrink-0 relative">
+    <div ref={ref} className="shrink-0 relative">
       <button
-        id={`gidc-complex-select-${selectId}_select`}
+        id={`complex-select-${selectId}_select`}
         className="w-full py-0.5 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
-        onClick={() => toggleDropdown(dropdownType === "OPTIONS" ? "" : "OPTIONS")}
+        onClick={() => toggleDropdown(!isDropped)}
       >
         <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
         <FaCaretDown className="absolute top-1/2 right-4 text-3xl -translate-y-1/2" />
       </button>
 
-      {renderMoreActions ? (
-        <button
-          className="absolute top-0 left-0 w-10 h-9 pl-2 pr-1 py-1 text-1.5xl text-black flex-center"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleDropdown(dropdownType === "ACTIONS" ? "" : "ACTIONS");
-          }}
-        >
-          <MdMoreHoriz />
-        </button>
-      ) : null}
-
       <div
         className={clsx(
           "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-size duration-100 ease-linear",
-          dropdownType !== "" && "border border-white"
+          isDropped && "border border-white"
         )}
         style={{
-          height: heightByDropdownType[dropdownType],
+          height: isDropped ? dropHeight : 0,
         }}
       >
-        {dropdownType === "OPTIONS" &&
-          options.map((option, i) => {
-            const { renderSuffix } = option;
-
-            return (
-              <div key={i} className="flex">
+        {options.map((option, i) => {
+          return (
+            <div key={i} className="group">
+              <div className="group-hover:bg-darkblue-3 group-hover:text-default">
                 <button
-                  className="px-2 py-1 grow text-lg text-left font-bold truncate cursor-default hover:bg-darkblue-2 hover:text-default"
+                  className="px-3 py-1 w-full text-lg text-left font-bold truncate cursor-default hover:bg-darkblue-1"
                   onClick={onClickOption(option.value || option.label)}
                 >
                   {option.label}
                 </button>
-
-                {renderSuffix && renderSuffix(renderKit)}
               </div>
-            );
-          })}
 
-        {dropdownType === "ACTIONS" && renderMoreActions && renderMoreActions(renderKit)}
+              {option.renderActions?.(renderKit)}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

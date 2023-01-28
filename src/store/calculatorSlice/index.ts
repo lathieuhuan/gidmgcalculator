@@ -211,6 +211,28 @@ export const calculatorSlice = createSlice({
         calculate(state, true);
       }
     },
+    removeCalcSetup: (state, action: PayloadAction<number>) => {
+      const setupId = action.payload;
+
+      if (state.setupManageInfos.length > 1) {
+        //
+        state.setupManageInfos = state.setupManageInfos.filter((info) => info.ID !== setupId);
+        delete state.setupsById[setupId];
+
+        if (setupId === state.activeId) {
+          state.activeId = state.setupManageInfos[0].ID;
+        }
+
+        state.comparedIds = state.comparedIds.filter((ID) => ID !== setupId);
+
+        if (state.comparedIds.length === 1) {
+          state.comparedIds = [];
+        }
+        if (setupId === state.standardId && state.comparedIds.length) {
+          state.standardId = state.comparedIds[0];
+        }
+      }
+    },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
       const { configs, setupsById, target } = state;
@@ -687,6 +709,8 @@ export const {
   initSessionWithSetup,
   importSetup,
   updateCalcSetup,
+  duplicateCalcSetup,
+  removeCalcSetup,
   updateCharacter,
   addTeammate,
   removeTeammate,
@@ -706,7 +730,6 @@ export const {
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
   updateTarget,
-  duplicateCalcSetup,
   applySettings,
 } = calculatorSlice.actions;
 
