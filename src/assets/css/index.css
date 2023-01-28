@@ -97,6 +97,10 @@ body {
   }
 }
 
+.contains-inline-svg svg {
+  display: inline;
+}
+
 .glowing {
   -webkit-animation: glow 0.5s ease-in-out infinite alternate;
   -moz-animation: glow 0.5s ease-in-out infinite alternate;

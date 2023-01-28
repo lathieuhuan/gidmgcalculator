@@ -164,18 +164,17 @@ export default function MySetups() {
         title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
         onClose={closeModal}
       >
-        <div className="space-y-2">
+        <div className="pr-2 space-y-1 contains-inline-svg">
           <p>
-            - <Green>Modify Setups</Green>: When you press the wrench icon{" "}
-            <FaWrench className="inline-block" /> on a Setup, you're pushing a <Red>copy</Red> of it
-            to the Calculator, so don't forget to save the modified copy if you want to apply the
-            changes to that Setup.
+            - <Green>Modify Setups</Green>: When you press the wrench icon <FaWrench /> on a Setup,
+            you're pushing a <Red>copy</Red> of it to the Calculator, so don't forget to save the
+            modified copy if you want to apply the changes to that Setup.
           </p>
           <p>
             - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members. On
             this complex, switch to teammates' Setups by pressing their icons. Break the complex
-            into individual Setups again by pressing the link / chain icon{" "}
-            <FaUnlink className="inline-block" /> before its name.
+            into individual Setups again by pressing the link / chain icon <FaUnlink /> before its
+            name.
           </p>
           <p>
             - You cannot change teammates when modifying the copy of a Setup that is in a complex.
@@ -183,9 +182,8 @@ export default function MySetups() {
           </p>
           <p>
             - You can build <Green>teammate's Setups</Green> based on a saved Setup by hovering over
-            teammate's icon and press the calculator icon <FaCalculator className="inline-block" />{" "}
-            that would appear. Party members and Target will be the same. Some Modifiers will remain
-            activated.
+            teammate's icon and press the calculator icon <FaCalculator /> that would appear. Party
+            members and Target will be the same. Some Modifiers will remain activated.
           </p>
         </div>
       </StandardModal>

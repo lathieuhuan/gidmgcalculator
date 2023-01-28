@@ -27,7 +27,6 @@ export function StandardModal({ active, title, children, onClose }: StandardModa
   return (
     <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
       <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
-      {/* <p className="mb-2 text-1.5xl text-orange font-bold">{title}</p> */}
       {title}
       <div className="grow custom-scrollbar">{children}</div>
     </Modal>

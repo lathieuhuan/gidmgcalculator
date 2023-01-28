@@ -13,7 +13,7 @@ import { Guides } from "./Guides";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
 
-type ModalType = "INTRO" | "TUTORIAL" | "UPLOAD" | "DOWNLOAD";
+type ModalType = "INTRO" | "GUIDES" | "UPLOAD" | "DOWNLOAD";
 
 export function NavBar() {
   const ref = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ export function NavBar() {
           >
             <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
               <IntroButton onClick={openModal("INTRO")} />
-              <GuidesButton onClick={openModal("TUTORIAL")} />
+              <GuidesButton onClick={openModal("GUIDES")} />
 
               {isLargeView ? null : (
                 <NavTabs
@@ -81,7 +81,7 @@ export function NavBar() {
 
       <Intro active={modalType === "INTRO"} onClose={closeModal} />
 
-      <Guides active={modalType === "TUTORIAL"} onClose={closeModal} />
+      <Guides active={modalType === "GUIDES"} onClose={closeModal} />
 
       <Modal
         active={modalType === "DOWNLOAD"}
