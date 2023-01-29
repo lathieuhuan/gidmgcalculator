@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
 // Hook
-import { useClickOutside } from "@Src/hooks/useClickOutside";
+import { useClickOutside } from "@Src/hooks";
 
 type RenderJXS = (args: { closeSelect: () => void }) => JSX.Element;
 

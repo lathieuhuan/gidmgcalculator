@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 
 // Hook
-import { useClickOutside } from "@Src/hooks/useClickOutside";
+import { useClickOutside } from "@Src/hooks";
 
 // Component
 import { Modal } from "@Components/molecules";

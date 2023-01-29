@@ -1,38 +1,26 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
 // Hook
-import { useDispatch } from "@Store/hooks";
-
-// Action & Selector
-import { updateUI } from "@Store/uiSlice";
+import { useClickOutside } from "@Src/hooks";
 
 // Component
+import { Modal } from "@Components/molecules";
 import { TrackerModal, type TrackerModalState } from "../TrackerModal";
+import { ResultsDisplay } from "./ResultsDisplay";
 
 interface MenuProps {
   activeSetupName: string;
 }
 export const Menu = ({ activeSetupName }: MenuProps) => {
-  const dispatch = useDispatch();
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [trackerModalState, setTrackerModalState] = useState<TrackerModalState>("CLOSE");
   const [menuDropped, setMenuDropped] = useState(false);
+  const [trackerModalState, setTrackerModalState] = useState<TrackerModalState>("CLOSE");
+  const [resultsEnlarged, setResultsEnlarged] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutsideMenu = (e: any) => {
-      const menuElmt = document.querySelector(`#damage-results-menu`);
-      const targetParent = e.target?.closest(`#damage-results-menu`);
-
-      if (!targetParent && menuElmt?.classList.contains("dropped")) {
-        setMenuDropped(false);
-      }
-    };
-    document.body.addEventListener("click", handleClickOutsideMenu);
-
-    return () => document.body.removeEventListener("click", handleClickOutsideMenu);
-  }, []);
+  useClickOutside(wrapperRef, () => setMenuDropped(false));
 
   const menuItems = [
     {
@@ -47,15 +35,12 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
       icon: FaExpandArrowsAlt,
       text: "Expand",
       className: "hover:bg-lesser hidden md1:flex",
-      onClick: () => dispatch(updateUI({ resultsEnlarged: true })),
+      onClick: () => setResultsEnlarged(true),
     },
   ];
 
   return (
-    <div
-      id="damage-results-menu"
-      className={"absolute top-2 right-2 w-8" + (menuDropped ? " dropped" : "")}
-    >
+    <div ref={wrapperRef} className="absolute top-2 right-2 w-8">
       <button
         className={
           "w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green text-black" : "")
@@ -95,6 +80,17 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
         trackerState={trackerModalState}
         onChangeTrackerModalState={setTrackerModalState}
       />
+
+      <Modal
+        active={resultsEnlarged}
+        className="p-4 pt-2 rounded-lg shadow-white-glow bg-darkblue-3 custom-scrollbar max-w-95"
+        style={{
+          height: "80vh",
+        }}
+        onClose={() => setResultsEnlarged(false)}
+      >
+        <ResultsDisplay activeSetupName={activeSetupName} />
+      </Modal>
     </div>
   );
 };

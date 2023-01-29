@@ -41,7 +41,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
     }
 
     if (keyword) {
-      filteredNames = filteredNames.filter((name) => name.toLowerCase().startsWith(keyword));
+      filteredNames = filteredNames.filter((name) => name.toLowerCase().includes(keyword));
     }
   }
 
@@ -49,13 +49,13 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
     <div className="h-full flex flex-col">
       <div className="p-2">
         <ModalHeader>
-          <div className="pl-5 col-span-2 md2:col-span-1 flex items-center">
+          <div className="pl-5 flex items-center">
             {dataType === "character" && (
               <>
                 <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
 
                 <input
-                  className="w-40 ml-3 px-2 py-1 leading-none font-semibold textinput-common"
+                  className="w-24 ml-3 px-2 py-1 leading-none font-semibold textinput-common"
                   placeholder="Search..."
                   onChange={(e) => setKeyword(e.target.value)}
                 />
@@ -81,14 +81,14 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
 
           <div className="flex justify-end items-center">
             {needMassAdd && (
-              <label className="mr-4 flex items-center font-bold text-black">
+              <label className="mr-4 flex font-bold text-black">
                 <input
                   type="checkbox"
                   className="scale-150"
                   checked={massAdd}
                   onChange={() => setMassAdd((prev) => !prev)}
                 />
-                <span className="ml-2">Mass Add ({amount.total})</span>
+                <span className="ml-2">Mass add</span>
               </label>
             )}
 

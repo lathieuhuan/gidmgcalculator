@@ -5,7 +5,9 @@ import { IconButton } from "@Components/atoms";
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={"h-11 relative grid grid-cols-3 rounded-t-lg bg-orange " + className}
+      className={
+        "h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange " + className
+      }
       {...rest}
     />
   );
