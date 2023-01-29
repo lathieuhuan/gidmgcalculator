@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaSkull } from "react-icons/fa";
 import { IoDocumentText } from "react-icons/io5";
 import type { ArtifactType } from "@Src/types";
 
@@ -22,7 +23,8 @@ import { useHeight } from "@Src/hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
-import { ConfirmModal, TypeSelect } from "@Components/organisms";
+import { Modal } from "@Components/molecules";
+import { TypeSelect } from "@Components/organisms";
 import { PickerCharacter, InventoryWeapon, InventoryArtifact } from "@Components/templates";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
@@ -30,13 +32,14 @@ import SectionArtifacts from "./SectionArtifacts";
 import SectionTarget from "./SectionTarget";
 import HighManager from "./HighManager";
 import { SetupSelect } from "./SetupSelect";
+import { TargetConfig } from "./modal-content";
 
 type ModalType =
   | "CHARACTERS_PICKER"
   | "WEAPONS_PICKER"
   | ArtifactType
   | "SHARE_SETUP_SUPPORTER"
-  | "MOVE_TARGET_NOTICE"
+  | "TARGET_CONFIG"
   | "";
 
 export default function SetupManager() {
@@ -47,7 +50,7 @@ export default function SetupManager() {
 
   const [modalType, setModalType] = useState<ModalType>("");
   const [prePickerOn, setPrePickerOn] = useState(false);
-  const [targetAtFront, setTargetAtFront] = useState(true);
+  const [targetOverviewOn, setTargetOverviewOn] = useState(true);
 
   const [ref, height] = useHeight();
 
@@ -62,23 +65,34 @@ export default function SetupManager() {
         <SectionWeapon />
         <SectionArtifacts />
 
-        {targetAtFront && (
-          <SectionTarget isAtFront onMove={() => setModalType("MOVE_TARGET_NOTICE")} />
+        {targetOverviewOn && (
+          <SectionTarget
+            onMinimize={() => setTargetOverviewOn(false)}
+            onEdit={() => setModalType("TARGET_CONFIG")}
+          />
         )}
       </div>
 
-      <div className="mt-4 flex items-center">
-        <div style={{ width: "5.425rem" }} />
+      <div className="mt-4 grid grid-cols-3">
+        <div className="flex items-center">
+          {!targetOverviewOn && (
+            <IconButton className="text-lg" boneOnly onClick={() => setModalType("TARGET_CONFIG")}>
+              <FaSkull />
+            </IconButton>
+          )}
+        </div>
 
-        <IconButton
-          className="mx-auto text-lg"
-          variant="positive"
-          onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
-        >
-          <IoDocumentText />
-        </IconButton>
+        <div className="flex-center">
+          <IconButton
+            className="mx-auto text-lg"
+            variant="positive"
+            onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
+          >
+            <IoDocumentText />
+          </IconButton>
+        </div>
 
-        <div className="flex">
+        <div className="flex justify-end">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setModalType("WEAPONS_PICKER")}
@@ -160,17 +174,24 @@ export default function SetupManager() {
         onClose={closeModal}
       />
 
-      <ConfirmModal
-        active={modalType === "MOVE_TARGET_NOTICE"}
-        message="Move Target Overview to Settings/Configs?"
-        buttons={[
-          undefined,
-          {
-            onClick: () => setTargetAtFront(false),
-          },
-        ]}
-        onClose={closeModal}
-      />
+      <Modal active={modalType === "TARGET_CONFIG"} className="h-large-modal" onClose={closeModal}>
+        <TargetConfig
+          button={
+            targetOverviewOn ? null : (
+              <Button
+                variant="positive"
+                onClick={() => {
+                  setTargetOverviewOn(true);
+                  closeModal();
+                }}
+              >
+                Overview mode
+              </Button>
+            )
+          }
+          onClose={closeModal}
+        />
+      </Modal>
     </div>
   );
 }

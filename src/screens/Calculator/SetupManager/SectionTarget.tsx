@@ -1,6 +1,5 @@
-import clsx from "clsx";
-import { Fragment, useState } from "react";
-import { FaChevronDown, FaEdit } from "react-icons/fa";
+import { Fragment } from "react";
+import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
 // Util
 import { getTargetData } from "@Src/utils/setup";
@@ -15,36 +14,25 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { CloseButton, IconButton } from "@Components/atoms";
-import { Modal } from "@Components/molecules";
-import { TargetConfig } from "./modal-content";
+import { IconButton } from "@Components/atoms";
 
 interface SectionTargetProps {
-  isAtFront?: boolean;
-  onMove: () => void;
+  onMinimize: () => void;
+  onEdit: () => void;
 }
-export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps) {
+export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
   const { title, names, variant, statuses } = getTargetData(target);
 
-  const [configOn, setConfigOn] = useState(false);
-
   return (
     <Fragment>
-      <div
-        className={clsx(
-          "px-4 py-3 rounded-xl bg-darkblue-1 cursor-default relative",
-          isAtFront && "border-2 border-lesser"
-        )}
-      >
+      <div className="px-4 py-3 rounded-xl bg-darkblue-1 cursor-default relative border-2 border-lesser">
         <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-lesser space-y-1">
-          <CloseButton boneOnly onClick={onMove} />
-          <IconButton
-            className="pl-1 hover:text-lightgold"
-            boneOnly
-            onClick={() => setConfigOn(true)}
-          >
+          <IconButton className="hover:text-lightgold" boneOnly onClick={onMinimize}>
+            <FaMinus />
+          </IconButton>
+          <IconButton className="pl-1 hover:text-lightgold" boneOnly onClick={onEdit}>
             <FaEdit />
           </IconButton>
         </div>
@@ -90,10 +78,6 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
           </label>
         </div>
       </div>
-
-      <Modal active={configOn} className="h-large-modal" onClose={() => setConfigOn(false)}>
-        <TargetConfig onClose={() => setConfigOn(false)} />
-      </Modal>
     </Fragment>
   );
 }

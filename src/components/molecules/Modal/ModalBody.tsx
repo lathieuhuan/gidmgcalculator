@@ -25,7 +25,10 @@ export const ModalBody = ({
           "shadow-white-glow rounded-lg bg-darkblue-2 " + styles["content-wrapper"],
         className
       )}
-      style={style}
+      style={{
+        maxWidth: "95%",
+        ...style,
+      }}
     >
       {children}
     </div>

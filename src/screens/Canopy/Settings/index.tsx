@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from "react";
-import type { AppSettings } from "@Store/calculatorSlice/types";
+import type { CalculatorSettings } from "@Store/calculatorSlice/types";
 
 import { useSelector } from "@Store/hooks";
 
-type ConfigOption = {
-  field: keyof AppSettings;
+type CalculatorOption = {
+  field: keyof CalculatorSettings;
   desc: string;
 };
 
@@ -26,7 +26,7 @@ export const Settings = () => {
 
   const [tempSettings, setTempSettings] = useState(settings);
 
-  const CONFIG_OPTIONS: ConfigOption[] = [
+  const CALC_OPTIONS: CalculatorOption[] = [
     {
       field: "separateCharInfo",
       desc: "Separate Character's Info on each Setup",
@@ -41,16 +41,16 @@ export const Settings = () => {
     <div className="h-full px-2 py-4">
       <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
       <Section title="Calculator">
-        <div className="space-y-4">
-          {CONFIG_OPTIONS.map(({ field, desc }, i) => (
-            <label key={i} className="flex items-center group">
+        <div className="mt-2 space-y-3">
+          {CALC_OPTIONS.map(({ field, desc }, i) => (
+            <label key={i} className="flex items-center hover:text-green">
               <input
                 type="checkbox"
                 className="ml-1 mr-4 scale-180"
                 checked={tempSettings[field]}
                 onChange={() => setTempSettings((prev) => ({ ...prev, [field]: !prev[field] }))}
               />
-              <span className="group-hover:text-lightgold cursor-pointer">{desc}</span>
+              <span>{desc}</span>
             </label>
           ))}
         </div>

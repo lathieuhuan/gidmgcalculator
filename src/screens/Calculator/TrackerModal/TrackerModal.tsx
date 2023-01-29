@@ -1,14 +1,15 @@
 import clsx from "clsx";
 import ReactDOM from "react-dom";
 import { useEffect, useState, memo } from "react";
-import { FaMinus, FaTimes } from "react-icons/fa";
+import { FaMinus } from "react-icons/fa";
 import type { TrackerModalState } from "./types";
 
 // Hook
 import { useCloseWithEsc } from "@Src/hooks";
 
 // Component
-import { ModalBody } from "@Components/molecules/Modal";
+import { CloseButton, IconButton } from "@Components/atoms";
+import { ModalBody } from "@Components/molecules";
 import TrackerContainer from "./TrackerContainer";
 
 interface TrackerModalProps {
@@ -78,18 +79,14 @@ export const TrackerModal = memo(
             <ModalBody withDefaultStyle animate={state.animate}>
               <div className="p-4 h-full relative flex flex-col">
                 <div className="absolute top-1 right-1 flex space-x-2 text-xl">
-                  <button
-                    className="w-8 h-8 flex-center hover:text-lightgold"
+                  <IconButton
+                    className="hover:text-lightgold"
+                    boneOnly
                     onClick={() => onChangeTrackerModalState("HIDDEN")}
                   >
                     <FaMinus />
-                  </button>
-                  <button
-                    className="w-8 h-8 flex-center hover:text-darkred"
-                    onClick={() => onChangeTrackerModalState("CLOSE")}
-                  >
-                    <FaTimes />
-                  </button>
+                  </IconButton>
+                  <CloseButton boneOnly onClick={() => onChangeTrackerModalState("CLOSE")} />
                 </div>
 
                 <p className="flex items-center md1:justify-center">

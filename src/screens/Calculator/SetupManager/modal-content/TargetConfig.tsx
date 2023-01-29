@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import type { ReactNode } from "react";
 import type { ChangeEvent } from "react";
 import type { AttackElement, Vision } from "@Src/types";
 
@@ -24,9 +25,10 @@ import { Button, CloseButton } from "@Components/atoms";
 import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {
+  button: ReactNode;
   onClose: () => void;
 }
-export function TargetConfig({ onClose }: TargetConfigProps) {
+export function TargetConfig({ button, onClose }: TargetConfigProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -179,9 +181,12 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
             })}
           </div>
 
-          <Button className="mt-3 mr-auto" variant="positive" onClick={onClose}>
-            Close
-          </Button>
+          <div className="space-x-2">
+            <Button className="mt-3 mr-auto" variant="negative" onClick={onClose}>
+              Close
+            </Button>
+            {button}
+          </div>
         </div>
 
         <div className="mx-4" />

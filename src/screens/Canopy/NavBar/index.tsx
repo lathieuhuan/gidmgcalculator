@@ -14,13 +14,13 @@ import { useClickOutside } from "@Src/hooks";
 // Component
 import { CloseButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { IntroModal } from "../IntroModal";
-import { GuidesModal } from "../GuidesModal";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
+import { IntroModal } from "../IntroModal";
+import { GuidesModal } from "../GuidesModal";
+import { Settings } from "../Settings";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
-import { Settings } from "./Settings";
 
 type ModalType = "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD";
 
@@ -83,7 +83,7 @@ export function NavBar() {
               {isLargeView ? null : (
                 <NavTabs
                   className="px-4 py-2"
-                  activeClassName="bg-darkblue-1 text-default"
+                  activeClassName="border-l-4 border-darkred bg-darkblue-1 text-default"
                   onClickTab={closeMenu}
                 />
               )}
