@@ -70,7 +70,7 @@ const Dehya: DataCharacter = {
       ],
     },
     EB: {
-      name: "The Lioness’s Bite",
+      name: "The Lioness's Bite",
       image: "",
       stats: [
         { name: "Flame-Mane's Fist", multFactors: 112.8 },

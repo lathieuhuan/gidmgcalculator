@@ -20,26 +20,26 @@ import { ImportManager, MessageModal, NavBar } from "@Screens/Canopy";
 function App() {
   const atScreen = useSelector(selectAtScreen);
 
-  // useEffect(() => {
-  //   const beforeunloadAlert = (e: BeforeUnloadEvent) => {
-  //     e.preventDefault();
-  //     return (e.returnValue = "Are you sure you want to exit?");
-  //   };
-  //   window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
+  useEffect(() => {
+    const beforeunloadAlert = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      return (e.returnValue = "Are you sure you want to exit?");
+    };
+    window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
 
-  //   const data = localStorage.getItem("GDC_Data");
-  //   if (data) {
-  //     try {
-  //       checkAndAddUserData(JSON.parse(data));
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
+    // const data = localStorage.getItem("GDC_Data");
+    // if (data) {
+    //   try {
+    //     checkAndAddUserData(JSON.parse(data));
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
 
-  //   return () => {
-  //     window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
+    };
+  }, []);
 
   const renderTabContent = () => {
     switch (atScreen) {
