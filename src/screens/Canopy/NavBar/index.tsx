@@ -13,10 +13,10 @@ import { useClickOutside } from "@Src/hooks";
 
 // Component
 import { Modal } from "@Components/molecules";
+import { IntroModal } from "../IntroModal";
+import { GuidesModal } from "../GuidesModal";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
-import { Intro } from "./Intro";
-import { Guides } from "./Guides";
 import { DownloadOptions } from "./DownloadOptions";
 import { UploadOptions } from "./UploadOptions";
 import { Settings } from "./Settings";
@@ -98,11 +98,16 @@ export function NavBar() {
         </div>
       </div>
 
-      <Intro active={modalType === "INTRO"} onClose={closeModal} />
+      <IntroModal active={modalType === "INTRO"} onClose={closeModal} />
 
-      <Guides active={modalType === "GUIDES"} onClose={closeModal} />
+      <GuidesModal active={modalType === "GUIDES"} onClose={closeModal} />
 
-      <Modal active={modalType === "SETTINGS"} onClose={closeModal}>
+      <Modal
+        active={modalType === "SETTINGS"}
+        className="max-w-95 rounded-lg bg-darkblue-2 shadow-white-glow"
+        style={{ height: "80vh" }}
+        onClose={closeModal}
+      >
         <Settings />
       </Modal>
 

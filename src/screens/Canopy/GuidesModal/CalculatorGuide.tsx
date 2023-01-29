@@ -10,7 +10,7 @@ import { SiTarget } from "react-icons/si";
 import { MdMoreVert } from "react-icons/md";
 
 import { Green, Lightgold } from "@Components/atoms";
-import { ListDecimal, ListDisc } from "../atoms";
+import { ListDecimal, ListDisc } from "../NavBar/atoms";
 
 export const CalculatorGuide = () => {
   return (

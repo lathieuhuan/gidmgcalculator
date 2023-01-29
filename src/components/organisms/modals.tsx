@@ -21,14 +21,21 @@ export function ConfirmModal({ active, onClose, ...rest }: ModalControl & Confir
 
 interface StandardModalProps extends ModalControl {
   title: ReactNode;
-  children: JSX.Element;
+  bodyClassName?: string;
+  children: ReactNode;
 }
-export function StandardModal({ active, title, children, onClose }: StandardModalProps) {
+export function StandardModal({
+  bodyClassName = "",
+  active,
+  title,
+  children,
+  onClose,
+}: StandardModalProps) {
   return (
     <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
       <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
       {title}
-      <div className="grow custom-scrollbar">{children}</div>
+      <div className={"grow custom-scrollbar " + bodyClassName}>{children}</div>
     </Modal>
   );
 }

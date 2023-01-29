@@ -8,25 +8,40 @@ type ConfigOption = {
   desc: string;
 };
 
-const CONFIG_OPTIONS: ConfigOption[] = [
-  {
-    field: "separateCharInfo",
-    desc: "Separate Character's Info on each Setup",
-  },
-  {
-    field: "keepArtStatsOnSwitch",
-    desc: "Keep Artifact Stats when switching to a new Set",
-  },
-];
+interface SectionProps {
+  title: string;
+  options: ConfigOption[];
+}
+const Section = ({ title, options }: SectionProps) => {
+  return (
+    <div className="p-2 bg-darkblue-1 rounded">
+      <p className="text-lightgold text-lg font-semibold">{title}</p>
+      <ul>{/*  */}</ul>
+    </div>
+  );
+};
 
 export const Settings = () => {
   const settings = useSelector((state) => state.calculator.settings);
 
   const [tempSettings, setTempSettings] = useState(settings);
 
+  const CONFIG_OPTIONS: ConfigOption[] = [
+    {
+      field: "separateCharInfo",
+      desc: "Separate Character's Info on each Setup",
+    },
+    {
+      field: "keepArtStatsOnSwitch",
+      desc: "Keep Artifact Stats when switching to a new Set",
+    },
+  ];
+
   return (
-    <div className="space-y-3">
-      <div className="p-4 rounded-lg bg-darkblue-2">
+    <div className="h-full p-4">
+      <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
+      <p></p>
+      <div className="mt-3">
         <div className="space-y-4">
           {CONFIG_OPTIONS.map(({ field, desc }, i) => (
             <label key={i} className="flex items-center group">
