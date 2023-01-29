@@ -97,3 +97,17 @@ export function ItemRemoveConfirm({
     />
   );
 }
+
+interface UnderConstructNoticeProps {
+  active: boolean;
+  onClose: () => void;
+}
+export const UnderConstructNotice = (props: UnderConstructNoticeProps) => {
+  return (
+    <ConfirmModal
+      message="This feature is under construction. Please come back later."
+      buttons={[undefined]}
+      {...props}
+    />
+  );
+};

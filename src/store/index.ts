@@ -24,8 +24,9 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root",
-  version: 1,
+  version: 0,
   storage,
+  blacklist: ["calculator", "ui", "database"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

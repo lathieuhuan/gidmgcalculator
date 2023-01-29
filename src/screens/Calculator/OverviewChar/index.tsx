@@ -21,8 +21,11 @@ import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 // Component
 import { Button, IconButton, BetaMark, StarLine, Image } from "@Components/atoms";
 import { ComplexSelect } from "@Components/molecules";
+import { UnderConstructNotice } from "@Components/organisms";
 import { PickerCharacter } from "@Components/templates";
 import contentByTab from "./content";
+
+type ModalType = "CHARACTER_PICKER" | "IMPORT_MANAGER" | "";
 
 interface OverviewCharProps {
   touched: boolean;
@@ -33,12 +36,14 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
   const charData = useSelector(selectCharData);
 
   const [activeTab, setActiveTab] = useState("Attributes");
-  const [pickerOn, setPickerOn] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>("");
 
   const Content = contentByTab[activeTab];
   const { beta, icon, vision, rarity } = findDataCharacter(charData)!;
 
-  const onClickCharImg = () => setPickerOn(true);
+  const onClickCharImg = () => setModalType("CHARACTER_PICKER");
+
+  const closeModal = () => setModalType("");
 
   return (
     <>
@@ -96,19 +101,27 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
           <div className="mt-3 grow hide-scrollbar">{Content && <Content />}</div>
         </div>
       ) : (
-        <div className="w-full flex flex-col">
-          <Button className="mx-auto" variant="positive" onClick={() => setPickerOn(true)}>
+        <div className="w-full flex flex-col items-center space-y-2">
+          <Button variant="positive" onClick={() => setModalType("CHARACTER_PICKER")}>
             Choose a character
+          </Button>
+
+          <p>or</p>
+
+          <Button variant="positive" onClick={() => setModalType("IMPORT_MANAGER")}>
+            Import a setup
           </Button>
         </div>
       )}
 
       <PickerCharacter
-        active={pickerOn}
+        active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
         onPickCharacter={(pickedChar) => dispatch(startCalculation(pickedChar))}
-        onClose={() => setPickerOn(false)}
+        onClose={closeModal}
       />
+
+      <UnderConstructNotice active={modalType === "IMPORT_MANAGER"} onClose={closeModal} />
     </>
   );
 }

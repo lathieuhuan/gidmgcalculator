@@ -62,7 +62,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 37,
+    code: 7,
     title: "Small Fungus (not dendro)",
     resistance: { base: 10, dendro: 10 },
     variant: {
@@ -71,12 +71,12 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 38,
+    code: 8,
     title: "Floating Dendro Fungus",
     resistance: { base: 10, dendro: 25 },
   },
   {
-    code: 39,
+    code: 9,
     title: "Large Fungus (not dendro)",
     resistance: { base: 10, dendro: 20 },
     variant: {
@@ -85,12 +85,12 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 40,
+    code: 10,
     title: "Winged Dendroshroom",
     resistance: { base: 10, dendro: 40 },
   },
   {
-    code: 41,
+    code: 11,
     title: "Jadeplume Terrorshroom",
     resistance: { base: 25, dendro: 80 },
     inputConfigs: {
@@ -99,24 +99,24 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 7,
+    code: 12,
     title: "Ruin Guard / Ruin Grader",
     resistance: { base: 10, phys: 70 },
   },
   {
-    code: 8,
+    code: 13,
     title: "Perpetual Mechanical Array",
     resistance: { base: 10, phys: 70 },
     inputConfigs: { label: "Stunned", changes: { base: -50 } },
   },
   {
-    code: 12,
+    code: 14,
     title: "Ruin Serpent",
     resistance: { base: 10, phys: 70 },
     inputConfigs: { label: "Charging", changes: { base: 300 } },
   },
   {
-    code: 42,
+    code: 15,
     title: "Ruin Drake",
     resistance: { base: 10, phys: 50 },
     inputConfigs: {
@@ -127,7 +127,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 43,
+    code: 16,
     title: "Aeonblight Drake",
     resistance: { base: 10, phys: 70 },
     inputConfigs: {
@@ -138,7 +138,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 20,
+    code: 17,
     title: "Primal Construct",
     resistance: { base: 10 },
     inputConfigs: { label: "Invisible", changes: { base: 50 } },
@@ -150,7 +150,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Invisible", changes: { base: 200 } },
   },
   {
-    code: 9,
+    code: 19,
     title: "Whopperflower",
     resistance: { base: 35, phys: 35 },
     variant: {
@@ -160,7 +160,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { base: -25 } },
   },
   {
-    code: 10,
+    code: 20,
     title: "Regisvine",
     resistance: { base: 110, phys: 130 },
     variant: {
@@ -170,7 +170,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { base: -100 } },
   },
   {
-    code: 11,
+    code: 21,
     title: "Hydro Mimic",
     resistance: { base: 15 },
     variant: {
@@ -184,12 +184,12 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 15,
+    code: 22,
     title: "Geovishap Hatchling",
     resistance: { base: 10, phys: 30, geo: 50 },
   },
   {
-    code: 16,
+    code: 23,
     title: "Geovishap",
     resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
@@ -198,7 +198,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 17,
+    code: 24,
     title: "Primo Geovishap",
     resistance: { base: 10, phys: 30, geo: 50 },
     variant: {
@@ -208,7 +208,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Countered (5s)", changes: { base: -50 } },
   },
   {
-    code: 19,
+    code: 25,
     title: "Rifthound Whelp",
     resistance: { base: 20 },
     variant: {
@@ -217,7 +217,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Enraged", changes: { variant: -30 } },
   },
   {
-    code: 21,
+    code: 26,
     title: "Rifthound",
     resistance: { base: 25 },
     variant: {
@@ -226,13 +226,13 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Enraged", changes: { variant: -65 } },
   },
   {
-    code: 22,
+    code: 27,
     title: "Golden Wolflord",
     resistance: { base: 25 },
     inputConfigs: { label: "After shield phase", changes: { geo: -45 } },
   },
   {
-    code: 23,
+    code: 28,
     title: "Bathysmal Vishap Hatchling",
     resistance: { base: 10, phys: 30 },
     variant: {
@@ -241,7 +241,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 24,
+    code: 29,
     title: "Bathysmal Vishaps Boss",
     resistance: { base: 10, phys: 30 },
     variant: {
@@ -250,14 +250,14 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 25,
+    code: 30,
     title: "Fatui Skirmisher",
     resistance: { base: 10, phys: -20 },
     inputConfigs: { label: "Armored", changes: { base: 100 } },
   },
 
   {
-    code: 26,
+    code: 31,
     title: "Fatui Elites",
     resistance: { base: 10, phys: -20 },
     variant: {
@@ -271,7 +271,7 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 27,
+    code: 32,
     title: "Shadowy Husks",
     resistance: { base: 10, phys: 30 },
     variant: {
@@ -280,12 +280,12 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 34,
+    code: 33,
     title: "Black Serpent Knight: Windcutter",
     resistance: { base: 10, phys: 30, anemo: 50 },
   },
   {
-    code: 35,
+    code: 34,
     title: "Mid-tier Eremites",
     resistance: { base: 10, phys: -20 },
     variant: {
@@ -298,7 +298,7 @@ const monsters: DataMonster[] = [
     inputConfigs: { label: "Stunned", changes: { variant: -60 } },
   },
   {
-    code: 36,
+    code: 35,
     title: "High-tier Eremites",
     resistance: { base: 10, phys: -20 },
     variant: {
@@ -317,45 +317,45 @@ const monsters: DataMonster[] = [
     },
   },
   {
-    code: 28,
+    code: 36,
     title: "Childe Phase 1",
     resistance: { base: 0, hydro: 50 },
     inputConfigs: { label: "Stunned", changes: { base: -30 } },
   },
   {
-    code: 29,
+    code: 37,
     title: "Childe Phase 2",
     resistance: { base: 0, electro: 50 },
     inputConfigs: { label: "Stunned", changes: { base: -50 } },
   },
   {
-    code: 30,
+    code: 38,
     title: "Childe Phase 3",
     resistance: { base: 0, hydro: 70, electro: 70 },
   },
   {
-    code: 31,
+    code: 39,
     title: "Signora Phase 1 (Cryo)",
     resistance: { base: 10, cryo: 40 },
   },
   {
-    code: 32,
+    code: 40,
     title: "Signora Phase 2 (Pyro)",
     resistance: { base: 10, pyro: 60 },
   },
   {
-    code: 33,
+    code: 41,
     title: "The Shogun",
     resistance: { base: 10 },
     inputConfigs: { label: "Stunned", changes: { base: -60 } },
   },
   {
-    code: 14,
+    code: 42,
     title: "False God of Wisdom (Phase 1)",
     resistance: { base: 10, electro: 50 },
   },
   {
-    code: 13,
+    code: 43,
     title: "False God of Wisdom (Phase 2)",
     resistance: { base: 30, electro: 90 },
     inputConfigs: {

@@ -26,6 +26,7 @@ import {
 
 // Component
 import { CollapseAndMount, Button } from "@Components/atoms";
+import { UnderConstructNotice } from "@Components/organisms";
 import { SetupControl } from "./SetupControl";
 
 import styles from "@Screens/Calculator/styles.module.scss";
@@ -45,6 +46,7 @@ function HiddenManager() {
     }))
   );
   const [tempStandardId, setTempStandardId] = useState(findById(tempSetups, standardId)?.ID || 0);
+  const [importManageOn, setImportManageOn] = useState(false);
   const [errorCode, setErrorCode] = useState<"NO_SETUPS" | "">("");
 
   const displayedSetups = tempSetups.filter((tempSetup) => tempSetup.status !== "REMOVED");
@@ -195,7 +197,13 @@ function HiddenManager() {
               >
                 <FaPlus />
               </button>
-              {/* <ImportBtn /> */}
+              <Button
+                variant="custom"
+                className="w-full h-8 mt-4 bg-blue-600 text-default"
+                onClick={() => setImportManageOn(true)}
+              >
+                Import
+              </Button>
             </div>
           )}
         </div>
@@ -216,6 +224,8 @@ function HiddenManager() {
         </span>
         <span>Apply</span>
       </Button>
+
+      <UnderConstructNotice active={importManageOn} onClose={() => setImportManageOn(false)} />
     </div>
   );
 }

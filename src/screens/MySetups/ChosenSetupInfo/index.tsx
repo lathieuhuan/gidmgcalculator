@@ -19,9 +19,10 @@ import { AttributeTable, Modal, SetBonusesDisplay } from "@Components/molecules"
 import {
   ArtifactCard,
   ConfirmModal,
+  UnderConstructNotice,
   DamageDisplay,
   OwnerLabel,
-  SetupExporter,
+  // SetupExporter,
   WeaponCard,
 } from "@Components/organisms";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
@@ -78,9 +79,10 @@ export const ChosenSetupInfo = ({
         onClose={onCloseModal}
       />
 
-      <Modal active={modal.type === "SHARE_SETUP"} onClose={onCloseModal}>
+      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} />
+      {/* <Modal active={modal.type === "SHARE_SETUP"} onClose={onCloseModal}>
         <SetupExporter data={chosenSetup} onClose={onCloseModal} />
-      </Modal>
+      </Modal> */}
 
       <Modal
         active={modal.type === "WEAPON"}
