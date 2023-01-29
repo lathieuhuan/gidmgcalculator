@@ -7,7 +7,7 @@ import { useSelector } from "@Store/hooks";
 
 // Selector
 import {
-  selectCalcConfigs,
+  selectCalcSettings,
   selectCalcSetupsById,
   selectActiveId,
   selectTarget,
@@ -34,7 +34,7 @@ export function OverrideOptions({
   const setupsById = useSelector(selectCalcSetupsById);
   const activeId = useSelector(selectActiveId);
   const target = useSelector(selectTarget);
-  const { separateCharInfo } = useSelector(selectCalcConfigs);
+  const { separateCharInfo } = useSelector(selectCalcSettings);
 
   const [ticked, setTicked] = useState([false, false]);
   const [expandedIndex, setExpandedIndex] = useState(-1);

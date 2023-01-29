@@ -7,6 +7,7 @@ import type {
   Target,
   TotalAttribute,
   AttackElement,
+  Level,
 } from "@Src/types";
 
 export type CalculatorState = {
@@ -32,11 +33,18 @@ export type CalculatorState = {
       dmgResult: DamageResult;
     }
   >;
-
   target: Target;
 };
 
 export type CalculatorSettings = {
   separateCharInfo: boolean;
   keepArtStatsOnSwitch: boolean;
+  charLevel: Level;
+  charCons: number;
+  charNAs: number;
+  charES: number;
+  charEB: number;
+  wpLevel: Level;
+  wpRefi: number;
+  artLevel: number;
 };

@@ -10,7 +10,7 @@ export const selectComparedIds = (state: RootState) => state.calculator.compared
 
 export const selectCharData = (state: RootState) => state.calculator.charData;
 
-export const selectCalcConfigs = (state: RootState) => state.calculator.configs;
+export const selectCalcSettings = (state: RootState) => state.calculator.settings;
 
 export const selectSetupManageInfos = (state: RootState) => state.calculator.setupManageInfos;
 

@@ -1,60 +1,108 @@
-import { useState, type ReactNode } from "react";
-import type { CalculatorSettings } from "@Store/calculatorSlice/types";
+import { useState } from "react";
 
-import { useSelector } from "@Store/hooks";
+// Hook
+import { useDispatch, useSelector } from "@Store/hooks";
 
-type CalculatorOption = {
-  field: keyof CalculatorSettings;
-  desc: string;
-};
+// Selector
+import { selectCalcSettings } from "@Store/calculatorSlice/selectors";
+import { CheckSetting, Section, SelectSetting } from "./atoms";
+import { ButtonBar } from "@Components/molecules";
+import { LEVELS } from "@Src/constants";
+import { Level } from "@Src/types";
+import { updateCalculator } from "@Store/calculatorSlice";
 
-interface SectionProps {
-  title: string;
-  children: ReactNode;
+interface SettingsProps {
+  onClose: () => void;
 }
-const Section = ({ title, children }: SectionProps) => {
-  return (
-    <div className="mt-2 px-4 py-2 bg-darkblue-1 rounded">
-      <p className="text-lightgold text-lg font-semibold">{title}</p>
-      {children}
-    </div>
-  );
-};
-
-export const Settings = () => {
-  const settings = useSelector((state) => state.calculator.settings);
+export const Settings = ({ onClose }: SettingsProps) => {
+  const dispatch = useDispatch();
+  const settings = useSelector(selectCalcSettings);
 
   const [tempSettings, setTempSettings] = useState(settings);
 
-  const CALC_OPTIONS: CalculatorOption[] = [
-    {
-      field: "separateCharInfo",
-      desc: "Separate Character's Info on each Setup",
-    },
-    {
-      field: "keepArtStatsOnSwitch",
-      desc: "Keep Artifact Stats when switching to a new Set",
-    },
-  ];
-
   return (
-    <div className="h-full px-2 py-4">
+    <div className="h-full px-2 py-4 flex flex-col">
       <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
-      <Section title="Calculator">
-        <div className="mt-2 space-y-3">
-          {CALC_OPTIONS.map(({ field, desc }, i) => (
-            <label key={i} className="flex items-center hover:text-green">
-              <input
-                type="checkbox"
-                className="ml-1 mr-4 scale-180"
-                checked={tempSettings[field]}
-                onChange={() => setTempSettings((prev) => ({ ...prev, [field]: !prev[field] }))}
-              />
-              <span>{desc}</span>
-            </label>
-          ))}
-        </div>
-      </Section>
+      <div className="grow">
+        <Section title="Calculator">
+          <div className="mt-2 space-y-3">
+            <CheckSetting
+              label="Separate Character's Info on each Setup"
+              checked={tempSettings.separateCharInfo}
+              onChange={() => {
+                setTempSettings((prevSettings) => {
+                  return {
+                    ...prevSettings,
+                    separateCharInfo: !prevSettings.separateCharInfo,
+                  };
+                });
+              }}
+            />
+            <CheckSetting
+              label="Keep Artifact Stats when switching to a new Set"
+              checked={tempSettings.keepArtStatsOnSwitch}
+              onChange={() => {
+                setTempSettings((prevSettings) => {
+                  return {
+                    ...prevSettings,
+                    keepArtStatsOnSwitch: !prevSettings.keepArtStatsOnSwitch,
+                  };
+                });
+              }}
+            />
+          </div>
+        </Section>
+
+        <Section title="General">
+          <div className="mt-2 space-y-3">
+            <SelectSetting
+              label="Character level"
+              value={tempSettings.charLevel}
+              options={LEVELS}
+              onChange={(e) => {
+                setTempSettings((prevSettings) => {
+                  return {
+                    ...prevSettings,
+                    charLevel: e.target.value as Level,
+                  };
+                });
+              }}
+            />
+
+            {}
+            <SelectSetting
+              label="Character Normal Attack level"
+              value={tempSettings.charNAs}
+              options={[...Array(13)].map((_, i) => i + 1)}
+              onChange={(e) => {
+                setTempSettings((prevSettings) => {
+                  return {
+                    ...prevSettings,
+                    charNAs: +e.target.value,
+                  };
+                });
+              }}
+            />
+          </div>
+        </Section>
+      </div>
+
+      <ButtonBar
+        className="mt-4"
+        buttons={[
+          {
+            text: "Cancel",
+            onClick: onClose,
+          },
+          {
+            text: "Confirm",
+            onClick: () => {
+              dispatch(updateCalculator({ settings: tempSettings }));
+              onClose();
+            },
+          },
+        ]}
+      />
     </div>
   );
 };

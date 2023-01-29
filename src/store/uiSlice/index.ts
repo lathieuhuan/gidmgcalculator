@@ -6,7 +6,6 @@ import { EScreen } from "@Src/constants";
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   highManagerWorking: false,
-  resultsEnlarged: false,
   importInfo: {},
 };
 
