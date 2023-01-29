@@ -21,7 +21,7 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Util
-import { getImgSrc, userItemToCalcItem } from "@Src/utils";
+import { userItemToCalcItem } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { restoreCalcSetup } from "@Src/utils/setup";
 import {

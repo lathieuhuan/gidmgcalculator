@@ -28,15 +28,6 @@ export function SetupControl({
 }: SetupControlProps) {
   const isNew = setup.status === "NEW";
 
-  // {
-  //   Icon: FaShareAlt,
-  //   onClick: () => openModal("SHARE_SETUP"),
-  // },
-  // {
-  //   Icon: FaUserEdit,
-  //   onClick: () => openModal("UPDATE_USERS_DATA"),
-  // },
-
   return (
     <div className="px-2 py-3 rounded-lg bg-darkblue-1" onDoubleClick={() => console.log(setup)}>
       <input
