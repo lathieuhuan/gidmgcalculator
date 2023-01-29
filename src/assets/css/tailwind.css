@@ -27,8 +27,11 @@
     @apply px-2 py-1 bg-default text-black rounded font-bold;
   }
   .small-modal {
-    @apply rounded-lg shadow-white-glow max-w-95;
+    @apply rounded-lg shadow-white-glow;
     width: 22rem;
+  }
+  .h-large-modal {
+    @apply h-[90vh] lg:h-[85vh];
   }
   .small-tooltip {
     @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;

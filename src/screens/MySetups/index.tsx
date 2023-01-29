@@ -190,14 +190,23 @@ export default function MySetups() {
 
       <Modal
         active={modal.type === "FIRST_COMBINE"}
-        className="max-w-95"
-        style={{ height: "85%" }}
+        className="h-large-modal"
+        style={{
+          minWidth: 300,
+        }}
         onClose={closeModal}
       >
         <FirstCombine onClose={closeModal} />
       </Modal>
 
-      <Modal active={modal.type === "COMBINE_MORE"} style={{ height: "85%" }} onClose={closeModal}>
+      <Modal
+        active={modal.type === "COMBINE_MORE"}
+        className="h-large-modal"
+        style={{
+          minWidth: 300,
+        }}
+        onClose={closeModal}
+      >
         {modal.ID && <CombineMore setupID={modal.ID} onClose={closeModal} />}
       </Modal>
     </WareHouse.Wrapper>

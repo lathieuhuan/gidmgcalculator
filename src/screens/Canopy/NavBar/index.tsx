@@ -12,6 +12,7 @@ import {
 import { useClickOutside } from "@Src/hooks";
 
 // Component
+import { CloseButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { IntroModal } from "../IntroModal";
 import { GuidesModal } from "../GuidesModal";
@@ -104,16 +105,16 @@ export function NavBar() {
 
       <Modal
         active={modalType === "SETTINGS"}
-        className="max-w-95 rounded-lg bg-darkblue-2 shadow-white-glow"
-        style={{ height: "80vh" }}
+        className="w-80 h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow"
         onClose={closeModal}
       >
+        <CloseButton className="absolute top-2 right-2" boneOnly onClick={closeModal} />
         <Settings />
       </Modal>
 
       <Modal
         active={modalType === "DOWNLOAD"}
-        className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow max-w-95"
+        className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
         style={{ width: "28rem" }}
         onClose={closeModal}
       >
@@ -122,7 +123,7 @@ export function NavBar() {
 
       <Modal
         active={modalType === "UPLOAD"}
-        className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow max-w-95"
+        className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
         style={{ width: "28rem" }}
         onClose={closeModal}
       >

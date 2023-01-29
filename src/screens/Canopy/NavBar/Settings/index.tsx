@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { AppSettings } from "@Store/calculatorSlice/types";
 
 import { useSelector } from "@Store/hooks";
@@ -10,13 +10,13 @@ type ConfigOption = {
 
 interface SectionProps {
   title: string;
-  options: ConfigOption[];
+  children: ReactNode;
 }
-const Section = ({ title, options }: SectionProps) => {
+const Section = ({ title, children }: SectionProps) => {
   return (
-    <div className="p-2 bg-darkblue-1 rounded">
+    <div className="mt-2 px-4 py-2 bg-darkblue-1 rounded">
       <p className="text-lightgold text-lg font-semibold">{title}</p>
-      <ul>{/*  */}</ul>
+      {children}
     </div>
   );
 };
@@ -38,10 +38,9 @@ export const Settings = () => {
   ];
 
   return (
-    <div className="h-full p-4">
+    <div className="h-full px-2 py-4">
       <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
-      <p></p>
-      <div className="mt-3">
+      <Section title="Calculator">
         <div className="space-y-4">
           {CONFIG_OPTIONS.map(({ field, desc }, i) => (
             <label key={i} className="flex items-center group">
@@ -55,7 +54,7 @@ export const Settings = () => {
             </label>
           ))}
         </div>
-      </div>
+      </Section>
     </div>
   );
 };

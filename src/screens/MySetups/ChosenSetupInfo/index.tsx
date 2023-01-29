@@ -84,7 +84,7 @@ export const ChosenSetupInfo = ({
 
       <Modal
         active={modal.type === "WEAPON"}
-        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95"
+        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
         onClose={onCloseModal}
       >
         <div className="relative">
@@ -97,7 +97,7 @@ export const ChosenSetupInfo = ({
 
       <Modal
         active={modal.type === "ARTIFACTS"}
-        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow max-w-95"
+        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
         onClose={onCloseModal}
       >
         {artifacts?.map((artifact, i) => {
@@ -115,8 +115,7 @@ export const ChosenSetupInfo = ({
 
       <Modal
         active={modal.type === "STATS"}
-        className="hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95"
-        style={{ height: "85%" }}
+        className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
         onClose={onCloseModal}
       >
         <div className="h-full flex divide-x-2 divide-darkblue-2">
@@ -145,8 +144,7 @@ export const ChosenSetupInfo = ({
       {calcResult && weapon && (
         <Modal
           active={modal.type === "MODIFIERS"}
-          className="hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow max-w-95"
-          style={{ height: "85%" }}
+          className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
           onClose={onCloseModal}
         >
           <ChosenSetupModifiers

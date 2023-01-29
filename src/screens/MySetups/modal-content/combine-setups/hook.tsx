@@ -36,7 +36,9 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
-            <p className="text-lg font-bold">No Setups available for choosing...</p>
+            <p className="pr-2 text-lg text-lesser text-center">
+              No Setups available for choosing...
+            </p>
           </div>
         )}
         {options.map((setup) => {

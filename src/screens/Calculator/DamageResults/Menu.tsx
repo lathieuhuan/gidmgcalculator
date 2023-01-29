@@ -83,10 +83,7 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
 
       <Modal
         active={resultsEnlarged}
-        className="p-4 pt-2 rounded-lg shadow-white-glow bg-darkblue-3 custom-scrollbar max-w-95"
-        style={{
-          height: "80vh",
-        }}
+        className="h-large-modal p-4 pt-2 rounded-lg shadow-white-glow bg-darkblue-3 custom-scrollbar"
         onClose={() => setResultsEnlarged(false)}
       >
         <ResultsDisplay activeSetupName={activeSetupName} />

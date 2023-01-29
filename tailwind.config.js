@@ -12,12 +12,6 @@ module.exports = {
       spacing: {
         13: "3.25rem",
       },
-      margin: {
-        "3px": "3px",
-      },
-      padding: {
-        "3px": "3px",
-      },
       borderWidth: {
         3: "3px",
       },
@@ -41,7 +35,6 @@ module.exports = {
         "3.5xl": "2rem",
       },
       lineHeight: {
-        tighter: 1.15,
         base: 1.35,
       },
       colors: {
@@ -84,7 +77,6 @@ module.exports = {
         13: "3.25rem",
       },
       maxWidth: {
-        95: "95%",
         "1/3": "33.333333%",
         "1/5": "20%",
         "1/6": "16.666666%",

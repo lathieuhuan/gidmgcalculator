@@ -91,7 +91,7 @@ export default function SectionTarget({ isAtFront, onMove }: SectionTargetProps)
         </div>
       </div>
 
-      <Modal active={configOn} className="max-w-95" onClose={() => setConfigOn(false)}>
+      <Modal active={configOn} className="h-large-modal" onClose={() => setConfigOn(false)}>
         <TargetConfig onClose={() => setConfigOn(false)} />
       </Modal>
     </Fragment>

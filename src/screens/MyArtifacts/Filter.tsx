@@ -82,7 +82,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
 
 export function Filter({ active, onClose, ...rest }: ModalControl & FilterProps) {
   return (
-    <Modal active={active} className="max-w-95" onClose={onClose}>
+    <Modal active={active} onClose={onClose}>
       <FilterInner {...rest} onClose={onClose} />
     </Modal>
   );

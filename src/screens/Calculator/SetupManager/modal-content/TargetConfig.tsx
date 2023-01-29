@@ -75,10 +75,7 @@ export function TargetConfig({ onClose }: TargetConfigProps) {
   };
 
   return (
-    <div
-      className="pl-5 pr-2 pt-4 pb-2 bg-darkblue-1 flex flex-col rounded-lg shadow-white-glow overflow-auto"
-      style={{ height: "90vh" }}
-    >
+    <div className="pl-5 pr-2 pt-4 pb-2 h-full bg-darkblue-1 flex flex-col rounded-lg shadow-white-glow overflow-auto">
       <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
       <p className="text-1.5xl text-orange font-bold" onDoubleClick={() => console.log(target)}>
         Target Config

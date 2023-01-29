@@ -72,7 +72,7 @@ export const ChosenSetupModifiers = ({
   const { title, variant, statuses } = getTargetData(target);
 
   return (
-    <div className="h-full px-4 flex space-x-4 overflow-auto">
+    <div className="h-full px-4 flex space-x-4">
       <ModifierWrapper title="Debuffs used" className="w-75 flex flex-col">
         <CollapseList
           list={[
