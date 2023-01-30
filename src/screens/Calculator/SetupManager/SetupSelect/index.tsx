@@ -134,18 +134,18 @@ export function SetupSelect() {
                   children: <FaBalanceScaleLeft className="text-1.5xl" />,
                 },
                 {
+                  className: "hover:bg-lightgold" + (isAtMax ? " bg-lesser" : ""),
+                  disabled: isAtMax,
+                  onClick: onClickCopySetup(ID),
+                  children: <FaCopy />,
+                },
+                {
                   className: "hover:bg-lightgold",
                   onClick: () => {
                     closeSelect();
                     onClickSaveSetup(i);
                   },
                   children: <FaSave />,
-                },
-                {
-                  className: "hover:bg-lightgold" + (isAtMax ? " bg-lesser" : ""),
-                  disabled: isAtMax,
-                  onClick: onClickCopySetup(ID),
-                  children: <FaCopy />,
                 },
                 {
                   className: "hover:bg-darkred hover:text-default",
