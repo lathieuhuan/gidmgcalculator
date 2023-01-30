@@ -16,7 +16,6 @@ import type {
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
-  DEFAULT_APP_SETTINGS,
   LEVELS,
   OTHER_PERCENT_STAT_TYPES,
 } from "@Src/constants";
@@ -128,9 +127,22 @@ export const weaponSubStatValue = (scale: string, lv: Level) => {
   return SUBSTAT_SCALE[scale][index];
 };
 
-const getAppSettings = () => {
+const getAppSettings = (): AppSettings => {
   let savedSettings = localStorage.getItem("settings");
-  return savedSettings ? (JSON.parse(savedSettings) as AppSettings) : DEFAULT_APP_SETTINGS;
+  return savedSettings
+    ? (JSON.parse(savedSettings) as AppSettings)
+    : {
+        charInfoIsSeparated: false,
+        doKeepArtStatsOnSwitch: false,
+        charLevel: "1/20",
+        charCons: 0,
+        charNAs: 1,
+        charES: 1,
+        charEB: 1,
+        wpLevel: "1/20",
+        wpRefi: 1,
+        artLevel: 0,
+      };
 };
 
 const setAppSettings = (newSettings: Partial<AppSettings>) => {
