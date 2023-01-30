@@ -16,6 +16,7 @@ import type {
   TeammateArtifact,
   SetupImportInfo,
   PartiallyRequired,
+  AppSettings,
 } from "@Src/types";
 import type { CalculatorState } from "./types";
 
@@ -157,7 +158,11 @@ export type NewSetupManageInfo = CalcSetupManageInfo & {
   isCompared: boolean;
 };
 
-export type ApplySettingsAction = PayloadAction<{
+export type UpdateSetupsAction = PayloadAction<{
   newSetupManageInfos: NewSetupManageInfo[];
   newStandardId: number;
+}>;
+
+export type ApplySettingsAction = PayloadAction<{
+  doMergeCharInfo?: boolean;
 }>;

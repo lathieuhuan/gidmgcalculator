@@ -12,7 +12,6 @@ import {
   ATTACK_ELEMENTS,
   RESONANCE_VISION_TYPES,
   TRANSFORMATIVE_REACTIONS,
-  DEFAULT_APP_SETTINGS,
 } from "@Src/constants";
 
 export type Nation =
@@ -118,7 +117,18 @@ export type Artifact = {
   subStats: ArtifactSubStat[];
 };
 
-export type AppSettings = typeof DEFAULT_APP_SETTINGS;
+export type AppSettings = {
+  charInfoIsSeparated: boolean;
+  doKeepArtStatsOnSwitch: boolean;
+  charLevel: Level;
+  charCons: number;
+  charNAs: number;
+  charES: number;
+  charEB: number;
+  wpLevel: Level;
+  wpRefi: number;
+  artLevel: number;
+};
 
 /**
  * utility generic

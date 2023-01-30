@@ -14,7 +14,7 @@ import { findById, getCopyName } from "@Src/utils";
 import { getSetupManageInfo, getNewSetupName } from "@Src/utils/setup";
 
 // Action
-import { applySettings } from "@Store/calculatorSlice";
+import { updateSetups } from "@Store/calculatorSlice";
 import { updateUI } from "@Store/uiSlice";
 
 // Selector
@@ -144,7 +144,7 @@ function HiddenManager() {
     }
 
     dispatch(
-      applySettings({
+      updateSetups({
         newSetupManageInfos: tempSetups,
         newStandardId: tempStandardId,
       })
