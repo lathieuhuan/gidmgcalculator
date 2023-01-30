@@ -167,3 +167,16 @@ export const DEFAULT_MODIFIER_INITIAL_VALUES: Record<string, number> = {
   anemoable: 0,
   dendroable: 0,
 };
+
+export const DEFAULT_APP_SETTINGS = {
+  separateCharInfo: false,
+  keepArtStatsOnSwitch: false,
+  charLevel: "1/20",
+  charCons: 0,
+  charNAs: 1,
+  charES: 1,
+  charEB: 1,
+  wpLevel: "1/20",
+  wpRefi: 1,
+  artLevel: 0,
+};

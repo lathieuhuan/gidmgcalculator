@@ -12,6 +12,7 @@ import {
   ATTACK_ELEMENTS,
   RESONANCE_VISION_TYPES,
   TRANSFORMATIVE_REACTIONS,
+  DEFAULT_APP_SETTINGS,
 } from "@Src/constants";
 
 export type Nation =
@@ -116,6 +117,8 @@ export type Artifact = {
   mainStatType: ArtifactMainStatType;
   subStats: ArtifactSubStat[];
 };
+
+export type AppSettings = typeof DEFAULT_APP_SETTINGS;
 
 /**
  * utility generic

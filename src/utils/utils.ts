@@ -1,4 +1,5 @@
 import type {
+  AppSettings,
   AttackElement,
   AttackPattern,
   CalcArtifact,
@@ -15,6 +16,7 @@ import type {
 import {
   ARTIFACT_PERCENT_STAT_TYPES,
   ATTACK_ELEMENTS,
+  DEFAULT_APP_SETTINGS,
   LEVELS,
   OTHER_PERCENT_STAT_TYPES,
 } from "@Src/constants";
@@ -124,4 +126,24 @@ export const weaponSubStatValue = (scale: string, lv: Level) => {
   const curLv = bareLv(lv);
   const index = curLv === 1 ? 0 : curLv === 20 ? 1 : (curLv - 20) / 10;
   return SUBSTAT_SCALE[scale][index];
+};
+
+const getAppSettings = () => {
+  let savedSettings = localStorage.getItem("settings");
+  return savedSettings ? (JSON.parse(savedSettings) as AppSettings) : DEFAULT_APP_SETTINGS;
+};
+
+const setAppSettings = (newSettings: Partial<AppSettings>) => {
+  localStorage.setItem(
+    "settings",
+    JSON.stringify({
+      ...getAppSettings(),
+      ...newSettings,
+    })
+  );
+};
+
+export const appSettings = {
+  get: getAppSettings,
+  set: setAppSettings,
 };

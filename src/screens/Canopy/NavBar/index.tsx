@@ -109,7 +109,7 @@ export function NavBar() {
         onClose={closeModal}
       >
         <CloseButton className="absolute top-2 right-2" boneOnly onClick={closeModal} />
-        <Settings />
+        <Settings onClose={closeModal} />
       </Modal>
 
       <Modal

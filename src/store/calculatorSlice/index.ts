@@ -42,6 +42,7 @@ import {
   countVision,
   findByCode,
   getCopyName,
+  appSettings,
 } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
@@ -67,10 +68,6 @@ const initialState: CalculatorState = {
   activeId: 0,
   standardId: 0,
   comparedIds: [],
-  settings: {
-    separateCharInfo: false,
-    keepArtStatsOnSwitch: false,
-  },
   charData: getCharData(defaultChar),
   setupManageInfos: [],
   setupsById: {},
@@ -109,7 +106,7 @@ export const calculatorSlice = createSlice({
       state.activeId = setupID;
       state.comparedIds = [];
       state.standardId = 0;
-      state.settings.separateCharInfo = false;
+      appSettings.set({ separateCharInfo: false });
 
       state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
@@ -146,10 +143,10 @@ export const calculatorSlice = createSlice({
       // calculate will repopulate statsById
       state.statsById = {};
       state.target = target;
-      state.settings.separateCharInfo = false;
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
+      appSettings.set({ separateCharInfo: false });
 
       calculate(state);
     },
@@ -157,7 +154,7 @@ export const calculatorSlice = createSlice({
       const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
-      const { separateCharInfo } = state.settings;
+      const { separateCharInfo } = appSettings.get();
 
       if (shouldOverwriteChar && separateCharInfo) {
         for (const setup of Object.values(setupsById)) {
@@ -235,7 +232,8 @@ export const calculatorSlice = createSlice({
     },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
-      const { settings, setupsById, target } = state;
+      const { setupsById, target } = state;
+      const settings = appSettings.get();
       const { level } = action.payload;
 
       if (level && target.level === 1) {
@@ -396,7 +394,7 @@ export const calculatorSlice = createSlice({
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && state.settings.keepArtStatsOnSwitch) {
+      if (piece && newPiece && appSettings.get().keepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } else {
