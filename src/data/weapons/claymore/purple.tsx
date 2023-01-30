@@ -19,6 +19,7 @@ import { makeWpModApplier } from "../utils";
 const purpleClaymores: DataWeapon[] = [
   {
     code: 150,
+    beta: true,
     name: "Mailed Flower",
     icon: "https://i.ibb.co/C2PZphf/mailed-flower.png",
     rarity: 4,

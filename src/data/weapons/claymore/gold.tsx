@@ -9,6 +9,7 @@ import { makeWpModApplier } from "../utils";
 const goldClaymores: DataWeapon[] = [
   {
     code: 151,
+    beta: true,
     name: "Beacon of the Reed Sea",
     icon: "https://i.ibb.co/VtnjT3D/beacon-of-the-reed-sea.png",
     rarity: 5,
