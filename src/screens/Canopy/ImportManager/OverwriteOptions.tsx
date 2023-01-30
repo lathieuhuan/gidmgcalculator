@@ -7,7 +7,6 @@ import { useSelector } from "@Store/hooks";
 
 // Selector
 import {
-  selectCalcSettings,
   selectCalcSetupsById,
   selectActiveId,
   selectTarget,
@@ -16,6 +15,7 @@ import {
 // Component
 import { SeeDetails, CollapseSpace, tableStyles } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
+import { appSettings } from "@Src/utils";
 
 interface OverrideOptions {
   pendingCode: number;
@@ -34,7 +34,6 @@ export function OverrideOptions({
   const setupsById = useSelector(selectCalcSetupsById);
   const activeId = useSelector(selectActiveId);
   const target = useSelector(selectTarget);
-  const { separateCharInfo } = useSelector(selectCalcSettings);
 
   const [ticked, setTicked] = useState([false, false]);
   const [expandedIndex, setExpandedIndex] = useState(-1);
@@ -49,7 +48,7 @@ export function OverrideOptions({
     cons: [char.cons],
   };
 
-  if (separateCharInfo) {
+  if (appSettings.get().charInfoIsSeparated) {
     comparedChar.level = Object.values(setupsById).map(({ char }) => char.level);
     comparedChar.NAs = Object.values(setupsById).map(({ char }) => char.NAs);
     comparedChar.ES = Object.values(setupsById).map(({ char }) => char.ES);
