@@ -5,14 +5,27 @@ import {
   FaCopy,
   FaSave,
   FaSyncAlt,
+  FaTrashAlt,
 } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import { MdMoreVert } from "react-icons/md";
+import { IoDocumentText } from "react-icons/io5";
 
 import { Green, Lightgold } from "@Components/atoms";
 import { ListDecimal, ListDisc } from "../NavBar/atoms";
 
 export const CalculatorGuide = () => {
+  const quickActions = [
+    { Icon: FaCopy, desc: "Copy the setup" },
+    { Icon: FaSave, desc: "Save the setup" },
+    { Icon: FaTrashAlt, desc: "Remove the setup" },
+    { Icon: FaBalanceScaleLeft, desc: "Toggle the setup for comparison" },
+    {
+      Icon: SiTarget,
+      desc: "Selecte the standard setup, all other setups will be compared to this one.",
+    },
+  ];
+
   return (
     <div className="-ml-1 -mr-2 contains-inline-svg">
       <p>The Calculator contains 4 columns, from left to right they are:</p>
@@ -36,10 +49,20 @@ export const CalculatorGuide = () => {
           </ListDisc>
         </li>
         <li>
-          <Green>Modifiers Manager</Green> shows and lets you activate / deactivate, adjust{" "}
-          <Lightgold>buffs</Lightgold> that applied to the character and{" "}
-          <Lightgold>debuffs</Lightgold> that applied to the target from various sources: teammates,
-          weapons, artifacts...
+          <Green>Modifiers Manager</Green>.
+          <ListDisc>
+            <li>
+              <Lightgold>Buffs</Lightgold> applied to the character and{" "}
+              <Lightgold>Debuffs</Lightgold> applied to the target from various sources: teammates,
+              weapons, artifacts... are called Modifiers.
+            </li>
+            <li>Every Modifier that needs  </li>
+          </ListDisc>
+          {/* shows and lets you activate / deactivate, adjust <Lightgold>buffs</Lightgold> that are
+          applied to the character and <Lightgold>debuffs</Lightgold> that are applied to the target
+          from various sources: teammates, weapons, artifacts... Each modifier has a requirement to
+          appear. For example, you need to add a catalyst-wielding teammate and give them Thrilling
+          Tales of Dragon Slayers to have it buff control available. */}
         </li>
         <li>
           <Green>Setups Manager</Green>. Here you can
@@ -47,26 +70,21 @@ export const CalculatorGuide = () => {
             <li>
               Make changes to <Lightgold>Teammates</Lightgold>, <Lightgold>Weapon</Lightgold>,{" "}
               <Lightgold>Artifacts</Lightgold>, and <Lightgold>Target</Lightgold>. Press the item /
-              character icons to switch them. Press 2 icons at the bottom right to select items from
-              your data <i>(see User Data guide section below)</i>.
+              character icons to switch them. Press 2 icons at the bottom right corner to select
+              items from your data <i>(see User Data guide section below)</i>.
             </li>
             <li>
-              Switch setups and perform quick actions to setups, or open <FaCog />{" "}
-              <Lightgold>Settings</Lightgold> and do the setups management there. Icons meaning:
+              Switch setups and perform quick actions to setups, or open the full manager with{" "}
+              <IoDocumentText /> and do the management there. Icons meaning:
               <ul className="mt-1 pl-2 space-y-1">
-                <li>
-                  <FaCopy /> Copy the setup
-                </li>
-                <li>
-                  <FaSave /> Save the setup
-                </li>
-                <li className="marker:mr-8">
-                  <FaBalanceScaleLeft /> Toggle the setup for comparison
-                </li>
-                <li>
-                  <SiTarget /> Selecte the standard setup, all other setups will be compared to this
-                  one.
-                </li>
+                {quickActions.map((action, i) => {
+                  return (
+                    <li key={i} className="flex items-center">
+                      <action.Icon />
+                      <span className="ml-2">{action.desc}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </li>
           </ListDisc>

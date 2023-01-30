@@ -12,7 +12,7 @@ import type {
 import type { CalculatorState } from "./types";
 import type {
   AddTeammateAction,
-  ApplySettingsAction,
+  UpdateSetupsAction,
   ChangeArtifactAction,
   ChangeModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
@@ -29,6 +29,7 @@ import type {
   UpdateTeammateWeaponAction,
   UpdateTeammateArtifactAction,
   InitSessionWithSetupAction,
+  ApplySettingsAction,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
@@ -42,6 +43,7 @@ import {
   countVision,
   findByCode,
   getCopyName,
+  appSettings,
 } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
@@ -67,18 +69,6 @@ const initialState: CalculatorState = {
   activeId: 0,
   standardId: 0,
   comparedIds: [],
-  settings: {
-    separateCharInfo: false,
-    keepArtStatsOnSwitch: false,
-    charLevel: "1/20",
-    charCons: 0,
-    charNAs: 1,
-    charES: 1,
-    charEB: 1,
-    wpLevel: "1/20",
-    wpRefi: 1,
-    artLevel: 0,
-  },
   charData: getCharData(defaultChar),
   setupManageInfos: [],
   setupsById: {},
@@ -117,7 +107,7 @@ export const calculatorSlice = createSlice({
       state.activeId = setupID;
       state.comparedIds = [];
       state.standardId = 0;
-      state.settings.separateCharInfo = false;
+      appSettings.set({ charInfoIsSeparated: false });
 
       state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
@@ -154,10 +144,10 @@ export const calculatorSlice = createSlice({
       // calculate will repopulate statsById
       state.statsById = {};
       state.target = target;
-      state.settings.separateCharInfo = false;
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
+      appSettings.set({ charInfoIsSeparated: false });
 
       calculate(state);
     },
@@ -165,9 +155,8 @@ export const calculatorSlice = createSlice({
       const { importInfo, shouldOverwriteChar, shouldOverwriteTarget } = action.payload;
       const { ID = Date.now(), type, name = "New setup", target, calcSetup } = importInfo;
       const { setupsById } = state;
-      const { separateCharInfo } = state.settings;
 
-      if (shouldOverwriteChar && separateCharInfo) {
+      if (shouldOverwriteChar && appSettings.get().charInfoIsSeparated) {
         for (const setup of Object.values(setupsById)) {
           setup.char = calcSetup.char;
         }
@@ -243,13 +232,14 @@ export const calculatorSlice = createSlice({
     },
     // CHARACTER
     updateCharacter: (state, action: PayloadAction<Partial<CharInfo>>) => {
-      const { settings, setupsById, target } = state;
+      const { setupsById, target } = state;
+      const { charInfoIsSeparated } = appSettings.get();
       const { level } = action.payload;
 
       if (level && target.level === 1) {
         target.level = bareLv(level);
       }
-      if (settings.separateCharInfo) {
+      if (charInfoIsSeparated) {
         const currentSetup = setupsById[state.activeId];
         currentSetup.char = {
           ...currentSetup.char,
@@ -263,7 +253,7 @@ export const calculatorSlice = createSlice({
           };
         }
       }
-      calculate(state, !settings.separateCharInfo);
+      calculate(state, !charInfoIsSeparated);
     },
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
@@ -404,7 +394,7 @@ export const calculatorSlice = createSlice({
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && state.settings.keepArtStatsOnSwitch) {
+      if (piece && newPiece && appSettings.get().doKeepArtStatsOnSwitch) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } else {
@@ -611,7 +601,7 @@ export const calculatorSlice = createSlice({
 
       calculate(state, true);
     },
-    applySettings: (state, action: ApplySettingsAction) => {
+    updateSetups: (state, action: UpdateSetupsAction) => {
       const { newSetupManageInfos, newStandardId } = action.payload;
       const { setupManageInfos, setupsById, charData, activeId } = state;
       const removedIds = [];
@@ -692,7 +682,7 @@ export const calculatorSlice = createSlice({
       const activeSetup = findById(tempManageInfos, activeId);
       const newActiveId = activeSetup ? activeSetup.ID : tempManageInfos[0].ID;
 
-      // if (state.configs.separateCharInfo && !newConfigs.separateCharInfo) {
+      // if (state.configs.charInfoIsSeparated && !newConfigs.charInfoIsSeparated) {
       //   const activeChar = setupsById[newActiveId].char;
 
       //   for (const setup of Object.values(setupsById)) {
@@ -707,6 +697,17 @@ export const calculatorSlice = createSlice({
       // state.configs = newConfigs;
 
       calculate(state, true);
+    },
+    applySettings: (state, action: ApplySettingsAction) => {
+      const { doMergeCharInfo } = action.payload;
+      const activeChar = state.setupsById[state.activeId]?.char;
+
+      if (doMergeCharInfo && activeChar) {
+        for (const setup of Object.values(state.setupsById)) {
+          setup.char = activeChar;
+        }
+        calculate(state, true);
+      }
     },
   },
 });
@@ -738,6 +739,7 @@ export const {
   updateCustomDebuffCtrls,
   removeCustomModCtrl,
   updateTarget,
+  updateSetups,
   applySettings,
 } = calculatorSlice.actions;
 

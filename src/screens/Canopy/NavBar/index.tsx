@@ -12,15 +12,14 @@ import {
 import { useClickOutside } from "@Src/hooks";
 
 // Component
-// import { CloseButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { UnderConstructNotice } from "@Components/organisms";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { IntroModal } from "../IntroModal";
 // import { GuidesModal } from "../GuidesModal";
-// import { Settings } from "../Settings";
 // import { DownloadOptions } from "./DownloadOptions";
+import { SettingsModal } from "../SettingsModal";
 import { UploadOptions } from "./UploadOptions";
 
 type ModalType = "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD";
@@ -112,6 +111,7 @@ export function NavBar() {
         <CloseButton className="absolute top-2 right-2" boneOnly onClick={closeModal} />
         <Settings onClose={closeModal} />
       </Modal> */}
+      <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
 
       <UnderConstructNotice
         active={["GUIDES", "SETTINGS", "DOWNLOAD"].includes(modalType)}

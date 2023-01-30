@@ -1,4 +1,5 @@
 import type {
+  AppSettings,
   AttackElement,
   AttackPattern,
   CalcArtifact,
@@ -124,4 +125,37 @@ export const weaponSubStatValue = (scale: string, lv: Level) => {
   const curLv = bareLv(lv);
   const index = curLv === 1 ? 0 : curLv === 20 ? 1 : (curLv - 20) / 10;
   return SUBSTAT_SCALE[scale][index];
+};
+
+const getAppSettings = (): AppSettings => {
+  let savedSettings = localStorage.getItem("settings");
+  return savedSettings
+    ? (JSON.parse(savedSettings) as AppSettings)
+    : {
+        charInfoIsSeparated: false,
+        doKeepArtStatsOnSwitch: false,
+        charLevel: "1/20",
+        charCons: 0,
+        charNAs: 1,
+        charES: 1,
+        charEB: 1,
+        wpLevel: "1/20",
+        wpRefi: 1,
+        artLevel: 0,
+      };
+};
+
+const setAppSettings = (newSettings: Partial<AppSettings>) => {
+  localStorage.setItem(
+    "settings",
+    JSON.stringify({
+      ...getAppSettings(),
+      ...newSettings,
+    })
+  );
+};
+
+export const appSettings = {
+  get: getAppSettings,
+  set: setAppSettings,
 };

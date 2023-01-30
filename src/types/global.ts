@@ -117,6 +117,19 @@ export type Artifact = {
   subStats: ArtifactSubStat[];
 };
 
+export type AppSettings = {
+  charInfoIsSeparated: boolean;
+  doKeepArtStatsOnSwitch: boolean;
+  charLevel: Level;
+  charCons: number;
+  charNAs: number;
+  charES: number;
+  charEB: number;
+  wpLevel: Level;
+  wpRefi: number;
+  artLevel: number;
+};
+
 /**
  * utility generic
  */

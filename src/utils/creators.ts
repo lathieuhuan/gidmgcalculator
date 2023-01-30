@@ -19,26 +19,35 @@ import {
   DEFAULT_MODIFIER_INITIAL_VALUES,
   EModAffect,
 } from "@Src/constants";
+import { appSettings } from "./utils";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
 
-export function createCharInfo(info?: Partial<PartialCharInfo>): PartialCharInfo {
+export const createCharInfo = (info?: Partial<PartialCharInfo>): PartialCharInfo => {
+  const { charLevel, charCons, charNAs, charES, charEB } = appSettings.get();
+
   return {
-    level: info?.level || "1/20",
-    NAs: info?.NAs || 1,
-    ES: info?.ES || 1,
-    EB: info?.EB || 1,
-    cons: info?.cons || 0,
+    level: info?.level || charLevel,
+    NAs: info?.NAs || charNAs,
+    ES: info?.ES || charES,
+    EB: info?.EB || charEB,
+    cons: info?.cons || charCons,
   };
-}
+};
 
 interface CreateWeaponArgs {
   type: WeaponType;
   code?: number;
 }
-export function createWeapon({ type, code }: CreateWeaponArgs): Omit<CalcWeapon, "ID"> {
-  return { type, code: code || DEFAULT_WEAPON_CODE[type], level: "1/20", refi: 1 };
-}
+export const createWeapon = ({ type, code }: CreateWeaponArgs): Omit<CalcWeapon, "ID"> => {
+  const { wpLevel, wpRefi } = appSettings.get();
+  return {
+    type,
+    code: code || DEFAULT_WEAPON_CODE[type],
+    level: wpLevel,
+    refi: wpRefi,
+  };
+};
 
 interface CreateArtifactArgs {
   type: ArtifactType;
@@ -50,11 +59,12 @@ export function createArtifact({
   code,
   rarity,
 }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
+  const { artLevel } = appSettings.get();
   return {
     type,
     code,
     rarity,
-    level: 0,
+    level: Math.min(artLevel, rarity === 5 ? 20 : 16),
     mainStatType: type === "flower" ? "hp" : type === "plume" ? "atk" : "atk_",
     subStats: [
       { type: "def", value: 0 },

@@ -7,7 +7,6 @@ import type {
   Target,
   TotalAttribute,
   AttackElement,
-  Level,
 } from "@Src/types";
 
 export type CalculatorState = {
@@ -15,7 +14,6 @@ export type CalculatorState = {
   standardId: number;
   comparedIds: number[];
 
-  settings: CalculatorSettings;
   message: {
     type: "" | "error";
     content: string;
@@ -34,17 +32,4 @@ export type CalculatorState = {
     }
   >;
   target: Target;
-};
-
-export type CalculatorSettings = {
-  separateCharInfo: boolean;
-  keepArtStatsOnSwitch: boolean;
-  charLevel: Level;
-  charCons: number;
-  charNAs: number;
-  charES: number;
-  charEB: number;
-  wpLevel: Level;
-  wpRefi: number;
-  artLevel: number;
 };
