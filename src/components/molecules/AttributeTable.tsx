@@ -107,20 +107,20 @@ function EmSection({ em }: EmSectionProps) {
       <CollapseSpace active={dropped}>
         <ul className="px-2 pb-1 text-sm flex flex-col space-y-1">
           <li>
-            - Increases damage dealt by Vaporize and Melt by{" "}
+            • Increases damage dealt by Vaporize and Melt by{" "}
             <Green>{rxnBonusFromEM.amplifying}%</Green>.
           </li>
           <li>
-            - Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
+            • Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
             Shattered, Swirl, Bloom, Hyperbloom, and Burgeon by{" "}
             <Green>{rxnBonusFromEM.transformative}%</Green>.
           </li>
           <li>
-            - Increases the DMG Bonus provided by Aggravate and Spread by{" "}
+            • Increases the DMG Bonus provided by Aggravate and Spread by{" "}
             <Green>{rxnBonusFromEM.quicken}%</Green>.
           </li>
           <li>
-            - Increases the damage absorption power of shields created through Crystallize by{" "}
+            • Increases the damage absorption power of shields created through Crystallize by{" "}
             <Green>{rxnBonusFromEM.shield}%</Green>.
           </li>
         </ul>

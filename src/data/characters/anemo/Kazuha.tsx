@@ -106,7 +106,7 @@ const Kazuha: DataCharacter = {
   buffs: [
     {
       index: 1,
-      src: EModSrc.C4,
+      src: EModSrc.A4,
       affect: EModAffect.PARTY,
       desc: ({ toSelf, totalAttr, inputs }) => {
         const elmtIndex = inputs[0] || 0;

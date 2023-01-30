@@ -85,7 +85,7 @@ const Wanderer: DataCharacter = {
     EB: {
       name: "Kyougen: Five Ceremonial Plays",
       image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
-      stats: [{ name: "Fudou Style Vacuum Slugger DMG (1/5)", multFactors: 147.2 }],
+      stats: [{ name: "Skill DMG (1/5)", multFactors: 147.2 }],
       energyCost: 60,
     },
   },

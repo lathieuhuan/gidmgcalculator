@@ -1,6 +1,16 @@
+import { FaBars, FaCog } from "react-icons/fa";
 import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
+  {
+    date: "January 30th, 2023",
+    content: [
+      <>
+        Added <FaCog /> <Lightgold>Settings</Lightgold> on <FaBars /> Menu.
+      </>,
+      <>Corrected some skill names.</>,
+    ],
+  },
   {
     date: "January 29th, 2023",
     content: [

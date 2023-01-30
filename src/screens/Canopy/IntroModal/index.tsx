@@ -20,11 +20,11 @@ export const IntroModal = (props: ModalControl) => {
           {
             heading: "Updates",
             body: (
-              <div className="space-y-2">
+              <div className="space-y-2 contains-inline-svg">
                 {UPDATES.map(({ date, content }, i) => (
                   <div key={i}>
                     <p className="text-orange font-bold">{date}</p>
-                    <ul className="space-y-1">
+                    <ul className="mt-1 space-y-1">
                       {content.map((line, j) => (
                         <li key={j}>- {line}</li>
                       ))}

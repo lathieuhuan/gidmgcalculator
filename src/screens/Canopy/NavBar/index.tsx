@@ -103,6 +103,8 @@ export function NavBar() {
 
       {/* <GuidesModal active={modalType === "GUIDES"} onClose={closeModal} /> */}
 
+      <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
+
       {/* <Modal
         active={modalType === "SETTINGS"}
         className="w-80 h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow"
@@ -111,10 +113,9 @@ export function NavBar() {
         <CloseButton className="absolute top-2 right-2" boneOnly onClick={closeModal} />
         <Settings onClose={closeModal} />
       </Modal> */}
-      <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
 
       <UnderConstructNotice
-        active={["GUIDES", "SETTINGS", "DOWNLOAD"].includes(modalType)}
+        active={["GUIDES", "DOWNLOAD"].includes(modalType)}
         onClose={closeModal}
       />
       {/* <Modal

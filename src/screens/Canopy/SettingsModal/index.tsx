@@ -85,7 +85,7 @@ const Settings = ({ onClose }: SettingsProps) => {
       <div className="grow hide-scrollbar">
         <Section title="Calculator">
           <CheckSetting
-            label="Separate Character's Info on each Setup"
+            label="Separate main character's info on each setup"
             defaultChecked={tempSettings.charInfoIsSeparated}
             onChange={() => {
               setTempSettings((prevSettings) => ({
@@ -95,7 +95,7 @@ const Settings = ({ onClose }: SettingsProps) => {
             }}
           />
           <CheckSetting
-            label="Keep Artifact Stats when switching to a new Set"
+            label="Keep artifact stats when switching to a new set"
             defaultChecked={tempSettings.doKeepArtStatsOnSwitch}
             onChange={() => {
               setTempSettings((prevSettings) => ({
