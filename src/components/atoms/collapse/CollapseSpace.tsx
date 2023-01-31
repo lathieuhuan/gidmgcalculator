@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { useHeight } from "@Src/hooks";
+import { useElementSize } from "@Src/hooks";
 
 interface CollapseSpaceProps {
   className?: string;
@@ -8,7 +8,7 @@ interface CollapseSpaceProps {
   children: ReactNode;
 }
 export function CollapseSpace({ active, className, children }: CollapseSpaceProps) {
-  const [ref, height] = useHeight();
+  const [ref, { height }] = useElementSize<HTMLDivElement>();
   const duration = Math.max(Math.min(Math.round(height) / 2, 300), 150);
 
   return (

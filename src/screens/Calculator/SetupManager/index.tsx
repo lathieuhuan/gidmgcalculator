@@ -19,7 +19,7 @@ import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selector
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useHeight } from "@Src/hooks";
+import { useElementSize } from "@Src/hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
@@ -52,7 +52,7 @@ export default function SetupManager() {
   const [prePickerOn, setPrePickerOn] = useState(false);
   const [targetOverviewOn, setTargetOverviewOn] = useState(true);
 
-  const [ref, height] = useHeight();
+  const [ref, { height }] = useElementSize<HTMLDivElement>();
 
   const closeModal = () => setModalType("");
 

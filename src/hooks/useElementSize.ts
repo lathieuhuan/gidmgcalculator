@@ -1,8 +1,14 @@
 import { Ref, useEffect, useRef, useState } from "react";
 
-export function useHeight(): [Ref<HTMLDivElement>, number] {
-  const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(0);
+export const useElementSize = <T extends HTMLElement>(): [
+  Ref<T>,
+  { width: number; height: number }
+] => {
+  const ref = useRef<T>(null);
+  const [size, setSize] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
@@ -11,9 +17,16 @@ export function useHeight(): [Ref<HTMLDivElement>, number] {
           const contentBoxSize = Array.isArray(entry.contentBoxSize)
             ? entry.contentBoxSize[0]
             : entry.contentBoxSize;
-          setHeight(contentBoxSize.blockSize);
+
+          setSize({
+            width: contentBoxSize.inlineSize,
+            height: contentBoxSize.blockSize,
+          });
         } else {
-          setHeight(entry.contentRect.height);
+          setSize({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
         }
       }
     });
@@ -26,5 +39,5 @@ export function useHeight(): [Ref<HTMLDivElement>, number] {
     };
   }, []);
 
-  return [ref, height];
-}
+  return [ref, size];
+};
