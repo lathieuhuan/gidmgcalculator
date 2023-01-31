@@ -21,9 +21,8 @@ import {
 } from "@Store/userDatabaseSlice";
 
 // Util
-import { userItemToCalcItem } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
-import { restoreCalcSetup } from "@Src/utils/setup";
+import { userSetupToCalcSetup } from "@Src/utils/setup";
 import {
   findDataArtifact,
   findDataCharacter,
@@ -229,22 +228,14 @@ export function SetupTemplate({
             disabled={!weapon}
             onClick={() => {
               if (weapon) {
-                const { weaponID, artifactIDs, ID, name, type, target, ...rest } = setup;
-
-                const calcSetup = restoreCalcSetup({
-                  ...rest,
-                  weapon: userItemToCalcItem(weapon),
-                  artifacts: artifacts.map((artifact) => {
-                    return artifact ? userItemToCalcItem(artifact) : null;
-                  }),
-                });
+                const { ID, name, type, target } = setup;
 
                 dispatch(
                   updateImportInfo({
                     ID,
                     name,
                     type,
-                    calcSetup,
+                    calcSetup: userSetupToCalcSetup(setup, weapon, artifacts, true),
                     target,
                   })
                 );

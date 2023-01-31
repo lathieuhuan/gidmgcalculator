@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
 // Util
-import { getTargetData } from "@Src/utils/setup";
+import { getTargetData } from "@Data/controllers";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";

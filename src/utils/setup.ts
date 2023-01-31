@@ -3,17 +3,19 @@ import type {
   CalcSetupManageInfo,
   ModifierInput,
   Party,
-  Target,
+  UserArtifacts,
   UserComplexSetup,
   UserSetup,
   UserSetupCalcInfo,
+  UserWeapon,
 } from "@Src/types";
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
-import { findDataCharacter, findMonster } from "@Data/controllers";
-import { deepCopy, findByIndex, turnArray } from "./pure-utils";
+import { findDataCharacter } from "@Data/controllers";
 import { getArtifactSetBonuses } from "./calculation";
 import { createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
+import { deepCopy, findByIndex } from "./pure-utils";
+import { userItemToCalcItem } from "./utils";
 
 export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
   return ["original", "combined"].includes(setup.type);
@@ -160,53 +162,18 @@ export const restoreCalcSetup = (data: CalcSetup) => {
   return output;
 };
 
-export const getTargetData = (target: Target) => {
-  const dataMonster = findMonster(target);
-  let variant = "";
-  const statuses: string[] = [];
-
-  if (target.variantType && dataMonster?.variant) {
-    for (const type of dataMonster.variant.types) {
-      if (typeof type === "string") {
-        if (type === target.variantType) {
-          variant = target.variantType;
-          break;
-        }
-      } else if (type.value === target.variantType) {
-        variant = type.label;
-        break;
-      }
-    }
-  }
-
-  if (target.inputs?.length && dataMonster?.inputConfigs) {
-    const inputConfigs = turnArray(dataMonster.inputConfigs);
-
-    target.inputs.forEach((input, index) => {
-      const { label, type = "check", options = [] } = inputConfigs[index] || {};
-
-      switch (type) {
-        case "check":
-          if (input) {
-            statuses.push(label);
-          }
-          break;
-        case "select":
-          const option = options[input];
-          const selectedLabel = typeof option === "string" ? option : option?.label;
-
-          if (selectedLabel) {
-            statuses.push(`${label}: ${selectedLabel}`);
-          }
-          break;
-      }
-    });
-  }
-
-  return {
-    title: dataMonster?.title,
-    names: dataMonster?.names,
-    variant,
-    statuses,
+export const userSetupToCalcSetup = (
+  setup: UserSetup,
+  weapon: UserWeapon,
+  artifacts: UserArtifacts,
+  shouldRestore?: boolean
+): CalcSetup => {
+  const { weaponID, artifactIDs, ID, name, type, target, ...rest } = setup;
+  const calcSetup = {
+    ...rest,
+    weapon: userItemToCalcItem(weapon),
+    artifacts: artifacts.map((artifact) => (artifact ? userItemToCalcItem(artifact) : null)),
   };
+
+  return shouldRestore ? restoreCalcSetup(calcSetup) : calcSetup;
 };

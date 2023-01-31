@@ -4,8 +4,7 @@ import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { getPartyData } from "@Data/controllers";
-import { getTargetData } from "@Src/utils/setup";
+import { getPartyData, getTargetData } from "@Data/controllers";
 import { calculateChosenSetup } from "./utils";
 
 // Component

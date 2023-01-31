@@ -28,7 +28,7 @@ export function DownloadOptions({ onClose }: { onClose: () => void }) {
   const userSetups = useSelector(selectUserSetups);
 
   const downloadData = JSON.stringify({
-    version: 2.1,
+    version: 3,
     Characters: userChars,
     Weapons: userWps,
     Artifacts: userArts,
