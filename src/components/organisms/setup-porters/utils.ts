@@ -3,9 +3,9 @@ import { ATTACK_ELEMENTS, LEVELS, REACTIONS } from "@Src/constants";
 import { findDataCharacter } from "@Data/controllers";
 
 export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
-  const DIVIDER_1 = ".";
+  const DIVIDER_1 = "-";
   const DIVIDER_2 = "*";
-  const DIVIDER_3 = "-";
+  const DIVIDER_3 = "_";
   const DIVIDER_4 = " ";
 
   const {

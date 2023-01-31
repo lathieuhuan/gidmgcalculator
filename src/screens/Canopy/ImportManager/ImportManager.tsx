@@ -19,9 +19,9 @@ import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
 import { ConfirmModalBody, Modal } from "@Components/molecules";
 import { OverrideOptions } from "./OverwriteOptions";
 
-type ImportingProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
+type ImportManagerProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
 
-function Importing({ calcSetup, target, ...manageInfo }: ImportingProps) {
+const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerProps) => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const currentTarget = useSelector(selectTarget);
@@ -139,7 +139,7 @@ function Importing({ calcSetup, target, ...manageInfo }: ImportingProps) {
         />
       );
   }
-}
+};
 
 export function ImportManager() {
   const dispatch = useDispatch();
@@ -151,7 +151,7 @@ export function ImportManager() {
 
   return (
     <Modal active={Boolean(calcSetup && target)} className="small-modal" onClose={onClose}>
-      <Importing calcSetup={calcSetup!} target={target!} {...rest} />
+      <ImportManagerCore calcSetup={calcSetup!} target={target!} {...rest} />
     </Modal>
   );
 }

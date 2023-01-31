@@ -21,11 +21,11 @@ import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 // Component
 import { Button, IconButton, BetaMark, StarLine, Image } from "@Components/atoms";
 import { ComplexSelect } from "@Components/molecules";
-import { UnderConstructNotice } from "@Components/organisms";
+import { SetupImporter } from "@Components/organisms";
 import { PickerCharacter } from "@Components/templates";
 import contentByTab from "./content";
 
-type ModalType = "CHARACTER_PICKER" | "IMPORT_MANAGER" | "";
+type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
 
 interface OverviewCharProps {
   touched: boolean;
@@ -108,7 +108,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
 
           <p>or</p>
 
-          <Button variant="positive" onClick={() => setModalType("IMPORT_MANAGER")}>
+          <Button variant="positive" onClick={() => setModalType("IMPORT_SETUP")}>
             Import a setup
           </Button>
         </div>
@@ -121,7 +121,7 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
         onClose={closeModal}
       />
 
-      <UnderConstructNotice active={modalType === "IMPORT_MANAGER"} onClose={closeModal} />
+      <SetupImporter active={modalType === "IMPORT_SETUP"} onClose={closeModal} />
     </>
   );
 }

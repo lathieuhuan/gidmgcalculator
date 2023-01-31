@@ -18,7 +18,7 @@ import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { IntroModal } from "../IntroModal";
 import { GuidesModal } from "../GuidesModal";
-// import { DownloadOptions } from "./DownloadOptions";
+import { DownloadOptions } from "./DownloadOptions";
 import { SettingsModal } from "../SettingsModal";
 import { UploadOptions } from "./UploadOptions";
 
@@ -105,27 +105,18 @@ export function NavBar() {
 
       <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
 
-      {/* <Modal
-        active={modalType === "SETTINGS"}
-        className="w-80 h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow"
-        onClose={closeModal}
-      >
-        <CloseButton className="absolute top-2 right-2" boneOnly onClick={closeModal} />
-        <Settings onClose={closeModal} />
-      </Modal> */}
-
-      <UnderConstructNotice
+      {/* <UnderConstructNotice
         active={["DOWNLOAD"].includes(modalType)}
         onClose={closeModal}
-      />
-      {/* <Modal
+      /> */}
+      <Modal
         active={modalType === "DOWNLOAD"}
         className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
         style={{ width: "28rem" }}
         onClose={closeModal}
       >
         <DownloadOptions onClose={closeModal} />
-      </Modal> */}
+      </Modal>
 
       <Modal
         active={modalType === "UPLOAD"}

@@ -6,7 +6,7 @@ import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { ButtonBar } from "@Components/molecules";
+import { ButtonBar, Modal, ModalControl } from "@Components/molecules";
 
 interface SetupExporterProps {
   setupName: string;
@@ -14,7 +14,7 @@ interface SetupExporterProps {
   target: Target;
   onClose: () => void;
 }
-export function SetupExporter({ setupName, calcSetup, target, onClose }: SetupExporterProps) {
+const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExporterProps) => {
   const [status, setStatus] = useState(0);
 
   const encodedData = encodeSetup(calcSetup, target);
@@ -56,4 +56,12 @@ export function SetupExporter({ setupName, calcSetup, target, onClose }: SetupEx
       </div>
     </div>
   );
-}
+};
+
+export const SetupExporter = ({ active, onClose, ...rest }: ModalControl & SetupExporterProps) => {
+  return (
+    <Modal {...{ active, onClose }}>
+      <SetupExporterCore {...rest} onClose={onClose} />
+    </Modal>
+  );
+};

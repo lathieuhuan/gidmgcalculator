@@ -12,6 +12,7 @@ import { selectUserArts, selectUserWps } from "@Store/userDatabaseSlice/selector
 
 // Util
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
+import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 // Component
@@ -19,10 +20,9 @@ import { AttributeTable, Modal, SetBonusesDisplay } from "@Components/molecules"
 import {
   ArtifactCard,
   ConfirmModal,
-  UnderConstructNotice,
   DamageDisplay,
   OwnerLabel,
-  // SetupExporter,
+  SetupExporter,
   WeaponCard,
 } from "@Components/organisms";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
@@ -79,10 +79,15 @@ export const ChosenSetupInfo = ({
         onClose={onCloseModal}
       />
 
-      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} />
-      {/* <Modal active={modal.type === "SHARE_SETUP"} onClose={onCloseModal}>
-        <SetupExporter data={chosenSetup} onClose={onCloseModal} />
-      </Modal> */}
+      {weapon && (
+        <SetupExporter
+          active={modal.type === "SHARE_SETUP"}
+          setupName={chosenSetup.name}
+          calcSetup={userSetupToCalcSetup(chosenSetup, weapon, artifacts)}
+          target={chosenSetup.target}
+          onClose={onCloseModal}
+        />
+      )}
 
       <Modal
         active={modal.type === "WEAPON"}
