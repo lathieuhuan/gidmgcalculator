@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { AttackPattern, Tracker } from "@Src/types";
-import type { TrackerModalState } from "../types";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -23,10 +22,12 @@ import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";
 import { DamageTracker } from "./DamageTracker";
 
+export type TrackerState = "open" | "close" | "hidden";
+
 interface TrackerContainerProps {
-  trackerState: TrackerModalState;
+  trackerState: TrackerState;
 }
-export default function TrackerContainer({ trackerState }: TrackerContainerProps) {
+export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   const activeSetup = useSelector((state) => {
     const { activeId, setupsById } = state.calculator;
     return setupsById[activeId];
@@ -42,7 +43,7 @@ export default function TrackerContainer({ trackerState }: TrackerContainerProps
   const totalDefReduct = getTotalRecordValue(result?.resistReduct.def || []);
 
   useEffect(() => {
-    if (trackerState === "OPEN") {
+    if (trackerState === "open") {
       const tracker = initTracker();
 
       calculateAll(activeSetup, target, charData, tracker);
@@ -145,4 +146,4 @@ export default function TrackerContainer({ trackerState }: TrackerContainerProps
       />
     </div>
   );
-}
+};

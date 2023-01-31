@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
-import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
+import { FaExpandArrowsAlt, FaMinus, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
 // Hook
 import { useClickOutside } from "@Src/hooks";
 
 // Component
+import { CloseButton, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { TrackerModal, type TrackerModalState } from "../TrackerModal";
+import { TrackerContainer, type TrackerState } from "../TrackerContainer";
 import { ResultsDisplay } from "./ResultsDisplay";
 
 interface MenuProps {
@@ -17,7 +18,7 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [menuDropped, setMenuDropped] = useState(false);
-  const [trackerModalState, setTrackerModalState] = useState<TrackerModalState>("CLOSE");
+  const [trackerState, setTrackerState] = useState<TrackerState>("close");
   const [resultsEnlarged, setResultsEnlarged] = useState(false);
 
   useClickOutside(wrapperRef, () => setMenuDropped(false));
@@ -26,10 +27,8 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
     {
       icon: FaSearch,
       text: "Tracker",
-      className: "flex " + (trackerModalState === "HIDDEN" ? "bg-green" : "hover:bg-lesser"),
-      onClick: () => {
-        setTrackerModalState(["CLOSE", "HIDDEN"].includes(trackerModalState) ? "OPEN" : "CLOSE");
-      },
+      className: "flex " + (trackerState === "hidden" ? "bg-green" : "hover:bg-lesser"),
+      onClick: () => setTrackerState("open"),
     },
     {
       icon: FaExpandArrowsAlt,
@@ -75,11 +74,22 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
         </div>
       </div>
 
-      <TrackerModal
-        activeSetupName={activeSetupName}
-        trackerState={trackerModalState}
-        onChangeTrackerModalState={setTrackerModalState}
-      />
+      <Modal state={trackerState} withDefaultStyle onClose={() => setTrackerState("close")}>
+        <IconButton
+          className="hover:text-lightgold"
+          boneOnly
+          onClick={() => setTrackerState("hidden")}
+        >
+          <FaMinus />
+        </IconButton>
+        <CloseButton boneOnly onClick={() => setTrackerState("close")} />
+        <p className="flex items-center md1:justify-center">
+          <span className="md1:text-xl md2:text-2xl text-orange font-bold">Tracking Results</span>{" "}
+          <span className="ml-2 text-lesser">({activeSetupName})</span>
+        </p>
+
+        <TrackerContainer trackerState={trackerState} />
+      </Modal>
 
       <Modal
         active={resultsEnlarged}

@@ -1,14 +1,10 @@
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useSelector } from "@Store/hooks";
 
 // Util
 import { findById } from "@Src/utils";
 
-// Action
-import { updateUI } from "@Store/uiSlice";
-
 // Component
-import { Modal } from "@Components/molecules";
 import { Menu } from "./Menu";
 import { ResultsDisplay } from "./ResultsDisplay";
 
