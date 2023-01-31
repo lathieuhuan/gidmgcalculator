@@ -16,9 +16,9 @@ import { ListDecimal, ListDisc } from "../NavBar/atoms";
 
 export const CalculatorGuide = () => {
   const quickActions = [
-    { Icon: FaCopy, desc: "Copy the setup" },
-    { Icon: FaSave, desc: "Save the setup" },
     { Icon: FaTrashAlt, desc: "Remove the setup" },
+    { Icon: FaSave, desc: "Save the setup to My Setups" },
+    { Icon: FaCopy, desc: "Copy the setup" },
     { Icon: FaBalanceScaleLeft, desc: "Toggle the setup for comparison" },
     {
       Icon: SiTarget,
@@ -37,7 +37,7 @@ export const CalculatorGuide = () => {
           <ListDisc>
             <li>
               Switch the <Lightgold>main character</Lightgold> to be calculated by pressing{" "}
-              <FaSyncAlt /> or the character's icon.
+              <FaSyncAlt /> or the character's icon. Change the character level.
             </li>
             <li>
               Change weapon level and refinement via dropdown selects <FaChevronDown />
@@ -52,17 +52,26 @@ export const CalculatorGuide = () => {
           <Green>Modifiers Manager</Green>.
           <ListDisc>
             <li>
-              <Lightgold>Buffs</Lightgold> applied to the character and{" "}
-              <Lightgold>Debuffs</Lightgold> applied to the target from various sources: teammates,
-              weapons, artifacts... are called Modifiers.
+              Modifiers are <Lightgold>Buffs</Lightgold> applied to the character and{" "}
+              <Lightgold>Debuffs</Lightgold> applied to the target coming from various sources such
+              as teammates, weapons, artifacts...
             </li>
-            <li>Every Modifier that needs  </li>
+            <li>
+              Every modifier that needs a condition to trigger will have a control in the Modifers
+              Manager which helps you activate / deactivate and adjust the modifier.
+            </li>
+            <li>
+              For example, as teammate Rosaria can give CRIT Rate bonus based on her CRIT Rate when
+              using Elemental Burst. In Modifier Manager, go to Buffs/Party, look for Rosaria's
+              section and you will see a checkbox to toggle this buff and an input to enter her CRIT
+              Rate for calculation.
+            </li>
+            <li>
+              For the modifier control to appear its source need to be present, e.g. you need to add
+              a catalyst-wielding teammate and give them Thrilling Tales of Dragon Slayers to have
+              it buff control available.
+            </li>
           </ListDisc>
-          {/* shows and lets you activate / deactivate, adjust <Lightgold>buffs</Lightgold> that are
-          applied to the character and <Lightgold>debuffs</Lightgold> that are applied to the target
-          from various sources: teammates, weapons, artifacts... Each modifier has a requirement to
-          appear. For example, you need to add a catalyst-wielding teammate and give them Thrilling
-          Tales of Dragon Slayers to have it buff control available. */}
         </li>
         <li>
           <Green>Setups Manager</Green>. Here you can
@@ -90,8 +99,8 @@ export const CalculatorGuide = () => {
           </ListDisc>
         </li>
         <li>
-          <Green>Damage Results</Green> shows the calculation results. Open the{" "}
-          <MdMoreVert className="text-xl" /> menu and you can
+          <Green>Damage Results</Green> shows the calculation results. With the menu{" "}
+          <MdMoreVert className="text-xl" /> you can
           <ListDisc>
             <li>
               Call the <Lightgold>Tracker</Lightgold> to inspect the calculation details: what buffs

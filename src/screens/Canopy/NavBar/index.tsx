@@ -17,7 +17,7 @@ import { UnderConstructNotice } from "@Components/organisms";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { IntroModal } from "../IntroModal";
-// import { GuidesModal } from "../GuidesModal";
+import { GuidesModal } from "../GuidesModal";
 // import { DownloadOptions } from "./DownloadOptions";
 import { SettingsModal } from "../SettingsModal";
 import { UploadOptions } from "./UploadOptions";
@@ -101,7 +101,7 @@ export function NavBar() {
 
       <IntroModal active={modalType === "INTRO"} onClose={closeModal} />
 
-      {/* <GuidesModal active={modalType === "GUIDES"} onClose={closeModal} /> */}
+      <GuidesModal active={modalType === "GUIDES"} onClose={closeModal} />
 
       <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
 
@@ -115,7 +115,7 @@ export function NavBar() {
       </Modal> */}
 
       <UnderConstructNotice
-        active={["GUIDES", "DOWNLOAD"].includes(modalType)}
+        active={["DOWNLOAD"].includes(modalType)}
         onClose={closeModal}
       />
       {/* <Modal

@@ -1,6 +1,7 @@
 import { CollapseList, ModalControl } from "@Components/molecules";
 import { StandardModal } from "@Components/organisms";
 import { CalculatorGuide } from "./CalculatorGuide";
+import { SettingsGuide } from "./SettingsGuide";
 import { UserDataGuide } from "./UserDataGuide";
 
 export const GuidesModal = (props: ModalControl) => {
@@ -18,6 +19,10 @@ export const GuidesModal = (props: ModalControl) => {
           {
             heading: "User Data",
             body: <UserDataGuide />,
+          },
+          {
+            heading: "Settings",
+            body: <SettingsGuide />,
           },
         ]}
       />
