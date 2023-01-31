@@ -26,7 +26,7 @@ import {
 
 // Component
 import { CollapseAndMount, Button } from "@Components/atoms";
-import { UnderConstructNotice } from "@Components/organisms";
+import { SetupImporter } from "@Components/organisms";
 import { SetupControl } from "./SetupControl";
 
 import styles from "@Screens/Calculator/styles.module.scss";
@@ -225,7 +225,7 @@ function HiddenManager() {
         <span>Apply</span>
       </Button>
 
-      <UnderConstructNotice active={importManageOn} onClose={() => setImportManageOn(false)} />
+      <SetupImporter active={importManageOn} onClose={() => setImportManageOn(false)} />
     </div>
   );
 }

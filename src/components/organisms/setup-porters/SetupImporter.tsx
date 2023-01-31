@@ -1,18 +1,31 @@
 import { useState } from "react";
+
 import { Modal, ModalControl } from "@Components/molecules";
+import { PorterLayout } from "./atoms";
+import { decodeSetup } from "./utils";
 
 const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
   const [code, setCode] = useState("");
 
   return (
-    <div>
-      <p className="mb-2 px-2 text-xl text-orange text-center font-bold">Import setup</p>
-      <textarea
-        className="w-full p-2 text-black rounded resize-none"
-        rows={15}
-        onChange={(e) => setCode(e.target.value)}
-      />
-    </div>
+    <PorterLayout
+      heading="Import setup"
+      textareaAttrs={{
+        onChange: (e) => setCode(e.target.value),
+      }}
+      moreButtons={[
+        {
+          text: "Import",
+          onClick: () => {
+            const split = code.split("&").map((str) => str.split("=")[1]);
+            const result = decodeSetup(split);
+
+            console.log(result);
+          },
+        },
+      ]}
+      onClose={onClose}
+    />
   );
 };
 
