@@ -1,21 +1,26 @@
+import { FaBars, FaCog } from "react-icons/fa";
 import { Lightgold } from "@Components/atoms";
 
 export const SettingsGuide = () => {
   return (
-    <>
+    <div className="space-y-1 contains-inline-svg">
+      <p>
+        - The App settings can be change via <FaCog /> Settings on the <FaBars /> Menu.
+      </p>
       <p>
         - Be careful when the Calculator is under the effect of{" "}
         <Lightgold>Separate main character's info on each setup</Lightgold> (level, constellation,
-        talents) on each Setup. It can make things complicated.
+        talents) on each setup. It can make things complicated.
       </p>
       <p>
-        - When Separate Character's Info is deactivated. Info on the current Setup will be used for
-        others.
+        - When the "Separate main character's info on each setup" option is deactivated. Info on the
+        current setup will be used for others. This setting will be reset to NOT activated at the
+        start of every calculating session (e.g. when select new main character).
       </p>
       <p>
-        - Separate Character's Info will be reset to NOT activated at the start of every calculating
-        session.
+        - <Lightgold>Default values</Lightgold> will be use whenever a new character or item is
+        created both in your data and the Calculator.
       </p>
-    </>
+    </div>
   );
 };

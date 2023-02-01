@@ -11,6 +11,9 @@
   select {
     outline: none;
   }
+  button:disabled {
+    cursor: default;
+  }
   select {
     background: transparent;
   }

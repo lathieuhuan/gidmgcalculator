@@ -23,10 +23,6 @@ export const UserDataGuide = () => {
         - Your saved data is <Red>limited</Red>. When creating new Setup in the Calculator, you
         should pick items that you already have if possible to reuse them and save space.
       </p>
-      <p>
-        - <Lightgold>Default values</Lightgold> will be use whenever a new character or item is
-        created both in your data and the Calculator.
-      </p>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const bgColorByVariant: Record<string, string> = {
   positive: "bg-lightgold",
@@ -16,13 +16,13 @@ const colorByVariant: Record<string, string> = {
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   boneOnly?: boolean;
-  noGlow?: boolean;
+  icon?: ReactNode;
   variant?: "positive" | "neutral" | "negative" | "default" | "custom";
 }
-export const buttonStyles = ({ boneOnly, noGlow, disabled, variant = "default" }: ButtonProps) => {
+export const buttonStyles = ({ boneOnly, disabled, variant = "default" }: ButtonProps) => {
   return [
     variant === "custom" ? "" : boneOnly ? colorByVariant[variant] : bgColorByVariant[variant],
     boneOnly || variant === "custom" ? "" : variant === "negative" ? "text-default" : "text-black",
-    disabled ? "opacity-50 cursor-default" : !noGlow && "glow-on-hover",
+    disabled ? "opacity-50" : "glow-on-hover",
   ];
 };

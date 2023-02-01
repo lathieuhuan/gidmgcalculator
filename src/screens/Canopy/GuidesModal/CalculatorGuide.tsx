@@ -1,11 +1,11 @@
 import {
   FaBalanceScaleLeft,
   FaChevronDown,
-  FaCog,
   FaCopy,
   FaSave,
   FaSyncAlt,
   FaTrashAlt,
+  FaShareAlt,
 } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import { MdMoreVert } from "react-icons/md";
@@ -17,6 +17,7 @@ import { ListDecimal, ListDisc } from "../NavBar/atoms";
 export const CalculatorGuide = () => {
   const quickActions = [
     { Icon: FaTrashAlt, desc: "Remove the setup" },
+    { Icon: FaShareAlt, desc: "Encode the setup to share it" },
     { Icon: FaSave, desc: "Save the setup to My Setups" },
     { Icon: FaCopy, desc: "Copy the setup" },
     { Icon: FaBalanceScaleLeft, desc: "Toggle the setup for comparison" },

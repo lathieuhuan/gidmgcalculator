@@ -4,22 +4,31 @@ import { FaInfoCircle, FaTimes } from "react-icons/fa";
 import { buttonStyles, type ButtonProps } from "./utils";
 
 export const Button = (props: ButtonProps) => {
-  const { className, variant, noGlow, boneOnly, ...rest } = props;
+  const { className, icon, variant, boneOnly, children, ...rest } = props;
   return (
     <button
       type="button"
       className={clsx(
-        "px-4 py-1 rounded-2xl shadow-common text-base font-bold leading-base",
+        "px-4 py-1 rounded-2xl shadow-common text-base font-bold leading-base flex-center",
         buttonStyles(props),
         className
       )}
       {...rest}
-    />
+    >
+      {icon ? (
+        <>
+          {icon}
+          <span className="pt-1 ml-2">{children}</span>
+        </>
+      ) : (
+        children
+      )}
+    </button>
   );
 };
 
-export const IconButton = (props: ButtonProps & { size?: string }) => {
-  const { className, variant, noGlow, boneOnly, size = "h-8 w-8", ...rest } = props;
+export const IconButton = (props: Omit<ButtonProps, "icon"> & { size?: string }) => {
+  const { className, variant, boneOnly, size = "h-8 w-8", ...rest } = props;
   return (
     <button
       type="button"

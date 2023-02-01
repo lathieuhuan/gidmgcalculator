@@ -16,6 +16,7 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 // Component
+import { CloseButton } from "@Components/atoms";
 import { AttributeTable, Modal, SetBonusesDisplay } from "@Components/molecules";
 import {
   ArtifactCard,
@@ -125,6 +126,7 @@ export const ChosenSetupInfo = ({
         className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
         onClose={onCloseModal}
       >
+        <CloseButton className="absolute top-2 right-2" boneOnly onClick={onCloseModal} />
         <div className="h-full flex divide-x-2 divide-darkblue-2">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange font-bold">Final Attributes</p>
@@ -154,6 +156,7 @@ export const ChosenSetupInfo = ({
           className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
           onClose={onCloseModal}
         >
+          <CloseButton className="absolute top-2 right-2" boneOnly onClick={onCloseModal} />
           <ChosenSetupModifiers
             calcResult={calcResult}
             chosenSetup={chosenSetup}

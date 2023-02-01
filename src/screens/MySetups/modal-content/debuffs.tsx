@@ -146,7 +146,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
     if (debuff) {
       content.push(
         <ModifierTemplate
-          key={index}
+          key={`${code}-${index}`}
           mutable={false}
           heading={name}
           desc={debuff.desc()}

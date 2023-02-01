@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
+import { BiImport } from "react-icons/bi";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Constant
@@ -190,16 +191,19 @@ function HiddenManager() {
           </div>
 
           {displayedSetups.length < MAX_CALC_SETUPS && (
-            <div className="mt-4">
-              <button
-                className="h-8 w-full flex-center rounded-2xl bg-blue-600 glow-on-hover"
-                onClick={addNewSetup}
-              >
-                <FaPlus />
-              </button>
+            <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full h-8 mt-4 bg-blue-600 text-default"
+                className="w-full bg-blue-600 text-default"
+                icon={<FaPlus />}
+                onClick={addNewSetup}
+              >
+                Add
+              </Button>
+              <Button
+                variant="custom"
+                className="w-full bg-blue-600 text-default"
+                icon={<BiImport />}
                 onClick={() => setImportManageOn(true)}
               >
                 Import

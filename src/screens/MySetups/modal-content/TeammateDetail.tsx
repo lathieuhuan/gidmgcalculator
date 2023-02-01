@@ -50,18 +50,22 @@ export const TeammateDetail = ({
 
         <div className="mt-4 flex justify-center">
           {isCalculated ? (
-            <Button variant="positive" className="flex items-center" onClick={onSwitchSetup}>
-              <FaSyncAlt />
-              <span className="mt-1 ml-1">Switch</span>
+            <Button
+              variant="positive"
+              className="flex items-center"
+              icon={<FaSyncAlt />}
+              onClick={onSwitchSetup}
+            >
+              Switch
             </Button>
           ) : (
             <Button
               variant="positive"
               className="flex items-center"
+              icon={<FaCalculator />}
               onClick={onCalculateTeammateSetup}
             >
-              <FaCalculator />
-              <span className="mt-1 ml-1">Calculate</span>
+              Calculate
             </Button>
           )}
         </div>
