@@ -93,7 +93,6 @@ export type TeammateWeapon = {
 export type TeammateArtifact = {
   code: number;
   buffCtrls: ModifierCtrl[];
-  debuffCtrls: ModifierCtrl[];
 };
 
 export type Teammate = {

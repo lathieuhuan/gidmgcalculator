@@ -205,7 +205,6 @@ export function createTeammate({ name, weaponType }: CreateTeammateArgs): Teamma
     artifact: {
       code: 0,
       buffCtrls: [],
-      debuffCtrls: [],
     },
   };
 }

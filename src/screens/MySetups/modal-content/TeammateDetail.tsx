@@ -29,7 +29,9 @@ export const TeammateDetail = ({
     <div className="w-75 rounded-lg bg-darkblue-2 shadow-white-glow">
       <div className="flex">
         <div className="pl-4 pt-4 flex">
-          <CharacterPortrait className="w-18 h-18" code={data.code} icon={data.icon} />
+          <div className="w-18 h-18 shrink-0">
+            <CharacterPortrait code={data.code} icon={data.icon} />
+          </div>
           <p className={`px-4 text-2xl text-${data.vision} font-bold`}>{teammate.name}</p>
         </div>
 

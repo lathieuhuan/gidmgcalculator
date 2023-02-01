@@ -1,7 +1,16 @@
 import clsx from "clsx";
 import { useState, type ButtonHTMLAttributes } from "react";
-import { FaCopy, FaSave, FaBalanceScaleLeft, FaTrashAlt } from "react-icons/fa";
+import {
+  FaCopy,
+  FaSave,
+  FaBalanceScaleLeft,
+  FaTrashAlt,
+  FaShareAlt,
+  FaFileImport,
+  FaSwimmingPool,
+} from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
+import type { CalcSetupManageInfo } from "@Src/types";
 
 // Constant
 import { MAX_CALC_SETUPS } from "@Src/constants";
@@ -18,6 +27,8 @@ import {
   selectComparedIds,
   selectStandardId,
   selectSetupManageInfos,
+  selectTarget,
+  selectCalcSetupsById,
 } from "@Store/calculatorSlice/selectors";
 
 // Util
@@ -25,12 +36,37 @@ import { findById } from "@Src/utils";
 
 // Component
 import { ComplexSelect, Modal } from "@Components/molecules";
+import { ConfirmModal, SetupExporter, SetupImporter } from "@Components/organisms";
 import { SaveSetup } from "../modal-content";
-import { ConfirmModal } from "@Components/organisms";
+import { cleanupCalcSetup } from "@Src/utils/setup";
 
 type ModalInfo = {
-  type: "SAVE_SETUP" | "REMOVE_SETUP" | "";
+  type: "SAVE_SETUP" | "REMOVE_SETUP" | "SHARE_SETUP" | "IMPORT_SETUP" | "";
   setupIndex: number;
+};
+
+interface CalcSetupExporterProps extends CalcSetupManageInfo {
+  active: boolean;
+  onClose: () => void;
+}
+const CalcSetupExporter = ({ name, ID, ...rest }: CalcSetupExporterProps) => {
+  const calculator = useSelector((state) => state.calculator);
+  const target = useSelector(selectTarget);
+
+  return (
+    calculator.setupsById[ID] && (
+      <SetupExporter
+        setupName={name}
+        calcSetup={{
+          ...cleanupCalcSetup(calculator, ID),
+          weapon: calculator.setupsById[ID].weapon,
+          artifacts: calculator.setupsById[ID].artifacts,
+        }}
+        target={target}
+        {...rest}
+      />
+    )
+  );
 };
 
 export function SetupSelect() {
@@ -90,6 +126,10 @@ export function SetupSelect() {
     setModal({ type: "SAVE_SETUP", setupIndex });
   };
 
+  const onClickShareSetup = (setupIndex: number) => {
+    setModal({ type: "SHARE_SETUP", setupIndex });
+  };
+
   const onClickRemoveSetup = (setupIndex: number) => {
     setModal({ type: "REMOVE_SETUP", setupIndex });
   };
@@ -123,38 +163,51 @@ export function SetupSelect() {
               const rightButtons: Array<ButtonHTMLAttributes<HTMLButtonElement>> = [
                 {
                   className: ID === standardId ? "bg-green" : "bg-default",
+                  children: <SiTarget className="text-1.5xl" />,
                   disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
                   onClick: onClickChooseStandard(ID),
-                  children: <SiTarget className="text-1.5xl" />,
                 },
                 {
                   className: comparedIds.includes(ID) ? "bg-green" : "bg-default",
+                  children: <FaBalanceScaleLeft className="text-1.5xl" />,
                   disabled: setupManageInfos.length < 2,
                   onClick: onClickToggleCompared(ID),
-                  children: <FaBalanceScaleLeft className="text-1.5xl" />,
                 },
                 {
                   className: "hover:bg-lightgold" + (isAtMax ? " bg-lesser" : ""),
+                  children: <FaCopy />,
                   disabled: isAtMax,
                   onClick: onClickCopySetup(ID),
-                  children: <FaCopy />,
                 },
                 {
                   className: "hover:bg-lightgold",
-                  onClick: () => {
-                    closeSelect();
-                    onClickSaveSetup(i);
-                  },
                   children: <FaSave />,
+                  onClick: () => {
+                    onClickSaveSetup(i);
+                    closeSelect();
+                  },
+                },
+                {
+                  className: "hover:bg-lightgold",
+                  children: <FaShareAlt />,
+                  onClick: () => {
+                    onClickShareSetup(i);
+                    closeSelect();
+                  },
+                },
+                {
+                  className: "hover:bg-lightgold",
+                  children: <FaFileImport />,
+                  onClick: () => setModal({ type: "IMPORT_SETUP", setupIndex: 0 }),
                 },
                 {
                   className: "hover:bg-darkred hover:text-default",
+                  children: <FaTrashAlt />,
                   disabled: setupManageInfos.length < 2,
                   onClick: () => {
                     closeSelect();
                     onClickRemoveSetup(i);
                   },
-                  children: <FaTrashAlt />,
                 },
               ];
 
@@ -177,6 +230,14 @@ export function SetupSelect() {
       >
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
       </Modal>
+
+      <CalcSetupExporter
+        active={modal.type === "SHARE_SETUP"}
+        {...setupManageInfos[modal.setupIndex]}
+        onClose={closeModal}
+      />
+
+      <SetupImporter active={modal.type === "IMPORT_SETUP"} onClose={closeModal} />
 
       <ConfirmModal
         active={modal.type === "REMOVE_SETUP"}

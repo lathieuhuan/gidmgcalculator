@@ -13,7 +13,12 @@ import type { CalculatorState } from "@Store/calculatorSlice/types";
 
 import { findDataCharacter } from "@Data/controllers";
 import { getArtifactSetBonuses } from "./calculation";
-import { createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
+import {
+  createArtDebuffCtrls,
+  createArtifactBuffCtrls,
+  createCharModCtrls,
+  createWeaponBuffCtrls,
+} from "./creators";
 import { deepCopy, findByIndex } from "./pure-utils";
 import { userItemToCalcItem } from "./utils";
 
@@ -106,26 +111,24 @@ type Restorable = {
   index: number;
   inputs?: ModifierInput[];
   code?: number;
-  refi?: number;
 };
+function restoreModCtrls<T extends Restorable>(newCtrls: T[], refCtrls: T[]): T[] {
+  for (const refCtrl of refCtrls) {
+    const i = newCtrls.findIndex(({ code, index }) => {
+      return index === refCtrl.index && code === refCtrl.code;
+    });
 
-export const restoreCalcSetup = (data: CalcSetup) => {
-  function restoreModCtrls(newCtrls: Restorable[], refCtrls: Restorable[]) {
-    for (const refCtrl of refCtrls) {
-      const i = newCtrls.findIndex(({ code, index }) => {
-        return index === refCtrl.index && code === refCtrl.code;
-      });
-
-      if (i !== -1) {
-        newCtrls[i].activated = true;
-        if (refCtrl.inputs && newCtrls[i].inputs) {
-          newCtrls[i].inputs = refCtrl.inputs;
-        }
+    if (i !== -1) {
+      newCtrls[i].activated = true;
+      if (refCtrl.inputs && newCtrls[i].inputs) {
+        newCtrls[i].inputs = refCtrl.inputs;
       }
     }
-    return newCtrls;
   }
+  return newCtrls;
+}
 
+export const restoreCalcSetup = (data: CalcSetup) => {
   const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
   const wpBuffCtrls = createWeaponBuffCtrls(true, data.weapon);
   const party: Party = [];
@@ -157,6 +160,7 @@ export const restoreCalcSetup = (data: CalcSetup) => {
     wpBuffCtrls: restoreModCtrls(wpBuffCtrls, data.wpBuffCtrls),
     party,
     artBuffCtrls: restoreModCtrls(artBuffCtrls, data.artBuffCtrls),
+    artDebuffCtrls: restoreModCtrls(createArtDebuffCtrls(), data.artDebuffCtrls),
   };
 
   return output;

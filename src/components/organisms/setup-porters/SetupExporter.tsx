@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useState } from "react";
 import type { CalcSetup, Target } from "@Src/types";
 
@@ -6,7 +5,7 @@ import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { Modal, ModalControl } from "@Components/molecules";
+import { Modal, type ModalControl } from "@Components/molecules";
 import { PorterLayout } from "./atoms";
 
 interface SetupExporterProps {
@@ -16,7 +15,7 @@ interface SetupExporterProps {
   onClose: () => void;
 }
 const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExporterProps) => {
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState<"SUCCESS" | "NOT_SUPPORT" | "">("");
 
   const encodedData = encodeSetup(calcSetup, target);
 
@@ -28,25 +27,28 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
         readOnly: true,
       }}
       message={
-        status > 0 && (
-          <p className={clsx("mt-2 text-center", status === 1 ? "text-green" : "text-lightred")}>
-            {status === 1
-              ? "Successfully copied to Clipboard."
-              : "We're sorry. Your browser does not allow/support this function."}
-          </p>
-        )
+        status
+          ? {
+              text:
+                status === "SUCCESS"
+                  ? "Successfully copied to Clipboard."
+                  : "Sorry. Your browser does not allow/support this function.",
+              type: status === "SUCCESS" ? "success" : "error",
+            }
+          : undefined
       }
       moreButtons={[
         {
           text: "Copy",
           onClick: () => {
             navigator.clipboard.writeText(encodedData).then(
-              () => setStatus(1),
-              () => setStatus(2)
+              () => setStatus("SUCCESS"),
+              () => setStatus("NOT_SUPPORT")
             );
           },
         },
       ]}
+      autoFocusButtonIndex={1}
       onClose={onClose}
     />
   );

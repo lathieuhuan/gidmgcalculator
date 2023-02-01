@@ -16,7 +16,6 @@ import type {
   TeammateArtifact,
   SetupImportInfo,
   PartiallyRequired,
-  AppSettings,
 } from "@Src/types";
 import type { CalculatorState } from "./types";
 
