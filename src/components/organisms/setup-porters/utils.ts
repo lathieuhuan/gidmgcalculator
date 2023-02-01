@@ -3,15 +3,18 @@ import type {
   ArtifactMainStatType,
   ArtifactSubStatType,
   ArtifactType,
+  AttackElement,
   AttackReaction,
   CalcArtifact,
   CalcSetup,
   ModifierCtrl,
   Rarity,
+  ResistanceReduction,
   Resonance,
   ResonanceVision,
   Target,
   Teammate,
+  Vision,
   WeaponType,
 } from "@Src/types";
 
@@ -23,9 +26,12 @@ import characters from "@Data/characters";
 import { findDataCharacter } from "@Data/controllers";
 import { restoreCalcSetup } from "@Src/utils/setup";
 
-const DIVIDER_1 = "-";
-const DIVIDER_2 = "*";
-const DIVIDER_3 = " ";
+const DIVIDER_1 = "D1";
+const DIVIDER_2 = "D2";
+const DIVIDER_3 = "D3";
+const DIVIDER_4 = "D4";
+const DIVIDER_MC = "D8";
+const DIVIDER_MC_INPUTS = "D9";
 
 export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   const {
@@ -50,9 +56,11 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   const { cons, NAs, ES, EB } = char;
 
   const encodeModCtrl = (mod: ModifierCtrl) => {
-    return [+mod.activated, mod.index, mod.inputs?.length ? mod.inputs.join(DIVIDER_3) : ""].join(
-      DIVIDER_2
-    );
+    return [
+      +mod.activated,
+      mod.index,
+      mod.inputs?.length ? mod.inputs.join(DIVIDER_MC_INPUTS) : "",
+    ].join(DIVIDER_MC);
   };
 
   const artifactCodes = artifacts.map((artifact, i) => {
@@ -74,8 +82,6 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     if (tm) {
       const { code: tmCode } = findDataCharacter(tm) || {};
       const { weapon, artifact } = tm;
-
-      console.log(artifact.buffCtrls);
 
       return `P${i}=${[
         tmCode,
@@ -106,11 +112,13 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
       .join(DIVIDER_1)}`,
     ...teammateCodes,
     `E=${[
-      elmtModCtrls.reaction ? REACTIONS.indexOf(elmtModCtrls.reaction) : "",
-      elmtModCtrls.infuse_reaction ? REACTIONS.indexOf(elmtModCtrls.infuse_reaction) : "",
+      elmtModCtrls.reaction,
+      elmtModCtrls.infuse_reaction,
       +elmtModCtrls.superconduct,
       elmtModCtrls.resonances
-        .map((rsn) => [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDER_3) : ""])
+        .map((rsn) =>
+          [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDER_4) : ""].join(DIVIDER_3)
+        )
         .join(DIVIDER_2),
     ].join(DIVIDER_1)}`,
     `I=${ATTACK_ELEMENTS.indexOf(customInfusion.element)}`,
@@ -127,18 +135,25 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 };
 
 const decodeModsCtrl = (code: string) => {
-  const [activated, index, inputs] = code.split(DIVIDER_2);
+  const [activated, index, inputs] = code.split(DIVIDER_MC);
+
   const result: ModifierCtrl = {
     activated: activated === "1",
     index: +index,
   };
   if (inputs) {
-    result.inputs = inputs.split(DIVIDER_3).map(Number);
+    result.inputs = inputs.split(DIVIDER_MC_INPUTS).map(Number);
   }
   return result;
 };
 
-export const decodeSetup = (items: Array<string | null>): CalcSetup => {
+interface DecodeSetupResult {
+  ID: number;
+  name: string;
+  calcSetup: CalcSetup;
+  target: Target;
+}
+export const decodeSetup = (items: Array<string | null>): DecodeSetupResult => {
   const [C, BC, DC, W, WBC, A1, A2, A3, A4, A5, ABC, ADC, P1, P2, P3, E, I, T] = items;
   let seedID = Date.now();
 
@@ -196,9 +211,6 @@ export const decodeSetup = (items: Array<string | null>): CalcSetup => {
     const [wpCode, wpType, wpRefi, wpBuffCtrls] = split(weapon, 2);
     const [artCode, artBCs] = split(artifact, 2);
 
-    // console.log(artBCs);
-    // console.log(splitCtrls(artBCs, 3));
-
     return {
       name,
       buffCtrls: splitCtrls(tmBCs, 2),
@@ -226,51 +238,75 @@ export const decodeSetup = (items: Array<string | null>): CalcSetup => {
           activated: activated === "1",
         };
         if (inputs) {
-          resonance.inputs = inputs.split(DIVIDER_3).map(Number);
+          resonance.inputs = inputs.split(DIVIDER_4).map(Number);
         }
         return resonance;
       })
     : [];
 
-  return restoreCalcSetup({
-    char: {
-      name,
-      level: LEVELS[+levelIndex],
-      cons: +cons,
-      NAs: +NAs,
-      ES: +ES,
-      EB: +EB,
-    },
-    selfBuffCtrls: splitCtrls(BC, 1),
-    selfDebuffCtrls: splitCtrls(DC, 1),
-    weapon: {
-      ID: seedID++,
-      code: +wpCode,
-      level: LEVELS[+wpLvIndex],
-      type: wpType as WeaponType,
-      refi: +wpRefi,
-    },
-    wpBuffCtrls: splitCtrls(WBC, 1),
-    artifacts: [
-      decodeArtifact(A1),
-      decodeArtifact(A2),
-      decodeArtifact(A3),
-      decodeArtifact(A4),
-      decodeArtifact(A5),
-    ],
-    artBuffCtrls: splitCtrls(ABC, 1),
-    artDebuffCtrls,
-    party: [decodeTeammate(P1), decodeTeammate(P2), decodeTeammate(P3)],
-    elmtModCtrls: {
-      reaction: (reaction as AttackReaction) || null,
-      infuse_reaction: (infuse_reaction as AttackReaction) || null,
-      resonances,
-      superconduct: superconduct === "1",
-    },
-    customInfusion: {
-      element: ATTACK_ELEMENTS[I ? +I : 7],
-    },
-    customBuffCtrls: [],
-    customDebuffCtrls: [],
-  });
+  const [targetCode, targetLv, targetVariant, targetInputs, targetResistances] = split(T, 1);
+
+  const target = {
+    code: +targetCode,
+    level: +targetLv,
+    resistances: {},
+  } as Target;
+
+  if (targetVariant) {
+    target.variantType = targetVariant as Vision;
+  }
+  if (targetInputs) {
+    target.inputs = targetInputs.split(DIVIDER_2).map(Number);
+  }
+  for (const res of targetResistances.split(DIVIDER_2)) {
+    const [key, value] = res.split(DIVIDER_3);
+    target.resistances[key as AttackElement] = +value;
+  }
+
+  return {
+    ID: seedID,
+    name: "Imported setup",
+    calcSetup: restoreCalcSetup({
+      char: {
+        name,
+        level: LEVELS[+levelIndex],
+        cons: +cons,
+        NAs: +NAs,
+        ES: +ES,
+        EB: +EB,
+      },
+      selfBuffCtrls: splitCtrls(BC, 1),
+      selfDebuffCtrls: splitCtrls(DC, 1),
+      weapon: {
+        ID: seedID++,
+        code: +wpCode,
+        level: LEVELS[+wpLvIndex],
+        type: wpType as WeaponType,
+        refi: +wpRefi,
+      },
+      wpBuffCtrls: splitCtrls(WBC, 1),
+      artifacts: [
+        decodeArtifact(A1),
+        decodeArtifact(A2),
+        decodeArtifact(A3),
+        decodeArtifact(A4),
+        decodeArtifact(A5),
+      ],
+      artBuffCtrls: splitCtrls(ABC, 1),
+      artDebuffCtrls,
+      party: [decodeTeammate(P1), decodeTeammate(P2), decodeTeammate(P3)],
+      elmtModCtrls: {
+        reaction: (reaction as AttackReaction) || null,
+        infuse_reaction: (infuse_reaction as AttackReaction) || null,
+        resonances,
+        superconduct: superconduct === "1",
+      },
+      customInfusion: {
+        element: ATTACK_ELEMENTS[I ? +I : 7],
+      },
+      customBuffCtrls: [],
+      customDebuffCtrls: [],
+    }),
+    target,
+  };
 };

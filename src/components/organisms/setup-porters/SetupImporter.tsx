@@ -1,13 +1,18 @@
 import { useState } from "react";
 
+// Hook
+import { useDispatch } from "@Store/hooks";
+
 // Util
 import { decodeSetup } from "./utils";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
 import { PorterLayout } from "./atoms";
+import { updateImportInfo } from "@Store/uiSlice";
 
 const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
+  const dispatch = useDispatch();
   const [code, setCode] = useState("");
   const [error, setError] = useState<"NOT_SUPPORT" | "UNKNOWN" | "">("");
 
@@ -44,10 +49,10 @@ const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
 
             if (actualCode.length) {
               try {
-                const split = actualCode.split("&").map((str) => str.split("=")[1]);
-                const result = decodeSetup(split);
+                const splitCode = actualCode.split("&").map((str) => str.split("=")[1]);
+                const result = decodeSetup(splitCode);
 
-                console.log(result);
+                dispatch(updateImportInfo(result));
               } catch (error) {
                 setError("UNKNOWN");
               }

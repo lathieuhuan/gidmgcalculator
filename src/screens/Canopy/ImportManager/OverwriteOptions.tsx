@@ -4,6 +4,10 @@ import type { CharInfo, Target } from "@Src/types";
 
 // Hook
 import { useSelector } from "@Store/hooks";
+import { useTranslation } from "@Src/hooks";
+
+// Util
+import { appSettings } from "@Src/utils";
 
 // Selector
 import {
@@ -15,7 +19,6 @@ import {
 // Component
 import { SeeDetails, CollapseSpace, tableStyles } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { appSettings } from "@Src/utils";
 
 interface OverrideOptions {
   pendingCode: number;
@@ -31,6 +34,7 @@ export function OverrideOptions({
   addImportedSetup,
   endImport,
 }: OverrideOptions) {
+  const { t } = useTranslation();
   const setupsById = useSelector(selectCalcSetupsById);
   const activeId = useSelector(selectActiveId);
   const target = useSelector(selectTarget);
@@ -119,7 +123,7 @@ export function OverrideOptions({
                               <th className={clsx("text-lightgold", tableStyles.th)}>New</th>
                             </tr>
 
-                            {Object.keys(object1).map((type, i) => {
+                            {Object.keys(object1).map((type, k) => {
                               let comparedCols;
 
                               if (type === "name") {
@@ -146,14 +150,14 @@ export function OverrideOptions({
                               }
 
                               return (
-                                <tr key={i} className={tableStyles.row}>
+                                <tr key={k} className={tableStyles.row}>
                                   <td
                                     className={clsx(
                                       "capitalize " + tableStyles.td,
                                       object1[type] !== object2?.[type] && "text-lightred"
                                     )}
                                   >
-                                    {type}
+                                    {t(type, { ns: i ? "resistance" : "common" })}
                                   </td>
                                   {comparedCols}
                                 </tr>

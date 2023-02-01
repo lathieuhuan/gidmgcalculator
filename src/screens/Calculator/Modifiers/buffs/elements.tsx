@@ -90,7 +90,7 @@ export default function ElementBuffs() {
   });
 
   if (content.length) {
-    content.push(<div key="divider-1" className="mx-auto w-1/2 h-px bg-lesser" />);
+    content.push(<div key="divider-1" className="mx-auto w-1/2 h-px bg-rarity-1" />);
   }
 
   // Reaction buff
@@ -176,7 +176,7 @@ export default function ElementBuffs() {
   addAttackReaction("reaction");
 
   if (content.length > elmtModCtrls.resonances.length) {
-    content.push(<div key="divider-2" className="mx-auto w-1/2 h-px bg-lesser" />);
+    content.push(<div key="divider-2" className="mx-auto w-1/2 h-px bg-rarity-1" />);
   }
 
   const isInfused = infusedElement !== "phys";
