@@ -21,6 +21,11 @@ export const getImgSrc = (src: string) => {
     : src;
 };
 
+export const getSearchParam = (key: string) => {
+  const searchParams = new URLSearchParams(window.location.search);
+  return searchParams.get(key);
+};
+
 export const turnArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };

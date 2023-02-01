@@ -15,6 +15,9 @@ import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calcula
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
 import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
 
+// Util
+import { getSearchParam } from "@Src/utils";
+
 // Component
 import { ConfirmModalBody, Modal } from "@Components/molecules";
 import { OverrideOptions } from "./OverwriteOptions";
@@ -33,6 +36,11 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
 
   const endImport = () => {
     dispatch(updateImportInfo({}));
+    dispatch(updateUI({ highManagerWorking: false }));
+
+    if (getSearchParam("importCode")) {
+      window.history.replaceState(null, "", window.location.origin);
+    }
   };
 
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {

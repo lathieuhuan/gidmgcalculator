@@ -1,13 +1,21 @@
 import { useEffect } from "react";
 
+// Constant
+import { EScreen } from "./constants";
+
+// Util
+import { getSearchParam } from "./utils";
+import { decodeSetup } from "@Components/organisms/setup-porters/utils";
+
 // Hook
-import { useSelector } from "@Store/hooks";
+import { useDispatch, useSelector } from "@Store/hooks";
+
+// Action
+import { updateImportInfo } from "@Store/uiSlice";
+import { updateCalculator } from "@Store/calculatorSlice";
 
 // Selector
 import { selectAtScreen } from "@Store/uiSlice/selectors";
-
-// Constant
-import { EScreen } from "./constants";
 
 // Screen
 import Calculator from "@Screens/Calculator";
@@ -18,6 +26,7 @@ import MySetups from "@Screens/MySetups";
 import { ImportManager, MessageModal, NavBar } from "@Screens/Canopy";
 
 function App() {
+  const dispatch = useDispatch();
   const atScreen = useSelector(selectAtScreen);
 
   useEffect(() => {
@@ -27,14 +36,22 @@ function App() {
     };
     window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
 
-    // const data = localStorage.getItem("GDC_Data");
-    // if (data) {
-    //   try {
-    //     checkAndAddUserData(JSON.parse(data));
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
+    const importCode = getSearchParam("importCode");
+
+    if (importCode) {
+      try {
+        dispatch(updateImportInfo(decodeSetup(importCode)));
+      } catch (error) {
+        dispatch(
+          updateCalculator({
+            message: {
+              type: "error",
+              content: "An unknown error has occurred. This setup cannot be imported.",
+            },
+          })
+        );
+      }
+    }
 
     return () => {
       window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
