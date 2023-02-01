@@ -47,6 +47,17 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
             );
           },
         },
+        {
+          text: "Copy URL",
+          onClick: () => {
+            navigator.clipboard
+              .writeText(`${window.location.origin}?importCode=${encodedData}`)
+              .then(
+                () => setStatus("SUCCESS"),
+                () => setStatus("NOT_SUPPORT")
+              );
+          },
+        },
       ]}
       autoFocusButtonIndex={1}
       onClose={onClose}

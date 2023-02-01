@@ -49,10 +49,10 @@ const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
 
             if (actualCode.length) {
               try {
-                const splitCode = actualCode.split("&").map((str) => str.split("=")[1]);
-                const result = decodeSetup(splitCode);
+                const result = decodeSetup(actualCode);
 
                 dispatch(updateImportInfo(result));
+                onClose();
               } catch (error) {
                 setError("UNKNOWN");
               }

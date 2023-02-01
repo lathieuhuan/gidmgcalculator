@@ -1,14 +1,6 @@
 import clsx from "clsx";
 import { useState, type ButtonHTMLAttributes } from "react";
-import {
-  FaCopy,
-  FaSave,
-  FaBalanceScaleLeft,
-  FaTrashAlt,
-  FaShareAlt,
-  FaFileImport,
-  FaSwimmingPool,
-} from "react-icons/fa";
+import { FaCopy, FaSave, FaBalanceScaleLeft, FaTrashAlt, FaShareAlt } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import type { CalcSetupManageInfo } from "@Src/types";
 
@@ -28,17 +20,16 @@ import {
   selectStandardId,
   selectSetupManageInfos,
   selectTarget,
-  selectCalcSetupsById,
 } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { findById } from "@Src/utils";
+import { cleanupCalcSetup } from "@Src/utils/setup";
 
 // Component
 import { ComplexSelect, Modal } from "@Components/molecules";
 import { ConfirmModal, SetupExporter, SetupImporter } from "@Components/organisms";
 import { SaveSetup } from "../modal-content";
-import { cleanupCalcSetup } from "@Src/utils/setup";
 
 type ModalInfo = {
   type: "SAVE_SETUP" | "REMOVE_SETUP" | "SHARE_SETUP" | "IMPORT_SETUP" | "";
@@ -194,11 +185,6 @@ export function SetupSelect() {
                     onClickShareSetup(i);
                     closeSelect();
                   },
-                },
-                {
-                  className: "hover:bg-lightgold",
-                  children: <FaFileImport />,
-                  onClick: () => setModal({ type: "IMPORT_SETUP", setupIndex: 0 }),
                 },
                 {
                   className: "hover:bg-darkred hover:text-default",

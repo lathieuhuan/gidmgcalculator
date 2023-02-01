@@ -1,4 +1,4 @@
-import type { ReactNode, TextareaHTMLAttributes } from "react";
+import type { TextareaHTMLAttributes } from "react";
 import { ButtonBar, type ButtonBarButton } from "@Components/molecules";
 import { CloseButton } from "@Components/atoms";
 
@@ -49,7 +49,7 @@ export const PorterLayout = ({
         ) : null}
 
         <ButtonBar
-          className="mt-4"
+          className="mt-4 space-x-4"
           autoFocusIndex={autoFocusButtonIndex}
           buttons={[{ text: "Cancel", onClick: onClose }, ...moreButtons]}
         />
