@@ -24,6 +24,7 @@ import {
   DamageDisplay,
   OwnerLabel,
   SetupExporter,
+  UnderConstructNotice,
   WeaponCard,
 } from "@Components/organisms";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
@@ -80,7 +81,9 @@ export const ChosenSetupInfo = ({
         onClose={onCloseModal}
       />
 
-      {weapon && (
+      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} />
+
+      {/* {weapon && (
         <SetupExporter
           active={modal.type === "SHARE_SETUP"}
           setupName={chosenSetup.name}
@@ -88,7 +91,7 @@ export const ChosenSetupInfo = ({
           target={chosenSetup.target}
           onClose={onCloseModal}
         />
-      )}
+      )} */}
 
       <Modal
         active={modal.type === "WEAPON"}
@@ -126,7 +129,7 @@ export const ChosenSetupInfo = ({
         className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
         onClose={onCloseModal}
       >
-        <CloseButton className="absolute top-2 right-2" boneOnly onClick={onCloseModal} />
+        <CloseButton className="absolute top-1 right-1" boneOnly onClick={onCloseModal} />
         <div className="h-full flex divide-x-2 divide-darkblue-2">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange font-bold">Final Attributes</p>
@@ -156,7 +159,7 @@ export const ChosenSetupInfo = ({
           className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
           onClose={onCloseModal}
         >
-          <CloseButton className="absolute top-2 right-2" boneOnly onClick={onCloseModal} />
+          <CloseButton className="absolute top-1 right-1" boneOnly onClick={onCloseModal} />
           <ChosenSetupModifiers
             calcResult={calcResult}
             chosenSetup={chosenSetup}

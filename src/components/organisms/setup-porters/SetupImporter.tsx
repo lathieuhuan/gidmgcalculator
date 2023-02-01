@@ -43,7 +43,7 @@ const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
           },
         },
         {
-          text: "Import",
+          text: "Proceed",
           onClick: () => {
             const actualCode = code.trim();
 

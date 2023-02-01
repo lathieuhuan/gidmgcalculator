@@ -13,7 +13,7 @@ import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calcula
 
 // Action
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
-import { importSetup, initSessionWithSetup } from "@Store/calculatorSlice";
+import { importSetup, initSessionWithSetup, updateCalculator } from "@Store/calculatorSlice";
 
 // Util
 import { getSearchParam } from "@Src/utils";
@@ -108,6 +108,17 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
       }
     } else {
       delayExecute(startNewSession);
+
+      if (getSearchParam("importCode")) {
+        dispatch(
+          updateCalculator({
+            message: {
+              type: "success",
+              content: "Successfully import the setup!",
+            },
+          })
+        );
+      }
     }
   }, []);
 

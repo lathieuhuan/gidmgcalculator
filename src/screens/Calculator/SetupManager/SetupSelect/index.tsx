@@ -28,7 +28,12 @@ import { cleanupCalcSetup } from "@Src/utils/setup";
 
 // Component
 import { ComplexSelect, Modal } from "@Components/molecules";
-import { ConfirmModal, SetupExporter, SetupImporter } from "@Components/organisms";
+import {
+  ConfirmModal,
+  SetupExporter,
+  SetupImporter,
+  UnderConstructNotice,
+} from "@Components/organisms";
 import { SaveSetup } from "../modal-content";
 
 type ModalInfo = {
@@ -217,11 +222,13 @@ export function SetupSelect() {
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
       </Modal>
 
-      <CalcSetupExporter
+      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={closeModal} />
+
+      {/* <CalcSetupExporter
         active={modal.type === "SHARE_SETUP"}
         {...setupManageInfos[modal.setupIndex]}
         onClose={closeModal}
-      />
+      /> */}
 
       <SetupImporter active={modal.type === "IMPORT_SETUP"} onClose={closeModal} />
 

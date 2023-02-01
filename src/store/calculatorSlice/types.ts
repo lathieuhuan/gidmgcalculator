@@ -15,7 +15,7 @@ export type CalculatorState = {
   comparedIds: number[];
 
   message: {
-    type: "" | "error";
+    type: "" | "error" | "success";
     content: string;
   };
 

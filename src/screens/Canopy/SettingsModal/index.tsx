@@ -145,7 +145,7 @@ const Settings = ({ onClose }: SettingsProps) => {
 export const SettingsModal = (props: ModalControl) => {
   return (
     <Modal className="h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow" {...props}>
-      <CloseButton className="absolute top-2 right-2" boneOnly onClick={props.onClose} />
+      <CloseButton className="absolute top-1 right-1" boneOnly onClick={props.onClose} />
       <Settings onClose={props.onClose} />
     </Modal>
   );

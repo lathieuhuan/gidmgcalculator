@@ -20,7 +20,11 @@ export const MessageModal = () => {
   return (
     <ConfirmModal
       active={message.type !== ""}
-      message={<span className="text-lightred text-xl">{message.content}</span>}
+      message={
+        <span className={"text-xl " + (message.type === "error" ? "text-lightred" : "text-green")}>
+          {message.content}
+        </span>
+      }
       bgColor="bg-darkblue-2"
       buttons={[undefined]}
       onClose={onClose}

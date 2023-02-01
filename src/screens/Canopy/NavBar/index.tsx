@@ -13,7 +13,6 @@ import { useClickOutside } from "@Src/hooks";
 
 // Component
 import { Modal } from "@Components/molecules";
-import { UnderConstructNotice } from "@Components/organisms";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { IntroModal } from "../IntroModal";

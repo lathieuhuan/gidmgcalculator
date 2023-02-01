@@ -10,20 +10,21 @@ import {
 import { SiTarget } from "react-icons/si";
 import { MdMoreVert } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
+import { BiImport } from "react-icons/bi";
 
 import { Green, Lightgold } from "@Components/atoms";
-import { ListDecimal, ListDisc } from "../NavBar/atoms";
+import { ListDecimal, ListDisc } from "./atoms";
 
 export const CalculatorGuide = () => {
   const quickActions = [
     { Icon: FaTrashAlt, desc: "Remove the setup" },
-    { Icon: FaShareAlt, desc: "Encode the setup to share it" },
+    { Icon: FaShareAlt, desc: "Encode the setup to share it with others" },
     { Icon: FaSave, desc: "Save the setup to My Setups" },
-    { Icon: FaCopy, desc: "Copy the setup" },
+    { Icon: FaCopy, desc: "Duplicate the setup" },
     { Icon: FaBalanceScaleLeft, desc: "Toggle the setup for comparison" },
     {
       Icon: SiTarget,
-      desc: "Selecte the standard setup, all other setups will be compared to this one.",
+      desc: "Select the standard setup, all other setups will be compared to this one.",
     },
   ];
 
@@ -96,6 +97,11 @@ export const CalculatorGuide = () => {
                   );
                 })}
               </ul>
+            </li>
+            <li>
+              You can <Lightgold>import a setup</Lightgold> in 2 ways: (1) Open the full manager,
+              choose <BiImport /> Import then paste the code, choose Proceed. (2) Follow the link
+              which contains the code.
             </li>
           </ListDisc>
         </li>

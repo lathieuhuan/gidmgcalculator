@@ -33,7 +33,7 @@ export function StandardModal({
 }: StandardModalProps) {
   return (
     <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
-      <CloseButton className="absolute top-2 right-2" boneOnly onClick={onClose} />
+      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
       {title}
       <div className={"grow custom-scrollbar " + bodyClassName}>{children}</div>
     </Modal>

@@ -83,8 +83,6 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
             uploadCase: "manual",
             result: "success",
           });
-
-          onClose();
         } catch (err) {
           console.log(err);
 
@@ -148,7 +146,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
 
         {message?.uploadCase === "manual" && (
           <p className={clsx("mb-2 font-bold text-center", messageColor)}>
-            {message.result === "success" ? "Successfully uploaded your File" : failMessage}
+            {message.result === "success" ? "Successfully uploaded your file" : failMessage}
           </p>
         )}
 

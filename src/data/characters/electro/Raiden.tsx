@@ -83,7 +83,7 @@ const getBuffValue = {
     return {
       stacks: Math.min(round(stacks, 2), 60),
       extraStacks: round(countResolve(bonusEnergySpent, level), 2),
-      musouBonus: 3.89 * TALENT_LV_MULTIPLIERS[2][level],
+      musouBonus: round(3.89 * TALENT_LV_MULTIPLIERS[2][level], 2),
       isshinBonus: isshinBonusMults[level],
     };
   },
