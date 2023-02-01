@@ -164,7 +164,7 @@ export function SetupTemplate({
     );
 
     const gears = (
-      <div className="mt-4 mx-auto grid grid-cols-3 gap-1">
+      <div className="mt-4 mx-auto grid grid-cols-3 gap-2">
         {weaponData ? (
           <GearIcon item={weaponData} onClick={openModal("WEAPON")} />
         ) : (

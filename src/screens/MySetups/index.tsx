@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { FaCalculator, FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
+import { FaInfo, FaUnlink, FaWrench } from "react-icons/fa";
 import type { UserComplexSetup, UserSetup } from "@Src/types";
 import type { MySetupModalType, MySetupModal } from "./types";
 
@@ -19,7 +19,7 @@ import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 
 // Component
-import { Button, IconButton, Green, Red } from "@Components/atoms";
+import { Button, IconButton, Red, Lightgold } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { StandardModal } from "@Components/organisms";
 import { WareHouse } from "@Components/templates";
@@ -164,28 +164,28 @@ export default function MySetups() {
         title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
         onClose={closeModal}
       >
-        <div className="pr-2 space-y-1 contains-inline-svg">
-          <p>
-            - <Green>Modify Setups</Green>: When you press the wrench icon <FaWrench /> on a Setup,
+        <ul className="pl-4 pr-2 list-disc space-y-1 contains-inline-svg">
+          <li>
+            <Lightgold>Modify setups</Lightgold>: When you press <FaWrench /> on a saved setup,
             you're pushing a <Red>copy</Red> of it to the Calculator, so don't forget to save the
-            modified copy if you want to apply the changes to that Setup.
-          </p>
-          <p>
-            - <Green>Complex Setup</Green>: The result of combining Setups of 4 party members. On
-            this complex, switch to teammates' Setups by pressing their icons. Break the complex
-            into individual Setups again by pressing the link / chain icon <FaUnlink /> before its
-            name.
-          </p>
-          <p>
-            - You cannot change teammates when modifying the copy of a Setup that is in a complex.
-            However you can make a copy of that copy in the Calculator and work on it.
-          </p>
-          <p>
-            - You can build <Green>teammate's Setups</Green> based on a saved Setup by hovering over
-            teammate's icon and press the calculator icon <FaCalculator /> that would appear. Party
-            members and Target will be the same. Some Modifiers will remain activated.
-          </p>
-        </div>
+            modified copy if you want to apply the changes to that setup.
+          </li>
+          <li>
+            <Lightgold>Teammate details</Lightgold> on a setup can be viewed when you press a
+            teammate icon. Here you can build a setup for that teammate based on the main setup.
+            Party members and Target will be the same. Some modifiers will remain activated and keep
+            their inputs.
+          </li>
+          <li>
+            <Lightgold>Complex Setup</Lightgold> is the result of combining setups of the same 4
+            party members. You can break this complex into individual setups again by pressing the{" "}
+            <FaUnlink /> before its name. Now at teammate details you can switch to that setup.
+          </li>
+          <li>
+            You CANNOT change teammates when modifying the direct copy of a setup that is in a
+            complex. However you can make a copy of that copy in the Calculator and work on it.
+          </li>
+        </ul>
       </StandardModal>
 
       <Modal
