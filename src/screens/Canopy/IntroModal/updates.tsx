@@ -3,10 +3,19 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 1st, 2023",
+    content: [
+      <>
+        Completed <FaCog /> <Lightgold>Guides</Lightgold> on <FaBars /> Menu.
+      </>,
+      <>Fixed minor bugs and updated some UI.</>,
+    ],
+  },
+  {
     date: "January 30th, 2023",
     content: [
       <>
-        Added <FaCog /> <Lightgold>Settings</Lightgold> on <FaBars /> Menu.
+        Completed <FaCog /> <Lightgold>Settings</Lightgold> feature on <FaBars /> Menu.
       </>,
       <>Corrected some skill names.</>,
     ],

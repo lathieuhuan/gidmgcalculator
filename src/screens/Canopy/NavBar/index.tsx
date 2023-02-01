@@ -13,6 +13,7 @@ import { useClickOutside } from "@Src/hooks";
 
 // Component
 import { Modal } from "@Components/molecules";
+import { UnderConstructNotice } from "@Components/organisms";
 import { ActionButton } from "./atoms";
 import { NavTabs } from "./molecules";
 import { IntroModal } from "../IntroModal";
@@ -104,18 +105,16 @@ export function NavBar() {
 
       <SettingsModal active={modalType === "SETTINGS"} onClose={closeModal} />
 
-      {/* <UnderConstructNotice
-        active={["DOWNLOAD"].includes(modalType)}
-        onClose={closeModal}
-      /> */}
-      <Modal
+      <UnderConstructNotice active={modalType === "DOWNLOAD"} onClose={closeModal} />
+
+      {/* <Modal
         active={modalType === "DOWNLOAD"}
         className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
         style={{ width: "28rem" }}
         onClose={closeModal}
       >
         <DownloadOptions onClose={closeModal} />
-      </Modal>
+      </Modal> */}
 
       <Modal
         active={modalType === "UPLOAD"}
