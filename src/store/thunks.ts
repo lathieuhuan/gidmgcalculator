@@ -297,7 +297,6 @@ export const makeTeammateSetup = ({
         artifact: {
           code: 0,
           buffCtrls: [],
-          debuffCtrls: [],
         },
         buffCtrls: tmBuffCtrls,
         debuffCtrls: tmDebuffCtrls,

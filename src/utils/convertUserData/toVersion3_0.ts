@@ -316,7 +316,6 @@ const convertSetup = (
           artifact: {
             code: 0,
             buffCtrls: [],
-            debuffCtrls: [],
           },
           buffCtrls: cleanModifiers(teammate.BCs, buffs),
           debuffCtrls: cleanModifiers(teammate.DCs, debuffs),
