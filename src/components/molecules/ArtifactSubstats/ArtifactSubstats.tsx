@@ -76,7 +76,7 @@ export function ArtifactSubstats({
               type="number"
               noDefaultStyle
               className={clsx(
-                "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right text-last-right",
+                "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right",
                 isValid ? "text-default" : "text-red-500"
               )}
               style={{ fontSize: "1.0625rem" }}

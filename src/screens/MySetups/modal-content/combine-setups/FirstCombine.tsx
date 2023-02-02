@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useState, KeyboardEventHandler } from "react";
 import type { UserSetup } from "@Src/types";
 
@@ -92,7 +91,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="h-full pl-2 md2:pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
-      <p className={clsx("pr-4 text-center", isError ? "text-lightred" : "text-lightgold")}>
+      <p className={"pr-4 text-center " + (isError ? "text-lightred" : "text-lightgold")}>
         {isError
           ? "You cannot combine these Setups."
           : "Choose at least 2 setups with the same party members."}
