@@ -3,6 +3,13 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 2nd, 2023",
+    content: [
+      <>Prevented changes of teammates on combined setups in the Calculator.</>,
+      <>Prevented bow characters from getting infusion to their charged and plunging attacks.</>,
+    ],
+  },
+  {
     date: "February 1st, 2023",
     content: [
       <>
@@ -29,7 +36,7 @@ export const UPDATES = [
         when you save new characters, items, setups.
       </>,
       <>
-        Also please help me with some testing. The sooner it becomes stable the soonner it gets
+        Also please help me with some testing. The sooner the App becomes stable the soonner it gets
         officially released. Thank you very much!
       </>,
     ],

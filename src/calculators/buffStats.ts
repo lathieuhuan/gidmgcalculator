@@ -113,14 +113,14 @@ export default function getBuffedStats({
   const usedWpMods: UsedCode[] = [];
   const usedArtMods: UsedCode[] = [];
 
-  function isNewMod(isWeapon: boolean, wpCode: number, modIndex: number) {
+  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
     const usedMods = isWeapon ? usedWpMods : usedArtMods;
-    const foundItem = usedMods.find((mod) => mod.itemCode === wpCode);
+    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
 
     if (foundItem && foundItem.modIndex === modIndex) {
       return false;
     } else {
-      usedMods.push({ itemCode: wpCode, modIndex });
+      usedMods.push({ itemCode, modIndex });
       return true;
     }
   }

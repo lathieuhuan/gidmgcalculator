@@ -18,8 +18,8 @@ export const SettingsGuide = () => {
         start of every calculating session (e.g. when select new main character).
       </p>
       <p>
-        - <Lightgold>Default values</Lightgold> will be use whenever a new character or item is
-        created both in your data and the Calculator.
+        - <Lightgold>Default values</Lightgold> will be used whenever a new character or item is
+        created in your data or the Calculator.
       </p>
     </div>
   );
