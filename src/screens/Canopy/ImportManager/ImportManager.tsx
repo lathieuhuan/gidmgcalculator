@@ -13,7 +13,7 @@ import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calcula
 
 // Action
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
-import { importSetup, initSessionWithSetup, updateCalculator } from "@Store/calculatorSlice";
+import { importSetup, initSessionWithSetup, updateMessage } from "@Store/calculatorSlice";
 
 // Util
 import { getSearchParam } from "@Src/utils";
@@ -111,11 +111,9 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
 
       if (getSearchParam("importCode")) {
         dispatch(
-          updateCalculator({
-            message: {
-              type: "success",
-              content: "Successfully import the setup!",
-            },
+          updateMessage({
+            type: "success",
+            content: "Successfully import the setup!",
           })
         );
       }

@@ -7,17 +7,14 @@ import type {
   Target,
   TotalAttribute,
   AttackElement,
+  AppMessage,
 } from "@Src/types";
 
 export type CalculatorState = {
+  message: AppMessage;
   activeId: number;
   standardId: number;
   comparedIds: number[];
-
-  message: {
-    type: "" | "error" | "success";
-    content: string;
-  };
 
   charData: CharData;
   setupManageInfos: CalcSetupManageInfo[];

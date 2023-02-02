@@ -1,5 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
+  AppMessage,
   AttackElement,
   CalcArtifact,
   CalcSetupManageInfo,
@@ -87,6 +88,12 @@ export const calculatorSlice = createSlice({
     updateCalculator: (state, action: UpdateCalculatorAction) => {
       return {
         ...state,
+        ...action.payload,
+      };
+    },
+    updateMessage: (state, action: PayloadAction<Partial<AppMessage>>) => {
+      state.message = {
+        ...state.message,
         ...action.payload,
       };
     },
@@ -714,6 +721,7 @@ export const calculatorSlice = createSlice({
 
 export const {
   updateCalculator,
+  updateMessage,
   initSessionWithChar,
   initSessionWithSetup,
   importSetup,

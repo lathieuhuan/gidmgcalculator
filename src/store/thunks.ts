@@ -12,7 +12,7 @@ import {
 } from "@Src/constants";
 
 // Action
-import { initSessionWithChar, updateAllArtifact, updateCalculator } from "./calculatorSlice";
+import { initSessionWithChar, updateAllArtifact, updateMessage } from "./calculatorSlice";
 import { updateImportInfo, updateUI } from "./uiSlice";
 import {
   addUserArtifact,
@@ -82,11 +82,9 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
 
     if (excessType) {
       return dispatch(
-        updateCalculator({
-          message: {
-            type: "error",
-            content: `You're having to many ${excessType}s. Please remove some of them first.`,
-          },
+        updateMessage({
+          type: "error",
+          content: `You're having to many ${excessType}s. Please remove some of them first.`,
         })
       );
     }

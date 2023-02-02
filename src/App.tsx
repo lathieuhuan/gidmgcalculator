@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
 import { updateImportInfo } from "@Store/uiSlice";
-import { updateCalculator } from "@Store/calculatorSlice";
+import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
 import { selectAtScreen } from "@Store/uiSlice/selectors";
@@ -43,11 +43,9 @@ function App() {
         dispatch(updateImportInfo(decodeSetup(importCode)));
       } catch (error) {
         dispatch(
-          updateCalculator({
-            message: {
-              type: "error",
-              content: "An unknown error has occurred. This setup cannot be imported.",
-            },
+          updateMessage({
+            type: "error",
+            content: "An unknown error has occurred. This setup cannot be imported.",
           })
         );
       }

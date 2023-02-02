@@ -130,6 +130,11 @@ export type AppSettings = {
   artLevel: number;
 };
 
+export type AppMessage = {
+  type: "" | "error" | "success" | "info";
+  content: string;
+};
+
 /**
  * utility generic
  */

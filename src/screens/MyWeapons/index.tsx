@@ -14,6 +14,7 @@ import {
   swapWeaponOwner,
   updateUserWeapon,
 } from "@Store/userDatabaseSlice";
+import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
 import {
@@ -29,23 +30,12 @@ import { useInventoryRack, useTypeFilter } from "@Components/templates/inventori
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import {
-  ItemRemoveConfirm,
-  TypeSelect,
-  WeaponCard,
-  OwnerLabel,
-  ConfirmModal,
-} from "@Components/organisms";
+import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel } from "@Components/organisms";
 import { PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
-type ModalType =
-  | ""
-  | "PICK_WEAPON_TYPE"
-  | "EQUIP_CHARACTER"
-  | "REMOVE_WEAPON"
-  | "CANNOT_REMOVE_WEAPON";
+type ModalType = "" | "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 
 export default function MyWeapons() {
   const [modalType, setModalType] = useState<ModalType>("");
@@ -135,9 +125,18 @@ export default function MyWeapons() {
                   buttons={[
                     {
                       text: "Remove",
-                      onClick: openModal(
-                        weapon.setupIDs?.length ? "CANNOT_REMOVE_WEAPON" : "REMOVE_WEAPON"
-                      ),
+                      onClick: () => {
+                        if (weapon.setupIDs?.length) {
+                          dispatch(
+                            updateMessage({
+                              type: "info",
+                              content: "This weapon cannot be deleted. It is used by some Setups.",
+                            })
+                          );
+                        } else {
+                          openModal("REMOVE_WEAPON");
+                        }
+                      },
                     },
                     { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
                   ]}
@@ -204,13 +203,6 @@ export default function MyWeapons() {
           onClose={closeModal}
         />
       )}
-
-      <ConfirmModal
-        active={modalType === "CANNOT_REMOVE_WEAPON"}
-        message="This weapon cannot be deleted. It is used by some Setups."
-        buttons={[undefined]}
-        onClose={closeModal}
-      />
     </WareHouse.Wrapper>
   );
 }

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import {
   addTeammate,
   removeTeammate,
+  updateMessage,
   updateTeammateArtifact,
   updateTeammateWeapon,
 } from "@Store/calculatorSlice";
@@ -32,7 +33,7 @@ import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templ
 import { CopySelect } from "./CopySelect";
 
 interface ModalState {
-  type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "COMBINED_NOTICE" | "";
+  type: "CHARACTER" | "WEAPON" | "ARTIFACT" | "";
   teammateIndex: number | null;
 }
 
@@ -65,21 +66,31 @@ export default function SectionParty() {
     setModal({ type: "", teammateIndex: null });
   };
 
+  const warnSetupCombined = () => {
+    dispatch(
+      updateMessage({
+        type: "info",
+        content:
+          "This setup is marked as part of a Complex setup, thus teammates cannot be changed",
+      })
+    );
+  };
+
   const onClickChangeTeammate = (teammateIndex: number) => () => {
     if (isCombined) {
-      return setModal({ type: "COMBINED_NOTICE", teammateIndex: null });
+      warnSetupCombined();
+    } else {
+      setModal({
+        type: "CHARACTER",
+        teammateIndex,
+      });
     }
-    setModal({
-      type: "CHARACTER",
-      teammateIndex,
-    });
   };
 
   const onClickRemoveTeammate = () => {
     if (isCombined) {
-      return setModal({ type: "COMBINED_NOTICE", teammateIndex: null });
-    }
-    if (detailSlot !== null) {
+      warnSetupCombined();
+    } else if (detailSlot !== null) {
       dispatch(removeTeammate(detailSlot));
     }
   };
@@ -182,13 +193,6 @@ export default function SectionParty() {
           </div>
         )}
       </CollapseSpace>
-
-      <ConfirmModal
-        active={modal.type === "COMBINED_NOTICE"}
-        message="This setup is marked as part of a Complex setup, thus teammates cannot be changed"
-        buttons={[undefined]}
-        onClose={closeModal}
-      />
 
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
