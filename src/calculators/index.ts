@@ -1,4 +1,4 @@
-import type { CalcSetup, CharData, Target, Tracker } from "@Src/types";
+import type { CalcSetup, CharData, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { findDataCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";
@@ -27,6 +27,7 @@ export default function calculateAll(
   const dataChar = findDataCharacter(char)!;
   const partyData = getPartyData(party);
   let infusedElement = customInfusion.element;
+  let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;
   let disabledNAs = false;
 
@@ -55,6 +56,10 @@ export default function calculateAll(
     isCustomInfusion = false;
   } else if (infusedElement === dataChar.vision) {
     isCustomInfusion = false;
+  }
+
+  if (dataChar.weaponType === "bow") {
+    infusedAttacks = ["NA"];
   }
 
   const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
@@ -92,6 +97,7 @@ export default function calculateAll(
     infusion: {
       element: infusedElement,
       isCustom: isCustomInfusion,
+      range: infusedAttacks,
     },
     elmtModCtrls,
     target,
@@ -99,6 +105,7 @@ export default function calculateAll(
   });
   return {
     infusedElement,
+    infusedAttacks,
     totalAttr,
     artAttr,
     rxnBonus,

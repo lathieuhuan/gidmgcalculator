@@ -24,6 +24,7 @@ import type {
   ActualAttackElement,
   Tracker,
   TrackerDamageRecord,
+  NormalAttack,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -91,6 +92,7 @@ export interface GetDamageArgs {
   customDebuffCtrls: CustomDebuffCtrl[];
   infusion: {
     element: AttackElement;
+    range: NormalAttack[];
     isCustom: boolean;
   };
   elmtModCtrls: ElementModCtrl;

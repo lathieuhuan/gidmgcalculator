@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { AttackPattern, Tracker } from "@Src/types";
+import { AttackPattern, Infusion, Tracker } from "@Src/types";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -37,6 +37,9 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   const dmgResult = useSelector(selectDmgResult);
 
   const [result, setResult] = useState<Tracker>();
+  const [infusion, setInfusion] = useState<Infusion>({
+    element: "phys",
+  });
 
   const { totalAttr, attPattBonus, attElmtBonus, rxnBonus } = result || {};
   const charLv = bareLv(activeSetup.char.level);
@@ -45,9 +48,13 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   useEffect(() => {
     if (trackerState === "open") {
       const tracker = initTracker();
+      const calcResult = calculateAll(activeSetup, target, charData, tracker);
 
-      calculateAll(activeSetup, target, charData, tracker);
       setResult(tracker);
+      setInfusion({
+        element: calcResult.infusedElement,
+        range: calcResult.infusedAttacks,
+      });
     }
   }, [trackerState]);
 
@@ -115,6 +122,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
                 records={result?.NAs}
                 calcDmgResult={dmgResult.NAs}
                 defMultDisplay={renderDefMultiplier("NA")}
+                infusion={infusion}
               />
             ),
           },

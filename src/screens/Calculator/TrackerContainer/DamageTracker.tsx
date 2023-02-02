@@ -1,5 +1,10 @@
 import { Fragment, ReactNode } from "react";
-import type { CalculatedDamageCluster, TalentBuff, TrackerDamageRecord } from "@Src/types";
+import type {
+  CalculatedDamageCluster,
+  Infusion,
+  TalentBuff,
+  TrackerDamageRecord,
+} from "@Src/types";
 
 // Constant
 import { keyMap } from "./constants";
@@ -18,13 +23,33 @@ interface DamageTrackerProps {
   records?: Record<string, TrackerDamageRecord>;
   calcDmgResult: CalculatedDamageCluster;
   defMultDisplay?: ReactNode;
+  infusion?: Infusion;
 }
-export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay }: DamageTrackerProps) {
+export function DamageTracker({
+  records = {},
+  calcDmgResult,
+  defMultDisplay,
+  infusion,
+}: DamageTrackerProps) {
   const { t } = useTranslation();
 
   return (
     <div className="space-y-1">
       {defMultDisplay}
+
+      {infusion && infusion.element !== "phys" && (
+        <div>
+          <p className="text-lightgold">Infusion:</p>
+          <ul className="pl-4 list-disc">
+            <li className="capitalize">
+              Element: <span className={`text-${infusion.element}`}>{infusion.element}</span>
+            </li>
+            {infusion.range?.length ? (
+              <li>Infused attack types: {infusion.range.map((att) => t(att)).join(", ")}</li>
+            ) : null}
+          </ul>
+        </div>
+      )}
 
       {Object.entries(records).map(([attackName, record], i) => {
         const { nonCrit = 0, crit = 0, average = 0 } = calcDmgResult[attackName] || {};

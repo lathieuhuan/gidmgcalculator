@@ -3,6 +3,7 @@ import type {
   ResistanceReduction,
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
+  NormalAttack,
 } from "@Src/types";
 import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
 
@@ -292,7 +293,12 @@ export default function getDamage({
       let rxnMult = 1;
 
       // check and infused
-      if (resultKey === "NAs" && attElmt === "phys" && infusion.element !== "phys") {
+      if (
+        resultKey === "NAs" &&
+        attElmt === "phys" &&
+        infusion.element !== "phys" &&
+        infusion.range.includes(ATT_PATT as NormalAttack)
+      ) {
         attElmt = infusion.element;
 
         if (infusion.isCustom) {
