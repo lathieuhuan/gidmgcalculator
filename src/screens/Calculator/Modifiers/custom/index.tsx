@@ -19,11 +19,8 @@ import {
   removeCustomModCtrl,
 } from "@Store/calculatorSlice";
 
-// Util
-import { processNumInput } from "@Src/utils";
-
 // Component
-import { CloseButton, IconToggleButton } from "@Components/atoms";
+import { CloseButton, IconToggleButton, Input } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { CopySection } from "@Screens/Calculator/components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
@@ -114,16 +111,18 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
               {t(type, { ns: isBuffs ? "common" : "resistance" })} {!isBuffs && "reduction"}
             </p>
 
-            <input
-              className="ml-auto w-16 px-2 py-1 text-right text-lg textinput-common font-medium"
+            <Input
+              type="number"
+              className="ml-auto w-16 px-2 py-1 text-right text-lg font-medium"
               value={value}
-              onChange={(e) => {
+              max={999}
+              onChange={(value) => {
                 dispatch(
                   updateAction({
                     actionType: "edit",
                     ctrls: {
                       index: ctrlIndex,
-                      value: processNumInput(e.target.value, value, 999),
+                      value,
                     },
                   })
                 );

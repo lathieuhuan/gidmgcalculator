@@ -9,13 +9,14 @@ import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 
 // Util
-import { percentSign, processNumInput } from "@Src/utils";
+import { percentSign } from "@Src/utils";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
+import { Input } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
@@ -46,7 +47,6 @@ interface BuffCtrlCreatorProps {
 export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [config, setConfig] = useState<CustomBuffCtrl>({
@@ -70,13 +70,6 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
     }));
 
     inputRef.current?.focus();
-  };
-
-  const onChangeValue = (value: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      value: processNumInput(value, config.value, 999),
-    }));
   };
 
   const onConfirm = () => {
@@ -126,12 +119,16 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
             </option>
           ))}
         </select>
-        <input
+        <Input
           ref={inputRef}
-          className="ml-4 w-16 px-2 py-1 text-lg text-right font-semibold textinput-common"
+          type="number"
+          className="ml-4 w-16 px-2 py-1 text-lg text-right font-semibold"
           autoFocus
           value={config.value}
-          onChange={(e) => onChangeValue(e.target.value)}
+          max={999}
+          onChange={(value) => {
+            setConfig((prev) => ({ ...prev, value }));
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               onConfirm();

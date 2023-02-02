@@ -14,7 +14,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { IconButton } from "@Components/atoms";
+import { IconButton, Input } from "@Components/atoms";
 
 interface SectionTargetProps {
   onMinimize: () => void;
@@ -64,16 +64,13 @@ export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps
 
           <label className="mt-3 flex items-center">
             <span>Level</span>
-            <input
-              className="ml-4 w-14 px-2 py-1 leading-none text-right font-semibold textinput-common"
+            <Input
+              type="number"
+              className="ml-4 w-14 px-2 py-1 leading-none text-right font-semibold"
               value={target.level}
-              onChange={(e) => {
-                const value = +e.target.value;
-
-                if (!isNaN(value) && value >= 0 && value <= 100) {
-                  dispatch(updateTarget({ level: value }));
-                }
-              }}
+              max={100}
+              debounceTime={0}
+              onChange={(value) => dispatch(updateTarget({ level: value }))}
             />
           </label>
         </div>

@@ -4,7 +4,7 @@ import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { IconButton } from "@Components/atoms";
+import { IconButton, Input } from "@Components/atoms";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;
@@ -30,17 +30,12 @@ export function SetupControl({
 
   return (
     <div className="px-2 py-3 rounded-lg bg-darkblue-1" onDoubleClick={() => console.log(setup)}>
-      <input
-        type="text"
+      <Input
         placeholder="Enter Setup's name"
-        className="w-full px-4 pt-1 text-lg text-center textinput-common rounded-md font-medium"
+        className="w-full px-4 pt-1 text-lg text-center rounded-md font-medium"
         value={setup.name}
-        onChange={(e) => {
-          const { value } = e.target;
-          if (value.length <= 16) {
-            changeSetupName(value);
-          }
-        }}
+        maxLength={16}
+        onChange={changeSetupName}
       />
       <div className="mt-4 flex justify-between">
         <div className="ml-1 flex space-x-4">

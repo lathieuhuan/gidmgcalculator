@@ -21,7 +21,7 @@ import { useTranslation } from "@Src/hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { Button, CloseButton } from "@Components/atoms";
+import { Button, CloseButton, Input } from "@Components/atoms";
 import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {
@@ -46,24 +46,12 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
     dispatch(updateTarget({ variantType: e.target.value as Vision }));
   };
 
-  const onChangeTargetProp = (key: "level" | AttackElement) => {
-    return (e: ChangeEvent<HTMLInputElement>) => {
-      const value = +e.target.value;
+  const onChangeTargetResistance = (attElmt: AttackElement) => {
+    return (value: number) => {
+      const newResistances = { ...target.resistances };
+      newResistances[attElmt] = value;
 
-      if (isNaN(value) && value > 100) {
-        return;
-      }
-
-      if (key === "level" && value >= 0) {
-        dispatch(updateTarget({ level: Math.round(value) }));
-      } else {
-        if (value > -100) {
-          const newResistances = { ...target.resistances };
-
-          newResistances[key as Vision] = Math.round(value);
-          dispatch(updateTarget({ resistances: newResistances }));
-        }
-      }
+      dispatch(updateTarget({ resistances: newResistances }));
     };
   };
 
@@ -89,10 +77,13 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             <div className="flex">
               <label className="ml-auto flex items-center">
                 <span className="mr-4 text-lg text-lightgold">Level</span>
-                <input
-                  className="w-16 p-2 text-right textinput-common font-bold"
+                <Input
+                  type="number"
+                  className="w-16 p-2 text-right font-bold"
                   value={target.level}
-                  onChange={onChangeTargetProp("level")}
+                  max={100}
+                  maxDecimalDigits={0}
+                  onChange={(value) => dispatch(updateTarget({ level: value }))}
                 />
               </label>
             </div>
@@ -204,11 +195,15 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
                   >
                     {t(attElmt, { ns: "resistance" })}
                   </p>
-                  <input
-                    className="w-20 p-2 text-right textinput-common font-bold disabled:bg-lesser"
+                  <Input
+                    type="number"
+                    className="w-20 p-2 text-right font-bold disabled:bg-lesser"
                     disabled={target.code !== 0}
                     value={target.resistances[attElmt]}
-                    onChange={onChangeTargetProp(attElmt)}
+                    maxDecimalDigits={0}
+                    max={100}
+                    min={-100}
+                    onChange={onChangeTargetResistance(attElmt)}
                   />
                 </div>
               );

@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import type { DataType, Filter, PickerItem } from "../types";
 
 // Component
-import { CollapseSpace, IconButton } from "@Components/atoms";
+import { CollapseSpace, IconButton, Input } from "@Components/atoms";
 import { ModalHeader } from "@Components/molecules";
 import { CharacterFilter } from "../molecules/CharacterFilter";
 import { MemoItem } from "../molecules/Item";
@@ -54,10 +54,10 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
               <>
                 <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
 
-                <input
-                  className="w-24 ml-3 px-2 py-1 leading-none font-semibold textinput-common"
+                <Input
+                  className="w-24 ml-3 px-2 py-1 leading-none font-semibold"
                   placeholder="Search..."
-                  onChange={(e) => setKeyword(e.target.value)}
+                  onChange={setKeyword}
                 />
 
                 <div className="absolute w-full top-full left-0 z-50">

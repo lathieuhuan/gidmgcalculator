@@ -6,6 +6,7 @@ export * from "./SharedSpace";
 export * from "./StatsTable";
 export * from "./ArtifactLevelSelect";
 export * from "./Image";
+export * from "./Input";
 export * from "./buttons";
 export * from "./span";
 export * from "./collapse";

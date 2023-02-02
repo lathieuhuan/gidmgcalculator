@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 import type { ModifierInput, ModInputConfig } from "@Src/types";
 
 // Util
-import { genNumberSequenceOptions, processNumInput } from "@Src/utils";
+import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
-import { Green } from "@Components/atoms";
+import { Green, Input } from "@Components/atoms";
 
 export type ModSelectOption = {
   label: string | number;
@@ -109,16 +109,12 @@ export function ModifierTemplate({
       case "text":
         if (mutable) {
           return (
-            <input
-              type="text"
-              className="w-20 p-2 text-right textinput-common font-semibold"
+            <Input
+              type="number"
+              className="w-20 p-2 text-right font-semibold"
               value={input}
-              onChange={(e) => {
-                if (onChangeText) {
-                  const newValue = processNumInput(e.target.value, input, config.max);
-                  onChangeText(newValue, index);
-                }
-              }}
+              max={config.max}
+              onChange={(value) => onChangeText?.(value, index)}
             />
           );
         }

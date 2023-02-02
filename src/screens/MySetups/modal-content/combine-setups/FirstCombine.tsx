@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState, ChangeEventHandler, KeyboardEventHandler } from "react";
+import { useState, KeyboardEventHandler } from "react";
 import type { UserSetup } from "@Src/types";
 
 // Selector
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hook";
 
 // Component
+import { Input } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
@@ -83,12 +84,6 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
-  const onChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (e.target.value.length <= 32) {
-      setInput(e.target.value);
-    }
-  };
-
   const onKeydownInput: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
       tryCombine();
@@ -106,12 +101,12 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
       {combineMenu}
 
       <div className="mt-6 pr-4">
-        <input
-          type="text"
-          className="px-4 py-1 w-full text-xl text-center textinput-common font-bold"
+        <Input
+          className="px-4 py-1 w-full text-xl text-center font-bold"
           value={input}
-          onChange={onChangeInput}
+          maxLength={32}
           onKeyDown={onKeydownInput}
+          onChange={setInput}
         />
         <ButtonBar
           className="mt-4"

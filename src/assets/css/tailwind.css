@@ -23,9 +23,6 @@
 }
 
 @layer components {
-  .textinput-common {
-    @apply leading-tight text-black rounded bg-default focus:bg-green focus:placeholder:text-darkblue-3;
-  }
   .styled-select {
     @apply px-2 py-1 bg-default text-black rounded font-bold;
   }

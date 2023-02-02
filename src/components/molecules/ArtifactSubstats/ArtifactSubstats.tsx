@@ -16,7 +16,10 @@ import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, processNumInput } from "@Src/utils";
+import { percentSign } from "@Src/utils";
+
+// Component
+import { Input } from "@Components/atoms";
 
 export interface ArtifactSubstatsProps {
   mutable?: boolean;
@@ -69,17 +72,16 @@ export function ArtifactSubstats({
 
             <span>+</span>
 
-            <input
+            <Input
+              type="number"
+              noDefaultStyle
               className={clsx(
                 "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right text-last-right",
                 isValid ? "text-default" : "text-red-500"
               )}
               style={{ fontSize: "1.0625rem" }}
               value={value}
-              onFocus={(e) => e.target.setSelectionRange(0, 5)}
-              onChange={(e) => {
-                onChangeSubStat?.(i, { value: processNumInput(e.target.value, value) });
-              }}
+              onChange={(value) => onChangeSubStat?.(i, { value })}
             />
             <span className="pt-2 pb-1">{percentSign(type)}</span>
           </div>

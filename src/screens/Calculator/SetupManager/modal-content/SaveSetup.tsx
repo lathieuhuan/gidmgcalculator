@@ -15,6 +15,7 @@ import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
+import { Input } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 interface SaveSetupProps {
@@ -33,15 +34,12 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
       <p className="mb-2 mx-auto text-xl text-orange font-bold">
         {existed ? "Modify OLD" : "Save NEW"} Setup
       </p>
-      <input
-        type="text"
-        className="mt-1 mb-8 px-4 pt-4 pb-2 text-1.5xl text-center textinput-common font-semibold"
+      <Input
+        className="mt-1 mb-8 px-4 pt-4 pb-2 text-1.5xl text-center font-semibold"
         autoFocus
         value={input}
-        onChange={(e) => {
-          const { value } = e.target;
-          value.length <= 34 && setInput(value);
-        }}
+        maxLength={34}
+        onChange={setInput}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             dispatch(saveSetupThunk(manageInfo.ID, input));

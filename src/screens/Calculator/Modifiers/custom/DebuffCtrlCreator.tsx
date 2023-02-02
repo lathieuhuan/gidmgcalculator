@@ -7,14 +7,12 @@ import { ATTACK_ELEMENTS } from "@Src/constants";
 // Action
 import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
 
-// Util
-import { processNumInput } from "@Src/utils";
-
 // Hook
 import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
+import { Input } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 interface DebuffCtrlCreatorProps {
@@ -40,13 +38,6 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
     inputRef.current?.focus();
   };
 
-  const onChangeValue = (value: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      value: processNumInput(value, config.value, 999),
-    }));
-  };
-
   const onConfirm = () => {
     dispatch(updateCustomDebuffCtrls({ actionType: "add", ctrls: config }));
     onClose();
@@ -66,12 +57,16 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
             </option>
           ))}
         </select>
-        <input
+        <Input
           ref={inputRef}
-          className="ml-4  w-16 px-2 py-1 text-lg text-right font-bold textinput-common"
+          type="number"
+          className="ml-4  w-16 px-2 py-1 text-lg text-right font-bold"
           autoFocus
           value={config.value}
-          onChange={(e) => onChangeValue(e.target.value)}
+          max={999}
+          onChange={(value) => {
+            setConfig((prev) => ({ ...prev, value }));
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               onConfirm();
