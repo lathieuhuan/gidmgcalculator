@@ -40,7 +40,6 @@ export const useInventoryRack = ({
   filteredIds,
 }: UseInventoryRackArgs) => {
   const [chosenID, setChosenID] = useState(0);
-  const [clickedID, setClickedID] = useState<number>(0);
   const [pageNo, setPageNo] = useState(0);
 
   const deadEnd = Math.ceil(filteredIds.length / itemLimit) - 1;
@@ -105,18 +104,13 @@ export const useInventoryRack = ({
                 <div
                   key={item.ID}
                   className={clsx(itemClassName, { hidden: !IDsOnPage.includes(item.ID) })}
-                  onDoubleClick={() => console.log(item)}
                 >
-                  <ItemThumb
-                    item={isWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
-                    chosen={item.ID === chosenID}
-                    clicked={item.ID === clickedID}
-                    onMouseDown={() => setClickedID(item.ID)}
-                    onMouseUp={() => {
-                      setClickedID(0);
-                      setChosenID(item.ID);
-                    }}
-                  />
+                  <div onClick={() => setChosenID(item.ID)}>
+                    <ItemThumb
+                      item={isWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                      chosen={item.ID === chosenID}
+                    />
+                  </div>
                 </div>
               );
             })}

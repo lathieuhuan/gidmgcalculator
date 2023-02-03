@@ -59,36 +59,34 @@ function WeaponInventory({
         </ModalHeader>
       </div>
 
-      <div className="p-2 pr-4 grow hide-scrollbar">
-        <div className="h-full flex hide-scrollbar">
-          {inventoryRack}
+      <div className="p-2 pr-4 grow flex hide-scrollbar">
+        {inventoryRack}
 
-          <div className="flex flex-col justify-between">
-            <div
-              className="p-4 rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar"
-              style={{ minHeight: "28rem" }}
-            >
-              <div className="w-68 grow hide-scrollbar">
-                <WeaponCard weapon={chosenWp} />
-              </div>
-
-              {chosenWp && chosenWp.owner !== owner ? (
-                <div className="mt-4 flex justify-center">
-                  <Button
-                    variant="positive"
-                    onClick={() => {
-                      onClickButton(chosenWp);
-                      onClose();
-                    }}
-                  >
-                    {buttonText}
-                  </Button>
-                </div>
-              ) : null}
+        <div className="flex flex-col justify-between">
+          <div
+            className="p-4 rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar"
+            style={{ minHeight: "28rem" }}
+          >
+            <div className="w-68 grow hide-scrollbar">
+              <WeaponCard weapon={chosenWp} />
             </div>
 
-            <OwnerLabel owner={chosenWp?.owner} />
+            {chosenWp && chosenWp.owner !== owner ? (
+              <div className="mt-4 flex justify-center">
+                <Button
+                  variant="positive"
+                  onClick={() => {
+                    onClickButton(chosenWp);
+                    onClose();
+                  }}
+                >
+                  {buttonText}
+                </Button>
+              </div>
+            ) : null}
           </div>
+
+          <OwnerLabel owner={chosenWp?.owner} />
         </div>
       </div>
     </div>

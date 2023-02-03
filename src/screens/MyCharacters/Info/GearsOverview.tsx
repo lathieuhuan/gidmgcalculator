@@ -45,11 +45,12 @@ export function GearsOverview({
 
     return (
       <div className="p-1 w-1/3">
-        <ItemThumb
-          item={{ beta, icon, rarity, ...rest, owner: undefined }}
-          chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
-          onMouseUp={() => toggleDetails("weapon")}
-        />
+        <div onClick={() => toggleDetails("weapon")}>
+          <ItemThumb
+            item={{ beta, icon, rarity, ...rest, owner: undefined }}
+            chosen={window.innerWidth < 686 ? false : activeDetails === "weapon"}
+          />
+        </div>
       </div>
     );
   };
@@ -62,16 +63,17 @@ export function GearsOverview({
         {artifacts.map((artifact, i) =>
           artifact ? (
             <div key={i} className="p-1 w-1/3">
-              <ItemThumb
-                item={{
-                  rarity: artifact.rarity,
-                  level: artifact.level,
-                  icon: findDataArtifact(artifact)?.icon || "",
-                  setupIDs: artifact.setupIDs,
-                }}
-                chosen={window.innerWidth < 686 ? false : activeDetails === i}
-                onMouseUp={() => toggleDetails(i)}
-              />
+              <div onClick={() => toggleDetails(i)}>
+                <ItemThumb
+                  item={{
+                    rarity: artifact.rarity,
+                    level: artifact.level,
+                    icon: findDataArtifact(artifact)?.icon || "",
+                    setupIDs: artifact.setupIDs,
+                  }}
+                  chosen={window.innerWidth < 686 ? false : activeDetails === i}
+                />
+              </div>
             </div>
           ) : (
             <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>

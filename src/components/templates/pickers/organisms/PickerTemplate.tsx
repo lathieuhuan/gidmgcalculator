@@ -26,7 +26,7 @@ interface PickerProps {
   onClose: () => void;
 }
 export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const intersectionObserverRef = useRef<HTMLDivElement>(null);
 
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
@@ -59,12 +59,12 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
     };
 
     const observer = new IntersectionObserver(handleIntersection, {
-      root: ref.current,
+      root: intersectionObserverRef.current,
       rootMargin: "0px",
       threshold: 0.1,
     });
 
-    document.querySelectorAll(".picker-item").forEach((item) => {
+    intersectionObserverRef.current?.querySelectorAll(".picker-item").forEach((item) => {
       if (item) {
         observer.observe(item);
       }
@@ -142,7 +142,7 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
 
       <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
-        <div ref={ref} className="pr-2 h-full custom-scrollbar">
+        <div ref={intersectionObserverRef} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               const { count, visible } = items[item.code] || {};

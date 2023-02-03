@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { memo } from "react";
 import type { Level, Rarity } from "@Src/types";
 
 // Util
@@ -19,18 +20,12 @@ interface ItemThumbProps {
     owner?: string | null;
     setupIDs?: number[];
   };
-  clicked?: boolean;
   chosen: boolean;
-  onMouseUp: () => void;
-  onMouseDown?: () => void;
 }
-export function ItemThumb({
+const ItemThumbCore = ({
   item: { beta, icon, rarity, level, refi, owner },
-  clicked,
   chosen,
-  onMouseUp,
-  onMouseDown = () => {},
-}: ItemThumbProps) {
+}: ItemThumbProps) => {
   //
   const renderSideIcon = (owner: string) => {
     const { icon = "", sideIcon } = findDataCharacter({ name: owner }) || {};
@@ -39,7 +34,7 @@ export function ItemThumb({
         className={clsx(
           "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
           styles["side-icon"],
-          !sideIcon && "beta overflow-hidden"
+          !sideIcon && "overflow-hidden"
         )}
       >
         <Image
@@ -56,9 +51,9 @@ export function ItemThumb({
 
   return (
     <div
-      className={clsx(styles.thumb, clicked && styles.clicked, chosen && styles.chosen)}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
+      className={clsx(styles.thumb, chosen && styles.chosen)}
+      onMouseDown={(e) => e.currentTarget.classList.add(styles.clicked)}
+      onMouseUp={(e) => e.currentTarget.classList.remove(styles.clicked)}
     >
       {owner && renderSideIcon(owner)}
 
@@ -96,12 +91,6 @@ export function ItemThumb({
       </div>
     </div>
   );
-}
+};
 
-// export const ItemThumb = memo(ItemThumbCore, (prev, next) => {
-//   if (prev.clicked !== next.clicked || prev.chosen !== next.chosen) return false;
-//   for (const field of ["icon", "level", "refi", "owner"] as const) {
-//     if (prev.item[field] !== next.item[field]) return false;
-//   }
-//   return true;
-// });
+export const ItemThumb = memo(ItemThumbCore, (prev, next) => prev.chosen === next.chosen);

@@ -19,6 +19,12 @@ export const selectFilteredWeaponIDs = createSelector(
   }
 );
 
+export const selectFilteredWeapons = createSelector(
+  selectUserWps,
+  (_: unknown, types: WeaponType[]) => types,
+  (userWps, types) => (types.length ? userWps.filter((wp) => types.includes(wp.type)) : userWps)
+);
+
 export const selectWeaponById = createSelector(
   selectUserWps,
   (_: unknown, ID: number) => ID,

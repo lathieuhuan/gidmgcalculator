@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import type { WeaponType } from "@Src/types";
+import type { UserWeapon, WeaponType } from "@Src/types";
 
 // Constant
 import { WEAPON_ICONS } from "@Src/constants";
@@ -19,6 +19,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 // Selector
 import {
   selectFilteredWeaponIDs,
+  selectFilteredWeapons,
   selectUserWps,
   selectWeaponById,
 } from "@Store/userDatabaseSlice/selectors";
@@ -31,15 +32,16 @@ import { useInventoryRack, useTypeFilter } from "@Components/templates/inventori
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel } from "@Components/organisms";
-import { PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
+import { InventoryRack, PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
 type ModalType = "" | "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 
 export default function MyWeapons() {
+  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
   const [modalType, setModalType] = useState<ModalType>("");
-  const [filterDropped, setFilterDropped] = useState(false);
+  const [filterIsActive, setFilterIsActive] = useState(false);
   const [weaponPicker, setWeaponPicker] = useState<{ active: boolean; type: WeaponType }>({
     active: false,
     type: "sword",
@@ -48,18 +50,9 @@ export default function MyWeapons() {
   const dispatch = useDispatch();
 
   const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
-  const filteredIds = useSelector((state) =>
-    selectFilteredWeaponIDs(state, filteredTypes as WeaponType[])
+  const filteredWeapons = useSelector((state) =>
+    selectFilteredWeapons(state, filteredTypes as WeaponType[])
   );
-
-  const { inventoryRack, chosenID, setChosenID } = useInventoryRack({
-    listClassName: styles.list,
-    itemClassName: styles.item,
-    items: useSelector(selectUserWps),
-    itemType: "weapon",
-    filteredIds,
-  });
-  const weapon = useSelector((state) => selectWeaponById(state, chosenID));
 
   const openModal = (type: ModalType) => () => setModalType(type);
   const closeModal = () => setModalType("");
@@ -88,15 +81,15 @@ export default function MyWeapons() {
           ) : (
             <Fragment>
               <IconButton
-                className={clsx("ml-1", filterDropped ? "bg-green" : "bg-white")}
-                onClick={() => setFilterDropped(!filterDropped)}
+                className={clsx("ml-1", filterIsActive ? "bg-green" : "bg-white")}
+                onClick={() => setFilterIsActive(!filterIsActive)}
               >
                 <FaEllipsisH />
               </IconButton>
 
               <CollapseSpace
                 className="w-full absolute top-full left-0 z-20"
-                active={filterDropped}
+                active={filterIsActive}
               >
                 <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
               </CollapseSpace>
@@ -105,28 +98,35 @@ export default function MyWeapons() {
         </WareHouse.ButtonBar>
 
         <WareHouse.Body className="hide-scrollbar">
-          {inventoryRack}
+          <InventoryRack
+            listClassName={styles.list}
+            itemClassName={styles.item}
+            chosenID={chosenWeapon?.ID || 0}
+            itemType="weapon"
+            items={filteredWeapons}
+            onClickItem={setChosenWeapon}
+          />
 
           <div className="flex flex-col">
             <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
               <div className="w-75 grow hide-scrollbar">
-                {weapon ? (
+                {chosenWeapon ? (
                   <WeaponCard
                     mutable
-                    weapon={weapon}
-                    upgrade={(level) => dispatch(updateUserWeapon({ ID: weapon.ID, level }))}
-                    refine={(refi) => dispatch(updateUserWeapon({ ID: weapon.ID, refi }))}
+                    weapon={chosenWeapon}
+                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, level }))}
+                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, refi }))}
                   />
                 ) : null}
               </div>
-              {weapon ? (
+              {chosenWeapon ? (
                 <ButtonBar
                   className="mt-4"
                   buttons={[
                     {
                       text: "Remove",
                       onClick: () => {
-                        if (weapon.setupIDs?.length) {
+                        if (chosenWeapon.setupIDs?.length) {
                           dispatch(
                             updateMessage({
                               type: "info",
@@ -144,7 +144,7 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel key={weapon?.ID} owner={weapon?.owner} setupIDs={weapon?.setupIDs} />
+            <OwnerLabel key={chosenWeapon?.ID} owner={chosenWeapon?.owner} setupIDs={chosenWeapon?.setupIDs} />
           </div>
         </WareHouse.Body>
       </WareHouse>
@@ -167,33 +167,34 @@ export default function MyWeapons() {
         needMassAdd
         weaponType={weaponPicker.type}
         onPickWeapon={(item) => {
-          const ID = Date.now();
-          dispatch(addUserWeapon({ ID, ...item, owner: null }));
-          setChosenID(ID);
+          const newWeapon = { ID: Date.now(), ...item, owner: null };
+
+          dispatch(addUserWeapon(newWeapon));
+          setChosenWeapon(newWeapon);
         }}
         onClose={() => setWeaponPicker((prev) => ({ ...prev, active: false }))}
       />
 
-      {weapon && (
+      {chosenWeapon && (
         <PickerCharacter
           active={modalType === "EQUIP_CHARACTER"}
           sourceType="userData"
           filter={({ name, weaponType }) => {
-            return weaponType === weapon.type && name !== weapon.owner;
+            return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;
           }}
           onPickCharacter={({ name }) => {
-            if (weapon.ID) {
-              dispatch(swapWeaponOwner({ weaponID: weapon.ID, newOwner: name }));
+            if (chosenWeapon.ID) {
+              dispatch(swapWeaponOwner({ weaponID: chosenWeapon.ID, newOwner: name }));
             }
           }}
           onClose={closeModal}
         />
       )}
 
-      {weapon && (
+      {/* {chosenWeapon && (
         <ItemRemoveConfirm
           active={modalType === "REMOVE_WEAPON"}
-          item={weapon}
+          item={chosenWeapon}
           itemType="weapon"
           filteredIds={filteredIds}
           removeItem={(item) => {
@@ -202,7 +203,7 @@ export default function MyWeapons() {
           updateChosenID={setChosenID}
           onClose={closeModal}
         />
-      )}
+      )} */}
     </WareHouse.Wrapper>
   );
 }
