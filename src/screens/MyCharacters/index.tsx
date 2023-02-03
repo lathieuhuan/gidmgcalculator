@@ -61,7 +61,7 @@ export default function MyCharacters() {
               variant="positive"
               onClick={() => setModalType("ADD_CHARACTER")}
             >
-              Add New Characters
+              Add new characters
             </Button>
           )}
         </div>

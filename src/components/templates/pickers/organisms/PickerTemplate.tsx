@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import type { DataType, Filter, PickerItem } from "../types";
 
@@ -13,6 +13,11 @@ const { FilterButton, Text } = ModalHeader;
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
+type ObservedItem = {
+  count: number;
+  visible: boolean;
+};
+
 interface PickerProps {
   data: PickerItem[];
   dataType: DataType;
@@ -21,15 +26,52 @@ interface PickerProps {
   onClose: () => void;
 }
 export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
   const [keyword, setKeyword] = useState("");
 
   const [massAdd, setMassAdd] = useState(false);
-  const [amount, setAmount] = useState({
-    total: 0,
-    each: data.map(() => 0),
-  });
+  const [items, setItems] = useState(
+    data.reduce((accumulator: Record<string, ObservedItem>, item) => {
+      accumulator[item.code] = {
+        count: 0,
+        visible: false,
+      };
+      return accumulator;
+    }, {})
+  );
+
+  useEffect(() => {
+    const handleIntersection: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry, i) => {
+        const id = entry.target.getAttribute("data-id");
+
+        if (entry.isIntersecting && id) {
+          setItems((prev) => {
+            const newItems = { ...prev };
+            newItems[id].visible = true;
+            return newItems;
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: ref.current,
+      rootMargin: "0px",
+      threshold: 0.1,
+    });
+
+    document.querySelectorAll(".picker-item").forEach((item) => {
+      if (item) {
+        observer.observe(item);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   let filteredNames: string[] = [];
 
@@ -100,38 +142,44 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
 
       <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
-        <div className="pr-2 h-full custom-scrollbar">
+        <div ref={ref} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
+              const { count, visible } = items[item.code] || {};
+
               return (
                 <div
+                  data-id={item.code}
                   key={item.code.toString() + item.rarity}
                   className={clsx(
-                    "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%]",
+                    "picker-item grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
+                    item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2",
                     { hidden: dataType === "character" && !filteredNames.includes(item.name) }
                   )}
                 >
-                  <MemoItem
-                    item={item}
-                    itemType={dataType}
-                    massAdd={massAdd}
-                    pickedAmount={amount.each[i]}
-                    onClickItem={() => {
+                  <div
+                    onClick={() => {
                       onPickItem(item);
 
                       if (!massAdd) {
                         onClose();
-                      } else {
-                        setAmount((prev) => {
-                          const each = [...prev.each];
-                          if (dataType !== "character") {
-                            each[i] += 1;
-                          }
-                          return { total: prev.total + 1, each };
+                      } //
+                      else if (dataType !== "character") {
+                        setItems((prev) => {
+                          const newItems = { ...prev };
+                          newItems[item.code].count += 1;
+                          return newItems;
                         });
                       }
                     }}
-                  />
+                  >
+                    <MemoItem
+                      visible={visible}
+                      item={item}
+                      itemType={dataType}
+                      pickedAmount={count}
+                    />
+                  </div>
                 </div>
               );
             })}

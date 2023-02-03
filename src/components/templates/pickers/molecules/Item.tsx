@@ -8,16 +8,15 @@ import { VISION_ICONS } from "@Src/constants";
 import { BetaMark, Image } from "@Components/atoms";
 
 interface ItemProps {
-  massAdd: boolean;
+  visible: boolean;
   item: PickerItem;
   itemType: DataType;
   pickedAmount: number;
-  onClickItem: () => void;
 }
-function Item({ item, itemType, pickedAmount, onClickItem }: ItemProps) {
+function Item({ visible, item, itemType, pickedAmount }: ItemProps) {
   return (
-    <div className={"relative " + (item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2")}>
-      <div className="cursor-pointer zoomin-on-hover relative" onClick={onClickItem}>
+    <div>
+      <div className="cursor-pointer zoomin-on-hover relative">
         {item.beta && <BetaMark className="absolute top-0 left-0 z-10" />}
 
         <div
@@ -26,8 +25,13 @@ function Item({ item, itemType, pickedAmount, onClickItem }: ItemProps) {
             (item.vision ? "pt-4" : "p-1")
           }
         >
-          <div className="aspect-square">
-            <Image src={item.icon} imgType={itemType} />
+          <div
+            className={
+              "aspect-square transition-opacity duration-500 " +
+              (visible ? "opacity-100" : "opacity-0")
+            }
+          >
+            {visible && <Image src={item.icon} imgType={itemType} />}
           </div>
           {!!pickedAmount && (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
@@ -37,7 +41,7 @@ function Item({ item, itemType, pickedAmount, onClickItem }: ItemProps) {
           {item.name}
         </p>
       </div>
-      {item.vision && (
+      {item.vision && visible && (
         <div
           className={
             "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow" +
@@ -53,5 +57,5 @@ function Item({ item, itemType, pickedAmount, onClickItem }: ItemProps) {
 }
 
 export const MemoItem = memo(Item, (prev, next) => {
-  return prev.massAdd === next.massAdd && prev.pickedAmount === next.pickedAmount;
+  return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;
 });

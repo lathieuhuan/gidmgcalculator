@@ -109,7 +109,7 @@ export default function SideIconCarousel({
             ) : (
               <div className="w-full h-20 flex justify-end items-center">
                 <p className="text-2.5xl font-bold text-lightgold flex">
-                  <span className="mr-2">Add New Characters</span>{" "}
+                  <span className="mr-2">Add new characters</span>{" "}
                   <FaArrowAltCircleUp className="rotate-90" />
                 </p>
               </div>
