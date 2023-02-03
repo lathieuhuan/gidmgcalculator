@@ -1,21 +1,18 @@
+import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
 // Selector
-import {
-  selectFilteredWeaponIDs,
-  selectUserWps,
-  selectWeaponById,
-} from "@Store/userDatabaseSlice/selectors";
+import { selectFilteredWeapons } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useInventoryRack } from "./hooks";
 
 // Component
 import { Button, IconButton } from "@Components/atoms";
 import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
 import { WeaponCard, OwnerLabel } from "@Components/organisms";
+import { InventoryRack } from "./organisms/InventoryRack";
 
 import styles from "./styles.module.scss";
 
@@ -33,16 +30,9 @@ function WeaponInventory({
   onClickButton,
   onClose,
 }: WeaponInventoryProps) {
-  const filteredIds = useSelector((state) => selectFilteredWeaponIDs(state, [weaponType]));
+  const filteredWeapons = useSelector((state) => selectFilteredWeapons(state, [weaponType]));
 
-  const { inventoryRack, chosenID } = useInventoryRack({
-    listClassName: styles["inventory-list"],
-    itemClassName: styles.item,
-    items: useSelector(selectUserWps),
-    itemType: "weapon",
-    filteredIds,
-  });
-  const chosenWp = useSelector((state) => selectWeaponById(state, chosenID));
+  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
 
   return (
     <div className="h-full flex flex-col">
@@ -60,7 +50,14 @@ function WeaponInventory({
       </div>
 
       <div className="p-2 pr-4 grow flex hide-scrollbar">
-        {inventoryRack}
+        <InventoryRack
+          listClassName={styles["inventory-list"]}
+          itemClassName={styles.item}
+          chosenID={chosenWeapon?.ID || 0}
+          itemType="weapon"
+          items={filteredWeapons}
+          onClickItem={setChosenWeapon}
+        />
 
         <div className="flex flex-col justify-between">
           <div
@@ -68,15 +65,15 @@ function WeaponInventory({
             style={{ minHeight: "28rem" }}
           >
             <div className="w-68 grow hide-scrollbar">
-              <WeaponCard weapon={chosenWp} />
+              <WeaponCard weapon={chosenWeapon} />
             </div>
 
-            {chosenWp && chosenWp.owner !== owner ? (
+            {chosenWeapon && chosenWeapon.owner !== owner ? (
               <div className="mt-4 flex justify-center">
                 <Button
                   variant="positive"
                   onClick={() => {
-                    onClickButton(chosenWp);
+                    onClickButton(chosenWeapon);
                     onClose();
                   }}
                 >
@@ -86,7 +83,7 @@ function WeaponInventory({
             ) : null}
           </div>
 
-          <OwnerLabel owner={chosenWp?.owner} />
+          <OwnerLabel owner={chosenWeapon?.owner} />
         </div>
       </div>
     </div>

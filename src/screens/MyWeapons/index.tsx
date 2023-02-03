@@ -17,16 +17,14 @@ import {
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
-import {
-  selectFilteredWeaponIDs,
-  selectFilteredWeapons,
-  selectUserWps,
-  selectWeaponById,
-} from "@Store/userDatabaseSlice/selectors";
+import { selectFilteredWeapons } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useInventoryRack, useTypeFilter } from "@Components/templates/inventories/hooks";
+import { useTypeFilter } from "@Components/templates/inventories/hooks";
+
+// Util
+import { indexById } from "@Src/utils";
 
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
@@ -39,6 +37,8 @@ import styles from "../styles.module.scss";
 type ModalType = "" | "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 
 export default function MyWeapons() {
+  const dispatch = useDispatch();
+
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
@@ -47,14 +47,13 @@ export default function MyWeapons() {
     type: "sword",
   });
 
-  const dispatch = useDispatch();
-
   const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
   const filteredWeapons = useSelector((state) =>
     selectFilteredWeapons(state, filteredTypes as WeaponType[])
   );
 
   const openModal = (type: ModalType) => () => setModalType(type);
+
   const closeModal = () => setModalType("");
 
   return (
@@ -134,7 +133,7 @@ export default function MyWeapons() {
                             })
                           );
                         } else {
-                          openModal("REMOVE_WEAPON");
+                          openModal("REMOVE_WEAPON")();
                         }
                       },
                     },
@@ -144,7 +143,11 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel key={chosenWeapon?.ID} owner={chosenWeapon?.owner} setupIDs={chosenWeapon?.setupIDs} />
+            <OwnerLabel
+              key={chosenWeapon?.ID}
+              owner={chosenWeapon?.owner}
+              setupIDs={chosenWeapon?.setupIDs}
+            />
           </div>
         </WareHouse.Body>
       </WareHouse>
@@ -191,19 +194,25 @@ export default function MyWeapons() {
         />
       )}
 
-      {/* {chosenWeapon && (
+      {chosenWeapon && (
         <ItemRemoveConfirm
           active={modalType === "REMOVE_WEAPON"}
           item={chosenWeapon}
           itemType="weapon"
-          filteredIds={filteredIds}
-          removeItem={(item) => {
-            dispatch(removeWeapon({ ...item, type: item.type as WeaponType }));
+          onConfirm={() => {
+            dispatch(removeWeapon(chosenWeapon));
+
+            const index = indexById(filteredWeapons, chosenWeapon.ID);
+
+            if (index !== -1 && filteredWeapons.length > 1) {
+              const move = index < filteredWeapons.length - 1 ? 1 : -1;
+
+              setChosenWeapon(filteredWeapons[index + move]);
+            }
           }}
-          updateChosenID={setChosenID}
           onClose={closeModal}
         />
-      )} */}
+      )}
     </WareHouse.Wrapper>
   );
 }

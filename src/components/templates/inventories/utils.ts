@@ -13,11 +13,11 @@ export function initArtifactStatsFilter(): StatsFilter {
   };
 }
 
-export function filterArtIdsBySetsAndStats(
+export const filterArtifactsBySetsAndStats = (
   artifacts: UserArtifact[],
   setCodes: number[],
   stats: StatsFilter
-) {
+) => {
   let result = setCodes.length
     ? artifacts.filter((p) => setCodes.includes(p.code))
     : [...artifacts];
@@ -59,8 +59,8 @@ export function filterArtIdsBySetsAndStats(
       return 0;
     });
   }
-  return result.map(({ ID }) => ID);
-}
+  return result;
+};
 
 export function hasDupStat(stats: StatsFilter) {
   const existed: string[] = [stats.main];

@@ -1,8 +1,12 @@
-import { ItemThumb } from "@Components/molecules";
-import { findDataArtifact, findDataWeapon } from "@Data/controllers";
-import { UserArtifact, UserWeapon } from "@Src/types";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaCaretRight } from "react-icons/fa";
+import type { UserArtifact, UserWeapon } from "@Src/types";
+
+// Util
+import { findDataArtifact, findDataWeapon } from "@Data/controllers";
+
+// Component
+import { ItemThumb } from "@Components/molecules";
 
 const PAGE_SIZE = 60;
 
@@ -12,15 +16,15 @@ interface InventoryRackCommonProps {
   chosenID: number;
 }
 
-interface WeaponInventoryRackProps extends InventoryRackCommonProps {
+interface WeaponInventoryRackProps {
   items: UserWeapon[];
   itemType: "weapon";
   onClickItem?: (weapon: UserWeapon) => void;
 }
-interface ArtifactInventoryRackProps extends InventoryRackCommonProps {
+interface ArtifactInventoryRackProps {
   itemType: "artifact";
   items: UserArtifact[];
-  onClickItem?: (weapon: UserArtifact) => void;
+  onClickItem?: (artifact: UserArtifact) => void;
 }
 
 function getWeaponInfo({ type, code, owner, refi, level, setupIDs }: UserWeapon) {
@@ -40,10 +44,16 @@ export function InventoryRack({
   itemType,
   items,
   onClickItem,
-}: WeaponInventoryRackProps | ArtifactInventoryRackProps) {
+}: (WeaponInventoryRackProps | ArtifactInventoryRackProps) & InventoryRackCommonProps) {
   const intersectionObserverRef = useRef<HTMLDivElement>(null);
 
   const [pageNo, setPageNo] = useState(0);
+
+  useEffect(() => {
+    if (items.length && !chosenID) {
+      onClickItem?.(items[0] as any);
+    }
+  }, []);
 
   const deadEnd = Math.ceil(items.length / PAGE_SIZE) - 1;
 
@@ -68,11 +78,7 @@ export function InventoryRack({
           <div className="flex flex-wrap">
             {itemType === "weapon"
               ? items.map((item, i) => {
-                  if (isHidden(i)) {
-                    return null;
-                  }
-
-                  return (
+                  return isHidden(i) ? null : (
                     <div key={item.ID} className={"inventory-item " + itemClassName}>
                       <div onClick={() => onClickItem?.(item)}>
                         <ItemThumb item={getWeaponInfo(item)} chosen={item.ID === chosenID} />
@@ -81,11 +87,7 @@ export function InventoryRack({
                   );
                 })
               : items.map((item, i) => {
-                  if (isHidden(i)) {
-                    return null;
-                  }
-
-                  return (
+                  return isHidden(i) ? null : (
                     <div key={item.ID} className={"inventory-item " + itemClassName}>
                       <div onClick={() => onClickItem?.(item)}>
                         <ItemThumb item={getArtifactInfo(item)} chosen={item.ID === chosenID} />

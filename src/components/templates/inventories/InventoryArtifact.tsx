@@ -12,17 +12,16 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useInventoryRack } from "./hooks";
 
 // Util
-import { findById } from "@Src/utils";
-import { initArtifactStatsFilter, filterArtIdsBySetsAndStats } from "./utils";
+import { initArtifactStatsFilter, filterArtifactsBySetsAndStats } from "./utils";
 
 // Conponent
 import { IconButton } from "@Components/atoms";
 import { ButtonBar, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
 import { ArtifactCard, OwnerLabel } from "@Components/organisms";
 import { ArtifactFilter } from "./organisms/ArtifactFilter";
+import { InventoryRack } from "./organisms/InventoryRack";
 
 import styles from "./styles.module.scss";
 
@@ -53,24 +52,17 @@ function ArtifactInventory({
   const [filterOn, setFilterOn] = useState(false);
   const [comparing, setComparing] = useState(false);
 
+  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [stats, setStats] = useState(initArtifactStatsFilter());
   const [codes, setCodes] = useState<number[]>([]);
   const data = useSelector((state) => selectArtifactsByType(state, artifactType));
 
-  const filteredIds = useMemo(
-    () => filterArtIdsBySetsAndStats(data, codes, stats),
+  const filteredArtifacts = useMemo(
+    () => filterArtifactsBySetsAndStats(data, codes, stats),
     [data, codes, stats]
   );
-  const { inventoryRack, chosenID } = useInventoryRack({
-    listClassName: styles["inventory-list"],
-    itemClassName: styles.item,
-    items: data,
-    itemType: "artifact",
-    filteredIds,
-  });
 
   const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
-  const chosenArtifact = findById(data, chosenID);
 
   return (
     <div className="h-full flex flex-col">
@@ -100,7 +92,14 @@ function ArtifactInventory({
 
       <div className="p-2 pr-4 grow hide-scrollbar">
         <div className="h-full flex hide-scrollbar">
-          {inventoryRack}
+          <InventoryRack
+            listClassName={styles["inventory-list"]}
+            itemClassName={styles.item}
+            chosenID={chosenArtifact?.ID || 0}
+            itemType="artifact"
+            items={filteredArtifacts}
+            onClickItem={setChosenArtifact}
+          />
 
           <div className="flex flex-col justify-between">
             <div

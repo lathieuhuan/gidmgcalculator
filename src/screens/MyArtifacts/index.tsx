@@ -20,15 +20,16 @@ import {
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
-import { selectArtifactById, selectUserArts } from "@Store/userDatabaseSlice/selectors";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useInventoryRack, useTypeFilter } from "@Components/templates/inventories/hooks";
+import { useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Util
+import { indexById } from "@Src/utils";
 import {
-  filterArtIdsBySetsAndStats,
+  filterArtifactsBySetsAndStats,
   initArtifactStatsFilter,
 } from "@Components/templates/inventories/utils";
 import { findDataArtifact } from "@Data/controllers";
@@ -42,19 +43,19 @@ import {
   TypeSelect,
   ItemRemoveConfirm,
 } from "@Components/organisms";
-import { PickerArtifact, PickerCharacter, WareHouse } from "@Components/templates";
+import { InventoryRack, PickerArtifact, PickerCharacter, WareHouse } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
 
-const selectFilteredArtifactIds = createSelector(
+const selectFilteredArtifacts = createSelector(
   selectUserArts,
   (_: unknown, types: ArtifactType[]) => types,
   (_: unknown, __: unknown, codes: number[]) => codes,
   (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
   (userArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
     const result = types.length ? userArts.filter((p) => types.includes(p.type)) : userArts;
-    return filterArtIdsBySetsAndStats(result, codes, stats);
+    return filterArtifactsBySetsAndStats(result, codes, stats);
   }
 );
 
@@ -63,41 +64,32 @@ type ModalType = "" | "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFAC
 export default function MyArtifacts() {
   const dispatch = useDispatch();
 
+  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
+  const [codes, setCodes] = useState<number[]>([]);
+  const [stats, setStats] = useState(initArtifactStatsFilter());
+
   const [modalType, setModalType] = useState<ModalType>("");
-  const [pickArtifactModal, setPickArtifactModal] = useState<{
-    isActive: boolean;
-    type: ArtifactType;
-  }>({
-    isActive: false,
+  const [artifactPicker, setArtifactPicker] = useState<{ active: boolean; type: ArtifactType }>({
+    active: false,
     type: "flower",
   });
   const [newOwner, setNewOwner] = useState<string | null>(null);
-
-  const [codes, setCodes] = useState<number[]>([]);
-  const [stats, setStats] = useState(initArtifactStatsFilter());
 
   const { filteredTypes, setFilteredType, renderTypeFilter } = useTypeFilter({
     itemType: "artifact",
   });
 
-  const filteredIds = useSelector((state) =>
-    selectFilteredArtifactIds(state, filteredTypes as ArtifactType[], codes, stats)
+  const filteredArtifacts = useSelector((state) =>
+    selectFilteredArtifacts(state, filteredTypes as ArtifactType[], codes, stats)
   );
-  const { inventoryRack, chosenID, setChosenID } = useInventoryRack({
-    listClassName: styles.list,
-    itemClassName: styles.item,
-    items: useSelector(selectUserArts),
-    itemType: "artifact",
-    filteredIds,
-  });
-  const artifact = useSelector((state) => selectArtifactById(state, chosenID));
 
   const openModal = (type: ModalType) => () => setModalType(type);
+
   const closeModal = () => setModalType("");
 
   const swapOwner = (name: string) => {
-    if (artifact) {
-      dispatch(swapArtifactOwner({ newOwner: name, artifactID: artifact.ID }));
+    if (chosenArtifact) {
+      dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenArtifact.ID }));
     }
   };
 
@@ -148,40 +140,54 @@ export default function MyArtifacts() {
         </WareHouse.ButtonBar>
 
         <WareHouse.Body className="hide-scrollbar">
-          {inventoryRack}
+          <InventoryRack
+            listClassName={styles.list}
+            itemClassName={styles.item}
+            chosenID={chosenArtifact?.ID || 0}
+            itemType="artifact"
+            items={filteredArtifacts}
+            onClickItem={setChosenArtifact}
+          />
 
           <div>
             <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
               <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
-                {artifact ? (
+                {chosenArtifact ? (
                   <ArtifactCard
-                    artifact={artifact}
+                    artifact={chosenArtifact}
                     mutable
-                    onEnhance={(level) => dispatch(updateUserArtifact({ ID: artifact.ID, level }))}
+                    onEnhance={(level) => {
+                      dispatch(updateUserArtifact({ ID: chosenArtifact.ID, level }));
+                    }}
                     onChangeMainStatType={(type) =>
                       dispatch(
                         updateUserArtifact({
-                          ID: artifact.ID,
+                          ID: chosenArtifact.ID,
                           mainStatType: type as ArtifactMainStatType,
                         })
                       )
                     }
                     onChangeSubStat={(subStatIndex, changes) => {
                       dispatch(
-                        updateUserArtifactSubStat({ ID: artifact.ID, subStatIndex, ...changes })
+                        updateUserArtifactSubStat({
+                          ID: chosenArtifact.ID,
+                          subStatIndex,
+                          ...changes,
+                        })
                       );
                     }}
                   />
                 ) : null}
               </div>
-              {artifact ? (
+
+              {chosenArtifact ? (
                 <ButtonBar
                   className="mt-4"
                   buttons={[
                     {
                       text: "Remove",
                       onClick: () => {
-                        if (artifact.setupIDs?.length) {
+                        if (chosenArtifact.setupIDs?.length) {
                           dispatch(
                             updateMessage({
                               type: "info",
@@ -201,10 +207,10 @@ export default function MyArtifacts() {
             </div>
 
             <OwnerLabel
-              key={artifact?.ID}
+              key={chosenArtifact?.ID}
               className="mt-4"
-              owner={artifact?.owner}
-              setupIDs={artifact?.setupIDs}
+              owner={chosenArtifact?.owner}
+              setupIDs={chosenArtifact?.setupIDs}
             />
           </div>
         </WareHouse.Body>
@@ -225,8 +231,8 @@ export default function MyArtifacts() {
         active={modalType === "PICK_ARTIFACT_TYPE"}
         choices={ARTIFACT_ICONS}
         onClickChoice={(artType) => {
-          setPickArtifactModal({
-            isActive: true,
+          setArtifactPicker({
+            active: true,
             type: artType as ArtifactType,
           });
           closeModal();
@@ -235,23 +241,28 @@ export default function MyArtifacts() {
       />
 
       <PickerArtifact
-        active={pickArtifactModal.isActive}
+        active={artifactPicker.active}
         needMassAdd
-        artifactType={pickArtifactModal.type}
-        onPickArtifact={(newItem) => {
-          const ID = Date.now();
-          dispatch(addUserArtifact({ ID, ...newItem, owner: null }));
-          setChosenID(ID);
+        artifactType={artifactPicker.type}
+        onPickArtifact={(item) => {
+          const newArtifact = {
+            ID: Date.now(),
+            ...item,
+            owner: null,
+          };
+
+          dispatch(addUserArtifact(newArtifact));
+          setChosenArtifact(newArtifact);
         }}
-        onClose={() => setPickArtifactModal((prev) => ({ ...prev, isActive: false }))}
+        onClose={() => setArtifactPicker((prev) => ({ ...prev, isActive: false }))}
       />
 
       <PickerCharacter
-        active={modalType === "EQUIP_CHARACTER" && !!artifact}
+        active={modalType === "EQUIP_CHARACTER" && !!chosenArtifact}
         sourceType="userData"
-        filter={({ name }) => name !== artifact?.owner}
+        filter={({ name }) => name !== chosenArtifact?.owner}
         onPickCharacter={({ name }) => {
-          if (artifact?.owner) {
+          if (chosenArtifact?.owner) {
             setNewOwner(name);
           } else {
             swapOwner(name);
@@ -260,27 +271,35 @@ export default function MyArtifacts() {
         onClose={closeModal}
       />
 
-      {artifact && (
+      {chosenArtifact && (
         <ItemRemoveConfirm
           active={modalType === "REMOVE_ARTIFACT"}
-          item={artifact}
+          item={chosenArtifact}
           itemType="artifact"
-          filteredIds={filteredIds}
-          removeItem={(item) => {
-            dispatch(removeArtifact({ ...item, type: item.type as ArtifactType }));
+          onConfirm={() => {
+            console.log("remove");
+
+            dispatch(removeArtifact(chosenArtifact));
+
+            const index = indexById(filteredArtifacts, chosenArtifact.ID);
+
+            if (index !== -1 && filteredArtifacts.length > 1) {
+              const move = index < filteredArtifacts.length - 1 ? 1 : -1;
+
+              setChosenArtifact(filteredArtifacts[index + move]);
+            }
           }}
-          updateChosenID={setChosenID}
           onClose={closeModal}
         />
       )}
 
-      {artifact && (
+      {chosenArtifact && (
         <ConfirmModal
           active={!!newOwner}
           message={
             <>
-              <b>{artifact.owner}</b> is currently using "
-              <b>{findDataArtifact(artifact)?.name || "<name missing>"}</b>
+              <b>{chosenArtifact.owner}</b> is currently using "
+              <b>{findDataArtifact(chosenArtifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }

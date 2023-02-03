@@ -47,24 +47,24 @@ const isWeapon = (
   return itemType === "weapon";
 };
 
-interface ItemRemoveConfirmProps extends ModalControl {
-  itemType: "weapon" | "artifact";
-  item: UserWeapon | UserArtifact;
-  filteredIds: number[];
-  removeItem: (args: { ID: number; owner: string | null; type: string }) => void;
-  updateChosenID: (newID: number) => void;
+interface WeaponRemoveConfirmProps {
+  itemType: "weapon";
+  item: UserWeapon;
+  onConfirm: () => void;
+}
+interface ArtifactRemoveConfirmProps {
+  itemType: "artifact";
+  item: UserArtifact;
+  onConfirm: () => void;
 }
 export function ItemRemoveConfirm({
   active,
   item,
   itemType,
-  filteredIds,
-  removeItem,
-  updateChosenID,
+  onConfirm,
   onClose,
-}: ItemRemoveConfirmProps) {
-  const { ID, owner, type } = item;
-  const itemData = isWeapon(item, itemType) ? findDataWeapon(item) : findDataArtifact(item);
+}: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) {
+  const itemData = itemType === "weapon" ? findDataWeapon(item) : findDataArtifact(item);
 
   return (
     <ConfirmModal
@@ -72,27 +72,14 @@ export function ItemRemoveConfirm({
       message={
         <>
           Remove "<b>{itemData?.name}</b>"?{" "}
-          {owner ? (
+          {item.owner ? (
             <>
-              It is currently used by <b>{owner}</b>.
+              It is currently used by <b>{item.owner}</b>.
             </>
           ) : null}
         </>
       }
-      buttons={[
-        undefined,
-        {
-          onClick: () => {
-            const index = filteredIds.indexOf(ID);
-            removeItem({ ID, owner, type });
-
-            if (index !== -1 && filteredIds.length > 1) {
-              const move = index < filteredIds.length - 1 ? 1 : -1;
-              updateChosenID(filteredIds[index + move]);
-            }
-          },
-        },
-      ]}
+      buttons={[undefined, { onClick: onConfirm }]}
       onClose={onClose}
     />
   );
