@@ -10,6 +10,10 @@ export const UPDATES = [
         their values after switched to another artifact. Thank you <Lightgold>Meiflower</Lightgold>{" "}
         and <Lightgold>SeiRyuSeijin</Lightgold>!
       </>,
+      <>
+        Fixed inputs on the Artifact section of the Setups Manager did not take "." as decimal
+        separator. Thank you <Lightgold>arthur cavalaro</Lightgold>!
+      </>,
     ],
   },
   {
