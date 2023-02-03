@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useState, useEffect } from "react";
 import type { ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler } from "react";
 import { round } from "@Src/utils";
 
@@ -63,12 +63,18 @@ export const Input = forwardRef(
     //   }
     // }, [value]);
 
+    useEffect(() => {
+      if (props.value !== +value) {
+        setValue(`${props.value}`);
+      }
+    }, [props.value]);
+
     const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
       props.onKeyDown?.(e);
 
       if (props.type === "number") {
         if (
-          ["ArrowRight", "ArrowLeft", "Backspace", "Delete"].includes(e.key) ||
+          ["ArrowRight", "ArrowLeft", "Backspace", "Delete", "Home", "End"].includes(e.key) ||
           !isNaN(+e.key) ||
           (e.key === "." && maxDecimalDigits) ||
           (e.key === "-" && props.min && props.min < 0)
@@ -128,7 +134,7 @@ export const Input = forwardRef(
           (noDefaultStyle ? "" : "leading-tight text-black rounded bg-default focus:bg-blue-100 ") +
           (className || "")
         }
-        value={debounceTime ? value : props.value}
+        value={value}
         onKeyDown={onKeyDown}
         onFocus={(e) => {
           props.onFocus?.(e);

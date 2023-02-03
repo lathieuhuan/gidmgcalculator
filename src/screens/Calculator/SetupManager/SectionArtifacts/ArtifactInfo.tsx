@@ -94,6 +94,7 @@ export function ArtifactInfo({
 
       <div className="px-2 pb-1">
         <ArtifactSubstats
+          key={artifact.ID}
           mutable
           rarity={rarity}
           mainStatType={mainStatType}
