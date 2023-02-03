@@ -64,30 +64,34 @@ export const IntroModal = (props: ModalControl) => {
           </a>
           , all data is collected from their site.
         </p>
-        <p>
-          - Huge and special thanks to{" "}
-          <Lightgold>
-            {[
-              "K3y87",
-              "Pastrynoms",
-              "Ithireal (and their friend)",
-              "CosSheCute",
-              "Chronopolize",
-              "333mage11",
-              "Gustavo Mota Derzi",
-              "Goldy4282",
-              "G_0st08",
-              "FlyingJetpa",
-              "Nono",
-              "mozz",
-              "niczan0728",
-              "Izah DLP",
-              "Meiflower",
-              "rock1017",
-            ].join(", ")}
-          </Lightgold>{" "}
-          for the Bug reports!
-        </p>
+        <p>- Huge and special thanks to these users for the bug reports!</p>
+        <ul className="ml-4 columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
+          {[
+            "K3y87",
+            "Pastrynoms",
+            "Ithireal (and their friend)",
+            "CosSheCute",
+            "Chronopolize",
+            "333mage11",
+            "Gustavo Mota Derzi",
+            "Goldy4282",
+            "G_0st08",
+            "FlyingJetpa",
+            "Nono",
+            "mozz",
+            "niczan0728",
+            "Izah DLP",
+            "Meiflower",
+            "rock1017",
+            "Street_Term9205",
+            "Sevenempest",
+            "_65535_",
+          ].map((name, i) => (
+            <li key={i}>
+              <Lightgold>{name}</Lightgold>
+            </li>
+          ))}
+        </ul>
         <p>
           - Last but not least, thank you for using my App and please give me some feedback if you
           can.

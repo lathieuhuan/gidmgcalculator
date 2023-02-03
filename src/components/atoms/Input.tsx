@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import type { ChangeEventHandler, InputHTMLAttributes, KeyboardEventHandler } from "react";
 import { round } from "@Src/utils";
 
@@ -33,7 +33,7 @@ export const Input = forwardRef(
     {
       className,
       maxDecimalDigits = 1,
-      debounceTime = 150,
+      debounceTime = 0,
       noDefaultStyle,
       ...props
     }: InputTextProps | InputNumberProps,
@@ -41,27 +41,27 @@ export const Input = forwardRef(
   ) => {
     const [value, setValue] = useState(props.value?.toString() || "");
 
-    useEffect(() => {
-      if (debounceTime) {
-        const handler = setTimeout(() => {
-          if (props.type === "number") {
-            if (value === "-") {
-              if (props.value !== 0) {
-                props.onChange?.(0);
-              }
-            } else if (+value !== props.value) {
-              props.onChange?.(+value);
-            }
-          } else if (value !== props.value) {
-            props.onChange?.(value);
-          }
-        }, debounceTime);
+    // useEffect(() => {
+    //   if (debounceTime) {
+    //     const handler = setTimeout(() => {
+    //       if (props.type === "number") {
+    //         if (value === "-") {
+    //           if (props.value !== 0) {
+    //             props.onChange?.(0);
+    //           }
+    //         } else if (+value !== props.value) {
+    //           props.onChange?.(+value);
+    //         }
+    //       } else if (value !== props.value) {
+    //         props.onChange?.(value);
+    //       }
+    //     }, debounceTime);
 
-        return () => {
-          clearTimeout(handler);
-        };
-      }
-    }, [value]);
+    //     return () => {
+    //       clearTimeout(handler);
+    //     };
+    //   }
+    // }, [value]);
 
     const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
       props.onKeyDown?.(e);

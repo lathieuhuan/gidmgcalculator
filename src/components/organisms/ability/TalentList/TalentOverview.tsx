@@ -103,12 +103,12 @@ export function TalentOverview({
                   <p className={`text-${vision} font-bold`}>1</p>
                 </div>
               </div>
-              <div
+              {/* <div
                 className="ml-auto"
                 onClick={() => onClickInfoSign(Object.keys(activeTalents).length + i)}
               >
                 <InfoSign selfHover />
-              </div>
+              </div> */}
             </div>
           </div>
         );

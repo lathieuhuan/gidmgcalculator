@@ -3,6 +3,16 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 3rd, 2023",
+    content: [
+      <>
+        Fixed a visual bug that makes inputs on the Artifact section of the Setups Manager keep
+        their values after switched to another artifact. Thank you <Lightgold>Meiflower</Lightgold>{" "}
+        and <Lightgold>SeiRyuSeijin</Lightgold>!
+      </>,
+    ],
+  },
+  {
     date: "February 2nd, 2023",
     content: [
       <>Prevented changes of teammates on combined setups in the Calculator.</>,
