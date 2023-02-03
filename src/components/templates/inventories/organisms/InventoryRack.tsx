@@ -17,8 +17,8 @@ interface InventoryRackCommonProps {
 }
 
 interface WeaponInventoryRackProps {
-  items: UserWeapon[];
   itemType: "weapon";
+  items: UserWeapon[];
   onClickItem?: (weapon: UserWeapon) => void;
 }
 interface ArtifactInventoryRackProps {
@@ -45,9 +45,15 @@ export function InventoryRack({
   items,
   onClickItem,
 }: (WeaponInventoryRackProps | ArtifactInventoryRackProps) & InventoryRackCommonProps) {
-  const intersectionObserverRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [pageNo, setPageNo] = useState(0);
+  const [visibles, setVisibles] = useState(
+    (items as any[]).reduce((accumulator: Record<string, boolean>, item) => {
+      accumulator[item.code] = false;
+      return accumulator;
+    }, {})
+  );
 
   useEffect(() => {
     if (items.length && !chosenID) {
@@ -55,42 +61,97 @@ export function InventoryRack({
     }
   }, []);
 
+  useEffect(() => {
+    const handleIntersection: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("data-id");
+        if (entry.isIntersecting && id) {
+          setVisibles((prev) => {
+            const newItems = { ...prev };
+            newItems[id] = true;
+            return newItems;
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: wrapperRef.current,
+      rootMargin: "0px",
+      threshold: 0.1,
+    });
+
+    wrapperRef.current?.querySelectorAll(".inventory-item").forEach((item) => {
+      if (item) {
+        observer.observe(item);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [items, pageNo]);
+
   const deadEnd = Math.ceil(items.length / PAGE_SIZE) - 1;
 
   const isHidden = (i: number) => i < PAGE_SIZE * pageNo || i >= PAGE_SIZE * (pageNo + 1);
 
+  const resetScroll = () => {
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  };
+
   const goBack = () => {
     if (pageNo > 0) {
       setPageNo((prev) => prev - 1);
+
+      resetScroll();
     }
   };
 
   const goNext = () => {
     if (pageNo < deadEnd) {
       setPageNo((prev) => prev + 1);
+
+      resetScroll();
     }
   };
 
   return (
     <div className="pr-2 w-full flex flex-col" style={{ minWidth: "22rem" }}>
-      <div ref={intersectionObserverRef} className={"custom-scrollbar " + listClassName}>
+      <div ref={wrapperRef} className={"custom-scrollbar " + listClassName}>
         {items.length ? (
           <div className="flex flex-wrap">
             {itemType === "weapon"
               ? items.map((item, i) => {
                   return isHidden(i) ? null : (
-                    <div key={item.ID} className={"inventory-item " + itemClassName}>
+                    <div
+                      key={item.ID}
+                      data-id={item.code}
+                      className={"inventory-item " + itemClassName}
+                    >
                       <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb item={getWeaponInfo(item)} chosen={item.ID === chosenID} />
+                        <ItemThumb
+                          item={getWeaponInfo(item)}
+                          visible={visibles[item.code]}
+                          chosen={item.ID === chosenID}
+                        />
                       </div>
                     </div>
                   );
                 })
               : items.map((item, i) => {
                   return isHidden(i) ? null : (
-                    <div key={item.ID} className={"inventory-item " + itemClassName}>
+                    <div
+                      key={item.ID}
+                      data-id={item.code}
+                      className={"inventory-item " + itemClassName}
+                    >
                       <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb item={getArtifactInfo(item)} chosen={item.ID === chosenID} />
+                        <ItemThumb
+                          item={getArtifactInfo(item)}
+                          visible={visibles[item.code]}
+                          chosen={item.ID === chosenID}
+                        />
                       </div>
                     </div>
                   );

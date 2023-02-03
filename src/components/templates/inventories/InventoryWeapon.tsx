@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
@@ -30,7 +30,11 @@ function WeaponInventory({
   onClickButton,
   onClose,
 }: WeaponInventoryProps) {
-  const filteredWeapons = useSelector((state) => selectFilteredWeapons(state, [weaponType]));
+  const weaponTypeRef = useRef([weaponType]);
+
+  const filteredWeapons = useSelector((state) =>
+    selectFilteredWeapons(state, weaponTypeRef.current)
+  );
 
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
 

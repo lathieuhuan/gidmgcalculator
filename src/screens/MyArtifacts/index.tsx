@@ -254,7 +254,7 @@ export default function MyArtifacts() {
           dispatch(addUserArtifact(newArtifact));
           setChosenArtifact(newArtifact);
         }}
-        onClose={() => setArtifactPicker((prev) => ({ ...prev, isActive: false }))}
+        onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />
 
       <PickerCharacter
@@ -277,8 +277,6 @@ export default function MyArtifacts() {
           item={chosenArtifact}
           itemType="artifact"
           onConfirm={() => {
-            console.log("remove");
-
             dispatch(removeArtifact(chosenArtifact));
 
             const index = indexById(filteredArtifacts, chosenArtifact.ID);

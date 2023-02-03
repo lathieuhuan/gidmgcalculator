@@ -20,10 +20,12 @@ interface ItemThumbProps {
     owner?: string | null;
     setupIDs?: number[];
   };
+  visible?: boolean;
   chosen: boolean;
 }
 const ItemThumbCore = ({
   item: { beta, icon, rarity, level, refi, owner },
+  visible = true,
   chosen,
 }: ItemThumbProps) => {
   //
@@ -32,19 +34,21 @@ const ItemThumbCore = ({
     return (
       <div
         className={clsx(
-          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
+          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle transition-opacity duration-500",
           styles["side-icon"],
-          !sideIcon && "overflow-hidden"
+          !sideIcon && "overflow-hidden",
+          visible ? "opacity-100" : "opacity-0"
         )}
       >
-        <Image
-          className={clsx(
-            "max-w-none -translate-x-2 -translate-y-4",
-            !sideIcon && "-translate-y-2"
-          )}
-          size="w-10 h-10"
-          src={sideIcon || icon}
-        />
+        {visible && (
+          <Image
+            className={
+              "max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "" : " -translate-y-2")
+            }
+            size="w-10 h-10"
+            src={sideIcon || icon}
+          />
+        )}
       </div>
     );
   };
@@ -66,10 +70,10 @@ const ItemThumbCore = ({
       >
         {refi !== undefined ? (
           <p
-            className={clsx(
-              "absolute top-1 left-1 rounded px-1 text-sm font-bold",
-              refi === 5 ? "bg-black text-orange" : "bg-black/60 text-default"
-            )}
+            className={
+              "absolute top-1 left-1 rounded px-1 text-sm font-bold " +
+              (refi === 5 ? "bg-black text-orange" : "bg-black/60 text-default")
+            }
           >
             {refi}
           </p>
@@ -77,10 +81,14 @@ const ItemThumbCore = ({
 
         <div
           className={
-            `bg-gradient-${rarity || 5} ` + "rounded-t rounded-br-2xl aspect-square overflow-hidden"
+            `aspect-square bg-gradient-${rarity || 5} ` + "rounded rounded-br-2xl overflow-hidden"
           }
         >
-          <Image src={icon} imgType={refi ? "weapon" : "artifact"} />
+          <div
+            className={"transition-opacity duration-500 " + (visible ? "opacity-100" : "opacity-0")}
+          >
+            {visible && <Image src={icon} imgType={refi ? "weapon" : "artifact"} />}
+          </div>
         </div>
 
         <div className="flex-center bg-default rounded-b">
@@ -93,4 +101,6 @@ const ItemThumbCore = ({
   );
 };
 
-export const ItemThumb = memo(ItemThumbCore, (prev, next) => prev.chosen === next.chosen);
+export const ItemThumb = memo(ItemThumbCore, (prev, next) => {
+  return prev.visible === next.visible && prev.chosen === next.chosen;
+});
