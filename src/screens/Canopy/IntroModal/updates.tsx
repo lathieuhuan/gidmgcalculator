@@ -3,6 +3,15 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 4th, 2023",
+    content: [
+      <>
+        Corrected <Lightgold>Mika</Lightgold>'s Elemental Burst healing scaled off ATK instead of
+        HP. Thank you <Lightgold>Spiderninja_1</Lightgold>!
+      </>,
+    ],
+  },
+  {
     date: "February 3rd, 2023",
     content: [
       <>
@@ -11,8 +20,8 @@ export const UPDATES = [
         and <Lightgold>SeiRyuSeijin</Lightgold>!
       </>,
       <>
-        Fixed inputs on the Artifact section of the Setups Manager did not take "." as decimal
-        separator. Thank you <Lightgold>arthur cavalaro</Lightgold>!
+        Fixed inputs controlling Artifact substats did not take "." as decimal separator. Thank you{" "}
+        <Lightgold>arthur cavalaro</Lightgold>!
       </>,
     ],
   },
@@ -20,7 +29,10 @@ export const UPDATES = [
     date: "February 2nd, 2023",
     content: [
       <>Prevented changes of teammates on combined setups in the Calculator.</>,
-      <>Prevented bow characters from getting infusion to their charged and plunging attacks.</>,
+      <>
+        Prevented bow-wielding characters from getting infusion to their charged and plunging
+        attacks.
+      </>,
     ],
   },
   {

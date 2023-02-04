@@ -33,12 +33,7 @@ export const InventoryRack = ({
   const heightRef = useRef(0);
 
   const [isReady, setIsReady] = useState(false);
-  const [itemsVisible, setItemsVisible] = useState(
-    (items as any[]).reduce((accumulator: Record<string, boolean>, item) => {
-      accumulator[getDataId(item)] = false;
-      return accumulator;
-    }, {})
-  );
+  const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
   const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
@@ -127,8 +122,9 @@ export const InventoryRack = ({
                     key={item.ID}
                     data-id={dataId}
                     className={clsx(
-                      "inventory-item transition-opacity duration-500",
+                      "transition-opacity duration-500",
                       itemClassName,
+                      isOnPage && "inventory-item",
                       isOnPage && itemsVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"
                     )}
                     style={{
