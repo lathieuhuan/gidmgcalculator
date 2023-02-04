@@ -103,7 +103,7 @@ export default function MyWeapons() {
             chosenID={chosenWeapon?.ID || 0}
             itemType="weapon"
             items={filteredWeapons}
-            onClickItem={setChosenWeapon}
+            onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
           />
 
           <div className="flex flex-col">

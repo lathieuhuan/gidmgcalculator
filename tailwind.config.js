@@ -1,6 +1,28 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    {
+      pattern: /text-rarity-(1|2|3|4|5)/,
+    },
+    {
+      pattern: /bg-rarity-(1|2|3|4|5)/,
+    },
+    "text-pyro",
+    "text-hydro",
+    "text-electro",
+    "text-dendro",
+    "text-geo",
+    "text-cryo",
+    "text-anemo",
+    "bg-pyro",
+    "bg-hydro",
+    "bg-electro",
+    "bg-dendro",
+    "bg-geo",
+    "bg-cryo",
+    "bg-anemo",
+  ],
   theme: {
     screens: {
       sm: "440px",

@@ -28,7 +28,7 @@ import { getPartyData } from "@Data/controllers";
 
 // Component
 import { CollapseSpace, Image } from "@Components/atoms";
-import { ConfirmModal, TeammateItems } from "@Components/organisms";
+import { TeammateItems } from "@Components/organisms";
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
 

@@ -146,7 +146,7 @@ export default function MyArtifacts() {
             chosenID={chosenArtifact?.ID || 0}
             itemType="artifact"
             items={filteredArtifacts}
-            onClickItem={setChosenArtifact}
+            onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
           />
 
           <div>
