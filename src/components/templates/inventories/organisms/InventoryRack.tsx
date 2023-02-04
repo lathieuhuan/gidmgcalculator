@@ -33,13 +33,13 @@ export const InventoryRack = ({
   const heightRef = useRef(0);
 
   const [isReady, setIsReady] = useState(false);
-  const [pageNo, setPageNo] = useState(0);
-  const [isVisible, setIsVisible] = useState(
+  const [itemsVisible, setItemsVisible] = useState(
     (items as any[]).reduce((accumulator: Record<string, boolean>, item) => {
       accumulator[getDataId(item)] = false;
       return accumulator;
     }, {})
   );
+  const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
     if (items.length && !chosenID) {
@@ -57,10 +57,10 @@ export const InventoryRack = ({
         entries.forEach((entry) => {
           const dataId = entry.target.getAttribute("data-id");
           if (entry.isIntersecting && dataId) {
-            setIsVisible((prev) => {
-              const newIsVisible = { ...prev };
-              newIsVisible[dataId] = true;
-              return newIsVisible;
+            setItemsVisible((prevItemsVisible) => {
+              const newItemVisible = { ...prevItemsVisible };
+              newItemVisible[dataId] = true;
+              return newItemVisible;
             });
           }
         });
@@ -129,13 +129,13 @@ export const InventoryRack = ({
                     className={clsx(
                       "inventory-item transition-opacity duration-500",
                       itemClassName,
-                      isOnPage && isVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"
+                      isOnPage && itemsVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"
                     )}
                     style={{
-                      height: isOnPage ? (isVisible[dataId] ? "auto" : heightRef.current) : 0,
+                      height: isOnPage ? (itemsVisible[dataId] ? "auto" : heightRef.current) : 0,
                     }}
                   >
-                    {isOnPage && isVisible[dataId] ? (
+                    {isOnPage && itemsVisible[dataId] ? (
                       <div onClick={() => onClickItem?.(item)}>
                         <ItemThumb
                           item={checkIfWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
