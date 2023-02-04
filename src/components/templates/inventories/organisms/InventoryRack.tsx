@@ -20,15 +20,14 @@ interface InventoryRackProps {
   items: UserWeapon[] | UserArtifact[];
   onClickItem?: (item: UserWeapon | UserArtifact) => void;
 }
-
-export function InventoryRack({
+export const InventoryRack = ({
   listClassName = "",
   itemClassName = "",
   chosenID,
   itemType,
   items,
   onClickItem,
-}: InventoryRackProps) {
+}: InventoryRackProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pioneerRef = useRef<HTMLDivElement>(null);
   const heightRef = useRef(0);
@@ -179,4 +178,4 @@ export function InventoryRack({
       ) : null}
     </div>
   );
-}
+};

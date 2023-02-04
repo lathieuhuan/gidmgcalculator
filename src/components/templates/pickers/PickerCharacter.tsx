@@ -16,20 +16,20 @@ import { useSelector } from "@Store/hooks";
 import { Modal, type ModalControl } from "@Components/molecules";
 import { PickerTemplate } from "./organisms/PickerTemplate";
 
-export interface PickerCharacterCoreProps {
+export interface CharacterPickerProps {
   sourceType: "mixed" | "appData" | "userData";
   needMassAdd?: boolean;
   filter?: (character: DataCharacter) => boolean;
   onPickCharacter: (character: PickerItem) => void;
   onClose: () => void;
 }
-function PickerCharacterCore({
+const CharacterPicker = ({
   sourceType,
   needMassAdd,
   filter,
   onPickCharacter,
   onClose,
-}: PickerCharacterCoreProps) {
+}: CharacterPickerProps) => {
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
@@ -89,16 +89,16 @@ function PickerCharacterCore({
       onClose={onClose}
     />
   );
-}
+};
 
 export const PickerCharacter = ({
   active,
   onClose,
   ...rest
-}: PickerCharacterCoreProps & ModalControl) => {
+}: CharacterPickerProps & ModalControl) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
-      <PickerCharacterCore {...rest} onClose={onClose} />
+      <CharacterPicker {...rest} onClose={onClose} />
     </Modal>
   );
 };

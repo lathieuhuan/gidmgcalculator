@@ -41,16 +41,16 @@ interface ArtifactInventoryProps {
   onClickButton: (chosen: UserArtifact) => void;
   onClose: () => void;
 }
-function ArtifactInventory({
+const ArtifactInventory = ({
   artifactType,
   currentArtifacts,
   owner,
   buttonText,
   onClickButton,
   onClose,
-}: ArtifactInventoryProps) {
-  const [filterOn, setFilterOn] = useState(false);
-  const [comparing, setComparing] = useState(false);
+}: ArtifactInventoryProps) => {
+  const [filterActive, setFilterActive] = useState(false);
+  const [showingCurrent, setShowingCurrent] = useState(false);
 
   const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [stats, setStats] = useState(initArtifactStatsFilter());
@@ -69,7 +69,7 @@ function ArtifactInventory({
       <div className="p-2">
         <ModalHeader>
           <div className="pl-5 flex items-center">
-            <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
+            <FilterButton active={filterActive} onClick={() => setFilterActive(!filterActive)} />
           </div>
 
           <Text>{artifactType}</Text>
@@ -81,11 +81,11 @@ function ArtifactInventory({
           </div>
 
           <ArtifactFilter
-            filterOn={filterOn}
+            active={filterActive}
             artifactType={artifactType}
             artifacts={data}
             filter={{ stats, codes, setStats, setCodes }}
-            onClose={() => setFilterOn(false)}
+            onClose={() => setFilterActive(false)}
           />
         </ModalHeader>
       </div>
@@ -111,7 +111,7 @@ function ArtifactInventory({
               {currentArtifact ? (
                 <div
                   className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"
-                  style={{ width: comparing ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
+                  style={{ width: showingCurrent ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
                   <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
                     <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
@@ -135,10 +135,10 @@ function ArtifactInventory({
                   buttons={[
                     {
                       text: "Compare",
-                      variant: comparing ? "neutral" : "default",
+                      variant: showingCurrent ? "neutral" : "default",
                       disabled: !currentArtifact,
                       onClick: () => {
-                        if (currentArtifact) setComparing(!comparing);
+                        if (currentArtifact) setShowingCurrent(!showingCurrent);
                       },
                     },
                     {
@@ -159,16 +159,16 @@ function ArtifactInventory({
       </div>
     </div>
   );
-}
+};
 
-export function InventoryArtifact({
+export const InventoryArtifact = ({
   active,
   onClose,
   ...rest
-}: ModalControl & ArtifactInventoryProps) {
+}: ModalControl & ArtifactInventoryProps) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
       <ArtifactInventory {...rest} onClose={onClose} />
     </Modal>
   );
-}
+};

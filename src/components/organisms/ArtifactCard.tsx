@@ -14,22 +14,22 @@ import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { BetaMark, IconButton, ArtifactLevelSelect } from "@Components/atoms";
-import { ArtifactSubstats, type ArtifactSubstatsProps } from "@Components/molecules";
+import { ArtifactSubstatsControl, type ArtifactSubstatsControlProps } from "@Components/molecules";
 
 interface ArtifactCardProps
-  extends Pick<ArtifactSubstatsProps, "mutable" | "space" | "onChangeSubStat"> {
+  extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
   artifact?: CalcArtifact;
   onEnhance?: (level: number) => void;
   onChangeMainStatType?: (type: string) => void;
 }
-export function ArtifactCard({
+export const ArtifactCard = ({
   artifact,
   mutable,
   space,
   onEnhance,
   onChangeMainStatType,
   onChangeSubStat,
-}: ArtifactCardProps) {
+}: ArtifactCardProps) => {
   const { t } = useTranslation();
   if (!artifact) return null;
 
@@ -122,7 +122,7 @@ export function ArtifactCard({
       </div>
 
       <div className={clsx(mutable && "px-2")}>
-        <ArtifactSubstats
+        <ArtifactSubstatsControl
           mutable={mutable}
           rarity={rarity}
           mainStatType={mainStatType}
@@ -133,4 +133,4 @@ export function ArtifactCard({
       </div>
     </div>
   );
-}
+};

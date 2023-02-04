@@ -23,7 +23,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Component
 import { IconButton, ArtifactLevelSelect } from "@Components/atoms";
-import { ConfirmModalBody, Modal, ArtifactSubstats } from "@Components/molecules";
+import { ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Components/molecules";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -93,7 +93,7 @@ export function ArtifactInfo({
       </div>
 
       <div className="px-2 pb-1">
-        <ArtifactSubstats
+        <ArtifactSubstatsControl
           key={artifact.ID}
           mutable
           rarity={rarity}

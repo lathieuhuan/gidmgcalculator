@@ -13,7 +13,7 @@ interface ItemProps {
   itemType: DataType;
   pickedAmount: number;
 }
-function Item({ visible, item, itemType, pickedAmount }: ItemProps) {
+const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
   return (
     <div>
       <div className="cursor-pointer zoomin-on-hover relative">
@@ -54,7 +54,7 @@ function Item({ visible, item, itemType, pickedAmount }: ItemProps) {
       )}
     </div>
   );
-}
+};
 
 export const MemoItem = memo(Item, (prev, next) => {
   return prev.visible === next.visible && prev.pickedAmount === next.pickedAmount;

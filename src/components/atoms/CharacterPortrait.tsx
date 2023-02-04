@@ -7,7 +7,7 @@ interface CharFilledSlotProps {
   icon: string;
   onClickIcon?: () => void;
 }
-export function CharacterPortrait({ className, code, icon, onClickIcon }: CharFilledSlotProps) {
+export const CharacterPortrait = ({ className, code, icon, onClickIcon }: CharFilledSlotProps) => {
   // for the traveler
   const bgColorByCode: Record<number, string> = {
     1: "bg-anemo",
@@ -28,4 +28,4 @@ export function CharacterPortrait({ className, code, icon, onClickIcon }: CharFi
       <Image src={icon} imgType="character" />
     </div>
   );
-}
+};

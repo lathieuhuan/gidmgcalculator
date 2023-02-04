@@ -15,18 +15,16 @@ interface ComplexSelectProps {
     value?: string | number;
     renderActions?: RenderJXS;
   }>;
-  optionHeight?: number;
   onChange?: (value: string | number) => void;
   onToggleDropdown?: (shouldDrop: boolean) => void;
 }
-export function ComplexSelect({
+export const ComplexSelect = ({
   selectId,
   value,
   options = [],
-  optionHeight = 2.25,
   onChange,
   onToggleDropdown,
-}: ComplexSelectProps) {
+}: ComplexSelectProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isDropped, setIsDropped] = useState(false);
 
@@ -106,4 +104,4 @@ export function ComplexSelect({
       </div>
     </div>
   );
-}
+};

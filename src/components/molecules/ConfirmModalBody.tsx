@@ -8,13 +8,13 @@ export interface ConfirmModalBodyProps {
   closeOnClickButton?: boolean;
   onClose: () => void;
 }
-export function ConfirmModalBody({
+export const ConfirmModalBody = ({
   message,
   bgColor = "bg-darkblue-3",
   buttons,
   closeOnClickButton = true,
   onClose,
-}: ConfirmModalBodyProps) {
+}: ConfirmModalBodyProps) => {
   const renderButtons: ButtonBarButton[] = [];
 
   buttons.forEach((button, index) => {
@@ -41,4 +41,4 @@ export function ConfirmModalBody({
       />
     </div>
   );
-}
+};

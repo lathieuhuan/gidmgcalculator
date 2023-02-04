@@ -15,7 +15,13 @@ interface AbilityImgProps {
   active?: boolean;
   onClick?: () => void;
 }
-export function AbilityIcon({ className, img, vision, active = true, onClick }: AbilityImgProps) {
+export const AbilityIcon = ({
+  className,
+  img,
+  vision,
+  active = true,
+  onClick,
+}: AbilityImgProps) => {
   const commonClassNames = ["transition-opacity duration-150 ease-in-out", !active && "opacity-50"];
 
   return img ? (
@@ -39,7 +45,25 @@ export function AbilityIcon({ className, img, vision, active = true, onClick }: 
       <FaQuestion size="1.25rem" />
     </div>
   );
+};
+
+interface CaretProps {
+  toRight?: boolean;
+  onClick: () => void;
 }
+const Caret = ({ toRight, onClick }: CaretProps) => {
+  return (
+    <button
+      className={
+        "absolute top-2 text-[2.5rem] text-darkblue-3 hover:text-lightgold flex-center cursor-pointer " +
+        (toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 left right-full")
+      }
+      onClick={onClick}
+    >
+      <FaCaretRight className={toRight ? "" : "rotate-180"} />
+    </button>
+  );
+};
 
 interface SlideShowProps {
   currentIndex: number;
@@ -50,7 +74,7 @@ interface SlideShowProps {
   onClickBack: () => void;
   onClickNext: () => void;
 }
-export function SlideShow({
+export const SlideShow = ({
   currentIndex,
   images,
   vision,
@@ -58,10 +82,11 @@ export function SlideShow({
   topLeftNote,
   onClickBack,
   onClickNext,
-}: SlideShowProps) {
+}: SlideShowProps) => {
   return (
-    <div className={clsx("flex-center relative", forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
+    <div className={"flex-center relative " + (forTalent ? "pt-1 pb-2" : "pt-2 pb-4")}>
       {topLeftNote}
+
       <div className="relative">
         <div className="w-14 h-14 overflow-hidden relative">
           <div
@@ -78,27 +103,10 @@ export function SlideShow({
             ))}
           </div>
         </div>
-        {currentIndex > 0 && <Caret toRight={false} onClick={onClickBack} />}
+
+        {currentIndex > 0 && <Caret onClick={onClickBack} />}
         {currentIndex < images.length - 1 && <Caret toRight onClick={onClickNext} />}
       </div>
     </div>
   );
-}
-
-interface CaretProps {
-  toRight: boolean;
-  onClick: () => void;
-}
-function Caret({ toRight, onClick }: CaretProps) {
-  return (
-    <button
-      className={clsx(
-        "absolute top-2 text-[2.5rem] text-darkblue-3 hover:text-lightgold flex-center cursor-pointer",
-        toRight ? "pl-4 pr-2 left-full" : "pl-2 pr-4 left right-full"
-      )}
-      onClick={onClick}
-    >
-      <FaCaretRight className={clsx(!toRight && "rotate-180")} />
-    </button>
-  );
-}
+};

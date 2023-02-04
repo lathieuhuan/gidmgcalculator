@@ -23,13 +23,13 @@ interface WeaponInventoryProps {
   onClickButton: (chosen: UserWeapon) => void;
   onClose: () => void;
 }
-function WeaponInventory({
+const WeaponInventory = ({
   weaponType,
   owner,
   buttonText,
   onClickButton,
   onClose,
-}: WeaponInventoryProps) {
+}: WeaponInventoryProps) => {
   const weaponTypeRef = useRef([weaponType]);
 
   const filteredWeapons = useSelector((state) =>
@@ -92,12 +92,16 @@ function WeaponInventory({
       </div>
     </div>
   );
-}
+};
 
-export function InventoryWeapon({ active, onClose, ...rest }: ModalControl & WeaponInventoryProps) {
+export const InventoryWeapon = ({
+  active,
+  onClose,
+  ...rest
+}: ModalControl & WeaponInventoryProps) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
       <WeaponInventory {...rest} onClose={onClose} />
     </Modal>
   );
-}
+};

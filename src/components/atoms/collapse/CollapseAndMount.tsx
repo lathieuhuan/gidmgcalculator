@@ -8,24 +8,37 @@ interface CollapseAndMount {
   style?: CSSProperties;
   children: ReactNode;
 }
-export function CollapseAndMount({
+export const CollapseAndMount = ({
   className,
   active,
   activeHeight,
   duration,
   style = {},
   children,
-}: CollapseAndMount) {
-  const [open, setOpen] = useState(false);
-  const [showing, setShowing] = useState(false);
+}: CollapseAndMount) => {
+  const [state, setState] = useState({
+    active: false,
+    mounted: false,
+  });
 
   useEffect(() => {
     if (active) {
-      setOpen(true);
-      setShowing(true);
+      setState({
+        active: true,
+        mounted: true,
+      });
     } else {
-      setOpen(false);
-      setTimeout(() => setShowing(false), duration);
+      setState((prev) => ({
+        ...prev,
+        active: false,
+      }));
+
+      setTimeout(() => {
+        setState((prev) => ({
+          ...prev,
+          mounted: false,
+        }));
+      }, duration);
     }
   }, [active]);
 
@@ -34,11 +47,11 @@ export function CollapseAndMount({
       className={className}
       style={{
         ...style,
-        height: open ? activeHeight : 0,
+        height: state.active ? activeHeight : 0,
         transition: `height ${duration}ms linear`,
       }}
     >
-      {showing && children}
+      {state.mounted && children}
     </div>
   );
-}
+};

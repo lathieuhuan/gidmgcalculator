@@ -12,19 +12,14 @@ import { createWeapon } from "@Src/utils/creators";
 import { Modal, type ModalControl } from "@Components/molecules";
 import { PickerTemplate } from "./organisms/PickerTemplate";
 
-interface PickerWeaponCoreProps {
+interface WeaponPickerProps {
   type?: string;
   weaponType: WeaponType;
   needMassAdd?: boolean;
   onPickWeapon: (info: ReturnType<typeof createWeapon>) => void;
   onClose: () => void;
 }
-function PickerWeaponCore({
-  weaponType,
-  needMassAdd,
-  onPickWeapon,
-  onClose,
-}: PickerWeaponCoreProps) {
+function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: WeaponPickerProps) {
   const data = useMemo(() => {
     return weapons[weaponType].map((weapon) =>
       pickProps(weapon, ["code", "name", "beta", "icon", "rarity"])
@@ -42,14 +37,10 @@ function PickerWeaponCore({
   );
 }
 
-export const PickerWeapon = ({
-  active,
-  onClose,
-  ...rest
-}: PickerWeaponCoreProps & ModalControl) => {
+export const PickerWeapon = ({ active, onClose, ...rest }: WeaponPickerProps & ModalControl) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
-      <PickerWeaponCore {...rest} onClose={onClose} />
+      <WeaponPicker {...rest} onClose={onClose} />
     </Modal>
   );
 };

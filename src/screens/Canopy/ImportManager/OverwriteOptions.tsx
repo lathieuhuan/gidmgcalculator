@@ -17,8 +17,10 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { SeeDetails, CollapseSpace, tableStyles } from "@Components/atoms";
+import { CollapseSpace, Table } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
+
+const { Tr, Th, Td } = Table;
 
 interface OverrideOptions {
   pendingCode: number;
@@ -105,66 +107,67 @@ export function OverrideOptions({
                       />
                       <span className="ml-4 text-lg">{text}</span>
                     </label>
-                    <SeeDetails
-                      className="ml-2 text-lg"
-                      active={expandedIndex === i}
+
+                    <span
+                      className={
+                        "cursor-pointer ml-2 text-lg " +
+                        (expandedIndex === i ? "text-green " : "text-default hover:text-lightgold ")
+                      }
                       onClick={onClickSeeDetails(i)}
-                    />
+                    >
+                      See details
+                    </span>
                   </div>
 
                   <CollapseSpace active={expandedIndex === i}>
                     <div className="flex justify-center">
                       <div style={{ maxWidth: "18rem" }}>
-                        <table className={tableStyles.table}>
+                        <Table>
                           <tbody>
-                            <tr className={tableStyles.row}>
-                              <th className={tableStyles.th} />
-                              <th className={clsx("text-lightgold", tableStyles.th)}>Old</th>
-                              <th className={clsx("text-lightgold", tableStyles.th)}>New</th>
-                            </tr>
+                            <Tr>
+                              <Th />
+                              <Th className="text-lightgold">Old</Th>
+                              <Th className="text-lightgold">New</Th>
+                            </Tr>
 
                             {Object.keys(object1).map((type, k) => {
                               let comparedCols;
 
                               if (type === "name") {
                                 comparedCols = (
-                                  <td
-                                    className={tableStyles.td}
-                                    colSpan={2}
-                                    style={{ textAlign: "center" }}
-                                  >
+                                  <Td colSpan={2} style={{ textAlign: "center" }}>
                                     {comparedChar.name}
-                                  </td>
+                                  </Td>
                                 );
                               } else {
                                 comparedCols = (
                                   <>
-                                    <td className={tableStyles.td}>
+                                    <Td>
                                       {object1[type]?.length > 1
                                         ? `[${object1[type].join(", ")}]`
                                         : object1[type]}
-                                    </td>
-                                    <td className={tableStyles.td}>{object2?.[type]}</td>
+                                    </Td>
+                                    <Td>{object2?.[type]}</Td>
                                   </>
                                 );
                               }
 
                               return (
-                                <tr key={k} className={tableStyles.row}>
-                                  <td
-                                    className={clsx(
-                                      "capitalize " + tableStyles.td,
-                                      object1[type] !== object2?.[type] && "text-lightred"
-                                    )}
+                                <Tr key={k}>
+                                  <Td
+                                    className={
+                                      "capitalize" +
+                                      (object1[type] !== object2?.[type] ? " text-lightred" : "")
+                                    }
                                   >
                                     {t(type, { ns: i ? "resistance" : "common" })}
-                                  </td>
+                                  </Td>
                                   {comparedCols}
-                                </tr>
+                                </Tr>
                               );
                             })}
                           </tbody>
-                        </table>
+                        </Table>
                       </div>
                     </div>
                   </CollapseSpace>

@@ -10,7 +10,7 @@ import { getImgSrc } from "@Src/utils";
 interface CharacterFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;
 }
-export function CharacterFilter(props: CharacterFilterProps) {
+export const CharacterFilter = (props: CharacterFilterProps) => {
   const { type, value, onClickOption } = props;
 
   return (
@@ -63,4 +63,4 @@ export function CharacterFilter(props: CharacterFilterProps) {
       </div>
     </div>
   );
-}
+};

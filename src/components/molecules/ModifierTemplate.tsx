@@ -88,7 +88,7 @@ interface ModifierTemplateProps {
   onToggleCheck?: (currentInput: number, inputIndex: number) => void;
   onSelectOption?: (value: number, inputIndex: number) => void;
 }
-export function ModifierTemplate({
+export const ModifierTemplate = ({
   mutable = true,
   checked,
   heading,
@@ -99,7 +99,7 @@ export function ModifierTemplate({
   onChangeText,
   onToggleCheck,
   onSelectOption,
-}: ModifierTemplateProps) {
+}: ModifierTemplateProps) => {
   //
   const renderInput = (index: number) => {
     const config = inputConfigs[index];
@@ -198,23 +198,17 @@ export function ModifierTemplate({
         <div
           className={clsx("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}
         >
-          {
-            //
-            inputConfigs.map((config, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-end"
-                style={{ minHeight: "2.25rem" }}
-              >
-                <span className="mr-4 text-base leading-6 text-right">
-                  {config.label || "Stacks"}
-                </span>
-                {renderInput(i)}
-              </div>
-            ))
-          }
+          {inputConfigs.map((config, i) => (
+            <div key={i} className="flex items-center justify-end" style={{ minHeight: "2.25rem" }}>
+              <span className="mr-4 text-base leading-6 text-right">
+                {config.label || "Stacks"}
+              </span>
+
+              {renderInput(i)}
+            </div>
+          ))}
         </div>
       ) : null}
     </div>
   );
-}
+};

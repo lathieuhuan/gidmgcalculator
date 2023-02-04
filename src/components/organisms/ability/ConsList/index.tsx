@@ -14,7 +14,7 @@ interface ConsListProps {
   char: CharInfo;
   onClickIcon: (index: number) => void;
 }
-export function ConsList({ char, onClickIcon }: ConsListProps) {
+export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
@@ -80,4 +80,4 @@ export function ConsList({ char, onClickIcon }: ConsListProps) {
       }
     />
   );
-}
+};

@@ -107,7 +107,7 @@ const Settings = ({ onClose }: SettingsProps) => {
         </Section>
 
         <Section title="Default values">
-          {defaultValueSettings.current.map(({ key, ...others }) => {
+          {defaultValueSettings.current.map(({ key, ...rest }) => {
             return (
               <SelectSetting
                 key={key}
@@ -118,7 +118,7 @@ const Settings = ({ onClose }: SettingsProps) => {
                     [key]: newvalue,
                   }));
                 }}
-                {...others}
+                {...rest}
               />
             );
           })}

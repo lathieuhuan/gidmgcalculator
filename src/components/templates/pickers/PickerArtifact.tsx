@@ -15,7 +15,7 @@ import artifacts from "@Data/artifacts";
 import { Modal, type ModalControl } from "@Components/molecules";
 import { PickerTemplate } from "./organisms/PickerTemplate";
 
-interface PickerArtifactCoreProps {
+interface ArtifactPickerProps {
   type?: string;
   artifactType: ArtifactType;
   needMassAdd?: boolean;
@@ -23,13 +23,13 @@ interface PickerArtifactCoreProps {
   onPickArtifact: (info: ReturnType<typeof createArtifact>) => void;
   onClose: () => void;
 }
-function PickerArtifactCore({
+const ArtifactPicker = ({
   artifactType,
   needMassAdd,
   forFeature,
   onPickArtifact,
   onClose,
-}: PickerArtifactCoreProps) {
+}: ArtifactPickerProps) => {
   const [gold, purple] = useMemo(() => {
     switch (forFeature) {
       case "TEAMMATE_MODIFIERS":
@@ -79,16 +79,16 @@ function PickerArtifactCore({
       onClose={onClose}
     />
   );
-}
+};
 
 export const PickerArtifact = ({
   active,
   onClose,
   ...rest
-}: PickerArtifactCoreProps & ModalControl) => {
+}: ArtifactPickerProps & ModalControl) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
-      <PickerArtifactCore {...rest} onClose={onClose} />
+      <ArtifactPicker {...rest} onClose={onClose} />
     </Modal>
   );
 };

@@ -7,10 +7,8 @@ interface CollapseListProps {
     heading: string;
     body: ReactNode;
   }>;
-  // headingList: string[];
-  // contentList: ReactNode[];
 }
-export function CollapseList({ list }: CollapseListProps) {
+export const CollapseList = ({ list }: CollapseListProps) => {
   const [expanded, setExpanded] = useState<(boolean | undefined)[]>([]);
   return (
     <div>
@@ -38,4 +36,4 @@ export function CollapseList({ list }: CollapseListProps) {
       ))}
     </div>
   );
-}
+};

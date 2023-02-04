@@ -21,13 +21,13 @@ interface TalentOverviewProps {
   onChangeLevel: (talentType: "NAs" | "ES" | "EB", newLevel: number) => void;
   onClickInfoSign: (index: number) => void;
 }
-export function TalentOverview({
+export const TalentOverview = ({
   char,
   dataChar,
   party,
   onChangeLevel,
   onClickInfoSign,
-}: TalentOverviewProps) {
+}: TalentOverviewProps) => {
   const { vision, weaponType, NAsConfig, activeTalents, passiveTalents } = dataChar;
   const partyData = party ? getPartyData(party) : undefined;
 
@@ -115,4 +115,4 @@ export function TalentOverview({
       })}
     </div>
   );
-}
+};

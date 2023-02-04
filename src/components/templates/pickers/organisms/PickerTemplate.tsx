@@ -25,7 +25,13 @@ interface PickerProps {
   onPickItem: (item: PickerItem) => void;
   onClose: () => void;
 }
-export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClose }: PickerProps) {
+export const PickerTemplate = ({
+  data,
+  dataType,
+  needMassAdd,
+  onPickItem,
+  onClose,
+}: PickerProps) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null);
 
   const [filterOn, setFilterOn] = useState(false);
@@ -188,4 +194,4 @@ export function PickerTemplate({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
     </div>
   );
-}
+};

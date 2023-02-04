@@ -131,7 +131,7 @@ export function SetupSelect() {
   };
 
   const renderSuffixButton = (
-    { className, ...otherAttrs }: ButtonHTMLAttributes<HTMLButtonElement>,
+    { className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>,
     index?: number
   ) => {
     return (
@@ -141,7 +141,7 @@ export function SetupSelect() {
           "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-lesser disabled:text-black",
           className
         )}
-        {...otherAttrs}
+        {...rest}
       />
     );
   };

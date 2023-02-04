@@ -32,7 +32,7 @@ interface OwnerLabelProps {
   owner?: string | null;
   setupIDs?: number[];
 }
-export function OwnerLabel({ className, style, owner, setupIDs }: OwnerLabelProps) {
+export const OwnerLabel = ({ className, style, owner, setupIDs }: OwnerLabelProps) => {
   const [list, setList] = useState({
     isVisible: false,
     isMounted: false,
@@ -85,4 +85,4 @@ export function OwnerLabel({ className, style, owner, setupIDs }: OwnerLabelProp
       </div>
     </div>
   );
-}
+};

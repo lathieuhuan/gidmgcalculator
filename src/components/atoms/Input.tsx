@@ -39,7 +39,9 @@ export const Input = forwardRef(
     }: InputTextProps | InputNumberProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const [value, setValue] = useState(props.value?.toString() || "");
+    const [value, setValue] = useState(
+      props.value === undefined ? "" : props.type === "number" ? `${props.value}` : props.value
+    );
 
     // useEffect(() => {
     //   if (debounceTime) {
@@ -64,8 +66,12 @@ export const Input = forwardRef(
     // }, [value]);
 
     useEffect(() => {
-      if (props.value !== +value) {
-        setValue(`${props.value}`);
+      if (props.type === "number") {
+        if (props.value !== +value) {
+          setValue(`${props.value ?? 0}`);
+        }
+      } else if (props.value !== value) {
+        setValue(props.value || "");
       }
     }, [props.value]);
 

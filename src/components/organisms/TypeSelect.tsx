@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 // Util
 import { getImgSrc } from "@Src/utils";
 
@@ -7,7 +9,7 @@ import { Modal, type ModalControl } from "@Components/molecules";
 
 interface TypeSelectProps extends ModalControl {
   choices: Record<string, string>;
-  footer?: JSX.Element;
+  footer?: ReactNode;
   onClickChoice: (choice: string) => void;
 }
 export function TypeSelect({ active, choices, onClickChoice, onClose, footer }: TypeSelectProps) {

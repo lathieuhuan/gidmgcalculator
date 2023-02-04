@@ -8,4 +8,4 @@ export * from "./ModifierTemplate";
 export * from "./modifiers";
 export * from "./SetBonusesDisplay";
 export * from "./ConfirmModalBody";
-export * from "./ArtifactSubstats";
+export * from "./ArtifactSubstatsControl";

@@ -16,7 +16,7 @@ interface ModalProps extends ModalControl {
   withDefaultStyle?: boolean;
   children: ReactNode;
 }
-export function Modal({ active, state: stateProp, onClose, ...others }: ModalProps) {
+export const Modal = ({ active, state: stateProp, onClose, ...rest }: ModalProps) => {
   const [state, setState] = useState({
     active: false,
     animate: false,
@@ -74,9 +74,9 @@ export function Modal({ active, state: stateProp, onClose, ...others }: ModalPro
             )}
             onClick={closeModal}
           />
-          <ModalBody animate={state.animate} {...others} />
+          <ModalBody animate={state.animate} {...rest} />
         </div>,
         document.querySelector("#root")!
       )
     : null;
-}
+};

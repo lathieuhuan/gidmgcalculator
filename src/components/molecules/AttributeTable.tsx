@@ -15,10 +15,59 @@ import { useTranslation } from "@Src/hooks";
 // Component
 import { Green, StatsTable, CollapseSpace } from "@Components/atoms";
 
+interface EmSectionProps {
+  em: number;
+}
+const EmSection = ({ em }: EmSectionProps) => {
+  const [dropped, setDropped] = useState(false);
+  const rxnBonusFromEM = getRxnBonusesFromEM(em);
+
+  return (
+    <div>
+      <StatsTable.Row
+        className="cursor-pointer !bg-transparent hover:!bg-darkerred"
+        onClick={() => setDropped(!dropped)}
+      >
+        <div className="flex items-center">
+          <p className="mr-1">Elemental Mastery</p>
+          <FaCaretDown
+            className={clsx(
+              "duration-150 ease-linear",
+              dropped ? "text-green" : "text-default rotate-90"
+            )}
+          />
+        </div>
+        <p className="mr-2">{em}</p>
+      </StatsTable.Row>
+      <CollapseSpace active={dropped}>
+        <ul className="px-2 pb-1 text-sm flex flex-col space-y-1">
+          <li>
+            • Increases damage dealt by Vaporize and Melt by{" "}
+            <Green>{rxnBonusFromEM.amplifying}%</Green>.
+          </li>
+          <li>
+            • Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
+            Shattered, Swirl, Bloom, Hyperbloom, and Burgeon by{" "}
+            <Green>{rxnBonusFromEM.transformative}%</Green>.
+          </li>
+          <li>
+            • Increases the DMG Bonus provided by Aggravate and Spread by{" "}
+            <Green>{rxnBonusFromEM.quicken}%</Green>.
+          </li>
+          <li>
+            • Increases the damage absorption power of shields created through Crystallize by{" "}
+            <Green>{rxnBonusFromEM.shield}%</Green>.
+          </li>
+        </ul>
+      </CollapseSpace>
+    </div>
+  );
+};
+
 interface AttributeTableProps {
   attributes: PartiallyRequired<Partial<TotalAttribute>, CoreStat>;
 }
-export function AttributeTable({ attributes }: AttributeTableProps) {
+export const AttributeTable = ({ attributes }: AttributeTableProps) => {
   const { t } = useTranslation();
 
   if (!attributes) {
@@ -78,53 +127,4 @@ export function AttributeTable({ attributes }: AttributeTableProps) {
       })}
     </StatsTable>
   );
-}
-
-interface EmSectionProps {
-  em: number;
-}
-function EmSection({ em }: EmSectionProps) {
-  const [dropped, setDropped] = useState(false);
-  const rxnBonusFromEM = getRxnBonusesFromEM(em);
-
-  return (
-    <div>
-      <StatsTable.Row
-        className="cursor-pointer !bg-transparent hover:!bg-darkerred"
-        onClick={() => setDropped(!dropped)}
-      >
-        <div className="flex items-center">
-          <p className="mr-1">Elemental Mastery</p>
-          <FaCaretDown
-            className={clsx(
-              "duration-150 ease-linear",
-              dropped ? "text-green" : "text-default rotate-90"
-            )}
-          />
-        </div>
-        <p className="mr-2">{em}</p>
-      </StatsTable.Row>
-      <CollapseSpace active={dropped}>
-        <ul className="px-2 pb-1 text-sm flex flex-col space-y-1">
-          <li>
-            • Increases damage dealt by Vaporize and Melt by{" "}
-            <Green>{rxnBonusFromEM.amplifying}%</Green>.
-          </li>
-          <li>
-            • Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
-            Shattered, Swirl, Bloom, Hyperbloom, and Burgeon by{" "}
-            <Green>{rxnBonusFromEM.transformative}%</Green>.
-          </li>
-          <li>
-            • Increases the DMG Bonus provided by Aggravate and Spread by{" "}
-            <Green>{rxnBonusFromEM.quicken}%</Green>.
-          </li>
-          <li>
-            • Increases the damage absorption power of shields created through Crystallize by{" "}
-            <Green>{rxnBonusFromEM.shield}%</Green>.
-          </li>
-        </ul>
-      </CollapseSpace>
-    </div>
-  );
-}
+};

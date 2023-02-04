@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { Fragment } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import type {
@@ -21,7 +20,7 @@ import { percentSign } from "@Src/utils";
 // Component
 import { Input } from "@Components/atoms";
 
-export interface ArtifactSubstatsProps {
+export interface ArtifactSubstatsControlProps {
   mutable?: boolean;
   space?: string;
   rarity: Rarity;
@@ -29,16 +28,16 @@ export interface ArtifactSubstatsProps {
   subStats: ArtifactSubStat[];
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
-export function ArtifactSubstats({
+export const ArtifactSubstatsControl = ({
   mutable,
   mainStatType,
   subStats,
   rarity,
   space,
   onChangeSubStat,
-}: ArtifactSubstatsProps) {
+}: ArtifactSubstatsControlProps) => {
   const { t } = useTranslation();
-  //
+
   const statTypeCount = { [mainStatType]: 1 };
   for (const { type } of subStats) {
     statTypeCount[type] = (statTypeCount[type] || 0) + 1;
@@ -54,10 +53,10 @@ export function ArtifactSubstats({
             <FaChevronDown className="absolute left-3 top-2.5" />
 
             <select
-              className={clsx(
-                "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none",
-                statTypeCount[type] === 1 ? "text-default" : "text-red-500"
-              )}
+              className={
+                "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none " +
+                (statTypeCount[type] === 1 ? "text-default" : "text-red-500")
+              }
               value={type}
               onChange={(e) => {
                 onChangeSubStat?.(i, { type: e.target.value as ArtifactSubStatType });
@@ -75,10 +74,10 @@ export function ArtifactSubstats({
             <Input
               type="number"
               noDefaultStyle
-              className={clsx(
-                "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right",
-                isValid ? "text-default" : "text-red-500"
-              )}
+              className={
+                "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right " +
+                (isValid ? "text-default" : "text-red-500")
+              }
               style={{ fontSize: "1.0625rem" }}
               value={value}
               onChange={(value) => onChangeSubStat?.(i, { value })}
@@ -90,10 +89,7 @@ export function ArtifactSubstats({
             <p className={space}>•</p>
             <p>
               <span
-                className={clsx(
-                  "mr-1",
-                  statTypeCount[type] === 1 ? "text-default" : "text-red-500"
-                )}
+                className={"mr-1 " + (statTypeCount[type] === 1 ? "text-default" : "text-red-500")}
               >
                 {t(type)}
               </span>
@@ -107,4 +103,4 @@ export function ArtifactSubstats({
       })}
     </Fragment>
   );
-}
+};

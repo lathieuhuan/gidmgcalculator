@@ -1,14 +1,10 @@
 import clsx from "clsx";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import styles from "./styles.module.scss";
 
 type IProps = {
   className?: string;
   children: ReactNode;
-};
-
-const Wrapper = (props: IProps) => {
-  return <div className="py-4 md2:py-8 h-full flex-center bg-darkblue-2" {...props} />;
 };
 
 const WareHouse = ({ className, ...rest }: IProps) => {
@@ -18,6 +14,10 @@ const WareHouse = ({ className, ...rest }: IProps) => {
       {...rest}
     />
   );
+};
+
+const Wrapper = (props: IProps) => {
+  return <div className="py-4 md2:py-8 h-full flex-center bg-darkblue-2" {...props} />;
 };
 
 const ButtonBar = (props: IProps) => {

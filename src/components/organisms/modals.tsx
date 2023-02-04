@@ -11,26 +11,30 @@ import {
   type ModalControl,
 } from "@Components/molecules";
 
-export function ConfirmModal({ active, onClose, ...rest }: ModalControl & ConfirmModalBodyProps) {
+export const ConfirmModal = ({
+  active,
+  onClose,
+  ...rest
+}: ModalControl & ConfirmModalBodyProps) => {
   return (
     <Modal active={active} className="small-modal" onClose={onClose}>
       <ConfirmModalBody {...rest} onClose={onClose} />
     </Modal>
   );
-}
+};
 
 interface StandardModalProps extends ModalControl {
   title: ReactNode;
   bodyClassName?: string;
   children: ReactNode;
 }
-export function StandardModal({
+export const StandardModal = ({
   bodyClassName = "",
   active,
   title,
   children,
   onClose,
-}: StandardModalProps) {
+}: StandardModalProps) => {
   return (
     <Modal className="px-2 py-4 md1:px-4 flex flex-col" withDefaultStyle {...{ active, onClose }}>
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
@@ -38,13 +42,6 @@ export function StandardModal({
       <div className={"grow custom-scrollbar " + bodyClassName}>{children}</div>
     </Modal>
   );
-}
-
-const isWeapon = (
-  item: UserWeapon | UserArtifact,
-  itemType: "weapon" | "artifact"
-): item is UserWeapon => {
-  return itemType === "weapon";
 };
 
 interface WeaponRemoveConfirmProps {
@@ -57,13 +54,13 @@ interface ArtifactRemoveConfirmProps {
   item: UserArtifact;
   onConfirm: () => void;
 }
-export function ItemRemoveConfirm({
+export const ItemRemoveConfirm = ({
   active,
   item,
   itemType,
   onConfirm,
   onClose,
-}: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) {
+}: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) => {
   const itemData = itemType === "weapon" ? findDataWeapon(item) : findDataArtifact(item);
 
   return (
@@ -83,7 +80,7 @@ export function ItemRemoveConfirm({
       onClose={onClose}
     />
   );
-}
+};
 
 interface UnderConstructNoticeProps {
   active: boolean;

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
@@ -22,7 +21,7 @@ interface WeaponCardProps {
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps) {
+export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   const { t } = useTranslation();
   if (!weapon) return null;
 
@@ -38,7 +37,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
         {/* left */}
         <div className="flex flex-col grow justify-between">
           {/*  */}
-          <div className={clsx("pt-1 grow flex items-center", groupStyles)}>
+          <div className={"pt-1 grow flex items-center " + groupStyles}>
             <p className="mr-2 text-lg font-semibold">Level</p>
             {mutable ? (
               <select
@@ -56,7 +55,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {subStat ? (
-            <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
+            <div className={"grow mt-1 pt-1 flex flex-col justify-center " + groupStyles}>
               <p className="font-semibold">{t(subStat.type)}</p>
               <p className={`text-rarity-${rarity} text-2xl leading-7 font-bold`}>
                 {weaponSubStatValue(subStat.scale, level)}
@@ -65,7 +64,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
             </div>
           ) : null}
 
-          <div className={clsx("grow mt-1 pt-1 flex flex-col justify-center", groupStyles)}>
+          <div className={"grow mt-1 pt-1 flex flex-col justify-center " + groupStyles}>
             <p className="font-semibold">Base ATK</p>
             <p className={`text-rarity-${rarity} text-2.5xl font-bold`}>
               {weaponMainStatValue(wpData.mainStatScale, level)}
@@ -81,7 +80,7 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
           </div>
 
           {rarity >= 3 && (
-            <div className={clsx("mt-2 py-1 flex flex-col items-center", groupStyles)}>
+            <div className={"mt-2 py-1 flex flex-col items-center " + groupStyles}>
               <p className="text-center font-semibold">Refinement</p>
               {mutable ? (
                 <select
@@ -106,4 +105,4 @@ export function WeaponCard({ weapon, mutable, upgrade, refine }: WeaponCardProps
       </div>
     </div>
   );
-}
+};

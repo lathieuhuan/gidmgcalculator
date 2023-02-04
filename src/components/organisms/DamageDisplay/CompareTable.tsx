@@ -19,13 +19,15 @@ import { findById } from "@Src/utils";
 import { displayValue, type TableKey } from "./utils";
 
 // Component
-import { tableStyles } from "@Components/atoms";
+import { Table } from "@Components/atoms";
+
+const { Tr, Th, Td } = Table;
 
 interface CompareTableProps {
   focus: EStatDamageKey;
   tableKey: TableKey;
 }
-export function CompareTable({ focus, tableKey: { main, subs } }: CompareTableProps) {
+export const CompareTable = ({ focus, tableKey: { main, subs } }: CompareTableProps) => {
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const statsById = useSelector((state) => state.calculator.statsById);
   const comparedIds = useSelector(selectComparedIds);
@@ -36,25 +38,23 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
 
   return (
     <tbody>
-      <tr className={tableStyles.row}>
-        <th className={tableStyles.th} />
-        <th className={tableStyles.th}>{title || "Setup's name missing"}</th>
+      <Tr>
+        <Th />
+        <Th>{title || "Setup's name missing"}</Th>
 
-        {otherSetupIds.map((id, i) => (
-          <th key={id} className={tableStyles.th}>
-            {findById(setupManageInfos, id)?.name}
-          </th>
+        {otherSetupIds.map((id) => (
+          <Th key={id}>{findById(setupManageInfos, id)?.name}</Th>
         ))}
-      </tr>
+      </Tr>
 
       {subs.map((name, i) => {
         const standardValue = statsById[standardId].dmgResult[main][name][focus];
         const standardIsArray = Array.isArray(standardValue);
 
         return (
-          <tr key={i} className={tableStyles.row}>
-            <td className={tableStyles.td}>{name}</td>
-            <td className={tableStyles.td}>{displayValue(standardValue)}</td>
+          <Tr key={i}>
+            <Td>{name}</Td>
+            <Td>{displayValue(standardValue)}</Td>
 
             {otherSetupIds.map((id, j) => {
               const thisValue = statsById[id].dmgResult[main][name][focus];
@@ -73,9 +73,9 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
                 ) / 10;
 
               return (
-                <td
+                <Td
                   key={j}
-                  className={clsx("relative group", tableStyles.td, diff && "pr-5")}
+                  className={"relative group" + (diff ? " pr-5" : "")}
                   style={{ minWidth: diff ? "5rem" : "auto" }}
                 >
                   {displayValue(thisValue)}
@@ -98,12 +98,12 @@ export function CompareTable({ focus, tableKey: { main, subs } }: CompareTablePr
                       </span>
                     </>
                   ) : null}
-                </td>
+                </Td>
               );
             })}
-          </tr>
+          </Tr>
         );
       })}
     </tbody>
   );
-}
+};

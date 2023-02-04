@@ -547,13 +547,13 @@ export const calculatorSlice = createSlice({
       // not update target if monster code === 0 (custom target)
       if (dataMonster?.code) {
         const { resistance, variant } = dataMonster;
-        const { base, ...otherResist } = resistance;
+        const { base, ...otherResistances } = resistance;
         const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;
         }
-        for (const [key, value] of Object.entries(otherResist)) {
+        for (const [key, value] of Object.entries(otherResistances)) {
           target.resistances[key as AttackElement] = value;
         }
 

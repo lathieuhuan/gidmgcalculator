@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 interface StatsTableProps {
   children: ReactNode;
 }
-function StatsTable({ children }: StatsTableProps) {
+const StatsTable = ({ children }: StatsTableProps) => {
   return <div className="w-full cursor-default">{children}</div>;
-}
+};
 
 interface RowProps {
   className?: string;
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode;
   onClick?: () => void;
 }
 StatsTable.Row = ({ className = "", children, onClick }: RowProps) => {

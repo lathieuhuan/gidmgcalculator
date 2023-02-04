@@ -14,8 +14,10 @@ import { getPartyData } from "@Data/controllers";
 import { displayValue, getTableKeys } from "./utils";
 
 // Component
-import { CollapseSpace, tableStyles } from "@Components/atoms";
+import { CollapseSpace, Table } from "@Components/atoms";
 import { CompareTable } from "./CompareTable";
+
+const { Tr, Th, Td } = Table;
 
 interface DamageDisplayProps {
   char: CharInfo;
@@ -23,7 +25,7 @@ interface DamageDisplayProps {
   damageResult: DamageResult;
   focus?: EStatDamageKey;
 }
-export function DamageDisplay({ char, party, damageResult, focus }: DamageDisplayProps) {
+export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDisplayProps) => {
   const { t } = useTranslation();
 
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
@@ -81,43 +83,44 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
                 </div>
               ) : (
                 <div className="custom-scrollbar">
-                  <table className={"mb-2 w-full " + tableStyles.table}>
-                    <colgroup>
-                      <col style={{ width: "8.5rem" }} className="w-34" />
-                      <col />
-                      <col />
-                      <col />
-                    </colgroup>
+                  <Table
+                    className="mb-2 w-full"
+                    colAttrs={[
+                      {
+                        className: "w-34",
+                        style: { width: "8.5rem" },
+                      },
+                      null,
+                      null,
+                      null,
+                    ]}
+                  >
                     {focus ? (
                       <CompareTable focus={focus} tableKey={key} />
                     ) : (
                       <tbody>
-                        <tr className={tableStyles.row}>
-                          <th className={tableStyles.th} />
-                          <th className={tableStyles.th}>Non-crit</th>
-                          <th className={tableStyles.th}>Crit</th>
-                          <th className={"text-lightgold " + tableStyles.th}>Avg.</th>
-                        </tr>
+                        <Tr>
+                          <Th />
+                          <Th>Non-crit</Th>
+                          <Th>Crit</Th>
+                          <Th className="text-lightgold">Avg.</Th>
+                        </Tr>
 
                         {key.subs.map((subKey, i) => {
                           const { nonCrit, crit, average } = standardValues[subKey] || {};
 
                           return nonCrit === undefined ? null : (
-                            <tr key={subKey} className={tableStyles.row}>
-                              <td className={tableStyles.td}>
-                                {isReactionDmg ? t(subKey) : subKey}
-                              </td>
-                              <td className={tableStyles.td}>{displayValue(nonCrit)}</td>
-                              <td className={tableStyles.td}>{displayValue(crit)}</td>
-                              <td className={tableStyles.td + " text-lightgold"}>
-                                {displayValue(average)}
-                              </td>
-                            </tr>
+                            <Tr key={subKey}>
+                              <Td>{isReactionDmg ? t(subKey) : subKey}</Td>
+                              <Td>{displayValue(nonCrit)}</Td>
+                              <Td>{displayValue(crit)}</Td>
+                              <Td className="text-lightgold">{displayValue(average)}</Td>
+                            </Tr>
                           );
                         })}
                       </tbody>
                     )}
-                  </table>
+                  </Table>
                 </div>
               )}
             </CollapseSpace>
@@ -126,4 +129,4 @@ export function DamageDisplay({ char, party, damageResult, focus }: DamageDispla
       })}
     </div>
   );
-}
+};
