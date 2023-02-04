@@ -13,11 +13,6 @@ const { FilterButton, Text } = ModalHeader;
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
-type ObservedItem = {
-  count: number;
-  visible: boolean;
-};
-
 interface PickerProps {
   data: PickerItem[];
   dataType: DataType;
@@ -33,21 +28,15 @@ export const PickerTemplate = ({
   onClose,
 }: PickerProps) => {
   const intersectionObserverRef = useRef<HTMLDivElement>(null);
+  const [pickedNames, setPickedNames] = useState<Record<string, boolean>>({});
 
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
   const [keyword, setKeyword] = useState("");
 
   const [massAdd, setMassAdd] = useState(false);
-  const [items, setItems] = useState(
-    data.reduce((accumulator: Record<string, ObservedItem>, item) => {
-      accumulator[item.code] = {
-        count: 0,
-        visible: false,
-      };
-      return accumulator;
-    }, {})
-  );
+  const [itemCounts, setItemCounts] = useState<number[]>([]);
+  const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const handleIntersection: IntersectionObserverCallback = (entries) => {
@@ -55,10 +44,10 @@ export const PickerTemplate = ({
         const id = entry.target.getAttribute("data-id");
 
         if (entry.isIntersecting && id) {
-          setItems((prev) => {
-            const newItems = { ...prev };
-            newItems[id].visible = true;
-            return newItems;
+          setItemsVisible((prevItemsVisible) => {
+            const newItemsVisible = { ...prevItemsVisible };
+            newItemsVisible[id] = true;
+            return newItemsVisible;
           });
         }
       });
@@ -79,17 +68,29 @@ export const PickerTemplate = ({
     return () => observer.disconnect();
   }, []);
 
-  let filteredNames: string[] = [];
+  const visibleNames: Record<string, boolean> = {};
 
   if (dataType === "character") {
     for (const char of data) {
       if (!filter.type || char[filter.type] === filter.value) {
-        filteredNames.push(char.name);
+        visibleNames[char.name] = true;
       }
     }
 
     if (keyword) {
-      filteredNames = filteredNames.filter((name) => name.toLowerCase().includes(keyword));
+      for (const name in visibleNames) {
+        if (!name.toLowerCase().includes(keyword)) {
+          delete visibleNames[name];
+        }
+      }
+    }
+
+    if (Object.keys(pickedNames).length) {
+      for (const name in visibleNames) {
+        if (pickedNames[name]) {
+          delete visibleNames[name];
+        }
+      }
     }
   }
 
@@ -151,7 +152,7 @@ export const PickerTemplate = ({
         <div ref={intersectionObserverRef} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
-              const { count, visible } = items[item.code] || {};
+              const count = itemCounts[i] || 0;
 
               return (
                 <div
@@ -160,7 +161,7 @@ export const PickerTemplate = ({
                   className={clsx(
                     "picker-item grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
                     item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2",
-                    { hidden: dataType === "character" && !filteredNames.includes(item.name) }
+                    { hidden: dataType === "character" && !visibleNames[item.name] }
                   )}
                 >
                   <div
@@ -171,16 +172,21 @@ export const PickerTemplate = ({
                         onClose();
                       } //
                       else if (dataType !== "character") {
-                        setItems((prev) => {
+                        setItemCounts((prev) => {
                           const newItems = { ...prev };
-                          newItems[item.code].count += 1;
+                          newItems[i] = count + 1;
                           return newItems;
                         });
+                      } else {
+                        setPickedNames((prevPickedNames) => ({
+                          ...prevPickedNames,
+                          [item.name]: true,
+                        }));
                       }
                     }}
                   >
                     <MemoItem
-                      visible={visible}
+                      visible={itemsVisible[item.code]}
                       item={item}
                       itemType={dataType}
                       pickedAmount={count}

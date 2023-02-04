@@ -33,9 +33,10 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
           >
             {visible && <Image src={item.icon} imgType={itemType} />}
           </div>
-          {!!pickedAmount && (
+
+          {pickedAmount ? (
             <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
-          )}
+          ) : null}
         </div>
         <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-default text-black font-bold text-center">
           {item.name}
