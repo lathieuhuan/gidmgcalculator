@@ -1,40 +1,24 @@
+import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import type { UserArtifact, UserWeapon } from "@Src/types";
 
+// Constant
+import { INVENTORY_PAGE_SIZE } from "@Src/constants";
+
 // Util
-import { findDataArtifact, findDataWeapon } from "@Data/controllers";
+import { getArtifactInfo, getWeaponInfo, getDataId, checkIfWeapon } from "./utils";
 
 // Component
 import { ItemThumb } from "@Components/molecules";
 
-const PAGE_SIZE = 60;
-
-interface InventoryRackCommonProps {
+interface InventoryRackProps {
   listClassName?: string;
   itemClassName?: string;
   chosenID: number;
-}
-
-interface WeaponInventoryRackProps {
-  itemType: "weapon";
-  items: UserWeapon[];
-  onClickItem?: (weapon: UserWeapon) => void;
-}
-interface ArtifactInventoryRackProps {
-  itemType: "artifact";
-  items: UserArtifact[];
-  onClickItem?: (artifact: UserArtifact) => void;
-}
-
-function getWeaponInfo({ type, code, owner, refi, level, setupIDs }: UserWeapon) {
-  const { beta, name, icon = "", rarity = 5 } = findDataWeapon({ type, code }) || {};
-  return { beta, name, icon, rarity, level, refi, owner, setupIDs };
-}
-
-function getArtifactInfo({ code, type, owner, rarity, level, setupIDs }: UserArtifact) {
-  const { beta, name, icon = "" } = findDataArtifact({ code, type }) || {};
-  return { beta, name, icon, rarity, level, owner, setupIDs };
+  itemType: "weapon" | "artifact";
+  items: UserWeapon[] | UserArtifact[];
+  onClickItem?: (item: UserWeapon | UserArtifact) => void;
 }
 
 export function InventoryRack({
@@ -44,13 +28,16 @@ export function InventoryRack({
   itemType,
   items,
   onClickItem,
-}: (WeaponInventoryRackProps | ArtifactInventoryRackProps) & InventoryRackCommonProps) {
+}: InventoryRackProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const pioneerRef = useRef<HTMLDivElement>(null);
+  const heightRef = useRef(0);
 
+  const [isReady, setIsReady] = useState(false);
   const [pageNo, setPageNo] = useState(0);
-  const [visibles, setVisibles] = useState(
+  const [isVisible, setIsVisible] = useState(
     (items as any[]).reduce((accumulator: Record<string, boolean>, item) => {
-      accumulator[item.code] = false;
+      accumulator[getDataId(item)] = false;
       return accumulator;
     }, {})
   );
@@ -59,40 +46,42 @@ export function InventoryRack({
     if (items.length && !chosenID) {
       onClickItem?.(items[0] as any);
     }
+    if (pioneerRef.current) {
+      heightRef.current = pioneerRef.current.clientHeight;
+      setIsReady(true);
+    }
   }, []);
 
   useEffect(() => {
-    const handleIntersection: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        const id = entry.target.getAttribute("data-id");
-        if (entry.isIntersecting && id) {
-          setVisibles((prev) => {
-            const newItems = { ...prev };
-            newItems[id] = true;
-            return newItems;
-          });
+    if (isReady) {
+      const handleIntersection: IntersectionObserverCallback = (entries) => {
+        entries.forEach((entry) => {
+          const dataId = entry.target.getAttribute("data-id");
+          if (entry.isIntersecting && dataId) {
+            setIsVisible((prev) => {
+              const newIsVisible = { ...prev };
+              newIsVisible[dataId] = true;
+              return newIsVisible;
+            });
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(handleIntersection, {
+        root: wrapperRef.current,
+      });
+
+      wrapperRef.current?.querySelectorAll(".inventory-item").forEach((item) => {
+        if (item) {
+          observer.observe(item);
         }
       });
-    };
 
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: wrapperRef.current,
-      rootMargin: "0px",
-      threshold: 0.1,
-    });
+      return () => observer.disconnect();
+    }
+  }, [isReady, items, pageNo]);
 
-    wrapperRef.current?.querySelectorAll(".inventory-item").forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [items, pageNo]);
-
-  const deadEnd = Math.ceil(items.length / PAGE_SIZE) - 1;
-
-  const isHidden = (i: number) => i < PAGE_SIZE * pageNo || i >= PAGE_SIZE * (pageNo + 1);
+  const deadEnd = Math.ceil(items.length / INVENTORY_PAGE_SIZE) - 1;
 
   const resetScroll = () => {
     if (wrapperRef.current) {
@@ -119,49 +108,52 @@ export function InventoryRack({
   return (
     <div className="pr-2 w-full flex flex-col" style={{ minWidth: "22rem" }}>
       <div ref={wrapperRef} className={"custom-scrollbar " + listClassName}>
-        {items.length ? (
-          <div className="flex flex-wrap">
-            {itemType === "weapon"
-              ? items.map((item, i) => {
-                  return isHidden(i) ? null : (
-                    <div
-                      key={item.ID}
-                      data-id={item.code}
-                      className={"inventory-item " + itemClassName}
-                    >
-                      <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb
-                          item={getWeaponInfo(item)}
-                          visible={visibles[item.code]}
-                          chosen={item.ID === chosenID}
-                        />
-                      </div>
-                    </div>
-                  );
-                })
-              : items.map((item, i) => {
-                  return isHidden(i) ? null : (
-                    <div
-                      key={item.ID}
-                      data-id={item.code}
-                      className={"inventory-item " + itemClassName}
-                    >
-                      <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb
-                          item={getArtifactInfo(item)}
-                          visible={visibles[item.code]}
-                          chosen={item.ID === chosenID}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-          </div>
-        ) : (
-          <div className="w-full pt-8 flex-center">
-            <p className="text-xl font-bold text-lightred">No {itemType} to display</p>
+        {!isReady && (
+          <div ref={pioneerRef} className={"opacity-0 " + itemClassName}>
+            <ItemThumb item={{ icon: "", level: "1/20", rarity: 5 }} />
           </div>
         )}
+
+        {isReady ? (
+          items.length ? (
+            <div className="flex flex-wrap">
+              {items.map((item, index) => {
+                const isOnPage =
+                  index >= INVENTORY_PAGE_SIZE * pageNo &&
+                  index < INVENTORY_PAGE_SIZE * (pageNo + 1);
+                const dataId = getDataId(item);
+
+                return (
+                  <div
+                    key={item.ID}
+                    data-id={dataId}
+                    className={clsx(
+                      "inventory-item transition-opacity duration-500",
+                      itemClassName,
+                      isOnPage && isVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"
+                    )}
+                    style={{
+                      height: isOnPage ? (isVisible[dataId] ? "auto" : heightRef.current) : 0,
+                    }}
+                  >
+                    {isOnPage && isVisible[dataId] ? (
+                      <div onClick={() => onClickItem?.(item)}>
+                        <ItemThumb
+                          item={checkIfWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                          chosen={item.ID === chosenID}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="w-full pt-8 flex-center">
+              <p className="text-xl font-bold text-lightred">No {itemType} to display</p>
+            </div>
+          )
+        ) : null}
       </div>
 
       {items.length ? (

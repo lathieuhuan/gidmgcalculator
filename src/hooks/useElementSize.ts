@@ -11,32 +11,35 @@ export const useElementSize = <T extends HTMLElement>(): [
   });
 
   useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentBoxSize) {
-          const contentBoxSize = Array.isArray(entry.contentBoxSize)
-            ? entry.contentBoxSize[0]
-            : entry.contentBoxSize;
-
-          setSize({
-            width: contentBoxSize.inlineSize,
-            height: contentBoxSize.blockSize,
-          });
-        } else {
-          setSize({
-            width: entry.contentRect.width,
-            height: entry.contentRect.height,
-          });
-        }
-      }
-    });
     const elmt = ref.current;
+
     if (elmt) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.contentBoxSize) {
+            const contentBoxSize = Array.isArray(entry.contentBoxSize)
+              ? entry.contentBoxSize[0]
+              : entry.contentBoxSize;
+
+            setSize({
+              width: contentBoxSize.inlineSize,
+              height: contentBoxSize.blockSize,
+            });
+          } else {
+            setSize({
+              width: entry.contentRect.width,
+              height: entry.contentRect.height,
+            });
+          }
+        }
+      });
+
       resizeObserver.observe(elmt);
+
+      return () => {
+        resizeObserver.unobserve(elmt);
+      };
     }
-    return () => {
-      if (elmt) resizeObserver.unobserve(elmt);
-    };
   }, []);
 
   return [ref, size];

@@ -98,7 +98,7 @@ function ArtifactInventory({
             chosenID={chosenArtifact?.ID || 0}
             itemType="artifact"
             items={filteredArtifacts}
-            onClickItem={setChosenArtifact}
+            onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
           />
 
           <div className="flex flex-col justify-between">

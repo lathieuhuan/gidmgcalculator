@@ -20,12 +20,10 @@ interface ItemThumbProps {
     owner?: string | null;
     setupIDs?: number[];
   };
-  visible?: boolean;
-  chosen: boolean;
+  chosen?: boolean;
 }
 const ItemThumbCore = ({
   item: { beta, icon, rarity, level, refi, owner },
-  visible = true,
   chosen,
 }: ItemThumbProps) => {
   //
@@ -34,21 +32,18 @@ const ItemThumbCore = ({
     return (
       <div
         className={clsx(
-          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle transition-opacity duration-500",
+          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
           styles["side-icon"],
-          !sideIcon && "overflow-hidden",
-          visible ? "opacity-100" : "opacity-0"
+          !sideIcon && "overflow-hidden"
         )}
       >
-        {visible && (
-          <Image
-            className={
-              "max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "" : " -translate-y-2")
-            }
-            size="w-10 h-10"
-            src={sideIcon || icon}
-          />
-        )}
+        <Image
+          className={
+            "max-w-none -translate-x-2 -translate-y-4" + (sideIcon ? "" : " -translate-y-2")
+          }
+          size="w-10 h-10"
+          src={sideIcon || icon}
+        />
       </div>
     );
   };
@@ -84,11 +79,7 @@ const ItemThumbCore = ({
             `aspect-square bg-gradient-${rarity || 5} ` + "rounded rounded-br-2xl overflow-hidden"
           }
         >
-          <div
-            className={"transition-opacity duration-500 " + (visible ? "opacity-100" : "opacity-0")}
-          >
-            {visible && <Image src={icon} imgType={refi ? "weapon" : "artifact"} />}
-          </div>
+          <Image src={icon} imgType={refi ? "weapon" : "artifact"} />
         </div>
 
         <div className="flex-center bg-default rounded-b">
@@ -101,6 +92,4 @@ const ItemThumbCore = ({
   );
 };
 
-export const ItemThumb = memo(ItemThumbCore, (prev, next) => {
-  return prev.visible === next.visible && prev.chosen === next.chosen;
-});
+export const ItemThumb = memo(ItemThumbCore, (prev, next) => prev.chosen === next.chosen);

@@ -87,6 +87,7 @@ const Mika: DataCharacter = {
           flatFactor: 234,
         },
       ],
+      multAttributeType: "hp",
       energyCost: 70,
     },
   },
