@@ -256,19 +256,24 @@ export const userDatabaseSlice = createSlice({
     },
     removeWeapon: ({ userWps, userChars }, action: RemoveWeaponAction) => {
       const { ID, owner, type } = action.payload;
-      userWps.splice(indexById(userWps, ID), 1);
+      const removedIndex = indexById(userWps, ID);
 
-      if (owner) {
-        const newWpID = Date.now();
-        userWps.unshift({
-          ID: newWpID,
-          owner,
-          ...createWeapon({ type }),
-        });
+      if (removedIndex !== -1) {
+        userWps.splice(removedIndex, 1);
 
-        const ownerInfo = findByName(userChars, owner);
-        if (ownerInfo) {
-          ownerInfo.weaponID = newWpID;
+        if (owner) {
+          const newWpID = Date.now();
+
+          userWps.unshift({
+            ID: newWpID,
+            owner,
+            ...createWeapon({ type }),
+          });
+
+          const ownerInfo = findByName(userChars, owner);
+          if (ownerInfo) {
+            ownerInfo.weaponID = newWpID;
+          }
         }
       }
     },
@@ -352,14 +357,18 @@ export const userDatabaseSlice = createSlice({
     },
     removeArtifact: ({ userArts, userChars }, action: RemoveArtifactAction) => {
       const { ID, owner, type } = action.payload;
-      userArts.splice(indexById(userArts, ID), 1);
+      const removedIndex = indexById(userArts, ID);
 
-      if (owner) {
-        const index = ARTIFACT_TYPES.indexOf(type);
+      if (removedIndex !== -1) {
+        userArts.splice(removedIndex, 1);
 
-        const ownerInfo = findByName(userChars, owner);
-        if (ownerInfo) {
-          ownerInfo.artifactIDs[index] = null;
+        if (owner) {
+          const artIndex = ARTIFACT_TYPES.indexOf(type);
+
+          const ownerInfo = findByName(userChars, owner);
+          if (ownerInfo) {
+            ownerInfo.artifactIDs[artIndex] = null;
+          }
         }
       }
     },

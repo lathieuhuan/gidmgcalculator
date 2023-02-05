@@ -202,12 +202,16 @@ export default function MyWeapons() {
           onConfirm={() => {
             dispatch(removeWeapon(chosenWeapon));
 
-            const index = indexById(filteredWeapons, chosenWeapon.ID);
+            const removedIndex = indexById(filteredWeapons, chosenWeapon.ID);
 
-            if (index !== -1 && filteredWeapons.length > 1) {
-              const move = index < filteredWeapons.length - 1 ? 1 : -1;
+            if (removedIndex !== -1) {
+              if (filteredWeapons.length > 1) {
+                const move = removedIndex === filteredWeapons.length - 1 ? -1 : 1;
 
-              setChosenWeapon(filteredWeapons[index + move]);
+                setChosenWeapon(filteredWeapons[removedIndex + move]);
+              } else {
+                setChosenWeapon(undefined);
+              }
             }
           }}
           onClose={closeModal}

@@ -279,12 +279,16 @@ export default function MyArtifacts() {
           onConfirm={() => {
             dispatch(removeArtifact(chosenArtifact));
 
-            const index = indexById(filteredArtifacts, chosenArtifact.ID);
+            const removedIndex = indexById(filteredArtifacts, chosenArtifact.ID);
 
-            if (index !== -1 && filteredArtifacts.length > 1) {
-              const move = index < filteredArtifacts.length - 1 ? 1 : -1;
+            if (removedIndex !== -1) {
+              if (filteredArtifacts.length > 1) {
+                const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
 
-              setChosenArtifact(filteredArtifacts[index + move]);
+                setChosenArtifact(filteredArtifacts[removedIndex + move]);
+              } else {
+                setChosenArtifact(undefined);
+              }
             }
           }}
           onClose={closeModal}
