@@ -24,13 +24,12 @@ const selectCharacterNames = createSelector(selectUserChars, (userChars) =>
 type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
 
 export default function MyCharacters() {
-  const [modalType, setModalType] = useState<ModalType>(null);
+  const dispatch = useDispatch();
 
   const chosenChar = useSelector(selectChosenChar);
   const characterNames = useSelector(selectCharacterNames);
 
-  const characterListRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
+  const [modalType, setModalType] = useState<ModalType>(null);
 
   return (
     <div className="h-full flex flex-col bg-darkblue-3">
@@ -68,7 +67,7 @@ export default function MyCharacters() {
       ) : (
         <SideIconCarousel
           characterNames={characterNames}
-          characterListRef={characterListRef}
+          chosenChar={chosenChar}
           onCliceSort={() => setModalType("SORT_CHARACTERS")}
           onClickWish={() => setModalType("ADD_CHARACTER")}
         />
@@ -88,7 +87,6 @@ export default function MyCharacters() {
           if (weaponType) {
             dispatch(addCharacter({ name, weaponType }));
           }
-          if (characterListRef.current) characterListRef.current.scrollLeft = 0;
         }}
         onClose={() => setModalType(null)}
       />

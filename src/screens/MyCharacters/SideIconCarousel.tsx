@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { RefObject, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 // Util
@@ -9,11 +9,9 @@ import { findDataCharacter } from "@Data/controllers";
 // Action
 import { chooseCharacter } from "@Store/userDatabaseSlice";
 
-// Selector
-import { selectChosenChar } from "@Store/userDatabaseSlice/selectors";
-
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
+import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
 import { IconButton } from "@Components/atoms";
@@ -23,45 +21,50 @@ import styles from "./styles.module.scss";
 
 interface TopBarProps {
   characterNames: string[];
-  characterListRef: RefObject<HTMLDivElement>;
+  chosenChar: string;
   onCliceSort: () => void;
   onClickWish: () => void;
 }
 export default function SideIconCarousel({
   characterNames,
-  characterListRef,
+  chosenChar,
   onCliceSort,
   onClickWish,
 }: TopBarProps) {
-  const [gridviewOn, setGridviewOn] = useState(false);
-  const chosenChar = useSelector(selectChosenChar);
   const dispatch = useDispatch();
 
-  const scrollList = (name: string) => () => {
-    if (characterListRef.current) {
-      characterListRef.current.scrollLeft = characterNames.indexOf(name) * 84;
-    }
+  const [gridviewOn, setGridviewOn] = useState(false);
+
+  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+
+  const scrollList = (name: string) => {
+    document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
   };
 
   useEffect(() => {
-    scrollList(chosenChar);
-    const thisCpn = characterListRef.current;
-
     const scrollHorizontally = (e: any) => {
       const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-      if (thisCpn) {
-        thisCpn.scrollLeft -= delta * 50;
+
+      if (ref.current) {
+        ref.current.scrollLeft -= delta * 50;
       }
       e.preventDefault();
     };
 
-    thisCpn?.addEventListener("wheel", scrollHorizontally);
-    return () => thisCpn?.removeEventListener("wheel", scrollHorizontally);
+    ref.current?.addEventListener("wheel", scrollHorizontally);
+
+    return () => {
+      ref.current?.removeEventListener("wheel", scrollHorizontally);
+    };
   }, []);
+
+  useEffect(() => {
+    scrollList(chosenChar);
+  }, [chosenChar]);
 
   return (
     <div className="w-full flex justify-center bg-darkblue-2">
-      <div className={clsx(styles["side-icon-carousel"])}>
+      <div className={styles["side-icon-carousel"]}>
         {characterNames.length ? (
           <div className="absolute top-8 right-full flex">
             <IconButton className="mr-4 text-xl" variant="positive" onClick={onCliceSort}>
@@ -73,7 +76,7 @@ export default function SideIconCarousel({
           </div>
         ) : null}
 
-        <div ref={characterListRef} className="mt-2 w-full hide-scrollbar">
+        <div ref={ref} className="mt-2 w-full hide-scrollbar">
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
@@ -82,11 +85,15 @@ export default function SideIconCarousel({
                   return null;
                 }
                 const { sideIcon, icon } = databaseChar;
+                const visible = itemsVisible[name];
 
                 return (
                   <div
                     key={name}
+                    id={`side-icon-${name}`}
+                    data-id={name}
                     className={clsx(
+                      observedItemCN,
                       "mx-1 border-b-3 border-transparent cursor-pointer",
                       name === chosenChar && styles["active-cell"]
                     )}
@@ -94,14 +101,23 @@ export default function SideIconCarousel({
                   >
                     <div
                       className={clsx(
-                        "rounded-circle border-3 border-lesser/30  bg-black/30",
+                        "rounded-circle border-3 border-lesser/30 bg-black/30",
                         styles["icon-wrapper"],
                         sideIcon
-                          ? clsx("m-2", styles["side-icon-wrapper"])
-                          : clsx("m-1 overflow-hidden", styles["beta-icon-wrapper"])
+                          ? "m-2 " + styles["side-icon-wrapper"]
+                          : "m-1 overflow-hidden " + styles["beta-icon-wrapper"]
                       )}
                     >
-                      <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />
+                      <div
+                        className={
+                          "w-ful h-full transition-opacity duration-400 " +
+                          (visible ? "opacity-100" : "opacity-0")
+                        }
+                      >
+                        {visible && (
+                          <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />
+                        )}
+                      </div>
                     </div>
                   </div>
                 );

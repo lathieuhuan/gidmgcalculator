@@ -27,7 +27,7 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
         >
           <div
             className={
-              "aspect-square transition-opacity duration-500 " +
+              "aspect-square transition-opacity duration-400 " +
               (visible ? "opacity-100" : "opacity-0")
             }
           >

@@ -1,7 +1,10 @@
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import type { DataType, Filter, PickerItem } from "../types";
+
+// Hook
+import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
 import { CollapseSpace, IconButton, Input } from "@Components/atoms";
@@ -27,7 +30,6 @@ export const PickerTemplate = ({
   onPickItem,
   onClose,
 }: PickerProps) => {
-  const intersectionObserverRef = useRef<HTMLDivElement>(null);
   const [pickedNames, setPickedNames] = useState<Record<string, boolean>>({});
 
   const [filterOn, setFilterOn] = useState(false);
@@ -36,37 +38,8 @@ export const PickerTemplate = ({
 
   const [massAdd, setMassAdd] = useState(false);
   const [itemCounts, setItemCounts] = useState<number[]>([]);
-  const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
 
-  useEffect(() => {
-    const handleIntersection: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry, i) => {
-        const id = entry.target.getAttribute("data-id");
-
-        if (entry.isIntersecting && id) {
-          setItemsVisible((prevItemsVisible) => {
-            const newItemsVisible = { ...prevItemsVisible };
-            newItemsVisible[id] = true;
-            return newItemsVisible;
-          });
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: intersectionObserverRef.current,
-      rootMargin: "0px",
-      threshold: 0.1,
-    });
-
-    intersectionObserverRef.current?.querySelectorAll(".picker-item").forEach((item) => {
-      if (item) {
-        observer.observe(item);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
 
   const visibleNames: Record<string, boolean> = {};
 
@@ -149,17 +122,18 @@ export const PickerTemplate = ({
       </div>
 
       <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
-        <div ref={intersectionObserverRef} className="pr-2 h-full custom-scrollbar">
+        <div ref={ref} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               const count = itemCounts[i] || 0;
 
               return (
                 <div
-                  data-id={item.code}
                   key={item.code.toString() + item.rarity}
+                  data-id={item.code}
                   className={clsx(
-                    "picker-item grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
+                    observedItemCN,
+                    "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
                     item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2",
                     { hidden: dataType === "character" && !visibleNames[item.name] }
                   )}

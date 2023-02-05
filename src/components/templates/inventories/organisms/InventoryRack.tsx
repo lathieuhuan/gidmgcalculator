@@ -28,7 +28,7 @@ export const InventoryRack = ({
   items,
   onClickItem,
 }: InventoryRackProps) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const observeArea = useRef<HTMLDivElement>(null);
   const pioneerRef = useRef<HTMLDivElement>(null);
   const heightRef = useRef(0);
 
@@ -51,6 +51,7 @@ export const InventoryRack = ({
       const handleIntersection: IntersectionObserverCallback = (entries) => {
         entries.forEach((entry) => {
           const dataId = entry.target.getAttribute("data-id");
+
           if (entry.isIntersecting && dataId) {
             setItemsVisible((prevItemsVisible) => {
               const newItemVisible = { ...prevItemsVisible };
@@ -62,10 +63,10 @@ export const InventoryRack = ({
       };
 
       const observer = new IntersectionObserver(handleIntersection, {
-        root: wrapperRef.current,
+        root: observeArea.current,
       });
 
-      wrapperRef.current?.querySelectorAll(".inventory-item").forEach((item) => {
+      observeArea.current?.querySelectorAll(".inventory-item").forEach((item) => {
         if (item) {
           observer.observe(item);
         }
@@ -78,8 +79,8 @@ export const InventoryRack = ({
   const deadEnd = Math.ceil(items.length / INVENTORY_PAGE_SIZE) - 1;
 
   const resetScroll = () => {
-    if (wrapperRef.current) {
-      wrapperRef.current.scrollTop = 0;
+    if (observeArea.current) {
+      observeArea.current.scrollTop = 0;
     }
   };
 
@@ -101,7 +102,7 @@ export const InventoryRack = ({
 
   return (
     <div className="pr-2 w-full flex flex-col" style={{ minWidth: "22rem" }}>
-      <div ref={wrapperRef} className={"custom-scrollbar " + listClassName}>
+      <div ref={observeArea} className={"custom-scrollbar " + listClassName}>
         {!isReady && (
           <div ref={pioneerRef} className={"opacity-0 " + itemClassName}>
             <ItemThumb item={{ icon: "", level: "1/20", rarity: 5 }} />
@@ -122,7 +123,7 @@ export const InventoryRack = ({
                     key={item.ID}
                     data-id={dataId}
                     className={clsx(
-                      "transition-opacity duration-500",
+                      "transition-opacity duration-400",
                       itemClassName,
                       isOnPage && "inventory-item",
                       isOnPage && itemsVisible[dataId] ? "opacity-100" : "opacity-0 !p-0"

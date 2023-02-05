@@ -117,6 +117,9 @@ module.exports = {
       transitionProperty: {
         size: "height, width",
       },
+      transitionDuration: {
+        400: "400ms",
+      },
     },
   },
   plugins: [],
