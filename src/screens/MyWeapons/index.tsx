@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import type { UserWeapon, WeaponType } from "@Src/types";
+import type { WeaponType } from "@Src/types";
 
 // Constant
 import { WEAPON_ICONS } from "@Src/constants";
@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Util
-import { indexById } from "@Src/utils";
+import { findById, indexById } from "@Src/utils";
 
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
@@ -39,7 +39,7 @@ type ModalType = "" | "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
 export default function MyWeapons() {
   const dispatch = useDispatch();
 
-  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
+  const [chosenID, setChosenID] = useState(0);
   const [modalType, setModalType] = useState<ModalType>("");
   const [filterIsActive, setFilterIsActive] = useState(false);
   const [weaponPicker, setWeaponPicker] = useState<{ active: boolean; type: WeaponType }>({
@@ -51,6 +51,7 @@ export default function MyWeapons() {
   const filteredWeapons = useSelector((state) =>
     selectFilteredWeapons(state, filteredTypes as WeaponType[])
   );
+  const chosenWeapon = findById(filteredWeapons, chosenID);
 
   const openModal = (type: ModalType) => () => setModalType(type);
 
@@ -100,10 +101,10 @@ export default function MyWeapons() {
           <InventoryRack
             listClassName={styles.list}
             itemClassName={styles.item}
-            chosenID={chosenWeapon?.ID || 0}
+            chosenID={chosenID}
             itemType="weapon"
             items={filteredWeapons}
-            onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
+            onClickItem={(item) => setChosenID(item.ID)}
           />
 
           <div className="flex flex-col">
@@ -113,8 +114,8 @@ export default function MyWeapons() {
                   <WeaponCard
                     mutable
                     weapon={chosenWeapon}
-                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, level }))}
-                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenWeapon.ID, refi }))}
+                    upgrade={(level) => dispatch(updateUserWeapon({ ID: chosenID, level }))}
+                    refine={(refi) => dispatch(updateUserWeapon({ ID: chosenID, refi }))}
                   />
                 ) : null}
               </div>
@@ -144,7 +145,7 @@ export default function MyWeapons() {
             </div>
 
             <OwnerLabel
-              key={chosenWeapon?.ID}
+              key={chosenID}
               owner={chosenWeapon?.owner}
               setupIDs={chosenWeapon?.setupIDs}
             />
@@ -173,7 +174,7 @@ export default function MyWeapons() {
           const newWeapon = { ID: Date.now(), ...item, owner: null };
 
           dispatch(addUserWeapon(newWeapon));
-          setChosenWeapon(newWeapon);
+          setChosenID(newWeapon.ID);
         }}
         onClose={() => setWeaponPicker((prev) => ({ ...prev, active: false }))}
       />
@@ -186,8 +187,8 @@ export default function MyWeapons() {
             return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;
           }}
           onPickCharacter={({ name }) => {
-            if (chosenWeapon.ID) {
-              dispatch(swapWeaponOwner({ weaponID: chosenWeapon.ID, newOwner: name }));
+            if (chosenID) {
+              dispatch(swapWeaponOwner({ weaponID: chosenID, newOwner: name }));
             }
           }}
           onClose={closeModal}
@@ -202,15 +203,15 @@ export default function MyWeapons() {
           onConfirm={() => {
             dispatch(removeWeapon(chosenWeapon));
 
-            const removedIndex = indexById(filteredWeapons, chosenWeapon.ID);
+            const removedIndex = indexById(filteredWeapons, chosenID);
 
             if (removedIndex !== -1) {
               if (filteredWeapons.length > 1) {
                 const move = removedIndex === filteredWeapons.length - 1 ? -1 : 1;
 
-                setChosenWeapon(filteredWeapons[removedIndex + move]);
+                setChosenID(filteredWeapons[removedIndex + move].ID);
               } else {
-                setChosenWeapon(undefined);
+                setChosenID(0);
               }
             }
           }}

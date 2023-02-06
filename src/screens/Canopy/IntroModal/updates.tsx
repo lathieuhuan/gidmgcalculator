@@ -3,6 +3,18 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 6th, 2023",
+    content: [
+      <>
+        Updated <Lightgold>Dehya</Lightgold> and <Lightgold>Mika</Lightgold>.
+      </>,
+      <>
+        Fixed <Lightgold>Dehya</Lightgold>'s Constellation 1 did not give HP bonus. Thank you{" "}
+        <Lightgold>Gabriel Caminha</Lightgold>!
+      </>,
+    ],
+  },
+  {
     date: "February 4th, 2023",
     content: [
       <>

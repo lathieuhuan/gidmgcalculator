@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { DragEventHandler, useEffect, useState } from "react";
+import { useState } from "react";
+import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
 import { FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
@@ -13,11 +13,11 @@ import { sortCharacters } from "@Store/userDatabaseSlice";
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Util
-import { splitLv } from "@Src/utils";
+import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Button, IconButton } from "@Components/atoms";
+import { IconButton } from "@Components/atoms";
 import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
@@ -27,20 +27,81 @@ const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   })
 );
 
+interface LineProps extends HTMLAttributes<HTMLDivElement> {
+  char: { name: string; level: string; rarity: number; index: number };
+  marker?: ReactNode;
+  visiblePlot?: boolean;
+}
+const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
+  return (
+    <div key={char.name} className="flex flex-col cursor-default select-none" {...rest}>
+      <div className="px-2 py-1 h-10 bg-darkblue-3" hidden={!visiblePlot}></div>
+
+      <div className="px-2 py-1 flex items-center hover:bg-darkblue-2">
+        <div className="w-8 h-8 mr-2 flex-center text-default pointer-events-none">{marker}</div>
+
+        <p className="pointer-events-none text-default">
+          <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
+          {char.level})
+        </p>
+      </div>
+    </div>
+  );
+};
+
 function SortInner({ onClose }: { onClose: () => void }) {
-  const toBeSorted = useSelector(selectCharacterToBeSorted);
   const dispatch = useDispatch();
+
+  const toBeSorted = useSelector(selectCharacterToBeSorted);
 
   const [list, setList] = useState(toBeSorted);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dropIndex, setDropIndex] = useState<number | null>(null);
+  const [markedList, setMarkedList] = useState<number[]>([]);
+  const [inMarkingMode, setInMarkingMode] = useState(false);
+
+  const onSortByName = () => {
+    setList((prev) => {
+      const newList = [...prev];
+      newList.sort((a, b) => a.name.localeCompare(b.name));
+
+      return newList;
+    });
+  };
+
+  const onSortByLevel = () => {
+    setList((prev) => {
+      const newList = [...prev];
+
+      return newList.sort((a, b) => {
+        const [fA, sA] = splitLv(a);
+        const [fB, sB] = splitLv(b);
+
+        if (fA !== fB) {
+          return fB - fA;
+        }
+
+        return sB - sA;
+      });
+    });
+  };
+
+  const onSortByRarity = () => {
+    setList((prev) => {
+      const newList = [...prev];
+
+      return newList.sort((a, b) => b.rarity - a.rarity);
+    });
+  };
 
   const onDragStart: DragEventHandler = (e) => {
     setDragIndex(+e.currentTarget.id);
   };
+
   const onDragEnter: DragEventHandler = (e) => {
     setDropIndex(+e.currentTarget.id);
   };
+
   const onDragOver: DragEventHandler = (e) => {
     e.preventDefault();
   };
@@ -60,8 +121,53 @@ function SortInner({ onClose }: { onClose: () => void }) {
     setDropIndex(null);
   };
 
+  const onClickLine = (index: number) => {
+    if (!inMarkingMode) {
+      return;
+    }
+
+    setMarkedList((prevMarkedList) => {
+      const exitedIndex = prevMarkedList.indexOf(index);
+
+      if (exitedIndex !== -1) {
+        return prevMarkedList.splice(0, exitedIndex);
+      }
+
+      return [...prevMarkedList, index];
+    });
+  };
+
+  const onToggleMarkingMode = () => {
+    setInMarkingMode(!inMarkingMode);
+
+    if (inMarkingMode) {
+      setMarkedList([]);
+    }
+  };
+
+  const onConfirmOrder = () => {
+    let orderedIndexes = [];
+
+    if (inMarkingMode) {
+      const remainIndexes = [];
+
+      for (const { index } of list) {
+        if (!markedList.includes(index)) {
+          remainIndexes.push(index);
+        }
+      }
+
+      orderedIndexes = markedList.concat(remainIndexes);
+    } else {
+      orderedIndexes = list.map(({ index }) => index);
+    }
+
+    dispatch(sortCharacters(orderedIndexes));
+    onClose();
+  };
+
   return (
-    <div className="px-2 py-4 rounded-lg bg-darkblue-2">
+    <div className="px-2 py-4 rounded-lg bg-darkblue-1">
       <IconButton
         className="absolute top-1 right-1 text-xl hover:text-darkred"
         boneOnly
@@ -74,93 +180,73 @@ function SortInner({ onClose }: { onClose: () => void }) {
       <ButtonBar
         className="mt-3 space-x-4"
         buttons={[
-          {
-            text: "Name",
-            variant: "neutral",
-            onClick: () => {
-              setList((prev) => {
-                const newList = [...prev];
-                newList.sort((a, b) => a.name.localeCompare(b.name));
-                return newList;
-              });
-            },
-          },
-          {
-            text: "Level",
-            variant: "neutral",
-            onClick: () => {
-              setList((prev) => {
-                const newList = [...prev];
-                return newList.sort((a, b) => {
-                  const [fA, sA] = splitLv(a);
-                  const [fB, sB] = splitLv(b);
-                  if (fA !== fB) {
-                    return fB - fA;
-                  }
-                  return sB - sA;
-                });
-              });
-            },
-          },
-          {
-            text: "Rarity",
-            variant: "neutral",
-            onClick: () => {
-              setList((prev) => {
-                const newList = [...prev];
-                return newList.sort((a, b) => {
-                  return b.rarity - a.rarity;
-                });
-              });
-            },
-          },
+          { text: "Name", variant: "default", onClick: onSortByName },
+          { text: "Level", variant: "default", onClick: onSortByLevel },
+          { text: "Rarity", variant: "default", onClick: onSortByRarity },
         ]}
       />
 
       <div className="mt-4 custom-scrollbar" style={{ height: "60vh" }}>
         <div>
-          {list.map((char, i) => (
-            <div
-              key={char.name}
-              id={i.toString()}
-              className={clsx(
-                "flex flex-col cursor-default select-none"
-                // i === dropIndex && "border-t border-white"
-              )}
-              draggable="true"
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
-              onDragEnter={onDragEnter}
-              onDrop={onDrop}
-            >
-              <div className="px-2 py-1 h-10" hidden={i !== dropIndex}>
-                <div className="bg-darkblue-3" />
-              </div>
+          {inMarkingMode &&
+            markedList.map((index, i) => {
+              const char = findByIndex(list, index);
 
-              <div className="px-2 py-1 flex items-center hover:bg-darkblue-1">
-                <div className="w-8 h-8 mr-2 flex-center text-default  pointer-events-none">
-                  <FaSort size="1.25rem" />
-                </div>
-                <p className="pointer-events-none text-default">
-                  <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
-                  {char.level})
-                </p>
-              </div>
-            </div>
-          ))}
+              if (char) {
+                return (
+                  <Line
+                    key={char.name}
+                    char={char}
+                    marker={i + 1}
+                    onClick={() => onClickLine(char.index)}
+                  />
+                );
+              }
+
+              return null;
+            })}
+          {inMarkingMode
+            ? list
+                .filter((char) => !markedList.includes(char.index))
+                .map((char) => {
+                  return (
+                    <Line key={char.name} char={char} onClick={() => onClickLine(char.index)} />
+                  );
+                })
+            : list.map((char, i) => {
+                return (
+                  <Line
+                    key={char.name}
+                    id={i.toString()}
+                    char={char}
+                    visiblePlot={i === dropIndex}
+                    draggable={!inMarkingMode}
+                    marker={<FaSort size="1.25rem" />}
+                    onDragStart={onDragStart}
+                    onDragOver={onDragOver}
+                    onDragEnter={onDragEnter}
+                    onDrop={onDrop}
+                  />
+                );
+              })}
         </div>
       </div>
-      <div className="mt-4 flex justify-center">
-        <Button
-          variant="positive"
-          onClick={() => {
-            dispatch(sortCharacters(list.map(({ index }) => index)));
-            onClose();
-          }}
-        >
-          Confirm
-        </Button>
-      </div>
+
+      <ButtonBar
+        className="mt-4 flex justify-center space-x-4"
+        buttons={[
+          {
+            text: inMarkingMode ? "Marking order" : "Drag & Drop",
+            variant: "neutral",
+            onClick: onToggleMarkingMode,
+          },
+          {
+            text: "Confirm",
+            variant: "positive",
+            onClick: onConfirmOrder,
+          },
+        ]}
+      />
     </div>
   );
 }

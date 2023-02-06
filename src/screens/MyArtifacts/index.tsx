@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Util
-import { indexById } from "@Src/utils";
+import { findById, indexById } from "@Src/utils";
 import {
   filterArtifactsBySetsAndStats,
   initArtifactStatsFilter,
@@ -64,7 +64,7 @@ type ModalType = "" | "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFAC
 export default function MyArtifacts() {
   const dispatch = useDispatch();
 
-  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
+  const [chosenID, setChosenID] = useState(0);
   const [codes, setCodes] = useState<number[]>([]);
   const [stats, setStats] = useState(initArtifactStatsFilter());
 
@@ -82,14 +82,15 @@ export default function MyArtifacts() {
   const filteredArtifacts = useSelector((state) =>
     selectFilteredArtifacts(state, filteredTypes as ArtifactType[], codes, stats)
   );
+  const chosenArtifact = findById(filteredArtifacts, chosenID);
 
   const openModal = (type: ModalType) => () => setModalType(type);
 
   const closeModal = () => setModalType("");
 
   const swapOwner = (name: string) => {
-    if (chosenArtifact) {
-      dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenArtifact.ID }));
+    if (chosenID) {
+      dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenID }));
     }
   };
 
@@ -143,10 +144,10 @@ export default function MyArtifacts() {
           <InventoryRack
             listClassName={styles.list}
             itemClassName={styles.item}
-            chosenID={chosenArtifact?.ID || 0}
+            chosenID={chosenID || 0}
             itemType="artifact"
             items={filteredArtifacts}
-            onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
+            onClickItem={(item) => setChosenID(item.ID)}
           />
 
           <div>
@@ -157,12 +158,12 @@ export default function MyArtifacts() {
                     artifact={chosenArtifact}
                     mutable
                     onEnhance={(level) => {
-                      dispatch(updateUserArtifact({ ID: chosenArtifact.ID, level }));
+                      dispatch(updateUserArtifact({ ID: chosenID, level }));
                     }}
                     onChangeMainStatType={(type) =>
                       dispatch(
                         updateUserArtifact({
-                          ID: chosenArtifact.ID,
+                          ID: chosenID,
                           mainStatType: type as ArtifactMainStatType,
                         })
                       )
@@ -170,7 +171,7 @@ export default function MyArtifacts() {
                     onChangeSubStat={(subStatIndex, changes) => {
                       dispatch(
                         updateUserArtifactSubStat({
-                          ID: chosenArtifact.ID,
+                          ID: chosenID,
                           subStatIndex,
                           ...changes,
                         })
@@ -252,7 +253,7 @@ export default function MyArtifacts() {
           };
 
           dispatch(addUserArtifact(newArtifact));
-          setChosenArtifact(newArtifact);
+          setChosenID(newArtifact.ID);
         }}
         onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />
@@ -285,9 +286,9 @@ export default function MyArtifacts() {
               if (filteredArtifacts.length > 1) {
                 const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
 
-                setChosenArtifact(filteredArtifacts[removedIndex + move]);
+                setChosenID(filteredArtifacts[removedIndex + move].ID);
               } else {
-                setChosenArtifact(undefined);
+                setChosenID(0);
               }
             }
           }}

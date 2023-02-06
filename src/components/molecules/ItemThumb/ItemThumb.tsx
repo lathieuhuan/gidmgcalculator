@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { memo } from "react";
 import type { Level, Rarity } from "@Src/types";
 
 // Util
@@ -22,7 +21,7 @@ interface ItemThumbProps {
   };
   chosen?: boolean;
 }
-const ItemThumbCore = ({
+export const ItemThumb = ({
   item: { beta, icon, rarity, level, refi, owner },
   chosen,
 }: ItemThumbProps) => {
@@ -91,5 +90,3 @@ const ItemThumbCore = ({
     </div>
   );
 };
-
-export const ItemThumb = memo(ItemThumbCore, (prev, next) => prev.chosen === next.chosen);

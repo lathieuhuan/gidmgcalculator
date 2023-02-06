@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type DependencyList } from "react";
 
-export const useIntersectionObserver = <T extends HTMLElement>() => {
+export const useIntersectionObserver = <T extends HTMLElement>(
+  dependecies: DependencyList = []
+) => {
   const observeAreaRef = useRef<T>(null);
   const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
 
@@ -32,7 +34,7 @@ export const useIntersectionObserver = <T extends HTMLElement>() => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, dependecies);
 
   return {
     ref: observeAreaRef,

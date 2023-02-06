@@ -35,7 +35,9 @@ export default function SideIconCarousel({
 
   const [gridviewOn, setGridviewOn] = useState(false);
 
-  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>([
+    characterNames,
+  ]);
 
   const scrollList = (name: string) => {
     document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
