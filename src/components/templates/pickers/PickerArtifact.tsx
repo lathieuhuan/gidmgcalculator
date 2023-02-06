@@ -13,14 +13,14 @@ import artifacts from "@Data/artifacts";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
-import { PickerTemplate } from "./organisms/PickerTemplate";
+import { PickerTemplate, type PickerTemplateProps } from "./organisms/PickerTemplate";
 
 interface ArtifactPickerProps {
   type?: string;
   artifactType: ArtifactType;
   needMassAdd?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
-  onPickArtifact: (info: ReturnType<typeof createArtifact>) => void;
+  onPickArtifact: (info: ReturnType<typeof createArtifact>) => ReturnType<PickerTemplateProps["onPickItem"]>;
   onClose: () => void;
 }
 const ArtifactPicker = ({

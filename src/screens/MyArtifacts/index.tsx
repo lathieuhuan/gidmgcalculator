@@ -6,7 +6,7 @@ import type { ArtifactType, ArtifactMainStatType, UserArtifact } from "@Src/type
 import type { StatsFilter } from "@Components/templates/inventories/utils";
 
 // Constant
-import { ARTIFACT_ICONS } from "@Src/constants";
+import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
 
 // Action
 import {
@@ -42,20 +42,24 @@ import {
   ConfirmModal,
   TypeSelect,
   ItemRemoveConfirm,
+  WareHouse,
 } from "@Components/organisms";
-import { InventoryRack, PickerArtifact, PickerCharacter, WareHouse } from "@Components/templates";
+import { InventoryRack, PickerArtifact, PickerCharacter } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
 
-const selectFilteredArtifacts = createSelector(
+const selectArtifactInventory = createSelector(
   selectUserArts,
   (_: unknown, types: ArtifactType[]) => types,
   (_: unknown, __: unknown, codes: number[]) => codes,
   (_: unknown, __: unknown, ___: unknown, stats: StatsFilter) => stats,
   (userArts: UserArtifact[], types: ArtifactType[], codes: number[], stats: StatsFilter) => {
     const result = types.length ? userArts.filter((p) => types.includes(p.type)) : userArts;
-    return filterArtifactsBySetsAndStats(result, codes, stats);
+    return {
+      filteredArtifacts: filterArtifactsBySetsAndStats(result, codes, stats),
+      totalCount: userArts.length,
+    };
   }
 );
 
@@ -79,20 +83,31 @@ export default function MyArtifacts() {
     itemType: "artifact",
   });
 
-  const filteredArtifacts = useSelector((state) =>
-    selectFilteredArtifacts(state, filteredTypes as ArtifactType[], codes, stats)
+  const { filteredArtifacts, totalCount } = useSelector((state) =>
+    selectArtifactInventory(state, filteredTypes as ArtifactType[], codes, stats)
   );
   const chosenArtifact = findById(filteredArtifacts, chosenID);
 
-  const openModal = (type: ModalType) => () => setModalType(type);
+  const checkIfMaxArtifactsReached = () => {
+    if (totalCount + 1 > MAX_USER_ARTIFACTS) {
+      dispatch(
+        updateMessage({
+          type: "error",
+          content: "Number of stored artifacts has reached its limit.",
+        })
+      );
 
-  const closeModal = () => setModalType("");
+      return true;
+    }
+  };
 
   const swapOwner = (name: string) => {
     if (chosenID) {
       dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenID }));
     }
   };
+
+  const closeModal = () => setModalType("");
 
   const isFiltered =
     filteredTypes.length ||
@@ -107,7 +122,15 @@ export default function MyArtifacts() {
           <ButtonBar
             className="mr-4 space-x-4"
             buttons={[
-              { text: "Add", variant: "positive", onClick: openModal("PICK_ARTIFACT_TYPE") },
+              {
+                text: "Add",
+                variant: "positive",
+                onClick: () => {
+                  if (!checkIfMaxArtifactsReached()) {
+                    setModalType("PICK_ARTIFACT_TYPE");
+                  }
+                },
+              },
               { text: "Sort", onClick: () => dispatch(sortArtifacts()) },
             ]}
           />
@@ -120,7 +143,7 @@ export default function MyArtifacts() {
                 "pl-4 py-1 bg-lightgold glow-on-hover",
                 isFiltered ? "pr-2 rounded-l-2xl" : "pr-4 rounded-2xl"
               )}
-              onClick={openModal("FITLER")}
+              onClick={() => setModalType("FITLER")}
             >
               <p className="text-black font-bold">Filter</p>
             </button>
@@ -197,11 +220,11 @@ export default function MyArtifacts() {
                             })
                           );
                         } else {
-                          openModal("REMOVE_ARTIFACT")();
+                          setModalType("REMOVE_ARTIFACT");
                         }
                       },
                     },
-                    { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
+                    { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
                   ]}
                 />
               ) : null}
@@ -246,6 +269,12 @@ export default function MyArtifacts() {
         needMassAdd
         artifactType={artifactPicker.type}
         onPickArtifact={(item) => {
+          if (checkIfMaxArtifactsReached()) {
+            return {
+              shouldStopPicking: true,
+            };
+          }
+
           const newArtifact = {
             ID: Date.now(),
             ...item,

@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { useEffect, useState } from "react";
 import type { CharInfo } from "@Src/types";
 
@@ -55,7 +54,9 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
                   />
                 </div>
                 <div className="grow flex items-center group" onClick={() => onClickInfo(i + 1)}>
-                  <p className={clsx("px-2 text-lg font-bold", char.cons < i + 1 && "opacity-50")}>
+                  <p
+                    className={"px-2 text-lg font-bold" + (char.cons < i + 1 ? " opacity-50" : "")}
+                  >
                     {cons.name}
                   </p>
                   <InfoSign className="ml-auto" />

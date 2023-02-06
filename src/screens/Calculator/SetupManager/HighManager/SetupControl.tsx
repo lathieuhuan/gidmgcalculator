@@ -9,25 +9,23 @@ import { IconButton, Input } from "@Components/atoms";
 interface SetupControlProps {
   setup: NewSetupManageInfo;
   isStandard: boolean;
-  isStandardChoosable: boolean;
-  changeSetupName: (newName: string) => void;
-  removeSetup: () => void;
-  copySetup: () => void;
+  choosableAsStandard: boolean;
+  onChangeSetupName: (newName: string) => void;
+  onRemoveSetup: () => void;
+  onCopySetup: () => void;
   onToggleCompared: () => void;
   onChooseStandard: () => void;
 }
 export function SetupControl({
   setup,
   isStandard,
-  isStandardChoosable,
-  changeSetupName,
-  removeSetup,
-  copySetup,
+  choosableAsStandard,
+  onChangeSetupName,
+  onRemoveSetup,
+  onCopySetup,
   onToggleCompared,
   onChooseStandard,
 }: SetupControlProps) {
-  const isNew = setup.status === "NEW";
-
   return (
     <div className="px-2 py-3 rounded-lg bg-darkblue-1" onDoubleClick={() => console.log(setup)}>
       <Input
@@ -35,15 +33,15 @@ export function SetupControl({
         className="w-full px-4 pt-1 text-lg text-center rounded-md font-medium"
         value={setup.name}
         maxLength={16}
-        onChange={changeSetupName}
+        onChange={onChangeSetupName}
       />
       <div className="mt-4 flex justify-between">
         <div className="ml-1 flex space-x-4">
-          <IconButton variant="negative" onClick={removeSetup}>
+          <IconButton variant="negative" onClick={onRemoveSetup}>
             <FaTrashAlt />
           </IconButton>
 
-          <IconButton variant="positive" disabled={isNew} onClick={copySetup}>
+          <IconButton variant="positive" disabled={setup.status === "NEW"} onClick={onCopySetup}>
             <FaCopy />
           </IconButton>
         </div>
@@ -54,11 +52,11 @@ export function SetupControl({
               "w-8 h-8 rounded-circle flex-center text-2xl",
               isStandard
                 ? "bg-green text-black"
-                : isStandardChoosable
+                : choosableAsStandard
                 ? "text-default"
                 : "text-lesser"
             )}
-            disabled={!isStandardChoosable}
+            disabled={!choosableAsStandard}
             onClick={onChooseStandard}
           >
             <SiTarget />

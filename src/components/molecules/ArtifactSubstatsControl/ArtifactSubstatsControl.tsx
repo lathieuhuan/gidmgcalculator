@@ -39,6 +39,7 @@ export const ArtifactSubstatsControl = ({
   const { t } = useTranslation();
 
   const statTypeCount = { [mainStatType]: 1 };
+
   for (const { type } of subStats) {
     statTypeCount[type] = (statTypeCount[type] || 0) + 1;
   }

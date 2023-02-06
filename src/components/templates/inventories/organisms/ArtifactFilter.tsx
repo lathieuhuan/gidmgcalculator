@@ -40,15 +40,28 @@ const ArtifactFilterCore = ({ artifactType, artifacts, filter, onClose }: Artifa
     artifacts,
     codes: filter.codes,
   });
-  const disabled =
+
+  const resetIsDisabled =
     artifactStatsFilter.main === "All" && artifactStatsFilter.subs.every((s) => s === "All");
+
+  const onConfirmFilter = () => {
+    if (hasDupStat(artifactStatsFilter)) {
+      setIsError(true);
+      return;
+    }
+
+    filter.setStats(artifactStatsFilter);
+    filter.setCodes(filteredTempCodes);
+
+    onClose();
+  };
 
   return (
     <div className="p-4 flex hide-scrollbar">
       <div className="flex flex-col">
         <Button
           className="mb-2 mx-auto"
-          disabled={disabled}
+          disabled={resetIsDisabled}
           onClick={() => setArtifactStatsFilter(initArtifactStatsFilter())}
         >
           Reset Stats
@@ -60,19 +73,7 @@ const ArtifactFilterCore = ({ artifactType, artifacts, filter, onClose }: Artifa
           className="mt-4 pb-2"
           buttons={[
             { text: "Cancel", onClick: onClose },
-            {
-              text: "Confirm",
-              onClick: () => {
-                if (hasDupStat(artifactStatsFilter)) {
-                  setIsError(true);
-                  return;
-                }
-
-                filter.setStats(artifactStatsFilter);
-                filter.setCodes(filteredTempCodes);
-                onClose();
-              },
-            },
+            { text: "Confirm", onClick: onConfirmFilter },
           ]}
         />
       </div>

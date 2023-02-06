@@ -14,8 +14,11 @@ export const selectChosenChar = (state: RootState) => state.database.chosenChar;
 
 export const selectChosenSetupID = (state: RootState) => state.database.chosenSetupID;
 
-export const selectFilteredWeapons = createSelector(
+export const selectWeaponInventory = createSelector(
   selectUserWps,
   (_: unknown, types: WeaponType[]) => types,
-  (userWps, types) => (types.length ? userWps.filter((wp) => types.includes(wp.type)) : userWps)
+  (userWps, types) => ({
+    filteredWeapons: types.length ? userWps.filter((wp) => types.includes(wp.type)) : userWps,
+    totalCount: userWps.length,
+  })
 );

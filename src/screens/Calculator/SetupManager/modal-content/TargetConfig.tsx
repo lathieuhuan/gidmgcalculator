@@ -188,10 +188,9 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
               return (
                 <div key={attElmt} className="flex justify-between items-center">
                   <p
-                    className={clsx(
-                      "text-lg",
-                      attElmt === "phys" ? "text-default" : `text-${attElmt}`
-                    )}
+                    className={
+                      "text-lg " + (attElmt === "phys" ? "text-default" : `text-${attElmt}`)
+                    }
                   >
                     {t(attElmt, { ns: "resistance" })}
                   </p>

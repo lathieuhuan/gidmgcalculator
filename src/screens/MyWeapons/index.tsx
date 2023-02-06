@@ -4,7 +4,7 @@ import { FaEllipsisH } from "react-icons/fa";
 import type { WeaponType } from "@Src/types";
 
 // Constant
-import { WEAPON_ICONS } from "@Src/constants";
+import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
 
 // Action
 import {
@@ -17,7 +17,7 @@ import {
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
-import { selectFilteredWeapons } from "@Store/userDatabaseSlice/selectors";
+import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -29,12 +29,18 @@ import { findById, indexById } from "@Src/utils";
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel } from "@Components/organisms";
-import { InventoryRack, PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
+import {
+  ItemRemoveConfirm,
+  TypeSelect,
+  WeaponCard,
+  OwnerLabel,
+  WareHouse,
+} from "@Components/organisms";
+import { InventoryRack, PickerCharacter, PickerWeapon } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
-type ModalType = "" | "PICK_WEAPON_TYPE" | "EQUIP_CHARACTER" | "REMOVE_WEAPON";
+type ModalType = "" | "PICK_WEAPON_TYPE" | "PICK_CHARACTER_FOR_EQUIP" | "REMOVE_WEAPON";
 
 export default function MyWeapons() {
   const dispatch = useDispatch();
@@ -48,12 +54,23 @@ export default function MyWeapons() {
   });
 
   const { filteredTypes, renderTypeFilter } = useTypeFilter({ itemType: "weapon" });
-  const filteredWeapons = useSelector((state) =>
-    selectFilteredWeapons(state, filteredTypes as WeaponType[])
+  const { filteredWeapons, totalCount } = useSelector((state) =>
+    selectWeaponInventory(state, filteredTypes as WeaponType[])
   );
   const chosenWeapon = findById(filteredWeapons, chosenID);
 
-  const openModal = (type: ModalType) => () => setModalType(type);
+  const checkIfMaxWeaponsReached = () => {
+    if (totalCount + 1 > MAX_USER_WEAPONS) {
+      dispatch(
+        updateMessage({
+          type: "error",
+          content: "Number of stored weapons has reached its limit.",
+        })
+      );
+
+      return true;
+    }
+  };
 
   const closeModal = () => setModalType("");
 
@@ -67,7 +84,11 @@ export default function MyWeapons() {
               {
                 text: "Add",
                 variant: "positive",
-                onClick: openModal("PICK_WEAPON_TYPE"),
+                onClick: () => {
+                  if (!checkIfMaxWeaponsReached()) {
+                    setModalType("PICK_WEAPON_TYPE");
+                  }
+                },
               },
               {
                 text: "Sort",
@@ -134,11 +155,11 @@ export default function MyWeapons() {
                             })
                           );
                         } else {
-                          openModal("REMOVE_WEAPON")();
+                          setModalType("REMOVE_WEAPON");
                         }
                       },
                     },
-                    { text: "Equip", onClick: openModal("EQUIP_CHARACTER") },
+                    { text: "Equip", onClick: () => setModalType("PICK_CHARACTER_FOR_EQUIP") },
                   ]}
                 />
               ) : null}
@@ -171,7 +192,17 @@ export default function MyWeapons() {
         needMassAdd
         weaponType={weaponPicker.type}
         onPickWeapon={(item) => {
-          const newWeapon = { ID: Date.now(), ...item, owner: null };
+          if (checkIfMaxWeaponsReached()) {
+            return {
+              shouldStopPicking: true,
+            };
+          }
+
+          const newWeapon = {
+            ID: Date.now(),
+            ...item,
+            owner: null,
+          };
 
           dispatch(addUserWeapon(newWeapon));
           setChosenID(newWeapon.ID);
@@ -181,7 +212,7 @@ export default function MyWeapons() {
 
       {chosenWeapon && (
         <PickerCharacter
-          active={modalType === "EQUIP_CHARACTER"}
+          active={modalType === "PICK_CHARACTER_FOR_EQUIP"}
           sourceType="userData"
           filter={({ name, weaponType }) => {
             return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;

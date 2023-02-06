@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
 // Selector
-import { selectFilteredWeapons } from "@Store/userDatabaseSlice/selectors";
+import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -32,8 +32,8 @@ const WeaponInventory = ({
 }: WeaponInventoryProps) => {
   const weaponTypeRef = useRef([weaponType]);
 
-  const filteredWeapons = useSelector((state) =>
-    selectFilteredWeapons(state, weaponTypeRef.current)
+  const { filteredWeapons } = useSelector((state) =>
+    selectWeaponInventory(state, weaponTypeRef.current)
   );
 
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();

@@ -23,6 +23,7 @@ export const CopySection = <TOption extends Option>({
 
   const onClick = () => {
     const chosen = options.find(({ label }) => label === chosenLabel);
+
     if (chosen) {
       onClickCopy(chosen);
     }

@@ -7,7 +7,7 @@ export const MessageModal = () => {
   const message = useSelector((state) => state.calculator.message);
 
   const onClose = () => {
-    dispatch(updateMessage({ ...message, type: "" }));
+    dispatch(updateMessage(null));
   };
 
   const COLOR_BY_TYPE = {
@@ -18,7 +18,7 @@ export const MessageModal = () => {
 
   return (
     <ConfirmModal
-      active={message.type !== ""}
+      active={message.active}
       message={
         <span className={"text-xl " + (message.type ? COLOR_BY_TYPE[message.type] : "")}>
           {message.content}

@@ -21,8 +21,7 @@ import { isUserSetup } from "@Src/utils/setup";
 // Component
 import { Button, IconButton, Red, Lightgold } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
-import { StandardModal } from "@Components/organisms";
-import { WareHouse } from "@Components/templates";
+import { StandardModal, WareHouse } from "@Components/organisms";
 import { SetupTemplate } from "./SetupTemplate";
 import { ChosenSetupInfo } from "./ChosenSetupInfo";
 import { FirstCombine, CombineMore } from "./modal-content";
