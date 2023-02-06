@@ -67,6 +67,28 @@ export const PickerTemplate = ({
     }
   }
 
+  const onClickItem = (item: PickerItem, index: number) => {
+    const { shouldStopPicking } = onPickItem(item) || {};
+
+    if (!massAdd) {
+      onClose();
+    } //
+    else if (dataType !== "character") {
+      if (!shouldStopPicking) {
+        setItemCounts((prev) => {
+          const newItems = { ...prev };
+          newItems[index] = (newItems[index] || 0) + 1;
+          return newItems;
+        });
+      }
+    } else {
+      setPickedNames((prevPickedNames) => ({
+        ...prevPickedNames,
+        [item.name]: true,
+      }));
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
@@ -125,8 +147,6 @@ export const PickerTemplate = ({
         <div ref={ref} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
-              const count = itemCounts[i] || 0;
-
               return (
                 <div
                   key={item.code.toString() + item.rarity}
@@ -138,34 +158,12 @@ export const PickerTemplate = ({
                     { hidden: dataType === "character" && !visibleNames[item.name] }
                   )}
                 >
-                  <div
-                    onClick={() => {
-                      const { shouldStopPicking } = onPickItem(item) || {};
-
-                      if (!massAdd) {
-                        onClose();
-                      } //
-                      else if (dataType !== "character") {
-                        if (!shouldStopPicking) {
-                          setItemCounts((prev) => {
-                            const newItems = { ...prev };
-                            newItems[i] = count + 1;
-                            return newItems;
-                          });
-                        }
-                      } else {
-                        setPickedNames((prevPickedNames) => ({
-                          ...prevPickedNames,
-                          [item.name]: true,
-                        }));
-                      }
-                    }}
-                  >
+                  <div onClick={() => onClickItem(item, i)}>
                     <MemoItem
                       visible={itemsVisible[item.code]}
                       item={item}
                       itemType={dataType}
-                      pickedAmount={count}
+                      pickedAmount={itemCounts[i] || 0}
                     />
                   </div>
                 </div>

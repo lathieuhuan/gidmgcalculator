@@ -29,6 +29,11 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
 
   const [input, setInput] = useState(existed ? existed.name : `${charData.name} setup`);
 
+  const saveSetup = () => {
+    dispatch(saveSetupThunk(manageInfo.ID, input));
+    onClose();
+  };
+
   return (
     <div className="h-full px-8 py-6 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow">
       <p className="mb-2 mx-auto text-xl text-orange font-bold">
@@ -42,21 +47,14 @@ export function SaveSetup({ manageInfo, onClose }: SaveSetupProps) {
         onChange={setInput}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            dispatch(saveSetupThunk(manageInfo.ID, input));
-            onClose();
+            saveSetup();
           }
         }}
       />
       <ButtonBar
         buttons={[
           { text: "Cancel", onClick: onClose },
-          {
-            text: "Confirm",
-            onClick: () => {
-              dispatch(saveSetupThunk(manageInfo.ID, input));
-              onClose();
-            },
-          },
+          { text: "Confirm", onClick: saveSetup },
         ]}
       />
     </div>

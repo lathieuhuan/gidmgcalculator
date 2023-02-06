@@ -42,8 +42,9 @@ import {
   ConfirmModal,
   TypeSelect,
   ItemRemoveConfirm,
+  WareHouse,
 } from "@Components/organisms";
-import { InventoryRack, PickerArtifact, PickerCharacter, WareHouse } from "@Components/templates";
+import { InventoryRack, PickerArtifact, PickerCharacter } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";

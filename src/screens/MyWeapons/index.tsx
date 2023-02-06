@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import type { UserWeapon, WeaponType } from "@Src/types";
 
@@ -29,8 +29,14 @@ import { indexById } from "@Src/utils";
 // Component
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel } from "@Components/organisms";
-import { InventoryRack, PickerCharacter, PickerWeapon, WareHouse } from "@Components/templates";
+import {
+  ItemRemoveConfirm,
+  TypeSelect,
+  WeaponCard,
+  OwnerLabel,
+  WareHouse,
+} from "@Components/organisms";
+import { InventoryRack, PickerCharacter, PickerWeapon } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 

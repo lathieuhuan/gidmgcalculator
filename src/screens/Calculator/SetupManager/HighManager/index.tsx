@@ -179,10 +179,10 @@ function HiddenManager() {
                   key={setup.ID}
                   setup={setup}
                   isStandard={setup.ID === tempStandardId}
-                  isStandardChoosable={setup.isCompared && comparedSetups.length > 1}
-                  changeSetupName={changeSetupName(index)}
-                  removeSetup={removeSetup(index)}
-                  copySetup={copySetup(index)}
+                  choosableAsStandard={setup.isCompared && comparedSetups.length > 1}
+                  onChangeSetupName={changeSetupName(index)}
+                  onRemoveSetup={removeSetup(index)}
+                  onCopySetup={copySetup(index)}
                   onToggleCompared={onToggleSetupCompared(index)}
                   onChooseStandard={onChooseStandardSetup(index)}
                 />

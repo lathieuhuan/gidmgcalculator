@@ -17,6 +17,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
 
           for (let i = 0; i <= bonusLv; i++) {
             const { desc } = artData.setBonuses[i];
+
             content.push(
               <li key={i} className="mt-1">
                 <span className="text-orange">{(i + 1) * 2}-Piece Set:</span> <span>{desc}</span>
@@ -31,7 +32,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
           );
         })
       ) : (
-        <p className="text-lesser font-medium">No Set Bonus</p>
+        <p className="text-lesser font-medium">No set bonus</p>
       )}
     </div>
   );

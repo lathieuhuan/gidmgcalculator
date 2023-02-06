@@ -6,8 +6,6 @@ import type { IconType } from "react-icons/lib";
 
 import { getImgSrc } from "@Src/utils";
 
-// import { ArtifactIcon } from "@Components/atoms";
-
 const ICONS_BY_TYPE = {
   character: FaUser,
   weapon: RiSwordFill,
