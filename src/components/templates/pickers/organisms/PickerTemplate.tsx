@@ -16,11 +16,11 @@ const { FilterButton, Text } = ModalHeader;
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
-interface PickerProps {
+export interface PickerTemplateProps {
   data: PickerItem[];
   dataType: DataType;
   needMassAdd?: boolean;
-  onPickItem: (item: PickerItem) => void;
+  onPickItem: (item: PickerItem) => { shouldStopPicking: boolean } | void;
   onClose: () => void;
 }
 export const PickerTemplate = ({
@@ -29,7 +29,7 @@ export const PickerTemplate = ({
   needMassAdd,
   onPickItem,
   onClose,
-}: PickerProps) => {
+}: PickerTemplateProps) => {
   const [pickedNames, setPickedNames] = useState<Record<string, boolean>>({});
 
   const [filterOn, setFilterOn] = useState(false);
@@ -140,17 +140,19 @@ export const PickerTemplate = ({
                 >
                   <div
                     onClick={() => {
-                      onPickItem(item);
+                      const { shouldStopPicking } = onPickItem(item) || {};
 
                       if (!massAdd) {
                         onClose();
                       } //
                       else if (dataType !== "character") {
-                        setItemCounts((prev) => {
-                          const newItems = { ...prev };
-                          newItems[i] = count + 1;
-                          return newItems;
-                        });
+                        if (!shouldStopPicking) {
+                          setItemCounts((prev) => {
+                            const newItems = { ...prev };
+                            newItems[i] = count + 1;
+                            return newItems;
+                          });
+                        }
                       } else {
                         setPickedNames((prevPickedNames) => ({
                           ...prevPickedNames,

@@ -131,8 +131,9 @@ export type AppSettings = {
 };
 
 export type AppMessage = {
-  type: "" | "error" | "success" | "info";
-  content: string;
+  active: boolean;
+  type?: "error" | "success" | "info";
+  content?: string;
 };
 
 /**

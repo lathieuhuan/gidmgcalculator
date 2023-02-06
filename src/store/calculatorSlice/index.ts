@@ -76,8 +76,7 @@ const initialState: CalculatorState = {
   statsById: {},
   target: createTarget(),
   message: {
-    type: "",
-    content: "",
+    active: false,
   },
 };
 
@@ -91,11 +90,16 @@ export const calculatorSlice = createSlice({
         ...action.payload,
       };
     },
-    updateMessage: (state, action: PayloadAction<Partial<AppMessage>>) => {
-      state.message = {
-        ...state.message,
-        ...action.payload,
-      };
+    updateMessage: (
+      state,
+      action: PayloadAction<NonNullable<Pick<AppMessage, "type" | "content">> | null>
+    ) => {
+      state.message = action.payload
+        ? {
+            ...action.payload,
+            active: true,
+          }
+        : { active: false };
     },
     initSessionWithChar: (state, action: InitSessionWithCharAction) => {
       const { pickedChar, userWps, userArts } = action.payload;

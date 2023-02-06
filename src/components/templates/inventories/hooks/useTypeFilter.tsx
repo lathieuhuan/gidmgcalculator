@@ -38,18 +38,13 @@ export function useTypeFilter({ itemType, initialTypes = [] }: UseTypeFilterArgs
           <button
             key={i}
             className={clsx(
-              "mr-4 glow-on-hover rounded-circle transition duration-150",
+              "mr-4 w-10 h-10 glow-on-hover rounded-circle transition duration-150",
               itemType === "artifact" && "p-1",
               active && (itemType === "weapon" ? "shadow-3px-3px shadow-green" : "bg-green")
             )}
             onClick={() => onClickIcon(active, index, type)}
           >
-            <img
-              className={clsx(itemType === "weapon" ? "w-10" : "w-8")}
-              src={getImgSrc(src)}
-              alt=""
-              draggable={false}
-            />
+            <img src={getImgSrc(src)} alt="" draggable={false} />
           </button>
         );
       })}
