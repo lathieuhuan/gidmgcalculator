@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import type {
   UserArtifact,
   UserComplexSetup,
@@ -208,16 +208,18 @@ export const userDatabaseSlice = createSlice({
       if (weaponInfo) {
         const oldOwner = weaponInfo.owner;
         weaponInfo.owner = newOwner;
-
         const newOwnerInfo = findByName(userChars, newOwner);
+
         if (newOwnerInfo) {
           const newOwnerWeaponInfo = findById(userWps, newOwnerInfo.weaponID);
+
           if (newOwnerWeaponInfo) {
             newOwnerWeaponInfo.owner = oldOwner;
           }
         }
         if (oldOwner) {
           const oldOwnerInfo = findByName(userChars, oldOwner);
+
           if (oldOwnerInfo) {
             oldOwnerInfo.weaponID = weaponID;
           }

@@ -91,7 +91,7 @@ export const ArtifactCard = ({
 
       <div className="mt-2 ml-6">
         {["flower", "plume"].includes(artifact.type) || !mutable ? (
-          <p className={clsx("pt-1 text-lg", mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
+          <p className={"py-1 text-lg " + (mutable ? "pl-8" : "pl-2")}>{t(mainStatType)}</p>
         ) : (
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-2" size="1.25rem" />

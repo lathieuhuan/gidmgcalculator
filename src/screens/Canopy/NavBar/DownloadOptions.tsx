@@ -29,10 +29,10 @@ export function DownloadOptions({ onClose }: { onClose: () => void }) {
 
   const downloadData = JSON.stringify({
     version: 3,
-    Characters: userChars,
-    Weapons: userWps,
-    Artifacts: userArts,
-    Setups: userSetups,
+    characters: userChars,
+    weapons: userWps,
+    artifacts: userArts,
+    setups: userSetups,
   });
 
   const saveToLocalStorage = () => {

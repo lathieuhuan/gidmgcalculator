@@ -3,7 +3,7 @@ import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Dehya: DataCharacter = {
@@ -34,7 +34,7 @@ const Dehya: DataCharacter = {
   ],
   bonusStat: { type: "hp_", value: 7.2 },
   NAsConfig: {
-    name: "Gold-Duster Assault",
+    name: "Sandstorm Assault",
   },
   isReverseXtraLv: true,
   activeTalents: {
@@ -61,7 +61,15 @@ const Dehya: DataCharacter = {
         { name: "Ranging Flame", multFactors: 132.8 },
         {
           name: "Field DMG",
-          multFactors: 68.8,
+          multFactors: [
+            {
+              root: 60.2,
+            },
+            {
+              root: 1.03,
+              attributeType: "hp",
+            },
+          ],
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const C2isInUse = charModIsInUse(Dehya.buffs || [], char, selfBuffCtrls, 0);
             return talentBuff([C2isInUse, "pct", [false, 2], 50]);
@@ -73,8 +81,14 @@ const Dehya: DataCharacter = {
       name: "The Lioness's Bite",
       image: "",
       stats: [
-        { name: "Flame-Mane's Fist", multFactors: 112.8 },
-        { name: "Incineration Drive", multFactors: 159.2 },
+        {
+          name: "Flame-Mane's Fist",
+          multFactors: [{ root: 98.7 }, { root: 1.69, attributeType: "hp" }],
+        },
+        {
+          name: "Incineration Drive",
+          multFactors: [{ root: 139.3 }, { root: 2.39, attributeType: "hp" }],
+        },
       ],
       energyCost: 70,
     },
@@ -156,9 +170,8 @@ const Dehya: DataCharacter = {
       src: EModSrc.C1,
       isGranted: checkCons[1],
       desc: () => Dehya.constellation[0].desc,
+      applyBuff: makeModApplier("totalAttr", "hp_", 20),
       applyFinalBuff: ({ totalAttr, attPattBonus, tracker, desc }) => {
-        applyModifier(desc, totalAttr, "hp_", 20, tracker);
-
         const buffs = [3.6, 6].map((mult) => ({
           value: applyPercent(totalAttr.hp, mult),
           desc: desc + ` / ${mult}% of ${Math.round(totalAttr.hp)} HP`,
