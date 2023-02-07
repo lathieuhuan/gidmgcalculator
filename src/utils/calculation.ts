@@ -268,7 +268,7 @@ export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
   const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
 
   return {
-    aggravate: Math.round(base * 1.15 * (rxnBonus.aggravate.pct / 100)),
-    spread: Math.round(base * 1.25 * (rxnBonus.spread.pct / 100)),
+    aggravate: Math.round(base * 1.15 * (1 + rxnBonus.aggravate.pct / 100)),
+    spread: Math.round(base * 1.25 * (1 + rxnBonus.spread.pct / 100)),
   };
 }
