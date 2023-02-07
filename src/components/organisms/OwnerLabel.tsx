@@ -10,6 +10,9 @@ import { useSelector } from "@Store/hooks";
 // Util
 import { findById } from "@Src/utils";
 
+// Component
+import { Popover } from "@Components/atoms";
+
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
   const userSetups = useSelector(selectUserSetups);
 
@@ -75,14 +78,15 @@ export const OwnerLabel = ({ className, style, owner, setupIDs }: OwnerLabelProp
         </button>
       ) : null}
 
-      <div
-        className={
-          "absolute bottom-full right-2 mb-2 px-4 py-2 text-default small-tooltip origin-bottom-right shadow-white-glow " +
-          (list.isVisible ? "scale-100" : "scale-0")
-        }
+      <Popover
+        as="div"
+        className="bottom-full right-2 mb-2 px-4 py-2 shadow-white-glow"
+        active={list.isVisible}
+        withTooltipStyle
+        origin="bottom-right"
       >
         {list.isMounted && <SetupList setupIDs={setupIDs} />}
-      </div>
+      </Popover>
     </div>
   );
 };

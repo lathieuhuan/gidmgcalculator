@@ -103,7 +103,7 @@ const Rosaria: DataCharacter = {
           Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party
           members (excluding Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green>{" "}
           for 10s. Maximum <Rose>15%</Rose>.{" "}
-          <Red>CRIT Rate Bonus: {Math.round((inputs[0] || 0) * 15) / 100}%.</Red>
+          <Red>CRIT Rate bonus: {Math.round((inputs[0] || 0) * 15) / 100}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],

@@ -1,25 +1,37 @@
-import type { CharData, CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { Green, Lightgold } from "@Components/atoms";
+import type { CharData, DataCharacter, PartyData } from "@Src/types";
+import { Green, Lightgold, Red } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round, countVision } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkAscs, modIsActivated, talentBuff, checkCons } from "../utils";
+import { checkAscs, talentBuff, checkCons } from "../utils";
 
-const getA4BuffValue = (
-  toSelf: boolean,
-  char: CharInfo,
-  buffCtrls: ModifierCtrl[],
-  charData: CharData,
-  partyData: PartyData
-) => {
-  if (toSelf ? checkAscs[4](char) : modIsActivated(buffCtrls, 1)) {
-    const visionCount = countVision(partyData, charData);
-    const numOfElmts = Object.keys(visionCount).length;
-    return numOfElmts * 2.5 + (numOfElmts === 4 ? 1.5 : 0);
+const getA4BuffValue = (charData: CharData, partyData: PartyData) => {
+  const visionCount = countVision(partyData, charData);
+  const numOfElmts = Object.keys(visionCount).length;
+  return numOfElmts * 2.5 + (numOfElmts === 4 ? 1.5 : 0);
+};
+
+const getNaBonus = ({ toSelf, inputs, char, charData, partyData, totalAttr }: any) => {
+  const DEF = toSelf ? totalAttr.def : inputs[0] || 0;
+  const level = toSelf
+    ? finalTalentLv({ char, dataChar: YunJin, talentType: "EB", partyData })
+    : inputs[1] || 1;
+  let desc = ` / Lv. ${level}`;
+  let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
+
+  if (toSelf ? checkAscs[4](char) : inputs[2]) {
+    const xtraMult = getA4BuffValue(charData, partyData);
+
+    desc += ` / A4: ${xtraMult}% extra`;
+    tlMult += xtraMult;
   }
-  return 0;
+
+  return {
+    value: applyPercent(DEF, tlMult),
+    xtraDesc: desc + ` / ${round(tlMult, 2)}% of ${DEF} DEF`,
+  };
 };
 
 const YunJin: DataCharacter = {
@@ -91,9 +103,8 @@ const YunJin: DataCharacter = {
           name: "DMG Increase",
           notAttack: "other",
           multFactors: { root: 32.16, attributeType: "def" },
-          getTalentBuff: ({ char, selfBuffCtrls, charData, partyData }) => {
-            const buffValue = getA4BuffValue(true, char, selfBuffCtrls, charData, partyData);
-            return talentBuff([true, "mult", [true, 4], buffValue]);
+          getTalentBuff: ({ charData, partyData }) => {
+            return talentBuff([true, "mult", [true, 4], getA4BuffValue(charData, partyData)]);
           },
         },
       ],
@@ -143,44 +154,37 @@ const YunJin: DataCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      desc: () => (
+      desc: (obj) => (
         <>
-          Increases <Green>Normal Attack DMG</Green> based on Yun Jin's <Green>current DEF</Green>.
+          Increases <Green>Normal Attack DMG</Green> based on Yun Jin's <Green>current DEF</Green>.{" "}
+          {!obj.toSelf && <Red>Total bonus: {getNaBonus(obj).value}.</Red>}
+          <br />• At <Lightgold>A4</Lightgold>, further increases the bonus based on how many
+          element types in the party.
           <br />• At <Lightgold>C2</Lightgold>, increases <Green>Normal Attack DMG</Green> by{" "}
-          <Green b>15%</Green>.<br />• At <Lightgold>C6</Lightgold>, increases{" "}
-          <Green>Normal ATK SPD</Green> by <Green b>12%</Green>.
+          <Green b>15%</Green>.
+          <br />• At <Lightgold>C6</Lightgold>, increases <Green>Normal ATK SPD</Green> by{" "}
+          <Green b>12%</Green>.
         </>
       ),
       affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: EModSrc.A4, type: "check", for: "teammate" },
         { label: EModSrc.C2, type: "check", for: "teammate" },
         { label: EModSrc.C6, type: "check", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, inputs, char, partyData } = obj;
-        const DEF = toSelf ? obj.totalAttr.def : inputs[0] || 0;
-        const level = toSelf
-          ? finalTalentLv({ char, dataChar: YunJin, talentType: "EB", partyData })
-          : inputs[1] || 1;
-        let desc = `${obj.desc} / Lv. ${level}`;
-        let tlMult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
-        const xtraMult = getA4BuffValue(toSelf, char, obj.charBuffCtrls, obj.charData, partyData);
+        const { toSelf, inputs, char, desc, tracker } = obj;
+        const { value, xtraDesc } = getNaBonus(obj);
 
-        if (xtraMult) {
-          desc += ` / A4: ${xtraMult}% extra`;
-          tlMult += xtraMult;
-        }
-        const buffValue = applyPercent(DEF, tlMult);
-        desc += ` / ${round(tlMult, 2)}% of ${DEF} DEF`;
-        applyModifier(desc, obj.attPattBonus, "NA.flat", buffValue, obj.tracker);
+        applyModifier(desc + xtraDesc, obj.attPattBonus, "NA.flat", value, tracker);
 
-        if (toSelf ? checkCons[2](char) : inputs[2]) {
-          applyModifier(obj.desc, obj.attPattBonus, "NA.pct", 15, obj.tracker);
+        if (toSelf ? checkCons[2](char) : inputs[3]) {
+          applyModifier(desc + ` + ${EModSrc.C2}`, obj.attPattBonus, "NA.pct", 15, tracker);
         }
-        if (toSelf ? checkCons[6](char) : inputs[3]) {
-          applyModifier(obj.desc, obj.totalAttr, "naAtkSpd", 12, obj.tracker);
+        if (toSelf ? checkCons[6](char) : inputs[4]) {
+          applyModifier(desc + ` + ${EModSrc.C6}`, obj.totalAttr, "naAtkSpd", 12, tracker);
         }
       },
     },

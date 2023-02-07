@@ -112,7 +112,7 @@ const Aloy: DataCharacter = {
           Increases Aloy's <Green>Normal Attack DMG</Green>. When she has 4 Coil stacks, all stacks
           are cleared. Aloy then enters the Rushing Ice state, which further increases her{" "}
           <Green>Normal Attack DMG</Green> and converts it to <Cryo>Cryo DMG</Cryo>.{" "}
-          <Red>Total DMG Bonus: {getNApctBonus(args)}%.</Red>
+          <Red>Total bonus: {getNApctBonus(args)}%.</Red>
           <br />• At <Lightgold>A1</Lightgold> when Aloy receives Coil effect, her{" "}
           <Green>ATK</Green> is increased by <Green b>16%</Green> for 10s.
           <br />• At <Lightgold>A4</Lightgold> when Aloy is in Rushing Ice state, her{" "}

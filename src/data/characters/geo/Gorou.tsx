@@ -159,7 +159,7 @@ const Gorou: DataCharacter = {
             of <Geo>Geo</Geo> characters in the party:
             <br />
             <span className={numOfGeo >= 1 ? "" : "opacity-50"}>
-              • 1 Geo character: Adds "Standing Firm" - <Green>DEF Bonus</Green>
+              • 1 Geo character: Adds "Standing Firm" - <Green>DEF bonus</Green>
               {toSelf ? (
                 "."
               ) : (

@@ -219,7 +219,7 @@ const goldPolearms: DataWeapon[] = [
         desc: ({ refi, totalAttr }) => (
           <>
             {findByCode(goldPolearms, 80)?.passiveDesc({ refi }).extra?.[0]}{" "}
-            <Red>ATK Bonus: {getStaffOfHomaBuff(totalAttr, refi).value}.</Red>
+            <Red>ATK bonus: {getStaffOfHomaBuff(totalAttr, refi).value}.</Red>
           </>
         ),
         applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {

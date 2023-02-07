@@ -3,6 +3,27 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 7th, 2023",
+    content: [
+      <>
+        Fixed Flat DMG Bonus from <Lightgold>Aggravate</Lightgold> and <Lightgold>Spread</Lightgold>{" "}
+        reactions was not properly increased by Elemental Mastery.
+      </>,
+      <>
+        Fixed <Lightgold>Yun Jin</Lightgold>'s Elemental Burst buff control mistook her C2 buff for
+        her A4 buff, and missed the control for A4 buff.
+      </>,
+      <>
+        Fixed <Lightgold>Dehya</Lightgold>'s ES and EB damage results got split into ATK part and HP
+        part.
+      </>,
+      <>
+        A big thank to <Lightgold>Ayan</Lightgold> for the tesing they have done!
+      </>,
+      <>Improved character sorting on large devices.</>,
+    ],
+  },
+  {
     date: "February 6th, 2023",
     content: [
       <>

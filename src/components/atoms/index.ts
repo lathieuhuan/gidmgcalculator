@@ -7,6 +7,7 @@ export * from "./ArtifactLevelSelect";
 export * from "./Image";
 export * from "./Input";
 export * from "./Table";
+export * from "./Popover";
 export * from "./buttons";
 export * from "./span";
 export * from "./collapse";

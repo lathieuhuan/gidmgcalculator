@@ -103,7 +103,7 @@ const Sucrose: DataCharacter = {
           II [EB] hits an opponent, increases all party members' (excluding Sucrose){" "}
           <Green>Elemental Mastery</Green> based on <Green b>20%</Green> of Sucrose's{" "}
           <Green>Elemental Mastery</Green> for 8s.{" "}
-          <Red>Elemental Mastery Bonus: {Math.round((inputs[0] || 0) * 0.2)}.</Red>
+          <Red>Elemental Mastery bonus: {Math.round((inputs[0] || 0) * 0.2)}.</Red>
         </>
       ),
       inputConfigs: [

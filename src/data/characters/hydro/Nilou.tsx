@@ -242,7 +242,7 @@ const Nilou: DataCharacter = {
           <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green>{" "}
           above 30,000 will cause <Green>Bountiful Cores DMG</Green> to increase by{" "}
           <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
-          <Red>Bonus DMG: {getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
+          <Red>DMG bonus: {getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
         </>
       ),
       isGranted: checkAscs[1],

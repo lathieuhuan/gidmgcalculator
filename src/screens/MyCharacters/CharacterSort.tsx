@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
-import { FaSort, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
 // Hook
@@ -17,7 +17,7 @@ import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { IconButton } from "@Components/atoms";
+import { Button, IconButton, Popover, SharedSpace } from "@Components/atoms";
 import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
@@ -166,6 +166,21 @@ function SortInner({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
+  const quickSortOptions = [
+    {
+      label: "By name",
+      onSelect: onSortByName,
+    },
+    {
+      label: "By level",
+      onSelect: onSortByLevel,
+    },
+    {
+      label: "By rarity",
+      onSelect: onSortByRarity,
+    },
+  ];
+
   return (
     <div className="px-2 py-4 rounded-lg bg-darkblue-1">
       <IconButton
@@ -176,15 +191,49 @@ function SortInner({ onClose }: { onClose: () => void }) {
         <FaTimes />
       </IconButton>
 
-      <p className="text-1.5xl text-orange text-center">Sort by</p>
-      <ButtonBar
-        className="mt-3 space-x-4"
-        buttons={[
-          { text: "Name", variant: "default", onClick: onSortByName },
-          { text: "Level", variant: "default", onClick: onSortByLevel },
-          { text: "Rarity", variant: "default", onClick: onSortByRarity },
-        ]}
-      />
+      <p className="text-1.5xl text-orange text-center">Sort characters</p>
+
+      <div className="mt-1 h-8 flex justify-between">
+        <div className="px-4 flex group relative cursor-default">
+          <p className="h-full flex items-center space-x-2">
+            <span>Quick sort</span>
+            <FaChevronDown />
+          </p>
+          <Popover
+            as="div"
+            className="px-1 py-2 top-full bg-darkblue-2 rounded group-hover:scale-100 space-y-2"
+            origin="top-left"
+          >
+            {quickSortOptions.map(({ label, onSelect }, i) => {
+              return (
+                <p key={i} className="px-2 py-1 rounded-sm hover:bg-darkblue-3" onClick={onSelect}>
+                  {label}
+                </p>
+              );
+            })}
+          </Popover>
+        </div>
+
+        <div className="flex items-center">
+          <span>Mode</span>
+          <div className="h-full px-2 select-none" style={{ width: 120 }}>
+            <SharedSpace
+              className="text-center cursor-default bg-darkblue-2 rounded"
+              atLeft={!inMarkingMode}
+              leftPart={
+                <p className="h-full flex-center" onClick={onToggleMarkingMode}>
+                  Drag & drop
+                </p>
+              }
+              rightPart={
+                <p className="h-full flex-center" onClick={onToggleMarkingMode}>
+                  Mark order
+                </p>
+              }
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="mt-4 custom-scrollbar" style={{ height: "60vh" }}>
         <div>
@@ -236,13 +285,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         className="mt-4 flex justify-center space-x-4"
         buttons={[
           {
-            text: inMarkingMode ? "Marking order" : "Drag & Drop",
-            variant: "neutral",
-            onClick: onToggleMarkingMode,
-          },
-          {
             text: "Confirm",
-            variant: "positive",
             onClick: onConfirmOrder,
           },
         ]}

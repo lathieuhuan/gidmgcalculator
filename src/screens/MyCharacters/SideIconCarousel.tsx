@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { FaSort, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
+import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 // Util
 import { getImgSrc } from "@Src/utils";
@@ -69,8 +69,8 @@ export default function SideIconCarousel({
       <div className={styles["side-icon-carousel"]}>
         {characterNames.length ? (
           <div className="absolute top-8 right-full flex">
-            <IconButton className="mr-4 text-xl" variant="positive" onClick={onCliceSort}>
-              <FaSort />
+            <IconButton className="mr-4 text-lg" variant="positive" onClick={onCliceSort}>
+              <FaSortAmountUpAlt />
             </IconButton>
             <IconButton className="mr-4" variant="positive" onClick={() => setGridviewOn(true)}>
               <FaTh />

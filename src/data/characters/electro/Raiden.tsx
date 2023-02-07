@@ -276,7 +276,7 @@ const Raiden: DataCharacter = {
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
           <Green>Energy Cost</Green> of the Elemental Burst during the eye's duration.{" "}
           <Red>
-            DMG Bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData).value}
+            DMG bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData).value}
             %.
           </Red>
         </>

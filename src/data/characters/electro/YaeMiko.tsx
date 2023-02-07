@@ -90,7 +90,7 @@ const YaeMiko: DataCharacter = {
         <>
           Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase Sesshou
           Sakura <Green>[ES] DMG</Green> by <Green b>0.15%</Green>.{" "}
-          <Red>DMG Bonus: {(totalAttr.em * 15) / 100}%.</Red>
+          <Red>DMG bonus: {(totalAttr.em * 15) / 100}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],

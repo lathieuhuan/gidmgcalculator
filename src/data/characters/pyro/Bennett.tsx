@@ -122,7 +122,7 @@ const Bennett: DataCharacter = {
           Increases <Green>ATK</Green> of the characters within its AoE based on Bennett's{" "}
           <Green>Base ATK</Green>.<br />• At <Lightgold>C1</Lightgold>, the <Green>ATK Bonus</Green>{" "}
           is further increased by <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
-          {!toSelf && <Red>ATK Bonus: {getEBBuffValue(inputs)[0]}.</Red>}
+          {!toSelf && <Red>ATK bonus: {getEBBuffValue(inputs)[0]}.</Red>}
           <br />• At <Lightgold>C6</Lightgold>, the characters also gain a <Green b>15%</Green>{" "}
           <Green>Pyro DMG Bonus</Green>.
         </>

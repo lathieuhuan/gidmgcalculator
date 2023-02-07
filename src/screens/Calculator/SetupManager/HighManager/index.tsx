@@ -26,7 +26,7 @@ import {
 } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { CollapseAndMount, Button } from "@Components/atoms";
+import { CollapseAndMount, Button, Popover } from "@Components/atoms";
 import { SetupImporter } from "@Components/organisms";
 import { SetupControl } from "./SetupControl";
 
@@ -218,14 +218,14 @@ function HiddenManager() {
         variant="positive"
         onClick={tryApplyNewSettings}
       >
-        <span
-          className={clsx(
-            "w-60 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 text-center small-tooltip bottom-full origin-bottom-center text-lightred",
-            errorCode !== "" && "group-hover:scale-100"
-          )}
-        >
-          {errorCode === "NO_SETUPS" ? "Please have atleast 1 Setup" : ""}
-        </span>
+        {errorCode === "NO_SETUPS" && (
+          <Popover
+            className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-lightred group-hover:scale-100"
+            withTooltipStyle
+          >
+            Please have atleast 1 setup
+          </Popover>
+        )}
         <span>Apply</span>
       </Button>
 
