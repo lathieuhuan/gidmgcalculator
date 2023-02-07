@@ -37,6 +37,7 @@ export function calculate(state: CalculatorState, all?: boolean) {
     console.log(err);
 
     state.message = {
+      active: true,
       type: "error",
       content: "An unknown error has occurred and prevented the calculation process.",
     };
