@@ -126,7 +126,7 @@ const YunJin: DataCharacter = {
         const n = Object.keys(visionCount).length;
         return (
           <>
-            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation [EB]
+            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation [~EB]
             is further increased by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
             <Green className={n === 2 ? "" : "opacity-50"}>5%</Green>/
             <Green className={n === 3 ? "" : "opacity-50"}>7.5%</Green>/
@@ -146,7 +146,7 @@ const YunJin: DataCharacter = {
       desc: () => (
         <>
           Increases <Green>Normal Attack DMG</Green> based on Yun Jin's <Green>current DEF</Green>.
-          <br />• At <Lightgold>A4</Lightgold>, increases <Green>Normal Attack DMG</Green> by{" "}
+          <br />• At <Lightgold>C2</Lightgold>, increases <Green>Normal Attack DMG</Green> by{" "}
           <Green b>15%</Green>.<br />• At <Lightgold>C6</Lightgold>, increases{" "}
           <Green>Normal ATK SPD</Green> by <Green b>12%</Green>.
         </>
@@ -155,8 +155,8 @@ const YunJin: DataCharacter = {
       inputConfigs: [
         { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
-        { label: "Ascension 4 Passive", type: "check", for: "teammate" },
-        { label: "Constrellation 6", type: "check", for: "teammate" },
+        { label: EModSrc.C2, type: "check", for: "teammate" },
+        { label: EModSrc.C6, type: "check", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, char, partyData } = obj;

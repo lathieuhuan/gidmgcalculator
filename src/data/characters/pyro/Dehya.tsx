@@ -70,6 +70,7 @@ const Dehya: DataCharacter = {
               attributeType: "hp",
             },
           ],
+          isWholeFactor: true,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const C2isInUse = charModIsInUse(Dehya.buffs || [], char, selfBuffCtrls, 0);
             return talentBuff([C2isInUse, "pct", [false, 2], 50]);
@@ -84,10 +85,12 @@ const Dehya: DataCharacter = {
         {
           name: "Flame-Mane's Fist",
           multFactors: [{ root: 98.7 }, { root: 1.69, attributeType: "hp" }],
+          isWholeFactor: true,
         },
         {
           name: "Incineration Drive",
           multFactors: [{ root: 139.3 }, { root: 2.39, attributeType: "hp" }],
+          isWholeFactor: true,
         },
       ],
       energyCost: 70,
