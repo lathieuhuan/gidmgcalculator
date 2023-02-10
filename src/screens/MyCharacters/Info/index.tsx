@@ -90,17 +90,10 @@ export default function Info() {
           <FaUserSlash size="1.125rem" />
         </IconButton>
 
-        <div className="flex">
+        <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}
           <div>
-            {!isMobile && (
-              <p
-                className={`text-3xl text-${vision} font-black`}
-                onDoubleClick={() => console.log(char, weapon, artifacts)}
-              >
-                {name}
-              </p>
-            )}
+            {!isMobile && <p className={`text-3xl text-${vision} font-black`}>{name}</p>}
             <StarLine rarity={rarity} />
 
             <div className="ml-1 my-1 flex text-lg">

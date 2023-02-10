@@ -198,34 +198,29 @@ export const userDatabaseSlice = createSlice({
         };
       }
     },
-    swapWeaponOwner: (
-      { userChars, userWps },
-      action: PayloadAction<{ newOwner: string; weaponID: number }>
-    ) => {
-      const { newOwner, weaponID } = action.payload;
+    swapWeaponOwner: (state, action: PayloadAction<{ newOwner: string; weaponID: number }>) => {
+      const { userChars, userWps } = state;
+      const { weaponID, newOwner } = action.payload;
       const weaponInfo = findById(userWps, weaponID);
+      const newOwnerInfo = findByName(userChars, newOwner);
 
-      if (weaponInfo) {
+      if (weaponInfo && newOwnerInfo) {
+        const newOwnerWeaponInfo = findById(userWps, newOwnerInfo.weaponID);
         const oldOwner = weaponInfo.owner;
+
         weaponInfo.owner = newOwner;
-        const newOwnerInfo = findByName(userChars, newOwner);
+        newOwnerInfo.weaponID = weaponID;
 
-        if (newOwnerInfo) {
-          const newOwnerWeaponInfo = findById(userWps, newOwnerInfo.weaponID);
+        if (newOwnerWeaponInfo) {
+          newOwnerWeaponInfo.owner = oldOwner;
 
-          if (newOwnerWeaponInfo) {
-            newOwnerWeaponInfo.owner = oldOwner;
+          if (oldOwner) {
+            const oldOwnerInfo = findByName(userChars, oldOwner);
+
+            if (oldOwnerInfo) {
+              oldOwnerInfo.weaponID = newOwnerWeaponInfo.ID;
+            }
           }
-        }
-        if (oldOwner) {
-          const oldOwnerInfo = findByName(userChars, oldOwner);
-
-          if (oldOwnerInfo) {
-            oldOwnerInfo.weaponID = weaponID;
-          }
-        }
-        if (newOwnerInfo) {
-          newOwnerInfo.weaponID = weaponID;
         }
       }
     },
@@ -304,37 +299,34 @@ export const userDatabaseSlice = createSlice({
         };
       }
     },
-    swapArtifactOwner: (
-      { userChars, userArts },
-      action: PayloadAction<{ newOwner: string; artifactID: number }>
-    ) => {
-      const { newOwner, artifactID } = action.payload;
+    swapArtifactOwner: (state, action: PayloadAction<{ newOwner: string; artifactID: number }>) => {
+      const { userChars, userArts } = state;
+      const { artifactID, newOwner } = action.payload;
       const artifactInfo = findById(userArts, artifactID);
+      const newOwnerInfo = findByName(userChars, newOwner);
 
-      if (artifactInfo) {
+      if (artifactInfo && newOwnerInfo) {
         const oldOwner = artifactInfo.owner;
+        const { artifactIDs } = newOwnerInfo;
+        const index = ARTIFACT_TYPES.indexOf(artifactInfo.type);
+
         artifactInfo.owner = newOwner;
 
-        const newOwnerInfo = findByName(userChars, newOwner);
-        if (newOwnerInfo) {
-          const { artifactIDs } = newOwnerInfo;
-          const index = ARTIFACT_TYPES.indexOf(artifactInfo.type);
+        if (artifactIDs[index]) {
+          const newOwnerArtifactInfo = findById(userArts, artifactIDs[index]);
 
-          if (artifactIDs[index]) {
-            const newOwnerArtifactInfo = findById(userArts, artifactIDs[index]);
-            if (newOwnerArtifactInfo) {
-              newOwnerArtifactInfo.owner = oldOwner;
-            }
+          if (newOwnerArtifactInfo) {
+            newOwnerArtifactInfo.owner = oldOwner;
           }
-
-          if (oldOwner) {
-            const oldOwnerInfo = findByName(userChars, oldOwner);
-            if (oldOwnerInfo) {
-              oldOwnerInfo.artifactIDs[index] = artifactIDs[index];
-            }
-          }
-          artifactIDs[index] = artifactID;
         }
+        if (oldOwner) {
+          const oldOwnerInfo = findByName(userChars, oldOwner);
+
+          if (oldOwnerInfo) {
+            oldOwnerInfo.artifactIDs[index] = artifactIDs[index];
+          }
+        }
+        artifactIDs[index] = artifactID;
       }
     },
     sortArtifacts: (state) => {
