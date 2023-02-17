@@ -5,7 +5,7 @@ import { Fragment, useRef, useState } from "react";
 import { useDispatch } from "@Store/hooks";
 
 // Util
-import { convertUserData } from "@Src/utils/convertUserData";
+import { convertUserData, convertFromGoodFormat } from "@Src/utils/convertUserData";
 import { downloadToDevice } from "./utils";
 
 // Action
@@ -37,6 +37,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
 
     if (data) {
       data = JSON.parse(data);
+
       try {
         checkAndAddUserData(data);
         setMessage({
@@ -68,14 +69,16 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
   const manuallyUpload = () => {
     const file = inputRef.current?.files?.[0];
     const reader = new FileReader();
-    const isJson = false;
-    // const isJson = file?.type.match(/application.*/);
+    const isJson = file?.type.match(/application.*/);
 
-    if (file?.type.match(/text.*/) || isJson) {
+    if (file && (file.type.match(/text.*/) || isJson)) {
       reader.onload = function (event) {
         try {
           let data = JSON.parse((event.target?.result as string) || "");
-          // if (isJson) data = convertToGOOD(data);
+
+          if (isJson) {
+            data = convertFromGoodFormat(data);
+          }
 
           checkAndAddUserData(data);
 
@@ -92,7 +95,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
           });
         }
       };
-      reader.readAsText(file!);
+      reader.readAsText(file);
     }
   };
 
@@ -140,8 +143,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
 
       <LoadOption className="flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">
-          Upload a .TXT file
-          {/* Upload a .TXT file or a .JSON file in GOOD format */}
+          Upload a .TXT file or a .JSON file in GOOD format
         </p>
 
         {message?.uploadCase === "manual" && (
@@ -154,8 +156,8 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
           ref={inputRef}
           hidden
           type="file"
-          accept="text/*"
-          // accept="text/*,application/json"
+          // accept="text/*"
+          accept="text/*,application/json"
           onChange={manuallyUpload}
         />
         <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>

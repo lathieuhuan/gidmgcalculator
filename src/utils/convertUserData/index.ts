@@ -1,5 +1,5 @@
-import type { ConvertUserDataArgs } from "./types";
 import { toVersion3_0 } from "./toVersion3_0";
+export * from "./fromGoodFormat";
 
 const ERROR = {
   cannotRecognise: "We cannot recognise your version of data.",

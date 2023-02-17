@@ -54,3 +54,25 @@ export const mapVerson3_0: Record<string, string> = {
   "Geo RES reduction": "geo",
   "Dendro RES reduction": "dendro",
 };
+
+export const mapGoodFormat: Record<string, string> = {
+  atk: "atk",
+  atk_: "atk_",
+  hp: "hp",
+  hp_: "hp_",
+  def: "def",
+  def_: "def_",
+  eleMas: "em",
+  enerRech_: "er",
+  critRate_: "cRate",
+  critDMG_: "cDmg",
+  heal_: "healBn",
+  pyro_dmg_: "pyro_",
+  hydro_dmg_: "hydro_",
+  electro_dmg_: "electro_",
+  geo_dmg_: "geo_",
+  anemo_dmg_: "anemo_",
+  dendro_dmg_: "dendro_",
+  cryo_dmg_: "cryo_",
+  physical_dmg_: "phys_",
+};

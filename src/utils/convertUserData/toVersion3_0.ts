@@ -1,4 +1,3 @@
-import type { ConvertUserDataArgs } from "./types";
 import type {
   ArtifactMainStatType,
   CharInfo,
@@ -25,6 +24,14 @@ import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/co
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createArtDebuffCtrls, createWeapon } from "../creators";
+
+type ConvertUserDataArgs = {
+  version: number;
+  Characters: any[];
+  Weapons: any[];
+  Artifacts: any[];
+  Setups: any[];
+};
 
 export const toVersion3_0 = (data: Omit<ConvertUserDataArgs, "version">) => {
   let seedID = Date.now();
