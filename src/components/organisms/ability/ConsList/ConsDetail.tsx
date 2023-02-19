@@ -65,32 +65,29 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
   }, []);
 
   return (
-    <div className="full-h flex-col">
-      <div className="hide-scrollbar">
-        <SlideShow
-          forTalent={false}
-          currentIndex={consLv - 1}
-          images={constellation.map((cons) => cons.image)}
-          vision={vision}
-          onClickBack={() => onChangeConsLv?.(consLv - 1)}
-          onClickNext={() => onChangeConsLv?.(consLv + 1)}
-        />
-        <p className={`text-xl text-${vision} font-bold`}>{consInfo.name}</p>
-        <p className="text-lg">
-          Constellation Lv. <Green b>{consLv}</Green>
+    <div className="h-full flex-col hide-scrollbar">
+      <SlideShow
+        forTalent={false}
+        currentIndex={consLv - 1}
+        images={constellation.map((cons) => cons.image)}
+        vision={vision}
+        onClickBack={() => onChangeConsLv?.(consLv - 1)}
+        onClickNext={() => onChangeConsLv?.(consLv + 1)}
+      />
+      <p className={`text-xl text-${vision} font-bold`}>{consInfo.name}</p>
+      <p className="text-lg">
+        Constellation Lv. <Green b>{consLv}</Green>
+      </p>
+      {consDesc ? (
+        <p className="mt-4">{consDesc}</p>
+      ) : (
+        <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
+          {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
+          {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
+          {status === "idle" && descArr[consLv - 1]}
         </p>
-        {consDesc ? (
-          <p className="mt-4">{consDesc}</p>
-        ) : (
-          <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
-            {status === "loading" && (
-              <AiOutlineLoading3Quarters className="text-2xl animate-spin" />
-            )}
-            {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
-            {status === "idle" && descArr[consLv - 1]}
-          </p>
-        )}
-      </div>
+      )}
+
       <div className="mt-4">
         <CloseButton className="mx-auto" onClick={onClose} />
       </div>

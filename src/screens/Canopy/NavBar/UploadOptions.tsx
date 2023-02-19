@@ -143,7 +143,8 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
 
       <LoadOption className="flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">
-          Upload a .TXT file or a .JSON file in GOOD format
+          Upload a .TXT file
+          {/* or a .JSON file in GOOD format */}
         </p>
 
         {message?.uploadCase === "manual" && (
@@ -156,8 +157,8 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
           ref={inputRef}
           hidden
           type="file"
-          // accept="text/*"
-          accept="text/*,application/json"
+          accept="text/*"
+          // accept="text/*,application/json"
           onChange={manuallyUpload}
         />
         <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>

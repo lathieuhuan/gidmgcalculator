@@ -3,6 +3,21 @@ import { Lightgold } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 19th, 2023",
+    content: [
+      <>
+        Corrected <Lightgold>Alhaitham</Lightgold>'s C6 description and removed its stacks input.
+      </>,
+      <>
+        Fixed <Lightgold>Wanderer</Lightgold> gained C1 benefits when his Elemental Skill is active
+        at Ascension 4.
+      </>,
+      <>
+        Thank you <Lightgold>Only_Pumpkin_801</Lightgold> for the bug report!
+      </>,
+    ],
+  },
+  {
     date: "February 7th, 2023",
     content: [
       <>

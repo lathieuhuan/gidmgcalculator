@@ -2,7 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Dendro, Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { applyModifier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Alhaitham: DataCharacter = {
@@ -167,21 +167,21 @@ const Alhaitham: DataCharacter = {
       get desc() {
         return (
           <>
-            2 seconds after Particular Field: Fetters of Phenomena is unleashed, he will generate 3
-            Chisel-Light Mirrors regardless of the number of mirrors consumed.
+            2 seconds after Particular Field: Fetters of Phenomena [EB] is unleashed, he will
+            generate 3 Chisel-Light Mirrors regardless of the number of mirrors consumed.
             <br />
             {this.xtraDesc?.[0]}
             <br />
             If this effect is triggered again during its initial duration, the duration remaining
-            will be increased by 5s.
+            will be increased by 6s.
           </>
         );
       },
       xtraDesc: [
         <>
-          If Alhaitham creates a Chisel-Light Mirror when their numbers have already maxed out, then
-          each excess Chisel-Light Mirror will increase his <Green>CRIT Rate</Green> by{" "}
-          <Green b>10%</Green> and <Green>CRIT DMG</Green> by <Green b>70%</Green> for 5s.
+          If Alhaitham generates Chisel-Light Mirrors when their numbers have already maxed out, his{" "}
+          <Green>CRIT Rate</Green> and <Green>CRIT DMG</Green> will increase by <Green b>10%</Green>{" "}
+          and <Green b>70%</Green> respectively for 6s.
         </>,
       ],
     },
@@ -255,16 +255,7 @@ const Alhaitham: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => Alhaitham.constellation[5].xtraDesc?.[0],
       isGranted: checkCons[6],
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 5,
-        },
-      ],
-      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        const stacks = inputs[0] || 0;
-        applyModifier(desc, totalAttr, ["cRate_", "cDmg_"], [stacks * 10, stacks * 70], tracker);
-      },
+      applyBuff: makeModApplier("totalAttr", ["cRate_", "cDmg_"], [10, 70]),
     },
   ],
 };
