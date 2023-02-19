@@ -65,23 +65,34 @@ export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 
 export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
 
-export const ARTIFACT_PERCENT_STAT_TYPES = [
+export const ARTIFACT_SUBSTAT_TYPES = [
+  "hp",
+  "hp_",
+  "atk",
+  "atk_",
+  "def",
+  "def_",
+  "em",
+  "er_",
+  "cRate_",
+  "cDmg_",
+] as const;
+
+/** Don't change the order of items */
+export const ATTRIBUTE_STAT_TYPES = [
+  ...CORE_STAT_TYPES,
   "hp_",
   "atk_",
   "def_",
+  "em",
+  "er_",
   "cRate_",
   "cDmg_",
-  "er_",
-] as const;
-
-export const OTHER_PERCENT_STAT_TYPES = ["healB_", "shieldS_", "naAtkSpd_", "caAtkSpd_"] as const;
-
-export const ATTRIBUTE_STAT_TYPES = [
-  ...CORE_STAT_TYPES,
-  "em",
-  ...ARTIFACT_PERCENT_STAT_TYPES,
   ...ATTACK_ELEMENTS,
-  ...OTHER_PERCENT_STAT_TYPES,
+  "healB_",
+  "shieldS_",
+  "naAtkSpd_",
+  "caAtkSpd_",
 ] as const;
 
 export const ATTACK_PATTERN_INFO_KEYS = [

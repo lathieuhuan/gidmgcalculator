@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
-import type { CalcArtifact, ArtifactMainStatType } from "@Src/types";
+import type { CalcArtifact, AttributeStat } from "@Src/types";
 
 // Constant
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
@@ -73,7 +73,7 @@ export function ArtifactInfo({
                   dispatch(
                     updateArtifact({
                       pieceIndex,
-                      mainStatType: e.target.value as ArtifactMainStatType,
+                      mainStatType: e.target.value as AttributeStat,
                     })
                   )
                 }

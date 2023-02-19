@@ -1,5 +1,5 @@
 import type {
-  ArtifactMainStatType,
+  AttributeStat,
   CharInfo,
   CustomBuffCtrl,
   CustomBuffCtrlType,
@@ -105,7 +105,7 @@ const convertWeapon = (weapon: any): UserWeapon => {
 const convertArtifact = (artifact: any): UserArtifact => {
   const { ID, type, code, rarity = 5, level, mainSType, subS, user: owner = null } = artifact;
 
-  const mainStatType = mapVerson3_0[mainSType] as ArtifactMainStatType;
+  const mainStatType = mapVerson3_0[mainSType] as AttributeStat;
   const subStats = subS.map((stat: any) => {
     return {
       type: mapVerson3_0[stat.type],

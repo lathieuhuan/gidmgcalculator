@@ -1,7 +1,6 @@
 import type {
-  ArtifactMainStatType,
   ArtifactSubStat,
-  ArtifactSubStatType,
+  AttributeStat,
   Level,
   UserArtifact,
   UserCharacter,
@@ -113,20 +112,20 @@ export function convertFromGoodFormat(data: any) {
 
     if (!code || (rarity !== 4 && rarity !== 5)) continue;
 
-    let mainStatType: ArtifactMainStatType =
+    let mainStatType: AttributeStat =
       slotKey === "flower" ? "hp" : slotKey === "plume" ? "atk" : "atk_";
     const subStats: ArtifactSubStat[] = [];
     const owner = searchCharacterByKey(artifact.location) || null;
 
     if (artifact.mainStatKey && artifact.mainStatKey in mapGoodFormat) {
-      mainStatType = mapGoodFormat[artifact.mainStatKey] as ArtifactMainStatType;
+      mainStatType = mapGoodFormat[artifact.mainStatKey] as AttributeStat;
     }
 
     for (const { key, value } of artifact.substats) {
-      let type: ArtifactSubStatType = "atk";
+      let type: AttributeStat = "atk";
 
       if (key && key in mapGoodFormat) {
-        type = mapGoodFormat[key] as ArtifactSubStatType;
+        type = mapGoodFormat[key] as AttributeStat;
       }
       subStats.push({ type, value });
     }

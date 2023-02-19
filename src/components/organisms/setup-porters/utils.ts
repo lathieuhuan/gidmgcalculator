@@ -1,7 +1,6 @@
 import type {
   ArtifactDebuffCtrl,
-  ArtifactMainStatType,
-  ArtifactSubStatType,
+  AttributeStat,
   ArtifactType,
   AttackElement,
   AttackReaction,
@@ -204,11 +203,11 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       type: artType,
       rarity: +rarity as Rarity,
       level: +artLevel,
-      mainStatType: mainStatType as ArtifactMainStatType,
+      mainStatType: mainStatType as AttributeStat,
       subStats: subStats.map((str) => {
         const [type, value] = split(str, 3);
         return {
-          type: type as ArtifactSubStatType,
+          type: type as AttributeStat,
           value: +value,
         };
       }),

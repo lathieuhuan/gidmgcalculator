@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
-import type { ArtifactType, ArtifactMainStatType, ArtifactSubStatType } from "@Src/types";
+import type { ArtifactType, AttributeStat } from "@Src/types";
 import type { StatsFilter } from "../utils";
 
 // Constant
-import { ARTIFACT_PERCENT_STAT_TYPES, ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
+import { ARTIFACT_SUBSTAT_TYPES, ATTACK_ELEMENTS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Hook
@@ -33,18 +33,31 @@ export function useArtifactStatsFilter({
 
   const mainStatOptions = artifactType
     ? ["All", ...Object.keys(ARTIFACT_MAIN_STATS[artifactType])]
-    : ["All", "hp", "atk", ...ARTIFACT_PERCENT_STAT_TYPES, "em", ...ATTACK_ELEMENTS, "healB_"];
+    : [
+        "All",
+        "hp",
+        "hp_",
+        "atk",
+        "atk_",
+        "def_",
+        "em",
+        "er_",
+        "cRate_",
+        "cDmg_",
+        ...ATTACK_ELEMENTS,
+        "healB_",
+      ];
 
-  const subStatOptions = ["All", ...CORE_STAT_TYPES, ...ARTIFACT_PERCENT_STAT_TYPES, "em"];
+  const subStatOptions = ["All"].concat(ARTIFACT_SUBSTAT_TYPES);
 
   const onChangeMainStat: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | ArtifactMainStatType }));
+    setFilter((prev) => ({ ...prev, main: e.target.value as "All" | AttributeStat }));
   };
 
   const onChangeSubStat = (newStat: string, index: number) => {
     setFilter((prev) => {
       const newSubs = [...prev.subs];
-      newSubs[index] = newStat as "All" | ArtifactSubStatType;
+      newSubs[index] = newStat as "All" | AttributeStat;
 
       if (newStat === "All") {
         for (let k = index; k < 4; k++) {

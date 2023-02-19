@@ -1,14 +1,9 @@
 import { Fragment } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import type {
-  ArtifactMainStatType,
-  ArtifactSubStatType,
-  ArtifactSubStat,
-  Rarity,
-} from "@Src/types";
+import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
 
 // Constant
-import { ARTIFACT_PERCENT_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
+import { ARTIFACT_SUBSTAT_TYPES } from "@Src/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 
 // Hook
@@ -24,7 +19,7 @@ export interface ArtifactSubstatsControlProps {
   mutable?: boolean;
   space?: string;
   rarity: Rarity;
-  mainStatType: ArtifactMainStatType;
+  mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];
   onChangeSubStat?: (index: number, changes: Partial<ArtifactSubStat>) => void;
 }
@@ -60,10 +55,10 @@ export const ArtifactSubstatsControl = ({
               }
               value={type}
               onChange={(e) => {
-                onChangeSubStat?.(i, { type: e.target.value as ArtifactSubStatType });
+                onChangeSubStat?.(i, { type: e.target.value as AttributeStat });
               }}
             >
-              {[...CORE_STAT_TYPES, "em", ...ARTIFACT_PERCENT_STAT_TYPES].map((type) => (
+              {ARTIFACT_SUBSTAT_TYPES.map((type) => (
                 <option key={type} value={type}>
                   {t(type)}
                 </option>

@@ -1,6 +1,5 @@
 import { BASE_REACTION_DAMAGE } from "@Src/constants";
 import type {
-  ActiveTalents,
   ArtifactSetBonus,
   AttackElement,
   AttackElementBonus,

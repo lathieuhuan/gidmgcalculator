@@ -1,7 +1,7 @@
 import type { Tracker } from "@Src/types";
 
 // Constant
-import { ATTACK_ELEMENTS, CORE_STAT_TYPES, OTHER_PERCENT_STAT_TYPES } from "@Src/constants";
+import { ATTRIBUTE_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
 
 // Util
 import { applyPercent, percentSign, round } from "@Src/utils";
@@ -13,15 +13,6 @@ import { useTranslation } from "@Src/hooks";
 
 // Selector
 import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
-
-const OTHER_STATS = [
-  "em",
-  "er_",
-  "cRate_",
-  "cDmg_",
-  ...ATTACK_ELEMENTS,
-  ...OTHER_PERCENT_STAT_TYPES,
-] as const;
 
 export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {
   const { t } = useTranslation();
@@ -57,7 +48,7 @@ export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAtt
         );
       })}
 
-      {OTHER_STATS.map((statType) => {
+      {ATTRIBUTE_STAT_TYPES.slice(6).map((statType) => {
         const percent = percentSign(statType);
 
         return (

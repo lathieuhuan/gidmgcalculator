@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
-import type { ArtifactType, ArtifactMainStatType, UserArtifact } from "@Src/types";
+import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
 import type { StatsFilter } from "@Components/templates/inventories/utils";
 
 // Constant
@@ -187,7 +187,7 @@ export default function MyArtifacts() {
                       dispatch(
                         updateUserArtifact({
                           ID: chosenID,
-                          mainStatType: type as ArtifactMainStatType,
+                          mainStatType: type as AttributeStat,
                         })
                       )
                     }

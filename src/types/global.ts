@@ -6,7 +6,6 @@ import {
   REACTIONS,
   NORMAL_ATTACKS,
   CORE_STAT_TYPES,
-  ARTIFACT_PERCENT_STAT_TYPES,
   BASE_STAT_TYPES,
   ATTRIBUTE_STAT_TYPES,
   ATTACK_ELEMENTS,
@@ -45,8 +44,6 @@ export type AttackElement = typeof ATTACK_ELEMENTS[number];
 export type CoreStat = typeof CORE_STAT_TYPES[number];
 
 export type BaseStat = typeof BASE_STAT_TYPES[number];
-
-export type ArtifactPercentStat = typeof ARTIFACT_PERCENT_STAT_TYPES[number];
 
 export type AttributeStat = typeof ATTRIBUTE_STAT_TYPES[number];
 
@@ -90,17 +87,8 @@ export type Weapon = {
   refi: number;
 };
 
-export type ArtifactMainStatType =
-  | Exclude<CoreStat, "def">
-  | ArtifactPercentStat
-  | "em"
-  | AttackElement
-  | "healB_";
-
-export type ArtifactSubStatType = CoreStat | ArtifactPercentStat | "em";
-
 export type ArtifactSubStat = {
-  type: ArtifactSubStatType;
+  type: AttributeStat;
   value: number;
 };
 
@@ -113,7 +101,7 @@ export type Artifact = {
   type: ArtifactType;
   rarity: Rarity;
   level: number;
-  mainStatType: ArtifactMainStatType;
+  mainStatType: AttributeStat;
   subStats: ArtifactSubStat[];
 };
 

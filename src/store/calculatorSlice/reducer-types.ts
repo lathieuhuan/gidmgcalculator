@@ -8,7 +8,7 @@ import type {
   Vision,
   WeaponType,
   CalcSetupManageInfo,
-  ArtifactMainStatType,
+  AttributeStat,
   CalcSetup,
   CustomBuffCtrl,
   CustomDebuffCtrl,
@@ -144,7 +144,7 @@ export type ChangeArtifactAction = PayloadAction<{
 export type UpdateArtifactAction = PayloadAction<{
   pieceIndex: number;
   level?: number;
-  mainStatType?: ArtifactMainStatType;
+  mainStatType?: AttributeStat;
   subStat?: {
     index: number;
     newInfo: Partial<ArtifactSubStat>;
