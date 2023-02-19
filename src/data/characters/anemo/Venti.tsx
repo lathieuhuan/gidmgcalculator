@@ -31,7 +31,7 @@ const Venti: DataCharacter = {
     [9791, 245, 622],
     [10531, 263, 669],
   ],
-  bonusStat: { type: "er", value: 8 },
+  bonusStat: { type: "er_", value: 8 },
   NAsConfig: {
     name: "Divine Marksmanship",
   },

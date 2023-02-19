@@ -80,7 +80,7 @@ const Ayato: DataCharacter = {
     [12751, 278, 715],
     [13715, 299, 769],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Kamisato Art - Marobashi",
   },
@@ -271,7 +271,7 @@ const Ayato: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
+      applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
   ],
 };

@@ -95,7 +95,7 @@ export type ArtifactMainStatType =
   | ArtifactPercentStat
   | "em"
   | AttackElement
-  | "healBn";
+  | "healB_";
 
 export type ArtifactSubStatType = CoreStat | ArtifactPercentStat | "em";
 

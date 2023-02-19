@@ -57,7 +57,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "5/51/Weapon_Forest_Regalia",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     buffs: [
       {
         index: 0,
@@ -104,7 +104,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "1/17/Weapon_Sacrificial_Greatsword",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     ...sacrificialSeries,
   },
   {
@@ -174,7 +174,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "d/d7/Weapon_Blackcliff_Slasher",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cDmg", scale: "12%" },
+    subStat: { type: "cDmg_", scale: "12%" },
     ...blackcliffSeries,
   },
   {
@@ -192,7 +192,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "8/88/Weapon_Serpent_Spine",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cRate", scale: "6%" },
+    subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Wavesplitter",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -247,7 +247,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "2/2e/Weapon_Katsuragikiri_Nagamasa",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
@@ -331,7 +331,7 @@ const purpleClaymores: DataWeapon[] = [
     icon: "9/9c/Weapon_Favonius_Greatsword",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er", scale: "13.3%" },
+    subStat: { type: "er_", scale: "13.3%" },
     ...favoniusSeries,
   },
 ];

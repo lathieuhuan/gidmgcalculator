@@ -7,7 +7,7 @@ import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   const isInUse = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
-  return talentBuff([isInUse, "cRate", [true, 1], 20]);
+  return talentBuff([isInUse, "cRate_", [true, 1], 20]);
 };
 
 const Ganyu: DataCharacter = {
@@ -36,7 +36,7 @@ const Ganyu: DataCharacter = {
     [9108, 311, 586],
     [9797, 335, 630],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Liutian Archery",
   },

@@ -108,7 +108,7 @@ const Heizou: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
+      applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
     {
       index: 2,
@@ -132,9 +132,9 @@ const Heizou: DataCharacter = {
         const stacks = inputs[0] || 0;
 
         if (stacks !== 4) {
-          applyModifier(desc, attPattBonus, "ES.cRate", 4 * stacks, tracker);
+          applyModifier(desc, attPattBonus, "ES.cRate_", 4 * stacks, tracker);
         } else {
-          applyModifier(desc, attPattBonus, ["ES.cRate", "ES.cDmg"], [4 * stacks, 32], tracker);
+          applyModifier(desc, attPattBonus, ["ES.cRate_", "ES.cDmg_"], [4 * stacks, 32], tracker);
         }
       },
     },

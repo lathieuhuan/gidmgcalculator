@@ -44,7 +44,7 @@ const purpleOnlySets: DataArtifact[] = [
             Increases <Green>Charged Attack CRIT Rate</Green> by <Green b>30%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("attPattBonus", "CA.cRate", 30),
+        applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 30),
       },
     ],
   },
@@ -121,7 +121,7 @@ const purpleOnlySets: DataArtifact[] = [
             <Green>CRIT Rate</Green> <Green b>+12%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "cRate", 12),
+        applyBuff: makeModApplier("totalAttr", "cRate_", 12),
       },
       {
         desc: (
@@ -137,7 +137,7 @@ const purpleOnlySets: DataArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: () => findByCode(purpleOnlySets, 23)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("totalAttr", "cRate", 24),
+        applyBuff: makeModApplier("totalAttr", "cRate_", 24),
       },
     ],
   },
@@ -223,7 +223,7 @@ const purpleOnlySets: DataArtifact[] = [
             <Green>Energy Recharge</Green> <Green b>+20%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "er", 20),
+        applyBuff: makeModApplier("totalAttr", "er_", 20),
       },
       {
         desc: (
@@ -455,7 +455,7 @@ const purpleOnlySets: DataArtifact[] = [
             <Green>Energy Recharge</Green> <Green b>+20%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "er", 20),
+        applyBuff: makeModApplier("totalAttr", "er_", 20),
       },
       {
         desc: (

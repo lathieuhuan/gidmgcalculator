@@ -50,7 +50,7 @@ const Wanderer: DataCharacter = {
     [9450, 305, 564],
     [10164, 328, 607],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Yuuban Meigen",
   },
@@ -219,7 +219,7 @@ const Wanderer: DataCharacter = {
         applyModifier(desc, attPattBonus, ["NA.specialMult", "CA.specialMult"], [NA, CA], tracker);
 
         if (checkCons[1](char)) {
-          applyModifier(desc, totalAttr, ["naAtkSpd", "caAtkSpd"], 10, tracker);
+          applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
         }
       },
     },
@@ -258,7 +258,7 @@ const Wanderer: DataCharacter = {
           applyModifier(desc, totalAttr, "atk_", 30, tracker);
         }
         if (inputs.includes(1)) {
-          applyModifier(desc, totalAttr, "cRate", 20, tracker);
+          applyModifier(desc, totalAttr, "cRate_", 20, tracker);
         }
       },
     },

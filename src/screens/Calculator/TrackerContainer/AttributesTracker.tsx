@@ -16,9 +16,9 @@ import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
 
 const OTHER_STATS = [
   "em",
-  "er",
-  "cRate",
-  "cDmg",
+  "er_",
+  "cRate_",
+  "cDmg_",
   ...ATTACK_ELEMENTS,
   ...OTHER_PERCENT_STAT_TYPES,
 ] as const;

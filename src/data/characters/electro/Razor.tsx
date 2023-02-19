@@ -133,7 +133,7 @@ const Razor: DataCharacter = {
           talentType: "EB",
           partyData,
         });
-        applyModifier(desc, totalAttr, "naAtkSpd", getEBBuffValue(level), tracker);
+        applyModifier(desc, totalAttr, "naAtkSpd_", getEBBuffValue(level), tracker);
       },
     },
     {
@@ -160,7 +160,7 @@ const Razor: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("totalAttr", "cRate", 10),
+      applyBuff: makeModApplier("totalAttr", "cRate_", 10),
     },
   ],
   debuffs: [

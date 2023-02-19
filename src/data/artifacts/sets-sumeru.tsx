@@ -55,7 +55,7 @@ const sumeruSets: DataArtifact[] = [
         desc: () => findByCode(sumeruSets, 36)?.setBonuses[1].desc,
         affect: EModAffect.SELF,
         applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "naAtkSpd", 10, tracker);
+          applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], 40, tracker);
         },
       },

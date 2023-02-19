@@ -318,7 +318,7 @@ const liyueSets: DataArtifact[] = [
             Increases <Green>Shield Strength</Green> by <Green b>35%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "shStr", 35),
+        applyBuff: makeModApplier("totalAttr", "shieldS_", 35),
       },
       {
         desc: (
@@ -454,7 +454,7 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 12)!.setBonuses[1].desc,
         affect: EModAffect.PARTY,
-        applyBuff: makeModApplier("totalAttr", ["atk_", "shStr"], [20, 30]),
+        applyBuff: makeModApplier("totalAttr", ["atk_", "shieldS_"], [20, 30]),
       },
     ],
   },

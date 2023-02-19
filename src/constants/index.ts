@@ -65,9 +65,16 @@ export const BASE_STAT_TYPES = ["base_hp", "base_atk", "base_def"] as const;
 
 export const CORE_STAT_TYPES = ["hp", "atk", "def"] as const;
 
-export const ARTIFACT_PERCENT_STAT_TYPES = ["hp_", "atk_", "def_", "cRate", "cDmg", "er"] as const;
+export const ARTIFACT_PERCENT_STAT_TYPES = [
+  "hp_",
+  "atk_",
+  "def_",
+  "cRate_",
+  "cDmg_",
+  "er_",
+] as const;
 
-export const OTHER_PERCENT_STAT_TYPES = ["healBn", "shStr", "naAtkSpd", "caAtkSpd"] as const;
+export const OTHER_PERCENT_STAT_TYPES = ["healB_", "shieldS_", "naAtkSpd_", "caAtkSpd_"] as const;
 
 export const ATTRIBUTE_STAT_TYPES = [
   ...CORE_STAT_TYPES,
@@ -78,8 +85,8 @@ export const ATTRIBUTE_STAT_TYPES = [
 ] as const;
 
 export const ATTACK_PATTERN_INFO_KEYS = [
-  "cRate",
-  "cDmg",
+  "cRate_",
+  "cDmg_",
   "pct",
   "flat",
   "mult",
@@ -87,9 +94,9 @@ export const ATTACK_PATTERN_INFO_KEYS = [
   "specialMult",
 ] as const;
 
-export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg", "flat"] as const;
+export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg_", "flat"] as const;
 
-export const REACTION_BONUS_INFO_KEYS = ["cRate", "cDmg", "pct"] as const;
+export const REACTION_BONUS_INFO_KEYS = ["cRate_", "cDmg_", "pct"] as const;
 
 export const VISION_ICONS = {
   pyro: "e/e8/Element_Pyro",

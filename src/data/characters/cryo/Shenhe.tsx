@@ -191,7 +191,7 @@ const Shenhe: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("attElmtBonus", "cryo.cDmg", 15),
+      applyBuff: makeModApplier("attElmtBonus", "cryo.cDmg_", 15),
     },
     {
       index: 4,

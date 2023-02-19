@@ -107,7 +107,7 @@ const Kokomi: DataCharacter = {
       image: "9/9d/Constellation_The_Clouds_Like_Waves_Rippling",
     },
     {
-      name: "The Moon, A Ship O'er the Seas",
+      name: "The Moon, A Ship O'er_ the Seas",
       image: "c/cd/Constellation_The_Moon%2C_A_Ship_O%27er_the_Seas",
     },
     {
@@ -143,14 +143,14 @@ const Kokomi: DataCharacter = {
         const buffValues = [4.84, 6.78, 7.1].map((mult, i) => {
           let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];
           if (i !== 2 && checkAscs[4](char)) {
-            finalMult += obj.totalAttr.healBn * 0.15;
+            finalMult += obj.totalAttr.healB_ * 0.15;
           }
           return applyPercent(obj.totalAttr.hp, finalMult);
         });
         applyModifier(obj.desc, obj.attPattBonus, fields, buffValues, obj.tracker);
 
         if (checkCons[4](char)) {
-          applyModifier(`Self / ${EModSrc.C4}`, obj.totalAttr, "naAtkSpd", 10, obj.tracker);
+          applyModifier(`Self / ${EModSrc.C4}`, obj.totalAttr, "naAtkSpd_", 10, obj.tracker);
         }
       },
     },

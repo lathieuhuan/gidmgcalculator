@@ -88,7 +88,7 @@ const getBuffValue = {
     };
   },
   A4: (totalAttr: TotalAttribute) => {
-    return round((totalAttr.er - 100) * 0.4, 1);
+    return round((totalAttr.er_ - 100) * 0.4, 1);
   },
   C1: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData, EBlevel?: number) => {
     const electroEC = +findInput(selfBuffCtrls, 3, 0); // EC = energyCost
@@ -131,7 +131,7 @@ const Raiden: DataCharacter = {
     [12000, 314, 734],
     [12907, 337, 789],
   ],
-  bonusStat: { type: "er", value: 8 },
+  bonusStat: { type: "er_", value: 8 },
   NAsConfig: {
     name: "Origin",
   },

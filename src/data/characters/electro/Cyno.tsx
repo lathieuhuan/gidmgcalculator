@@ -35,7 +35,7 @@ const Cyno: DataCharacter = {
     [11613, 296, 799],
     [12491, 318, 859],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Invoker's Spear",
   },
@@ -269,7 +269,7 @@ const Cyno: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => Cyno.constellation[0].xtraDesc?.[0],
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 20),
+      applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 20),
     },
     {
       index: 4,

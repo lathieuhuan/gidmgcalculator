@@ -34,7 +34,7 @@ const HuTao: DataCharacter = {
     [14459, 99, 815],
     [15552, 106, 876],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Secret Spear of Wangsheng",
   },
@@ -168,7 +168,7 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: makeModApplier("totalAttr", "cRate", 12),
+      applyBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
     {
       index: 2,
@@ -195,7 +195,7 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyFinalBuff: makeModApplier("totalAttr", "cRate", 12),
+      applyFinalBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
     {
       index: 4,
@@ -208,7 +208,7 @@ const HuTao: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("totalAttr", "cRate", 100),
+      applyBuff: makeModApplier("totalAttr", "cRate_", 100),
     },
   ],
 };

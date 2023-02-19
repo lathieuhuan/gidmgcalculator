@@ -32,7 +32,7 @@ const Yelan: DataCharacter = {
     [13434, 227, 509],
     [14450, 244, 548],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Stealthy Bowshot",
   },

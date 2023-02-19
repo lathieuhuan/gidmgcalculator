@@ -140,7 +140,7 @@ const Tighnari: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", "CA.cRate", 15),
+      applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 15),
     },
   ],
   buffs: [

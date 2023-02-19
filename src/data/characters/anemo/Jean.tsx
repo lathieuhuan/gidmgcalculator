@@ -31,7 +31,7 @@ const Jean: DataCharacter = {
     [13662, 222, 715],
     [14695, 239, 769],
   ],
-  bonusStat: { type: "healBn", value: 5.5 },
+  bonusStat: { type: "healB_", value: 5.5 },
   NAsConfig: {
     name: "Favonius Bladework",
   },
@@ -126,7 +126,7 @@ const Jean: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("totalAttr", "naAtkSpd", 15),
+      applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
   ],
   debuffs: [

@@ -97,7 +97,7 @@ const Amber: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: makeModApplier("attPattBonus", "EB.cRate", 10),
+      applyBuff: makeModApplier("attPattBonus", "EB.cRate_", 10),
     },
   ],
   buffs: [

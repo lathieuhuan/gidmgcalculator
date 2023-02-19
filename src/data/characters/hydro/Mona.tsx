@@ -17,7 +17,7 @@ const getEBBuffValue = ({
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
 
-const getA4BuffValue = (totalAttr: TotalAttribute) => Math.round(totalAttr.er * 2) / 10;
+const getA4BuffValue = (totalAttr: TotalAttribute) => Math.round(totalAttr.er_ * 2) / 10;
 
 const Mona: DataCharacter = {
   code: 16,
@@ -45,7 +45,7 @@ const Mona: DataCharacter = {
     [9677, 267, 607],
     [10409, 287, 653],
   ],
-  bonusStat: { type: "er", value: 8 },
+  bonusStat: { type: "er_", value: 8 },
   NAsConfig: {
     name: "Ripple of Fate",
   },
@@ -146,7 +146,7 @@ const Mona: DataCharacter = {
           applyModifier(desc, rxnBonus, fields, 15, tracker);
         }
         if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
-          applyModifier(desc, totalAttr, "cRate", 15, tracker);
+          applyModifier(desc, totalAttr, "cRate_", 15, tracker);
         }
       },
     },

@@ -13,7 +13,7 @@ const goldCatalysts: DataWeapon[] = [
     icon: "f/fc/Weapon_Tulaytullah%27s_Remembrance",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "cDmg", scale: "9.6%b" },
+    subStat: { type: "cDmg_", scale: "9.6%b" },
     passiveName: "Bygone Azure Teardrop",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -36,7 +36,7 @@ const goldCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd", 2.5),
+    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd_", 2.5),
     buffs: [
       {
         index: 1,
@@ -114,7 +114,7 @@ const goldCatalysts: DataWeapon[] = [
     icon: "b/b7/Weapon_Kagura%27s_Verity",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cDmg", scale: "14.4%" },
+    subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Kagura Dance of the Sacred Sakura",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -168,7 +168,7 @@ const goldCatalysts: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "healBn", 10),
+    applyBuff: makeWpModApplier("totalAttr", "healB_", 10),
     applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
       if (attPattBonus) {
         const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
@@ -202,7 +202,7 @@ const goldCatalysts: DataWeapon[] = [
     icon: "9/98/Weapon_Lost_Prayer_to_the_Sacred_Winds",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cRate", scale: "7.2%" },
+    subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Boundless Blessing",
     passiveDesc: ({ refi }) => ({
       get core() {

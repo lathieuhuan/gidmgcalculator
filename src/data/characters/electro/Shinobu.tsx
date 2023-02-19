@@ -134,7 +134,7 @@ const Shinobu: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: makeModApplier("totalAttr", "healBn", 15),
+      applyBuff: makeModApplier("totalAttr", "healB_", 15),
     },
     {
       index: 2,

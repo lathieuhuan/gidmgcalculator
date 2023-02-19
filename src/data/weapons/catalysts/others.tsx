@@ -14,7 +14,7 @@ const otherCatalysts: DataWeapon[] = [
     icon: "1/11/Weapon_Otherworldly_Story",
     rarity: 3,
     mainStatScale: "39",
-    subStat: { type: "er", scale: "8.5%" },
+    subStat: { type: "er_", scale: "8.5%" },
     passiveName: "Energy Shower",
     passiveDesc: ({ refi }) => ({
       core: <>Each Elemental Orb or Particle collected restores {0.75 + refi * 0.25}% HP.</>,
@@ -51,7 +51,7 @@ const otherCatalysts: DataWeapon[] = [
     icon: "e/e3/Weapon_Twin_Nephrite",
     rarity: 3,
     mainStatScale: "40",
-    subStat: { type: "cRate", scale: "3.4%" },
+    subStat: { type: "cRate_", scale: "3.4%" },
     passiveName: "Rapids",
     passiveDesc: ({ refi }) => ({
       core: (

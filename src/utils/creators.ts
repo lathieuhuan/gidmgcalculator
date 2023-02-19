@@ -69,8 +69,8 @@ export function createArtifact({
     subStats: [
       { type: "def", value: 0 },
       { type: "def_", value: 0 },
-      { type: "cRate", value: 0 },
-      { type: "cDmg", value: 0 },
+      { type: "cRate_", value: 0 },
+      { type: "cDmg_", value: 0 },
     ],
   };
 }

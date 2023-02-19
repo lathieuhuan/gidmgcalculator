@@ -98,7 +98,7 @@ const Chongyun: DataCharacter = {
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
         if (["sword", "claymore", "polearm"].includes(charData.weaponType))
-          applyModifier(desc, totalAttr, "naAtkSpd", 8, tracker);
+          applyModifier(desc, totalAttr, "naAtkSpd_", 8, tracker);
       },
     },
     {

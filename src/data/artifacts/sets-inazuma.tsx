@@ -181,7 +181,7 @@ const inazumaSets: DataArtifact[] = [
             <Green>Energy Recharge</Green> <Green b>+20%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "er", 20),
+        applyBuff: makeModApplier("totalAttr", "er_", 20),
       },
       {
         desc: (
@@ -193,7 +193,7 @@ const inazumaSets: DataArtifact[] = [
         ),
         applyFinalBuff: ({ attPattBonus, totalAttr, desc, tracker }) => {
           if (attPattBonus) {
-            let buffValue = Math.round(totalAttr.er * 25) / 100;
+            let buffValue = Math.round(totalAttr.er_ * 25) / 100;
             buffValue = Math.min(buffValue, 75);
             applyModifier(desc, attPattBonus, "EB.pct", Math.min(buffValue, 75), tracker);
           }
@@ -356,7 +356,7 @@ const inazumaSets: DataArtifact[] = [
             <Green>Healing Bonus</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "healBn", 15),
+        applyBuff: makeModApplier("totalAttr", "healB_", 15),
       },
       {
         desc: (

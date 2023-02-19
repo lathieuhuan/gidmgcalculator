@@ -146,7 +146,7 @@ const purplePolearms: DataWeapon[] = [
     icon: "5/57/Weapon_Favonius_Lance",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     ...favoniusSeries,
   },
   {
@@ -155,7 +155,7 @@ const purplePolearms: DataWeapon[] = [
     icon: "7/7e/Weapon_Prototype_Starglitter",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     passiveName: "Magic Affinity",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -189,7 +189,7 @@ const purplePolearms: DataWeapon[] = [
     icon: "f/f5/Weapon_The_Catch",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     passiveName: "Shanty",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -199,7 +199,7 @@ const purplePolearms: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate"], [16, 6]),
+    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate_"], [16, 6]),
   },
   {
     code: 93,
@@ -207,7 +207,7 @@ const purplePolearms: DataWeapon[] = [
     icon: "d/d5/Weapon_Blackcliff_Pole",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cDmg", scale: "12%" },
+    subStat: { type: "cDmg_", scale: "12%" },
     ...blackcliffSeries,
   },
   {
@@ -225,7 +225,7 @@ const purplePolearms: DataWeapon[] = [
     icon: "6/69/Weapon_Deathmatch",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "cRate", scale: "8%" },
+    subStat: { type: "cRate_", scale: "8%" },
     passiveName: "Gladiator",
     passiveDesc: ({ refi }) => ({
       core: (

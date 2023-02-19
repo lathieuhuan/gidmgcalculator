@@ -89,7 +89,7 @@ const Xinyan: DataCharacter = {
           name: "Physical Burst DMG",
           attElmt: "phys",
           multFactors: 340.8,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "cRate", [false, 2], 100]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "cRate_", [false, 2], 100]),
         },
         { name: "Pyro DoT", multFactors: 40 },
       ],
@@ -172,7 +172,7 @@ const Xinyan: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", ["naAtkSpd", "caAtkSpd"], 12),
+      applyBuff: makeModApplier("totalAttr", ["naAtkSpd_", "caAtkSpd_"], 12),
     },
   ],
   debuffs: [

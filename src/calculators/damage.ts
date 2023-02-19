@@ -78,17 +78,17 @@ function calcTalentDamage({
     const resMult = attElmt === "various" ? 1 : resistReduct[attElmt];
 
     // CALCULATE CRITS
-    const totalCrit = (type: "cRate" | "cDmg") => {
+    const totalCrit = (type: "cRate_" | "cDmg_") => {
       return (
         totalAttr[type] +
         (talentBuff[type]?.value || 0) +
         attPattBonus.all[type] +
         (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
-        (attElmt !== "various" && type === "cDmg" ? attElmtBonus[attElmt][type] : 0)
+        (attElmt !== "various" && type === "cDmg_" ? attElmtBonus[attElmt][type] : 0)
       );
     };
-    const cRate = Math.min(Math.max(totalCrit("cRate"), 0), 100) / 100;
-    const cDmg = totalCrit("cDmg") / 100;
+    const cRate_ = Math.min(Math.max(totalCrit("cRate_"), 0), 100) / 100;
+    const cDmg_ = totalCrit("cDmg_") / 100;
 
     base = applyToOneOrMany(
       base,
@@ -101,13 +101,13 @@ function calcTalentDamage({
     record.rxnMult = rxnMult;
     record.defMult = defMult;
     record.resMult = resMult;
-    record.cRate = cRate;
-    record.cDmg = cDmg;
+    record.cRate_ = cRate_;
+    record.cDmg_ = cDmg_;
 
     return {
       nonCrit: base,
-      crit: applyToOneOrMany(base, (n) => n * (1 + cDmg)),
-      average: applyToOneOrMany(base, (n) => n * (1 + cRate * cDmg)),
+      crit: applyToOneOrMany(base, (n) => n * (1 + cDmg_)),
+      average: applyToOneOrMany(base, (n) => n * (1 + cRate_ * cDmg_)),
     };
   } //
   else if (!Array.isArray(base)) {
@@ -117,7 +117,7 @@ function calcTalentDamage({
     switch (stat.notAttack) {
       case "healing":
         flat = talentBuff.flat?.value || 0;
-        normalMult += totalAttr.healBn / 100;
+        normalMult += totalAttr.healB_ / 100;
         break;
       case "shield":
         normalMult += (talentBuff.pct?.value || 0) / 100;
@@ -395,13 +395,13 @@ export default function getDamage({
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
     const baseValue = baseRxnDmg * mult;
     const nonCrit = baseValue * normalMult * resMult;
-    const cDmg = rxnBonus[rxn].cDmg / 100;
-    const cRate = rxnBonus[rxn].cRate / 100;
+    const cDmg_ = rxnBonus[rxn].cDmg_ / 100;
+    const cRate_ = rxnBonus[rxn].cRate_ / 100;
 
     finalResult.RXN[rxn] = {
       nonCrit,
-      crit: cDmg ? nonCrit * (1 + cDmg) : 0,
-      average: cRate ? nonCrit * (1 + cDmg * cRate) : 0,
+      crit: cDmg_ ? nonCrit * (1 + cDmg_) : 0,
+      average: cRate_ ? nonCrit * (1 + cDmg_ * cRate_) : 0,
     };
 
     if (tracker) {
@@ -409,8 +409,8 @@ export default function getDamage({
         multFactors: [{ value: Math.round(baseValue), desc: "Base DMG" }],
         normalMult,
         resMult,
-        cDmg,
-        cRate,
+        cDmg_,
+        cRate_,
       };
     }
   }

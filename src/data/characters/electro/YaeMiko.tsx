@@ -31,7 +31,7 @@ const YaeMiko: DataCharacter = {
     [9643, 316, 529],
     [10372, 340, 569],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Spiritfox Sin-Eater",
   },

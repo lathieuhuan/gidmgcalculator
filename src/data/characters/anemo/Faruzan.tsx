@@ -216,7 +216,7 @@ const Faruzan: DataCharacter = {
         }
         if (toSelf ? checkCons[6](char) : inputs[3]) {
           const descC6 = `${toSelf ? "Self" : "Faruzan"} / ${EModSrc.C6}`;
-          applyModifier(descC6, attElmtBonus, "anemo.cDmg", 40, tracker);
+          applyModifier(descC6, attElmtBonus, "anemo.cDmg_", 40, tracker);
         }
       },
     },

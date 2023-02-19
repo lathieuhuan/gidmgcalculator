@@ -87,7 +87,7 @@ export const royalSeries: SeriesInfo = {
       ],
       applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
         const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-        applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
+        applyModifier(desc, totalAttr, "cRate_", buffValue, tracker);
       },
     },
   ],
@@ -196,7 +196,7 @@ export const liyueSeries: SeriesInfo = {
       </>,
     ],
   }),
-  applyBuff: makeWpModApplier("totalAttr", "shStr", 20),
+  applyBuff: makeWpModApplier("totalAttr", "shieldS_", 20),
   buffs: [
     {
       index: 0,
@@ -239,7 +239,7 @@ export const lithicSeries: SeriesInfo = {
         charData.nation === "liyue" ? 1 : 0
       );
       const buffValues = [(6 + refi) * stacks, (2 + refi) * stacks];
-      applyModifier(desc, totalAttr, ["atk_", "cRate"], buffValues, tracker);
+      applyModifier(desc, totalAttr, ["atk_", "cRate_"], buffValues, tracker);
     }
   },
 };

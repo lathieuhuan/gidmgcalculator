@@ -59,7 +59,7 @@ export function DamageTracker({
         }
 
         const nonCritDmg = renderDmgValue(nonCrit);
-        const cDmg = record.cDmg ? round(record.cDmg, 3) : 0;
+        const cDmg_ = record.cDmg_ ? round(record.cDmg_, 3) : 0;
 
         return (
           <div key={i}>
@@ -123,21 +123,21 @@ export function DamageTracker({
                 {record.note}
               </li>
 
-              {cDmg ? (
+              {cDmg_ ? (
                 <li>
                   Crit <span className="text-orange font-semibold">{renderDmgValue(crit)}</span> ={" "}
-                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg}</Green>)
+                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>)
                 </li>
               ) : null}
 
-              {cDmg && record.cRate ? (
+              {cDmg_ && record.cRate_ ? (
                 <li>
                   Average{" "}
                   <span className="text-orange font-semibold">{renderDmgValue(average)}</span> ={" "}
-                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg}</Green>
+                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>
                   {renderDmgComponent({
                     desc: "Crit Rate",
-                    value: record.cRate,
+                    value: record.cRate_,
                     nullValue: null,
                     processor: (value) => round(value, 3),
                   })}

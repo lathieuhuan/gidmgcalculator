@@ -91,7 +91,7 @@ const Collei: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "er", 20),
+      applyBuff: makeModApplier("totalAttr", "er_", 20),
     },
     {
       index: 4,

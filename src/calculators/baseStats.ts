@@ -54,16 +54,16 @@ export function initiateTotalAttr({ char, weapon, weaponData, tracker }: Initiat
   const bonusScale = [0, 1, 2, 2, 3, 4][scaleIndex];
 
   addOrInit(innerStats, charData.bonusStat.type, charData.bonusStat.value * bonusScale);
-  addOrInit(innerStats, "cRate", 5);
-  addOrInit(innerStats, "cDmg", 50);
-  addOrInit(innerStats, "er", 100);
-  addOrInit(innerStats, "naAtkSpd", 100);
-  addOrInit(innerStats, "caAtkSpd", 100);
+  addOrInit(innerStats, "cRate_", 5);
+  addOrInit(innerStats, "cDmg_", 50);
+  addOrInit(innerStats, "er_", 100);
+  addOrInit(innerStats, "naAtkSpd_", 100);
+  addOrInit(innerStats, "caAtkSpd_", 100);
 
   // Kokomi
   if (charData.code === 42) {
-    innerStats.cRate -= 100;
-    innerStats.healBn = 25;
+    innerStats.cRate_ -= 100;
+    innerStats.healB_ = 25;
   }
   const baseConvertMap: Record<string, CoreStat> = {
     base_atk: "atk",

@@ -199,7 +199,7 @@ const mondstadtSets: DataArtifact[] = [
             Character <Green>Healing Effectiveness</Green> <Green b>+15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("totalAttr", "healBn", 15),
+        applyBuff: makeModApplier("totalAttr", "healB_", 15),
       },
       {
         desc: (
@@ -368,7 +368,7 @@ const mondstadtSets: DataArtifact[] = [
         affect: EModAffect.SELF,
         applyBuff: ({ totalAttr, desc, tracker }) => {
           const noteDesc = `${desc} on affected by Cryo`;
-          applyModifier(noteDesc, totalAttr, "cRate", 20, tracker);
+          applyModifier(noteDesc, totalAttr, "cRate_", 20, tracker);
         },
       },
       {
@@ -381,7 +381,7 @@ const mondstadtSets: DataArtifact[] = [
         ),
         affect: EModAffect.SELF,
         applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(`${desc} on frozen`, totalAttr, "cRate", 20, tracker);
+          applyModifier(`${desc} on frozen`, totalAttr, "cRate_", 20, tracker);
         },
       },
     ],

@@ -123,7 +123,7 @@ const Beidou: DataCharacter = {
       isGranted: checkAscs[4],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 15, tracker);
-        applyModifier(desc, totalAttr, ["naAtkSpd", "caAtkSpd"], 15, tracker);
+        applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 15, tracker);
       },
     },
   ],

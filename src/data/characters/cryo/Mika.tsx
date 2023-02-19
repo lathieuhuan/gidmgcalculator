@@ -179,14 +179,14 @@ const Mika: DataCharacter = {
           ? finalTalentLv({ char, dataChar: Mika, talentType: "ES", partyData })
           : inputs[0] || 0;
         const buffValue = level ? Math.min(12 + level, 25) : 0;
-        applyModifier(desc, totalAttr, "naAtkSpd", buffValue, tracker);
+        applyModifier(desc, totalAttr, "naAtkSpd_", buffValue, tracker);
 
         if (!toSelf || checkAscs[1](char)) {
           const buffValue = detectorBuff({ toSelf, char, inputs }).value;
           applyModifier(desc + ` + ${EModSrc.A1}`, totalAttr, "phys", buffValue, tracker);
         }
         if ((toSelf && checkCons[6](char)) || (!toSelf && inputs[2])) {
-          applyModifier(desc + ` + ${EModSrc.C6}`, attElmtBonus, "phys.cDmg", 60, tracker);
+          applyModifier(desc + ` + ${EModSrc.C6}`, attElmtBonus, "phys.cDmg_", 60, tracker);
         }
       },
     },

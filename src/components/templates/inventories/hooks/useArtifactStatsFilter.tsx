@@ -14,15 +14,6 @@ import { useTranslation } from "@Src/hooks";
 // Component
 import { Green, IconButton } from "@Components/atoms";
 
-const MAIN_STAT_TYPES = [
-  "hp",
-  "atk",
-  ...ARTIFACT_PERCENT_STAT_TYPES,
-  "em",
-  ...ATTACK_ELEMENTS,
-  "healBn",
-];
-
 interface UseArtifactStatsFilterArgs {
   artifactType?: ArtifactType;
   stats: StatsFilter;
@@ -42,7 +33,7 @@ export function useArtifactStatsFilter({
 
   const mainStatOptions = artifactType
     ? ["All", ...Object.keys(ARTIFACT_MAIN_STATS[artifactType])]
-    : ["All", ...MAIN_STAT_TYPES];
+    : ["All", "hp", "atk", ...ARTIFACT_PERCENT_STAT_TYPES, "em", ...ATTACK_ELEMENTS, "healB_"];
 
   const subStatOptions = ["All", ...CORE_STAT_TYPES, ...ARTIFACT_PERCENT_STAT_TYPES, "em"];
 

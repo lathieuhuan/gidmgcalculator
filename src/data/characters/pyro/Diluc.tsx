@@ -31,7 +31,7 @@ const Diluc: DataCharacter = {
     [12068, 311, 729],
     [12981, 335, 784],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Tempered Sword",
   },
@@ -155,7 +155,7 @@ const Diluc: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const buffValue = 5 * (inputs[0] || 0);
-        const keys: AttributeStat[] = ["atk_", "naAtkSpd", "caAtkSpd"];
+        const keys: AttributeStat[] = ["atk_", "naAtkSpd_", "caAtkSpd_"];
         applyModifier(desc, totalAttr, keys, [buffValue * 2, buffValue, buffValue], tracker);
       },
     },
@@ -186,7 +186,7 @@ const Diluc: DataCharacter = {
       isGranted: checkCons[6],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct", 30, tracker);
-        applyModifier(desc, totalAttr, "naAtkSpd", 30, tracker);
+        applyModifier(desc, totalAttr, "naAtkSpd_", 30, tracker);
       },
     },
   ],

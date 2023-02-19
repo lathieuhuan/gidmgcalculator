@@ -14,7 +14,7 @@ const goldClaymores: DataWeapon[] = [
     icon: "https://i.ibb.co/VtnjT3D/beacon-of-the-reed-sea.png",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cRate", scale: "7.2%" },
+    subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Desert Watch",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -100,7 +100,7 @@ const goldClaymores: DataWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         desc: ({ refi }) => findByCode(goldClaymores, 53)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd", "atk_"], [12, 20]),
+        applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd_", "atk_"], [12, 20]),
       },
     ],
   },
@@ -110,7 +110,7 @@ const goldClaymores: DataWeapon[] = [
     icon: "0/0b/Weapon_Skyward_Pride",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "er", scale: "8%" },
+    subStat: { type: "er_", scale: "8%" },
     passiveName: "Sky-ripping Dragon Spine",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -173,7 +173,7 @@ const goldClaymores: DataWeapon[] = [
     icon: "d/d4/Weapon_Redhorn_Stonethresher",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cDmg", scale: "19.2%" },
+    subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "Gokadaiou Otogibanashi",
     passiveDesc: ({ refi }) => ({
       core: (

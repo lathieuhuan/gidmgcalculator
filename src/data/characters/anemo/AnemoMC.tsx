@@ -65,7 +65,7 @@ const AnemoMC: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("totalAttr", "er", 16),
+      applyBuff: makeModApplier("totalAttr", "er_", 16),
     },
   ],
   debuffs: [

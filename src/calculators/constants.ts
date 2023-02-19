@@ -12,8 +12,8 @@ type ResonanceStat = {
 
 export const RESONANCE_STAT: Record<ResonanceVision, ResonanceStat> = {
   pyro: { key: "atk_", value: 25 },
-  cryo: { key: "cRate", value: 15 },
-  geo: { key: "shStr", value: 15 },
+  cryo: { key: "cRate_", value: 15 },
+  geo: { key: "shieldS_", value: 15 },
   hydro: { key: "hp_", value: 25 },
   dendro: { key: "em", value: 50 },
 };

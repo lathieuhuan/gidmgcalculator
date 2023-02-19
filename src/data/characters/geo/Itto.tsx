@@ -38,7 +38,7 @@ const Itto: DataCharacter = {
     [11954, 211, 892],
     [12858, 227, 959],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Fight Club Legend",
     // getExtraStats: () => [
@@ -140,7 +140,7 @@ const Itto: DataCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "CA.cDmg", 70),
+      applyBuff: makeModApplier("attPattBonus", "CA.cDmg_", 70),
     },
   ],
   buffs: [
@@ -163,7 +163,7 @@ const Itto: DataCharacter = {
           partyData,
         });
         const buffValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
-        applyModifier(desc, totalAttr, ["atk", "naAtkSpd"], [buffValue, 10], tracker);
+        applyModifier(desc, totalAttr, ["atk", "naAtkSpd_"], [buffValue, 10], tracker);
       },
       infuseConfig: {
         overwritable: false,

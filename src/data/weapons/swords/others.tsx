@@ -68,12 +68,12 @@ const otherSwords: DataWeapon[] = [
     icon: "2/23/Weapon_Harbinger_of_Dawn",
     rarity: 3,
     mainStatScale: "39",
-    subStat: { type: "cDmg", scale: "10.2%" },
+    subStat: { type: "cDmg_", scale: "10.2%" },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "cRate", 14),
+        applyBuff: makeWpModApplier("totalAttr", "cRate_", 14),
         desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
       },
     ],
@@ -102,7 +102,7 @@ const otherSwords: DataWeapon[] = [
     icon: "3/34/Weapon_Skyrider_Sword",
     rarity: 3,
     mainStatScale: "38",
-    subStat: { type: "er", scale: "11.3%" },
+    subStat: { type: "er_", scale: "11.3%" },
     buffs: [
       {
         index: 0,

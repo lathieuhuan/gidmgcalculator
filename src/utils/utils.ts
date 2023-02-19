@@ -13,19 +13,13 @@ import type {
   Vision,
   WeaponType,
 } from "@Src/types";
-import {
-  ARTIFACT_PERCENT_STAT_TYPES,
-  ATTACK_ELEMENTS,
-  LEVELS,
-  OTHER_PERCENT_STAT_TYPES,
-} from "@Src/constants";
+import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "@Src/constants/weapon-stats";
 
 export const percentSign = (stat: string) => {
   if (
-    ARTIFACT_PERCENT_STAT_TYPES.includes(stat as any) ||
-    OTHER_PERCENT_STAT_TYPES.includes(stat as any) ||
+    stat.slice(-1) === "_" ||
     ATTACK_ELEMENTS.includes(stat as any) ||
     ["pct", "mult", "defIgnore"].includes(stat)
   ) {

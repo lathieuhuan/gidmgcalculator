@@ -212,7 +212,7 @@ const Dehya: DataCharacter = {
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         const buffValue = (inputs[0] || 0) * 15;
-        applyModifier(desc, attPattBonus, ["EB.cRate", "EB.cDmg"], [10, buffValue], tracker);
+        applyModifier(desc, attPattBonus, ["EB.cRate_", "EB.cDmg_"], [10, buffValue], tracker);
       },
     },
   ],

@@ -263,7 +263,7 @@ const Alhaitham: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const stacks = inputs[0] || 0;
-        applyModifier(desc, totalAttr, ["cRate", "cDmg"], [stacks * 10, stacks * 70], tracker);
+        applyModifier(desc, totalAttr, ["cRate_", "cDmg_"], [stacks * 10, stacks * 70], tracker);
       },
     },
   ],

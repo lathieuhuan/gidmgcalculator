@@ -98,7 +98,7 @@ const Nahida: DataCharacter = {
 
             return talentBuff(
               [EBisInUse || A4isInUse, "pct", desc.join(" + "), buffValue],
-              [A4isInUse, "cRate", [true, 4], Math.min(round(excessEM * 0.03, 1), 24)]
+              [A4isInUse, "cRate_", [true, 4], Math.min(round(excessEM * 0.03, 1), 24)]
             );
           },
         },
@@ -283,14 +283,14 @@ const Nahida: DataCharacter = {
         applyModifier(
           desc,
           rxnBonus,
-          ["burning.cRate", "bloom.cRate", "hyperbloom.cRate", "burgeon.cRate"],
+          ["burning.cRate_", "bloom.cRate_", "hyperbloom.cRate_", "burgeon.cRate_"],
           20,
           tracker
         );
         applyModifier(
           desc,
           rxnBonus,
-          ["burning.cDmg", "bloom.cDmg", "hyperbloom.cDmg", "burgeon.cDmg"],
+          ["burning.cDmg_", "bloom.cDmg_", "hyperbloom.cDmg_", "burgeon.cDmg_"],
           100,
           tracker
         );

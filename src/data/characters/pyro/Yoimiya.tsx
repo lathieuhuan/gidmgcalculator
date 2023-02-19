@@ -38,7 +38,7 @@ const Yoimiya: DataCharacter = {
     [9450, 300, 572],
     [10164, 323, 615],
   ],
-  bonusStat: { type: "cRate", value: 4.8 },
+  bonusStat: { type: "cRate_", value: 4.8 },
   NAsConfig: {
     name: "Firework Flare-Up",
   },

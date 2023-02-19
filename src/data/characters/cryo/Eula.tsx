@@ -54,7 +54,7 @@ const Eula: DataCharacter = {
     [12296, 318, 698],
     [13226, 342, 751],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Favonius Bladework - Edel",
   },

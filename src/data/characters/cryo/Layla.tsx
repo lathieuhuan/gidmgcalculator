@@ -219,7 +219,7 @@ const Layla: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 6 * (inputs[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "shieldS_", 6 * (inputs[0] || 0), tracker);
       },
     },
     {

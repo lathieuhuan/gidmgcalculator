@@ -60,7 +60,7 @@ const YunJin: DataCharacter = {
     [9919, 178, 684],
     [10657, 191, 734],
   ],
-  bonusStat: { type: "er", value: 6.7 },
+  bonusStat: { type: "er_", value: 6.7 },
   NAsConfig: {
     name: "Cloud-Grazing Strike",
   },
@@ -184,7 +184,7 @@ const YunJin: DataCharacter = {
           applyModifier(desc + ` + ${EModSrc.C2}`, obj.attPattBonus, "NA.pct", 15, tracker);
         }
         if (toSelf ? checkCons[6](char) : inputs[4]) {
-          applyModifier(desc + ` + ${EModSrc.C6}`, obj.totalAttr, "naAtkSpd", 12, tracker);
+          applyModifier(desc + ` + ${EModSrc.C6}`, obj.totalAttr, "naAtkSpd_", 12, tracker);
         }
       },
     },

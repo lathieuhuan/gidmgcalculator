@@ -99,7 +99,7 @@ export const AttributeTable = ({ attributes }: AttributeTableProps) => {
 
       <EmSection em={attributes?.em || 0} />
 
-      {(["cRate", "cDmg", "healBn", "er", "shStr"] as const).map((type) => {
+      {(["cRate_", "cDmg_", "healB_", "er_", "shieldS_"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
             <p>{t(type)}</p>
@@ -117,7 +117,7 @@ export const AttributeTable = ({ attributes }: AttributeTableProps) => {
         );
       })}
 
-      {(["naAtkSpd", "caAtkSpd"] as const).map((type) => {
+      {(["naAtkSpd_", "caAtkSpd_"] as const).map((type) => {
         return (
           <StatsTable.Row key={type}>
             <p>{t(type)}</p>

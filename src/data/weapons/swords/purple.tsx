@@ -82,7 +82,7 @@ const purpleSwords: DataWeapon[] = [
         applyBuff: ({ totalAttr, refi, desc, tracker }) => {
           const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
           const finalDesc = desc + ` / ${(27 + refi * 9) / 1000}% * ${totalAttr.em} EM`;
-          applyModifier(finalDesc, totalAttr, "er", buffValue, tracker);
+          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
         },
       },
       {
@@ -99,7 +99,7 @@ const purpleSwords: DataWeapon[] = [
           const mult = (81 + refi * 27) / 10000;
           const buffValue = round((inputs[0] || 0) * mult, 1);
           const finalDesc = desc + ` / ${mult}% * ${inputs[0] || 0} EM`;
-          applyModifier(finalDesc, totalAttr, "er", buffValue, tracker);
+          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
         },
       },
     ],
@@ -138,7 +138,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "0/00/Weapon_Sapwood_Blade",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Forest Sanctuary",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -199,7 +199,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "6/6f/Weapon_Blackcliff_Longsword",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "cDmg", scale: "8%" },
+    subStat: { type: "cDmg_", scale: "8%" },
     ...blackcliffSeries,
   },
   {
@@ -243,7 +243,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "7/70/Weapon_Festering_Desire",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     passiveName: "Undying Admiration",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -253,7 +253,7 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate"], [16, 6]),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate_"], [16, 6]),
   },
   {
     code: 113,
@@ -261,7 +261,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "c/cf/Weapon_The_Black_Sword",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cRate", scale: "6%" },
+    subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Justice",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -370,7 +370,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "9/90/Weapon_Favonius_Sword",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er", scale: "13.3%" },
+    subStat: { type: "er_", scale: "13.3%" },
     ...favoniusSeries,
   },
   {
@@ -379,7 +379,7 @@ const purpleSwords: DataWeapon[] = [
     icon: "a/a0/Weapon_Sacrificial_Sword",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er", scale: "13.3%" },
+    subStat: { type: "er_", scale: "13.3%" },
     ...sacrificialSeries,
   },
   {

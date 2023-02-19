@@ -20,7 +20,7 @@ const goldSwords: DataWeapon[] = [
     icon: "d/de/Weapon_Light_of_Foliar_Incision",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cDmg", scale: "19.2%" },
+    subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "Whitemoon Bristle",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -40,7 +40,7 @@ const goldSwords: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
+    applyBuff: makeWpModApplier("totalAttr", "cRate_", 4),
     buffs: [
       {
         index: 0,
@@ -131,7 +131,7 @@ const goldSwords: DataWeapon[] = [
     icon: "8/85/Weapon_Haran_Geppaku_Futsu",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cRate", scale: "7.2%" },
+    subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Honed Flow",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -177,7 +177,7 @@ const goldSwords: DataWeapon[] = [
     icon: "0/09/Weapon_Mistsplitter_Reforged",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "cDmg", scale: "9.6%b" },
+    subStat: { type: "cDmg_", scale: "9.6%b" },
     passiveName: "Mistsplitter's Edge",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -250,7 +250,7 @@ const goldSwords: DataWeapon[] = [
     icon: "0/03/Weapon_Skyward_Blade",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "er", scale: "12%" },
+    subStat: { type: "er_", scale: "12%" },
     passiveName: "Sky-Piercing Fang",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -269,14 +269,14 @@ const goldSwords: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "cRate", 4),
+    applyBuff: makeWpModApplier("totalAttr", "cRate_", 4),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
         applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "naAtkSpd", 10, tracker);
+          applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
         },
       },
     ],
@@ -341,7 +341,7 @@ const goldSwords: DataWeapon[] = [
     icon: "2/2a/Weapon_Primordial_Jade_Cutter",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cRate", scale: "9.6%b" },
+    subStat: { type: "cRate_", scale: "9.6%b" },
     applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const bnPct = 0.9 + refi * 0.3;

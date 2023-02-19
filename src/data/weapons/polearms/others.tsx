@@ -29,7 +29,7 @@ const otherPolearms: DataWeapon[] = [
     icon: "1/1f/Weapon_White_Tassel",
     rarity: 3,
     mainStatScale: "39",
-    subStat: { type: "cRate", scale: "5.1%" },
+    subStat: { type: "cRate_", scale: "5.1%" },
     passiveName: "Sharp",
     passiveDesc: ({ refi }) => ({
       core: (

@@ -162,7 +162,7 @@ const Yanfei: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("attPattBonus", "CA.cRate", 20),
+      applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 20),
     },
   ],
 };

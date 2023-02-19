@@ -21,7 +21,7 @@ const goldPolearms: DataWeapon[] = [
     icon: "4/44/Weapon_Staff_of_the_Scarlet_Sands",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cRate", scale: "9.6%b" },
+    subStat: { type: "cRate_", scale: "9.6%b" },
     passiveName: "Heat Haze at Horizon's End",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -74,7 +74,7 @@ const goldPolearms: DataWeapon[] = [
     icon: "6/69/Weapon_Skyward_Spine",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "er", scale: "8%" },
+    subStat: { type: "er_", scale: "8%" },
     passiveName: "Blackwing",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -88,7 +88,7 @@ const goldPolearms: DataWeapon[] = [
       ),
     }),
     applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-      applyModifier(desc, totalAttr, ["cRate", "naAtkSpd"], [6 + refi * 2, 12], tracker);
+      applyModifier(desc, totalAttr, ["cRate_", "naAtkSpd_"], [6 + refi * 2, 12], tracker);
     },
   },
   {
@@ -97,7 +97,7 @@ const goldPolearms: DataWeapon[] = [
     icon: "8/80/Weapon_Primordial_Jade_Winged-Spear",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "cRate", scale: "4.8%" },
+    subStat: { type: "cRate_", scale: "4.8%" },
     passiveName: "Eagle Spear of Justice",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -138,7 +138,7 @@ const goldPolearms: DataWeapon[] = [
     icon: "2/21/Weapon_Engulfing_Lightning",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "er", scale: "12%" },
+    subStat: { type: "er_", scale: "12%" },
     passiveName: "Timeless Dream: Eternal Stove",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -158,7 +158,7 @@ const goldPolearms: DataWeapon[] = [
       ],
     }),
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-      const ER = round(totalAttr.er - 100, 1);
+      const ER = round(totalAttr.er_ - 100, 1);
       const mult = 21 + refi * 7;
       let buffValue = (ER / 100) * mult;
       let xtraDesc = ` / ${mult}% of ${ER}% Energy Recharge => ${round(buffValue, 2)}%`;
@@ -177,7 +177,7 @@ const goldPolearms: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldPolearms, 79)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "er", 30, 6),
+        applyBuff: makeWpModApplier("totalAttr", "er_", 30, 6),
       },
     ],
   },
@@ -187,7 +187,7 @@ const goldPolearms: DataWeapon[] = [
     icon: "1/17/Weapon_Staff_of_Homa",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cDmg", scale: "14.4%" },
+    subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Reckless Cinnabar",
     passiveDesc: ({ refi }) => ({
       get core() {

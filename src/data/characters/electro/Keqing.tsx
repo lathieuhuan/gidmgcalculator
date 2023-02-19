@@ -31,7 +31,7 @@ const Keqing: DataCharacter = {
     [12182, 300, 743],
     [13103, 323, 799],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Yunlai Swordsmanship",
   },
@@ -109,7 +109,7 @@ const Keqing: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: makeModApplier("totalAttr", ["cRate", "er"], 15),
+      applyBuff: makeModApplier("totalAttr", ["cRate_", "er_"], 15),
     },
     {
       index: 2,

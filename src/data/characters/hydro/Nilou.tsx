@@ -225,7 +225,7 @@ const Nilou: DataCharacter = {
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const baseValue = round(Math.min((totalAttr.hp / 1000) * 0.6, 30), 1);
         const buffValues = [baseValue, baseValue * 2];
-        applyModifier(desc, totalAttr, ["cRate", "cDmg"], buffValues, tracker);
+        applyModifier(desc, totalAttr, ["cRate_", "cDmg_"], buffValues, tracker);
       },
     },
   ],

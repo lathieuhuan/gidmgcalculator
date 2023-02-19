@@ -8,8 +8,8 @@ import type {
   WeaponType,
   CharInfo,
   NormalAttack,
-  ArtifactPercentStat,
   ModInputConfig,
+  AttributeStat,
 } from "./global";
 import type {
   CharData,
@@ -38,7 +38,7 @@ export type DataCharacter = {
   weaponType: WeaponType;
   stats: number[][];
   bonusStat: {
-    type: AttackElement | ArtifactPercentStat | "em" | "healBn";
+    type: AttributeStat;
     value: number;
   };
   NAsConfig: {

@@ -31,7 +31,7 @@ const Qiqi: DataCharacter = {
     [11499, 267, 857],
     [12368, 287, 922],
   ],
-  bonusStat: { type: "healBn", value: 5.5 },
+  bonusStat: { type: "healB_", value: 5.5 },
   NAsConfig: {
     name: "Ancient Sword Art",
   },

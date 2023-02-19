@@ -31,7 +31,7 @@ const Kaeya: DataCharacter = {
     [10830, 208, 737],
     [11636, 223, 792],
   ],
-  bonusStat: { type: "er", value: 6.7 },
+  bonusStat: { type: "er_", value: 6.7 },
   NAsConfig: {
     name: "Ceremonial Bladework",
   },
@@ -89,7 +89,7 @@ const Kaeya: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", ["NA.cRate", "CA.cRate"], 15),
+      applyBuff: makeModApplier("attPattBonus", ["NA.cRate_", "CA.cRate_"], 15),
     },
   ],
 };

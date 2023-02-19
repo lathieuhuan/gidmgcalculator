@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Rarity, ArtifactPercentStat, ModInputConfig } from "./global";
+import type { Rarity, ModInputConfig, AttributeStat } from "./global";
 import type {
   AttackPatternBonus,
   CharData,
@@ -23,7 +23,7 @@ export type DataWeapon = {
   icon: string;
   mainStatScale: string;
   subStat?: {
-    type: ArtifactPercentStat | "em" | "phys";
+    type: AttributeStat;
     scale: string;
   };
   applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;

@@ -186,7 +186,7 @@ const Dori: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "er", 30),
+      applyBuff: makeModApplier("totalAttr", "er_", 30),
     },
   ],
 };

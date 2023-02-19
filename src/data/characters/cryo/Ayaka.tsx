@@ -32,7 +32,7 @@ const Ayaka: DataCharacter = {
     [11954, 318, 729],
     [12858, 342, 784],
   ],
-  bonusStat: { type: "cDmg", value: 9.6 },
+  bonusStat: { type: "cDmg_", value: 9.6 },
   NAsConfig: {
     name: "Kamisato Art: Kabuki",
   },

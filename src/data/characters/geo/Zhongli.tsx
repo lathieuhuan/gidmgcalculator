@@ -151,7 +151,7 @@ const Zhongli: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "shStr", 5 * (inputs[0] || 0), tracker);
+        applyModifier(desc, totalAttr, "shieldS_", 5 * (inputs[0] || 0), tracker);
       },
     },
   ],

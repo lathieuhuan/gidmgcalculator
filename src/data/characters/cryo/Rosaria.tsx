@@ -92,7 +92,7 @@ const Rosaria: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: makeModApplier("totalAttr", "cRate", 12),
+      applyBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
     {
       index: 1,
@@ -117,7 +117,7 @@ const Rosaria: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         const buffValue = Math.round((inputs[0] || 0) * 15) / 100;
-        applyModifier(desc, totalAttr, "cRate", buffValue, tracker);
+        applyModifier(desc, totalAttr, "cRate_", buffValue, tracker);
       },
     },
     {
@@ -133,7 +133,7 @@ const Rosaria: DataCharacter = {
       isGranted: checkCons[1],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct", 10, tracker);
-        applyModifier(desc, totalAttr, "naAtkSpd", 10, tracker);
+        applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
       },
     },
   ],

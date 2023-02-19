@@ -47,7 +47,7 @@ const Bennett: DataCharacter = {
     [11539, 178, 718],
     [12397, 191, 771],
   ],
-  bonusStat: { type: "er", value: 6.7 },
+  bonusStat: { type: "er_", value: 6.7 },
   NAsConfig: {
     name: "Strike of Fortune",
   },

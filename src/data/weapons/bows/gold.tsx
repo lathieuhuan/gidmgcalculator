@@ -24,7 +24,7 @@ const goldBows: DataWeapon[] = [
     icon: "d/dd/Weapon_Hunter%27s_Path",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cRate", scale: "9.6%b" },
+    subStat: { type: "cRate_", scale: "9.6%b" },
     passiveName: "At the End of the Beast-Paths",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -63,7 +63,7 @@ const goldBows: DataWeapon[] = [
     icon: "c/cd/Weapon_Aqua_Simulacra",
     rarity: 5,
     mainStatScale: "44b",
-    subStat: { type: "cDmg", scale: "19.2%" },
+    subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "The Cleansing Form",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -97,7 +97,7 @@ const goldBows: DataWeapon[] = [
     icon: "1/19/Weapon_Skyward_Harp",
     rarity: 5,
     mainStatScale: "48",
-    subStat: { type: "cRate", scale: "4.8%" },
+    subStat: { type: "cRate_", scale: "4.8%" },
     passiveName: "Echoing Ballad",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -109,7 +109,7 @@ const goldBows: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "cDmg", 20),
+    applyBuff: makeWpModApplier("totalAttr", "cDmg_", 20),
   },
   {
     code: 6,
@@ -117,7 +117,7 @@ const goldBows: DataWeapon[] = [
     icon: "4/44/Weapon_Polar_Star",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cRate", scale: "7.2%" },
+    subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Daylight's Augury",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -164,7 +164,7 @@ const goldBows: DataWeapon[] = [
     icon: "7/77/Weapon_Thundering_Pulse",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "cDmg", scale: "14.4%" },
+    subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Rule by Thunder",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -255,7 +255,7 @@ const goldBows: DataWeapon[] = [
     icon: "a/a5/Weapon_Elegy_for_the_End",
     rarity: 5,
     mainStatScale: "46",
-    subStat: { type: "er", scale: "12%" },
+    subStat: { type: "er_", scale: "12%" },
     passiveName: "The Parting Refrain",
     passiveDesc: ({ refi }) => ({
       get core() {

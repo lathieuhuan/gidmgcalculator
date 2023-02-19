@@ -23,7 +23,7 @@ const otherBows: DataWeapon[] = [
     icon: "3/38/Weapon_Messenger",
     rarity: 3,
     mainStatScale: "40",
-    subStat: { type: "cDmg", scale: "6.8%" },
+    subStat: { type: "cDmg_", scale: "6.8%" },
     passiveName: "Archer's Message",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -49,7 +49,7 @@ const otherBows: DataWeapon[] = [
     icon: "5/52/Weapon_Sharpshooter%27s_Oath",
     rarity: 3,
     mainStatScale: "39",
-    subStat: { type: "cDmg", scale: "10.2%" },
+    subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Precise",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -73,7 +73,7 @@ const otherBows: DataWeapon[] = [
     icon: "c/ca/Weapon_Slingshot",
     rarity: 3,
     mainStatScale: "38",
-    subStat: { type: "cRate", scale: "6.8%" },
+    subStat: { type: "cRate_", scale: "6.8%" },
     passiveName: "Slingshot",
     passiveDesc: ({ refi }) => ({
       core: (

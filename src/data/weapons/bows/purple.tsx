@@ -25,7 +25,7 @@ const purpleBows: DataWeapon[] = [
     icon: "a/a2/Weapon_King%27s_Squire",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er", scale: "12%" },
+    subStat: { type: "er_", scale: "12%" },
     passiveName: "Labyrinth Lord's Instruction",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -59,7 +59,7 @@ const purpleBows: DataWeapon[] = [
     icon: "2/2b/Weapon_Fading_Twilight",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Radiance of the Deeps",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -153,7 +153,7 @@ const purpleBows: DataWeapon[] = [
     icon: "b/b8/Weapon_Blackcliff_Warbow",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "cDmg", scale: "8%" },
+    subStat: { type: "cDmg_", scale: "8%" },
     ...blackcliffSeries,
   },
   {
@@ -171,7 +171,7 @@ const purpleBows: DataWeapon[] = [
     icon: "e/ec/Weapon_Sacrificial_Bow",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     ...sacrificialSeries,
   },
   {
@@ -251,7 +251,7 @@ const purpleBows: DataWeapon[] = [
     icon: "f/ff/Weapon_The_Viridescent_Hunt",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cRate", scale: "6%" },
+    subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Verdant Wind",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -420,7 +420,7 @@ const purpleBows: DataWeapon[] = [
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           const stacks = inputs[0] || 0;
           const buffValues = [(3 + refi) * stacks, (0.9 + refi * 0.3) * stacks];
-          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd"], buffValues, tracker);
+          applyModifier(desc, totalAttr, ["atk_", "naAtkSpd_"], buffValues, tracker);
         },
       },
     ],
@@ -465,7 +465,7 @@ const purpleBows: DataWeapon[] = [
     icon: "8/85/Weapon_Favonius_Warbow",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er", scale: "13.3%" },
+    subStat: { type: "er_", scale: "13.3%" },
     ...favoniusSeries,
   },
 ];

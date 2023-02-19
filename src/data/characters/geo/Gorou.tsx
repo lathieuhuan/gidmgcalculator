@@ -244,7 +244,7 @@ const Gorou: DataCharacter = {
       isGranted: checkCons[6],
       applyBuff: (obj) => {
         const buffValue = [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1];
-        applyModifier(obj.desc, obj.attElmtBonus, "geo.cDmg", buffValue, obj.tracker);
+        applyModifier(obj.desc, obj.attElmtBonus, "geo.cDmg_", buffValue, obj.tracker);
       },
     },
   ],

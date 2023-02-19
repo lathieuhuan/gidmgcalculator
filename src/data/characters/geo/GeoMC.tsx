@@ -60,7 +60,7 @@ const GeoMC: DataCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "cRate", 10),
+      applyBuff: makeModApplier("totalAttr", "cRate_", 10),
     },
   ],
 };

@@ -234,8 +234,8 @@ export type TrackerDamageRecord = {
   rxnMult?: number;
   defMult?: number;
   resMult?: number;
-  cRate?: number;
-  cDmg?: number;
+  cRate_?: number;
+  cDmg_?: number;
   note?: string;
   talentBuff?: TalentBuff;
 };

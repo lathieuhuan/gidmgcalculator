@@ -27,7 +27,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "9/98/Weapon_Fruit_of_Fulfillment",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     passiveName: "Full Circle",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -76,7 +76,7 @@ const purpleCatalysts: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "er", 24),
+        applyBuff: makeWpModApplier("totalAttr", "er_", 24),
         desc: ({ refi }) => findByCode(purpleCatalysts, 123)?.passiveDesc({ refi }).core,
       },
     ],
@@ -96,7 +96,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "c/c6/Weapon_Wine_and_Song",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Ever-Changing",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -129,7 +129,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "e/ee/Weapon_Hakushin_Ring",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er", scale: "6.7%" },
+    subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Sakura Saiguu",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -201,7 +201,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "f/f0/Weapon_The_Widsith",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cDmg", scale: "12%" },
+    subStat: { type: "cDmg_", scale: "12%" },
     passiveName: "Debut",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -257,7 +257,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "f/fc/Weapon_Solar_Pearl",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cRate", scale: "6%" },
+    subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Solar Shine",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -317,7 +317,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "3/36/Weapon_Favonius_Codex",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "er", scale: "10%" },
+    subStat: { type: "er_", scale: "10%" },
     ...favoniusSeries,
   },
   {
@@ -326,7 +326,7 @@ const purpleCatalysts: DataWeapon[] = [
     icon: "a/a6/Weapon_Blackcliff_Agate",
     rarity: 4,
     mainStatScale: "42",
-    subStat: { type: "cDmg", scale: "12%" },
+    subStat: { type: "cDmg_", scale: "12%" },
     ...blackcliffSeries,
   },
   {
