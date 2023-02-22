@@ -236,6 +236,7 @@ const Alhaitham: DataCharacter = {
         {
           label: "Consumed Mirrors",
           type: "select",
+          initialValue: 0,
           max: 3,
         },
       ],

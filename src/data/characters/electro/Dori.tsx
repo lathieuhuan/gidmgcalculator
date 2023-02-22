@@ -76,6 +76,7 @@ const Dori: DataCharacter = {
           multFactors: { root: 6.67, attributeType: "hp" },
           flatFactor: 642,
         },
+        { name: "Jinni Toop (C2)", multFactors: 50, attPatt: "none" },
       ],
       // getExtraStats: (lv) => [
       //   { name: "Energy Regeneration", value: Math.min(1.5 + Math.floor(lv / 2) * 0.1, 2) },

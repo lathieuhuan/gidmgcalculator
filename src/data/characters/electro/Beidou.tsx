@@ -80,6 +80,10 @@ const Beidou: DataCharacter = {
       stats: [
         { name: "Skill DMG", multFactors: 121.6 },
         { name: "Lightning DMG", multFactors: 96 },
+        {
+          name: "Shield DMG Absorption (C1)",
+          multFactors: { root: 16, attributeType: "hp" },
+        },
       ],
       // getExtraStats: (lv) => [
       //   {

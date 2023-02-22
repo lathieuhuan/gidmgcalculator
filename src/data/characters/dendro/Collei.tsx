@@ -58,6 +58,7 @@ const Collei: DataCharacter = {
       stats: [
         { name: "Explosion DMG", multFactors: 201.82 },
         { name: "Leap DMG", multFactors: 43.25 },
+        { name: "Mini Cuilein-Anbar (C6)", multFactors: 200, attPatt: "none" },
       ],
       // getExtraStats: () => [
       //   { name: "Duration", value: "6s" },

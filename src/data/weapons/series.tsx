@@ -303,9 +303,15 @@ export const watatsumiSeries: SeriesInfo = {
         charData.EBcost
       );
       const mult = (9 + refi * 3) / 100;
-      const buffValue = round(energyCap * mult, 2);
-      const finalDesc = desc + ` / Energy Cap. ${energyCap} * ${mult}%`;
-      applyModifier(finalDesc, attPattBonus, "EB.pct", buffValue, tracker);
+      let extraDesc = ` / Energy Cap. ${energyCap} * ${mult}%`;
+      let buffValue = round(energyCap * mult, 2);
+      const maxValue = 30 + refi + 10;
+
+      if (buffValue > maxValue) {
+        buffValue = maxValue;
+        extraDesc += ` / limited to ${maxValue}%`;
+      }
+      applyModifier(desc + extraDesc, attPattBonus, "EB.pct", buffValue, tracker);
     }
   },
 };

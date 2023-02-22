@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent, round } from "@Src/utils";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
+import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
 
 function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
@@ -71,6 +71,7 @@ const Bennett: DataCharacter = {
         { name: "Charge Level 1", multFactors: [84, 92] },
         { name: "Charge Level 2", multFactors: [88, 96] },
         { name: "Explosion", multFactors: 132 },
+        { name: "Additional attack (C4)", multFactors: 124.2 },
       ],
       // getExtraStats: () => [{ name: "CD", value: "5/7.5/10s" }],
     },
@@ -151,6 +152,18 @@ const Bennett: DataCharacter = {
           applyModifier(descC6, totalAttr, "pyro", 15, obj.tracker);
         }
       },
+    },
+    {
+      index: 3,
+      src: EModSrc.C2,
+      affect: EModAffect.SELF,
+      desc: () => (
+        <>
+          When Bennett's HP falls below 70%, his <Green>Energy Recharge</Green> is increased by{" "}
+          <Green b>30%</Green>.
+        </>
+      ),
+      applyBuff: makeModApplier("totalAttr", "er_", 30),
     },
   ],
 };

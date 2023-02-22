@@ -41,7 +41,6 @@ const Yanfei: DataCharacter = {
   bonusStat: { type: "pyro", value: 6 },
   NAsConfig: {
     name: "Seal of Approval",
-
     // getExtraStats: () => [
     //   { name: "Scarlet Seal Stamina Consumption Decrease", value: "15% per Seal" },
     //   { name: "Scarlet Seal Duration", value: "10s" },
@@ -76,7 +75,13 @@ const Yanfei: DataCharacter = {
     EB: {
       name: "Done Deal",
       image: "9/96/Talent_Done_Deal",
-      stats: [{ name: "Skill DMG", multFactors: 182.4 }],
+      stats: [
+        { name: "Skill DMG", multFactors: 182.4 },
+        {
+          name: "Shield DMG Absorption (C4)",
+          multFactors: { root: 45, attributeType: "hp" },
+        },
+      ],
       // getExtraStats: (lv) => [
       //   { name: "Scarlet Seal Grant Interval", value: "1s" },
       //   {
@@ -91,17 +96,7 @@ const Yanfei: DataCharacter = {
   },
   passiveTalents: [
     { name: "Proviso", image: "7/73/Talent_Proviso" },
-    {
-      name: "Blazing Eye",
-      image: "1/19/Talent_Blazing_Eye",
-      // desc: (
-      //   <>
-      //     When Yanfei's Charged Attack deals a CRIT Hit to opponents, she will deal an additional
-      //     instance of AoE {pyroDmg} equal to <Green b>80%</Green> of her <Green>ATK</Green>. This
-      //     DMG counts as Charged Attack DMG.
-      //   </>
-      // ),
-    },
+    { name: "Blazing Eye", image: "1/19/Talent_Blazing_Eye" },
     { name: "Encyclopedic Expertise	", image: "0/08/Talent_Encyclopedic_Expertise" },
   ],
   constellation: [

@@ -36,7 +36,7 @@ const goldCatalysts: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd_", 2.5),
+    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd_", 10),
     buffs: [
       {
         index: 1,
