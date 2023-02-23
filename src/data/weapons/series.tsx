@@ -305,7 +305,7 @@ export const watatsumiSeries: SeriesInfo = {
       const mult = (9 + refi * 3) / 100;
       let extraDesc = ` / Energy Cap. ${energyCap} * ${mult}%`;
       let buffValue = round(energyCap * mult, 2);
-      const maxValue = 30 + refi + 10;
+      const maxValue = 30 + refi * 10;
 
       if (buffValue > maxValue) {
         buffValue = maxValue;

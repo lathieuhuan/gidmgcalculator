@@ -8,6 +8,7 @@ import { checkAscs, checkCons } from "../utils";
 const YaeMiko: DataCharacter = {
   code: 49,
   name: "Yae Miko",
+  GOOD: "YaeMiko",
   // icon: "5/57/Character_Yae_Miko_Thumb",
   icon: "b/ba/Yae_Miko_Icon",
   sideIcon: "2/25/Character_Yae_Miko_Side_Icon",

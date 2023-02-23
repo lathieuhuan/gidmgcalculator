@@ -16,6 +16,7 @@ const getA4TAlentBuff = (index: number): GetTalentBuffFn => {
 const Shinobu: DataCharacter = {
   code: 52,
   name: "Shinobu",
+  GOOD: "KukiShinobu",
   // icon: "3/37/Character_Kuki_Shinobu_Thumb",
   icon: "b/b3/Kuki_Shinobu_Icon",
   sideIcon: "3/38/Character_Kuki_Shinobu_Side_Icon",

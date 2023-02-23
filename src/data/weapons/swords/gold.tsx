@@ -55,7 +55,7 @@ const goldSwords: DataWeapon[] = [
   },
   {
     code: 140,
-    name: "Key of Hierophany",
+    name: "Key of Khaj-Nisut",
     icon: "5/52/Weapon_Key_of_Khaj-Nisut",
     rarity: 5,
     mainStatScale: "44b",

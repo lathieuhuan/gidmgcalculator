@@ -37,6 +37,7 @@ const getNaBonus = ({ toSelf, inputs, char, charData, partyData, totalAttr }: an
 const YunJin: DataCharacter = {
   code: 48,
   name: "Yun Jin",
+  GOOD: "YunJin",
   // icon: "c/cb/Character_Yun_Jin_Thumb",
   icon: "9/9c/Yun_Jin_Icon",
   sideIcon: "9/9a/Character_Yun_Jin_Side_Icon",

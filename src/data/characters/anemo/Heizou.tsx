@@ -8,6 +8,7 @@ import { checkCons } from "../utils";
 const Heizou: DataCharacter = {
   code: 53,
   name: "Heizou",
+  GOOD: "ShikanoinHeizou",
   // icon: "e/e4/Character_Shikanoin_Heizou_Thumb",
   icon: "2/20/Shikanoin_Heizou_Icon",
   sideIcon: "8/89/Character_Shikanoin_Heizou_Side_Icon",

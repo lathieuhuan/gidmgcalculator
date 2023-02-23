@@ -194,7 +194,5 @@ export function convertFromGoodFormat(data: any) {
     }
   }
 
-  console.log(result.artifacts);
-
   return result;
 }

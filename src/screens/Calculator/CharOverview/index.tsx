@@ -30,7 +30,7 @@ type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
 interface OverviewCharProps {
   touched: boolean;
 }
-export default function OverviewChar({ touched }: OverviewCharProps) {
+export default function CharOverview({ touched }: OverviewCharProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar)!;
   const charData = useSelector(selectCharData);
@@ -44,6 +44,12 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
   const onClickCharImg = () => setModalType("CHARACTER_PICKER");
 
   const closeModal = () => setModalType("");
+
+  const onClickConsLevel = (cons: number) => {
+    if (cons !== char.cons) {
+      dispatch(updateCharacter({ cons }));
+    }
+  };
 
   return (
     <>
@@ -60,9 +66,12 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
               <Image className="cursor-pointer" src={icon} imgType="character" />
             </div>
 
-            <div className="overflow-hidden">
-              <p className={`text-3xl truncate text-${vision} font-black`}>{char.name}</p>
-              <StarLine className="mt-1" rarity={rarity} />
+            <div className="min-w-0">
+              <div className="overflow-hidden">
+                <p className={`text-3xl truncate text-${vision} font-black`}>{char.name}</p>
+                <StarLine className="mt-1" rarity={rarity} />
+              </div>
+
               <div className="mt-1 flex items-center">
                 <p className="mr-1 text-lg">Level</p>
                 <select
@@ -76,11 +85,32 @@ export default function OverviewChar({ touched }: OverviewCharProps) {
                     </option>
                   ))}
                 </select>
-                <p
-                  className={`ml-2 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-darkblue-2 text-${vision} leading-none font-bold cursor-default`}
+                <div
+                  className={
+                    "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-darkblue-2 " +
+                    `text-${vision} leading-none font-bold cursor-default relative group`
+                  }
                 >
                   <span>C{char.cons}</span>
-                </p>
+                  <div className="absolute top-full z-50 pt-1 hidden group-hover:block">
+                    <ul className="bg-default text-black rounded overflow-hidden">
+                      {[...Array(7)].map((_, i) => {
+                        return (
+                          <li
+                            key={i}
+                            className={
+                              "px-3 pt-2 pb-1.5 " +
+                              (i === char.cons ? "bg-lesser" : "hover:bg-lightgold")
+                            }
+                            onClick={() => onClickConsLevel(i)}
+                          >
+                            C{i}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

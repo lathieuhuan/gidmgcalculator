@@ -5,7 +5,7 @@ import { memo } from "react";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import OverviewChar from "./OverviewChar";
+import CharOverview from "./CharOverview";
 import Modifiers from "./Modifiers";
 import DamageResults from "./DamageResults";
 import SetupManager from "./SetupManager";
@@ -20,7 +20,7 @@ function Calculator() {
       <div className="h-98/100 flex space-x-2">
         {/* Panel 1 */}
         <div className={clsx("px-6 py-4 bg-darkblue-1", styles.card)}>
-          <OverviewChar touched={touched} />
+          <CharOverview touched={touched} />
         </div>
 
         {/* Panel 2 */}

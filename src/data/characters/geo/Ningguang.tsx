@@ -94,7 +94,7 @@ const Ningguang: DataCharacter = {
   buffs: [
     {
       index: 0,
-      src: EModSrc.C4,
+      src: EModSrc.A4,
       affect: EModAffect.PARTY,
       desc: () => (
         <>
