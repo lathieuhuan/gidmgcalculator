@@ -9,7 +9,7 @@ import { makeWpModApplier } from "../utils";
 const goldCatalysts: DataWeapon[] = [
   {
     code: 147,
-    name: "Tullaytullah's Remembrance",
+    name: "Tulaytullah's Remembrance",
     icon: "f/fc/Weapon_Tulaytullah%27s_Remembrance",
     rarity: 5,
     mainStatScale: "48",

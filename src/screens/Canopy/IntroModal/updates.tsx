@@ -3,13 +3,17 @@ import { Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "February 28th, 2023",
+    content: [<>Enabled uploading .json file in GOOD format.</>],
+  },
+  {
     date: "February 23th, 2023",
     content: [
       <>
         Fixed <Lightgold>Wanderer's Troupe</Lightgold> 4-piece set bonus did not work.
       </>,
       <>
-        Fixed <Lightgold>Tullaytullah's Remembrance</Lightgold> gave less Normal Attack Speed than
+        Fixed <Lightgold>Tulaytullah's Remembrance</Lightgold> gave less Normal Attack Speed than
         expected.
       </>,
       <>
@@ -35,7 +39,7 @@ export const UPDATES = [
         <Lightgold>Watatsumi weapon series</Lightgold> (Mouun's Moon, Akuoumaru, Wavebreaker's Fin).
       </>,
       <>
-        Hug thanks you <Red>Only_Pumpkin_801</Red> for the reports of all above problems!
+        Hug thanks to <Red>Only_Pumpkin_801</Red> for the reports of all above problems!
       </>,
       <>
         Switched <Lightgold>Jean</Lightgold>'s C1 buff from auto to controllable. Thank you{" "}

@@ -83,8 +83,8 @@ export function convertFromGoodFormat(data: any) {
   for (const char of data.characters || []) {
     let name;
 
-    if (char.key === "Traveler" && char.elementKey) {
-      name = uppercaseFirstLetter(char.elementKey) + " Traveler";
+    if (char.key.slice(0, 8) === "Traveler") {
+      name = char.key.slice(8) + " Traveler";
     } else {
       name = searchCharacterByKey(char.key);
     }
