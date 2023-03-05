@@ -83,8 +83,8 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            Incoming Elemental DMG increases <Green>corresponding Elemental RES</Green> by{" "}
-            <Green b>30%</Green> for 10s. Can only occur once every 10s.
+            Incoming Elemental DMG increases <Green>corresponding Elemental RES</Green> by <Green b>30%</Green> for 10s.
+            Can only occur once every 10s.
           </>
         ),
       },
@@ -126,8 +126,7 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            When HP is below 70%, <Green>CRIT Rate</Green> increases by an additional{" "}
-            <Green b>24%</Green>.
+            When HP is below 70%, <Green>CRIT Rate</Green> increases by an additional <Green b>24%</Green>.
           </>
         ),
       },
@@ -177,8 +176,8 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            Upon triggering an Elemental Reaction, increases all party members'{" "}
-            <Green>Elemental Mastery</Green> by <Green b>120</Green> for 8s.
+            Upon triggering an Elemental Reaction, increases all party members' <Green>Elemental Mastery</Green> by{" "}
+            <Green b>120</Green> for 8s.
           </>
         ),
       },
@@ -228,8 +227,8 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            Using an Elemental Burst regenerates <Green b>2</Green> <Green>Energy</Green> for all
-            party members (excluding the wearer) every 2s for 6s. This effect cannot stack.
+            Using an Elemental Burst regenerates <Green b>2</Green> <Green>Energy</Green> for all party members
+            (excluding the wearer) every 2s for 6s. This effect cannot stack.
           </>
         ),
       },
@@ -271,9 +270,8 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            For each different element present in your own party, the wearer's{" "}
-            <Green>Elemental RES</Green> to that <Green>corresponding element</Green> is increased
-            by <Green b>30%</Green>.
+            For each different element present in your own party, the wearer's <Green>Elemental RES</Green> to that{" "}
+            <Green>corresponding element</Green> is increased by <Green b>30%</Green>.
           </>
         ),
       },
@@ -315,8 +313,7 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases <Green>DMG</Green> by <Green b>30%</Green> against opponents with more than
-            50% HP.
+            Increases <Green>DMG</Green> by <Green b>30%</Green> against opponents with more than 50% HP.
           </>
         ),
       },
@@ -326,7 +323,7 @@ const purpleOnlySets: DataArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: () => findByCode(purpleOnlySets, 27)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("attPattBonus", "all.pct", 30),
+        applyBuff: makeModApplier("attPattBonus", "all.pct_", 30),
       },
     ],
   },
@@ -361,13 +358,13 @@ const purpleOnlySets: DataArtifact[] = [
             Increases <Green>Normal Attack and Charged Attack DMG</Green> by <Green b>15%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 15),
+        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 15),
       },
       {
         desc: (
           <>
-            After using Elemental Skill, increases{" "}
-            <Green>Normal Attack and Charged Attack DMG</Green> by <Green b>25%</Green> for 8s.
+            After using Elemental Skill, increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
+            <Green b>25%</Green> for 8s.
           </>
         ),
       },
@@ -377,7 +374,7 @@ const purpleOnlySets: DataArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: () => findByCode(purpleOnlySets, 28)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 25),
+        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 25),
       },
     ],
   },
@@ -412,7 +409,7 @@ const purpleOnlySets: DataArtifact[] = [
             Increases <Green>Elemental Skill DMG</Green> by <Green b>20%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("attPattBonus", "ES.pct", 20),
+        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 20),
       },
       {
         desc: (
@@ -460,8 +457,8 @@ const purpleOnlySets: DataArtifact[] = [
       {
         desc: (
           <>
-            Gaining Elemental Particles or Orbs gives <Green b>3</Green> <Green>Energy</Green> to
-            all party members who have a bow or a catalyst equipped. Can only occur once every 3s.
+            Gaining Elemental Particles or Orbs gives <Green b>3</Green> <Green>Energy</Green> to all party members who
+            have a bow or a catalyst equipped. Can only occur once every 3s.
           </>
         ),
       },

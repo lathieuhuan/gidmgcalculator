@@ -107,9 +107,8 @@ const Baizhu: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Baizhu's active party member hits an opponent with their attacks, Baizhu will use
-          Gossamer Sprite: Splice that deals 300% Dendro DMG and 20% of Universal Diagnosis' [ES]
-          healing.
+          When Baizhu's active party member hits an opponent with their attacks, Baizhu will use Gossamer Sprite: Splice
+          that deals 300% Dendro DMG and 20% of Universal Diagnosis' [ES] healing.
           <br />
           This effect can be triggered once every 5s.
         </>
@@ -133,16 +132,15 @@ const Baizhu: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} Additionally, when Gossamer Sprite or Gossamer Sprite: Splice [ES]
-            hit opponents, there is a 100% chance of generating one of Seamless Shields [~EB]. This
-            effect can only be triggered once by a Gossamer Sprite or Gossamer Sprite: Splice.
+            {this.xtraDesc?.[0]} Additionally, when Gossamer Sprite or Gossamer Sprite: Splice [ES] hit opponents, there
+            is a 100% chance of generating one of Seamless Shields [~EB]. This effect can only be triggered once by a
+            Gossamer Sprite or Gossamer Sprite: Splice.
           </>
         );
       },
       xtraDesc: [
         <>
-          Increases <Green>Spiritveins [~EB] DMG</Green> by <Green b>10%</Green> of Baizhu's{" "}
-          <Green>Max HP</Green>.
+          Increases <Green>Spiritveins [~EB] DMG</Green> by <Green b>10%</Green> of Baizhu's <Green>Max HP</Green>.
         </>,
       ],
     },
@@ -162,10 +160,8 @@ const Baizhu: DataCharacter = {
       isGranted: checkAscs[1],
       desc: () => (
         <>
-          Baizhu gains different effects according to the current HP of your current active
-          character:
-          <br />• When their HP is less than 50%, Baizhu gains <Green b>20%</Green>{" "}
-          <Green>Healing Bonus</Green>.
+          Baizhu gains different effects according to the current HP of your current active character:
+          <br />• When their HP is less than 50%, Baizhu gains <Green b>20%</Green> <Green>Healing Bonus</Green>.
           <br />• When their HP is equal to or more than 50%, Baizhu gains <Green b>25%</Green>{" "}
           <Green>Dendro DMG Bonus</Green>.
         </>
@@ -186,26 +182,20 @@ const Baizhu: DataCharacter = {
       isGranted: checkAscs[4],
       desc: () => (
         <>
-          Characters healed by Healing Holism [EB] will gain the Year of Verdant Favor effect: Each
-          1,000 Max HP that Baizhu possesses below 50,000 will increase their{" "}
-          <Green>Burning, Bloom, Hyperbloom, and Burgeon DMG</Green> by <Green b>2%</Green>, while
-          their <Green>Aggravate and Spread DMG</Green> will be increased by <Green b>0.8%</Green>.
-          This effect lasts 6s.
+          Characters healed by Healing Holism [EB] will gain the Year of Verdant Favor effect: Each 1,000 Max HP that
+          Baizhu possesses below 50,000 will increase their <Green>Burning, Bloom, Hyperbloom, and Burgeon DMG</Green>{" "}
+          by <Green b>2%</Green>, while their <Green>Aggravate and Spread DMG</Green> will be increased by{" "}
+          <Green b>0.8%</Green>. This effect lasts 6s.
         </>
       ),
       inputConfigs: [{ label: "Max HP", type: "text", max: 99999, for: "teammate" }],
       applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
         const hp = toSelf ? totalAttr.hp : inputs[0] || 0;
         const stacks = Math.floor(Math.min(hp, 50000) / 1000);
+        const fields: ReactionBonusPath[] = ["burning.pct_", "bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"];
 
-        applyModifier(
-          desc,
-          rxnBonus,
-          ["burning.pct", "bloom.pct", "hyperbloom.pct", "burgeon.pct"],
-          stacks * 2,
-          tracker
-        );
-        applyModifier(desc, rxnBonus, ["aggravate.pct", "spread.pct"], stacks * 0.8, tracker);
+        applyModifier(desc, rxnBonus, fields, stacks * 2, tracker);
+        applyModifier(desc, rxnBonus, ["aggravate.pct_", "spread.pct_"], stacks * 0.8, tracker);
       },
     },
     {

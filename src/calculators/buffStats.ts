@@ -57,8 +57,7 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: Appl
 
   for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
     if (isGranted(char)) {
-      const applyFn =
-        !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+      const applyFn = !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
       applyFn?.({
         desc: `Self / ${src}`,
@@ -73,11 +72,7 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: Appl
 
     if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
       const applyFn =
-        !isFinal && buff.applyBuff
-          ? buff.applyBuff
-          : isFinal && buff.applyFinalBuff
-          ? buff.applyFinalBuff
-          : undefined;
+        !isFinal && buff.applyBuff ? buff.applyBuff : isFinal && buff.applyFinalBuff ? buff.applyFinalBuff : undefined;
 
       applyFn?.({
         desc: `Self / ${buff.src}`,
@@ -186,15 +181,15 @@ export default function getBuffedStats({
       case 2: {
         const key = type as AttackPatternBonusKey;
 
-        attPattBonus[key].pct += value;
-        addTrackerRecord(tracker?.attPattBonus[`${key}.pct`], "Custom buff", value);
+        attPattBonus[key].pct_ += value;
+        addTrackerRecord(tracker?.attPattBonus[`${key}.pct_`], "Custom buff", value);
         break;
       }
       case 3: {
         const key = type as Reaction;
 
-        rxnBonus[key].pct += value;
-        addTrackerRecord(tracker?.rxnBonus[`${key}.pct`], "Custom buff", value);
+        rxnBonus[key].pct_ += value;
+        addTrackerRecord(tracker?.rxnBonus[`${key}.pct_`], "Custom buff", value);
         break;
       }
     }
@@ -215,7 +210,7 @@ export default function getBuffedStats({
       applyModifier(desc, totalAttr, key, value + xtraValue, tracker);
 
       if (vision === "geo") {
-        applyModifier(desc, attPattBonus, "all.pct", 15, tracker);
+        applyModifier(desc, attPattBonus, "all.pct_", 15, tracker);
       }
     }
   }
@@ -384,13 +379,13 @@ export default function getBuffedStats({
   const { transformative, amplifying, quicken } = getRxnBonusesFromEM(totalAttr.em);
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
-    rxnBonus[rxn].pct += transformative;
+    rxnBonus[rxn].pct_ += transformative;
   }
   for (const rxn of AMPLIFYING_REACTIONS) {
-    rxnBonus[rxn].pct += amplifying;
+    rxnBonus[rxn].pct_ += amplifying;
   }
   for (const rxn of QUICKEN_REACTIONS) {
-    rxnBonus[rxn].pct += quicken;
+    rxnBonus[rxn].pct_ += quicken;
   }
   const { spread, aggravate } = getQuickenBuffDamage(char.level, rxnBonus);
 

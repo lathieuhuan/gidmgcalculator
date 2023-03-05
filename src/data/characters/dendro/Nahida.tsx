@@ -97,7 +97,7 @@ const Nahida: DataCharacter = {
             }
 
             return talentBuff(
-              [EBisInUse || A4isInUse, "pct", desc.join(" + "), buffValue],
+              [EBisInUse || A4isInUse, "pct_", desc.join(" + "), buffValue],
               [A4isInUse, "cRate_", [true, 4], Math.min(round(excessEM * 0.03, 1), 24)]
             );
           },
@@ -153,9 +153,9 @@ const Nahida: DataCharacter = {
       image: "5/5f/Constellation_The_Seed_of_Stored_Knowledge",
       desc: (
         <>
-          When the Shrine of Maya is unleashed and the Elemental Types of the party members are
-          being tabulated, the count will add <Green b>1</Green> to the{" "}
-          <Green>number of Pyro, Electro, and Hydro characters</Green> respectively.
+          When the Shrine of Maya is unleashed and the Elemental Types of the party members are being tabulated, the
+          count will add <Green b>1</Green> to the <Green>number of Pyro, Electro, and Hydro characters</Green>{" "}
+          respectively.
         </>
       ),
     },
@@ -165,8 +165,7 @@ const Nahida: DataCharacter = {
       get desc() {
         return (
           <>
-            Opponents that are marked by Nahida's own Seed of Skandha will be affected by the
-            following effects:
+            Opponents that are marked by Nahida's own Seed of Skandha will be affected by the following effects:
             <br />• {this.xtraDesc![0]}
             <br />• {this.xtraDesc![1]}
           </>
@@ -174,13 +173,12 @@ const Nahida: DataCharacter = {
       },
       xtraDesc: [
         <>
-          <Green>Burning, Bloom, Hyperbloom, Burgeon Reaction DMG</Green> can score CRIT Hits.{" "}
-          <Green>CRIT Rate</Green> and <Green>CRIT DMG</Green> are fixed at <Green b>20%</Green> and{" "}
-          <Green b>100%</Green> respectively.
+          <Green>Burning, Bloom, Hyperbloom, Burgeon Reaction DMG</Green> can score CRIT Hits. <Green>CRIT Rate</Green>{" "}
+          and <Green>CRIT DMG</Green> are fixed at <Green b>20%</Green> and <Green b>100%</Green> respectively.
         </>,
         <>
-          Within 8s of being affected by Quicken, Aggravate, Spread, <Green>DEF</Green> is decreased
-          by <Green b>30%</Green>.
+          Within 8s of being affected by Quicken, Aggravate, Spread, <Green>DEF</Green> is decreased by{" "}
+          <Green b>30%</Green>.
         </>,
       ],
     },
@@ -207,16 +205,13 @@ const Nahida: DataCharacter = {
       image: "b/b5/Constellation_The_Fruit_of_Reason%27s_Culmination",
       desc: (
         <>
-          When Nahida hits an opponent linked by All Schemes to Know's Seeds of Skandha with Normal
-          or Charged Attacks after unleashing Illusory Heart, she will use Karmic Oblivion on this
-          opponent and all connected opponents, dealing Dendro DMG based on 200% of Nahida's ATK and
-          400% of her Elemental Mastery.
+          When Nahida hits an opponent linked by All Schemes to Know's Seeds of Skandha with Normal or Charged Attacks
+          after unleashing Illusory Heart, she will use Karmic Oblivion on this opponent and all connected opponents,
+          dealing Dendro DMG based on 200% of Nahida's ATK and 400% of her Elemental Mastery.
           <br />
-          DMG dealt by Karmic Oblivion is considered Elemental Skill DMG and can be triggered once
-          every 0.2s.
+          DMG dealt by Karmic Oblivion is considered Elemental Skill DMG and can be triggered once every 0.2s.
           <br />
-          This effect can last up to 10s and will be removed after Nahida has unleashed 6 instances
-          of Karmic Oblivion.
+          This effect can last up to 10s and will be removed after Nahida has unleashed 6 instances of Karmic Oblivion.
         </>
       ),
     },
@@ -226,10 +221,9 @@ const Nahida: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          Each point of Nahida's <Green>Elemental Mastery</Green> beyond 200 will grant{" "}
-          <Green b>0.1%</Green> <Green>Bonus DMG</Green> (max <Rose>80%</Rose>) and{" "}
-          <Green b>0.03%</Green> <Green>CRIT Rate</Green> (max <Rose>24%</Rose>) to{" "}
-          <Green>Tri-Karma Purification</Green>.
+          Each point of Nahida's <Green>Elemental Mastery</Green> beyond 200 will grant <Green b>0.1%</Green>{" "}
+          <Green>Bonus DMG</Green> (max <Rose>80%</Rose>) and <Green b>0.03%</Green> <Green>CRIT Rate</Green> (max{" "}
+          <Rose>24%</Rose>) to <Green>Tri-Karma Purification</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -256,9 +250,9 @@ const Nahida: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          The Elemental Mastery of the active character within the Shrine of Maya will be increased
-          by <Green>25%</Green> of the <Green>Elemental Mastery</Green> of the party member with the
-          highest Elemental Mastery. Maximum <Rose>250</Rose> Elemental Mastery.
+          The Elemental Mastery of the active character within the Shrine of Maya will be increased by{" "}
+          <Green>25%</Green> of the <Green>Elemental Mastery</Green> of the party member with the highest Elemental
+          Mastery. Maximum <Rose>250</Rose> Elemental Mastery.
         </>
       ),
       isGranted: checkAscs[1],

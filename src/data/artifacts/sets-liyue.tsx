@@ -36,13 +36,13 @@ const liyueSets: DataArtifact[] = [
             <Green>Elemental Burst DMG</Green> <Green b>+20%</Green>.
           </>
         ),
-        applyBuff: makeModApplier("attPattBonus", "EB.pct", 20),
+        applyBuff: makeModApplier("attPattBonus", "EB.pct_", 20),
       },
       {
         desc: (
           <>
-            Using an Elemental Burst increases all party members' <Green>ATK</Green> by{" "}
-            <Green b>20%</Green> for 12s. This effect cannot stack.
+            Using an Elemental Burst increases all party members' <Green>ATK</Green> by <Green b>20%</Green> for 12s.
+            This effect cannot stack.
           </>
         ),
       },
@@ -92,8 +92,8 @@ const liyueSets: DataArtifact[] = [
       {
         desc: (
           <>
-            After defeating an opponent, increases <Green>Charged Attack DMG</Green> by{" "}
-            <Green b>50%</Green>, and reduces its Stamina cost to 0 for 10s.
+            After defeating an opponent, increases <Green>Charged Attack DMG</Green> by <Green b>50%</Green>, and
+            reduces its Stamina cost to 0 for 10s.
           </>
         ),
       },
@@ -103,7 +103,7 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 6)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "CA.pct", 50),
+        applyBuff: makeModApplier("attPattBonus", "CA.pct_", 50),
       },
     ],
   },
@@ -144,21 +144,20 @@ const liyueSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              Increases <Green>Overloaded, Burning, and Burngeon DMG</Green> by <Green b>40%</Green>
-              . Increases <Green>Vaporize and Melt DMG</Green> by <Green b>15%</Green>{" "}
-              {this.xtraDesc![0]}
+              Increases <Green>Overloaded, Burning, and Burngeon DMG</Green> by <Green b>40%</Green>. Increases{" "}
+              <Green>Vaporize and Melt DMG</Green> by <Green b>15%</Green> {this.xtraDesc![0]}
             </>
           );
         },
         xtraDesc: [
           <>
-            Using an Elemental Skill increases the <Green>2-Piece Set Bonus</Green> by{" "}
-            <Green b>50%</Green> of its starting value for 10s. Max <Rose>3</Rose> stacks.
+            Using an Elemental Skill increases the <Green>2-Piece Set Bonus</Green> by <Green b>50%</Green> of its
+            starting value for 10s. Max <Rose>3</Rose> stacks.
           </>,
         ],
         applyBuff: makeModApplier(
           "rxnBonus",
-          ["overloaded.pct", "burning.pct", "burgeon.pct", "melt.pct", "vaporize.pct"],
+          ["overloaded.pct_", "burning.pct_", "burgeon.pct_", "melt.pct_", "vaporize.pct_"],
           [40, 40, 40, 15, 15]
         ),
       },
@@ -221,7 +220,7 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 8)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "all.pct", 35),
+        applyBuff: makeModApplier("attPattBonus", "all.pct_", 35),
       },
     ],
   },
@@ -261,10 +260,9 @@ const liyueSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party
-            members gain <Green b>35%</Green> <Green>DMG Bonus</Green> for{" "}
-            <Green>that particular element</Green> for 10s. Only one form of Elemental DMG Bonus can
-            be gained in this manner at any one time.
+            Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party members gain{" "}
+            <Green b>35%</Green> <Green>DMG Bonus</Green> for <Green>that particular element</Green> for 10s. Only one
+            form of Elemental DMG Bonus can be gained in this manner at any one time.
           </>
         ),
       },
@@ -334,7 +332,7 @@ const liyueSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(liyueSets, 10)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 40),
+        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 40),
       },
     ],
   },
@@ -374,10 +372,9 @@ const liyueSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When an Elemental Skill hits an opponent, <Green>ATK</Green> is increased by{" "}
-            <Green b>9%</Green> for 7s. This effect stacks up to <Green b>2</Green>{" "}
-            <Green>times</Green> and can be triggered once every 0.3s. Once 2 stacks are reached,
-            the <Green>2-set effect</Green> is increased by <Green b>100%</Green>.
+            When an Elemental Skill hits an opponent, <Green>ATK</Green> is increased by <Green b>9%</Green> for 7s.
+            This effect stacks up to <Green b>2</Green> <Green>times</Green> and can be triggered once every 0.3s. Once
+            2 stacks are reached, the <Green>2-set effect</Green> is increased by <Green b>100%</Green>.
           </>
         ),
       },
@@ -440,11 +437,10 @@ const liyueSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When an Elemental Skill hits an opponent, the <Green>ATK</Green> of all nearby party
-            members is increased by <Green b>20%</Green> and their <Green>Shield Strength</Green> is
-            increased by <Green b>30%</Green> for 3s. This effect can be triggered once every 0.5s.
-            This effect can still be triggered even when the character who is using this artifact
-            set is not on the field.
+            When an Elemental Skill hits an opponent, the <Green>ATK</Green> of all nearby party members is increased by{" "}
+            <Green b>20%</Green> and their <Green>Shield Strength</Green> is increased by <Green b>30%</Green> for 3s.
+            This effect can be triggered once every 0.5s. This effect can still be triggered even when the character who
+            is using this artifact set is not on the field.
           </>
         ),
       },

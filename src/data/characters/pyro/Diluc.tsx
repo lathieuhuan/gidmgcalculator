@@ -114,8 +114,8 @@ const Diluc: DataCharacter = {
       desc: () => (
         <>
           After casting Dawn [EB], Diluc gains a <Pyro>Pyro Infusion</Pyro>.
-          <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green>{" "}
-          <Green>Pyro DMG Bonus</Green> during this duration.
+          <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during
+          this duration.
         </>
       ),
       infuseConfig: {
@@ -128,12 +128,11 @@ const Diluc: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Diluc deals <Green b>15%</Green> <Green>more DMG</Green> to opponents whose HP is above
-          50%.
+          Diluc deals <Green b>15%</Green> <Green>more DMG</Green> to opponents whose HP is above 50%.
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", "all.pct", 15),
+      applyBuff: makeModApplier("attPattBonus", "all.pct_", 15),
     },
     {
       index: 3,
@@ -141,9 +140,8 @@ const Diluc: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and{" "}
-          <Green>ATK SPD</Green> increases by <Green b>5%</Green> for 10s, up to <Rose>3</Rose>{" "}
-          times.
+          When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and <Green>ATK SPD</Green>{" "}
+          increases by <Green b>5%</Green> for 10s, up to <Rose>3</Rose> times.
         </>
       ),
       isGranted: checkCons[2],
@@ -165,12 +163,12 @@ const Diluc: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the
-          combo deals <Green b>40%</Green> <Green>DMG Bonus</Green>. This effect lasts for 2s.
+          Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the combo deals{" "}
+          <Green b>40%</Green> <Green>DMG Bonus</Green>. This effect lasts for 2s.
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonus", "ES.pct", 40),
+      applyBuff: makeModApplier("attPattBonus", "ES.pct_", 40),
     },
     {
       index: 5,
@@ -178,14 +176,13 @@ const Diluc: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Within 6s after casting Searing Onslaught [ES], the next <Rose>2</Rose>{" "}
-          <Green>Normal Attacks</Green> will have their <Green>DMG and ATK SPD</Green> increased by{" "}
-          <Green b>30%</Green>.
+          Within 6s after casting Searing Onslaught [ES], the next <Rose>2</Rose> <Green>Normal Attacks</Green> will
+          have their <Green>DMG and ATK SPD</Green> increased by <Green b>30%</Green>.
         </>
       ),
       isGranted: checkCons[6],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "NA.pct", 30, tracker);
+        applyModifier(desc, attPattBonus, "NA.pct_", 30, tracker);
         applyModifier(desc, totalAttr, "naAtkSpd_", 30, tracker);
       },
     },

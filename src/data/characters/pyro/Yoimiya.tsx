@@ -54,10 +54,7 @@ const Yoimiya: DataCharacter = {
       multScale: 4,
     },
     CA: {
-      stats: [
-        ...BOW_CAs,
-        { name: "Kindling Arrow", subAttPatt: "FCA", multFactors: { root: 16.4, scale: 2 } },
-      ],
+      stats: [...BOW_CAs, { name: "Kindling Arrow", subAttPatt: "FCA", multFactors: { root: 16.4, scale: 2 } }],
     },
     PA: { stats: LIGHT_PAs },
     ES: {
@@ -108,11 +105,10 @@ const Yoimiya: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           Yoimiya's <Green>Normal Attack DMG</Green> will be increased by{" "}
-          <Green b>{1 + round(getESBuffValue(char, partyData) / 100, 3)}</Green> times and converted
-          to Blazing Arrows dealing <Pyro>Pyro DMG</Pyro>.
+          <Green b>{1 + round(getESBuffValue(char, partyData) / 100, 3)}</Green> times and converted to Blazing Arrows
+          dealing <Pyro>Pyro DMG</Pyro>.
           <br />• At <Lightgold>A1</Lightgold>, Normal Attacks on hit will increase Yoimiya's{" "}
-          <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> for 3s. Maximum{" "}
-          <Rose>10 stacks</Rose>.
+          <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> for 3s. Maximum <Rose>10 stacks</Rose>.
         </>
       ),
       inputConfigs: [
@@ -125,7 +121,7 @@ const Yoimiya: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs, desc, tracker }) => {
         const buffValue = getESBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, "NA.specialMult", buffValue, tracker);
+        applyModifier(desc, attPattBonus, "NA.multPlus_", buffValue, tracker);
 
         if (checkAscs[1](char)) {
           applyModifier(desc, totalAttr, "pyro", 2 * (inputs[0] || 0), tracker);
@@ -141,10 +137,9 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a{" "}
-          <Green b>10%</Green> <Green>ATK Bonus</Green> for 15s. A further <Green b>1%</Green>{" "}
-          <Green>ATK Bonus</Green> will be added for each "Tricks of the Trouble-Maker" [A1] stacks
-          Yoimiya possesses when using Ryuukin Saxifrage.
+          Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a <Green b>10%</Green>{" "}
+          <Green>ATK Bonus</Green> for 15s. A further <Green b>1%</Green> <Green>ATK Bonus</Green> will be added for
+          each "Tricks of the Trouble-Maker" [A1] stacks Yoimiya possesses when using Ryuukin Saxifrage.
         </>
       ),
       isGranted: checkAscs[4],
@@ -165,8 +160,8 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's{" "}
-          <Green>ATK</Green> is increased by <Green b>20%</Green> for 20s.
+          When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's <Green>ATK</Green>{" "}
+          is increased by <Green b>20%</Green> for 20s.
         </>
       ),
       isGranted: checkCons[1],
@@ -178,8 +173,8 @@ const Yoimiya: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a{" "}
-          <Green b>25%</Green> <Green>Pyro DMG Bonus</Green> for 6s. Can work off-field.
+          When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a <Green b>25%</Green>{" "}
+          <Green>Pyro DMG Bonus</Green> for 6s. Can work off-field.
         </>
       ),
       isGranted: checkCons[2],

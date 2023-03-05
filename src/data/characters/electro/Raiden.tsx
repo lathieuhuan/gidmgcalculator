@@ -13,17 +13,10 @@ import { ATTACK_PATTERNS, EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round } from "@Src/utils";
-import {
-  finalTalentLv,
-  applyModifier,
-  makeModApplier,
-  type AttackPatternPath,
-} from "@Src/utils/calculation";
+import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
-export const isshinBonusMults = [
-  0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54,
-];
+export const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
 
 const countResolve = (energyCost: number, level: number) => {
   return Math.round(energyCost * Math.min(Math.ceil(14.5 + level * 0.5), 20)) / 100;
@@ -35,8 +28,8 @@ const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuff
       const buffValue = getBuffValue.EB(char, selfBuffCtrls, partyData);
       if (buffValue.stacks) {
         return {
-          mult: {
-            desc: `Bonus from ${buffValue.stacks} Resolve, each gave ${buffValue[bonusType]}% extra multiplier`,
+          mult_: {
+            desc: `Bonus from ${buffValue.stacks} Resolve, each gave ${buffValue[bonusType]}% extra mult`,
             value: round(buffValue.stacks * buffValue[bonusType], 2),
           },
         };
@@ -47,16 +40,8 @@ const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuff
 };
 
 const getBuffValue = {
-  ES: (
-    toSelf: boolean,
-    char: CharInfo,
-    { EBcost }: CharData,
-    inputs: ModifierInput[],
-    partyData: PartyData
-  ) => {
-    const level = toSelf
-      ? finalTalentLv({ char, dataChar: Raiden, talentType: "ES", partyData })
-      : inputs[0] || 0;
+  ES: (toSelf: boolean, char: CharInfo, { EBcost }: CharData, inputs: ModifierInput[], partyData: PartyData) => {
+    const level = toSelf ? finalTalentLv({ char, dataChar: Raiden, talentType: "ES", partyData }) : inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
 
     return {
@@ -254,9 +239,8 @@ const Raiden: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Each 1% above 100% <Green>Energy Recharge</Green> grants the Raiden Shogun{" "}
-          <Green b>0.4%</Green> <Green>Electro DMG Bonus</Green>.{" "}
-          <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
+          Each 1% above 100% <Green>Energy Recharge</Green> grants the Raiden Shogun <Green b>0.4%</Green>{" "}
+          <Green>Electro DMG Bonus</Green>. <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],
@@ -273,8 +257,8 @@ const Raiden: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: ({ toSelf, char, charData, inputs, partyData }) => (
         <>
-          Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the{" "}
-          <Green>Energy Cost</Green> of the Elemental Burst during the eye's duration.{" "}
+          Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the <Green>Energy Cost</Green> of
+          the Elemental Burst during the eye's duration.{" "}
           <Red>
             DMG bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData).value}
             %.
@@ -292,7 +276,7 @@ const Raiden: DataCharacter = {
         const { toSelf, char, charData, inputs, partyData } = obj;
         const result = getBuffValue.ES(toSelf, char, charData, inputs, partyData);
         const desc = `${obj.desc} / Lv. ${result.desc}`;
-        applyModifier(desc, obj.attPattBonus, "EB.pct", result.value, obj.tracker);
+        applyModifier(desc, obj.attPattBonus, "EB.pct_", result.value, obj.tracker);
       },
     },
     {
@@ -303,16 +287,15 @@ const Raiden: DataCharacter = {
         const { stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
         return (
           <>
-            Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased
-            based on the number of Chakra Desiderata's Resolve stacks consumed.{" "}
-            <Red>Total Resolve: {stacks}</Red>
+            Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
+            of Chakra Desiderata's Resolve stacks consumed. <Red>Total Resolve: {stacks}</Red>
             <br />
             Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.
-            <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from
-            Electro characters by <Green b>80%</Green>, from characters of other visions by{" "}
-            <Green b>20%</Green>. <Red>Extra Resolve: {extraStacks}</Red>
-            <br />• At <Lightgold>C2</Lightgold>, the Raiden Shogun's attacks ignore{" "}
-            <Green b>60%</Green> of opponents' <Green>DEF</Green>.
+            <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from Electro characters by{" "}
+            <Green b>80%</Green>, from characters of other visions by <Green b>20%</Green>.{" "}
+            <Red>Extra Resolve: {extraStacks}</Red>
+            <br />• At <Lightgold>C2</Lightgold>, the Raiden Shogun's attacks ignore <Green b>60%</Green> of opponents'{" "}
+            <Green>DEF</Green>.
           </>
         );
       },
@@ -322,7 +305,7 @@ const Raiden: DataCharacter = {
       ],
       applyBuff: ({ char, attPattBonus, desc, tracker }) => {
         if (checkCons[2](char)) {
-          const fields = ATTACK_PATTERNS.map((t) => `${t}.defIgnore`) as AttackPatternPath[];
+          const fields: AttackPatternPath[] = ["NA.defIgn_", "CA.defIgn_", "PA.defIgn_", "ES.defIgn_", "EB.defIgn_"];
           applyModifier(desc, attPattBonus, fields, 60, tracker);
         }
       },
@@ -337,8 +320,8 @@ const Raiden: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          When the Musou Isshin state expires, all nearby party members (excluding the Raiden
-          Shogun) gain <Green b>30%</Green> <Green>ATK</Green> for 10s.
+          When the Musou Isshin state expires, all nearby party members (excluding the Raiden Shogun) gain{" "}
+          <Green b>30%</Green> <Green>ATK</Green> for 10s.
         </>
       ),
       isGranted: checkCons[4],

@@ -120,10 +120,7 @@ const Razor: DataCharacter = {
       desc: ({ char, partyData }) => (
         <>
           Raises Razor's <Green>ATK SPD</Green> by{" "}
-          <Green b>
-            {getEBBuffValue(finalTalentLv({ char, dataChar: Razor, talentType: "EB", partyData }))}%
-          </Green>
-          .
+          <Green b>{getEBBuffValue(finalTalentLv({ char, dataChar: Razor, talentType: "EB", partyData }))}%</Green>.
         </>
       ),
       applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
@@ -142,12 +139,11 @@ const Razor: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Picking up an Elemental Orb or Particle increases Razor's <Green>DMG</Green> by{" "}
-          <Green b>10%</Green> for 8s.
+          Picking up an Elemental Orb or Particle increases Razor's <Green>DMG</Green> by <Green b>10%</Green> for 8s.
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", "all.pct", 10),
+      applyBuff: makeModApplier("attPattBonus", "all.pct_", 10),
     },
     {
       index: 2,
@@ -155,8 +151,7 @@ const Razor: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases <Green>CRIT Rate</Green> against opponents with less than 30% HP by{" "}
-          <Green b>10%</Green>.
+          Increases <Green>CRIT Rate</Green> against opponents with less than 30% HP by <Green b>10%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -169,8 +164,7 @@ const Razor: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Claw and Thunder [ES] (Press) decreases opponents' <Green>DEF</Green> by{" "}
-          <Green b>15%</Green> for 7s.
+          Claw and Thunder [ES] (Press) decreases opponents' <Green>DEF</Green> by <Green b>15%</Green> for 7s.
         </>
       ),
       isGranted: checkCons[4],

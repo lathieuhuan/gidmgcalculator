@@ -43,17 +43,16 @@ const sumeruSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an
-              opponent, each attack type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks.
-              Each stack's duration is counted independently. {this.xtraDesc?.[0]}
+              When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an opponent, each
+              attack type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks. Each stack's duration is counted
+              independently. {this.xtraDesc?.[0]}
             </>
           );
         },
         xtraDesc: [
           <>
-            While 1, 2, or 3 or more Nymph's Croix stacks are in effect, <Green>ATK</Green> is
-            increased by <Green b>7%/16%/25%</Green>, and <Green>Hydro DMG</Green> is increased by{" "}
-            <Green b>4%/9%/15%</Green>.
+            While 1, 2, or 3 or more Nymph's Croix stacks are in effect, <Green>ATK</Green> is increased by{" "}
+            <Green b>7%/16%/25%</Green>, and <Green>Hydro DMG</Green> is increased by <Green b>4%/9%/15%</Green>.
           </>,
         ],
       },
@@ -116,21 +115,19 @@ const sumeruSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by{" "}
-              <Green b>10%</Green>. {this.xtraDesc?.[0]} The duration of each stack is counted
-              independently. These stacks will continue to take effect even when the equipping
-              character is not on the field.
+              Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by <Green b>10%</Green>.{" "}
+              {this.xtraDesc?.[0]} The duration of each stack is counted independently. These stacks will continue to
+              take effect even when the equipping character is not on the field.
             </>
           );
         },
         xtraDesc: [
           <>
-            When the equipping character takes DMG, Increases{" "}
-            <Green>Elemental Skill and Elemental Burst DMG</Green> by <Green b>8%</Green> for 8s.
-            Max <Rose>5</Rose> stacks.
+            When the equipping character takes DMG, Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by{" "}
+            <Green b>8%</Green> for 8s. Max <Rose>5</Rose> stacks.
           </>,
         ],
-        applyBuff: makeModApplier("attPattBonus", ["ES.pct", "EB.pct"], 10),
+        applyBuff: makeModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 10),
       },
     ],
     buffs: [
@@ -146,7 +143,7 @@ const sumeruSets: DataArtifact[] = [
         ],
         applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
           const stacks = inputs[0] || 0;
-          applyModifier(desc, attPattBonus, ["ES.pct", "EB.pct"], stacks * 8, tracker);
+          applyModifier(desc, attPattBonus, ["ES.pct_", "EB.pct_"], stacks * 8, tracker);
         },
       },
     ],
@@ -187,9 +184,8 @@ const sumeruSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When Charged Attacks hit opponents, the equipping character's{" "}
-            <Green>Normal Attack SPD</Green> will increase by <Green b>10%</Green> while{" "}
-            <Green>Normal, Charged, and Plunging Attack DMG</Green> will increase by{" "}
+            When Charged Attacks hit opponents, the equipping character's <Green>Normal Attack SPD</Green> will increase
+            by <Green b>10%</Green> while <Green>Normal, Charged, and Plunging Attack DMG</Green> will increase by{" "}
             <Green b>40%</Green> for 10s.
           </>
         ),
@@ -202,7 +198,7 @@ const sumeruSets: DataArtifact[] = [
         desc: () => findByCode(sumeruSets, 36)?.setBonuses[1].desc,
         applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
           applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], 40, tracker);
+          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_", "PA.pct_"], 40, tracker);
         },
       },
     ],
@@ -244,21 +240,20 @@ const sumeruSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              The equipping character's <Green>Bloom, Hyperbloom, and Burgeon reaction DMG</Green>{" "}
-              are increased by <Green b>40%</Green>. {this.xtraDesc?.[0]} This effect can only be
-              triggered once per second. The character who equips this can still trigger its effects
-              when not on the field.
+              The equipping character's <Green>Bloom, Hyperbloom, and Burgeon reaction DMG</Green> are increased by{" "}
+              <Green b>40%</Green>. {this.xtraDesc?.[0]} This effect can only be triggered once per second. The
+              character who equips this can still trigger its effects when not on the field.
             </>
           );
         },
         xtraDesc: [
           <>
-            When the equipping character triggers Bloom, Hyperbloom, or Burgeon, they will gain
-            another <Green b>10%</Green> <Green>DMG bonus</Green> to those reations. Max{" "}
-            <Rose>4</Rose> stacks. Each stack lasts 10s.
+            When the equipping character triggers Bloom, Hyperbloom, or Burgeon, they will gain another{" "}
+            <Green b>10%</Green> <Green>DMG bonus</Green> to those reations. Max <Rose>4</Rose> stacks. Each stack lasts
+            10s.
           </>,
         ],
-        applyBuff: makeModApplier("rxnBonus", ["bloom.pct", "hyperbloom.pct", "burgeon.pct"], 40),
+        applyBuff: makeModApplier("rxnBonus", ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"], 40),
       },
     ],
     buffs: [
@@ -273,7 +268,7 @@ const sumeruSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ rxnBonus, inputs, desc, tracker }) => {
-          const fields: ReactionBonusPath[] = ["bloom.pct", "hyperbloom.pct", "burgeon.pct"];
+          const fields: ReactionBonusPath[] = ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"];
           applyModifier(desc, rxnBonus, fields, 10 * inputs[0], tracker);
         },
       },
@@ -315,9 +310,9 @@ const sumeruSets: DataArtifact[] = [
       {
         desc: (
           <>
-            After Elemental Skills or Bursts hit opponents, the targets' <Green>Dendro RES</Green>{" "}
-            will be decreased by <Green b>30%</Green> for 8s. This effect can be triggered even if
-            the equipping character is not on the field.
+            After Elemental Skills or Bursts hit opponents, the targets' <Green>Dendro RES</Green> will be decreased by{" "}
+            <Green b>30%</Green> for 8s. This effect can be triggered even if the equipping character is not on the
+            field.
           </>
         ),
       },
@@ -367,20 +362,18 @@ const sumeruSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              Within 8s of triggering an Elemental Reaction, the character equipping this will
-              obtain buffs based on the Elemental Type of the other party members.{" "}
-              {this.xtraDesc?.[0]} Each of the aforementioned buffs will count up to 3 characters.
-              This effect can be triggered once every 8s. The character who equips this can still
-              trigger its effects when not on the field.
+              Within 8s of triggering an Elemental Reaction, the character equipping this will obtain buffs based on the
+              Elemental Type of the other party members. {this.xtraDesc?.[0]} Each of the aforementioned buffs will
+              count up to 3 characters. This effect can be triggered once every 8s. The character who equips this can
+              still trigger its effects when not on the field.
             </>
           );
         },
         xtraDesc: [
           <>
-            <Green>ATK</Green> is increased by <Green b>14%</Green> for each party member whose
-            Elemental Type is the same as the equipping character, and{" "}
-            <Green b>Elemental Mastery</Green> is increased by <Green b>50</Green> for every party
-            member with a different Elemental Type.
+            <Green>ATK</Green> is increased by <Green b>14%</Green> for each party member whose Elemental Type is the
+            same as the equipping character, and <Green b>Elemental Mastery</Green> is increased by <Green b>50</Green>{" "}
+            for every party member with a different Elemental Type.
           </>,
         ],
       },

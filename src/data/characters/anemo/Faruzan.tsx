@@ -14,9 +14,7 @@ interface GetWindGiftBuffValueArgs {
   partyData: PartyData;
 }
 const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBuffValueArgs) => {
-  const level = toSelf
-    ? finalTalentLv({ char, dataChar: Faruzan, talentType: "EB", partyData })
-    : inputs[0] || 0;
+  const level = toSelf ? finalTalentLv({ char, dataChar: Faruzan, talentType: "EB", partyData }) : inputs[0] || 0;
   return level ? round(18 * TALENT_LV_MULTIPLIERS[2][level], 1) : 0;
 };
 
@@ -82,9 +80,9 @@ const Faruzan: DataCharacter = {
       image: "7/7f/Talent_Impetuous_Flow",
       desc: (
         <>
-          When Faruzan is in the Manifest Gale state [~ES], the amount of time taken to charge a
-          shot is decreased by 60%, and she can apply Perfidious Wind's Bale [debuff] to opponents
-          who are hit by the vortex created by Pressurized Collapse [~ES].
+          When Faruzan is in the Manifest Gale state [~ES], the amount of time taken to charge a shot is decreased by
+          60%, and she can apply Perfidious Wind's Bale [debuff] to opponents who are hit by the vortex created by
+          Pressurized Collapse [~ES].
         </>
       ),
     },
@@ -94,16 +92,15 @@ const Faruzan: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} This DMG Bonus will be cleared 0.1s after dealing Anemo DMG to
-            opponents, and can be triggered once every 0.8s.
+            {this.xtraDesc?.[0]} This DMG Bonus will be cleared 0.1s after dealing Anemo DMG to opponents, and can be
+            triggered once every 0.8s.
           </>
         );
       },
       xtraDesc: [
         <>
-          When characters affected by Prayerful Wind's Gift [~EB] deal <Anemo>Anemo DMG</Anemo> to
-          opponents, this DMG will be increased based on <Green b>32%</Green> of Faruzan's own{" "}
-          <Green>ATK</Green>.
+          When characters affected by Prayerful Wind's Gift [~EB] deal <Anemo>Anemo DMG</Anemo> to opponents, this DMG
+          will be increased based on <Green b>32%</Green> of Faruzan's own <Green>ATK</Green>.
         </>,
       ],
     },
@@ -119,20 +116,15 @@ const Faruzan: DataCharacter = {
       image: "f/f2/Constellation_Truth_by_Any_Means",
       desc: (
         <>
-          Faruzan can fire off a maximum of 2 Hurricane Arrows using fully charged Aimed Shots while
-          under a single Wind Realm of Nasamjnin [ES] effect.
+          Faruzan can fire off a maximum of 2 Hurricane Arrows using fully charged Aimed Shots while under a single Wind
+          Realm of Nasamjnin [ES] effect.
         </>
       ),
     },
     {
       name: "Overzealous Intellect",
       image: "5/5b/Constellation_Overzealous_Intellect",
-      desc: (
-        <>
-          The duration of the Dazzling Polyhedron created by The Wind's Secret Ways [EB] increased
-          by 6s.
-        </>
-      ),
+      desc: <>The duration of the Dazzling Polyhedron created by The Wind's Secret Ways [EB] increased by 6s.</>,
     },
     { name: "Spirit-Orchard Stroll", image: "b/b5/Constellation_Spirit-Orchard_Stroll" },
     {
@@ -140,9 +132,9 @@ const Faruzan: DataCharacter = {
       image: "8/82/Constellation_Divine_Comprehension",
       desc: (
         <>
-          The vortex created by Wind Realm of Nasamjnin [ES] will restore Energy to Faruzan based on
-          the number of opponents hit: If it hits 1 opponent, it will restore 2 Energy for Faruzan.
-          Each additional opponent hit will restore 0.5 more Energy for Faruzan.
+          The vortex created by Wind Realm of Nasamjnin [ES] will restore Energy to Faruzan based on the number of
+          opponents hit: If it hits 1 opponent, it will restore 2 Energy for Faruzan. Each additional opponent hit will
+          restore 0.5 more Energy for Faruzan.
           <br />A maximum of 4 Energy can be restored to her per vortex.
         </>
       ),
@@ -154,16 +146,16 @@ const Faruzan: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} When the active character deals DMG under this affect, they will
-            apply Pressurized Collapse [~ES] to the opponent damaged. This effect can be triggered
-            once every 3s. This CD is shared between all party members.
+            {this.xtraDesc?.[0]} When the active character deals DMG under this affect, they will apply Pressurized
+            Collapse [~ES] to the opponent damaged. This effect can be triggered once every 3s. This CD is shared
+            between all party members.
           </>
         );
       },
       xtraDesc: [
         <>
-          Characters affected by Prayerful Wind's Benefit [EB buff] have their{" "}
-          <Green>Anemo CRIT DMG</Green> increased by <Green>40%</Green>.
+          Characters affected by Prayerful Wind's Benefit [EB buff] have their <Green>Anemo CRIT DMG</Green> increased
+          by <Green>40%</Green>.
         </>,
       ],
     },
@@ -178,10 +170,10 @@ const Faruzan: DataCharacter = {
           <>
             Increases <Green>Anemo DMG Bonus</Green> to all nearby characters by{" "}
             <Green b>{getWindGiftBuffValue(args)}%</Green>.
-            <br />• At <Lightgold>A4</Lightgold>, increases <Anemo>Anemo DMG</Anemo> based on{" "}
-            <Green b>32%</Green> of Faruzan's <Green>Base ATK</Green>.
-            <br />• At <Lightgold>C6</Lightgold>, increases <Anemo>Anemo</Anemo>{" "}
-            <Green>CRIT DMG</Green> by <Green b>40%</Green>.
+            <br />• At <Lightgold>A4</Lightgold>, increases <Anemo>Anemo DMG</Anemo> based on <Green b>32%</Green> of
+            Faruzan's <Green>Base ATK</Green>.
+            <br />• At <Lightgold>C6</Lightgold>, increases <Anemo>Anemo</Anemo> <Green>CRIT DMG</Green> by{" "}
+            <Green b>40%</Green>.
           </>
         );
       },
@@ -194,23 +186,14 @@ const Faruzan: DataCharacter = {
       applyBuff: ({ totalAttr, desc, tracker, ...rest }) => {
         applyModifier(desc, totalAttr, "anemo", getWindGiftBuffValue(rest), tracker);
       },
-      applyFinalBuff: ({
-        toSelf,
-        char,
-        totalAttr,
-        inputs,
-        attElmtBonus,
-        partyData,
-        desc,
-        tracker,
-      }) => {
+      applyFinalBuff: ({ toSelf, char, totalAttr, inputs, attElmtBonus, partyData, desc, tracker }) => {
         if (toSelf ? checkAscs[4](char) : inputs[1]) {
           const ATK = toSelf ? totalAttr.base_atk : inputs[2] || 0;
           const level = toSelf
             ? finalTalentLv({ char, dataChar: Faruzan, talentType: "EB", partyData })
             : inputs[0] || 1;
           const mult = 32;
-          const finalDesc = desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} Base ATK`;
+          const finalDesc = desc + ` / Lv. ${level} / ${mult}% of ${ATK} Base ATK`;
 
           applyModifier(finalDesc, attElmtBonus, "anemo.flat", applyPercent(ATK, mult), tracker);
         }

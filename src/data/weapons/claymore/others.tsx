@@ -38,7 +38,7 @@ const otherClaymores: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherClaymores, 129)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 30, 6),
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 30, 6),
       },
     ],
   },
@@ -53,9 +53,8 @@ const otherClaymores: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          On hit, Normal or Charged Attacks increase <Green>ATK</Green> by{" "}
-          <Green b>{5 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every
-          0.5s.
+          On hit, Normal or Charged Attacks increase <Green>ATK</Green> by <Green b>{5 + refi}%</Green> for 6s. Max{" "}
+          <Rose>4</Rose> stacks. Can only occur once every 0.5s.
         </>
       ),
     }),
@@ -88,8 +87,8 @@ const otherClaymores: DataWeapon[] = [
       core: (
         <>
           After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional{" "}
-          <Green b>{45 + refi * 15}%</Green> <Green>ATK</Green> DMG in a small area. Effect lasts
-          15s. DMG can only occur once every 3s.
+          <Green b>{45 + refi * 15}%</Green> <Green>ATK</Green> DMG in a small area. Effect lasts 15s. DMG can only
+          occur once every 3s.
         </>
       ),
     }),

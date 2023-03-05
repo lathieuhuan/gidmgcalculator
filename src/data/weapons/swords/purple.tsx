@@ -1,13 +1,7 @@
 import type { DataWeapon } from "@Src/types";
 import { Green, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import {
-  baneSeries2,
-  blackcliffSeries,
-  favoniusSeries,
-  royalSeries,
-  sacrificialSeries,
-} from "../series";
+import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
 import { applyPercent, findByCode, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
@@ -25,17 +19,16 @@ const purpleSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one
-            of them for 10s. This effect can be triggered once every 15s. If this opponent is taken
-            out during Cursed Parasol's duration, Cursed Parasol's CD will be refreshed immediately.{" "}
-            {this.extra?.[0]}
+            After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for 10s. This
+            effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration,
+            Cursed Parasol's CD will be refreshed immediately. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          The character wielding this weapon will deal <Green b>{12 + refi * 4}%</Green> more{" "}
-          <Green>DMG</Green> to the opponent affected by Cursed Parasol.
+          The character wielding this weapon will deal <Green b>{12 + refi * 4}%</Green> more <Green>DMG</Green> to the
+          opponent affected by Cursed Parasol.
         </>,
       ],
     }),
@@ -44,7 +37,7 @@ const purpleSwords: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 149)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 16),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
       },
     ],
   },
@@ -60,17 +53,17 @@ const purpleSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} Multiple instances of this weapon can allow this buff to stack. This
-            effect will still trigger even if the character is not on the field.
+            {this.extra?.[0]} Multiple instances of this weapon can allow this buff to stack. This effect will still
+            trigger even if the character is not on the field.
           </>
         );
       },
       extra: [
         <>
           The following effect will trigger every 10s: the equipping character will gain{" "}
-          <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point
-          of <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members
-          gaining <Green>30%</Green> of this buff for the same duration.
+          <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point of{" "}
+          <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members gaining <Green>30%</Green> of
+          this buff for the same duration.
         </>,
       ],
     }),
@@ -115,9 +108,9 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: () => ({
       core: (
         <>
-          When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing
-          Gale, dealing AoE DMG equal to 180% of ATK and increasing <Green>ATK</Green> by{" "}
-          <Green b>15%</Green> for 8s. This effect can be triggered once every 8s.
+          When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
+          equal to 180% of ATK and increasing <Green>ATK</Green> by <Green b>15%</Green> for 8s. This effect can be
+          triggered once every 8s.
         </>
       ),
     }),
@@ -144,11 +137,10 @@ const purpleSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
-            Leaf of Consciousness will be created around the character for a maximum of 10s.{" "}
-            {this.extra?.[0]} Only 1 Leaf can be generated this way every 20s. This effect can still
-            be triggered if the character is not on the field. The Leaf of Consciousness' effect
-            cannot stack.
+            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
+            will be created around the character for a maximum of 10s. {this.extra?.[0]} Only 1 Leaf can be generated
+            this way every 20s. This effect can still be triggered if the character is not on the field. The Leaf of
+            Consciousness' effect cannot stack.
           </>
         );
       },
@@ -179,8 +171,8 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>DMG</Green> dealt by the character equipping this weapon by{" "}
-          <Green b>{9 + refi * 3}%</Green>. Taking DMG disables this effect for 5s.
+          Increases <Green>DMG</Green> dealt by the character equipping this weapon by <Green b>{9 + refi * 3}%</Green>.
+          Taking DMG disables this effect for 5s.
         </>
       ),
     }),
@@ -189,7 +181,7 @@ const purpleSwords: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 109)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
       },
     ],
   },
@@ -214,8 +206,7 @@ const purpleSwords: DataWeapon[] = [
       core: (
         <>
           On hit, Normal or Charged Attacks increase <Green>ATK</Green> and <Green>DEF</Green> by{" "}
-          <Green b>{3 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every
-          0.3s.
+          <Green b>{3 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every 0.3s.
         </>
       ),
     }),
@@ -253,7 +244,7 @@ const purpleSwords: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "ES.cRate_"], [16, 6]),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "ES.cRate_"], [16, 6]),
   },
   {
     code: 113,
@@ -267,12 +258,12 @@ const purpleSwords: DataWeapon[] = [
       core: (
         <>
           Increases <Green>DMG</Green> dealt by <Green>Normal and Charged Attacks</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>. Additionally, regenerates {50 + refi * 10}% of ATK as
-          HP when Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.
+          <Green b>{15 + refi * 5}%</Green>. Additionally, regenerates {50 + refi * 10}% of ATK as HP when Normal and
+          Charged Attacks score a CRIT Hit. This effect can occur once every 5s.
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 20),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 20),
   },
   {
     code: 114,
@@ -285,9 +276,9 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power
-          of music and deals {75 + refi * 25}% ATK DMG to surrounding enemies. Harmonics last up to
-          30s, and a maximum of 1 can be gained every 0.5s.
+          Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music and deals{" "}
+          {75 + refi * 25}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained
+          every 0.5s.
         </>
       ),
     }),
@@ -321,9 +312,8 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Dealing Elemental DMG increases <Green>all DMG</Green> by{" "}
-          <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max <Rose>2</Rose> stacks. Can only occur
-          once every 1s.
+          Dealing Elemental DMG increases <Green>all DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max{" "}
+          <Rose>2</Rose> stacks. Can only occur once every 1s.
         </>
       ),
     }),
@@ -340,7 +330,7 @@ const purpleSwords: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
         },
       },
     ],
@@ -356,10 +346,10 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered
-          once every 5s. The Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist
-          simultaneously. After using an Elemental Burst, all Succession Seeds are consumed and
-          after 2s, the character regenerates {4.5 + refi * 1.5} Energy for each seed consumed.
+          After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered once every 5s. The
+          Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist simultaneously. After using an Elemental
+          Burst, all Succession Seeds are consumed and after 2s, the character regenerates {4.5 + refi * 1.5} Energy for
+          each seed consumed.
         </>
       ),
     }),
@@ -393,9 +383,8 @@ const purpleSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          <Green>Elemental Skill DMG</Green> is increased by <Green b>{30 + refi * 10}%</Green> of
-          DEF. The effect will be triggered no more than once every 1.5s and will be cleared 0.1s
-          after the Elemental Skill deals DMG.
+          <Green>Elemental Skill DMG</Green> is increased by <Green b>{30 + refi * 10}%</Green> of DEF. The effect will
+          be triggered no more than once every 1.5s and will be cleared 0.1s after the Elemental Skill deals DMG.
         </>
       ),
     }),

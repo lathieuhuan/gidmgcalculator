@@ -87,8 +87,8 @@ const Rosaria: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her{" "}
-          <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 5s.
+          When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her <Green>CRIT Rate</Green>{" "}
+          increased by <Green b>12%</Green> for 5s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -100,9 +100,8 @@ const Rosaria: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: ({ inputs }) => (
         <>
-          Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party
-          members (excluding Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green>{" "}
-          for 10s. Maximum <Rose>15%</Rose>.{" "}
+          Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party members (excluding
+          Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green> for 10s. Maximum <Rose>15%</Rose>.{" "}
           <Red>CRIT Rate bonus: {Math.round((inputs[0] || 0) * 15) / 100}%.</Red>
         </>
       ),
@@ -132,7 +131,7 @@ const Rosaria: DataCharacter = {
       ),
       isGranted: checkCons[1],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "NA.pct", 10, tracker);
+        applyModifier(desc, attPattBonus, "NA.pct_", 10, tracker);
         applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
       },
     },
@@ -143,8 +142,8 @@ const Rosaria: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Rites of Termination's [EB] attack decreases opponents' <Green>Physical RES</Green> by{" "}
-          <Green b>20%</Green> for 10s.
+          Rites of Termination's [EB] attack decreases opponents' <Green>Physical RES</Green> by <Green b>20%</Green>{" "}
+          for 10s.
         </>
       ),
       isGranted: checkCons[6],

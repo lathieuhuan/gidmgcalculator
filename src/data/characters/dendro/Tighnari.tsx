@@ -121,15 +121,14 @@ const Tighnari: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          For every point of Elemental Mastery Tighnari possesses, his{" "}
-          <Green>Charged Attack DMG</Green> and Fashioner's Tanglevine Shaft <Green>[EB] DMG</Green>{" "}
-          are increased by <Green b>0.08%</Green>. Max <Rose>80%</Rose>.
+          For every point of Elemental Mastery Tighnari possesses, his <Green>Charged Attack DMG</Green> and Fashioner's
+          Tanglevine Shaft <Green>[EB] DMG</Green> are increased by <Green b>0.08%</Green>. Max <Rose>80%</Rose>.
         </>
       ),
       isGranted: checkAscs[4],
       applyBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
         const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
-        applyModifier(desc, attPattBonus, ["CA.pct", "EB.pct"], buffValue, tracker);
+        applyModifier(desc, attPattBonus, ["CA.pct_", "EB.pct_"], buffValue, tracker);
       },
     },
     {
@@ -150,8 +149,8 @@ const Tighnari: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by{" "}
-          <Green b>50</Green> for 4s.
+          After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by <Green b>50</Green>{" "}
+          for 4s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -163,8 +162,8 @@ const Tighnari: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains{" "}
-          <Green b>20%</Green> <Green>Dendro DMG Bonus</Green>.
+          When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains <Green b>20%</Green>{" "}
+          <Green>Dendro DMG Bonus</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -176,10 +175,9 @@ const Tighnari: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain{" "}
-          <Green b>60</Green> <Green>Elemental Mastery</Green> for 8s. If this skill triggers a
-          Burning, Bloom, Aggravate, or Spread reaction, their <Green>Elemental Mastery</Green> will
-          be further increased by <Green b>60</Green>.
+          When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain <Green b>60</Green>{" "}
+          <Green>Elemental Mastery</Green> for 8s. If this skill triggers a Burning, Bloom, Aggravate, or Spread
+          reaction, their <Green>Elemental Mastery</Green> will be further increased by <Green b>60</Green>.
         </>
       ),
       isGranted: checkCons[4],

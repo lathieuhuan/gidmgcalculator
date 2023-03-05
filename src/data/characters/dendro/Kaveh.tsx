@@ -83,9 +83,8 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          When DMG dealt by a Dendro Core (including Burgeon and Hyperbloom) hits Kaveh, he will
-          regain HP equal to 300% of his Elemental Mastery. This effect can be triggered once every
-          0.5s.
+          When DMG dealt by a Dendro Core (including Burgeon and Hyperbloom) hits Kaveh, he will regain HP equal to 300%
+          of his Elemental Mastery. This effect can be triggered once every 0.5s.
         </>
       ),
     },
@@ -95,8 +94,7 @@ const Kaveh: DataCharacter = {
       get desc() {
         return (
           <>
-            During Painted Dome [EB], {this.xtraDesc?.[0]} This effect can be triggered once every
-            0.1s.
+            During Painted Dome [EB], {this.xtraDesc?.[0]} This effect can be triggered once every 0.1s.
             <br />
             This effect will be canceled when Painted Dome's effects end.
           </>
@@ -104,9 +102,8 @@ const Kaveh: DataCharacter = {
       },
       xtraDesc: [
         <>
-          after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his{" "}
-          <Green>Elemental Mastery</Green> will increase by <Green b>25</Green>. Max <Rose>4</Rose>{" "}
-          stacks.
+          after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his <Green>Elemental Mastery</Green> will
+          increase by <Green b>25</Green>. Max <Rose>4</Rose> stacks.
         </>,
       ],
     },
@@ -121,8 +118,8 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          Within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES will be increased by
-          50% and he will receive 50% more healing.
+          Within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES will be increased by 50% and he will
+          receive 50% more healing.
         </>
       ),
     },
@@ -131,8 +128,7 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          Kaveh's <Green>Normal Attack SPD</Green> increases by <Green b>15%</Green> during Painted
-          Dome [EB].
+          Kaveh's <Green>Normal Attack SPD</Green> increases by <Green b>15%</Green> during Painted Dome [EB].
         </>
       ),
     },
@@ -142,8 +138,8 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will have their
-          rupture DMG increased by <Green b>60%</Green>.
+          Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will have their rupture DMG increased
+          by <Green b>60%</Green>.
         </>
       ),
     },
@@ -153,10 +149,10 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Kaveh's Normal, Charged, and Plunging Attacks hit opponents during Painted Dome [EB],
-          it will unleash the Light of the Firmament upon the opponent's position, dealing{" "}
-          <Green b>61.8%</Green> of Kaveh's <Green>ATK</Green> as AoE Dendro DMG and causing all
-          Dendro Cores within that AoE to rupture. This effect can be triggered once every 3s.
+          When Kaveh's Normal, Charged, and Plunging Attacks hit opponents during Painted Dome [EB], it will unleash the
+          Light of the Firmament upon the opponent's position, dealing <Green b>61.8%</Green> of Kaveh's{" "}
+          <Green>ATK</Green> as AoE Dendro DMG and causing all Dendro Cores within that AoE to rupture. This effect can
+          be triggered once every 3s.
         </>
       ),
     },
@@ -170,8 +166,8 @@ const Kaveh: DataCharacter = {
         const level = finalTalentLv({ ...args, dataChar: Kaveh, talentType: "EB" });
         return (
           <>
-            • Grants <Dendro>Dendro Infusion</Dendro>.<br />• Increases Bloom DMG triggered by all
-            party members by <Green b>{getEBbuffValue(level)}%</Green>.
+            • Grants <Dendro>Dendro Infusion</Dendro>.<br />• Increases Bloom DMG triggered by all party members by{" "}
+            <Green b>{getEBbuffValue(level)}%</Green>.
             <br />• At <Lightgold>A4</Lightgold>, {Kaveh.passiveTalents[1].xtraDesc?.[0]}
             <br />• At <Lightgold>C2</Lightgold>, {Kaveh.constellation[1].desc}
           </>
@@ -188,7 +184,7 @@ const Kaveh: DataCharacter = {
       applyBuff: ({ totalAttr, rxnBonus, char, partyData, inputs, desc, tracker }) => {
         const level = finalTalentLv({ char, dataChar: Kaveh, talentType: "EB", partyData });
 
-        applyModifier(desc, rxnBonus, "bloom.pct", getEBbuffValue(level), tracker);
+        applyModifier(desc, rxnBonus, "bloom.pct_", getEBbuffValue(level), tracker);
 
         if (checkAscs[4](char)) {
           const stacks = inputs[0];
@@ -208,8 +204,7 @@ const Kaveh: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: ({ inputs }) => (
         <>
-          Increases Bloom DMG triggered by all party members by{" "}
-          <Green b>{getEBbuffValue(inputs[0])}%</Green>.
+          Increases Bloom DMG triggered by all party members by <Green b>{getEBbuffValue(inputs[0])}%</Green>.
         </>
       ),
       inputConfigs: [
@@ -220,7 +215,7 @@ const Kaveh: DataCharacter = {
         },
       ],
       applyBuff: ({ rxnBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, rxnBonus, "bloom.pct", getEBbuffValue(inputs[0]), tracker);
+        applyModifier(desc, rxnBonus, "bloom.pct_", getEBbuffValue(inputs[0]), tracker);
       },
     },
     {
@@ -229,7 +224,7 @@ const Kaveh: DataCharacter = {
       affect: EModAffect.SELF,
       isGranted: checkCons[4],
       desc: () => Kaveh.constellation[3].desc,
-      applyBuff: makeModApplier("rxnBonus", "bloom.pct", 60),
+      applyBuff: makeModApplier("rxnBonus", "bloom.pct_", 60),
     },
   ],
 };

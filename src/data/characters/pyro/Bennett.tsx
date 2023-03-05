@@ -90,7 +90,7 @@ const Bennett: DataCharacter = {
           name: "ATK Bonus",
           notAttack: "other",
           multFactors: { root: 56, attributeType: "base_atk" },
-          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "mult", [false, 1], 20]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "mult_", [false, 1], 20]),
         },
       ],
       // getExtraStats: () => [
@@ -120,9 +120,9 @@ const Bennett: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, inputs }) => (
         <>
-          Increases <Green>ATK</Green> of the characters within its AoE based on Bennett's{" "}
-          <Green>Base ATK</Green>.<br />• At <Lightgold>C1</Lightgold>, the <Green>ATK Bonus</Green>{" "}
-          is further increased by <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
+          Increases <Green>ATK</Green> of the characters within its AoE based on Bennett's <Green>Base ATK</Green>.
+          <br />• At <Lightgold>C1</Lightgold>, the <Green>ATK Bonus</Green> is further increased by{" "}
+          <Green b>20%</Green> of his <Green>Base ATK</Green>.{" "}
           {!toSelf && <Red>ATK bonus: {getEBBuffValue(inputs)[0]}.</Red>}
           <br />• At <Lightgold>C6</Lightgold>, the characters also gain a <Green b>15%</Green>{" "}
           <Green>Pyro DMG Bonus</Green>.
@@ -159,8 +159,7 @@ const Bennett: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Bennett's HP falls below 70%, his <Green>Energy Recharge</Green> is increased by{" "}
-          <Green b>30%</Green>.
+          When Bennett's HP falls below 70%, his <Green>Energy Recharge</Green> is increased by <Green b>30%</Green>.
         </>
       ),
       applyBuff: makeModApplier("totalAttr", "er_", 30),

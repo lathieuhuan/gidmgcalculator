@@ -61,7 +61,7 @@ const Diona: DataCharacter = {
           notAttack: "shield",
           multFactors: { root: 7.2, attributeType: "hp" },
           flatFactor: 693,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "pct", [false, 1], 15]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "pct_", [false, 1], 15]),
         },
       ],
       // getExtraStats: (lv) => [
@@ -108,12 +108,12 @@ const Diona: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Increases Icy Paws <Green>[ES] DMG</Green> by <Green b>15%</Green>, and increases its
-          shield's <Green>DMG Absorption</Green> by <Green b>15%</Green>.
+          Increases Icy Paws <Green>[ES] DMG</Green> by <Green b>15%</Green>, and increases its shield's{" "}
+          <Green>DMG Absorption</Green> by <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("attPattBonus", "ES.pct", 15),
+      applyBuff: makeModApplier("attPattBonus", "ES.pct_", 15),
     },
   ],
   buffs: [
@@ -123,8 +123,8 @@ const Diona: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          When characters within Signature Mix's radius have more than 50% HP, their{" "}
-          <Green>Elemental Mastery</Green> is increased by <Green b>200</Green>.
+          When characters within Signature Mix's radius have more than 50% HP, their <Green>Elemental Mastery</Green> is
+          increased by <Green b>200</Green>.
         </>
       ),
       isGranted: checkCons[6],

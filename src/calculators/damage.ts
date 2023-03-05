@@ -8,25 +8,13 @@ import type {
 import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
 
 // Constant
-import {
-  ATTACK_ELEMENTS,
-  ATTACK_PATTERNS,
-  TRANSFORMATIVE_REACTIONS,
-  BASE_REACTION_DAMAGE,
-} from "@Src/constants";
+import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS, BASE_REACTION_DAMAGE } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
-import {
-  applyToOneOrMany,
-  bareLv,
-  findByIndex,
-  toMult,
-  getTalentDefaultInfo,
-  turnArray,
-} from "@Src/utils";
+import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 
 function calcTalentDamage({
@@ -52,12 +40,12 @@ function calcTalentDamage({
       (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
-    let normalMult = (talentBuff.pct?.value || 0) + attPattBonus.all.pct;
+    let normalMult = (talentBuff.pct_?.value || 0) + attPattBonus.all.pct_;
     let specialMult = 1;
 
     if (attPatt !== "none") {
-      normalMult += attPattBonus[attPatt].pct;
-      specialMult = toMult(attPattBonus[attPatt].specialMult);
+      normalMult += attPattBonus[attPatt].pct_;
+      specialMult = toMult(attPattBonus[attPatt].multPlus_);
     }
     if (attElmt !== "various") {
       normalMult += totalAttr[attElmt];
@@ -70,7 +58,7 @@ function calcTalentDamage({
     const defReduction = 1 - resistReduct.def / 100;
 
     if (attPatt !== "none") {
-      defMult = 1 - attPattBonus[attPatt].defIgnore / 100;
+      defMult = 1 - attPattBonus[attPatt].defIgn_ / 100;
     }
     defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
 
@@ -90,10 +78,7 @@ function calcTalentDamage({
     const cRate_ = Math.min(Math.max(totalCrit("cRate_"), 0), 100) / 100;
     const cDmg_ = totalCrit("cDmg_") / 100;
 
-    base = applyToOneOrMany(
-      base,
-      (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult
-    );
+    base = applyToOneOrMany(base, (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult);
 
     record.totalFlat = flat;
     record.normalMult = normalMult;
@@ -120,7 +105,7 @@ function calcTalentDamage({
         normalMult += totalAttr.healB_ / 100;
         break;
       case "shield":
-        normalMult += (talentBuff.pct?.value || 0) / 100;
+        normalMult += (talentBuff.pct_?.value || 0) / 100;
         break;
     }
     base += flat;
@@ -185,12 +170,7 @@ export default function getDamage({
   for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
-    if (
-      activated &&
-      debuff &&
-      (!debuff.isGranted || debuff.isGranted(char)) &&
-      debuff.applyDebuff
-    ) {
+    if (activated && debuff && (!debuff.isGranted || debuff.isGranted(char)) && debuff.applyDebuff) {
       debuff.applyDebuff({
         desc: `Self / ${debuff.src}`,
         fromSelf: true,
@@ -267,12 +247,7 @@ export default function getDamage({
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
-    const level = finalTalentLv({
-      dataChar,
-      talentType: resultKey,
-      char,
-      partyData,
-    });
+    const level = finalTalentLv({ dataChar, talentType: resultKey, char, partyData });
 
     for (const stat of talent.stats) {
       const talentBuff = stat.getTalentBuff
@@ -307,11 +282,7 @@ export default function getDamage({
       }
 
       // deal elemental dmg and want amplify reaction
-      if (
-        attElmt !== "various" &&
-        attElmt !== "phys" &&
-        (actualReaction === "melt" || actualReaction === "vaporize")
-      ) {
+      if (attElmt !== "various" && attElmt !== "phys" && (actualReaction === "melt" || actualReaction === "vaporize")) {
         rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
 
@@ -331,8 +302,7 @@ export default function getDamage({
           scale = multScale,
         } = typeof factor === "number" ? { root: factor } : factor;
 
-        const finalMult =
-          root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult?.value || 0);
+        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult_?.value || 0);
 
         let flatBonus = 0;
 
@@ -391,7 +361,7 @@ export default function getDamage({
 
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     const { mult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
-    const normalMult = 1 + rxnBonus[rxn].pct / 100;
+    const normalMult = 1 + rxnBonus[rxn].pct_ / 100;
     const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
     const baseValue = baseRxnDmg * mult;
     const nonCrit = baseValue * normalMult * resMult;

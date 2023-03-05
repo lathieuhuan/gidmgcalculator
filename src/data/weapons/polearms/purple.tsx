@@ -53,17 +53,16 @@ const purplePolearms: DataWeapon[] = [
       get core() {
         return (
           <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
-            Leaf of Revival will be created around the character for a maximum of 10s.{" "}
-            {this.extra?.[0]} Only 1 Leaf can be generated this way every 20s. This effect can still
-            be triggered if the character is not on the field.
+            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will
+            be created around the character for a maximum of 10s. {this.extra?.[0]} Only 1 Leaf can be generated this
+            way every 20s. This effect can still be triggered if the character is not on the field.
           </>
         );
       },
       extra: [
         <>
-          When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green>{" "}
-          <Green>ATK</Green> for 12s.
+          When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green> <Green>ATK</Green> for
+          12s.
         </>,
       ],
     }),
@@ -96,8 +95,8 @@ const purplePolearms: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional{" "}
-          {15 + refi * 5}% ATK as DMG for 5s.
+          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15 + refi * 5}% ATK
+          as DMG for 5s.
         </>
       ),
     }),
@@ -122,14 +121,13 @@ const purplePolearms: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-          After Elemental Skill hits an opponent, the character loses 3 Energy but regenerates{" "}
-          {2.5 + refi * 0.5} Energy every 2s for the next 6s. This effect can occur once every 10s.
-          Can be triggered even when the character is not on the field.
+          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>. After Elemental Skill
+          hits an opponent, the character loses 3 Energy but regenerates {2.5 + refi * 0.5} Energy every 2s for the next
+          6s. This effect can occur once every 10s. Can be triggered even when the character is not on the field.
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
   },
   {
     code: 89,
@@ -178,7 +176,7 @@ const purplePolearms: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
+          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
         },
       },
     ],
@@ -199,7 +197,7 @@ const purplePolearms: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct", "EB.cRate_"], [16, 6]),
+    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct_", "EB.cRate_"], [16, 6]),
   },
   {
     code: 93,
@@ -230,10 +228,9 @@ const purplePolearms: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
-          <Green b>{12 + refi * 4}%</Green> and <Green>DEF</Green> is increased by{" "}
-          <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents nearby,{" "}
-          <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
+          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by <Green b>{12 + refi * 4}%</Green>{" "}
+          and <Green>DEF</Green> is increased by <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents
+          nearby, <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
         </>
       ),
     }),

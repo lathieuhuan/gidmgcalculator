@@ -18,18 +18,15 @@ import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } fr
 // Hook
 import { useTranslation } from "@Src/hooks";
 
-interface BonusesTrackerProps
-  extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
+interface BonusesTrackerProps extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
   em?: number;
 }
 
 export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: BonusesTrackerProps) {
   const { t } = useTranslation();
 
-  const hasAttPattBonus =
-    attPattBonus && Object.values(attPattBonus).some((records) => records.length);
-  const hasAttElmtBonus =
-    attElmtBonus && Object.values(attElmtBonus).some((records) => records.length);
+  const hasAttPattBonus = attPattBonus && Object.values(attPattBonus).some((records) => records.length);
+  const hasAttElmtBonus = attElmtBonus && Object.values(attElmtBonus).some((records) => records.length);
   const hasRxnBonus = rxnBonus && Object.values(rxnBonus).some((records) => records.length);
 
   if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus && !em) {
@@ -114,7 +111,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
       {hasRxnBonus || em ? (
         <div className={recordListStyles + (hasAttPattBonus || hasAttElmtBonus ? " pt-3" : "")}>
           {REACTIONS.map((reaction) => {
-            const records = rxnBonus?.[`${reaction}.pct`] || [];
+            const records = rxnBonus?.[`${reaction}.pct_`] || [];
             let bonusFromEM = 0;
 
             if (reaction === "melt" || reaction === "vaporize") {

@@ -1,1 +1,1 @@
-export const NCPA_PERCENTS = ["NA.pct", "CA.pct", "PA.pct"] as const;
+export const NCPA_PERCENTS = ["NA.pct_", "CA.pct_", "PA.pct_"] as const;

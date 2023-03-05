@@ -105,11 +105,10 @@ const Sara: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, inputs }) => (
         <>
-          Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou
-          Sara's <Green>Base ATK</Green>.{" "}
-          {!toSelf && <Red>ATK bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
-          <br />• At <Lightgold>C6</Lightgold>, it also increases <Electro>Electro</Electro>{" "}
-          <Green>Crit DMG</Green> by <Green b>60%</Green>.
+          Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou Sara's{" "}
+          <Green>Base ATK</Green>. {!toSelf && <Red>ATK bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
+          <br />• At <Lightgold>C6</Lightgold>, it also increases <Electro>Electro</Electro> <Green>Crit DMG</Green> by{" "}
+          <Green b>60%</Green>.
         </>
       ),
       inputConfigs: [

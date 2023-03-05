@@ -28,8 +28,8 @@ const otherBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Charged Attack hits on weak spots deal an additional <Green b>{75 + refi * 25}%</Green>{" "}
-          <Green>ATK</Green> DMG as CRIT DMG. Can only occur once every 10s.
+          Charged Attack hits on weak spots deal an additional <Green b>{75 + refi * 25}%</Green> <Green>ATK</Green> DMG
+          as CRIT DMG. Can only occur once every 10s.
         </>
       ),
     }),
@@ -63,7 +63,7 @@ const otherBows: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherBows, 3)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 24),
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 24),
       },
     ],
   },
@@ -78,15 +78,14 @@ const otherBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          If a <Green>Normal or Charged Attack</Green> hits a target within 0.3s of being fired,
-          increases <Green>DMG</Green> by <Green b>{30 + refi * 6}%</Green>. Otherwise, decreases
-          DMG by 10%.
+          If a <Green>Normal or Charged Attack</Green> hits a target within 0.3s of being fired, increases{" "}
+          <Green>DMG</Green> by <Green b>{30 + refi * 6}%</Green>. Otherwise, decreases DMG by 10%.
         </>
       ),
     }),
     applyBuff: ({ attPattBonus, desc, tracker }) => {
       if (attPattBonus) {
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], -10, tracker);
+        applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], -10, tracker);
       }
     },
     buffs: [
@@ -95,7 +94,7 @@ const otherBows: DataWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherBows, 4)?.passiveDesc({ refi }).core,
         applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 40 + refi * 6, tracker);
+          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 40 + refi * 6, tracker);
         },
       },
     ],

@@ -28,9 +28,9 @@ const purpleClaymores: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction,{" "}
-          <Green>ATK</Green> is increased by <Green b>{9 + refi * 3}%</Green> and{" "}
-          <Green>Elemental Mastery</Green> is increased by <Green b>{36 + refi * 12}</Green>.
+          Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction, <Green>ATK</Green> is
+          increased by <Green b>{9 + refi * 3}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
+          <Green b>{36 + refi * 12}</Green>.
         </>
       ),
     }),
@@ -70,9 +70,8 @@ const purpleClaymores: DataWeapon[] = [
       get core() {
         return (
           <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a
-            Leaf of Consciousness will be created around the character for a maximum of 10s.{" "}
-            {this.extra?.[0]} {this.extra?.[1]}
+            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
+            will be created around the character for a maximum of 10s. {this.extra?.[0]} {this.extra?.[1]}
           </>
         );
       },
@@ -82,8 +81,8 @@ const purpleClaymores: DataWeapon[] = [
           <Green>Elemental Mastery</Green> for 12s.
         </>,
         <>
-          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the
-          character is not on the field. The Leaf of Consciousness' effect cannot stack.
+          Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
+          the field. The Leaf of Consciousness' effect cannot stack.
         </>,
       ],
     }),
@@ -126,8 +125,8 @@ const purpleClaymores: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          On hit, Normal or Charged Attacks have a 50% chance to deal an additional{" "}
-          {180 + refi * 60} ATK DMG to opponents within a small AoE. Can only occur once every 15s.
+          On hit, Normal or Charged Attacks have a 50% chance to deal an additional {180 + refi * 60} ATK DMG to
+          opponents within a small AoE. Can only occur once every 15s.
         </>
       ),
     }),
@@ -144,8 +143,7 @@ const purpleClaymores: DataWeapon[] = [
       core: (
         <>
           On hit, Normal or Charged Attacks increase <Green>ATK</Green> and <Green>DEF</Green> by{" "}
-          <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur
-          once every 0.5s.
+          <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every 0.5s.
         </>
       ),
     }),
@@ -203,13 +201,12 @@ const purpleClaymores: DataWeapon[] = [
       },
       extra: [
         <>
-          Every 4s a character is on the field, they will deal <Green b>{5 + refi}%</Green>{" "}
-          <Green>more DMG</Green> and take {[0, 3, 2.7, 2.4, 2.2, 2][refi]}% more DMG. This effect
-          has a maximum of <Rose>5</Rose> stacks
+          Every 4s a character is on the field, they will deal <Green b>{5 + refi}%</Green> <Green>more DMG</Green> and
+          take {[0, 3, 2.7, 2.4, 2.2, 2][refi]}% more DMG. This effect has a maximum of <Rose>5</Rose> stacks
         </>,
         <>
-          and will not be reset if the character leaves the field, but will be reduced by 1 stack
-          when the character takes DMG.
+          and will not be reset if the character leaves the field, but will be reduced by 1 stack when the character
+          takes DMG.
         </>,
       ],
     }),
@@ -226,7 +223,7 @@ const purpleClaymores: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (5 + refi) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
         },
       },
     ],
@@ -247,16 +244,15 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 6),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-          After Elemental Skill hits an opponent, the character loses 3 Energy but regenerates{" "}
-          <Green b>{2.5 + refi * 0.5}</Green> <Green>Energy</Green> every 2s for the next 6s. This
-          effect can occur once every 10s. Can be triggered even when the character is not on the
-          field.
+          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>. After Elemental Skill
+          hits an opponent, the character loses 3 Energy but regenerates <Green b>{2.5 + refi * 0.5}</Green>{" "}
+          <Green>Energy</Green> every 2s for the next 6s. This effect can occur once every 10s. Can be triggered even
+          when the character is not on the field.
         </>
       ),
     }),
@@ -272,7 +268,7 @@ const purpleClaymores: DataWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 12),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
         desc: ({ refi }) => findByCode(purpleClaymores, 70)?.passiveDesc({ refi }).extra?.[0],
       },
     ],
@@ -281,16 +277,15 @@ const purpleClaymores: DataWeapon[] = [
       get core() {
         return (
           <>
-            Taking DMG generates a shield which absorbs DMG up to {17 + refi * 3}% of max HP. This
-            shield lasts for 10s or until broken, and can only be triggered once every 45s.{" "}
-            {this.extra?.[0]}
+            Taking DMG generates a shield which absorbs DMG up to {17 + refi * 3}% of max HP. This shield lasts for 10s
+            or until broken, and can only be triggered once every 45s. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          While protected by a shield, the character gains <Green b>{9 + refi * 3}%</Green>{" "}
-          <Green>increased DMG</Green>.
+          While protected by a shield, the character gains <Green b>{9 + refi * 3}%</Green> <Green>increased DMG</Green>
+          .
         </>,
       ],
     }),
@@ -311,15 +306,14 @@ const purpleClaymores: DataWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    applyBuff: makeWpModApplier("attPattBonus", "EB.pct", 12),
+    applyBuff: makeWpModApplier("attPattBonus", "EB.pct_", 12),
     passiveName: "Oceanic Victory",
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Elemental Burst DMG</Green> by <Green b>{9 + refi * 3}%</Green>. When
-          Elemental Burst hits opponents, there is a 100% chance of summoning a titanic tuna that
-          charges and deals <Green b>{75 + refi * 25}%</Green> <Green>ATK</Green> as AoE DMG. This
-          effect can occur once every 15s.
+          Increases <Green>Elemental Burst DMG</Green> by <Green b>{9 + refi * 3}%</Green>. When Elemental Burst hits
+          opponents, there is a 100% chance of summoning a titanic tuna that charges and deals{" "}
+          <Green b>{75 + refi * 25}%</Green> <Green>ATK</Green> as AoE DMG. This effect can occur once every 15s.
         </>
       ),
     }),

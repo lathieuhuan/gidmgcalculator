@@ -8,14 +8,14 @@ const getC2TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
   const buffValue = 3.3 * Math.floor(+findInput(selfBuffCtrls, 1, 0) / 0.5);
 
-  return talentBuff([isInUse, "pct", [false, 2], buffValue]);
+  return talentBuff([isInUse, "pct_", [false, 2], buffValue]);
 };
 
 const getC6TalentBuff = (index: number): GetTalentBuffFn => {
   return ({ char, totalAttr }) => {
     const buffValue = Math.min(totalAttr.em, 2000) * (index ? 3 : 0.2);
 
-    return talentBuff([checkCons[6](char), index ? "flat" : "mult", [false, 6], buffValue]);
+    return talentBuff([checkCons[6](char), index ? "flat" : "mult_", [false, 6], buffValue]);
   };
 };
 
@@ -78,7 +78,7 @@ const Sayu: DataCharacter = {
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const isInUse = charModIsInUse(Sayu.buffs!, char, selfBuffCtrls, 1);
 
-            return talentBuff([isInUse, "pct", [false, 2], 3.3]);
+            return talentBuff([isInUse, "pct_", [false, 2], 3.3]);
           },
         },
         { name: "Hold Kick", multFactors: 217.6, getTalentBuff: getC2TalentBuff },
@@ -153,10 +153,10 @@ const Sayu: DataCharacter = {
       desc: () => (
         <>
           Each point of Sayu's <Green>Elemental Mastery</Green> will:
-          <br />• Increases <Green>Daruma DMG</Green> by <Green b>0.2%</Green> <Green>ATK</Green>,
-          up to <Rose>400%</Rose> ATK.
-          <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to{" "}
-          <Rose>6,000</Rose> additional HP.
+          <br />• Increases <Green>Daruma DMG</Green> by <Green b>0.2%</Green> <Green>ATK</Green>, up to{" "}
+          <Rose>400%</Rose> ATK.
+          <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to <Rose>6,000</Rose>{" "}
+          additional HP.
         </>
       ),
       isGranted: checkCons[6],
@@ -171,8 +171,8 @@ const Sayu: DataCharacter = {
         <>
           Yoohoo Art: Fuuin Dash [ES] gains the following effects:
           <br />• <Green>Press Kick DMG</Green> increased by <Green b>3.3%</Green>.
-          <br />• <Green>Hold Kick DMG</Green> increased by <Green b>3.3%</Green> for every 0.5s
-          Sayu in Fuufuu Windwheel state, up to <Rose>66%</Rose>.
+          <br />• <Green>Hold Kick DMG</Green> increased by <Green b>3.3%</Green> for every 0.5s Sayu in Fuufuu
+          Windwheel state, up to <Rose>66%</Rose>.
         </>
       ),
       isGranted: checkCons[2],

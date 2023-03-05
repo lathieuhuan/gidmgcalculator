@@ -109,15 +109,13 @@ const Aloy: DataCharacter = {
       affect: EModAffect.SELF,
       desc: (args) => (
         <>
-          Increases Aloy's <Green>Normal Attack DMG</Green>. When she has 4 Coil stacks, all stacks
-          are cleared. Aloy then enters the Rushing Ice state, which further increases her{" "}
-          <Green>Normal Attack DMG</Green> and converts it to <Cryo>Cryo DMG</Cryo>.{" "}
-          <Red>Total bonus: {getNApctBonus(args)}%.</Red>
-          <br />• At <Lightgold>A1</Lightgold> when Aloy receives Coil effect, her{" "}
-          <Green>ATK</Green> is increased by <Green b>16%</Green> for 10s.
-          <br />• At <Lightgold>A4</Lightgold> when Aloy is in Rushing Ice state, her{" "}
-          <Green>Cryo DMG Bonus</Green> increases by <Green b>3.5%</Green> every 1s, up to{" "}
-          <Rose>35%</Rose>.
+          Increases Aloy's <Green>Normal Attack DMG</Green>. When she has 4 Coil stacks, all stacks are cleared. Aloy
+          then enters the Rushing Ice state, which further increases her <Green>Normal Attack DMG</Green> and converts
+          it to <Cryo>Cryo DMG</Cryo>. <Red>Total bonus: {getNApctBonus(args)}%.</Red>
+          <br />• At <Lightgold>A1</Lightgold> when Aloy receives Coil effect, her <Green>ATK</Green> is increased by{" "}
+          <Green b>16%</Green> for 10s.
+          <br />• At <Lightgold>A4</Lightgold> when Aloy is in Rushing Ice state, her <Green>Cryo DMG Bonus</Green>{" "}
+          increases by <Green b>3.5%</Green> every 1s, up to <Rose>35%</Rose>.
         </>
       ),
       inputConfigs: [
@@ -133,7 +131,7 @@ const Aloy: DataCharacter = {
       ],
       applyBuff: (obj) => {
         const { char, desc, tracker } = obj;
-        applyModifier(desc, obj.attPattBonus, "NA.pct", getNApctBonus(obj), tracker);
+        applyModifier(desc, obj.attPattBonus, "NA.pct_", getNApctBonus(obj), tracker);
 
         if (checkAscs[1](char)) {
           applyModifier(desc, obj.totalAttr, "atk_", 16, tracker);
@@ -152,8 +150,8 @@ const Aloy: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          when Aloy receives the Coil effect, nearby party members' <Green>ATK</Green> is increased
-          by <Green b>8%</Green> for 10s.
+          when Aloy receives the Coil effect, nearby party members' <Green>ATK</Green> is increased by{" "}
+          <Green b>8%</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[1],

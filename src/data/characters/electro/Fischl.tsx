@@ -63,7 +63,7 @@ const Fischl: DataCharacter = {
         {
           name: "Summoning DMG",
           multFactors: 115.44,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult", [false, 2], 200]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[2](char), "mult_", [false, 2], 200]),
         },
         { name: "Thundering Retribution (A4)", multFactors: { root: 80, scale: 0 } },
         { name: "Oz's Joint Attack (C6)", multFactors: { root: 30, scale: 0 } },
@@ -105,8 +105,7 @@ const Fischl: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Nightrider's <Green>Summoning DMG</Green> is increased by <Green b>200%</Green> of{" "}
-          <Green>ATK</Green>.
+          Nightrider's <Green>Summoning DMG</Green> is increased by <Green b>200%</Green> of <Green>ATK</Green>.
         </>
       ),
       isGranted: checkCons[2],

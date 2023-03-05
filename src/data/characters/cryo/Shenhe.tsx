@@ -8,15 +8,8 @@ import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const getEBDebuffValue = (
-  fromSelf: boolean,
-  char: CharInfo,
-  inputs: ModifierInput[],
-  partyData: PartyData
-) => {
-  const level = fromSelf
-    ? finalTalentLv({ char, dataChar: Shenhe, talentType: "EB", partyData })
-    : inputs[0] || 0;
+const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
+  const level = fromSelf ? finalTalentLv({ char, dataChar: Shenhe, talentType: "EB", partyData }) : inputs[0] || 0;
   return level ? Math.min(5 + level, 15) : 0;
 };
 
@@ -112,9 +105,8 @@ const Shenhe: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal{" "}
-          <Cryo>Cryo</Cryo> <Green>DMG</Green> the DMG dealt is increased based on Shenhe's{" "}
-          <Green>current ATK</Green>.
+          When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal <Cryo>Cryo</Cryo>{" "}
+          <Green>DMG</Green> the DMG dealt is increased based on Shenhe's <Green>current ATK</Green>.
         </>
       ),
       inputConfigs: [
@@ -124,9 +116,7 @@ const Shenhe: DataCharacter = {
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, attElmtBonus } = obj;
         const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
-        const level = toSelf
-          ? finalTalentLv({ ...obj, dataChar: Shenhe, talentType: "ES" })
-          : inputs[1] || 1;
+        const level = toSelf ? finalTalentLv({ ...obj, dataChar: Shenhe, talentType: "ES" }) : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const finalDesc = obj.desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
 
@@ -139,8 +129,8 @@ const Shenhe: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          An active character within Divine Maiden's Deliverance [EB] field gain{" "}
-          <Green b>15%</Green> <Green>Cryo DMG Bonus</Green>.
+          An active character within Divine Maiden's Deliverance [EB] field gain <Green b>15%</Green>{" "}
+          <Green>Cryo DMG Bonus</Green>.
         </>
       ),
       isGranted: checkAscs[1],
@@ -152,17 +142,14 @@ const Shenhe: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: ({ inputs }) => (
         <>
-          After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the
-          following effects:
+          After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the following effects:
           <br />
           <span className={inputs[0] ? "" : "opacity-50"}>
-            • Press: <Green>Elemental Skill and Elemental Burst DMG</Green> increased by{" "}
-            <Green b>15%</Green> for 10s.
+            • Press: <Green>Elemental Skill and Elemental Burst DMG</Green> increased by <Green b>15%</Green> for 10s.
           </span>
           <br />
           <span className={inputs[1] ? "" : "opacity-50"}>
-            • Hold: <Green>Normal, Charged and Plunging Attack DMG</Green> increased by{" "}
-            <Green b>15%</Green> for 15s.
+            • Hold: <Green>Normal, Charged and Plunging Attack DMG</Green> increased by <Green b>15%</Green> for 15s.
           </span>
         </>
       ),
@@ -173,7 +160,7 @@ const Shenhe: DataCharacter = {
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
         if (inputs[0] === 1) {
-          applyModifier(desc + " / Press", attPattBonus, ["ES.pct", "EB.pct"], 15, tracker);
+          applyModifier(desc + " / Press", attPattBonus, ["ES.pct_", "EB.pct_"], 15, tracker);
         }
         if (inputs[1] === 1) {
           applyModifier(desc + " / Hold", attPattBonus, [...NCPA_PERCENTS], 15, tracker);
@@ -186,8 +173,8 @@ const Shenhe: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Active characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green>{" "}
-          increased <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
+          Active characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green> increased{" "}
+          <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -199,9 +186,9 @@ const Shenhe: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra
-          stack for 60s. Each stack increases her next Spring Spirit Summoning{" "}
-          <Green>[ES] DMG</Green> by <Green b>5%</Green>. Maximum <Rose>50</Rose> stacks.
+          Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra stack for 60s. Each
+          stack increases her next Spring Spirit Summoning <Green>[ES] DMG</Green> by <Green b>5%</Green>. Maximum{" "}
+          <Rose>50</Rose> stacks.
         </>
       ),
       isGranted: checkCons[4],
@@ -213,7 +200,7 @@ const Shenhe: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", 5 * (inputs[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "ES.pct_", 5 * (inputs[0] || 0), tracker);
       },
     },
   ],

@@ -17,8 +17,8 @@ const otherPolearms: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Normal Attacks deal an additional <Green b>{120 + refi * 40}%</Green> <Green>DMG</Green>.
-          Can only occur once every 10s.
+          Normal Attacks deal an additional <Green b>{120 + refi * 40}%</Green> <Green>DMG</Green>. Can only occur once
+          every 10s.
         </>
       ),
     }),
@@ -43,7 +43,7 @@ const otherPolearms: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherPolearms, 75)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 24),
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 24),
       },
     ],
   },
@@ -67,7 +67,7 @@ const otherPolearms: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherPolearms, 76)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 40),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 40),
       },
     ],
   },

@@ -59,7 +59,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   }, [trackerState]);
 
   const renderDefMultiplier = (talent: AttackPattern) => {
-    const totalDefIgnore = getTotalRecordValue(result?.attPattBonus[`${talent}.defIgnore`] || []);
+    const totalDefIgnore = getTotalRecordValue(result?.attPattBonus[`${talent}.defIgn_`] || []);
 
     return (
       <div className="flex items-center">
@@ -83,8 +83,8 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
                 (1 - <Lesser>DEF ignore</Lesser> <Green>{totalDefIgnore}</Green> / 100) *
               </>
             ) : null}{" "}
-            (<Lesser>target Lv.</Lesser> <Green>{target.level}</Green> + 100) +{" "}
-            <Lesser>char. Lv.</Lesser> <Green>{charLv}</Green> + 100
+            (<Lesser>target Lv.</Lesser> <Green>{target.level}</Green> + 100) + <Lesser>char. Lv.</Lesser>{" "}
+            <Green>{charLv}</Green> + 100
           </p>
         </div>
       </div>
@@ -92,10 +92,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   };
 
   return (
-    <div
-      className="mt-2 grow custom-scrollbar cursor-default"
-      onDoubleClick={() => console.log(result)}
-    >
+    <div className="mt-2 grow custom-scrollbar cursor-default" onDoubleClick={() => console.log(result)}>
       <CollapseList
         list={[
           {

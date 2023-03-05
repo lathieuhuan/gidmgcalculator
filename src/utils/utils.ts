@@ -18,11 +18,7 @@ import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { BASE_ATTACK_TYPE, SUBSTAT_SCALE } from "@Src/constants/weapon-stats";
 
 export const percentSign = (stat: string) => {
-  if (
-    stat.slice(-1) === "_" ||
-    ATTACK_ELEMENTS.includes(stat as any) ||
-    ["pct", "mult", "defIgnore"].includes(stat)
-  ) {
+  if (stat.slice(-1) === "_" || ATTACK_ELEMENTS.includes(stat as any)) {
     return "%";
   }
   return "";
@@ -56,10 +52,7 @@ export function countVision(partyData: PartyData, charData?: CharData) {
 
 export function userItemToCalcItem(item: UserWeapon, newID?: number): CalcWeapon;
 export function userItemToCalcItem(item: UserArtifact, newID?: number): CalcArtifact;
-export function userItemToCalcItem(
-  item: UserWeapon | UserArtifact,
-  newID = Date.now()
-): CalcWeapon | CalcArtifact {
+export function userItemToCalcItem(item: UserWeapon | UserArtifact, newID = Date.now()): CalcWeapon | CalcArtifact {
   const { owner, setupIDs, ...info } = item;
   return info;
 }
@@ -71,10 +64,7 @@ interface Options {
 }
 export function calcItemToUserItem(item: CalcArtifact, options?: Options): UserArtifact;
 export function calcItemToUserItem(item: CalcWeapon, options?: Options): UserWeapon;
-export function calcItemToUserItem(
-  item: CalcArtifact | CalcWeapon,
-  options?: Options
-): UserArtifact | UserWeapon {
+export function calcItemToUserItem(item: CalcArtifact | CalcWeapon, options?: Options): UserArtifact | UserWeapon {
   const { ID = item.ID, owner = null, setupIDs } = options || {};
 
   return {

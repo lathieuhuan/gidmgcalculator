@@ -72,7 +72,7 @@ const Dehya: DataCharacter = {
           isWholeFactor: true,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const C2isInUse = charModIsInUse(Dehya.buffs || [], char, selfBuffCtrls, 0);
-            return talentBuff([C2isInUse, "pct", [false, 2], 50]);
+            return talentBuff([C2isInUse, "pct_", [false, 2], 50]);
           },
         },
       ],
@@ -107,10 +107,10 @@ const Dehya: DataCharacter = {
       desc: (
         <>
           Dehya's <Green>Max HP</Green> is increased by <Green>20%</Green>, and:
-          <br />• Molten Inferno's <Green>[ES] DMG</Green> will be increased by{" "}
-          <Green b>3.6%</Green> of her <Green>Max HP</Green>.
-          <br />• The Lioness's Bite's <Green>[EB] DMG</Green> will be increased by{" "}
-          <Green b>6%</Green> of her <Green>Max HP</Green>.
+          <br />• Molten Inferno's <Green>[ES] DMG</Green> will be increased by <Green b>3.6%</Green> of her{" "}
+          <Green>Max HP</Green>.
+          <br />• The Lioness's Bite's <Green>[EB] DMG</Green> will be increased by <Green b>6%</Green> of her{" "}
+          <Green>Max HP</Green>.
         </>
       ),
     },
@@ -120,16 +120,16 @@ const Dehya: DataCharacter = {
       get desc() {
         return (
           <>
-            When Dehya uses Molten Inferno: Ranging Flame [ES], the duration of the recreated Fiery
-            Sanctum field will be increased by 4s. {this.xtraDesc?.[0]}
+            When Dehya uses Molten Inferno: Ranging Flame [ES], the duration of the recreated Fiery Sanctum field will
+            be increased by 4s. {this.xtraDesc?.[0]}
           </>
         );
       },
       xtraDesc: [
         <>
-          When a <Green>Fiery Sanctum</Green> exists on the field, <Green>DMG</Green> dealt by its
-          next coordinated attack will be increased by <Green b>50%</Green> when active character(s)
-          within the Fiery Sanctum field are attacked.
+          When a <Green>Fiery Sanctum</Green> exists on the field, <Green>DMG</Green> dealt by its next coordinated
+          attack will be increased by <Green b>50%</Green> when active character(s) within the Fiery Sanctum field are
+          attacked.
         </>,
       ],
     },
@@ -139,8 +139,8 @@ const Dehya: DataCharacter = {
       image: "3/31/Constellation_An_Oath_Abiding",
       desc: (
         <>
-          When Lioness's Bite attacks hit opponents, they will restore 1.5 Energy for Dehya and 2.5%
-          of her Max HP. This effect can be triggered once every 0.2s.
+          When Lioness's Bite attacks hit opponents, they will restore 1.5 Energy for Dehya and 2.5% of her Max HP. This
+          effect can be triggered once every 0.2s.
         </>
       ),
     },
@@ -151,18 +151,16 @@ const Dehya: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} and extend that duration by 0.5s. This effect can trigger every
-            0.2s. The duration can be extended for a maximum of 2s, and CRIT DMG can be increased by
-            a maximum of 60% this way.
+            {this.xtraDesc?.[0]} and extend that duration by 0.5s. This effect can trigger every 0.2s. The duration can
+            be extended for a maximum of 2s, and CRIT DMG can be increased by a maximum of 60% this way.
           </>
         );
       },
       xtraDesc: [
         <>
-          The <Green>CRIT Rate</Green> of The Lioness's Bite [EB] is increased by{" "}
-          <Green b>10%</Green>. After a Flame-Mane's Fist attack hits an opponent and deals CRIT
-          hits, it will cause the <Green>CRIT DMG</Green> of The Lioness's Bite to increase by{" "}
-          <Green b>15%</Green> for the rest of Blazing Lioness's duration
+          The <Green>CRIT Rate</Green> of The Lioness's Bite [EB] is increased by <Green b>10%</Green>. After a
+          Flame-Mane's Fist attack hits an opponent and deals CRIT hits, it will cause the <Green>CRIT DMG</Green> of
+          The Lioness's Bite to increase by <Green b>15%</Green> for the rest of Blazing Lioness's duration
         </>,
       ],
     },

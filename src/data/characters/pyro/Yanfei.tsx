@@ -117,12 +117,11 @@ const Yanfei: DataCharacter = {
       affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
-          Increases <Green>Charged Attack DMG</Green> by{" "}
-          <Green b>{getEBBuffValue(char, partyData)}%</Green>.
+          Increases <Green>Charged Attack DMG</Green> by <Green b>{getEBBuffValue(char, partyData)}%</Green>.
         </>
       ),
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.pct", getEBBuffValue(char, partyData), tracker);
+        applyModifier(desc, attPattBonus, "CA.pct_", getEBBuffValue(char, partyData), tracker);
       },
     },
     {
@@ -152,8 +151,8 @@ const Yanfei: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by <Green b>20%</Green> against
-          enemies below 50% HP.
+          Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by <Green b>20%</Green> against enemies below 50%
+          HP.
         </>
       ),
       isGranted: checkCons[2],

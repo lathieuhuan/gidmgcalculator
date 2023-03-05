@@ -116,8 +116,8 @@ const Yelan: DataCharacter = {
         const n = Object.keys(visionCount).length;
         return (
           <>
-            When the party has 1/2/3/4 Elemental Types, Yelan's <Green>Max HP</Green> is increased
-            by <Green className={n === 1 ? "" : "opacity-50"}>6%</Green>/
+            When the party has 1/2/3/4 Elemental Types, Yelan's <Green>Max HP</Green> is increased by{" "}
+            <Green className={n === 1 ? "" : "opacity-50"}>6%</Green>/
             <Green className={n === 2 ? "" : "opacity-50"}>12%</Green>/
             <Green className={n === 3 ? "" : "opacity-50"}>18%</Green>/
             <Green className={n === 4 ? "" : "opacity-50"}>30%</Green>.
@@ -139,9 +139,8 @@ const Yelan: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          During Depth-Clarion Dice [EB], your own active character gains <Green b>1%</Green>{" "}
-          <Green>DMG Bonus</Green> which will increase by a further <Green b>3.5%</Green> every
-          second. Maximum <Rose>50%</Rose>.
+          During Depth-Clarion Dice [EB], your own active character gains <Green b>1%</Green> <Green>DMG Bonus</Green>{" "}
+          which will increase by a further <Green b>3.5%</Green> every second. Maximum <Rose>50%</Rose>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -153,7 +152,7 @@ const Yelan: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "all.pct", 1 + 3.5 * (inputs[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "all.pct_", 1 + 3.5 * (inputs[0] || 0), tracker);
       },
     },
     {
@@ -162,9 +161,8 @@ const Yelan: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for
-          every opponent marked by Lifeline [~ES] when the Lifeline explodes. Maximum{" "}
-          <Rose>40%</Rose>.
+          Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for every opponent marked
+          by Lifeline [~ES] when the Lifeline explodes. Maximum <Rose>40%</Rose>.
         </>
       ),
       isGranted: checkCons[4],

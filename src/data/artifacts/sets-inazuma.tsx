@@ -43,20 +43,20 @@ const inazumaSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              {this.xtraDesc![0]} This effect will be dispelled 0.05s after a Normal Attack deals
-              DMG. {this.xtraDesc![1]} This trigger can occur once every 0.2s.
+              {this.xtraDesc![0]} This effect will be dispelled 0.05s after a Normal Attack deals DMG.{" "}
+              {this.xtraDesc![1]} This trigger can occur once every 0.2s.
             </>
           );
         },
         xtraDesc: [
           <>
-            When Normal Attacks hit opponents, there is a <Green b>36%</Green> <Green>chance</Green>{" "}
-            that it will trigger Valley Rite, which will increase <Green>Normal Attack DMG</Green>{" "}
-            by <Green b>70%</Green> of <Green>ATK</Green>.
+            When Normal Attacks hit opponents, there is a <Green b>36%</Green> <Green>chance</Green> that it will
+            trigger Valley Rite, which will increase <Green>Normal Attack DMG</Green> by <Green b>70%</Green> of{" "}
+            <Green>ATK</Green>.
           </>,
           <>
-            If a Normal Attack fails to trigger Valley Rite, the <Green>odds</Green> of it
-            triggering the next time will increase by <Green b>20%</Green>.
+            If a Normal Attack fails to trigger Valley Rite, the <Green>odds</Green> of it triggering the next time will
+            increase by <Green b>20%</Green>.
           </>,
         ],
       },
@@ -116,18 +116,18 @@ const inazumaSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              {this.xtraDesc![0]} This effect can be triggered once every 0.8s. Nascent Light will
-              be dispelled when the character leaves the field. If an Elemental Burst is used again
-              during the duration of Nascent Light, the original Nascent Light will be dispelled.
+              {this.xtraDesc![0]} This effect can be triggered once every 0.8s. Nascent Light will be dispelled when the
+              character leaves the field. If an Elemental Burst is used again during the duration of Nascent Light, the
+              original Nascent Light will be dispelled.
             </>
           );
         },
         xtraDesc: [
           <>
-            After using an Elemental Burst, this character will gain the Nascent Light effect,
-            increasing their <Green>ATK</Green> by <Green b>8%</Green> for 16s. When the character's
-            HP decreases, Their <Green>ATK</Green> will further increase by <Green b>10%</Green>.
-            This increase can occur this way a maximum of <Rose>4</Rose> times.
+            After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their{" "}
+            <Green>ATK</Green> by <Green b>8%</Green> for 16s. When the character's HP decreases, Their{" "}
+            <Green>ATK</Green> will further increase by <Green b>10%</Green>. This increase can occur this way a maximum
+            of <Rose>4</Rose> times.
           </>,
         ],
       },
@@ -186,16 +186,15 @@ const inazumaSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases <Green>Elemental Burst DMG</Green> by <Green b>25%</Green> of{" "}
-            <Green>Energy Recharge</Green>. A maximum of <Green b>75%</Green>{" "}
-            <Green>bonus DMG</Green> can be obtained in this way.
+            Increases <Green>Elemental Burst DMG</Green> by <Green b>25%</Green> of <Green>Energy Recharge</Green>. A
+            maximum of <Green b>75%</Green> <Green>bonus DMG</Green> can be obtained in this way.
           </>
         ),
         applyFinalBuff: ({ attPattBonus, totalAttr, desc, tracker }) => {
           if (attPattBonus) {
             let buffValue = Math.round(totalAttr.er_ * 25) / 100;
             buffValue = Math.min(buffValue, 75);
-            applyModifier(desc, attPattBonus, "EB.pct", Math.min(buffValue, 75), tracker);
+            applyModifier(desc, attPattBonus, "EB.pct_", Math.min(buffValue, 75), tracker);
           }
         },
       },
@@ -237,9 +236,8 @@ const inazumaSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15
-            Energy and <Green>Normal/Charged/Plunging Attack DMG</Green> is increased by{" "}
-            <Green b>50%</Green> for 10s.
+            When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and{" "}
+            <Green>Normal/Charged/Plunging Attack DMG</Green> is increased by <Green b>50%</Green> for 10s.
           </>
         ),
       },
@@ -292,18 +290,17 @@ const inazumaSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              A character equipped with this Artifact set will obtain the Curiosity effect in the
-              following conditions: When on the field, the character gains 1 stack after hitting an
-              opponent with a Geo attack, triggering a maximum of once every 0.3s. When off the
-              field, the character gains 1 stack every 3s. {this.xtraDesc?.[0]} When 6 seconds pass
-              without gaining a Curiosity stack, 1 stack is lost.
+              A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions:
+              When on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a
+              maximum of once every 0.3s. When off the field, the character gains 1 stack every 3s. {this.xtraDesc?.[0]}{" "}
+              When 6 seconds pass without gaining a Curiosity stack, 1 stack is lost.
             </>
           );
         },
         xtraDesc: [
           <>
-            Curiosity can stack up to <Rose>4</Rose> times, each providing <Green b>6%</Green>{" "}
-            <Green>DEF</Green> and a <Green b>6%</Green> <Green>Geo DMG Bonus</Green>.
+            Curiosity can stack up to <Rose>4</Rose> times, each providing <Green b>6%</Green> <Green>DEF</Green> and a{" "}
+            <Green b>6%</Green> <Green>Geo DMG Bonus</Green>.
           </>,
         ],
       },
@@ -361,16 +358,14 @@ const inazumaSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When the character equipping this artifact set heals a character in the party, a
-            Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from
-            healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will
-            explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This
-            DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but
-            it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses).
-            Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can
-            accumulate up to 30,000 HP (including overflow healing). There can be no more than one
-            Sea-Dyed Foam active at any given time. This effect can still be triggered even when the
-            character who is using this artifact set is not on the field.
+            When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear
+            for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end
+            of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the
+            accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and
+            Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only
+            one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP
+            (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This
+            effect can still be triggered even when the character who is using this artifact set is not on the field.
           </>
         ),
       },

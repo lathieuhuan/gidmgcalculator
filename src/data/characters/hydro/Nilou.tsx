@@ -67,7 +67,7 @@ const Nilou: DataCharacter = {
         {
           name: "Watery Moon DMG",
           multFactors: 7.17,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 65]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct_", [false, 1], 65]),
         },
         { name: "Whirling Steps 1-Hit DMG", multFactors: 3.26 },
         { name: "Whirling Steps 2-Hit DMG", multFactors: 3.96 },
@@ -100,26 +100,24 @@ const Nilou: DataCharacter = {
       get desc() {
         return (
           <>
-            When all characters in the party are either Dendro or Hydro, and there is at least one
-            Dendro and Hydro character, the flowery steps of Nilou's Dance of Haftkarsvar will grant
-            all nearby characters the Golden Chalice's Bounty for 30s.
+            When all characters in the party are either Dendro or Hydro, and there is at least one Dendro and Hydro
+            character, the flowery steps of Nilou's Dance of Haftkarsvar will grant all nearby characters the Golden
+            Chalice's Bounty for 30s.
             <br />
             {this.xtraDesc![0]}
             <br />
             Such Cores will burst very quickly after being created, and they have larger AoEs.
             <br />
-            Bountiful Cores cannot trigger Hyperbloom or Burgeon, and they share a upper numerical
-            limit with Dendro Cores. Bountiful Core DMG is considered DMG dealt by Dendro Cores
-            produced by Bloom.
+            Bountiful Cores cannot trigger Hyperbloom or Burgeon, and they share a upper numerical limit with Dendro
+            Cores. Bountiful Core DMG is considered DMG dealt by Dendro Cores produced by Bloom.
           </>
         );
       },
       xtraDesc: [
         <>
-          Characters under the effect of Golden Chalice's Bounty will have their{" "}
-          <Green>Elemental Mastery</Green> increased by <Green b>100</Green> for 10s whenever they
-          are hit by Dendro attacks. Also, triggering the Bloom reaction will create Bountiful Cores
-          instead of Dendro Cores.
+          Characters under the effect of Golden Chalice's Bounty will have their <Green>Elemental Mastery</Green>{" "}
+          increased by <Green b>100</Green> for 10s whenever they are hit by Dendro attacks. Also, triggering the Bloom
+          reaction will create Bountiful Cores instead of Dendro Cores.
         </>,
       ],
     },
@@ -129,8 +127,8 @@ const Nilou: DataCharacter = {
       desc: (
         <>
           Each 1,000 points of Max HP above 30,000 will cause the <Green>DMG</Green> dealt by{" "}
-          <Green>Bountiful Cores</Green> created by characters affected by Golden Chalice's Bounty
-          to increase by <Green b>9%</Green>.
+          <Green>Bountiful Cores</Green> created by characters affected by Golden Chalice's Bounty to increase by{" "}
+          <Green b>9%</Green>.
           <br />
           The <Green>maximum</Green> increase in Bountiful Core DMG that can be achieved this way is{" "}
           <Green b>400%</Green>.
@@ -172,12 +170,12 @@ const Nilou: DataCharacter = {
       },
       xtraDesc: [
         <>
-          After characters affected by the Golden Chalice's Bounty deal Hydro DMG to opponents, that
-          opponent's <Green>Hydro RES</Green> will be decreased by <Green b>35%</Green> for 10s.
+          After characters affected by the Golden Chalice's Bounty deal Hydro DMG to opponents, that opponent's{" "}
+          <Green>Hydro RES</Green> will be decreased by <Green b>35%</Green> for 10s.
         </>,
         <>
-          After a triggered Bloom reaction deals DMG to opponents, their <Green>Dendro RES</Green>{" "}
-          will be decreased by <Green b>35%</Green> for 10s.
+          After a triggered Bloom reaction deals DMG to opponents, their <Green>Dendro RES</Green> will be decreased by{" "}
+          <Green b>35%</Green> for 10s.
         </>,
       ],
     },
@@ -188,15 +186,15 @@ const Nilou: DataCharacter = {
       get desc() {
         return (
           <>
-            After the third dance step of Dance of Haftkarsvar' Pirouette hits opponents, Nilou will
-            gain 15 Elemental Energy, and {this.xtraDesc![0]}
+            After the third dance step of Dance of Haftkarsvar' Pirouette hits opponents, Nilou will gain 15 Elemental
+            Energy, and {this.xtraDesc![0]}
           </>
         );
       },
       xtraDesc: [
         <>
-          Dance of the Lotus: Distant Dreams, Listening Spring <Green>[EB] DMG</Green> will be
-          increased by <Green b>50%</Green> for 8s.
+          Dance of the Lotus: Distant Dreams, Listening Spring <Green>[EB] DMG</Green> will be increased by{" "}
+          <Green b>50%</Green> for 8s.
         </>,
       ],
     },
@@ -206,9 +204,8 @@ const Nilou: DataCharacter = {
       image: "9/93/Constellation_Frostbreaker%27s_Melody",
       desc: (
         <>
-          For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> is increased by{" "}
-          <Green b>0.6%</Green> (max <Rose>30%</Rose>) and her <Green>CRIT DMG</Green> is increase
-          by <Green b>1.2%</Green> (max <Rose>60%</Rose>).
+          For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> is increased by <Green b>0.6%</Green> (max{" "}
+          <Rose>30%</Rose>) and her <Green>CRIT DMG</Green> is increase by <Green b>1.2%</Green> (max <Rose>60%</Rose>).
         </>
       ),
     },
@@ -237,12 +234,10 @@ const Nilou: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: ({ toSelf, totalAttr, inputs }) => (
         <>
-          Increases characters' <Green>Elemental Mastery</Green> by <Green b>100</Green> for 10s
-          whenever they are hit by Dendro attacks. Also, triggering Bloom reaction will create
-          Bountiful Cores instead of Dendro Cores.
-          <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green>{" "}
-          above 30,000 will cause <Green>Bountiful Cores DMG</Green> to increase by{" "}
-          <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
+          Increases characters' <Green>Elemental Mastery</Green> by <Green b>100</Green> for 10s whenever they are hit
+          by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
+          <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green> above 30,000 will cause{" "}
+          <Green>Bountiful Cores DMG</Green> to increase by <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
           <Red>DMG bonus: {getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
         </>
       ),
@@ -263,7 +258,7 @@ const Nilou: DataCharacter = {
       applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, char, desc, tracker }) => {
         if (toSelf ? checkAscs[4](char) : inputs[0]) {
           const buffValue = getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0]);
-          applyModifier(desc, rxnBonus, "bloom.pct", buffValue, tracker);
+          applyModifier(desc, rxnBonus, "bloom.pct_", buffValue, tracker);
         }
       },
     },
@@ -272,12 +267,9 @@ const Nilou: DataCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       desc: () => (
-        <>
-          After the third dance step of Pirouette state [~ES] hits opponents,{" "}
-          {Nilou.constellation[3].xtraDesc?.[0]}
-        </>
+        <>After the third dance step of Pirouette state [~ES] hits opponents, {Nilou.constellation[3].xtraDesc?.[0]}</>
       ),
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 50),
+      applyBuff: makeModApplier("attPattBonus", "EB.pct_", 50),
     },
   ],
   debuffs: [

@@ -16,9 +16,7 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
 }
 
 export const getImgSrc = (src: string) => {
-  return src.split("/")[0].length === 1
-    ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png`
-    : src;
+  return src.split("/")[0].length === 1 ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png` : src;
 };
 
 export const getSearchParam = (key: string) => {
@@ -67,15 +65,11 @@ export const round = (n: number, x: number) => {
   return Math.round(n * pow) / pow;
 };
 
-export const applyPercent = (n: number, pct: number) => Math.round((n * pct) / 100);
+export const applyPercent = (n: number, percent: number) => Math.round((n * percent) / 100);
 
 export const toMult = (n: number) => 1 + n / 100;
 
-export const genNumberSequenceOptions = (
-  max: number | undefined = 0,
-  startsAt0: boolean = false,
-  min: number = 1
-) => {
+export const genNumberSequenceOptions = (max: number | undefined = 0, startsAt0: boolean = false, min: number = 1) => {
   const result = [...Array(max)].map((_, i) => {
     const value = i + min;
     return { label: value, value };

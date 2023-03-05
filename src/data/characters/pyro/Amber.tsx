@@ -119,12 +119,11 @@ const Amber: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases Baron Bunny <Green>[ES] DMG</Green> via manual detonation by{" "}
-          <Green b>200%</Green>.
+          Increases Baron Bunny <Green>[ES] DMG</Green> via manual detonation by <Green b>200%</Green>.
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("attPattBonus", "ES.pct", 200),
+      applyBuff: makeModApplier("attPattBonus", "ES.pct_", 200),
     },
     {
       index: 3,
@@ -132,8 +131,8 @@ const Amber: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and{" "}
-          <Green>ATK</Green> by <Green b>15%</Green> for 10s.
+          Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and <Green>ATK</Green> by{" "}
+          <Green b>15%</Green> for 10s.
         </>
       ),
       isGranted: checkCons[6],

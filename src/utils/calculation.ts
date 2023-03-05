@@ -192,12 +192,7 @@ export function applyModifier(
   });
 }
 
-export type RecipientName =
-  | "totalAttr"
-  | "attPattBonus"
-  | "attElmtBonus"
-  | "rxnBonus"
-  | "resistReduct";
+export type RecipientName = "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus" | "resistReduct";
 
 interface ModApplierArgs {
   totalAttr: TotalAttribute;
@@ -233,11 +228,7 @@ export function makeModApplier(
   rootValue: RootValue
 ): (args: any) => void;
 
-export function makeModApplier(
-  recipientName: RecipientName,
-  keys: ModRecipientKey,
-  rootValue: RootValue
-) {
+export function makeModApplier(recipientName: RecipientName, keys: ModRecipientKey, rootValue: RootValue) {
   return (args: ModApplierArgs) => {
     const recipient = (args as any)[recipientName];
     if (recipient) {
@@ -257,9 +248,8 @@ export function getRxnBonusesFromEM(EM = 0) {
 
 export function getAmplifyingMultiplier(elmt: AttackElement, rxnBonus: ReactionBonus) {
   return {
-    melt: (1 + rxnBonus.melt.pct / 100) * (elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1),
-    vaporize:
-      (1 + rxnBonus.vaporize.pct / 100) * (elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1),
+    melt: (1 + rxnBonus.melt.pct_ / 100) * (elmt === "pyro" ? 2 : elmt === "cryo" ? 1.5 : 1),
+    vaporize: (1 + rxnBonus.vaporize.pct_ / 100) * (elmt === "pyro" ? 1.5 : elmt === "hydro" ? 2 : 1),
   };
 }
 
@@ -267,7 +257,7 @@ export function getQuickenBuffDamage(charLv: Level, rxnBonus: ReactionBonus) {
   const base = BASE_REACTION_DAMAGE[bareLv(charLv)];
 
   return {
-    aggravate: Math.round(base * 1.15 * (1 + rxnBonus.aggravate.pct / 100)),
-    spread: Math.round(base * 1.25 * (1 + rxnBonus.spread.pct / 100)),
+    aggravate: Math.round(base * 1.15 * (1 + rxnBonus.aggravate.pct_ / 100)),
+    spread: Math.round(base * 1.25 * (1 + rxnBonus.spread.pct_ / 100)),
   };
 }

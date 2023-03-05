@@ -19,8 +19,8 @@ const goldClaymores: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]}. {this.extra?.[1]}. The 2 aforementioned effects can be triggered even
-            when the character is not on the field. {this.extra?.[2]}
+            {this.extra?.[0]}. {this.extra?.[1]}. The 2 aforementioned effects can be triggered even when the character
+            is not on the field. {this.extra?.[2]}
           </>
         );
       },
@@ -30,12 +30,11 @@ const goldClaymores: DataWeapon[] = [
           <Green b>{15 + refi * 5}%</Green> for 8s.
         </>,
         <>
-          After you take DMG, your <Green>ATK</Green> will be increased by{" "}
-          <Green b>{15 + refi * 5}%</Green> for 8s.
+          After you take DMG, your <Green>ATK</Green> will be increased by <Green b>{15 + refi * 5}%</Green> for 8s.
         </>,
         <>
-          When not protected by a shield, your character's <Green>Max HP</Green> will be increased
-          by <Green b>{24 + refi * 8}%</Green>.
+          When not protected by a shield, your character's <Green>Max HP</Green> will be increased by{" "}
+          <Green b>{24 + refi * 8}%</Green>.
         </>,
       ],
     }),
@@ -72,22 +71,20 @@ const goldClaymores: DataWeapon[] = [
       get core() {
         return (
           <>
-            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
-            <Green>ATK</Green> by <Green b>{12 + refi * 4}%</Green>, and when Normal or Charged
-            Attacks hit opponents, the character gains a Sigil of Whispers. This effect can be
-            triggered once every 0.3s. When you possess four Sigils of Whispers, all of them will be
-            consumed and all nearby party members will obtain the "Millennial Movement: Banner-Hymn"
-            effect for 12s. {this.extra?.[0]} Of the many effects of the "Millennial Movement",
-            buffs of the same type will not stack.
+            A part of the "Millennial Movement" that wanders amidst the winds. Increases <Green>ATK</Green> by{" "}
+            <Green b>{12 + refi * 4}%</Green>, and when Normal or Charged Attacks hit opponents, the character gains a
+            Sigil of Whispers. This effect can be triggered once every 0.3s. When you possess four Sigils of Whispers,
+            all of them will be consumed and all nearby party members will obtain the "Millennial Movement: Banner-Hymn"
+            effect for 12s. {this.extra?.[0]} Of the many effects of the "Millennial Movement", buffs of the same type
+            will not stack.
           </>
         );
       },
       extra: [
         <>
-          "Millennial Movement: Banner-Hymn" increases <Green>Normal ATK SPD</Green> by{" "}
-          <Green b>{9 + refi * 3}%</Green> and increases <Green>ATK</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>. Once this effect is triggered, you will not gain Sigils
-          of Whispers for 20s.
+          "Millennial Movement: Banner-Hymn" increases <Green>Normal ATK SPD</Green> by <Green b>{9 + refi * 3}%</Green>{" "}
+          and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>. Once this effect is triggered, you will
+          not gain Sigils of Whispers for 20s.
         </>,
       ],
     }),
@@ -112,14 +109,13 @@ const goldClaymores: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>all DMG</Green> by <Green b>{6 + refi * 2}%</Green>. After using an
-          Elemental Burst, Normal or Charged Attack, on hit, creates a vacuum blade that does{" "}
-          {60 + refi * 20}% of ATK as DMG to opponents along its path. Lasts for 20s or 8 vacuum
-          blades.
+          Increases <Green>all DMG</Green> by <Green b>{6 + refi * 2}%</Green>. After using an Elemental Burst, Normal
+          or Charged Attack, on hit, creates a vacuum blade that does {60 + refi * 20}% of ATK as DMG to opponents along
+          its path. Lasts for 20s or 8 vacuum blades.
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 8),
+    applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 8),
   },
   {
     code: 55,
@@ -148,9 +144,8 @@ const goldClaymores: DataWeapon[] = [
       },
       extra: [
         <>
-          On hit, attacks against opponents with less than 30% HP increase all party members'{" "}
-          <Green>ATK</Green> by <Green b>{30 + refi * 10}%</Green> for 12s. Can only occur once
-          every 30s.
+          On hit, attacks against opponents with less than 30% HP increase all party members' <Green>ATK</Green> by{" "}
+          <Green b>{30 + refi * 10}%</Green> for 12s. Can only occur once every 30s.
         </>,
       ],
     }),
@@ -176,8 +171,8 @@ const goldClaymores: DataWeapon[] = [
       core: (
         <>
           <Green>DEF</Green> is increased by <Green b>{21 + refi * 7}%</Green>.{" "}
-          <Green>Normal and Charged Attack DMG</Green> is increased by{" "}
-          <Green b>{30 + refi * 10}%</Green> of <Green>DEF</Green>.
+          <Green>Normal and Charged Attack DMG</Green> is increased by <Green b>{30 + refi * 10}%</Green> of{" "}
+          <Green>DEF</Green>.
         </>
       ),
     }),

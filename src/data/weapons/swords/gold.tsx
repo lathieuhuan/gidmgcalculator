@@ -7,11 +7,7 @@ import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const mistsplitterBuffValuesByStack = (refi: number) => [
-  6 + refi * 2,
-  12 + refi * 4,
-  21 + refi * 7,
-];
+const mistsplitterBuffValuesByStack = (refi: number) => [6 + refi * 2, 12 + refi * 4, 21 + refi * 7];
 
 const goldSwords: DataWeapon[] = [
   {
@@ -26,17 +22,16 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>CRIT Rate</Green> is increased by <Green b>{3 + refi}%</Green>. {this.extra?.[0]}{" "}
-            You can obtain Foliar Incision once every 12s.
+            <Green>CRIT Rate</Green> is increased by <Green b>{3 + refi}%</Green>. {this.extra?.[0]} You can obtain
+            Foliar Incision once every 12s.
           </>
         );
       },
       extra: [
         <>
-          When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained,
-          increasing <Green>Normal Attack and Elemental Skill DMG</Green> by{" "}
-          <Green b>{90 + refi * 30}%</Green> of <Green>Elemental Mastery</Green>. This effect will
-          disappear after <Rose>28</Rose> DMG instances or 12s.
+          When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained, increasing{" "}
+          <Green>Normal Attack and Elemental Skill DMG</Green> by <Green b>{90 + refi * 30}%</Green> of{" "}
+          <Green>Elemental Mastery</Green>. This effect will disappear after <Rose>28</Rose> DMG instances or 12s.
         </>,
       ],
     }),
@@ -65,23 +60,20 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. {this.extra![0]}{" "}
-            {this.extra![1]}
+            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. {this.extra![0]} {this.extra![1]}
           </>
         );
       },
       extra: [
         <>
-          When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This
-          effect increases the equipping character's <Green>Elemental Mastery</Green> by{" "}
-          <Green b>{(9 + refi * 3) / 100}%</Green> of their <Green>Max HP</Green>. This effect can
-          trigger once every 0.3s. Max <Rose>3</Rose> stacks.
+          When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This effect increases the
+          equipping character's <Green>Elemental Mastery</Green> by <Green b>{(9 + refi * 3) / 100}%</Green> of their{" "}
+          <Green>Max HP</Green>. This effect can trigger once every 0.3s. Max <Rose>3</Rose> stacks.
         </>,
         <>
-          When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed,
-          the <Green>Elemental Mastery</Green> of all nearby party members will be increased by{" "}
-          <Green b>{(15 + refi * 5) / 100}%</Green> of the equipping character's{" "}
-          <Green>Max HP</Green> for 20s.
+          When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed, the{" "}
+          <Green>Elemental Mastery</Green> of all nearby party members will be increased by{" "}
+          <Green b>{(15 + refi * 5) / 100}%</Green> of the equipping character's <Green>Max HP</Green> for 20s.
         </>,
       ],
     }),
@@ -137,18 +129,18 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            Obtain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. When
-            other nearby party members use Elemental Skills, the character equipping this weapon
-            will gain 1 Wavespike stack. Max <Rose>2</Rose> stacks. This effect can be triggered
-            once every 0.3s. When the character equipping this weapon uses an Elemental Skill, all
-            stacks of Wavespike will be consumed to gain Ripping Upheaval. {this.extra}
+            Obtain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. When other nearby party
+            members use Elemental Skills, the character equipping this weapon will gain 1 Wavespike stack. Max{" "}
+            <Rose>2</Rose> stacks. This effect can be triggered once every 0.3s. When the character equipping this
+            weapon uses an Elemental Skill, all stacks of Wavespike will be consumed to gain Ripping Upheaval.{" "}
+            {this.extra}
           </>
         );
       },
       extra: [
         <>
-          <Green>Each stack</Green> of Wavepike consumed will increase{" "}
-          <Green>Normal Attack DMG</Green> by <Green b>{15 + refi * 5}%</Green> for 8s.
+          <Green>Each stack</Green> of Wavepike consumed will increase <Green>Normal Attack DMG</Green> by{" "}
+          <Green b>{15 + refi * 5}%</Green> for 8s.
         </>,
       ],
     }),
@@ -166,7 +158,7 @@ const goldSwords: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (15 + refi * 5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
         },
       },
     ],
@@ -183,22 +175,21 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            Gain a <Green b>{9 + refi * 3}%</Green> <Green>Elemental DMG Bonus</Green> for every
-            element and receive the might of Mistsplitter's Emblem. {this.extra}
+            Gain a <Green b>{9 + refi * 3}%</Green> <Green>Elemental DMG Bonus</Green> for every element and receive the
+            might of Mistsplitter's Emblem. {this.extra}
           </>
         );
       },
       extra: [
         <>
           At stack levels 1/2/3, Mistsplitter's Emblem provides a{" "}
-          <Green b>{mistsplitterBuffValuesByStack(refi).join("/")}%</Green> Elemental DMG Bonus for
-          the <Green>character's Elemental Type</Green>.
+          <Green b>{mistsplitterBuffValuesByStack(refi).join("/")}%</Green> Elemental DMG Bonus for the{" "}
+          <Green>character's Elemental Type</Green>.
         </>,
         <>
-          The character will obtain 1 stack of Mistsplitter's Emblem in each of the following
-          scenarios: Normal Attack deals Elemental DMG (stack lasts 5s), casting Elemental Burst
-          (stack lasts 10s); Energy is less than 100% (stack disappears when Energy is full). Each
-          stack's duration is calculated independently.
+          The character will obtain 1 stack of Mistsplitter's Emblem in each of the following scenarios: Normal Attack
+          deals Elemental DMG (stack lasts 5s), casting Elemental Burst (stack lasts 10s); Energy is less than 100%
+          (stack disappears when Energy is full). Each stack's duration is calculated independently.
         </>,
       ],
     }),
@@ -233,12 +224,10 @@ const goldSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green>. Triggers on taking
-          DMG: the soul of the Falcon of the West awakens, holding the banner of the resistance
-          aloft, regenerating HP equal to {85 + refi * 15}% of ATK and dealing{" "}
-          <Green b>{160 + refi * 40}%</Green>
-          of <Green>ATK</Green> as DMG to surrounding opponents. This effect can only occur once
-          every 15s.
+          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green>. Triggers on taking DMG: the soul of the
+          Falcon of the West awakens, holding the banner of the resistance aloft, regenerating HP equal to{" "}
+          {85 + refi * 15}% of ATK and dealing <Green b>{160 + refi * 40}%</Green>
+          of <Green>ATK</Green> as DMG to surrounding opponents. This effect can only occur once every 15s.
         </>
       ),
     }),
@@ -256,16 +245,15 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>Crit Rate</Green> increased by <Green b>{3 + refi}%</Green>. And Normal and
-            Charged hits deal additional DMG equal to {15 + refi * 5}% of ATK. Skypiercing Might
-            lasts for 12s. {this.extra}
+            <Green>Crit Rate</Green> increased by <Green b>{3 + refi}%</Green>. And Normal and Charged hits deal
+            additional DMG equal to {15 + refi * 5}% of ATK. Skypiercing Might lasts for 12s. {this.extra}
           </>
         );
       },
       extra: [
         <>
-          Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and{" "}
-          <Green>ATK SPD</Green> by <Green b>10%</Green>.
+          Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and <Green>ATK SPD</Green> by{" "}
+          <Green b>10%</Green>.
         </>,
       ],
     }),
@@ -293,27 +281,24 @@ const goldSwords: DataWeapon[] = [
       get core() {
         return (
           <>
-            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
-            <Green>DMG</Green> by <Green b>{7.5 + refi * 2.5}%</Green>. When triggering Elemental
-            Reactions, the character gains a Sigil of Rebellion. This effect can be triggered once
-            every 0.5s. When you possess 2 Sigils of Rebellion, all of them will be consumed and all
-            nearby party members will obtain the "Millennial Movement: Song of Resistance" effect
-            for 12s. {this.extra![0]} Of the many effects of the "Millennial Movement", buffs of the
-            same type will not stack.
+            A part of the "Millennial Movement" that wanders amidst the winds. Increases <Green>DMG</Green> by{" "}
+            <Green b>{7.5 + refi * 2.5}%</Green>. When triggering Elemental Reactions, the character gains a Sigil of
+            Rebellion. This effect can be triggered once every 0.5s. When you possess 2 Sigils of Rebellion, all of them
+            will be consumed and all nearby party members will obtain the "Millennial Movement: Song of Resistance"
+            effect for 12s. {this.extra![0]} Of the many effects of the "Millennial Movement", buffs of the same type
+            will not stack.
           </>
         );
       },
       extra: [
         <>
-          "Millennial Movement: Song of Resistance" increases{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
-          <Green b>{12 + refi * 4}%</Green> and increases <Green>ATK</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>. Once this effect is triggered, you will not gain Sigils
-          of Rebellion for 20s.
+          "Millennial Movement: Song of Resistance" increases <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
+          <Green b>{12 + refi * 4}%</Green> and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>. Once
+          this effect is triggered, you will not gain Sigils of Rebellion for 20s.
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct", 10),
+    applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 10),
     buffs: [
       {
         index: 0,
@@ -352,9 +337,9 @@ const goldSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides
-          an <Green>ATK Bonus</Green> based on <Green b>{(9 + refi * 3) / 10}%</Green> of the
-          wielder's <Green>Max HP</Green>.
+          <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides an{" "}
+          <Green>ATK Bonus</Green> based on <Green b>{(9 + refi * 3) / 10}%</Green> of the wielder's{" "}
+          <Green>Max HP</Green>.
         </>
       ),
     }),

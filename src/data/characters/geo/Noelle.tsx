@@ -88,7 +88,7 @@ const Noelle: DataCharacter = {
           name: "ATK Bonus",
           notAttack: "other",
           multFactors: { root: 40, attributeType: "def" },
-          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult", [false, 6], 50]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[6](char), "mult_", [false, 6], 50]),
         },
       ],
       // getExtraStats: () => [
@@ -120,7 +120,7 @@ const Noelle: DataCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: makeModApplier("attPattBonus", "CA.pct", 15),
+      applyBuff: makeModApplier("attPattBonus", "CA.pct_", 15),
     },
   ],
   buffs: [
@@ -131,8 +131,8 @@ const Noelle: DataCharacter = {
       desc: () => (
         <>
           • Grants Noelle a <Geo>Geo Infusion</Geo> that cannot be overridden.
-          <br />• Increases Noelle's <Green>ATK</Green> based on her <Green>DEF</Green>. At{" "}
-          <Lightgold>C6</Lightgold>, the multipler bonus is increased by <Green b>50%</Green>.
+          <br />• Increases Noelle's <Green>ATK</Green> based on her <Green>DEF</Green>. At <Lightgold>C6</Lightgold>,
+          the multipler bonus is increased by <Green b>50%</Green>.
         </>
       ),
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {

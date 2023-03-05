@@ -67,7 +67,7 @@ const Wanderer: DataCharacter = {
           multFactors: { root: 35, scale: 0 },
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const ESisInUse = charModIsInUse(Wanderer.buffs || [], char, selfBuffCtrls, 0);
-            return talentBuff([ESisInUse && checkCons[1](char), "mult", [true, 4], 25]);
+            return talentBuff([ESisInUse && checkCons[1](char), "mult_", [true, 4], 25]);
           },
         },
       ],
@@ -96,8 +96,8 @@ const Wanderer: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} <br />• Electro: When Normal and Charged Attacks hit opponents, 0.8
-            Energy will be restored. Energy can be restored in this manner every 0.2s.
+            {this.xtraDesc?.[0]} <br />• Electro: When Normal and Charged Attacks hit opponents, 0.8 Energy will be
+            restored. Energy can be restored in this manner every 0.2s.
             <br />
             {this.xtraDesc?.[1]}
           </>
@@ -105,8 +105,8 @@ const Wanderer: DataCharacter = {
       },
       xtraDesc: [
         <>
-          If Hanega: Song of the Wind [ES] comes into contact with Hydro/Pyro/Cryo/Electro, the
-          Windfavored state will obtain buffs:
+          If Hanega: Song of the Wind [ES] comes into contact with Hydro/Pyro/Cryo/Electro, the Windfavored state will
+          obtain buffs:
           <br />• Hydro: <Green>Kuugoryoku Point cap</Green> increases by <Green b>20</Green>.
           <br />• Pyro: <Green>ATK</Green> increases by <Green b>30%</Green>.
           <br />• Cryo: <Green>CRIT Rate</Green> increases by <Green b>20%</Green>.
@@ -119,16 +119,14 @@ const Wanderer: DataCharacter = {
       image: "4/4f/Talent_Gales_of_Reverie",
       desc: (
         <>
-          When The Wanderer hits opponents with Normal and Charged Attacks in his Windfavored state
-          [~ES], he has a 16% chance to obtain the Descent effect: The next time The Wanderer
-          sprints while in this instance of the Windfavored state, this effect will be removed, this
-          sprint instance will not consume any Kuugoryoku Points, and he will fire off{" "}
-          <Green b>4</Green> wind arrows that deal <Green b>35%</Green> of his <Green>ATK</Green> as{" "}
-          <Anemo>Anemo DMG</Anemo> each.
+          When The Wanderer hits opponents with Normal and Charged Attacks in his Windfavored state [~ES], he has a 16%
+          chance to obtain the Descent effect: The next time The Wanderer sprints while in this instance of the
+          Windfavored state, this effect will be removed, this sprint instance will not consume any Kuugoryoku Points,
+          and he will fire off <Green b>4</Green> wind arrows that deal <Green b>35%</Green> of his <Green>ATK</Green>{" "}
+          as <Anemo>Anemo DMG</Anemo> each.
           <br />
-          For each Normal and Charged Attack that does not produce this effect, the next attack of
-          those kinds will have a 12% increase chance of producing it. The calculation of the effect
-          production is done once every 0.1s.
+          For each Normal and Charged Attack that does not produce this effect, the next attack of those kinds will have
+          a 12% increase chance of producing it. The calculation of the effect production is done once every 0.1s.
         </>
       ),
     },
@@ -144,11 +142,11 @@ const Wanderer: DataCharacter = {
       image: "c/c9/Constellation_Shoban_Ostentatious_Plumage",
       desc: (
         <>
-          When in the Windfavored State [~ES], The Wanderer's{" "}
-          <Green>Normal and Charged Attack SPD</Green> is increased by <Green b>10%</Green>.
+          When in the Windfavored State [~ES], The Wanderer's <Green>Normal and Charged Attack SPD</Green> is increased
+          by <Green b>10%</Green>.
           <br />
-          Additionally, the wind arrows fired by the Passive Talent “Gales of Reverie”{" "}
-          <Green>[A4]</Green> will deal <Green b>25%</Green> <Green>additional ATK</Green> as DMG.
+          Additionally, the wind arrows fired by the Passive Talent “Gales of Reverie” <Green>[A4]</Green> will deal{" "}
+          <Green b>25%</Green> <Green>additional ATK</Green> as DMG.
         </>
       ),
     },
@@ -157,10 +155,10 @@ const Wanderer: DataCharacter = {
       image: "4/4a/Constellation_Niban_Moonlit_Isle_Amidst_White_Waves",
       desc: (
         <>
-          When in the Windfavored State [~ES], Kyougen: Five Ceremonial Plays{" "}
-          <Green>[EB] DMG</Green> will be increased by <Green b>4%</Green> per point of{" "}
-          <Green>difference between the max and the current amount of Kuugoryoku Points</Green> when
-          using this skill. Maximum <Rose>200%</Rose>.
+          When in the Windfavored State [~ES], Kyougen: Five Ceremonial Plays <Green>[EB] DMG</Green> will be increased
+          by <Green b>4%</Green> per point of{" "}
+          <Green>difference between the max and the current amount of Kuugoryoku Points</Green> when using this skill.
+          Maximum <Rose>200%</Rose>.
         </>
       ),
     },
@@ -170,9 +168,9 @@ const Wanderer: DataCharacter = {
       image: "7/77/Constellation_Yonban_Set_Adrift_into_Spring",
       desc: (
         <>
-          When casting Hanega: Song of the Wind [ES], should the Passive Talent “Jade-Claimed
-          Flower” [A1] be triggered, the character will gain enhancement effects in correspondence
-          to the contacted Elemental Type(s), and also gain a random untriggered enhancement effect.
+          When casting Hanega: Song of the Wind [ES], should the Passive Talent “Jade-Claimed Flower” [A1] be triggered,
+          the character will gain enhancement effects in correspondence to the contacted Elemental Type(s), and also
+          gain a random untriggered enhancement effect.
         </>
       ),
     },
@@ -185,13 +183,11 @@ const Wanderer: DataCharacter = {
       image: "0/01/Constellation_Shugen_The_Curtains%27_Melancholic_Sway",
       desc: (
         <>
-          When The Wanderer actively hits opponents with Normal Attacks while in the Windfavored
-          state [~ES], the following effects will occur:
-          <br />• Deals an additional instance of Normal Attack, dealing 40% of the attack's
-          original DMG.
-          <br />• When Restores 4 Kuugoryoku Points to The Wanderer. Kuugoryoku Points can be
-          restored in this manner once every 0.2s. This restoration can occur 5 times within one
-          Windfavored duration.
+          When The Wanderer actively hits opponents with Normal Attacks while in the Windfavored state [~ES], the
+          following effects will occur:
+          <br />• Deals an additional instance of Normal Attack, dealing 40% of the attack's original DMG.
+          <br />• When Restores 4 Kuugoryoku Points to The Wanderer. Kuugoryoku Points can be restored in this manner
+          once every 0.2s. This restoration can occur 5 times within one Windfavored duration.
         </>
       ),
     },
@@ -205,18 +201,17 @@ const Wanderer: DataCharacter = {
         const { NA, CA } = getESBuffValue(char, partyData);
         return (
           <>
-            Increases <Green>Normal Attack DMG</Green> by <Green b>{round(1 + NA / 100, 3)}</Green>{" "}
-            times and <Green>Charged Attack DMG</Green> by <Green b>{round(1 + CA / 100, 3)}</Green>{" "}
-            times.
-            <br />• At <Lightgold>C1</Lightgold>, increases{" "}
-            <Green>Normal and Charged Attack SPD</Green> by <Green b>10%</Green>, increases{" "}
-            <Green>Wind Arrow DMG</Green> [~A4] by <Green b>25%</Green> of <Green>ATK</Green>.
+            Increases <Green>Normal Attack DMG</Green> by <Green b>{round(1 + NA / 100, 3)}</Green> times and{" "}
+            <Green>Charged Attack DMG</Green> by <Green b>{round(1 + CA / 100, 3)}</Green> times.
+            <br />• At <Lightgold>C1</Lightgold>, increases <Green>Normal and Charged Attack SPD</Green> by{" "}
+            <Green b>10%</Green>, increases <Green>Wind Arrow DMG</Green> [~A4] by <Green b>25%</Green> of{" "}
+            <Green>ATK</Green>.
           </>
         );
       },
       applyBuff: ({ totalAttr, attPattBonus, char, partyData, desc, tracker }) => {
         const { NA, CA } = getESBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, ["NA.specialMult", "CA.specialMult"], [NA, CA], tracker);
+        applyModifier(desc, attPattBonus, ["NA.multPlus_", "CA.multPlus_"], [NA, CA], tracker);
 
         if (checkCons[1](char)) {
           applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
@@ -285,7 +280,7 @@ const Wanderer: DataCharacter = {
       applyBuff: ({ attPattBonus, inputs, charBuffCtrls, desc, tracker }) => {
         const pointDifference = (isInfusedHydroES(charBuffCtrls) ? 120 : 100) - (inputs[0] || 0);
         const buffValue = Math.min(Math.max(pointDifference, 0) * 4, 200);
-        applyModifier(desc, attPattBonus, "EB.pct", buffValue, tracker);
+        applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
       },
     },
   ],

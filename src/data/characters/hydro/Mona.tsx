@@ -11,9 +11,7 @@ const getEBBuffValue = ({
   partyData,
   inputs,
 }: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
-  const level = toSelf
-    ? finalTalentLv({ char, dataChar: Mona, talentType: "EB", partyData })
-    : inputs[0] || 0;
+  const level = toSelf ? finalTalentLv({ char, dataChar: Mona, talentType: "EB", partyData }) : inputs[0] || 0;
   return level ? Math.min(40 + level * 2, 60) : 0;
 };
 
@@ -105,9 +103,8 @@ const Mona: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to{" "}
-          <Green b>20%</Green> of her <Green>Energy Recharge</Green> rate.{" "}
-          <Red>Hydro DMG Bonus: {getA4BuffValue(totalAttr)}%.</Red>
+          Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to <Green b>20%</Green> of her{" "}
+          <Green>Energy Recharge</Green> rate. <Red>Hydro DMG Bonus: {getA4BuffValue(totalAttr)}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],
@@ -123,13 +120,10 @@ const Mona: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: (obj) => (
         <>
-          Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG</Green> taken by
-          opponents.
+          Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG</Green> taken by opponents.
           <br />• At <Lightgold>C1</Lightgold>, increases <Green>Electro-Charged DMG</Green>,{" "}
-          <Green>Vaporize DMG</Green>, and <Green>Hydro Swirl DMG</Green> by <Green b>15%</Green>{" "}
-          for 8s.
-          <br />• At <Lightgold>C4</Lightgold>, increases <Green>CRIT Rate</Green> by{" "}
-          <Green b>15%</Green>.
+          <Green>Vaporize DMG</Green>, and <Green>Hydro Swirl DMG</Green> by <Green b>15%</Green> for 8s.
+          <br />• At <Lightgold>C4</Lightgold>, increases <Green>CRIT Rate</Green> by <Green b>15%</Green>.
         </>
       ),
       inputConfigs: [
@@ -139,11 +133,10 @@ const Mona: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, attPattBonus, rxnBonus, desc, tracker, ...rest }) => {
         const { toSelf, inputs, char } = rest;
-        applyModifier(desc, attPattBonus, "all.pct", getEBBuffValue(rest), tracker);
+        applyModifier(desc, attPattBonus, "all.pct_", getEBBuffValue(rest), tracker);
 
         if ((toSelf && checkCons[1](char)) || (!toSelf && inputs[1])) {
-          const fields: ReactionBonusPath[] = ["electroCharged.pct", "swirl.pct", "vaporize.pct"];
-          applyModifier(desc, rxnBonus, fields, 15, tracker);
+          applyModifier(desc, rxnBonus, ["electroCharged.pct_", "swirl.pct_", "vaporize.pct_"], 15, tracker);
         }
         if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
           applyModifier(desc, totalAttr, "cRate_", 15, tracker);
@@ -156,9 +149,8 @@ const Mona: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green>{" "}
-          <Green>DMG increase</Green> of her next <Green>Charged Attack</Green> per second of
-          movement (up to <Rose b>180%</Rose>) for 8s.
+          Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green> <Green>DMG increase</Green> of her next{" "}
+          <Green>Charged Attack</Green> per second of movement (up to <Rose b>180%</Rose>) for 8s.
         </>
       ),
       isGranted: checkCons[6],
@@ -169,7 +161,7 @@ const Mona: DataCharacter = {
         },
       ],
       applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.pct", 60 * (inputs[0] || 0), tracker);
+        applyModifier(desc, attPattBonus, "CA.pct_", 60 * (inputs[0] || 0), tracker);
       },
     },
   ],

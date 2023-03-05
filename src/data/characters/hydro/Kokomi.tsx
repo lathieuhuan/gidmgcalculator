@@ -4,12 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";
-import {
-  finalTalentLv,
-  applyModifier,
-  makeModApplier,
-  type AttackPatternPath,
-} from "@Src/utils/calculation";
+import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const Kokomi: DataCharacter = {
@@ -127,12 +122,12 @@ const Kokomi: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased
-          based on her <Green>Max HP</Green>.
-          <br />• At <Lightgold>A4</Lightgold>, <Green>Normal and Charged Attack DMG Bonus</Green>{" "}
-          is further increasd based on <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
-          <br />• At <Lightgold>C4</Lightgold>, Kokomi's <Green>Normal Attack SPD</Green> is
-          increased by <Green b>10%</Green>.
+          Kokomi's <Green>Normal Attack, Charged Attack and Bake-Kurage DMG</Green> are increased based on her{" "}
+          <Green>Max HP</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, <Green>Normal and Charged Attack DMG Bonus</Green> is further increasd
+          based on <Green b>15%</Green> of her <Green>Healing Bonus</Green>.
+          <br />• At <Lightgold>C4</Lightgold>, Kokomi's <Green>Normal Attack SPD</Green> is increased by{" "}
+          <Green b>10%</Green>.
         </>
       ),
       applyFinalBuff: (obj) => {
@@ -160,9 +155,8 @@ const Kokomi: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          During Nereid's Ascension, Kokomi gains a <Green b>40%</Green>{" "}
-          <Green>Hydro DMG Bonus</Green> for 4s after her Normal and Charged Attacks heal, or would
-          heal, any party member with 80% or more HP.
+          During Nereid's Ascension, Kokomi gains a <Green b>40%</Green> <Green>Hydro DMG Bonus</Green> for 4s after her
+          Normal and Charged Attacks heal, or would heal, any party member with 80% or more HP.
         </>
       ),
       isGranted: checkCons[6],

@@ -89,14 +89,13 @@ const YaeMiko: DataCharacter = {
       src: EModSrc.A4,
       desc: ({ totalAttr }) => (
         <>
-          Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase Sesshou
-          Sakura <Green>[ES] DMG</Green> by <Green b>0.15%</Green>.{" "}
-          <Red>DMG bonus: {(totalAttr.em * 15) / 100}%.</Red>
+          Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase Sesshou Sakura{" "}
+          <Green>[ES] DMG</Green> by <Green b>0.15%</Green>. <Red>DMG bonus: {(totalAttr.em * 15) / 100}%.</Red>
         </>
       ),
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct", (totalAttr.em * 15) / 100, tracker);
+        applyModifier(desc, attPattBonus, "ES.pct_", (totalAttr.em * 15) / 100, tracker);
       },
     },
   ],
@@ -107,8 +106,8 @@ const YaeMiko: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When Sesshou Sakura thunderbolt [ES] hit opponents, the <Green>Electro DMG Bonus</Green>{" "}
-          of all nearby party members is increased by <Green b>20%</Green> for 5s.
+          When Sesshou Sakura thunderbolt [ES] hit opponents, the <Green>Electro DMG Bonus</Green> of all nearby party
+          members is increased by <Green b>20%</Green> for 5s.
         </>
       ),
       isGranted: checkCons[4],
@@ -120,12 +119,11 @@ const YaeMiko: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Sesshou Sakura's attacks will ignore <Green b>60%</Green> of the opponents'{" "}
-          <Green>DEF</Green>.
+          Sesshou Sakura's attacks will ignore <Green b>60%</Green> of the opponents' <Green>DEF</Green>.
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "ES.defIgnore", 60),
+      applyBuff: makeModApplier("attPattBonus", "ES.defIgn_", 60),
     },
   ],
 };

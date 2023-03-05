@@ -107,12 +107,12 @@ const Jean: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and
-          increases the <Green>DMG</Green> dealt by <Green b>40%</Green>.
+          Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and increases the{" "}
+          <Green>DMG</Green> dealt by <Green b>40%</Green>.
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", "ES.pct", 40),
+      applyBuff: makeModApplier("attPattBonus", "ES.pct_", 40),
     },
     {
       index: 1,
@@ -120,9 +120,8 @@ const Jean: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When Jean picks up an Elemental Orb/Particle, all party members have their{" "}
-          <Green>Movement SPD</Green> and <Green>ATK SPD</Green> increased by <Green b>15%</Green>{" "}
-          for 15s.
+          When Jean picks up an Elemental Orb/Particle, all party members have their <Green>Movement SPD</Green> and{" "}
+          <Green>ATK SPD</Green> increased by <Green b>15%</Green> for 15s.
         </>
       ),
       isGranted: checkCons[2],
@@ -135,8 +134,8 @@ const Jean: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Within the field of Dandelion Breeze [EB], all opponents have their{" "}
-          <Green>Anemo RES</Green> decreased by <Green b>40%</Green>.
+          Within the field of Dandelion Breeze [EB], all opponents have their <Green>Anemo RES</Green> decreased by{" "}
+          <Green b>40%</Green>.
         </>
       ),
       isGranted: checkCons[4],

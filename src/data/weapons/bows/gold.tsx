@@ -11,11 +11,7 @@ const polarStarBuffValuesByStack = (refi: number) => [
   22.5 + refi * 7.5,
   36 + refi * 12,
 ];
-const thunderingPulseBuffValuesByStack = (refi: number) => [
-  9 + refi * 3,
-  18 + refi * 6,
-  30 + refi * 10,
-];
+const thunderingPulseBuffValuesByStack = (refi: number) => [9 + refi * 3, 18 + refi * 6, 30 + refi * 10];
 
 const goldBows: DataWeapon[] = [
   {
@@ -30,17 +26,16 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            Gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>.{" "}
-            {this.extra?.[0]} This effect will be removed after <Rose>12</Rose> Charged Attacks or
-            10s. Only 1 instance of Tireless Hunt can be gained every 12s.
+            Gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. {this.extra?.[0]} This effect
+            will be removed after <Rose>12</Rose> Charged Attacks or 10s. Only 1 instance of Tireless Hunt can be gained
+            every 12s.
           </>
         );
       },
       extra: [
         <>
-          Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This
-          effect increases <Green>Charged Attack DMG</Green> by <Green b>{120 + refi * 40}%</Green>{" "}
-          of <Green>Elemental Mastery</Green>.
+          Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This effect increases{" "}
+          <Green>Charged Attack DMG</Green> by <Green b>{120 + refi * 40}%</Green> of <Green>Elemental Mastery</Green>.
         </>,
       ],
     }),
@@ -69,15 +64,15 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>HP</Green> is increased by <Green>{12 + refi * 4}%</Green>. {this.extra?.[0]}{" "}
-            This will take effect whether the character is on-field or not.
+            <Green>HP</Green> is increased by <Green>{12 + refi * 4}%</Green>. {this.extra?.[0]} This will take effect
+            whether the character is on-field or not.
           </>
         );
       },
       extra: [
         <>
-          When there are opponents nearby, the <Green>DMG</Green> dealt by the wielder of this
-          weapon is increased by <Green b>{15 + refi * 5}%</Green>.
+          When there are opponents nearby, the <Green>DMG</Green> dealt by the wielder of this weapon is increased by{" "}
+          <Green b>{15 + refi * 5}%</Green>.
         </>,
       ],
     }),
@@ -87,7 +82,7 @@ const goldBows: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldBows, 125)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct", 20),
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 20),
       },
     ],
   },
@@ -103,9 +98,8 @@ const goldBows: DataWeapon[] = [
       core: (
         <>
           Increases <Green>CRIT DMG</Green> by <Green b>{15 + refi * 5}%</Green>. Hits have a{" "}
-          <Green b>{50 + refi * 10}%</Green> <Green>chance</Green> to inflict a small AoE attack,
-          dealing <Green>125% Physical ATK DMG</Green>. Can only occur once every{" "}
-          <Green b>{4.5 - refi * 0.5}s</Green>.
+          <Green b>{50 + refi * 10}%</Green> <Green>chance</Green> to inflict a small AoE attack, dealing{" "}
+          <Green>125% Physical ATK DMG</Green>. Can only occur once every <Green b>{4.5 - refi * 0.5}s</Green>.
         </>
       ),
     }),
@@ -124,10 +118,10 @@ const goldBows: DataWeapon[] = [
         return (
           <>
             <Green>Elemental Skill</Green> and <Green>Elemental Burst DMG</Green> increased by{" "}
-            <Green b>{9 + refi * 3}%</Green>. After a Normal Attack, Charged Attack, Elemental Skill
-            or Elemental Burst hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s.{" "}
-            {this.extra?.[0]} The stack of Ashen Nightstar created by the Normal Attack, Charged
-            Attack, Elemental Skill or Elemental Burst will be counted independently of the others.
+            <Green b>{9 + refi * 3}%</Green>. After a Normal Attack, Charged Attack, Elemental Skill or Elemental Burst
+            hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s. {this.extra?.[0]} The stack of Ashen
+            Nightstar created by the Normal Attack, Charged Attack, Elemental Skill or Elemental Burst will be counted
+            independently of the others.
           </>
         );
       },
@@ -138,7 +132,7 @@ const goldBows: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 12),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 12),
     buffs: [
       {
         index: 0,
@@ -170,11 +164,10 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            Increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> and grants the might
-            of the Thunder Emblem. {this.extra?.[0]} The character will obtain 1 stack of Thunder
-            Emblem in each of the following scenarios: Normal Attack deals DMG (stack lasts 5s),
-            casting Elemental Skill (stack lasts 10s); Energy is less than 100% (stack disappears
-            when Energy is full). Each stack's duration is calculated independently.
+            Increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> and grants the might of the Thunder
+            Emblem. {this.extra?.[0]} The character will obtain 1 stack of Thunder Emblem in each of the following
+            scenarios: Normal Attack deals DMG (stack lasts 5s), casting Elemental Skill (stack lasts 10s); Energy is
+            less than 100% (stack disappears when Energy is full). Each stack's duration is calculated independently.
           </>
         );
       },
@@ -200,7 +193,7 @@ const goldBows: DataWeapon[] = [
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const valueIndex = (inputs[0] || 0) - 1;
           const buffValue = thunderingPulseBuffValuesByStack(refi)[valueIndex];
-          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
         },
       },
     ],
@@ -217,20 +210,19 @@ const goldBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            Increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
-            <Green b>{9 + refi * 3}%</Green>. {this.extra?.[0]}
+            Increases <Green>Normal Attack and Charged Attack DMG</Green> by <Green b>{9 + refi * 3}%</Green>.{" "}
+            {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
           After a Normal or Charged Attack is fired, <Green>DMG</Green> dealt increases by a further{" "}
-          <Green b>{6 + refi * 2}%</Green> every 0.1 seconds the arrow is in the air for up to{" "}
-          <Rose>5</Rose> times.
+          <Green b>{6 + refi * 2}%</Green> every 0.1 seconds the arrow is in the air for up to <Rose>5</Rose> times.
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], 12),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 12),
     buffs: [
       {
         index: 0,
@@ -244,7 +236,7 @@ const goldBows: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
+          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
         },
       },
     ],
@@ -262,22 +254,20 @@ const goldBows: DataWeapon[] = [
         return (
           <>
             A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
-            <Green>Elemental Mastery</Green> by <Green b>{45 + refi * 15}</Green>. When Elemental
-            Skill or Elemental Burst hit opponents, the character gains a Sigil of Remembrance. This
-            effect can be triggered once every 0.2s and can be triggered even if said character is
-            not on the field. When you possess four Sigils of Remembrance, all of them will be
-            consumed and all nearby party members will obtain the "Millennial Movement: Farewell
-            Song" effect for 12s. {this.extra?.[0]} Once this effect is triggered, you will not gain
-            Sigils of Remembrance for 20s. Of the many effects of the "Millennial Movement", buffs
-            of the same type will not stack.
+            <Green>Elemental Mastery</Green> by <Green b>{45 + refi * 15}</Green>. When Elemental Skill or Elemental
+            Burst hit opponents, the character gains a Sigil of Remembrance. This effect can be triggered once every
+            0.2s and can be triggered even if said character is not on the field. When you possess four Sigils of
+            Remembrance, all of them will be consumed and all nearby party members will obtain the "Millennial Movement:
+            Farewell Song" effect for 12s. {this.extra?.[0]} Once this effect is triggered, you will not gain Sigils of
+            Remembrance for 20s. Of the many effects of the "Millennial Movement", buffs of the same type will not
+            stack.
           </>
         );
       },
       extra: [
         <>
           "Millennial Movement: Farewell Song" increases <Green>Elemental Mastery</Green> by{" "}
-          <Green b>{75 + refi * 25}</Green> and increases <Green>ATK</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>.
+          <Green b>{75 + refi * 25}</Green> and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>.
         </>,
       ],
     }),

@@ -96,8 +96,7 @@ const Ayaka: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Ayaka reappears from Senho form, she gains a <Cryo>Cryo Infusion</Cryo> for a brief
-          period.
+          When Ayaka reappears from Senho form, she gains a <Cryo>Cryo Infusion</Cryo> for a brief period.
         </>
       ),
       infuseConfig: {
@@ -110,12 +109,12 @@ const Ayaka: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          After using Kamisato Art: Hyouka [ES], Ayaka's{" "}
-          <Green>Normal and Charged attack DMG</Green> is increased by <Green b>30%</Green> for 6s.
+          After using Kamisato Art: Hyouka [ES], Ayaka's <Green>Normal and Charged attack DMG</Green> is increased by{" "}
+          <Green b>30%</Green> for 6s.
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 30),
+      applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 30),
     },
     {
       index: 2,
@@ -123,8 +122,8 @@ const Ayaka: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains{" "}
-          <Green b>18%</Green> <Green>Cryo DMG Bonus</Green> for 10s.
+          When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains <Green b>18%</Green>{" "}
+          <Green>Cryo DMG Bonus</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[4],
@@ -136,12 +135,12 @@ const Ayaka: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Ayaka gains Usurahi Butou every 10s, increasing her <Green>Charged Attack DMG</Green> by{" "}
-          <Green b>298%</Green>.
+          Ayaka gains Usurahi Butou every 10s, increasing her <Green>Charged Attack DMG</Green> by <Green b>298%</Green>
+          .
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "CA.pct", 298),
+      applyBuff: makeModApplier("attPattBonus", "CA.pct_", 298),
     },
   ],
   debuffs: [
@@ -150,8 +149,8 @@ const Ayaka: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Opponents damaged by Frostflake Seki no To [~EB] will have their <Green>DEF</Green>{" "}
-          decreased by <Green b>30%</Green> for 6s.
+          Opponents damaged by Frostflake Seki no To [~EB] will have their <Green>DEF</Green> decreased by{" "}
+          <Green b>30%</Green> for 6s.
         </>
       ),
       isGranted: checkCons[4],

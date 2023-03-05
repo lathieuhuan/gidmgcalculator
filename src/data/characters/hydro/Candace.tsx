@@ -87,8 +87,8 @@ const Candace: DataCharacter = {
       image: "3/33/Talent_Aegis_of_Crossed_Arrows",
       desc: (
         <>
-          If Candace is hit by an attack in the Hold duration of Sacred Rite: Heron's Sanctum, that
-          skill will finish charging instantly.
+          If Candace is hit by an attack in the Hold duration of Sacred Rite: Heron's Sanctum, that skill will finish
+          charging instantly.
         </>
       ),
     },
@@ -97,10 +97,9 @@ const Candace: DataCharacter = {
       image: "8/86/Talent_Celestial_Dome_of_Sand",
       desc: (
         <>
-          Characters affected by the Prayer of the Crimson Crown caused by Sacred Rite: Wagtail's
-          Tide will deal <Green b>0.5%</Green> <Green>increased DMG</Green> to opponents for every
-          1,000 points of Candace's Max HP when they deal Elemental DMG with their{" "}
-          <Green>Normal Attacks</Green>.
+          Characters affected by the Prayer of the Crimson Crown caused by Sacred Rite: Wagtail's Tide will deal{" "}
+          <Green b>0.5%</Green> <Green>increased DMG</Green> to opponents for every 1,000 points of Candace's Max HP
+          when they deal Elemental DMG with their <Green>Normal Attacks</Green>.
         </>
       ),
     },
@@ -112,8 +111,8 @@ const Candace: DataCharacter = {
       image: "1/1d/Constellation_Returning_Heiress_of_the_Scarlet_Sands",
       desc: (
         <>
-          The <Green>duration</Green> of Prayer of the Crimson Crown effect triggered by Sacred
-          Rite: Wagtail's Tide is increased by <Green b>3s</Green>.
+          The <Green>duration</Green> of Prayer of the Crimson Crown effect triggered by Sacred Rite: Wagtail's Tide is
+          increased by <Green b>3s</Green>.
         </>
       ),
     },
@@ -122,8 +121,8 @@ const Candace: DataCharacter = {
       image: "3/3b/Constellation_Moon-Piercing_Brilliance",
       desc: (
         <>
-          When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's <Green>Max HP</Green> will
-          be increased by <Green>20%</Green> for 15s.
+          When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's <Green>Max HP</Green> will be increased by{" "}
+          <Green>20%</Green> for 15s.
         </>
       ),
     },
@@ -131,12 +130,7 @@ const Candace: DataCharacter = {
     {
       name: "Sentinel Oath",
       image: "b/b7/Constellation_Sentinel_Oath",
-      desc: (
-        <>
-          Shortens the Hold CD of Sacred Rite: Heron's Guard to be the same as that of the Tapping
-          CD.
-        </>
-      ),
+      desc: <>Shortens the Hold CD of Sacred Rite: Heron's Guard to be the same as that of the Tapping CD.</>,
     },
     { name: "Golden Eye", image: "f/fc/Constellation_Heterochromatic_Gaze" },
     {
@@ -144,10 +138,9 @@ const Candace: DataCharacter = {
       image: "e/ec/Constellation_The_Overflow",
       desc: (
         <>
-          When characters (excluding Candace herself) affected by the Prayer of the Crimson Crown
-          caused by Sacred Rite: Wagtail's Tide deal Elemental DMG to opponents using normal
-          Attacks, an attack wave will be unleashed that deals AoE <Hydro>Hydro DMG</Hydro> equal to{" "}
-          <Green b>15%</Green> of Candace's <Green>Max HP</Green>. <br />
+          When characters (excluding Candace herself) affected by the Prayer of the Crimson Crown caused by Sacred Rite:
+          Wagtail's Tide deal Elemental DMG to opponents using normal Attacks, an attack wave will be unleashed that
+          deals AoE <Hydro>Hydro DMG</Hydro> equal to <Green b>15%</Green> of Candace's <Green>Max HP</Green>. <br />
           This effect can trigger once every 2.3s and is considered Elemental Burst DMG.
         </>
       ),
@@ -161,10 +154,9 @@ const Candace: DataCharacter = {
       desc: () => (
         <>
           Prayer of the Crimson Crown [~EB] has the following properties:
-          <br />• Characters deal <Green b>20%</Green> increased{" "}
-          <Green>Elemental Normal Attack DMG</Green>.
-          <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green>{" "}
-          for every 1,000 points of Candace's <Green>Max HP</Green>.
+          <br />• Characters deal <Green b>20%</Green> increased <Green>Elemental Normal Attack DMG</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green> for every 1,000
+          points of Candace's <Green>Max HP</Green>.
         </>
       ),
       inputConfigs: [
@@ -181,7 +173,7 @@ const Candace: DataCharacter = {
         if (charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
           const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs[0] || 0 : 0;
           const stacks = Math.floor(maxHP / 1000);
-          applyModifier(obj.desc, attPattBonus, "NA.pct", 20 + stacks * 0.5, obj.tracker);
+          applyModifier(obj.desc, attPattBonus, "NA.pct_", 20 + stacks * 0.5, obj.tracker);
         }
       },
     },

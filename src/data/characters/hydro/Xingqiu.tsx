@@ -106,12 +106,12 @@ const Xingqiu: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen <Green>[ES] DMG</Green>{" "}
-          is increased by <Green b>50%</Green>.
+          During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen <Green>[ES] DMG</Green> is increased by{" "}
+          <Green b>50%</Green>.
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonus", "ES.specialMult", 50),
+      applyBuff: makeModApplier("attPattBonus", "ES.multPlus_", 50),
     },
   ],
   debuffs: [
@@ -120,8 +120,7 @@ const Xingqiu: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Decreases the <Green>Hydro RES</Green> of opponents hit by sword rain attacks by{" "}
-          <Green b>15%</Green> for 4s.
+          Decreases the <Green>Hydro RES</Green> of opponents hit by sword rain attacks by <Green b>15%</Green> for 4s.
         </>
       ),
       isGranted: checkCons[2],

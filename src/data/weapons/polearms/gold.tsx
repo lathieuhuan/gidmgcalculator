@@ -27,17 +27,16 @@ const goldPolearms: DataWeapon[] = [
       get core() {
         return (
           <>
-            The equipping character gains <Green b>{39 + refi * 13}%</Green> of their{" "}
-            <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. {this.extra?.[0]}
+            The equipping character gains <Green b>{39 + refi * 13}%</Green> of their <Green>Elemental Mastery</Green>{" "}
+            as bonus <Green>ATK</Green>. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be
-          gained for 10s: the equipping character will gain <Green b>{21 + refi * 7}%</Green> of
-          their <Green>Elemental Mastery</Green> as bonus <Green>ATK</Green>. Max <Rose>3</Rose>{" "}
-          stacks.
+          When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
+          equipping character will gain <Green b>{21 + refi * 7}%</Green> of their <Green>Elemental Mastery</Green> as
+          bonus <Green>ATK</Green>. Max <Rose>3</Rose> stacks.
         </>,
       ],
     }),
@@ -80,10 +79,9 @@ const goldPolearms: DataWeapon[] = [
       core: (
         <>
           Increases <Green>CRIT Rate</Green> by <Green b>{6 + refi * 2}%</Green> and increases{" "}
-          <Green>Normal ATK SPD</Green> by <Green b>12%</Green>. Additionally, Normal and Charged
-          Attacks hits on opponents have a 50% chance to trigger a vacuum blade that deals{" "}
-          {25 + refi * 15}% of ATK as DMG in a small AoE. This effect can occur no more than once
-          every 2s.
+          <Green>Normal ATK SPD</Green> by <Green b>12%</Green>. Additionally, Normal and Charged Attacks hits on
+          opponents have a 50% chance to trigger a vacuum blade that deals {25 + refi * 15}% of ATK as DMG in a small
+          AoE. This effect can occur no more than once every 2s.
         </>
       ),
     }),
@@ -102,10 +100,9 @@ const goldPolearms: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          On hit, increases <Green>ATK</Green> by <Green b>{2.5 + refi * 0.7}%</Green> for 6s. Max{" "}
-          <Rose>7</Rose> stacks. This effect can only occur once every 0.3s. While in possession of
-          the maximum possible stacks, <Green>DMG</Green> dealt is increased by{" "}
-          <Green b>{9 + refi * 3}%</Green>.
+          On hit, increases <Green>ATK</Green> by <Green b>{2.5 + refi * 0.7}%</Green> for 6s. Max <Rose>7</Rose>{" "}
+          stacks. This effect can only occur once every 0.3s. While in possession of the maximum possible stacks,{" "}
+          <Green>DMG</Green> dealt is increased by <Green b>{9 + refi * 3}%</Green>.
         </>
       ),
     }),
@@ -126,7 +123,7 @@ const goldPolearms: DataWeapon[] = [
           applyModifier(desc, totalAttr, "atk_", round(buffValue, 1), tracker);
 
           if (stacks === 7) {
-            applyModifier(desc, attPattBonus, "all.pct", 9 + refi * 3, tracker);
+            applyModifier(desc, attPattBonus, "all.pct_", 9 + refi * 3, tracker);
           }
         },
       },
@@ -144,16 +141,14 @@ const goldPolearms: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>ATK</Green> increased by <Green b>{21 + refi * 7}%</Green> of{" "}
-            <Green>Energy Recharge</Green> over the base 100%. You can gain a maximum bonus of{" "}
-            {70 + refi * 10}% ATK. {this.extra?.[0]}
+            <Green>ATK</Green> increased by <Green b>{21 + refi * 7}%</Green> of <Green>Energy Recharge</Green> over the
+            base 100%. You can gain a maximum bonus of {70 + refi * 10}% ATK. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          Gain <Green b>{25 + refi * 5}%</Green> <Green>Energy Recharge</Green> for 12s after using
-          an Elemental Burst.
+          Gain <Green b>{25 + refi * 5}%</Green> <Green>Energy Recharge</Green> for 12s after using an Elemental Burst.
         </>,
       ],
     }),
@@ -193,16 +188,16 @@ const goldPolearms: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides
-            an <Green>ATK Bonus</Green> based on <Green b>{Math.round(6 + refi * 2) / 10}%</Green>{" "}
-            of the wielder's <Green>Max HP</Green>. {this.extra?.[0]}
+            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides an{" "}
+            <Green>ATK Bonus</Green> based on <Green b>{Math.round(6 + refi * 2) / 10}%</Green> of the wielder's{" "}
+            <Green>Max HP</Green>. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          When the wielder's HP is less than 50%, this <Green>ATK Bonus</Green> is increased by an
-          additional <Green b>{Math.round(8 + refi * 2) / 10}%</Green> of <Green>Max HP</Green>.
+          When the wielder's HP is less than 50%, this <Green>ATK Bonus</Green> is increased by an additional{" "}
+          <Green b>{Math.round(8 + refi * 2) / 10}%</Green> of <Green>Max HP</Green>.
         </>,
       ],
     }),
@@ -250,17 +245,15 @@ const goldPolearms: DataWeapon[] = [
       get core() {
         return (
           <>
-            Gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>.{" "}
-            {this.extra?.[0]}
+            Gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          Obtain Consummation for 20s after using an Elemental Skill, causing <Green>ATK</Green> to
-          increase by <Green b>{(24 + refi * 8) / 10}%</Green> per second, up to <Rose>6</Rose>{" "}
-          times. When the character equipped with this weapon is not on the field, Consummation's
-          ATK increase is <Green>doubled</Green>.
+          Obtain Consummation for 20s after using an Elemental Skill, causing <Green>ATK</Green> to increase by{" "}
+          <Green b>{(24 + refi * 8) / 10}%</Green> per second, up to <Rose>6</Rose> times. When the character equipped
+          with this weapon is not on the field, Consummation's ATK increase is <Green>doubled</Green>.
         </>,
       ],
     }),

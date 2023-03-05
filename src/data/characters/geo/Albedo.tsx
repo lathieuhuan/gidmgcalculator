@@ -57,7 +57,7 @@ const Albedo: DataCharacter = {
           multFactors: { root: 133.6, attributeType: "def" },
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const A1isInUse = charModIsInUse(Albedo.buffs!, char, selfBuffCtrls, 0);
-            return talentBuff([A1isInUse, "pct", [true, 1], 25]);
+            return talentBuff([A1isInUse, "pct_", [true, 1], 25]);
           },
         },
       ],
@@ -97,8 +97,8 @@ const Albedo: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          <Green>Transient Blossoms</Green> deal <Green b>25%</Green> <Green>more DMG</Green> to
-          opponents whose HP is below 50%.
+          <Green>Transient Blossoms</Green> deal <Green b>25%</Green> <Green>more DMG</Green> to opponents whose HP is
+          below 50%.
         </>
       ),
       isGranted: checkAscs[1],
@@ -109,8 +109,8 @@ const Albedo: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Using Rite of Progeniture: Tectonic Tide [EB] increases the{" "}
-          <Green>Elemental Mastery</Green> of nearby party members by <Green b>125</Green> for 10s.
+          Using Rite of Progeniture: Tectonic Tide [EB] increases the <Green>Elemental Mastery</Green> of nearby party
+          members by <Green b>125</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[4],
@@ -122,10 +122,9 @@ const Albedo: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture:
-          Tectonic Tide [EB] consumes all stacks, each increases Albedo's <Green>[EB] DMG</Green> by{" "}
-          <Green b>30%</Green> of his <Green>DEF</Green>. This effect stacks up to <Rose>4</Rose>{" "}
-          times.
+          Transient Blossoms grant Albedo Fatal Reckoning for 30s. Unleashing Rite of Progeniture: Tectonic Tide [EB]
+          consumes all stacks, each increases Albedo's <Green>[EB] DMG</Green> by <Green b>30%</Green> of his{" "}
+          <Green>DEF</Green>. This effect stacks up to <Rose>4</Rose> times.
         </>
       ),
       isGranted: checkCons[2],
@@ -146,12 +145,12 @@ const Albedo: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Active party members within the Solar Isotoma [ES] field have their{" "}
-          <Green>Plunging Attack DMG</Green> increased by <Green b>30%</Green>.
+          Active party members within the Solar Isotoma [ES] field have their <Green>Plunging Attack DMG</Green>{" "}
+          increased by <Green b>30%</Green>.
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonus", "PA.pct", 30),
+      applyBuff: makeModApplier("attPattBonus", "PA.pct_", 30),
     },
     {
       index: 4,
@@ -159,12 +158,12 @@ const Albedo: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Active party members within the Solar Isotoma [ES] field who are protected by a shield
-          created by Crystallize have their <Green>DMG</Green> increased by <Green b>17%</Green>.
+          Active party members within the Solar Isotoma [ES] field who are protected by a shield created by Crystallize
+          have their <Green>DMG</Green> increased by <Green b>17%</Green>.
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "all.pct", 17),
+      applyBuff: makeModApplier("attPattBonus", "all.pct_", 17),
     },
   ],
 };

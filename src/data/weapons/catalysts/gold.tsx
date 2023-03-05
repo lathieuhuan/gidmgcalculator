@@ -20,17 +20,16 @@ const goldCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} At the same time, they will regain {3.5 + refi * 0.5} Energy every
-            2.5s. This will still take effect even if the character is not on the field.
+            {this.extra?.[0]} At the same time, they will regain {3.5 + refi * 0.5} Energy every 2.5s. This will still
+            take effect even if the character is not on the field.
           </>
         );
       },
       extra: [
         <>
           When using an Elemental Burst or creating a shield, the equipping character's{" "}
-          <Green>corresponding Elemental DMG</Green> is increased by{" "}
-          <Green b>{(15 + refi * 15) / 100}%</Green> for every 1,000 Max HP they possess for 3s, up
-          to <Rose>{6 + refi * 6}%</Rose>.
+          <Green>corresponding Elemental DMG</Green> is increased by <Green b>{(15 + refi * 15) / 100}%</Green> for
+          every 1,000 Max HP they possess for 3s, up to <Rose>{6 + refi * 6}%</Rose>.
         </>,
       ],
     }),
@@ -59,20 +58,19 @@ const goldCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            <Green>Normal Attack SPD</Green> is increased by <Green b>{7.5 + refi * 2.5}%</Green>.{" "}
-            {this.extra?.[0]} The effect will be removed when the wielder leaves the field, and
-            using the Elemental Skill again will reset all DMG buffs.
+            <Green>Normal Attack SPD</Green> is increased by <Green b>{7.5 + refi * 2.5}%</Green>. {this.extra?.[0]} The
+            effect will be removed when the wielder leaves the field, and using the Elemental Skill again will reset all
+            DMG buffs.
           </>
         );
       },
       extra: [
         <>
-          After the wielder unleashes an Elemental Skill, <Green>Normal Attack DMG</Green> will
-          increase by <Green b>{(36 + refi * 12) / 10}%</Green> every second for 12s. After this
-          character hits an opponent with a Normal Attack during this duration,{" "}
-          <Green>Normal Attack DMG</Green> will be increased by{" "}
-          <Green b>{(72 + refi * 24) / 10}%</Green>. This increase can be triggered once every 0.3s.
-          Total maximum bonus is <Rose>48%</Rose>.
+          After the wielder unleashes an Elemental Skill, <Green>Normal Attack DMG</Green> will increase by{" "}
+          <Green b>{(36 + refi * 12) / 10}%</Green> every second for 12s. After this character hits an opponent with a
+          Normal Attack during this duration, <Green>Normal Attack DMG</Green> will be increased by{" "}
+          <Green b>{(72 + refi * 24) / 10}%</Green>. This increase can be triggered once every 0.3s. Total maximum bonus
+          is <Rose>48%</Rose>.
         </>,
       ],
     }),
@@ -91,7 +89,7 @@ const goldCatalysts: DataWeapon[] = [
           const valuePerStack = (36 + refi * 12) / 10;
           let buffValue = stacks * valuePerStack;
           buffValue = Math.min(buffValue, valuePerStack * 10);
-          applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
         },
       },
     ],
@@ -108,20 +106,19 @@ const goldCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            Party members other than the equipping character will provide the equipping character
-            with buffs based on whether their Elemental Type is the same as the latter or not. If
-            their Elemental Types are the same, increase <Green>Elemental Mastery</Green> by{" "}
-            <Green b>{24 + refi * 8}</Green>. If not, increase the equipping character's{" "}
-            <Green>DMG Bonus</Green> from their Elemental Type by <Green b>{6 + refi * 4}%</Green>.
-            Max <Rose>3</Rose> stacks. {this.extra?.[0]}
+            Party members other than the equipping character will provide the equipping character with buffs based on
+            whether their Elemental Type is the same as the latter or not. If their Elemental Types are the same,
+            increase <Green>Elemental Mastery</Green> by <Green b>{24 + refi * 8}</Green>. If not, increase the
+            equipping character's <Green>DMG Bonus</Green> from their Elemental Type by <Green b>{6 + refi * 4}%</Green>
+            . Max <Rose>3</Rose> stacks. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
           Additionally, all nearby party members other than the equipping character will have their{" "}
-          <Green>Elemental Mastery</Green> increased by <Green b>{38 + refi * 2}</Green>. Multiple
-          such effects from multiple such weapons can stack.
+          <Green>Elemental Mastery</Green> increased by <Green b>{38 + refi * 2}</Green>. Multiple such effects from
+          multiple such weapons can stack.
         </>,
       ],
     }),
@@ -159,11 +156,10 @@ const goldCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Gains the Kagura Dance effect when using an Elemental Skill, causing the{" "}
-          <Green>Elemental Skill DMG</Green> of the character wielding this weapon to increase by{" "}
-          <Green b>{9 + refi * 3}%</Green> for 16s. Max <Rose>3</Rose> stacks. This character will
-          gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green> when they
-          possess 3 stacks.
+          Gains the Kagura Dance effect when using an Elemental Skill, causing the <Green>Elemental Skill DMG</Green> of
+          the character wielding this weapon to increase by <Green b>{9 + refi * 3}%</Green> for 16s. Max <Rose>3</Rose>{" "}
+          stacks. This character will gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green> when
+          they possess 3 stacks.
         </>
       ),
     }),
@@ -180,7 +176,7 @@ const goldCatalysts: DataWeapon[] = [
         ],
         applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
           const stack = inputs[0] || 0;
-          applyModifier(desc, attPattBonus, "ES.pct", (9 + refi * 3) * stack, tracker);
+          applyModifier(desc, attPattBonus, "ES.pct_", (9 + refi * 3) * stack, tracker);
 
           if (stack === 3) {
             applyModifier(desc, totalAttr, [...VISION_TYPES], 9 + refi * 3, tracker);
@@ -201,10 +197,9 @@ const goldCatalysts: DataWeapon[] = [
       core: (
         <>
           <Green>Healing Bonus</Green> increased by <Green b>{7.5 + refi * 2.5}%</Green>,{" "}
-          <Green>Normal Attack DMG</Green> is increased by <Green b>{0.75 + refi * 0.25}%</Green> of
-          the <Green>Max HP</Green> of the character equipping this weapon. For 12s after using an
-          Elemental Burst, Normal Attacks that hit opponents will restore 0.6 Energy. Energy can be
-          restored this way once every 0.1s.
+          <Green>Normal Attack DMG</Green> is increased by <Green b>{0.75 + refi * 0.25}%</Green> of the{" "}
+          <Green>Max HP</Green> of the character equipping this weapon. For 12s after using an Elemental Burst, Normal
+          Attacks that hit opponents will restore 0.6 Energy. Energy can be restored this way once every 0.1s.
         </>
       ),
     }),
@@ -227,10 +222,9 @@ const goldCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Elemental DMG Bonus</Green> by <Green b>{9 + refi * 3}%</Green>. Normal
-          Attack hits have a 50% chance to earn the favor of the clouds. which actively seek out
-          nearby opponents to attack for 15s, dealing {120 + refi * 40}% ATK DMG. Can only occur
-          once every 30s.
+          Increases <Green>Elemental DMG Bonus</Green> by <Green b>{9 + refi * 3}%</Green>. Normal Attack hits have a
+          50% chance to earn the favor of the clouds. which actively seek out nearby opponents to attack for 15s,
+          dealing {120 + refi * 40}% ATK DMG. Can only occur once every 30s.
         </>
       ),
     }),
@@ -246,17 +240,12 @@ const goldCatalysts: DataWeapon[] = [
     passiveName: "Boundless Blessing",
     passiveDesc: ({ refi }) => ({
       get core() {
-        return (
-          <>
-            Increases Movement SPD by 10%. {this.extra?.[0]} Lasts until the character falls or
-            leaves combat.
-          </>
-        );
+        return <>Increases Movement SPD by 10%. {this.extra?.[0]} Lasts until the character falls or leaves combat.</>;
       },
       extra: [
         <>
-          When in battle, gain an <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> every 4s. Max <Rose>4</Rose> stacks.
+          When in battle, gain an <Green b>{6 + refi * 2}%</Green> <Green>Elemental DMG Bonus</Green> every 4s. Max{" "}
+          <Rose>4</Rose> stacks.
         </>,
       ],
     }),

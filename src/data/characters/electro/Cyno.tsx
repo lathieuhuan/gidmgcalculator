@@ -64,7 +64,7 @@ const Cyno: DataCharacter = {
           multFactors: 156.8,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const A1isInUse = charModIsInUse(Cyno.buffs!, char, selfBuffCtrls, 1);
-            return talentBuff([A1isInUse, "pct", [true, 1], 35]);
+            return talentBuff([A1isInUse, "pct_", [true, 1], 35]);
           },
         },
         {
@@ -135,8 +135,7 @@ const Cyno: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc![0]}, and firing off 3 Duststalker Bolts that deal 100% of Cyno's ATK as
-            Electro DMG.
+            {this.xtraDesc![0]}, and firing off 3 Duststalker Bolts that deal 100% of Cyno's ATK as Electro DMG.
             <br />
             Duststalker Bolt DMG is considered Elemental Skill DMG.
           </>
@@ -144,9 +143,9 @@ const Cyno: DataCharacter = {
       },
       xtraDesc: [
         <>
-          When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at
-          intervals. If he activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> whle
-          affected by this stance, its <Green>DMG</Green> will be increased by <Green b>35%</Green>
+          When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at intervals. If he
+          activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> whle affected by this stance, its{" "}
+          <Green>DMG</Green> will be increased by <Green b>35%</Green>
         </>,
       ],
     },
@@ -155,10 +154,10 @@ const Cyno: DataCharacter = {
       image: "e/ed/Talent_Authority_Over_the_Nine_Bows",
       desc: (
         <>
-          • Pactsworn Pathclearer's [EB] <Green>Normal Attack DMG</Green> is increased by{" "}
-          <Green b>150%</Green> of Cyno's <Green>Elemental Mastery</Green>.
-          <br />• <Green>Duststalker Bolt DMG</Green> [A1] is increased by <Green b>250%</Green> of
+          • Pactsworn Pathclearer's [EB] <Green>Normal Attack DMG</Green> is increased by <Green b>150%</Green> of
           Cyno's <Green>Elemental Mastery</Green>.
+          <br />• <Green>Duststalker Bolt DMG</Green> [A1] is increased by <Green b>250%</Green> of Cyno's{" "}
+          <Green>Elemental Mastery</Green>.
         </>
       ),
     },
@@ -171,9 +170,8 @@ const Cyno: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc![0]} If the Judication effect of the Ascension Talent Featherfall
-            Judgment is triggered during Secret Rite: Chasmic Soulfarer, the duration of this
-            increase will be refreshed.
+            {this.xtraDesc![0]} If the Judication effect of the Ascension Talent Featherfall Judgment is triggered
+            during Secret Rite: Chasmic Soulfarer, the duration of this increase will be refreshed.
             <br />
             You need to unlock the Passive Talent "Featherfall Judgment."
           </>
@@ -181,8 +179,8 @@ const Cyno: DataCharacter = {
       },
       xtraDesc: [
         <>
-          After using Sacred Rite: Wolf's Swiftness, Cyno's <Green>Normal Attack SPD</Green> will be
-          increased by <Green b>20%</Green> for 10s.
+          After using Sacred Rite: Wolf's Swiftness, Cyno's <Green>Normal Attack SPD</Green> will be increased by{" "}
+          <Green b>20%</Green> for 10s.
         </>,
       ],
     },
@@ -191,9 +189,8 @@ const Cyno: DataCharacter = {
       image: "c/cc/Constellation_Ceremony_Homecoming_of_Spirits",
       desc: (
         <>
-          When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will
-          increase by <Green b>10%</Green> for 4s. This effect can be triggered once every 0.1s. Max{" "}
-          <Rose>5</Rose> stacks.
+          When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will increase by{" "}
+          <Green b>10%</Green> for 4s. This effect can be triggered once every 0.1s. Max <Rose>5</Rose> stacks.
         </>
       ),
     },
@@ -203,9 +200,9 @@ const Cyno: DataCharacter = {
       image: "1/11/Constellation_Austerity_Forbidding_Guard",
       desc: (
         <>
-          When Cyno is in the Pactsworn Pathclearer state, after he triggers Electro-Charged,
-          Overloaded, Quicken, Hyperbloom, an Electro Swirl or an Electro Crystallization reaction,
-          he will restore 3 Elemental Energy for all nearby party members (except himself).
+          When Cyno is in the Pactsworn Pathclearer state, after he triggers Electro-Charged, Overloaded, Quicken,
+          Hyperbloom, an Electro Swirl or an Electro Crystallization reaction, he will restore 3 Elemental Energy for
+          all nearby party members (except himself).
           <br />
           This effect can occur 5 times within one use of Sacred Rite: Wolf's Swiftness.
         </>
@@ -220,11 +217,11 @@ const Cyno: DataCharacter = {
       image: "1/11/Constellation_Raiment_Just_Scales",
       desc: (
         <>
-          After using Sacred Rite: Wolf's Swiftness or triggering Judication, Cyno will gain{" "}
-          <Green b>4</Green> <Green>stacks</Green> of the "Day of the Jackal" effect. When he hits
-          opponents with Normal Attacks, he will consume 1 stack of "Day of the Jackal" to trigger
-          one Duststalker Bolt. Day of the Jackal lasts for 8s. Max <Rose>8</Rose> stacks. 1 stack
-          can be consumed every 0.4s. This effect will be canceled once Pactsworn Pathclearer ends.
+          After using Sacred Rite: Wolf's Swiftness or triggering Judication, Cyno will gain <Green b>4</Green>{" "}
+          <Green>stacks</Green> of the "Day of the Jackal" effect. When he hits opponents with Normal Attacks, he will
+          consume 1 stack of "Day of the Jackal" to trigger one Duststalker Bolt. Day of the Jackal lasts for 8s. Max{" "}
+          <Rose>8</Rose> stacks. 1 stack can be consumed every 0.4s. This effect will be canceled once Pactsworn
+          Pathclearer ends.
           <br />
           You must unlock the Passive Talent "Featherfall Judgment."
         </>

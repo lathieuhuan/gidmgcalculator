@@ -120,13 +120,13 @@ const Beidou: DataCharacter = {
       desc: () => (
         <>
           After unleashing Tidecaller [ES] with its maximum DMG Bonus, Beidou's{" "}
-          <Green>Normal and Charged Attacks DMG</Green> and <Green>ATK SPD</Green> are increased by{" "}
-          <Green b>15%</Green> for 10s.
+          <Green>Normal and Charged Attacks DMG</Green> and <Green>ATK SPD</Green> are increased by <Green b>15%</Green>{" "}
+          for 10s.
         </>
       ),
       isGranted: checkAscs[4],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], 15, tracker);
+        applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 15, tracker);
         applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 15, tracker);
       },
     },
@@ -137,8 +137,8 @@ const Beidou: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          During the duration of Stormbreaker [EB], the <Green>Electro RES</Green> of surrounding
-          opponents is decreased by <Green b>15%</Green>.
+          During the duration of Stormbreaker [EB], the <Green>Electro RES</Green> of surrounding opponents is decreased
+          by <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[6],

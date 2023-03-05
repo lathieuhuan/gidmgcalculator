@@ -1,28 +1,14 @@
-import type {
-  CharInfo,
-  DataCharacter,
-  GetTalentBuffFn,
-  ModifierCtrl,
-  ModifierInput,
-  PartyData,
-} from "@Src/types";
+import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierCtrl, ModifierInput, PartyData } from "@Src/types";
 import { Green, Hydro, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { MEDIUM_PAs, EModSrc } from "../constants";
 import { applyPercent } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
-import {
-  charModIsInUse,
-  checkCons,
-  findInput,
-  modIsActivated,
-  talentBuff,
-  TalentBuffConfig,
-} from "../utils";
+import { charModIsInUse, checkCons, findInput, modIsActivated, talentBuff, TalentBuffConfig } from "../utils";
 
 const C1TalentBuff = (char: CharInfo, charBuffCtrls: ModifierCtrl[]): TalentBuffConfig => {
-  return [charModIsInUse(Ayato.buffs!, char, charBuffCtrls, 3), "pct", [false, 1], 40];
+  return [charModIsInUse(Ayato.buffs!, char, charBuffCtrls, 3), "pct_", [false, 1], 40];
 };
 
 const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, totalAttr }) => {
@@ -41,15 +27,8 @@ const getESTalentBuff: GetTalentBuffFn = ({ char, partyData, selfBuffCtrls, tota
   return {};
 };
 
-const getEBBuffValue = (
-  toSelf: boolean,
-  char: CharInfo,
-  partyData: PartyData,
-  inputs: ModifierInput[]
-) => {
-  const level = toSelf
-    ? finalTalentLv({ char, dataChar: Ayato, talentType: "EB", partyData })
-    : inputs[0] || 1;
+const getEBBuffValue = (toSelf: boolean, char: CharInfo, partyData: PartyData, inputs: ModifierInput[]) => {
+  const level = toSelf ? finalTalentLv({ char, dataChar: Ayato, talentType: "EB", partyData }) : inputs[0] || 1;
   return level ? Math.min(level + 10, 20) : 0;
 };
 
@@ -139,7 +118,7 @@ const Ayato: DataCharacter = {
             });
             const stacks = findInput(selfBuffCtrls, 0, 0);
             return {
-              mult: {
+              mult_: {
                 desc: `Namisen effect with ${stacks} stacks`,
                 value: 0.56 * +stacks * TALENT_LV_MULTIPLIERS[7][level],
               },
@@ -199,12 +178,11 @@ const Ayato: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          • Converts his Normal Attack DMG into AoE <Hydro>Hydro DMG</Hydro> (Shunsuiken) that
-          cannot be overridden.
-          <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase{" "}
-          <Green>Shunsuiken DMG</Green> based on his <Green>current Max HP</Green>.
-          <br />• At <Lightgold>C2</Lightgold>, Ayato's <Green>Max HP</Green> is increased by{" "}
-          <Green b>50%</Green> when he has at least 3 Namisen stacks.
+          • Converts his Normal Attack DMG into AoE <Hydro>Hydro DMG</Hydro> (Shunsuiken) that cannot be overridden.
+          <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase <Green>Shunsuiken DMG</Green> based on
+          his <Green>current Max HP</Green>.
+          <br />• At <Lightgold>C2</Lightgold>, Ayato's <Green>Max HP</Green> is increased by <Green b>50%</Green> when
+          he has at least 3 Namisen stacks.
         </>
       ),
       inputConfigs: [
@@ -243,7 +221,7 @@ const Ayato: DataCharacter = {
       ],
       applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
         const buffValue = getEBBuffValue(toSelf, char, partyData, inputs);
-        applyModifier(desc, attPattBonus, "NA.pct", buffValue, tracker);
+        applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
       },
     },
     {
@@ -252,8 +230,7 @@ const Ayato: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          <Green>Shunsuiken DMG</Green> is increased by <Green b>40%</Green> against opponents with
-          50% HP or less.
+          <Green>Shunsuiken DMG</Green> is increased by <Green b>40%</Green> against opponents with 50% HP or less.
         </>
       ),
       isGranted: checkCons[1],
@@ -264,8 +241,8 @@ const Ayato: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          After using Kamisato Art: Suiyuu [EB], all nearby party members will have{" "}
-          <Green b>15%</Green> increased <Green>Normal Attack SPD</Green> for 15s.
+          After using Kamisato Art: Suiyuu [EB], all nearby party members will have <Green b>15%</Green> increased{" "}
+          <Green>Normal Attack SPD</Green> for 15s.
         </>
       ),
       isGranted: checkCons[4],

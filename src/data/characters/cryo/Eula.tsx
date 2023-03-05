@@ -1,10 +1,4 @@
-import type {
-  CharInfo,
-  DataCharacter,
-  GetTalentBuffFn,
-  ModifierInput,
-  PartyData,
-} from "@Src/types";
+import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierInput, PartyData } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -13,18 +7,11 @@ import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const getC4TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   const isInUse = charModIsInUse(Eula.buffs!, char, selfBuffCtrls, 1);
-  return talentBuff([isInUse, "pct", [false, 4], 25]);
+  return talentBuff([isInUse, "pct_", [false, 4], 25]);
 };
 
-const getESDebuffValue = (
-  fromSelf: boolean,
-  char: CharInfo,
-  inputs: ModifierInput[],
-  partyData: PartyData
-) => {
-  const level = fromSelf
-    ? finalTalentLv({ char, dataChar: Eula, talentType: "ES", partyData })
-    : inputs[0] || 0;
+const getESDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
+  const level = fromSelf ? finalTalentLv({ char, dataChar: Eula, talentType: "ES", partyData }) : inputs[0] || 0;
   return level ? Math.min(15 + level, 25) : 0;
 };
 
@@ -143,9 +130,8 @@ const Eula: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Every time Grimheart stacks [~ES] are consumed, Eula's <Green>Physical DMG</Green> is
-          increased by <Green b>30%</Green> for 6s. Each stack consumed increases the duration by
-          6s.
+          Every time Grimheart stacks [~ES] are consumed, Eula's <Green>Physical DMG</Green> is increased by{" "}
+          <Green b>30%</Green> for 6s. Each stack consumed increases the duration by 6s.
         </>
       ),
       isGranted: checkCons[1],
@@ -157,8 +143,8 @@ const Eula: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          <Green>Lightfall Swords DMG</Green> is increased by <Green b>25%</Green> against opponents
-          with less than 50% HP.
+          <Green>Lightfall Swords DMG</Green> is increased by <Green b>25%</Green> against opponents with less than 50%
+          HP.
         </>
       ),
       isGranted: checkCons[4],
@@ -170,9 +156,8 @@ const Eula: DataCharacter = {
       src: EModSrc.ES,
       desc: ({ fromSelf, char, inputs, partyData }) => (
         <>
-          If Grimheart stacks are consumed, surrounding opponents will have their{" "}
-          <Green>Physical RES</Green> and <Green>Cryo RES</Green> decreased by{" "}
-          <Green b>{getESDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
+          If Grimheart stacks are consumed, surrounding opponents will have their <Green>Physical RES</Green> and{" "}
+          <Green>Cryo RES</Green> decreased by <Green b>{getESDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
         </>
       ),
       inputConfigs: [

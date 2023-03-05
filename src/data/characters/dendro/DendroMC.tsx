@@ -41,9 +41,9 @@ const DendroMC: DataCharacter = {
       image: "5/55/Talent_Verdant_Overgrowth",
       desc: (
         <>
-          Lea Lotus Lamp [~EB] will obtain one level of Overflowing Lotuslight every second it is on
-          the field, increasing the <Green>Elemental Mastery</Green> of active character(s) within
-          its AoE by <Green b>6</Green>. Maximum <Rose>10</Rose> stacks.
+          Lea Lotus Lamp [~EB] will obtain one level of Overflowing Lotuslight every second it is on the field,
+          increasing the <Green>Elemental Mastery</Green> of active character(s) within its AoE by <Green b>6</Green>.
+          Maximum <Rose>10</Rose> stacks.
         </>
       ),
     },
@@ -52,9 +52,8 @@ const DendroMC: DataCharacter = {
       image: "5/55/Talent_Verdant_Luxury",
       desc: (
         <>
-          Every point of Elemental Mastery the Traveler possesses increases Razorgrass Blade{" "}
-          <Green>[ES] DMG</Green> by <Green b>0.15%</Green> and Surgent Manifestation{" "}
-          <Green>[EB] DMG</Green> by <Green b>0.1%</Green>.
+          Every point of Elemental Mastery the Traveler possesses increases Razorgrass Blade <Green>[ES] DMG</Green> by{" "}
+          <Green b>0.15%</Green> and Surgent Manifestation <Green>[EB] DMG</Green> by <Green b>0.1%</Green>.
         </>
       ),
     },
@@ -63,11 +62,7 @@ const DendroMC: DataCharacter = {
     {
       name: "Symbiotic Creeper",
       image: "1/16/Constellation_Symbiotic_Creeper",
-      desc: (
-        <>
-          After Razorgrass Blade hits an opponent, it will regenerate 3.5 Energy for the Traveler.
-        </>
-      ),
+      desc: <>After Razorgrass Blade hits an opponent, it will regenerate 3.5 Energy for the Traveler.</>,
     },
     {
       name: "Green Resilience",
@@ -80,8 +75,8 @@ const DendroMC: DataCharacter = {
       image: "f/f5/Constellation_Treacle_Grass",
       desc: (
         <>
-          After the Lea Lotus Lamp triggers a Lotuslight Transfiguration, it will obtain 5 stacks of
-          the Overflowing Lotuslight effect from the Passive Talent "Verdant Overgrowth."
+          After the Lea Lotus Lamp triggers a Lotuslight Transfiguration, it will obtain 5 stacks of the Overflowing
+          Lotuslight effect from the Passive Talent "Verdant Overgrowth."
         </>
       ),
     },
@@ -91,10 +86,10 @@ const DendroMC: DataCharacter = {
       image: "d/dc/Constellation_Withering_Aggregation",
       desc: (
         <>
-          The <Green>Dendro DMG Bonus</Green> of the character under the effect of Overflowing
-          Lotuslight [~EB] is increased by <Green b>12%</Green>. If the Lamp has experienced a
-          Lotuslight Transfiguration previously, the character will also gain <Green b>12%</Green>{" "}
-          <Green>DMG Bonus</Green> for the <Green>corresponding element</Green>.
+          The <Green>Dendro DMG Bonus</Green> of the character under the effect of Overflowing Lotuslight [~EB] is
+          increased by <Green b>12%</Green>. If the Lamp has experienced a Lotuslight Transfiguration previously, the
+          character will also gain <Green b>12%</Green> <Green>DMG Bonus</Green> for the{" "}
+          <Green>corresponding element</Green>.
         </>
       ),
     },
@@ -107,7 +102,7 @@ const DendroMC: DataCharacter = {
       applyBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
         const buffValue1 = totalAttr.em * 0.15;
         const buffValue2 = totalAttr.em * 0.1;
-        applyModifier(desc, attPattBonus, ["ES.pct", "EB.pct"], [buffValue1, buffValue2], tracker);
+        applyModifier(desc, attPattBonus, ["ES.pct_", "EB.pct_"], [buffValue1, buffValue2], tracker);
       },
     },
   ],

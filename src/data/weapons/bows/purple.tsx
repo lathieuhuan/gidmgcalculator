@@ -1,22 +1,12 @@
 import type { DataWeapon } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
-import {
-  blackcliffSeries,
-  favoniusSeries,
-  royalSeries,
-  sacrificialSeries,
-  watatsumiSeries,
-} from "../series";
+import { blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries, watatsumiSeries } from "../series";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const fadingTwilightBuffValuesByState = (refi: number) => [
-  4.5 + refi * 1.5,
-  7.5 + refi * 2.5,
-  10.5 + refi * 3.5,
-];
+const fadingTwilightBuffValuesByState = (refi: number) => [4.5 + refi * 1.5, 7.5 + refi * 2.5, 10.5 + refi * 3.5];
 
 const purpleBows: DataWeapon[] = [
   {
@@ -31,16 +21,16 @@ const purpleBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} This effect will be removed when switching characters. When the
-            Teachings of the Forest effect ends or is removed, it will deal 100% of ATK as DMG to 1
-            nearby opponent. The Teachings of the Forest effect can be triggered once every 20s.
+            {this.extra?.[0]} This effect will be removed when switching characters. When the Teachings of the Forest
+            effect ends or is removed, it will deal 100% of ATK as DMG to 1 nearby opponent. The Teachings of the Forest
+            effect can be triggered once every 20s.
           </>
         );
       },
       extra: [
         <>
-          Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts,
-          increasing <Green>Elemental Mastery</Green> by <Green b>{40 + refi * 20}</Green> for 12s.
+          Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts, increasing{" "}
+          <Green>Elemental Mastery</Green> by <Green b>{40 + refi * 20}</Green> for 12s.
         </>,
       ],
     }),
@@ -65,19 +55,18 @@ const purpleBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} When attacks hit opponents, this weapon will switch to the next state.
-            This weapon can change states once every 7s. The character equipping this weapon can
-            still trigger the state switch while not on the field.
+            {this.extra?.[0]} When attacks hit opponents, this weapon will switch to the next state. This weapon can
+            change states once every 7s. The character equipping this weapon can still trigger the state switch while
+            not on the field.
           </>
         );
       },
       extra: [
         <>
-          Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase{" "}
-          <Green>DMG</Green> dealt by{" "}
+          Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase <Green>DMG</Green> dealt by{" "}
           <Green b>
             {fadingTwilightBuffValuesByState(refi)
-              .map((pct) => pct + "%")
+              .map((pct_) => pct_ + "%")
               .join("/")}
           </Green>{" "}
           respectively.
@@ -99,7 +88,7 @@ const purpleBows: DataWeapon[] = [
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const valueIndex = (inputs[0] || 0) - 1;
           const buffValue = fadingTwilightBuffValuesByState(refi)[valueIndex];
-          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
         },
       },
     ],
@@ -116,16 +105,15 @@ const purpleBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} When the character is on the field for more than 4s, the
-            aforementioned DMG buff decreases by 4% per second until it reaches 0%.
+            {this.extra?.[0]} When the character is on the field for more than 4s, the aforementioned DMG buff decreases
+            by 4% per second until it reaches 0%.
           </>
         );
       },
       extra: [
         <>
-          While the character equipped with this weapon is in the party but not on the field, their{" "}
-          <Green>DMG</Green> increases by <Green b>{1.5 + refi * 0.5}%</Green> every second up to a
-          max of <Rose>{15 + refi * 5}%</Rose>.
+          While the character equipped with this weapon is in the party but not on the field, their <Green>DMG</Green>{" "}
+          increases by <Green b>{1.5 + refi * 0.5}%</Green> every second up to a max of <Rose>{15 + refi * 5}%</Rose>.
         </>,
       ],
     }),
@@ -142,7 +130,7 @@ const purpleBows: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
           const buffValue = (1.5 + refi * 0.5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct", buffValue, tracker);
+          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
         },
       },
     ],
@@ -186,16 +174,16 @@ const purpleBows: DataWeapon[] = [
       get core() {
         return (
           <>
-            When <Lightgold>Aloy</Lightgold> equips Predator, <Green>ATK</Green> is increased by{" "}
-            <Green b>66</Green>. {this.extra?.[0]}
+            When <Lightgold>Aloy</Lightgold> equips Predator, <Green>ATK</Green> is increased by <Green b>66</Green>.{" "}
+            {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
           Dealing <Cryo>Cryo DMG</Cryo> to opponents increases this character's{" "}
-          <Green>Normal and Charged Attack DMG</Green> by <Green b>10%</Green> for 6s. This effect
-          can have a maximum of <Green b>2</Green> stacks.
+          <Green>Normal and Charged Attack DMG</Green> by <Green b>10%</Green> for 6s. This effect can have a maximum of{" "}
+          <Green b>2</Green> stacks.
           <br />
           <Red>
             <span className="mr-4">•</span>
@@ -222,7 +210,7 @@ const purpleBows: DataWeapon[] = [
         ],
         applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
           const buffValue = 10 * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct"], buffValue, tracker);
+          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
         },
       },
     ],
@@ -243,7 +231,7 @@ const purpleBows: DataWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 24),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 24),
   },
   {
     code: 18,
@@ -256,10 +244,10 @@ const purpleBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Upon hit, Normal and Aimed Shot Attacks have a <Green>50% chance</Green> to generate a
-          Cyclone, which will continuously attract surrounding opponents, dealing{" "}
-          <Green b>{30 + refi * 10}%</Green> of <Green>ATK</Green> as DMG to these opponents every
-          0.5s for 4s. This effect can only occur once every <Green b>{15 - refi * 1}s</Green>.
+          Upon hit, Normal and Aimed Shot Attacks have a <Green>50% chance</Green> to generate a Cyclone, which will
+          continuously attract surrounding opponents, dealing <Green b>{30 + refi * 10}%</Green> of <Green>ATK</Green>{" "}
+          as DMG to these opponents every 0.5s for 4s. This effect can only occur once every{" "}
+          <Green b>{15 - refi * 1}s</Green>.
         </>
       ),
     }),
@@ -296,13 +284,13 @@ const purpleBows: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 19)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "ES.pct", 20),
+        applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 20),
       },
       {
         index: 1,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 19)?.passiveDesc({ refi }).extra?.[1],
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 20),
       },
     ],
   },
@@ -326,8 +314,8 @@ const purpleBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          After using an Elemental Skill, receive a boon from the ancient wish of the Windblume,
-          increasing <Green>ATK</Green> by <Green b>{12 + refi * 4}%</Green> for 6s.
+          After using an Elemental Skill, receive a boon from the ancient wish of the Windblume, increasing{" "}
+          <Green>ATK</Green> by <Green b>{12 + refi * 4}%</Green> for 6s.
         </>
       ),
     }),
@@ -351,15 +339,15 @@ const purpleBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Normal Attack DMG</Green> by <Green b>{30 + refi * 10}%</Green> but
-          decreases Charged Attack DMG by 10%.
+          Increases <Green>Normal Attack DMG</Green> by <Green b>{30 + refi * 10}%</Green> but decreases Charged Attack
+          DMG by 10%.
         </>
       ),
     }),
     applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
       if (attPattBonus) {
-        applyModifier(desc, attPattBonus, "NA.pct", 30 + refi * 10, tracker);
-        applyModifier("Rust passive penalty", attPattBonus, "CA.pct", -10, tracker);
+        applyModifier(desc, attPattBonus, "NA.pct_", 30 + refi * 10, tracker);
+        applyModifier("Rust passive penalty", attPattBonus, "CA.pct_", -10, tracker);
       }
     },
   },
@@ -399,10 +387,9 @@ const purpleBows: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Normal Attack and Charged Attack hits increase <Green>ATK</Green> by{" "}
-          <Green b>{3 + refi}%</Green> and <Green>Normal ATK SPD</Green> by{" "}
-          <Green b>{0.9 + refi * 0.3}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur
-          once every 0.3s.
+          Normal Attack and Charged Attack hits increase <Green>ATK</Green> by <Green b>{3 + refi}%</Green> and{" "}
+          <Green>Normal ATK SPD</Green> by <Green b>{0.9 + refi * 0.3}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can
+          only occur once every 0.3s.
         </>
       ),
     }),
@@ -444,18 +431,18 @@ const purpleBows: DataWeapon[] = [
       },
       extra: [
         <>
-          When the equipping character's Energy reaches 100%, the <Green>DMG Bonuses</Green> are
-          increased by <Green b>100%</Green>.
+          When the equipping character's Energy reaches 100%, the <Green>DMG Bonuses</Green> are increased by{" "}
+          <Green b>100%</Green>.
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
+    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], [16, 12]),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 25)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", ["NA.pct", "CA.pct"], [16, 12]),
+        applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], [16, 12]),
       },
     ],
   },

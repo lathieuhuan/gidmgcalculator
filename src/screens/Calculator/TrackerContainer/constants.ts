@@ -1,11 +1,11 @@
 import type { AttacklementInfoKey, AttackPatternInfoKey } from "@Src/types";
 
 export const keyMap: Record<AttackPatternInfoKey | AttacklementInfoKey, string> = {
-  pct: "Percent",
+  pct_: "Percent",
   flat: "Flat",
   cDmg_: "CRIT DMG",
   cRate_: "CRIT Rate",
-  defIgnore: "DEF ignore",
-  mult: "Multiplier",
+  defIgn_: "DEF ignore",
+  mult_: "Multiplier",
   specialMult: "Special Multiplier",
 };

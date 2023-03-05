@@ -59,7 +59,7 @@ const Layla: DataCharacter = {
           getTalentBuff: ({ char, totalAttr }) => {
             return talentBuff(
               [checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)],
-              [checkCons[6](char), "pct", [false, 6], 40]
+              [checkCons[6](char), "pct_", [false, 6], 40]
             );
           },
         },
@@ -68,7 +68,7 @@ const Layla: DataCharacter = {
           notAttack: "shield",
           multFactors: { root: 10.8, attributeType: "hp" },
           flatFactor: 1040,
-          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct", [false, 1], 20]),
+          getTalentBuff: ({ char }) => talentBuff([checkCons[1](char), "pct_", [false, 1], 20]),
         },
       ],
       // getExtraStats: (lv) => [{ name: "Shield Duration", value: "12s" }],
@@ -91,8 +91,8 @@ const Layla: DataCharacter = {
       desc: (
         <>
           While the Curtain of Slumber [~ES] is active, each time the Curtain gains a Night Star:
-          <br />• The <Green>Shield Strength</Green> of the character is increased by{" "}
-          <Green b>6%</Green>. Max <Rose>4</Rose> stacks.
+          <br />• The <Green>Shield Strength</Green> of the character is increased by <Green b>6%</Green>. Max{" "}
+          <Rose>4</Rose> stacks.
           <br />• This effect persists until the Curtain of Slumber disappears.
         </>
       ),
@@ -102,8 +102,7 @@ const Layla: DataCharacter = {
       image: "3/32/Talent_Sweet_Slumber_Undisturbed",
       desc: (
         <>
-          <Green>Shooting Star DMG</Green> [~ES] is increased by <Green b>1.5%</Green> of Layla's{" "}
-          <Green>Max HP</Green>.
+          <Green>Shooting Star DMG</Green> [~ES] is increased by <Green b>1.5%</Green> of Layla's <Green>Max HP</Green>.
         </>
       ),
     },
@@ -118,17 +117,15 @@ const Layla: DataCharacter = {
           <>
             {this.xtraDesc![0]}
             <br />
-            Additionally, when unleashing Nights of Formal Focus [ES], she will generate a shield
-            for any nearby party members who are not being protected by a Curtain of Slumber. This
-            shield will have 35% of the absorption of a Curtain of Slumber, will last for 12s, and
-            will absorb Cryo DMG with 250% effectiveness.
+            Additionally, when unleashing Nights of Formal Focus [ES], she will generate a shield for any nearby party
+            members who are not being protected by a Curtain of Slumber. This shield will have 35% of the absorption of
+            a Curtain of Slumber, will last for 12s, and will absorb Cryo DMG with 250% effectiveness.
           </>
         );
       },
       xtraDesc: [
         <>
-          The <Green>Shield Absorption</Green> of the Curtain of Slumber [~ES] is increased by{" "}
-          <Green b>20%</Green>.
+          The <Green>Shield Absorption</Green> of the Curtain of Slumber [~ES] is increased by <Green b>20%</Green>.
         </>,
       ],
     },
@@ -137,9 +134,8 @@ const Layla: DataCharacter = {
       image: "6/6a/Constellation_Light%27s_Remit",
       desc: (
         <>
-          When Shooting Stars [~ES] strike opponents, they will each restore <Green>1</Green>{" "}
-          <Green>Energy</Green> to Layla. Each Shooting Star can restore Energy to her in this
-          manner once.
+          When Shooting Stars [~ES] strike opponents, they will each restore <Green>1</Green> <Green>Energy</Green> to
+          Layla. Each Shooting Star can restore Energy to her in this manner once.
         </>
       ),
     },
@@ -152,16 +148,15 @@ const Layla: DataCharacter = {
           <>
             {this.xtraDesc![0]}
             <br />
-            Open Mind can last up to 3s and will be removed 0.1s after dealing Normal or Charged
-            Attack DMG.
+            Open Mind can last up to 3s and will be removed 0.1s after dealing Normal or Charged Attack DMG.
           </>
         );
       },
       xtraDesc: [
         <>
           When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will increases{" "}
-          <Green>Normal and Charged Attack DMG</Green> of nearby party members based on{" "}
-          <Green b>5%</Green> of Layla's <Green>Max HP</Green>.
+          <Green>Normal and Charged Attack DMG</Green> of nearby party members based on <Green b>5%</Green> of Layla's{" "}
+          <Green>Max HP</Green>.
         </>,
       ],
     },
@@ -174,15 +169,15 @@ const Layla: DataCharacter = {
           <>
             {this.xtraDesc![0]}
             <br />
-            Additionally, the interval between the creation of Night Stars via Nights of Formal
-            Focus is decreased by 20%.
+            Additionally, the interval between the creation of Night Stars via Nights of Formal Focus is decreased by
+            20%.
           </>
         );
       },
       xtraDesc: [
         <>
-          Increases <Green>Shooting Star DMG</Green> [~ES] and <Green>Starlight Slug DMG</Green>{" "}
-          [~EB] by <Green b>40%</Green>.
+          Increases <Green>Shooting Star DMG</Green> [~ES] and <Green>Starlight Slug DMG</Green> [~EB] by{" "}
+          <Green b>40%</Green>.
         </>,
       ],
     },
@@ -202,7 +197,7 @@ const Layla: DataCharacter = {
       src: EModSrc.C6,
       desc: () => Layla.constellation[5].xtraDesc![0],
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 40),
+      applyBuff: makeModApplier("attPattBonus", "EB.pct_", 40),
     },
   ],
   buffs: [

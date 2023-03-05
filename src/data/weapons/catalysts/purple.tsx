@@ -33,16 +33,16 @@ const purpleCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} For every 6s that go by without an Elemental Reaction being triggered,
-            1 stack will be lost. This effect can be triggered even when the character is off-field.
+            {this.extra?.[0]} For every 6s that go by without an Elemental Reaction being triggered, 1 stack will be
+            lost. This effect can be triggered even when the character is off-field.
           </>
         );
       },
       extra: [
         <>
           Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
-          <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK. For
-          every 0.3s, 1 stack of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.
+          <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK. For every 0.3s, 1 stack
+          of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.
         </>,
       ],
     }),
@@ -84,8 +84,8 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Increases <Green>Energy Recharge</Green> by <Green b>{18 + refi * 6}%</Green> for 10s
-          after using an Elemental Skill.
+          Increases <Green>Energy Recharge</Green> by <Green b>{18 + refi * 6}%</Green> for 10s after using an Elemental
+          Skill.
         </>
       ),
     }),
@@ -102,15 +102,15 @@ const purpleCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or
-            Alternate sprint by {12 + refi * 2} for 5s. {this.extra?.[0]}
+            Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or Alternate sprint by{" "}
+            {12 + refi * 2} for 5s. {this.extra?.[0]}
           </>
         );
       },
       extra: [
         <>
-          Using a Sprint or Alternate Sprint ability increases <Green>ATK</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green> for 5s.
+          Using a Sprint or Alternate Sprint ability increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>{" "}
+          for 5s.
         </>,
       ],
     }),
@@ -134,10 +134,10 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          After the character equipped with this weapon triggers an Electro elemental reaction,
-          nearby party members of an Elemental Type involved in the elemental reaction receive a{" "}
-          <Green b>{7.5 + refi * 2.5}%</Green> <Green>Elemental DMG Bonus for their element</Green>,
-          lasting 6s. Elemental Bonuses gained in this way cannot be stacked.
+          After the character equipped with this weapon triggers an Electro elemental reaction, nearby party members of
+          an Elemental Type involved in the elemental reaction receive a <Green b>{7.5 + refi * 2.5}%</Green>{" "}
+          <Green>Elemental DMG Bonus for their element</Green>, lasting 6s. Elemental Bonuses gained in this way cannot
+          be stacked.
         </>
       ),
     }),
@@ -172,8 +172,8 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green>{" "}
-          <Green>Elemental DMG Bonus</Green> for 10s. Max <Rose>2</Rose> stacks.
+          Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green> <Green>Elemental DMG Bonus</Green>{" "}
+          for 10s. Max <Rose>2</Rose> stacks.
         </>
       ),
     }),
@@ -206,11 +206,10 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          When a character takes the field, they will gain a random theme song for 10s. This can
-          only occur once every 30s. Recitative: <Green>ATK</Green> is increased by{" "}
-          <Green b>{45 + refi * 15}%</Green>. Aria: increases <Green>all Elemental DMG</Green> by{" "}
-          <Green b>{36 + refi * 12}%</Green>. Interlude: <Green>Elemental Mastery</Green> is
-          increased by <Green b>{180 + refi * 60}</Green>.
+          When a character takes the field, they will gain a random theme song for 10s. This can only occur once every
+          30s. Recitative: <Green>ATK</Green> is increased by <Green b>{45 + refi * 15}%</Green>. Aria: increases{" "}
+          <Green>all Elemental DMG</Green> by <Green b>{36 + refi * 12}%</Green>. Interlude:{" "}
+          <Green>Elemental Mastery</Green> is increased by <Green b>{180 + refi * 60}</Green>.
         </>
       ),
     }),
@@ -269,12 +268,12 @@ const purpleCatalysts: DataWeapon[] = [
       },
       extra: [
         <>
-          Normal Attack hits increase <Green>Elemental Skill</Green> and{" "}
-          <Green>Elemental Burst DMG</Green> by <Green b>{15 + refi * 5}%</Green> for 6s.
+          Normal Attack hits increase <Green>Elemental Skill</Green> and <Green>Elemental Burst DMG</Green> by{" "}
+          <Green b>{15 + refi * 5}%</Green> for 6s.
         </>,
         <>
-          Likewise, Elemental Skill or Elemental Burst hits increase{" "}
-          <Green>Normal Attack DMG</Green> by <Green b>{15 + refi * 5}%</Green> for 6s.
+          Likewise, Elemental Skill or Elemental Burst hits increase <Green>Normal Attack DMG</Green> by{" "}
+          <Green b>{15 + refi * 5}%</Green> for 6s.
         </>,
       ],
     }),
@@ -283,13 +282,13 @@ const purpleCatalysts: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct", "EB.pct"], 20),
+        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 20),
       },
       {
         index: 1,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct", 20),
+        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 20),
       },
     ],
   },
@@ -304,9 +303,8 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Using an Elemental Burst regenerates <Green b>{3.5 + refi * 0.5}</Green>{" "}
-          <Green>Energy</Green> every 2s for 6s. All party members will regenerate{" "}
-          <Green b>{3.5 + refi * 0.5}%</Green> HP every 2s for this duration.
+          Using an Elemental Burst regenerates <Green b>{3.5 + refi * 0.5}</Green> <Green>Energy</Green> every 2s for
+          6s. All party members will regenerate <Green b>{3.5 + refi * 0.5}%</Green> HP every 2s for this duration.
         </>
       ),
     }),
@@ -351,8 +349,7 @@ const purpleCatalysts: DataWeapon[] = [
           <Green b>{12 + refi * 4}%</Green> for 6s.
         </>,
         <>
-          Charged Attack hits on opponents increase <Green>ATK</Green> by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 6s.
+          Charged Attack hits on opponents increase <Green>ATK</Green> by <Green b>{6 + refi * 2}%</Green> for 6s.
         </>,
       ],
     }),
@@ -361,7 +358,7 @@ const purpleCatalysts: DataWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct", 16),
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 16),
       },
       {
         index: 1,
@@ -382,10 +379,9 @@ const purpleCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Normal and Charged Attacks have a <Green>50% chance</Green> to fire a Bolt of Perception,
-          dealing <Green b>{210 + refi * 30}%</Green> <Green>ATK</Green> as DMG. This bolt can
-          bounce between opponents a maximum of 4 times. This effect can occur once every{" "}
-          <Green b>{13 - refi}s</Green>.
+          Normal and Charged Attacks have a <Green>50% chance</Green> to fire a Bolt of Perception, dealing{" "}
+          <Green b>{210 + refi * 30}%</Green> <Green>ATK</Green> as DMG. This bolt can bounce between opponents a
+          maximum of 4 times. This effect can occur once every <Green b>{13 - refi}s</Green>.
         </>
       ),
     }),

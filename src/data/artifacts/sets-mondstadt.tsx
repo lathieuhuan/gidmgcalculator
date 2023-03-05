@@ -48,7 +48,7 @@ const mondstadtSets: DataArtifact[] = [
         applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
           const supported = ["sword", "claymore", "polearm"];
           if (attPattBonus && supported.includes(charData.weaponType)) {
-            applyModifier(desc, attPattBonus, "NA.pct", 35, tracker);
+            applyModifier(desc, attPattBonus, "NA.pct_", 35, tracker);
           }
         },
       },
@@ -90,13 +90,12 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases <Green>Charged Attack DMG</Green> by <Green b>35%</Green> if the character
-            uses a Catalyst or Bow.
+            Increases <Green>Charged Attack DMG</Green> by <Green b>35%</Green> if the character uses a Catalyst or Bow.
           </>
         ),
         applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
           if (attPattBonus && ["catalyst", "bow"].includes(charData.weaponType)) {
-            applyModifier(desc, attPattBonus, "CA.pct", 35, tracker);
+            applyModifier(desc, attPattBonus, "CA.pct_", 35, tracker);
           }
         },
       },
@@ -139,11 +138,10 @@ const mondstadtSets: DataArtifact[] = [
         desc: (
           <>
             Increases <Green>Swirl DMG</Green> by <Green b>60%</Green>. Decreases opponent's{" "}
-            <Green>Elemental RES</Green> to the element infused in the Swirl by <Green b>40%</Green>{" "}
-            for 10s.
+            <Green>Elemental RES</Green> to the element infused in the Swirl by <Green b>40%</Green> for 10s.
           </>
         ),
-        applyBuff: makeModApplier("rxnBonus", "swirl.pct", 60),
+        applyBuff: makeModApplier("rxnBonus", "swirl.pct_", 60),
       },
     ],
     debuffs: [
@@ -202,12 +200,7 @@ const mondstadtSets: DataArtifact[] = [
         applyBuff: makeModApplier("totalAttr", "healB_", 15),
       },
       {
-        desc: (
-          <>
-            Using an Elemental Skill or Burst increases healing received by all party members by 20%
-            for 10s.
-          </>
-        ),
+        desc: <>Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s.</>,
       },
     ],
   },
@@ -244,12 +237,10 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases damage caused by{" "}
-            <Green>Overloaded, Electro-Charged, Superconduct and Hyperbloom</Green> by{" "}
-            <Green b>40%</Green>, and the DMG Bonus conferred by <Green>Aggravate</Green> is
-            increased by <Green b>20%</Green>. When Quicken or the aforementioned Elemental
-            Reactions are triggered, Elemental Skill CD is decreased by 1s. Can only occur once
-            every 0.8s.
+            Increases damage caused by <Green>Overloaded, Electro-Charged, Superconduct and Hyperbloom</Green> by{" "}
+            <Green b>40%</Green>, and the DMG Bonus conferred by <Green>Aggravate</Green> is increased by{" "}
+            <Green b>20%</Green>. When Quicken or the aforementioned Elemental Reactions are triggered, Elemental Skill
+            CD is decreased by 1s. Can only occur once every 0.8s.
           </>
         ),
         applyBuff: ({ rxnBonus, desc, tracker }) => {
@@ -257,11 +248,11 @@ const mondstadtSets: DataArtifact[] = [
             applyModifier(
               desc,
               rxnBonus,
-              ["overloaded.pct", "electroCharged.pct", "superconduct.pct", "hyperbloom.pct"],
+              ["overloaded.pct_", "electroCharged.pct_", "superconduct.pct_", "hyperbloom.pct_"],
               40,
               tracker
             );
-            applyModifier(desc, rxnBonus, "aggravate.pct", 20, tracker);
+            applyModifier(desc, rxnBonus, "aggravate.pct_", 20, tracker);
           }
         },
       },
@@ -298,8 +289,7 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            Increases <Green>DMG</Green> against opponents affected by Electro by{" "}
-            <Green b>35%</Green>.
+            Increases <Green>DMG</Green> against opponents affected by Electro by <Green b>35%</Green>.
           </>
         ),
       },
@@ -309,7 +299,7 @@ const mondstadtSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(mondstadtSets, 18)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "all.pct", 35),
+        applyBuff: makeModApplier("attPattBonus", "all.pct_", 35),
       },
     ],
   },
@@ -349,9 +339,9 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is
-            increased by <Green b>20%</Green>. If the opponent is Frozen, <Green>CRIT Rate</Green>{" "}
-            is increased by an additional <Green b>20%</Green>.
+            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is increased by{" "}
+            <Green b>20%</Green>. If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional{" "}
+            <Green b>20%</Green>.
           </>
         ),
       },
@@ -361,8 +351,8 @@ const mondstadtSets: DataArtifact[] = [
         index: 0,
         desc: () => (
           <>
-            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is
-            increased by <Green b>20%</Green>.
+            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is increased by{" "}
+            <Green b>20%</Green>.
           </>
         ),
         affect: EModAffect.SELF,
@@ -375,8 +365,7 @@ const mondstadtSets: DataArtifact[] = [
         index: 1,
         desc: () => (
           <>
-            If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional{" "}
-            <Green b>20%</Green>.
+            If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional <Green b>20%</Green>.
           </>
         ),
         affect: EModAffect.SELF,
@@ -422,8 +411,8 @@ const mondstadtSets: DataArtifact[] = [
       {
         desc: (
           <>
-            After using an Elemental Skill, increases{" "}
-            <Green>Normal Attack and Charged Attack DMG</Green> by <Green b>30%</Green> for 15s.
+            After using an Elemental Skill, increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
+            <Green b>30%</Green> for 15s.
           </>
         ),
       },
@@ -433,7 +422,7 @@ const mondstadtSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(mondstadtSets, 20)!.setBonuses[1].desc,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct", "CA.pct"], 30),
+        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 30),
       },
     ],
   },

@@ -90,9 +90,8 @@ const Chongyun: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Sword, Claymore, or Polearm-wielding characters within Spirit Blade: Chonghua's Layered
-          Frost [ES] field have their <Green>Normal ATK SPD</Green> increased by <Green b>8%</Green>
-          .
+          Sword, Claymore, or Polearm-wielding characters within Spirit Blade: Chonghua's Layered Frost [ES] field have
+          their <Green>Normal ATK SPD</Green> increased by <Green b>8%</Green>.
         </>
       ),
       isGranted: checkAscs[1],
@@ -107,13 +106,12 @@ const Chongyun: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Spirit Blade: Cloud-Parting Star <Green>[EB]</Green> deals <Green b>15%</Green>{" "}
-          <Green>more DMG</Green> to opponents with a lower percentage of their Max HP remaining
-          than Chongyun.
+          Spirit Blade: Cloud-Parting Star <Green>[EB]</Green> deals <Green b>15%</Green> <Green>more DMG</Green> to
+          opponents with a lower percentage of their Max HP remaining than Chongyun.
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "EB.pct", 15),
+      applyBuff: makeModApplier("attPattBonus", "EB.pct_", 15),
     },
   ],
   debuffs: [
@@ -122,9 +120,8 @@ const Chongyun: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another
-          spirit blade will be summoned to strike nearby opponents and decrease their{" "}
-          <Green>Cryo RES</Green> by <Green b>10%</Green> for 8s.
+          When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another spirit blade will be
+          summoned to strike nearby opponents and decrease their <Green>Cryo RES</Green> by <Green b>10%</Green> for 8s.
         </>
       ),
       isGranted: checkAscs[4],
