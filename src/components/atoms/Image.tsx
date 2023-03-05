@@ -46,6 +46,11 @@ export const Image = ({
         className={clsx(size, className, imgClassName, isError && "hidden")}
         draggable={false}
         onError={() => setIsError(true)}
+        onLoad={() => {
+          if (isError) {
+            setIsError(false);
+          }
+        }}
       />
     </>
   );

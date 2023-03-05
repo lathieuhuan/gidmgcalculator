@@ -6,6 +6,152 @@ import { EModAffect } from "@Src/constants";
 
 const sumeruSets: DataArtifact[] = [
   {
+    code: 38,
+    beta: true,
+    name: "Nymph's Dream",
+    variants: [4, 5],
+    flower: {
+      name: "Flower",
+      icon: "https://images2.imgbox.com/13/09/wXfgluY1_o.png",
+    },
+    plume: {
+      name: "Plume",
+      icon: "https://images2.imgbox.com/9b/64/E73Jd8oG_o.png",
+    },
+    sands: {
+      name: "Sands",
+      icon: "https://images2.imgbox.com/d1/d3/eb0bo07q_o.png",
+    },
+    goblet: {
+      name: "Goblet",
+      icon: "https://images2.imgbox.com/08/58/YfTdk50T_o.png",
+    },
+    circlet: {
+      name: "Circlet",
+      icon: "https://images2.imgbox.com/2b/18/4t2yE5RG_o.png",
+    },
+    setBonuses: [
+      {
+        desc: (
+          <>
+            <Green>Hydro DMG Bonus</Green> +<Green b>15%</Green>.
+          </>
+        ),
+        applyBuff: makeModApplier("totalAttr", "hydro", 15),
+      },
+      {
+        get desc() {
+          return (
+            <>
+              When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an
+              opponent, each attack type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks.
+              Each stack's duration is counted independently. {this.xtraDesc?.[0]}
+            </>
+          );
+        },
+        xtraDesc: [
+          <>
+            While 1, 2, or 3 or more Nymph's Croix stacks are in effect, <Green>ATK</Green> is
+            increased by <Green b>7%/16%/25%</Green>, and <Green>Hydro DMG</Green> is increased by{" "}
+            <Green b>4%/9%/15%</Green>.
+          </>,
+        ],
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: () => findByCode(sumeruSets, 38)?.setBonuses[1].xtraDesc?.[0],
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
+          const index = (inputs[0] || 1) - 1;
+          const atkBuff = [7, 16, 25][index];
+          const hydroBuff = [4, 9, 15][index];
+          applyModifier(desc, totalAttr, ["atk_", "hydro"], [atkBuff, hydroBuff], tracker);
+        },
+      },
+    ],
+  },
+  {
+    code: 37,
+    beta: true,
+    name: "Dewflower's Glow",
+    variants: [4, 5],
+    flower: {
+      name: "Flower",
+      icon: "https://images2.imgbox.com/c9/12/v51uGpOY_o.png",
+    },
+    plume: {
+      name: "Plume",
+      icon: "https://images2.imgbox.com/a2/cf/PwY8vxPz_o.png",
+    },
+    sands: {
+      name: "Sands",
+      icon: "https://images2.imgbox.com/4e/31/YhZ8cbWs_o.png",
+    },
+    goblet: {
+      name: "Goblet",
+      icon: "https://images2.imgbox.com/3a/bf/xjmGyFNb_o.png",
+    },
+    circlet: {
+      name: "Circlet",
+      icon: "https://images2.imgbox.com/2e/47/8XJPzx6h_o.png",
+    },
+    setBonuses: [
+      {
+        desc: (
+          <>
+            <Green>HP</Green> +<Green b>20%</Green>.
+          </>
+        ),
+        applyBuff: makeModApplier("totalAttr", "hp_", 20),
+      },
+      {
+        get desc() {
+          return (
+            <>
+              Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by{" "}
+              <Green b>10%</Green>. {this.xtraDesc?.[0]} The duration of each stack is counted
+              independently. These stacks will continue to take effect even when the equipping
+              character is not on the field.
+            </>
+          );
+        },
+        xtraDesc: [
+          <>
+            When the equipping character takes DMG, Increases{" "}
+            <Green>Elemental Skill and Elemental Burst DMG</Green> by <Green b>8%</Green> for 8s.
+            Max <Rose>5</Rose> stacks.
+          </>,
+        ],
+        applyBuff: makeModApplier("attPattBonus", ["ES.pct", "EB.pct"], 10),
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: () => findByCode(sumeruSets, 37)?.setBonuses[1].xtraDesc?.[0],
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
+        applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
+          const stacks = inputs[0] || 0;
+          applyModifier(desc, attPattBonus, ["ES.pct", "EB.pct"], stacks * 8, tracker);
+        },
+      },
+    ],
+  },
+  {
     code: 36,
     name: "Desert Pavilion Chronicle",
     variants: [4, 5],
@@ -52,8 +198,8 @@ const sumeruSets: DataArtifact[] = [
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(sumeruSets, 36)?.setBonuses[1].desc,
         affect: EModAffect.SELF,
+        desc: () => findByCode(sumeruSets, 36)?.setBonuses[1].desc,
         applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
           applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
           applyModifier(desc, attPattBonus, ["NA.pct", "CA.pct", "PA.pct"], 40, tracker);
@@ -118,8 +264,8 @@ const sumeruSets: DataArtifact[] = [
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(sumeruSets, 35)?.setBonuses[1]?.xtraDesc?.[0],
         affect: EModAffect.SELF,
+        desc: () => findByCode(sumeruSets, 35)?.setBonuses[1]?.xtraDesc?.[0],
         inputConfigs: [
           {
             type: "stacks",

@@ -9,56 +9,53 @@ import { makeWpModApplier } from "../utils";
 const goldClaymores: DataWeapon[] = [
   {
     code: 151,
-    beta: true,
     name: "Beacon of the Reed Sea",
-    icon: "https://i.ibb.co/VtnjT3D/beacon-of-the-reed-sea.png",
+    icon: "6/6c/Weapon_Beacon_of_the_Reed_Sea",
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Desert Watch",
     passiveDesc: ({ refi }) => ({
-      core: (
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]}. {this.extra?.[1]}. The 2 aforementioned effects can be triggered even
+            when the character is not on the field. {this.extra?.[2]}
+          </>
+        );
+      },
+      extra: [
         <>
-          After an Elemental Skill hits an opponent, your ATK will be increased by {15 + refi * 5}%
-          for 8s. After you take DMG, your ATK will be increased by {15 + refi * 5}% for 8s. The 2
-          aforementioned effects can be triggered even when the character is not on the field.
-          Additionally, when not protected by a shield, your character's Max HP will be increased by{" "}
-          {24 + refi * 8}%.
-        </>
-      ),
+          After an Elemental Skill hits an opponent, your <Green>ATK</Green> will be increased by{" "}
+          <Green b>{15 + refi * 5}%</Green> for 8s.
+        </>,
+        <>
+          After you take DMG, your <Green>ATK</Green> will be increased by{" "}
+          <Green b>{15 + refi * 5}%</Green> for 8s.
+        </>,
+        <>
+          When not protected by a shield, your character's <Green>Max HP</Green> will be increased
+          by <Green b>{24 + refi * 8}%</Green>.
+        </>,
+      ],
     }),
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            After an Elemental Skill hits an opponent, your <Green>ATK</Green> will be increased by{" "}
-            <Green b>{15 + refi * 5}%</Green> for 8s.
-          </>
-        ),
+        desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[0],
         applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            After you take DMG, your <Green>ATK</Green> will be increased by{" "}
-            <Green b>{15 + refi * 5}%</Green> for 8s.
-          </>
-        ),
+        desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[1],
         applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
       },
       {
         index: 2,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When not protected by a shield, your character's <Green>Max HP</Green> will be increased
-            by <Green b>{24 + refi * 8}%</Green>.
-          </>
-        ),
+        desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[2],
         applyBuff: makeWpModApplier("totalAttr", "hp_", 32),
       },
     ],

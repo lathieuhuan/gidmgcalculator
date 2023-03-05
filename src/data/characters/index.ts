@@ -5,6 +5,7 @@ import Ayato from "./hydro/Ayato";
 import Amber from "./pyro/Amber";
 import AnemoMC from "./anemo/AnemoMC";
 import Ayaka from "./cryo/Ayaka";
+import Baizhu from "./dendro/Baizhu";
 import Barbara from "./hydro/Barbara";
 import Beidou from "./electro/Beidou";
 import Bennett from "./pyro/Bennett";
@@ -28,8 +29,9 @@ import Heizou from "./anemo/Heizou";
 import HuTao from "./pyro/HuTao";
 import Itto from "./geo/Itto";
 import Jean from "./anemo/Jean";
-import Kazuha from "./anemo/Kazuha";
 import Kaeya from "./cryo/Kaeya";
+import Kaveh from "./dendro/Kaveh";
+import Kazuha from "./anemo/Kazuha";
 import Keqing from "./electro/Keqing";
 import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
@@ -75,6 +77,7 @@ const characters = {
   "Anemo Traveler": AnemoMC,
   Ayaka,
   Ayato,
+  Baizhu,
   Barbara,
   Beidou,
   Bennett,
@@ -99,6 +102,7 @@ const characters = {
   Itto,
   Jean,
   Kaeya,
+  Kaveh,
   Kazuha,
   Keqing,
   Klee,

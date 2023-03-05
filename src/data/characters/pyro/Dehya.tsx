@@ -8,10 +8,9 @@ import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
 const Dehya: DataCharacter = {
   code: 68,
-  beta: true,
   name: "Dehya",
-  icon: "https://i.ibb.co/kGzXzJH/dehya.png",
-  sideIcon: "",
+  icon: "3/3f/Dehya_Icon",
+  sideIcon: "5/51/Character_Dehya_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "pyro",
@@ -55,7 +54,7 @@ const Dehya: DataCharacter = {
     PA: { stats: HEAVY_PAs },
     ES: {
       name: "Molten Inferno",
-      image: "",
+      image: "6/6b/Talent_Molten_Inferno",
       stats: [
         { name: "Indomitable Flame", multFactors: 112.88 },
         { name: "Ranging Flame", multFactors: 132.8 },
@@ -80,7 +79,7 @@ const Dehya: DataCharacter = {
     },
     EB: {
       name: "The Lioness's Bite",
-      image: "",
+      image: "1/12/Talent_Leonine_Bite",
       stats: [
         {
           name: "Flame-Mane's Fist",
@@ -97,14 +96,14 @@ const Dehya: DataCharacter = {
     },
   },
   passiveTalents: [
-    { name: "Unstinting Succor", image: "" },
-    { name: "Stalwart and True", image: "" },
-    { name: "The Sunlit Way", image: "" },
+    { name: "Unstinting Succor", image: "4/47/Talent_Unstinting_Succor" },
+    { name: "Stalwart and True", image: "1/12/Talent_Stalwart_and_True" },
+    { name: "The Sunlit Way", image: "e/ee/Talent_The_Sunlit_Way" },
   ],
   constellation: [
     {
       name: "The Flame Incandescent",
-      image: "",
+      image: "5/50/Constellation_The_Flame_Incandescent",
       desc: (
         <>
           Dehya's <Green>Max HP</Green> is increased by <Green>20%</Green>, and:
@@ -117,7 +116,7 @@ const Dehya: DataCharacter = {
     },
     {
       name: "The Sand-Blades Glittering",
-      image: "",
+      image: "0/08/Constellation_The_Sand-Blades_Glittering",
       get desc() {
         return (
           <>
@@ -134,10 +133,10 @@ const Dehya: DataCharacter = {
         </>,
       ],
     },
-    { name: "A Rage Swift as Fire", image: "" },
+    { name: "A Rage Swift as Fire", image: "e/ee/Constellation_A_Rage_Swift_as_Fire" },
     {
       name: "An Oath Abiding",
-      image: "",
+      image: "3/31/Constellation_An_Oath_Abiding",
       desc: (
         <>
           When Lioness's Bite attacks hit opponents, they will restore 1.5 Energy for Dehya and 2.5%
@@ -145,10 +144,10 @@ const Dehya: DataCharacter = {
         </>
       ),
     },
-    { name: "The Alpha Unleashed", image: "" },
+    { name: "The Alpha Unleashed", image: "3/38/Constellation_The_Alpha_Unleashed" },
     {
       name: "The Burning Claws Cleaving",
-      image: "",
+      image: "2/26/Constellation_The_Burning_Claws_Cleaving",
       get desc() {
         return (
           <>

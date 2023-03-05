@@ -12,7 +12,8 @@ export function nilouA1isOn(partyData: PartyData, charData: CharData) {
 }
 
 export function getNilouA4BuffValue(maxHP: number) {
-  return maxHP > 30000 ? round(Math.min((maxHP / 1000 - 30) * 9, 400), 1) : 0;
+  const stacks = Math.floor(maxHP / 1000) - 30;
+  return stacks > 0 ? round(Math.min(stacks * 9, 400), 1) : 0;
 }
 
 const Nilou: DataCharacter = {

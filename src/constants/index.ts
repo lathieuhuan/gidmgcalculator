@@ -33,7 +33,7 @@ export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] 
 
 export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
 
-// don't ever change the order of this array
+/** Don't change the order of items */
 export const VISION_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
 
 export const LEVELS = [

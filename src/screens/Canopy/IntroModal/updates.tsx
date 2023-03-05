@@ -3,6 +3,22 @@ import { Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "March 5th, 2023",
+    content: [
+      <>
+        Added beta characters: <Lightgold>Baizhu</Lightgold> (dendro), <Lightgold>Kaveh</Lightgold>{" "}
+        (dendro).
+      </>,
+      <>
+        Added beta weapon: <Lightgold>Jadefall's Splendor</Lightgold> (catalyst).
+      </>,
+      <>
+        Added beta artifact sets: <Lightgold>Nymph's Dream</Lightgold>,{" "}
+        <Lightgold>Dewflower's Glow</Lightgold>.
+      </>,
+    ],
+  },
+  {
     date: "February 28th, 2023",
     content: [<>Enabled uploading .json file in GOOD format.</>],
   },

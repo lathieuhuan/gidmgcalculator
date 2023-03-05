@@ -8,6 +8,46 @@ import { makeWpModApplier } from "../utils";
 
 const goldCatalysts: DataWeapon[] = [
   {
+    code: 152,
+    beta: true,
+    name: "Jadefall's Splendor",
+    icon: "https://i.ibb.co/2dWtL2S/jadefalls-splendor.png",
+    rarity: 5,
+    mainStatScale: "46",
+    subStat: { type: "hp_", scale: "10.8%" },
+    passiveName: "Protector's Virtue",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} At the same time, they will regain {3.5 + refi * 0.5} Energy every
+            2.5s. This will still take effect even if the character is not on the field.
+          </>
+        );
+      },
+      extra: [
+        <>
+          When using an Elemental Burst or creating a shield, the equipping character's{" "}
+          <Green>corresponding Elemental DMG</Green> is increased by{" "}
+          <Green b>{(15 + refi * 15) / 100}%</Green> for every 1,000 Max HP they possess for 3s, up
+          to <Rose>{6 + refi * 6}%</Rose>.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldCatalysts, 152)?.passiveDesc({ refi }).extra?.[0],
+        applyFinalBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
+          const stacks = Math.floor(totalAttr.hp / 1000);
+          const buffValue = Math.min(stacks * (0.15 + refi * 0.15), 6 + refi * 6);
+          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
+        },
+      },
+    ],
+  },
+  {
     code: 147,
     name: "Tulaytullah's Remembrance",
     icon: "f/fc/Weapon_Tulaytullah%27s_Remembrance",

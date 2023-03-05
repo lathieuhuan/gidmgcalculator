@@ -180,7 +180,8 @@ const Candace: DataCharacter = {
 
         if (charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
           const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs[0] || 0 : 0;
-          applyModifier(obj.desc, attPattBonus, "NA.pct", 20 + (maxHP / 1000) * 0.5, obj.tracker);
+          const stacks = Math.floor(maxHP / 1000);
+          applyModifier(obj.desc, attPattBonus, "NA.pct", 20 + stacks * 0.5, obj.tracker);
         }
       },
     },
