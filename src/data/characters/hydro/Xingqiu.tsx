@@ -111,7 +111,7 @@ const Xingqiu: DataCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("attPattBonus", "ES.multPlus_", 50),
+      applyBuff: makeModApplier("attPattBonus", "ES.multPlus", 50),
     },
   ],
   debuffs: [

@@ -1,9 +1,16 @@
 import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
-import type { CustomBuffCtrl, CustomDebuffCtrlType } from "@Src/types";
+import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 
 // Constant
-import { ATTACK_ELEMENTS, ATTACK_PATTERNS, REACTIONS } from "@Src/constants";
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
+  REACTION_BONUS_INFO_KEYS,
+  REACTIONS,
+} from "@Src/constants";
 
 // Action
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
@@ -18,28 +25,34 @@ import { useTranslation } from "@Src/hooks";
 // Component
 import { Input } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
+import { FaChevronDown } from "react-icons/fa";
 
-const CUSTOM_BUFF_CATEGORIES = ["Attributes", "Elements", "Talents", "Reactions"] as const;
+type CustomBuffCategory = CustomBuffCtrl["category"];
 
-const OPTIONS_BY_CATEGORY = {
-  Attributes: [
-    "hp",
-    "hp_",
-    "atk",
-    "atk_",
-    "def",
-    "def_",
-    "em",
-    "er_",
-    "cRate_",
-    "cDmg_",
-    "shieldS_",
-    "healB_",
-  ],
-  Elements: ATTACK_ELEMENTS,
-  Talents: ATTACK_PATTERNS,
-  Reactions: REACTIONS,
-} as const;
+const CATEGORIES: Record<
+  CustomBuffCategory,
+  { label: string; types: readonly CustomBuffCtrlType[]; subTypes?: readonly string[] }
+> = {
+  totalAttr: {
+    label: "Attributes",
+    types: ["hp", "hp_", "atk", "atk_", "def", "def_", "em", "er_", "cRate_", "cDmg_", "shieldS_", "healB_"],
+  },
+  attElmtBonus: {
+    label: "Elements",
+    types: ATTACK_ELEMENTS,
+    subTypes: ATTACK_ELEMENT_INFO_KEYS,
+  },
+  attPattBonus: {
+    label: "Talents",
+    types: ["all", ...ATTACK_PATTERNS],
+    subTypes: ATTACK_PATTERN_INFO_KEYS,
+  },
+  rxnBonus: {
+    label: "Reactions",
+    types: REACTIONS,
+    subTypes: REACTION_BONUS_INFO_KEYS,
+  },
+};
 
 interface BuffCtrlCreatorProps {
   onClose: () => void;
@@ -50,24 +63,39 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [config, setConfig] = useState<CustomBuffCtrl>({
-    category: 0,
+    category: "totalAttr",
     type: "atk_",
     value: 0,
   });
 
-  const onChangeCategory = (categoryName: typeof CUSTOM_BUFF_CATEGORIES[number]) => {
-    setConfig((prev) => ({
-      ...prev,
-      type: OPTIONS_BY_CATEGORY[categoryName][0],
-      category: CUSTOM_BUFF_CATEGORIES.indexOf(categoryName),
-    }));
+  const subTypes = CATEGORIES[config.category].subTypes;
+
+  const onChangeCategory = (category: CustomBuffCategory) => {
+    const subType = CATEGORIES[category].subTypes?.[0] as CustomBuffCtrl["subType"];
+
+    setConfig({
+      category,
+      type: CATEGORIES[category].types[0] as CustomBuffCtrlType,
+      ...(subType ? { subType } : undefined),
+      value: 0,
+    });
   };
 
   const onChangeType = (type: string) => {
-    setConfig((prev) => ({
-      ...prev,
-      type: type as CustomDebuffCtrlType,
-    }));
+    setConfig({
+      ...config,
+      type: type as CustomBuffCtrlType,
+    });
+
+    inputRef.current?.focus();
+  };
+
+  const onChangeSubType = (subType: string) => {
+    setConfig({
+      ...config,
+      subType: subType as CustomBuffCtrl["subType"],
+      value: 0,
+    });
 
     inputRef.current?.focus();
   };
@@ -80,12 +108,12 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   return (
     <Fragment>
       <div className="flex flex-col md1:flex-row">
-        {CUSTOM_BUFF_CATEGORIES.map((categoryName, index) => {
-          const chosen = config.category === index;
+        {Object.entries(CATEGORIES).map(([category, { label }], index) => {
+          const chosen = config.category === category;
 
           return (
             <button
-              key={categoryName}
+              key={category}
               className={clsx(
                 "px-4 py-1",
                 !index && "rounded-t-lg md1:rounded-tr-none md1:rounded-l-lg",
@@ -95,47 +123,68 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 if (!chosen) {
-                  onChangeCategory(categoryName);
+                  onChangeCategory(category as CustomBuffCategory);
                 }
               }}
             >
-              <p className={clsx("text-lg font-semibold text-center", chosen && "text-black")}>
-                {categoryName}
-              </p>
+              <p className={clsx("text-lg font-semibold text-center", chosen && "text-black")}>{label}</p>
             </button>
           );
         })}
       </div>
 
-      <div className="mx-auto mt-8 flex items-center">
-        <select
-          className="pr-2 text-default text-right text-last-right"
-          value={config.type}
-          onChange={(e) => onChangeType(e.target.value)}
-        >
-          {OPTIONS_BY_CATEGORY[CUSTOM_BUFF_CATEGORIES[config.category]].map((option) => (
-            <option key={option} className="pr-2" value={option}>
-              {t(option)}
-            </option>
-          ))}
-        </select>
-        <Input
-          ref={inputRef}
-          type="number"
-          className="ml-4 w-16 px-2 py-1 text-lg text-right font-semibold"
-          autoFocus
-          value={config.value}
-          max={999}
-          onChange={(value) => {
-            setConfig((prev) => ({ ...prev, value }));
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onConfirm();
-            }
-          }}
-        />
-        <span className="ml-2">{config.category > 1 ? "%" : percentSign(config.type)}</span>
+      <div className="mt-4 mx-auto flex-center flex-col md1:flex-row md1:space-x-3">
+        <div className="mt-4 flex items-center relative">
+          <FaChevronDown className="absolute -z-10" />
+          <select
+            className="pl-6 pr-2 text-default appearance-none capitalize"
+            value={config.type}
+            onChange={(e) => onChangeType(e.target.value)}
+          >
+            {CATEGORIES[config.category].types.map((option) => (
+              <option key={option} className="pr-2" value={option}>
+                {config.category === "attElmtBonus" ? (option === "phys" ? "physical" : option) : t(option)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mt-4 flex items-center">
+          {subTypes ? (
+            <div className="flex items-center relative">
+              <FaChevronDown className="absolute -z-10" />
+              <select
+                className="pl-6 pr-2 text-default appearance-none"
+                value={config.subType}
+                onChange={(e) => onChangeSubType(e.target.value)}
+              >
+                {subTypes.map((subType, i) => (
+                  <option key={i} value={subType}>
+                    {t(subType)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
+
+          <Input
+            ref={inputRef}
+            type="number"
+            className="w-16 ml-3 px-2 py-1 text-lg text-right font-semibold"
+            autoFocus
+            value={config.value}
+            max={999}
+            onChange={(value) => {
+              setConfig((prev) => ({ ...prev, value }));
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onConfirm();
+              }
+            }}
+          />
+          <span className="ml-2">{percentSign(config.subType || config.type)}</span>
+        </div>
       </div>
       <ButtonBar
         className="mt-8"

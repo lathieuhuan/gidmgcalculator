@@ -45,7 +45,7 @@ function calcTalentDamage({
 
     if (attPatt !== "none") {
       normalMult += attPattBonus[attPatt].pct_;
-      specialMult = toMult(attPattBonus[attPatt].multPlus_);
+      specialMult = toMult(attPattBonus[attPatt].multPlus);
     }
     if (attElmt !== "various") {
       normalMult += totalAttr[attElmt];

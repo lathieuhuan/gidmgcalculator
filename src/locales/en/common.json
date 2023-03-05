@@ -43,5 +43,10 @@
   "spread": "Spread",
   "aggravate": "Aggravate",
   "melt": "Melt",
-  "vaporize": "Vaporize"
+  "vaporize": "Vaporize",
+  "flat": "Flat Bonus",
+  "pct_": "Percent Bonus",
+  "mult_": "Multiplier Bonus",
+  "defIgn_": "Def Ignore",
+  "multPlus": "Multicative"
 }

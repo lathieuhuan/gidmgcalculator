@@ -6,18 +6,10 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Selector
-import {
-  selectActiveId,
-  selectSetupManageInfos,
-  selectCalcSetupsById,
-} from "@Store/calculatorSlice/selectors";
+import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 
 // Action
-import {
-  updateCustomBuffCtrls,
-  updateCustomDebuffCtrls,
-  removeCustomModCtrl,
-} from "@Store/calculatorSlice";
+import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
 
 // Component
 import { CloseButton, IconToggleButton, Input } from "@Components/atoms";
@@ -93,9 +85,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
         </IconToggleButton>
       </div>
 
-      {copyOptions.length ? (
-        <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} />
-      ) : null}
+      {copyOptions.length ? <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} /> : null}
 
       <div className="mt-6 space-y-4" style={{ marginLeft: "-0.5rem" }}>
         {modCtrls.map(({ type, value }, ctrlIndex) => (
@@ -135,13 +125,10 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       <Modal
         active={modalOn}
         className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow"
+        style={{ minWidth: isBuffs ? 302 : "auto" }}
         onClose={closeModal}
       >
-        {isBuffs ? (
-          <BuffCtrlCreator onClose={closeModal} />
-        ) : (
-          <DebuffCtrlCreator onClose={closeModal} />
-        )}
+        {isBuffs ? <BuffCtrlCreator onClose={closeModal} /> : <DebuffCtrlCreator onClose={closeModal} />}
       </Modal>
     </div>
   );

@@ -95,7 +95,7 @@ export const ATTRIBUTE_STAT_TYPES = [
   "caAtkSpd_",
 ] as const;
 
-export const ATTACK_PATTERN_INFO_KEYS = ["cRate_", "cDmg_", "pct_", "flat", "mult_", "defIgn_", "multPlus_"] as const;
+export const ATTACK_PATTERN_INFO_KEYS = ["cRate_", "cDmg_", "pct_", "flat", "mult_", "defIgn_", "multPlus"] as const;
 
 export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg_", "flat"] as const;
 

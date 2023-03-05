@@ -121,7 +121,7 @@ const Yoimiya: DataCharacter = {
       ],
       applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs, desc, tracker }) => {
         const buffValue = getESBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, "NA.multPlus_", buffValue, tracker);
+        applyModifier(desc, attPattBonus, "NA.multPlus", buffValue, tracker);
 
         if (checkAscs[1](char)) {
           applyModifier(desc, totalAttr, "pyro", 2 * (inputs[0] || 0), tracker);

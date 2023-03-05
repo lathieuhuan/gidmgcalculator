@@ -211,7 +211,7 @@ const Wanderer: DataCharacter = {
       },
       applyBuff: ({ totalAttr, attPattBonus, char, partyData, desc, tracker }) => {
         const { NA, CA } = getESBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, ["NA.multPlus_", "CA.multPlus_"], [NA, CA], tracker);
+        applyModifier(desc, attPattBonus, ["NA.multPlus", "CA.multPlus"], [NA, CA], tracker);
 
         if (checkCons[1](char)) {
           applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
