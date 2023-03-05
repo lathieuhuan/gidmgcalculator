@@ -29,11 +29,12 @@ export enum EStatDamageKey {
   AVERAGE = "average",
 }
 
+/** Don't change the items order of any array below */
+
 export const WEAPON_TYPES = ["sword", "claymore", "catalyst", "polearm", "bow"] as const;
 
 export const ARTIFACT_TYPES = ["flower", "plume", "sands", "goblet", "circlet"] as const;
 
-/** Don't change the order of items */
 export const VISION_TYPES = ["pyro", "hydro", "electro", "cryo", "geo", "anemo", "dendro"] as const;
 
 export const LEVELS = [
@@ -78,7 +79,6 @@ export const ARTIFACT_SUBSTAT_TYPES = [
   "cDmg_",
 ] as const;
 
-/** Don't change the order of items */
 export const ATTRIBUTE_STAT_TYPES = [
   ...CORE_STAT_TYPES,
   "hp_",
@@ -180,6 +180,7 @@ export const DEFAULT_WEAPON_CODE = {
 
 export const DEFAULT_MODIFIER_INITIAL_VALUES: Record<string, number> = {
   check: 0,
+  level: 1,
   text: 0,
   select: 1,
   stacks: 1,

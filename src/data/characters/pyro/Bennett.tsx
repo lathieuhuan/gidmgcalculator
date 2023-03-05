@@ -130,7 +130,7 @@ const Bennett: DataCharacter = {
       ),
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
-        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],

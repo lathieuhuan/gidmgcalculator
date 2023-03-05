@@ -114,7 +114,7 @@ const Sara: DataCharacter = {
       ),
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
-        { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Skill Level", type: "level", for: "teammate" },
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {

@@ -213,7 +213,11 @@ const Kaveh: DataCharacter = {
         </>
       ),
       inputConfigs: [
-        { label: "Elemental Burst level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        {
+          label: "Elemental Burst level",
+          type: "level",
+          for: "teammate",
+        },
       ],
       applyBuff: ({ rxnBonus, inputs, desc, tracker }) => {
         applyModifier(desc, rxnBonus, "bloom.pct", getEBbuffValue(inputs[0]), tracker);

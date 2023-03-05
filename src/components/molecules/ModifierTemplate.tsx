@@ -107,13 +107,14 @@ export const ModifierTemplate = ({
 
     switch (config.type) {
       case "text":
+      case "level":
         if (mutable) {
           return (
             <Input
               type="number"
               className="w-20 p-2 text-right font-semibold"
               value={input}
-              max={config.max}
+              max={config.type === "level" ? 13 : config.max}
               onChange={(value) => onChangeText?.(value, index)}
             />
           );

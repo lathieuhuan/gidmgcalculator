@@ -133,7 +133,7 @@ const Mona: DataCharacter = {
         </>
       ),
       inputConfigs: [
-        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
         { label: "Constellation 4", type: "check", for: "teammate" },
       ],

@@ -197,9 +197,14 @@ const Baizhu: DataCharacter = {
       applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
         const hp = toSelf ? totalAttr.hp : inputs[0] || 0;
         const stacks = Math.floor(Math.min(hp, 50000) / 1000);
-        const fields: ReactionBonusPath[] = ["burning.pct", "bloom.pct", "hyperbloom.pct"];
 
-        applyModifier(desc, rxnBonus, fields, stacks * 2, tracker);
+        applyModifier(
+          desc,
+          rxnBonus,
+          ["burning.pct", "bloom.pct", "hyperbloom.pct", "burgeon.pct"],
+          stacks * 2,
+          tracker
+        );
         applyModifier(desc, rxnBonus, ["aggravate.pct", "spread.pct"], stacks * 0.8, tracker);
       },
     },

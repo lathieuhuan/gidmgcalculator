@@ -237,9 +237,7 @@ const Ayato: DataCharacter = {
       inputConfigs: [
         {
           label: "Elemental Burst Level",
-          type: "text",
-          initialValue: 1,
-          max: 13,
+          type: "level",
           for: "teammate",
         },
       ],

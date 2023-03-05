@@ -284,9 +284,7 @@ const Raiden: DataCharacter = {
       inputConfigs: [
         {
           label: "Elemental Skill Level",
-          type: "text",
-          initialValue: 1,
-          max: 13,
+          type: "level",
           for: "teammate",
         },
       ],

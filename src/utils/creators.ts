@@ -1,22 +1,22 @@
 import type {
-  CharInfo,
-  Rarity,
-  WeaponType,
+  ArtifactDebuffCtrl,
   ArtifactType,
-  ModifierCtrl,
-  Target,
   CalcArtifact,
   CalcWeapon,
+  CharInfo,
   ElementModCtrl,
-  Teammate,
+  ModifierCtrl,
   ModInputConfig,
-  ArtifactDebuffCtrl,
+  Rarity,
+  Target,
+  Teammate,
+  WeaponType,
 } from "@Src/types";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 import {
   ATTACK_ELEMENTS,
-  DEFAULT_WEAPON_CODE,
   DEFAULT_MODIFIER_INITIAL_VALUES,
+  DEFAULT_WEAPON_CODE,
   EModAffect,
 } from "@Src/constants";
 import { appSettings } from "./utils";

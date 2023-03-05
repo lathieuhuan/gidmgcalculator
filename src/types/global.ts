@@ -64,7 +64,14 @@ export type CharInfo = {
   cons: number;
 };
 
-export type ModInputType = "text" | "check" | "stacks" | "select" | "anemoable" | "dendroable";
+export type ModInputType =
+  | "level"
+  | "text"
+  | "check"
+  | "stacks"
+  | "select"
+  | "anemoable"
+  | "dendroable";
 
 export type ModInputConfig = {
   label?: string;

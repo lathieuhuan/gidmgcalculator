@@ -186,7 +186,7 @@ const Faruzan: DataCharacter = {
         );
       },
       inputConfigs: [
-        { label: "Elemental Burst Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Ascension 4", type: "check", for: "teammate" },
         { label: "Base ATK (A4)", type: "text", max: 9999, for: "teammate" },
         { label: "Constellation 6", type: "check", for: "teammate" },

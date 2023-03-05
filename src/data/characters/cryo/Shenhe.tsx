@@ -119,7 +119,7 @@ const Shenhe: DataCharacter = {
       ),
       inputConfigs: [
         { label: "Current ATK", type: "text", max: 9999, for: "teammate" },
-        { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Skill Level", type: "level", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, attElmtBonus } = obj;
@@ -230,9 +230,7 @@ const Shenhe: DataCharacter = {
       inputConfigs: [
         {
           label: "Elemental Burst Level",
-          type: "text",
-          initialValue: 1,
-          max: 13,
+          type: "level",
           for: "teammate",
         },
       ],

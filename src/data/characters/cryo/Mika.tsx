@@ -170,7 +170,7 @@ const Mika: DataCharacter = {
         </>
       ),
       inputConfigs: [
-        { label: "Elemental Skill Level", type: "text", initialValue: 1, max: 13, for: "teammate" },
+        { label: "Elemental Skill Level", type: "level", for: "teammate" },
         { label: "Detector stacks (A1)", type: "select", initialValue: 0, max: 5 },
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
