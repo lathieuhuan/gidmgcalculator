@@ -7,9 +7,7 @@ import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const getEBbuffValue = (level: number) => {
-  return level ? round(27.49 * TALENT_LV_MULTIPLIERS[2][level], 2) : 0;
-};
+const getEBbuffValue = (level: number) => (level ? round(27.49 * TALENT_LV_MULTIPLIERS[2][level], 2) : 0);
 
 const Kaveh: DataCharacter = {
   code: 69,
@@ -17,7 +15,7 @@ const Kaveh: DataCharacter = {
   name: "Kaveh",
   icon: "https://i.ibb.co/7zsCR62/kaveh.png",
   sideIcon: "",
-  rarity: 5,
+  rarity: 4,
   nation: "sumeru",
   vision: "dendro",
   weaponType: "claymore",

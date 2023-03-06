@@ -95,11 +95,11 @@ export const ATTRIBUTE_STAT_TYPES = [
   "caAtkSpd_",
 ] as const;
 
-export const ATTACK_PATTERN_INFO_KEYS = ["cRate_", "cDmg_", "pct_", "flat", "mult_", "defIgn_", "multPlus"] as const;
+export const ATTACK_PATTERN_INFO_KEYS = ["pct_", "flat", "cRate_", "cDmg_", "mult_", "defIgn_", "multPlus"] as const;
 
-export const ATTACK_ELEMENT_INFO_KEYS = ["cDmg_", "flat"] as const;
+export const ATTACK_ELEMENT_INFO_KEYS = ["flat", "cRate_", "cDmg_"] as const;
 
-export const REACTION_BONUS_INFO_KEYS = ["cRate_", "cDmg_", "pct_"] as const;
+export const REACTION_BONUS_INFO_KEYS = ["pct_", "cRate_", "cDmg_"] as const;
 
 export const VISION_ICONS = {
   pyro: "e/e8/Element_Pyro",

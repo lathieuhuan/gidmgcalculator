@@ -58,7 +58,7 @@ function calcTalentDamage({
     const defReduction = 1 - resistReduct.def / 100;
 
     if (attPatt !== "none") {
-      defMult = 1 - attPattBonus[attPatt].defIgn_ / 100;
+      defMult = 1 - (attPattBonus[attPatt].defIgn_ + attPattBonus.all.defIgn_) / 100;
     }
     defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
 
@@ -72,7 +72,7 @@ function calcTalentDamage({
         (talentBuff[type]?.value || 0) +
         attPattBonus.all[type] +
         (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
-        (attElmt !== "various" && type === "cDmg_" ? attElmtBonus[attElmt][type] : 0)
+        (attElmt !== "various" ? attElmtBonus[attElmt][type] : 0)
       );
     };
     const cRate_ = Math.min(Math.max(totalCrit("cRate_"), 0), 100) / 100;

@@ -52,7 +52,12 @@ const Baizhu: DataCharacter = {
       image: "",
       stats: [
         { name: "Skill DMG", multFactors: 79.2 },
-        { name: "Healing", multFactors: { root: 9.6, attributeType: "hp" }, flatFactor: 924 },
+        {
+          name: "Healing",
+          notAttack: "healing",
+          multFactors: { root: 9.6, attributeType: "hp" },
+          flatFactor: 924,
+        },
         {
           name: "Gossamer Sprite: Splice DMG (C2)",
           multFactors: { root: 237.6, scale: 0 },
@@ -60,6 +65,7 @@ const Baizhu: DataCharacter = {
         },
         {
           name: "Gossamer Sprite: Splice Healing (C2)",
+          notAttack: "healing",
           multFactors: { root: 1.92, attributeType: "hp" },
           flatFactor: 185,
         },
@@ -71,11 +77,13 @@ const Baizhu: DataCharacter = {
       stats: [
         {
           name: "Seamless Shield DMG Absorption",
+          notAttack: "shield",
           multFactors: { root: 0.8, attributeType: "hp" },
           flatFactor: 77,
         },
         {
           name: "Spiritvein Healing",
+          notAttack: "healing",
           multFactors: { root: 5.2, attributeType: "hp" },
           flatFactor: 501,
         },

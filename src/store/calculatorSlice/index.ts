@@ -36,16 +36,7 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
-import {
-  bareLv,
-  deepCopy,
-  findById,
-  turnArray,
-  countVision,
-  findByCode,
-  getCopyName,
-  appSettings,
-} from "@Src/utils";
+import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -90,10 +81,7 @@ export const calculatorSlice = createSlice({
         ...action.payload,
       };
     },
-    updateMessage: (
-      state,
-      action: PayloadAction<NonNullable<Pick<AppMessage, "type" | "content">> | null>
-    ) => {
+    updateMessage: (state, action: PayloadAction<NonNullable<Pick<AppMessage, "type" | "content">> | null>) => {
       state.message = action.payload
         ? {
             ...action.payload,
@@ -296,11 +284,7 @@ export const calculatorSlice = createSlice({
         }
       }
       // new teammate form new resonance
-      if (
-        resonanceVisionTypes.includes(vision) &&
-        oldVisionCount[vision] === 1 &&
-        newVisionCount[vision] === 2
-      ) {
+      if (resonanceVisionTypes.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
         const newResonance = {
           vision,
           activated: ["pyro", "hydro", "dendro"].includes(vision),
@@ -447,9 +431,7 @@ export const calculatorSlice = createSlice({
       const setBonuses = getArtifactSetBonuses(pieces);
       const setup = state.setupsById[state.activeId];
       setup.artifacts = pieces;
-      setup.artBuffCtrls = setBonuses[0]?.bonusLv
-        ? createArtifactBuffCtrls(true, setBonuses[0])
-        : [];
+      setup.artBuffCtrls = setBonuses[0]?.bonusLv ? createArtifactBuffCtrls(true, setBonuses[0]) : [];
 
       calculate(state);
     },
@@ -492,7 +474,7 @@ export const calculatorSlice = createSlice({
 
       switch (actionType) {
         case "add":
-          activeSetup.customBuffCtrls.unshift(...turnArray(ctrls));
+          activeSetup.customBuffCtrls.push(...turnArray(ctrls));
           break;
         case "edit":
           for (const { index, ...newInfo } of turnArray(ctrls)) {

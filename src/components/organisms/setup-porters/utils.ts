@@ -45,8 +45,6 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     party,
     elmtModCtrls,
     customInfusion,
-    customBuffCtrls,
-    customDebuffCtrls,
   } = calcSetup;
 
   const { code: charCode = 0 } = findDataCharacter(char) || {};
@@ -55,20 +53,14 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   const _charCode = [charCode, LEVELS.indexOf(char.level), cons, NAs, ES, EB].join(DIVIDERS[1]);
 
   const encodeMC = (mod: ModifierCtrl) => {
-    return [
-      +mod.activated,
-      mod.index,
-      mod.inputs?.length ? mod.inputs.join(DIVIDER_MC_INPUTS) : "",
-    ].join(DIVIDER_MC);
+    return [+mod.activated, mod.index, mod.inputs?.length ? mod.inputs.join(DIVIDER_MC_INPUTS) : ""].join(DIVIDER_MC);
   };
 
   const encodeMCs = (mods: ModifierCtrl[], divideLv: number) => {
     return mods.map(encodeMC).join(DIVIDERS[divideLv]);
   };
 
-  const _wpCode = [weapon.code, weapon.type, LEVELS.indexOf(weapon.level), weapon.refi].join(
-    DIVIDERS[1]
-  );
+  const _wpCode = [weapon.code, weapon.type, LEVELS.indexOf(weapon.level), weapon.refi].join(DIVIDERS[1]);
 
   const _artifactCodes = artifacts.map((artifact, i) => {
     return artifact
@@ -78,15 +70,11 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
           artifact.rarity,
           artifact.level,
           artifact.mainStatType,
-          artifact.subStats
-            .map((subStat) => [subStat.type, subStat.value].join(DIVIDERS[3]))
-            .join(DIVIDERS[2]),
+          artifact.subStats.map((subStat) => [subStat.type, subStat.value].join(DIVIDERS[3])).join(DIVIDERS[2]),
         ].join(DIVIDERS[1])
       : "";
   });
-  const _artDCsCode = artDebuffCtrls
-    .map((ctrl) => `${ctrl.code + DIVIDERS[2] + encodeMC(ctrl)}`)
-    .join(DIVIDERS[1]);
+  const _artDCsCode = artDebuffCtrls.map((ctrl) => `${ctrl.code + DIVIDERS[2] + encodeMC(ctrl)}`).join(DIVIDERS[1]);
 
   const _teammateCodes = party.map((tm, i) => {
     if (tm) {
@@ -104,16 +92,12 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     return "";
   });
 
-  const _elmtMCsCode = [
-    elmtModCtrls.reaction,
-    elmtModCtrls.infuse_reaction,
-    +elmtModCtrls.superconduct,
-  ].join(DIVIDERS[1]);
+  const _elmtMCsCode = [elmtModCtrls.reaction, elmtModCtrls.infuse_reaction, +elmtModCtrls.superconduct].join(
+    DIVIDERS[1]
+  );
 
   const _resonancesCode = elmtModCtrls.resonances
-    .map((rsn) =>
-      [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDERS[3]) : ""].join(DIVIDERS[2])
-    )
+    .map((rsn) => [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDERS[3]) : ""].join(DIVIDERS[2]))
     .join(DIVIDERS[1]);
 
   const _targetCode = [
@@ -122,9 +106,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     target.variantType || "",
     target.inputs?.length ? target.inputs.join(DIVIDERS[2]) : "",
     Object.entries(target.resistances)
-      .map(([key, value]) =>
-        [ATTACK_ELEMENTS.indexOf(key as AttackElement), value].join(DIVIDERS[3])
-      )
+      .map(([key, value]) => [ATTACK_ELEMENTS.indexOf(key as AttackElement), value].join(DIVIDERS[3]))
       .join(DIVIDERS[2]),
   ].join(DIVIDERS[1]);
 

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useState } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 
@@ -17,6 +18,12 @@ import { Modal } from "@Components/molecules";
 import { CopySection } from "@Screens/Calculator/components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
+import { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
+import { percentSign } from "@Src/utils";
+
+const isBuffCtrl = (ctrl: CustomBuffCtrl | CustomDebuffCtrl): ctrl is CustomBuffCtrl => {
+  return "category" in (ctrl as CustomBuffCtrl);
+};
 
 interface CustomModifiersProps {
   isBuffs: boolean;
@@ -87,39 +94,59 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
 
       {copyOptions.length ? <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} /> : null}
 
-      <div className="mt-6 space-y-4" style={{ marginLeft: "-0.5rem" }}>
-        {modCtrls.map(({ type, value }, ctrlIndex) => (
-          <div key={ctrlIndex} className="flex items-center">
-            <CloseButton
-              boneOnly
-              className="text-1.5xl"
-              onClick={() => {
-                dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
-              }}
-            />
-            <p className="pl-1 pr-2">
-              {t(type, { ns: isBuffs ? "common" : "resistance" })} {!isBuffs && "reduction"}
-            </p>
+      <div className="mt-6 flex flex-col-reverse space-y-4 space-y-reverse" style={{ marginLeft: "-0.5rem" }}>
+        {modCtrls.map((ctrl, ctrlIndex) => {
+          let label = "";
+          let min = 0;
+          let max = 0;
 
-            <Input
-              type="number"
-              className="ml-auto w-16 px-2 py-1 text-right text-lg font-medium"
-              value={value}
-              max={999}
-              onChange={(value) => {
-                dispatch(
-                  updateAction({
-                    actionType: "edit",
-                    ctrls: {
-                      index: ctrlIndex,
-                      value,
-                    },
-                  })
-                );
-              }}
-            />
-          </div>
-        ))}
+          if (isBuffCtrl(ctrl)) {
+            const sign = percentSign(ctrl.subType || ctrl.type);
+
+            min = sign ? -99 : -9999;
+            max = sign ? 999 : 99_999;
+            label = clsx(
+              BuffCtrlCreator.toLabel(ctrl.category, ctrl.type, t),
+              ctrl.subType && ` ${t(ctrl.subType)}`,
+              sign && `(${sign})`
+            );
+          } else {
+            max = 200;
+            label = `${t(ctrl.type, { ns: "resistance" })} reduction (%)`;
+          }
+
+          return (
+            <div key={ctrlIndex} className="flex items-center">
+              <CloseButton
+                boneOnly
+                className="text-1.5xl"
+                onClick={() => {
+                  dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
+                }}
+              />
+              <p className="pl-1 pr-2 capitalize">{label}</p>
+
+              <Input
+                type="number"
+                className="ml-auto w-16 px-2 py-1 text-right text-lg font-medium"
+                value={ctrl.value}
+                min={min}
+                max={max}
+                onChange={(value) => {
+                  dispatch(
+                    updateAction({
+                      actionType: "edit",
+                      ctrls: {
+                        index: ctrlIndex,
+                        value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
 
       <Modal

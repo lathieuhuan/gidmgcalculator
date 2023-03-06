@@ -28,12 +28,7 @@ import { cleanupCalcSetup } from "@Src/utils/setup";
 
 // Component
 import { ComplexSelect, Modal } from "@Components/molecules";
-import {
-  ConfirmModal,
-  SetupExporter,
-  SetupImporter,
-  UnderConstructNotice,
-} from "@Components/organisms";
+import { ConfirmModal, SetupExporter, SetupImporter, UnderConstructNotice } from "@Components/organisms";
 import { SaveSetup } from "../modal-content";
 
 type ModalInfo = {
@@ -96,9 +91,7 @@ export function SetupSelect() {
 
   const onClickToggleCompared = (ID: number) => () => {
     let newStandardId = standardId;
-    const newComparedIds = comparedIds.includes(ID)
-      ? comparedIds.filter((id) => id !== ID)
-      : comparedIds.concat(ID);
+    const newComparedIds = comparedIds.includes(ID) ? comparedIds.filter((id) => id !== ID) : comparedIds.concat(ID);
 
     if (newComparedIds.length === 0) {
       newStandardId = 0;
@@ -130,10 +123,7 @@ export function SetupSelect() {
     setModal({ type: "REMOVE_SETUP", setupIndex });
   };
 
-  const renderSuffixButton = (
-    { className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>,
-    index?: number
-  ) => {
+  const renderSuffixButton = ({ className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>, index?: number) => {
     return (
       <button
         key={index}
@@ -202,11 +192,7 @@ export function SetupSelect() {
                 },
               ];
 
-              return (
-                <div className="ml-auto flex justify-end">
-                  {rightButtons.map(renderSuffixButton)}
-                </div>
-              );
+              return <div className="ml-auto flex justify-end">{rightButtons.map(renderSuffixButton)}</div>;
             },
           };
         })}

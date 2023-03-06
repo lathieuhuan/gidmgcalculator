@@ -1,6 +1,8 @@
 import type {
+  AttackElement,
   AttackElementBonus,
   AttacklementInfo,
+  AttacklementInfoKey,
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfo,
@@ -11,6 +13,7 @@ import type {
   Reaction,
   ReactionBonus,
   ReactionBonusInfo,
+  ReactionBonusInfoKey,
 } from "@Src/types";
 import type { GetBuffedStatsArgs, UsedCode } from "./types";
 
@@ -168,28 +171,45 @@ export default function getBuffedStats({
   applyArtPassiveBuffs({ isFinal: false, setBonuses, modifierArgs });
 
   // APPLY CUSTOM BUFFS
-  for (const { category, type, value } of customBuffCtrls) {
+  const applyToTotalAttr = (type: string, value: number) => {
+    const key = type as AttributeStat;
+
+    totalAttr[key] += value;
+    addTrackerRecord(tracker?.totalAttr[key], "Custom buff", value);
+  };
+
+  for (const { category, type, subType, value } of customBuffCtrls) {
     switch (category) {
-      case 0:
-      case 1: {
-        const key = type as AttributeStat;
+      case "totalAttr": {
+        applyToTotalAttr(type, value);
+      }
+      case "attElmtBonus": {
+        if (subType === "pct_") {
+          applyToTotalAttr(type, value);
+        } else if (subType) {
+          const key = type as AttackElement;
+          const subKey = subType as AttacklementInfoKey;
 
-        totalAttr[key] += value;
-        addTrackerRecord(tracker?.totalAttr[key], "Custom buff", value);
+          attElmtBonus[key][subKey] += value;
+          addTrackerRecord(tracker?.attElmtBonus[`${key}.${subKey}`], "Custom buff", value);
+        }
         break;
       }
-      case 2: {
-        const key = type as AttackPatternBonusKey;
+      case "attPattBonus": {
+        if (subType) {
+          const key = type as AttackPatternBonusKey;
 
-        attPattBonus[key].pct_ += value;
-        addTrackerRecord(tracker?.attPattBonus[`${key}.pct_`], "Custom buff", value);
+          attPattBonus[key][subType] += value;
+          addTrackerRecord(tracker?.attPattBonus[`${key}.${subType}`], "Custom buff", value);
+        }
         break;
       }
-      case 3: {
+      case "rxnBonus": {
         const key = type as Reaction;
+        const subKey = subType as ReactionBonusInfoKey;
 
-        rxnBonus[key].pct_ += value;
-        addTrackerRecord(tracker?.rxnBonus[`${key}.pct_`], "Custom buff", value);
+        rxnBonus[key][subKey] += value;
+        addTrackerRecord(tracker?.rxnBonus[`${key}.${subKey}`], "Custom buff", value);
         break;
       }
     }

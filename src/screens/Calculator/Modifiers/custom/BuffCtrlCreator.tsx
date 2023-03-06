@@ -7,7 +7,6 @@ import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
   ATTACK_PATTERNS,
-  ATTACK_PATTERN_INFO_KEYS,
   REACTION_BONUS_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
@@ -29,6 +28,10 @@ import { FaChevronDown } from "react-icons/fa";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
+const toLabel = (category: string, type: string, t: (origin: string) => string) => {
+  return category === "attElmtBonus" ? (type === "phys" ? "physical" : type) : t(type);
+};
+
 const CATEGORIES: Record<
   CustomBuffCategory,
   { label: string; types: readonly CustomBuffCtrlType[]; subTypes?: readonly string[] }
@@ -40,12 +43,12 @@ const CATEGORIES: Record<
   attElmtBonus: {
     label: "Elements",
     types: ATTACK_ELEMENTS,
-    subTypes: ATTACK_ELEMENT_INFO_KEYS,
+    subTypes: ["pct_", ...ATTACK_ELEMENT_INFO_KEYS],
   },
   attPattBonus: {
     label: "Talents",
     types: ["all", ...ATTACK_PATTERNS],
-    subTypes: ATTACK_PATTERN_INFO_KEYS,
+    subTypes: ["pct_", "flat", "cRate_", "cDmg_", "defIgn_"],
   },
   rxnBonus: {
     label: "Reactions",
@@ -57,7 +60,7 @@ const CATEGORIES: Record<
 interface BuffCtrlCreatorProps {
   onClose: () => void;
 }
-export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
+const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -69,6 +72,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
   });
 
   const subTypes = CATEGORIES[config.category].subTypes;
+  const sign = percentSign(config.subType || config.type);
 
   const onChangeCategory = (category: CustomBuffCategory) => {
     const subType = CATEGORIES[category].subTypes?.[0] as CustomBuffCtrl["subType"];
@@ -143,7 +147,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
           >
             {CATEGORIES[config.category].types.map((option) => (
               <option key={option} className="pr-2" value={option}>
-                {config.category === "attElmtBonus" ? (option === "phys" ? "physical" : option) : t(option)}
+                {toLabel(config.category, option, t)}
               </option>
             ))}
           </select>
@@ -151,20 +155,24 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
 
         <div className="mt-4 flex items-center">
           {subTypes ? (
-            <div className="flex items-center relative">
-              <FaChevronDown className="absolute -z-10" />
-              <select
-                className="pl-6 pr-2 text-default appearance-none"
-                value={config.subType}
-                onChange={(e) => onChangeSubType(e.target.value)}
-              >
-                {subTypes.map((subType, i) => (
-                  <option key={i} value={subType}>
-                    {t(subType)}
-                  </option>
-                ))}
-              </select>
-            </div>
+            ["melt", "vaporize"].includes(config.type) ? (
+              <span className="px-2">{t("pct_")}</span>
+            ) : (
+              <div className="flex items-center relative">
+                <FaChevronDown className="absolute -z-10" />
+                <select
+                  className="pl-6 pr-2 text-default appearance-none"
+                  value={config.subType}
+                  onChange={(e) => onChangeSubType(e.target.value)}
+                >
+                  {subTypes.map((subType, i) => (
+                    <option key={i} className="disabled:bg-lesser" value={subType}>
+                      {t(subType)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )
           ) : null}
 
           <Input
@@ -173,7 +181,8 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
             className="w-16 ml-3 px-2 py-1 text-lg text-right font-semibold"
             autoFocus
             value={config.value}
-            max={999}
+            min={sign ? -99 : -9999}
+            max={sign ? 999 : 99_999}
             onChange={(value) => {
               setConfig((prev) => ({ ...prev, value }));
             }}
@@ -183,7 +192,7 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
               }
             }}
           />
-          <span className="ml-2">{percentSign(config.subType || config.type)}</span>
+          <span className="ml-2">{sign}</span>
         </div>
       </div>
       <ButtonBar
@@ -195,4 +204,8 @@ export default function BuffCtrlCreator({ onClose }: BuffCtrlCreatorProps) {
       />
     </Fragment>
   );
-}
+};
+
+BuffCtrlCreator.toLabel = toLabel;
+
+export default BuffCtrlCreator;

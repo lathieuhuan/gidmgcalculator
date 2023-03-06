@@ -63,7 +63,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           className="ml-4 w-16 px-2 py-1 text-lg text-right font-bold"
           autoFocus
           value={config.value}
-          max={999}
+          max={200}
           onChange={(value) => {
             setConfig((prev) => ({ ...prev, value }));
           }}

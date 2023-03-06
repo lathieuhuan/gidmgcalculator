@@ -1,10 +1,6 @@
 import type {
   AttributeStat,
   CharInfo,
-  CustomBuffCtrl,
-  CustomBuffCtrlType,
-  CustomDebuffCtrl,
-  CustomDebuffCtrlType,
   DataWeapon,
   ModifierCtrl,
   ModInputConfig,
@@ -331,24 +327,6 @@ const convertSetup = (
     }
   }
 
-  // CUSTOME MODIFIERS
-  const { customBCs = [], customDCs = [] } = setup.customMCs || {};
-
-  const customBuffCtrls: CustomBuffCtrl[] = customBCs.map((ctrl: any): CustomBuffCtrl => {
-    return {
-      category: ctrl.catKey,
-      type: mapVerson3_0[ctrl.type] as CustomBuffCtrlType,
-      value: ctrl.val,
-    };
-  });
-
-  const customDebuffCtrls: CustomDebuffCtrl[] = customDCs.map((ctrl: any): CustomDebuffCtrl => {
-    return {
-      type: mapVerson3_0[ctrl.type] as CustomDebuffCtrlType,
-      value: ctrl.val,
-    };
-  });
-
   const {
     Level: level = 1,
     "Pyro RES": pyro,
@@ -382,8 +360,8 @@ const convertSetup = (
       wpBuffCtrls: cleanModifiers(wpBuffCtrls, dataWeapon?.buffs || []),
       artBuffCtrls: cleanModifiers(setup.art?.BCs || [], artifactBuffs),
       artDebuffCtrls: createArtDebuffCtrls(),
-      customBuffCtrls,
-      customDebuffCtrls,
+      customBuffCtrls: [],
+      customDebuffCtrls: [],
 
       customInfusion: {
         element: "phys",
