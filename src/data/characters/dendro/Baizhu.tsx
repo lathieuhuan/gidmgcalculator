@@ -91,7 +91,7 @@ const Baizhu: DataCharacter = {
           name: "Spiritvein DMG",
           multFactors: 80.96,
           getTalentBuff: ({ char, totalAttr }) => {
-            const buffValue = Math.round(totalAttr.hp / 10);
+            const buffValue = Math.round(totalAttr.hp * 0.06);
             return talentBuff([checkCons[6](char), "flat", [false, 6], buffValue]);
           },
         },
@@ -118,7 +118,7 @@ const Baizhu: DataCharacter = {
           When Baizhu's active party member hits an opponent with their attacks, Baizhu will use Gossamer Sprite: Splice
           that deals 300% Dendro DMG and 20% of Universal Diagnosis' [ES] healing.
           <br />
-          This effect can be triggered once every 5s.
+          This effect can be triggered once every 6s.
         </>
       ),
     },
@@ -148,7 +148,7 @@ const Baizhu: DataCharacter = {
       },
       xtraDesc: [
         <>
-          Increases <Green>Spiritveins [~EB] DMG</Green> by <Green b>10%</Green> of Baizhu's <Green>Max HP</Green>.
+          Increases <Green>Spiritveins [~EB] DMG</Green> by <Green b>6%</Green> of Baizhu's <Green>Max HP</Green>.
         </>,
       ],
     },

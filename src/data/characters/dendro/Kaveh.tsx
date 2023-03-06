@@ -43,10 +43,10 @@ const Kaveh: DataCharacter = {
   activeTalents: {
     NA: {
       stats: [
-        { name: "1-Hit", multFactors: 80.57 },
-        { name: "2-Hit", multFactors: 73.68 },
-        { name: "3-Hit", multFactors: 92.39 },
-        { name: "4-Hit", multFactors: 110.77 },
+        { name: "1-Hit", multFactors: 76.19 },
+        { name: "2-Hit", multFactors: 69.64 },
+        { name: "3-Hit", multFactors: 84.26 },
+        { name: "4-Hit", multFactors: 102.69 },
       ],
     },
     CA: {
@@ -116,8 +116,8 @@ const Kaveh: DataCharacter = {
       image: "",
       desc: (
         <>
-          Within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES will be increased by 50% and he will
-          receive 50% more healing.
+          Within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES and Incoming Healing Bonus will be
+          increased by 50% and 25% respectively.
         </>
       ),
     },
