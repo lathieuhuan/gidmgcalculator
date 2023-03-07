@@ -15,7 +15,7 @@ import {
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 
 // Util
-import { percentSign } from "@Src/utils";
+import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
@@ -27,10 +27,6 @@ import { ButtonBar } from "@Components/molecules";
 import { FaChevronDown } from "react-icons/fa";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
-
-const toLabel = (category: string, type: string, t: (origin: string) => string) => {
-  return category === "attElmtBonus" ? (type === "phys" ? "physical" : type) : t(type);
-};
 
 const CATEGORIES: Record<
   CustomBuffCategory,
@@ -147,7 +143,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
           >
             {CATEGORIES[config.category].types.map((option) => (
               <option key={option} className="pr-2" value={option}>
-                {toLabel(config.category, option, t)}
+                {toCustomBuffLabel(config.category, option, t)}
               </option>
             ))}
           </select>
@@ -205,7 +201,5 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
     </Fragment>
   );
 };
-
-BuffCtrlCreator.toLabel = toLabel;
 
 export default BuffCtrlCreator;

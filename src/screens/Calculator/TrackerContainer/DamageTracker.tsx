@@ -1,13 +1,5 @@
 import { Fragment, ReactNode } from "react";
-import type {
-  CalculatedDamageCluster,
-  Infusion,
-  TalentBuff,
-  TrackerDamageRecord,
-} from "@Src/types";
-
-// Constant
-import { keyMap } from "./constants";
+import type { CalculatedDamageCluster, Infusion, TalentBuff, TrackerDamageRecord } from "@Src/types";
 
 // Component
 import { Green } from "@Components/atoms";
@@ -25,12 +17,7 @@ interface DamageTrackerProps {
   defMultDisplay?: ReactNode;
   infusion?: Infusion;
 }
-export function DamageTracker({
-  records = {},
-  calcDmgResult,
-  defMultDisplay,
-  infusion,
-}: DamageTrackerProps) {
+export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, infusion }: DamageTrackerProps) {
   const { t } = useTranslation();
 
   return (
@@ -65,7 +52,7 @@ export function DamageTracker({
           <div key={i}>
             <p className="font-medium">{t(attackName)}</p>
             <ul className="pl-4 text-lesser text-sm leading-6 list-disc">
-              {renderTalentBuff(record.talentBuff)}
+              {renderTalentBuff(record.talentBuff, t)}
 
               <li>
                 Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
@@ -78,9 +65,7 @@ export function DamageTracker({
                         <>
                           {" "}
                           <Green>*</Green> Talent Mult.{" "}
-                          <Green>
-                            {renderDmgValue(factor.talentMult, (value) => round(value, 2) + "%")}
-                          </Green>
+                          <Green>{renderDmgValue(factor.talentMult, (value) => round(value, 2) + "%")}</Green>
                         </>
                       ) : null}
                       {record.multFactors[i + 1] ? " + " : ""}
@@ -125,16 +110,15 @@ export function DamageTracker({
 
               {cDmg_ ? (
                 <li>
-                  Crit <span className="text-orange font-semibold">{renderDmgValue(crit)}</span> ={" "}
-                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>)
+                  Crit <span className="text-orange font-semibold">{renderDmgValue(crit)}</span> = {nonCritDmg}{" "}
+                  <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>)
                 </li>
               ) : null}
 
               {cDmg_ && record.cRate_ ? (
                 <li>
-                  Average{" "}
-                  <span className="text-orange font-semibold">{renderDmgValue(average)}</span> ={" "}
-                  {nonCritDmg} <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>
+                  Average <span className="text-orange font-semibold">{renderDmgValue(average)}</span> = {nonCritDmg}{" "}
+                  <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>
                   {renderDmgComponent({
                     desc: "Crit Rate",
                     value: record.cRate_,
@@ -152,7 +136,7 @@ export function DamageTracker({
   );
 }
 
-function renderTalentBuff(talentBuff: TalentBuff = {}) {
+function renderTalentBuff(talentBuff: TalentBuff = {}, t: (str: string) => string) {
   const entries = Object.entries(talentBuff);
 
   if (!entries.length) {
@@ -165,7 +149,7 @@ function renderTalentBuff(talentBuff: TalentBuff = {}) {
       {entries.map(([key, record], i) => {
         return (
           <p key={i} className="list-disc">
-            + {keyMap[key as keyof typeof keyMap]}: {record.desc}{" "}
+            + {t(key)}: {record.desc}{" "}
             <Green>
               {record.value}
               {percentSign(key)}

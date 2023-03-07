@@ -14,11 +14,24 @@ import type {
   Target,
   Teammate,
   Vision,
-  WeaponType,
+  CustomBuffCtrlCategory,
+  AttackPatternBonusKey,
+  Reaction,
+  CustomBuffCtrl,
+  CustomDebuffCtrl,
+  CustomBuffCtrlType,
 } from "@Src/types";
 
 // Constant
-import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
+import {
+  ATTACK_ELEMENTS,
+  LEVELS,
+  WEAPON_TYPES,
+  ATTRIBUTE_STAT_TYPES,
+  ATTACK_PATTERN_INFO_KEYS,
+  ATTACK_PATTERNS,
+  REACTIONS,
+} from "@Src/constants";
 import characters from "@Data/characters";
 
 // Util
@@ -29,22 +42,23 @@ import { restoreCalcSetup } from "@Src/utils/setup";
 const DIVIDERS = ["*", "D1", "D2", "D3", "D4"];
 const DIVIDER_MC = "D8";
 const DIVIDER_MC_INPUTS = "D9";
+const CUSTOM_BUFF_CATEGORIES: CustomBuffCtrlCategory[] = ["totalAttr", "attElmtBonus", "attPattBonus", "rxnBonus"];
 
 export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   const {
     char,
     selfBuffCtrls,
     selfDebuffCtrls,
-
     weapon,
     wpBuffCtrls,
     artifacts,
     artBuffCtrls,
     artDebuffCtrls,
-
     party,
     elmtModCtrls,
     customInfusion,
+    customBuffCtrls,
+    customDebuffCtrls,
   } = calcSetup;
 
   const { code: charCode = 0 } = findDataCharacter(char) || {};
@@ -60,7 +74,9 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     return mods.map(encodeMC).join(DIVIDERS[divideLv]);
   };
 
-  const _wpCode = [weapon.code, weapon.type, LEVELS.indexOf(weapon.level), weapon.refi].join(DIVIDERS[1]);
+  const _wpCode = [weapon.code, WEAPON_TYPES.indexOf(weapon.type), LEVELS.indexOf(weapon.level), weapon.refi].join(
+    DIVIDERS[1]
+  );
 
   const _artifactCodes = artifacts.map((artifact, i) => {
     return artifact
@@ -69,8 +85,10 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
           // artifact.type,
           artifact.rarity,
           artifact.level,
-          artifact.mainStatType,
-          artifact.subStats.map((subStat) => [subStat.type, subStat.value].join(DIVIDERS[3])).join(DIVIDERS[2]),
+          ATTRIBUTE_STAT_TYPES.indexOf(artifact.mainStatType),
+          artifact.subStats
+            .map((subStat) => [ATTRIBUTE_STAT_TYPES.indexOf(subStat.type), subStat.value].join(DIVIDERS[3]))
+            .join(DIVIDERS[2]),
         ].join(DIVIDERS[1])
       : "";
   });
@@ -85,7 +103,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
         tmCode,
         encodeMCs(tm.buffCtrls, 2),
         encodeMCs(tm.debuffCtrls, 2),
-        [weapon.code, weapon.type, weapon.refi, encodeMCs(weapon.buffCtrls, 3)].join(DIVIDERS[2]),
+        [weapon.code, WEAPON_TYPES.indexOf(weapon.type), weapon.refi, encodeMCs(weapon.buffCtrls, 3)].join(DIVIDERS[2]),
         [artifact.code, encodeMCs(artifact.buffCtrls, 3)].join(DIVIDERS[2]),
       ].join(DIVIDERS[1]);
     }
@@ -99,6 +117,36 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   const _resonancesCode = elmtModCtrls.resonances
     .map((rsn) => [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDERS[3]) : ""].join(DIVIDERS[2]))
     .join(DIVIDERS[1]);
+
+  const _customBuffCodes = customBuffCtrls.map((ctrl) => {
+    let typeCode = 0;
+
+    switch (ctrl.category) {
+      case "totalAttr":
+        typeCode = ATTRIBUTE_STAT_TYPES.indexOf(ctrl.type as AttributeStat);
+        break;
+      case "attElmtBonus":
+        typeCode = ATTACK_ELEMENTS.indexOf(ctrl.type as AttackElement);
+        break;
+      case "attPattBonus":
+        typeCode = ["all"].concat(ATTACK_PATTERNS).indexOf(ctrl.type as AttackPatternBonusKey);
+        break;
+      case "rxnBonus":
+        typeCode = REACTIONS.indexOf(ctrl.type as Reaction);
+        break;
+    }
+    return [
+      CUSTOM_BUFF_CATEGORIES.indexOf(ctrl.category),
+      typeCode,
+      ctrl.subType ? ATTACK_PATTERN_INFO_KEYS.indexOf(ctrl.subType) : 0,
+      ctrl.value,
+    ].join(DIVIDERS[2]);
+  });
+
+  const _customDebuffCodes = customDebuffCtrls.map((ctrl) => {
+    const typeCode = ["def"].concat(ATTACK_ELEMENTS).indexOf(ctrl.type);
+    return [typeCode, ctrl.value].join(DIVIDERS[2]);
+  });
 
   const _targetCode = [
     target.code,
@@ -123,6 +171,8 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
     _elmtMCsCode,
     _resonancesCode,
     ATTACK_ELEMENTS.indexOf(customInfusion.element),
+    _customBuffCodes.join(DIVIDERS[1]),
+    _customDebuffCodes.join(DIVIDERS[1]),
     _targetCode,
   ].join(DIVIDERS[0]);
 };
@@ -147,6 +197,8 @@ export const decodeSetup = (code: string): SetupImportInfo => {
     _elmtMCsCode,
     _resonancesCode,
     _infuseElmtIndex,
+    _customBuffsCode,
+    _customDebuffCodes,
     _targetCode,
   ] = code.split(DIVIDERS[0]);
   let seedID = Date.now();
@@ -171,12 +223,12 @@ export const decodeSetup = (code: string): SetupImportInfo => {
   };
 
   const [charCode, levelIndex, cons, NAs, ES, EB] = split(_charCode, 1);
-  const [wpCode, wpType, wpLvIndex, wpRefi] = split(_wpCode, 1);
+  const [wpCode, wpTypeIndex, wpLvIndex, wpRefi] = split(_wpCode, 1);
   const { name = "" } = findByCode(Object.values(characters), +charCode) || {};
 
   const decodeArtifact = (str: string | null, artType: ArtifactType): CalcArtifact | null => {
     if (!str) return null;
-    const [artCode, rarity, artLevel, mainStatType, jointSubStats] = split(str, 1);
+    const [artCode, rarity, artLevel, mainStatTypeIndex, jointSubStats] = split(str, 1);
     const subStats = split(jointSubStats, 2);
 
     return {
@@ -185,11 +237,11 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       type: artType,
       rarity: +rarity as Rarity,
       level: +artLevel,
-      mainStatType: mainStatType as AttributeStat,
+      mainStatType: ATTRIBUTE_STAT_TYPES[+mainStatTypeIndex],
       subStats: subStats.map((str) => {
-        const [type, value] = split(str, 3);
+        const [typeIndex, value] = split(str, 3);
         return {
-          type: type as AttributeStat,
+          type: ATTRIBUTE_STAT_TYPES[+typeIndex],
           value: +value,
         };
       }),
@@ -213,7 +265,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
     if (!tmStr) return null;
     const [tmCode, tmBCs, tmDCs, weapon, artifact] = split(tmStr, 1);
     const { name = "" } = Object.values(characters).find((data) => data.code === +tmCode) || {};
-    const [wpCode, wpType, wpRefi, wpBuffCtrls] = split(weapon, 2);
+    const [wpCode, wpTypeIndex, wpRefi, wpBuffCtrls] = split(weapon, 2);
     const [artCode, artBCs] = split(artifact, 2);
 
     return {
@@ -222,7 +274,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       debuffCtrls: splitMCs(tmDCs, 2),
       weapon: {
         code: +wpCode,
-        type: wpType as WeaponType,
+        type: WEAPON_TYPES[+wpTypeIndex],
         refi: +wpRefi,
         buffCtrls: splitMCs(wpBuffCtrls, 3),
       },
@@ -248,6 +300,42 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       })
     : [];
   const [tgCode, tgLevel, tgVariant, tgInputs, tgResistances] = split(_targetCode, 1);
+
+  const customBuffCtrls: CustomBuffCtrl[] = split(_customBuffsCode, 1).map((codes) => {
+    const [categoryIndex, typeIndex, subTypeIndex, value] = split(codes, 2);
+    const category = CUSTOM_BUFF_CATEGORIES[+categoryIndex];
+    let type = "";
+
+    switch (category) {
+      case "totalAttr":
+        type = ATTRIBUTE_STAT_TYPES[+typeIndex];
+        break;
+      case "attElmtBonus":
+        type = ATTACK_ELEMENTS[+typeIndex];
+        break;
+      case "attPattBonus":
+        type = ["all"].concat(ATTACK_PATTERNS)[+typeIndex];
+        break;
+      case "rxnBonus":
+        type = REACTIONS[+typeIndex];
+        break;
+    }
+
+    return {
+      category,
+      type: type as CustomBuffCtrlType,
+      ...(category === "totalAttr" ? undefined : { subType: ATTACK_PATTERN_INFO_KEYS[+subTypeIndex] }),
+      value: +value,
+    };
+  });
+
+  const customDebuffCtrls: CustomDebuffCtrl[] = split(_customDebuffCodes, 1).map((codes) => {
+    const [typeIndex, value] = split(codes, 2);
+    return {
+      type: ["def"].concat(ATTACK_ELEMENTS)[+typeIndex] as CustomDebuffCtrl["type"],
+      value: +value,
+    };
+  });
 
   const target = {
     code: +tgCode,
@@ -284,7 +372,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
         ID: seedID++,
         code: +wpCode,
         level: LEVELS[+wpLvIndex],
-        type: wpType as WeaponType,
+        type: WEAPON_TYPES[+wpTypeIndex],
         refi: +wpRefi,
       },
       wpBuffCtrls: splitMCs(_wpBCsCode, 1),
@@ -307,8 +395,8 @@ export const decodeSetup = (code: string): SetupImportInfo => {
       customInfusion: {
         element: _infuseElmtIndex ? ATTACK_ELEMENTS[+_infuseElmtIndex] : "phys",
       },
-      customBuffCtrls: [],
-      customDebuffCtrls: [],
+      customBuffCtrls,
+      customDebuffCtrls,
     }),
     target,
   };

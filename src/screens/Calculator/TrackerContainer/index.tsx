@@ -59,7 +59,9 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   }, [trackerState]);
 
   const renderDefMultiplier = (talent: AttackPattern) => {
-    const totalDefIgnore = getTotalRecordValue(result?.attPattBonus[`${talent}.defIgn_`] || []);
+    const talentDefIgnore = getTotalRecordValue(result?.attPattBonus[`${talent}.defIgn_`] || []);
+    const allDefIgnore = getTotalRecordValue(result?.attPattBonus["all.defIgn_"] || []);
+    const totalDefIgnore = talentDefIgnore + allDefIgnore;
 
     return (
       <div className="flex items-center">

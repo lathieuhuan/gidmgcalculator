@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
+import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -12,14 +13,15 @@ import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@S
 // Action
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
 
+// Util
+import { percentSign, toCustomBuffLabel } from "@Src/utils";
+
 // Component
 import { CloseButton, IconToggleButton, Input } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { CopySection } from "@Screens/Calculator/components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
-import { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
-import { percentSign } from "@Src/utils";
 
 const isBuffCtrl = (ctrl: CustomBuffCtrl | CustomDebuffCtrl): ctrl is CustomBuffCtrl => {
   return "category" in (ctrl as CustomBuffCtrl);
@@ -106,7 +108,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             min = sign ? -99 : -9999;
             max = sign ? 999 : 99_999;
             label = clsx(
-              BuffCtrlCreator.toLabel(ctrl.category, ctrl.type, t),
+              toCustomBuffLabel(ctrl.category, ctrl.type, t),
               ctrl.subType && ` ${t(ctrl.subType)}`,
               sign && `(${sign})`
             );

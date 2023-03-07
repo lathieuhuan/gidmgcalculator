@@ -76,7 +76,7 @@ const goldBows: DataWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "hp", 16),
+    applyBuff: makeWpModApplier("totalAttr", "hp_", 16),
     buffs: [
       {
         index: 0,

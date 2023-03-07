@@ -11,17 +11,10 @@ import {
   ATTACK_ELEMENTS,
   RESONANCE_VISION_TYPES,
   TRANSFORMATIVE_REACTIONS,
+  ATTACK_PATTERNS,
 } from "@Src/constants";
 
-export type Nation =
-  | "outland"
-  | "mondstadt"
-  | "liyue"
-  | "inazuma"
-  | "sumeru"
-  | "natlan"
-  | "fontaine"
-  | "snezhnaya";
+export type Nation = "outland" | "mondstadt" | "liyue" | "inazuma" | "sumeru" | "natlan" | "fontaine" | "snezhnaya";
 
 export type Rarity = 1 | 2 | 3 | 4 | 5;
 
@@ -37,7 +30,7 @@ export type ResonanceVision = typeof RESONANCE_VISION_TYPES[number];
 
 export type NormalAttack = typeof NORMAL_ATTACKS[number];
 
-export type AttackPattern = NormalAttack | "ES" | "EB";
+export type AttackPattern = typeof ATTACK_PATTERNS[number];
 
 export type AttackElement = typeof ATTACK_ELEMENTS[number];
 
@@ -64,14 +57,7 @@ export type CharInfo = {
   cons: number;
 };
 
-export type ModInputType =
-  | "level"
-  | "text"
-  | "check"
-  | "stacks"
-  | "select"
-  | "anemoable"
-  | "dendroable";
+export type ModInputType = "level" | "text" | "check" | "stacks" | "select" | "anemoable" | "dendroable";
 
 export type ModInputConfig = {
   label?: string;

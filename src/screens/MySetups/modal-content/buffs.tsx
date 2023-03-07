@@ -21,7 +21,7 @@ import type {
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { findByIndex, percentSign } from "@Src/utils";
+import { findByIndex, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
 
@@ -43,13 +43,7 @@ interface ElementBuffsProps {
   rxnBonus: ReactionBonus;
   vision: Vision;
 }
-export function ElementBuffs({
-  charLv,
-  elmtModCtrls,
-  infusedElement,
-  rxnBonus,
-  vision,
-}: ElementBuffsProps) {
+export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, vision }: ElementBuffsProps) {
   const content = [];
   const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
@@ -66,8 +60,7 @@ export function ElementBuffs({
         heading="Custom Infusion"
         desc={
           <>
-            Infused with{" "}
-            <span className={`capitalize text-${infusedElement}`}>{infusedElement}.</span>
+            Infused with <span className={`capitalize text-${infusedElement}`}>{infusedElement}.</span>
           </>
         }
       />
@@ -116,15 +109,7 @@ interface SelfBuffsProps {
   partyData: PartyData;
   innateBuffs: InnateBuff[];
 }
-export function SelfBuffs({
-  char,
-  charData,
-  buffs,
-  totalAttr,
-  selfBuffCtrls,
-  partyData,
-  innateBuffs,
-}: SelfBuffsProps) {
+export function SelfBuffs({ char, charData, buffs, totalAttr, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach(({ src, desc }, index) => {
@@ -343,12 +328,12 @@ interface CustomBuffsProps {
 export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
   const { t } = useTranslation();
 
-  const content = customBuffCtrls.map(({ category, type, value }, i) => (
+  const content = customBuffCtrls.map(({ category, type, subType, value }, i) => (
     <div key={i} className="flex justify-end">
-      <p className="mr-4">{t(type)}</p>
+      <p className="mr-4">{toCustomBuffLabel(category, type, t)}</p>
       <p className="w-12 shrink-0 text-orange text-right">
         {value}
-        {category > 1 ? "%" : percentSign(type)}
+        {percentSign(subType || type)}
       </p>
     </div>
   ));

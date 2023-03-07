@@ -120,6 +120,8 @@ export type ElementModCtrl = {
   resonances: Resonance[];
 };
 
+export type CustomBuffCtrlCategory = "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus";
+
 export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey | Reaction;
 
 export type CustomBuffCtrl = {

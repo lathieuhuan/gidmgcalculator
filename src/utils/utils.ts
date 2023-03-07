@@ -111,6 +111,10 @@ export const weaponSubStatValue = (scale: string, lv: Level) => {
   return SUBSTAT_SCALE[scale][index];
 };
 
+export const toCustomBuffLabel = (category: string, type: string, t: (origin: string) => string) => {
+  return category === "attElmtBonus" ? (type === "phys" ? "physical" : type) : t(type);
+};
+
 const getAppSettings = (): AppSettings => {
   let savedSettings = localStorage.getItem("settings");
   return savedSettings

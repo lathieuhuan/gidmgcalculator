@@ -8,7 +8,6 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
-import { keyMap } from "./constants";
 
 // Util
 import { round, percentSign } from "@Src/utils";
@@ -61,7 +60,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
                   return records.length ? (
                     <div key={infoKey} className="pl-2">
-                      {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
+                      {renderHeading(t(infoKey), getTotalRecordValue(records) + percent)}
 
                       <ul className="pl-4 list-disc">
                         {records.map(renderRecord((value) => round(value, 1) + percent))}
@@ -94,7 +93,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
                   return records.length ? (
                     <div key={infoKey} className="mt-1 pl-2">
-                      {renderHeading(keyMap[infoKey], getTotalRecordValue(records) + percent)}
+                      {renderHeading(t(infoKey), getTotalRecordValue(records) + percent)}
 
                       <ul className="pl-4 list-disc">
                         {records.map(renderRecord((value) => round(value, 1) + percent))}
