@@ -126,7 +126,7 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
                   dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
                 }}
               />
-              <p className="pl-1 pr-2 capitalize">{label}</p>
+              <p className="pl-1 pr-2 text-sm capitalize">{label}</p>
 
               <Input
                 type="number"

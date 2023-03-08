@@ -82,9 +82,16 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
   };
 
   const onChangeType = (type: string) => {
+    let subType = config.subType;
+
+    if (["melt", "vaporize"].includes(type)) {
+      subType = "pct_";
+    }
+
     setConfig({
       ...config,
       type: type as CustomBuffCtrlType,
+      ...(subType ? { subType } : undefined),
     });
 
     inputRef.current?.focus();
