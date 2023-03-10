@@ -36,6 +36,9 @@
   .small-tooltip {
     @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;
   }
+  .load-option {
+    @apply pt-2 pb-3 px-4 hover:bg-darkblue-1;
+  }
 }
 
 @layer utilities {

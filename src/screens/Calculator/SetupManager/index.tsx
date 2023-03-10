@@ -22,10 +22,11 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useElementSize } from "@Src/hooks";
 
 // Component
+import { PickerCharacter } from "@Src/features";
 import { Button, IconButton } from "@Components/atoms";
 import { Modal } from "@Components/molecules";
 import { TypeSelect } from "@Components/organisms";
-import { PickerCharacter, InventoryWeapon, InventoryArtifact } from "@Components/templates";
+import { InventoryWeapon, InventoryArtifact } from "@Components/templates";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
@@ -34,13 +35,7 @@ import HighManager from "./HighManager";
 import { SetupSelect } from "./SetupSelect";
 import { TargetConfig } from "./modal-content";
 
-type ModalType =
-  | "CHARACTERS_PICKER"
-  | "WEAPONS_PICKER"
-  | ArtifactType
-  | "SHARE_SETUP_SUPPORTER"
-  | "TARGET_CONFIG"
-  | "";
+type ModalType = "CHARACTERS_PICKER" | "WEAPONS_PICKER" | ArtifactType | "SHARE_SETUP_SUPPORTER" | "TARGET_CONFIG" | "";
 
 export default function SetupManager() {
   const dispatch = useDispatch();
@@ -66,10 +61,7 @@ export default function SetupManager() {
         <SectionArtifacts />
 
         {targetOverviewOn && (
-          <SectionTarget
-            onMinimize={() => setTargetOverviewOn(false)}
-            onEdit={() => setModalType("TARGET_CONFIG")}
-          />
+          <SectionTarget onMinimize={() => setTargetOverviewOn(false)} onEdit={() => setModalType("TARGET_CONFIG")} />
         )}
       </div>
 
@@ -99,15 +91,8 @@ export default function SetupManager() {
           >
             <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
-          <button
-            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
-            onClick={() => setPrePickerOn(true)}
-          >
-            <img
-              src={getImgSrc("6/6a/Icon_Inventory_Artifacts")}
-              alt="artifact"
-              draggable={false}
-            />
+          <button className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold" onClick={() => setPrePickerOn(true)}>
+            <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
       </div>

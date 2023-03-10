@@ -10,7 +10,7 @@ const Beidou: DataCharacter = {
   name: "Beidou",
   // icon: "6/61/Character_Beidou_Thumb",
   icon: "e/e1/Beidou_Icon",
-  sideIcon: "5/54/Character_Beidou_Side_Icon",
+  sideIcon: "8/84/Beidou_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "electro",

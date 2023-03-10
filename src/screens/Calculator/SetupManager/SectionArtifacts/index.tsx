@@ -18,8 +18,8 @@ import { getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
+import { PickerArtifact } from "@Src/features";
 import { CollapseSpace } from "@Components/atoms";
-import { PickerArtifact } from "@Components/templates";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 
@@ -64,9 +64,7 @@ export default function SectionArtifacts() {
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {
           const artifact = artifacts[index];
-          const icon = artifact
-            ? findDataArtifact({ code: artifact.code, type })?.icon || ""
-            : ARTIFACT_ICONS[type];
+          const icon = artifact ? findDataArtifact({ code: artifact.code, type })?.icon || "" : ARTIFACT_ICONS[type];
 
           return (
             <div

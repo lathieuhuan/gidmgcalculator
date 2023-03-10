@@ -6,14 +6,14 @@ import { useDispatch } from "@Store/hooks";
 
 // Util
 import { convertUserData, convertFromGoodFormat } from "@Src/utils/convertUserData";
-import { downloadToDevice } from "./utils";
+import { downloadToDevice } from "@Src/utils";
 
 // Action
 import { addUserDatabase } from "@Store/userDatabaseSlice";
 
 // Component
 import { Button, CloseButton } from "@Components/atoms";
-import { LoadOption } from "./atoms";
+import { Modal, type ModalControl } from "@Components/molecules";
 
 type MessageState =
   | { uploadCase: "auto"; result: "success" | "fail" | "no_data" }
@@ -22,8 +22,9 @@ type MessageState =
 interface UploadOptionsProps {
   onClose: () => void;
 }
-export function UploadOptions({ onClose }: UploadOptionsProps) {
+const UploadOptions = ({ onClose }: UploadOptionsProps) => {
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [message, setMessage] = useState<MessageState | null>(null);
 
@@ -57,14 +58,14 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
       });
     }
   };
+
   const downloadFromLocalStorageToDevice = () => {
     const data = localStorage.getItem("GDC_Data");
 
     if (data) {
-      downloadToDevice(data);
+      downloadToDevice(data, "plain/text");
     }
   };
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const manuallyUpload = () => {
     const file = inputRef.current?.files?.[0];
@@ -99,8 +100,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
     }
   };
 
-  const failMessage =
-    "An Error has occured while loading your data. Please send me your Database to fix it.";
+  const failMessage = "An Error has occured while loading your data. Please send me your Database to fix it.";
 
   const messageColor = message?.result === "success" ? "text-green" : "text-lightred";
   const uploadFromLocalStorageFailed = message?.uploadCase === "auto" && message?.result === "fail";
@@ -109,7 +109,7 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
     <Fragment>
       <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
 
-      <LoadOption className="flex flex-col items-center">
+      <div className="load-option flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">Load from Local Storage</p>
 
         {message?.uploadCase === "auto" && (
@@ -137,11 +137,11 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
         >
           {uploadFromLocalStorageFailed ? "Download Database" : "Load"}
         </Button>
-      </LoadOption>
+      </div>
 
       <div className="w-full border-b border-default" />
 
-      <LoadOption className="flex flex-col items-center">
+      <div className="load-option flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">
           Upload a .TXT file of GIDC or a .JSON file in GOOD format
         </p>
@@ -163,7 +163,20 @@ export function UploadOptions({ onClose }: UploadOptionsProps) {
         <Button className="my-1" variant="positive" onClick={() => inputRef.current?.click()}>
           Choose File
         </Button>
-      </LoadOption>
+      </div>
     </Fragment>
   );
-}
+};
+
+export const Upload = (props: ModalControl) => {
+  return (
+    <Modal
+      active={props.active}
+      className="pt-2 pb-4 rounded-lg bg-darkblue-2 shadow-white-glow"
+      style={{ width: "28rem" }}
+      onClose={props.onClose}
+    >
+      <UploadOptions onClose={props.onClose} />
+    </Modal>
+  );
+};

@@ -22,7 +22,7 @@ const genNumberSequence = (count: number, startFromZero?: boolean) => {
 interface SettingsProps {
   onClose: () => void;
 }
-const Settings = ({ onClose }: SettingsProps) => {
+const SettingsCore = ({ onClose }: SettingsProps) => {
   const dispatch = useDispatch();
   const [tempSettings, setTempSettings] = useState(appSettings.get());
 
@@ -142,11 +142,11 @@ const Settings = ({ onClose }: SettingsProps) => {
   );
 };
 
-export const SettingsModal = (props: ModalControl) => {
+export const Settings = (props: ModalControl) => {
   return (
     <Modal className="h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow" {...props}>
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={props.onClose} />
-      <Settings onClose={props.onClose} />
+      <SettingsCore onClose={props.onClose} />
     </Modal>
   );
 };

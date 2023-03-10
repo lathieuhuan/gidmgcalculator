@@ -9,8 +9,8 @@ import { useIntersectionObserver } from "@Src/hooks";
 // Component
 import { CollapseSpace, IconButton, Input } from "@Components/atoms";
 import { ModalHeader } from "@Components/molecules";
-import { CharacterFilter } from "../molecules/CharacterFilter";
-import { MemoItem } from "../molecules/Item";
+import { CharacterFilter } from "./CharacterFilter";
+import { MemoItem } from "./Item";
 
 const { FilterButton, Text } = ModalHeader;
 
@@ -23,13 +23,7 @@ export interface PickerTemplateProps {
   onPickItem: (item: PickerItem) => { shouldStopPicking: boolean } | void;
   onClose: () => void;
 }
-export const PickerTemplate = ({
-  data,
-  dataType,
-  needMassAdd,
-  onPickItem,
-  onClose,
-}: PickerTemplateProps) => {
+export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClose }: PickerTemplateProps) => {
   const [pickedNames, setPickedNames] = useState<Record<string, boolean>>({});
 
   const [filterOn, setFilterOn] = useState(false);

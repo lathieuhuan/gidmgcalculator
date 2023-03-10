@@ -5,7 +5,7 @@ import { About } from "./About";
 import { Notes } from "./Notes";
 import { UPDATES } from "./updates";
 
-export const IntroModal = (props: ModalControl) => {
+export const Introduction = (props: ModalControl) => {
   return (
     <StandardModal
       title={
@@ -48,11 +48,7 @@ export const IntroModal = (props: ModalControl) => {
         <p className="text-lightgold font-bold">CREDIT</p>
         <p>
           - A special thank to{" "}
-          <a
-            href="https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki"
-            rel="noreferrer"
-            target="_blank"
-          >
+          <a href="https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki" rel="noreferrer" target="_blank">
             Genshin Impact Wiki
           </a>
           , every image and formula is gathered from them.
@@ -92,10 +88,7 @@ export const IntroModal = (props: ModalControl) => {
             </li>
           ))}
         </ul>
-        <p>
-          - Last but not least, thank you for using my App and please give me some feedback if you
-          can.
-        </p>
+        <p>- Last but not least, thank you for using my App and please give me some feedback if you can.</p>
       </div>
     </StandardModal>
   );

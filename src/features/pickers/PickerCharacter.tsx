@@ -14,7 +14,7 @@ import { useSelector } from "@Store/hooks";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
-import { PickerTemplate } from "./organisms/PickerTemplate";
+import { PickerTemplate } from "./PickerTemplate";
 
 export interface CharacterPickerProps {
   sourceType: "mixed" | "appData" | "userData";
@@ -23,25 +23,11 @@ export interface CharacterPickerProps {
   onPickCharacter: (character: PickerItem) => void;
   onClose: () => void;
 }
-const CharacterPicker = ({
-  sourceType,
-  needMassAdd,
-  filter,
-  onPickCharacter,
-  onClose,
-}: CharacterPickerProps) => {
+const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onClose }: CharacterPickerProps) => {
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
-    const fields: Array<keyof DataCharacter> = [
-      "code",
-      "beta",
-      "name",
-      "icon",
-      "rarity",
-      "vision",
-      "weaponType",
-    ];
+    const fields: Array<keyof DataCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const data: PickerItem[] = [];
 
     if (sourceType === "mixed") {
@@ -91,11 +77,7 @@ const CharacterPicker = ({
   );
 };
 
-export const PickerCharacter = ({
-  active,
-  onClose,
-  ...rest
-}: CharacterPickerProps & ModalControl) => {
+export const PickerCharacter = ({ active, onClose, ...rest }: CharacterPickerProps & ModalControl) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
       <CharacterPicker {...rest} onClose={onClose} />

@@ -14,8 +14,8 @@ import { useDispatch } from "@Store/hooks";
 import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
+import { PickerCharacter } from "@Src/features";
 import { IconButton } from "@Components/atoms";
-import { PickerCharacter } from "@Components/templates";
 
 import styles from "./styles.module.scss";
 
@@ -25,19 +25,12 @@ interface TopBarProps {
   onCliceSort: () => void;
   onClickWish: () => void;
 }
-export default function SideIconCarousel({
-  characterNames,
-  chosenChar,
-  onCliceSort,
-  onClickWish,
-}: TopBarProps) {
+export default function SideIconCarousel({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
 
-  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>([
-    characterNames,
-  ]);
+  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>([characterNames]);
 
   const scrollList = (name: string) => {
     document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
@@ -112,13 +105,10 @@ export default function SideIconCarousel({
                     >
                       <div
                         className={
-                          "w-ful h-full transition-opacity duration-400 " +
-                          (visible ? "opacity-100" : "opacity-0")
+                          "w-ful h-full transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")
                         }
                       >
-                        {visible && (
-                          <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />
-                        )}
+                        {visible && <img src={getImgSrc(sideIcon || icon)} alt="icon" draggable={false} />}
                       </div>
                     </div>
                   </div>
@@ -127,8 +117,7 @@ export default function SideIconCarousel({
             ) : (
               <div className="w-full h-20 flex justify-end items-center">
                 <p className="text-2.5xl font-bold text-lightgold flex">
-                  <span className="mr-2">Add new characters</span>{" "}
-                  <FaArrowAltCircleUp className="rotate-90" />
+                  <span className="mr-2">Add new characters</span> <FaArrowAltCircleUp className="rotate-90" />
                 </p>
               </div>
             )}

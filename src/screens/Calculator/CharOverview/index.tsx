@@ -19,10 +19,10 @@ import { startCalculation } from "@Store/thunks";
 import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
 // Component
+import { PickerCharacter } from "@Src/features";
 import { Button, IconButton, BetaMark, StarLine, Image } from "@Components/atoms";
 import { ComplexSelect } from "@Components/molecules";
 import { SetupImporter } from "@Components/organisms";
-import { PickerCharacter } from "@Components/templates";
 import contentByTab from "./content";
 
 type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
@@ -98,10 +98,7 @@ export default function CharOverview({ touched }: OverviewCharProps) {
                         return (
                           <li
                             key={i}
-                            className={
-                              "px-3 pt-2 pb-1.5 " +
-                              (i === char.cons ? "bg-lesser" : "hover:bg-lightgold")
-                            }
+                            className={"px-3 pt-2 pb-1.5 " + (i === char.cons ? "bg-lesser" : "hover:bg-lightgold")}
                             onClick={() => onClickConsLevel(i)}
                           >
                             C{i}

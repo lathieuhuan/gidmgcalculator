@@ -7,13 +7,7 @@ import type { WeaponType } from "@Src/types";
 import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
 
 // Action
-import {
-  addUserWeapon,
-  removeWeapon,
-  sortWeapons,
-  swapWeaponOwner,
-  updateUserWeapon,
-} from "@Store/userDatabaseSlice";
+import { addUserWeapon, removeWeapon, sortWeapons, swapWeaponOwner, updateUserWeapon } from "@Store/userDatabaseSlice";
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
@@ -27,16 +21,11 @@ import { useTypeFilter } from "@Components/templates/inventories/hooks";
 import { findById, indexById } from "@Src/utils";
 
 // Component
+import { PickerCharacter, PickerWeapon } from "@Src/features";
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import {
-  ItemRemoveConfirm,
-  TypeSelect,
-  WeaponCard,
-  OwnerLabel,
-  WareHouse,
-} from "@Components/organisms";
-import { InventoryRack, PickerCharacter, PickerWeapon } from "@Components/templates";
+import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel, WareHouse } from "@Components/organisms";
+import { InventoryRack } from "@Components/templates";
 
 import styles from "../styles.module.scss";
 
@@ -108,10 +97,7 @@ export default function MyWeapons() {
                 <FaEllipsisH />
               </IconButton>
 
-              <CollapseSpace
-                className="w-full absolute top-full left-0 z-20"
-                active={filterIsActive}
-              >
+              <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
                 <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
               </CollapseSpace>
             </Fragment>
@@ -165,11 +151,7 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel
-              key={chosenID}
-              owner={chosenWeapon?.owner}
-              setupIDs={chosenWeapon?.setupIDs}
-            />
+            <OwnerLabel key={chosenID} owner={chosenWeapon?.owner} setupIDs={chosenWeapon?.setupIDs} />
           </div>
         </WareHouse.Body>
       </WareHouse>

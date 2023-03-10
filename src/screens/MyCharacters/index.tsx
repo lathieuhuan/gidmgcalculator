@@ -11,15 +11,13 @@ import { selectChosenChar, selectUserChars } from "@Store/userDatabaseSlice/sele
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
+import { PickerCharacter } from "@Src/features";
 import { Button } from "@Components/atoms";
-import { PickerCharacter } from "@Components/templates";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 import Info from "./Info";
 
-const selectCharacterNames = createSelector(selectUserChars, (userChars) =>
-  userChars.map(({ name }) => name)
-);
+const selectCharacterNames = createSelector(selectUserChars, (userChars) => userChars.map(({ name }) => name));
 
 type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
 
@@ -46,20 +44,12 @@ export default function MyCharacters() {
                   <option key={i}>{name}</option>
                 ))}
               </select>
-              <Button
-                className="ml-6"
-                variant="positive"
-                onClick={() => setModalType("ADD_CHARACTER")}
-              >
+              <Button className="ml-6" variant="positive" onClick={() => setModalType("ADD_CHARACTER")}>
                 Add
               </Button>
             </div>
           ) : (
-            <Button
-              className="mx-auto"
-              variant="positive"
-              onClick={() => setModalType("ADD_CHARACTER")}
-            >
+            <Button className="mx-auto" variant="positive" onClick={() => setModalType("ADD_CHARACTER")}>
               Add new characters
             </Button>
           )}
@@ -73,9 +63,7 @@ export default function MyCharacters() {
         />
       )}
       <div className="grow flex-center overflow-y-auto">
-        <div className="w-full h-98/100 flex justify-center">
-          {!!characterNames.length && <Info />}
-        </div>
+        <div className="w-full h-98/100 flex justify-center">{!!characterNames.length && <Info />}</div>
       </div>
 
       <PickerCharacter

@@ -28,13 +28,11 @@ import { useTypeFilter } from "@Components/templates/inventories/hooks";
 
 // Util
 import { findById, indexById } from "@Src/utils";
-import {
-  filterArtifactsBySetsAndStats,
-  initArtifactStatsFilter,
-} from "@Components/templates/inventories/utils";
+import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "@Components/templates/inventories/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
+import { PickerArtifact, PickerCharacter } from "@Src/features";
 import { ButtonBar } from "@Components/molecules";
 import {
   ArtifactCard,
@@ -44,7 +42,7 @@ import {
   ItemRemoveConfirm,
   WareHouse,
 } from "@Components/organisms";
-import { InventoryRack, PickerArtifact, PickerCharacter } from "@Components/templates";
+import { InventoryRack } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -110,10 +108,7 @@ export default function MyArtifacts() {
   const closeModal = () => setModalType("");
 
   const isFiltered =
-    filteredTypes.length ||
-    codes.length ||
-    stats.main !== "All" ||
-    stats.subs.some((s) => s !== "All");
+    filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");
 
   return (
     <WareHouse.Wrapper>
@@ -215,8 +210,7 @@ export default function MyArtifacts() {
                           dispatch(
                             updateMessage({
                               type: "info",
-                              content:
-                                "This artifact cannot be deleted. It is used by some Setups.",
+                              content: "This artifact cannot be deleted. It is used by some Setups.",
                             })
                           );
                         } else {

@@ -36,13 +36,7 @@ interface ChosenSetupInfoProps {
   modal: MySetupModal;
   onCloseModal: () => void;
 }
-export const ChosenSetupInfo = ({
-  chosenSetup,
-  weapon,
-  artifacts,
-  modal,
-  onCloseModal,
-}: ChosenSetupInfoProps) => {
+export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onCloseModal }: ChosenSetupInfoProps) => {
   const dispatch = useDispatch();
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
@@ -57,11 +51,7 @@ export const ChosenSetupInfo = ({
       </div>
       <div className="mt-2 grow hide-scrollbar">
         {calcResult?.damage && (
-          <DamageDisplay
-            char={chosenSetup.char}
-            party={chosenSetup.party}
-            damageResult={calcResult.damage}
-          />
+          <DamageDisplay char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
         )}
       </div>
 
@@ -81,9 +71,9 @@ export const ChosenSetupInfo = ({
         onClose={onCloseModal}
       />
 
-      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} />
+      {/* <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} /> */}
 
-      {/* {weapon && (
+      {weapon && (
         <SetupExporter
           active={modal.type === "SHARE_SETUP"}
           setupName={chosenSetup.name}
@@ -91,7 +81,7 @@ export const ChosenSetupInfo = ({
           target={chosenSetup.target}
           onClose={onCloseModal}
         />
-      )} */}
+      )}
 
       <Modal
         active={modal.type === "WEAPON"}

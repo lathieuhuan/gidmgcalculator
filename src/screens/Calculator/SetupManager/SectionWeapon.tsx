@@ -19,8 +19,8 @@ import { findDataWeapon } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
 
 // Component
+import { PickerWeapon } from "@Src/features";
 import { BetaMark } from "@Components/atoms";
-import { PickerWeapon } from "@Components/templates";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();

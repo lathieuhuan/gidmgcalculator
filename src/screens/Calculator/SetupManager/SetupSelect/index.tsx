@@ -208,13 +208,13 @@ export function SetupSelect() {
         <SaveSetup manageInfo={setupManageInfos[modal.setupIndex]} onClose={closeModal} />
       </Modal>
 
-      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={closeModal} />
+      {/* <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={closeModal} /> */}
 
-      {/* <CalcSetupExporter
+      <CalcSetupExporter
         active={modal.type === "SHARE_SETUP"}
         {...setupManageInfos[modal.setupIndex]}
         onClose={closeModal}
-      /> */}
+      />
 
       <SetupImporter active={modal.type === "IMPORT_SETUP"} onClose={closeModal} />
 

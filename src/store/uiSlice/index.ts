@@ -5,6 +5,7 @@ import { EScreen } from "@Src/constants";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
+  appModalType: "",
   highManagerWorking: false,
   importInfo: {},
 };

@@ -13,7 +13,7 @@ import artifacts from "@Data/artifacts";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
-import { PickerTemplate, type PickerTemplateProps } from "./organisms/PickerTemplate";
+import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface ArtifactPickerProps {
   type?: string;
@@ -23,13 +23,7 @@ interface ArtifactPickerProps {
   onPickArtifact: (info: ReturnType<typeof createArtifact>) => ReturnType<PickerTemplateProps["onPickItem"]>;
   onClose: () => void;
 }
-const ArtifactPicker = ({
-  artifactType,
-  needMassAdd,
-  forFeature,
-  onPickArtifact,
-  onClose,
-}: ArtifactPickerProps) => {
+const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact, onClose }: ArtifactPickerProps) => {
   const [gold, purple] = useMemo(() => {
     switch (forFeature) {
       case "TEAMMATE_MODIFIERS":
@@ -73,19 +67,13 @@ const ArtifactPicker = ({
       dataType="artifact"
       needMassAdd={needMassAdd}
       data={gold.concat(purple)}
-      onPickItem={({ code, rarity }) =>
-        onPickArtifact(createArtifact({ type: artifactType, code, rarity }))
-      }
+      onPickItem={({ code, rarity }) => onPickArtifact(createArtifact({ type: artifactType, code, rarity }))}
       onClose={onClose}
     />
   );
 };
 
-export const PickerArtifact = ({
-  active,
-  onClose,
-  ...rest
-}: ArtifactPickerProps & ModalControl) => {
+export const PickerArtifact = ({ active, onClose, ...rest }: ArtifactPickerProps & ModalControl) => {
   return (
     <Modal active={active} withDefaultStyle onClose={onClose}>
       <ArtifactPicker {...rest} onClose={onClose} />

@@ -10,22 +10,18 @@ import { createWeapon } from "@Src/utils/creators";
 
 // Component
 import { Modal, type ModalControl } from "@Components/molecules";
-import { PickerTemplate, type PickerTemplateProps } from "./organisms/PickerTemplate";
+import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface WeaponPickerProps {
   type?: string;
   weaponType: WeaponType;
   needMassAdd?: boolean;
-  onPickWeapon: (
-    info: ReturnType<typeof createWeapon>
-  ) => ReturnType<PickerTemplateProps["onPickItem"]>;
+  onPickWeapon: (info: ReturnType<typeof createWeapon>) => ReturnType<PickerTemplateProps["onPickItem"]>;
   onClose: () => void;
 }
 function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: WeaponPickerProps) {
   const data = useMemo(() => {
-    return weapons[weaponType].map((weapon) =>
-      pickProps(weapon, ["code", "name", "beta", "icon", "rarity"])
-    );
+    return weapons[weaponType].map((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "rarity"]));
   }, []);
 
   return (

@@ -15,21 +15,16 @@ import {
 } from "@Store/calculatorSlice";
 
 // Selector
-import {
-  selectCharData,
-  selectActiveId,
-  selectSetupManageInfos,
-  selectParty,
-} from "@Store/calculatorSlice/selectors";
+import { selectCharData, selectActiveId, selectSetupManageInfos, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { findById } from "@Src/utils";
 import { getPartyData } from "@Data/controllers";
 
 // Component
+import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/features";
 import { CollapseSpace, Image } from "@Components/atoms";
 import { TeammateItems } from "@Components/organisms";
-import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Components/templates";
 import { CopySelect } from "./CopySelect";
 
 interface ModalState {
@@ -70,8 +65,7 @@ export default function SectionParty() {
     dispatch(
       updateMessage({
         type: "info",
-        content:
-          "This setup is marked as part of a Complex setup, thus teammates cannot be changed",
+        content: "This setup is marked as part of a Complex setup, thus teammates cannot be changed",
       })
     );
   };
@@ -123,11 +117,7 @@ export default function SectionParty() {
           );
 
           return (
-            <div
-              key={teammateIndex}
-              className="w-1/3 flex flex-col items-center"
-              style={{ height: "5.25rem" }}
-            >
+            <div key={teammateIndex} className="w-1/3 flex flex-col items-center" style={{ height: "5.25rem" }}>
               <div
                 className={clsx(
                   "flex items-end text-xl shrink-0 overflow-hidden transition-size",
@@ -135,19 +125,13 @@ export default function SectionParty() {
                 )}
               >
                 <button
-                  className={
-                    "w-10 h-10 text-darkred glow-on-hover " +
-                    (isExpanded ? "flex-center" : "hidden")
-                  }
+                  className={"w-10 h-10 text-darkred glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickRemoveTeammate}
                 >
                   <FaUserSlash />
                 </button>
                 <button
-                  className={
-                    "w-10 h-10 text-lightgold glow-on-hover " +
-                    (isExpanded ? "flex-center" : "hidden")
-                  }
+                  className={"w-10 h-10 text-lightgold glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickChangeTeammate(teammateIndex)}
                 >
                   <FaSyncAlt />
