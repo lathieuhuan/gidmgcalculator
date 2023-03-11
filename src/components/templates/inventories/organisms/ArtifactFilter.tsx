@@ -8,7 +8,7 @@ import { useArtifactSetFilter, useArtifactStatsFilter } from "../hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "../utils";
 
 // Component
-import { Button, CollapseAndMount } from "@Components/atoms";
+import { Button } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
 
 interface ArtifactFilterProps {
@@ -22,7 +22,7 @@ interface ArtifactFilterProps {
   };
   onClose: () => void;
 }
-const ArtifactFilterCore = ({ artifactType, artifacts, filter, onClose }: ArtifactFilterProps) => {
+export const ArtifactFilter = ({ artifactType, artifacts, filter, onClose }: ArtifactFilterProps) => {
   const [isError, setIsError] = useState(false);
 
   const {
@@ -41,8 +41,7 @@ const ArtifactFilterCore = ({ artifactType, artifacts, filter, onClose }: Artifa
     codes: filter.codes,
   });
 
-  const resetIsDisabled =
-    artifactStatsFilter.main === "All" && artifactStatsFilter.subs.every((s) => s === "All");
+  const resetIsDisabled = artifactStatsFilter.main === "All" && artifactStatsFilter.subs.every((s) => s === "All");
 
   const onConfirmFilter = () => {
     if (hasDupStat(artifactStatsFilter)) {
@@ -80,23 +79,5 @@ const ArtifactFilterCore = ({ artifactType, artifacts, filter, onClose }: Artifa
 
       {renderArtifactSetFilter()}
     </div>
-  );
-};
-
-export const ArtifactFilter = ({
-  active,
-  ...rest
-}: ArtifactFilterProps & {
-  active: boolean;
-}) => {
-  return (
-    <CollapseAndMount
-      className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-darkblue-3 flex justify-center"
-      active={active}
-      activeHeight="28.35rem"
-      duration={150}
-    >
-      <ArtifactFilterCore {...rest} />
-    </CollapseAndMount>
   );
 };

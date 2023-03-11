@@ -24,8 +24,7 @@ import { findById, indexById } from "@Src/utils";
 import { PickerCharacter, PickerWeapon } from "@Src/features";
 import { IconButton, CollapseSpace } from "@Components/atoms";
 import { ButtonBar } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel, WareHouse } from "@Components/organisms";
-import { InventoryRack } from "@Components/templates";
+import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel, WareHouse, InventoryRack } from "@Components/organisms";
 
 import styles from "../styles.module.scss";
 

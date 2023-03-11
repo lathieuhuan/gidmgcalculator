@@ -10,3 +10,4 @@ export * from "./ArtifactCard";
 export * from "./OwnerLabel";
 export * from "./TeammateItems";
 export * from "./Warehouse";
+export * from "./InventoryRack";

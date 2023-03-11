@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import { FaTimes } from "react-icons/fa";
 import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 
 // Constant
@@ -17,15 +16,10 @@ import { useSelector } from "@Store/hooks";
 import { initArtifactStatsFilter, filterArtifactsBySetsAndStats } from "./utils";
 
 // Conponent
-import { IconButton } from "@Components/atoms";
+import { CollapseAndMount } from "@Components/atoms";
 import { ButtonBar, Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { ArtifactCard, OwnerLabel } from "@Components/organisms";
+import { ArtifactCard, OwnerLabel, InventoryRack } from "@Components/organisms";
 import { ArtifactFilter } from "./organisms/ArtifactFilter";
-import { InventoryRack } from "./organisms/InventoryRack";
-
-import styles from "./styles.module.scss";
-
-const { Text, FilterButton } = ModalHeader;
 
 const selectArtifactsByType = createSelector(
   selectUserArts,
@@ -57,10 +51,7 @@ const ArtifactInventory = ({
   const [codes, setCodes] = useState<number[]>([]);
   const data = useSelector((state) => selectArtifactsByType(state, artifactType));
 
-  const filteredArtifacts = useMemo(
-    () => filterArtifactsBySetsAndStats(data, codes, stats),
-    [data, codes, stats]
-  );
+  const filteredArtifacts = useMemo(() => filterArtifactsBySetsAndStats(data, codes, stats), [data, codes, stats]);
 
   const currentArtifact = currentArtifacts[ARTIFACT_TYPES.indexOf(artifactType)];
 
@@ -69,32 +60,32 @@ const ArtifactInventory = ({
       <div className="p-2">
         <ModalHeader>
           <div className="pl-5 flex items-center">
-            <FilterButton active={filterActive} onClick={() => setFilterActive(!filterActive)} />
+            <ModalHeader.FilterButton active={filterActive} onClick={() => setFilterActive(!filterActive)} />
           </div>
+          <ModalHeader.Text>{artifactType}</ModalHeader.Text>
+          <ModalHeader.RightEnd onClickClose={onClose} />
 
-          <Text>{artifactType}</Text>
-
-          <div className="flex justify-end items-center">
-            <IconButton className="mr-2 text-black text-xl" variant="custom" onClick={onClose}>
-              <FaTimes />
-            </IconButton>
-          </div>
-
-          <ArtifactFilter
+          <CollapseAndMount
+            className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-darkblue-3 flex justify-center"
             active={filterActive}
-            artifactType={artifactType}
-            artifacts={data}
-            filter={{ stats, codes, setStats, setCodes }}
-            onClose={() => setFilterActive(false)}
-          />
+            activeHeight="28.35rem"
+            duration={150}
+          >
+            <ArtifactFilter
+              artifactType={artifactType}
+              artifacts={data}
+              filter={{ stats, codes, setStats, setCodes }}
+              onClose={() => setFilterActive(false)}
+            />
+          </CollapseAndMount>
         </ModalHeader>
       </div>
 
       <div className="p-2 pr-4 grow hide-scrollbar">
         <div className="h-full flex hide-scrollbar">
           <InventoryRack
-            listClassName={styles["inventory-list"]}
-            itemClassName={styles.item}
+            listClassName="inventory-list"
+            itemClassName="inventory-item"
             chosenID={chosenArtifact?.ID || 0}
             itemType="artifact"
             items={filteredArtifacts}
@@ -102,12 +93,7 @@ const ArtifactInventory = ({
           />
 
           <div className="flex flex-col justify-between">
-            <div
-              className={clsx(
-                "p-4 rounded-lg bg-darkblue-1 flex flex-col relative",
-                !chosenArtifact && "h-full"
-              )}
-            >
+            <div className={clsx("p-4 rounded-lg bg-darkblue-1 flex flex-col relative", !chosenArtifact && "h-full")}>
               {currentArtifact ? (
                 <div
                   className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"
@@ -124,9 +110,7 @@ const ArtifactInventory = ({
               ) : null}
 
               <div className="w-64 hide-scrollbar">
-                {chosenArtifact ? (
-                  <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" />
-                ) : null}
+                {chosenArtifact ? <ArtifactCard mutable={false} artifact={chosenArtifact} space="mx-3" /> : null}
               </div>
 
               {chosenArtifact && chosenArtifact.owner !== owner ? (
@@ -159,13 +143,9 @@ const ArtifactInventory = ({
   );
 };
 
-export const InventoryArtifact = ({
-  active,
-  onClose,
-  ...rest
-}: ModalControl & ArtifactInventoryProps) => {
+export const InventoryArtifact = ({ active, onClose, ...rest }: ModalControl & ArtifactInventoryProps) => {
   return (
-    <Modal active={active} withDefaultStyle onClose={onClose}>
+    <Modal withDefaultStyle {...{ active, onClose }}>
       <ArtifactInventory {...rest} onClose={onClose} />
     </Modal>
   );

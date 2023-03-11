@@ -41,8 +41,8 @@ import {
   TypeSelect,
   ItemRemoveConfirm,
   WareHouse,
+  InventoryRack,
 } from "@Components/organisms";
-import { InventoryRack } from "@Components/templates";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";

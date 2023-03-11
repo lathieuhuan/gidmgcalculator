@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
-import { FaCaretRight } from "react-icons/fa";
+import { FaCaretRight, FaMinus } from "react-icons/fa";
 import type { UserArtifact, UserWeapon } from "@Src/types";
 
 // Constant
@@ -16,16 +16,20 @@ interface InventoryRackProps {
   listClassName?: string;
   itemClassName?: string;
   chosenID: number;
+  chosenIDs?: Record<string, boolean>;
   itemType: "weapon" | "artifact";
   items: UserWeapon[] | UserArtifact[];
+  onUnchooseItem?: (item: UserWeapon | UserArtifact) => void;
   onClickItem?: (item: UserWeapon | UserArtifact) => void;
 }
 export const InventoryRack = ({
   listClassName = "",
   itemClassName = "",
   chosenID,
+  chosenIDs,
   itemType,
   items,
+  onUnchooseItem,
   onClickItem,
 }: InventoryRackProps) => {
   const observeArea = useRef<HTMLDivElement>(null);
@@ -77,6 +81,8 @@ export const InventoryRack = ({
   }, [isReady, items, pageNo]);
 
   const deadEnd = Math.ceil(items.length / INVENTORY_PAGE_SIZE) - 1;
+  const firstIndex = INVENTORY_PAGE_SIZE * pageNo;
+  const nextFirstIndex = firstIndex + INVENTORY_PAGE_SIZE;
 
   const resetScroll = () => {
     if (observeArea.current) {
@@ -113,9 +119,7 @@ export const InventoryRack = ({
           items.length ? (
             <div className="flex flex-wrap">
               {items.map((item, index) => {
-                const isOnPage =
-                  index >= INVENTORY_PAGE_SIZE * pageNo &&
-                  index < INVENTORY_PAGE_SIZE * (pageNo + 1);
+                const isOnPage = index >= firstIndex && index < nextFirstIndex;
                 const dataId = getDataId(item);
 
                 return (
@@ -133,12 +137,22 @@ export const InventoryRack = ({
                     }}
                   >
                     {isOnPage && itemsVisible[dataId] ? (
-                      <div onClick={() => onClickItem?.(item)}>
-                        <ItemThumb
-                          item={checkIfWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
-                          chosen={item.ID === chosenID}
-                        />
-                      </div>
+                      <>
+                        {chosenIDs?.[item.ID] && (
+                          <button
+                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-darkred rounded"
+                            onClick={() => onUnchooseItem?.(item)}
+                          >
+                            <FaMinus />
+                          </button>
+                        )}
+                        <div onClick={() => onClickItem?.(item)}>
+                          <ItemThumb
+                            item={checkIfWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                            chosen={item.ID === chosenID}
+                          />
+                        </div>
+                      </>
                     ) : null}
                   </div>
                 );
@@ -155,10 +169,7 @@ export const InventoryRack = ({
       {items.length ? (
         <div className="pt-2 pb-1 flex-center space-x-2">
           <button onClick={goBack}>
-            <FaCaretRight
-              className={"rotate-180 " + (pageNo > 0 ? "glow-on-hover" : "opacity-50")}
-              size="1.75rem"
-            />
+            <FaCaretRight className={"rotate-180 " + (pageNo > 0 ? "glow-on-hover" : "opacity-50")} size="1.75rem" />
           </button>
 
           <p className="font-bold">
@@ -166,10 +177,7 @@ export const InventoryRack = ({
           </p>
 
           <button onClick={goNext}>
-            <FaCaretRight
-              className={pageNo < deadEnd ? "glow-on-hover" : "opacity-50"}
-              size="1.75rem"
-            />
+            <FaCaretRight className={pageNo < deadEnd ? "glow-on-hover" : "opacity-50"} size="1.75rem" />
           </button>
         </div>
       ) : null}

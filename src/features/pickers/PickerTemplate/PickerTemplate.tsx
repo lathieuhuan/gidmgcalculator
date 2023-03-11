@@ -1,18 +1,15 @@
 import clsx from "clsx";
 import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
 import type { DataType, Filter, PickerItem } from "../types";
 
 // Hook
 import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
-import { CollapseSpace, IconButton, Input } from "@Components/atoms";
+import { CollapseSpace, Input } from "@Components/atoms";
 import { ModalHeader } from "@Components/molecules";
 import { CharacterFilter } from "./CharacterFilter";
 import { MemoItem } from "./Item";
-
-const { FilterButton, Text } = ModalHeader;
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
@@ -87,53 +84,51 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
     <div className="h-full flex flex-col">
       <div className="p-2">
         <ModalHeader>
-          <div className="pl-5 flex items-center">
-            {dataType === "character" && (
-              <>
-                <FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
+          {dataType === "character" ? (
+            <div className="pl-5 flex items-center">
+              <ModalHeader.FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
 
-                <Input
-                  className="w-24 ml-3 px-2 py-1 leading-none font-semibold"
-                  placeholder="Search..."
-                  onChange={setKeyword}
-                />
+              <Input
+                className="w-24 ml-3 px-2 py-1 leading-none font-semibold"
+                placeholder="Search..."
+                onChange={setKeyword}
+              />
 
-                <div className="absolute w-full top-full left-0 z-50">
-                  <div className="rounded-b-lg bg-darkblue-3 shadow-common">
-                    <CollapseSpace active={filterOn}>
-                      <CharacterFilter
-                        {...filter}
-                        onClickOption={(isChosen, newFilter) => {
-                          setFilter(isChosen ? DEFAULT_FILTER : newFilter);
-                          setFilterOn(false);
-                        }}
-                      />
-                    </CollapseSpace>
-                  </div>
+              <div className="absolute w-full top-full left-0 z-50">
+                <div className="rounded-b-lg bg-darkblue-3 shadow-common">
+                  <CollapseSpace active={filterOn}>
+                    <CharacterFilter
+                      {...filter}
+                      onClickOption={(isChosen, newFilter) => {
+                        setFilter(isChosen ? DEFAULT_FILTER : newFilter);
+                        setFilterOn(false);
+                      }}
+                    />
+                  </CollapseSpace>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+            </div>
+          ) : (
+            <div />
+          )}
 
-          <Text>{dataType}s</Text>
-
-          <div className="flex justify-end items-center">
-            {needMassAdd && (
-              <label className="mr-4 flex font-bold text-black">
-                <input
-                  type="checkbox"
-                  className="scale-150"
-                  checked={massAdd}
-                  onChange={() => setMassAdd((prev) => !prev)}
-                />
-                <span className="ml-2">Mass add</span>
-              </label>
-            )}
-
-            <IconButton className="mr-2 text-black text-xl" variant="custom" onClick={onClose}>
-              <FaTimes />
-            </IconButton>
-          </div>
+          <ModalHeader.Text>{dataType}s</ModalHeader.Text>
+          <ModalHeader.RightEnd
+            extraContent={
+              needMassAdd && (
+                <label className="mr-4 flex font-bold text-black">
+                  <input
+                    type="checkbox"
+                    className="scale-150"
+                    checked={massAdd}
+                    onChange={() => setMassAdd((prev) => !prev)}
+                  />
+                  <span className="ml-2">Mass add</span>
+                </label>
+              )
+            }
+            onClickClose={onClose}
+          />
         </ModalHeader>
       </div>
 
