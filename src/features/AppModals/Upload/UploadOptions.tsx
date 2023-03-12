@@ -1,12 +1,16 @@
 import clsx from "clsx";
 import { Fragment, useRef, useState } from "react";
+import type { UploadedData, UploadStep } from "./types";
+
+// Constant
+import { MAX_USER_ARTIFACTS, MAX_USER_WEAPONS } from "@Src/constants";
+
+// Util
+import { convertFromGoodFormat, toVersion3_0 } from "@Src/utils/convertUserData";
+import { downloadToDevice } from "@Src/utils";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
-
-// Util
-import { convertUserData, convertFromGoodFormat } from "@Src/utils/convertUserData";
-import { downloadToDevice } from "@Src/utils";
 
 // Action
 import { addUserDatabase } from "@Store/userDatabaseSlice";
@@ -14,31 +18,65 @@ import { addUserDatabase } from "@Store/userDatabaseSlice";
 // Component
 import { Button, CloseButton } from "@Components/atoms";
 import { Modal, type ModalControl } from "@Components/molecules";
-import { UserArtifact, UserCharacter, UserSetup, UserWeapon } from "@Src/types";
 
 type MessageState =
-  | { uploadCase: "auto"; result: "success" | "fail" | "no_data" }
-  | { uploadCase: "manual"; result: "success" | "fail" };
-
-export interface UploadedData {
-  characters: UserCharacter[];
-  weapons: UserWeapon[];
-  artifacts: UserArtifact[];
-  setups: UserSetup[];
-}
+  | { uploadMethod: "auto"; result: "success" | "fail" | "no_data" }
+  | { uploadMethod: "manual"; result: "success" | "fail" };
 
 interface UploadOptionsProps {
+  onRequestSelect: (data: UploadedData, steps: UploadStep[]) => void;
   onClose: () => void;
-  onSuccessUpload: (data: UploadedData) => void;
 }
-const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => {
+const UploadOptionsCore = ({ onClose, onRequestSelect }: UploadOptionsProps) => {
+  const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [message, setMessage] = useState<MessageState | null>(null);
 
-  const checkAndAddUserData = (data: any) => {
-    const { version, ...database } = convertUserData(data);
-    onSuccessUpload(database);
+  const addUserData = (data: UploadedData, method: "manual" | "auto") => {
+    const uploadSteps: UploadStep[] = [];
+
+    if (data.weapons.length > MAX_USER_WEAPONS) {
+      uploadSteps.push("CHECK_WEAPONS");
+    }
+    if (data.artifacts.length > MAX_USER_ARTIFACTS) {
+      uploadSteps.push("CHECK_ARTIFACTS");
+    }
+
+    if (uploadSteps.length) {
+      return onRequestSelect(data, uploadSteps);
+    }
+
+    dispatch(addUserDatabase(data));
+
+    setMessage({
+      uploadMethod: method,
+      result: "success",
+    });
+  };
+
+  const checkAndAddUserData = (data: any, method: "manual" | "auto") => {
+    const version = +data.version;
+
+    if (version < 2.1) {
+      // "Your database are too old and cannot be converted to the current version"
+      return setMessage({
+        uploadMethod: method,
+        result: "fail",
+      });
+    }
+    if (version === 2.1) {
+      return addUserData(toVersion3_0(data), method);
+    }
+    if (version === 3) {
+      return addUserData(data, method);
+    }
+
+    // "Your version of data cannot be recognised."
+    setMessage({
+      uploadMethod: method,
+      result: "fail",
+    });
   };
 
   const tryToLoadFromLocalStorage = () => {
@@ -47,21 +85,10 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
     if (data) {
       data = JSON.parse(data);
 
-      try {
-        checkAndAddUserData(data);
-        setMessage({
-          uploadCase: "auto",
-          result: "success",
-        });
-      } catch (err) {
-        setMessage({
-          uploadCase: "auto",
-          result: "fail",
-        });
-      }
+      checkAndAddUserData(data, "auto");
     } else {
       setMessage({
-        uploadCase: "auto",
+        uploadMethod: "auto",
         result: "no_data",
       });
     }
@@ -89,17 +116,12 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
             data = convertFromGoodFormat(data);
           }
 
-          checkAndAddUserData(data);
-
-          setMessage({
-            uploadCase: "manual",
-            result: "success",
-          });
+          checkAndAddUserData(data, "manual");
         } catch (err) {
           console.log(err);
 
           setMessage({
-            uploadCase: "manual",
+            uploadMethod: "manual",
             result: "fail",
           });
         }
@@ -108,10 +130,10 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
     }
   };
 
-  const failMessage = "An Error has occured while loading your data. Please send me your Database to fix it.";
+  const failMessage = "An Error has occured while loading your data. You can send me your data for checking.";
 
   const messageColor = message?.result === "success" ? "text-green" : "text-lightred";
-  const uploadFromLocalStorageFailed = message?.uploadCase === "auto" && message?.result === "fail";
+  const autoUploadFailed = message?.uploadMethod === "auto" && message?.result === "fail";
 
   return (
     <Fragment>
@@ -120,7 +142,7 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
       <div className="load-option flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">Load from Local Storage</p>
 
-        {message?.uploadCase === "auto" && (
+        {message?.uploadMethod === "auto" && (
           <p className={clsx("mb-2 text-lg font-bold text-center", messageColor)}>
             {
               {
@@ -136,14 +158,14 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
           className="my-1"
           variant="positive"
           onClick={() => {
-            if (uploadFromLocalStorageFailed) {
+            if (autoUploadFailed) {
               downloadFromLocalStorageToDevice();
             } else {
               tryToLoadFromLocalStorage();
             }
           }}
         >
-          {uploadFromLocalStorageFailed ? "Download Database" : "Load"}
+          {autoUploadFailed ? "Download Database" : "Load"}
         </Button>
       </div>
 
@@ -154,7 +176,7 @@ const UploadOptionsCore = ({ onClose, onSuccessUpload }: UploadOptionsProps) => 
           Upload a .TXT file of GIDC or a .JSON file in GOOD format
         </p>
 
-        {message?.uploadCase === "manual" && (
+        {message?.uploadMethod === "manual" && (
           <p className={clsx("mb-2 font-bold text-center", messageColor)}>
             {message.result === "success" ? "Successfully uploaded your file" : failMessage}
           </p>

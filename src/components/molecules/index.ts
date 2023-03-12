@@ -9,3 +9,4 @@ export * from "./modifiers";
 export * from "./SetBonusesDisplay";
 export * from "./ConfirmModalBody";
 export * from "./ArtifactSubstatsControl";
+export * from "./Notification";

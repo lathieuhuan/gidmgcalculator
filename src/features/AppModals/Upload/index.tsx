@@ -1,31 +1,47 @@
 import { useState, useRef } from "react";
 import type { BooRecord } from "@Src/types";
+import type { UploadedData, UploadStep } from "./types";
 
 import { MAX_USER_WEAPONS } from "@Src/constants";
 import { useDispatch } from "@Store/hooks";
 import { addUserDatabase } from "@Store/userDatabaseSlice";
+import { notification } from "@Src/utils";
 
 // Component
 import { ModalControl } from "@Components/molecules";
-import { UploadedData, UploadOptions } from "./UploadOptions";
-import { WeaponChecker } from "./WeaponChecker";
-import { notification } from "@Src/utils";
+import { UploadOptions } from "./UploadOptions";
+import { WeaponSelect } from "./WeaponSelect";
 
-const UPLOAD_STEPS = ["SELECT_OPTION", "CHECK_WEAPONS", "CHECK_ARTIFACTS", "FINISH"] as const;
-
-export const Upload = (props: ModalControl) => {
+const UploadCore = (props: ModalControl) => {
   // const dispatch = useDispatch();
-
-  const [step, setStep] = useState<typeof UPLOAD_STEPS[number]>("SELECT_OPTION");
+  const uploadSteps = useRef<UploadStep[]>(["SELECT_OPTION"]);
   const uploadedData = useRef<UploadedData>();
   const removedWeaponIDs = useRef<BooRecord>();
 
-  const onClose = (atStep: typeof step) => () => {
-    if (atStep === step) {
-      setStep("SELECT_OPTION");
+  const [stepNo, setStepNo] = useState(0);
+
+  const currentStep = uploadSteps.current[stepNo];
+
+  const onClose = (atStep: UploadStep) => () => {
+    if (atStep === currentStep) {
+      setStepNo(0);
+      uploadSteps.current = ["SELECT_OPTION"];
       uploadedData.current = undefined;
       removedWeaponIDs.current = undefined;
       props.onClose();
+    }
+  };
+
+  const toNextStep = () => {
+    const nextStepNo = stepNo + 1;
+
+    setStepNo(nextStepNo);
+
+    switch (uploadSteps.current[nextStepNo]) {
+      case "CHECK_WEAPONS":
+        return notification.warn({
+          content: "Too many weapons! Select weapons to be discarded.",
+        });
     }
   };
 
@@ -34,19 +50,17 @@ export const Upload = (props: ModalControl) => {
   return (
     <>
       <UploadOptions
-        active={props.active && step === "SELECT_OPTION"}
-        onSuccessUpload={(data) => {
+        active={props.active && currentStep === "SELECT_OPTION"}
+        onRequestSelect={(data, steps) => {
           uploadedData.current = data;
+          uploadSteps.current.push(...steps);
 
-          notification.info();
-          setStep("CHECK_WEAPONS");
-          // if (data.weapons.length > MAX_USER_WEAPONS) {
-          // }
+          toNextStep();
         }}
         onClose={onClose("SELECT_OPTION")}
       />
-      <WeaponChecker
-        active={props.active && step === "CHECK_WEAPONS"}
+      <WeaponSelect
+        active={props.active && currentStep === "CHECK_WEAPONS"}
         items={uploadedData.current?.weapons || []}
         onConfirm={(data) => {
           removedWeaponIDs.current = data;
@@ -57,4 +71,8 @@ export const Upload = (props: ModalControl) => {
       />
     </>
   );
+};
+
+export const Upload = (props: ModalControl) => {
+  return props.active ? <UploadCore {...props} /> : null;
 };

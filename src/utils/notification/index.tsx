@@ -1,17 +1,41 @@
-import ReactDOM from "react-dom/client";
+import { notifRoot } from "./root";
+import type { NotificationControl } from "./types";
+import { NotificationCenter, trackedNotis } from "./NotificationCenter";
 
-const show = () => {
-  if (!document.body.querySelector("#notif")) {
-    let location = document.createElement("div");
-    location.id = "notif";
-    document.body.append(location);
+const show = (type: NotificationControl["type"]) => (args: Omit<NotificationControl, "id" | "type">) => {
+  let id = 0;
+
+  for (let i = 0; i < 100; i++) {
+    if (trackedNotis.every((trackedNoti) => trackedNoti.id !== i)) {
+      id = i;
+      break;
+    }
   }
 
-  const notifCotent = <div className="absolute top-5 w-80 bg-default rounded-lg">Hello</div>;
+  notifRoot.render(
+    <NotificationCenter
+      request={{
+        type: "add",
+        noti: {
+          id,
+          type,
+          ...args,
+        },
+      }}
+    />
+  );
 
-  ReactDOM.createRoot(document.body.querySelector("#notif")!).render(notifCotent);
+  return id;
+};
+
+const destroy = (id: number) => {
+  notifRoot.render(<NotificationCenter request={{ type: "remove", id }} />);
 };
 
 export const notification = {
-  info: show,
+  info: show("info"),
+  success: show("success"),
+  error: show("error"),
+  warn: show("warn"),
+  destroy,
 };

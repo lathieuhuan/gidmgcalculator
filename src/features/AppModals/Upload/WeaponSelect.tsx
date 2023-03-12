@@ -7,12 +7,12 @@ import { InventoryRack, OwnerLabel, WeaponCard } from "@Components/organisms";
 import { Button } from "@Components/atoms";
 import { FaCheck } from "react-icons/fa";
 
-interface WeaponCheckerProps {
+interface WeaponSelectProps {
   items: UserWeapon[];
   onClose: () => void;
   onConfirm: (chosenIDs: BooRecord) => void;
 }
-const WeaponCheckerCore = ({ items, onClose, onConfirm }: WeaponCheckerProps) => {
+const WeaponSelectCore = ({ items, onClose, onConfirm }: WeaponSelectProps) => {
   const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
   const [chosenIDs, setChosenIDs] = useState(
     items.reduce((map: BooRecord, item) => {
@@ -87,10 +87,10 @@ const WeaponCheckerCore = ({ items, onClose, onConfirm }: WeaponCheckerProps) =>
   );
 };
 
-export const WeaponChecker = ({ active, onClose, ...rest }: ModalControl & WeaponCheckerProps) => {
+export const WeaponSelect = ({ active, onClose, ...rest }: ModalControl & WeaponSelectProps) => {
   return (
     <Modal withDefaultStyle {...{ active, onClose }}>
-      <WeaponCheckerCore {...rest} onClose={onClose} />
+      <WeaponSelectCore {...rest} onClose={onClose} />
     </Modal>
   );
 };
