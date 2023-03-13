@@ -56,28 +56,30 @@ export const ArtifactFilter = ({ artifactType, artifacts, filter, onClose }: Art
   };
 
   return (
-    <div className="p-4 flex hide-scrollbar">
-      <div className="flex flex-col">
-        <Button
-          className="mb-2 mx-auto"
-          disabled={resetIsDisabled}
-          onClick={() => setArtifactStatsFilter(initArtifactStatsFilter())}
-        >
-          Reset Stats
-        </Button>
+    <div className="p-4 hide-scrollbar">
+      <div className="flex hide-scrollbar">
+        <div className="flex flex-col">
+          <Button
+            className="mb-2 mx-auto"
+            disabled={resetIsDisabled}
+            onClick={() => setArtifactStatsFilter(initArtifactStatsFilter())}
+          >
+            Reset Stats
+          </Button>
 
-        {renderArtifactStatsFilter()}
+          {renderArtifactStatsFilter()}
 
-        <ButtonBar
-          className="mt-4 pb-2"
-          buttons={[
-            { text: "Cancel", onClick: onClose },
-            { text: "Confirm", onClick: onConfirmFilter },
-          ]}
-        />
+          <ButtonBar
+            className="mt-4 pb-2"
+            buttons={[
+              { text: "Cancel", onClick: onClose },
+              { text: "Confirm", onClick: onConfirmFilter },
+            ]}
+          />
+        </div>
+
+        {renderArtifactSetFilter()}
       </div>
-
-      {renderArtifactSetFilter()}
     </div>
   );
 };

@@ -4,17 +4,17 @@ import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
 
 // Component
 import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { InventoryRack, OwnerLabel, WeaponCard } from "@Components/organisms";
+import { ArtifactCard, InventoryRack, OwnerLabel } from "@Components/organisms";
 import { Button } from "@Components/atoms";
 
-interface WeaponSelectProps {
-  items: UserWeapon[];
+interface ArtifactSelectProps {
+  items: UserArtifact[];
   max: number;
   onClose: () => void;
   onConfirm: (chosenIDs: BooRecord) => void;
 }
-const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps) => {
-  const [chosenWeapon, setChosenWeapon] = useState<UserWeapon>();
+const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectProps) => {
+  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
   const [chosenIDs, setChosenIDs] = useState(
     items.reduce((map: BooRecord, item) => {
       map[item.ID] = false;
@@ -24,8 +24,8 @@ const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps)
 
   const chosenCount = Object.values(chosenIDs).filter(Boolean).length;
 
-  const onClickItem = (item: UserWeapon | UserArtifact) => {
-    setChosenWeapon(item as UserWeapon);
+  const onClickItem = (item: UserArtifact | UserWeapon) => {
+    setChosenArtifact(item as UserArtifact);
 
     if (!chosenIDs[item.ID] && chosenCount < max) {
       setChosenIDs((prevChosenIDs) => {
@@ -36,7 +36,7 @@ const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps)
     }
   };
 
-  const onUnchooseItem = (item: UserWeapon | UserArtifact) => {
+  const onUnchooseItem = (item: UserArtifact | UserWeapon) => {
     setChosenIDs((prevChosenIDs) => {
       const newChosenIDs = { ...prevChosenIDs };
       newChosenIDs[item.ID] = false;
@@ -60,7 +60,7 @@ const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps)
               Confirm
             </Button>
             <span className="ml-3 text-black font-bold">
-              {chosenCount}/{max} weapons selected
+              {chosenCount}/{max} artifacts selected
             </span>
           </div>
           <ModalHeader.RightEnd onClickClose={onClose} />
@@ -71,9 +71,9 @@ const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps)
         <InventoryRack
           listClassName="inventory-list"
           itemClassName="inventory-item"
-          chosenID={chosenWeapon?.ID || 1}
+          chosenID={chosenArtifact?.ID || 1}
           chosenIDs={chosenIDs}
-          itemType="weapon"
+          itemType="artifact"
           items={items}
           onUnchooseItem={onUnchooseItem}
           onClickItem={onClickItem}
@@ -82,21 +82,21 @@ const WeaponSelectCore = ({ items, max, onClose, onConfirm }: WeaponSelectProps)
         <div className="flex flex-col justify-between">
           <div className="p-4 rounded-lg bg-darkblue-1 grow" style={{ minHeight: "28rem" }}>
             <div className="w-68 h-full hide-scrollbar">
-              <WeaponCard weapon={chosenWeapon} />
+              <ArtifactCard space="mx-3" artifact={chosenArtifact} />
             </div>
           </div>
 
-          <OwnerLabel owner={chosenWeapon?.owner} />
+          <OwnerLabel owner={chosenArtifact?.owner} />
         </div>
       </div>
     </div>
   );
 };
 
-export const WeaponSelect = ({ active, onClose, ...rest }: ModalControl & WeaponSelectProps) => {
+export const ArtifactSelect = ({ active, onClose, ...rest }: ModalControl & ArtifactSelectProps) => {
   return (
     <Modal withDefaultStyle {...{ active, onClose }}>
-      <WeaponSelectCore {...rest} onClose={onClose} />
+      <ArtifactSelectCore {...rest} onClose={onClose} />
     </Modal>
   );
 };

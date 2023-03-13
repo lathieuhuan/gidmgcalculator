@@ -25,9 +25,8 @@ type MessageState =
 
 interface UploadOptionsProps {
   onRequestSelect: (data: UploadedData, steps: UploadStep[]) => void;
-  onClose: () => void;
 }
-const UploadOptionsCore = ({ onClose, onRequestSelect }: UploadOptionsProps) => {
+const UploadOptionsCore = ({ onRequestSelect }: UploadOptionsProps) => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -137,8 +136,6 @@ const UploadOptionsCore = ({ onClose, onRequestSelect }: UploadOptionsProps) => 
 
   return (
     <Fragment>
-      <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
-
       <div className="load-option flex flex-col items-center">
         <p className="px-4 py-2 text-xl text-default text-center">Load from Local Storage</p>
 
@@ -205,7 +202,8 @@ export const UploadOptions = ({ active, onClose, ...rest }: ModalControl & Uploa
       style={{ width: "28rem" }}
       {...{ active, onClose }}
     >
-      <UploadOptionsCore onClose={onClose} {...rest} />
+      <CloseButton className="ml-auto mr-2 mb-4" onClick={onClose} />
+      <UploadOptionsCore {...rest} />
     </Modal>
   );
 };

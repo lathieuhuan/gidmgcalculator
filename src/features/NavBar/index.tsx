@@ -49,7 +49,7 @@ export function NavBar() {
 
           <div
             className={
-              "absolute top-full right-0 z-30 origin-top-right transition-transform duration-200 pt-2 pr-2 " +
+              "absolute top-full right-0 z-50 origin-top-right transition-transform duration-200 pt-2 pr-2 " +
               (menuDropped ? "scale-100" : "scale-0")
             }
           >

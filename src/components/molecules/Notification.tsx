@@ -28,10 +28,16 @@ export const Notification = (props: NotificationProps) => {
       style={{ boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px" }}
     >
       <span className="p-2 text-xl shrink-0">{renderIcon()}</span>
-      <p className="grow text-black" style={{ paddingTop: "0.375rem" }}>
+      <p className="pr-2 grow text-black" style={{ paddingTop: "0.375rem" }}>
         {props.content}
       </p>
-      <IconButton className="text-black text-xl" size="w-8 h-8" variant="custom" boneOnly onClick={props.onClose}>
+      <IconButton
+        className="text-black/60 hover:text-black text-xl"
+        size="w-8 h-8"
+        variant="custom"
+        boneOnly
+        onClick={props.onClose}
+      >
         <FaTimes />
       </IconButton>
     </div>

@@ -18,7 +18,7 @@ export const Button = (props: ButtonProps) => {
       {icon ? (
         <>
           {icon}
-          <span className="pt-1 ml-2">{children}</span>
+          <span className="py-0.5 ml-2">{children}</span>
         </>
       ) : (
         children
