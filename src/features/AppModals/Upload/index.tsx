@@ -9,7 +9,7 @@ import { notification } from "@Src/utils";
 
 // Component
 import { ModalControl } from "@Components/molecules";
-import { UploadOptions } from "./UploadOptions";
+import { FileUpload } from "./FileUpload";
 import { WeaponSelect } from "./WeaponSelect";
 import { ArtifactSelect } from "./ArtifactSelect";
 
@@ -54,8 +54,15 @@ const UploadCore = (props: ModalControl) => {
 
       return notification.warn({
         content: `Too many ${itemType}! Please select ${itemType} to be left out.`,
+        duration: 0,
       });
     }
+
+    notification.success({
+      content: "Successfully uploaded your data!",
+    });
+
+    const { weapons = [], artifacts = [] } = uploadedData.current || {};
 
     dispatch(
       addUserDatabase({
@@ -70,11 +77,17 @@ const UploadCore = (props: ModalControl) => {
 
   return (
     <>
-      <UploadOptions
+      <FileUpload
         active={props.active && currentStep === "SELECT_OPTION"}
-        onRequestSelect={(data, steps) => {
+        onSuccessUploadFile={(data) => {
           uploadedData.current = data;
-          uploadSteps.current.push(...steps);
+
+          if (data.weapons.length > MAX_USER_WEAPONS) {
+            uploadSteps.current.push("CHECK_WEAPONS");
+          }
+          if (data.artifacts.length > MAX_USER_ARTIFACTS) {
+            uploadSteps.current.push("CHECK_ARTIFACTS");
+          }
 
           toNextStep();
         }}

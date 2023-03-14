@@ -50,7 +50,7 @@ export const NotificationCenter = ({ request }: NotificationCenterProps) => {
             key={id}
             className="absolute w-full"
             style={{
-              top: 12 * (i + 1) + extraDistance,
+              top: 16 * (i + 1) + extraDistance,
             }}
           >
             <NotificationAnimator

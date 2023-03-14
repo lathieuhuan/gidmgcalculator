@@ -19,6 +19,7 @@ const show = (type: NotificationControl["type"]) => (args: Omit<NotificationCont
         noti: {
           id,
           type,
+          duration: 5,
           ...args,
         },
       }}
