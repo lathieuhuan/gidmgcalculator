@@ -1,51 +1,24 @@
-import { useState, useEffect } from "react";
-import type { NotificationCenterProps, NotificationControl } from "./types";
+import { Notification } from "@Components/molecules";
+import { useRef } from "react";
 import { NotificationAnimator } from "./NotificationAnimator";
+import { NotificationCenterProps } from "./types";
 
-export let trackedNotis: Array<NotificationControl & { height: number }> = [];
+export const NotificationCenter = (props: NotificationCenterProps) => {
+  const heights = useRef<number[]>([]);
 
-export const NotificationCenter = ({ request }: NotificationCenterProps) => {
-  const [ids, setIds] = useState<number[]>([]);
-
-  const removeNoti = (id: number) => {
-    const index = trackedNotis.findIndex((trackedNoti) => trackedNoti.id === id);
-
-    if (index !== -1) {
-      trackedNotis[index].onClose?.();
-      trackedNotis.splice(index, 1);
-    }
-
-    setIds((prevIds) => prevIds.filter((prevId) => prevId !== id));
-  };
-
-  useEffect(() => {
-    switch (request.type) {
-      case "add":
-        trackedNotis.push({
-          ...request.noti,
-          height: 0,
-        });
-
-        setIds((prevIds) => [...prevIds, request.noti.id]);
-
-        break;
-      case "remove":
-        removeNoti(request.id);
-        break;
-    }
-  }, [request]);
+  console.log("run");
+  console.log(props.requests);
 
   return (
     <div className="w-80 relative" style={{ maxWidth: "95%" }}>
-      {ids.map((id, i) => {
-        const noti = trackedNotis.find((trackedNoti) => trackedNoti.id === id);
+      {props.requests.map((request, i, all) => {
+        const { id } = request;
 
-        const extraDistance = Array.from({ length: Math.min(ids.length, i + 1) }).reduce(
-          (accumulator: number, _, j) => accumulator + (trackedNotis[j - 1]?.height || 0),
-          0
-        );
+        const extraDistance = all.slice(0, i).reduce((total, ctrl) => {
+          return total + (heights.current[ctrl.id] || 0);
+        }, 0);
 
-        return noti ? (
+        return (
           <div
             key={id}
             className="absolute w-full"
@@ -54,14 +27,19 @@ export const NotificationCenter = ({ request }: NotificationCenterProps) => {
             }}
           >
             <NotificationAnimator
-              {...noti}
+              {...request}
               onMount={(element) => {
-                noti.height = element.clientHeight;
+                heights.current[id] = element.clientHeight;
               }}
-              onClose={() => removeNoti(noti.id)}
-            />
+              afterClose={() => {
+                request.afterClose?.(id);
+                props.afterCloseNoti(id);
+              }}
+            >
+              {({ onClose }) => <Notification {...request} onClose={onClose} />}
+            </NotificationAnimator>
           </div>
-        ) : null;
+        );
       })}
     </div>
   );

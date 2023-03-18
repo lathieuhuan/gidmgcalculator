@@ -1,36 +1,65 @@
 import { notifRoot } from "./root";
-import type { NotificationControl } from "./types";
-import { NotificationCenter, trackedNotis } from "./NotificationCenter";
+import type { NotificationRequest } from "./types";
+import { NotificationCenter } from "./NotificationCenter";
 
-const show = (type: NotificationControl["type"]) => (args: Omit<NotificationControl, "id" | "type">) => {
-  let id = 0;
+export let notiRequests: NotificationRequest[] = [];
 
-  for (let i = 0; i < 100; i++) {
-    if (trackedNotis.every((trackedNoti) => trackedNoti.id !== i)) {
-      id = i;
-      break;
+const updateNotification = () => {
+  notifRoot.render(<NotificationCenter requests={notiRequests} afterCloseNoti={cleanup} />);
+};
+
+const cleanup = (id: number) => {
+  notiRequests = notiRequests.filter((request) => request.id !== id);
+
+  updateNotification();
+};
+
+const destroy = (id?: number | "all") => {
+  if (id === "all") {
+    for (const request of notiRequests) {
+      request.isClosing = true;
+    }
+  } else if (typeof id === "number") {
+    const request = notiRequests.find((request) => request.id === id);
+
+    if (request) {
+      request.isClosing = true;
+    }
+  } else {
+    const lastRequest = notiRequests[notiRequests.length - 1];
+
+    if (lastRequest) {
+      lastRequest.isClosing = true;
     }
   }
 
-  notifRoot.render(
-    <NotificationCenter
-      request={{
-        type: "add",
-        noti: {
-          id,
-          type,
-          duration: 5,
-          ...args,
-        },
-      }}
-    />
-  );
+  console.log("destroy");
+  console.log(notiRequests);
 
-  return id;
+  updateNotification();
 };
 
-const destroy = (id: number) => {
-  notifRoot.render(<NotificationCenter request={{ type: "remove", id }} />);
+const show = (type: NotificationRequest["type"]) => (noti: Omit<NotificationRequest, "id" | "type">) => {
+  //
+  for (let id = 0; id < 100; id++) {
+    if (notiRequests.every((notification) => notification.id !== id)) {
+      //
+      notiRequests.push({
+        id,
+        type,
+        duration: 5,
+        ...noti,
+      });
+
+      console.log("show", type);
+      console.log(notiRequests);
+
+      updateNotification();
+
+      return id;
+    }
+  }
+  return 0;
 };
 
 export const notification = {

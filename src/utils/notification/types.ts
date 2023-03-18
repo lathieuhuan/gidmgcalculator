@@ -1,20 +1,20 @@
-import { NotificationProps } from "@Components/molecules";
+import type { PartiallyRequired } from "@Src/types";
+import type { NotificationProps } from "@Components/molecules";
 
-export type NotificationControl = Pick<NotificationProps, "type" | "content" | "onClose"> & {
+export type NotificationRequest = Omit<NotificationProps, "onClose"> & {
   id: number;
   duration?: number;
+  isClosing?: boolean;
+  onClose?: (id: number) => void;
+  afterClose?: (id: number) => void;
 };
 
-type AddRequest = {
-  type: "add";
-  noti: NotificationControl;
-};
-
-type RemoveRequest = {
-  type: "remove";
-  id: number;
-};
+export interface NotificationAnimatorProps extends PartiallyRequired<NotificationRequest, "afterClose"> {
+  children: (operation: { onClose: () => void }) => React.ReactElement;
+  onMount: (info: HTMLDivElement) => void;
+}
 
 export interface NotificationCenterProps {
-  request: AddRequest | RemoveRequest;
+  requests: NotificationRequest[];
+  afterCloseNoti: (id: number) => void;
 }
