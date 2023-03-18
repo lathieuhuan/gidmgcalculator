@@ -36,6 +36,8 @@ export const ascsFromLv = (lv: Level) => {
   return maxLv === 20 ? 0 : maxLv / 10 - 3;
 };
 
+export const checkIfWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
+
 export function countVision(partyData: PartyData, charData?: CharData) {
   const result: Partial<Record<Vision, number>> = {};
   if (charData) {

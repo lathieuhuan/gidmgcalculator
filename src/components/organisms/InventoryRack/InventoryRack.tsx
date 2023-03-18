@@ -7,7 +7,8 @@ import type { UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
-import { getArtifactInfo, getWeaponInfo, getDataId, checkIfWeapon } from "./utils";
+import { checkIfWeapon } from "@Src/utils";
+import { getArtifactInfo, getWeaponInfo, getDataId } from "./utils";
 
 // Component
 import { ItemThumb } from "@Components/molecules";

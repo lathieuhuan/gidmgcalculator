@@ -1,17 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import type { BooRecord } from "@Src/types";
+import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
 import type { UploadedData, UploadStep } from "./types";
+import type { ModalControl } from "@Components/molecules";
 
 import { MAX_USER_ARTIFACTS, MAX_USER_WEAPONS } from "@Src/constants";
+import { notification } from "@Src/utils";
 import { useDispatch } from "@Store/hooks";
 import { addUserDatabase } from "@Store/userDatabaseSlice";
-import { notification } from "@Src/utils";
 
 // Component
-import { ModalControl } from "@Components/molecules";
+import { ItemMultiSelect } from "@Components/templates";
 import { FileUpload } from "./FileUpload";
-import { WeaponSelect } from "./WeaponSelect";
-import { ArtifactSelect } from "./ArtifactSelect";
 
 const UploadCore = (props: ModalControl) => {
   const dispatch = useDispatch();
@@ -19,11 +18,23 @@ const UploadCore = (props: ModalControl) => {
   const uploadedData = useRef<UploadedData>();
   const removedWeaponIDs = useRef<BooRecord>({});
   const removedArtifactIDs = useRef<BooRecord>({});
+  const notiId = useRef<number>();
 
   const [stepNo, setStepNo] = useState(-1);
 
   const currentStep = uploadSteps.current[stepNo];
   const { weapons = [], artifacts = [] } = uploadedData.current || {};
+  const selectingWeapons = props.active && currentStep === "CHECK_WEAPONS";
+  const selectingArtifacts = props.active && currentStep === "CHECK_ARTIFACTS";
+  let filteredWeapons: UserWeapon[] = [];
+  let filteredArtifacts: UserArtifact[] = [];
+
+  if (selectingWeapons) {
+    filteredWeapons = weapons.filter((weapon) => !weapon.owner && !weapon.setupIDs?.length);
+  }
+  if (selectingArtifacts) {
+    filteredArtifacts = artifacts.filter((artifact) => !artifact.owner && !artifact.setupIDs?.length);
+  }
 
   useEffect(() => {
     setStepNo(0);
@@ -32,16 +43,22 @@ const UploadCore = (props: ModalControl) => {
   const onClose = (atStep: UploadStep) => () => {
     if (atStep === currentStep) {
       setStepNo(-1);
-      uploadSteps.current = ["SELECT_OPTION"];
-      uploadedData.current = undefined;
-      removedWeaponIDs.current = {};
-      removedArtifactIDs.current = {};
+
+      if (notiId.current !== undefined) {
+        notification.destroy(notiId.current);
+      }
 
       setTimeout(props.onClose, 150);
     }
   };
 
   const toNextStep = () => {
+    if (notiId.current !== undefined) {
+      notification.destroy(notiId.current);
+
+      notiId.current = undefined;
+    }
+
     if (stepNo !== uploadSteps.current.length - 1) {
       const nextStepNo = stepNo + 1;
       const key: string = uploadSteps.current[nextStepNo];
@@ -52,10 +69,12 @@ const UploadCore = (props: ModalControl) => {
 
       setStepNo(nextStepNo);
 
-      return notification.warn({
+      notiId.current = notification.warn({
         content: `Too many ${itemType}! Please select ${itemType} to be left out.`,
         duration: 0,
       });
+
+      return;
     }
 
     notification.success({
@@ -93,9 +112,10 @@ const UploadCore = (props: ModalControl) => {
         }}
         onClose={onClose("SELECT_OPTION")}
       />
-      <WeaponSelect
+      <ItemMultiSelect
         active={props.active && currentStep === "CHECK_WEAPONS"}
-        items={weapons}
+        itemType="weapon"
+        items={filteredWeapons}
         max={weapons.length - MAX_USER_WEAPONS}
         onConfirm={(data) => {
           removedWeaponIDs.current = data;
@@ -103,9 +123,10 @@ const UploadCore = (props: ModalControl) => {
         }}
         onClose={onClose("CHECK_WEAPONS")}
       />
-      <ArtifactSelect
+      <ItemMultiSelect
         active={props.active && currentStep === "CHECK_ARTIFACTS"}
-        items={artifacts}
+        itemType="artifact"
+        items={filteredArtifacts}
         max={artifacts.length - MAX_USER_ARTIFACTS}
         onConfirm={(data) => {
           removedArtifactIDs.current = data;

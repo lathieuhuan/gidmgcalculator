@@ -28,7 +28,7 @@ export const Notification = (props: NotificationProps) => {
       style={{ boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px" }}
     >
       <span className="p-2 text-xl shrink-0">{renderIcon()}</span>
-      <p className="pr-2 grow text-black" style={{ paddingTop: "0.375rem" }}>
+      <p className="pr-2 grow text-black font-semibold" style={{ paddingTop: "0.375rem" }}>
         {props.content}
       </p>
       <IconButton

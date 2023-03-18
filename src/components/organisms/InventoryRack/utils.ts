@@ -11,6 +11,4 @@ export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: 
   return { beta, name, icon, rarity, level, owner, setupIDs };
 };
 
-export const checkIfWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
-
 export const getDataId = (item: UserWeapon | UserArtifact) => `${item.type}-${item.code}`;

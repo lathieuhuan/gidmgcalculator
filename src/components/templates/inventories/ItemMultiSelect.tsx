@@ -2,32 +2,32 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
 
+import { checkIfWeapon } from "@Src/utils";
+
 // Component
 import { Modal, ModalHeader, type ModalControl } from "@Components/molecules";
-import { ArtifactCard, InventoryRack, OwnerLabel } from "@Components/organisms";
+import { ArtifactCard, InventoryRack, OwnerLabel, WeaponCard } from "@Components/organisms";
 import { Button } from "@Components/atoms";
 
-interface ArtifactSelectProps {
-  items: UserArtifact[];
-  max: number;
+interface ItemMultiSelectProps {
+  itemType: "weapon" | "artifact";
+  items: UserWeapon[] | UserArtifact[];
+  max?: number;
   onClose: () => void;
   onConfirm: (chosenIDs: BooRecord) => void;
 }
-const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectProps) => {
-  const [chosenArtifact, setChosenArtifact] = useState<UserArtifact>();
-  const [chosenIDs, setChosenIDs] = useState(
-    items.reduce((map: BooRecord, item) => {
-      map[item.ID] = false;
-      return map;
-    }, {})
-  );
+
+const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
+  const { max } = props;
+  const [chosenItem, setChosenItem] = useState<UserWeapon | UserArtifact>();
+  const [chosenIDs, setChosenIDs] = useState<BooRecord>({});
 
   const chosenCount = Object.values(chosenIDs).filter(Boolean).length;
 
-  const onClickItem = (item: UserArtifact | UserWeapon) => {
-    setChosenArtifact(item as UserArtifact);
+  const onClickItem = (item: UserWeapon | UserArtifact) => {
+    setChosenItem(item as UserWeapon);
 
-    if (!chosenIDs[item.ID] && chosenCount < max) {
+    if (!chosenIDs[item.ID] && max && chosenCount < max) {
       setChosenIDs((prevChosenIDs) => {
         const newChosenIDs = { ...prevChosenIDs };
         newChosenIDs[item.ID] = true;
@@ -36,7 +36,7 @@ const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectPr
     }
   };
 
-  const onUnchooseItem = (item: UserArtifact | UserWeapon) => {
+  const onUnchooseItem = (item: UserWeapon | UserArtifact) => {
     setChosenIDs((prevChosenIDs) => {
       const newChosenIDs = { ...prevChosenIDs };
       newChosenIDs[item.ID] = false;
@@ -47,23 +47,23 @@ const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectPr
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
-        <ModalHeader>
-          <div className="pl-4 flex items-center md2:col-span-2">
+        <ModalHeader className="grid-cols-5">
+          <div className="pl-4 flex items-center col-span-4 md2:col-span-2">
             <Button
               className={"shadow-none " + (chosenCount !== max ? "text-black/60" : "")}
               variant="default"
               boneOnly={chosenCount !== max}
               icon={<FaCheck />}
               style={{ paddingTop: 2, paddingBottom: 0 }}
-              onClick={() => onConfirm(chosenIDs)}
+              onClick={() => props.onConfirm(chosenIDs)}
             >
               Confirm
             </Button>
-            <span className="ml-3 text-black font-bold">
-              {chosenCount}/{max} artifacts selected
-            </span>
+            <p className="ml-3 text-black font-bold">
+              {chosenCount}/{max} selected
+            </p>
           </div>
-          <ModalHeader.RightEnd onClickClose={onClose} />
+          <ModalHeader.RightEnd onClickClose={props.onClose} />
         </ModalHeader>
       </div>
 
@@ -71,10 +71,10 @@ const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectPr
         <InventoryRack
           listClassName="inventory-list"
           itemClassName="inventory-item"
-          chosenID={chosenArtifact?.ID || 1}
+          chosenID={chosenItem?.ID || 1}
           chosenIDs={chosenIDs}
-          itemType="artifact"
-          items={items}
+          itemType={props.itemType}
+          items={props.items}
           onUnchooseItem={onUnchooseItem}
           onClickItem={onClickItem}
         />
@@ -82,21 +82,27 @@ const ArtifactSelectCore = ({ items, max, onClose, onConfirm }: ArtifactSelectPr
         <div className="flex flex-col justify-between">
           <div className="p-4 rounded-lg bg-darkblue-1 grow" style={{ minHeight: "28rem" }}>
             <div className="w-68 h-full hide-scrollbar">
-              <ArtifactCard space="mx-3" artifact={chosenArtifact} />
+              {chosenItem ? (
+                checkIfWeapon(chosenItem) ? (
+                  <WeaponCard weapon={chosenItem} />
+                ) : (
+                  <ArtifactCard artifact={chosenItem} />
+                )
+              ) : null}
             </div>
           </div>
 
-          <OwnerLabel owner={chosenArtifact?.owner} />
+          <OwnerLabel owner={chosenItem?.owner} />
         </div>
       </div>
     </div>
   );
 };
 
-export const ArtifactSelect = ({ active, onClose, ...rest }: ModalControl & ArtifactSelectProps) => {
+export const ItemMultiSelect = ({ active, onClose, ...rest }: ModalControl & ItemMultiSelectProps) => {
   return (
     <Modal withDefaultStyle {...{ active, onClose }}>
-      <ArtifactSelectCore {...rest} onClose={onClose} />
+      <ItemMultiSelectCore {...rest} onClose={onClose} />
     </Modal>
   );
 };

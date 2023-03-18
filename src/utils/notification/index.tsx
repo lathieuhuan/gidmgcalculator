@@ -5,13 +5,15 @@ import { NotificationCenter } from "./NotificationCenter";
 export let notiRequests: NotificationRequest[] = [];
 
 const updateNotification = () => {
-  notifRoot.render(<NotificationCenter requests={notiRequests} afterCloseNoti={cleanup} />);
-};
-
-const cleanup = (id: number) => {
-  notiRequests = notiRequests.filter((request) => request.id !== id);
-
-  updateNotification();
+  notifRoot.render(
+    <NotificationCenter
+      requests={notiRequests}
+      afterCloseNoti={(id: number) => {
+        notiRequests = notiRequests.filter((request) => request.id !== id);
+        updateNotification();
+      }}
+    />
+  );
 };
 
 const destroy = (id?: number | "all") => {
@@ -33,9 +35,6 @@ const destroy = (id?: number | "all") => {
     }
   }
 
-  console.log("destroy");
-  console.log(notiRequests);
-
   updateNotification();
 };
 
@@ -47,12 +46,9 @@ const show = (type: NotificationRequest["type"]) => (noti: Omit<NotificationRequ
       notiRequests.push({
         id,
         type,
-        duration: 5,
+        duration: 3,
         ...noti,
       });
-
-      console.log("show", type);
-      console.log(notiRequests);
 
       updateNotification();
 

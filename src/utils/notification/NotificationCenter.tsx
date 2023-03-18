@@ -6,9 +6,6 @@ import { NotificationCenterProps } from "./types";
 export const NotificationCenter = (props: NotificationCenterProps) => {
   const heights = useRef<number[]>([]);
 
-  console.log("run");
-  console.log(props.requests);
-
   return (
     <div className="w-80 relative" style={{ maxWidth: "95%" }}>
       {props.requests.map((request, i, all) => {
