@@ -114,10 +114,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
                 >
                   {variant.types.map((variantType, i) => {
                     return (
-                      <option
-                        key={i}
-                        value={typeof variantType === "string" ? variantType : variantType.value}
-                      >
+                      <option key={i} value={typeof variantType === "string" ? variantType : variantType.value}>
                         {typeof variantType === "string" ? variantType : variantType.label}
                       </option>
                     );
@@ -172,8 +169,8 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             })}
           </div>
 
-          <div className="space-x-2">
-            <Button className="mt-3 mr-auto" variant="negative" onClick={onClose}>
+          <div className="mt-3 flex space-x-2">
+            <Button variant="negative" onClick={onClose}>
               Close
             </Button>
             {button}
@@ -187,11 +184,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             {ATTACK_ELEMENTS.map((attElmt) => {
               return (
                 <div key={attElmt} className="flex justify-between items-center">
-                  <p
-                    className={
-                      "text-lg " + (attElmt === "phys" ? "text-default" : `text-${attElmt}`)
-                    }
-                  >
+                  <p className={"text-lg " + (attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
                     {t(attElmt, { ns: "resistance" })}
                   </p>
                   <Input

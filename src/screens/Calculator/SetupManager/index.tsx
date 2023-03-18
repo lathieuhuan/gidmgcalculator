@@ -68,7 +68,7 @@ export default function SetupManager() {
       <div className="mt-4 grid grid-cols-3">
         <div className="flex items-center">
           {!targetOverviewOn && (
-            <IconButton className="text-lg" boneOnly onClick={() => setModalType("TARGET_CONFIG")}>
+            <IconButton className="text-xl" size="w-10 h-10" boneOnly onClick={() => setModalType("TARGET_CONFIG")}>
               <FaSkull />
             </IconButton>
           )}
@@ -84,7 +84,7 @@ export default function SetupManager() {
           </IconButton>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end space-x-1">
           <button
             className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
             onClick={() => setModalType("WEAPONS_PICKER")}

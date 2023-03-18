@@ -20,7 +20,7 @@ const goldCatalysts: DataWeapon[] = [
       get core() {
         return (
           <>
-            {this.extra?.[0]} At the same time, they will regain {3.5 + refi * 0.5} Energy every 2.5s. This will still
+            {this.extra?.[0]} At the same time, they will regain {4 + refi * 0.5} Energy every 2.5s. This will still
             take effect even if the character is not on the field.
           </>
         );
@@ -28,8 +28,8 @@ const goldCatalysts: DataWeapon[] = [
       extra: [
         <>
           When using an Elemental Burst or creating a shield, the equipping character's{" "}
-          <Green>corresponding Elemental DMG</Green> is increased by <Green b>{(15 + refi * 15) / 100}%</Green> for
-          every 1,000 Max HP they possess for 3s, up to <Rose>{6 + refi * 6}%</Rose>.
+          <Green>corresponding Elemental DMG</Green> is increased by <Green b>{(10 + refi * 20) / 100}%</Green> for
+          every 1,000 Max HP they possess for 3s, up to <Rose>{4 + refi * 8}%</Rose>.
         </>,
       ],
     }),
@@ -40,7 +40,7 @@ const goldCatalysts: DataWeapon[] = [
         desc: ({ refi }) => findByCode(goldCatalysts, 152)?.passiveDesc({ refi }).extra?.[0],
         applyFinalBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
           const stacks = Math.floor(totalAttr.hp / 1000);
-          const buffValue = Math.min(stacks * (0.15 + refi * 0.15), 6 + refi * 6);
+          const buffValue = Math.min(stacks * (0.1 + refi * 0.2), 4 + refi * 8);
           applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
       },

@@ -88,11 +88,10 @@ const Lisa: DataCharacter = {
   debuffs: [
     {
       index: 0,
-      src: EModSrc.C4,
+      src: EModSrc.A4,
       desc: () => (
         <>
-          Opponents hit by Lightning Rose [EB] have their <Green>DEF</Green> decreased by{" "}
-          <Green b>15%</Green> for 10s.
+          Opponents hit by Lightning Rose [EB] have their <Green>DEF</Green> decreased by <Green b>15%</Green> for 10s.
         </>
       ),
       isGranted: checkAscs[4],

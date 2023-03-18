@@ -1,19 +1,15 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 
-// util
+import { LEVELS } from "@Src/constants";
 import { appSettings } from "@Src/utils";
-
-// Hook
+import { PersistControlContext } from "@Src/features";
 import { useDispatch } from "@Store/hooks";
-
-// Action
 import { applySettings } from "@Store/calculatorSlice";
 
 // Component
 import { CloseButton } from "@Components/atoms";
 import { ButtonBar, Modal, ModalControl } from "@Components/molecules";
 import { CheckSetting, Section, SelectSetting } from "./atoms";
-import { LEVELS } from "@Src/constants";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
   return [...Array(count)].map((_, i) => i + (startFromZero ? 0 : 1));
@@ -25,6 +21,7 @@ interface SettingsProps {
 const SettingsCore = ({ onClose }: SettingsProps) => {
   const dispatch = useDispatch();
   const [tempSettings, setTempSettings] = useState(appSettings.get());
+  const changeAppStoreConfig = useContext(PersistControlContext);
 
   const onConfirmNewSettings = () => {
     if (appSettings.get().charInfoIsSeparated && !tempSettings.charInfoIsSeparated) {
@@ -34,6 +31,10 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
         })
       );
     }
+
+    changeAppStoreConfig({
+      persistingUserData: tempSettings.persistingUserData,
+    });
 
     appSettings.set(tempSettings);
     onClose();
@@ -104,6 +105,26 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
               }));
             }}
           />
+          <div>
+            <CheckSetting
+              label="Auto save my database to browser's local storage"
+              defaultChecked={tempSettings.persistingUserData}
+              onChange={() => {
+                setTempSettings((prevSettings) => ({
+                  ...prevSettings,
+                  persistingUserData: !prevSettings.persistingUserData,
+                }));
+              }}
+            />
+            <ul className="mt-1 pl-4 text-sm list-disc space-y-1">
+              {tempSettings.persistingUserData && (
+                <li>Your data is available on this browser only and will be lost if the local storage is cleared.</li>
+              )}
+              <li className="text-lightred">
+                Change of this setting can remove your current data and works on the App!
+              </li>
+            </ul>
+          </div>
         </Section>
 
         <Section title="Default values">

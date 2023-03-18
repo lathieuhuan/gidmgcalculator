@@ -101,6 +101,7 @@ export type Artifact = {
 export type AppSettings = {
   charInfoIsSeparated: boolean;
   doKeepArtStatsOnSwitch: boolean;
+  persistingUserData: boolean;
   charLevel: Level;
   charCons: number;
   charNAs: number;

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
-import { UnderConstructNotice } from "@Components/organisms";
 import { Introduction } from "./Introduction";
 import { Guides } from "./Guides";
 import { Settings } from "./Settings";
@@ -18,7 +17,6 @@ export const AppModals = () => {
 
   return (
     <>
-      {/* <UnderConstructNotice active={modalType === "DOWNLOAD"} onClose={closeModal} /> */}
       <Introduction active={appModalType === "INTRO"} onClose={closeModal} />
       <Guides active={appModalType === "GUIDES"} onClose={closeModal} />
       <Settings active={appModalType === "SETTINGS"} onClose={closeModal} />

@@ -1,11 +1,5 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import type {
-  UserArtifact,
-  UserComplexSetup,
-  UserDatabaseState,
-  UserWeapon,
-  WeaponType,
-} from "@Src/types";
+import type { UserArtifact, UserComplexSetup, UserDatabaseState, UserWeapon, WeaponType } from "@Src/types";
 import type {
   AddUserDatabaseAction,
   UpdateUserArtifactSubStatAction,
@@ -29,7 +23,7 @@ import { findById, findByName, indexById, indexByName, splitLv } from "@Src/util
 import { isUserSetup } from "@Src/utils/setup";
 import { createCharInfo, createWeapon } from "@Src/utils/creators";
 
-const initialState: UserDatabaseState = {
+export const initialState: UserDatabaseState = {
   userChars: [],
   userWps: [],
   userArts: [],
@@ -441,9 +435,7 @@ export const userDatabaseSlice = createSlice({
         const lastIndex = visibleIDs.length - 1;
 
         state.chosenSetupID =
-          removedIndexInVisible === lastIndex
-            ? visibleIDs[lastIndex - 1] || 0
-            : visibleIDs[removedIndexInVisible + 1];
+          removedIndexInVisible === lastIndex ? visibleIDs[lastIndex - 1] || 0 : visibleIDs[removedIndexInVisible + 1];
       }
     },
     combineSetups: (state, action: CombineSetupsAction) => {

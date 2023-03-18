@@ -23,7 +23,7 @@ import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
-import { ErrorBoundary, Message, NavBar, ImportManager, AppModals } from "@Src/features";
+import { Message, NavBar, ImportManager, AppModals } from "@Src/features";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,25 +71,19 @@ function App() {
     }
   };
 
-  const onUndo = () => {
-    //
-  };
-
   return (
     <div className="App h-screen pt-8 text-default bg-default">
-      <ErrorBoundary onUndo={onUndo}>
-        <NavBar />
+      <NavBar />
 
-        <div className="h-full flex-center relative">
-          <Calculator />
+      <div className="h-full flex-center relative">
+        <Calculator />
 
-          {atScreen !== EScreen.CALCULATOR && <div className="absolute full-stretch z-30">{renderTabContent()}</div>}
-        </div>
+        {atScreen !== EScreen.CALCULATOR && <div className="absolute full-stretch z-30">{renderTabContent()}</div>}
+      </div>
 
-        <AppModals />
-        <Message />
-        <ImportManager />
-      </ErrorBoundary>
+      <AppModals />
+      <Message />
+      <ImportManager />
     </div>
   );
 }

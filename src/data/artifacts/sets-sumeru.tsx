@@ -124,7 +124,7 @@ const sumeruSets: DataArtifact[] = [
         xtraDesc: [
           <>
             When the equipping character takes DMG, Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by{" "}
-            <Green b>8%</Green> for 8s. Max <Rose>5</Rose> stacks.
+            <Green b>8%</Green> for 5s. Max <Rose>5</Rose> stacks.
           </>,
         ],
         applyBuff: makeModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 10),

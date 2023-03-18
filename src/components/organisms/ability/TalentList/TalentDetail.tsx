@@ -30,12 +30,7 @@ interface TalentDetailProps {
   onChangeDetailIndex: (newIndex: number) => void;
   onClose: () => void;
 }
-export const TalentDetail = ({
-  dataChar,
-  detailIndex,
-  onChangeDetailIndex,
-  onClose,
-}: TalentDetailProps) => {
+export const TalentDetail = ({ dataChar, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
   const { t } = useTranslation();
   const { weaponType, vision, activeTalents } = dataChar;
 
@@ -102,8 +97,7 @@ export const TalentDetail = ({
             if (detailIndex >= 1) onChangeDetailIndex(detailIndex - 1);
           }}
           onClickNext={() => {
-            if (detailIndex < Object.keys(activeTalents).length - 1)
-              onChangeDetailIndex(detailIndex + 1);
+            if (detailIndex < Object.keys(activeTalents).length - 1) onChangeDetailIndex(detailIndex + 1);
           }}
           topLeftNote={<p className="absolute top-0 left-0 w-1/4 text-sm">{t(talent.type)}</p>}
         />
@@ -114,11 +108,7 @@ export const TalentDetail = ({
         </div> */}
 
         <div>
-          <div
-            className={
-              "py-2 flex-center bg-darkblue-1 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")
-            }
-          >
+          <div className={"py-2 flex-center bg-darkblue-1 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")}>
             {!isStatic && (
               <>
                 {renderLevelButton(true)}
@@ -135,7 +125,7 @@ export const TalentDetail = ({
                 value={talentLevel}
                 onChange={(e) => setTalentLevel(+e.target.value)}
               >
-                {[...Array(15).keys()].map((_, i) => (
+                {Array.from({ length: 13 }).map((_, i) => (
                   <option key={i}>{i + 1}</option>
                 ))}
               </select>
@@ -200,10 +190,7 @@ function processActiveTalents(
       const multFactors = turnArray(stat.multFactors);
       const factorStrings = [];
 
-      if (
-        stat.isNotOfficial ||
-        multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)
-      ) {
+      if (stat.isNotOfficial || multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)) {
         continue;
       }
 

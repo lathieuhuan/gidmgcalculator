@@ -4,13 +4,14 @@ import { StandardModal } from "@Components/organisms";
 import { About } from "./About";
 import { Notes } from "./Notes";
 import { UPDATES } from "./updates";
+import { VersionRecap } from "./VersionRecap";
 
 export const Introduction = (props: ModalControl) => {
   return (
     <StandardModal
       title={
         <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator <sup className="text-base text-lesser">(v3.0.0-beta)</sup>
+          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.0.0</sup>
         </h1>
       }
       {...props}
@@ -33,6 +34,10 @@ export const Introduction = (props: ModalControl) => {
                 ))}
               </div>
             ),
+          },
+          {
+            heading: "New in v3.0.0",
+            body: <VersionRecap />,
           },
           {
             heading: "Notes",
@@ -82,6 +87,13 @@ export const Introduction = (props: ModalControl) => {
             "Street_Term9205",
             "Sevenempest",
             "_65535_",
+            "arthur cavalaro",
+            "Spiderninja_1",
+            "Gabriel Caminha",
+            "Ayan",
+            "Only_Pumpkin_801",
+            "Jenny-sama",
+            "L1itTru",
           ].map((name, i) => (
             <li key={i}>
               <Lightgold>{name}</Lightgold>

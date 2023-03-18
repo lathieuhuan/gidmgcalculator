@@ -119,20 +119,26 @@ export const toCustomBuffLabel = (category: string, type: string, t: (origin: st
 
 const getAppSettings = (): AppSettings => {
   let savedSettings = localStorage.getItem("settings");
+  const defaultSettings: AppSettings = {
+    charInfoIsSeparated: false,
+    doKeepArtStatsOnSwitch: false,
+    persistingUserData: false,
+    charLevel: "1/20",
+    charCons: 0,
+    charNAs: 1,
+    charES: 1,
+    charEB: 1,
+    wpLevel: "1/20",
+    wpRefi: 1,
+    artLevel: 0,
+  };
+
   return savedSettings
-    ? (JSON.parse(savedSettings) as AppSettings)
-    : {
-        charInfoIsSeparated: false,
-        doKeepArtStatsOnSwitch: false,
-        charLevel: "1/20",
-        charCons: 0,
-        charNAs: 1,
-        charES: 1,
-        charEB: 1,
-        wpLevel: "1/20",
-        wpRefi: 1,
-        artLevel: 0,
-      };
+    ? {
+        ...defaultSettings,
+        ...(JSON.parse(savedSettings) as AppSettings),
+      }
+    : defaultSettings;
 };
 
 const setAppSettings = (newSettings: Partial<AppSettings>) => {
