@@ -127,21 +127,3 @@ export const getCopyName = (originalName: string, existedNames: string[]) => {
 
   return undefined;
 };
-
-export const downloadToDevice = (data: any, type: string) => {
-  // type "text/plain" | "application/json"
-  const textBlob = new Blob([data], { type });
-  const newLink = document.createElement("a");
-
-  newLink.download = "GDC_Data";
-
-  if (window.webkitURL != null) {
-    newLink.href = window.webkitURL.createObjectURL(textBlob);
-  } else {
-    newLink.href = window.URL.createObjectURL(textBlob);
-    newLink.style.display = "none";
-    document.body.appendChild(newLink);
-  }
-
-  newLink.click();
-};

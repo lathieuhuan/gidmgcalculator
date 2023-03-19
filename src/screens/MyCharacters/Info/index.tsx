@@ -20,12 +20,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSlice";
 
 // Selector
-import {
-  selectChosenChar,
-  selectUserArts,
-  selectUserChars,
-  selectUserWps,
-} from "@Store/userDatabaseSlice/selectors";
+import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
 import { IconButton, StarLine } from "@Components/atoms";
@@ -82,11 +77,7 @@ export default function Info() {
       style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
     >
       <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
-        <IconButton
-          className="absolute top-4 right-4"
-          variant="negative"
-          onClick={() => setRemoving(true)}
-        >
+        <IconButton className="absolute top-4 right-4" variant="negative" onClick={() => setRemoving(true)}>
           <FaUserSlash size="1.125rem" />
         </IconButton>
 
@@ -101,12 +92,10 @@ export default function Info() {
               <select
                 className={`text-right text-last-right text-${vision} font-semibold`}
                 value={char.level}
-                onChange={(e) =>
-                  dispatch(updateUserCharacter({ name, level: e.target.value as Level }))
-                }
+                onChange={(e) => dispatch(updateUserCharacter({ name, level: e.target.value as Level }))}
               >
                 {LEVELS.map((lv, i) => (
-                  <option key={i}>{lv}</option>
+                  <option key={i}>{LEVELS[LEVELS.length - 1 - i]}</option>
                 ))}
               </select>
             </div>

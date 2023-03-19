@@ -31,31 +31,25 @@ const EmSection = ({ em }: EmSectionProps) => {
         <div className="flex items-center">
           <p className="mr-1">Elemental Mastery</p>
           <FaCaretDown
-            className={clsx(
-              "duration-150 ease-linear",
-              dropped ? "text-green" : "text-default rotate-90"
-            )}
+            className={clsx("duration-150 ease-linear", dropped ? "text-green" : "text-default rotate-90")}
           />
         </div>
         <p className="mr-2">{em}</p>
       </StatsTable.Row>
       <CollapseSpace active={dropped}>
-        <ul className="px-2 pb-1 text-sm flex flex-col space-y-1">
+        <ul className="px-2 py-1 text-sm flex flex-col space-y-1">
           <li>
-            • Increases damage dealt by Vaporize and Melt by{" "}
-            <Green>{rxnBonusFromEM.amplifying}%</Green>.
+            Increases damage dealt by Vaporize and Melt by <Green>{rxnBonusFromEM.amplifying}%</Green>.
           </li>
           <li>
-            • Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning,
-            Shattered, Swirl, Bloom, Hyperbloom, and Burgeon by{" "}
-            <Green>{rxnBonusFromEM.transformative}%</Green>.
+            Increases damage dealt by Overloaded, Superconduct, Electro-Charged, Burning, Shattered, Swirl, Bloom,
+            Hyperbloom, and Burgeon by <Green>{rxnBonusFromEM.transformative}%</Green>.
           </li>
           <li>
-            • Increases the DMG Bonus provided by Aggravate and Spread by{" "}
-            <Green>{rxnBonusFromEM.quicken}%</Green>.
+            Increases the DMG Bonus provided by Aggravate and Spread by <Green>{rxnBonusFromEM.quicken}%</Green>.
           </li>
           <li>
-            • Increases the damage absorption power of shields created through Crystallize by{" "}
+            Increases the damage absorption power of shields created through Crystallize by{" "}
             <Green>{rxnBonusFromEM.shield}%</Green>.
           </li>
         </ul>
@@ -84,9 +78,7 @@ export const AttributeTable = ({ attributes }: AttributeTableProps) => {
           <StatsTable.Row key={type} className="group">
             <p>{t(type)}</p>
             <div className="relative">
-              <p className={clsx("mr-2", { "group-hover:hidden": baseAttr })}>
-                {Math.round(totalAttr)}
-              </p>
+              <p className={clsx("mr-2", { "group-hover:hidden": baseAttr })}>{Math.round(totalAttr)}</p>
               {baseAttr ? (
                 <p className="mr-2 hidden whitespace-nowrap group-hover:block group-hover:absolute group-hover:top-0 group-hover:right-0">
                   {baseAttr} + <Green>{Math.round(totalAttr - baseAttr)}</Green>

@@ -64,7 +64,7 @@ export const userDatabaseSlice = createSlice({
       const weaponID = Date.now();
 
       state.chosenChar = name;
-      state.userChars.unshift({
+      state.userChars.push({
         name,
         ...createCharInfo(),
         weaponID,
