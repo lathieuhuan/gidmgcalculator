@@ -24,7 +24,7 @@ const Aloy: DataCharacter = {
   name: "Aloy",
   // icon: "6/6a/Character_Aloy_Thumb",
   icon: "e/e5/Aloy_Icon",
-  sideIcon: "0/0c/Character_Aloy_Side_Icon",
+  sideIcon: "4/46/Aloy_Side_Icon",
   rarity: 5,
   nation: "outland",
   vision: "cryo",

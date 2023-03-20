@@ -94,7 +94,7 @@ const Barbara: DataCharacter = {
     { name: "Gleeful Songs", image: "b/b7/Constellation_Gleeful_Songs" },
     { name: "Vitality Burst", image: "1/14/Constellation_Vitality_Burst" },
     { name: "Star of Tomorrow", image: "6/67/Constellation_Star_of_Tomorrow" },
-    { name: "Attentiveness be My Power", image: "6/69/Constellation_Attentiveness_be_My_Power" },
+    { name: "Attentiveness be My Power", image: "3/30/Constellation_Attentiveness_Be_My_Power" },
     { name: "The Purest Companionship", image: "6/69/Constellation_The_Purest_Companionship" },
     {
       name: "Dedicating Everything to You",
@@ -108,8 +108,8 @@ const Barbara: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          During Let the Show Begin's [ES] duration, your active character gains a{" "}
-          <Green b>15%</Green> <Green>Hydro DMG Bonus</Green>.
+          During Let the Show Begin's [ES] duration, your active character gains a <Green b>15%</Green>{" "}
+          <Green>Hydro DMG Bonus</Green>.
         </>
       ),
       isGranted: checkCons[2],

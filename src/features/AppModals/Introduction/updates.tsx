@@ -2,6 +2,16 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "March 20th, 2023",
+    content: [
+      <>Fixed broken image links.</>,
+      <>
+        Setting "Keep artifact stats when switching to a new set" will be no longer applied when switching to your saved
+        artifacts.
+      </>,
+    ],
+  },
+  {
     date: "March 19th, 2023",
     content: [
       <>

@@ -32,10 +32,7 @@ export type InitSessionWithCharAction = PayloadAction<{
   userArts: UserArtifact[];
 }>;
 
-type InitSessionWithSetupPayload = PartiallyRequired<
-  Omit<SetupImportInfo, "importType">,
-  "calcSetup" | "target"
->;
+type InitSessionWithSetupPayload = PartiallyRequired<Omit<SetupImportInfo, "importType">, "calcSetup" | "target">;
 export type InitSessionWithSetupAction = PayloadAction<InitSessionWithSetupPayload>;
 
 export type ImportSetupAction = PayloadAction<{
@@ -75,12 +72,7 @@ type InputInfo = {
 };
 
 export type ToggleModCtrlPath = {
-  modCtrlName:
-    | "selfBuffCtrls"
-    | "selfDebuffCtrls"
-    | "wpBuffCtrls"
-    | "artBuffCtrls"
-    | "artDebuffCtrls";
+  modCtrlName: "selfBuffCtrls" | "selfDebuffCtrls" | "wpBuffCtrls" | "artBuffCtrls" | "artDebuffCtrls";
   ctrlIndex: number;
 };
 export type ToggleModCtrlAction = PayloadAction<ToggleModCtrlPath>;
@@ -139,6 +131,7 @@ export type RemoveCustomModCtrlAction = PayloadAction<CustomModCtrlPath>;
 export type ChangeArtifactAction = PayloadAction<{
   pieceIndex: number;
   newPiece: CalcArtifact | null;
+  noKeepingStats?: boolean;
 }>;
 
 export type UpdateArtifactAction = PayloadAction<{

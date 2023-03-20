@@ -22,7 +22,7 @@ const Mona: DataCharacter = {
   name: "Mona",
   // icon: "a/a0/Character_Mona_Thumb",
   icon: "4/41/Mona_Icon",
-  sideIcon: "1/1a/Character_Mona_Side_Icon",
+  sideIcon: "6/61/Mona_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "hydro",

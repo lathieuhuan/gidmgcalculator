@@ -11,7 +11,7 @@ const Yelan: DataCharacter = {
   name: "Yelan",
   // icon: "a/a8/Character_Yelan_Thumb",
   icon: "d/d3/Yelan_Icon",
-  sideIcon: "9/9c/Character_Yelan_Side_Icon",
+  sideIcon: "9/9f/Yelan_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "hydro",

@@ -11,7 +11,7 @@ const Layla: DataCharacter = {
   name: "Layla",
   // icon: "9/93/Character_Layla_Thumb",
   icon: "1/1a/Layla_Icon",
-  sideIcon: "9/90/Character_Layla_Side_Icon",
+  sideIcon: "2/23/Layla_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "cryo",

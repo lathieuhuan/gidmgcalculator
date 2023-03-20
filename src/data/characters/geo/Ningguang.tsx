@@ -10,7 +10,7 @@ const Ningguang: DataCharacter = {
   name: "Ningguang",
   // icon: "2/2b/Character_Ningguang_Thumb",
   icon: "e/e0/Ningguang_Icon",
-  sideIcon: "6/64/Character_Ningguang_Side_Icon",
+  sideIcon: "2/25/Ningguang_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "geo",

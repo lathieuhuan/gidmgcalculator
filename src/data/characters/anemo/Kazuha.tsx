@@ -18,7 +18,7 @@ const Kazuha: DataCharacter = {
   GOOD: "KaedeharaKazuha",
   // icon: "f/f0/Character_Kaedehara_Kazuha_Thumb",
   icon: "e/e3/Kaedehara_Kazuha_Icon",
-  sideIcon: "1/16/Character_Kaedehara_Kazuha_Side_Icon",
+  sideIcon: "c/cc/Kaedehara_Kazuha_Side_Icon",
   rarity: 5,
   nation: "inazuma",
   vision: "anemo",
@@ -139,8 +139,8 @@ const Kazuha: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Kazuha Slash's [EB] field increases the <Green>Elemental Mastery</Green> of him and
-          characters within the field by <Green b>200</Green>.
+          Kazuha Slash's [EB] field increases the <Green>Elemental Mastery</Green> of him and characters within the
+          field by <Green b>200</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -152,10 +152,10 @@ const Kazuha: DataCharacter = {
       affect: EModAffect.SELF,
       desc: ({ totalAttr }) => (
         <>
-          After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an{" "}
-          <Anemo>Anemo Infusion</Anemo> for 5s. Each point of <Green>Elemental Mastery</Green> will
-          increase Kazuha's <Green>Normal, Charged, and Plunging Attack DMG</Green> by{" "}
-          <Green b>0.2%</Green>. <Red>DMG bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
+          After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an <Anemo>Anemo Infusion</Anemo> for 5s. Each
+          point of <Green>Elemental Mastery</Green> will increase Kazuha's{" "}
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> by <Green b>0.2%</Green>.{" "}
+          <Red>DMG bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
         </>
       ),
       isGranted: checkCons[6],

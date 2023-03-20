@@ -21,7 +21,7 @@ const Nilou: DataCharacter = {
   name: "Nilou",
   // icon: "a/a5/Character_Nilou_Thumb",
   icon: "5/58/Nilou_Icon",
-  sideIcon: "a/a9/Character_Nilou_Side_Icon",
+  sideIcon: "c/c3/Nilou_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "hydro",

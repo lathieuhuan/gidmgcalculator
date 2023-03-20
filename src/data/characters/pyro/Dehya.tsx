@@ -10,7 +10,7 @@ const Dehya: DataCharacter = {
   code: 68,
   name: "Dehya",
   icon: "3/3f/Dehya_Icon",
-  sideIcon: "5/51/Character_Dehya_Side_Icon",
+  sideIcon: "a/af/Dehya_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "pyro",
