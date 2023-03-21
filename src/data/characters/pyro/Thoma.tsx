@@ -10,9 +10,8 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 const Thoma: DataCharacter = {
   code: 43,
   name: "Thoma",
-  // icon: "8/8a/Character_Thoma_Thumb",
   icon: "5/5b/Thoma_Icon",
-  sideIcon: "4/46/Character_Thoma_Side_Icon",
+  sideIcon: "e/e9/Thoma_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "pyro",
@@ -117,8 +116,8 @@ const Thoma: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          <Green>Fiery Collapse DMG</Green> [~EB] is increased by <Green b>2.2%</Green> of Thoma's{" "}
-          <Green>Max HP</Green>.
+          <Green>Fiery Collapse DMG</Green> [~EB] is increased by <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>
+          .
         </>
       ),
       isGranted: checkAscs[4],
@@ -131,9 +130,9 @@ const Thoma: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          When your current active character obtains or refreshes a Blazing Barrier, this
-          character's <Green>Shield Strength</Green> will increase by <Green b>5%</Green> for 6s.
-          Max <Rose>5</Rose> stacks, each stack can be obtained once every 0.3 seconds.
+          When your current active character obtains or refreshes a Blazing Barrier, this character's{" "}
+          <Green>Shield Strength</Green> will increase by <Green b>5%</Green> for 6s. Max <Rose>5</Rose> stacks, each
+          stack can be obtained once every 0.3 seconds.
         </>
       ),
       isGranted: checkAscs[1],
@@ -154,8 +153,7 @@ const Thoma: DataCharacter = {
       desc: () => (
         <>
           When a Blazing Barrier is obtained or refreshed, all party members'{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> is increased by{" "}
-          <Green b>15%</Green> for 6s.
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> is increased by <Green b>15%</Green> for 6s.
         </>
       ),
       affect: EModAffect.PARTY,

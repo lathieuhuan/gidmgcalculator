@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Kaeya: DataCharacter = {
   code: 5,
   name: "Kaeya",
-  // icon: "3/33/Character_Kaeya_Thumb",
   icon: "b/b6/Kaeya_Icon",
-  sideIcon: "d/d0/Character_Kaeya_Side_Icon",
+  sideIcon: "b/b5/Kaeya_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",
@@ -84,8 +83,8 @@ const Kaeya: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Kaeya's <Green>Normal and Charged Attack CRIT Rate</Green> against opponents affected by
-          Cryo is increased by <Green b>15%</Green>.
+          Kaeya's <Green>Normal and Charged Attack CRIT Rate</Green> against opponents affected by Cryo is increased by{" "}
+          <Green b>15%</Green>.
         </>
       ),
       isGranted: checkCons[1],

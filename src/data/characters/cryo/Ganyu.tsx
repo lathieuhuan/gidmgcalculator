@@ -13,9 +13,8 @@ const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
 const Ganyu: DataCharacter = {
   code: 28,
   name: "Ganyu",
-  // icon: "0/0a/Character_Ganyu_Thumb",
   icon: "7/79/Ganyu_Icon",
-  sideIcon: "e/e1/Character_Ganyu_Side_Icon",
+  sideIcon: "3/3a/Ganyu_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "cryo",

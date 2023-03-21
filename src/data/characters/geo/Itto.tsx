@@ -15,9 +15,8 @@ const Itto: DataCharacter = {
   code: 45,
   name: "Itto",
   GOOD: "AratakiItto",
-  // icon: "7/79/Character_Arataki_Itto_Thumb",
   icon: "7/7b/Arataki_Itto_Icon",
-  sideIcon: "f/fe/Character_Arataki_Itto_Side_Icon",
+  sideIcon: "c/c8/Arataki_Itto_Side_Icon",
   rarity: 5,
   nation: "inazuma",
   vision: "geo",
@@ -126,8 +125,7 @@ const Itto: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's{" "}
-          <Green>DEF</Green>.
+          <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's <Green>DEF</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -151,8 +149,8 @@ const Itto: DataCharacter = {
       desc: () => (
         <>
           • Grants Itto a <Geo>Geo Infusion</Geo> that cannot be overridden.
-          <br />• Increases Itto's <Green>Normal Attack SPD</Green> by <Green b>10%</Green>. Also
-          increases his <Green>ATK</Green> based on his <Green>DEF</Green>.
+          <br />• Increases Itto's <Green>Normal Attack SPD</Green> by <Green b>10%</Green>. Also increases his{" "}
+          <Green>ATK</Green> based on his <Green>DEF</Green>.
         </>
       ),
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
@@ -175,9 +173,8 @@ const Itto: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When the Raging Oni King state [EB] ends, all nearby party members gain{" "}
-          <Green b>20%</Green> <Green>DEF</Green> and <Green b>20%</Green> <Green>ATK</Green> for
-          10s.
+          When the Raging Oni King state [EB] ends, all nearby party members gain <Green b>20%</Green>{" "}
+          <Green>DEF</Green> and <Green b>20%</Green> <Green>ATK</Green> for 10s.
         </>
       ),
       isGranted: checkCons[4],

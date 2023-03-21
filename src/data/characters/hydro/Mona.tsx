@@ -20,7 +20,6 @@ const getA4BuffValue = (totalAttr: TotalAttribute) => Math.round(totalAttr.er_ *
 const Mona: DataCharacter = {
   code: 16,
   name: "Mona",
-  // icon: "a/a0/Character_Mona_Thumb",
   icon: "4/41/Mona_Icon",
   sideIcon: "6/61/Mona_Side_Icon",
   rarity: 5,

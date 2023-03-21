@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Chongyun: DataCharacter = {
   code: 4,
   name: "Chongyun",
-  // icon: "6/68/Character_Chongyun_Thumb",
   icon: "3/35/Chongyun_Icon",
-  sideIcon: "c/cc/Character_Chongyun_Side_Icon",
+  sideIcon: "2/20/Chongyun_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "cryo",

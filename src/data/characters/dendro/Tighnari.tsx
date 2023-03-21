@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Tighnari: DataCharacter = {
   code: 54,
   name: "Tighnari",
-  // icon: "9/91/Character_Tighnari_Thumb",
   icon: "8/87/Tighnari_Icon",
-  sideIcon: "a/a4/Character_Tighnari_Side_Icon",
+  sideIcon: "1/15/Tighnari_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",

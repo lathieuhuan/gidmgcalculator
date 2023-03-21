@@ -8,9 +8,8 @@ import { checkCons, talentBuff } from "../utils";
 const Diona: DataCharacter = {
   code: 24,
   name: "Diona",
-  // icon: "b/b9/Character_Diona_Thumb",
   icon: "4/40/Diona_Icon",
-  sideIcon: "c/c2/Character_Diona_Side_Icon",
+  sideIcon: "e/e1/Diona_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",

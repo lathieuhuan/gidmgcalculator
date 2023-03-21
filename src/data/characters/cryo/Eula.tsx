@@ -18,9 +18,8 @@ const getESDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInp
 const Eula: DataCharacter = {
   code: 33,
   name: "Eula",
-  // icon: "d/d3/Character_Eula_Thumb",
   icon: "a/af/Eula_Icon",
-  sideIcon: "0/0d/Character_Eula_Side_Icon",
+  sideIcon: "8/8d/Eula_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "cryo",

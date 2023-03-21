@@ -12,9 +12,8 @@ const getA4talentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
 const Cyno: DataCharacter = {
   code: 59,
   name: "Cyno",
-  // icon: "d/d1/Character_Cyno_Thumb",
   icon: "3/31/Cyno_Icon",
-  sideIcon: "d/de/Character_Cyno_Side_Icon",
+  sideIcon: "b/b1/Cyno_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "electro",

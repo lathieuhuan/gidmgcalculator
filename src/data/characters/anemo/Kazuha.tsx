@@ -16,7 +16,6 @@ const Kazuha: DataCharacter = {
   code: 35,
   name: "Kazuha",
   GOOD: "KaedeharaKazuha",
-  // icon: "f/f0/Character_Kaedehara_Kazuha_Thumb",
   icon: "e/e3/Kaedehara_Kazuha_Icon",
   sideIcon: "c/cc/Kaedehara_Kazuha_Side_Icon",
   rarity: 5,

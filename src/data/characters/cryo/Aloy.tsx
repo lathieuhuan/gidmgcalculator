@@ -22,7 +22,6 @@ const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: Mod
 const Aloy: DataCharacter = {
   code: 39,
   name: "Aloy",
-  // icon: "6/6a/Character_Aloy_Thumb",
   icon: "e/e5/Aloy_Icon",
   sideIcon: "4/46/Aloy_Side_Icon",
   rarity: 5,

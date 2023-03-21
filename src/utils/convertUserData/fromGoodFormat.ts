@@ -1,11 +1,4 @@
-import type {
-  ArtifactSubStat,
-  AttributeStat,
-  Level,
-  UserArtifact,
-  UserCharacter,
-  UserWeapon,
-} from "@Src/types";
+import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
 
 import characters from "@Data/characters";
 import weapons from "@Data/weapons";
@@ -17,7 +10,8 @@ import { findByName } from "../pure-utils";
 import { mapGoodFormat } from "./constants";
 
 const convertLevel = (level: any, ascension: any) => {
-  return `${level}/${ascension ? ascension * 10 + 30 : 20}` as Level;
+  const roundedLevel = Math.round(+level / 10) * 10;
+  return `${roundedLevel || 1}/${ascension ? ascension * 10 + 30 : 20}` as Level;
 };
 
 const uppercaseFirstLetter = (word: any): string => {
@@ -103,6 +97,8 @@ export function convertFromGoodFormat(data: any) {
       artifactIDs: [null, null, null, null, null],
     };
 
+    console.log(charInfo.name, charInfo.level);
+
     result.characters.push(charInfo);
   }
 
@@ -112,8 +108,7 @@ export function convertFromGoodFormat(data: any) {
 
     if (!code || (rarity !== 4 && rarity !== 5)) continue;
 
-    let mainStatType: AttributeStat =
-      slotKey === "flower" ? "hp" : slotKey === "plume" ? "atk" : "atk_";
+    let mainStatType: AttributeStat = slotKey === "flower" ? "hp" : slotKey === "plume" ? "atk" : "atk_";
     const subStats: ArtifactSubStat[] = [];
     const owner = searchCharacterByKey(artifact.location) || null;
 

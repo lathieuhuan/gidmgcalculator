@@ -6,9 +6,8 @@ import { checkCons, talentBuff } from "../utils";
 const Fischl: DataCharacter = {
   code: 8,
   name: "Fischl",
-  // icon: "1/14/Character_Fischl_Thumb",
   icon: "9/9a/Fischl_Icon",
-  sideIcon: "e/ec/Character_Fischl_Side_Icon",
+  sideIcon: "b/b8/Fischl_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",

@@ -8,7 +8,6 @@ import { checkAscs, checkCons } from "../utils";
 const Beidou: DataCharacter = {
   code: 6,
   name: "Beidou",
-  // icon: "6/61/Character_Beidou_Thumb",
   icon: "e/e1/Beidou_Icon",
   sideIcon: "8/84/Beidou_Side_Icon",
   rarity: 4,

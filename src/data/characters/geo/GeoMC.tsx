@@ -55,8 +55,8 @@ const GeoMC: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Party members within the radius of Wake of Earth have their <Green>CRIT Rate</Green>{" "}
-          increased by <Green b>10%</Green> and have increased resistance against interruption.
+          Party members within the radius of Wake of Earth have their <Green>CRIT Rate</Green> increased by{" "}
+          <Green b>10%</Green> and have increased resistance against interruption.
         </>
       ),
       isGranted: checkCons[1],

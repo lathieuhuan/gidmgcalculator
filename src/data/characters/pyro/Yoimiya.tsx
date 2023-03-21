@@ -15,9 +15,8 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Yoimiya: DataCharacter = {
   code: 38,
   name: "Yoimiya",
-  // icon: "0/05/Character_Yoimiya_Thumb",
   icon: "8/88/Yoimiya_Icon",
-  sideIcon: "5/5f/Character_Yoimiya_Side_Icon",
+  sideIcon: "2/2a/Yoimiya_Side_Icon",
   rarity: 5,
   nation: "inazuma",
   vision: "pyro",

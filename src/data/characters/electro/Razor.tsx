@@ -12,9 +12,8 @@ const getEBBuffValue = (level: number) => {
 const Razor: DataCharacter = {
   code: 11,
   name: "Razor",
-  // icon: "1/1d/Character_Razor_Thumb",
   icon: "b/b8/Razor_Icon",
-  sideIcon: "5/57/Character_Razor_Side_Icon",
+  sideIcon: "4/4d/Razor_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",

@@ -23,9 +23,8 @@ function getEBBuff(char: CharInfo, partyData: PartyData) {
 const Nahida: DataCharacter = {
   code: 62,
   name: "Nahida",
-  // icon: "c/cf/Character_Nahida_Thumb",
   icon: "f/f9/Nahida_Icon",
-  sideIcon: "1/13/Character_Nahida_Side_Icon",
+  sideIcon: "2/22/Nahida_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",

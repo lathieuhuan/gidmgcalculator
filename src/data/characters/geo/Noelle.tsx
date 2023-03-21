@@ -10,9 +10,8 @@ import { checkCons, talentBuff } from "../utils";
 const Noelle: DataCharacter = {
   code: 14,
   name: "Noelle",
-  // icon: "a/ab/Character_Noelle_Thumb",
   icon: "8/8e/Noelle_Icon",
-  sideIcon: "5/5e/Character_Noelle_Side_Icon",
+  sideIcon: "1/15/Noelle_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "geo",

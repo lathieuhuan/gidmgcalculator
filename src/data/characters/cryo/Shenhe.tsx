@@ -16,9 +16,8 @@ const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInp
 const Shenhe: DataCharacter = {
   code: 47,
   name: "Shenhe",
-  // icon: "5/58/Character_Shenhe_Thumb",
   icon: "a/af/Shenhe_Icon",
-  sideIcon: "8/8d/Character_Shenhe_Side_Icon",
+  sideIcon: "3/31/Shenhe_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "cryo",

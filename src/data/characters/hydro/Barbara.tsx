@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Barbara: DataCharacter = {
   code: 15,
   name: "Barbara",
-  // icon: "7/72/Character_Barbara_Thumb",
   icon: "6/6a/Barbara_Icon",
-  sideIcon: "5/50/Character_Barbara_Side_Icon",
+  sideIcon: "3/39/Barbara_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "hydro",

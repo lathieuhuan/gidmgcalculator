@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Qiqi: DataCharacter = {
   code: 7,
   name: "Qiqi",
-  // icon: "d/d5/Character_Qiqi_Thumb",
   icon: "b/b3/Qiqi_Icon",
-  sideIcon: "1/1c/Character_Qiqi_Side_Icon",
+  sideIcon: "e/ef/Qiqi_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "cryo",

@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Rosaria: DataCharacter = {
   code: 32,
   name: "Rosaria",
-  // icon: "f/f6/Character_Rosaria_Thumb",
   icon: "3/35/Rosaria_Icon",
-  sideIcon: "0/08/Character_Rosaria_Side_Icon",
+  sideIcon: "0/0e/Rosaria_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",

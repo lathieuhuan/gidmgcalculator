@@ -21,9 +21,8 @@ const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBu
 const Faruzan: DataCharacter = {
   code: 64,
   name: "Faruzan",
-  // icon: "a/a1/Character_Faruzan_Thumb",
   icon: "b/b2/Faruzan_Icon",
-  sideIcon: "0/00/Character_Faruzan_Side_Icon",
+  sideIcon: "c/c1/Faruzan_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "anemo",

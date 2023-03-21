@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Sucrose: DataCharacter = {
   code: 3,
   name: "Sucrose",
-  // icon: "6/61/Character_Sucrose_Thumb",
   icon: "0/0e/Sucrose_Icon",
-  sideIcon: "4/4f/Character_Sucrose_Side_Icon",
+  sideIcon: "9/98/Sucrose_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "anemo",
@@ -86,9 +85,8 @@ const Sucrose: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          When Sucrose triggers a Swirl, all characters in the party with the matching element
-          (excluding Sucrose) have their <Green>Elemental Mastery</Green> increased by{" "}
-          <Green b>50</Green> for 8s.
+          When Sucrose triggers a Swirl, all characters in the party with the matching element (excluding Sucrose) have
+          their <Green>Elemental Mastery</Green> increased by <Green b>50</Green> for 8s.
         </>
       ),
       applyBuff: makeModApplier("totalAttr", "em", 50),
@@ -99,10 +97,9 @@ const Sucrose: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: ({ inputs }) => (
         <>
-          When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type
-          II [EB] hits an opponent, increases all party members' (excluding Sucrose){" "}
-          <Green>Elemental Mastery</Green> based on <Green b>20%</Green> of Sucrose's{" "}
-          <Green>Elemental Mastery</Green> for 8s.{" "}
+          When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type II [EB] hits an
+          opponent, increases all party members' (excluding Sucrose) <Green>Elemental Mastery</Green> based on{" "}
+          <Green b>20%</Green> of Sucrose's <Green>Elemental Mastery</Green> for 8s.{" "}
           <Red>Elemental Mastery bonus: {Math.round((inputs[0] || 0) * 0.2)}.</Red>
         </>
       ),
@@ -123,9 +120,9 @@ const Sucrose: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all
-          party members gain a <Green b>20%</Green> <Green>Elemental DMG Bonus</Green> for the
-          corresponding <Green>absorbed element</Green> during its duration.
+          If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all party members gain a{" "}
+          <Green b>20%</Green> <Green>Elemental DMG Bonus</Green> for the corresponding <Green>absorbed element</Green>{" "}
+          during its duration.
         </>
       ),
       isGranted: checkCons[6],

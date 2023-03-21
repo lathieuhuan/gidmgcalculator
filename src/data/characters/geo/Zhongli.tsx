@@ -9,9 +9,8 @@ import { checkAscs } from "../utils";
 const Zhongli: DataCharacter = {
   code: 25,
   name: "Zhongli",
-  // icon: "c/c2/Character_Zhongli_Thumb",
   icon: "a/a6/Zhongli_Icon",
-  sideIcon: "e/e1/Character_Zhongli_Side_Icon",
+  sideIcon: "6/68/Zhongli_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "geo",

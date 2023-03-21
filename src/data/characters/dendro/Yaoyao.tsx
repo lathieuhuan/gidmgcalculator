@@ -9,7 +9,7 @@ const Yaoyao: DataCharacter = {
   code: 66,
   name: "Yaoyao",
   icon: "8/83/Yaoyao_Icon",
-  sideIcon: "d/d2/Character_Yaoyao_Side_Icon",
+  sideIcon: "3/39/Yaoyao_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "dendro",
@@ -94,9 +94,9 @@ const Yaoyao: DataCharacter = {
       image: "d/d5/Talent_Starscatter",
       desc: (
         <>
-          While affected by the Adeptal Legacy state [~EB], Yaoyao will constantly throw White Jade
-          Radishes at nearby opponents when she is sprinting, jumping, or running. She can throw 1
-          White Jade Radish this way once every 0.6s.
+          While affected by the Adeptal Legacy state [~EB], Yaoyao will constantly throw White Jade Radishes at nearby
+          opponents when she is sprinting, jumping, or running. She can throw 1 White Jade Radish this way once every
+          0.6s.
         </>
       ),
     },
@@ -105,8 +105,8 @@ const Yaoyao: DataCharacter = {
       image: "a/ab/Talent_In_Others%27_Shoes",
       desc: (
         <>
-          When White Jade Radishes [~ES] explode, active characters within their AoE will regain HP
-          every 1s based on 0.8% of Yaoyao's Max HP. This effect lasts 5s.
+          When White Jade Radishes [~ES] explode, active characters within their AoE will regain HP every 1s based on
+          0.8% of Yaoyao's Max HP. This effect lasts 5s.
         </>
       ),
     },
@@ -119,15 +119,15 @@ const Yaoyao: DataCharacter = {
       get desc() {
         return (
           <>
-            {this.xtraDesc?.[0]} and have <Green b>15</Green> <Green>Stamina</Green> restored to
-            them. This form of Stamina Restoration can only be triggered every 5s.
+            {this.xtraDesc?.[0]} and have <Green b>15</Green> <Green>Stamina</Green> restored to them. This form of
+            Stamina Restoration can only be triggered every 5s.
           </>
         );
       },
       xtraDesc: [
         <>
-          When White Jade Radishes [~ES] explode, active characters within their AoE will gain{" "}
-          <Green b>15%</Green> <Green b>Dendro DMG Bonus</Green> for 8s
+          When White Jade Radishes [~ES] explode, active characters within their AoE will gain <Green b>15%</Green>{" "}
+          <Green b>Dendro DMG Bonus</Green> for 8s
         </>,
       ],
     },
@@ -136,9 +136,8 @@ const Yaoyao: DataCharacter = {
       image: "3/3d/Constellation_Innocent",
       desc: (
         <>
-          While affected by the Adeptal Legacy state [~EB], if White Jade Radish explosions damage
-          opponents, 3 Energy will be restored to Yaoyao. This form of Energy regeneration can occur
-          once every 0.8s.
+          While affected by the Adeptal Legacy state [~EB], if White Jade Radish explosions damage opponents, 3 Energy
+          will be restored to Yaoyao. This form of Energy regeneration can occur once every 0.8s.
         </>
       ),
     },
@@ -148,9 +147,9 @@ const Yaoyao: DataCharacter = {
       image: "3/39/Constellation_Winsome",
       desc: (
         <>
-          After using Raphanus Sky Cluster [ES] or Moonjade Descent [EB], Yaoyao's{" "}
-          <Green>Elemental Mastery</Green> will be increased based on <Green b>0.3%</Green> of her{" "}
-          <Green>Max HP</Green> for 8s. Max <Rose>120</Rose> Elemental Mastery.
+          After using Raphanus Sky Cluster [ES] or Moonjade Descent [EB], Yaoyao's <Green>Elemental Mastery</Green> will
+          be increased based on <Green b>0.3%</Green> of her <Green>Max HP</Green> for 8s. Max <Rose>120</Rose>{" "}
+          Elemental Mastery.
         </>
       ),
     },
@@ -160,11 +159,10 @@ const Yaoyao: DataCharacter = {
       image: "0/02/Constellation_Beneficent",
       desc: (
         <>
-          For every 2 White Jade Radishes Yuegui: Throwing Mode [ES] throws out, it will also throw
-          a Mega Radish that has a larger AoE and upon exploding, it will:
+          For every 2 White Jade Radishes Yuegui: Throwing Mode [ES] throws out, it will also throw a Mega Radish that
+          has a larger AoE and upon exploding, it will:
           <br />• Deal AoE Dendro DMG based on <Green b>75%</Green> of Yaoyao's <Green>ATK</Green>.
-          <br />• Restore HP for the active character based on <Green b>7.5%</Green> of Yaoyao's{" "}
-          <Green>Max HP</Green>.
+          <br />• Restore HP for the active character based on <Green b>7.5%</Green> of Yaoyao's <Green>Max HP</Green>.
           <br />
           Every Yuegei: Throwing Mode can throw out a maximum of <Rose>2</Rose> Mega Radishes.
         </>

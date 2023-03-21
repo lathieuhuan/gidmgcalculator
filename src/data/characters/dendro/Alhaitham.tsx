@@ -9,7 +9,7 @@ const Alhaitham: DataCharacter = {
   code: 65,
   name: "Alhaitham",
   icon: "2/2c/Alhaitham_Icon",
-  sideIcon: "e/ed/Character_Alhaitham_Side_Icon",
+  sideIcon: "c/cb/Alhaitham_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "dendro",

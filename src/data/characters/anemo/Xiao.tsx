@@ -16,9 +16,8 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Xiao: DataCharacter = {
   code: 30,
   name: "Xiao",
-  // icon: "b/b9/Character_Xiao_Thumb",
   icon: "f/fd/Xiao_Icon",
-  sideIcon: "8/83/Character_Xiao_Side_Icon",
+  sideIcon: "4/49/Xiao_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "anemo",

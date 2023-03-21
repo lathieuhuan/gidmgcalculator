@@ -8,7 +8,6 @@ import { checkAscs } from "../utils";
 const Ningguang: DataCharacter = {
   code: 13,
   name: "Ningguang",
-  // icon: "2/2b/Character_Ningguang_Thumb",
   icon: "e/e0/Ningguang_Icon",
   sideIcon: "2/25/Ningguang_Side_Icon",
   rarity: 4,

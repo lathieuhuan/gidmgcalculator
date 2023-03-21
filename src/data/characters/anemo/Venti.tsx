@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Venti: DataCharacter = {
   code: 22,
   name: "Venti",
-  // icon: "8/8d/Character_Venti_Thumb",
   icon: "f/f1/Venti_Icon",
-  sideIcon: "f/f7/Character_Venti_Side_Icon",
+  sideIcon: "0/00/Venti_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "anemo",
@@ -109,10 +108,9 @@ const Venti: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Skyward Sonnet [ES] decreases opponents' <Green>Anemo RES</Green> and{" "}
-          <Green>Physical RES</Green> by <Green b>12%</Green> for 10s. Opponents launched by Skyward
-          Sonnet suffer an additional <Green b>12%</Green> <Green>Anemo RES</Green> and{" "}
-          <Green>Physical RES</Green> decrease while airborne.
+          Skyward Sonnet [ES] decreases opponents' <Green>Anemo RES</Green> and <Green>Physical RES</Green> by{" "}
+          <Green b>12%</Green> for 10s. Opponents launched by Skyward Sonnet suffer an additional <Green b>12%</Green>{" "}
+          <Green>Anemo RES</Green> and <Green>Physical RES</Green> decrease while airborne.
         </>
       ),
       isGranted: checkCons[2],
@@ -132,8 +130,8 @@ const Venti: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Wind's Grand Ode decreases opponents' <Green>Anemo RES</Green> and <Green>RES</Green>{" "}
-          towards the <Green>Element absorbed</Green> by <Green b>20%</Green>.
+          Wind's Grand Ode decreases opponents' <Green>Anemo RES</Green> and <Green>RES</Green> towards the{" "}
+          <Green>Element absorbed</Green> by <Green b>20%</Green>.
         </>
       ),
       isGranted: checkCons[6],

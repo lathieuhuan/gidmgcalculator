@@ -22,9 +22,8 @@ const getC6TalentBuff = (index: number): GetTalentBuffFn => {
 const Sayu: DataCharacter = {
   code: 36,
   name: "Sayu",
-  // icon: "e/ec/Character_Sayu_Thumb",
   icon: "2/22/Sayu_Icon",
-  sideIcon: "4/4a/Character_Sayu_Side_Icon",
+  sideIcon: "7/7d/Sayu_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "anemo",

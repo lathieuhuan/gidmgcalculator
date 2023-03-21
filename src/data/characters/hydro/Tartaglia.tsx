@@ -6,9 +6,8 @@ import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 const Tartaglia: DataCharacter = {
   code: 26,
   name: "Tartaglia",
-  // icon: "5/53/Character_Tartaglia_Thumb",
   icon: "8/85/Tartaglia_Icon",
-  sideIcon: "c/ca/Character_Tartaglia_Side_Icon",
+  sideIcon: "2/2f/Tartaglia_Side_Icon",
   rarity: 5,
   nation: "snezhnaya",
   vision: "hydro",
@@ -112,8 +111,8 @@ const Tartaglia: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Tartaglia's <Green>Normal and Charged Attacks</Green> are converted to{" "}
-          <Hydro>Hydro DMG</Hydro> that cannot be overridden.
+          Tartaglia's <Green>Normal and Charged Attacks</Green> are converted to <Hydro>Hydro DMG</Hydro> that cannot be
+          overridden.
         </>
       ),
       infuseConfig: {

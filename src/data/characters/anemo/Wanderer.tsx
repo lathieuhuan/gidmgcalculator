@@ -27,9 +27,8 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Wanderer: DataCharacter = {
   code: 63,
   name: "Wanderer",
-  // icon: "f/f2/Character_Wanderer_Thumb",
   icon: "f/f8/Wanderer_Icon",
-  sideIcon: "5/54/Character_Wanderer_Side_Icon",
+  sideIcon: "6/67/Wanderer_Side_Icon",
   rarity: 5,
   nation: "sumeru",
   vision: "anemo",

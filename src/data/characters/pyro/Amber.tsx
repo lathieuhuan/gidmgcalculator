@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Amber: DataCharacter = {
   code: 18,
   name: "Amber",
-  // icon: "c/c6/Character_Amber_Thumb",
   icon: "7/75/Amber_Icon",
-  sideIcon: "2/25/Outfit_100%25_Outrider_Side_Icon",
+  sideIcon: "0/07/Amber_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "pyro",

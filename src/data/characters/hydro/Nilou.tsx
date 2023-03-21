@@ -19,7 +19,6 @@ export function getNilouA4BuffValue(maxHP: number) {
 const Nilou: DataCharacter = {
   code: 60,
   name: "Nilou",
-  // icon: "a/a5/Character_Nilou_Thumb",
   icon: "5/58/Nilou_Icon",
   sideIcon: "c/c3/Nilou_Side_Icon",
   rarity: 5,

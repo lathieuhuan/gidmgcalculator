@@ -15,9 +15,8 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
 const Yanfei: DataCharacter = {
   code: 34,
   name: "Yanfei",
-  // icon: "1/1f/Character_Yanfei_Thumb",
   icon: "5/54/Yanfei_Icon",
-  sideIcon: "4/4c/Character_Yanfei_Side_Icon",
+  sideIcon: "b/b3/Yanfei_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "pyro",

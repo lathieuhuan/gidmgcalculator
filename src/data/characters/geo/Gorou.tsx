@@ -18,9 +18,8 @@ const countGeo = (charData: CharData, partyData: PartyData) => {
 const Gorou: DataCharacter = {
   code: 44,
   name: "Gorou",
-  // icon: "5/56/Character_Gorou_Thumb",
   icon: "f/fe/Gorou_Icon",
-  sideIcon: "6/67/Character_Gorou_Side_Icon",
+  sideIcon: "7/7e/Gorou_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "geo",
@@ -133,10 +132,8 @@ const Gorou: DataCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          • Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by <Green b>156%</Green> of
-          DEF.
-          <br />• Juuga: Forward Unto Victory <Green>[ES] DMG</Green> increased by{" "}
-          <Green b>15.6%</Green> of DEF.
+          • Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by <Green b>156%</Green> of DEF.
+          <br />• Juuga: Forward Unto Victory <Green>[ES] DMG</Green> increased by <Green b>15.6%</Green> of DEF.
         </>
       ),
       isGranted: checkAscs[4],
@@ -155,8 +152,8 @@ const Gorou: DataCharacter = {
         const numOfGeo = countGeo(charData, partyData);
         return (
           <>
-            Provides up to 3 buffs to active characters within the skill's AoE based on the number
-            of <Geo>Geo</Geo> characters in the party:
+            Provides up to 3 buffs to active characters within the skill's AoE based on the number of <Geo>Geo</Geo>{" "}
+            characters in the party:
             <br />
             <span className={numOfGeo >= 1 ? "" : "opacity-50"}>
               • 1 Geo character: Adds "Standing Firm" - <Green>DEF bonus</Green>
@@ -187,9 +184,7 @@ const Gorou: DataCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const level = obj.toSelf
-          ? finalTalentLv({ ...obj, dataChar: Gorou, talentType: "ES" })
-          : obj.inputs[0] || 1;
+        const level = obj.toSelf ? finalTalentLv({ ...obj, dataChar: Gorou, talentType: "ES" }) : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
         const buffValues = [getESBuffValue(level)];
 
@@ -206,8 +201,8 @@ const Gorou: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          After using Juuga: Forward Unto Victory [EB], all nearby party members' <Green>DEF</Green>{" "}
-          is increased by <Green b>25%</Green> for 12s.
+          After using Juuga: Forward Unto Victory [EB], all nearby party members' <Green>DEF</Green> is increased by{" "}
+          <Green b>25%</Green> for 12s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -221,9 +216,8 @@ const Gorou: DataCharacter = {
         const n = countGeo(charData, partyData);
         return (
           <>
-            For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB],
-            increases all nearby party members' <Geo>Geo</Geo> <Green>CRIT DMG</Green> based on the
-            buff level of the skill's field:
+            For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB], increases all nearby
+            party members' <Geo>Geo</Geo> <Green>CRIT DMG</Green> based on the buff level of the skill's field:
             <br />
             <span className={n === 1 ? "" : "opacity-50"}>
               • "Standing Firm": <Green b>+10%</Green>

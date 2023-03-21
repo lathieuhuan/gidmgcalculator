@@ -8,9 +8,8 @@ import { checkAscs, charModIsInUse, checkCons, talentBuff } from "../utils";
 const Albedo: DataCharacter = {
   code: 29,
   name: "Albedo",
-  // icon: "0/00/Character_Albedo_Thumb",
   icon: "3/30/Albedo_Icon",
-  sideIcon: "1/12/Character_Albedo_Side_Icon",
+  sideIcon: "3/34/Albedo_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "geo",

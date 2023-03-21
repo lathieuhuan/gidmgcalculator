@@ -11,9 +11,8 @@ const HuTao: DataCharacter = {
   code: 31,
   name: "Hu Tao",
   GOOD: "HuTao",
-  // icon: "a/a4/Character_Hu_Tao_Thumb",
   icon: "e/e9/Hu_Tao_Icon",
-  sideIcon: "7/78/Character_Hu_Tao_Side_Icon",
+  sideIcon: "8/8c/Hu_Tao_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "pyro",
@@ -121,8 +120,8 @@ const HuTao: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Increases the Blood Blossom <Green>[ES] DMG</Green> by an amount equal to{" "}
-          <Green b>10%</Green> of Hu Tao's <Green>Max HP</Green>.
+          Increases the Blood Blossom <Green>[ES] DMG</Green> by an amount equal to <Green b>10%</Green> of Hu Tao's{" "}
+          <Green>Max HP</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -163,8 +162,8 @@ const HuTao: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will
-          have their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
+          When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will have their{" "}
+          <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -176,8 +175,8 @@ const HuTao: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Hu Tao's HP is equal to or less than 50%, her <Green>Pyro DMG Bonus</Green> is
-          increased by <Green b>33%</Green>.
+          When Hu Tao's HP is equal to or less than 50%, her <Green>Pyro DMG Bonus</Green> is increased by{" "}
+          <Green b>33%</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -189,9 +188,8 @@ const HuTao: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all
-          nearby allies in the party (excluding Hu Tao) will have their <Green>CRIT Rate</Green>{" "}
-          increased by <Green b>12%</Green> for 15s.
+          Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all nearby allies in the
+          party (excluding Hu Tao) will have their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 15s.
         </>
       ),
       isGranted: checkCons[4],
@@ -203,8 +201,8 @@ const HuTao: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her{" "}
-          <Green>CRIT Rate</Green> is increased by <Green b>100%</Green> for 10s.
+          When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her <Green>CRIT Rate</Green> is
+          increased by <Green b>100%</Green> for 10s.
         </>
       ),
       isGranted: checkCons[6],

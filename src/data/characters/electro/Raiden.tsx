@@ -9,7 +9,7 @@ import type {
   TotalAttribute,
 } from "@Src/types";
 import { Electro, Green, Lightgold, Red } from "@Components/atoms";
-import { ATTACK_PATTERNS, EModAffect } from "@Src/constants";
+import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round } from "@Src/utils";
@@ -93,9 +93,8 @@ const Raiden: DataCharacter = {
   code: 40,
   name: "Raiden Shogun",
   GOOD: "RaidenShogun",
-  // icon: "5/52/Character_Raiden_Shogun_Thumb",
   icon: "2/24/Raiden_Shogun_Icon",
-  sideIcon: "9/95/Character_Raiden_Shogun_Side_Icon",
+  sideIcon: "c/c7/Raiden_Shogun_Side_Icon",
   rarity: 5,
   nation: "inazuma",
   vision: "electro",

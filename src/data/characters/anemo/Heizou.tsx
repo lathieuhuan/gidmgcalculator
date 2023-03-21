@@ -9,9 +9,8 @@ const Heizou: DataCharacter = {
   code: 53,
   name: "Heizou",
   GOOD: "ShikanoinHeizou",
-  // icon: "e/e4/Character_Shikanoin_Heizou_Thumb",
   icon: "2/20/Shikanoin_Heizou_Icon",
-  sideIcon: "8/89/Character_Shikanoin_Heizou_Side_Icon",
+  sideIcon: "c/ca/Shikanoin_Heizou_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "anemo",
@@ -92,8 +91,8 @@ const Heizou: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding
-          Heizou) <Green>Elemental Mastery</Green> by <Green b>80</Green> for 10s.
+          When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding Heizou){" "}
+          <Green>Elemental Mastery</Green> by <Green b>80</Green> for 10s.
         </>
       ),
       applyBuff: makeModApplier("totalAttr", "em", 80),
@@ -104,8 +103,7 @@ const Heizou: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          For 5s after Heizou takes the field, his <Green>Normal Attack SPD</Green> is increased by{" "}
-          <Green>15%</Green>.
+          For 5s after Heizou takes the field, his <Green>Normal Attack SPD</Green> is increased by <Green>15%</Green>.
         </>
       ),
       isGranted: checkCons[1],
@@ -117,9 +115,9 @@ const Heizou: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Each Declension stack increases Heartstopper Strike <Green>[ES] CRIT Rate</Green> by{" "}
-          <Green b>4%</Green>. When Heizou possesses Conviction, Heartstoppper Strike's{" "}
-          <Green>[ES] CRIT DMG</Green> is increased by <Green b>32%</Green>.
+          Each Declension stack increases Heartstopper Strike <Green>[ES] CRIT Rate</Green> by <Green b>4%</Green>. When
+          Heizou possesses Conviction, Heartstoppper Strike's <Green>[ES] CRIT DMG</Green> is increased by{" "}
+          <Green b>32%</Green>.
         </>
       ),
       isGranted: checkCons[6],

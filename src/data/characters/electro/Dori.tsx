@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Dori: DataCharacter = {
   code: 56,
   name: "Dori",
-  // icon: "9/90/Character_Dori_Thumb",
   icon: "5/54/Dori_Icon",
-  sideIcon: "0/0f/Character_Dori_Side_Icon",
+  sideIcon: "6/6d/Dori_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "electro",
@@ -92,10 +91,9 @@ const Dori: DataCharacter = {
       image: "a/ae/Talent_An_Eye_for_Gold",
       desc: (
         <>
-          After a character connected to the Jinni triggers an Electro-Charged, Superconduct,
-          Overloaded, Quicken, Aggravate, Hyperbloom, or an Electro Swirl or Crystallize reaction,
-          the <Green>CD</Green> of Spirit-Warding Lamp: Troubleshooter Cannon is decreased by{" "}
-          <Green b>1s</Green>. <br />
+          After a character connected to the Jinni triggers an Electro-Charged, Superconduct, Overloaded, Quicken,
+          Aggravate, Hyperbloom, or an Electro Swirl or Crystallize reaction, the <Green>CD</Green> of Spirit-Warding
+          Lamp: Troubleshooter Cannon is decreased by <Green b>1s</Green>. <br />
           This effect can be triggered once every 3s.
         </>
       ),
@@ -105,11 +103,10 @@ const Dori: DataCharacter = {
       image: "6/6e/Talent_Compound_Interest",
       desc: (
         <>
-          When the Troubleshooter Shots or After-Sales Service Rounds from Spirit-Warding Lamp:
-          Troubleshooter Cannon hit opponents, Dori will restore 5 Elemental Energy for every 100%
-          Energy Recharge possessed. <br />
-          Per Spirit-Warding Lamp: Troubleshooter Cannon, only one instance of Energy restoration
-          can be triggered and a maximum of 15 Energy can be restored this way.
+          When the Troubleshooter Shots or After-Sales Service Rounds from Spirit-Warding Lamp: Troubleshooter Cannon
+          hit opponents, Dori will restore 5 Elemental Energy for every 100% Energy Recharge possessed. <br />
+          Per Spirit-Warding Lamp: Troubleshooter Cannon, only one instance of Energy restoration can be triggered and a
+          maximum of 15 Energy can be restored this way.
         </>
       ),
     },
@@ -122,20 +119,15 @@ const Dori: DataCharacter = {
     {
       name: "Additional Investment",
       image: "e/e1/Constellation_Additional_Investment",
-      desc: (
-        <>
-          The number of After-Sales Service Rounds created by Troubleshooter Shots is increased by
-          1.
-        </>
-      ),
+      desc: <>The number of After-Sales Service Rounds created by Troubleshooter Shots is increased by 1.</>,
     },
     {
       name: "Special Franchise",
       image: "9/92/Constellation_Special_Franchise",
       desc: (
         <>
-          When you are in combat and the Jinni heals the character it is connected to, it will fire
-          a Jinni Toop from that character's position that deals 50% of Dori's ATK DMG.
+          When you are in combat and the Jinni heals the character it is connected to, it will fire a Jinni Toop from
+          that character's position that deals 50% of Dori's ATK DMG.
         </>
       ),
     },
@@ -146,8 +138,8 @@ const Dori: DataCharacter = {
       get desc() {
         return (
           <>
-            The character connected to the Lamp Spirit will obtain the following buffs based on
-            their current HP and Energy:
+            The character connected to the Lamp Spirit will obtain the following buffs based on their current HP and
+            Energy:
             <br />• When their HP is lower than 50%, they gain 50% Incoming Healing Bonus.
             <br />• When their Energy {this.xtraDesc?.[0]}.
           </>
@@ -165,12 +157,10 @@ const Dori: DataCharacter = {
       image: "a/ab/Constellation_Sprinkling_Weight",
       desc: (
         <>
-          Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter
-          Cannon:
+          Dori gains the following effects for 3s after using Spirit-Warding Lamp: Troubleshooter Cannon:
           <br />• <Electro>Electro Infusion</Electro>.
-          <br />• When Normal Attacks hit opponents, all party members will heal HP equivalent to{" "}
-          <Green b>4%</Green> of Dori's <Green>Max HP</Green>. This type of healing can occur once
-          every 0.1s.
+          <br />• When Normal Attacks hit opponents, all party members will heal HP equivalent to <Green b>4%</Green> of
+          Dori's <Green>Max HP</Green>. This type of healing can occur once every 0.1s.
         </>
       ),
     },
@@ -180,12 +170,7 @@ const Dori: DataCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          When Energy of the character connected to the Lamp Spirit{" "}
-          {Dori.constellation[3].xtraDesc?.[0]}
-        </>
-      ),
+      desc: () => <>When Energy of the character connected to the Lamp Spirit {Dori.constellation[3].xtraDesc?.[0]}</>,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "er_", 30),
     },

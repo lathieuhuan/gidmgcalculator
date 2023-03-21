@@ -7,9 +7,8 @@ import { checkAscs } from "../utils";
 const Lisa: DataCharacter = {
   code: 10,
   name: "Lisa",
-  // icon: "5/51/Character_Lisa_Thumb",
   icon: "6/65/Lisa_Icon",
-  sideIcon: "e/e6/Character_Lisa_Side_Icon",
+  sideIcon: "2/26/Lisa_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "electro",

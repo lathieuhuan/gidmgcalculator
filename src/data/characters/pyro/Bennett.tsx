@@ -24,9 +24,8 @@ function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
 const Bennett: DataCharacter = {
   code: 19,
   name: "Bennett",
-  // icon: "7/7b/Character_Bennett_Thumb",
   icon: "7/79/Bennett_Icon",
-  sideIcon: "3/3c/Character_Bennett_Side_Icon",
+  sideIcon: "0/01/Bennett_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "pyro",

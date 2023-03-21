@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Xiangling: DataCharacter = {
   code: 21,
   name: "Xiangling",
-  // icon: "a/a0/Character_Xiangling_Thumb",
   icon: "3/39/Xiangling_Icon",
-  sideIcon: "4/4a/Character_Xiangling_Side_Icon",
+  sideIcon: "b/b0/Xiangling_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "pyro",
@@ -105,8 +104,7 @@ const Xiangling: DataCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          For the duration of Pyronado, all party members receive a <Green b>15%</Green>{" "}
-          <Green>Pyro DMG Bonus</Green>.
+          For the duration of Pyronado, all party members receive a <Green b>15%</Green> <Green>Pyro DMG Bonus</Green>.
         </>
       ),
       isGranted: checkCons[6],
@@ -119,8 +117,7 @@ const Xiangling: DataCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          Opponents hit by Guoba's attacks have their <Green>Pyro RES</Green> reduced by{" "}
-          <Green b>15%</Green> for 6s.
+          Opponents hit by Guoba's attacks have their <Green>Pyro RES</Green> reduced by <Green b>15%</Green> for 6s.
         </>
       ),
       isGranted: checkCons[1],

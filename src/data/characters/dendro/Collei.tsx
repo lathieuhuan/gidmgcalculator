@@ -8,9 +8,8 @@ import { checkCons } from "../utils";
 const Collei: DataCharacter = {
   code: 55,
   name: "Collei",
-  // icon: "9/9e/Character_Collei_Thumb",
   icon: "a/a2/Collei_Icon",
-  sideIcon: "a/a8/Character_Collei_Side_Icon",
+  sideIcon: "0/04/Collei_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "dendro",
@@ -87,8 +86,8 @@ const Collei: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is
-          increased by <Green b>20%</Green>.
+          When in the party and not on the field, Collei's <Green>Energy Recharge</Green> is increased by{" "}
+          <Green b>20%</Green>.
         </>
       ),
       isGranted: checkCons[1],
@@ -100,8 +99,8 @@ const Collei: DataCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          Using Trump-Card Kitty [EB] will increase all nearby characters'{" "}
-          <Green>Elemental Mastery</Green> (excluding Collei) by <Green b>60</Green> for 12s.
+          Using Trump-Card Kitty [EB] will increase all nearby characters' <Green>Elemental Mastery</Green> (excluding
+          Collei) by <Green b>60</Green> for 12s.
         </>
       ),
       isGranted: checkCons[4],

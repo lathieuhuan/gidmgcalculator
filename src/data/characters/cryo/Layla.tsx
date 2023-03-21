@@ -9,7 +9,6 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 const Layla: DataCharacter = {
   code: 61,
   name: "Layla",
-  // icon: "9/93/Character_Layla_Thumb",
   icon: "1/1a/Layla_Icon",
   sideIcon: "2/23/Layla_Side_Icon",
   rarity: 4,

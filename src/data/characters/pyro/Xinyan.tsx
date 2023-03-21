@@ -8,9 +8,8 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 const Xinyan: DataCharacter = {
   code: 27,
   name: "Xinyan",
-  // icon: "9/9d/Character_Xinyan_Thumb",
   icon: "2/24/Xinyan_Icon",
-  sideIcon: "3/32/Character_Xinyan_Side_Icon",
+  sideIcon: "e/ec/Xinyan_Side_Icon",
   rarity: 4,
   nation: "liyue",
   vision: "pyro",
@@ -127,8 +126,7 @@ const Xinyan: DataCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Riff Revolution's <Green>[EB] Physical CRIT Rate</Green> is increased by{" "}
-          <Green b>100%</Green>.
+          Riff Revolution's <Green>[EB] Physical CRIT Rate</Green> is increased by <Green b>100%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -137,8 +135,7 @@ const Xinyan: DataCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Xinyan's <Green>Charged Attacks DMG</Green> is increased by <Green b>50%</Green> of her{" "}
-          <Green>DEF</Green>.
+          Xinyan's <Green>Charged Attacks DMG</Green> is increased by <Green b>50%</Green> of her <Green>DEF</Green>.
         </>
       ),
       isGranted: checkCons[6],
@@ -154,8 +151,7 @@ const Xinyan: DataCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Characters shielded by Sweeping Fervor [ES] deal <Green b>15%</Green> increased{" "}
-          <Green>Physical DMG</Green>.
+          Characters shielded by Sweeping Fervor [ES] deal <Green b>15%</Green> increased <Green>Physical DMG</Green>.
         </>
       ),
       isGranted: checkAscs[1],
@@ -181,8 +177,7 @@ const Xinyan: DataCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Sweeping Fervor's swing DMG decreases opponent's <Green>Physical RES</Green> by{" "}
-          <Green b>15%</Green> for 12s.
+          Sweeping Fervor's swing DMG decreases opponent's <Green>Physical RES</Green> by <Green b>15%</Green> for 12s.
         </>
       ),
       isGranted: checkCons[4],

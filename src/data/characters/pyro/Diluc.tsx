@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Diluc: DataCharacter = {
   code: 20,
   name: "Diluc",
-  // icon: "0/02/Character_Diluc_Thumb",
   icon: "3/3d/Diluc_Icon",
-  sideIcon: "a/af/Character_Diluc_Side_Icon",
+  sideIcon: "6/67/Diluc_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "pyro",

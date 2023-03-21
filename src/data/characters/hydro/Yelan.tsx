@@ -9,7 +9,6 @@ import { checkAscs, checkCons } from "../utils";
 const Yelan: DataCharacter = {
   code: 51,
   name: "Yelan",
-  // icon: "a/a8/Character_Yelan_Thumb",
   icon: "d/d3/Yelan_Icon",
   sideIcon: "9/9f/Yelan_Side_Icon",
   rarity: 5,

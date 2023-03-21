@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Keqing: DataCharacter = {
   code: 9,
   name: "Keqing",
-  // icon: "0/06/Character_Keqing_Thumb",
   icon: "5/52/Keqing_Icon",
-  sideIcon: "b/ba/Character_Keqing_Side_Icon",
+  sideIcon: "6/60/Keqing_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "electro",
@@ -89,8 +88,8 @@ const Keqing: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing
-          gains an <Electro>Electro Infusion</Electro> for 5s.
+          After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing gains an{" "}
+          <Electro>Electro Infusion</Electro> for 5s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -104,8 +103,8 @@ const Keqing: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          After casting Starward Sword [EB], Keqing's <Green>CRIT Rate</Green> and{" "}
-          <Green>Energy Recharge</Green> are increased by <Green b>15%</Green> for 8s.
+          After casting Starward Sword [EB], Keqing's <Green>CRIT Rate</Green> and <Green>Energy Recharge</Green> are
+          increased by <Green b>15%</Green> for 8s.
         </>
       ),
       isGranted: checkAscs[4],
@@ -117,8 +116,8 @@ const Keqing: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          For 10s after Keqing triggers an Electro-related Elemental Reaction, her{" "}
-          <Green>ATK</Green> is increased by <Green b>25%</Green>.
+          For 10s after Keqing triggers an Electro-related Elemental Reaction, her <Green>ATK</Green> is increased by{" "}
+          <Green b>25%</Green>.
         </>
       ),
       isGranted: checkCons[4],
@@ -130,9 +129,9 @@ const Keqing: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst,
-          Keqing gains a <Green b>6%</Green> <Green>Electro DMG Bonus</Green> for 8s. Effects
-          triggered by different sources are considered independent entities.
+          When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst, Keqing gains a{" "}
+          <Green b>6%</Green> <Green>Electro DMG Bonus</Green> for 8s. Effects triggered by different sources are
+          considered independent entities.
         </>
       ),
       isGranted: checkCons[6],

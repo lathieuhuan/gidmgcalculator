@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Klee: DataCharacter = {
   code: 23,
   name: "Klee",
-  // icon: "c/c3/Character_Klee_Thumb",
   icon: "9/9c/Klee_Icon",
-  sideIcon: "c/c2/Character_Klee_Side_Icon",
+  sideIcon: "b/ba/Klee_Side_Icon",
   rarity: 5,
   nation: "mondstadt",
   vision: "pyro",

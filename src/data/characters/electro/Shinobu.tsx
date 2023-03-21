@@ -17,9 +17,8 @@ const Shinobu: DataCharacter = {
   code: 52,
   name: "Shinobu",
   GOOD: "KukiShinobu",
-  // icon: "3/37/Character_Kuki_Shinobu_Thumb",
   icon: "b/b3/Kuki_Shinobu_Icon",
-  sideIcon: "3/38/Character_Kuki_Shinobu_Side_Icon",
+  sideIcon: "7/7d/Kuki_Shinobu_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "electro",
@@ -116,8 +115,7 @@ const Shinobu: DataCharacter = {
           Sanctifying Ring's [ES] abilities are boosted:
           <br />• <Green>Healing amount</Green> will be increased by <Green b>75%</Green> of{" "}
           <Green>Elemental Mastery</Green>.
-          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of{" "}
-          <Green>Elemental Mastery</Green>.
+          <br />• <Green>DMG</Green> dealt is increased by <Green b>25%</Green> of <Green>Elemental Mastery</Green>.
         </>
       ),
       isGranted: checkAscs[4],
@@ -143,8 +141,8 @@ const Shinobu: DataCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Shinobu's HP drops below 25%, she will gain <Green b>150</Green>{" "}
-          <Green>Elemental Mastery</Green> for 15s. This effect will trigger once every 60s.
+          When Shinobu's HP drops below 25%, she will gain <Green b>150</Green> <Green>Elemental Mastery</Green> for
+          15s. This effect will trigger once every 60s.
         </>
       ),
       isGranted: checkCons[6],

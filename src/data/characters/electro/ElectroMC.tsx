@@ -69,8 +69,8 @@ const ElectroMC: DataCharacter = {
       desc: () => (
         <>
           Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
-          <br />• At <Lightgold>A4</Lightgold>, increases the bonus by <Green b>10%</Green> of the
-          Traveler's <Green>Energy Recharge</Green>.
+          <br />• At <Lightgold>A4</Lightgold>, increases the bonus by <Green b>10%</Green> of the Traveler's{" "}
+          <Green>Energy Recharge</Green>.
         </>
       ),
       inputConfigs: [

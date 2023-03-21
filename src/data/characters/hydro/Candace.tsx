@@ -8,9 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Candace: DataCharacter = {
   code: 58,
   name: "Candace",
-  // icon: "b/bf/Character_Candace_Thumb",
   icon: "d/dd/Candace_Icon",
-  sideIcon: "9/95/Character_Candace_Side_Icon",
+  sideIcon: "7/7f/Candace_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "hydro",

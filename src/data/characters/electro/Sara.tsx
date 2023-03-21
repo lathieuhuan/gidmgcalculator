@@ -18,7 +18,6 @@ const Sara: DataCharacter = {
   code: 41,
   name: "Kujou Sara",
   GOOD: "KujouSara",
-  // icon: "9/96/Character_Kujou_Sara_Thumb",
   icon: "d/df/Kujou_Sara_Icon",
   sideIcon: "0/00/Kujou_Sara_Side_Icon",
   rarity: 4,
