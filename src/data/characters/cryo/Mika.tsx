@@ -25,10 +25,9 @@ const detectorBuff = ({ toSelf, char, inputs }: DetectorBuffValueArgs) => {
 
 const Mika: DataCharacter = {
   code: 67,
-  beta: true,
   name: "Mika",
-  icon: "https://i.ibb.co/PjXsMSt/mika.png",
-  sideIcon: "",
+  icon: "d/dd/Mika_Icon",
+  sideIcon: "8/84/Mika_Side_Icon",
   rarity: 4,
   nation: "mondstadt",
   vision: "cryo",
@@ -102,9 +101,8 @@ const Mika: DataCharacter = {
       image: "",
       desc: (
         <>
-          The Soulwind state [~ES] can decrease the healing interval between instances caused by
-          Eagleplume state [~EB]. This decrease percentage is equal to the ATK SPD increase provided
-          by Soulwind.
+          The Soulwind state [~ES] can decrease the healing interval between instances caused by Eagleplume state [~EB].
+          This decrease percentage is equal to the ATK SPD increase provided by Soulwind.
         </>
       ),
     },
@@ -113,8 +111,8 @@ const Mika: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Flowfrost Arrow [~ES] first hits an opponent, or its Rimestar Flare hits opponents, 1
-          Detector stack [~A1] will be generated.
+          When Flowfrost Arrow [~ES] first hits an opponent, or its Rimestar Flare hits opponents, 1 Detector stack
+          [~A1] will be generated.
         </>
       ),
     },
@@ -124,9 +122,8 @@ const Mika: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Eagleplume state [~EB] heal other party members, this will restore 3 Energy to Mika.
-          This form of Energy restoration can occur 5 times during the Eagleplume state created by 1
-          use of Skyfeather Song.
+          When Eagleplume state [~EB] heal other party members, this will restore 3 Energy to Mika. This form of Energy
+          restoration can occur 5 times during the Eagleplume state created by 1 use of Skyfeather Song.
         </>
       ),
     },
@@ -136,8 +133,8 @@ const Mika: DataCharacter = {
       image: "",
       desc: (
         <>
-          The maximum number of Detector stacks Soulwind can gain is increased by 1. Additionally,
-          characters affected by Soulwind will deal 60% more Physical CRIT DMG.
+          The maximum number of Detector stacks Soulwind can gain is increased by 1. Additionally, characters affected
+          by Soulwind will deal 60% more Physical CRIT DMG.
         </>
       ),
     },
@@ -150,21 +147,16 @@ const Mika: DataCharacter = {
       desc: (obj) => (
         <>
           Grants nearby active characters Soulwind, increasing their ATK SPD.
-          <br />• At <Lightgold>A1</Lightgold>, Soulwind can grant characters the Detector effect,
-          increasing their <Green>Physical DMG</Green> by <Green>10%</Green> each stack. Max{" "}
-          <Rose>3</Rose> stacks.
-          <br />• At <Lightgold>A4</Lightgold>, the maximum number of <Green>stacks</Green> is
-          increased by <Green>1</Green>.
-          <br />• At <Lightgold>C6</Lightgold>, the maximum number of <Green>stacks</Green> is
-          increased by <Green>1</Green>. Grants <Green b>60%</Green>{" "}
-          <Green>Physical CRIT DMG</Green> bonus.
+          <br />• At <Lightgold>A1</Lightgold>, Soulwind can grant characters the Detector effect, increasing their{" "}
+          <Green>Physical DMG</Green> by <Green>10%</Green> each stack. Max <Rose>3</Rose> stacks.
+          <br />• At <Lightgold>A4</Lightgold>, the maximum number of <Green>stacks</Green> is increased by{" "}
+          <Green>1</Green>.
+          <br />• At <Lightgold>C6</Lightgold>, the maximum number of <Green>stacks</Green> is increased by{" "}
+          <Green>1</Green>. Grants <Green b>60%</Green> <Green>Physical CRIT DMG</Green> bonus.
           {obj.toSelf && (
             <>
               <br />
-              <Red>
-                --- Max Detector stacks: {checkAscs[1](obj.char) ? detectorBuff(obj).maxStacks : 0}{" "}
-                ---
-              </Red>
+              <Red>--- Max Detector stacks: {checkAscs[1](obj.char) ? detectorBuff(obj).maxStacks : 0} ---</Red>
             </>
           )}
         </>
@@ -175,9 +167,7 @@ const Mika: DataCharacter = {
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: ({ toSelf, char, totalAttr, attElmtBonus, inputs, partyData, desc, tracker }) => {
-        const level = toSelf
-          ? finalTalentLv({ char, dataChar: Mika, talentType: "ES", partyData })
-          : inputs[0] || 0;
+        const level = toSelf ? finalTalentLv({ char, dataChar: Mika, talentType: "ES", partyData }) : inputs[0] || 0;
         const buffValue = level ? Math.min(12 + level, 25) : 0;
         applyModifier(desc, totalAttr, "naAtkSpd_", buffValue, tracker);
 
