@@ -97,8 +97,6 @@ export function convertFromGoodFormat(data: any) {
       artifactIDs: [null, null, null, null, null],
     };
 
-    console.log(charInfo.name, charInfo.level);
-
     result.characters.push(charInfo);
   }
 

@@ -383,13 +383,13 @@ export const calculatorSlice = createSlice({
     },
     // ARTIFACTS
     changeArtifact: (state, action: ChangeArtifactAction) => {
-      const { pieceIndex, newPiece, noKeepingStats } = action.payload;
+      const { pieceIndex, newPiece, shouldKeepStats } = action.payload;
       const setup = state.setupsById[state.activeId];
       const piece = setup.artifacts[pieceIndex];
       const oldSetBonuses = getArtifactSetBonuses(setup.artifacts);
       const oldBonusLevel = oldSetBonuses[0]?.bonusLv;
 
-      if (piece && newPiece && noKeepingStats && appSettings.get().doKeepArtStatsOnSwitch) {
+      if (shouldKeepStats && piece && newPiece) {
         piece.code = newPiece.code;
         piece.rarity = newPiece.rarity;
       } else {

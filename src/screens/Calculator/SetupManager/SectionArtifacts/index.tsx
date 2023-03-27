@@ -14,7 +14,7 @@ import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
-import { getImgSrc } from "@Src/utils";
+import { appSettings, getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
@@ -115,6 +115,7 @@ export default function SectionArtifacts() {
                 ID: Date.now(),
                 ...item,
               },
+              shouldKeepStats: appSettings.get().doKeepArtStatsOnSwitch,
             })
           );
           setActiveTabIndex(artifactPicker.slot);

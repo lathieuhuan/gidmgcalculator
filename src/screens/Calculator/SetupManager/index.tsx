@@ -142,7 +142,6 @@ export default function SetupManager() {
             changeArtifact({
               pieceIndex: ARTIFACT_TYPES.indexOf(modalType as ArtifactType),
               newPiece: userItemToCalcItem(artifact),
-              noKeepingStats: true,
             })
           );
         }}

@@ -103,7 +103,7 @@ const purpleCatalysts: DataWeapon[] = [
         return (
           <>
             Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or Alternate sprint by{" "}
-            {12 + refi * 2} for 5s. {this.extra?.[0]}
+            {12 + refi * 2}% for 5s. {this.extra?.[0]}
           </>
         );
       },

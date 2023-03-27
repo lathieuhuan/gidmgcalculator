@@ -2,6 +2,15 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "March 28th, 2023",
+    content: [
+      <>
+        Fixed setting "Keep artifact stats when switching to a new set" did not work properly. Thank you{" "}
+        <Lightgold>Only_Pumpkin_801</Lightgold>!
+      </>,
+    ],
+  },
+  {
     date: "March 20th, 2023",
     content: [
       <>Fixed broken image links.</>,
