@@ -2,11 +2,24 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "March 30th, 2023",
+    content: [
+      <>
+        Prevented <Lightgold>Wanderer</Lightgold>'s A1 from triggering the third infused element buff when he is not yet
+        at C4. Thank you <Red>Only_Pumpkin_801</Red>!
+      </>,
+      <>
+        Corrected <Lightgold>Desert Pavilion Chronicle</Lightgold>'s description form 10s to 15s. Thank you{" "}
+        <Red>Hounth</Red>!
+      </>,
+    ],
+  },
+  {
     date: "March 28th, 2023",
     content: [
       <>
         Fixed setting "Keep artifact stats when switching to a new set" did not work properly. Thank you{" "}
-        <Lightgold>Only_Pumpkin_801</Lightgold>!
+        <Red>Only_Pumpkin_801</Red>!
       </>,
     ],
   },
@@ -28,7 +41,7 @@ export const UPDATES = [
         <Lightgold>Dewflower's Glow</Lightgold>.
       </>,
       <>
-        Corrected a wrong label on <Lightgold>Lisa</Lightgold>'s A4 debuff. Thank you <Red>Steven Redington</Red>!
+        Corrected a wrong label on <Lightgold>Lisa</Lightgold>'s A4 debuff. Thank you <Red>Izzo</Red>!
       </>,
       <>Added limits to the amount of items that can be uploaded from a file.</>,
       <>

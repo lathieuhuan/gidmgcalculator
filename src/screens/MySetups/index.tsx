@@ -44,9 +44,7 @@ export default function MySetups() {
 
   const chosenSetup = (() => {
     const setup = findById(userSetups, chosenSetupID);
-    return setup && setup.type === "complex"
-      ? (findById(userSetups, setup.shownID) as UserSetup)
-      : setup;
+    return setup && setup.type === "complex" ? (findById(userSetups, setup.shownID) as UserSetup) : setup;
   })();
 
   useEffect(() => {
@@ -113,12 +111,7 @@ export default function MySetups() {
     <WareHouse.Wrapper>
       <WareHouse className={styles["setup-warehouse"]}>
         <WareHouse.ButtonBar>
-          <IconButton
-            className="mr-4"
-            variant="positive"
-            size="w-7 h-7"
-            onClick={openModal("TIPS")}
-          >
+          <IconButton className="mr-4" variant="positive" size="w-7 h-7" onClick={openModal("TIPS")}>
             <FaInfo className="text-sm" />
           </IconButton>
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
@@ -142,10 +135,7 @@ export default function MySetups() {
             )}
           </div>
 
-          <div
-            className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3"
-            style={{ width: "21.75rem" }}
-          >
+          <div className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3" style={{ width: "21.75rem" }}>
             {chosenSetup && (
               <ChosenSetupInfo
                 chosenSetup={chosenSetup}
@@ -165,24 +155,23 @@ export default function MySetups() {
       >
         <ul className="pl-4 pr-2 list-disc space-y-1 contains-inline-svg">
           <li>
-            <Lightgold>Modify setups</Lightgold>: When you press <FaWrench /> on a saved setup,
-            you're pushing a <Red>copy</Red> of it to the Calculator, so don't forget to save the
-            modified copy if you want to apply the changes to that setup.
+            <Lightgold>Update setups</Lightgold>: When you press <FaWrench /> on a saved setup, you're pushing a{" "}
+            <Red>copy</Red> of it to the Calculator, so don't forget to save the modified copy if you want to apply the
+            changes to that setup.
           </li>
           <li>
-            <Lightgold>Teammate details</Lightgold> on a setup can be viewed when you press a
-            teammate icon. Here you can build a setup for that teammate based on the main setup.
-            Party members and Target will be the same. Some modifiers will remain activated and keep
-            their inputs.
+            <Lightgold>Teammate details</Lightgold> on a setup can be viewed when you press a teammate icon. Here you
+            can build a setup for that teammate based on the main setup. Party members and Target will be the same. Some
+            modifiers will remain activated and keep their inputs.
           </li>
           <li>
-            <Lightgold>Complex Setup</Lightgold> is the result of combining setups of the same 4
-            party members. You can break this complex into individual setups again by pressing the{" "}
-            <FaUnlink /> before its name. Now at teammate details you can switch to that setup.
+            <Lightgold>Complex Setup</Lightgold> is the result of combining setups of the same 4 party members. You can
+            break this complex into individual setups again by pressing the <FaUnlink /> before its name. Now at
+            teammate details you can switch to that setup.
           </li>
           <li>
-            You CANNOT change teammates when modifying the direct copy of a setup that is in a
-            complex. However you can make a copy of that copy in the Calculator and work on it.
+            You CANNOT change teammates when modifying the direct copy of a setup that is in a complex. However you can
+            make a copy of that copy in the Calculator and work on it.
           </li>
         </ul>
       </StandardModal>

@@ -7,8 +7,8 @@ import { round, findByIndex } from "@Src/utils";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
-const isInfusedHydroES = (charBuffCtrls: ModifierCtrl[]) => {
-  return findByIndex(charBuffCtrls, 1)?.inputs?.includes(2);
+const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {
+  return checkCons[4](args.char) ? findByIndex(args.charBuffCtrls, 1)?.inputs?.includes(2) : false;
 };
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
@@ -260,11 +260,10 @@ const Wanderer: DataCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: ({ charBuffCtrls }) => {
+      desc: (obj) => {
         return (
           <>
-            {Wanderer.constellation[1].desc}{" "}
-            <Red>Kuugoryoku Points cap: {isInfusedHydroES(charBuffCtrls) ? 120 : 100}.</Red>
+            {Wanderer.constellation[1].desc} <Red>Kuugoryoku Points cap: {isHydroInfusedES(obj) ? 120 : 100}.</Red>
           </>
         );
       },
@@ -276,10 +275,10 @@ const Wanderer: DataCharacter = {
           max: 120,
         },
       ],
-      applyBuff: ({ attPattBonus, inputs, charBuffCtrls, desc, tracker }) => {
-        const pointDifference = (isInfusedHydroES(charBuffCtrls) ? 120 : 100) - (inputs[0] || 0);
-        const buffValue = Math.min(Math.max(pointDifference, 0) * 4, 200);
-        applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
+      applyBuff: (obj) => {
+        const difference = (isHydroInfusedES(obj) ? 120 : 100) - (obj.inputs[0] || 0);
+        const buffValue = Math.min(Math.max(difference, 0) * 4, 200);
+        applyModifier(obj.desc, obj.attPattBonus, "EB.pct_", buffValue, obj.tracker);
       },
     },
   ],

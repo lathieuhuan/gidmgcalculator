@@ -1,10 +1,9 @@
 import type {
-  CharData,
   CharInfo,
   DataCharacter,
+  BuffDescriptionArgs,
   GetTalentBuffFn,
   ModifierCtrl,
-  ModifierInput,
   PartyData,
   TotalAttribute,
 } from "@Src/types";
@@ -16,37 +15,18 @@ import { round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
 
-export const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
-
-const countResolve = (energyCost: number, level: number) => {
-  return Math.round(energyCost * Math.min(Math.ceil(14.5 + level * 0.5), 20)) / 100;
-};
-
-const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuffFn => {
-  return ({ char, selfBuffCtrls, partyData }) => {
-    if (modIsActivated(selfBuffCtrls, 1)) {
-      const buffValue = getBuffValue.EB(char, selfBuffCtrls, partyData);
-      if (buffValue.stacks) {
-        return {
-          mult_: {
-            desc: `Bonus from ${buffValue.stacks} Resolve, each gave ${buffValue[bonusType]}% extra mult`,
-            value: round(buffValue.stacks * buffValue[bonusType], 2),
-          },
-        };
-      }
-    }
-    return {};
-  };
-};
+const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
 
 const getBuffValue = {
-  ES: (toSelf: boolean, char: CharInfo, { EBcost }: CharData, inputs: ModifierInput[], partyData: PartyData) => {
-    const level = toSelf ? finalTalentLv({ char, dataChar: Raiden, talentType: "ES", partyData }) : inputs[0] || 0;
+  ES: (args: BuffDescriptionArgs) => {
+    const level = args.toSelf
+      ? finalTalentLv({ char: args.char, dataChar: Raiden, talentType: "ES", partyData: args.partyData })
+      : args.inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
 
     return {
-      desc: `${level} / ${round(mult, 2)}% * ${EBcost} Energy Cost`,
-      value: round(EBcost * mult, 1),
+      desc: `${level} / ${round(mult, 2)}% * ${args.charData.EBcost} Energy Cost`,
+      value: round(args.charData.EBcost * mult, 1),
     };
   },
   EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
@@ -64,10 +44,14 @@ const getBuffValue = {
       bonusEnergySpent += electroEnergySpent * 0.8 + (totalEnergySpent - electroEnergySpent) * 0.2;
     }
 
-    let stacks = countResolve(totalEnergySpent + bonusEnergySpent, level);
+    const stackPerEnergy = Math.min(Math.ceil(14.5 + level * 0.5), 20);
+    const countResolve = (energyCost: number) => Math.round(energyCost * stackPerEnergy) / 100;
+
+    let stacks = countResolve(totalEnergySpent + bonusEnergySpent);
     return {
+      stackPerEnergy,
       stacks: Math.min(round(stacks, 2), 60),
-      extraStacks: round(countResolve(bonusEnergySpent, level), 2),
+      extraStacks: countResolve(bonusEnergySpent),
       musouBonus: round(3.89 * TALENT_LV_MULTIPLIERS[2][level], 2),
       isshinBonus: isshinBonusMults[level],
     };
@@ -75,18 +59,23 @@ const getBuffValue = {
   A4: (totalAttr: TotalAttribute) => {
     return round((totalAttr.er_ - 100) * 0.4, 1);
   },
-  C1: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData, EBlevel?: number) => {
-    const electroEC = +findInput(selfBuffCtrls, 3, 0); // EC = energyCost
-    const otherEC = +findInput(selfBuffCtrls, 1, 0) - electroEC;
+};
 
-    if (otherEC < 0) {
-      return 0;
+const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuffFn => {
+  return ({ char, selfBuffCtrls, partyData }) => {
+    if (modIsActivated(selfBuffCtrls, 1)) {
+      const buffValue = getBuffValue.EB(char, selfBuffCtrls, partyData);
+      if (buffValue.stacks) {
+        return {
+          mult_: {
+            desc: `${buffValue.stacks} Resolve, ${buffValue[bonusType]}% extra multiplier each`,
+            value: round(buffValue.stacks * buffValue[bonusType], 2),
+          },
+        };
+      }
     }
-    const level = EBlevel || finalTalentLv({ char, dataChar: Raiden, talentType: "EB", partyData });
-    const electroResolve = countResolve(electroEC, level);
-    const otherResolve = countResolve(otherEC, level);
-    return round(electroResolve * 0.8 + otherResolve * 0.2, 1);
-  },
+    return {};
+  };
 };
 
 const Raiden: DataCharacter = {
@@ -254,14 +243,10 @@ const Raiden: DataCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
-      desc: ({ toSelf, char, charData, inputs, partyData }) => (
+      desc: (obj) => (
         <>
           Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the <Green>Energy Cost</Green> of
-          the Elemental Burst during the eye's duration.{" "}
-          <Red>
-            DMG bonus: {getBuffValue.ES(toSelf, char, charData, inputs, partyData).value}
-            %.
-          </Red>
+          the Elemental Burst during the eye's duration. <Red>DMG bonus: {getBuffValue.ES(obj).value}%.</Red>
         </>
       ),
       inputConfigs: [
@@ -272,8 +257,7 @@ const Raiden: DataCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const { toSelf, char, charData, inputs, partyData } = obj;
-        const result = getBuffValue.ES(toSelf, char, charData, inputs, partyData);
+        const result = getBuffValue.ES(obj);
         const desc = `${obj.desc} / Lv. ${result.desc}`;
         applyModifier(desc, obj.attPattBonus, "EB.pct_", result.value, obj.tracker);
       },
@@ -283,11 +267,14 @@ const Raiden: DataCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       desc: ({ char, charBuffCtrls, partyData }) => {
-        const { stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
+        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
         return (
           <>
             Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
-            of Chakra Desiderata's Resolve stacks consumed. <Red>Total Resolve: {stacks}</Red>
+            of Chakra Desiderata's Resolve stacks consumed.{" "}
+            <Red>
+              Resolve per Enerygy spent: {stackPerEnergy / 100}. Total Resolve: {stacks}
+            </Red>
             <br />
             Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.
             <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from Electro characters by{" "}

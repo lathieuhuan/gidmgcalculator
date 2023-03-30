@@ -169,11 +169,7 @@ export type ActiveTalents = {
 export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
-  desc: (args: {
-    charData: CharData;
-    partyData: PartyData;
-    totalAttr: TotalAttribute;
-  }) => ReactNode;
+  desc: (args: { charData: CharData; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
@@ -189,7 +185,11 @@ type AbilityModifier = {
   isGranted?: (char: CharInfo) => boolean;
 };
 
-// BUFFS
+// ============ BUFFS ============
+export type BuffDescriptionArgs = Pick<
+  ApplyCharBuffArgs,
+  "toSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
+>;
 
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
@@ -199,15 +199,7 @@ export type AbilityBuff = AbilityModifier & {
     range?: NormalAttack[];
     disabledNAs?: boolean;
   };
-  desc: (args: {
-    toSelf: boolean;
-    char: CharInfo;
-    charData: CharData;
-    charBuffCtrls: ModifierCtrl[];
-    partyData: PartyData;
-    totalAttr: TotalAttribute;
-    inputs: ModifierInput[];
-  }) => ReactNode;
+  desc: (args: BuffDescriptionArgs) => ReactNode;
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
@@ -219,27 +211,19 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
   desc: string;
 };
 
-// DEBUFFS
-
-type ApplyCharDebuffFn = (args: {
-  resistReduct: ResistanceReduction;
-  attPattBonus: AttackPatternBonus;
-  char: CharInfo;
-  inputs: ModifierInput[];
-  partyData: PartyData;
-  fromSelf: boolean;
-  desc: string;
-  tracker?: Tracker;
-}) => void;
-
+// ============ DEBUFFS ============
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-  desc: (args: {
-    fromSelf: boolean;
+  desc: (args: { fromSelf: boolean; char: CharInfo; inputs: ModifierInput[]; partyData: PartyData }) => ReactNode;
+  applyDebuff?: (args: {
+    resistReduct: ResistanceReduction;
+    attPattBonus: AttackPatternBonus;
     char: CharInfo;
     inputs: ModifierInput[];
     partyData: PartyData;
-  }) => ReactNode;
-  applyDebuff?: ApplyCharDebuffFn;
+    fromSelf: boolean;
+    desc: string;
+    tracker?: Tracker;
+  }) => void;
 };

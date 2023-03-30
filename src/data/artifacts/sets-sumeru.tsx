@@ -186,7 +186,7 @@ const sumeruSets: DataArtifact[] = [
           <>
             When Charged Attacks hit opponents, the equipping character's <Green>Normal Attack SPD</Green> will increase
             by <Green b>10%</Green> while <Green>Normal, Charged, and Plunging Attack DMG</Green> will increase by{" "}
-            <Green b>40%</Green> for 10s.
+            <Green b>40%</Green> for 15s.
           </>
         ),
       },
