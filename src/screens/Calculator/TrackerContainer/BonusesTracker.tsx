@@ -123,7 +123,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
             return records.length || em ? (
               <div key={reaction} className="pl-2 break-inside-avoid">
-                {renderHeading(t(reaction), getTotalRecordValue(records) + bonusFromEM + "%")}
+                {renderHeading(t(reaction), round(getTotalRecordValue(records) + bonusFromEM, 1) + "%")}
 
                 <ul className="pl-4 list-disc">
                   {renderRecord((value) => value + "%")(

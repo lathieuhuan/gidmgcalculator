@@ -11,7 +11,7 @@ export const Introduction = (props: ModalControl) => {
     <StandardModal
       title={
         <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.0.0</sup>
+          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.0.1</sup>
         </h1>
       }
       {...props}

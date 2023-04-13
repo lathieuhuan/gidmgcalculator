@@ -2,6 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green, Hydro, Lightgold } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
@@ -171,8 +172,9 @@ const Candace: DataCharacter = {
 
         if (charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
           const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs[0] || 0 : 0;
-          const stacks = Math.floor(maxHP / 1000);
-          applyModifier(obj.desc, attPattBonus, "NA.pct_", 20 + stacks * 0.5, obj.tracker);
+          const buffValue = round(20 + (maxHP / 1000) * 0.5, 1);
+
+          applyModifier(obj.desc, attPattBonus, "NA.pct_", buffValue, obj.tracker);
         }
       },
     },

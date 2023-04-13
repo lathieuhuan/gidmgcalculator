@@ -6,13 +6,13 @@ import { round, countVision } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-export function nilouA1isOn(partyData: PartyData, charData: CharData) {
+function A1isOn(partyData: PartyData, charData: CharData) {
   const { dendro, hydro, ...rest } = countVision(partyData, charData);
   return Boolean(dendro && hydro && !Object.keys(rest).length);
 }
 
-export function getNilouA4BuffValue(maxHP: number) {
-  const stacks = Math.floor(maxHP / 1000) - 30;
+function getA4BuffValue(maxHP: number) {
+  const stacks = maxHP / 1000 - 30;
   return stacks > 0 ? round(Math.min(stacks * 9, 400), 1) : 0;
 }
 
@@ -237,7 +237,7 @@ const Nilou: DataCharacter = {
           by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
           <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green> above 30,000 will cause{" "}
           <Green>Bountiful Cores DMG</Green> to increase by <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
-          <Red>DMG bonus: {getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
+          <Red>DMG bonus: {getA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
         </>
       ),
       isGranted: checkAscs[1],
@@ -250,13 +250,13 @@ const Nilou: DataCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
-        if (nilouA1isOn(partyData, charData)) {
+        if (A1isOn(partyData, charData)) {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },
       applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, char, desc, tracker }) => {
         if (toSelf ? checkAscs[4](char) : inputs[0]) {
-          const buffValue = getNilouA4BuffValue(toSelf ? totalAttr.hp : inputs[0]);
+          const buffValue = getA4BuffValue(toSelf ? totalAttr.hp : inputs[0]);
           applyModifier(desc, rxnBonus, "bloom.pct_", buffValue, tracker);
         }
       },

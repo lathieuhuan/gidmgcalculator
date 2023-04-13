@@ -36,22 +36,22 @@ const getBuffValue = {
       talentType: "EB",
       partyData,
     });
-    const totalEnergySpent = findInput(selfBuffCtrls, 1, 0);
-    const electroEnergySpent = findInput(selfBuffCtrls, 1, 1);
-    let bonusEnergySpent = 0;
+    const totalEnergy = findInput(selfBuffCtrls, 1, 0);
+    const electroEnergy = findInput(selfBuffCtrls, 1, 1);
+    let extraEnergy = 0;
 
-    if (checkCons[1](char) && electroEnergySpent < totalEnergySpent) {
-      bonusEnergySpent += electroEnergySpent * 0.8 + (totalEnergySpent - electroEnergySpent) * 0.2;
+    if (checkCons[1](char) && electroEnergy <= totalEnergy) {
+      extraEnergy += electroEnergy * 0.8 + (totalEnergy - electroEnergy) * 0.2;
     }
 
     const stackPerEnergy = Math.min(Math.ceil(14.5 + level * 0.5), 20);
     const countResolve = (energyCost: number) => Math.round(energyCost * stackPerEnergy) / 100;
+    const stacks = countResolve(totalEnergy + extraEnergy);
 
-    let stacks = countResolve(totalEnergySpent + bonusEnergySpent);
     return {
       stackPerEnergy,
       stacks: Math.min(round(stacks, 2), 60),
-      extraStacks: countResolve(bonusEnergySpent),
+      extraStacks: countResolve(extraEnergy),
       musouBonus: round(3.89 * TALENT_LV_MULTIPLIERS[2][level], 2),
       isshinBonus: isshinBonusMults[level],
     };
@@ -273,7 +273,7 @@ const Raiden: DataCharacter = {
             Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
             of Chakra Desiderata's Resolve stacks consumed.{" "}
             <Red>
-              Resolve per Enerygy spent: {stackPerEnergy / 100}. Total Resolve: {stacks}
+              Resolve per Energy spent: {stackPerEnergy / 100}. Total Resolve: {stacks}
             </Red>
             <br />
             Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.

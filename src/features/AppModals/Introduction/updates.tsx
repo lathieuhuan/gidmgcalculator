@@ -2,6 +2,30 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "April 13th, 2023",
+    content: [
+      <>
+        Added <Lightgold>Kirara</Lightgold>.
+      </>,
+      <>
+        Fixed <Lightgold>Tighnari</Lightgold>'s A4 did not factor in some Elemenetal Mastery bonuses.
+      </>,
+      <>
+        Fixed <Lightgold>Raiden Shogun</Lightgold>'s resolve count did not work at C1, when Total Energy spent by all
+        characters is equal to Total Energy spent by Electro characters. Thank you <Red>Only_Pumpkin_801</Red>!
+      </>,
+      <>
+        Changed buffs that are based on characters' Max HP from --[1 bonus value each 1,000 Max HP]-- to --[0.001 bonus
+        value each 1 Max HP]--. For example, <Lightgold>Nilou</Lightgold>'s A4 will now get 0.009% Bloom DMG bonus every
+        1 Max HP above 30,000, instead of 9% bonus every 1,000 Max HP above 30,000. Thank you <Red>StockedSix</Red> for
+        the testing on Nilou!
+      </>,
+      <>
+        Other characters affected by the above change: <Lightgold>Baizhu, Candace, Kirara</Lightgold>.
+      </>,
+    ],
+  },
+  {
     date: "March 30th, 2023",
     content: [
       <>

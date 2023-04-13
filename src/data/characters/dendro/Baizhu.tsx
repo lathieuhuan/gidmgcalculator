@@ -2,6 +2,7 @@ import type { DataCharacter } from "@Src/types";
 import { Green } from "@Components/atoms";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
+import { round } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -198,7 +199,7 @@ const Baizhu: DataCharacter = {
       inputConfigs: [{ label: "Max HP", type: "text", max: 99999, for: "teammate" }],
       applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
         const hp = toSelf ? totalAttr.hp : inputs[0] || 0;
-        const stacks = Math.floor(Math.min(hp, 50000) / 1000);
+        const stacks = round(Math.min(hp, 50000) / 1000, 1);
         const fields: ReactionBonusPath[] = ["burning.pct_", "bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"];
 
         applyModifier(desc, rxnBonus, fields, stacks * 2, tracker);

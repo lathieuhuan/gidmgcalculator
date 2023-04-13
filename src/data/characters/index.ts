@@ -33,6 +33,7 @@ import Kaeya from "./cryo/Kaeya";
 import Kaveh from "./dendro/Kaveh";
 import Kazuha from "./anemo/Kazuha";
 import Keqing from "./electro/Keqing";
+import Kirara from "./dendro/Kirara";
 import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
 import Layla from "./cryo/Layla";
@@ -105,6 +106,7 @@ const characters = {
   Kaveh,
   Kazuha,
   Keqing,
+  Kirara,
   Klee,
   Kokomi,
   Layla,

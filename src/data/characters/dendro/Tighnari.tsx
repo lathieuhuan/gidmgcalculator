@@ -125,7 +125,7 @@ const Tighnari: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
+      applyFinalBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
         const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
         applyModifier(desc, attPattBonus, ["CA.pct_", "EB.pct_"], buffValue, tracker);
       },
