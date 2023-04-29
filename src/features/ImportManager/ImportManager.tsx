@@ -16,7 +16,7 @@ import { updateImportInfo, updateUI } from "@Store/uiSlice";
 import { importSetup, initSessionWithSetup, updateMessage } from "@Store/calculatorSlice";
 
 // Util
-import { getSearchParam } from "@Src/utils";
+import { getSearchParam, removeEmpty } from "@Src/utils";
 
 // Component
 import { ConfirmModalBody, Modal } from "@Components/molecules";
@@ -87,7 +87,7 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
           delayExecute(() => setPendingCode(4));
         } else {
           const sameChar = isEqual(char, calcSetup.char);
-          const sameTarget = isEqual(currentTarget, target);
+          const sameTarget = isEqual(removeEmpty(currentTarget), removeEmpty(target));
 
           if (sameChar && sameTarget) {
             delayExecute(() => addImportedSetup(false, false));
@@ -130,8 +130,7 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
           message={
             (pendingCode === 1
               ? "We're calculating another Character."
-              : "The number of Setups on Calculator has reach the limit of 4.") +
-            " Start a new session?"
+              : "The number of Setups on Calculator has reach the limit of 4.") + " Start a new session?"
           }
           buttons={[undefined, { onClick: startNewSession }]}
           onClose={endImport}

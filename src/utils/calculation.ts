@@ -3,7 +3,7 @@ import type {
   ArtifactSetBonus,
   AttackElement,
   AttackElementBonus,
-  AttacklementInfoKey,
+  AttackElementInfoKey,
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfoKey,
@@ -88,7 +88,7 @@ export const finalTalentLv = (args: TotalXtraTalentArgs) => {
 
 export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey}`;
 
-export type AttackElementPath = `${AttackElement}.${AttacklementInfoKey}`;
+export type AttackElementPath = `${AttackElement}.${AttackElementInfoKey}`;
 
 export type ReactionBonusPath = `${Reaction}.${ReactionBonusInfoKey}`;
 

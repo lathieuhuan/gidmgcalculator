@@ -2,7 +2,7 @@ import type {
   AttackElement,
   AttackElementBonus,
   AttacklementInfo,
-  AttacklementInfoKey,
+  AttackElementInfoKey,
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfo,
@@ -188,7 +188,7 @@ export default function getBuffedStats({
           applyToTotalAttr(type, value);
         } else if (subType) {
           const key = type as AttackElement;
-          const subKey = subType as AttacklementInfoKey;
+          const subKey = subType as AttackElementInfoKey;
 
           attElmtBonus[key][subKey] += value;
           addTrackerRecord(tracker?.attElmtBonus[`${key}.${subKey}`], "Custom buff", value);

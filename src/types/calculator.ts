@@ -127,7 +127,7 @@ export type CustomBuffCtrlType = AttributeStat | AttackPatternBonusKey | Reactio
 export type CustomBuffCtrl = {
   category: "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus";
   type: CustomBuffCtrlType;
-  subType?: AttackPatternInfoKey | AttacklementInfoKey | ReactionBonusInfoKey;
+  subType?: AttackPatternInfoKey | AttackElementInfoKey | ReactionBonusInfoKey;
   value: number;
 };
 
@@ -158,16 +158,16 @@ export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
 
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;
 
-export type AttackPatternInfoKey = typeof ATTACK_PATTERN_INFO_KEYS[number];
+export type AttackPatternInfoKey = (typeof ATTACK_PATTERN_INFO_KEYS)[number];
 export type AttackPatternInfo = Record<AttackPatternInfoKey, number>;
 export type AttackPatternBonusKey = AttackPattern | "all";
 export type AttackPatternBonus = Record<AttackPatternBonusKey, AttackPatternInfo>;
 
-export type AttacklementInfoKey = typeof ATTACK_ELEMENT_INFO_KEYS[number];
-export type AttacklementInfo = Record<AttacklementInfoKey, number>;
+export type AttackElementInfoKey = (typeof ATTACK_ELEMENT_INFO_KEYS)[number];
+export type AttacklementInfo = Record<AttackElementInfoKey, number>;
 export type AttackElementBonus = Record<AttackElement, AttacklementInfo>;
 
-export type ReactionBonusInfoKey = typeof REACTION_BONUS_INFO_KEYS[number];
+export type ReactionBonusInfoKey = (typeof REACTION_BONUS_INFO_KEYS)[number];
 export type ReactionBonusInfo = Record<ReactionBonusInfoKey, number>;
 export type ReactionBonus = Record<Reaction, ReactionBonusInfo>;
 
@@ -179,7 +179,7 @@ export type Infusion = {
   range?: NormalAttack[];
 };
 
-export type Talent = typeof TALENT_TYPES[number];
+export type Talent = (typeof TALENT_TYPES)[number];
 
 type CalculatedDamage = {
   nonCrit: number | number[];
@@ -245,7 +245,7 @@ export type TrackerDamageRecord = {
 export type Tracker = {
   totalAttr: Record<AttributeStat, TrackerRecord[]>;
   attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
-  attElmtBonus: Record<`${AttackElement}.${AttacklementInfoKey}`, TrackerRecord[]>;
+  attElmtBonus: Record<`${AttackElement}.${AttackElementInfoKey}`, TrackerRecord[]>;
   rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
   resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
   NAs: Record<string, TrackerDamageRecord>;

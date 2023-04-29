@@ -23,8 +23,7 @@ import {
   ConfirmModal,
   DamageDisplay,
   OwnerLabel,
-  // SetupExporter,
-  UnderConstructNotice,
+  SetupExporter,
   WeaponCard,
 } from "@Components/organisms";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
@@ -71,9 +70,7 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
         onClose={onCloseModal}
       />
 
-      <UnderConstructNotice active={modal.type === "SHARE_SETUP"} onClose={onCloseModal} />
-
-      {/* {weapon && (
+      {weapon && (
         <SetupExporter
           active={modal.type === "SHARE_SETUP"}
           setupName={chosenSetup.name}
@@ -81,7 +78,7 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
           target={chosenSetup.target}
           onClose={onCloseModal}
         />
-      )} */}
+      )}
 
       <Modal
         active={modal.type === "WEAPON"}

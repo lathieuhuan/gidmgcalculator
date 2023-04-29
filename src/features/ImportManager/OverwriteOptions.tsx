@@ -10,11 +10,7 @@ import { useTranslation } from "@Src/hooks";
 import { appSettings } from "@Src/utils";
 
 // Selector
-import {
-  selectCalcSetupsById,
-  selectActiveId,
-  selectTarget,
-} from "@Store/calculatorSlice/selectors";
+import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Component
 import { CollapseSpace, Table } from "@Components/atoms";
@@ -82,18 +78,13 @@ export function OverrideOptions({
     <div className="p-4 bg-darkblue-3 relative">
       <div className="py-2">
         <p className="text-xl text-center">
-          We detect difference(s) between the Calculator and this Setup. Choose what you want to
-          overwrite.
+          We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
         </p>
         <div>
-          {["Character's Info.", "Target's Info."].map((text, i) => {
+          {["Character's Info.", "Target's Info."].map((title, i) => {
             if (pendingCode >= 300 || pendingCode % 10 === i) {
-              const object1: any = i
-                ? { level: target?.level, ...target?.resistances }
-                : comparedChar;
-              const object2: any = i
-                ? { level: importedTarget?.level, ...importedTarget?.resistances }
-                : importedChar;
+              const object1: any = i ? { level: target?.level, ...target?.resistances } : comparedChar;
+              const object2: any = i ? { level: importedTarget?.level, ...importedTarget?.resistances } : importedChar;
 
               return (
                 <div key={i} className={expandedIndex ? "mt-4" : "mt-2"}>
@@ -105,7 +96,7 @@ export function OverrideOptions({
                         checked={ticked[i]}
                         onChange={onChangeTickedOption(i)}
                       />
-                      <span className="ml-4 text-lg">{text}</span>
+                      <span className="ml-4 text-lg">{title}</span>
                     </label>
 
                     <span
@@ -143,9 +134,7 @@ export function OverrideOptions({
                                 comparedCols = (
                                   <>
                                     <Td>
-                                      {object1[type]?.length > 1
-                                        ? `[${object1[type].join(", ")}]`
-                                        : object1[type]}
+                                      {object1[type]?.length > 1 ? `[${object1[type].join(", ")}]` : object1[type]}
                                     </Td>
                                     <Td>{object2?.[type]}</Td>
                                   </>
@@ -156,8 +145,7 @@ export function OverrideOptions({
                                 <Tr key={k}>
                                   <Td
                                     className={
-                                      "capitalize" +
-                                      (object1[type] !== object2?.[type] ? " text-lightred" : "")
+                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-lightred" : "")
                                     }
                                   >
                                     {t(type, { ns: i ? "resistance" : "common" })}

@@ -127,3 +127,18 @@ export const getCopyName = (originalName: string, existedNames: string[]) => {
 
   return undefined;
 };
+
+export const removeEmpty = <T extends Record<string, any>>(obj: T): T => {
+  const copy = {} as T;
+
+  for (const key in obj) {
+    if (Array.isArray(obj[key])) {
+      if (obj[key].length) {
+        copy[key] = obj.key;
+      }
+    } else if (!["", null, undefined].includes(obj[key])) {
+      copy[key] = obj[key];
+    }
+  }
+  return copy;
+};
