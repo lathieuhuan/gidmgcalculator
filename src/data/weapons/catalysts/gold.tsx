@@ -9,13 +9,12 @@ import { makeWpModApplier } from "../utils";
 const goldCatalysts: DataWeapon[] = [
   {
     code: 152,
-    beta: true,
     name: "Jadefall's Splendor",
-    icon: "https://i.ibb.co/2dWtL2S/jadefalls-splendor.png",
+    icon: "7/7a/Weapon_Jadefall%27s_Splendor",
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
-    passiveName: "Protector's Virtue",
+    passiveName: "Primordial Jade Regalia",
     passiveDesc: ({ refi }) => ({
       get core() {
         return (

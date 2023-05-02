@@ -11,10 +11,9 @@ const getEBbuffValue = (level: number) => (level ? round(27.49 * TALENT_LV_MULTI
 
 const Kaveh: DataCharacter = {
   code: 69,
-  beta: true,
   name: "Kaveh",
-  icon: "https://i.ibb.co/7zsCR62/kaveh.png",
-  sideIcon: "",
+  icon: "1/1f/Kaveh_Icon",
+  sideIcon: "5/5e/Kaveh_Side_Icon",
   rarity: 4,
   nation: "sumeru",
   vision: "dendro",
@@ -37,7 +36,7 @@ const Kaveh: DataCharacter = {
   ],
   bonusStat: { type: "em", value: 24 },
   NAsConfig: {
-    name: "Torque Settings",
+    name: "Schematic Setup",
   },
   isReverseXtraLv: true,
   activeTalents: {
@@ -58,12 +57,12 @@ const Kaveh: DataCharacter = {
     PA: { stats: HEAVY_PAs },
     ES: {
       name: "Artistic Ingenuity",
-      image: "",
+      image: "0/0b/Talent_Artistic_Ingenuity",
       stats: [{ name: "Skill DMG", multFactors: 204 }],
     },
     EB: {
       name: "Painted Dome",
-      image: "",
+      image: "2/28/Talent_Painted_Dome",
       stats: [
         { name: "Skill DMG", multFactors: 160 },
         {
@@ -77,8 +76,8 @@ const Kaveh: DataCharacter = {
   },
   passiveTalents: [
     {
-      name: "Creator's Undertaking",
-      image: "",
+      name: "An Architect's Undertaking",
+      image: "a/a6/Talent_An_Architect%27s_Undertaking",
       desc: (
         <>
           When DMG dealt by a Dendro Core (including Burgeon and Hyperbloom) hits Kaveh, he will regain HP equal to 300%
@@ -88,7 +87,7 @@ const Kaveh: DataCharacter = {
     },
     {
       name: "A Craftsman's Curious Conceptions",
-      image: "",
+      image: "d/d1/Talent_A_Craftsman%27s_Curious_Conceptions",
       get desc() {
         return (
           <>
@@ -107,13 +106,13 @@ const Kaveh: DataCharacter = {
     },
     {
       name: "The Art of Budgeting",
-      image: "",
+      image: "4/41/Talent_The_Art_of_Budgeting",
     },
   ],
   constellation: [
     {
       name: "Sublime Salutations",
-      image: "",
+      image: "1/14/Constellation_Sublime_Salutations",
       desc: (
         <>
           Within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES and Incoming Healing Bonus will be
@@ -122,18 +121,18 @@ const Kaveh: DataCharacter = {
       ),
     },
     {
-      name: "The Grand Road",
-      image: "",
+      name: "Grace of Royal Roads",
+      image: "2/28/Constellation_Grace_of_Royal_Roads",
       desc: (
         <>
           Kaveh's <Green>Normal Attack SPD</Green> increases by <Green b>15%</Green> during Painted Dome [EB].
         </>
       ),
     },
-    { name: "Profferrings of the Golden Tower", image: "" },
+    { name: "Profferings of Dur Untash", image: "a/a7/Constellation_Profferings_of_Dur_Untash" },
     {
-      name: "Feast of a Hundred Pillars",
-      image: "",
+      name: "Feast of Apadana",
+      image: "c/ca/Constellation_Feast_of_Apadana",
       desc: (
         <>
           Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will have their rupture DMG increased
@@ -141,10 +140,10 @@ const Kaveh: DataCharacter = {
         </>
       ),
     },
-    { name: "Sacred Storage", image: "" },
+    { name: "Treasures of Bonkhanak", image: "f/f6/Constellation_Treasures_of_Bonkhanak" },
     {
-      name: "Idyllic Ideal",
-      image: "",
+      name: "Pairidaeza's Dreams",
+      image: "6/61/Constellation_Pairidaeza%27s_Dreams",
       desc: (
         <>
           When Kaveh's Normal, Charged, and Plunging Attacks hit opponents during Painted Dome [EB], it will unleash the

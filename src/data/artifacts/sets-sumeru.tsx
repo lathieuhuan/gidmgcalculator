@@ -7,28 +7,27 @@ import { EModAffect } from "@Src/constants";
 const sumeruSets: DataArtifact[] = [
   {
     code: 38,
-    beta: true,
     name: "Nymph's Dream",
     variants: [4, 5],
     flower: {
-      name: "Flower",
-      icon: "https://images2.imgbox.com/13/09/wXfgluY1_o.png",
+      name: "Odyssean Flower",
+      icon: "7/7b/Item_Odyssean_Flower",
     },
     plume: {
-      name: "Plume",
-      icon: "https://images2.imgbox.com/9b/64/E73Jd8oG_o.png",
+      name: "Wicked Mage's Plumule",
+      icon: "e/ea/Item_Wicked_Mage%27s_Plumule",
     },
     sands: {
-      name: "Sands",
-      icon: "https://images2.imgbox.com/d1/d3/eb0bo07q_o.png",
+      name: "Nymph's Constancy",
+      icon: "6/66/Item_Nymph%27s_Constancy",
     },
     goblet: {
-      name: "Goblet",
-      icon: "https://images2.imgbox.com/08/58/YfTdk50T_o.png",
+      name: "Heroes' Tea Party",
+      icon: "e/e7/Item_Heroes%27_Tea_Party",
     },
     circlet: {
-      name: "Circlet",
-      icon: "https://images2.imgbox.com/2b/18/4t2yE5RG_o.png",
+      name: "Fell Dragon's Monocle",
+      icon: "f/ff/Item_Fell_Dragon%27s_Monocle",
     },
     setBonuses: [
       {
@@ -79,28 +78,27 @@ const sumeruSets: DataArtifact[] = [
   },
   {
     code: 37,
-    beta: true,
     name: "Dewflower's Glow",
     variants: [4, 5],
     flower: {
-      name: "Flower",
-      icon: "https://images2.imgbox.com/c9/12/v51uGpOY_o.png",
+      name: "Stamen of Khvarena's Origin",
+      icon: "c/c5/Item_Stamen_of_Khvarena%27s_Origin",
     },
     plume: {
-      name: "Plume",
-      icon: "https://images2.imgbox.com/a2/cf/PwY8vxPz_o.png",
+      name: "Vibrant Pinion",
+      icon: "0/09/Item_Vibrant_Pinion",
     },
     sands: {
-      name: "Sands",
-      icon: "https://images2.imgbox.com/4e/31/YhZ8cbWs_o.png",
+      name: "Ancient Abscission",
+      icon: "d/d4/Item_Ancient_Abscission",
     },
     goblet: {
-      name: "Goblet",
-      icon: "https://images2.imgbox.com/3a/bf/xjmGyFNb_o.png",
+      name: "Feast of Boundless Joy",
+      icon: "9/99/Item_Feast_of_Boundless_Joy",
     },
     circlet: {
-      name: "Circlet",
-      icon: "https://images2.imgbox.com/2e/47/8XJPzx6h_o.png",
+      name: "Heart of Khvarena's Brilliance",
+      icon: "f/fa/Item_Heart_of_Khvarena%27s_Brilliance",
     },
     setBonuses: [
       {

@@ -8,10 +8,9 @@ import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Baizhu: DataCharacter = {
   code: 70,
-  beta: true,
   name: "Baizhu",
-  icon: "https://i.ibb.co/s3jLxJz/baizhu.png",
-  sideIcon: "",
+  icon: "https://images2.imgbox.com/da/d9/A4umtyus_o.png",
+  sideIcon: "f/f9/Baizhu_Side_Icon",
   rarity: 5,
   nation: "liyue",
   vision: "dendro",
@@ -34,7 +33,7 @@ const Baizhu: DataCharacter = {
   ],
   bonusStat: { type: "hp_", value: 7.2 },
   NAsConfig: {
-    name: "Gilded Acupuncture",
+    name: "The Classics of Acupuncture",
   },
   isReverseXtraLv: true,
   activeTalents: {
@@ -50,7 +49,7 @@ const Baizhu: DataCharacter = {
     PA: { stats: LIGHT_PAs },
     ES: {
       name: "Universal Diagnosis",
-      image: "",
+      image: "6/69/Talent_Universal_Diagnosis",
       stats: [
         { name: "Skill DMG", multFactors: 79.2 },
         {
@@ -72,8 +71,8 @@ const Baizhu: DataCharacter = {
       ],
     },
     EB: {
-      name: "Healing Holism",
-      image: "",
+      name: "Holistic Revivification",
+      image: "1/1b/Talent_Holistic_Revivification",
       stats: [
         {
           name: "Seamless Shield DMG Absorption",
@@ -100,19 +99,28 @@ const Baizhu: DataCharacter = {
     },
   },
   passiveTalents: [
-    { name: "Five Fortunes Forever", image: "" },
-    { name: "All Things Are of the Earth", image: "" },
-    { name: "Herbal Nourishment", image: "" },
+    {
+      name: "Five Fortunes Forever",
+      image: "b/b6/Talent_Five_Fortunes_Forever",
+    },
+    {
+      name: "All Things Are of the Earth",
+      image: "2/29/Talent_All_Things_Are_of_the_Earth",
+    },
+    {
+      name: "Herbal Nourishment",
+      image: "6/66/Talent_Herbal_Nourishment",
+    },
   ],
   constellation: [
     {
-      name: "Even the Slightest Groan",
-      image: "",
+      name: "Attentive Observation",
+      image: "3/33/Constellation_Attentive_Observation",
       desc: <>Universal Diagnosis [ES] gains 1 additional charge.</>,
     },
     {
-      name: "Skilled of Hand",
-      image: "",
+      name: "Incisive Discernment",
+      image: "b/b3/Constellation_Incisive_Discernment",
       desc: (
         <>
           When Baizhu's active party member hits an opponent with their attacks, Baizhu will use Gossamer Sprite: Splice
@@ -122,21 +130,24 @@ const Baizhu: DataCharacter = {
         </>
       ),
     },
-    { name: "All Aspects Stabilized", image: "" },
     {
-      name: "Ancient Perception",
-      image: "",
+      name: "All Aspects Stabilized",
+      image: "9/94/Constellation_All_Aspects_Stabilized",
+    },
+    {
+      name: "Ancient Art of Perception",
+      image: "e/e9/Constellation_Ancient_Art_of_Perception",
       desc: (
         <>
-          For 15s after Healing Holism [EB] is used, Baizhu will increase all nearby party members'{" "}
+          For 15s after Holistic Revivification [EB] is used, Baizhu will increase all nearby party members'{" "}
           <Green>Elemental Mastery</Green> by <Green b>80</Green>.
         </>
       ),
     },
-    { name: "Hidden Shifting Signs", image: "" },
+    { name: "The Hidden Ebb and Flow", image: "e/e7/Constellation_The_Hidden_Ebb_and_Flow" },
     {
-      name: "Aura Flow",
-      image: "",
+      name: "Elimination of Malicious Qi",
+      image: "6/6a/Constellation_Elimination_of_Malicious_Qi",
       get desc() {
         return (
           <>
@@ -190,10 +201,10 @@ const Baizhu: DataCharacter = {
       isGranted: checkAscs[4],
       desc: () => (
         <>
-          Characters healed by Healing Holism [EB] will gain the Year of Verdant Favor effect: Each 1,000 Max HP that
-          Baizhu possesses below 50,000 will increase their <Green>Burning, Bloom, Hyperbloom, and Burgeon DMG</Green>{" "}
-          by <Green b>2%</Green>, while their <Green>Aggravate and Spread DMG</Green> will be increased by{" "}
-          <Green b>0.8%</Green>. This effect lasts 6s.
+          Characters healed by Holistic Revivification [EB] will gain the Year of Verdant Favor effect: Each 1,000 Max
+          HP that Baizhu possesses below 50,000 will increase their{" "}
+          <Green>Burning, Bloom, Hyperbloom, and Burgeon DMG</Green> by <Green b>2%</Green>, while their{" "}
+          <Green>Aggravate and Spread DMG</Green> will be increased by <Green b>0.8%</Green>. This effect lasts 6s.
         </>
       ),
       inputConfigs: [{ label: "Max HP", type: "text", max: 99999, for: "teammate" }],
