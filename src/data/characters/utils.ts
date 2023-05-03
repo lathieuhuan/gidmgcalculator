@@ -1,10 +1,4 @@
-import type {
-  CharInfo,
-  ModifierInput,
-  ModifierCtrl,
-  TalentBuff,
-  AttackPatternInfoKey,
-} from "@Src/types";
+import type { CharInfo, ModifierInput, ModifierCtrl, TalentBuff, AttackPatternInfoKey } from "@Src/types";
 import { ascsFromLv, findByIndex } from "@Src/utils";
 
 const makeAscsChecker = (value: number) => (char: CharInfo) => {
@@ -28,26 +22,20 @@ export const checkCons = {
 };
 
 export const makeTrackerDesc = (isAscs: boolean, level: number) => {
-  return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level} activated`;
+  return `Self / ${isAscs ? "Ascension" : "Constellation"} ${level}`;
 };
 
-export type TalentBuffConfig = [
-  boolean | undefined,
-  AttackPatternInfoKey,
-  string | readonly [boolean, number],
-  number
-];
+export type TalentBuffConfig = [boolean | undefined, AttackPatternInfoKey, string | readonly [boolean, number], number];
 
 export function talentBuff(...configs: TalentBuffConfig[]) {
   const result: Partial<TalentBuff> = {};
 
   for (let [condition, attPattKey, descConfig, value] of configs) {
     if (condition) {
-      let desc = "";
-      if (Array.isArray(descConfig)) {
-        desc = makeTrackerDesc(descConfig[0], descConfig[1]);
-      }
-      result[attPattKey] = { desc, value };
+      result[attPattKey] = {
+        desc: typeof descConfig === "string" ? descConfig : makeTrackerDesc(descConfig[0], descConfig[1]),
+        value,
+      };
     }
   }
   return result;
@@ -69,11 +57,7 @@ export const charModIsInUse = (
   index: number
 ) => {
   const modifier = findByIndex(mods, index);
-  return (
-    modifier &&
-    (!modifier.isGranted || modifier.isGranted(char)) &&
-    modIsActivated(buffCtrls, index)
-  );
+  return modifier && (!modifier.isGranted || modifier.isGranted(char)) && modIsActivated(buffCtrls, index);
 };
 
 export function findInput(

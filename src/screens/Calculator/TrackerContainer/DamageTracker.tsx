@@ -60,7 +60,7 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
                   return (
                     <Fragment key={i}>
                       {factor.desc ? t(factor.desc) + " " : null}
-                      <Green>{factor.value}</Green>
+                      <Green>{Math.round(factor.value)}</Green>
                       {factor.talentMult ? (
                         <>
                           {" "}

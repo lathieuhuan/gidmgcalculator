@@ -135,8 +135,8 @@ const Kaveh: DataCharacter = {
       image: "c/ca/Constellation_Feast_of_Apadana",
       desc: (
         <>
-          Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will have their rupture DMG increased
-          by <Green b>60%</Green>.
+          Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will deal <Green b>60%</Green> more
+          DMG when they burst.
         </>
       ),
     },

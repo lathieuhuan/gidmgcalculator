@@ -60,13 +60,13 @@ const Baizhu: DataCharacter = {
         },
         {
           name: "Gossamer Sprite: Splice DMG (C2)",
-          multFactors: { root: 198, scale: 0 },
+          multFactors: { root: 250, scale: 0 },
         },
         {
           name: "Gossamer Sprite: Splice Healing (C2)",
           notAttack: "healing",
-          multFactors: { root: 1.92, attributeType: "hp" },
-          flatFactor: 185,
+          multFactors: { root: 1.6, attributeType: "hp" },
+          flatFactor: 154,
         },
       ],
     },
@@ -88,10 +88,12 @@ const Baizhu: DataCharacter = {
         },
         {
           name: "Spiritvein DMG",
+          isNotOfficial: true,
           multFactors: 97.06,
           getTalentBuff: ({ char, totalAttr }) => {
             const buffValue = Math.round(totalAttr.hp * 0.08);
-            return talentBuff([checkCons[6](char), "flat", [false, 6], buffValue]);
+            const desc = `${EModSrc.C6} / 8% of ${Math.round(totalAttr.hp)} HP`;
+            return talentBuff([checkCons[6](char), "flat", desc, buffValue]);
           },
         },
       ],
@@ -123,8 +125,8 @@ const Baizhu: DataCharacter = {
       image: "b/b3/Constellation_Incisive_Discernment",
       desc: (
         <>
-          When Baizhu's active party member hits an opponent with their attacks, Baizhu will use Gossamer Sprite: Splice
-          that deals 250% Dendro DMG and 20% of Universal Diagnosis' [ES] healing.
+          When your active party member hits an opponent with their attacks, Baizhu will use Gossamer Sprite: Splice
+          [~ES] that deals 250% of Baizhu's ATK as Dendro DMG and heals for 20% of Universal Diagnosis' [ES] healing.
           <br />
           This effect can be triggered once every 5s.
         </>
@@ -187,11 +189,7 @@ const Baizhu: DataCharacter = {
       ),
       inputConfigs: [{ label: "HP less than 50%", type: "check" }],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        if (inputs[0]) {
-          applyModifier(desc, totalAttr, "healB_", 20, tracker);
-        } else {
-          applyModifier(desc, totalAttr, "dendro", 25, tracker);
-        }
+        applyModifier(desc, totalAttr, inputs[0] ? "healB_" : "dendro", inputs[0] ? 20 : 25, tracker);
       },
     },
     {
