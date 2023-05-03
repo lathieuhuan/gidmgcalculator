@@ -2,6 +2,17 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "May 3rd, 2023",
+    content: [
+      <>
+        Updated <Lightgold>Baizhu</Lightgold> and <Lightgold>Kaveh</Lightgold>.
+      </>,
+      <>
+        Released <Lightgold>Export Setup</Lightgold> feature.
+      </>,
+    ],
+  },
+  {
     date: "April 13th, 2023",
     content: [
       <>
