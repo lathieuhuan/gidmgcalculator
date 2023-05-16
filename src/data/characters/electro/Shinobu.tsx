@@ -71,6 +71,11 @@ const Shinobu: DataCharacter = {
           multFactors: 25.24,
           getTalentBuff: getA4TAlentBuff(1),
         },
+        {
+          name: "Thundergrass Mark (C4)",
+          multFactors: { root: 9.7, attributeType: "hp", scale: 0 },
+          attPatt: "none",
+        },
       ],
       // getExtraStats: () => [
       //   { name: "Activation Cost", value: "30% Current HP" },

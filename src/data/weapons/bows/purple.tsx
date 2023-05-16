@@ -15,7 +15,7 @@ const purpleBows: DataWeapon[] = [
     icon: "a/a2/Weapon_King%27s_Squire",
     rarity: 4,
     mainStatScale: "41",
-    subStat: { type: "er_", scale: "12%" },
+    subStat: { type: "atk_", scale: "12%" },
     passiveName: "Labyrinth Lord's Instruction",
     passiveDesc: ({ refi }) => ({
       get core() {

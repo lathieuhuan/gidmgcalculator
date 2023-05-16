@@ -46,6 +46,12 @@ const Razor: DataCharacter = {
         { name: "2-Hit", multFactors: 82.63 },
         { name: "3-Hit", multFactors: 103.31 },
         { name: "4-Hit", multFactors: 136.05 },
+        {
+          name: "Lightning strike (C6)",
+          multFactors: { root: 100, scale: 0 },
+          attElmt: "electro",
+          attPatt: "none",
+        },
       ],
       multScale: 4,
     },

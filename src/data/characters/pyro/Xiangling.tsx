@@ -43,6 +43,12 @@ const Xiangling: DataCharacter = {
         { name: "3-Hit (1/2)", multFactors: 26.06 },
         { name: "4-Hit (1/4)", multFactors: 14.1 },
         { name: "5-Hit", multFactors: 71.04 },
+        {
+          name: "Additional Hit (C2)",
+          multFactors: { root: 75, scale: 0 },
+          attElmt: "pyro",
+          attPatt: "none",
+        },
       ],
     },
     CA: { stats: [{ name: "Charged Attack", multFactors: 121.69 }] },

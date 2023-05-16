@@ -60,6 +60,9 @@ const Wanderer: DataCharacter = {
         { name: "1-Hit", multFactors: { root: 68.71, scale: 1 } },
         { name: "2-Hit", multFactors: { root: 65.02, scale: 1 } },
         { name: "3-Hit (1/2)", multFactors: { root: 47.64, scale: 1 } },
+        { name: "Additional 1-Hit (C6)", multFactors: { root: 27.48, scale: 1 } },
+        { name: "Additional 2-Hit (C6)", multFactors: { root: 26, scale: 1 } },
+        { name: "Additional 3-Hit (1/2) (C6)", multFactors: { root: 19.06, scale: 1 } },
         {
           name: "Wind Arrow DMG (A4) (1/4)",
           attPatt: "none",

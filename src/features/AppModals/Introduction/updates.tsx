@@ -2,7 +2,21 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
-    date: "May 3rd, 2023",
+    date: "May 16th, 2023",
+    content: [
+      <>
+        Corrected <Lightgold>King's Squire</Lightgold> substat from Energy Recharge to ATK%. Thank you{" "}
+        <Red>Victor H</Red>!
+      </>,
+      <>
+        Added additional attacks or shield for: <Lightgold>Razor</Lightgold> C6, <Lightgold>Chongyun</Lightgold> C1,{" "}
+        <Lightgold>Xiangling</Lightgold> C2, <Lightgold>Noelle</Lightgold> A1 & C4, <Lightgold>Wanderer</Lightgold> C6.
+        Thank you <Red>Meiflower</Red>!
+      </>,
+    ],
+  },
+  {
+    date: "May 3rd, 2023 (v3.1.0)",
     content: [
       <>
         Updated <Lightgold>Baizhu</Lightgold> and <Lightgold>Kaveh</Lightgold>.

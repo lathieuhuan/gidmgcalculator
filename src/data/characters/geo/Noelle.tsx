@@ -69,6 +69,16 @@ const Noelle: DataCharacter = {
           multFactors: 21.28,
           flatFactor: 103,
         },
+        {
+          name: "Emergent Shield (A1)",
+          notAttack: "shield",
+          multFactors: { root: 400, scale: 0 },
+        },
+        {
+          name: "Shield break DMG (C4)",
+          multFactors: { root: 400, attributeType: "atk", scale: 0 },
+          attPatt: "none",
+        },
       ],
       multAttributeType: "def",
       // getExtraStats: (lv) => [

@@ -42,6 +42,12 @@ const Chongyun: DataCharacter = {
         { name: "2-Hit", multFactors: 63.12 },
         { name: "3-Hit", multFactors: 80.32 },
         { name: "4-Hit", multFactors: 101.22 },
+        {
+          name: "Ice blade (1/3) (C1)",
+          multFactors: { root: 50, scale: 0 },
+          attElmt: "cryo",
+          attPatt: "none",
+        },
       ],
     },
     CA: {
