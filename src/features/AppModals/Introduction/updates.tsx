@@ -2,6 +2,14 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "May 25th, 2023",
+    content: [
+      <>
+        Added <Lightgold>Ibis Piercer</Lightgold>.
+      </>,
+    ],
+  },
+  {
     date: "May 16th, 2023",
     content: [
       <>

@@ -10,6 +10,40 @@ const fadingTwilightBuffValuesByState = (refi: number) => [4.5 + refi * 1.5, 7.5
 
 const purpleBows: DataWeapon[] = [
   {
+    code: 153,
+    name: "Ibis Piercer",
+    icon: "c/ce/Weapon_Ibis_Piercer",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    passiveName: "Secret Wisdom's Favor",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          The character's <Green>Elemental Mastery</Green> will increase by <Green b>{30 + refi * 10}</Green> within 6s
+          after Charged Attacks hit opponents. Max <Rose>2</Rose> stacks. This effect can triggered once every 0.5s.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 153)?.passiveDesc({ refi }).core,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
+          const buffValue = (30 + refi * 10) * (inputs[0] || 0);
+          applyModifier(desc, totalAttr, "em", buffValue, tracker);
+        },
+      },
+    ],
+  },
+  {
     code: 138,
     name: "King's Squire",
     icon: "a/a2/Weapon_King%27s_Squire",

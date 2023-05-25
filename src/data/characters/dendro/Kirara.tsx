@@ -10,7 +10,7 @@ const Kirara: DataCharacter = {
   code: 71,
   name: "Kirara",
   icon: "https://images2.imgbox.com/4c/09/DLJYSuy8_o.png",
-  sideIcon: "",
+  sideIcon: "1/1b/Kirara_Side_Icon",
   rarity: 4,
   nation: "inazuma",
   vision: "dendro",
@@ -48,7 +48,7 @@ const Kirara: DataCharacter = {
     PA: { stats: MEDIUM_PAs },
     ES: {
       name: "Meow-teor Kick",
-      image: "",
+      image: "7/79/Talent_Meow-teor_Kick",
       stats: [
         { name: "Tail-Flicking Flying Kick", multFactors: 104 },
         { name: "Urgent Neko Parcel Hit", multFactors: 33.6 },
@@ -69,7 +69,7 @@ const Kirara: DataCharacter = {
     },
     EB: {
       name: "Secret Art: Surprise Dispatch",
-      image: "",
+      image: "a/a1/Talent_Secret_Art_Surprise_Dispatch",
       stats: [
         { name: "Skill DMG", multFactors: 570.24 },
         { name: "Cat Grass Cardamom Explosion", multFactors: 35.64 },
@@ -81,7 +81,7 @@ const Kirara: DataCharacter = {
   passiveTalents: [
     {
       name: "Bewitching, Betwitching Tails",
-      image: "",
+      image: "5/56/Talent_Bewitching%2C_Betwitching_Tails",
       desc: (
         <>
           When Kirara is in the Urgent Neko Parcel state [~ES], each impact against an opponent will grant a stack of
@@ -93,8 +93,8 @@ const Kirara: DataCharacter = {
       ),
     },
     {
-      name: "Timely Bedazzlement",
-      image: "",
+      name: "Pupillary Variance",
+      image: "a/a3/Talent_Pupillary_Variance",
       desc: (
         <>
           Every 1,000 Max HP Kirara possesses will increase the Meow-teor Kick <Green>[ES] DMG</Green> by{" "}
@@ -102,15 +102,12 @@ const Kirara: DataCharacter = {
         </>
       ),
     },
-    {
-      name: "Cat's Creeping Carriage",
-      image: "",
-    },
+    { name: "Cat's Creeping Carriage", image: "5/51/Talent_Cat%27s_Creeping_Carriage" },
   ],
   constellation: [
     {
       name: "Material Circulation",
-      image: "",
+      image: "2/26/Constellation_Material_Circulation",
       desc: (
         <>
           Every 8,000 Max HP Kirara possesses will cause her to create <Green b>1</Green> extra{" "}
@@ -121,7 +118,7 @@ const Kirara: DataCharacter = {
     },
     {
       name: "Perfectly Packaged",
-      image: "",
+      image: "8/83/Constellation_Perfectly_Packaged",
       desc: (
         <>
           When Kirara is in the Urgent Neko Parcel state [~ES], she will grant other party members she crashes into
@@ -130,10 +127,10 @@ const Kirara: DataCharacter = {
         </>
       ),
     },
-    { name: "Universal Recognition", image: "" },
+    { name: "Universal Recognition", image: "e/ea/Constellation_Universal_Recognition" },
     {
       name: "Steed of Skanda",
-      image: "",
+      image: "7/72/Constellation_Steed_of_Skanda",
       desc: (
         <>
           After active character(s) protected by Shields of Safe Transport or Critical Transport Shields hit opponents
@@ -143,10 +140,10 @@ const Kirara: DataCharacter = {
         </>
       ),
     },
-    { name: "A Thousand Miles in a Day", image: "" },
+    { name: "A Thousand Miles in a Day", image: "e/e4/Constellation_A_Thousand_Miles_in_a_Day" },
     {
       name: "Countless Sights to See",
-      image: "",
+      image: "9/95/Constellation_Countless_Sights_to_See",
       desc: (
         <>
           All nearby party members will gain <Green b>12%</Green> <Green>All Elemental DMG Bonus</Green> within 15s
