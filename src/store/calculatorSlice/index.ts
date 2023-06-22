@@ -33,6 +33,7 @@ import type {
   ApplySettingsAction,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
 import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
@@ -51,6 +52,13 @@ import {
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
 import { calculate, parseUserCharData } from "./utils";
+
+const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
+  if (artifact.debuffs?.length) {
+    accumulator.push(artifact.code);
+  }
+  return accumulator;
+}, []);
 
 const defaultChar = {
   name: "Albedo",
@@ -336,12 +344,28 @@ export const calculatorSlice = createSlice({
       const teammate = state.setupsById[state.activeId].party[teammateIndex];
 
       if (teammate) {
+        const prevArtifactCode = teammate.artifact.code;
+
         teammate.artifact = {
           ...teammate.artifact,
           ...newArtifactInfo,
         };
         if (newArtifactInfo.code) {
-          teammate.artifact.buffCtrls = createArtifactBuffCtrls(false, newArtifactInfo);
+          if (newArtifactInfo.code === -1) {
+            // Deactivate artifact that has debuff
+            if (debuffArtifactCodes.includes(prevArtifactCode)) {
+              const debuffArtifact = state.setupsById[state.activeId].artDebuffCtrls.find(
+                (ctrl) => ctrl.code === prevArtifactCode
+              );
+
+              if (debuffArtifact) {
+                debuffArtifact.activated = false;
+              }
+            }
+            teammate.artifact.buffCtrls = [];
+          } else {
+            teammate.artifact.buffCtrls = createArtifactBuffCtrls(false, newArtifactInfo);
+          }
         }
         calculate(state);
       }

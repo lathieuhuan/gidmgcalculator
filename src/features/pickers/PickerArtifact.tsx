@@ -27,7 +27,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
   const [gold, purple] = useMemo(() => {
     switch (forFeature) {
       case "TEAMMATE_MODIFIERS":
-        return artifacts.reduce(
+        return artifacts.reduce<PickerItem[][]>(
           (accumulator, set) => {
             const { code, beta, name, buffs, debuffs, variants } = set;
 
@@ -41,7 +41,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
 
             return accumulator;
           },
-          [[], []] as [PickerItem[], PickerItem[]]
+          [[], []]
         );
       default:
         return artifacts.reduce(

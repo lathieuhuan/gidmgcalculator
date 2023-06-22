@@ -2,6 +2,10 @@ import { Green, Lightgold, Red } from "@Components/atoms";
 
 export const UPDATES = [
   {
+    date: "June 22th, 2023",
+    content: ["Fixed a bug where removing a teammate's artifact with active debuff, the debuff was not removed."],
+  },
+  {
     date: "May 25th, 2023",
     content: [
       <>
