@@ -21,9 +21,7 @@ import { useTabs } from "@Src/hooks";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
-import { SharedSpace } from "@Components/atoms";
-import { AttributeTable, SetBonusesDisplay } from "@Components/molecules";
-import { WeaponCard, TalentList, ConsList } from "@Components/organisms";
+import { SharedSpace, AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConsList } from "@Components";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {
@@ -84,10 +82,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const char = useSelector(selectChar);
     const dispatch = useDispatch();
     return (
-      <ConsList
-        char={char}
-        onClickIcon={(i) => dispatch(updateCharacter({ cons: char.cons === i + 1 ? i : i + 1 }))}
-      />
+      <ConsList char={char} onClickIcon={(i) => dispatch(updateCharacter({ cons: char.cons === i + 1 ? i : i + 1 }))} />
     );
   },
   Talents() {

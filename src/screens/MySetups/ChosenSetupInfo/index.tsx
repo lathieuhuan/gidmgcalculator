@@ -16,16 +16,18 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
 // Component
-import { CloseButton } from "@Components/atoms";
-import { AttributeTable, Modal, SetBonusesDisplay } from "@Components/molecules";
 import {
-  ArtifactCard,
-  ConfirmModal,
-  DamageDisplay,
+  CloseButton,
+  AttributeTable,
+  SetBonusesDisplay,
+  Modal,
   OwnerLabel,
-  SetupExporter,
+  ArtifactCard,
   WeaponCard,
-} from "@Components/organisms";
+  DamageDisplay,
+  ConfirmModal,
+  SetupExporter,
+} from "@Components";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
 
 interface ChosenSetupInfoProps {

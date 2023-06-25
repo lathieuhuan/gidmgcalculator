@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { Button } from "@Components/atoms";
+import { Button } from "@Components";
 import CharacterSort from "./CharacterSort";
 import SideIconCarousel from "./SideIconCarousel";
 import Info from "./Info";

@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1 } from "../series";
@@ -31,8 +31,8 @@ const otherCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction,
-          increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> for 12s.
+          Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases{" "}
+          <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> for 12s.
         </>
       ),
     }),
@@ -56,8 +56,8 @@ const otherCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Defeating an opponent increases Movement SPD and <Green>ATK</Green> by{" "}
-          <Green b>{10 + refi * 2}%</Green> for 15s.
+          Defeating an opponent increases Movement SPD and <Green>ATK</Green> by <Green b>{10 + refi * 2}%</Green> for
+          15s.
         </>
       ),
     }),
@@ -83,9 +83,8 @@ const otherCatalysts: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          When switching characters, the new character taking the field has their <Green>ATK</Green>{" "}
-          increased by <Green b>{18 + refi * 6}%</Green> for 10s. This effect can only occur once
-          every 20s.
+          When switching characters, the new character taking the field has their <Green>ATK</Green> increased by{" "}
+          <Green b>{18 + refi * 6}%</Green> for 10s. This effect can only occur once every 20s.
         </>
       ),
     }),

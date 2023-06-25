@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hook";
 
 // Component
-import { ButtonBar } from "@Components/molecules";
+import { ButtonBar } from "@Components";
 
 interface CombineMoreProps {
   setupID: number;

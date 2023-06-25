@@ -6,8 +6,7 @@ import { MdMoreVert } from "react-icons/md";
 import { useClickOutside } from "@Src/hooks";
 
 // Component
-import { CloseButton, IconButton } from "@Components/atoms";
-import { Modal } from "@Components/molecules";
+import { CloseButton, IconButton, Modal } from "@Components";
 import { TrackerContainer, type TrackerState } from "../TrackerContainer";
 import { ResultsDisplay } from "./ResultsDisplay";
 
@@ -41,9 +40,7 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
   return (
     <div ref={wrapperRef} className="absolute top-2 right-2 w-8">
       <button
-        className={
-          "w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green text-black" : "")
-        }
+        className={"w-8 h-8 flex-center rounded-md text-2xl" + (menuDropped ? " bg-green text-black" : "")}
         onClick={() => setMenuDropped(!menuDropped)}
       >
         <MdMoreVert />
@@ -51,8 +48,7 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
 
       <div
         className={
-          "absolute right-0 z-10 mt-1 rounded bg-default text-black hide-scrollbar" +
-          (menuDropped ? "" : " max-h-0")
+          "absolute right-0 z-10 mt-1 rounded bg-default text-black hide-scrollbar" + (menuDropped ? "" : " max-h-0")
         }
       >
         <div className="py-1 flex flex-col">
@@ -81,11 +77,7 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
         onClose={() => setTrackerState("close")}
       >
         <div className="absolute top-1 right-1 flex">
-          <IconButton
-            className="hover:text-lightgold"
-            boneOnly
-            onClick={() => setTrackerState("hidden")}
-          >
+          <IconButton className="hover:text-lightgold" boneOnly onClick={() => setTrackerState("hidden")}>
             <FaMinus />
           </IconButton>
           <CloseButton boneOnly onClick={() => setTrackerState("close")} />

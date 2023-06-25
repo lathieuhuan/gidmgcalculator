@@ -1,19 +1,23 @@
-import {
-  FaBalanceScaleLeft,
-  FaChevronDown,
-  FaCopy,
-  FaSave,
-  FaSyncAlt,
-  FaTrashAlt,
-  FaShareAlt,
-} from "react-icons/fa";
+import { FaBalanceScaleLeft, FaChevronDown, FaCopy, FaSave, FaSyncAlt, FaTrashAlt, FaShareAlt } from "react-icons/fa";
 import { SiTarget } from "react-icons/si";
 import { MdMoreVert } from "react-icons/md";
 import { IoDocumentText } from "react-icons/io5";
 import { BiImport } from "react-icons/bi";
+import type { ReactNode } from "react";
 
-import { Green, Lightgold } from "@Components/atoms";
-import { ListDecimal, ListDisc } from "./atoms";
+import { Green, Lightgold } from "@Components";
+
+interface ListProps {
+  children: ReactNode;
+}
+
+export const ListDecimal = (props: ListProps) => {
+  return <ul className="mt-1 pl-4 list-decimal space-y-1" {...props} />;
+};
+
+export const ListDisc = (props: ListProps) => {
+  return <ul className="mt-1 list-disc list-inside space-y-1" {...props} />;
+};
 
 export const CalculatorGuide = () => {
   const quickActions = [
@@ -33,20 +37,20 @@ export const CalculatorGuide = () => {
       <p>The Calculator contains 4 columns, from left to right they are:</p>
       <ListDecimal>
         <li>
-          <Green>Character Overview</Green> displays general information and attributes summary of
-          the character, details of the weapon, attributes summary and set bonuses of the artifacts,
-          levels of the constellation and talents. Here you can:
+          <Green>Character Overview</Green> displays general information and attributes summary of the character,
+          details of the weapon, attributes summary and set bonuses of the artifacts, levels of the constellation and
+          talents. Here you can:
           <ListDisc>
             <li>
-              Switch the <Lightgold>main character</Lightgold> to be calculated by pressing{" "}
-              <FaSyncAlt /> or the character's icon. Change the character level.
+              Switch the <Lightgold>main character</Lightgold> to be calculated by pressing <FaSyncAlt /> or the
+              character's icon. Change the character level.
             </li>
             <li>
               Change weapon level and refinement via dropdown selects <FaChevronDown />
             </li>
             <li>
-              Change <Lightgold>talent levels</Lightgold> via dropdown selects <FaChevronDown />.
-              Change <Lightgold>constellation level</Lightgold> by pressing their icons.
+              Change <Lightgold>talent levels</Lightgold> via dropdown selects <FaChevronDown />. Change{" "}
+              <Lightgold>constellation level</Lightgold> by pressing their icons.
             </li>
           </ListDisc>
         </li>
@@ -54,24 +58,21 @@ export const CalculatorGuide = () => {
           <Green>Modifiers Manager</Green>.
           <ListDisc>
             <li>
-              Modifiers are <Lightgold>Buffs</Lightgold> applied to the character and{" "}
-              <Lightgold>Debuffs</Lightgold> applied to the target coming from various sources such
-              as teammates, weapons, artifacts...
+              Modifiers are <Lightgold>Buffs</Lightgold> applied to the character and <Lightgold>Debuffs</Lightgold>{" "}
+              applied to the target coming from various sources such as teammates, weapons, artifacts...
             </li>
             <li>
-              Every modifier that needs a condition to trigger will have a control in the Modifers
-              Manager which helps you activate / deactivate and adjust the modifier.
+              Every modifier that needs a condition to trigger will have a control in the Modifers Manager which helps
+              you activate / deactivate and adjust the modifier.
             </li>
             <li>
-              For example, as teammate Rosaria can give CRIT Rate bonus based on her CRIT Rate when
-              using Elemental Burst. In Modifier Manager, go to Buffs/Party, look for Rosaria's
-              section and you will see a checkbox to toggle this buff and an input to enter her CRIT
-              Rate for calculation.
+              For example, as teammate Rosaria can give CRIT Rate bonus based on her CRIT Rate when using Elemental
+              Burst. In Modifier Manager, go to Buffs/Party, look for Rosaria's section and you will see a checkbox to
+              toggle this buff and an input to enter her CRIT Rate for calculation.
             </li>
             <li>
-              For the modifier control to appear its source need to be present, e.g. you need to add
-              a catalyst-wielding teammate and give them Thrilling Tales of Dragon Slayers to have
-              it buff control available.
+              For the modifier control to appear its source need to be present, e.g. you need to add a catalyst-wielding
+              teammate and give them Thrilling Tales of Dragon Slayers to have it buff control available.
             </li>
           </ListDisc>
         </li>
@@ -80,13 +81,13 @@ export const CalculatorGuide = () => {
           <ListDisc>
             <li>
               Make changes to <Lightgold>Teammates</Lightgold>, <Lightgold>Weapon</Lightgold>,{" "}
-              <Lightgold>Artifacts</Lightgold>, and <Lightgold>Target</Lightgold>. Press the item /
-              character icons to switch them. Press 2 icons at the bottom right corner to select
-              items from your data <i>(see User Data guide section below)</i>.
+              <Lightgold>Artifacts</Lightgold>, and <Lightgold>Target</Lightgold>. Press the item / character icons to
+              switch them. Press 2 icons at the bottom right corner to select items from your data{" "}
+              <i>(see User Data guide section below)</i>.
             </li>
             <li>
-              Switch setups and perform quick actions to setups, or open the full manager with{" "}
-              <IoDocumentText /> and do the management there. Icons meaning:
+              Switch setups and perform quick actions to setups, or open the full manager with <IoDocumentText /> and do
+              the management there. Icons meaning:
               <ul className="mt-1 pl-2 space-y-1">
                 {quickActions.map((action, i) => {
                   return (
@@ -99,24 +100,20 @@ export const CalculatorGuide = () => {
               </ul>
             </li>
             <li>
-              You can <Lightgold>import a setup</Lightgold> in 2 ways: (1) Open the full manager,
-              choose <BiImport /> Import then paste the code, choose Proceed. (2) Follow the link
-              which contains the code.
+              You can <Lightgold>import a setup</Lightgold> in 2 ways: (1) Open the full manager, choose <BiImport />{" "}
+              Import then paste the code, choose Proceed. (2) Follow the link which contains the code.
             </li>
           </ListDisc>
         </li>
         <li>
-          <Green>Damage Results</Green> shows the calculation results. With the menu{" "}
-          <MdMoreVert className="text-xl" /> you can
+          <Green>Damage Results</Green> shows the calculation results. With the menu <MdMoreVert className="text-xl" />{" "}
+          you can
           <ListDisc>
             <li>
-              Call the <Lightgold>Tracker</Lightgold> to inspect the calculation details: what buffs
-              and debuffs are used, their values, sources...
+              Call the <Lightgold>Tracker</Lightgold> to inspect the calculation details: what buffs and debuffs are
+              used, their values, sources...
             </li>
-            <li>
-              Expand the results for better view when comparing many setups (not available on small
-              devices).
-            </li>
+            <li>Expand the results for better view when comparing many setups (not available on small devices).</li>
           </ListDisc>
         </li>
       </ListDecimal>

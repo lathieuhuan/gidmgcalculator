@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green, Rose } from "@Components/atoms";
+import { Green, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";

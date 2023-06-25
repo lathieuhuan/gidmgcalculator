@@ -19,7 +19,7 @@ import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { PickerArtifact } from "@Src/features";
-import { CollapseSpace } from "@Components/atoms";
+import { CollapseSpace } from "@Components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
 

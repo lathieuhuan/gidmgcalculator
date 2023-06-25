@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Cryo, Green, Lightgold, Red, Rose } from "@Components/atoms";
+import { Cryo, Green, Lightgold, Red, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries, watatsumiSeries } from "../series";
 import { findByCode } from "@Src/utils";

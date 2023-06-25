@@ -1,6 +1,6 @@
 import { FaDiscord, FaRedditAlien } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Lightgold } from "@Components/atoms";
+import { Lightgold } from "@Components";
 
 export const About = () => {
   const CONTACTS = [
@@ -24,17 +24,14 @@ export const About = () => {
   return (
     <div className="space-y-1">
       <p>
-        - Hello, I'm <Lightgold>Ronqueroc</Lightgold> the owner of this App. I lost my job at a
-        hotel due to the pandemic and started to learn programming on July 2020.
+        - Hello, I'm <Lightgold>Ronqueroc</Lightgold> the owner of this App. I lost my job at a hotel due to the
+        pandemic and started to learn programming on July 2020.
       </p>
       <p>
-        - This App is for calculating DMG a character in game Genshin Impact can do with their
-        attacks in a specific scenario (Setup). It is not affiliated with or endorsed by Hoyoverse.
+        - This App is for calculating DMG a character in game Genshin Impact can do with their attacks in a specific
+        scenario (Setup). It is not affiliated with or endorsed by Hoyoverse.
       </p>
-      <p>
-        - Feel free to contact me if you encounter bugs or have any questions regarding the
-        Calculator.
-      </p>
+      <p>- Feel free to contact me if you encounter bugs or have any questions regarding the Calculator.</p>
       <ul className="pl-3 space-y-2">
         {CONTACTS.map(({ Icon, href, text }, i) => (
           <li key={text} className="flex items-center">

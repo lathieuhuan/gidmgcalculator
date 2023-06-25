@@ -1,5 +1,5 @@
 import { FaBars, FaCog } from "react-icons/fa";
-import { Lightgold } from "@Components/atoms";
+import { Lightgold } from "@Components";
 
 export const SettingsGuide = () => {
   return (

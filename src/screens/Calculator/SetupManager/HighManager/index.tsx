@@ -19,15 +19,10 @@ import { updateSetups } from "@Store/calculatorSlice";
 import { updateUI } from "@Store/uiSlice";
 
 // Selector
-import {
-  selectComparedIds,
-  selectStandardId,
-  selectSetupManageInfos,
-} from "@Store/calculatorSlice/selectors";
+import { selectComparedIds, selectStandardId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { CollapseAndMount, Button, Popover } from "@Components/atoms";
-import { SetupImporter } from "@Components/organisms";
+import { Button, Popover, CollapseAndMount, SetupImporter } from "@Components";
 import { SetupControl } from "./SetupControl";
 
 import styles from "@Screens/Calculator/styles.module.scss";
@@ -213,11 +208,7 @@ function HiddenManager() {
         </div>
       </div>
 
-      <Button
-        className="mt-4 mx-auto group relative"
-        variant="positive"
-        onClick={tryApplyNewSettings}
-      >
+      <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApplyNewSettings}>
         {errorCode === "NO_SETUPS" && (
           <Popover
             className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-lightred group-hover:scale-100"

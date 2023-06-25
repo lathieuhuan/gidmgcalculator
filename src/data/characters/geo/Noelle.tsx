@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Geo, Green, Lightgold } from "@Components/atoms";
+import { Geo, Green, Lightgold } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVY_PAs } from "../constants";

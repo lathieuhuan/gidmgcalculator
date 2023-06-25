@@ -1,8 +1,5 @@
 import type { PartyData, Teammate } from "@Src/types";
-import type {
-  ToggleModCtrlPath,
-  ToggleTeammateModCtrlPath,
-} from "@Store/calculatorSlice/reducer-types";
+import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -23,7 +20,7 @@ import { findDataCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components/molecules";
+import { ModifierTemplate, renderModifiers } from "@Components";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -64,9 +61,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
             );
           }}
           onToggleCheck={(currentInput, inputIndex) => {
-            dispatch(
-              changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 })
-            );
+            dispatch(changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 }));
           }}
           onSelectOption={(value, inputIndex) => {
             dispatch(
@@ -90,14 +85,7 @@ export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
 
   party.forEach((teammate, tmIndex) => {
     if (teammate && teammate.debuffCtrls.length)
-      content.push(
-        <TeammateDebuffs
-          key={tmIndex}
-          teammate={teammate}
-          tmIndex={tmIndex}
-          partyData={partyData}
-        />
-      );
+      content.push(<TeammateDebuffs key={tmIndex} teammate={teammate} tmIndex={tmIndex} partyData={partyData} />);
   });
   return renderModifiers(content, "debuffs");
 }
@@ -155,9 +143,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
             })
           );
         }}
-        onSelectOption={(value, inputIndex) =>
-          dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))
-        }
+        onSelectOption={(value, inputIndex) => dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))}
       />
     );
   });

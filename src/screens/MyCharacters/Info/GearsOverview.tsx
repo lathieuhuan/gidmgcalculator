@@ -10,8 +10,7 @@ import { getImgSrc } from "@Src/utils";
 import { findDataArtifact, findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { InfoSign } from "@Components/atoms";
-import { ItemThumb } from "@Components/molecules";
+import { InfoSign, ItemThumb } from "@Components";
 
 const bonusStyles = (active: boolean) => {
   return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2"];
@@ -81,12 +80,7 @@ export function GearsOverview({
                 className="p-4 w-full h-full flex-center rounded bg-darkblue-3 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
               >
-                <img
-                  className="w-full"
-                  src={getImgSrc(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])}
-                  alt=""
-                  draggable={false}
-                />
+                <img className="w-full" src={getImgSrc(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])} alt="" draggable={false} />
               </button>
             </div>
           )
@@ -105,8 +99,7 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green font-medium">
-                  {findDataArtifactSet({ code: setBonuses[0].code })?.name} (
-                  {setBonuses[0].bonusLv * 2 + 2})
+                  {findDataArtifactSet({ code: setBonuses[0].code })?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green font-medium">

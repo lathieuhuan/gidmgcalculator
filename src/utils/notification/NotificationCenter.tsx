@@ -1,5 +1,5 @@
-import { Notification } from "@Components/molecules";
 import { useRef } from "react";
+import { Notification } from "@Components";
 import { NotificationAnimator } from "./NotificationAnimator";
 import { NotificationCenterProps } from "./types";
 

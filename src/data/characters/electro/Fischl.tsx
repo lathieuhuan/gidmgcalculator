@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green } from "@Components";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons, talentBuff } from "../utils";
 

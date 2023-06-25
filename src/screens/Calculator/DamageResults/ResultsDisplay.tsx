@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 
 // Selector
-import {
-  selectChar,
-  selectComparedIds,
-  selectDmgResult,
-  selectParty,
-} from "@Store/calculatorSlice/selectors";
+import { selectChar, selectComparedIds, selectDmgResult, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -15,7 +10,7 @@ import { useSelector } from "@Store/hooks";
 import { EStatDamageKey } from "@Src/constants";
 
 // Component
-import { DamageDisplay } from "@Components/organisms";
+import { DamageDisplay } from "@Components";
 
 const FOCUS_LABELS = {
   [EStatDamageKey.AVERAGE]: "Average",
@@ -47,11 +42,7 @@ export function ResultsDisplay({ activeSetupName }: ResultsDisplayProps) {
       {comparing ? (
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
-          <select
-            className="text-lightgold"
-            value={focus}
-            onChange={(e) => setFocus(e.target.value as EStatDamageKey)}
-          >
+          <select className="text-lightgold" value={focus} onChange={(e) => setFocus(e.target.value as EStatDamageKey)}>
             {Object.values(EStatDamageKey).map((opt) => (
               <option key={opt} value={opt}>
                 {FOCUS_LABELS[opt]}

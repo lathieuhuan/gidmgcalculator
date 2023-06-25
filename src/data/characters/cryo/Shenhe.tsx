@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Cryo, Green, Rose } from "@Components/atoms";
+import { Cryo, Green, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";

@@ -14,25 +14,15 @@ import { updateImportInfo } from "@Store/uiSlice";
 import { makeTeammateSetup } from "@Store/thunks";
 
 // Selector
-import {
-  chooseUserSetup,
-  switchShownSetupInComplex,
-  uncombineSetups,
-} from "@Store/userDatabaseSlice";
+import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@Store/userDatabaseSlice";
 
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import {
-  findDataArtifact,
-  findDataCharacter,
-  findDataWeapon,
-  getPartyData,
-} from "@Data/controllers";
+import { findDataArtifact, findDataCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
-import { CharacterPortrait, IconButton, Image } from "@Components/atoms";
-import { Modal } from "@Components/molecules";
+import { IconButton, CharacterPortrait, Image, Modal } from "@Components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
 
@@ -45,15 +35,7 @@ interface SetupLayoutProps {
   allIDs?: Record<string, number>;
   openModal: (type: MySetupModalType, ID?: number) => () => void;
 }
-export function SetupTemplate({
-  ID,
-  setup,
-  setupName,
-  weapon,
-  artifacts = [],
-  allIDs,
-  openModal,
-}: SetupLayoutProps) {
+export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], allIDs, openModal }: SetupLayoutProps) {
   const { type, char, party } = setup;
   const dispatch = useDispatch();
 
@@ -118,8 +100,7 @@ export function SetupTemplate({
             <p className="text-lg">Level {renderSpan(char.level)}</p>
             <p>Constellation {renderSpan(char.cons)}</p>
             <p>
-              Talents: {renderSpan(talents[0])} / {renderSpan(talents[1])} /{" "}
-              {renderSpan(talents[2])}
+              Talents: {renderSpan(talents[0])} / {renderSpan(talents[1])} / {renderSpan(talents[2])}
             </p>
           </div>
         </div>
@@ -127,10 +108,7 @@ export function SetupTemplate({
     }
 
     const teammate = (
-      <div
-        className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")}
-        style={{ width: "15.5rem" }}
-      >
+      <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
           const dataTeammate = teammate && findDataCharacter(teammate);
           if (!dataTeammate) return null;
@@ -142,9 +120,7 @@ export function SetupTemplate({
               key={teammateIndex}
               className={
                 "w-18 h-18 cursor-pointer" +
-                (isCalculated
-                  ? " rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer"
-                  : "")
+                (isCalculated ? " rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer" : "")
               }
             >
               <CharacterPortrait
@@ -198,10 +174,7 @@ export function SetupTemplate({
 
   return (
     <>
-      <div
-        className="pr-1 flex justify-between flex-col lg:flex-row"
-        onDoubleClick={() => console.log(setup)}
-      >
+      <div className="pr-1 flex justify-between flex-col lg:flex-row" onDoubleClick={() => console.log(setup)}>
         <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
           {isOriginal ? null : window.innerWidth > 1025 ? (
             <button
@@ -216,9 +189,7 @@ export function SetupTemplate({
               <FaUnlink />
             </IconButton>
           )}
-          <p className="px-1 text-xl text-orange font-semibold truncate">
-            {setupName || setup.name}
-          </p>
+          <p className="px-1 text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
@@ -245,11 +216,7 @@ export function SetupTemplate({
             <FaWrench />
           </IconButton>
 
-          <IconButton
-            className="p-2 glow-on-hover"
-            variant="neutral"
-            onClick={openModal("SHARE_SETUP", setup.ID)}
-          >
+          <IconButton className="p-2 glow-on-hover" variant="neutral" onClick={openModal("SHARE_SETUP", setup.ID)}>
             <FaShareAlt />
           </IconButton>
 

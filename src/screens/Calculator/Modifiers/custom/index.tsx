@@ -17,8 +17,7 @@ import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } f
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
-import { CloseButton, IconToggleButton, Input } from "@Components/atoms";
-import { Modal } from "@Components/molecules";
+import { CloseButton, IconToggleButton, Input, Modal } from "@Components";
 import { CopySection } from "@Screens/Calculator/components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";

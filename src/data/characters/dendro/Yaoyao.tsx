@@ -1,4 +1,4 @@
-import { Green, Rose } from "@Components/atoms";
+import { Green, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { DataCharacter } from "@Src/types";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
-import type { StatsFilter } from "@Components/templates/inventories/utils";
+import type { StatsFilter } from "@Components/inventories/utils";
 
 // Constant
 import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
@@ -24,25 +24,25 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components/templates/inventories/hooks";
+import { useTypeFilter } from "@Components/inventories/hooks";
 
 // Util
 import { findById, indexById } from "@Src/utils";
-import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "@Components/templates/inventories/utils";
+import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "@Components/inventories/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { PickerArtifact, PickerCharacter } from "@Src/features";
-import { ButtonBar } from "@Components/molecules";
 import {
-  ArtifactCard,
+  ButtonBar,
   OwnerLabel,
-  ConfirmModal,
+  ArtifactCard,
   TypeSelect,
-  ItemRemoveConfirm,
-  WareHouse,
   InventoryRack,
-} from "@Components/organisms";
+  WareHouse,
+  ConfirmModal,
+  ItemRemoveConfirm,
+} from "@Components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";

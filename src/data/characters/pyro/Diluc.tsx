@@ -1,5 +1,5 @@
 import type { AttributeStat, DataCharacter } from "@Src/types";
-import { Green, Lightgold, Pyro, Rose } from "@Components/atoms";
+import { Green, Lightgold, Pyro, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

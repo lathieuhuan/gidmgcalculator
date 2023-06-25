@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { EScreen } from "./constants";
 
 // Util
+import { decodeSetup } from "@Components";
 import { getSearchParam } from "./utils";
-import { decodeSetup } from "@Components/organisms/setup-porters/utils";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";

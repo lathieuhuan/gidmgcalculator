@@ -2,12 +2,7 @@ import { useEffect } from "react";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 // Action
-import {
-  changeModCtrlInput,
-  toggleModCtrl,
-  updateResonance,
-  updateCalcSetup,
-} from "@Store/calculatorSlice";
+import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
 
 // Selector
 import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
@@ -21,8 +16,7 @@ import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
-import { Green } from "@Components/atoms";
-import { ModifierTemplate, renderModifiers } from "@Components/molecules";
+import { Green, ModifierTemplate, renderModifiers } from "@Components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -48,8 +42,7 @@ export function ElementDebuffs() {
         heading="Superconduct"
         desc={
           <>
-            Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12
-            seconds.
+            Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12 seconds.
           </>
         }
       />
@@ -63,8 +56,8 @@ export function ElementDebuffs() {
           heading="Enduring Rock"
           desc={
             <>
-              Shielded characters dealing DMG to enemies will decrease their <Green>Geo RES</Green>{" "}
-              by <Green b>20%</Green> for 15s.
+              Shielded characters dealing DMG to enemies will decrease their <Green>Geo RES</Green> by{" "}
+              <Green b>20%</Green> for 15s.
             </>
           }
         />

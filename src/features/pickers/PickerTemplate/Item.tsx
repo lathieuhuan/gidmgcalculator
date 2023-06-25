@@ -5,7 +5,7 @@ import type { DataType, PickerItem } from "../types";
 import { VISION_ICONS } from "@Src/constants";
 
 // Component
-import { BetaMark, Image } from "@Components/atoms";
+import { Image, BetaMark } from "@Components";
 
 interface ItemProps {
   visible: boolean;
@@ -21,22 +21,14 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
 
         <div
           className={
-            `overflow-hidden relative bg-gradient-${item.rarity} rounded-t-lg ` +
-            (item.vision ? "pt-4" : "p-1")
+            `overflow-hidden relative bg-gradient-${item.rarity} rounded-t-lg ` + (item.vision ? "pt-4" : "p-1")
           }
         >
-          <div
-            className={
-              "aspect-square transition-opacity duration-400 " +
-              (visible ? "opacity-100" : "opacity-0")
-            }
-          >
+          <div className={"aspect-square transition-opacity duration-400 " + (visible ? "opacity-100" : "opacity-0")}>
             {visible && <Image src={item.icon} imgType={itemType} />}
           </div>
 
-          {pickedAmount ? (
-            <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p>
-          ) : null}
+          {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
         </div>
         <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-default text-black font-bold text-center">
           {item.name}

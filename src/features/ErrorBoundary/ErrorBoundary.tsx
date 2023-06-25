@@ -1,5 +1,5 @@
-import { Button } from "@Components/atoms";
 import { Component, ErrorInfo, ReactNode } from "react";
+import { Button } from "@Components";
 
 interface Props {
   onUndo: () => void;

@@ -22,8 +22,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton, ArtifactLevelSelect } from "@Components/atoms";
-import { ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Components/molecules";
+import { IconButton, ArtifactLevelSelect, ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Components";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;
@@ -31,12 +30,7 @@ interface ArtifactInfoProps {
   onClickRemovePiece: () => void;
   onClickChangePiece: () => void;
 }
-export function ArtifactInfo({
-  artifact,
-  pieceIndex,
-  onClickRemovePiece,
-  onClickChangePiece,
-}: ArtifactInfoProps) {
+export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClickChangePiece }: ArtifactInfoProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -144,11 +138,7 @@ export function ArtifactInfo({
       </div>
 
       <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>
-        <ConfirmSaving
-          artifact={artifact}
-          pieceIndex={pieceIndex}
-          onClose={() => setIsSaving(false)}
-        />
+        <ConfirmSaving artifact={artifact} pieceIndex={pieceIndex} onClose={() => setIsSaving(false)} />
       </Modal>
     </div>
   );
@@ -227,9 +217,7 @@ function ConfirmSaving({ artifact, pieceIndex, onClose }: ConfirmSavingProps) {
           message={
             <>
               This artifact is already saved{ownerInfo}.{" "}
-              {noChange
-                ? "Nothing has changed."
-                : "Their stats are different. Do you want to overwrite"}
+              {noChange ? "Nothing has changed." : "Their stats are different. Do you want to overwrite"}
             </>
           }
           buttons={buttons}

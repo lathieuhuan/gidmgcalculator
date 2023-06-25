@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierCtrl, ModifierInput, PartyData } from "@Src/types";
-import { Green, Hydro, Lightgold } from "@Components/atoms";
+import { Green, Hydro, Lightgold } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { MEDIUM_PAs, EModSrc } from "../constants";

@@ -8,8 +8,7 @@ import { getPartyData, getTargetData } from "@Data/controllers";
 import { calculateChosenSetup } from "./utils";
 
 // Component
-import { Lightgold } from "@Components/atoms";
-import { CollapseList } from "@Components/molecules";
+import { Lightgold, CollapseList } from "@Components";
 import {
   ArtifactBuffs,
   ArtifactDebuffs,
@@ -44,12 +43,7 @@ interface ChosenSetupModifiersProps {
   weapon: UserWeapon;
   setBonuses: ArtifactSetBonus[];
 }
-export const ChosenSetupModifiers = ({
-  chosenSetup,
-  calcResult,
-  weapon,
-  setBonuses,
-}: ChosenSetupModifiersProps) => {
+export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonuses }: ChosenSetupModifiersProps) => {
   const { t } = useTranslation();
 
   const {
@@ -77,22 +71,12 @@ export const ChosenSetupModifiers = ({
           list={[
             {
               heading: "Resonance & Reactions",
-              body: (
-                <ElementDebuffs
-                  superconduct={elmtModCtrls.superconduct}
-                  resonances={elmtModCtrls.resonances}
-                />
-              ),
+              body: <ElementDebuffs superconduct={elmtModCtrls.superconduct} resonances={elmtModCtrls.resonances} />,
             },
             {
               heading: "Self",
               body: (
-                <SelfDebuffs
-                  char={char}
-                  selfDebuffCtrls={selfDebuffCtrls}
-                  debuffs={debuffs}
-                  partyData={partyData}
-                />
+                <SelfDebuffs char={char} selfDebuffCtrls={selfDebuffCtrls} debuffs={debuffs} partyData={partyData} />
               ),
             },
             {
@@ -143,31 +127,18 @@ export const ChosenSetupModifiers = ({
             {
               heading: "Party",
               body: (
-                <PartyBuffs
-                  char={char}
-                  charData={charData}
-                  party={party}
-                  partyData={partyData}
-                  totalAttr={totalAttr}
-                />
+                <PartyBuffs char={char} charData={charData} party={party} partyData={partyData} totalAttr={totalAttr} />
               ),
             },
             {
               heading: "Weapons",
               body: weapon ? (
-                <WeaponBuffs
-                  weapon={weapon}
-                  wpBuffCtrls={wpBuffCtrls}
-                  totalAttr={totalAttr}
-                  party={party}
-                />
+                <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} totalAttr={totalAttr} party={party} />
               ) : null,
             },
             {
               heading: "Artifacts",
-              body: (
-                <ArtifactBuffs setBonuses={setBonuses} artBuffCtrls={artBuffCtrls} party={party} />
-              ),
+              body: <ArtifactBuffs setBonuses={setBonuses} artBuffCtrls={artBuffCtrls} party={party} />,
             },
             {
               heading: "Custom",
@@ -195,11 +166,7 @@ export const ChosenSetupModifiers = ({
 
           {Object.entries(target.resistances).map(([key, value], i) => (
             <p key={i} className="mt-1">
-              <span
-                className={
-                  "mr-2 capitalize " + (key === "level" ? "text-lightgold" : `text-${key}`)
-                }
-              >
+              <span className={"mr-2 capitalize " + (key === "level" ? "text-lightgold" : `text-${key}`)}>
                 {t(key, { ns: "resistance" })}:
               </span>
               <span className="font-medium">{value}</span>

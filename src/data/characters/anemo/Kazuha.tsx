@@ -1,5 +1,5 @@
 import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
-import { Anemo, Green, Red } from "@Components/atoms";
+import { Anemo, Green, Red } from "@Components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModSrc } from "../constants";

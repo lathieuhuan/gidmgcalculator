@@ -6,8 +6,7 @@ import type { DataType, Filter, PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
-import { CollapseSpace, Input } from "@Components/atoms";
-import { ModalHeader } from "@Components/molecules";
+import { Input, CollapseSpace, ModalHeader } from "@Components";
 import { CharacterFilter } from "./CharacterFilter";
 import { MemoItem } from "./Item";
 

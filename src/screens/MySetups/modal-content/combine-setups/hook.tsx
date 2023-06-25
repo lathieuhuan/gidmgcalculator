@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import type { UserSetup } from "@Src/types";
-import { CharacterPortrait } from "@Components/atoms";
+import { CharacterPortrait } from "@Components";
 import { findDataCharacter } from "@Data/controllers";
 
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
@@ -36,9 +36,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
-            <p className="pr-2 text-lg text-lesser text-center">
-              No Setups available for choosing...
-            </p>
+            <p className="pr-2 text-lg text-lesser text-center">No Setups available for choosing...</p>
           </div>
         )}
         {options.map((setup) => {

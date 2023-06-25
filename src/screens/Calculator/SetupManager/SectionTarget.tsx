@@ -14,7 +14,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { IconButton, Input } from "@Components/atoms";
+import { IconButton, Input } from "@Components";
 
 interface SectionTargetProps {
   onMinimize: () => void;

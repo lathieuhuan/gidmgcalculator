@@ -1,7 +1,8 @@
 import { useState } from "react";
-import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
 import { FaChevronDown, FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
+import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
+import type { ModalControl } from "@Components";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -17,8 +18,7 @@ import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Button, IconButton, Popover, SharedSpace } from "@Components/atoms";
-import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
+import { IconButton, Popover, SharedSpace, ButtonBar, Modal } from "@Components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -41,8 +41,7 @@ const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
         <div className="w-8 h-8 mr-2 flex-center text-default pointer-events-none">{marker}</div>
 
         <p className="pointer-events-none text-default">
-          <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv.{" "}
-          {char.level})
+          <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv. {char.level})
         </p>
       </div>
     </div>
@@ -109,11 +108,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
     if (dropIndex !== null && dragIndex !== null && dropIndex !== dragIndex) {
       setList((prev) => {
         const newList = [...prev];
-        newList.splice(
-          dragIndex < dropIndex ? dropIndex - 1 : dropIndex,
-          0,
-          newList.splice(dragIndex, 1)[0]
-        );
+        newList.splice(dragIndex < dropIndex ? dropIndex - 1 : dropIndex, 0, newList.splice(dragIndex, 1)[0]);
         return newList;
       });
     }
@@ -183,11 +178,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="px-2 py-4 rounded-lg bg-darkblue-1">
-      <IconButton
-        className="absolute top-1 right-1 text-xl hover:text-darkred"
-        boneOnly
-        onClick={onClose}
-      >
+      <IconButton className="absolute top-1 right-1 text-xl hover:text-darkred" boneOnly onClick={onClose}>
         <FaTimes />
       </IconButton>
 
@@ -242,14 +233,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
               const char = findByIndex(list, index);
 
               if (char) {
-                return (
-                  <Line
-                    key={char.name}
-                    char={char}
-                    marker={i + 1}
-                    onClick={() => onClickLine(char.index)}
-                  />
-                );
+                return <Line key={char.name} char={char} marker={i + 1} onClick={() => onClickLine(char.index)} />;
               }
 
               return null;
@@ -258,9 +242,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
             ? list
                 .filter((char) => !markedList.includes(char.index))
                 .map((char) => {
-                  return (
-                    <Line key={char.name} char={char} onClick={() => onClickLine(char.index)} />
-                  );
+                  return <Line key={char.name} char={char} onClick={() => onClickLine(char.index)} />;
                 })
             : list.map((char, i) => {
                 return (

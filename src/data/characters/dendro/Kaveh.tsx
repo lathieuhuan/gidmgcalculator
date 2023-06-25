@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Dendro, Green, Lightgold, Rose } from "@Components/atoms";
+import { Dendro, Green, Lightgold, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVY_PAs } from "../constants";

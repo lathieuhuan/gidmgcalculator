@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Hydro, Lightgold } from "@Components/atoms";
+import { Green, Hydro, Lightgold } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round } from "@Src/utils";

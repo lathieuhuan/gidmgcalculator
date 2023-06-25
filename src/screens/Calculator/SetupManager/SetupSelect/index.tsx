@@ -27,8 +27,7 @@ import { findById } from "@Src/utils";
 import { cleanupCalcSetup } from "@Src/utils/setup";
 
 // Component
-import { ComplexSelect, Modal } from "@Components/molecules";
-import { ConfirmModal, SetupExporter, SetupImporter } from "@Components/organisms";
+import { ComplexSelect, Modal, ConfirmModal, SetupExporter, SetupImporter } from "@Components";
 import { SaveSetup } from "../modal-content";
 
 type ModalInfo = {

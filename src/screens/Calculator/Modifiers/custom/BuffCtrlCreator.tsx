@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
+import { FaChevronDown } from "react-icons/fa";
 import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 
 // Constant
@@ -22,9 +23,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Input } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
-import { FaChevronDown } from "react-icons/fa";
+import { Input, ButtonBar } from "@Components";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 

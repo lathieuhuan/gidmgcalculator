@@ -1,4 +1,4 @@
-import { ConfirmModal } from "@Components/organisms";
+import { ConfirmModal } from "@Components";
 import { updateMessage } from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 

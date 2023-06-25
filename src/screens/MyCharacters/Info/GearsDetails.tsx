@@ -1,28 +1,16 @@
 import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
-import type {
-  ArtifactAttribute,
-  AttributeStat,
-  ArtifactSetBonus,
-  UserArtifacts,
-  UserWeapon,
-} from "@Src/types";
+import type { ArtifactAttribute, AttributeStat, ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
 
 // Action
-import {
-  updateUserArtifactSubStat,
-  updateUserArtifact,
-  updateUserWeapon,
-} from "@Store/userDatabaseSlice";
+import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button } from "@Components/atoms";
-import { ButtonBar, AttributeTable, SetBonusesDisplay } from "@Components/molecules";
-import { WeaponCard, ArtifactCard } from "@Components/organisms";
+import { Button, AttributeTable, ButtonBar, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Components";
 
 interface GearsDetailsProps {
   className: string;
@@ -54,10 +42,7 @@ export function GearsDetails({
 
   useEffect(() => {
     if (
-      (typeof activeDetails === "number" &&
-        activeDetails >= 0 &&
-        activeDetails < 5 &&
-        !artifacts[activeDetails]) ||
+      (typeof activeDetails === "number" && activeDetails >= 0 && activeDetails < 5 && !artifacts[activeDetails]) ||
       (activeDetails === "setBonus" && !setBonuses.length)
     ) {
       onCloseDetails();
@@ -122,9 +107,7 @@ export function GearsDetails({
                   );
                 }}
                 onChangeSubStat={(subStatIndex, changes) => {
-                  dispatch(
-                    updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes })
-                  );
+                  dispatch(updateUserArtifactSubStat({ ID: activeArtifact.ID, subStatIndex, ...changes }));
                 }}
               />
             </div>

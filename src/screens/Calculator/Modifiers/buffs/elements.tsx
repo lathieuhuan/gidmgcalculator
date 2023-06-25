@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
+import type { ModSelectOption } from "@Components";
 
 // Constant
 import { VISION_TYPES } from "@Src/constants";
@@ -8,12 +9,7 @@ import { VISION_TYPES } from "@Src/constants";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Selector
-import {
-  selectChar,
-  selectCharData,
-  selectElmtModCtrls,
-  selectRxnBonus,
-} from "@Store/calculatorSlice/selectors";
+import { selectChar, selectCharData, selectElmtModCtrls, selectRxnBonus } from "@Store/calculatorSlice/selectors";
 
 // Action
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
@@ -30,8 +26,7 @@ import {
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-  type ModSelectOption,
-} from "@Components/molecules";
+} from "@Components";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
@@ -46,9 +41,7 @@ export default function ElementBuffs() {
   const { element: infusedElement } = customInfusion;
   const content: JSX.Element[] = [];
 
-  const [infusedValue, setInfusedValue] = useState(
-    infusedElement === "phys" ? "pyro" : infusedElement
-  );
+  const [infusedValue, setInfusedValue] = useState(infusedElement === "phys" ? "pyro" : infusedElement);
 
   // Resonance buffs
   elmtModCtrls.resonances.forEach((resonance) => {
@@ -94,11 +87,7 @@ export default function ElementBuffs() {
   }
 
   // Reaction buff
-  const renderMeltVaporize = (
-    element: Vision,
-    field: "reaction" | "infuse_reaction",
-    reaction: AmplifyingReaction
-  ) => {
+  const renderMeltVaporize = (element: Vision, field: "reaction" | "infuse_reaction", reaction: AmplifyingReaction) => {
     const activated = elmtModCtrls[field] === reaction;
 
     return (
@@ -192,10 +181,8 @@ export default function ElementBuffs() {
           heading="Custom Infusion"
           desc={
             <>
-              This infusion overwrites self infusion but does not overwrite elemental nature of
-              attacks{" "}
-              <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>
-              .
+              This infusion overwrites self infusion but does not overwrite elemental nature of attacks{" "}
+              <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
             </>
           }
           checked={isInfused}

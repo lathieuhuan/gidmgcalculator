@@ -16,7 +16,7 @@ import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components/molecules";
+import { ModifierTemplate, renderModifiers } from "@Components";
 
 export default function ArtifactBuffs() {
   const dispatch = useDispatch();

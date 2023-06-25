@@ -1,6 +1,5 @@
-import { Lightgold } from "@Components/atoms";
-import { CollapseList, ModalControl } from "@Components/molecules";
-import { StandardModal } from "@Components/organisms";
+import type { ModalControl } from "@Components";
+import { Lightgold, CollapseList, StandardModal } from "@Components";
 import { CalculatorGuide } from "./CalculatorGuide";
 import { SettingsGuide } from "./SettingsGuide";
 import { UserDataGuide } from "./UserDataGuide";

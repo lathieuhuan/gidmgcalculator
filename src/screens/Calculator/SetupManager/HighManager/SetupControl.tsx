@@ -4,7 +4,7 @@ import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { IconButton, Input } from "@Components/atoms";
+import { IconButton, Input } from "@Components";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;
@@ -50,11 +50,7 @@ export function SetupControl({
           <button
             className={clsx(
               "w-8 h-8 rounded-circle flex-center text-2xl",
-              isStandard
-                ? "bg-green text-black"
-                : choosableAsStandard
-                ? "text-default"
-                : "text-lesser"
+              isStandard ? "bg-green text-black" : choosableAsStandard ? "text-default" : "text-lesser"
             )}
             disabled={!choosableAsStandard}
             onClick={onChooseStandard}
@@ -62,10 +58,7 @@ export function SetupControl({
             <SiTarget />
           </button>
           <button
-            className={clsx(
-              "w-8 h-8 rounded-circle flex-center text-xl",
-              setup.isCompared && "bg-green text-black"
-            )}
+            className={clsx("w-8 h-8 rounded-circle flex-center text-xl", setup.isCompared && "bg-green text-black")}
             onClick={onToggleCompared}
           >
             <FaBalanceScaleLeft />

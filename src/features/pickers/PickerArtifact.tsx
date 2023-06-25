@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { ArtifactType } from "@Src/types";
+import type { ModalControl } from "@Components";
 import type { PickerItem } from "./types";
 
 // Constant
@@ -12,7 +13,7 @@ import { createArtifact } from "@Src/utils/creators";
 import artifacts from "@Data/artifacts";
 
 // Component
-import { Modal, type ModalControl } from "@Components/molecules";
+import { Modal } from "@Components";
 import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface ArtifactPickerProps {

@@ -1,16 +1,8 @@
 import type { PartyData, Teammate } from "@Src/types";
-import type {
-  ToggleModCtrlPath,
-  ToggleTeammateModCtrlPath,
-} from "@Store/calculatorSlice/reducer-types";
+import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 // Selector
-import {
-  selectChar,
-  selectCharData,
-  selectParty,
-  selectTotalAttr,
-} from "@Store/calculatorSlice/selectors";
+import { selectChar, selectCharData, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
 
 // Action
 import {
@@ -28,7 +20,7 @@ import { findDataCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components/molecules";
+import { ModifierTemplate, renderModifiers } from "@Components";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -120,14 +112,7 @@ export function PartyBuffs() {
 
   party.forEach((teammate, index) => {
     if (teammate && teammate.buffCtrls.length) {
-      content.push(
-        <TeammateBuffs
-          key={index}
-          teammate={teammate}
-          teammateIndex={index}
-          partyData={partyData}
-        />
-      );
+      content.push(<TeammateBuffs key={index} teammate={teammate} teammateIndex={index} partyData={partyData} />);
     }
   });
   return renderModifiers(content, "buffs");

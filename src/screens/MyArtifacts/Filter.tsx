@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import type { ArtifactType } from "@Src/types";
-import type { StatsFilter } from "@Components/templates/inventories/utils";
+import type { ModalControl } from "@Components";
+import type { StatsFilter } from "@Components/inventories/utils";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import {
-  useArtifactSetFilter,
-  useArtifactStatsFilter,
-  useTypeFilter,
-} from "@Components/templates/inventories/hooks";
+import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Components/inventories/hooks";
 
 // Selector
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Util
-import { hasDupStat } from "@Components/templates/inventories/utils";
+import { hasDupStat } from "@Components/inventories/utils";
 
 // Component
-import { ButtonBar, Modal, type ModalControl } from "@Components/molecules";
+import { ButtonBar, Modal } from "@Components";
 
 interface FilterProps {
   types: ArtifactType[];

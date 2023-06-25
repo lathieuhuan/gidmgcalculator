@@ -15,16 +15,24 @@ import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components/templates/inventories/hooks";
+import { useTypeFilter } from "@Components";
 
 // Util
 import { findById, indexById } from "@Src/utils";
 
 // Component
 import { PickerCharacter, PickerWeapon } from "@Src/features";
-import { IconButton, CollapseSpace } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
-import { ItemRemoveConfirm, TypeSelect, WeaponCard, OwnerLabel, WareHouse, InventoryRack } from "@Components/organisms";
+import {
+  IconButton,
+  CollapseSpace,
+  ButtonBar,
+  OwnerLabel,
+  TypeSelect,
+  WeaponCard,
+  WareHouse,
+  InventoryRack,
+  ItemRemoveConfirm,
+} from "@Components";
 
 import styles from "../styles.module.scss";
 

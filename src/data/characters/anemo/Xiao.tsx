@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
-import { Anemo, Green, Lightgold, Rose } from "@Components/atoms";
+import { Anemo, Green, Lightgold, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NCPA_PERCENTS } from "@Data/constants";

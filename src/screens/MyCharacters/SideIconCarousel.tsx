@@ -15,7 +15,7 @@ import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { IconButton } from "@Components/atoms";
+import { IconButton } from "@Components";
 
 import styles from "./styles.module.scss";
 

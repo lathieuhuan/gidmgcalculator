@@ -20,7 +20,7 @@ import { getImgSrc } from "@Src/utils";
 
 // Component
 import { PickerWeapon } from "@Src/features";
-import { BetaMark } from "@Components/atoms";
+import { BetaMark } from "@Components";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();

@@ -13,8 +13,7 @@ import { appSettings } from "@Src/utils";
 import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { CollapseSpace, Table } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
+import { Table, CollapseSpace, ButtonBar } from "@Components";
 
 const { Tr, Th, Td } = Table;
 

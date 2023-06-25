@@ -15,8 +15,7 @@ import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Input } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
+import { Input, ButtonBar } from "@Components";
 
 interface SaveSetupProps {
   manageInfo: CalcSetupManageInfo;

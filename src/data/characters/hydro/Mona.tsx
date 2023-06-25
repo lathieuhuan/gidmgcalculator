@@ -1,8 +1,8 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Components/atoms";
+import { Green, Lightgold, Red, Rose } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { finalTalentLv, applyModifier, type ReactionBonusPath } from "@Src/utils/calculation";
+import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({

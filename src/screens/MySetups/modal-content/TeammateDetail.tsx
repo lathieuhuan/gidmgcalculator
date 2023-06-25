@@ -5,8 +5,7 @@ import type { Teammate } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Button, CharacterPortrait, IconButton } from "@Components/atoms";
-import { TeammateItems } from "@Components/organisms";
+import { Button, IconButton, CharacterPortrait, TeammateItems } from "@Components";
 
 interface TeammateDetailProps {
   teammate: Teammate;
@@ -35,12 +34,7 @@ export const TeammateDetail = ({
           <p className={`px-4 text-2xl text-${data.vision} font-bold`}>{teammate.name}</p>
         </div>
 
-        <IconButton
-          className="ml-auto text-xl hover:text-darkred"
-          size="w-10 h-10"
-          boneOnly
-          onClick={onClose}
-        >
+        <IconButton className="ml-auto text-xl hover:text-darkred" size="w-10 h-10" boneOnly onClick={onClose}>
           <FaTimes />
         </IconButton>
       </div>
@@ -50,12 +44,7 @@ export const TeammateDetail = ({
 
         <div className="mt-4 flex justify-center">
           {isCalculated ? (
-            <Button
-              variant="positive"
-              className="flex items-center"
-              icon={<FaSyncAlt />}
-              onClick={onSwitchSetup}
-            >
+            <Button variant="positive" className="flex items-center" icon={<FaSyncAlt />} onClick={onSwitchSetup}>
               Switch
             </Button>
           ) : (

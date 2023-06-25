@@ -12,8 +12,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Input } from "@Components/atoms";
-import { ButtonBar } from "@Components/molecules";
+import { Input, ButtonBar } from "@Components";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;

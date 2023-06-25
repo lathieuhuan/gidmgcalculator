@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components/atoms";
+import { Green } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1 } from "../series";
@@ -38,8 +38,8 @@ const otherSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl
-          reaction, <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green> for 12s.
+          Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction,{" "}
+          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green> for 12s.
         </>
       ),
     }),
@@ -55,9 +55,8 @@ const otherSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          On hit, has <Green>50% chance</Green> to deal <Green b>{200 + refi * 40}%</Green>{" "}
-          <Green>ATK</Green> DMG to a single enemy. Can only occur once every{" "}
-          <Green b>{16 - refi}s</Green>.
+          On hit, has <Green>50% chance</Green> to deal <Green b>{200 + refi * 40}%</Green> <Green>ATK</Green> DMG to a
+          single enemy. Can only occur once every <Green b>{16 - refi}s</Green>.
         </>
       ),
     }),
@@ -81,8 +80,7 @@ const otherSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          When HP is above 90%, increases <Green>CRIT Rate</Green> by{" "}
-          <Green b>{10.5 + refi * 3.5}%</Green>.
+          When HP is above 90%, increases <Green>CRIT Rate</Green> by <Green b>{10.5 + refi * 3.5}%</Green>.
         </>
       ),
     }),
@@ -115,8 +113,8 @@ const otherSwords: DataWeapon[] = [
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          Using an Elemental Burst grants a <Green b>{9 + refi * 3}%</Green> increase in{" "}
-          <Green>ATK</Green> and Movement SPD for 15s.
+          Using an Elemental Burst grants a <Green b>{9 + refi * 3}%</Green> increase in <Green>ATK</Green> and Movement
+          SPD for 15s.
         </>
       ),
     }),

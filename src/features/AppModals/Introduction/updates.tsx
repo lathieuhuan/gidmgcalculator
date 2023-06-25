@@ -1,4 +1,4 @@
-import { Green, Lightgold, Red } from "@Components/atoms";
+import { Green, Lightgold, Red } from "@Components";
 
 export const UPDATES = [
   {

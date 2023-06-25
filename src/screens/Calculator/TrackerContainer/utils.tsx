@@ -1,6 +1,6 @@
 import type { Tracker, TrackerRecord } from "@Src/types";
 import type { ReactNode } from "react";
-import { Green } from "@Components/atoms";
+import { Green } from "@Components";
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -67,10 +67,7 @@ export function renderHeading(white: ReactNode, orange?: string | number) {
   );
 }
 
-export function renderRecord(
-  calcFn?: (value: number) => string | number,
-  extraDesc?: (value: number) => string
-) {
+export function renderRecord(calcFn?: (value: number) => string | number, extraDesc?: (value: number) => string) {
   return ({ desc, value }: TrackerRecord, index: number) =>
     value ? (
       <li key={index} className="text-lesser text-sm">
@@ -88,13 +85,7 @@ interface RenderDmgComponentArgs {
   nullValue?: number | null;
   processor?: (value: number) => string | number;
 }
-export function renderDmgComponent({
-  desc,
-  value,
-  sign = "*",
-  nullValue = 0,
-  processor,
-}: RenderDmgComponentArgs) {
+export function renderDmgComponent({ desc, value, sign = "*", nullValue = 0, processor }: RenderDmgComponentArgs) {
   return value !== undefined && value !== nullValue ? (
     <>
       {" "}
@@ -103,11 +94,6 @@ export function renderDmgComponent({
   ) : null;
 }
 
-export function renderDmgValue(
-  value: number | number[],
-  callback: (value: number) => string | number = Math.round
-) {
-  return Array.isArray(value)
-    ? callback(value.reduce((total, num) => total + num, 0))
-    : callback(value);
+export function renderDmgValue(value: number | number[], callback: (value: number) => string | number = Math.round) {
+  return Array.isArray(value) ? callback(value.reduce((total, num) => total + num, 0)) : callback(value);
 }

@@ -1,5 +1,5 @@
 import type { DataCharacter, ModifierInput } from "@Src/types";
-import { Green, Lightgold, Red } from "@Components/atoms";
+import { Green, Lightgold, Red } from "@Components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";

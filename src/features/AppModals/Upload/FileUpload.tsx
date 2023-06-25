@@ -1,14 +1,14 @@
 import { useRef } from "react";
-import type { UploadedData } from "./types";
 import { FaUpload } from "react-icons/fa";
+import type { UploadedData } from "./types";
+import type { ModalControl } from "@Components";
 
 // Util
 import { notification } from "@Src/utils";
 import { convertFromGoodFormat, toVersion3_0 } from "@Src/utils/convertUserData";
 
 // Component
-import { Button, CloseButton } from "@Components/atoms";
-import { Modal, type ModalControl } from "@Components/molecules";
+import { Button, CloseButton, Modal } from "@Components";
 
 interface FileUploadProps {
   onSuccessUploadFile: (data: UploadedData) => void;

@@ -17,8 +17,7 @@ import { findByIndex } from "@Src/utils";
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Green } from "@Components/atoms";
-import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components/molecules";
+import { Green, ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
@@ -35,8 +34,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
         heading="Superconduct"
         desc={
           <>
-            Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12
-            seconds.
+            Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12 seconds.
           </>
         }
       />
@@ -100,10 +98,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
 
     if (debuffs.length) {
       content.push(
-        <p
-          key={name}
-          className={`pt-2 -mb-1 text-lg text-${vision} font-bold text-center uppercase`}
-        >
+        <p key={name} className={`pt-2 -mb-1 text-lg text-${vision} font-bold text-center uppercase`}>
           {name}
         </p>
       );
