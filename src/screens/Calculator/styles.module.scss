@@ -1,6 +1,11 @@
 .calculator {
   width: 95%;
   height: calc(100vh - 3rem);
+  scroll-snap-type: x mandatory;
+
+  @media (min-width: 420px) {
+    scroll-snap-type: none;
+  }
   @media (min-width: 1456px) {
     width: 1416px;
   }
@@ -11,4 +16,5 @@
   max-width: 21.75rem;
   border-radius: 0.625rem;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 10px rgba(0, 0, 0, 0.2);
+  scroll-snap-align: center;
 }
