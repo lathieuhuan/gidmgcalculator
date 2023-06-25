@@ -56,6 +56,26 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
 
         return (
           <div key={key.main} className="flex flex-col">
+            {/* <div className={"h-6 mx-auto mb-2 flex rounded-2xl bg-orange overflow-hidden"}>
+              <button
+                className={clsx(
+                  "pt-1 pb-0.5 flex items-center space-x-2 text-black font-bold",
+                  talentLevel ? "pl-4 pr-2" : "px-4"
+                )}
+                onClick={toggleTable(index)}
+              >
+                <FaChevronRight
+                  className={"text-sm text-black duration-150 ease-linear" + (closedItems[index] ? "" : " rotate-90")}
+                />
+                <span className="text-lg leading-none">{t(key.main)}</span>
+              </button>
+
+              {talentLevel ? (
+                <button className="px-2 bg-black/60 text-default text-sm leading-none">
+                  {talentLevel}
+                </button>
+              ) : null}
+            </div> */}
             <button
               className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
               onClick={toggleTable(index)}
@@ -68,8 +88,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               ) : null}
               <FaChevronDown
                 className={
-                  "ml-2 text-sm text-black duration-150 ease-linear" +
-                  (closedItems[index] ? " rotate-90" : "")
+                  "ml-2 text-sm text-black duration-150 ease-linear" + (closedItems[index] ? " rotate-90" : "")
                 }
               />
             </button>
@@ -77,9 +96,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
             <CollapseSpace active={!closedItems[index]}>
               {key.subs.length === 0 ? (
                 <div className="pb-2">
-                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">
-                    This talent does not deal damage.
-                  </p>
+                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">This talent does not deal damage.</p>
                 </div>
               ) : (
                 <div className="custom-scrollbar">
