@@ -1,13 +1,8 @@
 import clsx from "clsx";
 import { FaLongArrowAltUp } from "react-icons/fa";
 
-// Constant
 import { EStatDamageKey } from "@Src/constants";
-
-// Selector
 import { selectComparedIds, selectStandardId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
 
 // Util
@@ -15,7 +10,7 @@ import { findById } from "@Src/utils";
 import { displayValue, type TableKey } from "./utils";
 
 // Component
-import { Table } from "../table/Table";
+import { Table } from "../table";
 
 const { Tr, Th, Td } = Table;
 

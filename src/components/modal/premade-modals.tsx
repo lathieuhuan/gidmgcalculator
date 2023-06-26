@@ -1,19 +1,16 @@
 import type { ReactNode } from "react";
-import type { UserArtifact, UserWeapon } from "@Src/types";
-import type { ModalControl } from "./Modal";
-import type { ButtonBarButton } from "../ButtonBar";
 
+import type { UserArtifact, UserWeapon } from "@Src/types";
 import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { ButtonBar } from "../ButtonBar";
-import { CloseButton } from "../buttons";
-import { Modal } from "./Modal";
+import { CloseButton, ButtonGroup, type ButtonGroupItem } from "../button";
+import { Modal, type ModalControl } from "./Modal";
 
 export interface ConfirmModalBodyProps {
   message: string | JSX.Element;
   bgColor?: string;
-  buttons: (Partial<ButtonBarButton> | undefined | false)[];
+  buttons: (Partial<ButtonGroupItem> | undefined | false)[];
   /** Default to true */
   closeOnClickButton?: boolean;
   onClose: () => void;
@@ -25,7 +22,7 @@ export const ConfirmModalBody = ({
   closeOnClickButton = true,
   onClose,
 }: ConfirmModalBodyProps) => {
-  const renderButtons: ButtonBarButton[] = [];
+  const renderButtons: ButtonGroupItem[] = [];
 
   buttons.forEach((button, index) => {
     const { text, variant, onClick } = button || {};
@@ -44,7 +41,7 @@ export const ConfirmModalBody = ({
   return (
     <div className={"p-4 rounded-lg " + bgColor}>
       <p className="py-2 text-center text-1.5xl text-default">{message}</p>
-      <ButtonBar
+      <ButtonGroup
         className={"mt-4 flex-wrap" + (buttons.length > 2 ? " space-x-4" : "")}
         buttons={renderButtons}
         autoFocusIndex={buttons.length - 1}

@@ -1,9 +1,5 @@
 import type { UserSetup } from "@Src/types";
-
-// Action
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
-
-// Selector
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Util
@@ -12,10 +8,10 @@ import { isUserSetup } from "@Src/utils/setup";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useCombineManager } from "./hook";
+import { useCombineManager } from "./hooks";
 
 // Component
-import { ButtonBar } from "@Components";
+import { ButtonGroup } from "@Src/components";
 
 interface CombineMoreProps {
   setupID: number;
@@ -99,7 +95,7 @@ export function CombineMore({ setupID, onClose }: CombineMoreProps) {
 
       {combineMenu}
 
-      <ButtonBar
+      <ButtonGroup
         className="mt-4"
         buttons={[
           { text: "Cancel", onClick: onClose },

@@ -1,12 +1,11 @@
 import { FaTimes } from "react-icons/fa";
-import type { Teammate } from "@Src/types";
 
-// Util
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { IconButton } from "@Components";
+import { IconButton } from "./button";
 
 interface TeammateItemsProps {
   className?: string;

@@ -1,20 +1,22 @@
 import clsx from "clsx";
-import { Button } from "@Components";
+import { Button } from "./button";
 
-export interface ButtonBarButton {
+export interface ButtonGroupItem {
   text: string;
   disabled?: boolean;
   variant?: "positive" | "negative" | "neutral" | "default";
   onClick?: () => void;
 }
-interface ButtonBarProps {
+interface ButtonGroupProps {
   className?: string;
-  buttons: ButtonBarButton[];
+  buttons: ButtonGroupItem[];
+  /** Default to space-x-8 (2rem) */
+  space?: string;
   autoFocusIndex?: number;
 }
-export const ButtonBar = ({ className, buttons, autoFocusIndex }: ButtonBarProps) => {
+export const ButtonGroup = ({ className, buttons, space = "space-x-8", autoFocusIndex }: ButtonGroupProps) => {
   return (
-    <div className={clsx("flex justify-center", !className?.includes("space-x-") && "space-x-8", className)}>
+    <div className={clsx("flex justify-center", space, className)}>
       {buttons.map((button, i) => {
         return (
           <Button

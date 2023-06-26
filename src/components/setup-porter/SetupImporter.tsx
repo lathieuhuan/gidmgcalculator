@@ -1,12 +1,11 @@
 import { useState } from "react";
-import type { ModalControl } from "../modal/Modal";
 
 import { updateImportInfo } from "@Store/uiSlice";
 import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
 // Component
-import { Modal } from "../modal/Modal";
+import { Modal, type ModalControl } from "../modal";
 import { PorterLayout } from "./PorterLayout";
 
 const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {

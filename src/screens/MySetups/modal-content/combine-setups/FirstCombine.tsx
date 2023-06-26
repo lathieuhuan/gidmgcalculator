@@ -1,21 +1,16 @@
 import { useState, KeyboardEventHandler } from "react";
+
 import type { UserSetup } from "@Src/types";
-
-// Selector
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
-
-// Action
 import { combineSetups } from "@Store/userDatabaseSlice";
-
-// Util
 import { findById } from "@Src/utils";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useCombineManager } from "./hook";
+import { useCombineManager } from "./hooks";
 
 // Component
-import { Input, ButtonBar } from "@Components";
+import { Input, ButtonGroup } from "@Src/components";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();
@@ -100,7 +95,7 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
           onKeyDown={onKeydownInput}
           onChange={setInput}
         />
-        <ButtonBar
+        <ButtonGroup
           className="mt-4"
           buttons={[
             { text: "Cancel", onClick: onClose },

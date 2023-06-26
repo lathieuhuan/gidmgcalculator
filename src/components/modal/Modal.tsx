@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import ReactDOM from "react-dom";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
+
 import { useCloseWithEsc } from "@Src/hooks";
 import { ModalBody } from "./ModalBody";
 

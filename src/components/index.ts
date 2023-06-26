@@ -1,5 +1,5 @@
 export * from "./ability-list";
-export * from "./artifact";
+export * from "./ArtifactCard";
 export * from "./collapse";
 export * from "./DamageDisplay";
 export * from "./inventory";
@@ -8,7 +8,7 @@ export * from "./modal";
 export * from "./setup-porter";
 export * from "./table";
 
-export * from "./buttons";
+export * from "./button";
 export * from "./span";
 export * from "./modifiers";
 export * from "./StarLine";
@@ -18,7 +18,6 @@ export * from "./Image";
 export * from "./CharacterPortrait";
 export * from "./BetaMark";
 export * from "./SharedSpace";
-export * from "./ButtonBar";
 export * from "./ComplexSelect";
 export * from "./Notification";
 export * from "./ModifierTemplate";

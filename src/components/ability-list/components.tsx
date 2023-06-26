@@ -1,9 +1,8 @@
 import clsx from "clsx";
-import { FaCaretRight, FaQuestion } from "react-icons/fa";
 import type { ReactNode } from "react";
-import type { Vision } from "@Src/types";
+import { FaCaretRight, FaQuestion } from "react-icons/fa";
 
-// Util
+import type { Vision } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 import styles from "./styles.module.scss";

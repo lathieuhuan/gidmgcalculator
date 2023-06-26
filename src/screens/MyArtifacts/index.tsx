@@ -3,7 +3,6 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
-import type { StatsFilter } from "@Components/inventories/utils";
 
 // Constant
 import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
@@ -24,17 +23,17 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components/inventories/hooks";
+import { useTypeFilter } from "@Components/inventory/hooks";
 
 // Util
 import { findById, indexById } from "@Src/utils";
-import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "@Components/inventories/utils";
+import { filterArtifactsBySetsAndStats, initArtifactStatsFilter, type StatsFilter } from "@Components/inventory/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { PickerArtifact, PickerCharacter } from "@Src/features";
 import {
-  ButtonBar,
+  ButtonGroup,
   OwnerLabel,
   ArtifactCard,
   TypeSelect,
@@ -42,7 +41,7 @@ import {
   WareHouse,
   ConfirmModal,
   ItemRemoveConfirm,
-} from "@Components";
+} from "@Src/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -114,7 +113,7 @@ export default function MyArtifacts() {
     <WareHouse.Wrapper>
       <WareHouse>
         <WareHouse.ButtonBar>
-          <ButtonBar
+          <ButtonGroup
             className="mr-4 space-x-4"
             buttons={[
               {
@@ -200,7 +199,7 @@ export default function MyArtifacts() {
               </div>
 
               {chosenArtifact ? (
-                <ButtonBar
+                <ButtonGroup
                   className="mt-4"
                   buttons={[
                     {

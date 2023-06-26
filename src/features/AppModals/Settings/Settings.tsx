@@ -7,7 +7,7 @@ import { useDispatch } from "@Store/hooks";
 import { applySettings } from "@Store/calculatorSlice";
 
 // Component
-import { CloseButton, ButtonBar, Modal, ModalControl } from "@Components";
+import { CloseButton, ButtonGroup, Modal, type ModalControl } from "@Src/components";
 import { CheckSetting, Section, SelectSetting } from "./components";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
@@ -145,7 +145,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
         </Section>
       </div>
 
-      <ButtonBar
+      <ButtonGroup
         className="mt-4"
         buttons={[
           {

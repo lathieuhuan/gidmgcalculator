@@ -2,16 +2,14 @@ import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
-// Hook
-import { useTranslation } from "@Src/hooks";
-
 // Component
-import { BetaMark } from "@Components";
+import { BetaMark } from "./BetaMark";
 
 const groupStyles = "bg-darkblue-2 px-2";
 

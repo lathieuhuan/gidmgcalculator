@@ -1,6 +1,6 @@
 import type { InsHTMLAttributes, ParamHTMLAttributes, ReactNode } from "react";
 import { FaFilter, FaTimes } from "react-icons/fa";
-import { IconButton } from "../../buttons";
+import { IconButton } from "../button";
 
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (

@@ -1,19 +1,15 @@
-import clsx from "clsx";
 import { useState } from "react";
+
 import type { CharInfo, Target } from "@Src/types";
+import { appSettings } from "@Src/utils";
+import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Hook
 import { useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
-// Util
-import { appSettings } from "@Src/utils";
-
-// Selector
-import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calculatorSlice/selectors";
-
 // Component
-import { Table, CollapseSpace, ButtonBar } from "@Components";
+import { Table, CollapseSpace, ButtonGroup } from "@Src/components";
 
 const { Tr, Th, Td } = Table;
 
@@ -166,7 +162,7 @@ export function OverrideOptions({
           })}
         </div>
       </div>
-      <ButtonBar
+      <ButtonGroup
         className={expandedIndex === pendingCode % 10 ? "mt-2" : "mt-4"}
         buttons={[
           { text: "Cancel", onClick: endImport },

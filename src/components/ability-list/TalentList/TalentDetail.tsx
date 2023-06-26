@@ -1,20 +1,18 @@
 import { useState, useRef, useMemo } from "react";
 import { FaCaretDown } from "react-icons/fa";
+
 import type { TalentStatAttributeType, DataCharacter, Talent } from "@Src/types";
+import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
+import { useTranslation } from "@Src/hooks";
 
 // Constant
 import { ATTACK_PATTERNS } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
-// Util
-import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
-
-// Hook
-import { useTranslation } from "@Src/hooks";
-
 // Component
-import { CloseButton, StatsTable } from "@Components";
+import { CloseButton } from "../../button";
+import { StatsTable } from "../../table";
 import { SlideShow } from "../components";
 
 const { Row } = StatsTable;

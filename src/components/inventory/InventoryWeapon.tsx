@@ -1,16 +1,12 @@
 import { useState, useRef } from "react";
 import type { UserWeapon, WeaponType } from "@Src/types";
-import type { ModalControl } from "@Components";
 
-// Selector
 import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { Button } from "../buttons";
-import { Modal, ModalHeader } from "../modal/Modal";
+import { Button } from "../button";
+import { Modal, ModalHeader, type ModalControl } from "../modal";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
 import { InventoryRack } from "./InventoryRack";

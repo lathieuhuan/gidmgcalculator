@@ -1,22 +1,21 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
-import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
-import type { ModalControl } from "../modal/Modal";
 
+import type { ArtifactType, CalcArtifact, UserArtifact } from "@Src/types";
 import { ARTIFACT_TYPES } from "@Src/constants";
-import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
-import { initArtifactStatsFilter, filterArtifactsBySetsAndStats } from "./utils";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
+import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "./utils";
 
 // Conponent
-import { CollapseAndMount } from "../collapse";
-import { ButtonBar } from "../ButtonBar";
-import { Modal, ModalHeader } from "../modal/Modal";
+import { ArtifactCard } from "../ArtifactCard";
+import { ButtonGroup } from "../button";
 import { OwnerLabel } from "../OwnerLabel";
-import { ArtifactCard } from "../artifact";
-import { InventoryRack } from "./InventoryRack";
+import { CollapseAndMount } from "../collapse";
+import { Modal, ModalHeader, type ModalControl } from "../modal";
 import { ArtifactFilter } from "./ArtifactFilter";
+import { InventoryRack } from "./InventoryRack";
 
 const selectArtifactsByType = createSelector(
   selectUserArts,
@@ -111,7 +110,7 @@ const ArtifactInventory = ({
               </div>
 
               {chosenArtifact && chosenArtifact.owner !== owner ? (
-                <ButtonBar
+                <ButtonGroup
                   className="mt-6"
                   buttons={[
                     {

@@ -2,15 +2,9 @@ import { useState } from "react";
 import { FaChevronDown, FaSort, FaTimes } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 import type { DragEventHandler, HTMLAttributes, ReactNode } from "react";
-import type { ModalControl } from "@Components";
 
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
 import { sortCharacters } from "@Store/userDatabaseSlice";
-
-// Selector
 import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Util
@@ -18,7 +12,7 @@ import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { IconButton, Popover, SharedSpace, ButtonBar, Modal } from "@Components";
+import { IconButton, Popover, SharedSpace, ButtonGroup, Modal, type ModalControl } from "@Src/components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -263,8 +257,9 @@ function SortInner({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      <ButtonBar
-        className="mt-4 flex justify-center space-x-4"
+      <ButtonGroup
+        className="mt-4 flex justify-center"
+        space="space-x-4"
         buttons={[
           {
             text: "Confirm",

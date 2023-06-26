@@ -1,16 +1,15 @@
 import clsx from "clsx";
 import { type CSSProperties, useEffect } from "react";
+
+// Type
 import type { ArtifactAttribute, AttributeStat, ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-// Hook
 import { useDispatch } from "@Store/hooks";
-
-// Action
 import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button, AttributeTable, ButtonBar, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Components";
+import { Button, AttributeTable, ButtonGroup, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
 
 interface GearsDetailsProps {
   className: string;
@@ -111,7 +110,7 @@ export function GearsDetails({
                 }}
               />
             </div>
-            <ButtonBar
+            <ButtonGroup
               className="mt-6"
               buttons={[
                 { text: "Unequip", onClick: onClickUnequipArtifact },

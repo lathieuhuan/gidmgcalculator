@@ -5,10 +5,7 @@ import { FaArrowAltCircleUp, FaChevronDown } from "react-icons/fa";
 import type { CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 
-// Constant
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
-
-// Hook
 import { useTranslation } from "@Src/hooks";
 
 // Util
@@ -16,10 +13,10 @@ import { percentSign, getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
+import { BetaMark } from "../BetaMark";
+import { IconButton } from "../button";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
-import { BetaMark } from "../BetaMark";
-import { IconButton } from "../buttons";
 
 interface ArtifactCardProps extends Pick<ArtifactSubstatsControlProps, "mutable" | "space" | "onChangeSubStat"> {
   artifact?: CalcArtifact;

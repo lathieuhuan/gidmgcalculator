@@ -1,21 +1,18 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+
 import type { CharInfo, DamageResult, Party } from "@Src/types";
-
-// Consant
 import { EStatDamageKey } from "@Src/constants";
-
-// Hook
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { finalTalentLv } from "@Src/utils/calculation";
 import { getPartyData } from "@Data/controllers";
+import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
 // Component
-import { Table } from "../table/Table";
 import { CollapseSpace } from "../collapse";
+import { Table } from "../table";
 import { CompareTable } from "./CompareTable";
 
 const { Tr, Th, Td } = Table;

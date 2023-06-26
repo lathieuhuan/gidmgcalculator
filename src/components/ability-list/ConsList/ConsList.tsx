@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import type { CharInfo } from "@Src/types";
 
-// Util
+import type { CharInfo } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Conponent
-import { InfoSign, SharedSpace } from "@Components";
+import { InfoSign } from "../../button";
+import { SharedSpace } from "../../SharedSpace";
 import { AbilityIcon } from "../components";
 import { ConsDetail } from "./ConsDetail";
 

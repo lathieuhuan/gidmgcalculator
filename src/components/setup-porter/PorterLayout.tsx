@@ -1,8 +1,5 @@
 import type { TextareaHTMLAttributes } from "react";
-import type { ButtonBarButton } from "../ButtonBar";
-
-import { ButtonBar } from "../ButtonBar";
-import { CloseButton } from "../buttons";
+import { CloseButton, ButtonGroup, type ButtonGroupItem } from "../button";
 
 interface PorterLayoutProps {
   heading: string;
@@ -11,7 +8,7 @@ interface PorterLayoutProps {
     type?: "success" | "error";
   };
   textareaAttrs: TextareaHTMLAttributes<HTMLTextAreaElement>;
-  moreButtons: ButtonBarButton[];
+  moreButtons: ButtonGroupItem[];
   autoFocusButtonIndex?: number;
   onClose: () => void;
 }
@@ -41,7 +38,7 @@ export const PorterLayout = ({
           </p>
         ) : null}
 
-        <ButtonBar
+        <ButtonGroup
           className="mt-4 space-x-4"
           autoFocusIndex={autoFocusButtonIndex}
           buttons={[{ text: "Cancel", onClick: onClose }, ...moreButtons]}

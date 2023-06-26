@@ -1,12 +1,11 @@
 import { useState } from "react";
-import type { ArtifactType, CalcArtifact } from "@Src/types";
 
+import type { ArtifactType, CalcArtifact } from "@Src/types";
 import { useArtifactSetFilter, useArtifactStatsFilter } from "./hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "./utils";
 
 // Component
-import { Button } from "../buttons";
-import { ButtonBar } from "../ButtonBar";
+import { Button, ButtonGroup } from "../button";
 
 interface ArtifactFilterProps {
   artifactType: ArtifactType;
@@ -66,7 +65,7 @@ export const ArtifactFilter = ({ artifactType, artifacts, filter, onClose }: Art
 
           {renderArtifactStatsFilter()}
 
-          <ButtonBar
+          <ButtonGroup
             className="mt-4 pb-2"
             buttons={[
               { text: "Cancel", onClick: onClose },

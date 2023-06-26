@@ -11,7 +11,7 @@ import { ascsFromLv } from "@Src/utils";
 import { totalXtraTalentLv } from "@Src/utils/calculation";
 
 // Component
-import { InfoSign } from "@Components";
+import { InfoSign } from "../../button";
 import { AbilityIcon } from "../components";
 
 interface TalentOverviewProps {

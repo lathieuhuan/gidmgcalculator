@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import type { UserSetup } from "@Src/types";
-import { CharacterPortrait } from "@Components";
+import { CharacterPortrait } from "@Src/components";
 import { findDataCharacter } from "@Data/controllers";
 
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;

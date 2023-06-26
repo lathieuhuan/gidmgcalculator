@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
-import type { ModalControl } from "@Components";
 
-import { checkIfWeapon } from "@Src/utils";
+import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
+import { itemIsWeapon } from "@Src/utils";
 
 // Component
-import { Button } from "../buttons";
-import { Modal, ModalHeader } from "../modal/Modal";
+import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
-import { ArtifactCard } from "../artifact";
+import { Button } from "../button";
+import { Modal, ModalHeader, type ModalControl } from "../modal";
 import { InventoryRack } from "./InventoryRack";
 
 interface ItemMultiSelectProps {
@@ -87,7 +86,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
           <div className="p-4 rounded-lg bg-darkblue-1 grow" style={{ minHeight: "28rem" }}>
             <div className="w-68 h-full hide-scrollbar">
               {chosenItem ? (
-                checkIfWeapon(chosenItem) ? (
+                itemIsWeapon(chosenItem) ? (
                   <WeaponCard weapon={chosenItem} />
                 ) : (
                   <ArtifactCard artifact={chosenItem} />

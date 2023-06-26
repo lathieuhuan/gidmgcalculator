@@ -1,11 +1,10 @@
 import { useState } from "react";
-import type { CharInfo, Party } from "@Src/types";
 
-// Util
+import type { CharInfo, Party } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { SharedSpace } from "@Components";
+import { SharedSpace } from "../../SharedSpace";
 import { TalentDetail } from "./TalentDetail";
 import { TalentOverview } from "./TalentOverview";
 

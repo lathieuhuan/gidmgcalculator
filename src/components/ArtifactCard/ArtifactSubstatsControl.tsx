@@ -1,19 +1,16 @@
 import { Fragment } from "react";
 import { FaChevronDown } from "react-icons/fa";
+
 import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
+import { useTranslation } from "@Src/hooks";
+import { percentSign } from "@Src/utils";
 
 // Constant
 import { ARTIFACT_SUBSTAT_TYPES } from "@Src/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 
-// Hook
-import { useTranslation } from "@Src/hooks";
-
-// Util
-import { percentSign } from "@Src/utils";
-
 // Component
-import { Input } from "../../Input";
+import { Input } from "../Input";
 
 export interface ArtifactSubstatsControlProps {
   mutable?: boolean;

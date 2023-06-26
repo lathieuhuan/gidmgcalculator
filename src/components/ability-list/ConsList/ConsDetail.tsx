@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import type { DataCharacter } from "@Src/types";
 
-// Constant
+import type { DataCharacter } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Conponent
-import { CloseButton, Green, Lesser } from "@Components";
+import { CloseButton } from "../../button";
+import { Green, Lesser } from "../../span";
 import { SlideShow } from "../components";
 
 interface ConsDetailProps {

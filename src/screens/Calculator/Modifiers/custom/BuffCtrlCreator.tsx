@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 
-// Constant
+import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -11,11 +10,7 @@ import {
   REACTION_BONUS_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
-
-// Action
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
-
-// Util
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Hook
@@ -23,7 +18,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Input, ButtonBar } from "@Components";
+import { Input, ButtonGroup } from "@Src/components";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 
@@ -197,7 +192,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
           <span className="ml-2">{sign}</span>
         </div>
       </div>
-      <ButtonBar
+      <ButtonGroup
         className="mt-8"
         buttons={[
           { text: "Cancel", onClick: onClose },

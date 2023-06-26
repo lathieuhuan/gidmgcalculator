@@ -1,12 +1,10 @@
 import { useState } from "react";
-import type { CalcSetup, Target } from "@Src/types";
-import type { ModalControl } from "../modal/Modal";
 
-// Util
+import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { Modal } from "../modal/Modal";
+import { Modal, type ModalControl } from "../modal";
 import { PorterLayout } from "./PorterLayout";
 
 interface SetupExporterProps {

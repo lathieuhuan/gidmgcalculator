@@ -1,38 +1,33 @@
 import clsx from "clsx";
 import { Fragment, useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
-import type { WeaponType } from "@Src/types";
 
-// Constant
+import type { WeaponType } from "@Src/types";
 import { MAX_USER_WEAPONS, WEAPON_ICONS } from "@Src/constants";
+import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
+import { findById, indexById } from "@Src/utils";
 
 // Action
 import { addUserWeapon, removeWeapon, sortWeapons, swapWeaponOwner, updateUserWeapon } from "@Store/userDatabaseSlice";
 import { updateMessage } from "@Store/calculatorSlice";
 
-// Selector
-import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
-
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components";
-
-// Util
-import { findById, indexById } from "@Src/utils";
+import { useTypeFilter } from "@Components/inventory/hooks";
 
 // Component
 import { PickerCharacter, PickerWeapon } from "@Src/features";
 import {
   IconButton,
   CollapseSpace,
-  ButtonBar,
+  ButtonGroup,
   OwnerLabel,
   TypeSelect,
   WeaponCard,
   WareHouse,
   InventoryRack,
   ItemRemoveConfirm,
-} from "@Components";
+} from "@Src/components";
 
 import styles from "../styles.module.scss";
 
@@ -74,7 +69,7 @@ export default function MyWeapons() {
     <WareHouse.Wrapper>
       <WareHouse>
         <WareHouse.ButtonBar>
-          <ButtonBar
+          <ButtonGroup
             className="mr-4 space-x-4"
             buttons={[
               {
@@ -134,7 +129,7 @@ export default function MyWeapons() {
                 ) : null}
               </div>
               {chosenWeapon ? (
-                <ButtonBar
+                <ButtonGroup
                   className="mt-4"
                   buttons={[
                     {

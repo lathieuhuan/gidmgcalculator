@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
+
 import type { ArtifactType } from "@Src/types";
-import type { ModalControl } from "@Components";
-import type { StatsFilter } from "@Components/inventories/utils";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
+import { hasDupStat, type StatsFilter } from "@Components/inventory/utils";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Components/inventories/hooks";
-
-// Selector
-import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-
-// Util
-import { hasDupStat } from "@Components/inventories/utils";
+import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Components/inventory/hooks";
 
 // Component
-import { ButtonBar, Modal } from "@Components";
+import { ButtonGroup, Modal, type ModalControl } from "@Src/components";
 
 interface FilterProps {
   types: ArtifactType[];
@@ -54,7 +49,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
         {renderArtifactSetFilter()}
       </div>
 
-      <ButtonBar
+      <ButtonGroup
         className="mt-4"
         buttons={[
           { text: "Cancel", onClick: onClose },

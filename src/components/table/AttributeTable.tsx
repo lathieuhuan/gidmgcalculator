@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 
-// Constant
+import type { CoreStat, PartiallyRequired, TotalAttribute } from "@Src/types";
 import { ATTACK_ELEMENTS, CORE_STAT_TYPES } from "@Src/constants";
 import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { useTranslation } from "@Src/hooks";

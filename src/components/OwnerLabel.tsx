@@ -1,17 +1,12 @@
 import { CSSProperties, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
-// Selector
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
-
-// Util
 import { findById } from "@Src/utils";
 
 // Component
-import { Popover } from "@Components";
+import { Popover } from "./Popover";
 
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
   const userSetups = useSelector(selectUserSetups);

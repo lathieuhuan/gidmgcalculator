@@ -7,7 +7,7 @@ import { findByCode, getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
-import { Button } from "../../buttons";
+import { Button } from "../../button";
 
 type TempSetsState = {
   code: number;

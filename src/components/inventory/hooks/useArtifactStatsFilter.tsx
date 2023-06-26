@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { ChangeEventHandler, useState } from "react";
 import { FaInfo, FaTimes } from "react-icons/fa";
+
+// Type
 import type { ArtifactType, AttributeStat } from "@Src/types";
 import type { StatsFilter } from "../utils";
 
@@ -12,7 +14,7 @@ import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton } from "../../buttons";
+import { IconButton } from "../../button";
 import { Green } from "../../span";
 
 interface UseArtifactStatsFilterArgs {

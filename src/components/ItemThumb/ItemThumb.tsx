@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import type { Level, Rarity } from "@Src/types";
 
-// Util
+import type { Level, Rarity } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component

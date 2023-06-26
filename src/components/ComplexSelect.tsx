@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-// Hook
 import { useClickOutside } from "@Src/hooks";
 
 type RenderJXS = (args: { closeSelect: () => void }) => JSX.Element;
@@ -18,13 +17,7 @@ interface ComplexSelectProps {
   onChange?: (value: string | number) => void;
   onToggleDropdown?: (shouldDrop: boolean) => void;
 }
-export const ComplexSelect = ({
-  selectId,
-  value,
-  options = [],
-  onChange,
-  onToggleDropdown,
-}: ComplexSelectProps) => {
+export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggleDropdown }: ComplexSelectProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isDropped, setIsDropped] = useState(false);
 
@@ -56,10 +49,7 @@ export const ComplexSelect = ({
   };
 
   const { label } = options.find((option) => option.value === value) || {};
-  const dropHeight = options.reduce(
-    (accumulator, option) => accumulator + (option.renderActions ? 72 : 36),
-    0
-  );
+  const dropHeight = options.reduce((accumulator, option) => accumulator + (option.renderActions ? 72 : 36), 0);
 
   const renderKit = {
     closeSelect: () => toggleDropdown(false),

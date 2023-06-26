@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
-import type { ModifierInput, ModInputConfig } from "@Src/types";
 
-// Util
+import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
-import { Input, Green } from "@Components";
+import { Input } from "./Input";
+import { Green } from "./span";
 
 export type ModSelectOption = {
   label: string | number;
