@@ -8,7 +8,7 @@ import { pickProps } from "@Src/utils";
 import { createWeapon } from "@Src/utils/creators";
 
 // Component
-import { Modal, type ModalControl } from "@Src/pure-components";
+import { withModal } from "@Src/pure-components";
 import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface WeaponPickerProps {
@@ -34,10 +34,4 @@ function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: Weapon
   );
 }
 
-export const PickerWeapon = ({ active, onClose, ...rest }: WeaponPickerProps & ModalControl) => {
-  return (
-    <Modal active={active} withDefaultStyle onClose={onClose}>
-      <WeaponPicker {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const PickerWeapon = withModal(WeaponPicker, { withDefaultStyle: true });

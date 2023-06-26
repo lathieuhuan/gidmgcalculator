@@ -9,7 +9,7 @@ import { useSelector } from "@Store/hooks";
 import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Component
-import { ButtonGroup, Modal, type ModalControl } from "@Src/pure-components";
+import { ButtonGroup, withModal } from "@Src/pure-components";
 
 interface FilterProps {
   types: ArtifactType[];
@@ -72,10 +72,4 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
   );
 }
 
-export function Filter({ active, onClose, ...rest }: ModalControl & FilterProps) {
-  return (
-    <Modal active={active} onClose={onClose}>
-      <FilterInner {...rest} onClose={onClose} />
-    </Modal>
-  );
-}
+export const Filter = withModal(FilterInner);

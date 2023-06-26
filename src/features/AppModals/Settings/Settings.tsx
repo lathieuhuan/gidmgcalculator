@@ -7,7 +7,7 @@ import { useDispatch } from "@Store/hooks";
 import { applySettings } from "@Store/calculatorSlice";
 
 // Component
-import { CloseButton, ButtonGroup, Modal, type ModalControl } from "@Src/pure-components";
+import { ButtonGroup, withModal } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {
@@ -162,11 +162,13 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
   );
 };
 
-export const Settings = (props: ModalControl) => {
-  return (
-    <Modal className="h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow" {...props}>
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={props.onClose} />
-      <SettingsCore onClose={props.onClose} />
-    </Modal>
-  );
-};
+export const Settings = withModal(
+  SettingsCore,
+  {
+    className: "h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow",
+  },
+  {
+    className: "absolute top-1 right-1",
+    boneOnly: true,
+  }
+);

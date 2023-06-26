@@ -7,7 +7,7 @@ import { notification } from "@Src/utils/notification";
 import { convertFromGoodFormat, toVersion3_0 } from "@Src/utils/convertUserData";
 
 // Component
-import { Button, CloseButton, Modal, type ModalControl } from "@Src/pure-components";
+import { Button, withModal } from "@Src/pure-components";
 
 interface FileUploadProps {
   onSuccessUploadFile: (data: UploadedData) => void;
@@ -83,15 +83,16 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
   );
 };
 
-export const FileUpload = ({ active, onClose, ...rest }: ModalControl & FileUploadProps) => {
-  return (
-    <Modal
-      className="p-4 rounded-lg bg-darkblue-2 shadow-white-glow"
-      style={{ width: "28rem" }}
-      {...{ active, onClose }}
-    >
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
-      <FileUploadCore {...rest} />
-    </Modal>
-  );
-};
+export const FileUpload = withModal(
+  FileUploadCore,
+  {
+    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    style: {
+      width: "28rem",
+    },
+  },
+  {
+    className: "absolute top-1 right-1",
+    boneOnly: true,
+  }
+);

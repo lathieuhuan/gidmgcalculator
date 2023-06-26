@@ -5,10 +5,10 @@ import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
 // Component
-import { Modal, type ModalControl } from "@Src/pure-components";
+import { withModal } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
-const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
+const SetupImporterCore = (props: { onClose: () => void }) => {
   const dispatch = useDispatch();
   const [code, setCode] = useState("");
   const [error, setError] = useState<"NOT_SUPPORT" | "UNKNOWN" | "">("");
@@ -49,7 +49,7 @@ const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
                 const result = decodeSetup(actualCode);
 
                 dispatch(updateImportInfo(result));
-                onClose();
+                props.onClose();
               } catch (error) {
                 setError("UNKNOWN");
               }
@@ -58,15 +58,9 @@ const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {
         },
       ]}
       autoFocusButtonIndex={1}
-      onClose={onClose}
+      onClose={props.onClose}
     />
   );
 };
 
-export const SetupImporter = ({ active, onClose }: ModalControl) => {
-  return (
-    <Modal className="" {...{ active, onClose }}>
-      <SetupImporterCore onClose={onClose} />
-    </Modal>
-  );
-};
+export const SetupImporter = withModal(SetupImporterCore);

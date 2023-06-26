@@ -9,7 +9,7 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "./utils";
 
 // Conponent
-import { ButtonGroup, CollapseAndMount, Modal, ModalHeader, type ModalControl } from "@Src/pure-components";
+import { ButtonGroup, CollapseAndMount, ModalHeader, withModal } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { ArtifactFilter } from "./ArtifactFilter";
@@ -137,10 +137,4 @@ const ArtifactInventory = ({
   );
 };
 
-export const InventoryArtifact = ({ active, onClose, ...rest }: ModalControl & ArtifactInventoryProps) => {
-  return (
-    <Modal withDefaultStyle {...{ active, onClose }}>
-      <ArtifactInventory {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const InventoryArtifact = withModal(ArtifactInventory, { withDefaultStyle: true });

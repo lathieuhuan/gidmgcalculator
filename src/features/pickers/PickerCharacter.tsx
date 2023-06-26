@@ -12,7 +12,7 @@ import { findByName, pickProps } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Modal, type ModalControl } from "@Src/pure-components";
+import { withModal } from "@Src/pure-components";
 import { PickerTemplate } from "./PickerTemplate";
 
 export interface CharacterPickerProps {
@@ -76,10 +76,4 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   );
 };
 
-export const PickerCharacter = ({ active, onClose, ...rest }: CharacterPickerProps & ModalControl) => {
-  return (
-    <Modal active={active} withDefaultStyle onClose={onClose}>
-      <CharacterPicker {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const PickerCharacter = withModal(CharacterPicker, { withDefaultStyle: true });

@@ -7,7 +7,7 @@ import { createArtifact } from "@Src/utils/creators";
 import artifacts from "@Data/artifacts";
 
 // Component
-import { Modal, type ModalControl } from "@Src/pure-components";
+import { withModal } from "@Src/pure-components";
 import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface ArtifactPickerProps {
@@ -68,10 +68,4 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
   );
 };
 
-export const PickerArtifact = ({ active, onClose, ...rest }: ArtifactPickerProps & ModalControl) => {
-  return (
-    <Modal active={active} withDefaultStyle onClose={onClose}>
-      <ArtifactPicker {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const PickerArtifact = withModal(ArtifactPicker, { withDefaultStyle: true });

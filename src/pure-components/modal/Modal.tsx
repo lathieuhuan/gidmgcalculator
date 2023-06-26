@@ -4,6 +4,7 @@ import { CSSProperties, ReactNode, useEffect, useState } from "react";
 
 import { useCloseWithEsc } from "@Src/hooks";
 import { ModalBody } from "./ModalBody";
+import { CloseButton, type CloseButtonProps } from "../button";
 
 export interface ModalControl {
   active?: boolean;
@@ -81,3 +82,18 @@ export const Modal = ({ active, state: stateProp, onClose, ...rest }: ModalProps
       )
     : null;
 };
+
+export function withModal<T>(
+  Component: (props: T) => JSX.Element,
+  modalProps?: Partial<Omit<ModalProps, "active" | "onClose">>,
+  closeButton?: Partial<Omit<CloseButtonProps, "onClick">>
+) {
+  return (props: ModalControl & T): JSX.Element => {
+    return (
+      <Modal active={props.active} onClose={props.onClose} {...modalProps}>
+        {closeButton ? <CloseButton {...closeButton} onClick={props.onClose} /> : null}
+        <Component {...props} />
+      </Modal>
+    );
+  };
+}

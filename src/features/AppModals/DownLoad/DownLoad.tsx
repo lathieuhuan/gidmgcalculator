@@ -4,7 +4,7 @@ import { useSelector } from "@Store/hooks";
 import { selectUserArts, selectUserChars, selectUserSetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Button, CloseButton, Modal, type ModalControl } from "@Src/pure-components";
+import { Button, withModal } from "@Src/pure-components";
 
 const DownloadOptions = () => {
   const userChars = useSelector(selectUserChars);
@@ -51,15 +51,16 @@ const DownloadOptions = () => {
   );
 };
 
-export const Download = ({ active, onClose }: ModalControl) => {
-  return (
-    <Modal
-      className="p-4 rounded-lg bg-darkblue-2 shadow-white-glow"
-      style={{ width: "28rem" }}
-      {...{ active, onClose }}
-    >
-      <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
-      <DownloadOptions />
-    </Modal>
-  );
-};
+export const Download = withModal(
+  DownloadOptions,
+  {
+    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    style: {
+      width: "28rem",
+    },
+  },
+  {
+    className: "absolute top-1 right-1",
+    boneOnly: true,
+  }
+);

@@ -1,5 +1,5 @@
 import { ButtonGroup, ButtonGroupItem } from "../button";
-import { Modal, type ModalControl } from "./Modal";
+import { withModal } from "./Modal";
 
 export interface ConfirmModalBodyProps {
   message: string | JSX.Element;
@@ -45,10 +45,4 @@ export const ConfirmModalBody = ({
   );
 };
 
-export const ConfirmModal = ({ active, onClose, ...rest }: ModalControl & ConfirmModalBodyProps) => {
-  return (
-    <Modal active={active} className="small-modal" onClose={onClose}>
-      <ConfirmModalBody {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const ConfirmModal = withModal(ConfirmModalBody, { className: "small-modal" });

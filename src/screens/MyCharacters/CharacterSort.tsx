@@ -13,7 +13,7 @@ import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { IconButton, ButtonGroup, Popover, SharedSpace, Modal, type ModalControl } from "@Src/pure-components";
+import { IconButton, ButtonGroup, Popover, SharedSpace, withModal } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -272,10 +272,4 @@ function SortInner({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default function CharacterSort({ active, onClose }: ModalControl) {
-  return (
-    <Modal active={active} className="small-modal" onClose={onClose}>
-      <SortInner onClose={onClose} />
-    </Modal>
-  );
-}
+export default withModal(SortInner, { className: "small-modal" });

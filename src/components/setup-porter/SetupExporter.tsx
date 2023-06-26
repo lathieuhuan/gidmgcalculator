@@ -4,7 +4,7 @@ import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { Modal, type ModalControl } from "@Src/pure-components";
+import { withModal } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 interface SetupExporterProps {
@@ -62,10 +62,4 @@ const SetupExporterCore = ({ setupName, calcSetup, target, onClose }: SetupExpor
   );
 };
 
-export const SetupExporter = ({ active, onClose, ...rest }: ModalControl & SetupExporterProps) => {
-  return (
-    <Modal {...{ active, onClose }}>
-      <SetupExporterCore {...rest} onClose={onClose} />
-    </Modal>
-  );
-};
+export const SetupExporter = withModal(SetupExporterCore);
