@@ -23,11 +23,15 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components/inventory/hooks";
+import { useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Util
 import { findById, indexById } from "@Src/utils";
-import { filterArtifactsBySetsAndStats, initArtifactStatsFilter, type StatsFilter } from "@Components/inventory/utils";
+import {
+  filterArtifactsBySetsAndStats,
+  initArtifactStatsFilter,
+  type StatsFilter,
+} from "@Src/components/inventory/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component

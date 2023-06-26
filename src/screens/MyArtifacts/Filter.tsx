@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import type { ArtifactType } from "@Src/types";
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-import { hasDupStat, type StatsFilter } from "@Components/inventory/utils";
+import { hasDupStat, type StatsFilter } from "@Src/components/inventory/utils";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Components/inventory/hooks";
+import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Component
 import { ButtonGroup, Modal, type ModalControl } from "@Src/components";

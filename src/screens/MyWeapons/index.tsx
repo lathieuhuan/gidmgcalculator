@@ -13,7 +13,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Components/inventory/hooks";
+import { useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Component
 import { PickerCharacter, PickerWeapon } from "@Src/features";
