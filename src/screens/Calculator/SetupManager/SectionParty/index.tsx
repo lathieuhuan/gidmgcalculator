@@ -23,7 +23,7 @@ import { getPartyData } from "@Data/controllers";
 
 // Component
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/features";
-import { Image, CollapseSpace, TeammateItems } from "@Components";
+import { Image, CollapseSpace, TeammateItems } from "@Src/components";
 import { CopySelect } from "./CopySelect";
 
 interface ModalState {

@@ -8,7 +8,7 @@ import { getPartyData, getTargetData } from "@Data/controllers";
 import { calculateChosenSetup } from "./utils";
 
 // Component
-import { Lightgold, CollapseList } from "@Components";
+import { Lightgold, CollapseList } from "@Src/components";
 import {
   ArtifactBuffs,
   ArtifactDebuffs,

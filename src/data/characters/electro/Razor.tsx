@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green } from "@Components";
+import { Green } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";

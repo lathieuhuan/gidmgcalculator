@@ -114,7 +114,8 @@ export default function MyArtifacts() {
       <WareHouse>
         <WareHouse.ButtonBar>
           <ButtonGroup
-            className="mr-4 space-x-4"
+            className="mr-4"
+            space="space-x-4"
             buttons={[
               {
                 text: "Add",

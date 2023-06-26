@@ -42,7 +42,8 @@ export const ConfirmModalBody = ({
     <div className={"p-4 rounded-lg " + bgColor}>
       <p className="py-2 text-center text-1.5xl text-default">{message}</p>
       <ButtonGroup
-        className={"mt-4 flex-wrap" + (buttons.length > 2 ? " space-x-4" : "")}
+        className="mt-4 flex-wrap"
+        space={buttons.length > 2 ? "space-x-4" : undefined}
         buttons={renderButtons}
         autoFocusIndex={buttons.length - 1}
       />

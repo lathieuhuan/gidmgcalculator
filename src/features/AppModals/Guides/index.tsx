@@ -1,5 +1,5 @@
-import type { ModalControl } from "@Components";
-import { Lightgold, CollapseList, StandardModal } from "@Components";
+import type { ModalControl } from "@Src/components";
+import { Lightgold, CollapseList, StandardModal } from "@Src/components";
 import { CalculatorGuide } from "./CalculatorGuide";
 import { SettingsGuide } from "./SettingsGuide";
 import { UserDataGuide } from "./UserDataGuide";

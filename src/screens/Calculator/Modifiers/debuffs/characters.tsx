@@ -20,7 +20,7 @@ import { findDataCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Components";
+import { ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();

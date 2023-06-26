@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton, ArtifactLevelSelect, ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Components";
+import { IconButton, ArtifactLevelSelect, ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Src/components";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;

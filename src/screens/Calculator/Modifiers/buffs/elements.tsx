@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
-import type { ModSelectOption } from "@Components";
+import type { ModSelectOption } from "@Src/components";
 
 // Constant
 import { VISION_TYPES } from "@Src/constants";
@@ -26,7 +26,7 @@ import {
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-} from "@Components";
+} from "@Src/components";
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();

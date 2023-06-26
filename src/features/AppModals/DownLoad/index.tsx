@@ -1,5 +1,5 @@
 import { FaDownload } from "react-icons/fa";
-import type { ModalControl } from "@Components";
+import type { ModalControl } from "@Src/components";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import { selectUserArts, selectUserChars, selectUserSetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Button, CloseButton, Modal } from "@Components";
+import { Button, CloseButton, Modal } from "@Src/components";
 
 const DownloadOptions = () => {
   const userChars = useSelector(selectUserChars);

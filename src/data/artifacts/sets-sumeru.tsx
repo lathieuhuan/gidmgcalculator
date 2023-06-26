@@ -1,5 +1,5 @@
 import type { DataArtifact } from "@Src/types";
-import { Green, Rose } from "@Components";
+import { Green, Rose } from "@Src/components";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { EModAffect } from "@Src/constants";

@@ -39,7 +39,8 @@ export const PorterLayout = ({
         ) : null}
 
         <ButtonGroup
-          className="mt-4 space-x-4"
+          className="mt-4"
+          space="space-x-4"
           autoFocusIndex={autoFocusButtonIndex}
           buttons={[{ text: "Cancel", onClick: onClose }, ...moreButtons]}
         />

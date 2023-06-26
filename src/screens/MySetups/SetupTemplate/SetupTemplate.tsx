@@ -22,7 +22,7 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { findDataArtifact, findDataCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
-import { IconButton, CharacterPortrait, Image, Modal } from "@Components";
+import { IconButton, CharacterPortrait, Image, Modal } from "@Src/components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
 

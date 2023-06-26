@@ -10,7 +10,7 @@ import { getImgSrc } from "@Src/utils";
 import { findDataArtifact, findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { InfoSign, ItemThumb } from "@Components";
+import { InfoSign, ItemThumb } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
   return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2"];

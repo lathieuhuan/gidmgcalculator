@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { DataCharacter } from "@Src/types";
-import type { ModalControl } from "@Components";
+import type { ModalControl } from "@Src/components";
 import type { PickerItem } from "./types";
 
 // Data
@@ -14,7 +14,7 @@ import { findDataCharacter } from "@Data/controllers";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { Modal } from "@Components";
+import { Modal } from "@Src/components";
 import { PickerTemplate } from "./PickerTemplate";
 
 export interface CharacterPickerProps {

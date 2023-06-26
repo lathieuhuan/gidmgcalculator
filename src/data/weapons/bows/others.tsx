@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green } from "@Components";
+import { Green } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakSeries } from "../series";

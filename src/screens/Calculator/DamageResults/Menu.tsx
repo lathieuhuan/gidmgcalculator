@@ -6,7 +6,7 @@ import { MdMoreVert } from "react-icons/md";
 import { useClickOutside } from "@Src/hooks";
 
 // Component
-import { CloseButton, IconButton, Modal } from "@Components";
+import { CloseButton, IconButton, Modal } from "@Src/components";
 import { TrackerContainer, type TrackerState } from "../TrackerContainer";
 import { ResultsDisplay } from "./ResultsDisplay";
 

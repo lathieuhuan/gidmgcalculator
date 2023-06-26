@@ -19,7 +19,7 @@ import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 
 // Component
-import { Red, Lightgold, Button, IconButton, Modal, WareHouse, StandardModal } from "@Components";
+import { Red, Lightgold, Button, IconButton, Modal, WareHouse, StandardModal } from "@Src/components";
 import { SetupTemplate } from "./SetupTemplate";
 import { ChosenSetupInfo } from "./ChosenSetupInfo";
 import { FirstCombine, CombineMore } from "./modal-content";

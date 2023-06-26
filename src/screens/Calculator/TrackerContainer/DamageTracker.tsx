@@ -2,7 +2,7 @@ import { Fragment, ReactNode } from "react";
 import type { CalculatedDamageCluster, Infusion, TalentBuff, TrackerDamageRecord } from "@Src/types";
 
 // Component
-import { Green } from "@Components";
+import { Green } from "@Src/components";
 
 // Hook
 import { useTranslation } from "@Src/hooks";

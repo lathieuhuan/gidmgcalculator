@@ -21,7 +21,7 @@ import { useTranslation } from "@Src/hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { Button, CloseButton, Input } from "@Components";
+import { Button, CloseButton, Input } from "@Src/components";
 import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {

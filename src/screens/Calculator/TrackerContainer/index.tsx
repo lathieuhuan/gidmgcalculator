@@ -15,7 +15,7 @@ import { bareLv } from "@Src/utils";
 import { initTracker, getTotalRecordValue } from "./utils";
 
 // Component
-import { Green, Lesser, CollapseList } from "@Components";
+import { Green, Lesser, CollapseList } from "@Src/components";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";

@@ -1,5 +1,5 @@
 import type { DataArtifact } from "@Src/types";
-import { Green } from "@Components";
+import { Green } from "@Src/components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

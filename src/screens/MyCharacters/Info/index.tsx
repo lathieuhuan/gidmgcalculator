@@ -23,7 +23,7 @@ import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSli
 import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { IconButton, StarLine, AttributeTable, ConfirmModalBody, Modal, TalentList, ConsList } from "@Components";
+import { IconButton, StarLine, AttributeTable, ConfirmModalBody, Modal, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
 
 const selectChosenInfo = createSelector(

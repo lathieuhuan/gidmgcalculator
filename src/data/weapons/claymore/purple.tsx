@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green, Rose } from "@Components";
+import { Green, Rose } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import {
   baneSeries2,

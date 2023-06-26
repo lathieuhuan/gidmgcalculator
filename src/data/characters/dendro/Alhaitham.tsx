@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Dendro, Green, Rose } from "@Components";
+import { Dendro, Green, Rose } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

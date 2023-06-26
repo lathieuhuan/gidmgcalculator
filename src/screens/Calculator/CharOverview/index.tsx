@@ -20,7 +20,7 @@ import { selectChar, selectCharData } from "@Store/calculatorSlice/selectors";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { Button, IconButton, StarLine, Image, BetaMark, ComplexSelect, SetupImporter } from "@Components";
+import { Button, IconButton, StarLine, Image, BetaMark, ComplexSelect, SetupImporter } from "@Src/components";
 import contentByTab from "./content";
 
 type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";

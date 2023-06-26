@@ -19,7 +19,7 @@ import { importSetup, initSessionWithSetup, updateMessage } from "@Store/calcula
 import { getSearchParam, removeEmpty } from "@Src/utils";
 
 // Component
-import { ConfirmModalBody, Modal } from "@Components";
+import { ConfirmModalBody, Modal } from "@Src/components";
 import { OverrideOptions } from "./OverwriteOptions";
 
 type ImportManagerProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;

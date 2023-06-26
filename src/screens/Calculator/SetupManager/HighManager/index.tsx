@@ -22,7 +22,7 @@ import { updateUI } from "@Store/uiSlice";
 import { selectComparedIds, selectStandardId, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { Button, Popover, CollapseAndMount, SetupImporter } from "@Components";
+import { Button, Popover, CollapseAndMount, SetupImporter } from "@Src/components";
 import { SetupControl } from "./SetupControl";
 
 import styles from "@Screens/Calculator/styles.module.scss";

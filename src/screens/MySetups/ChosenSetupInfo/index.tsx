@@ -27,7 +27,7 @@ import {
   DamageDisplay,
   ConfirmModal,
   SetupExporter,
-} from "@Components";
+} from "@Src/components";
 import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
 
 interface ChosenSetupInfoProps {

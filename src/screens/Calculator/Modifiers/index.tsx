@@ -9,7 +9,7 @@ import { selectParty } from "@Store/calculatorSlice/selectors";
 import { getPartyData } from "@Data/controllers";
 
 // Component
-import { CollapseList } from "@Components";
+import { CollapseList } from "@Src/components";
 import ElementBuffs from "./buffs/elements";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
 import WeaponBuffs from "./buffs/weapons";

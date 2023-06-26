@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Green, Rose } from "@Components";
+import { Green, Rose } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { charModIsInUse, checkCons, findInput, talentBuff } from "../utils";

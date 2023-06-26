@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
 import type { UploadedData, UploadStep } from "./types";
-import type { ModalControl } from "@Components";
+import type { ModalControl } from "@Src/components";
 
 import { MAX_USER_ARTIFACTS, MAX_USER_WEAPONS } from "@Src/constants";
 import { notification } from "@Src/utils";
@@ -9,7 +9,7 @@ import { useDispatch } from "@Store/hooks";
 import { addUserDatabase } from "@Store/userDatabaseSlice";
 
 // Component
-import { ItemMultiSelect } from "@Components";
+import { ItemMultiSelect } from "@Src/components";
 import { FileUpload } from "./FileUpload";
 
 const UploadCore = (props: ModalControl) => {

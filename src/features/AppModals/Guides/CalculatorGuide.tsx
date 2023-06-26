@@ -5,7 +5,7 @@ import { IoDocumentText } from "react-icons/io5";
 import { BiImport } from "react-icons/bi";
 import type { ReactNode } from "react";
 
-import { Green, Lightgold } from "@Components";
+import { Green, Lightgold } from "@Src/components";
 
 interface ListProps {
   children: ReactNode;

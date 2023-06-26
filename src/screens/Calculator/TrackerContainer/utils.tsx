@@ -1,6 +1,6 @@
 import type { Tracker, TrackerRecord } from "@Src/types";
 import type { ReactNode } from "react";
-import { Green } from "@Components";
+import { Green } from "@Src/components";
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,

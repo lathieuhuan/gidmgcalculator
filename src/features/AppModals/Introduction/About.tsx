@@ -1,6 +1,6 @@
 import { FaDiscord, FaRedditAlien } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Lightgold } from "@Components";
+import { Lightgold } from "@Src/components";
 
 export const About = () => {
   const CONTACTS = [

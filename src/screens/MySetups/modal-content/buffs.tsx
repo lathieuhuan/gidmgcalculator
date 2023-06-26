@@ -34,7 +34,7 @@ import {
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
-} from "@Components";
+} from "@Src/components";
 
 interface ElementBuffsProps {
   charLv: Level;

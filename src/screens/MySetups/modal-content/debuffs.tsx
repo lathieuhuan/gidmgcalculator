@@ -17,7 +17,7 @@ import { findByIndex } from "@Src/utils";
 import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Green, ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Components";
+import { Green, ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Src/components";
 
 interface ElementDebuffsProps {
   superconduct: boolean;

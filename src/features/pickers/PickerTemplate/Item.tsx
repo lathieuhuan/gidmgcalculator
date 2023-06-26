@@ -5,7 +5,7 @@ import type { DataType, PickerItem } from "../types";
 import { VISION_ICONS } from "@Src/constants";
 
 // Component
-import { Image, BetaMark } from "@Components";
+import { Image, BetaMark } from "@Src/components";
 
 interface ItemProps {
   visible: boolean;

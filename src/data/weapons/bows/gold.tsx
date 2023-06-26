@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green, Rose } from "@Components";
+import { Green, Rose } from "@Src/components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";

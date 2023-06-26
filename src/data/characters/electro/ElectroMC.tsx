@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Lightgold } from "@Components";
+import { Green, Lightgold } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

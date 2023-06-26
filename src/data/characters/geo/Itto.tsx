@@ -1,5 +1,5 @@
 import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Geo, Green } from "@Components";
+import { Geo, Green } from "@Src/components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, HEAVIER_PAs } from "../constants";

@@ -23,7 +23,7 @@ import { useElementSize } from "@Src/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { Button, IconButton, Modal, TypeSelect, InventoryWeapon, InventoryArtifact } from "@Components";
+import { Button, IconButton, Modal, TypeSelect, InventoryWeapon, InventoryArtifact } from "@Src/components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";

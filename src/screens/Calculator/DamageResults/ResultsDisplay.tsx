@@ -10,7 +10,7 @@ import { useSelector } from "@Store/hooks";
 import { EStatDamageKey } from "@Src/constants";
 
 // Component
-import { DamageDisplay } from "@Components";
+import { DamageDisplay } from "@Src/components";
 
 const FOCUS_LABELS = {
   [EStatDamageKey.AVERAGE]: "Average",
