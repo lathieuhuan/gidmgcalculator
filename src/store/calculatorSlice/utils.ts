@@ -9,7 +9,7 @@ import type {
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
-import calculateAll from "@Src/calculators";
+import calculateAll from "@Src/calculation";
 import { findById, userItemToCalcItem } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import {

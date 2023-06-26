@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Calculator
-import calculateAll from "@Calculators/index";
+import calculateAll from "@Src/calculation";
 
 // Util
 import { bareLv } from "@Src/utils";

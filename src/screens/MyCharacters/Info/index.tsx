@@ -1,26 +1,17 @@
 import { useState } from "react";
 import { FaUserSlash } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
+
 import type { Level } from "@Src/types";
-
-// Constant
 import { LEVELS } from "@Src/constants";
-
-// Calculator
-import getBaseStats from "@Calculators/baseStats";
+import getBaseStats from "@Src/calculation/baseStats";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSlice";
+import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findById, findByName, getImgSrc } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
-
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
-import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSlice";
-
-// Selector
-import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Component
 import { IconButton, StarLine, AttributeTable, ConfirmModalBody, Modal, TalentList, ConsList } from "@Src/components";

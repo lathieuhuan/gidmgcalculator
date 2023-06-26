@@ -1,5 +1,5 @@
 import type { CharData, UserArtifact, UserSetup, UserWeapon } from "@Src/types";
-import calculateAll from "@Calculators/index";
+import calculateAll from "@Src/calculation";
 import { findDataCharacter } from "@Data/controllers";
 import { findById } from "@Src/utils";
 

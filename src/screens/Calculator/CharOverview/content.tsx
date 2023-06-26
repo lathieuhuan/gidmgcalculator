@@ -1,5 +1,5 @@
 // Calculator
-import { addArtAttr } from "@Calculators/baseStats";
+import { addArtAttr } from "@Src/calculation/baseStats";
 
 // Action
 import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
