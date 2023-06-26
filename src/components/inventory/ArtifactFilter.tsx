@@ -5,7 +5,7 @@ import { useArtifactSetFilter, useArtifactStatsFilter } from "./hooks";
 import { hasDupStat, initArtifactStatsFilter, StatsFilter } from "./utils";
 
 // Component
-import { Button, ButtonGroup } from "../button";
+import { Button, ButtonGroup } from "@Src/pure-components";
 
 interface ArtifactFilterProps {
   artifactType: ArtifactType;

@@ -6,14 +6,10 @@ import type { MySetupModalType } from "../types";
 // Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
-// Hook
+// Store
 import { useDispatch } from "@Store/hooks";
-
-// Action
 import { updateImportInfo } from "@Store/uiSlice";
 import { makeTeammateSetup } from "@Store/thunks";
-
-// Selector
 import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@Store/userDatabaseSlice";
 
 // Util
@@ -22,7 +18,8 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { findDataArtifact, findDataCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
-import { IconButton, CharacterPortrait, Image, Modal } from "@Src/components";
+import { IconButton, Image, Modal } from "@Src/pure-components";
+import { CharacterPortrait } from "@Src/components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
 

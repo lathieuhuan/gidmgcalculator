@@ -1,5 +1,5 @@
 import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
-import { Green } from "./span";
+import { Green } from "@Src/pure-components";
 import { round } from "@Src/utils";
 
 export const renderModifiers = (modifiers: JSX.Element[], type: "buffs" | "debuffs", mutable?: boolean) => {

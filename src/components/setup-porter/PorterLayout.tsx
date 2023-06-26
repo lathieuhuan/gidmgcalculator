@@ -1,5 +1,5 @@
 import type { TextareaHTMLAttributes } from "react";
-import { CloseButton, ButtonGroup, type ButtonGroupItem } from "../button";
+import { CloseButton, ButtonGroup, type ButtonGroupItem } from "@Src/pure-components";
 
 interface PorterLayoutProps {
   heading: string;

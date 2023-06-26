@@ -1,5 +1,5 @@
 import type { PartiallyRequired } from "@Src/types";
-import type { NotificationProps } from "@Src/components";
+import type { NotificationProps } from "@Src/pure-components";
 
 export type NotificationRequest = Omit<NotificationProps, "onClose"> & {
   id: number;

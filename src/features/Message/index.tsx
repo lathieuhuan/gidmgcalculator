@@ -1,4 +1,4 @@
-import { ConfirmModal } from "@Src/components";
+import { ConfirmModal } from "@Src/pure-components";
 import { updateMessage } from "@Store/calculatorSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 

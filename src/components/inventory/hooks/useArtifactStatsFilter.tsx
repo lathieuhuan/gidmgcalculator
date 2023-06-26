@@ -14,8 +14,7 @@ import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton } from "../../button";
-import { Green } from "../../span";
+import { IconButton, Green } from "@Src/pure-components";
 
 interface UseArtifactStatsFilterArgs {
   artifactType?: ArtifactType;

@@ -5,7 +5,8 @@ import type { Teammate } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Button, IconButton, CharacterPortrait, TeammateItems } from "@Src/components";
+import { Button, IconButton } from "@Src/pure-components";
+import { CharacterPortrait, TeammateItems } from "@Src/components";
 
 interface TeammateDetailProps {
   teammate: Teammate;

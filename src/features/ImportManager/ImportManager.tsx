@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
+
 import type { PartiallyRequired, SetupImportInfo } from "@Src/types";
-
-// Constant
 import { EScreen, MAX_CALC_SETUPS } from "@Src/constants";
-
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Selector
 import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calculatorSlice/selectors";
+import { getSearchParam, removeEmpty } from "@Src/utils";
 
 // Action
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
 import { importSetup, initSessionWithSetup, updateMessage } from "@Store/calculatorSlice";
 
-// Util
-import { getSearchParam, removeEmpty } from "@Src/utils";
-
 // Component
-import { ConfirmModalBody, Modal } from "@Src/components";
+import { Modal, ConfirmModalBody } from "@Src/pure-components";
 import { OverrideOptions } from "./OverwriteOptions";
 
 type ImportManagerProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;

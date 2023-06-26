@@ -2,11 +2,10 @@ import { useRef, useState } from "react";
 import { FaExpandArrowsAlt, FaMinus, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
-// Hook
 import { useClickOutside } from "@Src/hooks";
 
 // Component
-import { CloseButton, IconButton, Modal } from "@Src/components";
+import { CloseButton, IconButton, Modal } from "@Src/pure-components";
 import { TrackerContainer, type TrackerState } from "../TrackerContainer";
 import { ResultsDisplay } from "./ResultsDisplay";
 

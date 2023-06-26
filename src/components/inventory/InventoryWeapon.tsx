@@ -5,8 +5,7 @@ import { selectWeaponInventory } from "@Store/userDatabaseSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Component
-import { Button } from "../button";
-import { Modal, ModalHeader, type ModalControl } from "../modal";
+import { Button, Modal, ModalHeader, type ModalControl } from "@Src/pure-components";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
 import { InventoryRack } from "./InventoryRack";

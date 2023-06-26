@@ -1,10 +1,7 @@
 import clsx from "clsx";
+
 import type { Filter } from "../types";
-
-// Constant
 import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
-
-// Util
 import { getImgSrc } from "@Src/utils";
 
 interface CharacterFilterProps extends Filter {
@@ -43,13 +40,10 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
             return (
               <img
                 key={i}
-                className={clsx(
-                  "cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11",
-                  {
-                    "ml-6": i,
-                    "border-3 border-white": chosen,
-                  }
-                )}
+                className={clsx("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11", {
+                  "ml-6": i,
+                  "border-3 border-white": chosen,
+                })}
                 src={getImgSrc(src)}
                 alt={wpType}
                 draggable={false}

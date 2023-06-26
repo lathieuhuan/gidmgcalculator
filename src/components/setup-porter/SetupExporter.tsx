@@ -4,7 +4,7 @@ import type { CalcSetup, Target } from "@Src/types";
 import { encodeSetup } from "./utils";
 
 // Component
-import { Modal, type ModalControl } from "../modal";
+import { Modal, type ModalControl } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 interface SetupExporterProps {

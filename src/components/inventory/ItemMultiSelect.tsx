@@ -5,11 +5,10 @@ import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { itemIsWeapon } from "@Src/utils";
 
 // Component
+import { Button, Modal, ModalHeader, type ModalControl } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
 import { OwnerLabel } from "../OwnerLabel";
 import { WeaponCard } from "../WeaponCard";
-import { Button } from "../button";
-import { Modal, ModalHeader, type ModalControl } from "../modal";
 import { InventoryRack } from "./InventoryRack";
 
 interface ItemMultiSelectProps {

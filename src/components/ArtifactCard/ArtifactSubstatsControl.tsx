@@ -10,7 +10,7 @@ import { ARTIFACT_SUBSTAT_TYPES } from "@Src/constants";
 import VALID_SUBSTAT_VALUES from "./validSubstatValues";
 
 // Component
-import { Input } from "../Input";
+import { Input } from "@Src/pure-components";
 
 export interface ArtifactSubstatsControlProps {
   mutable?: boolean;

@@ -4,7 +4,7 @@ import type { CharInfo, Party } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { SharedSpace } from "../../SharedSpace";
+import { SharedSpace } from "@Src/pure-components";
 import { TalentDetail } from "./TalentDetail";
 import { TalentOverview } from "./TalentOverview";
 

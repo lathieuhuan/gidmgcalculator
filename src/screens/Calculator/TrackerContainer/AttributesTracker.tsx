@@ -1,17 +1,13 @@
 import type { Tracker } from "@Src/types";
-
-// Constant
 import { ATTRIBUTE_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
+import { useTranslation } from "@Src/hooks";
 
 // Util
 import { applyPercent, percentSign, round } from "@Src/utils";
 import { recordListStyles, renderHeading, renderRecord } from "./utils";
 
-// Hook
+// Store
 import { useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
-
-// Selector
 import { selectTotalAttr } from "@Store/calculatorSlice/selectors";
 
 export function AttributesTracker({ totalAttr }: Partial<Pick<Tracker, "totalAttr">>) {

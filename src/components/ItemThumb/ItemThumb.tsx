@@ -4,7 +4,7 @@ import type { Level, Rarity } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Image } from "../Image";
+import { Image } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
 

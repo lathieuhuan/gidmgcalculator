@@ -1,5 +1,5 @@
 import type { DataWeapon, TotalAttribute } from "@Src/types";
-import { Green, Red, Rose } from "@Src/components";
+import { Green, Red, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 import { applyPercent, findByCode, round } from "@Src/utils";

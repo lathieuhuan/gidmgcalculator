@@ -1,4 +1,4 @@
-import { Green, Lightgold, Red } from "@Src/components";
+import { Green, Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {

@@ -1,15 +1,14 @@
 import { Fragment, ReactNode } from "react";
+
 import type { CalculatedDamageCluster, Infusion, TalentBuff, TrackerDamageRecord } from "@Src/types";
-
-// Component
-import { Green } from "@Src/components";
-
-// Hook
 import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, round } from "@Src/utils";
 import { renderDmgComponent, renderDmgValue } from "./utils";
+
+// Component
+import { Green } from "@Src/pure-components";
 
 interface DamageTrackerProps {
   records?: Record<string, TrackerDamageRecord>;

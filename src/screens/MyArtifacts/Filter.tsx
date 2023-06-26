@@ -9,7 +9,7 @@ import { useSelector } from "@Store/hooks";
 import { useArtifactSetFilter, useArtifactStatsFilter, useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Component
-import { ButtonGroup, Modal, type ModalControl } from "@Src/components";
+import { ButtonGroup, Modal, type ModalControl } from "@Src/pure-components";
 
 interface FilterProps {
   types: ArtifactType[];

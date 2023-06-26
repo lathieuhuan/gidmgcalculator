@@ -8,9 +8,7 @@ import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Green } from "../span";
-import { CollapseSpace } from "../collapse";
-import { StatsTable } from "./StatsTable";
+import { StatsTable, CollapseSpace, Green } from "@Src/pure-components";
 
 interface EmSectionProps {
   em: number;

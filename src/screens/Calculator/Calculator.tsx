@@ -11,7 +11,7 @@ import SetupManager from "./SetupManager";
 
 import styles from "./styles.module.scss";
 
-function Calculator() {
+const Calculator = () => {
   const touched = useSelector((state) => state.calculator.setupManageInfos.length !== 0);
 
   return (
@@ -35,6 +35,6 @@ function Calculator() {
       </div>
     </div>
   );
-}
+};
 
 export default memo(Calculator);

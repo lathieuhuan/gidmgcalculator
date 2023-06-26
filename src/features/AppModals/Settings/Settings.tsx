@@ -2,12 +2,12 @@ import { useRef, useState, useContext } from "react";
 
 import { LEVELS } from "@Src/constants";
 import { appSettings } from "@Src/utils";
-import { PersistControlContext } from "@Src/features";
+import { PersistControlContext } from "../../PersistControl";
 import { useDispatch } from "@Store/hooks";
 import { applySettings } from "@Store/calculatorSlice";
 
 // Component
-import { CloseButton, ButtonGroup, Modal, type ModalControl } from "@Src/components";
+import { CloseButton, ButtonGroup, Modal, type ModalControl } from "@Src/pure-components";
 import { CheckSetting, Section, SelectSetting } from "./components";
 
 const genNumberSequence = (count: number, startFromZero?: boolean) => {

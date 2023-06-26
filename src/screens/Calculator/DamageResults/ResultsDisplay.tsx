@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 
-// Selector
 import { selectChar, selectComparedIds, selectDmgResult, selectParty } from "@Store/calculatorSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
-
-// Constant
 import { EStatDamageKey } from "@Src/constants";
 
 // Component

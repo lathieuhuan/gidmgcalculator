@@ -1,16 +1,16 @@
 import { useState, KeyboardEventHandler } from "react";
-
 import type { UserSetup } from "@Src/types";
+
+// Store
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { combineSetups } from "@Store/userDatabaseSlice";
-import { findById } from "@Src/utils";
-
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
+
+import { findById } from "@Src/utils";
 import { useCombineManager } from "./hooks";
 
 // Component
-import { Input, ButtonGroup } from "@Src/components";
+import { Input, ButtonGroup } from "@Src/pure-components";
 
 export function FirstCombine({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch();

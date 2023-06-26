@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Electro, Green } from "@Src/components";
+import { Electro, Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";

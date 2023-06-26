@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierInput, PartyData } from "@Src/types";
-import { Green } from "@Src/components";
+import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";

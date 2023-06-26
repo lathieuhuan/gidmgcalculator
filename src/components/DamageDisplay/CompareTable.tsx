@@ -10,7 +10,7 @@ import { findById } from "@Src/utils";
 import { displayValue, type TableKey } from "./utils";
 
 // Component
-import { Table } from "../table";
+import { Table } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 

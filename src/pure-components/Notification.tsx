@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { FaCheckCircle, FaExclamationCircle, FaExclamationTriangle, FaInfoCircle, FaTimes } from "react-icons/fa";
-
 import { IconButton } from "./button";
 
 export interface NotificationProps {

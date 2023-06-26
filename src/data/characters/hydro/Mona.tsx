@@ -1,5 +1,5 @@
 import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Src/components";
+import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { finalTalentLv, applyModifier } from "@Src/utils/calculation";

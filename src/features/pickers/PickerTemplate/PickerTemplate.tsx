@@ -1,12 +1,11 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { DataType, Filter, PickerItem } from "../types";
 
-// Hook
+import type { DataType, Filter, PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
-import { Input, CollapseSpace, ModalHeader } from "@Src/components";
+import { Input, CollapseSpace, ModalHeader } from "@Src/pure-components";
 import { CharacterFilter } from "./CharacterFilter";
 import { MemoItem } from "./Item";
 

@@ -1,6 +1,6 @@
-import type { Tracker, TrackerRecord } from "@Src/types";
 import type { ReactNode } from "react";
-import { Green } from "@Src/components";
+import type { Tracker, TrackerRecord } from "@Src/types";
+
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -11,6 +11,7 @@ import {
   REACTION_BONUS_INFO_KEYS,
 } from "@Src/constants";
 import { round } from "@Src/utils";
+import { Green } from "@Src/pure-components";
 
 export const recordListStyles = "columns-1 md2:columns-2 space-y-1";
 

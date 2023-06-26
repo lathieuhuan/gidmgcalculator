@@ -4,8 +4,7 @@ import type { CharInfo } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Conponent
-import { InfoSign } from "../../button";
-import { SharedSpace } from "../../SharedSpace";
+import { InfoSign, SharedSpace } from "@Src/pure-components";
 import { AbilityIcon } from "../components";
 import { ConsDetail } from "./ConsDetail";
 

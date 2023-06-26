@@ -2,10 +2,10 @@ import clsx from "clsx";
 import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
-import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
 
-// Constant
+import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
 import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
+import { useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Action
 import {
@@ -18,12 +18,9 @@ import {
 } from "@Store/userDatabaseSlice";
 import { updateMessage } from "@Store/calculatorSlice";
 
-// Selector
-import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-
-// Hook
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTypeFilter } from "@Src/components/inventory/hooks";
+import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findById, indexById } from "@Src/utils";
@@ -36,16 +33,8 @@ import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { PickerArtifact, PickerCharacter } from "@Src/features";
-import {
-  ButtonGroup,
-  OwnerLabel,
-  ArtifactCard,
-  TypeSelect,
-  InventoryRack,
-  WareHouse,
-  ConfirmModal,
-  ItemRemoveConfirm,
-} from "@Src/components";
+import { ButtonGroup, WarehouseLayout, ConfirmModal } from "@Src/pure-components";
+import { OwnerLabel, ArtifactCard, TypeSelect, InventoryRack, ItemRemoveConfirm } from "@Src/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -114,9 +103,9 @@ export default function MyArtifacts() {
     filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");
 
   return (
-    <WareHouse.Wrapper>
-      <WareHouse>
-        <WareHouse.ButtonBar>
+    <WarehouseLayout.Wrapper>
+      <WarehouseLayout>
+        <WarehouseLayout.ButtonBar>
           <ButtonGroup
             className="mr-4"
             space="space-x-4"
@@ -160,9 +149,9 @@ export default function MyArtifacts() {
               </div>
             )}
           </div>
-        </WareHouse.ButtonBar>
+        </WarehouseLayout.ButtonBar>
 
-        <WareHouse.Body className="hide-scrollbar">
+        <WarehouseLayout.Body className="hide-scrollbar">
           <InventoryRack
             listClassName={styles.list}
             itemClassName={styles.item}
@@ -235,8 +224,8 @@ export default function MyArtifacts() {
               setupIDs={chosenArtifact?.setupIDs}
             />
           </div>
-        </WareHouse.Body>
-      </WareHouse>
+        </WarehouseLayout.Body>
+      </WarehouseLayout>
 
       <Filter
         active={modalType === "FITLER"}
@@ -337,6 +326,6 @@ export default function MyArtifacts() {
           onClose={() => setNewOwner(null)}
         />
       )}
-    </WareHouse.Wrapper>
+    </WarehouseLayout.Wrapper>
   );
 }

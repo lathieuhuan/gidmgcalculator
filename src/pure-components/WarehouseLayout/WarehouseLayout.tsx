@@ -7,13 +7,8 @@ type IProps = {
   children: ReactNode;
 };
 
-const WareHouse = ({ className, ...rest }: IProps) => {
-  return (
-    <div
-      className={clsx("relative h-full pt-12 md2:pt-14", styles.warehouse, className)}
-      {...rest}
-    />
-  );
+const WarehouseLayout = ({ className, ...rest }: IProps) => {
+  return <div className={clsx("relative h-full pt-12 md2:pt-14", styles.warehouse, className)} {...rest} />;
 };
 
 const Wrapper = (props: IProps) => {
@@ -28,8 +23,8 @@ const Body = ({ className = "", ...rest }: IProps) => {
   return <div className={"h-full flex " + className} {...rest} />;
 };
 
-WareHouse.Wrapper = Wrapper;
-WareHouse.ButtonBar = ButtonBar;
-WareHouse.Body = Body;
+WarehouseLayout.Wrapper = Wrapper;
+WarehouseLayout.ButtonBar = ButtonBar;
+WarehouseLayout.Body = Body;
 
-export { WareHouse };
+export { WarehouseLayout };

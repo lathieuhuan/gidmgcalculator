@@ -1,5 +1,5 @@
 import type { DataWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/components";
+import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
 import { applyPercent, findByCode, round } from "@Src/utils";

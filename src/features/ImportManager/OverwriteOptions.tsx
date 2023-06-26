@@ -9,7 +9,7 @@ import { useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Table, CollapseSpace, ButtonGroup } from "@Src/components";
+import { ButtonGroup, Table, CollapseSpace } from "@Src/pure-components";
 
 const { Tr, Th, Td } = Table;
 

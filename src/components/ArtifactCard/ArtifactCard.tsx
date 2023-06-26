@@ -13,8 +13,7 @@ import { percentSign, getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
-import { BetaMark } from "../BetaMark";
-import { IconButton } from "../button";
+import { IconButton, BetaMark } from "@Src/pure-components";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
 

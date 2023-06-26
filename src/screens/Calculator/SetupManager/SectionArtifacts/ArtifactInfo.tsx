@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
 import { FaSave, FaSyncAlt, FaTrashAlt, FaChevronDown } from "react-icons/fa";
+
 import type { CalcArtifact, AttributeStat } from "@Src/types";
+import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
 
 // Constant
 import { MAX_USER_ARTIFACTS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
-// Action
+// Store
 import { changeArtifact, updateArtifact } from "@Store/calculatorSlice";
 import { addUserArtifact, updateUserArtifact } from "@Store/userDatabaseSlice";
-
-// Selector
 import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
-
-// Util
-import { calcItemToUserItem, findById, percentSign, userItemToCalcItem } from "@Src/utils";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton, ArtifactLevelSelect, ConfirmModalBody, Modal, ArtifactSubstatsControl } from "@Src/components";
+import { IconButton, Modal, ConfirmModalBody } from "@Src/pure-components";
+import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
 interface ArtifactInfoProps {
   artifact: CalcArtifact;

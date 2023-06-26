@@ -1,13 +1,8 @@
 import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
 import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
-
-// Selector
 import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 
 // Util

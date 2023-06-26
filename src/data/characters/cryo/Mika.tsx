@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, ModifierInput } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Src/components";
+import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";

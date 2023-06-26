@@ -6,7 +6,7 @@ import { useSelector } from "@Store/hooks";
 import { findById } from "@Src/utils";
 
 // Component
-import { Popover } from "./Popover";
+import { Popover } from "@Src/pure-components";
 
 const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
   const userSetups = useSelector(selectUserSetups);

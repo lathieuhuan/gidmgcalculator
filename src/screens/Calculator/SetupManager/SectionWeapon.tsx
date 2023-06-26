@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import type { Level } from "@Src/types";
 
-// Constant
+import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
-// Action
+// Store
 import { changeWeapon, updateWeapon } from "@Store/calculatorSlice";
-
-// Selector
 import { selectWeapon } from "@Store/calculatorSlice/selectors";
-
-// Hook
 import { useSelector } from "@Store/hooks";
 
 // Util
@@ -20,7 +15,7 @@ import { getImgSrc } from "@Src/utils";
 
 // Component
 import { PickerWeapon } from "@Src/features";
-import { BetaMark } from "@Src/components";
+import { BetaMark } from "@Src/pure-components";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();

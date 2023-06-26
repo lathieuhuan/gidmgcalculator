@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Hydro } from "@Src/components";
+import { Green, Hydro } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 

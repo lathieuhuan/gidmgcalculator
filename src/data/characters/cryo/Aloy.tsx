@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Cryo, Green, Lightgold, Red, Rose } from "@Src/components";
+import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";

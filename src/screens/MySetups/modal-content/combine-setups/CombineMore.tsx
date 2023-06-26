@@ -1,4 +1,7 @@
 import type { UserSetup } from "@Src/types";
+
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
 import { addSetupToComplex } from "@Store/userDatabaseSlice";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
@@ -6,12 +9,10 @@ import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
 import { useCombineManager } from "./hooks";
 
 // Component
-import { ButtonGroup } from "@Src/components";
+import { ButtonGroup } from "@Src/pure-components";
 
 interface CombineMoreProps {
   setupID: number;

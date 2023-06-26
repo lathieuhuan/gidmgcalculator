@@ -9,11 +9,9 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 import { filterArtifactsBySetsAndStats, initArtifactStatsFilter } from "./utils";
 
 // Conponent
+import { ButtonGroup, CollapseAndMount, Modal, ModalHeader, type ModalControl } from "@Src/pure-components";
 import { ArtifactCard } from "../ArtifactCard";
-import { ButtonGroup } from "../button";
 import { OwnerLabel } from "../OwnerLabel";
-import { CollapseAndMount } from "../collapse";
-import { Modal, ModalHeader, type ModalControl } from "../modal";
 import { ArtifactFilter } from "./ArtifactFilter";
 import { InventoryRack } from "./InventoryRack";
 

@@ -5,7 +5,7 @@ import { getImgSrc } from "@Src/utils";
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { IconButton } from "./button";
+import { IconButton } from "@Src/pure-components";
 
 interface TeammateItemsProps {
   className?: string;

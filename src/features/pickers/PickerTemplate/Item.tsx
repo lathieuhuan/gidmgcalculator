@@ -1,11 +1,10 @@
 import { memo } from "react";
-import type { DataType, PickerItem } from "../types";
 
-// Constant
+import type { DataType, PickerItem } from "../types";
 import { VISION_ICONS } from "@Src/constants";
 
 // Component
-import { Image, BetaMark } from "@Src/components";
+import { Image, BetaMark } from "@Src/pure-components";
 
 interface ItemProps {
   visible: boolean;

@@ -1,7 +1,5 @@
-// Calculator
 import { addArtAttr } from "@Src/calculation/baseStats";
-
-// Action
+import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 
 // Selector
@@ -17,11 +15,9 @@ import {
 import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Src/hooks";
 
-// Util
-import { getArtifactSetBonuses } from "@Src/utils/calculation";
-
 // Component
-import { SharedSpace, AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConsList } from "@Src/components";
+import { SharedSpace } from "@Src/pure-components";
+import { AttributeTable, SetBonusesDisplay, WeaponCard, TalentList, ConsList } from "@Src/components";
 
 const contentByTab: Record<string, () => JSX.Element> = {
   Attributes() {

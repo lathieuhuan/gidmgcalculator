@@ -1,19 +1,13 @@
 import { useMemo } from "react";
+
 import type { ArtifactType } from "@Src/types";
-import type { ModalControl } from "@Src/components";
 import type { PickerItem } from "./types";
-
-// Constant
 import { EModAffect } from "@Src/constants";
-
-// Util
 import { createArtifact } from "@Src/utils/creators";
-
-// Data
 import artifacts from "@Data/artifacts";
 
 // Component
-import { Modal } from "@Src/components";
+import { Modal, type ModalControl } from "@Src/pure-components";
 import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface ArtifactPickerProps {

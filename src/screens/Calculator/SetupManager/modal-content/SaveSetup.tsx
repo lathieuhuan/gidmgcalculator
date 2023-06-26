@@ -10,7 +10,7 @@ import { selectCharData } from "@Store/calculatorSlice/selectors";
 import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 
 // Component
-import { Input, ButtonGroup } from "@Src/components";
+import { ButtonGroup, Input } from "@Src/pure-components";
 
 interface SaveSetupProps {
   manageInfo: CalcSetupManageInfo;

@@ -1,4 +1,5 @@
 export * from "./Modal";
 export * from "./ModalBody";
 export * from "./ModalHeader";
-export * from "./premade-modals";
+export * from "./ConfirmModal";
+export * from "./StandardModal";

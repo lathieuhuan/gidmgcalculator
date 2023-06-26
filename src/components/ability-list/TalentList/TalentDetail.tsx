@@ -11,11 +11,9 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Component
-import { CloseButton } from "../../button";
-import { StatsTable } from "../../table";
+import { CloseButton, StatsTable } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
-const { Row } = StatsTable;
 const styles = {
   row: "pb-1 text-sm",
   leftCol: "pr-6 text-dullyellow",
@@ -133,10 +131,10 @@ export const TalentDetail = ({ dataChar, detailIndex, onChangeDetailIndex, onClo
           <StatsTable>
             {talent.stats.map((stat, i) => {
               return (
-                <Row key={i} className={styles.row}>
+                <StatsTable.Row key={i} className={styles.row}>
                   <p className={styles.leftCol}>{stat.name}</p>
                   <p className={styles.rightCol}>{stat.value}</p>
-                </Row>
+                </StatsTable.Row>
               );
             })}
           </StatsTable>

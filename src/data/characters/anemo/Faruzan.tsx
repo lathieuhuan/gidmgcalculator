@@ -1,5 +1,5 @@
 import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Anemo, Green, Lightgold } from "@Src/components";
+import { Anemo, Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";

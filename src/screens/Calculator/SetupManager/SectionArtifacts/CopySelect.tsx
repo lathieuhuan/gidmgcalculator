@@ -1,14 +1,9 @@
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
 import { updateCalcSetup } from "@Store/calculatorSlice";
-
-// Selector
 import { selectCalcSetupsById, selectSetupManageInfos } from "@Store/calculatorSlice/selectors";
 
 // Component
-import { CopySection, type Option } from "@Screens/Calculator/components";
+import { CopySection, type Option } from "../../components";
 
 export function CopySelect() {
   const dispatch = useDispatch();

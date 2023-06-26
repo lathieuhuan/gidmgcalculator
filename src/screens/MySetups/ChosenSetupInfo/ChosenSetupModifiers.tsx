@@ -1,6 +1,4 @@
 import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
-
-// Hook
 import { useTranslation } from "@Src/hooks";
 
 // Util
@@ -8,7 +6,7 @@ import { getPartyData, getTargetData } from "@Data/controllers";
 import { calculateChosenSetup } from "./utils";
 
 // Component
-import { Lightgold, CollapseList } from "@Src/components";
+import { Lightgold, CollapseList } from "@Src/pure-components";
 import {
   ArtifactBuffs,
   ArtifactDebuffs,

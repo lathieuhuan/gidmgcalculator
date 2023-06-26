@@ -5,11 +5,13 @@ import { type CSSProperties, useEffect } from "react";
 import type { ArtifactAttribute, AttributeStat, ArtifactSetBonus, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
+// Store
 import { useDispatch } from "@Store/hooks";
 import { updateUserArtifactSubStat, updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
 
 // Component
-import { Button, AttributeTable, ButtonGroup, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
+import { Button, ButtonGroup } from "@Src/pure-components";
+import { AttributeTable, SetBonusesDisplay, ArtifactCard, WeaponCard } from "@Src/components";
 
 interface GearsDetailsProps {
   className: string;

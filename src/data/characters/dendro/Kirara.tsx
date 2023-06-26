@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Dendro, Green, Rose } from "@Src/components";
+import { Dendro, Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { round } from "@Src/utils";

@@ -1,5 +1,5 @@
 import type { DataCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/components";
+import { Green, Rose } from "@Src/pure-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyPercent } from "@Src/utils";

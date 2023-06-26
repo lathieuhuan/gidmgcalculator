@@ -5,8 +5,7 @@ import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
-import { Input } from "./Input";
-import { Green } from "./span";
+import { Input, Green } from "@Src/pure-components";
 
 export type ModSelectOption = {
   label: string | number;

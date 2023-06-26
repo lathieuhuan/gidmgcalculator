@@ -1,4 +1,5 @@
 import type { Tracker } from "@Src/types";
+import { useTranslation } from "@Src/hooks";
 
 // Constant
 import {
@@ -13,9 +14,6 @@ import {
 import { round, percentSign } from "@Src/utils";
 import { getRxnBonusesFromEM } from "@Src/utils/calculation";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
-
-// Hook
-import { useTranslation } from "@Src/hooks";
 
 interface BonusesTrackerProps extends Partial<Pick<Tracker, "attPattBonus" | "attElmtBonus" | "rxnBonus">> {
   em?: number;

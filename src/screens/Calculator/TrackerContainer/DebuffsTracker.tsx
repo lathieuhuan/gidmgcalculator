@@ -1,12 +1,6 @@
 import type { ResistanceReduction, Tracker } from "@Src/types";
-
-// Constant
 import { ATTACK_ELEMENTS } from "@Src/constants";
-
-// Hook
 import { useTranslation } from "@Src/hooks";
-
-// Util
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 function getResMultEquation(value: number) {
@@ -32,14 +26,9 @@ export function DebuffsTracker({ resistReduct }: Partial<Pick<Tracker, "resistRe
 
             return records.length ? (
               <div key={attElmt} className="break-inside-avoid">
-                {renderHeading(
-                  t(attElmt, { ns: "resistance" }) + " reduction",
-                  totalResistReduct[attElmt] + "%"
-                )}
+                {renderHeading(t(attElmt, { ns: "resistance" }) + " reduction", totalResistReduct[attElmt] + "%")}
 
-                <ul className="pl-4 list-disc">
-                  {records.map(renderRecord((value) => value + "%"))}
-                </ul>
+                <ul className="pl-4 list-disc">{records.map(renderRecord((value) => value + "%"))}</ul>
               </div>
             ) : null;
           })}
@@ -67,10 +56,7 @@ export function DebuffsTracker({ resistReduct }: Partial<Pick<Tracker, "resistRe
                     0
                   )}
 
-                  {renderRecord(getResMultEquation)(
-                    { desc: "Equation", value: actualResistance },
-                    1
-                  )}
+                  {renderRecord(getResMultEquation)({ desc: "Equation", value: actualResistance }, 1)}
                 </ul>
               </div>
             );

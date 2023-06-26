@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Image } from "./Image";
+import { Image } from "@Src/pure-components";
 
 interface CharFilledSlotProps {
   className?: string;

@@ -9,7 +9,7 @@ import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue } from 
 import { findDataWeapon } from "@Data/controllers";
 
 // Component
-import { BetaMark } from "./BetaMark";
+import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 

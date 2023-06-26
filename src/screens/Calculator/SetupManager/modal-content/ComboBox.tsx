@@ -1,13 +1,10 @@
 import clsx from "clsx";
 import { ChangeEvent, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+
 import type { Vision } from "@Src/types";
 import type { DataMonster } from "@Data/monsters/types";
-
-// Data
 import monsters from "@Data/monsters";
-
-// Util
 import { turnArray } from "@Src/utils";
 
 interface ComboBoxProps {

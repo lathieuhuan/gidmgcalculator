@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Notification } from "@Src/components";
+import { Notification } from "@Src/pure-components";
 import { NotificationAnimator } from "./NotificationAnimator";
 import { NotificationCenterProps } from "./types";
 

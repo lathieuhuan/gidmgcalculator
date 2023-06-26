@@ -1,15 +1,8 @@
-import clsx from "clsx";
-import type { ReactNode } from "react";
-import type { ChangeEvent } from "react";
+import type { ReactNode, ChangeEvent } from "react";
+
 import type { AttackElement, Vision } from "@Src/types";
-
-// Constant
 import { ATTACK_ELEMENTS } from "@Src/constants";
-
-// Action
 import { updateTarget } from "@Store/calculatorSlice";
-
-// Selector
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
@@ -21,7 +14,7 @@ import { useTranslation } from "@Src/hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { Button, CloseButton, Input } from "@Src/components";
+import { Button, CloseButton, Input } from "@Src/pure-components";
 import { ComboBox } from "./ComboBox";
 
 interface TargetConfigProps {

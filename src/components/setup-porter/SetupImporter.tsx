@@ -5,7 +5,7 @@ import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
 // Component
-import { Modal, type ModalControl } from "../modal";
+import { Modal, type ModalControl } from "@Src/pure-components";
 import { PorterLayout } from "./PorterLayout";
 
 const SetupImporterCore = ({ onClose }: Pick<ModalControl, "onClose">) => {

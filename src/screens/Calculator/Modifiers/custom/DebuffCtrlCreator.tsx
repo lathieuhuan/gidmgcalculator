@@ -9,7 +9,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Input, ButtonGroup } from "@Src/components";
+import { ButtonGroup, Input } from "@Src/pure-components";
 
 interface DebuffCtrlCreatorProps {
   onClose: () => void;

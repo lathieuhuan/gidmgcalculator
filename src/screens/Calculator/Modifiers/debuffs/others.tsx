@@ -1,13 +1,8 @@
 import { useEffect } from "react";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-// Action
 import { changeModCtrlInput, toggleModCtrl, updateResonance, updateCalcSetup } from "@Store/calculatorSlice";
-
-// Selector
 import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calculatorSlice/selectors";
-
-// Hook
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
@@ -16,7 +11,8 @@ import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
-import { Green, ModifierTemplate, renderModifiers } from "@Src/components";
+import { Green } from "@Src/pure-components";
+import { ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();

@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import { Fragment, useState, useRef } from "react";
 import { FaChevronDown } from "react-icons/fa";
-
 import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
+
+// Constant
 import {
   ATTACK_ELEMENTS,
   ATTACK_ELEMENT_INFO_KEYS,
@@ -10,6 +11,7 @@ import {
   REACTION_BONUS_INFO_KEYS,
   REACTIONS,
 } from "@Src/constants";
+
 import { updateCustomBuffCtrls } from "@Store/calculatorSlice";
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
@@ -18,7 +20,7 @@ import { useDispatch } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { Input, ButtonGroup } from "@Src/components";
+import { ButtonGroup, Input } from "@Src/pure-components";
 
 type CustomBuffCategory = CustomBuffCtrl["category"];
 

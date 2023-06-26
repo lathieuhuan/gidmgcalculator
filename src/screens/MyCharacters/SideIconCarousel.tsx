@@ -2,20 +2,19 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
+import { useIntersectionObserver } from "@Src/hooks";
+
 // Util
 import { getImgSrc } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
-// Action
+// Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";
-
-// Hook
 import { useDispatch } from "@Store/hooks";
-import { useIntersectionObserver } from "@Src/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { IconButton } from "@Src/components";
+import { IconButton } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
 

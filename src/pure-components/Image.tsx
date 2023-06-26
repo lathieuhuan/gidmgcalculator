@@ -3,7 +3,6 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { RiSwordFill } from "react-icons/ri";
 import type { IconType } from "react-icons/lib";
-
 import { getImgSrc } from "@Src/utils";
 
 const ICONS_BY_TYPE = {

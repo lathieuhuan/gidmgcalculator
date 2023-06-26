@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import { AttackPattern, Infusion, Tracker } from "@Src/types";
 
-// Hook
+// Store
 import { useSelector } from "@Store/hooks";
-
-// Selector
 import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
-// Calculator
-import calculateAll from "@Src/calculation";
-
 // Util
+import calculateAll from "@Src/calculation";
 import { bareLv } from "@Src/utils";
 import { initTracker, getTotalRecordValue } from "./utils";
 
 // Component
-import { Green, Lesser, CollapseList } from "@Src/components";
+import { Green, Lesser, CollapseList } from "@Src/pure-components";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";

@@ -1,20 +1,15 @@
 import { Fragment } from "react";
 import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
-// Util
 import { getTargetData } from "@Data/controllers";
 
-// Hook
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Selector
 import { selectTarget } from "@Store/calculatorSlice/selectors";
-
-// Action
 import { updateTarget } from "@Store/calculatorSlice";
 
 // Component
-import { IconButton, Input } from "@Src/components";
+import { IconButton, Input } from "@Src/pure-components";
 
 interface SectionTargetProps {
   onMinimize: () => void;

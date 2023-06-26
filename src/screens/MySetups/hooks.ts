@@ -5,15 +5,9 @@ import type { UserArtifacts, UserWeapon } from "@Src/types";
 import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 
-// Hook
+// Store
 import { useSelector } from "@Store/hooks";
-
-// Selector
-import {
-  selectUserArts,
-  selectUserSetups,
-  selectUserWps,
-} from "@Store/userDatabaseSlice/selectors";
+import { selectUserArts, selectUserSetups, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 type SetupItemInfos = Record<
   string,

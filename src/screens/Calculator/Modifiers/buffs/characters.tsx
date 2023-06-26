@@ -1,8 +1,8 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-// Selector
 import { selectChar, selectCharData, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
 import {
@@ -11,9 +11,6 @@ import {
   toggleModCtrl,
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
-
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { findDataCharacter, getPartyData } from "@Data/controllers";

@@ -7,7 +7,7 @@ import type {
   PartyData,
   TotalAttribute,
 } from "@Src/types";
-import { Electro, Green, Lightgold, Red } from "@Src/components";
+import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, MEDIUM_PAs } from "../constants";

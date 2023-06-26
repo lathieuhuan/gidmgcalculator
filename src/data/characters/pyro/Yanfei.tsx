@@ -1,5 +1,5 @@
 import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
-import { Green } from "@Src/components";
+import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { EModSrc, LIGHT_PAs } from "../constants";

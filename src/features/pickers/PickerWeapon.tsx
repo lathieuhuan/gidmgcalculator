@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import type { WeaponType } from "@Src/types";
-import type { ModalControl } from "@Src/components";
 
-// Data
+import type { WeaponType } from "@Src/types";
 import weapons from "@Data/weapons";
 
 // Util
@@ -10,7 +8,7 @@ import { pickProps } from "@Src/utils";
 import { createWeapon } from "@Src/utils/creators";
 
 // Component
-import { Modal } from "@Src/components";
+import { Modal, type ModalControl } from "@Src/pure-components";
 import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
 
 interface WeaponPickerProps {

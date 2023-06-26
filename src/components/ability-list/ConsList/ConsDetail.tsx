@@ -5,8 +5,7 @@ import type { DataCharacter } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Conponent
-import { CloseButton } from "../../button";
-import { Green, Lesser } from "../../span";
+import { CloseButton, Green, Lesser } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
 interface ConsDetailProps {

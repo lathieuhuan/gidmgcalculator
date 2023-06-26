@@ -2,8 +2,7 @@ import type { ReactNode } from "react";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { Modal, type ModalControl } from "./modal";
-import { CloseButton } from "./button";
+import { CloseButton, Modal, type ModalControl } from "@Src/pure-components";
 
 interface TypeSelectProps extends ModalControl {
   choices: Record<string, string>;

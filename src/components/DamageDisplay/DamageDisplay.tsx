@@ -11,8 +11,7 @@ import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
 // Component
-import { CollapseSpace } from "../collapse";
-import { Table } from "../table";
+import { CollapseSpace, Table } from "@Src/pure-components";
 import { CompareTable } from "./CompareTable";
 
 const { Tr, Th, Td } = Table;

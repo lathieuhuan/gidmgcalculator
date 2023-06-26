@@ -1,22 +1,20 @@
 import clsx from "clsx";
 import { useState } from "react";
+
+// Type
 import type { ArtifactAttribute, UserArtifacts, UserWeapon } from "@Src/types";
 import type { DetailsType } from "./types";
 
-// Constant
 import { ARTIFACT_TYPES } from "@Src/constants";
-
-// Hook
-import { useDispatch } from "@Store/hooks";
-
-// Action
-import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
-
-// Util
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
+// Store
+import { useDispatch } from "@Store/hooks";
+import { switchArtifact, switchWeapon, unequipArtifact } from "@Store/userDatabaseSlice";
+
 // Component
-import { CloseButton, SharedSpace, InventoryWeapon, InventoryArtifact } from "@Src/components";
+import { CloseButton, SharedSpace } from "@Src/pure-components";
+import { InventoryWeapon, InventoryArtifact } from "@Src/components";
 import { GearsOverview } from "./GearsOverview";
 import { GearsDetails } from "./GearsDetails";
 

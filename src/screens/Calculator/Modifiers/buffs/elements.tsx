@@ -2,20 +2,11 @@ import { useState } from "react";
 import type { AmplifyingReaction, ModInputConfig, Vision } from "@Src/types";
 import type { ModSelectOption } from "@Src/components";
 
-// Constant
 import { VISION_TYPES } from "@Src/constants";
-
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
-
-// Selector
-import { selectChar, selectCharData, selectElmtModCtrls, selectRxnBonus } from "@Store/calculatorSlice/selectors";
-
-// Action
-import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
-
-// Util
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { selectChar, selectCharData, selectElmtModCtrls, selectRxnBonus } from "@Store/calculatorSlice/selectors";
+import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 
 // Component
 import {

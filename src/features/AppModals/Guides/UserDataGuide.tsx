@@ -1,5 +1,5 @@
 import { FaBars, FaCog } from "react-icons/fa";
-import { Lightgold, Red } from "@Src/components";
+import { Lightgold, Red } from "@Src/pure-components";
 
 export const UserDataGuide = () => {
   return (
