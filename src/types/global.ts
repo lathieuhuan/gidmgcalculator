@@ -18,35 +18,35 @@ export type Nation = "outland" | "mondstadt" | "liyue" | "inazuma" | "sumeru" | 
 
 export type Rarity = 1 | 2 | 3 | 4 | 5;
 
-export type Level = typeof LEVELS[number];
+export type Level = (typeof LEVELS)[number];
 
-export type WeaponType = typeof WEAPON_TYPES[number];
+export type WeaponType = (typeof WEAPON_TYPES)[number];
 
-export type ArtifactType = typeof ARTIFACT_TYPES[number];
+export type ArtifactType = (typeof ARTIFACT_TYPES)[number];
 
-export type Vision = typeof VISION_TYPES[number];
+export type Vision = (typeof VISION_TYPES)[number];
 
-export type ResonanceVision = typeof RESONANCE_VISION_TYPES[number];
+export type ResonanceVision = (typeof RESONANCE_VISION_TYPES)[number];
 
-export type NormalAttack = typeof NORMAL_ATTACKS[number];
+export type NormalAttack = (typeof NORMAL_ATTACKS)[number];
 
-export type AttackPattern = typeof ATTACK_PATTERNS[number];
+export type AttackPattern = (typeof ATTACK_PATTERNS)[number];
 
-export type AttackElement = typeof ATTACK_ELEMENTS[number];
+export type AttackElement = (typeof ATTACK_ELEMENTS)[number];
 
-export type CoreStat = typeof CORE_STAT_TYPES[number];
+export type CoreStat = (typeof CORE_STAT_TYPES)[number];
 
-export type BaseStat = typeof BASE_STAT_TYPES[number];
+export type BaseStat = (typeof BASE_STAT_TYPES)[number];
 
-export type AttributeStat = typeof ATTRIBUTE_STAT_TYPES[number];
+export type AttributeStat = (typeof ATTRIBUTE_STAT_TYPES)[number];
 
 export type AmplifyingReaction = "melt" | "vaporize";
 
 export type QuickenReaction = "spread" | "aggravate";
 
-export type Reaction = typeof REACTIONS[number];
+export type Reaction = (typeof REACTIONS)[number];
 
-export type TransformativeReaction = typeof TRANSFORMATIVE_REACTIONS[number];
+export type TransformativeReaction = (typeof TRANSFORMATIVE_REACTIONS)[number];
 
 export type CharInfo = {
   name: string;
@@ -125,4 +125,6 @@ export type PartiallyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<
 
 export type PartiallyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
-export type BooRecord = Record<string, boolean>;
+export type StringRecord = Record<string, string>;
+
+export type BooleanRecord = Record<string, boolean>;

@@ -1,4 +1,6 @@
-export const mapVerson3_0: Record<string, string> = {
+import type { StringRecord } from "@Src/types";
+
+export const mapVerson3_0: StringRecord = {
   HP: "hp",
   ATK: "atk",
   DEF: "def",
@@ -55,7 +57,7 @@ export const mapVerson3_0: Record<string, string> = {
   "Dendro RES reduction": "dendro",
 };
 
-export const mapGoodFormat: Record<string, string> = {
+export const mapGoodFormat: StringRecord = {
   atk: "atk",
   atk_: "atk_",
   hp: "hp",

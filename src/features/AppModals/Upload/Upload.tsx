@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
+import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import type { UploadedData, UploadStep } from "./types";
 import type { ModalControl } from "@Src/pure-components";
 
@@ -16,8 +16,8 @@ const UploadCore = (props: ModalControl) => {
   const dispatch = useDispatch();
   const uploadSteps = useRef<UploadStep[]>(["SELECT_OPTION"]);
   const uploadedData = useRef<UploadedData>();
-  const removedWeaponIDs = useRef<BooRecord>({});
-  const removedArtifactIDs = useRef<BooRecord>({});
+  const removedWeaponIDs = useRef<BooleanRecord>({});
+  const removedArtifactIDs = useRef<BooleanRecord>({});
   const notiId = useRef<number>();
 
   const [stepNo, setStepNo] = useState(-1);

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
-import type { BooRecord, UserArtifact, UserWeapon } from "@Src/types";
+import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { itemIsWeapon } from "@Src/utils";
 
 // Component
@@ -16,13 +16,13 @@ interface ItemMultiSelectProps {
   items: UserWeapon[] | UserArtifact[];
   max?: number;
   onClose: () => void;
-  onConfirm: (chosenIDs: BooRecord) => void;
+  onConfirm: (chosenIDs: BooleanRecord) => void;
 }
 
 const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
   const { max } = props;
   const [chosenItem, setChosenItem] = useState<UserWeapon | UserArtifact>();
-  const [chosenIDs, setChosenIDs] = useState<BooRecord>({});
+  const [chosenIDs, setChosenIDs] = useState<BooleanRecord>({});
 
   const chosenCount = Object.values(chosenIDs).filter(Boolean).length;
 

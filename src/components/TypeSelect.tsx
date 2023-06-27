@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
+
+import type { StringRecord } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
 
 // Component
 import { CloseButton, Modal, type ModalControl } from "@Src/pure-components";
 
 interface TypeSelectProps extends ModalControl {
-  choices: Record<string, string>;
+  choices: StringRecord;
   footer?: ReactNode;
   onClickChoice: (choice: string) => void;
 }

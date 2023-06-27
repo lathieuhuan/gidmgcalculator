@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton, Modal, ConfirmModalBody } from "@Src/pure-components";
+import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { ArtifactLevelSelect, ArtifactSubstatsControl } from "@Src/components";
 
 interface ArtifactInfoProps {
@@ -106,33 +106,27 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
         />
       </div>
 
-      <div className="pt-4 pb-1 flex justify-evenly align-center">
-        <IconButton
+      <div className="pt-4 pb-1 flex justify-evenly items-center">
+        <Button
           variant="negative"
+          icon={<FaTrashAlt />}
           onClick={() => {
             dispatch(changeArtifact({ pieceIndex, newPiece: null }));
             onClickRemovePiece();
           }}
-        >
-          <FaTrashAlt />
-        </IconButton>
+        />
 
-        <IconButton variant="neutral" onClick={() => setIsSaving(true)}>
-          <FaSave />
-        </IconButton>
+        <Button variant="neutral" icon={<FaSave />} onClick={() => setIsSaving(true)} />
 
-        <IconButton
-          className="font-bold"
+        <Button
+          className="w-8 h-8"
           disabled={level === maxLevel}
           variant="neutral"
+          icon={<span>{maxLevel}</span>}
           onClick={() => dispatch(updateArtifact({ pieceIndex, level: maxLevel }))}
-        >
-          {maxLevel}
-        </IconButton>
+        />
 
-        <IconButton className="text-xl" variant="positive" onClick={onClickChangePiece}>
-          <FaSyncAlt />
-        </IconButton>
+        <Button variant="positive" icon={<FaSyncAlt />} onClick={onClickChangePiece} />
       </div>
 
       <Modal active={isSaving} className="small-modal" onClose={() => setIsSaving(false)}>

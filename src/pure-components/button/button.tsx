@@ -1,25 +1,60 @@
 import clsx from "clsx";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactElement } from "react";
 import { FaInfoCircle, FaTimes } from "react-icons/fa";
+import type { StringRecord } from "@Src/types";
 
-const bgColorByVariant: Record<string, string> = {
+const bgColorByVariant: StringRecord = {
   positive: "bg-lightgold",
   neutral: "bg-green",
   negative: "bg-darkred",
   default: "bg-default",
 };
-
-const colorByVariant: Record<string, string> = {
+const colorByVariant: StringRecord = {
   positive: "text-lightgold",
   neutral: "text-green",
   negative: "text-darkred",
   default: "text-default",
 };
 
+const buttonPadding = {
+  circular: {
+    small: "px-3 py-1",
+    medium: "px-4 py-1.5",
+  },
+  rounded: {
+    small: "px-2 py-1",
+    medium: "px-3 py-1.5",
+  },
+};
+const buttonSize = {
+  small: "text-sm leading-4",
+  medium: "text-base leading-5",
+};
+
+const iconButtonPadding = {
+  withFlesh: {
+    small: "p-1.5",
+    medium: "p-2",
+  },
+  boneOnly: {
+    small: "p-1",
+    medium: "p-1.5",
+  },
+};
+const iconButtonSize = {
+  withFlesh: buttonSize,
+  boneOnly: {
+    small: "text-lg leading-5",
+    medium: "text-xl leading-6",
+  },
+};
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  boneOnly?: boolean;
-  icon?: ReactNode;
   variant?: "positive" | "neutral" | "negative" | "default" | "custom";
+  shape?: "rounded" | "circular";
+  boneOnly?: boolean;
+  icon?: ReactElement;
+  iconPosition?: "start" | "end";
 }
 const buttonStyles = ({ boneOnly, disabled, variant = "default" }: ButtonProps) => {
   return [
@@ -29,26 +64,58 @@ const buttonStyles = ({ boneOnly, disabled, variant = "default" }: ButtonProps) 
   ];
 };
 
-export const Button = (props: ButtonProps) => {
-  const { className, icon, variant, boneOnly, children, ...rest } = props;
+export const Button = ({
+  variant = "default",
+  shape = "circular",
+  size = "medium",
+  boneOnly,
+  icon,
+  iconPosition = "start",
+  children,
+  ...rest
+}: ButtonProps & {
+  size?: "small" | "medium";
+}) => {
+  const classes = [
+    "font-bold flex-center",
+    shape === "circular" ? "rounded-full" : "rounded",
+    variant === "custom"
+      ? ""
+      : boneOnly
+      ? colorByVariant[variant]
+      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"],
+    rest.disabled ? "opacity-50" : "glow-on-hover",
+    rest.className,
+  ];
+
+  if (children) {
+    const iconRender = <span className="shrink-0">{icon}</span>;
+
+    return (
+      <button
+        type="button"
+        {...rest}
+        className={clsx(classes, "space-x-1.5", buttonSize[size], buttonPadding[shape][size])}
+      >
+        {!!icon && iconPosition === "start" && iconRender}
+        <span className={size === "small" ? "pt-0.5" : ""}>{children}</span>
+        {!!icon && iconPosition === "end" && iconRender}
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
-      className={clsx(
-        "px-4 py-1 rounded-2xl shadow-common text-base font-bold leading-base flex-center",
-        buttonStyles(props),
-        className
-      )}
       {...rest}
-    >
-      {icon ? (
-        <>
-          {icon}
-          <span className="py-0.5 ml-2">{children}</span>
-        </>
-      ) : (
-        children
+      className={clsx(
+        classes,
+        boneOnly
+          ? [iconButtonPadding.boneOnly[size], iconButtonSize.boneOnly[size]]
+          : [iconButtonPadding.withFlesh[size], iconButtonSize.withFlesh[size]]
       )}
+    >
+      {icon}
     </button>
   );
 };

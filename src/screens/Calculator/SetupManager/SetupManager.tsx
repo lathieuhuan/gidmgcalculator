@@ -18,7 +18,7 @@ import { useElementSize } from "@Src/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { Button, IconButton, Modal } from "@Src/pure-components";
+import { Button, Modal } from "@Src/pure-components";
 import { TypeSelect, InventoryWeapon, InventoryArtifact } from "@Src/components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
@@ -60,21 +60,16 @@ export default function SetupManager() {
 
       <div className="mt-4 grid grid-cols-3">
         <div className="flex items-center">
-          {!targetOverviewOn && (
-            <IconButton className="text-xl" size="w-10 h-10" boneOnly onClick={() => setModalType("TARGET_CONFIG")}>
-              <FaSkull />
-            </IconButton>
-          )}
+          {!targetOverviewOn && <Button boneOnly icon={<FaSkull />} onClick={() => setModalType("TARGET_CONFIG")} />}
         </div>
 
         <div className="flex-center">
-          <IconButton
-            className="mx-auto text-lg"
+          <Button
+            className="mx-auto"
             variant="positive"
+            icon={<IoDocumentText />}
             onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
-          >
-            <IoDocumentText />
-          </IconButton>
+          />
         </div>
 
         <div className="flex justify-end space-x-1">

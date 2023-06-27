@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 
+import type { BooleanRecord } from "@Src/types";
 import type { DataType, Filter, PickerItem } from "../types";
 import { useIntersectionObserver } from "@Src/hooks";
 
@@ -19,7 +20,7 @@ export interface PickerTemplateProps {
   onClose: () => void;
 }
 export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClose }: PickerTemplateProps) => {
-  const [pickedNames, setPickedNames] = useState<Record<string, boolean>>({});
+  const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
 
   const [filterOn, setFilterOn] = useState(false);
   const [filter, setFilter] = useState(DEFAULT_FILTER);
@@ -30,7 +31,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
 
   const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
 
-  const visibleNames: Record<string, boolean> = {};
+  const visibleNames: BooleanRecord = {};
 
   if (dataType === "character") {
     for (const char of data) {
@@ -87,7 +88,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
               <ModalHeader.FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
 
               <Input
-                className="w-24 ml-3 px-2 py-1 leading-none font-semibold"
+                className="w-24 ml-3 px-2 py-1 leading-none font-semibold shadow-common"
                 placeholder="Search..."
                 onChange={setKeyword}
               />

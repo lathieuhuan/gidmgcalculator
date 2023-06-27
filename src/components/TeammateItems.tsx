@@ -5,7 +5,7 @@ import { getImgSrc } from "@Src/utils";
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 
 // Component
-import { IconButton } from "@Src/pure-components";
+import { Button } from "@Src/pure-components";
 
 interface TeammateItemsProps {
   className?: string;
@@ -85,9 +85,12 @@ export const TeammateItems = ({
           {artifactSetName || "No artifact buff / debuff"}
         </p>
         {artifactSetName && mutable && (
-          <IconButton className="mt-1 self-start text-xl hover:text-darkred" boneOnly onClick={onClickRemoveArtifact}>
-            <FaTimes />
-          </IconButton>
+          <Button
+            className="mt-1 self-start hover:text-darkred"
+            boneOnly
+            icon={<FaTimes />}
+            onClick={onClickRemoveArtifact}
+          />
         )}
       </div>
     </div>

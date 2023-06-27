@@ -5,7 +5,7 @@ import { MdMoreVert } from "react-icons/md";
 import { useClickOutside } from "@Src/hooks";
 
 // Component
-import { CloseButton, IconButton, Modal } from "@Src/pure-components";
+import { Button, CloseButton, Modal } from "@Src/pure-components";
 import { TrackerContainer, type TrackerState } from "../TrackerContainer";
 import { ResultsDisplay } from "./ResultsDisplay";
 
@@ -76,9 +76,12 @@ export const Menu = ({ activeSetupName }: MenuProps) => {
         onClose={() => setTrackerState("close")}
       >
         <div className="absolute top-1 right-1 flex">
-          <IconButton className="hover:text-lightgold" boneOnly onClick={() => setTrackerState("hidden")}>
-            <FaMinus />
-          </IconButton>
+          <Button
+            className="hover:text-lightgold"
+            boneOnly
+            icon={<FaMinus />}
+            onClick={() => setTrackerState("hidden")}
+          />
           <CloseButton boneOnly onClick={() => setTrackerState("close")} />
         </div>
         <p className="flex items-center md1:justify-center">

@@ -18,7 +18,7 @@ import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { findDataArtifact, findDataCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
-import { IconButton, Image, Modal } from "@Src/pure-components";
+import { Button, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
@@ -174,30 +174,31 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
       <div className="pr-1 flex justify-between flex-col lg:flex-row" onDoubleClick={() => console.log(setup)}>
         <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
           {isOriginal ? null : window.innerWidth > 1025 ? (
-            <button
-              className="w-8 h-8 rounded-circle text-default hover:text-darkred flex-center group"
+            <Button
+              className="hover:text-darkred group"
+              variant="custom"
+              icon={
+                <>
+                  <FaUnlink className="hidden group-hover:block" />
+                  <FaLink className="block group-hover:hidden" />
+                </>
+              }
               onClick={uncombine}
-            >
-              <FaUnlink className="hidden group-hover:block" />
-              <FaLink className="block group-hover:hidden" />
-            </button>
+            />
           ) : (
-            <IconButton boneOnly variant="negative" onClick={uncombine}>
-              <FaUnlink />
-            </IconButton>
+            <Button variant="negative" boneOnly icon={<FaUnlink />} onClick={uncombine} />
           )}
           <p className="px-1 text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
-          <IconButton
-            className="p-2"
+          <Button
             variant="positive"
+            icon={<FaWrench />}
             disabled={!weapon}
             onClick={() => {
               if (weapon) {
                 const { ID, name, type, target } = setup;
-
                 dispatch(
                   updateImportInfo({
                     ID,
@@ -209,26 +210,19 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
                 );
               }
             }}
-          >
-            <FaWrench />
-          </IconButton>
+          />
 
-          <IconButton className="p-2 glow-on-hover" variant="neutral" onClick={openModal("SHARE_SETUP", setup.ID)}>
-            <FaShareAlt />
-          </IconButton>
+          <Button variant="neutral" icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP", setup.ID)} />
 
           {isOriginal ? (
-            <IconButton variant="negative" onClick={openModal("REMOVE_SETUP", setup.ID)}>
-              <FaTrashAlt />
-            </IconButton>
+            <Button variant="negative" icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP", setup.ID)} />
           ) : (
-            <IconButton
+            <Button
               variant="neutral"
+              icon={<FaPlus />}
               disabled={!allIDs || Object.keys(allIDs).length >= 4}
               onClick={openModal("COMBINE_MORE", ID)}
-            >
-              <FaPlus />
-            </IconButton>
+            />
           )}
         </div>
       </div>

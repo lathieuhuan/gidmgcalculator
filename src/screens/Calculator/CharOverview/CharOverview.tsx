@@ -13,7 +13,7 @@ import { startCalculation } from "@Store/thunks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { Button, IconButton, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-components";
+import { Button, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-components";
 import { SetupImporter } from "@Src/components";
 import contentByTab from "./content";
 
@@ -49,12 +49,8 @@ export default function CharOverview({ touched }: OverviewCharProps) {
         <div className="h-full flex flex-col">
           <div className="mt-2 mb-1 pb-4 flex">
             <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={onClickCharImg}>
-              <IconButton className="absolute -top-2.5 -left-2.5 z-10 text-xl" variant="positive">
-                <FaSyncAlt />
-              </IconButton>
-
+              <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
               {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
-
               <Image className="cursor-pointer" src={icon} imgType="character" />
             </div>
 

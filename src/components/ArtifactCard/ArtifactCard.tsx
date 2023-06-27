@@ -13,7 +13,7 @@ import { percentSign, getImgSrc } from "@Src/utils";
 import { findDataArtifact } from "@Data/controllers";
 
 // Component
-import { IconButton, BetaMark } from "@Src/pure-components";
+import { BetaMark, Button } from "@Src/pure-components";
 import { ArtifactSubstatsControl } from "./ArtifactSubstatsControl";
 import { ArtifactLevelSelect } from "./ArtifactLevelSelect";
 
@@ -37,7 +37,7 @@ export const ArtifactCard = ({
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;
-  const isDisabledLevelup = artifact.level === maxLevel;
+  const levelUpDisabled = artifact.level === maxLevel;
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(artifact)}>
@@ -57,24 +57,27 @@ export const ArtifactCard = ({
               />
             </div>
             <div className="mt-1 flex flex-col items-center">
-              <IconButton
+              <Button
                 className="bg-black text-orange text-3.5xl"
                 variant="custom"
-                disabled={isDisabledLevelup}
+                style={{ padding: 0 }}
+                icon={<FaArrowAltCircleUp />}
+                disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(Math.min(artifact.level + 4, maxLevel))}
-              >
-                <FaArrowAltCircleUp />
-              </IconButton>
-              <button
-                className={clsx(
-                  "mt-6 px-1.5 py-1 rounded bg-orange text-base text-black font-bold leading-base",
-                  isDisabledLevelup ? "opacity-50 cursor-default" : "glow-on-hover"
-                )}
-                disabled={isDisabledLevelup}
+              />
+              <Button
+                variant="custom"
+                shape="rounded"
+                className="mt-6 text-black bg-orange"
+                style={{
+                  paddingLeft: 6,
+                  paddingRight: 6,
+                }}
+                disabled={levelUpDisabled}
                 onClick={() => onEnhance?.(maxLevel)}
               >
                 MAX
-              </button>
+              </Button>
             </div>
           </div>
         ) : (

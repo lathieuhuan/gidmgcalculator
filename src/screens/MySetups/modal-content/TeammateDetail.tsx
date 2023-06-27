@@ -5,7 +5,7 @@ import type { Teammate } from "@Src/types";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { Button, IconButton } from "@Src/pure-components";
+import { Button } from "@Src/pure-components";
 import { CharacterPortrait, TeammateItems } from "@Src/components";
 
 interface TeammateDetailProps {
@@ -34,10 +34,9 @@ export const TeammateDetail = ({
           </div>
           <p className={`px-4 text-2xl text-${data.vision} font-bold`}>{teammate.name}</p>
         </div>
-
-        <IconButton className="ml-auto text-xl hover:text-darkred" size="w-10 h-10" boneOnly onClick={onClose}>
-          <FaTimes />
-        </IconButton>
+        <span className="ml-auto p-1">
+          <Button className="hover:text-darkred" boneOnly icon={<FaTimes />} onClick={onClose} />
+        </span>
       </div>
 
       <div className="py-4">

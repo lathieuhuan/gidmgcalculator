@@ -15,7 +15,7 @@ import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
 import { PickerCharacter, PickerWeapon } from "@Src/features";
-import { ButtonGroup, IconButton, CollapseSpace, WarehouseLayout } from "@Src/pure-components";
+import { ButtonGroup, CollapseSpace, WarehouseLayout, Button } from "@Src/pure-components";
 import { OwnerLabel, TypeSelect, WeaponCard, InventoryRack, ItemRemoveConfirm } from "@Src/components";
 
 import styles from "../styles.module.scss";
@@ -82,12 +82,11 @@ export default function MyWeapons() {
             renderTypeFilter()
           ) : (
             <Fragment>
-              <IconButton
+              <Button
                 className={clsx("ml-1", filterIsActive ? "bg-green" : "bg-white")}
+                icon={<FaEllipsisH />}
                 onClick={() => setFilterIsActive(!filterIsActive)}
-              >
-                <FaEllipsisH />
-              </IconButton>
+              />
 
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
                 <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>

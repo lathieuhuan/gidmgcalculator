@@ -16,7 +16,7 @@ import { findById, findByName, getImgSrc } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { IconButton, StarLine, Modal, ConfirmModalBody } from "@Src/pure-components";
+import { StarLine, Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
 
@@ -69,9 +69,12 @@ export default function MyCharacterInfo() {
       style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
     >
       <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
-        <IconButton className="absolute top-4 right-4" variant="negative" onClick={() => setRemoving(true)}>
-          <FaUserSlash size="1.125rem" />
-        </IconButton>
+        <Button
+          className="absolute top-4 right-4"
+          variant="negative"
+          icon={<FaUserSlash />}
+          onClick={() => setRemoving(true)}
+        />
 
         <div className="flex" onDoubleClick={() => console.log(char, weapon, artifacts)}>
           {isMobile && <img className="mr-4 mb-4 w-20" src={getImgSrc(icon)} alt={name} />}

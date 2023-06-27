@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { FaCaretRight, FaMinus } from "react-icons/fa";
 
-import type { UserArtifact, UserWeapon } from "@Src/types";
+import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
@@ -28,7 +28,7 @@ interface InventoryRackProps {
   listClassName?: string;
   itemClassName?: string;
   chosenID: number;
-  chosenIDs?: Record<string, boolean>;
+  chosenIDs?: BooleanRecord;
   itemType: "weapon" | "artifact";
   items: UserWeapon[] | UserArtifact[];
   onUnchooseItem?: (item: UserWeapon | UserArtifact) => void;
@@ -49,7 +49,7 @@ export const InventoryRack = ({
   const heightRef = useRef(0);
 
   const [isReady, setIsReady] = useState(false);
-  const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
+  const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
   const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {

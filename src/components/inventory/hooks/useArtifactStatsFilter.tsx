@@ -14,7 +14,7 @@ import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 import { useTranslation } from "@Src/hooks";
 
 // Component
-import { IconButton, Green } from "@Src/pure-components";
+import { Green, Button } from "@Src/pure-components";
 
 interface UseArtifactStatsFilterArgs {
   artifactType?: ArtifactType;
@@ -108,14 +108,13 @@ export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArti
 
   const renderArtifactStatsFilter = () => (
     <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-darkblue-2 relative">
-      <IconButton
-        className="text-sm absolute bottom-3 left-3"
+      <Button
+        className="absolute bottom-3 left-3"
         variant={atInfo ? "negative" : "default"}
-        size="w-6 h-6"
+        size="small"
+        icon={<Icon />}
         onClick={() => setAtInfo(!atInfo)}
-      >
-        <Icon />
-      </IconButton>
+      />
 
       {atInfo ? (
         <div className="mt-2">

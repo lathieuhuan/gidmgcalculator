@@ -13,7 +13,7 @@ import { findByIndex, splitLv } from "@Src/utils";
 import { findDataCharacter } from "@Data/controllers";
 
 // Component
-import { IconButton, ButtonGroup, Popover, SharedSpace, withModal } from "@Src/pure-components";
+import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
@@ -173,9 +173,12 @@ function SortInner({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="px-2 py-4 rounded-lg bg-darkblue-1">
-      <IconButton className="absolute top-1 right-1 text-xl hover:text-darkred" boneOnly onClick={onClose}>
-        <FaTimes />
-      </IconButton>
+      <Button
+        className="absolute top-1 right-1 text-xl hover:text-darkred"
+        boneOnly
+        icon={<FaTimes />}
+        onClick={onClose}
+      />
 
       <p className="text-1.5xl text-orange text-center">Sort characters</p>
 

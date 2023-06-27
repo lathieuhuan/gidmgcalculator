@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, type DependencyList } from "react";
+import { BooleanRecord } from "@Src/types";
 
-export const useIntersectionObserver = <T extends HTMLElement>(
-  dependecies: DependencyList = []
-) => {
+export const useIntersectionObserver = <T extends HTMLElement>(dependecies: DependencyList = []) => {
   const observeAreaRef = useRef<T>(null);
-  const [itemsVisible, setItemsVisible] = useState<Record<string, boolean>>({});
+  const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
 
   const observedItemCN = "observed-item";
 

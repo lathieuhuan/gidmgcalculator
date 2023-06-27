@@ -4,7 +4,7 @@ import { SiTarget } from "react-icons/si";
 import type { NewSetupManageInfo } from "@Store/calculatorSlice/reducer-types";
 
 // Component
-import { IconButton, Input } from "@Src/pure-components";
+import { Button, Input } from "@Src/pure-components";
 
 interface SetupControlProps {
   setup: NewSetupManageInfo;
@@ -37,13 +37,8 @@ export function SetupControl({
       />
       <div className="mt-4 flex justify-between">
         <div className="ml-1 flex space-x-4">
-          <IconButton variant="negative" onClick={onRemoveSetup}>
-            <FaTrashAlt />
-          </IconButton>
-
-          <IconButton variant="positive" disabled={setup.status === "NEW"} onClick={onCopySetup}>
-            <FaCopy />
-          </IconButton>
+          <Button variant="negative" icon={<FaTrashAlt />} onClick={onRemoveSetup} />
+          <Button variant="positive" icon={<FaCopy />} disabled={setup.status === "NEW"} onClick={onCopySetup} />
         </div>
 
         <div className="flex space-x-3">

@@ -14,7 +14,7 @@ import { useDispatch } from "@Store/hooks";
 
 // Component
 import { PickerCharacter } from "@Src/features";
-import { IconButton } from "@Src/pure-components";
+import { Button } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
 
@@ -61,12 +61,8 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
       <div className={styles["side-icon-carousel"]}>
         {characterNames.length ? (
           <div className="absolute top-8 right-full flex">
-            <IconButton className="mr-4 text-lg" variant="positive" onClick={onCliceSort}>
-              <FaSortAmountUpAlt />
-            </IconButton>
-            <IconButton className="mr-4" variant="positive" onClick={() => setGridviewOn(true)}>
-              <FaTh />
-            </IconButton>
+            <Button className="mr-4" variant="positive" icon={<FaSortAmountUpAlt />} onClick={onCliceSort} />
+            <Button className="mr-4" variant="positive" icon={<FaTh />} onClick={() => setGridviewOn(true)} />
           </div>
         ) : null}
 

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { FaCheckCircle, FaExclamationCircle, FaExclamationTriangle, FaInfoCircle, FaTimes } from "react-icons/fa";
-import { IconButton } from "./button";
+import { Button } from "./button";
 
 export interface NotificationProps {
   type: "info" | "success" | "error" | "warn";
@@ -23,22 +23,20 @@ export const Notification = (props: NotificationProps) => {
 
   return (
     <div
-      className="w-full p-1 bg-default rounded-lg flex"
+      className="w-full p-1 bg-default rounded-lg flex items-start"
       style={{ boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px" }}
     >
       <span className="p-2 text-xl shrink-0">{renderIcon()}</span>
       <p className="pr-2 grow text-black font-semibold" style={{ paddingTop: "0.375rem" }}>
         {props.content}
       </p>
-      <IconButton
-        className="text-black/60 hover:text-black text-xl"
-        size="w-8 h-8"
+      <Button
+        className="text-black/60 hover:text-black"
         variant="custom"
         boneOnly
+        icon={<FaTimes />}
         onClick={props.onClose}
-      >
-        <FaTimes />
-      </IconButton>
+      />
     </div>
   );
 };

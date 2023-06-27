@@ -16,7 +16,7 @@ import { isUserSetup } from "@Src/utils/setup";
 import { useSetupItems } from "./hooks";
 
 // Component
-import { Button, IconButton, Red, Lightgold, Modal, StandardModal, WarehouseLayout } from "@Src/pure-components";
+import { Button, Red, Lightgold, Modal, StandardModal, WarehouseLayout } from "@Src/pure-components";
 import { SetupTemplate } from "./SetupTemplate";
 import { ChosenSetupInfo } from "./ChosenSetupInfo";
 import { FirstCombine, CombineMore } from "./modal-content";
@@ -106,9 +106,7 @@ export default function MySetups() {
     <WarehouseLayout.Wrapper>
       <WarehouseLayout className={styles["setup-WarehouseLayout"]}>
         <WarehouseLayout.ButtonBar>
-          <IconButton className="mr-4" variant="positive" size="w-7 h-7" onClick={openModal("TIPS")}>
-            <FaInfo className="text-sm" />
-          </IconButton>
+          <Button className="mr-4" variant="positive" size="small" icon={<FaInfo />} onClick={openModal("TIPS")} />
           <Button variant="positive" onClick={openModal("FIRST_COMBINE")}>
             Combine
           </Button>
