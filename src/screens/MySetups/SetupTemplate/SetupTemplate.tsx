@@ -41,6 +41,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     isCalculated: false,
   });
 
+  const teammateInfo = party[teammateDetail.index];
   const isOriginal = type === "original";
 
   const closeTeammateDetail = () => {
@@ -256,12 +257,12 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
       </div>
 
       <Modal active={teammateDetail.index !== -1} onClose={closeTeammateDetail}>
-        {party[teammateDetail.index] && (
+        {teammateInfo && (
           <TeammateDetail
-            teammate={party[teammateDetail.index]!}
+            teammate={teammateInfo}
             isCalculated={teammateDetail.isCalculated}
             onSwitchSetup={() => {
-              const { name } = party[teammateDetail.index] || {};
+              const { name } = teammateInfo || {};
               const shownID = allIDs && name ? allIDs[name] : undefined;
 
               if (shownID) {
