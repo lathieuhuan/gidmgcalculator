@@ -142,7 +142,7 @@ export const TalentDetail = ({ dataChar, detailIndex, onChangeDetailIndex, onClo
       </div>
 
       <div className="mt-4">
-        <CloseButton className="mx-auto glow-on-hover" onClick={onClose} />
+        <CloseButton className="mx-auto glow-on-hover" size="small" onClick={onClose} />
       </div>
     </div>
   );

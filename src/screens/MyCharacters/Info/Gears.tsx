@@ -105,7 +105,7 @@ export default function Gears(props: GearsProps) {
             rightPart={
               <div className="h-full py-4 flex flex-col">
                 <div className="flex justify-center">
-                  <CloseButton onClick={() => toggleDetails(activeDetails)} />
+                  <CloseButton size="small" onClick={() => toggleDetails(activeDetails)} />
                 </div>
                 <div className="pt-3 grow hide-scrollbar">{detailsComponent}</div>
               </div>

@@ -12,7 +12,7 @@ import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } f
 import { percentSign, toCustomBuffLabel } from "@Src/utils";
 
 // Component
-import { CloseButton, IconToggleButton, Input, Modal } from "@Src/pure-components";
+import { ToggleButton, CloseButton, Input, Modal } from "@Src/pure-components";
 import { CopySection } from "../../components";
 import BuffCtrlCreator from "./BuffCtrlCreator";
 import DebuffCtrlCreator from "./DebuffCtrlCreator";
@@ -73,19 +73,22 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
   return (
     <div className="flex flex-col">
       <div className="mt-3 flex justify-between">
-        <IconToggleButton
-          color="text-default bg-darkred"
+        <ToggleButton
+          icon={<FaTrashAlt />}
+          variant="negative"
+          active={modCtrls.length !== 0}
           disabled={modCtrls.length === 0}
           onClick={() => {
             dispatch(updateAction({ actionType: "replace", ctrls: [] }));
           }}
-        >
-          <FaTrashAlt />
-        </IconToggleButton>
-
-        <IconToggleButton disabled={modCtrls.length > 9} onClick={() => setModalOn(true)}>
-          <FaPlus />
-        </IconToggleButton>
+        />
+        <ToggleButton
+          icon={<FaPlus />}
+          variant="positive"
+          active={modCtrls.length <= 9}
+          disabled={modCtrls.length > 9}
+          onClick={() => setModalOn(true)}
+        />
       </div>
 
       {copyOptions.length ? <CopySection className="mt-6" options={copyOptions} onClickCopy={copyModCtrls} /> : null}
@@ -115,7 +118,6 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
             <div key={ctrlIndex} className="flex items-center">
               <CloseButton
                 boneOnly
-                className="text-1.5xl"
                 onClick={() => {
                   dispatch(removeCustomModCtrl({ isBuffs, ctrlIndex }));
                 }}

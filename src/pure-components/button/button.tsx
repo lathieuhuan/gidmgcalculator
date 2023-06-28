@@ -52,30 +52,23 @@ const iconButtonSize = {
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "positive" | "neutral" | "negative" | "default" | "custom";
   shape?: "rounded" | "circular";
+  size?: "small" | "medium";
   boneOnly?: boolean;
+  paddingCls?: string | null;
   icon?: ReactElement;
   iconPosition?: "start" | "end";
 }
-const buttonStyles = ({ boneOnly, disabled, variant = "default" }: ButtonProps) => {
-  return [
-    variant === "custom" ? "" : boneOnly ? colorByVariant[variant] : bgColorByVariant[variant],
-    boneOnly || variant === "custom" ? "" : variant === "negative" ? "text-default" : "text-black",
-    disabled ? "opacity-50" : "glow-on-hover",
-  ];
-};
-
 export const Button = ({
   variant = "default",
   shape = "circular",
   size = "medium",
   boneOnly,
+  paddingCls,
   icon,
   iconPosition = "start",
   children,
   ...rest
-}: ButtonProps & {
-  size?: "small" | "medium";
-}) => {
+}: ButtonProps) => {
   const classes = [
     "font-bold flex-center",
     shape === "circular" ? "rounded-full" : "rounded",
@@ -88,6 +81,10 @@ export const Button = ({
     rest.className,
   ];
 
+  const getPaddingCls = (defaultCls: string) => {
+    return paddingCls === null ? "" : paddingCls || defaultCls;
+  };
+
   if (children) {
     const iconRender = <span className="shrink-0">{icon}</span>;
 
@@ -95,7 +92,7 @@ export const Button = ({
       <button
         type="button"
         {...rest}
-        className={clsx(classes, "space-x-1.5", buttonSize[size], buttonPadding[shape][size])}
+        className={clsx(classes, "space-x-1.5", buttonSize[size], getPaddingCls(buttonPadding[shape][size]))}
       >
         {!!icon && iconPosition === "start" && iconRender}
         <span className={size === "small" ? "pt-0.5" : ""}>{children}</span>
@@ -103,7 +100,6 @@ export const Button = ({
       </button>
     );
   }
-
   return (
     <button
       type="button"
@@ -111,8 +107,8 @@ export const Button = ({
       className={clsx(
         classes,
         boneOnly
-          ? [iconButtonPadding.boneOnly[size], iconButtonSize.boneOnly[size]]
-          : [iconButtonPadding.withFlesh[size], iconButtonSize.withFlesh[size]]
+          ? [getPaddingCls(iconButtonPadding.boneOnly[size]), iconButtonSize.boneOnly[size]]
+          : [getPaddingCls(iconButtonPadding.withFlesh[size]), iconButtonSize.withFlesh[size]]
       )}
     >
       {icon}
@@ -120,40 +116,42 @@ export const Button = ({
   );
 };
 
-export const IconButton = (props: Omit<ButtonProps, "icon"> & { size?: string }) => {
-  const { className, variant, boneOnly, size = "h-8 w-8", ...rest } = props;
+interface ToggleButtonProps extends Omit<ButtonProps, "boneOnly"> {
+  active?: boolean;
+}
+export const ToggleButton = ({ active, variant = "default", ...rest }: ToggleButtonProps) => {
   return (
-    <button
-      type="button"
-      className={clsx("rounded-circle flex-center shrink-0", buttonStyles(props), size, className)}
+    <Button
       {...rest}
+      variant="custom"
+      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"])}
     />
   );
 };
 
-interface IconToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  disabledColor?: string;
-  size?: string;
+export interface CloseButtonProps extends Omit<ButtonProps, "icon" | "children" | "variant"> {
+  hoverRed?: boolean;
 }
-export const IconToggleButton = ({
-  className,
-  disabled,
-  color = "text-black bg-lightgold",
-  disabledColor = "text-lesser bg-transparent",
-  size = "h-8 w-8",
-  ...rest
-}: IconToggleButtonProps) => {
+export const CloseButton = ({ hoverRed = true, ...rest }: CloseButtonProps) => {
+  if (rest.boneOnly) {
+    return (
+      <Button
+        variant="default"
+        icon={<FaTimes className="shrink-0" />}
+        {...rest}
+        className={rest.className + (hoverRed ? " hover:text-darkred" : "")}
+      />
+    );
+  }
   return (
-    <button
-      type="button"
-      className={clsx(
-        "rounded-circle flex-center shrink-0",
-        size,
-        disabled ? disabledColor : `${color} glow-on-hover`,
-        className
-      )}
-      disabled={disabled}
+    <Button
+      variant="negative"
+      icon={<FaTimes className={"shrink-0 " + (rest.size === "small" ? "text-base" : "text-lg")} />}
       {...rest}
+      style={{
+        ...(rest.paddingCls === null ? undefined : { padding: rest.size === "small" ? 5 : 7 }),
+        ...rest.style,
+      }}
     />
   );
 };
@@ -166,45 +164,22 @@ interface InfoSignProps {
 }
 export const InfoSign = (props: InfoSignProps) => {
   if (props.active) {
-    return <CloseButton className={clsx("text-sm", props.className)} size="h-6 w-6" />;
-  }
-  return (
-    <button
-      className={clsx(
-        "h-6 w-6 text-2xl block rounded-circle",
-        props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold",
-        props.className
-      )}
-      onClick={props.onClick}
-    >
-      <FaInfoCircle />
-    </button>
-  );
-};
-
-export interface CloseButtonProps {
-  size?: string;
-  noGlow?: boolean;
-  boneOnly?: boolean;
-  className?: string;
-  onClick?: () => void;
-}
-export const CloseButton = ({ className, size, boneOnly, ...rest }: CloseButtonProps) => {
-  if (boneOnly) {
     return (
-      <IconButton
-        className={"text-default hover:text-darkred text-xl " + className}
-        size={size || "w-8 h-8"}
-        variant="custom"
-        {...rest}
-      >
-        <FaTimes />
-      </IconButton>
+      <CloseButton
+        className={clsx("w-6 h-6", props.className)}
+        size="small"
+        paddingCls={null}
+        onClick={props.onClick}
+      />
     );
   }
   return (
-    <IconButton className={className} size={size || "w-7 h-7"} variant="negative" {...rest}>
-      <FaTimes />
-    </IconButton>
+    <Button
+      className={clsx(props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold", props.className)}
+      boneOnly
+      paddingCls={null}
+      icon={<FaInfoCircle className="text-2xl" />}
+      onClick={props.onClick}
+    />
   );
 };

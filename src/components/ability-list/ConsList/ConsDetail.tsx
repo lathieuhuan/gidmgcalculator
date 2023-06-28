@@ -88,7 +88,7 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
       )}
 
       <div className="mt-4">
-        <CloseButton className="mx-auto" onClick={onClose} />
+        <CloseButton className="mx-auto" size="small" onClick={onClose} />
       </div>
     </div>
   );
