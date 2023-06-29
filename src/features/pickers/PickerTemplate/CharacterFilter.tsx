@@ -1,8 +1,9 @@
 import clsx from "clsx";
 
 import type { Filter } from "../types";
-import { VISION_ICONS, WEAPON_ICONS } from "@Src/constants";
+import { VISION_TYPES, WEAPON_ICONS } from "@Src/constants";
 import { getImgSrc } from "@Src/utils";
+import { Vision } from "@Src/pure-components";
 
 interface CharacterFilterProps extends Filter {
   onClickOption: (isChosen: boolean, newFilter: Filter) => void;
@@ -14,22 +15,22 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
     <div className="px-4">
       <div className="py-4 flex flex-wrap justify-around">
         <div className="flex overflow-auto hide-scrollbar">
-          {Object.entries(VISION_ICONS).map(([elmtType, src], i) => {
-            const chosen = type === "vision" && value === elmtType;
+          {VISION_TYPES.map((vision, i) => {
+            const chosen = type === "vision" && value === vision;
+
             return (
-              <img
+              <button
                 key={i}
-                className={clsx("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10", {
+                className={clsx("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10 shrink-0 flex-center", {
                   "ml-6": i,
                   "border-3 border-white": chosen,
                 })}
-                src={getImgSrc(src)}
-                alt={elmtType}
-                draggable={false}
                 onClick={() => {
-                  onClickOption(chosen, { type: "vision", value: elmtType });
+                  onClickOption(chosen, { type: "vision", value: vision });
                 }}
-              />
+              >
+                <Vision type={vision} size="80%" />
+              </button>
             );
           })}
         </div>
@@ -40,7 +41,7 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
             return (
               <img
                 key={i}
-                className={clsx("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11", {
+                className={clsx("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11 shrink-0", {
                   "ml-6": i,
                   "border-3 border-white": chosen,
                 })}

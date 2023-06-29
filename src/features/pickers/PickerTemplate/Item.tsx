@@ -1,10 +1,9 @@
 import { memo } from "react";
 
 import type { DataType, PickerItem } from "../types";
-import { VISION_ICONS } from "@Src/constants";
 
 // Component
-import { Image, BetaMark } from "@Src/pure-components";
+import { Image, BetaMark, Vision } from "@Src/pure-components";
 
 interface ItemProps {
   visible: boolean;
@@ -36,12 +35,12 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
       {item.vision && visible && (
         <div
           className={
-            "absolute top-0.5 right-0.5 p-1 flex items-center rounded-full bg-black shadow-white-glow" +
+            "absolute top-0.5 right-0.5 p-1 flex-center rounded-full bg-black shadow-white-glow" +
             (item.cons !== undefined ? " flex rounded-2xl pl-1.5" : "")
           }
         >
           {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
-          <Image size="w-5 h-5" src={VISION_ICONS[item.vision]} />
+          <Vision type={item.vision} />
         </div>
       )}
     </div>
