@@ -7,9 +7,9 @@ import { checkAscs, checkCons } from "../utils";
 import { countVision } from "@Src/utils";
 
 const Lynette: DataCharacter = {
-  code: 2,
+  code: 72,
   name: "Lynette",
-  icon: "",
+  icon: "https://images2.imgbox.com/5b/1a/kApSKvQl_o.png",
   sideIcon: "",
   rarity: 4,
   nation: "fontaine",
@@ -150,20 +150,9 @@ const Lynette: DataCharacter = {
       desc: () => Lynette.constellation[5].desc,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "anemo", 20),
-    },
-  ],
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.C4,
-      desc: () => (
-        <>
-          Within the field of Dandelion Breeze [EB], all opponents have their <Green>Anemo RES</Green> decreased by{" "}
-          <Green b>40%</Green>.
-        </>
-      ),
-      isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resistReduct", "anemo", 40),
+      infuseConfig: {
+        overwritable: false,
+      },
     },
   ],
 };

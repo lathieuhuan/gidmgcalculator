@@ -38,6 +38,7 @@ import Klee from "./pyro/Klee";
 import Kokomi from "./hydro/Kokomi";
 import Layla from "./cryo/Layla";
 import Lisa from "./electro/Lisa";
+import Lynette from "./anemo/Lynette";
 import Mika from "./cryo/Mika";
 import Mona from "./hydro/Mona";
 import Nahida from "./dendro/Nahida";
@@ -111,6 +112,7 @@ const characters = {
   Kokomi,
   Layla,
   Lisa,
+  Lynette,
   Mika,
   Mona,
   Nahida,
