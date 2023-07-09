@@ -302,7 +302,10 @@ export default function getDamage({
           scale = multScale,
         } = typeof factor === "number" ? { root: factor } : factor;
 
-        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult_?.value || 0);
+        const finalMult =
+          root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) +
+          (talentBuff.mult_?.value || 0) +
+          attPattBonus[ATT_PATT].mult_;
 
         let flatBonus = 0;
 

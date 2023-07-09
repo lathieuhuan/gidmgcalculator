@@ -92,6 +92,9 @@ export const Introduction = (props: ModalControl) => {
             "Only_Pumpkin_801",
             "Jenny-sama",
             "L1itTru",
+            "Izzo",
+            "Hounth",
+            "StockedSix",
           ].map((name, i) => (
             <li key={i}>
               <Lightgold>{name}</Lightgold>
