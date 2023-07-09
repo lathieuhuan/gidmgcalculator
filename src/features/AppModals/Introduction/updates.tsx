@@ -2,7 +2,7 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
-    date: "July 9th, 2023",
+    date: "July 9th, 2023 (v3.2.0)",
     content: [
       <>
         Added characters: <Lightgold>Lyney</Lightgold> and <Lightgold>Lynette</Lightgold>.

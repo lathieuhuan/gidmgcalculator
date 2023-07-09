@@ -50,6 +50,7 @@ const Bennett: DataCharacter = {
   NAsConfig: {
     name: "Strike of Fortune",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

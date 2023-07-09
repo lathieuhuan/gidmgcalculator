@@ -36,6 +36,7 @@ const Thoma: DataCharacter = {
   NAsConfig: {
     name: "Swiftshatter Spear",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

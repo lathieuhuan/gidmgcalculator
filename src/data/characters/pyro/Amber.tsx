@@ -34,7 +34,7 @@ const Amber: DataCharacter = {
   NAsConfig: {
     name: "Sharpshooter",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

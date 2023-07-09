@@ -34,7 +34,7 @@ const Xingqiu: DataCharacter = {
   NAsConfig: {
     name: "Guhua Style",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

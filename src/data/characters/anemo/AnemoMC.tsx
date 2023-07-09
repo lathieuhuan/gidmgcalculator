@@ -13,7 +13,7 @@ const AnemoMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Ironwind",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {

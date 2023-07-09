@@ -47,6 +47,7 @@ const Faruzan: DataCharacter = {
   NAsConfig: {
     name: "Parthian Shot",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

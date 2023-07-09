@@ -34,7 +34,7 @@ const Qiqi: DataCharacter = {
   NAsConfig: {
     name: "Ancient Sword Art",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,7 +34,7 @@ const Ningguang: DataCharacter = {
   NAsConfig: {
     name: "Sparkling Scatter",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: { stats: [{ name: "Normal Attack", multFactors: 28 }] },
     CA: {

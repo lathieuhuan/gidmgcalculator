@@ -42,6 +42,7 @@ const Shenhe: DataCharacter = {
   NAsConfig: {
     name: "Dawnstar Shooter",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

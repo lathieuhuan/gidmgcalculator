@@ -38,7 +38,7 @@ const Cyno: DataCharacter = {
   NAsConfig: {
     name: "Invoker's Spear",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

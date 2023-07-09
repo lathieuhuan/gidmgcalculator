@@ -34,6 +34,7 @@ const Collei: DataCharacter = {
   NAsConfig: {
     name: "Supplicant's Bowmanship",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -35,6 +35,7 @@ const Heizou: DataCharacter = {
   NAsConfig: {
     name: "Fudou Style Martial Arts",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

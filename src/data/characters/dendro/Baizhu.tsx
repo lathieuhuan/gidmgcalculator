@@ -35,7 +35,7 @@ const Baizhu: DataCharacter = {
   NAsConfig: {
     name: "The Classics of Acupuncture",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

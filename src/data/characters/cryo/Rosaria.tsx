@@ -34,6 +34,7 @@ const Rosaria: DataCharacter = {
   NAsConfig: {
     name: "Spear of the Church",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -35,7 +35,7 @@ const Ayaka: DataCharacter = {
   NAsConfig: {
     name: "Kamisato Art: Kabuki",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

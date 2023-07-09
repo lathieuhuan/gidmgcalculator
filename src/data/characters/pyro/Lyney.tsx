@@ -41,6 +41,7 @@ const Lyney: DataCharacter = {
   NAsConfig: {
     name: "Card Force Translocation",
   },
+  bonusLvFromCons: ["NAs", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,6 +34,7 @@ const Kaeya: DataCharacter = {
   NAsConfig: {
     name: "Ceremonial Bladework",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

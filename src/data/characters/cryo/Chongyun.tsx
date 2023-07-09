@@ -34,7 +34,7 @@ const Chongyun: DataCharacter = {
   NAsConfig: {
     name: "Demonbane",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

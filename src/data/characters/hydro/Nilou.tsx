@@ -45,7 +45,7 @@ const Nilou: DataCharacter = {
   NAsConfig: {
     name: "Dance of Samser",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,6 +34,7 @@ const Xinyan: DataCharacter = {
   NAsConfig: {
     name: "Dance on Fire",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

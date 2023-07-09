@@ -34,6 +34,7 @@ const Yaoyao: DataCharacter = {
   NAsConfig: {
     name: "Toss 'N' Turn Spear",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -42,6 +42,7 @@ const Xiao: DataCharacter = {
   NAsConfig: {
     name: "Whirlwind Thrust",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

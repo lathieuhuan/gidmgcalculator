@@ -35,6 +35,7 @@ const Kirara: DataCharacter = {
   NAsConfig: {
     name: "Boxcutter",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -35,7 +35,7 @@ const Dehya: DataCharacter = {
   NAsConfig: {
     name: "Sandstorm Assault",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,7 +34,7 @@ const Barbara: DataCharacter = {
   NAsConfig: {
     name: "Whisper of Water",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

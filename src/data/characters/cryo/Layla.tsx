@@ -35,6 +35,7 @@ const Layla: DataCharacter = {
   NAsConfig: {
     name: "Sword of the Radiant Path",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

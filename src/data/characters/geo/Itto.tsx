@@ -45,6 +45,7 @@ const Itto: DataCharacter = {
     //   { name: "Saichimonji Slash Stamina Cost", value: 20 },
     // ],
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

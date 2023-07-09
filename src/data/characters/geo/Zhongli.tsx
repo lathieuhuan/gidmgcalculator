@@ -35,6 +35,7 @@ const Zhongli: DataCharacter = {
   NAsConfig: {
     name: "Rain of Stone",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

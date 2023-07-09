@@ -34,6 +34,7 @@ const Albedo: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework - Weiss",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

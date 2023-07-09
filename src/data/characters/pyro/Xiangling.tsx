@@ -34,7 +34,7 @@ const Xiangling: DataCharacter = {
   NAsConfig: {
     name: "Dough-Fu",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

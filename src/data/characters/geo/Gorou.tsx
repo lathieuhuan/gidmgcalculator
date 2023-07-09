@@ -44,6 +44,7 @@ const Gorou: DataCharacter = {
   NAsConfig: {
     name: "Ripping Fang Fletching",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

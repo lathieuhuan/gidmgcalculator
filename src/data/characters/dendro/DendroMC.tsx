@@ -13,6 +13,7 @@ const DendroMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Fieldcleaver",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {

@@ -35,7 +35,7 @@ const Candace: DataCharacter = {
   NAsConfig: {
     name: "Gleaming Spear - Guardian Stance",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

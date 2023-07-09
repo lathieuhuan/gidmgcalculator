@@ -34,7 +34,7 @@ const Venti: DataCharacter = {
   NAsConfig: {
     name: "Divine Marksmanship",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

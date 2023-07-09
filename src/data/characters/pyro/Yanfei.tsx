@@ -45,6 +45,7 @@ const Yanfei: DataCharacter = {
     //   { name: "Scarlet Seal Duration", value: "10s" },
     // ],
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

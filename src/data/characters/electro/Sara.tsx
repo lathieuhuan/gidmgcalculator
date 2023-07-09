@@ -44,7 +44,7 @@ const Sara: DataCharacter = {
   NAsConfig: {
     name: "Tengu Bowmanship",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

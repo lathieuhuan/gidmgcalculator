@@ -48,7 +48,7 @@ const Sayu: DataCharacter = {
   NAsConfig: {
     name: "Shuumatsuban Ninja Blade",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

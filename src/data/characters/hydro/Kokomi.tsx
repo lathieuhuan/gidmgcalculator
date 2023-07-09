@@ -37,7 +37,7 @@ const Kokomi: DataCharacter = {
   NAsConfig: {
     name: "The Shape of Water",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

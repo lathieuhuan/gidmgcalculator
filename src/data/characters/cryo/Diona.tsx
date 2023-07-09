@@ -34,7 +34,7 @@ const Diona: DataCharacter = {
   NAsConfig: {
     name: "Kätzlein Style",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

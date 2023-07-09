@@ -41,6 +41,7 @@ const Yoimiya: DataCharacter = {
   NAsConfig: {
     name: "Firework Flare-Up",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

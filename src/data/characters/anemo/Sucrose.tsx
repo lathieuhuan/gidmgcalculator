@@ -34,6 +34,7 @@ const Sucrose: DataCharacter = {
   NAsConfig: {
     name: "Wind Spirit Creation",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -32,6 +32,7 @@ const Fischl: DataCharacter = {
   NAsConfig: {
     name: "Bolts of Downfall",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

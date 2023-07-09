@@ -13,6 +13,7 @@ import type {
 } from "./global";
 import type {
   CharData,
+  Talent,
   ModifierCtrl,
   PartyData,
   ResistanceReduction,
@@ -45,7 +46,7 @@ export type DataCharacter = {
     name: string;
     getExtraStats?: GetExtraStatsFn;
   };
-  isReverseXtraLv?: boolean;
+  bonusLvFromCons: Talent[];
   activeTalents: ActiveTalents;
   passiveTalents: NoStatsAbility[];
   constellation: NoStatsAbility[];

@@ -34,6 +34,7 @@ const Klee: DataCharacter = {
   NAsConfig: {
     name: "Kaboom!",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

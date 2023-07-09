@@ -62,7 +62,7 @@ const YunJin: DataCharacter = {
   NAsConfig: {
     name: "Cloud-Grazing Strike",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

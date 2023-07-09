@@ -13,7 +13,7 @@ const GeoMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Rockblade",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {

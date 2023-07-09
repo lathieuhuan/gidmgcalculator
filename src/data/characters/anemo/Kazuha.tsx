@@ -42,6 +42,7 @@ const Kazuha: DataCharacter = {
   NAsConfig: {
     name: "Garyuu Bladework",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

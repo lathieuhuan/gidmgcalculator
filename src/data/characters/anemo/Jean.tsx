@@ -34,7 +34,7 @@ const Jean: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

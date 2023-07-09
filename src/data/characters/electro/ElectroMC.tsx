@@ -13,7 +13,7 @@ const ElectroMC: DataCharacter = {
   NAsConfig: {
     name: "Foreign Thundershock",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     ...TRAVELLER_NCPAs,
     ES: {

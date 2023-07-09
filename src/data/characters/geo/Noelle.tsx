@@ -36,6 +36,7 @@ const Noelle: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework - Maid",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

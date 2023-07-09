@@ -52,30 +52,25 @@ interface TotalXtraTalentArgs {
 }
 export function totalXtraTalentLv({ char, dataChar, talentType, partyData }: TotalXtraTalentArgs) {
   let result = 0;
+  const [atCons3, atCons5] = dataChar.bonusLvFromCons;
 
-  switch (talentType) {
-    case "NAs":
-      if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
-        result++;
-      }
-      break;
-    case "ES":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 5) {
-          result += 3;
-        }
-      } else if (char.cons >= 3) {
-        result += 3;
-      }
-      break;
-    case "EB":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 3) {
-          result += 3;
-        }
-      } else if (char.cons >= 5) {
-        result += 3;
-      }
+  if (talentType === "NAs") {
+    if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
+      result++;
+    }
+  }
+
+  const increaseByCons = (atCons: typeof talentType) => {
+    if (talentType === atCons) {
+      result += 3;
+    }
+  };
+
+  if (char.cons >= 3) {
+    increaseByCons(atCons3);
+  }
+  if (char.cons >= 5) {
+    increaseByCons(atCons5);
   }
 
   return result;

@@ -48,6 +48,7 @@ const Aloy: DataCharacter = {
   NAsConfig: {
     name: "Rapid Fire",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,7 +34,7 @@ const Tighnari: DataCharacter = {
   NAsConfig: {
     name: "Khanda Barrier-Buster",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

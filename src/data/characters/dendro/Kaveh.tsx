@@ -38,7 +38,7 @@ const Kaveh: DataCharacter = {
   NAsConfig: {
     name: "Schematic Setup",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

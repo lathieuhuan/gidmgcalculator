@@ -53,7 +53,7 @@ const Wanderer: DataCharacter = {
   NAsConfig: {
     name: "Yuuban Meigen",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

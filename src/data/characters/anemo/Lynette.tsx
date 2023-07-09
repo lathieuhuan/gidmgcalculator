@@ -35,7 +35,7 @@ const Lynette: DataCharacter = {
   NAsConfig: {
     name: "Rapid Ritesword",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,7 +34,7 @@ const Freminet: DataCharacter = {
   NAsConfig: {
     name: "Flowing Eddies",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

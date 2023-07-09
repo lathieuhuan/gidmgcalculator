@@ -33,7 +33,7 @@ const Lisa: DataCharacter = {
   NAsConfig: {
     name: "Lightning Touch",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

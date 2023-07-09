@@ -62,6 +62,7 @@ const Ayato: DataCharacter = {
   NAsConfig: {
     name: "Kamisato Art - Marobashi",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

@@ -34,6 +34,7 @@ const Beidou: DataCharacter = {
   NAsConfig: {
     name: "Oceanborne",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

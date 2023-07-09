@@ -35,6 +35,7 @@ const YaeMiko: DataCharacter = {
   NAsConfig: {
     name: "Spiritfox Sin-Eater",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

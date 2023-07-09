@@ -44,7 +44,7 @@ const Eula: DataCharacter = {
   NAsConfig: {
     name: "Favonius Bladework - Edel",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

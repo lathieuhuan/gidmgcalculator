@@ -38,7 +38,7 @@ const Razor: DataCharacter = {
   NAsConfig: {
     name: "Steel Fang",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

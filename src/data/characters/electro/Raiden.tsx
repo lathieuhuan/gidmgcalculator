@@ -108,7 +108,7 @@ const Raiden: DataCharacter = {
   NAsConfig: {
     name: "Origin",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

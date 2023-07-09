@@ -46,7 +46,7 @@ const Mona: DataCharacter = {
   NAsConfig: {
     name: "Ripple of Fate",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

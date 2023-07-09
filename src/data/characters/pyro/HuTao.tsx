@@ -37,6 +37,7 @@ const HuTao: DataCharacter = {
   NAsConfig: {
     name: "Secret Spear of Wangsheng",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

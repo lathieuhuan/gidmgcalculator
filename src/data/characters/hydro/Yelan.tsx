@@ -35,7 +35,7 @@ const Yelan: DataCharacter = {
   NAsConfig: {
     name: "Stealthy Bowshot",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import type { DataCharacter } from "@Src/types";
+import type { DataCharacter, Talent } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Conponent
@@ -21,18 +21,28 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
   const {
     name: charName,
     vision,
-    isReverseXtraLv,
+    bonusLvFromCons,
+    NAsConfig: { name },
     activeTalents: { ES, EB },
     constellation,
   } = dataChar;
   const consInfo = constellation[consLv - 1] || {};
   let abilityName = "";
 
+  const getName = (talent: Talent) => {
+    const nameMap: Partial<Record<Talent, string>> = {
+      NAs: name,
+      ES: ES.name,
+      EB: EB.name,
+    };
+    return nameMap[talent] || "";
+  };
+
   if (consLv === 3) {
-    abilityName = isReverseXtraLv ? EB.name : ES.name;
+    abilityName = getName(bonusLvFromCons[0]);
   }
   if (consLv === 5) {
-    abilityName = isReverseXtraLv ? ES.name : EB.name;
+    abilityName = getName(bonusLvFromCons[1]);
   }
 
   const consDesc = abilityName ? (

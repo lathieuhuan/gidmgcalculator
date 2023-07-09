@@ -52,7 +52,7 @@ const Mika: DataCharacter = {
   NAsConfig: {
     name: "Spear of Favonius - Point Passage",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

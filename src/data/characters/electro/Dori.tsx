@@ -34,7 +34,7 @@ const Dori: DataCharacter = {
   NAsConfig: {
     name: "Marvelous Sword-Dance (Modified)",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

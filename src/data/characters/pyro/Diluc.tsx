@@ -34,6 +34,7 @@ const Diluc: DataCharacter = {
   NAsConfig: {
     name: "Tempered Sword",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

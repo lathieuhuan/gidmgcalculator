@@ -34,6 +34,7 @@ const Alhaitham: DataCharacter = {
   NAsConfig: {
     name: "Abductive Reasoning",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

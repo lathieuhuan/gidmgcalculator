@@ -33,6 +33,7 @@ const Tartaglia: DataCharacter = {
     name: "Cutting Torrent",
     // getExtraStats: () => [{ name: "Riptide Duration", value: "10s" }],
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

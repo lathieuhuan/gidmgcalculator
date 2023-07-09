@@ -34,7 +34,7 @@ const Keqing: DataCharacter = {
   NAsConfig: {
     name: "Yunlai Swordsmanship",
   },
-  isReverseXtraLv: true,
+  bonusLvFromCons: ["EB", "ES"],
   activeTalents: {
     NA: {
       stats: [

@@ -43,6 +43,7 @@ const Shinobu: DataCharacter = {
   NAsConfig: {
     name: "Shinobu's Shadowsword",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [

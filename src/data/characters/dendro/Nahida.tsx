@@ -49,6 +49,7 @@ const Nahida: DataCharacter = {
   NAsConfig: {
     name: "Form",
   },
+  bonusLvFromCons: ["ES", "EB"],
   activeTalents: {
     NA: {
       stats: [
