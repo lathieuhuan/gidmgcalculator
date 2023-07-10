@@ -4,6 +4,7 @@ import type {
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
   NormalAttack,
+  CalculatedDamage,
 } from "@Src/types";
 import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
 
@@ -31,7 +32,7 @@ function calcTalentDamage({
   rxnMult,
   resistReduct,
   record,
-}: CalcTalentStatArgs) {
+}: CalcTalentStatArgs): CalculatedDamage {
   if (base !== 0 && !stat.notAttack) {
     const flat =
       (talentBuff.flat?.value || 0) +
@@ -93,6 +94,7 @@ function calcTalentDamage({
       nonCrit: base,
       crit: applyToOneOrMany(base, (n) => n * (1 + cDmg_)),
       average: applyToOneOrMany(base, (n) => n * (1 + cRate_ * cDmg_)),
+      attElmt,
     };
   } //
   else if (!Array.isArray(base)) {
@@ -228,12 +230,12 @@ export default function getDamage({
     resistReduct[key] = RES < 0 ? 1 - RES / 2 : RES >= 0.75 ? 1 / (4 * RES + 1) : 1 - RES;
   }
 
-  const finalResult = {
+  const finalResult: DamageResult = {
     NAs: {},
     ES: {},
     EB: {},
     RXN: {},
-  } as DamageResult;
+  };
 
   if (tracker) {
     tracker.NAs = {};
@@ -375,6 +377,7 @@ export default function getDamage({
       nonCrit,
       crit: cDmg_ ? nonCrit * (1 + cDmg_) : 0,
       average: cRate_ ? nonCrit * (1 + cDmg_ * cRate_) : 0,
+      attElmt: dmgType,
     };
 
     if (tracker) {

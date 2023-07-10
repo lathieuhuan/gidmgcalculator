@@ -58,12 +58,13 @@ const Lyney: DataCharacter = {
         {
           name: "Pyrotechnic Strike",
           multFactors: 212,
+          attElmt: "pyro",
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const isInUse = charModIsInUse(Lyney.buffs!, char, selfBuffCtrls, 1);
             return talentBuff([isInUse, "mult_", [false, 1], 80]);
           },
         },
-        { name: "Spiritbreath Thorn", multFactors: 37.92 },
+        { name: "Spiritbreath Thorn", multFactors: 37.92, attElmt: "pyro" },
       ],
       multScale: 2,
     },

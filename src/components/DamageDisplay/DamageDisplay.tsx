@@ -121,11 +121,11 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                         </Tr>
 
                         {key.subs.map((subKey, i) => {
-                          const { nonCrit, crit, average } = standardValues[subKey] || {};
+                          const { nonCrit, crit, average, attElmt } = standardValues[subKey] || {};
 
                           return nonCrit === undefined ? null : (
                             <Tr key={subKey}>
-                              <Td>{isReactionDmg ? t(subKey) : subKey}</Td>
+                              <Td title={attElmt?.toUpperCase()}>{isReactionDmg ? t(subKey) : subKey}</Td>
                               <Td>{displayValue(nonCrit)}</Td>
                               <Td>{displayValue(crit)}</Td>
                               <Td className="text-lightgold">{displayValue(average)}</Td>

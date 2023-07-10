@@ -2,6 +2,15 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "July 10th, 2023",
+    content: [
+      <>
+        Corrected damage type of <Lightgold>Lyney</Lightgold>'s "Pyrotechnic Strike" and "Spiritbreath Thorn" to Pyro.
+        Thank you <Red>Antixique</Red>!
+      </>,
+    ],
+  },
+  {
     date: "July 9th, 2023 (v3.2.0)",
     content: [
       <>

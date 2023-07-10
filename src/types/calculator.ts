@@ -1,3 +1,4 @@
+import type { ActualAttackElement } from "./character";
 import type {
   AttackElement,
   AttackPattern,
@@ -181,15 +182,14 @@ export type Infusion = {
 
 export type Talent = (typeof TALENT_TYPES)[number];
 
-type CalculatedDamage = {
+export type CalculatedDamage = {
   nonCrit: number | number[];
   crit: number | number[];
   average: number | number[];
+  attElmt?: ActualAttackElement;
 };
 
-export type CalculatedDamageCluster = {
-  [k: string]: CalculatedDamage;
-};
+export type CalculatedDamageCluster = Record<string, CalculatedDamage>;
 
 export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
