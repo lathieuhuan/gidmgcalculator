@@ -2,6 +2,30 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "July 11th, 2023",
+    content: [
+      <>
+        Added artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
+      </>,
+      <>
+        Added bows: <Lightgold>Song of Stillness</Lightgold>, <Lightgold>Scion of the Blazing Sun</Lightgold>.
+      </>,
+      <>
+        Added catalysts: <Lightgold>Flowing Purity</Lightgold>, <Lightgold>Sacrificial Jade</Lightgold>.
+      </>,
+      <>
+        Added claymores: <Lightgold>Tidal Shadow</Lightgold>, <Lightgold>Talking Stick</Lightgold>.
+      </>,
+      <>
+        Added polearms: <Lightgold>Rightful Reward</Lightgold>, <Lightgold>Ballad of the Fjords</Lightgold>.
+      </>,
+      <>
+        Added swords: <Lightgold>Crossing of Fleuve Cendre</Lightgold>, <Lightgold>Finale of the Deep</Lightgold>,{" "}
+        <Lightgold>Wolf-Fang</Lightgold>.
+      </>,
+    ],
+  },
+  {
     date: "July 10th, 2023",
     content: [
       <>

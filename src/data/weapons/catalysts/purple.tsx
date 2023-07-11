@@ -17,7 +17,7 @@ const purpleCatalysts: DataWeapon[] = [
   {
     code: 162,
     name: "Flowing Purity",
-    icon: "",
+    icon: "https://images2.imgbox.com/56/62/FXT7IK0o_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
@@ -73,7 +73,7 @@ const purpleCatalysts: DataWeapon[] = [
   {
     code: 161,
     name: "Sacrificial Jade",
-    icon: "",
+    icon: "https://images2.imgbox.com/80/94/Ke393kt9_o.png",
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },

@@ -11,23 +11,23 @@ const fontaineSets: DataArtifact[] = [
     variants: [4, 5],
     flower: {
       name: "Flower",
-      icon: "",
+      icon: "https://images2.imgbox.com/03/ec/BOIJmvU5_o.png",
     },
     plume: {
       name: "Plume",
-      icon: "",
+      icon: "https://images2.imgbox.com/57/a9/W8nhGIh5_o.png",
     },
     sands: {
       name: "Sands",
-      icon: "",
+      icon: "https://images2.imgbox.com/a2/40/1OX9MKOW_o.png",
     },
     goblet: {
       name: "Goblet",
-      icon: "",
+      icon: "https://images2.imgbox.com/fc/bf/E4GhjlA9_o.png",
     },
     circlet: {
       name: "Circlet",
-      icon: "",
+      icon: "https://images2.imgbox.com/8d/07/qRBikoYo_o.png",
     },
     setBonuses: [
       {
@@ -70,23 +70,23 @@ const fontaineSets: DataArtifact[] = [
     variants: [4, 5],
     flower: {
       name: "Flower",
-      icon: "",
+      icon: "https://images2.imgbox.com/62/6f/3vMF9DVE_o.png",
     },
     plume: {
       name: "Plume",
-      icon: "",
+      icon: "https://images2.imgbox.com/c6/d2/lNSN6z4U_o.png",
     },
     sands: {
       name: "Sands",
-      icon: "",
+      icon: "https://images2.imgbox.com/0c/4d/gyOO33rv_o.png",
     },
     goblet: {
       name: "Goblet",
-      icon: "",
+      icon: "https://images2.imgbox.com/e0/c3/virjS4hm_o.png",
     },
     circlet: {
       name: "Circlet",
-      icon: "",
+      icon: "https://images2.imgbox.com/73/4b/C6Hhb7dB_o.png",
     },
     setBonuses: [
       {
