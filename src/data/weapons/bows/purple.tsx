@@ -10,6 +10,64 @@ const fadingTwilightBuffValuesByState = (refi: number) => [4.5 + refi * 1.5, 7.5
 
 const purpleBows: DataWeapon[] = [
   {
+    code: 164,
+    name: "Song of Stillness",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "atk_", scale: "9%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After the wielder is healed, they will deal <Green b>{12 + refi * 4}%</Green> more <Green>DMG</Green> for 8s.
+          This can be triggered even when the character is not on the field.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 164)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
+      },
+    ],
+  },
+  {
+    code: 163,
+    name: "Scion of the Blazing Sun",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "cRate_", scale: "4%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            After a Charged Attack hits an opponent, a Sunfire Arrow will descend and deal {45 + refi * 15}% ATK as DMG.{" "}
+            {this.extra?.[0]} A Sunfire Arrow can be triggered once every 12s.
+          </>
+        );
+      },
+      extra: [
+        <>
+          After a Sunfire Arrow hits an opponent, it will increase the <Green>Charged Attack DMG</Green> taken by this
+          opponent from the wielder by <Green b>{21 + refi * 7}%</Green>.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 163)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 28),
+      },
+    ],
+  },
+  {
     code: 153,
     name: "Ibis Piercer",
     icon: "c/ce/Weapon_Ibis_Piercer",
