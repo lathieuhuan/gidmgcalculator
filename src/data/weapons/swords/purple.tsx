@@ -10,7 +10,7 @@ const purpleSwords: DataWeapon[] = [
   {
     code: 165,
     name: "Crossing of Fleuve Cendre",
-    icon: "",
+    icon: "https://images2.imgbox.com/75/99/6Ym3kHce_o.png",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
@@ -43,7 +43,7 @@ const purpleSwords: DataWeapon[] = [
   {
     code: 156,
     name: "Finale of the Deep",
-    icon: "",
+    icon: "https://images2.imgbox.com/11/aa/6uT27dLW_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
@@ -98,7 +98,7 @@ const purpleSwords: DataWeapon[] = [
   {
     code: 155,
     name: "Wolf-Fang",
-    icon: "",
+    icon: "https://images2.imgbox.com/e3/69/glrRYvtm_o.png",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },

@@ -18,7 +18,7 @@ const purplePolearms: DataWeapon[] = [
   {
     code: 160,
     name: "Rightful Reward",
-    icon: "",
+    icon: "https://images2.imgbox.com/d8/99/aC6TxTrF_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
@@ -35,7 +35,7 @@ const purplePolearms: DataWeapon[] = [
   {
     code: 159,
     name: "Ballad of the Fjords",
-    icon: "",
+    icon: "https://images2.imgbox.com/85/5a/qt8NiEXW_o.png",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
