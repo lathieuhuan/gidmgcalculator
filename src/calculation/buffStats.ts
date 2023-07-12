@@ -106,22 +106,6 @@ export default function getBuffedStats({
 }: GetBuffedStatsArgs) {
   const weaponData = findDataWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
-  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
-  const setBonuses = getArtifactSetBonuses(artifacts);
-  const usedWpMods: UsedCode[] = [];
-  const usedArtMods: UsedCode[] = [];
-
-  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
-    const usedMods = isWeapon ? usedWpMods : usedArtMods;
-    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
-
-    if (foundItem && foundItem.modIndex === modIndex) {
-      return false;
-    } else {
-      usedMods.push({ itemCode, modIndex });
-      return true;
-    }
-  }
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -164,10 +148,33 @@ export default function getBuffedStats({
     infusedElement,
     tracker,
   };
-  const { refi } = weapon;
+
+  applySelfBuffs({
+    isFinal: false,
+    modifierArgs,
+    charBuffCtrls: selfBuffCtrls,
+    dataChar,
+  });
+
+  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
+  const setBonuses = getArtifactSetBonuses(artifacts);
+  const usedWpMods: UsedCode[] = [];
+  const usedArtMods: UsedCode[] = [];
+
+  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
+    const usedMods = isWeapon ? usedWpMods : usedArtMods;
+    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
+
+    if (foundItem && foundItem.modIndex === modIndex) {
+      return false;
+    } else {
+      usedMods.push({ itemCode, modIndex });
+      return true;
+    }
+  }
 
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
-  applyWpPassiveBuffs({ isFinal: false, weaponData, refi, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, modifierArgs });
   applyArtPassiveBuffs({ isFinal: false, setBonuses, modifierArgs });
 
   // APPLY CUSTOM BUFFS
@@ -234,13 +241,6 @@ export default function getBuffedStats({
       }
     }
   }
-
-  applySelfBuffs({
-    isFinal: false,
-    modifierArgs,
-    charBuffCtrls: selfBuffCtrls,
-    dataChar,
-  });
 
   // APPPLY TEAMMATE BUFFS
 
@@ -325,7 +325,7 @@ export default function getBuffedStats({
       if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
         applyBuff({
           desc: `${weaponData.name} activated`,
-          refi,
+          refi: weapon.refi,
           inputs,
           ...modifierArgs,
         });
@@ -355,7 +355,7 @@ export default function getBuffedStats({
   calcFinalTotalAttrs(totalAttr);
 
   applyArtPassiveBuffs({ isFinal: true, setBonuses, modifierArgs });
-  applyWpPassiveBuffs({ isFinal: true, weaponData, refi, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: true, weaponData, refi: weapon.refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
   for (const { activated, index, inputs = [] } of wpBuffCtrls) {
@@ -365,7 +365,7 @@ export default function getBuffedStats({
       if (applyFinalBuff) {
         applyFinalBuff({
           desc: `${weaponData.name} activated`,
-          refi,
+          refi: weapon.refi,
           inputs,
           ...modifierArgs,
         });

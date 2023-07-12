@@ -3,7 +3,7 @@ import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { round } from "@Src/utils";
+import { applyPercent, countVision, round } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
@@ -101,11 +101,9 @@ const Lyney: DataCharacter = {
       desc: (
         <>
           When dealing DMG to opponents affected by Pyro, Lyney will receive the following buffs:
-          <br />• <Green>DMG</Green> increased by <Green b>60%</Green> at <Green>base</Green>.
-          <br />• Each Pyro party member other than Lyney will cause this effect to receive a further <Green>
-            20%
-          </Green>{" "}
-          bonus.
+          <br />• <Green>Base ATK</Green> increased by <Green b>60%</Green>.
+          <br />• Each Pyro party member other than Lyney will cause this effect to receive a further{" "}
+          <Green b>20%</Green> bonus.
           <br />
           Lyney can gain a total of <Rose>100%</Rose> increased DMG to opponents affected by Pyro in this way.
         </>
@@ -191,8 +189,15 @@ const Lyney: DataCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      desc: () => "The effect of this buff is still being learnt.",
+      desc: () => Lyney.passiveTalents[1].desc,
       isGranted: checkAscs[4],
+      applyBuff: ({ totalAttr, partyData, desc, tracker }) => {
+        const { pyro = 0 } = countVision(partyData);
+        const percent = Math.min(60 + pyro * 20, 100);
+        const buffValue = applyPercent(totalAttr.base_atk, percent);
+        const finalDesc = desc + ` / ${percent}% of ${totalAttr.base_atk} Base ATK`;
+        applyModifier(finalDesc, totalAttr, "base_atk", buffValue, tracker);
+      },
     },
     {
       index: 3,

@@ -11,10 +11,10 @@ import type {
   AttributeStat,
   PartiallyRequired,
   NormalAttack,
-  BaseStat,
   ResonanceVision,
   Weapon,
   Artifact,
+  TotalAttributeStat,
 } from "./global";
 import {
   ATTACK_ELEMENT_INFO_KEYS,
@@ -155,7 +155,7 @@ export type SetupImportInfo = {
   target?: Target;
 };
 
-export type TotalAttribute = Record<BaseStat | AttributeStat, number>;
+export type TotalAttribute = Record<TotalAttributeStat, number>;
 
 export type ArtifactAttribute = PartiallyRequired<Partial<Record<AttributeStat, number>>, CoreStat>;
 
@@ -243,7 +243,7 @@ export type TrackerDamageRecord = {
 };
 
 export type Tracker = {
-  totalAttr: Record<AttributeStat, TrackerRecord[]>;
+  totalAttr: Record<TotalAttributeStat, TrackerRecord[]>;
   attPattBonus: Record<`${AttackPatternBonusKey}.${AttackPatternInfoKey}`, TrackerRecord[]>;
   attElmtBonus: Record<`${AttackElement}.${AttackElementInfoKey}`, TrackerRecord[]>;
   rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;

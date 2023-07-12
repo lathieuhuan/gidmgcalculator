@@ -21,6 +21,7 @@ import type {
   Talent,
   TotalAttribute,
   Tracker,
+  TotalAttributeStat,
 } from "@Src/types";
 import { findByName, pickOne, turnArray } from "./pure-utils";
 import { bareLv } from "./utils";
@@ -95,8 +96,8 @@ export type ModRecipient =
   | ResistanceReduction;
 
 export type ModRecipientKey =
-  | AttributeStat
-  | AttributeStat[]
+  | TotalAttributeStat
+  | TotalAttributeStat[]
   | ReactionBonusPath
   | ReactionBonusPath[]
   | AttackPatternPath
@@ -111,7 +112,7 @@ type RootValue = number | number[];
 export function applyModifier(
   desc: string | undefined,
   recipient: TotalAttribute,
-  keys: AttributeStat | AttributeStat[],
+  keys: TotalAttributeStat | TotalAttributeStat[],
   rootValue: RootValue,
   tracker?: Tracker
 ): void;

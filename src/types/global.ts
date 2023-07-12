@@ -40,6 +40,8 @@ export type BaseStat = (typeof BASE_STAT_TYPES)[number];
 
 export type AttributeStat = (typeof ATTRIBUTE_STAT_TYPES)[number];
 
+export type TotalAttributeStat = BaseStat | AttributeStat;
+
 export type AmplifyingReaction = "melt" | "vaporize";
 
 export type QuickenReaction = "spread" | "aggravate";
