@@ -42,16 +42,17 @@ function calcTalentDamage({
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
     let normalMult = (talentBuff.pct_?.value || 0) + attPattBonus.all.pct_;
-    let specialMult = 1;
+    let specialMult = (talentBuff.multPlus?.value || 0) + attPattBonus.all.multPlus;
 
     if (attPatt !== "none") {
       normalMult += attPattBonus[attPatt].pct_;
-      specialMult = toMult(attPattBonus[attPatt].multPlus);
+      specialMult += attPattBonus[attPatt].multPlus;
     }
     if (attElmt !== "various") {
       normalMult += totalAttr[attElmt];
     }
     normalMult = toMult(normalMult);
+    specialMult = toMult(specialMult);
 
     // CALCULATE DEFENSE MULTIPLIER
     let defMult = 1;

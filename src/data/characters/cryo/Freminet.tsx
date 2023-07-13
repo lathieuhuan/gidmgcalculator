@@ -1,12 +1,17 @@
-import type { DataCharacter } from "@Src/types";
+import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkAscs, checkCons } from "../utils";
+import { applyModifier } from "@Src/utils/calculation";
+import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+
+const getShatteringPressureBuff: GetTalentBuffFn = ({ selfBuffCtrls, char }) => {
+  const A4isInUse = charModIsInUse(Freminet.buffs!, char, selfBuffCtrls, 1);
+  return talentBuff([A4isInUse, "pct_", [true, 4], 40], [checkCons[1](char), "cRate_", [false, 1], 15]);
+};
 
 const Freminet: DataCharacter = {
-  code: 4,
+  code: 74,
   name: "Freminet",
   icon: "https://images2.imgbox.com/fa/bf/A2tmjH1a_o.png",
   sideIcon: "",
@@ -34,7 +39,7 @@ const Freminet: DataCharacter = {
   NAsConfig: {
     name: "Flowing Eddies",
   },
-  bonusLvFromCons: ["EB", "ES"],
+  bonusLvFromCons: ["NAs", "ES"],
   activeTalents: {
     NA: {
       stats: [
@@ -56,22 +61,58 @@ const Freminet: DataCharacter = {
       image: "",
       stats: [
         { name: "Upward Thrust", multFactors: 83.04 },
-        { name: "Frost DMG", multFactors: 3.58 },
-        { name: "Level 0 Shattering Pressure", multFactors: 200.48 },
         {
-          name: "Level 1 Shattering Pressure",
-          multFactors: [{ root: 100.24 }, { root: 45.82 }],
+          name: "Frost DMG",
+          multFactors: 3.58,
+          getTalentBuff: ({ char, selfBuffCtrls }) => {
+            const isInUse = charModIsInUse(Freminet.buffs!, char, selfBuffCtrls, 0);
+            return talentBuff([isInUse, "multPlus", "Stalking mode", 100]);
+          },
         },
         {
-          name: "Level 2 Shattering Pressure",
-          multFactors: [{ root: 70.17 }, { root: 80.19 }],
+          name: "Level 0 Shattering Pressure",
+          multFactors: 200.48,
+          getTalentBuff: getShatteringPressureBuff,
         },
         {
-          name: "Level 3 Shattering Pressure",
-          multFactors: [{ root: 40.1 }, { root: 114.56 }],
+          name: "Level 1 Shattering Pressure (cryo)",
+          multFactors: 100.24,
+          getTalentBuff: getShatteringPressureBuff,
         },
-        { name: "Level 4 Shattering Pressure", multFactors: 229.12, attElmt: "phys" },
-
+        {
+          name: "Level 1 Shattering Pressure (physical)",
+          multFactors: 45.82,
+          attElmt: "phys",
+          getTalentBuff: getShatteringPressureBuff,
+        },
+        {
+          name: "Level 2 Shattering Pressure (cryo)",
+          multFactors: 70.17,
+          getTalentBuff: getShatteringPressureBuff,
+        },
+        {
+          name: "Level 2 Shattering Pressure (physical)",
+          multFactors: 80.19,
+          attElmt: "phys",
+          getTalentBuff: getShatteringPressureBuff,
+        },
+        {
+          name: "Level 3 Shattering Pressure (cryo)",
+          multFactors: 40.1,
+          getTalentBuff: getShatteringPressureBuff,
+        },
+        {
+          name: "Level 3 Shattering Pressure (physical)",
+          multFactors: 114.56,
+          attElmt: "phys",
+          getTalentBuff: getShatteringPressureBuff,
+        },
+        {
+          name: "Level 4 Shattering Pressure",
+          multFactors: 229.12,
+          attElmt: "phys",
+          getTalentBuff: getShatteringPressureBuff,
+        },
         { name: "Spiritbreath Thorn", multFactors: 14.4 },
       ],
     },
@@ -98,8 +139,8 @@ const Freminet: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Freminet triggers Shatter against opponents, the dealt by <Green>Shattering Pressure DMG</Green> [~ES]
-          will be increased by <Green>40%</Green> for 5s.
+          When Freminet triggers Shatter against opponents, <Green>Shattering Pressure DMG</Green> [~ES] will be
+          increased by <Green>40%</Green> for 5s.
         </>
       ),
     },
@@ -148,7 +189,25 @@ const Freminet: DataCharacter = {
       ),
     },
   ],
+  innateBuffs: [
+    {
+      src: EModSrc.C1,
+      desc: () => Freminet.constellation[0].desc,
+      isGranted: checkCons[1],
+    },
+  ],
   buffs: [
+    {
+      index: 0,
+      src: "Stalking mode",
+      affect: EModAffect.SELF,
+      desc: () => (
+        <>
+          While in Stalking mode, <Green>Frost</Green> released by his Normal Attacks deal <Green b>200%</Green> of
+          their original DMG.
+        </>
+      ),
+    },
     {
       index: 1,
       src: EModSrc.A4,
@@ -158,30 +217,37 @@ const Freminet: DataCharacter = {
     },
     {
       index: 2,
+      src: EModSrc.C4,
+      affect: EModAffect.SELF,
+      desc: () => Freminet.constellation[3].desc,
+      isGranted: checkCons[4],
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 2,
+        },
+      ],
+      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
+        const buffValue = 9 * (inputs[0] || 0);
+        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
+      },
+    },
+    {
+      index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Spirit Blade: Cloud-Parting Star <Green>[EB]</Green> deals <Green b>15%</Green> <Green>more DMG</Green> to
-          opponents with a lower percentage of their Max HP remaining than Freminet.
-        </>
-      ),
+      desc: () => Freminet.constellation[5].desc,
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "EB.pct_", 15),
-    },
-  ],
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.A4,
-      desc: () => (
-        <>
-          When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another spirit blade will be
-          summoned to strike nearby opponents and decrease their <Green>Cryo RES</Green> by <Green b>10%</Green> for 8s.
-        </>
-      ),
-      isGranted: checkAscs[4],
-      applyDebuff: makeModApplier("resistReduct", "cryo", 10),
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 3,
+        },
+      ],
+      applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
+        const buffValue = 12 * (inputs[0] || 0);
+        applyModifier(desc, totalAttr, "cDmg_", buffValue, tracker);
+      },
     },
   ],
 };

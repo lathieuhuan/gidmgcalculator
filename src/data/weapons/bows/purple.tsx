@@ -102,6 +102,24 @@ const purpleBows: DataWeapon[] = [
     ],
   },
   {
+    code: 166,
+    name: "End of the Line",
+    icon: "7/71/Weapon_End_of_the_Line",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "er_", scale: "10%" },
+    passiveName: "Net Snapper",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Triggers the Flowrider effect after using an Elemental Skill, dealing {60 + refi * 20}% ATK as AoE DMG upon
+          hitting an opponent with an attack. Flowrider will be removed after 15s or after causing 3 instances of AoE
+          DMG. Only 1 instance of AoE DMG can be caused every 2s in this way. Flowrider can be triggered once every 12s.
+        </>
+      ),
+    }),
+  },
+  {
     code: 138,
     name: "King's Squire",
     icon: "a/a2/Weapon_King%27s_Squire",

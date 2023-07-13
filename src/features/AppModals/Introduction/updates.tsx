@@ -2,6 +2,17 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "July 13th, 2023",
+    content: [
+      <>
+        Added characters: <Lightgold>Hydro Traveler</Lightgold>, <Lightgold>Freminet</Lightgold>.
+      </>,
+      <>
+        Added bow: <Lightgold>End of the Line</Lightgold>.
+      </>,
+    ],
+  },
+  {
     date: "July 11th, 2023",
     content: [
       <>

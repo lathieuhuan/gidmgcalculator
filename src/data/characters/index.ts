@@ -21,12 +21,14 @@ import Dori from "./electro/Dori";
 import Eula from "./cryo/Eula";
 import ElectroMC from "./electro/ElectroMC";
 import Fischl from "./electro/Fischl";
+import Freminet from "./cryo/Freminet";
 import Faruzan from "./anemo/Faruzan";
 import Ganyu from "./cryo/Ganyu";
 import GeoMC from "./geo/GeoMC";
 import Gorou from "./geo/Gorou";
 import Heizou from "./anemo/Heizou";
 import HuTao from "./pyro/HuTao";
+import HydroMC from "./hydro/HydroMC";
 import Itto from "./geo/Itto";
 import Jean from "./anemo/Jean";
 import Kaeya from "./cryo/Kaeya";
@@ -97,11 +99,13 @@ const characters = {
   Eula,
   Faruzan,
   Fischl,
+  Freminet,
   Ganyu,
   "Geo Traveler": GeoMC,
   Gorou,
   Heizou,
   "Hu Tao": HuTao,
+  "Hydro Traveler": HydroMC,
   Itto,
   Jean,
   Kaeya,
