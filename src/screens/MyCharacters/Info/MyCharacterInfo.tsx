@@ -13,12 +13,12 @@ import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from
 // Util
 import getBaseStats from "@Src/calculation/baseStats";
 import { findById, findByName, getImgSrc } from "@Src/utils";
-import { findAppCharacter } from "@Data/controllers";
 
 // Component
 import { StarLine, Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
+import { appData } from "@Data/index";
 
 const selectChosenInfo = createSelector(
   selectUserChars,
@@ -41,23 +41,15 @@ export default function MyCharacterInfo() {
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
-  const dataChar = findAppCharacter(char);
-  if (!dataChar || !weapon) {
+  const charData = appData.getCharacter(char.name);
+  if (!charData || !weapon) {
     return null;
   }
-  const { code, name, icon, rarity, nation, vision } = dataChar;
+  const { name, icon, rarity, vision } = charData;
 
   const { totalAttr, artAttr } = getBaseStats({
     char,
-    charData: {
-      code,
-      name,
-      icon,
-      nation,
-      vision,
-      weaponType: dataChar.weaponType,
-      EBcost: dataChar.activeTalents.EB.energyCost,
-    },
+    charData,
     weapon,
     artifacts,
   });

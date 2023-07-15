@@ -13,11 +13,12 @@ import {
 } from "@Store/calculatorSlice";
 
 // Util
-import { findAppCharacter, getPartyData } from "@Data/controllers";
+import { getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { appData } from "@Data/index";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ export function SelfBuffs() {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
 
-  const { innateBuffs = [], buffs = [] } = findAppCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = appData.getCharacter(char.name) || {};
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
@@ -127,7 +128,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const charData = useSelector(selectCharData);
 
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findAppCharacter(teammate)!;
+  const { buffs = [], vision } = appData.getCharacter(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs = [] } = ctrl;

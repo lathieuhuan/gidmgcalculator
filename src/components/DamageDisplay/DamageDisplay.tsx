@@ -26,7 +26,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
   const { t } = useTranslation();
 
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const { tableKeys, dataChar } = useMemo(() => getTableKeys(char.name), [char.name]);
+  const { tableKeys, charData } = useMemo(() => getTableKeys(char.name), [char.name]);
 
   const toggleTable = (index: number) => () => {
     setClosedItems((prev) => {
@@ -42,10 +42,10 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
         const standardValues = damageResult[key.main];
         const isReactionDmg = key.main === "RXN";
         const talentLevel =
-          !isReactionDmg && dataChar
+          !isReactionDmg && charData
             ? finalTalentLv({
                 char,
-                dataChar,
+                charData,
                 talentType: key.main,
                 partyData: getPartyData(party),
               })

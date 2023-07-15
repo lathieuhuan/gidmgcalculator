@@ -15,13 +15,14 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { findDataArtifact, findAppCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
+import { findDataArtifact, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
+import { appData } from "@Data/index";
 
 interface SetupLayoutProps {
   ID: number;
@@ -73,26 +74,26 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const dataChar = findAppCharacter(char);
+    const charData = appData.getCharacter(char.name);
     const weaponData = weapon ? findDataWeapon(weapon) : undefined;
 
-    if (dataChar) {
+    if (charData) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
         return finalTalentLv({
           char,
-          dataChar,
+          charData,
           talentType,
           partyData: getPartyData(party),
         });
       });
 
       const renderSpan = (text: string | number) => (
-        <span className={`font-medium text-${dataChar.vision}`}>{text}</span>
+        <span className={`font-medium text-${charData.vision}`}>{text}</span>
       );
 
       mainCharacter = (
         <div className="mx-auto lg:mx-0 flex">
-          <Image size="w-20 h-20" src={dataChar.icon} imgType="character" />
+          <Image size="w-20 h-20" src={charData.icon} imgType="character" />
 
           <div className="ml-4 flex-col justify-between">
             <p className="text-lg">Level {renderSpan(char.level)}</p>
@@ -108,7 +109,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = (
       <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && findAppCharacter(teammate);
+          const dataTeammate = teammate && appData.getCharacter(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];

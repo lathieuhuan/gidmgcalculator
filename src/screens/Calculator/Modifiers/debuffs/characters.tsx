@@ -3,6 +3,7 @@ import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calcul
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
+import { findByIndex } from "@Src/utils";
 
 // Action
 import {
@@ -12,12 +13,9 @@ import {
   toggleTeammateModCtrl,
 } from "@Store/calculatorSlice";
 
-// Util
-import { findAppCharacter } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
-
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { appData } from "@Data/index";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -26,7 +24,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
     return state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls;
   });
 
-  const { debuffs = [] } = findAppCharacter(char) || {};
+  const { debuffs = [] } = appData.getCharacter(char.name) || {};
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
@@ -96,7 +94,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
-  const tmData = findAppCharacter(teammate);
+  const tmData = appData.getCharacter(teammate.name);
   if (!tmData) return null;
 
   const { vision, debuffs = [] } = tmData;

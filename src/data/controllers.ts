@@ -1,23 +1,12 @@
-import type {
-  ArtifactType,
-  CharData,
-  AppCharacter,
-  PartyData,
-  Target,
-  WeaponType,
-} from "@Src/types";
+import type { ArtifactType, PartyData, Target, WeaponType } from "@Src/types";
 import { turnArray } from "@Src/utils";
+import { appData } from ".";
 import artifacts from "./artifacts";
-import characters from "./characters";
 import monsters from "./monsters";
 import weapons from "./weapons";
 
 type HasName = { name: string };
 type HasCode = { code: number };
-
-export const findAppCharacter = (char: HasName): AppCharacter | undefined => {
-  return characters[char.name as keyof typeof characters];
-};
 
 export const findDataArtifactSet = ({ code }: HasCode) => {
   // no artifact with code 0
@@ -43,21 +32,8 @@ export const findMonster = ({ code }: { code: number }) => {
   return monsters.find((monster) => monster.code === code);
 };
 
-export const getCharData = (char: HasName): CharData => {
-  const { code, name, icon, vision, nation, weaponType, activeTalents } = findAppCharacter(char)!;
-  return {
-    code,
-    name,
-    icon,
-    vision,
-    nation,
-    weaponType,
-    EBcost: activeTalents.EB.energyCost,
-  };
-};
-
 export function getPartyData(party: (HasName | null)[]): PartyData {
-  return party.map((teammate) => (teammate ? getCharData(teammate) || null : null));
+  return party.map((teammate) => (teammate ? appData.getCharacter(teammate.name) || null : null));
 }
 
 export const getTargetData = (target: Target) => {

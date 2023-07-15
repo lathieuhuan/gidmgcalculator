@@ -1,7 +1,6 @@
 import type {
   AttackElementBonus,
   AttackPatternBonus,
-  CharData,
   CalcWeapon,
   CalcArtifacts,
   CharInfo,
@@ -37,15 +36,14 @@ export type BaseModifierArgsWrapper = {
   attPattBonus?: AttackPatternBonus;
   attElmtBonus?: AttackElementBonus;
   rxnBonus?: ReactionBonus;
-  charData: CharData;
+  charData: AppCharacter;
   partyData?: PartyData;
   tracker?: Tracker;
 };
 
 export type GetBuffedStatsArgs = {
   char: CharInfo;
-  charData: CharData;
-  dataChar: AppCharacter;
+  charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
@@ -77,8 +75,7 @@ export interface CalcPatternStatArgs {
 
 export interface GetDamageArgs {
   char: CharInfo;
-  charData: CharData;
-  dataChar: AppCharacter;
+  charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];

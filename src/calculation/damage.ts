@@ -13,9 +13,10 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
-import { findDataArtifactSet, findAppCharacter } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { appData } from "@Data/index";
 
 function calcPatternStat({
   stat,
@@ -123,7 +124,6 @@ function calcPatternStat({
 export default function getDamage({
   char,
   charData,
-  dataChar,
   selfBuffCtrls,
   selfDebuffCtrls,
   artDebuffCtrls,
@@ -145,7 +145,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { patternActs, weaponType, vision, debuffs } = dataChar;
+  const { patternActs, weaponType, vision, debuffs } = charData;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -176,7 +176,7 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs = [] } = findAppCharacter(teammate)!;
+      const { debuffs = [] } = appData.getCharacter(teammate.name);
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs, index);
 
@@ -240,7 +240,7 @@ export default function getDamage({
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
-    const level = finalTalentLv({ dataChar, talentType: resultKey, char, partyData });
+    const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
 
     for (const stat of talent.stats) {
       // const talentBuff = stat.getTalentBuff

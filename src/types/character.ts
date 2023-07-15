@@ -40,6 +40,7 @@ export type AppCharacter = {
     type: AttributeStat;
     value: number;
   };
+  EBcost: number;
   activeTalents: {
     NAs: ActiveTalent;
     ES: ActiveTalent;
@@ -67,7 +68,6 @@ type Ability = {
 
 type ActiveTalent = Ability & {
   bonusLvAtCons?: number;
-  energyCost?: number;
 };
 
 export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";

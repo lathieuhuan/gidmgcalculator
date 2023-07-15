@@ -30,7 +30,7 @@ import {
 } from "@Src/constants";
 import { RESONANCE_STAT } from "./constants";
 
-import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import {
   getArtifactSetBonuses,
@@ -47,16 +47,17 @@ import {
   initiateTotalAttr,
 } from "./baseStats";
 import { addTrackerRecord } from "./utils";
+import { appData } from "@Data/index";
 
 interface ApplySelfBuffs {
   isFinal: boolean;
   modifierArgs: BuffModifierArgsWrapper;
   charBuffCtrls: ModifierCtrl[];
-  dataChar: AppCharacter;
+  charData: AppCharacter;
 }
-function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: ApplySelfBuffs) {
+function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, charData }: ApplySelfBuffs) {
   const { char } = modifierArgs;
-  const { innateBuffs = [], buffs = [] } = dataChar;
+  const { innateBuffs = [], buffs = [] } = charData;
 
   for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
     if (isGranted(char)) {
@@ -91,7 +92,6 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: Appl
 export default function getBuffedStats({
   char,
   charData,
-  dataChar,
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
@@ -105,7 +105,7 @@ export default function getBuffedStats({
   tracker,
 }: GetBuffedStatsArgs) {
   const weaponData = findDataWeapon(weapon)!;
-  const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
+  const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
   const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
   const setBonuses = getArtifactSetBonuses(artifacts);
   const usedWpMods: UsedCode[] = [];
@@ -239,14 +239,14 @@ export default function getBuffedStats({
     isFinal: false,
     modifierArgs,
     charBuffCtrls: selfBuffCtrls,
-    dataChar,
+    charData,
   });
 
   // APPPLY TEAMMATE BUFFS
 
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weaponType, buffs = [] } = findAppCharacter(teammate)!;
+    const { name, weaponType, buffs = [] } = appData.getCharacter(teammate.name);
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;
@@ -379,7 +379,7 @@ export default function getBuffedStats({
     isFinal: true,
     modifierArgs,
     charBuffCtrls: selfBuffCtrls,
-    dataChar,
+    charData,
   });
 
   // APPLY ARTIFACT FINAL BUFFS

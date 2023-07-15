@@ -1,18 +1,14 @@
-import type { CharData, UserArtifact, UserSetup, UserWeapon } from "@Src/types";
+import type { UserArtifact, UserSetup, UserWeapon } from "@Src/types";
 import calculateAll from "@Src/calculation";
-import { findAppCharacter } from "@Data/controllers";
 import { findById } from "@Src/utils";
+import { appData } from "@Data/index";
 
-export const calculateChosenSetup = (
-  chosenSetup: UserSetup,
-  userWps: UserWeapon[],
-  userArts: UserArtifact[]
-) => {
+export const calculateChosenSetup = (chosenSetup: UserSetup, userWps: UserWeapon[], userArts: UserArtifact[]) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-  const data = findAppCharacter(char);
+  const charData = appData.getCharacter(char.name);
   const weapon = findById(userWps, weaponID);
 
-  if (data && weapon) {
+  if (charData && weapon) {
     const artifacts = artifactIDs.reduce((results: UserArtifact[], ID) => {
       const foundArt = ID ? findById(userArts, ID) : undefined;
 
@@ -23,17 +19,7 @@ export const calculateChosenSetup = (
       return results;
     }, []);
 
-    const charData: CharData = {
-      code: data.code,
-      name: data.name,
-      icon: data.icon,
-      vision: data.vision,
-      nation: data.nation,
-      weaponType: data.weaponType,
-      EBcost: data.activeTalents.EB.energyCost,
-    };
-
-    const result = calculateAll({ char, weapon, artifacts, ...rest }, target, charData);
+    const result = calculateAll({ char, weapon, artifacts, ...rest }, target);
 
     return {
       charData,
@@ -42,9 +28,9 @@ export const calculateChosenSetup = (
       rxnBonus: result.rxnBonus,
       damage: result.dmgResult,
       infusedElement: result.infusedElement,
-      innateBuffs: data.innateBuffs || [],
-      buffs: data.buffs || [],
-      debuffs: data.debuffs || [],
+      innateBuffs: charData.innateBuffs || [],
+      buffs: charData.buffs || [],
+      debuffs: charData.debuffs || [],
     };
   }
 };

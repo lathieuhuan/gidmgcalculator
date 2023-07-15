@@ -21,6 +21,7 @@ import {
   REACTION_BONUS_INFO_KEYS,
   TALENT_TYPES,
 } from "@Src/constants";
+import { AppCharacter } from "./character";
 
 export type SetupType = "original" | "combined" | "complex";
 
@@ -46,16 +47,6 @@ export type CalcSetup = {
   customBuffCtrls: CustomBuffCtrl[];
   customDebuffCtrls: CustomDebuffCtrl[];
   customInfusion: Infusion;
-};
-
-export type CharData = {
-  code: number;
-  name: string;
-  icon: string;
-  nation: Nation;
-  vision: Vision;
-  weaponType: WeaponType;
-  EBcost: number;
 };
 
 export type ModifierInput = number;
@@ -193,11 +184,11 @@ export type CalculatedDamageCluster = {
 
 export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
-export type PartyData = (CharData | null)[];
+export type PartyData = (AppCharacter | null)[];
 
 export type BuffModifierArgsWrapper = {
   char: CharInfo;
-  charData: CharData;
+  charData: AppCharacter;
   partyData: PartyData;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;

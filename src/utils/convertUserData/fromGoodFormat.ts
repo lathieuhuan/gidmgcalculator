@@ -3,11 +3,11 @@ import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter
 import characters from "@Data/characters";
 import weapons from "@Data/weapons";
 import artifacts from "@Data/artifacts";
-import { findAppCharacter } from "@Data/controllers";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
 import { findByName } from "../pure-utils";
 import { mapGoodFormat } from "./constants";
+import { appData } from "@Data/index";
 
 const convertLevel = (level: any, ascension: any) => {
   const roundedLevel = Math.round(+level / 10) * 10;
@@ -173,7 +173,7 @@ export function convertFromGoodFormat(data: any) {
 
   for (const char of result.characters) {
     if (!char.weaponID) {
-      const { weaponType } = findAppCharacter(char)! || {};
+      const { weaponType } = appData.getCharacter(char.name)! || {};
       const weaponID = seedID++;
       const newWeapon = createWeapon({ type: weaponType });
 

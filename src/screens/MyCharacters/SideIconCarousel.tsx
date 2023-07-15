@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { useIntersectionObserver } from "@Src/hooks";
-
-// Util
 import { getImgSrc } from "@Src/utils";
-import { findAppCharacter } from "@Data/controllers";
 
 // Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";
@@ -17,6 +14,7 @@ import { PickerCharacter } from "@Src/features";
 import { Button } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
+import { appData } from "@Data/index";
 
 interface TopBarProps {
   characterNames: string[];
@@ -70,11 +68,11 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
-                const databaseChar = findAppCharacter({ name });
-                if (!databaseChar) {
+                const charData = appData.getCharacter(name);
+                if (!charData) {
                   return null;
                 }
-                const { sideIcon, icon } = databaseChar;
+                const { sideIcon, icon } = charData;
                 const visible = itemsVisible[name];
 
                 return (

@@ -14,7 +14,7 @@ type DataControl<T> = {
 };
 
 export class AppDataService {
-  characters: Record<string, DataControl<AppCharacter>> = {};
+  private characters: Record<string, DataControl<AppCharacter>> = {};
 
   constructor() {
     Object.entries(characters).forEach(([name, data]) => {
@@ -64,7 +64,7 @@ export class AppDataService {
     return response;
   }
 
-  getAppCharacter(name: string) {
+  getCharacter(name: string) {
     return this.characters[name].data;
   }
 

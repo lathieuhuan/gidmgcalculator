@@ -1,4 +1,4 @@
-import { findAppCharacter } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { NORMAL_ATTACKS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 
 type AttackPatternKey = {
@@ -8,14 +8,14 @@ type AttackPatternKey = {
 
 type ReactionKey = {
   main: "RXN";
-  subs: Array<typeof TRANSFORMATIVE_REACTIONS[number]>;
+  subs: Array<(typeof TRANSFORMATIVE_REACTIONS)[number]>;
 };
 
 export type TableKey = AttackPatternKey | ReactionKey;
 
 export const getTableKeys = (charName: string) => {
-  const dataChar = findAppCharacter({ name: charName });
-  if (!dataChar) {
+  const charData = appData.getCharacter(charName);
+  if (!charData) {
     return {
       tableKeys: [],
     };
@@ -25,13 +25,13 @@ export const getTableKeys = (charName: string) => {
     subs: [],
   };
   for (const na of NORMAL_ATTACKS) {
-    NAs.subs = NAs.subs.concat(dataChar.activeTalents[na].stats.map(({ name }) => name));
+    NAs.subs = NAs.subs.concat(charData.patternActs[na].stats.map(({ name }) => name));
   }
 
   const result: TableKey[] = [NAs];
 
   for (const attPatt of ["ES", "EB"] as const) {
-    const { stats } = dataChar.activeTalents[attPatt];
+    const { stats } = charData.patternActs[attPatt];
     result.push({
       main: attPatt,
       subs: stats.map(({ name }) => name),
@@ -45,7 +45,7 @@ export const getTableKeys = (charName: string) => {
 
   return {
     tableKeys: result,
-    dataChar,
+    charData,
   };
 };
 

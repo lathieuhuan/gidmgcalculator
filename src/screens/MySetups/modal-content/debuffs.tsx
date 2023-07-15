@@ -14,11 +14,12 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex } from "@Src/utils";
-import { findDataArtifactSet, findAppCharacter } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
 import { Green } from "@Src/pure-components";
 import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Src/components";
+import { appData } from "@Data/index";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
@@ -90,7 +91,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       continue;
     }
 
-    const teammateData = findAppCharacter(teammate);
+    const teammateData = appData.getCharacter(teammate.name);
     if (!teammateData) {
       continue;
     }

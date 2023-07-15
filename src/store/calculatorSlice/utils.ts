@@ -1,31 +1,25 @@
-import type {
-  CalcWeapon,
-  CharInfo,
-  ModifierCtrl,
-  UserArtifact,
-  UserWeapon,
-  WeaponType,
-} from "@Src/types";
+import type { CalcWeapon, CharInfo, ModifierCtrl, UserArtifact, UserWeapon, WeaponType } from "@Src/types";
 import type { PickedChar } from "./reducer-types";
 import type { CalculatorState } from "./types";
 
 import calculateAll from "@Src/calculation";
 import { findById, userItemToCalcItem } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import {
-  createArtifactBuffCtrls,
-  createCharInfo,
-  createWeapon,
-  createWeaponBuffCtrls,
-} from "@Src/utils/creators";
+import { createArtifactBuffCtrls, createCharInfo, createWeapon, createWeaponBuffCtrls } from "@Src/utils/creators";
+import { appData } from "@Data/index";
+
+export const getCharDataFromState = (state: CalculatorState) => {
+  const setup = state.setupsById[state.activeId];
+  return appData.getCharacter(setup.char.name);
+};
 
 export function calculate(state: CalculatorState, all?: boolean) {
   try {
-    const { activeId, setupManageInfos, setupsById, charData, target } = state;
+    const { activeId, setupManageInfos, setupsById, target } = state;
     const allIds = all ? setupManageInfos.map(({ ID }) => ID) : [activeId];
 
     for (const id of allIds) {
-      const results = calculateAll(setupsById[id], target, charData);
+      const results = calculateAll(setupsById[id], target);
       state.statsById[id] = {
         infusedElement: results.infusedElement,
         totalAttrs: results.totalAttr,

@@ -36,7 +36,7 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { findAppCharacter, getCharData, getPartyData } from "@Data/controllers";
+import { getPartyData } from "@Data/controllers";
 import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
@@ -51,7 +51,8 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { calculate, parseUserCharData } from "./utils";
+import { calculate, getCharDataFromState, parseUserCharData } from "./utils";
+import { appData } from "@Data/index";
 
 const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
   if (artifact.debuffs?.length) {
@@ -69,7 +70,6 @@ const initialState: CalculatorState = {
   activeId: 0,
   standardId: 0,
   comparedIds: [],
-  charData: getCharData(defaultChar),
   setupManageInfos: [],
   setupsById: {},
   statsById: {},
@@ -101,7 +101,7 @@ export const calculatorSlice = createSlice({
       const { pickedChar, userWps, userArts } = action.payload;
       const setupManageInfo = getSetupManageInfo({});
       const { ID: setupID } = setupManageInfo;
-      const charData = getCharData(pickedChar);
+      const charData = appData.getCharacter(pickedChar.name);
       const data = parseUserCharData({
         pickedChar,
         userWps,
@@ -116,7 +116,6 @@ export const calculatorSlice = createSlice({
       state.standardId = 0;
       appSettings.set({ charInfoIsSeparated: false });
 
-      state.charData = charData;
       state.setupManageInfos = [setupManageInfo];
       state.setupsById = {
         [setupID]: {
@@ -143,7 +142,6 @@ export const calculatorSlice = createSlice({
     initSessionWithSetup: (state, action: InitSessionWithSetupAction) => {
       const { ID = Date.now(), name, type, calcSetup, target } = action.payload;
 
-      state.charData = getCharData(calcSetup.char);
       state.setupManageInfos = [getSetupManageInfo({ ID, name, type })];
       state.setupsById = {
         [ID]: calcSetup,
@@ -265,20 +263,21 @@ export const calculatorSlice = createSlice({
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
       const { name, vision, weaponType, teammateIndex } = action.payload;
+      const charData = getCharDataFromState(state);
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision(getPartyData(party), state.charData);
+      const oldVisionCount = countVision(getPartyData(party), charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newVisionCount = countVision(getPartyData(party), state.charData);
+      const newVisionCount = countVision(getPartyData(party), charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const { vision: oldVision } = findAppCharacter(oldTeammate) || {};
+        const { vision: oldVision } = appData.getCharacter(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -308,13 +307,14 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const teammateIndex = action.payload;
+      const charData = getCharDataFromState(state);
       const { party, elmtModCtrls } = state.setupsById[state.activeId];
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = findAppCharacter(teammate)!;
+        const { vision } = appData.getCharacter(teammate.name);
         party[teammateIndex] = null;
-        const newVisionCount = countVision(getPartyData(party), state.charData);
+        const newVisionCount = countVision(getPartyData(party), charData);
 
         if (newVisionCount[vision] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
@@ -620,7 +620,8 @@ export const calculatorSlice = createSlice({
     },
     updateSetups: (state, action: UpdateSetupsAction) => {
       const { newSetupManageInfos, newStandardId } = action.payload;
-      const { setupManageInfos, setupsById, charData, activeId } = state;
+      const charData = getCharDataFromState(state);
+      const { setupManageInfos, setupsById, activeId } = state;
       const removedIds = [];
       // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];

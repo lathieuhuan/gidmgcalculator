@@ -46,38 +46,25 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
-  dataChar: AppCharacter;
+  charData: AppCharacter;
   talentType: Talent;
   partyData?: PartyData;
 }
-export function totalXtraTalentLv({ char, dataChar, talentType, partyData }: TotalXtraTalentArgs) {
+export function totalXtraTalentLv({ char, charData, talentType, partyData }: TotalXtraTalentArgs) {
   let result = 0;
 
-  switch (talentType) {
-    case "NAs":
-      if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
-        result++;
-      }
-      break;
-    case "ES":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 5) {
-          result += 3;
-        }
-      } else if (char.cons >= 3) {
-        result += 3;
-      }
-      break;
-    case "EB":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 3) {
-          result += 3;
-        }
-      } else if (char.cons >= 5) {
-        result += 3;
-      }
+  if (talentType === "NAs") {
+    if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
+      result++;
+    }
   }
+  if (talentType !== "altSprint") {
+    const { bonusLvAtCons } = charData.activeTalents[talentType];
 
+    if (bonusLvAtCons && char.cons >= bonusLvAtCons) {
+      result += 3;
+    }
+  }
   return result;
 }
 

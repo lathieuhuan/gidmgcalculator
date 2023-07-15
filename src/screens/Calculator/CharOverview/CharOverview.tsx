@@ -3,7 +3,6 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { findAppCharacter } from "@Data/controllers";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -16,6 +15,7 @@ import { PickerCharacter } from "@Src/features";
 import { Button, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-components";
 import { SetupImporter } from "@Src/components";
 import contentByTab from "./content";
+import { appData } from "@Data/index";
 
 type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
 
@@ -31,7 +31,7 @@ export default function CharOverview({ touched }: OverviewCharProps) {
   const [modalType, setModalType] = useState<ModalType>("");
 
   const Content = contentByTab[activeTab];
-  const { beta, icon, vision, rarity } = findAppCharacter(charData)!;
+  const { beta, icon, vision, rarity } = appData.getCharacter(charData)!;
 
   const onClickCharImg = () => setModalType("CHARACTER_PICKER");
 
@@ -132,7 +132,13 @@ export default function CharOverview({ touched }: OverviewCharProps) {
       <PickerCharacter
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
-        onPickCharacter={(pickedChar) => dispatch(startCalculation(pickedChar))}
+        onPickCharacter={async (pickedChar) => {
+          const response = await appData.fetchCharacter(pickedChar.name);
+
+          if (response.code === 200) {
+            return dispatch(startCalculation(pickedChar));
+          }
+        }}
         onClose={closeModal}
       />
 
