@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Conponent
@@ -9,7 +9,7 @@ import { CloseButton, Green, Lesser } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
 interface ConsDetailProps {
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;

@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Geo, Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -7,7 +7,7 @@ import { applyPercent } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
 
-const Noelle: DataCharacter = {
+const Noelle: AppCharacter = {
   code: 14,
   name: "Noelle",
   icon: "8/8e/Noelle_Icon",

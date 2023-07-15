@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -13,7 +13,7 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   return round(58.45 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
-const Xiao: DataCharacter = {
+const Xiao: AppCharacter = {
   code: 30,
   name: "Xiao",
   icon: "f/fd/Xiao_Icon",

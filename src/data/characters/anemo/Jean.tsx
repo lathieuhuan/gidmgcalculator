@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Jean: DataCharacter = {
+const Jean: AppCharacter = {
   code: 2,
   name: "Jean",
   icon: "6/64/Jean_Icon",
@@ -31,11 +31,23 @@ const Jean: DataCharacter = {
     [14695, 239, 769],
   ],
   bonusStat: { type: "healB_", value: 5.5 },
-  NAsConfig: {
-    name: "Favonius Bladework",
-  },
-  isReverseXtraLv: true,
   activeTalents: {
+    NAs: {
+      name: "Favonius Bladework",
+    },
+    ES: {
+      name: "Gale Blade",
+      image: "2/24/Talent_Gale_Blade",
+      bonusLvAtCons: 5,
+    },
+    EB: {
+      name: "Dandelion Breeze",
+      image: "e/ef/Talent_Dandelion_Breeze",
+      bonusLvAtCons: 3,
+      energyCost: 80,
+    },
+  },
+  patternActs: {
     NA: {
       stats: [
         { name: "1-Hit", multFactors: 48.33 },
@@ -48,36 +60,25 @@ const Jean: DataCharacter = {
     CA: { stats: [{ name: "Charged Attack", multFactors: 162.02 }] },
     PA: { stats: MEDIUM_PAs },
     ES: {
-      name: "Gale Blade",
-      image: "2/24/Talent_Gale_Blade",
       stats: [{ name: "Skill DMG", multFactors: 292 }],
-      // getExtraStats: () => [
-      //   { name: "Stamina Consumption", value: "20 per Second" },
-      //   { name: "Max Duration", value: "5s" },
-      //   { name: "CD", value: "6s" },
-      // ],
     },
     EB: {
-      name: "Dandelion Breeze",
-      image: "e/ef/Talent_Dandelion_Breeze",
       stats: [
         { name: "Burst DMG", multFactors: 424.8 },
         { name: "Entering/Exiting DMG", multFactors: 78.4 },
         {
           name: "Activation Healing",
-          notAttack: "healing",
+          type: "healing",
           multFactors: { root: 251.2, attributeType: "atk" },
           flatFactor: 1540,
         },
         {
           name: "Continuous Regen.",
-          notAttack: "healing",
+          type: "healing",
           multFactors: { root: 25.12, attributeType: "atk" },
           flatFactor: 154,
         },
       ],
-      // getExtraStats: () => [{ name: "CD", value: "20s" }],
-      energyCost: 80,
     },
   },
   passiveTalents: [

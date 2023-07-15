@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Dendro, Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Alhaitham: DataCharacter = {
+const Alhaitham: AppCharacter = {
   code: 65,
   name: "Alhaitham",
   icon: "2/2c/Alhaitham_Icon",
@@ -56,7 +56,7 @@ const Alhaitham: DataCharacter = {
             { root: 193.6, attributeType: "atk" },
             { root: 154.88, attributeType: "em" },
           ],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
         },
         {
           name: "Mirror Projection DMG",
@@ -64,7 +64,7 @@ const Alhaitham: DataCharacter = {
             { root: 67.2, attributeType: "atk" },
             { root: 134.4, attributeType: "em" },
           ],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
           getTalentBuff: ({ char, totalAttr }) => {
             const buffValue = Math.min(totalAttr.em * 0.1, 100);
             return talentBuff([checkAscs[4](char), "pct_", [true, 4], buffValue]);
@@ -82,7 +82,7 @@ const Alhaitham: DataCharacter = {
             { root: 121.6, attributeType: "atk" },
             { root: 97.28, attributeType: "em" },
           ],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
         },
       ],
       energyCost: 70,

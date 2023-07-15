@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -18,7 +18,7 @@ const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBu
   return level ? round(18 * TALENT_LV_MULTIPLIERS[2][level], 1) : 0;
 };
 
-const Faruzan: DataCharacter = {
+const Faruzan: AppCharacter = {
   code: 64,
   name: "Faruzan",
   icon: "b/b2/Faruzan_Icon",

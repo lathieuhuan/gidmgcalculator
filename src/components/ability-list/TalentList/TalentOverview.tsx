@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { CharInfo, DataCharacter, Party } from "@Src/types";
+import type { CharInfo, AppCharacter, Party } from "@Src/types";
 
 // Constant
 import { TALENT_TYPES } from "@Src/constants";
@@ -16,7 +16,7 @@ import { AbilityIcon } from "../components";
 
 interface TalentOverviewProps {
   char: CharInfo;
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   party?: Party;
   onChangeLevel: (talentType: "NAs" | "ES" | "EB", newLevel: number) => void;
   onClickInfoSign: (index: number) => void;

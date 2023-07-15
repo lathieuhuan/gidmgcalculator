@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
@@ -13,7 +13,7 @@ const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInp
   return level ? Math.min(5 + level, 15) : 0;
 };
 
-const Shenhe: DataCharacter = {
+const Shenhe: AppCharacter = {
   code: 47,
   name: "Shenhe",
   icon: "a/af/Shenhe_Icon",

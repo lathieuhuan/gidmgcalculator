@@ -23,7 +23,7 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
 
 // Component
 import {
@@ -166,7 +166,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       continue;
     }
 
-    const teammateData = findDataCharacter(teammate);
+    const teammateData = findAppCharacter(teammate);
     if (!teammateData) {
       continue;
     }

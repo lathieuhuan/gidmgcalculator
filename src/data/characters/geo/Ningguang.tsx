@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
-const Ningguang: DataCharacter = {
+const Ningguang: AppCharacter = {
   code: 13,
   name: "Ningguang",
   icon: "e/e0/Ningguang_Icon",

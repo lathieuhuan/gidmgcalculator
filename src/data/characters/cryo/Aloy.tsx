@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -19,7 +19,7 @@ const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: Mod
   return round(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks, 2);
 };
 
-const Aloy: DataCharacter = {
+const Aloy: AppCharacter = {
   code: 39,
   name: "Aloy",
   icon: "e/e5/Aloy_Icon",

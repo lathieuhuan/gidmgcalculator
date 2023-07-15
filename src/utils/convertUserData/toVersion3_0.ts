@@ -16,7 +16,7 @@ import type {
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
 import { mapVerson3_0 } from "./constants";
 
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createArtDebuffCtrls, createWeapon } from "../creators";
@@ -129,7 +129,7 @@ const convertCharacter = (
 
   if (!weaponID || !findById(weapons, weaponID)) {
     finalWeaponID = seedID++;
-    const { weaponType = "sword" } = findDataCharacter(char) || {};
+    const { weaponType = "sword" } = findAppCharacter(char) || {};
 
     xtraWeapon = {
       ID: finalWeaponID,
@@ -216,7 +216,7 @@ const convertSetup = (
   seedID: number
 ): ConvertSetupResult => {
   const { weapon, art } = setup;
-  const { buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
+  const { buffs = [], debuffs = [] } = findAppCharacter(setup.char) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
   const artifactIDs: (number | null)[] = [];
@@ -301,7 +301,7 @@ const convertSetup = (
     if (!teammate) {
       party.push(null);
     } else {
-      const dataTeammate = findDataCharacter(teammate);
+      const dataTeammate = findAppCharacter(teammate);
 
       if (!dataTeammate) {
         party.push(null);

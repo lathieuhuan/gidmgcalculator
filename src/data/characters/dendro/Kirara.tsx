@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Dendro, Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
-const Kirara: DataCharacter = {
+const Kirara: AppCharacter = {
   code: 71,
   name: "Kirara",
   icon: "https://images2.imgbox.com/4c/09/DLJYSuy8_o.png",

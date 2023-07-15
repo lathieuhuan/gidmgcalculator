@@ -1,4 +1,4 @@
-import type { CharData, DataCharacter, PartyData } from "@Src/types";
+import type { CharData, AppCharacter, PartyData } from "@Src/types";
 import { Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -32,7 +32,7 @@ const getNaBonus = ({ toSelf, inputs, char, charData, partyData, totalAttr }: an
   };
 };
 
-const YunJin: DataCharacter = {
+const YunJin: AppCharacter = {
   code: 48,
   name: "Yun Jin",
   GOOD: "YunJin",

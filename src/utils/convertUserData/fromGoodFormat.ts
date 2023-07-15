@@ -3,7 +3,7 @@ import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter
 import characters from "@Data/characters";
 import weapons from "@Data/weapons";
 import artifacts from "@Data/artifacts";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
 import { findByName } from "../pure-utils";
@@ -173,7 +173,7 @@ export function convertFromGoodFormat(data: any) {
 
   for (const char of result.characters) {
     if (!char.weaponID) {
-      const { weaponType } = findDataCharacter(char)! || {};
+      const { weaponType } = findAppCharacter(char)! || {};
       const weaponID = seedID++;
       const newWeapon = createWeapon({ type: weaponType });
 

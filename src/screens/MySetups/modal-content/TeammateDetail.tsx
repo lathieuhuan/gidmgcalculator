@@ -2,7 +2,7 @@ import { FaCalculator, FaTimes, FaSyncAlt } from "react-icons/fa";
 import type { Teammate } from "@Src/types";
 
 // Util
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -22,7 +22,7 @@ export const TeammateDetail = ({
   onCalculateTeammateSetup,
   onClose,
 }: TeammateDetailProps) => {
-  const data = findDataCharacter(teammate);
+  const data = findAppCharacter(teammate);
   if (!data) return null;
 
   return (

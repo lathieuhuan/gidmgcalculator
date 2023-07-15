@@ -1,10 +1,10 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
-const Lisa: DataCharacter = {
+const Lisa: AppCharacter = {
   code: 10,
   name: "Lisa",
   icon: "6/65/Lisa_Icon",

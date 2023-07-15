@@ -13,7 +13,7 @@ import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from
 // Util
 import getBaseStats from "@Src/calculation/baseStats";
 import { findById, findByName, getImgSrc } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Component
 import { StarLine, Modal, ConfirmModalBody, Button } from "@Src/pure-components";
@@ -41,7 +41,7 @@ export default function MyCharacterInfo() {
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
-  const dataChar = findDataCharacter(char);
+  const dataChar = findAppCharacter(char);
   if (!dataChar || !weapon) {
     return null;
   }

@@ -1,4 +1,4 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
@@ -10,7 +10,7 @@ const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
   return talentBuff([isInUse, "cRate_", [true, 1], 20]);
 };
 
-const Ganyu: DataCharacter = {
+const Ganyu: AppCharacter = {
   code: 28,
   name: "Ganyu",
   icon: "7/79/Ganyu_Icon",

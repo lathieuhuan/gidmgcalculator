@@ -3,7 +3,7 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -31,7 +31,7 @@ export default function CharOverview({ touched }: OverviewCharProps) {
   const [modalType, setModalType] = useState<ModalType>("");
 
   const Content = contentByTab[activeTab];
-  const { beta, icon, vision, rarity } = findDataCharacter(charData)!;
+  const { beta, icon, vision, rarity } = findAppCharacter(charData)!;
 
   const onClickCharImg = () => setModalType("CHARACTER_PICKER");
 

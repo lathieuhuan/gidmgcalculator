@@ -12,7 +12,7 @@ import type {
   Teammate,
   WeaponType,
 } from "@Src/types";
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
 import {
   ATTACK_ELEMENTS,
   DEFAULT_MODIFIER_INITIAL_VALUES,
@@ -78,7 +78,7 @@ export function createArtifact({
 export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = findDataCharacter({ name }) || {};
+  const { buffs = [], debuffs = [] } = findAppCharacter({ name }) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {

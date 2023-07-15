@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 import { VISION_TYPES } from "@Src/constants";
 
-const AnemoMC: DataCharacter = {
+const AnemoMC: AppCharacter = {
   code: 1,
   name: "Anemo Traveler",
   ...TRAVELER_INFO,

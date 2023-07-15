@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 // Type
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import type { PickerItem } from "./types";
 
 import characters from "@Data/characters";
@@ -9,7 +9,7 @@ import { useSelector } from "@Store/hooks";
 
 // Util
 import { findByName, pickProps } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Component
 import { withModal } from "@Src/pure-components";
@@ -18,7 +18,7 @@ import { PickerTemplate } from "./PickerTemplate";
 export interface CharacterPickerProps {
   sourceType: "mixed" | "appData" | "userData";
   needMassAdd?: boolean;
-  filter?: (character: DataCharacter) => boolean;
+  filter?: (character: AppCharacter) => boolean;
   onPickCharacter: (character: PickerItem) => void;
   onClose: () => void;
 }
@@ -26,7 +26,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
-    const fields: Array<keyof DataCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
+    const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const data: PickerItem[] = [];
 
     if (sourceType === "mixed") {
@@ -48,7 +48,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
       }
     } else if (sourceType === "userData") {
       for (const { name, cons, artifactIDs } of userChars) {
-        const found = findDataCharacter({ name });
+        const found = findAppCharacter({ name });
 
         if (found) {
           if (!filter || filter(found)) {

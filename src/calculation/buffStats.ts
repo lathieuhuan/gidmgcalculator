@@ -8,7 +8,7 @@ import type {
   AttackPatternInfo,
   AttributeStat,
   BuffModifierArgsWrapper,
-  DataCharacter,
+  AppCharacter,
   ModifierCtrl,
   Reaction,
   ReactionBonus,
@@ -30,7 +30,7 @@ import {
 } from "@Src/constants";
 import { RESONANCE_STAT } from "./constants";
 
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import {
   getArtifactSetBonuses,
@@ -52,7 +52,7 @@ interface ApplySelfBuffs {
   isFinal: boolean;
   modifierArgs: BuffModifierArgsWrapper;
   charBuffCtrls: ModifierCtrl[];
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
 }
 function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: ApplySelfBuffs) {
   const { char } = modifierArgs;
@@ -246,7 +246,7 @@ export default function getBuffedStats({
 
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weaponType, buffs = [] } = findDataCharacter(teammate)!;
+    const { name, weaponType, buffs = [] } = findAppCharacter(teammate)!;
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;

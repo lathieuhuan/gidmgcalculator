@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Beidou: DataCharacter = {
+const Beidou: AppCharacter = {
   code: 6,
   name: "Beidou",
   icon: "e/e1/Beidou_Icon",

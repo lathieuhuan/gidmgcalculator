@@ -20,15 +20,14 @@ import type {
   TotalAttribute,
   ModifierInput,
   BuffModifierArgsWrapper,
-  TalentBuff,
   Tracker,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
-export type DataCharacter = {
+export type AppCharacter = {
   code: number;
-  beta?: boolean;
   name: string;
+  beta?: boolean;
   GOOD?: string;
   icon: string;
   sideIcon: string;
@@ -41,89 +40,62 @@ export type DataCharacter = {
     type: AttributeStat;
     value: number;
   };
-  NAsConfig: {
-    name: string;
-    getExtraStats?: GetExtraStatsFn;
+  activeTalents: {
+    NAs: ActiveTalent;
+    ES: ActiveTalent;
+    EB: ActiveTalent;
   };
-  isReverseXtraLv?: boolean;
-  activeTalents: ActiveTalents;
-  passiveTalents: NoStatsAbility[];
-  constellation: NoStatsAbility[];
+  patternActs: {
+    NA: PatternAct;
+    CA: PatternAct;
+    PA: PatternAct;
+    ES: PatternAct;
+    EB: PatternAct;
+  };
+  passiveTalents: Ability[];
+  constellation: Ability[];
   innateBuffs?: InnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
 
-/**
- * extraStats are not calculated into damage results
- */
-export type GetExtraStatsFn = (level: number) => {
+type Ability = {
   name: string;
-  value: ReactNode;
-}[];
-
-type StatDefault = {
-  /**
-   * Common scale for stats' multFactors
-   */
-  multScale?: number;
-  /**
-   * Common attributeType for stats' multFactors
-   */
-  multAttributeType?: TalentStatAttributeType;
+  image?: string;
+  description?: string;
 };
 
-type NormalAttacks = StatDefault & {
-  stats: TalentStat[];
+type ActiveTalent = Ability & {
+  bonusLvAtCons?: number;
+  energyCost?: number;
 };
 
-type GetTalentBuffArgs = {
-  char: CharInfo;
-  charData: CharData;
-  partyData: PartyData;
-  totalAttr: TotalAttribute;
-  selfBuffCtrls: ModifierCtrl[];
-  selfDebuffCtrls: ModifierCtrl[];
-};
-
-export type GetTalentBuffFn = (args: GetTalentBuffArgs) => TalentBuff;
-
-export type TalentStatAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
+export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
 export type ActualAttackPattern = AttackPattern | "none";
 
 export type ActualAttackElement = AttackElement | "various";
 
-export type SubAttackPattern = "FCA";
-
-type TalentStatMultFactor = {
+type PatternActMultFactor = {
   root: number;
   /** When 0 stat not scale off talent level */
   scale?: number;
   /** Calc default to 'atk'. Only on ES / EB */
-  attributeType?: TalentStatAttributeType;
+  attributeType?: TalentAttributeType;
 };
 
-export type TalentStat = {
+export type PatternStat = {
+  id?: string;
   name: string;
+  type?: "attack" | "healing" | "shield" | "other";
   attPatt?: ActualAttackPattern;
-  subAttPatt?: SubAttackPattern;
   attElmt?: ActualAttackElement;
+  subAttPatt?: "FCA";
   /**
    * Damage factors multiplying an attribute, scaling off talent level
    */
-  multFactors: number | number[] | TalentStatMultFactor | TalentStatMultFactor[];
-  /**
-   * Whether multFactors is sum or not
-   */
-  isWholeFactor?: boolean;
-  /**
-   * If true, stat not listed in-game, just more calculation, e.g. total of all hits
-   */
-  isNotOfficial?: boolean;
-  getTalentBuff?: GetTalentBuffFn;
-  /** only on ES / EB */
-  notAttack?: "healing" | "shield" | "other";
+  multFactors: number | number[] | PatternActMultFactor | PatternActMultFactor[];
+  multFactorsAreOne?: boolean;
   /**
    * Damage factor multiplying root, caling off talent level. Only on ES / EB
    */
@@ -136,34 +108,12 @@ export type TalentStat = {
          */
         scale?: number;
       };
-  /** only on ES / EB */
-  getLimit?: (args: { totalAttr: TotalAttribute }) => number;
 };
 
-type ElementalSkill = StatDefault & {
-  name: string;
-  image: string;
-  stats: TalentStat[];
-  getExtraStats?: GetExtraStatsFn;
-};
-
-type ElementalBurst = ElementalSkill & { energyCost: number };
-
-type NoStatsAbility = {
-  name: string;
-  image: string;
-  desc?: JSX.Element;
-  xtraDesc?: JSX.Element[];
-};
-
-export type ActiveTalents = {
-  NA: NormalAttacks;
-  CA: NormalAttacks;
-  PA: NormalAttacks;
-  ES: ElementalSkill;
-  EB: ElementalBurst;
-  // #to-check
-  altSprint?: NoStatsAbility;
+type PatternAct = {
+  multScale?: number;
+  multAttributeType?: TalentAttributeType;
+  stats: PatternStat[];
 };
 
 export type InnateBuff = {

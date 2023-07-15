@@ -1,4 +1,4 @@
-import type { CharData, DataCharacter, PartyData } from "@Src/types";
+import type { CharData, AppCharacter, PartyData } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -16,7 +16,7 @@ function getA4BuffValue(maxHP: number) {
   return stacks > 0 ? round(Math.min(stacks * 9, 400), 1) : 0;
 }
 
-const Nilou: DataCharacter = {
+const Nilou: AppCharacter = {
   code: 60,
   name: "Nilou",
   icon: "5/58/Nilou_Icon",

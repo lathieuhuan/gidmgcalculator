@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Chongyun: DataCharacter = {
+const Chongyun: AppCharacter = {
   code: 4,
   name: "Chongyun",
   icon: "3/35/Chongyun_Icon",

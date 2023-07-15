@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, ModifierCtrl, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { Anemo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -24,7 +24,7 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   };
 };
 
-const Wanderer: DataCharacter = {
+const Wanderer: AppCharacter = {
   code: 63,
   name: "Wanderer",
   icon: "f/f8/Wanderer_Icon",

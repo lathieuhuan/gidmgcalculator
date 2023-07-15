@@ -215,6 +215,7 @@ export type DebuffModifierArgsWrapper = {
   tracker?: Tracker;
 };
 
+// #to-remove
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
 // Tracker

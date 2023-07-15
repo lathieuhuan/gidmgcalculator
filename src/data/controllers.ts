@@ -1,7 +1,7 @@
 import type {
   ArtifactType,
   CharData,
-  DataCharacter,
+  AppCharacter,
   PartyData,
   Target,
   WeaponType,
@@ -15,7 +15,7 @@ import weapons from "./weapons";
 type HasName = { name: string };
 type HasCode = { code: number };
 
-export const findDataCharacter = (char: HasName): DataCharacter | undefined => {
+export const findAppCharacter = (char: HasName): AppCharacter | undefined => {
   return characters[char.name as keyof typeof characters];
 };
 
@@ -44,7 +44,7 @@ export const findMonster = ({ code }: { code: number }) => {
 };
 
 export const getCharData = (char: HasName): CharData => {
-  const { code, name, icon, vision, nation, weaponType, activeTalents } = findDataCharacter(char)!;
+  const { code, name, icon, vision, nation, weaponType, activeTalents } = findAppCharacter(char)!;
   return {
     code,
     name,

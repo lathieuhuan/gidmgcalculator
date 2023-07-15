@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Collei: DataCharacter = {
+const Collei: AppCharacter = {
   code: 55,
   name: "Collei",
   icon: "a/a2/Collei_Icon",

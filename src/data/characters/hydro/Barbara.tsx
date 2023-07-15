@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Barbara: DataCharacter = {
+const Barbara: AppCharacter = {
   code: 15,
   name: "Barbara",
   icon: "6/6a/Barbara_Icon",

@@ -1,4 +1,4 @@
-import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
+import type { AppCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -12,7 +12,7 @@ const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
   return round(33.4 * TALENT_LV_MULTIPLIERS[5][level], 1);
 };
 
-const Yanfei: DataCharacter = {
+const Yanfei: AppCharacter = {
   code: 34,
   name: "Yanfei",
   icon: "5/54/Yanfei_Icon",

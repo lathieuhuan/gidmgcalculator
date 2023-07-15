@@ -1,4 +1,4 @@
-import type { AttributeStat, CharData, DataCharacter, PartyData } from "@Src/types";
+import type { AttributeStat, CharData, AppCharacter, PartyData } from "@Src/types";
 import { Geo, Green, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -15,7 +15,7 @@ const countGeo = (charData: CharData, partyData: PartyData) => {
   );
 };
 
-const Gorou: DataCharacter = {
+const Gorou: AppCharacter = {
   code: 44,
   name: "Gorou",
   icon: "f/fe/Gorou_Icon",

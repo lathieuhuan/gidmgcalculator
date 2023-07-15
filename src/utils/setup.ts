@@ -11,7 +11,7 @@ import type {
 } from "@Src/types";
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 import { getArtifactSetBonuses } from "./calculation";
 import {
   createArtDebuffCtrls,
@@ -65,7 +65,7 @@ export function cleanupCalcSetup(
   options?: CleanupCalcSetupOptions
 ): UserSetupCalcInfo {
   const { char, weapon, artifacts, ...data } = calculator.setupsById[setupID];
-  const { buffs = [], debuffs = [] } = findDataCharacter(char) || {};
+  const { buffs = [], debuffs = [] } = findAppCharacter(char) || {};
   const party: Party = [];
 
   for (const teammate of data.party) {

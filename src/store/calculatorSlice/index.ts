@@ -36,7 +36,7 @@ import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
+import { findAppCharacter, getCharData, getPartyData } from "@Data/controllers";
 import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
@@ -278,7 +278,7 @@ export const calculatorSlice = createSlice({
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const { vision: oldVision } = findDataCharacter(oldTeammate) || {};
+        const { vision: oldVision } = findAppCharacter(oldTeammate) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -312,7 +312,7 @@ export const calculatorSlice = createSlice({
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = findDataCharacter(teammate)!;
+        const { vision } = findAppCharacter(teammate)!;
         party[teammateIndex] = null;
         const newVisionCount = countVision(getPartyData(party), state.charData);
 

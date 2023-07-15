@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, PartyData } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -20,7 +20,7 @@ function getEBBuff(char: CharInfo, partyData: PartyData) {
   };
 }
 
-const Nahida: DataCharacter = {
+const Nahida: AppCharacter = {
   code: 62,
   name: "Nahida",
   icon: "f/f9/Nahida_Icon",
@@ -72,7 +72,7 @@ const Nahida: DataCharacter = {
             { root: 103.2, attributeType: "atk" },
             { root: 206.4, attributeType: "em" },
           ],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
           getTalentBuff: ({ totalAttr, char, partyData, selfBuffCtrls }) => {
             let buffValue = 0;
             let desc = [];

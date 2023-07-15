@@ -1,6 +1,6 @@
 import type { CharData, UserArtifact, UserSetup, UserWeapon } from "@Src/types";
 import calculateAll from "@Src/calculation";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 import { findById } from "@Src/utils";
 
 export const calculateChosenSetup = (
@@ -9,7 +9,7 @@ export const calculateChosenSetup = (
   userArts: UserArtifact[]
 ) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-  const data = findDataCharacter(char);
+  const data = findAppCharacter(char);
   const weapon = findById(userWps, weaponID);
 
   if (data && weapon) {

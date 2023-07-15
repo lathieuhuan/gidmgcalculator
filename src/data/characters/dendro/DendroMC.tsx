@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const DendroMC: DataCharacter = {
+const DendroMC: AppCharacter = {
   code: 57,
   name: "Dendro Traveler",
   ...TRAVELER_INFO,

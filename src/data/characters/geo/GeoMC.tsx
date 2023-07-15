@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const GeoMC: DataCharacter = {
+const GeoMC: AppCharacter = {
   code: 12,
   name: "Geo Traveler",
   ...TRAVELER_INFO,

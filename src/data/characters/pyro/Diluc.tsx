@@ -1,11 +1,11 @@
-import type { AttributeStat, DataCharacter } from "@Src/types";
+import type { AttributeStat, AppCharacter } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Diluc: DataCharacter = {
+const Diluc: AppCharacter = {
   code: 20,
   name: "Diluc",
   icon: "3/3d/Diluc_Icon",

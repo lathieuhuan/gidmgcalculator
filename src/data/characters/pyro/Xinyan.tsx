@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Xinyan: DataCharacter = {
+const Xinyan: AppCharacter = {
   code: 27,
   name: "Xinyan",
   icon: "2/24/Xinyan_Icon",

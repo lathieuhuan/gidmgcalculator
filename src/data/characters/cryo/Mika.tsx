@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, ModifierInput } from "@Src/types";
+import type { CharInfo, AppCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -23,7 +23,7 @@ const detectorBuff = ({ toSelf, char, inputs }: DetectorBuffValueArgs) => {
   };
 };
 
-const Mika: DataCharacter = {
+const Mika: AppCharacter = {
   code: 67,
   name: "Mika",
   icon: "d/dd/Mika_Icon",

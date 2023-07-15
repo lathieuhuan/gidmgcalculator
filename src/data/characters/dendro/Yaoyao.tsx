@@ -1,11 +1,11 @@
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { DataCharacter } from "@Src/types";
+import { AppCharacter } from "@Src/types";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons } from "../utils";
 
-const Yaoyao: DataCharacter = {
+const Yaoyao: AppCharacter = {
   code: 66,
   name: "Yaoyao",
   icon: "8/83/Yaoyao_Icon",

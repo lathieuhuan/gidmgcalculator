@@ -1,4 +1,4 @@
-import type { ApplyCharBuffArgs, DataCharacter, TotalAttribute } from "@Src/types";
+import type { ApplyCharBuffArgs, AppCharacter, TotalAttribute } from "@Src/types";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
@@ -17,7 +17,7 @@ const getEBBuffValue = ({
 
 const getA4BuffValue = (totalAttr: TotalAttribute) => Math.round(totalAttr.er_ * 2) / 10;
 
-const Mona: DataCharacter = {
+const Mona: AppCharacter = {
   code: 16,
   name: "Mona",
   icon: "4/41/Mona_Icon",

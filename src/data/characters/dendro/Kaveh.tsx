@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Dendro, Green, Lightgold, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -9,7 +9,7 @@ import { checkAscs, checkCons } from "../utils";
 
 const getEBbuffValue = (level: number) => (level ? round(27.49 * TALENT_LV_MULTIPLIERS[2][level], 2) : 0);
 
-const Kaveh: DataCharacter = {
+const Kaveh: AppCharacter = {
   code: 69,
   name: "Kaveh",
   icon: "1/1f/Kaveh_Icon",

@@ -1,4 +1,4 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
 import { Geo, Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -11,7 +11,7 @@ const getA4TalentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
   return talentBuff([checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
 };
 
-const Itto: DataCharacter = {
+const Itto: AppCharacter = {
   code: 45,
   name: "Itto",
   GOOD: "AratakiItto",

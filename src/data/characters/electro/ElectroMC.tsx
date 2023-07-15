@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const ElectroMC: DataCharacter = {
+const ElectroMC: AppCharacter = {
   code: 46,
   name: "Electro Traveler",
   ...TRAVELER_INFO,

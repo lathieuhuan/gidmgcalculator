@@ -13,7 +13,7 @@ import {
 } from "@Store/calculatorSlice";
 
 // Util
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
@@ -26,7 +26,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
     return state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls;
   });
 
-  const { debuffs = [] } = findDataCharacter(char) || {};
+  const { debuffs = [] } = findAppCharacter(char) || {};
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
@@ -96,7 +96,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
-  const tmData = findDataCharacter(teammate);
+  const tmData = findAppCharacter(teammate);
   if (!tmData) return null;
 
   const { vision, debuffs = [] } = tmData;

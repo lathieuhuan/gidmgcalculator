@@ -10,7 +10,7 @@ import type {
   AttributeStat,
   CalcArtifacts,
   CharInfo,
-  DataCharacter,
+  AppCharacter,
   Level,
   PartyData,
   Reaction,
@@ -46,7 +46,7 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   talentType: Talent;
   partyData?: PartyData;
 }

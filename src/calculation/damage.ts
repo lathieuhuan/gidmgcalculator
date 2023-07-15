@@ -5,7 +5,7 @@ import type {
   TrackerDamageRecord,
   NormalAttack,
 } from "@Src/types";
-import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
+import type { CalcPatternStatArgs, GetDamageArgs } from "./types";
 
 // Constant
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS, BASE_REACTION_DAMAGE } from "@Src/constants";
@@ -13,11 +13,11 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
-import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter } from "@Data/controllers";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 
-function calcTalentDamage({
+function calcPatternStat({
   stat,
   attElmt,
   attPatt,
@@ -31,8 +31,8 @@ function calcTalentDamage({
   rxnMult,
   resistReduct,
   record,
-}: CalcTalentStatArgs) {
-  if (base !== 0 && !stat.notAttack) {
+}: CalcPatternStatArgs) {
+  if (base !== 0 && !stat.type) {
     const flat =
       (talentBuff.flat?.value || 0) +
       attPattBonus.all.flat +
@@ -99,7 +99,7 @@ function calcTalentDamage({
     let flat = 0;
     let normalMult = 1;
 
-    switch (stat.notAttack) {
+    switch (stat.type) {
       case "healing":
         flat = talentBuff.flat?.value || 0;
         normalMult += totalAttr.healB_ / 100;
@@ -114,13 +114,6 @@ function calcTalentDamage({
     if (normalMult !== 1) {
       base *= normalMult;
       record.normalMult = normalMult;
-    }
-    if (stat.getLimit) {
-      const limit = stat.getLimit({ totalAttr });
-      if (base > limit) {
-        base = limit;
-        record.note = ` (limited to ${limit})`;
-      }
     }
     return { nonCrit: base, crit: 0, average: base };
   }
@@ -152,7 +145,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { activeTalents, weaponType, vision, debuffs } = dataChar;
+  const { patternActs, weaponType, vision, debuffs } = dataChar;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -183,7 +176,7 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs = [] } = findDataCharacter(teammate)!;
+      const { debuffs = [] } = findAppCharacter(teammate)!;
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs, index);
 
@@ -243,23 +236,24 @@ export default function getDamage({
   }
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
-    const talent = activeTalents[ATT_PATT];
+    const talent = patternActs[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
     const level = finalTalentLv({ dataChar, talentType: resultKey, char, partyData });
 
     for (const stat of talent.stats) {
-      const talentBuff = stat.getTalentBuff
-        ? stat.getTalentBuff({
-            char,
-            charData,
-            selfBuffCtrls,
-            selfDebuffCtrls,
-            totalAttr,
-            partyData,
-          })
-        : {};
+      // const talentBuff = stat.getTalentBuff
+      //   ? stat.getTalentBuff({
+      //       char,
+      //       charData,
+      //       selfBuffCtrls,
+      //       selfDebuffCtrls,
+      //       totalAttr,
+      //       partyData,
+      //     })
+      //   : {};
+      const talentBuff: any = {};
 
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
@@ -323,19 +317,19 @@ export default function getDamage({
         bases.push((totalAttr[attributeType] * finalMult) / 100 + flatBonus);
       }
 
-      if (stat.isWholeFactor) {
+      if (stat.multFactorsAreOne) {
         bases = [bases.reduce((accumulator, base) => accumulator + base, 0)];
       }
 
       // TALENT DMG
-      if (resultKey === "NAs" && disabledNAs && !stat.notAttack) {
+      if (resultKey === "NAs" && disabledNAs && !stat.type) {
         finalResult[resultKey][stat.name] = {
           nonCrit: 0,
           crit: 0,
           average: 0,
         };
       } else {
-        finalResult[resultKey][stat.name] = calcTalentDamage({
+        finalResult[resultKey][stat.name] = calcPatternStat({
           stat,
           attPatt,
           attElmt,

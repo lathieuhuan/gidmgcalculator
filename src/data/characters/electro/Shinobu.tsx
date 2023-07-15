@@ -1,4 +1,4 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -13,7 +13,7 @@ const getA4TAlentBuff = (index: number): GetTalentBuffFn => {
   };
 };
 
-const Shinobu: DataCharacter = {
+const Shinobu: AppCharacter = {
   code: 52,
   name: "Shinobu",
   GOOD: "KukiShinobu",

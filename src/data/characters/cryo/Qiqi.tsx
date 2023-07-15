@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Qiqi: DataCharacter = {
+const Qiqi: AppCharacter = {
   code: 7,
   name: "Qiqi",
   icon: "b/b3/Qiqi_Icon",

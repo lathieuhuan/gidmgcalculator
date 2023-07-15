@@ -1,4 +1,4 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
 import { Electro, Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -9,7 +9,7 @@ const getA4talentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
   return talentBuff([checkAscs[4](char), "flat", [true, 4], Math.round(totalAttr.em * 1.5)]);
 };
 
-const Cyno: DataCharacter = {
+const Cyno: AppCharacter = {
   code: 59,
   name: "Cyno",
   icon: "3/31/Cyno_Icon",

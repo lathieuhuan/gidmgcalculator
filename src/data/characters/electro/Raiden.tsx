@@ -1,6 +1,6 @@
 import type {
   CharInfo,
-  DataCharacter,
+  AppCharacter,
   BuffDescriptionArgs,
   GetTalentBuffFn,
   ModifierCtrl,
@@ -78,7 +78,7 @@ const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuff
   };
 };
 
-const Raiden: DataCharacter = {
+const Raiden: AppCharacter = {
   code: 40,
   name: "Raiden Shogun",
   GOOD: "RaidenShogun",

@@ -1,4 +1,4 @@
-import type { DataCharacter, CharInfo, PartyData } from "@Src/types";
+import type { AppCharacter, CharInfo, PartyData } from "@Src/types";
 import { Green, Lightgold, Pyro, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -12,7 +12,7 @@ const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   return round(37.91 * TALENT_LV_MULTIPLIERS[5][level], 2);
 };
 
-const Yoimiya: DataCharacter = {
+const Yoimiya: AppCharacter = {
   code: 38,
   name: "Yoimiya",
   icon: "8/88/Yoimiya_Icon",

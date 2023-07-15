@@ -6,7 +6,7 @@ import { useIntersectionObserver } from "@Src/hooks";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";
@@ -70,7 +70,7 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
-                const databaseChar = findDataCharacter({ name });
+                const databaseChar = findAppCharacter({ name });
                 if (!databaseChar) {
                   return null;
                 }

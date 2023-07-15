@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Kaeya: DataCharacter = {
+const Kaeya: AppCharacter = {
   code: 5,
   name: "Kaeya",
   icon: "b/b6/Kaeya_Icon",

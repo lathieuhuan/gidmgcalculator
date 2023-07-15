@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { CharInfo, Party } from "@Src/types";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";
@@ -17,7 +17,7 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
   const [atDetail, setAtDetail] = useState(false);
   const [detailIndex, setDetailIndex] = useState(-1);
 
-  const dataChar = findDataCharacter(char)!;
+  const dataChar = findAppCharacter(char)!;
   const numOfActives = Object.keys(dataChar.activeTalents).length;
 
   return (

@@ -36,7 +36,7 @@ import characters from "@Data/characters";
 
 // Util
 import { findByCode } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { findAppCharacter } from "@Data/controllers";
 import { restoreCalcSetup } from "@Src/utils/setup";
 
 const DIVIDERS = ["*", "D1", "D2", "D3", "D4"];
@@ -62,7 +62,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   } = calcSetup;
 
   try {
-    const dataChar = findDataCharacter(char);
+    const dataChar = findAppCharacter(char);
     if (!dataChar) {
       throw new Error("Character not found");
     }
@@ -102,7 +102,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 
     const _teammateCodes = party.map((tm, i) => {
       if (tm) {
-        const { code: tmCode } = findDataCharacter(tm) || {};
+        const { code: tmCode } = findAppCharacter(tm) || {};
         const { weapon, artifact } = tm;
 
         return [

@@ -15,7 +15,7 @@ import type { BaseModifierArgsWrapper } from "./types";
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 
 // Util
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter, findDataWeapon } from "@Data/controllers";
 import {
   applyPercent,
   ascsFromLv,
@@ -34,7 +34,7 @@ interface InitiateTotalAttrArgs {
   tracker?: Tracker;
 }
 export function initiateTotalAttr({ char, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
-  const charData = findDataCharacter(char)!;
+  const charData = findAppCharacter(char)!;
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {

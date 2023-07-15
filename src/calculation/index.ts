@@ -1,6 +1,6 @@
 import type { CalcSetup, CharData, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { findDataCharacter, getPartyData } from "@Data/controllers";
+import { findAppCharacter, getPartyData } from "@Data/controllers";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
 
@@ -24,7 +24,7 @@ export default function calculateAll(
   charData: CharData,
   tracker?: Tracker
 ) {
-  const dataChar = findDataCharacter(char)!;
+  const dataChar = findAppCharacter(char)!;
   const partyData = getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];

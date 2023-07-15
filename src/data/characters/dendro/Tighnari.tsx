@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Tighnari: DataCharacter = {
+const Tighnari: AppCharacter = {
   code: 54,
   name: "Tighnari",
   icon: "8/87/Tighnari_Icon",

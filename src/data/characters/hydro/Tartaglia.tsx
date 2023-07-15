@@ -1,9 +1,9 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Hydro } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 
-const Tartaglia: DataCharacter = {
+const Tartaglia: AppCharacter = {
   code: 26,
   name: "Tartaglia",
   icon: "8/85/Tartaglia_Icon",

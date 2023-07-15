@@ -14,7 +14,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex } from "@Src/utils";
-import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
+import { findDataArtifactSet, findAppCharacter } from "@Data/controllers";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -90,7 +90,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       continue;
     }
 
-    const teammateData = findDataCharacter(teammate);
+    const teammateData = findAppCharacter(teammate);
     if (!teammateData) {
       continue;
     }

@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Electro, Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Dori: DataCharacter = {
+const Dori: AppCharacter = {
   code: 56,
   name: "Dori",
   icon: "5/54/Dori_Icon",

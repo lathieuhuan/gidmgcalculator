@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
@@ -9,7 +9,7 @@ const getEBBuffValue = (level: number) => {
   return Math.min(24 + level * 2 - Math.max(level - 6, 0), 40);
 };
 
-const Razor: DataCharacter = {
+const Razor: AppCharacter = {
   code: 11,
   name: "Razor",
   icon: "b/b8/Razor_Icon",

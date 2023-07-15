@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Pyro } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -7,7 +7,7 @@ import { applyPercent } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const HuTao: DataCharacter = {
+const HuTao: AppCharacter = {
   code: 31,
   name: "Hu Tao",
   GOOD: "HuTao",

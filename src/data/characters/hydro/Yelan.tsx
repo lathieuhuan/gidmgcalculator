@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Yelan: DataCharacter = {
+const Yelan: AppCharacter = {
   code: 51,
   name: "Yelan",
   icon: "d/d3/Yelan_Icon",

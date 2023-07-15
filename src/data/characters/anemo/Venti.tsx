@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Venti: DataCharacter = {
+const Venti: AppCharacter = {
   code: 22,
   name: "Venti",
   icon: "f/f1/Venti_Icon",

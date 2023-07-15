@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { charModIsInUse, checkCons, talentBuff } from "../utils";
 
-const Dehya: DataCharacter = {
+const Dehya: AppCharacter = {
   code: 68,
   name: "Dehya",
   icon: "3/3f/Dehya_Icon",
@@ -69,7 +69,7 @@ const Dehya: DataCharacter = {
               attributeType: "hp",
             },
           ],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const C2isInUse = charModIsInUse(Dehya.buffs || [], char, selfBuffCtrls, 0);
             return talentBuff([C2isInUse, "pct_", [false, 2], 50]);
@@ -84,12 +84,12 @@ const Dehya: DataCharacter = {
         {
           name: "Flame-Mane's Fist",
           multFactors: [{ root: 98.7 }, { root: 1.69, attributeType: "hp" }],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
         },
         {
           name: "Incineration Drive",
           multFactors: [{ root: 139.3 }, { root: 2.39, attributeType: "hp" }],
-          isWholeFactor: true,
+          multFactorsAreOne: true,
         },
       ],
       energyCost: 70,

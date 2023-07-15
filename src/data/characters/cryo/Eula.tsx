@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierInput, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, GetTalentBuffFn, ModifierInput, PartyData } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -15,7 +15,7 @@ const getESDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInp
   return level ? Math.min(15 + level, 25) : 0;
 };
 
-const Eula: DataCharacter = {
+const Eula: AppCharacter = {
   code: 33,
   name: "Eula",
   icon: "a/af/Eula_Icon",

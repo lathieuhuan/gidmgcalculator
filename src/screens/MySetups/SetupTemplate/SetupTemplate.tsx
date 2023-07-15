@@ -15,7 +15,7 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { findDataArtifact, findDataCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
+import { findDataArtifact, findAppCharacter, findDataWeapon, getPartyData } from "@Data/controllers";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
@@ -73,7 +73,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const dataChar = findDataCharacter(char);
+    const dataChar = findAppCharacter(char);
     const weaponData = weapon ? findDataWeapon(weapon) : undefined;
 
     if (dataChar) {
@@ -108,7 +108,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = (
       <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && findDataCharacter(teammate);
+          const dataTeammate = teammate && findAppCharacter(teammate);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];

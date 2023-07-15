@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { MEDIUM_PAs, EModSrc } from "../constants";
 import { checkAscs, charModIsInUse, checkCons, talentBuff } from "../utils";
 
-const Albedo: DataCharacter = {
+const Albedo: AppCharacter = {
   code: 29,
   name: "Albedo",
   icon: "3/30/Albedo_Icon",

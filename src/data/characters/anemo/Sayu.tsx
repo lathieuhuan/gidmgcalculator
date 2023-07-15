@@ -1,4 +1,4 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -19,7 +19,7 @@ const getC6TalentBuff = (index: number): GetTalentBuffFn => {
   };
 };
 
-const Sayu: DataCharacter = {
+const Sayu: AppCharacter = {
   code: 36,
   name: "Sayu",
   icon: "2/22/Sayu_Icon",

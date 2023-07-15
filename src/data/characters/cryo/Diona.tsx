@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons, talentBuff } from "../utils";
 
-const Diona: DataCharacter = {
+const Diona: AppCharacter = {
   code: 24,
   name: "Diona",
   icon: "4/40/Diona_Icon",

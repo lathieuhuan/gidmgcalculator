@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { applyPercent } from "@Src/utils";
 import { applyModifier, AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs } from "../utils";
 
-const Zhongli: DataCharacter = {
+const Zhongli: AppCharacter = {
   code: 25,
   name: "Zhongli",
   icon: "a/a6/Zhongli_Icon",

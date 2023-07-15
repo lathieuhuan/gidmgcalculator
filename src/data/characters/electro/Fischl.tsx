@@ -1,9 +1,9 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons, talentBuff } from "../utils";
 
-const Fischl: DataCharacter = {
+const Fischl: AppCharacter = {
   code: 8,
   name: "Fischl",
   icon: "9/9a/Fischl_Icon",

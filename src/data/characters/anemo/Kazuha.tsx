@@ -1,4 +1,4 @@
-import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
+import type { AppCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { Anemo, Green, Red } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
@@ -12,7 +12,7 @@ const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: Modi
   return round(+EM * 0.04, 2);
 };
 
-const Kazuha: DataCharacter = {
+const Kazuha: AppCharacter = {
   code: 35,
   name: "Kazuha",
   GOOD: "KaedeharaKazuha",

@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, LIGHT_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { round } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Baizhu: DataCharacter = {
+const Baizhu: AppCharacter = {
   code: 70,
   name: "Baizhu",
   icon: "https://images2.imgbox.com/da/d9/A4umtyus_o.png",

@@ -1,4 +1,4 @@
-import type { TalentStat } from "@Src/types";
+import type { PatternStat } from "@Src/types";
 
 export enum EModSrc {
   ES = "Elemental Skill",
@@ -11,7 +11,7 @@ export enum EModSrc {
   C6 = "Constellation 6",
 }
 
-export const BOW_CAs: TalentStat[] = [
+export const BOW_CAs: PatternStat[] = [
   { name: "Aimed Shot", multFactors: { root: 43.86, scale: 7 } },
   {
     name: "Fully-charged Aimed Shot",
@@ -20,21 +20,21 @@ export const BOW_CAs: TalentStat[] = [
   },
 ];
 
-export const LIGHT_PAs: TalentStat[] = [
+export const LIGHT_PAs: PatternStat[] = [
   { name: "Plunge DMG", multFactors: 56.83 },
   { name: "Low Plunge", multFactors: 113.63 },
   { name: "High Plunge", multFactors: 141.93 },
 ];
 
 // sword & polearm
-export const MEDIUM_PAs: TalentStat[] = [
+export const MEDIUM_PAs: PatternStat[] = [
   { name: "Plunge DMG", multFactors: 63.93 },
   { name: "Low Plunge", multFactors: 127.84 },
   { name: "High Plunge", multFactors: 159.68 },
 ];
 
 // claymore
-export const HEAVY_PAs: TalentStat[] = [
+export const HEAVY_PAs: PatternStat[] = [
   { name: "Plunge DMG", multFactors: 74.59 },
   { name: "Low Plunge", multFactors: 149.14 },
   { name: "High Plunge", multFactors: 186.29 },
@@ -43,7 +43,7 @@ export const HEAVY_PAs: TalentStat[] = [
 // special
 
 // Xiao, Kazuha, Itto
-export const HEAVIER_PAs: TalentStat[] = [
+export const HEAVIER_PAs: PatternStat[] = [
   { name: "Plunge DMG", multFactors: 81.83 },
   { name: "Low Plunge", multFactors: 163.63 },
   { name: "High Plunge", multFactors: 204.39 },
@@ -75,9 +75,9 @@ export const TRAVELER_INFO = {
 };
 
 export const TRAVELLER_NCPAs: {
-  NA: { stats: TalentStat[] };
-  CA: { stats: TalentStat[] };
-  PA: { stats: TalentStat[] };
+  NA: { stats: PatternStat[] };
+  CA: { stats: PatternStat[] };
+  PA: { stats: PatternStat[] };
 } = {
   NA: {
     stats: [

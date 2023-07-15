@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-import type { TalentStatAttributeType, DataCharacter, Talent } from "@Src/types";
+import type { TalentAttributeType, AppCharacter, Talent } from "@Src/types";
 import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
 import { useTranslation } from "@Src/hooks";
 
@@ -21,7 +21,7 @@ const styles = {
 };
 
 interface TalentDetailProps {
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   detailIndex: number;
   onChangeDetailIndex: (newIndex: number) => void;
   onClose: () => void;
@@ -159,9 +159,9 @@ interface ProcessedActiveTalent {
   stats: ProcessedStat[];
 }
 function processActiveTalents(
-  dataChar: DataCharacter,
+  dataChar: AppCharacter,
   level: number,
-  label: Record<TalentStatAttributeType, string>
+  label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
   const { vision, weaponType, activeTalents } = dataChar;
   const { ES, EB } = activeTalents;

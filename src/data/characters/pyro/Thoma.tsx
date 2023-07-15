@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
@@ -7,7 +7,7 @@ import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Thoma: DataCharacter = {
+const Thoma: AppCharacter = {
   code: 43,
   name: "Thoma",
   icon: "5/5b/Thoma_Icon",

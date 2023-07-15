@@ -1,4 +1,4 @@
-import type { DataCharacter, ModifierInput } from "@Src/types";
+import type { AppCharacter, ModifierInput } from "@Src/types";
 import { Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -21,7 +21,7 @@ function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
   return [applyPercent(baseATK, mult), desc + ` / ${round(mult, 2)}% of ${baseATK} Base ATK`];
 }
 
-const Bennett: DataCharacter = {
+const Bennett: AppCharacter = {
   code: 19,
   name: "Bennett",
   icon: "7/79/Bennett_Icon",

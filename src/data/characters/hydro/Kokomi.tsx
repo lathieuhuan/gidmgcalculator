@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -7,7 +7,7 @@ import { applyPercent } from "@Src/utils";
 import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { checkAscs, checkCons } from "../utils";
 
-const Kokomi: DataCharacter = {
+const Kokomi: AppCharacter = {
   code: 42,
   name: "Kokomi",
   GOOD: "SangonomiyaKokomi",

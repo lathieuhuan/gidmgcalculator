@@ -7,7 +7,7 @@ import type {
   CharData,
   Level,
   PartyData,
-  TalentStatAttributeType,
+  TalentAttributeType,
   UserArtifact,
   UserWeapon,
   Vision,
@@ -85,7 +85,7 @@ export const getTalentDefaultInfo = (
 ): {
   attElmt: AttackElement;
   scale: number;
-  attributeType: TalentStatAttributeType;
+  attributeType: TalentAttributeType;
   flatFactorScale: number;
 } => {
   const attElmt = key === "NAs" && weaponType !== "catalyst" ? "phys" : vision;

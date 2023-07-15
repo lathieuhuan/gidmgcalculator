@@ -1,4 +1,4 @@
-import type { CharInfo, DataCharacter, GetTalentBuffFn, ModifierCtrl, ModifierInput, PartyData } from "@Src/types";
+import type { CharInfo, AppCharacter, GetTalentBuffFn, ModifierCtrl, ModifierInput, PartyData } from "@Src/types";
 import { Green, Hydro, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -32,7 +32,7 @@ const getEBBuffValue = (toSelf: boolean, char: CharInfo, partyData: PartyData, i
   return level ? Math.min(level + 10, 20) : 0;
 };
 
-const Ayato: DataCharacter = {
+const Ayato: AppCharacter = {
   code: 50,
   name: "Ayato",
   GOOD: "KamisatoAyato",

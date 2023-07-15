@@ -13,8 +13,7 @@ import type {
   ReactionBonus,
   TotalAttribute,
   AttackElement,
-  DataCharacter,
-  TalentStat,
+  AppCharacter,
   Target,
   TalentBuff,
   ResistanceReduction,
@@ -25,6 +24,7 @@ import type {
   Tracker,
   TrackerDamageRecord,
   NormalAttack,
+  PatternStat,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -45,7 +45,7 @@ export type BaseModifierArgsWrapper = {
 export type GetBuffedStatsArgs = {
   char: CharInfo;
   charData: CharData;
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
@@ -59,8 +59,8 @@ export type GetBuffedStatsArgs = {
   tracker?: Tracker;
 };
 
-export interface CalcTalentStatArgs {
-  stat: TalentStat;
+export interface CalcPatternStatArgs {
+  stat: PatternStat;
   attPatt: ActualAttackPattern;
   attElmt: ActualAttackElement;
   base: number | number[];
@@ -78,7 +78,7 @@ export interface CalcTalentStatArgs {
 export interface GetDamageArgs {
   char: CharInfo;
   charData: CharData;
-  dataChar: DataCharacter;
+  dataChar: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];

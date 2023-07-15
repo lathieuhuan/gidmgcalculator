@@ -1,4 +1,4 @@
-import type { DataCharacter, ModifierInput } from "@Src/types";
+import type { AppCharacter, ModifierInput } from "@Src/types";
 import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -14,7 +14,7 @@ const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {
   return [applyPercent(baseATK, mult), `${level} / ${round(mult, 2)}% of ${baseATK} Base ATK`];
 };
 
-const Sara: DataCharacter = {
+const Sara: AppCharacter = {
   code: 41,
   name: "Kujou Sara",
   GOOD: "KujouSara",

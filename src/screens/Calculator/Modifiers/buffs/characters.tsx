@@ -13,7 +13,7 @@ import {
 } from "@Store/calculatorSlice";
 
 // Util
-import { findDataCharacter, getPartyData } from "@Data/controllers";
+import { findAppCharacter, getPartyData } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 
 // Component
@@ -29,7 +29,7 @@ export function SelfBuffs() {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
 
-  const { innateBuffs = [], buffs = [] } = findDataCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = findAppCharacter(char) || {};
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
@@ -127,7 +127,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const charData = useSelector(selectCharData);
 
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findDataCharacter(teammate)!;
+  const { buffs = [], vision } = findAppCharacter(teammate)!;
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs = [] } = ctrl;

@@ -1,4 +1,4 @@
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -6,7 +6,7 @@ import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Layla: DataCharacter = {
+const Layla: AppCharacter = {
   code: 61,
   name: "Layla",
   icon: "1/1a/Layla_Icon",
