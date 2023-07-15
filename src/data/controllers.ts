@@ -32,10 +32,6 @@ export const findMonster = ({ code }: { code: number }) => {
   return monsters.find((monster) => monster.code === code);
 };
 
-export function getPartyData(party: (HasName | null)[]): PartyData {
-  return party.map((teammate) => (teammate ? appData.getCharacter(teammate.name) || null : null));
-}
-
 export const getTargetData = (target: Target) => {
   const dataMonster = findMonster(target);
   let variant = "";

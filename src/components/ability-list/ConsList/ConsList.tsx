@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 import type { CharInfo } from "@Src/types";
+import { appData } from "@Data/index";
 
 // Conponent
 import { InfoSign, SharedSpace } from "@Src/pure-components";
 import { AbilityIcon } from "../components";
 import { ConsDetail } from "./ConsDetail";
-import { appData } from "@Data/index";
 
 interface ConsListProps {
   char: CharInfo;
@@ -16,7 +16,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const dataChar = appData.getCharacter(char.name);
+  const dataChar = appData.getCharData(char.name);
 
   useEffect(() => {
     setAtDetails(false);

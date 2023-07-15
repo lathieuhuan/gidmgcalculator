@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 import type { CharInfo, Party } from "@Src/types";
+import { appData } from "@Data/index";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";
 import { TalentDetail } from "./TalentDetail";
 import { TalentOverview } from "./TalentOverview";
-import { appData } from "@Data/index";
 
 interface TalentListProps {
   char: CharInfo;
@@ -17,8 +17,8 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
   const [atDetail, setAtDetail] = useState(false);
   const [detailIndex, setDetailIndex] = useState(-1);
 
-  const dataChar = appData.getCharacter(char.name);
-  const numOfActives = Object.keys(dataChar.activeTalents).length;
+  const charData = appData.getCharData(char.name);
+  const numOfActives = Object.keys(charData.activeTalents).length;
 
   return (
     <SharedSpace
@@ -26,7 +26,7 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
       leftPart={
         <TalentOverview
           char={char}
-          dataChar={dataChar}
+          charData={charData}
           party={party}
           onChangeLevel={onChangeTalentLevel}
           onClickInfoSign={(newIndex) => {
@@ -36,9 +36,9 @@ export const TalentList = ({ char, party, onChangeTalentLevel }: TalentListProps
         />
       }
       rightPart={
-        detailIndex !== -1 && detailIndex < numOfActives + dataChar.passiveTalents.length ? (
+        detailIndex !== -1 && detailIndex < numOfActives + charData.passiveTalents.length ? (
           <TalentDetail
-            dataChar={dataChar}
+            charData={charData}
             detailIndex={detailIndex}
             onChangeDetailIndex={setDetailIndex}
             onClose={() => {

@@ -5,7 +5,7 @@ import { appData } from "@Data/index";
 
 export const calculateChosenSetup = (chosenSetup: UserSetup, userWps: UserWeapon[], userArts: UserArtifact[]) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
-  const charData = appData.getCharacter(char.name);
+  const charData = appData.getCharData(char.name);
   const weapon = findById(userWps, weaponID);
 
   if (charData && weapon) {

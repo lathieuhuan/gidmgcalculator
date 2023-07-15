@@ -12,10 +12,10 @@ import type {
   Teammate,
   WeaponType,
 } from "@Src/types";
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
-import { appSettings } from "./utils";
 import { appData } from "@Data/index";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { appSettings } from "./utils";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
 
@@ -70,7 +70,7 @@ export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit
 export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = appData.getCharacter(name) || {};
+  const { buffs = [], debuffs = [] } = appData.getCharData(name) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {

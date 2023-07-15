@@ -14,34 +14,38 @@ import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
 import { findDataArtifactSet } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
-import { appData } from "@Data/index";
+import { getItemBonus } from "./utils";
 
-function calcPatternStat({
+function calcItem({
   stat,
   attElmt,
   attPatt,
   base,
   char,
   target,
-  talentBuff,
   totalAttr,
   attPattBonus,
   attElmtBonus,
+  calcItemBonuses,
   rxnMult,
   resistReduct,
   record,
 }: CalcPatternStatArgs) {
+  const itemFlatBonus = getItemBonus(calcItemBonuses, "flat");
+  const itemPctBonus = getItemBonus(calcItemBonuses, "pct_");
+
   if (base !== 0 && !stat.type) {
     const flat =
-      (talentBuff.flat?.value || 0) +
+      itemFlatBonus +
       attPattBonus.all.flat +
       (attPatt !== "none" ? attPattBonus[attPatt].flat : 0) +
       (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
-    let normalMult = (talentBuff.pct_?.value || 0) + attPattBonus.all.pct_;
+    let normalMult = itemPctBonus + attPattBonus.all.pct_;
     let specialMult = 1;
 
     if (attPatt !== "none") {
@@ -70,7 +74,7 @@ function calcPatternStat({
     const totalCrit = (type: "cRate_" | "cDmg_") => {
       return (
         totalAttr[type] +
-        (talentBuff[type]?.value || 0) +
+        getItemBonus(calcItemBonuses, type) +
         attPattBonus.all[type] +
         (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
         (attElmt !== "various" ? attElmtBonus[attElmt][type] : 0)
@@ -102,11 +106,11 @@ function calcPatternStat({
 
     switch (stat.type) {
       case "healing":
-        flat = talentBuff.flat?.value || 0;
+        flat = itemFlatBonus;
         normalMult += totalAttr.healB_ / 100;
         break;
       case "shield":
-        normalMult += (talentBuff.pct_?.value || 0) / 100;
+        normalMult += itemPctBonus / 100;
         break;
     }
     base += flat;
@@ -133,6 +137,7 @@ export default function getDamage({
   totalAttr,
   attPattBonus,
   attElmtBonus,
+  calcItemBonuses,
   rxnBonus,
   customDebuffCtrls,
   infusion,
@@ -145,7 +150,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { patternActs, weaponType, vision, debuffs } = charData;
+  const { calcList, weaponType, vision, debuffs } = charData;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -176,7 +181,7 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs = [] } = appData.getCharacter(teammate.name);
+      const { debuffs = [] } = appData.getCharData(teammate.name);
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs, index);
 
@@ -236,25 +241,13 @@ export default function getDamage({
   }
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
-    const talent = patternActs[ATT_PATT];
+    const talent = calcList[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
     const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
     const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
 
     for (const stat of talent.stats) {
-      // const talentBuff = stat.getTalentBuff
-      //   ? stat.getTalentBuff({
-      //       char,
-      //       charData,
-      //       selfBuffCtrls,
-      //       selfDebuffCtrls,
-      //       totalAttr,
-      //       partyData,
-      //     })
-      //   : {};
-      const talentBuff: any = {};
-
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
       let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
@@ -281,11 +274,16 @@ export default function getDamage({
       }
 
       let bases = [];
-      const { flatFactor } = stat;
+      const { id, flatFactor } = stat;
+      const itemBonuses = id
+        ? calcItemBonuses.filter((bonus) => (Array.isArray(bonus.ids) ? bonus.ids.includes(id) : bonus.ids === id))
+        : [];
+      const itemBonusMult = itemBonuses.reduce((total, bonus) => total + (bonus.bonus.mult_?.value || 0), 0);
+
       const record = {
         multFactors: [],
         normalMult: 1,
-        talentBuff,
+        itemBonuses,
       } as TrackerDamageRecord;
 
       // CALCULATE BASE DAMAGE
@@ -296,7 +294,7 @@ export default function getDamage({
           scale = multScale,
         } = typeof factor === "number" ? { root: factor } : factor;
 
-        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + (talentBuff.mult_?.value || 0);
+        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + itemBonusMult;
 
         let flatBonus = 0;
 
@@ -329,17 +327,17 @@ export default function getDamage({
           average: 0,
         };
       } else {
-        finalResult[resultKey][stat.name] = calcPatternStat({
+        finalResult[resultKey][stat.name] = calcItem({
           stat,
           attPatt,
           attElmt,
           base: bases.length > 1 ? bases : bases[0],
           char,
           target,
-          talentBuff,
           totalAttr,
           attPattBonus,
           attElmtBonus,
+          calcItemBonuses: itemBonuses,
           rxnMult,
           resistReduct,
           record,

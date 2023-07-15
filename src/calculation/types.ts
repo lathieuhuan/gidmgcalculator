@@ -14,7 +14,6 @@ import type {
   AttackElement,
   AppCharacter,
   Target,
-  TalentBuff,
   ResistanceReduction,
   ArtifactDebuffCtrl,
   CustomDebuffCtrl,
@@ -24,6 +23,7 @@ import type {
   TrackerDamageRecord,
   NormalAttack,
   PatternStat,
+  CalcItemBonuses,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -65,15 +65,16 @@ export interface CalcPatternStatArgs {
   char: CharInfo;
   target: Target;
   rxnMult: number;
-  talentBuff: TalentBuff;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
+  calcItemBonuses: CalcItemBonuses;
   resistReduct: ResistanceReduction;
   record: TrackerDamageRecord;
 }
 
-export interface GetDamageArgs {
+export interface GetDamageArgs
+  extends Pick<CalcPatternStatArgs, "totalAttr" | "attPattBonus" | "attElmtBonus" | "calcItemBonuses"> {
   char: CharInfo;
   charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
@@ -82,9 +83,6 @@ export interface GetDamageArgs {
   party: Party;
   partyData: PartyData;
   disabledNAs: boolean;
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   customDebuffCtrls: CustomDebuffCtrl[];
   infusion: {

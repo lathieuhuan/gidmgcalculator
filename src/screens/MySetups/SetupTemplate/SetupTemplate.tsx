@@ -15,14 +15,14 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { findDataArtifact, findDataWeapon, getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
+import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
 import { TeammateDetail } from "../modal-content/TeammateDetail";
 import { GearIcon } from "./GearIcon";
-import { appData } from "@Data/index";
 
 interface SetupLayoutProps {
   ID: number;
@@ -74,7 +74,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const display = useMemo(() => {
     let mainCharacter = null;
-    const charData = appData.getCharacter(char.name);
+    const charData = appData.getCharData(char.name);
     const weaponData = weapon ? findDataWeapon(weapon) : undefined;
 
     if (charData) {
@@ -83,7 +83,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           char,
           charData,
           talentType,
-          partyData: getPartyData(party),
+          partyData: appData.getPartyData(party),
         });
       });
 
@@ -109,7 +109,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const teammate = (
       <div className={"flex space-x-4 " + (party.filter(Boolean).length ? "mt-4" : "")} style={{ width: "15.5rem" }}>
         {party.map((teammate, teammateIndex) => {
-          const dataTeammate = teammate && appData.getCharacter(teammate.name);
+          const dataTeammate = teammate && appData.getCharData(teammate.name);
           if (!dataTeammate) return null;
 
           const isCalculated = !isOriginal && !!allIDs?.[teammate.name];

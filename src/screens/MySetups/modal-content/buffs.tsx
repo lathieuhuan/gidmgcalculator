@@ -24,6 +24,7 @@ import { useTranslation } from "@Src/hooks";
 import { findByIndex, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import {
@@ -35,7 +36,6 @@ import {
   renderQuickenDesc,
   renderQuickenHeading,
 } from "@Src/components";
-import { appData } from "@Data/index";
 
 interface ElementBuffsProps {
   charLv: Level;
@@ -167,7 +167,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       continue;
     }
 
-    const teammateData = appData.getCharacter(teammate.name);
+    const teammateData = appData.getCharData(teammate.name);
     if (!teammateData) {
       continue;
     }

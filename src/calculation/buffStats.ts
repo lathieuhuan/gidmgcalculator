@@ -14,9 +14,11 @@ import type {
   ReactionBonus,
   ReactionBonusInfo,
   ReactionBonusInfoKey,
+  CalcItemBonuses,
 } from "@Src/types";
 import type { GetBuffedStatsArgs, UsedCode } from "./types";
 
+import { appData } from "@Data/index";
 import {
   AMPLIFYING_REACTIONS,
   ATTACK_ELEMENTS,
@@ -47,7 +49,6 @@ import {
   initiateTotalAttr,
 } from "./baseStats";
 import { addTrackerRecord } from "./utils";
-import { appData } from "@Data/index";
 
 interface ApplySelfBuffs {
   isFinal: boolean;
@@ -153,6 +154,8 @@ export default function getBuffedStats({
     }
   }
 
+  const calcItemBonuses: CalcItemBonuses = [];
+
   const modifierArgs: BuffModifierArgsWrapper = {
     char,
     charData,
@@ -160,6 +163,7 @@ export default function getBuffedStats({
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBonuses,
     rxnBonus,
     infusedElement,
     tracker,
@@ -246,7 +250,7 @@ export default function getBuffedStats({
 
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weaponType, buffs = [] } = appData.getCharacter(teammate.name);
+    const { name, weaponType, buffs = [] } = appData.getCharData(teammate.name);
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;
@@ -416,10 +420,13 @@ export default function getBuffedStats({
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
+  console.log(calcItemBonuses);
+
   return {
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBonuses,
     rxnBonus,
     artAttr,
   };

@@ -60,7 +60,7 @@ const Caret = ({ toRight, onClick }: CaretProps) => {
 
 interface SlideShowProps {
   currentIndex: number;
-  images: string[];
+  images: (string | undefined)[];
   vision: Vision;
   forTalent: boolean;
   topLeftNote?: ReactNode;

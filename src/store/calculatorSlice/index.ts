@@ -33,10 +33,10 @@ import type {
   ApplySettingsAction,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import { appData } from "@Data/index";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { getPartyData } from "@Data/controllers";
 import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
@@ -52,7 +52,6 @@ import {
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
 import { calculate, getCharDataFromState, parseUserCharData } from "./utils";
-import { appData } from "@Data/index";
 
 const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
   if (artifact.debuffs?.length) {
@@ -101,7 +100,7 @@ export const calculatorSlice = createSlice({
       const { pickedChar, userWps, userArts } = action.payload;
       const setupManageInfo = getSetupManageInfo({});
       const { ID: setupID } = setupManageInfo;
-      const charData = appData.getCharacter(pickedChar.name);
+      const charData = appData.getCharData(pickedChar.name);
       const data = parseUserCharData({
         pickedChar,
         userWps,
@@ -267,17 +266,17 @@ export const calculatorSlice = createSlice({
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision(getPartyData(party), charData);
+      const oldVisionCount = countVision(appData.getPartyData(party), charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newVisionCount = countVision(getPartyData(party), charData);
+      const newVisionCount = countVision(appData.getPartyData(party), charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const { vision: oldVision } = appData.getCharacter(oldTeammate.name) || {};
+        const { vision: oldVision } = appData.getCharData(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -312,9 +311,9 @@ export const calculatorSlice = createSlice({
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = appData.getCharacter(teammate.name);
+        const { vision } = appData.getCharData(teammate.name);
         party[teammateIndex] = null;
-        const newVisionCount = countVision(getPartyData(party), charData);
+        const newVisionCount = countVision(appData.getPartyData(party), charData);
 
         if (newVisionCount[vision] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {

@@ -1,11 +1,11 @@
-import type { AppCharacter } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
-const Jean = {
+const Jean: DefaultAppCharacter = {
   code: 2,
   name: "Jean",
   icon: "6/64/Jean_Icon",
@@ -14,6 +14,7 @@ const Jean = {
   nation: "mondstadt",
   vision: "anemo",
   weaponType: "sword",
+  EBcost: 80,
   buffs: [
     {
       index: 0,
@@ -58,4 +59,4 @@ const Jean = {
   ],
 };
 
-export default Jean as unknown as AppCharacter;
+export default Jean as AppCharacter;

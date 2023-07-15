@@ -62,7 +62,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
   } = calcSetup;
 
   try {
-    const charData = appData.getCharacter(char.name);
+    const charData = appData.getCharData(char.name);
     if (!charData) {
       throw new Error("Character not found");
     }
@@ -102,7 +102,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 
     const _teammateCodes = party.map((tm, i) => {
       if (tm) {
-        const { code: tmCode } = appData.getCharacter(tm.name) || {};
+        const { code: tmCode } = appData.getCharData(tm.name) || {};
         const { weapon, artifact } = tm;
 
         return [

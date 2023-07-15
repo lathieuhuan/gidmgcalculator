@@ -1,5 +1,6 @@
 import { BACKEND_URL_PATH } from "@Src/constants";
-import { AppCharacter, Party } from "@Src/types";
+import { AppCharacter, Party, PartyData } from "@Src/types";
+import { pickProps } from "@Src/utils";
 import characters from "./characters";
 
 type Response<T> = {
@@ -64,11 +65,17 @@ export class AppDataService {
     return response;
   }
 
-  getCharacter(name: string) {
+  getCharData(name: string) {
     return this.characters[name].data;
   }
 
-  getPartyData(party: Party) {
-    //
+  getPartyData(party: Party): PartyData {
+    return party.map((teammate) => {
+      if (teammate) {
+        const keys: Array<keyof AppCharacter> = ["code", "name", "icon", "nation", "vision", "weaponType", "EBcost"];
+        return pickProps(this.characters[teammate.name].data, keys);
+      }
+      return null;
+    });
   }
 }

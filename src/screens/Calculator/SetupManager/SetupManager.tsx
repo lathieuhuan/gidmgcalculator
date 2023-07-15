@@ -5,12 +5,13 @@ import { IoDocumentText } from "react-icons/io5";
 import type { ArtifactType } from "@Src/types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
+import { appData } from "@Data/index";
 
 // Store
 import { updateUI } from "@Store/uiSlice";
 import { changeArtifact, changeWeapon } from "@Store/calculatorSlice";
 import { pickEquippedArtSet } from "@Store/thunks";
-import { selectArtifacts, selectCharData } from "@Store/calculatorSlice/selectors";
+import { selectArtifacts, selectChar } from "@Store/calculatorSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -32,9 +33,10 @@ type ModalType = "CHARACTERS_PICKER" | "WEAPONS_PICKER" | ArtifactType | "SHARE_
 
 export default function SetupManager() {
   const dispatch = useDispatch();
-
-  const charData = useSelector(selectCharData);
+  const char = useSelector(selectChar);
   const artifacts = useSelector(selectArtifacts);
+
+  const charData = appData.getCharData(char.name);
 
   const [modalType, setModalType] = useState<ModalType>("");
   const [prePickerOn, setPrePickerOn] = useState(false);

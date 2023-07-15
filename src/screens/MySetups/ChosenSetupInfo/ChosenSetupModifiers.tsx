@@ -2,7 +2,8 @@ import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { getPartyData, getTargetData } from "@Data/controllers";
+import { appData } from "@Data/index";
+import { getTargetData } from "@Data/controllers";
 import { calculateChosenSetup } from "./utils";
 
 // Component
@@ -59,7 +60,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
   } = chosenSetup;
   const { charData, infusedElement, totalAttr, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
 
-  const partyData = getPartyData(party);
+  const partyData = appData.getPartyData(party);
   const { title, variant, statuses } = getTargetData(target);
 
   return (

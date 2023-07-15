@@ -41,39 +41,6 @@ export const HEAVY_PAs: PatternStat[] = [
 ];
 
 // special
-
-// Xiao, Kazuha, Itto
-export const HEAVIER_PAs: PatternStat[] = [
-  { name: "Plunge DMG", multFactors: 81.83 },
-  { name: "Low Plunge", multFactors: 163.63 },
-  { name: "High Plunge", multFactors: 204.39 },
-];
-
-export const TRAVELER_INFO = {
-  icon: "5/59/Traveler_Icon",
-  sideIcon: "9/9a/Lumine_Side_Icon",
-  rarity: 5 as const,
-  nation: "outland" as const,
-  weaponType: "sword" as const,
-  stats: [
-    [912, 18, 57],
-    [2342, 46, 147],
-    [3024, 59, 190],
-    [4529, 88, 284],
-    [5013, 98, 315],
-    [5766, 113, 362],
-    [6411, 125, 402],
-    [7164, 140, 450],
-    [7648, 149, 480],
-    [8401, 164, 527],
-    [8885, 174, 558],
-    [9638, 188, 605],
-    [10122, 198, 635],
-    [10875, 212, 683],
-  ],
-  bonusStat: { type: "atk_" as const, value: 6 },
-};
-
 export const TRAVELLER_NCPAs: {
   NA: { stats: PatternStat[] };
   CA: { stats: PatternStat[] };
@@ -92,4 +59,36 @@ export const TRAVELLER_NCPAs: {
     stats: [{ name: "Charged Attack", multFactors: [55.9, 72.24] }],
   },
   PA: { stats: MEDIUM_PAs },
+};
+
+// Xiao, Kazuha, Itto
+export const HEAVIER_PAs: PatternStat[] = [
+  { name: "Plunge DMG", multFactors: 81.83 },
+  { name: "Low Plunge", multFactors: 163.63 },
+  { name: "High Plunge", multFactors: 204.39 },
+];
+
+export const TRAVELER_INFO = {
+  icon: "5/59/Traveler_Icon",
+  sideIcon: "9/9a/Lumine_Side_Icon",
+  rarity: 5 as const,
+  nation: "outland" as const,
+  weaponType: "sword" as const,
+  // stats: [
+  //   [912, 18, 57],
+  //   [2342, 46, 147],
+  //   [3024, 59, 190],
+  //   [4529, 88, 284],
+  //   [5013, 98, 315],
+  //   [5766, 113, 362],
+  //   [6411, 125, 402],
+  //   [7164, 140, 450],
+  //   [7648, 149, 480],
+  //   [8401, 164, 527],
+  //   [8885, 174, 558],
+  //   [9638, 188, 605],
+  //   [10122, 198, 635],
+  //   [10875, 212, 683],
+  // ],
+  // bonusStat: { type: "atk_" as const, value: 6 },
 };

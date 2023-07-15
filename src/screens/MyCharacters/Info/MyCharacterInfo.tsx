@@ -13,12 +13,12 @@ import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from
 // Util
 import getBaseStats from "@Src/calculation/baseStats";
 import { findById, findByName, getImgSrc } from "@Src/utils";
+import { appData } from "@Data/index";
 
 // Component
 import { StarLine, Modal, ConfirmModalBody, Button } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
-import { appData } from "@Data/index";
 
 const selectChosenInfo = createSelector(
   selectUserChars,
@@ -41,7 +41,7 @@ export default function MyCharacterInfo() {
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const dispatch = useDispatch();
 
-  const charData = appData.getCharacter(char.name);
+  const charData = appData.getCharData(char.name);
   if (!charData || !weapon) {
     return null;
   }

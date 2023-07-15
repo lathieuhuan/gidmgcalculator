@@ -10,7 +10,7 @@ import { appData } from "@Data/index";
 
 export const getCharDataFromState = (state: CalculatorState) => {
   const setup = state.setupsById[state.activeId];
-  return appData.getCharacter(setup.char.name);
+  return appData.getCharData(setup.char.name);
 };
 
 export function calculate(state: CalculatorState, all?: boolean) {

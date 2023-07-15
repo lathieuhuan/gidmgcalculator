@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useState } from "react";
+// import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import type { AppCharacter } from "@Src/types";
-import { GENSHIN_DEV_URL } from "@Src/constants";
+// import { GENSHIN_DEV_URL } from "@Src/constants";
 
 // Conponent
 import { CloseButton, Green, Lesser } from "@Src/pure-components";
@@ -15,53 +15,11 @@ interface ConsDetailProps {
   onClose?: () => void;
 }
 export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const [descArr, setDescArr] = useState([]);
+  // #to-do
   const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
 
-  const {
-    name: charName,
-    vision,
-    isReverseXtraLv,
-    activeTalents: { ES, EB },
-    constellation,
-  } = dataChar;
+  const { vision, constellation } = dataChar;
   const consInfo = constellation[consLv - 1] || {};
-  let abilityName = "";
-
-  if (consLv === 3) {
-    abilityName = isReverseXtraLv ? EB.name : ES.name;
-  }
-  if (consLv === 5) {
-    abilityName = isReverseXtraLv ? ES.name : EB.name;
-  }
-
-  const consDesc = abilityName ? (
-    <>
-      Increases the Level of {abilityName} by 3.
-      <br />
-      Maximum upgrade level is 15.
-    </>
-  ) : (
-    consInfo.desc
-  );
-
-  useEffect(() => {
-    if (!constellation[0].desc) {
-      setStatus("loading");
-
-      fetch(GENSHIN_DEV_URL + `/characters/` + charName)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            setStatus("error");
-          } else {
-            const { constellations = [] } = data;
-            setDescArr(constellations.map((constellation: any) => constellation.description));
-            setStatus("idle");
-          }
-        });
-    }
-  }, []);
 
   return (
     <div className="h-full flex-col hide-scrollbar">
@@ -77,13 +35,12 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
       <p className="text-lg">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>
-      {consDesc ? (
-        <p className="mt-4">{consDesc}</p>
+      {consInfo.description ? (
+        <p className="mt-4">{consInfo.description}</p>
       ) : (
         <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
-          {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
           {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
-          {status === "idle" && descArr[consLv - 1]}
+          {/* {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />} */}
         </p>
       )}
 

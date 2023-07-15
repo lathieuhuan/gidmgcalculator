@@ -6,7 +6,7 @@ import { EStatDamageKey } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
@@ -47,7 +47,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                 char,
                 charData,
                 talentType: key.main,
-                partyData: getPartyData(party),
+                partyData: appData.getPartyData(party),
               })
             : 0;
 

@@ -1,9 +1,8 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
-import { appData } from "@Data/index";
 
 export default function calculateAll(
   {
@@ -24,8 +23,8 @@ export default function calculateAll(
   target: Target,
   tracker?: Tracker
 ) {
-  const charData = appData.getCharacter(char.name);
-  const partyData = getPartyData(party);
+  const charData = appData.getCharData(char.name);
+  const partyData = appData.getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;
@@ -62,7 +61,7 @@ export default function calculateAll(
     infusedAttacks = ["NA"];
   }
 
-  const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
+  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBonuses, rxnBonus } = getBuffedStats({
     char,
     charData,
     selfBuffCtrls,
@@ -90,6 +89,7 @@ export default function calculateAll(
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBonuses,
     rxnBonus,
     customDebuffCtrls,
     infusion: {

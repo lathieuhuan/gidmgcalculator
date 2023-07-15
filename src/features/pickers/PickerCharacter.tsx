@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { AppCharacter } from "@Src/types";
 import type { PickerItem } from "./types";
 
+import { appData } from "@Data/index";
 import characters from "@Data/characters";
 import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
@@ -9,7 +10,6 @@ import { findByName, pickProps } from "@Src/utils";
 // Component
 import { withModal } from "@Src/pure-components";
 import { PickerTemplate } from "./PickerTemplate";
-import { appData } from "@Data/index";
 
 export interface CharacterPickerProps {
   sourceType: "mixed" | "appData" | "userData";
@@ -44,7 +44,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
       }
     } else if (sourceType === "userData") {
       for (const { name, cons, artifactIDs } of userChars) {
-        const found = appData.getCharacter(name);
+        const found = appData.getCharData(name);
 
         if (found) {
           if (!filter || filter(found)) {

@@ -162,6 +162,11 @@ export type ReactionBonusInfoKey = (typeof REACTION_BONUS_INFO_KEYS)[number];
 export type ReactionBonusInfo = Record<ReactionBonusInfoKey, number>;
 export type ReactionBonus = Record<Reaction, ReactionBonusInfo>;
 
+export type CalcItemBonuses = Array<{
+  ids: string | string[];
+  bonus: TalentBuff;
+}>;
+
 export type ResistanceReductionKey = AttackElement | "def";
 export type ResistanceReduction = Record<ResistanceReductionKey, number>;
 
@@ -184,7 +189,9 @@ export type CalculatedDamageCluster = {
 
 export type DamageResult = Record<"NAs" | "ES" | "EB" | "RXN", CalculatedDamageCluster>;
 
-export type PartyData = (AppCharacter | null)[];
+type TeammateData = Pick<AppCharacter, "code" | "name" | "icon" | "nation" | "vision" | "weaponType" | "EBcost">;
+
+export type PartyData = (TeammateData | null)[];
 
 export type BuffModifierArgsWrapper = {
   char: CharInfo;
@@ -193,6 +200,7 @@ export type BuffModifierArgsWrapper = {
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
+  calcItemBonuses: CalcItemBonuses;
   rxnBonus: ReactionBonus;
   infusedElement: AttackElement;
   tracker?: Tracker;
@@ -206,7 +214,7 @@ export type DebuffModifierArgsWrapper = {
   tracker?: Tracker;
 };
 
-// #to-remove
+// #to-rename
 export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
 // Tracker
@@ -231,7 +239,7 @@ export type TrackerDamageRecord = {
   cRate_?: number;
   cDmg_?: number;
   note?: string;
-  talentBuff?: TalentBuff;
+  itemBonuses?: CalcItemBonuses;
 };
 
 export type Tracker = {

@@ -4,8 +4,11 @@ import type { ModSelectOption } from "@Src/components";
 
 import { VISION_TYPES } from "@Src/constants";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
+import { appData } from "@Data/index";
+
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
-import { selectChar, selectCharData, selectElmtModCtrls, selectRxnBonus } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectElmtModCtrls, selectRxnBonus } from "@Store/calculatorSlice/selectors";
 import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 
 // Component
@@ -21,8 +24,8 @@ import {
 
 export default function ElementBuffs() {
   const dispatch = useDispatch();
-  const { vision, weaponType } = useSelector(selectCharData);
   const char = useSelector(selectChar);
+  const { vision, weaponType } = appData.getCharData(char.name);
   const elmtModCtrls = useSelector(selectElmtModCtrls);
   const rxnBonus = useSelector(selectRxnBonus);
   const customInfusion = useSelector((state) => {

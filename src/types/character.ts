@@ -12,7 +12,6 @@ import type {
   AttributeStat,
 } from "./global";
 import type {
-  CharData,
   ModifierCtrl,
   PartyData,
   ResistanceReduction,
@@ -21,8 +20,26 @@ import type {
   ModifierInput,
   BuffModifierArgsWrapper,
   Tracker,
+  CalcItemBonuses,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
+
+export type DefaultAppCharacter = Pick<
+  AppCharacter,
+  | "code"
+  | "name"
+  | "GOOD"
+  | "icon"
+  | "sideIcon"
+  | "rarity"
+  | "nation"
+  | "vision"
+  | "weaponType"
+  | "EBcost"
+  | "innateBuffs"
+  | "buffs"
+  | "debuffs"
+>;
 
 export type AppCharacter = {
   code: number;
@@ -45,13 +62,14 @@ export type AppCharacter = {
     NAs: ActiveTalent;
     ES: ActiveTalent;
     EB: ActiveTalent;
+    altSprint?: ActiveTalent;
   };
-  patternActs: {
-    NA: PatternAct;
-    CA: PatternAct;
-    PA: PatternAct;
-    ES: PatternAct;
-    EB: PatternAct;
+  calcList: {
+    NA: CalcItem;
+    CA: CalcItem;
+    PA: CalcItem;
+    ES: CalcItem;
+    EB: CalcItem;
   };
   passiveTalents: Ability[];
   constellation: Ability[];
@@ -88,6 +106,7 @@ export type PatternStat = {
   id?: string;
   name: string;
   type?: "attack" | "healing" | "shield" | "other";
+  notOfficial?: boolean;
   attPatt?: ActualAttackPattern;
   attElmt?: ActualAttackElement;
   subAttPatt?: "FCA";
@@ -110,7 +129,7 @@ export type PatternStat = {
       };
 };
 
-type PatternAct = {
+type CalcItem = {
   multScale?: number;
   multAttributeType?: TalentAttributeType;
   stats: PatternStat[];
@@ -119,7 +138,7 @@ type PatternAct = {
 export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
-  desc: (args: { charData: CharData; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
+  desc: (args: { charData: AppCharacter; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
