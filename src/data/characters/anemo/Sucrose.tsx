@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Red } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { EModSrc } from "../constants";
+import { Green, Red } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
 const Sucrose: DefaultAppCharacter = {

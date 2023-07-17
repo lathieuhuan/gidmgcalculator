@@ -1,10 +1,10 @@
 import type { AppCharacter, DefaultAppCharacter, ModifierInput, TotalAttribute } from "@Src/types";
-import { Anemo, Green, Red } from "@Src/pure-components";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { NCPA_PERCENTS } from "@Data/constants";
-import { EModSrc } from "../constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Anemo, Green, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {

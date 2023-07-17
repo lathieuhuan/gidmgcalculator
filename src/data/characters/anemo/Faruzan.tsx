@@ -1,10 +1,10 @@
-import type { CharInfo, AppCharacter, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Anemo, Green, Lightgold } from "@Src/pure-components";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc } from "../constants";
+import { Anemo, Green, Lightgold } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 interface GetWindGiftBuffValueArgs {

@@ -1,8 +1,8 @@
-import type { CharInfo, AppCharacter, DefaultAppCharacter, ModifierInput } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { EModSrc } from "../constants";
+import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 interface DetectorBuffValueArgs {

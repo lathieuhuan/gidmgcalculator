@@ -1,11 +1,11 @@
-import type { CharInfo, AppCharacter, DefaultAppCharacter, PartyData } from "@Src/types";
-import { Anemo, Green, Lightgold, Rose } from "@Src/pure-components";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { NCPA_PERCENTS } from "@Data/constants";
-import { EModSrc } from "../constants";
+import { Anemo, Green, Lightgold, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs } from "../utils";
 
 const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {

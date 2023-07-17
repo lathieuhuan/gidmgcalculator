@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { EModSrc } from "../constants";
+import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Ganyu: DefaultAppCharacter = {

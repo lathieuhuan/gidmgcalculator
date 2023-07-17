@@ -1,9 +1,9 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { EModSrc } from "../constants";
+import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const Layla: DefaultAppCharacter = {

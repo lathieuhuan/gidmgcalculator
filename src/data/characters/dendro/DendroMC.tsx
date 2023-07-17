@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { EModSrc, TRAVELER_INFO } from "../constants";
+import { Green, Rose } from "@Src/pure-components";
 import { applyModifier } from "@Src/utils/calculation";
+import { EModSrc, TRAVELER_INFO } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const DendroMC: DefaultAppCharacter = {

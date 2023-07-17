@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
 import { EModSrc } from "../constants";
 import { checkCons, talentBuff } from "../utils";
 

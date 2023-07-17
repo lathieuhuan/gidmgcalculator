@@ -1,9 +1,9 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green } from "@Src/pure-components";
-import { EModSrc, TRAVELER_INFO } from "../constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkCons } from "../utils";
 import { VISION_TYPES } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc, TRAVELER_INFO } from "../constants";
+import { checkCons } from "../utils";
 
 const AnemoMC: DefaultAppCharacter = {
   code: 1,

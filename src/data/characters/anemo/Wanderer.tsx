@@ -1,10 +1,10 @@
-import type { CharInfo, AppCharacter, DefaultAppCharacter, ModifierCtrl, PartyData } from "@Src/types";
-import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
+import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
+import { findByIndex, round } from "@Src/utils";
+import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { round, findByIndex } from "@Src/utils";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
 const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {

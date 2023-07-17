@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { EModSrc } from "../constants";
+import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkCons, talentBuff } from "../utils";
 
 const Diona: DefaultAppCharacter = {

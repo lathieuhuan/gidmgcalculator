@@ -1,10 +1,10 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Dendro, Green, Lightgold, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc, HEAVY_PAs } from "../constants";
+import { Dendro, Green, Lightgold, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBbuffValue = (level: number) => (level ? round(27.49 * TALENT_LV_MULTIPLIERS[2][level], 2) : 0);
