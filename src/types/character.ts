@@ -20,7 +20,6 @@ import type {
   ModifierInput,
   BuffModifierArgsWrapper,
   Tracker,
-  CalcItemBonuses,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 

@@ -1,16 +1,11 @@
-import type { AppCharacter, GetTalentBuffFn } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, LIGHT_PAs } from "../constants";
+import { EModSrc } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const getA1TalentBuff: GetTalentBuffFn = ({ char, selfBuffCtrls }) => {
-  const isInUse = charModIsInUse(Ganyu.buffs!, char, selfBuffCtrls, 0);
-  return talentBuff([isInUse, "cRate_", [true, 1], 20]);
-};
-
-const Ganyu: AppCharacter = {
+const Ganyu: DefaultAppCharacter = {
   code: 28,
   name: "Ganyu",
   icon: "7/79/Ganyu_Icon",
@@ -19,105 +14,7 @@ const Ganyu: AppCharacter = {
   nation: "liyue",
   vision: "cryo",
   weaponType: "bow",
-  stats: [
-    [763, 26, 49],
-    [1978, 68, 127],
-    [2632, 90, 169],
-    [3939, 135, 253],
-    [4403, 151, 283],
-    [5066, 173, 326],
-    [5686, 194, 366],
-    [6355, 217, 409],
-    [6820, 233, 439],
-    [7495, 256, 482],
-    [7960, 272, 512],
-    [8643, 295, 556],
-    [9108, 311, 586],
-    [9797, 335, 630],
-  ],
-  bonusStat: { type: "cDmg_", value: 9.6 },
-  NAsConfig: {
-    name: "Liutian Archery",
-  },
-  isReverseXtraLv: true,
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 31.73 },
-        { name: "2-Hit", multFactors: 35.6 },
-        { name: "3-Hit", multFactors: 45.49 },
-        { name: "4-Hit", multFactors: 45.49 },
-        { name: "5-Hit", multFactors: 48.25 },
-        { name: "6-Hit", multFactors: 57.62 },
-      ],
-    },
-    CA: {
-      stats: [
-        { name: "Aimed Shot", multFactors: { root: 43.86, scale: 1 } },
-        {
-          name: "Aimed Shot Charged Level 1",
-          subAttPatt: "FCA",
-          multFactors: 124,
-        },
-        {
-          name: "Frostflake Arrow",
-          subAttPatt: "FCA",
-          multFactors: 128,
-          getTalentBuff: getA1TalentBuff,
-        },
-        {
-          name: "Frostflake Arrow Bloom",
-          subAttPatt: "FCA",
-          multFactors: 217.6,
-          getTalentBuff: getA1TalentBuff,
-        },
-      ],
-      multScale: 2,
-    },
-    PA: { stats: LIGHT_PAs },
-    ES: {
-      name: "Trail of the Qilin",
-      image: "d/d1/Talent_Trail_of_the_Qilin",
-      stats: [
-        {
-          name: "Inherited HP",
-          notAttack: "other",
-          multFactors: { root: 120, attributeType: "hp" },
-        },
-        { name: "Skill DMG", multFactors: 132 },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "6s" },
-      //   { name: "CD", value: "10s" },
-      // ],
-    },
-    EB: {
-      name: "Celestial Shower",
-      image: "4/47/Talent_Celestial_Shower",
-      stats: [{ name: "Ice shard DMG", multFactors: 70.27 }],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "15s" },
-      //   { name: "CD", value: "15s" },
-      // ],
-      energyCost: 60,
-    },
-  },
-  passiveTalents: [
-    { name: "Undivided Heart", image: "a/a3/Talent_Undivided_Heart" },
-    {
-      name: "Harmony between Heaven and Earth",
-      image: "d/d4/Talent_Harmony_between_Heaven_and_Earth",
-    },
-    { name: "Preserved for the Hunt", image: "c/cf/Talent_Preserved_for_the_Hunt" },
-  ],
-  constellation: [
-    { name: "Dew-Drinker", image: "7/74/Constellation_Dew-Drinker" },
-    { name: "The Auspicious", image: "d/d9/Constellation_The_Auspicious" },
-    { name: "Cloud-Strider", image: "b/bf/Constellation_Cloud-Strider" },
-    { name: "Westward Sojourn", image: "e/e0/Constellation_Westward_Sojourn" },
-    { name: "The Merciful", image: "5/57/Constellation_The_Merciful" },
-    { name: "The Clement", image: "b/b5/Constellation_The_Clement" },
-  ],
+  EBcost: 60,
   buffs: [
     {
       index: 0,
@@ -130,6 +27,12 @@ const Ganyu: AppCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
+      applyBuff: ({ calcItemBonuses }) => {
+        calcItemBonuses.push({
+          ids: [],
+          bonus: talentBuff([true, "cRate_", [true, 1], 20]),
+        });
+      },
     },
     {
       index: 1,
@@ -182,4 +85,4 @@ const Ganyu: AppCharacter = {
   ],
 };
 
-export default Ganyu;
+export default Ganyu as AppCharacter;

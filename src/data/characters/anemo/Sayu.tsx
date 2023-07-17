@@ -33,11 +33,11 @@ const Sayu: DefaultAppCharacter = {
 
         calcItemBonuses.push(
           {
-            ids: "0",
+            ids: "EB.0",
             bonus: talentBuff([isValid, "mult_", [false, 6], buffValue * 0.2]),
           },
           {
-            ids: "1",
+            ids: "EB.1",
             bonus: talentBuff([isValid, "flat", [false, 6], buffValue * 3]),
           }
         );
@@ -66,16 +66,14 @@ const Sayu: DefaultAppCharacter = {
         },
       ],
       applyBuff: ({ inputs, calcItemBonuses }) => {
-        const buffValue = 3.3 * Math.floor((inputs[0] || 0) / 0.5);
-
         calcItemBonuses.push(
           {
-            ids: "0",
+            ids: "ES.0",
             bonus: talentBuff([true, "pct_", [false, 2], 3.3]),
           },
           {
-            ids: ["1", "2"],
-            bonus: talentBuff([true, "pct_", [false, 2], buffValue]),
+            ids: ["ES.1", "ES.2"],
+            bonus: talentBuff([true, "pct_", [false, 2], 3.3 * Math.floor((inputs[0] || 0) / 0.5)]),
           }
         );
       },

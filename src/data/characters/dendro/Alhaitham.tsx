@@ -1,11 +1,11 @@
-import type { AppCharacter } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { Dendro, Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkAscs, checkCons, talentBuff } from "../utils";
 
-const Alhaitham: AppCharacter = {
+const Alhaitham: DefaultAppCharacter = {
   code: 65,
   name: "Alhaitham",
   icon: "2/2c/Alhaitham_Icon",
@@ -14,185 +14,26 @@ const Alhaitham: AppCharacter = {
   nation: "sumeru",
   vision: "dendro",
   weaponType: "sword",
-  stats: [
-    [1039, 24, 61],
-    [2695, 63, 158],
-    [3586, 84, 210],
-    [5366, 126, 314],
-    [5999, 141, 351],
-    [6902, 162, 404],
-    [7747, 182, 454],
-    [8659, 203, 507],
-    [9292, 218, 544],
-    [10213, 240, 598],
-    [10846, 255, 635],
-    [11777, 276, 690],
-    [12410, 291, 727],
-    [13348, 313, 782],
-  ],
-  bonusStat: { type: "dendro", value: 7.2 },
-  NAsConfig: {
-    name: "Abductive Reasoning",
-  },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 49.53 },
-        { name: "2-Hit", multFactors: 50.75 },
-        { name: "3-Hit (1/2)", multFactors: 34.18 },
-        { name: "4-Hit", multFactors: 66.77 },
-        { name: "5-Hit", multFactors: 83.85 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack (1/2)", multFactors: 55.26 }] },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Universality: An Elaboration on Form",
-      image: "2/29/Talent_Universality_An_Elaboration_on_Form",
-      stats: [
-        {
-          name: "Rush Attack DMG",
-          multFactors: [
-            { root: 193.6, attributeType: "atk" },
-            { root: 154.88, attributeType: "em" },
-          ],
-          multFactorsAreOne: true,
-        },
-        {
-          name: "Mirror Projection DMG",
-          multFactors: [
-            { root: 67.2, attributeType: "atk" },
-            { root: 134.4, attributeType: "em" },
-          ],
-          multFactorsAreOne: true,
-          getTalentBuff: ({ char, totalAttr }) => {
-            const buffValue = Math.min(totalAttr.em * 0.1, 100);
-            return talentBuff([checkAscs[4](char), "pct_", [true, 4], buffValue]);
-          },
-        },
-      ],
-    },
-    EB: {
-      name: "Particular Field: Fetters of Phenomena",
-      image: "0/08/Talent_Particular_Field_Fetters_of_Phenomena",
-      stats: [
-        {
-          name: "Single-Instance DMG",
-          multFactors: [
-            { root: 121.6, attributeType: "atk" },
-            { root: 97.28, attributeType: "em" },
-          ],
-          multFactorsAreOne: true,
-        },
-      ],
-      energyCost: 70,
-    },
-  },
-  passiveTalents: [
+  EBcost: 70,
+  innateBuffs: [
     {
-      name: "Four-Causal Correction",
-      image: "3/32/Talent_Four-Causal_Correction",
-      desc: (
-        <>
-          When Alhaitham's Charged and Plunging Attacks hit opponents, they will create 1 Chisel-Light Mirror. This
-          effect can be triggered once every 12s.
-        </>
-      ),
-    },
-    {
-      name: "Mysteries Laid Bare",
-      image: "f/f4/Talent_Mysteries_Laid_Bare",
-      desc: (
+      src: EModSrc.A4,
+      desc: () => (
         <>
           Each point of Alhaitham's Elemental Mastery will increase the <Green>Projection Attacks DMG</Green> [~ES] and
           Particular Field: Fetters of Phenomena <Green>[EB] DMG</Green> by <Green b>0.1%</Green>. Max <Rose>100%</Rose>
           .
         </>
       ),
-    },
-    {
-      name: "Law of Reductive Overdetermination",
-      image: "a/a4/Talent_Law_of_Reductive_Overdetermination",
-    },
-  ],
-  constellation: [
-    {
-      name: "Intuition",
-      image: "c/c9/Constellation_Intuition",
-      desc: (
-        <>
-          When a Projection Attack hits an opponent, Universality: An Elaboration on Form's CD is decreased by 1.2s.
-          This effect can be triggered once every 1s.
-        </>
-      ),
-    },
-    {
-      name: "Debate",
-      image: "9/9d/Constellation_Debate",
-      get desc() {
-        return (
-          <>
-            {this.xtraDesc?.[0]}
-            Each stack's duration is counted independently. This effect can be triggered even when the maximum number of
-            Chisel-Light Mirrors has been reached.
-          </>
-        );
-      },
-      xtraDesc: [
-        <>
-          When Alhaitham generates a Chisel-Light Mirror, his <Green>Elemental Mastery</Green> will be increased by{" "}
-          <Green b>50</Green> for 8 seconds, max <Rose>4</Rose> stacks.
-        </>,
-      ],
-    },
-    { name: "Negation", image: "4/4f/Constellation_Negation" },
-    {
-      name: "Elucidation",
-      image: "b/b5/Constellation_Elucidation",
-      desc: (
-        <>
-          Buff based on the number of Chisel-Light Mirrors consumed and generated by Particular Field: Fetters of
-          Phenomena [EB]:
-          <br />• Each Mirror consumed will increase the <Green>Elemental Mastery</Green> of all other nearby party
-          members by <Green b>30</Green> for 15s.
-          <br />• Each Mirror generated will grant Alhaitham a <Green b>10%</Green> <Green>Dendro DMG Bonus</Green> for
-          15s.
-        </>
-      ),
-    },
-    { name: "Sagacity", image: "c/c0/Constellation_Sagacity" },
-    {
-      name: "Structuration",
-      image: "5/55/Constellation_Structuration",
-      get desc() {
-        return (
-          <>
-            2 seconds after Particular Field: Fetters of Phenomena [EB] is unleashed, he will generate 3 Chisel-Light
-            Mirrors regardless of the number of mirrors consumed.
-            <br />
-            {this.xtraDesc?.[0]}
-            <br />
-            If this effect is triggered again during its initial duration, the duration remaining will be increased by
-            6s.
-          </>
-        );
-      },
-      xtraDesc: [
-        <>
-          If Alhaitham generates Chisel-Light Mirrors when their numbers have already maxed out, his{" "}
-          <Green>CRIT Rate</Green> and <Green>CRIT DMG</Green> will increase by <Green b>10%</Green> and{" "}
-          <Green b>70%</Green> respectively for 6s.
-        </>,
-      ],
-    },
-  ],
-  innateBuffs: [
-    {
-      src: EModSrc.A4,
-      desc: () => Alhaitham.passiveTalents[1].desc,
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "EB.pct_", Math.min(totalAttr.em * 0.1, 100), tracker);
+      applyBuff: ({ totalAttr, attPattBonus, calcItemBonuses, desc, tracker }) => {
+        const buffValue = Math.min(totalAttr.em * 0.1, 100);
+        applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
+
+        calcItemBonuses.push({
+          ids: "ES.0",
+          bonus: talentBuff([true, "pct_", [true, 4], buffValue]),
+        });
       },
     },
   ],
@@ -214,7 +55,12 @@ const Alhaitham: AppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => Alhaitham.constellation[1].xtraDesc?.[0],
+      desc: () => (
+        <>
+          When Alhaitham generates a Chisel-Light Mirror, his <Green>Elemental Mastery</Green> will be increased by{" "}
+          <Green b>50</Green> for 8 seconds, max <Rose>4</Rose> stacks.
+        </>
+      ),
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -230,7 +76,16 @@ const Alhaitham: AppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => Alhaitham.constellation[3].desc,
+      desc: () => (
+        <>
+          Buff based on the number of Chisel-Light Mirrors consumed and generated by Particular Field: Fetters of
+          Phenomena [EB]:
+          <br />• Each Mirror consumed will increase the <Green>Elemental Mastery</Green> of all other nearby party
+          members by <Green b>30</Green> for 15s.
+          <br />• Each Mirror generated will grant Alhaitham a <Green b>10%</Green> <Green>Dendro DMG Bonus</Green> for
+          15s.
+        </>
+      ),
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -254,11 +109,17 @@ const Alhaitham: AppCharacter = {
       index: 4,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => Alhaitham.constellation[5].xtraDesc?.[0],
+      desc: () => (
+        <>
+          If Alhaitham generates Chisel-Light Mirrors when their numbers have already maxed out, his{" "}
+          <Green>CRIT Rate</Green> and <Green>CRIT DMG</Green> will increase by <Green b>10%</Green> and{" "}
+          <Green b>70%</Green> respectively for 6s.
+        </>
+      ),
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", ["cRate_", "cDmg_"], [10, 70]),
     },
   ],
 };
 
-export default Alhaitham;
+export default Alhaitham as AppCharacter;
