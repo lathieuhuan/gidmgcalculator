@@ -1,7 +1,7 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
-import { EModSrc } from "../constants";
 import { makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs } from "../utils";
 
 const Lisa: DefaultAppCharacter = {

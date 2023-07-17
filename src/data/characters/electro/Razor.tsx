@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { checkCons } from "../utils";
 
 const getEBBuffValue = (level: number) => {

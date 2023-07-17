@@ -1,10 +1,10 @@
 import type { AppCharacter, DefaultAppCharacter, ModifierInput } from "@Src/types";
-import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc } from "../constants";
+import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
-import { finalTalentLv, applyModifier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
 const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {

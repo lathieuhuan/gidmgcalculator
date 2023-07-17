@@ -1,18 +1,18 @@
 import type {
-  CharInfo,
   AppCharacter,
-  DefaultAppCharacter,
   BuffDescriptionArgs,
+  CharInfo,
+  DefaultAppCharacter,
   ModifierCtrl,
   PartyData,
   TotalAttribute,
 } from "@Src/types";
-import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc } from "../constants";
+import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons, findInput, talentBuff } from "../utils";
 
 const getBuffValue = {

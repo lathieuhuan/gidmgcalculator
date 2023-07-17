@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green, Lightgold } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, TRAVELER_INFO } from "../constants";
+import { Green, Lightgold } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc, TRAVELER_INFO } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DefaultAppCharacter = {
