@@ -232,7 +232,7 @@ const Raiden: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const buffValue = getBuffValue.A4(totalAttr);
         applyModifier(desc, totalAttr, "electro", buffValue, tracker);
       },

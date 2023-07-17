@@ -9,7 +9,7 @@ import { charModIsInUse, checkAscs, checkCons, talentBuff } from "../utils";
 
 const getPropSurplusValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, dataChar: Lyney, talentType: "ES", partyData });
-  return round(48.84 * TALENT_LV_MULTIPLIERS[2][level], 2);
+  return round(53.2 * TALENT_LV_MULTIPLIERS[2][level], 2);
 };
 
 const Lyney: DataCharacter = {
@@ -64,7 +64,12 @@ const Lyney: DataCharacter = {
             return talentBuff([isInUse, "mult_", [false, 1], 80]);
           },
         },
-        { name: "Spiritbreath Thorn", multFactors: 37.92, attElmt: "pyro" },
+        {
+          name: "Pyrotechnic Strike: Reprised (C6)",
+          multFactors: 169.6,
+          attElmt: "pyro",
+        },
+        { name: "Spiritbreath Thorn", multFactors: 28, attElmt: "pyro" },
       ],
       multScale: 2,
     },
@@ -72,13 +77,13 @@ const Lyney: DataCharacter = {
     ES: {
       name: "Bewildering Lights",
       image: "",
-      stats: [{ name: "Skill DMG", multFactors: 130.24 }],
+      stats: [{ name: "Skill DMG", multFactors: 167.2 }],
     },
     EB: {
       name: "Wondrous Trick: Miracle Parade",
       image: "",
       stats: [
-        { name: "Skill DMG", multFactors: 138 },
+        { name: "Skill DMG", multFactors: 154 },
         { name: "Explosive Firework", multFactors: 414 },
       ],
       energyCost: 60,
@@ -140,7 +145,7 @@ const Lyney: DataCharacter = {
       desc: (
         <>
           After an opponent is hit by Lyney's Pyro Charged Attack, this opponent's <Green>Pyro RES</Green> will be
-          decreased by <Green b>25%</Green> for 6s.
+          decreased by <Green b>20%</Green> for 6s.
         </>
       ),
     },
@@ -150,8 +155,8 @@ const Lyney: DataCharacter = {
       image: "",
       desc: (
         <>
-          When Lyney fires a Prop Arrow, he will fire a Pyrotechnic Strike: Reprised that will deal 100% of a
-          Pyrotechnic Strike's DMG. This DMG is considered Charged Attack DMG.
+          When Lyney fires a Prop Arrow, he will fire a Pyrotechnic Strike: Reprised that will deal 80% of a Pyrotechnic
+          Strike's DMG. This DMG is considered Charged Attack DMG.
         </>
       ),
     },
@@ -222,7 +227,7 @@ const Lyney: DataCharacter = {
       src: EModSrc.C4,
       desc: () => Lyney.constellation[3].desc,
       isGranted: checkCons[1],
-      applyDebuff: makeModApplier("resistReduct", "pyro", 25),
+      applyDebuff: makeModApplier("resistReduct", "pyro", 20),
     },
   ],
 };

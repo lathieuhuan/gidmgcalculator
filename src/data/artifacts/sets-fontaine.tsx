@@ -42,17 +42,17 @@ const fontaineSets: DataArtifact[] = [
         get desc() {
           return (
             <>
-              Increases <Green>Elemental Skill DMG</Green> by <Green b>20%</Green>. {this.xtraDesc?.[0]}
+              Increases <Green>Elemental Skill DMG</Green> by <Green b>25%</Green>. {this.xtraDesc?.[0]}
             </>
           );
         },
         xtraDesc: [
           <>
-            When not on the field, <Green>Elemental Skill DMG</Green> will be further increased by <Green b>20%</Green>.
+            When not on the field, <Green>Elemental Skill DMG</Green> will be further increased by <Green b>25%</Green>.
             This effect will be cleared 2s after taking the field
           </>,
         ],
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 20),
+        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 25),
       },
     ],
     buffs: [
@@ -60,7 +60,7 @@ const fontaineSets: DataArtifact[] = [
         index: 0,
         desc: () => findByCode(fontaineSets, 40)!.setBonuses[1].xtraDesc?.[0],
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 20),
+        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 25),
       },
     ],
   },
@@ -100,7 +100,7 @@ const fontaineSets: DataArtifact[] = [
       {
         desc: (
           <>
-            When current HP changes, <Green>CRIT Rate</Green> will be increased by <Green>11%</Green> for 5s. Max{" "}
+            When current HP changes, <Green>CRIT Rate</Green> will be increased by <Green>12%</Green> for 5s. Max{" "}
             <Rose>3</Rose> stacks.
           </>
         ),
@@ -118,7 +118,7 @@ const fontaineSets: DataArtifact[] = [
           },
         ],
         applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "cRate_", 11 * (inputs[0] || 0), tracker);
+          applyModifier(desc, totalAttr, "cRate_", 12 * (inputs[0] || 0), tracker);
         },
       },
     ],

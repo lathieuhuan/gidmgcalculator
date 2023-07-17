@@ -63,7 +63,7 @@ const Freminet: DataCharacter = {
         { name: "Upward Thrust", multFactors: 83.04 },
         {
           name: "Frost DMG",
-          multFactors: 3.58,
+          multFactors: 7.2,
           getTalentBuff: ({ char, selfBuffCtrls }) => {
             const isInUse = charModIsInUse(Freminet.buffs!, char, selfBuffCtrls, 0);
             return talentBuff([isInUse, "multPlus", "Stalking mode", 100]);
@@ -81,7 +81,7 @@ const Freminet: DataCharacter = {
         },
         {
           name: "Level 1 Shattering Pressure (physical)",
-          multFactors: 45.82,
+          multFactors: 48.7,
           attElmt: "phys",
           getTalentBuff: getShatteringPressureBuff,
         },
@@ -92,7 +92,7 @@ const Freminet: DataCharacter = {
         },
         {
           name: "Level 2 Shattering Pressure (physical)",
-          multFactors: 80.19,
+          multFactors: 85.2,
           attElmt: "phys",
           getTalentBuff: getShatteringPressureBuff,
         },
@@ -103,13 +103,13 @@ const Freminet: DataCharacter = {
         },
         {
           name: "Level 3 Shattering Pressure (physical)",
-          multFactors: 114.56,
+          multFactors: 121.7,
           attElmt: "phys",
           getTalentBuff: getShatteringPressureBuff,
         },
         {
           name: "Level 4 Shattering Pressure",
-          multFactors: 229.12,
+          multFactors: 243.4,
           attElmt: "phys",
           getTalentBuff: getShatteringPressureBuff,
         },

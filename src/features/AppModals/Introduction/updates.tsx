@@ -2,6 +2,25 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "July 17th, 2023",
+    content: [
+      <>
+        Updated characters (v2): <Lightgold>Lyney</Lightgold>, <Lightgold>Hydro Traveler</Lightgold>,{" "}
+        <Lightgold>Freminet</Lightgold>.
+      </>,
+      <>
+        Updated weapon <Lightgold>The First Great Magic</Lightgold>.
+      </>,
+      <>
+        Updated artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
+      </>,
+      <>
+        Fixed <Lightgold>Raiden Shogun</Lightgold>'s A4 buff did not work properly. Thank you{" "}
+        <Red>RememberTelannas</Red>!
+      </>,
+    ],
+  },
+  {
     date: "July 13th, 2023",
     content: [
       <>

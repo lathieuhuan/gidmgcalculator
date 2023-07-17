@@ -12,7 +12,7 @@ const polarStarBuffValuesByStack = (refi: number) => [
   36 + refi * 12,
 ];
 const thunderingPulseBuffValuesByStack = (refi: number) => [9 + refi * 3, 18 + refi * 6, 30 + refi * 10];
-const the1stGreateMagicBuffValuesByStack = (refi: number) => [6 + refi * 2, 12 + refi * 4, 30 + refi * 10];
+const the1stGreateMagicBuffValuesByStack = (refi: number) => [12 + refi * 4, 24 + refi * 8, 36 + refi * 12];
 
 const goldBows: DataWeapon[] = [
   {
@@ -28,7 +28,7 @@ const goldBows: DataWeapon[] = [
       return {
         core: (
           <>
-            <Green>ATK</Green> increased by <Green b>{9 + refi * 3}%</Green>. For every party member with the same
+            <Green>ATK</Green> increased by <Green b>{12 + refi * 4}%</Green>. For every party member with the same
             Elemental Type as the wielder (including the wielder themselves), gain 1 Gimmick stack. For every party
             member with a different Elemental Type from the wielder, gain 1 Theatrics stack. When the wielder has 1/2/3
             or more Gimmick stacks, <Green>ATK</Green> will be increased by{" "}
@@ -42,7 +42,7 @@ const goldBows: DataWeapon[] = [
       if (partyData) {
         const { [charData.vision]: numOfSameVisions } = countVision(partyData, charData);
         const valueIndex = numOfSameVisions ? Math.min(numOfSameVisions, 3) - 1 : -1;
-        let bonusValue = 9 + refi * 3;
+        let bonusValue = 12 + refi * 4;
         bonusValue += the1stGreateMagicBuffValuesByStack(refi)[valueIndex] || 0;
         applyModifier(desc, totalAttr, "atk_", bonusValue, tracker);
       }

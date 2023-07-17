@@ -41,7 +41,7 @@ const HydroMC: DataCharacter = {
         },
         {
           name: "Dewdrop",
-          multFactors: 28.8,
+          multFactors: 32.8,
           getTalentBuff: ({ char, partyData, selfBuffCtrls, totalAttr }) => {
             const level = finalTalentLv({ char, dataChar: HydroMC, talentType: "ES", partyData });
             const multiplier = round(0.64 * TALENT_LV_MULTIPLIERS[2][level], 2);
