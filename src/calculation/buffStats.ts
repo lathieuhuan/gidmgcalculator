@@ -420,8 +420,6 @@ export default function getBuffedStats({
     applyModifier("Aggravate reaction", attElmtBonus, "electro.flat", aggravate, tracker);
   }
 
-  console.log(calcItemBonuses);
-
   return {
     totalAttr,
     attPattBonus,

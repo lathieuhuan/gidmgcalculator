@@ -150,7 +150,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { calcList, weaponType, vision, debuffs } = charData;
+  const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -241,13 +241,13 @@ export default function getDamage({
   }
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
-    const talent = calcList[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
-    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
+    const config = calcListConfig?.[ATT_PATT] || {};
+    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = config;
     const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
 
-    for (const stat of talent.stats) {
+    for (const stat of calcList[ATT_PATT]) {
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
       let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;

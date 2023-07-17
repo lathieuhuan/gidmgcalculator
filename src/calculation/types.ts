@@ -22,7 +22,7 @@ import type {
   Tracker,
   TrackerDamageRecord,
   NormalAttack,
-  PatternStat,
+  CalcItem,
   CalcItemBonuses,
 } from "@Src/types";
 
@@ -58,7 +58,7 @@ export type GetBuffedStatsArgs = {
 };
 
 export interface CalcPatternStatArgs {
-  stat: PatternStat;
+  stat: CalcItem;
   attPatt: ActualAttackPattern;
   attElmt: ActualAttackElement;
   base: number | number[];

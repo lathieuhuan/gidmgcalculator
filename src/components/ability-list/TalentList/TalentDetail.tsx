@@ -163,7 +163,7 @@ function processActiveTalents(
   level: number,
   label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
-  const { vision, weaponType, EBcost, activeTalents, calcList } = charData;
+  const { vision, weaponType, EBcost, activeTalents, calcListConfig, calcList } = charData;
   const { NAs, ES, EB } = activeTalents;
 
   const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
@@ -176,9 +176,9 @@ function processActiveTalents(
     const isElemental = attPatt === "ES" || attPatt === "EB";
     const resultKey = isElemental ? attPatt : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
-    const { stats, multScale = defaultInfo.scale, multAttributeType } = calcList[attPatt];
+    const { multScale = defaultInfo.scale, multAttributeType } = calcListConfig?.[attPatt] || {};
 
-    for (const stat of stats) {
+    for (const stat of calcList[attPatt]) {
       const multFactors = turnArray(stat.multFactors);
       const factorStrings = [];
 
