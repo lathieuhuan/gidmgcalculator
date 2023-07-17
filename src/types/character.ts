@@ -58,24 +58,36 @@ export type AppCharacter = {
     value: number;
   };
   EBcost: number;
+  calcListConfig?: {
+    NA?: CalcListConfig;
+    CA?: CalcListConfig;
+    PA?: CalcListConfig;
+    ES?: CalcListConfig;
+    EB?: CalcListConfig;
+  };
+  calcList: {
+    NA: CalcItem[];
+    CA: CalcItem[];
+    PA: CalcItem[];
+    ES: CalcItem[];
+    EB: CalcItem[];
+  };
   activeTalents: {
     NAs: ActiveTalent;
     ES: ActiveTalent;
     EB: ActiveTalent;
     altSprint?: ActiveTalent;
   };
-  calcList: {
-    NA: CalcItem;
-    CA: CalcItem;
-    PA: CalcItem;
-    ES: CalcItem;
-    EB: CalcItem;
-  };
   passiveTalents: Ability[];
   constellation: Ability[];
   innateBuffs?: InnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
+};
+
+type CalcListConfig = {
+  multScale?: number;
+  multAttributeType?: TalentAttributeType;
 };
 
 type Ability = {
@@ -94,7 +106,7 @@ export type ActualAttackPattern = AttackPattern | "none";
 
 export type ActualAttackElement = AttackElement | "various";
 
-type PatternActMultFactor = {
+type CalcItemMultFactor = {
   root: number;
   /** When 0 stat not scale off talent level */
   scale?: number;
@@ -102,7 +114,7 @@ type PatternActMultFactor = {
   attributeType?: TalentAttributeType;
 };
 
-export type PatternStat = {
+export type CalcItem = {
   id?: string;
   name: string;
   type?: "attack" | "healing" | "shield" | "other";
@@ -113,7 +125,7 @@ export type PatternStat = {
   /**
    * Damage factors multiplying an attribute, scaling off talent level
    */
-  multFactors: number | number[] | PatternActMultFactor | PatternActMultFactor[];
+  multFactors: number | number[] | CalcItemMultFactor | CalcItemMultFactor[];
   multFactorsAreOne?: boolean;
   /**
    * Damage factor multiplying root, caling off talent level. Only on ES / EB
@@ -127,12 +139,6 @@ export type PatternStat = {
          */
         scale?: number;
       };
-};
-
-type CalcItem = {
-  multScale?: number;
-  multAttributeType?: TalentAttributeType;
-  stats: PatternStat[];
 };
 
 export type InnateBuff = {
