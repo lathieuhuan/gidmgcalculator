@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
@@ -9,7 +9,7 @@ import { makeWpModApplier } from "../utils";
 
 const mistsplitterBuffValuesByStack = (refi: number) => [6 + refi * 2, 12 + refi * 4, 21 + refi * 7];
 
-const goldSwords: DataWeapon[] = [
+const goldSwords: AppWeapon[] = [
   {
     code: 148,
     name: "Light of Foliar Incision",

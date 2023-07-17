@@ -1,7 +1,7 @@
 import type {
   AttributeStat,
   CharInfo,
-  DataWeapon,
+  AppWeapon,
   ModifierCtrl,
   ModInputConfig,
   Party,
@@ -236,7 +236,7 @@ const convertSetup = (
     }, []) || [];
 
   // WEAPON
-  let dataWeapon: DataWeapon | undefined;
+  let dataWeapon: AppWeapon | undefined;
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
 
   const existedWeapon = findById(weapons, weaponInfo.ID);

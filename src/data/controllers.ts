@@ -1,11 +1,9 @@
 import type { ArtifactType, PartyData, Target, WeaponType } from "@Src/types";
 import { turnArray } from "@Src/utils";
-import { appData } from ".";
 import artifacts from "./artifacts";
 import monsters from "./monsters";
 import weapons from "./weapons";
 
-type HasName = { name: string };
 type HasCode = { code: number };
 
 export const findDataArtifactSet = ({ code }: HasCode) => {

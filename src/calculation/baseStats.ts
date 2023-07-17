@@ -4,7 +4,7 @@ import type {
   CalcArtifacts,
   ArtifactSetBonus,
   CharInfo,
-  DataWeapon,
+  AppWeapon,
   Level,
   TotalAttribute,
   CoreStat,
@@ -31,7 +31,7 @@ interface InitiateTotalAttrArgs {
   char: CharInfo;
   charData: AppCharacter;
   weapon: CalcWeapon;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   tracker?: Tracker;
 }
 export function initiateTotalAttr({ char, charData, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
@@ -125,7 +125,7 @@ export function addArtAttr({ artifacts, totalAttr, tracker }: AddArtAttrArgs): A
 
 interface addWeaponSubStatArgs {
   totalAttr: TotalAttribute;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   wpLevel: Level;
   tracker?: Tracker;
 }
@@ -165,7 +165,7 @@ export function applyArtPassiveBuffs({ isFinal, setBonuses, modifierArgs }: Appl
 
 interface ApplyWpPassiveBuffsArgs {
   isFinal: boolean;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   refi: number;
   modifierArgs: BaseModifierArgsWrapper;
 }

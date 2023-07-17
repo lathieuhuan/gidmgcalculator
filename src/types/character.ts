@@ -27,6 +27,7 @@ export type DefaultAppCharacter = Pick<
   AppCharacter,
   | "code"
   | "name"
+  | "beta"
   | "GOOD"
   | "icon"
   | "sideIcon"
@@ -84,6 +85,11 @@ export type AppCharacter = {
   debuffs?: AbilityDebuff[];
 };
 
+type CalcListConfig = {
+  multScale?: number;
+  multAttributeType?: TalentAttributeType;
+};
+
 type Ability = {
   name: string;
   image?: string;
@@ -106,11 +112,6 @@ type CalcItemMultFactor = {
   scale?: number;
   /** Calc default to 'atk'. Only on ES / EB */
   attributeType?: TalentAttributeType;
-};
-
-type CalcListConfig = {
-  multScale?: number;
-  multAttributeType?: TalentAttributeType;
 };
 
 export type CalcItem = {

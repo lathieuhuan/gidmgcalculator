@@ -1,21 +1,15 @@
-import type { AttributeStat, CharData, AppCharacter, PartyData } from "@Src/types";
-import { Geo, Green, Red } from "@Src/pure-components";
+import type { AppCharacter, AttributeStat, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { Geo, Green, Red } from "@Src/pure-components";
+import { countVision } from "@Src/utils";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
 
-const countGeo = (charData: CharData, partyData: PartyData) => {
-  return partyData.reduce(
-    (result, data) => (data?.vision === "geo" ? result + 1 : result),
-    charData.vision === "geo" ? 1 : 0
-  );
-};
-
-const Gorou: AppCharacter = {
+const Gorou: DefaultAppCharacter = {
   code: 44,
   name: "Gorou",
   icon: "f/fe/Gorou_Icon",
@@ -24,109 +18,7 @@ const Gorou: AppCharacter = {
   nation: "inazuma",
   vision: "geo",
   weaponType: "bow",
-  stats: [
-    [802, 15, 54],
-    [2061, 39, 140],
-    [2661, 51, 180],
-    [3985, 76, 270],
-    [4411, 84, 299],
-    [5074, 97, 344],
-    [5642, 108, 382],
-    [6305, 120, 427],
-    [6731, 128, 456],
-    [7393, 141, 501],
-    [7818, 149, 530],
-    [8481, 162, 575],
-    [8907, 170, 603],
-    [9570, 183, 648],
-  ],
-  bonusStat: { type: "geo", value: 6 },
-  NAsConfig: {
-    name: "Ripping Fang Fletching",
-  },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 37.75 },
-        { name: "2-Hit", multFactors: 37.15 },
-        { name: "3-Hit", multFactors: 49.45 },
-        { name: "4-Hit", multFactors: 59 },
-      ],
-    },
-    CA: { stats: BOW_CAs },
-    PA: { stats: LIGHT_PAs },
-    ES: {
-      name: "Inuzaka All-Round Defense",
-      image: "e/e6/Talent_Inuzaka_All-Round_Defense",
-      stats: [
-        { name: "Skill DMG", multFactors: 107.2 },
-        {
-          name: "DEF Increase",
-          notAttack: "other",
-          multFactors: { root: 0 },
-          flatFactor: { root: 206, scale: 2 },
-        },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Geo DMG Bonus", value: "10%" },
-      //   { name: "Duration", value: "10s" },
-      //   { name: "CD", value: "10s" },
-      // ],
-    },
-    EB: {
-      name: "Juuga: Forward Unto Victory",
-      image: "f/f9/Talent_Juuga_Forward_Unto_Victory",
-      stats: [
-        { name: "Skill DMG", multFactors: 98.22 },
-        { name: "Crystal Collapse DMG", multFactors: 61.3 },
-        {
-          name: "Heal Amount (C4)",
-          notAttack: "healing",
-          multFactors: { root: 50, scale: 0 },
-        },
-      ],
-      multAttributeType: "def",
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "9s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-      energyCost: 80,
-    },
-  },
-  passiveTalents: [
-    {
-      name: "Heedless of the Wind and Weather",
-      image: "8/89/Talent_Heedless_of_the_Wind_and_Weather",
-    },
-    { name: "A Favor Repaid", image: "6/61/Talent_A_Favor_Repaid" },
-    { name: "Seeker of Shinies", image: "8/82/Talent_Seeker_of_Shinies" },
-  ],
-  constellation: [
-    {
-      name: "Rushing Hound: Swift as the Wind",
-      image: "2/2e/Constellation_Rushing_Hound_Swift_as_the_Wind",
-    },
-    {
-      name: "Sitting Hound: Steady as a Clock",
-      image: "0/0c/Constellation_Sitting_Hound_Steady_as_a_Clock",
-    },
-    {
-      name: "Mauling Hound: Fierce as Fire",
-      image: "2/25/Constellation_Mauling_Hound_Fierce_as_Fire",
-    },
-    {
-      name: "Lapping Hound: Warm as Water",
-      image: "4/4d/Constellation_Lapping_Hound_Warm_as_Water",
-    },
-    {
-      name: "Striking Hound: Thunderous Force",
-      image: "4/47/Constellation_Striking_Hound_Thunderous_Force",
-    },
-    {
-      name: "Valiant Hound: Mountainous Fealty",
-      image: "9/9d/Constellation_Valiant_Hound_Mountainous_Fealty",
-    },
-  ],
+  EBcost: 80,
   innateBuffs: [
     {
       src: EModSrc.A4,
@@ -149,13 +41,13 @@ const Gorou: AppCharacter = {
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
       desc: ({ toSelf, charData, inputs, partyData }) => {
-        const numOfGeo = countGeo(charData, partyData);
+        const { geo = 0 } = countVision(partyData, charData);
         return (
           <>
             Provides up to 3 buffs to active characters within the skill's AoE based on the number of <Geo>Geo</Geo>{" "}
             characters in the party:
             <br />
-            <span className={numOfGeo >= 1 ? "" : "opacity-50"}>
+            <span className={geo >= 1 ? "" : "opacity-50"}>
               • 1 Geo character: Adds "Standing Firm" - <Green>DEF bonus</Green>
               {toSelf ? (
                 "."
@@ -166,11 +58,11 @@ const Gorou: AppCharacter = {
               )}
             </span>
             <br />
-            <span className={numOfGeo >= 2 ? "" : "opacity-50"}>
+            <span className={geo >= 2 ? "" : "opacity-50"}>
               • 2 Geo characters: Adds "Impregnable" - Increased resistance to interruption.
             </span>
             <br />
-            <span className={numOfGeo >= 3 ? "" : "opacity-50"}>
+            <span className={geo >= 3 ? "" : "opacity-50"}>
               • 3 Geo character: Adds "Crunch" - <Green b>15%</Green> <Green>Geo DMG Bonus</Green>.
             </span>
           </>
@@ -184,11 +76,14 @@ const Gorou: AppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const level = obj.toSelf ? finalTalentLv({ ...obj, dataChar: Gorou, talentType: "ES" }) : obj.inputs[0] || 1;
+        const level = obj.toSelf
+          ? finalTalentLv({ ...obj, charData: Gorou as AppCharacter, talentType: "ES" })
+          : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
         const buffValues = [getESBuffValue(level)];
+        const { geo = 0 } = countVision(obj.partyData, obj.charData);
 
-        if (countGeo(obj.charData, obj.partyData) > 2) {
+        if (geo > 2) {
           fields.push("geo");
           buffValues.push(15);
         }
@@ -213,21 +108,21 @@ const Gorou: AppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.PARTY,
       desc: ({ charData, partyData }) => {
-        const n = countGeo(charData, partyData);
+        const { geo = 0 } = countVision(partyData, charData);
         return (
           <>
             For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB], increases all nearby
             party members' <Geo>Geo</Geo> <Green>CRIT DMG</Green> based on the buff level of the skill's field:
             <br />
-            <span className={n === 1 ? "" : "opacity-50"}>
+            <span className={geo === 1 ? "" : "opacity-50"}>
               • "Standing Firm": <Green b>+10%</Green>
             </span>
             <br />
-            <span className={n === 2 ? "" : "opacity-50"}>
+            <span className={geo === 2 ? "" : "opacity-50"}>
               • "Impregnable": <Green b>+20%</Green>
             </span>
             <br />
-            <span className={n >= 3 ? "" : "opacity-50"}>
+            <span className={geo >= 3 ? "" : "opacity-50"}>
               • "Crunch": <Green b>+40%</Green>
             </span>
           </>
@@ -235,11 +130,12 @@ const Gorou: AppCharacter = {
       },
       isGranted: checkCons[6],
       applyBuff: (obj) => {
-        const buffValue = [10, 20, 40, 40][countGeo(obj.charData, obj.partyData) - 1];
+        const { geo = 0 } = countVision(obj.partyData, obj.charData);
+        const buffValue = [10, 20, 40, 40][geo - 1];
         applyModifier(obj.desc, obj.attElmtBonus, "geo.cDmg_", buffValue, obj.tracker);
       },
     },
   ],
 };
 
-export default Gorou;
+export default Gorou as AppCharacter;
