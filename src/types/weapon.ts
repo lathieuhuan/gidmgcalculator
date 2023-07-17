@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { Rarity, ModInputConfig, AttributeStat } from "./global";
 import type {
   AttackPatternBonus,
-  CharData,
   BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
@@ -10,12 +9,18 @@ import type {
   TotalAttribute,
   Tracker,
 } from "./calculator";
+import type { AppCharacter } from "./character";
 import { EModAffect } from "@Src/constants";
+
+export type DefaultAppWeapon = Pick<
+  AppWeapon,
+  "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
+>;
 
 /**
  * Weapon in app data
  */
-export type DataWeapon = {
+export type AppWeapon = {
   code: number;
   beta?: boolean;
   name: string;
@@ -40,7 +45,7 @@ type ApplyWpPassiveBuffsArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
-  charData: CharData;
+  charData: AppCharacter;
   partyData?: PartyData;
   refi: number;
   desc: string;

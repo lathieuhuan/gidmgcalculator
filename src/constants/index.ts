@@ -11,6 +11,9 @@ export const BACKEND_URL_PATH = {
   character: {
     byName: (name: string) => `${BACKEND_URL_PATH.base}/character?name=${name}`,
   },
+  weapon: {
+    byCode: (code: number) => `${BACKEND_URL_PATH.base}/weapon?code=${code}`,
+  },
 };
 
 export enum EScreen {

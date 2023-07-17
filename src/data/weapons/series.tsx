@@ -1,14 +1,14 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "./utils";
 
-type SeriesInfo = Pick<DataWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
+type SeriesInfo = Pick<AppWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
 
 export const desertSeries: Pick<
-  DataWeapon,
+  AppWeapon,
   "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat"
 > = {
   rarity: 4,

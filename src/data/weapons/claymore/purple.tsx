@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import {
@@ -16,7 +16,7 @@ import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purpleClaymores: DataWeapon[] = [
+const purpleClaymores: AppWeapon[] = [
   {
     code: 150,
     name: "Mailed Flower",

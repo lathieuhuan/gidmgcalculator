@@ -1,4 +1,4 @@
-import type { DataWeapon, TotalAttribute } from "@Src/types";
+import type { AppWeapon, TotalAttribute } from "@Src/types";
 import { Green, Red, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
@@ -14,7 +14,7 @@ const getStaffOfHomaBuff = (totalAttr: TotalAttribute, refi: number) => {
   };
 };
 
-const goldPolearms: DataWeapon[] = [
+const goldPolearms: AppWeapon[] = [
   {
     code: 139,
     name: "Staff of the Scarlet Sands",

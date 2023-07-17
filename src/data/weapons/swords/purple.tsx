@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
@@ -6,7 +6,7 @@ import { applyPercent, findByCode, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purpleSwords: DataWeapon[] = [
+const purpleSwords: AppWeapon[] = [
   {
     code: 149,
     name: "Toukabou Shigure",

@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
@@ -6,7 +6,7 @@ import { baneSeries1 } from "../series";
 import { findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
-const otherSwords: DataWeapon[] = [
+const otherSwords: AppWeapon[] = [
   {
     code: 132,
     name: "Traveler's Handy Sword",

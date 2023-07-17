@@ -4,7 +4,7 @@ import type {
   AttackPattern,
   CalcArtifact,
   CalcWeapon,
-  CharData,
+  AppCharacter,
   Level,
   PartyData,
   TalentAttributeType,
@@ -38,7 +38,7 @@ export const ascsFromLv = (lv: Level) => {
 
 export const itemIsWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
 
-export function countVision(partyData: PartyData, charData?: CharData) {
+export function countVision(partyData: PartyData, charData?: AppCharacter) {
   const result: Partial<Record<Vision, number>> = {};
   if (charData) {
     result[charData.vision] = 1;

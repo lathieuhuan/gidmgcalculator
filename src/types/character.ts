@@ -28,6 +28,7 @@ export type DefaultAppCharacter = Pick<
   AppCharacter,
   | "code"
   | "name"
+  | "beta"
   | "GOOD"
   | "icon"
   | "sideIcon"
