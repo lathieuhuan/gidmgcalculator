@@ -1,5 +1,5 @@
 import type { ArtifactType, PartyData, Target, WeaponType } from "@Src/types";
-import { turnArray } from "@Src/utils";
+import { toArray } from "@Src/utils";
 import artifacts from "./artifacts";
 import monsters from "./monsters";
 import weapons from "./weapons";
@@ -50,7 +50,7 @@ export const getTargetData = (target: Target) => {
   }
 
   if (target.inputs?.length && dataMonster?.inputConfigs) {
-    const inputConfigs = turnArray(dataMonster.inputConfigs);
+    const inputConfigs = toArray(dataMonster.inputConfigs);
 
     target.inputs.forEach((input, index) => {
       const { label, type = "check", options = [] } = inputConfigs[index] || {};

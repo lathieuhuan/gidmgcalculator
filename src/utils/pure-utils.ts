@@ -24,7 +24,7 @@ export const getSearchParam = (key: string) => {
   return searchParams.get(key);
 };
 
-export const turnArray = <T>(subject: T | T[]): T[] => {
+export const toArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };
 

@@ -37,7 +37,7 @@ import { appData } from "@Data/index";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -497,10 +497,10 @@ export const calculatorSlice = createSlice({
 
       switch (actionType) {
         case "add":
-          activeSetup.customBuffCtrls.push(...turnArray(ctrls));
+          activeSetup.customBuffCtrls.push(...toArray(ctrls));
           break;
         case "edit":
-          for (const { index, ...newInfo } of turnArray(ctrls)) {
+          for (const { index, ...newInfo } of toArray(ctrls)) {
             activeSetup.customBuffCtrls[index] = {
               ...activeSetup.customBuffCtrls[index],
               ...newInfo,
@@ -508,7 +508,7 @@ export const calculatorSlice = createSlice({
           }
           break;
         case "replace":
-          activeSetup.customBuffCtrls = turnArray(ctrls);
+          activeSetup.customBuffCtrls = toArray(ctrls);
           break;
       }
       calculate(state);
@@ -519,10 +519,10 @@ export const calculatorSlice = createSlice({
 
       switch (actionType) {
         case "add":
-          activeSetup.customDebuffCtrls.unshift(...turnArray(ctrls));
+          activeSetup.customDebuffCtrls.unshift(...toArray(ctrls));
           break;
         case "edit":
-          for (const { index, ...newInfo } of turnArray(ctrls)) {
+          for (const { index, ...newInfo } of toArray(ctrls)) {
             activeSetup.customDebuffCtrls[index] = {
               ...activeSetup.customDebuffCtrls[index],
               ...newInfo,
@@ -530,7 +530,7 @@ export const calculatorSlice = createSlice({
           }
           break;
         case "replace":
-          activeSetup.customDebuffCtrls = turnArray(ctrls);
+          activeSetup.customDebuffCtrls = toArray(ctrls);
           break;
       }
       calculate(state);
@@ -557,7 +557,7 @@ export const calculatorSlice = createSlice({
       if (dataMonster?.code) {
         const { resistance, variant } = dataMonster;
         const { base, ...otherResistances } = resistance;
-        const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
+        const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;

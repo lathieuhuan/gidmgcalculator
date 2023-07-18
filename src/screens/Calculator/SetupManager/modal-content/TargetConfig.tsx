@@ -7,7 +7,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { findMonster } from "@Data/controllers";
-import { turnArray } from "@Src/utils";
+import { toArray } from "@Src/utils";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -33,7 +33,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
   }
 
   const { variant } = dataMonster;
-  const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
+  const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
 
   const onChangeElementVariant = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(updateTarget({ variantType: e.target.value as Vision }));

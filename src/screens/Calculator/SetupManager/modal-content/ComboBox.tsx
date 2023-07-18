@@ -5,7 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 import type { Vision } from "@Src/types";
 import type { DataMonster } from "@Data/monsters/types";
 import monsters from "@Data/monsters";
-import { turnArray } from "@Src/utils";
+import { toArray } from "@Src/utils";
 
 interface ComboBoxProps {
   className: string;
@@ -39,7 +39,7 @@ export const ComboBox = ({
     if (monster.code !== targetCode) {
       let newVariantType;
       let newInputs = monster.inputConfigs
-        ? turnArray(monster.inputConfigs).map((config) => (config.type === "select" ? -1 : 0))
+        ? toArray(monster.inputConfigs).map((config) => (config.type === "select" ? -1 : 0))
         : [];
 
       if (monster.variant) {

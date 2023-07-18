@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
 import type { TalentAttributeType, AppCharacter, Talent } from "@Src/types";
-import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
+import { getTalentDefaultInfo, round, toArray } from "@Src/utils";
 import { useTranslation } from "@Src/hooks";
 
 // Constant
@@ -179,7 +179,7 @@ function processActiveTalents(
     const { multScale = defaultInfo.scale, multAttributeType } = calcListConfig?.[attPatt] || {};
 
     for (const stat of calcList[attPatt]) {
-      const multFactors = turnArray(stat.multFactors);
+      const multFactors = toArray(stat.multFactors);
       const factorStrings = [];
 
       if (stat.notOfficial || multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)) {

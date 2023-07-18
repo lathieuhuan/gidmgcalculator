@@ -15,7 +15,7 @@ import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 // Util
 import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
-import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
+import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { getItemBonus } from "./utils";
 
@@ -287,7 +287,7 @@ export default function getDamage({
       } as TrackerDamageRecord;
 
       // CALCULATE BASE DAMAGE
-      for (const factor of turnArray(stat.multFactors)) {
+      for (const factor of toArray(stat.multFactors)) {
         const {
           root,
           attributeType = multAttributeType,

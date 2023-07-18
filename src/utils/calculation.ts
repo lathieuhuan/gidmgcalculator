@@ -22,7 +22,7 @@ import type {
   TotalAttribute,
   Tracker,
 } from "@Src/types";
-import { findByName, pickOne, turnArray } from "./pure-utils";
+import { findByName, pickOne, toArray } from "./pure-utils";
 import { bareLv } from "./utils";
 
 export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
@@ -157,7 +157,7 @@ export function applyModifier(
     }
   };
 
-  turnArray(keys).forEach((key, i) => {
+  toArray(keys).forEach((key, i) => {
     const [field, subField] = key.split(".");
     const value = pickOne(rootValue, i);
     const node = {
