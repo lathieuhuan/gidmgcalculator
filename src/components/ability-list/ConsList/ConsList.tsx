@@ -16,13 +16,13 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
   const [consLv, setConsLv] = useState(0);
   const [atDetails, setAtDetails] = useState(false);
 
-  const dataChar = appData.getCharData(char.name);
+  const charData = appData.getCharData(char.name);
 
   useEffect(() => {
     setAtDetails(false);
-  }, [dataChar.code]);
+  }, [charData.code]);
 
-  if (!dataChar.constellation.length) {
+  if (!charData.constellation.length) {
     return (
       <p className="pt-4 px-4 text-xl text-center">
         The time has not yet come for this person's corner of the night sky to light up.
@@ -40,7 +40,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
       atLeft={!atDetails}
       leftPart={
         <div className="h-full hide-scrollbar flex flex-col space-y-4">
-          {dataChar.constellation.map((cons, i) => {
+          {charData.constellation.map((cons, i) => {
             return (
               <div key={i} className="flex">
                 <div className="flex-center">
@@ -48,7 +48,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
                     className="my-1 mr-2 cursor-pointer"
                     img={cons.image}
                     active={char.cons >= i + 1}
-                    vision={dataChar.vision}
+                    vision={charData.vision}
                     onClick={() => onClickIcon(i)}
                   />
                 </div>
@@ -64,7 +64,7 @@ export const ConsList = ({ char, onClickIcon }: ConsListProps) => {
       rightPart={
         consLv ? (
           <ConsDetail
-            dataChar={dataChar}
+            charData={charData}
             consLv={consLv}
             onChangeConsLv={setConsLv}
             onClose={() => {

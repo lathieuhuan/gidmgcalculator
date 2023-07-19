@@ -1,24 +1,66 @@
-import { useState } from "react";
-// import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useEffect, useRef, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import type { AppCharacter } from "@Src/types";
-// import { GENSHIN_DEV_URL } from "@Src/constants";
+import { appData } from "@Data/index";
 
 // Conponent
 import { CloseButton, Green, Lesser } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
+const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
+  const { auto = true } = options || {};
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">(auto ? "loading" : "idle");
+  const [descriptions, setDescriptions] = useState<string[]>();
+  const state = useRef({
+    fetchStarted: false,
+    mounted: true,
+  });
+
+  useEffect(() => {
+    return () => {
+      state.current.mounted = false;
+    };
+  }, []);
+
+  const getConstellation = async () => {
+    const response = await appData.fetchConsDescriptions(name);
+
+    if (state.current.mounted) {
+      if (response.code === 200) {
+        setTimeout(() => {
+          setStatus("success");
+          setDescriptions(response.data || []);
+        }, 2000);
+      } else {
+        setStatus("error");
+      }
+    }
+  };
+
+  if (status === "loading" && !state.current.fetchStarted) {
+    state.current.fetchStarted = true;
+    getConstellation();
+  }
+
+  return {
+    isLoading: status === "loading",
+    isError: status === "error",
+    isSuccess: status === "success",
+    data: descriptions,
+  };
+};
+
 interface ConsDetailProps {
-  dataChar: AppCharacter;
+  charData: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;
 }
-export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  // #to-do
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
+export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
+  const { isLoading, isError, data } = useConsDescriptions(charData.name);
 
-  const { vision, constellation } = dataChar;
+  const { vision, constellation } = charData;
   const consInfo = constellation[consLv - 1] || {};
 
   return (
@@ -38,9 +80,10 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
       {consInfo.description ? (
         <p className="mt-4">{consInfo.description}</p>
       ) : (
-        <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
-          {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
-          {/* {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />} */}
+        <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
+          {isLoading && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
+          {isError && <Lesser>Error. Rebooting...</Lesser>}
+          {data?.[consLv - 1]}
         </p>
       )}
 

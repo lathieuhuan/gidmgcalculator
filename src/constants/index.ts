@@ -4,7 +4,10 @@ export const MAX_USER_SETUPS = 50;
 export const MAX_CALC_SETUPS = 4;
 export const INVENTORY_PAGE_SIZE = 60;
 
-export const GENSHIN_DEV_URL = "https://api.genshin.dev";
+export const GENSHIN_DEV_URL_PATH = {
+  base: "https://api.genshin.dev",
+  character: (name: string) => `${GENSHIN_DEV_URL_PATH.base}/characters/${name}`,
+};
 
 export const BACKEND_URL_PATH = {
   base: "http://localhost:3001/api",

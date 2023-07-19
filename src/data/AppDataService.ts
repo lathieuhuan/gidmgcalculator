@@ -1,14 +1,14 @@
-import { BACKEND_URL_PATH } from "@Src/constants";
+import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { AppCharacter, AppWeapon, Party, PartyData } from "@Src/types";
 import { pickProps } from "@Src/utils";
 import characters from "./characters";
 import weapons from "./weapons";
 
-type Response<T> = {
+type Response<T> = Promise<{
   code: number;
   message?: string;
   data: T | null;
-};
+}>;
 
 type DataControl<T> = {
   fetched: boolean;
@@ -37,18 +37,17 @@ export class AppDataService {
     }
   }
 
-  async fetchData<T>(url: string): Promise<Response<T>> {
-    const result = await fetch(url)
+  private async fetchData<T>(url: string): Response<T> {
+    return await fetch(url)
       .then((res) => res.json())
       .catch((err) => ({
         code: 500,
         message: err.message,
         data: null,
       }));
-    return result as Response<T>;
   }
 
-  async fetchCharacter(name: string): Promise<Response<AppCharacter>> {
+  async fetchCharacter(name: string): Response<AppCharacter> {
     const control = this.characters[name];
 
     if (!control) {
@@ -81,7 +80,54 @@ export class AppDataService {
     return response;
   }
 
-  async fetchWeapon(code: number): Promise<Response<AppWeapon>> {
+  async fetchConsDescriptions(name: string): Response<string[]> {
+    const { constellation } = this.characters[name].data;
+
+    if (constellation[0]) {
+      if (constellation[0].description) {
+        return {
+          code: 200,
+          data: constellation.map((cons) => cons.description || "[Description missing]"),
+        };
+      }
+
+      const response = await fetch(GENSHIN_DEV_URL_PATH.character(name))
+        .then((res) => res.json())
+        .catch((err) => ({
+          code: 500,
+          message: err.message,
+          data: null,
+        }));
+
+      if (response?.constellations?.length) {
+        const descriptions: string[] = [];
+
+        constellation.forEach((cons, i) => {
+          const description = response.constellations[i].description || "[Description missing]";
+
+          descriptions.push(description);
+          cons.description = description;
+        });
+
+        return {
+          code: 200,
+          data: descriptions,
+        };
+      }
+
+      return {
+        ...response,
+        data: [],
+      };
+    }
+
+    return {
+      code: 200,
+      data: [],
+    };
+  }
+
+  async fetchWeapon(code: number): Response<AppWeapon> {
     const control = this.weapons.find((weapon) => weapon.data.code === code);
 
     if (!control) {
