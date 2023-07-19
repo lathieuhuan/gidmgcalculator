@@ -1,5 +1,9 @@
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 
+export const randomNumber = (max: number, min = 0, step = 1) => {
+  return Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
+};
+
 export const randomString = (n: number) => {
   return Math.random()
     .toString(36)

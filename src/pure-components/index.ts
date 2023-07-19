@@ -2,6 +2,7 @@ export * from "./button";
 export * from "./span";
 export * from "./collapse";
 export * from "./modal";
+export * from "./skeleton";
 export * from "./table";
 export * from "./WarehouseLayout";
 export * from "./BetaMark";

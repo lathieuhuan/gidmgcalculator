@@ -27,18 +27,17 @@ const Sayu: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyFinalBuff: ({ char, totalAttr, calcItemBonuses }) => {
+      applyFinalBuff: ({ totalAttr, calcItemBonuses }) => {
         const buffValue = Math.min(totalAttr.em, 2000);
-        const isValid = checkCons[6](char);
 
         calcItemBonuses.push(
           {
             ids: "EB.0",
-            bonus: talentBuff([isValid, "mult_", [false, 6], buffValue * 0.2]),
+            bonus: talentBuff([true, "mult_", [false, 6], buffValue * 0.2]),
           },
           {
             ids: "EB.1",
-            bonus: talentBuff([isValid, "flat", [false, 6], buffValue * 3]),
+            bonus: talentBuff([true, "flat", [false, 6], buffValue * 3]),
           }
         );
       },

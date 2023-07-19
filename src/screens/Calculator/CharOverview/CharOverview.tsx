@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 
-import type { Level } from "@Src/types";
+import type { AppCharacter, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 import { appData } from "@Data/index";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar } from "@Store/calculatorSlice/selectors";
-import { updateCharacter } from "@Store/calculatorSlice";
+// Action
+import { updateCharacter, updateMessage } from "@Store/calculatorSlice";
+import { updateUI } from "@Store/uiSlice";
 import { startCalculation } from "@Store/thunks";
 
 // Component
@@ -19,10 +21,40 @@ import contentByTab from "./content";
 
 type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
 
+interface HeaderProps extends Pick<AppCharacter, "name" | "icon" | "vision" | "rarity" | "beta"> {
+  extra?: React.ReactNode;
+  onClickCharImg?: () => void;
+}
+const Header = ({ beta, name, icon, vision, rarity, extra, onClickCharImg }: HeaderProps) => {
+  return (
+    <div className="mt-2 mb-1 pb-4 flex">
+      <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={onClickCharImg}>
+        <Button
+          className="absolute -top-2.5 -left-2.5 z-10"
+          variant="positive"
+          icon={<FaSyncAlt />}
+          disabled={!onClickCharImg}
+        />
+        {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
+        <Image className="cursor-pointer" src={icon} imgType="character" />
+      </div>
+
+      <div className="min-w-0">
+        <div className="overflow-hidden">
+          <p className={`text-3xl truncate text-${vision} font-black`}>{name}</p>
+          <StarLine className="mt-1" rarity={rarity} />
+        </div>
+
+        {extra}
+      </div>
+    </div>
+  );
+};
+
 interface OverviewCharProps {
   touched: boolean;
 }
-export default function CharOverview({ touched }: OverviewCharProps) {
+function CharOverview({ touched }: OverviewCharProps) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar)!;
 
@@ -30,8 +62,6 @@ export default function CharOverview({ touched }: OverviewCharProps) {
   const [modalType, setModalType] = useState<ModalType>("");
 
   const Content = contentByTab[activeTab];
-
-  const onClickCharImg = () => setModalType("CHARACTER_PICKER");
 
   const closeModal = () => setModalType("");
 
@@ -48,19 +78,11 @@ export default function CharOverview({ touched }: OverviewCharProps) {
 
     body = (
       <div className="h-full flex flex-col">
-        <div className="mt-2 mb-1 pb-4 flex">
-          <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={onClickCharImg}>
-            <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
-            {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
-            <Image className="cursor-pointer" src={icon} imgType="character" />
-          </div>
-
-          <div className="min-w-0">
-            <div className="overflow-hidden">
-              <p className={`text-3xl truncate text-${vision} font-black`}>{char.name}</p>
-              <StarLine className="mt-1" rarity={rarity} />
-            </div>
-
+        <Header
+          name={char.name}
+          {...{ beta, icon, vision, rarity }}
+          onClickCharImg={() => setModalType("CHARACTER_PICKER")}
+          extra={
             <div className="mt-1 flex items-center">
               <p className="mr-1 text-lg">Level</p>
               <select
@@ -98,8 +120,8 @@ export default function CharOverview({ touched }: OverviewCharProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          }
+        />
 
         <ComplexSelect
           selectId="character-overview-select"
@@ -123,9 +145,7 @@ export default function CharOverview({ touched }: OverviewCharProps) {
         <Button variant="positive" onClick={() => setModalType("CHARACTER_PICKER")}>
           Choose a character
         </Button>
-
         <p>or</p>
-
         <Button variant="positive" onClick={() => setModalType("IMPORT_SETUP")}>
           Import a setup
         </Button>
@@ -141,11 +161,35 @@ export default function CharOverview({ touched }: OverviewCharProps) {
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
         onPickCharacter={async (pickedChar) => {
+          dispatch(
+            updateUI({
+              loadingCharacter: {
+                name: pickedChar.name,
+                vision: pickedChar.vision!,
+                icon: pickedChar.icon,
+                rarity: pickedChar.rarity,
+              },
+            })
+          );
+
           const response = await appData.fetchCharacter(pickedChar.name);
 
           if (response.code === 200) {
-            return dispatch(startCalculation(pickedChar));
+            dispatch(startCalculation(pickedChar));
+          } else {
+            dispatch(
+              updateMessage({
+                type: "error",
+                content: `Cannot get character data (${response.code})`,
+              })
+            );
           }
+
+          dispatch(
+            updateUI({
+              loadingCharacter: null,
+            })
+          );
         }}
         onClose={closeModal}
       />
@@ -154,3 +198,7 @@ export default function CharOverview({ touched }: OverviewCharProps) {
     </>
   );
 }
+
+CharOverview.Header = Header;
+
+export default CharOverview;
