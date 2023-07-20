@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Ganyu: DefaultAppCharacter = {
   code: 28,
@@ -27,11 +27,8 @@ const Ganyu: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: [],
-          bonus: talentBuff([true, "cRate_", [true, 1], 20]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A1, ["CA.0", "CA.1"], "cRate_", 20));
       },
     },
     {

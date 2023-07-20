@@ -23,7 +23,8 @@ import type {
   TrackerDamageRecord,
   NormalAttack,
   CalcItem,
-  CalcItemBonuses,
+  CalcItemBuff,
+  CalcItemBonus,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -57,7 +58,7 @@ export type GetBuffedStatsArgs = {
   tracker?: Tracker;
 };
 
-export interface CalcPatternStatArgs {
+export interface CalculateItemArgs {
   stat: CalcItem;
   attPatt: ActualAttackPattern;
   attElmt: ActualAttackElement;
@@ -68,13 +69,13 @@ export interface CalcPatternStatArgs {
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
-  calcItemBonuses: CalcItemBonuses;
+  calcItemBonues: CalcItemBonus[];
   resistReduct: ResistanceReduction;
   record: TrackerDamageRecord;
 }
 
-export interface GetDamageArgs
-  extends Pick<CalcPatternStatArgs, "totalAttr" | "attPattBonus" | "attElmtBonus" | "calcItemBonuses"> {
+export interface GetDamageArgs extends Pick<CalculateItemArgs, "totalAttr" | "attPattBonus" | "attElmtBonus"> {
+  calcItemBuffs: CalcItemBuff[];
   char: CharInfo;
   charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];

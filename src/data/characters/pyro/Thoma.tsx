@@ -5,7 +5,7 @@ import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Thoma: DefaultAppCharacter = {
   code: 43,
@@ -27,11 +27,8 @@ const Thoma: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
-        calcItemBonuses.push({
-          ids: "EB.0",
-          bonus: talentBuff([true, "flat", [true, 4], applyPercent(totalAttr.hp, 2.2)]),
-        });
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A4, "EB.0", "flat", applyPercent(totalAttr.hp, 2.2)));
       },
     },
   ],

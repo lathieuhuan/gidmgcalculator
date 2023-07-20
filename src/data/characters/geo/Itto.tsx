@@ -5,7 +5,7 @@ import { Geo, Green } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Itto: DefaultAppCharacter = {
   code: 45,
@@ -27,11 +27,8 @@ const Itto: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
-        calcItemBonuses.push({
-          ids: ["CA.0", "CA.1"],
-          bonus: talentBuff([true, "flat", [true, 4], applyPercent(totalAttr.def, 35)]),
-        });
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A4, ["CA.0", "CA.1"], "flat", applyPercent(totalAttr.def, 35)));
       },
     },
     {

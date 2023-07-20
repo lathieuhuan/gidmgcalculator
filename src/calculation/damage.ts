@@ -1,11 +1,12 @@
-import type {
+import {
   DamageResult,
   ResistanceReduction,
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
   NormalAttack,
+  CalcItemBonus,
 } from "@Src/types";
-import type { CalcPatternStatArgs, GetDamageArgs } from "./types";
+import type { CalculateItemArgs, GetDamageArgs } from "./types";
 
 // Constant
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS, BASE_REACTION_DAMAGE } from "@Src/constants";
@@ -17,9 +18,9 @@ import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
-import { getItemBonus } from "./utils";
+import { getExclusiveBonus } from "./utils";
 
-function calcItem({
+function calculateItem({
   stat,
   attElmt,
   attPatt,
@@ -29,13 +30,13 @@ function calcItem({
   totalAttr,
   attPattBonus,
   attElmtBonus,
-  calcItemBonuses,
+  calcItemBonues,
   rxnMult,
   resistReduct,
   record,
-}: CalcPatternStatArgs) {
-  const itemFlatBonus = getItemBonus(calcItemBonuses, "flat");
-  const itemPctBonus = getItemBonus(calcItemBonuses, "pct_");
+}: CalculateItemArgs) {
+  const itemFlatBonus = getExclusiveBonus(calcItemBonues, "flat");
+  const itemPctBonus = getExclusiveBonus(calcItemBonues, "pct_");
 
   if (base !== 0 && !stat.type) {
     const flat =
@@ -74,7 +75,7 @@ function calcItem({
     const totalCrit = (type: "cRate_" | "cDmg_") => {
       return (
         totalAttr[type] +
-        getItemBonus(calcItemBonuses, type) +
+        getExclusiveBonus(calcItemBonues, type) +
         attPattBonus.all[type] +
         (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
         (attElmt !== "various" ? attElmtBonus[attElmt][type] : 0)
@@ -137,7 +138,7 @@ export default function getDamage({
   totalAttr,
   attPattBonus,
   attElmtBonus,
-  calcItemBonuses,
+  calcItemBuffs,
   rxnBonus,
   customDebuffCtrls,
   infusion,
@@ -275,15 +276,20 @@ export default function getDamage({
 
       let bases = [];
       const { id, flatFactor } = stat;
-      const itemBonuses = id
-        ? calcItemBonuses.filter((bonus) => (Array.isArray(bonus.ids) ? bonus.ids.includes(id) : bonus.ids === id))
+      const calcItemBonues = id
+        ? calcItemBuffs.reduce<CalcItemBonus[]>((bonuses, buff) => {
+            if (Array.isArray(buff.ids) ? buff.ids.includes(id) : buff.ids === id) {
+              bonuses.push(buff.bonus);
+            }
+            return bonuses;
+          }, [])
         : [];
-      const itemBonusMult = itemBonuses.reduce((total, bonus) => total + (bonus.bonus.mult_?.value || 0), 0);
+      const itemBonusMult = getExclusiveBonus(calcItemBonues, "mult_");
 
       const record = {
         multFactors: [],
         normalMult: 1,
-        itemBonuses,
+        exclusives: calcItemBonues,
       } as TrackerDamageRecord;
 
       // CALCULATE BASE DAMAGE
@@ -327,7 +333,7 @@ export default function getDamage({
           average: 0,
         };
       } else {
-        finalResult[resultKey][stat.name] = calcItem({
+        finalResult[resultKey][stat.name] = calculateItem({
           stat,
           attPatt,
           attElmt,
@@ -337,7 +343,7 @@ export default function getDamage({
           totalAttr,
           attPattBonus,
           attElmtBonus,
-          calcItemBonuses: itemBonuses,
+          calcItemBonues,
           rxnMult,
           resistReduct,
           record,

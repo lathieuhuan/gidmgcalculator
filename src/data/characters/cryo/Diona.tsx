@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const Diona: DefaultAppCharacter = {
   code: 24,
@@ -25,13 +25,9 @@ const Diona: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: ({ attPattBonus, calcItemBonuses, desc, tracker }) => {
+      applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct_", 15, tracker);
-
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [false, 1], 15]),
-        });
+        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "pct_", 15));
       },
     },
   ],

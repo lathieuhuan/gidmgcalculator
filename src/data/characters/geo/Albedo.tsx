@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Albedo: DefaultAppCharacter = {
   code: 29,
@@ -27,11 +27,8 @@ const Albedo: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [true, 1], 25]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A1, "ES.0", "pct_", 25));
       },
     },
     {

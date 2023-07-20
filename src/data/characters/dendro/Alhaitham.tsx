@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Dendro, Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Alhaitham: DefaultAppCharacter = {
   code: 65,
@@ -26,14 +26,10 @@ const Alhaitham: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, calcItemBonuses, desc, tracker }) => {
+      applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, desc, tracker }) => {
         const buffValue = Math.min(totalAttr.em * 0.1, 100);
         applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
-
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [true, 4], buffValue]),
-        });
+        calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "pct_", buffValue));
       },
     },
   ],

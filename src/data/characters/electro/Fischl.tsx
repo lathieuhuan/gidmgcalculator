@@ -1,7 +1,7 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const Fischl: DefaultAppCharacter = {
   code: 8,
@@ -22,11 +22,8 @@ const Fischl: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyFinalBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "mult_", [false, 2], 200]),
-        });
+      applyFinalBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "mult_", 200));
       },
     },
   ],

@@ -4,7 +4,7 @@ import { Green } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Baizhu: DefaultAppCharacter = {
   code: 70,
@@ -25,13 +25,9 @@ const Baizhu: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const desc = `${EModSrc.C6} / 8% of ${Math.round(totalAttr.hp)} HP`;
-
-        calcItemBonuses.push({
-          ids: "EB.0",
-          bonus: talentBuff([true, "flat", desc, Math.round(totalAttr.hp * 0.08)]),
-        });
+        calcItemBuffs.push(exclBuff(desc, "EB.0", "flat", Math.round(totalAttr.hp * 0.08)));
       },
     },
   ],

@@ -61,7 +61,7 @@ export default function calculateAll(
     infusedAttacks = ["NA"];
   }
 
-  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBonuses, rxnBonus } = getBuffedStats({
+  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBuffs, rxnBonus } = getBuffedStats({
     char,
     charData,
     selfBuffCtrls,
@@ -89,7 +89,7 @@ export default function calculateAll(
     totalAttr,
     attPattBonus,
     attElmtBonus,
-    calcItemBonuses,
+    calcItemBuffs,
     rxnBonus,
     customDebuffCtrls,
     infusion: {

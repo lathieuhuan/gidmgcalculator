@@ -4,7 +4,7 @@ import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const Dehya: DefaultAppCharacter = {
   code: 68,
@@ -54,11 +54,8 @@ const Dehya: DefaultAppCharacter = {
           attacked.
         </>
       ),
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [false, 2], 50]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "pct_", 50));
       },
     },
     {

@@ -3,7 +3,6 @@ import type {
   BuffDescriptionArgs,
   CharInfo,
   DefaultAppCharacter,
-  ModifierCtrl,
   PartyData,
   TotalAttribute,
 } from "@Src/types";
@@ -13,7 +12,7 @@ import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, findInput, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const getBuffValue = {
   ES: (args: BuffDescriptionArgs) => {
@@ -32,7 +31,7 @@ const getBuffValue = {
       value: round(args.charData.EBcost * mult, 1),
     };
   },
-  EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
+  EB: (char: CharInfo, partyData: PartyData, totalEnergy = 0, electroEnergy = 0) => {
     const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
     const level = finalTalentLv({
       char,
@@ -40,8 +39,6 @@ const getBuffValue = {
       talentType: "EB",
       partyData,
     });
-    const totalEnergy = findInput(selfBuffCtrls, 1, 0);
-    const electroEnergy = findInput(selfBuffCtrls, 1, 1);
     let extraEnergy = 0;
 
     if (checkCons[1](char) && electroEnergy <= totalEnergy) {
@@ -86,7 +83,7 @@ const Raiden: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const buffValue = getBuffValue.A4(totalAttr);
         applyModifier(desc, totalAttr, "electro", buffValue, tracker);
       },
@@ -120,8 +117,8 @@ const Raiden: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, charBuffCtrls, partyData }) => {
-        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
+      desc: ({ char, partyData, inputs }) => {
+        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
         return (
           <>
             Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
@@ -143,29 +140,18 @@ const Raiden: DefaultAppCharacter = {
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
-      applyBuff: ({ char, attPattBonus, calcItemBonuses, charBuffCtrls, partyData, desc, tracker }) => {
-        const buffValue = getBuffValue.EB(char, charBuffCtrls, partyData);
+      applyBuff: ({ char, attPattBonus, calcItemBuffs, inputs, partyData, desc, tracker }) => {
+        const buffValue = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
+        const { stacks, musouBonus, isshinBonus } = buffValue;
 
-        if (buffValue.stacks) {
-          calcItemBonuses.push(
-            {
-              ids: "EB.0",
-              bonus: talentBuff([
-                true,
-                "mult_",
-                `${buffValue.stacks} Resolve, ${buffValue.musouBonus}% extra multiplier each`,
-                round(buffValue.stacks * buffValue.musouBonus, 2),
-              ]),
-            },
-            {
-              ids: Array.from({ length: 8 }).map((_, i) => `EB.${i + 1}`),
-              bonus: talentBuff([
-                true,
-                "mult_",
-                `${buffValue.stacks} Resolve, ${buffValue.isshinBonus}% extra multiplier each`,
-                round(buffValue.stacks * buffValue.isshinBonus, 2),
-              ]),
-            }
+        if (stacks) {
+          const musouDesc = `${stacks} Resolve, ${musouBonus}% extra multiplier each`;
+          const isshinDesc = `${stacks} Resolve, ${isshinBonus}% extra multiplier each`;
+          const ids = Array.from({ length: 9 }).map((_, i) => `EB.${i + 1}`);
+
+          calcItemBuffs.push(
+            exclBuff(musouDesc, "EB.0", "mult_", round(stacks * musouBonus, 2)),
+            exclBuff(isshinDesc, ids, "mult_", round(stacks * isshinBonus, 2))
           );
         }
 

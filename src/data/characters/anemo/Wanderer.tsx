@@ -5,7 +5,7 @@ import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { findByIndex, round } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {
   return checkCons[4](args.char) ? findByIndex(args.charBuffCtrls, 1)?.inputs?.includes(2) : false;
@@ -51,17 +51,13 @@ const Wanderer: DefaultAppCharacter = {
           </>
         );
       },
-      applyBuff: ({ totalAttr, attPattBonus, calcItemBonuses, char, partyData, desc, tracker }) => {
+      applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, char, partyData, desc, tracker }) => {
         const { NA, CA } = getESBuffValue(char, partyData);
         applyModifier(desc, attPattBonus, ["NA.multPlus", "CA.multPlus"], [NA, CA], tracker);
 
         if (checkCons[1](char)) {
           applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
-
-          calcItemBonuses.push({
-            ids: "NA.0",
-            bonus: talentBuff([true, "mult_", [true, 4], 25]),
-          });
+          calcItemBuffs.push(exclBuff(EModSrc.C1, "NA.0", "mult_", 25));
         }
       },
     },

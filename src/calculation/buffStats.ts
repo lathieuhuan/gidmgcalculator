@@ -14,7 +14,7 @@ import type {
   ReactionBonus,
   ReactionBonusInfo,
   ReactionBonusInfoKey,
-  CalcItemBonuses,
+  CalcItemBuff,
 } from "@Src/types";
 import type { GetBuffedStatsArgs, UsedCode } from "./types";
 
@@ -154,7 +154,7 @@ export default function getBuffedStats({
     }
   }
 
-  const calcItemBonuses: CalcItemBonuses = [];
+  const calcItemBuffs: CalcItemBuff[] = [];
 
   const modifierArgs: BuffModifierArgsWrapper = {
     char,
@@ -163,7 +163,7 @@ export default function getBuffedStats({
     totalAttr,
     attPattBonus,
     attElmtBonus,
-    calcItemBonuses,
+    calcItemBuffs,
     rxnBonus,
     infusedElement,
     tracker,
@@ -424,7 +424,7 @@ export default function getBuffedStats({
     totalAttr,
     attPattBonus,
     attElmtBonus,
-    calcItemBonuses,
+    calcItemBuffs,
     rxnBonus,
     artAttr,
   };

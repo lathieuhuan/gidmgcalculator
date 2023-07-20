@@ -5,7 +5,7 @@ import { Green, Hydro, Lightgold } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const getEBBuffValue = (toSelf: boolean, char: CharInfo, partyData: PartyData, inputs: ModifierInput[]) => {
   const level = toSelf
@@ -51,7 +51,7 @@ const Ayato: DefaultAppCharacter = {
           applyModifier(desc, totalAttr, "hp_", 50, tracker);
         }
       },
-      applyFinalBuff: ({ char, totalAttr, calcItemBonuses, inputs, partyData }) => {
+      applyFinalBuff: ({ char, totalAttr, calcItemBuffs, inputs, partyData }) => {
         const level = finalTalentLv({
           char,
           charData: Ayato as AppCharacter,
@@ -60,10 +60,9 @@ const Ayato: DefaultAppCharacter = {
         });
         const finalMult = 0.56 * (inputs[0] || 0) * TALENT_LV_MULTIPLIERS[7][level];
 
-        calcItemBonuses.push({
-          ids: ["ES.0", "ES.1", "ES.2"],
-          bonus: talentBuff([true, "flat", "Elemental Skill", applyPercent(totalAttr.hp, finalMult)]),
-        });
+        calcItemBuffs.push(
+          exclBuff(EModSrc.ES, ["ES.0", "ES.1", "ES.2"], "flat", applyPercent(totalAttr.hp, finalMult))
+        );
       },
       infuseConfig: {
         overwritable: false,
@@ -102,11 +101,8 @@ const Ayato: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: ["ES.0", "ES.1", "ES.2", "ES.3"],
-          bonus: talentBuff([true, "pct_", [false, 1], 40]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C1, ["ES.0", "ES.1", "ES.2", "ES.3"], "pct_", 40));
       },
     },
     {

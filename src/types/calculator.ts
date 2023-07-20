@@ -1,7 +1,6 @@
 import type {
   AttackElement,
   AttackPattern,
-  Nation,
   Vision,
   WeaponType,
   Reaction,
@@ -162,10 +161,10 @@ export type ReactionBonusInfoKey = (typeof REACTION_BONUS_INFO_KEYS)[number];
 export type ReactionBonusInfo = Record<ReactionBonusInfoKey, number>;
 export type ReactionBonus = Record<Reaction, ReactionBonusInfo>;
 
-export type CalcItemBonuses = Array<{
+export type CalcItemBuff = {
   ids: string | string[];
-  bonus: TalentBuff;
-}>;
+  bonus: CalcItemBonus;
+};
 
 export type ResistanceReductionKey = AttackElement | "def";
 export type ResistanceReduction = Record<ResistanceReductionKey, number>;
@@ -200,7 +199,7 @@ export type BuffModifierArgsWrapper = {
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
-  calcItemBonuses: CalcItemBonuses;
+  calcItemBuffs: CalcItemBuff[];
   rxnBonus: ReactionBonus;
   infusedElement: AttackElement;
   tracker?: Tracker;
@@ -214,8 +213,7 @@ export type DebuffModifierArgsWrapper = {
   tracker?: Tracker;
 };
 
-// #to-rename
-export type TalentBuff = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
+export type CalcItemBonus = Partial<Record<AttackPatternInfoKey, { desc: string; value: number }>>;
 
 // Tracker
 
@@ -239,7 +237,7 @@ export type TrackerDamageRecord = {
   cRate_?: number;
   cDmg_?: number;
   note?: string;
-  itemBonuses?: CalcItemBonuses;
+  exclusives?: CalcItemBonus[];
 };
 
 export type Tracker = {

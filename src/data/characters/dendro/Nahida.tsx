@@ -5,7 +5,7 @@ import { Green, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 function getEBBuff(char: CharInfo, partyData: PartyData) {
   const level = finalTalentLv({ char, charData: Nahida as AppCharacter, talentType: "EB", partyData });
@@ -41,16 +41,12 @@ const Nahida: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const excessEM = Math.max(totalAttr.em - 200, 0);
-
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff(
-            [true, "pct_", [true, 4], Math.min(excessEM / 10, 80)],
-            [true, "cRate_", [true, 4], Math.min(round(excessEM * 0.03, 1), 24)]
-          ),
-        });
+        calcItemBuffs.push(
+          exclBuff(EModSrc.A4, "ES.0", "pct_", Math.min(excessEM / 10, 80)),
+          exclBuff(EModSrc.A4, "ES.0", "cRate_", Math.min(round(excessEM * 0.03, 1), 24))
+        );
       },
     },
   ],
@@ -68,14 +64,11 @@ const Nahida: DefaultAppCharacter = {
           </>
         );
       },
-      applyFinalBuff: ({ calcItemBonuses, char, partyData }) => {
+      applyFinalBuff: ({ calcItemBuffs, char, partyData }) => {
         const { value, pyroCount } = getEBBuff(char, partyData);
 
         if (value) {
-          calcItemBonuses.push({
-            ids: "ES.0",
-            bonus: talentBuff([true, "pct_", `${EModSrc.EB} / ${pyroCount} Pyro teammates`, value]),
-          });
+          calcItemBuffs.push(exclBuff(`${EModSrc.EB} / ${pyroCount} Pyro teammates`, "ES.0", "pct_", value));
         }
       },
     },

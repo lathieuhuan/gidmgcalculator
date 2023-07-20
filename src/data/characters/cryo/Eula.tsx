@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const getESDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
   const level = fromSelf
@@ -47,11 +47,8 @@ const Eula: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[4],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: ["EB.0", "EB.1"],
-          bonus: talentBuff([true, "pct_", [false, 4], 25]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C4, ["EB.0", "EB.1"], "pct_", 25));
       },
     },
   ],

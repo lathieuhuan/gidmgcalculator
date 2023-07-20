@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Shinobu: DefaultAppCharacter = {
   code: 52,
@@ -28,16 +28,10 @@ const Shinobu: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
-        calcItemBonuses.push(
-          {
-            ids: "ES.0",
-            bonus: talentBuff([true, "flat", [true, 4], Math.round(totalAttr.em * 0.25)]),
-          },
-          {
-            ids: "ES.1",
-            bonus: talentBuff([true, "flat", [true, 4], Math.round(totalAttr.em * 0.75)]),
-          }
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
+        calcItemBuffs.push(
+          exclBuff(EModSrc.A4, "ES.0", "flat", Math.round(totalAttr.em * 0.25)),
+          exclBuff(EModSrc.A4, "ES.1", "flat", Math.round(totalAttr.em * 0.75))
         );
       },
     },

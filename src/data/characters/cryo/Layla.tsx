@@ -4,7 +4,7 @@ import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Layla: DefaultAppCharacter = {
   code: 61,
@@ -25,11 +25,8 @@ const Layla: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ totalAttr, calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "flat", [true, 4], applyPercent(totalAttr.hp, 1.5)]),
-        });
+      applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "flat", applyPercent(totalAttr.hp, 1.5)));
       },
     },
     {
@@ -40,11 +37,8 @@ const Layla: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[1],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.1",
-          bonus: talentBuff([true, "pct_", [false, 1], 20]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.1", "pct_", 20));
       },
     },
     {
@@ -56,13 +50,9 @@ const Layla: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyBuff: ({ attPattBonus, calcItemBonuses, desc, tracker }) => {
+      applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "EB.pct_", 40, tracker);
-
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [false, 6], 40]),
-        });
+        calcItemBuffs.push(exclBuff(EModSrc.C6, "ES.0", "pct_", 40));
       },
     },
   ],

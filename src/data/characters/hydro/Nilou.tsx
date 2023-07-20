@@ -4,7 +4,7 @@ import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 function getA4BuffValue(maxHP: number) {
   const stacks = maxHP / 1000 - 30;
@@ -30,11 +30,8 @@ const Nilou: DefaultAppCharacter = {
           <Green>Watery moon DMG</Green> is increased by <Green b>65%</Green>.
         </>
       ),
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [false, 1], 65]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.0", "pct_", 65));
       },
     },
     {

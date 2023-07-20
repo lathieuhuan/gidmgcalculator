@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Xinyan: DefaultAppCharacter = {
   code: 27,
@@ -24,11 +24,8 @@ const Xinyan: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[2],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "EB.0",
-          bonus: talentBuff([true, "cRate_", [false, 2], 100]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.C2, "EB.0", "cRate_", 100));
       },
     },
     {

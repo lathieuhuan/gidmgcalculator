@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Electro, Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Cyno: DefaultAppCharacter = {
   code: 59,
@@ -27,16 +27,10 @@ const Cyno: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyFinalBuff: ({ calcItemBonuses, totalAttr }) => {
-        calcItemBonuses.push(
-          {
-            ids: "ES.1",
-            bonus: talentBuff([true, "flat", [true, 4], totalAttr.em * 2.5]),
-          },
-          {
-            ids: ["EB.0", "EB.1", "EB.2", "EB.3", "EB.4"],
-            bonus: talentBuff([true, "flat", [true, 4], Math.round(totalAttr.em * 1.5)]),
-          }
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
+        calcItemBuffs.push(
+          exclBuff(EModSrc.A4, "ES.1", "flat", totalAttr.em * 2.5),
+          exclBuff(EModSrc.A4, ["EB.0", "EB.1", "EB.2", "EB.3", "EB.4"], "flat", Math.round(totalAttr.em * 1.5))
         );
       },
     },
@@ -71,11 +65,8 @@ const Cyno: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[1],
-      applyBuff: ({ calcItemBonuses }) => {
-        calcItemBonuses.push({
-          ids: "ES.0",
-          bonus: talentBuff([true, "pct_", [true, 1], 35]),
-        });
+      applyBuff: ({ calcItemBuffs }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A1, "ES.0", "pct_", 35));
       },
     },
     {

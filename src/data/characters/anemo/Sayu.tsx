@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { EModSrc } from "../constants";
-import { checkCons, talentBuff } from "../utils";
+import { checkCons, exclBuff } from "../utils";
 
 const Sayu: DefaultAppCharacter = {
   code: 36,
@@ -27,18 +27,12 @@ const Sayu: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkCons[6],
-      applyFinalBuff: ({ totalAttr, calcItemBonuses }) => {
+      applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         const buffValue = Math.min(totalAttr.em, 2000);
 
-        calcItemBonuses.push(
-          {
-            ids: "EB.0",
-            bonus: talentBuff([true, "mult_", [false, 6], buffValue * 0.2]),
-          },
-          {
-            ids: "EB.1",
-            bonus: talentBuff([true, "flat", [false, 6], buffValue * 3]),
-          }
+        calcItemBuffs.push(
+          exclBuff(EModSrc.C6, "EB.0", "mult_", buffValue * 0.2),
+          exclBuff(EModSrc.C6, "EB.1", "flat", buffValue * 3)
         );
       },
     },
@@ -64,16 +58,10 @@ const Sayu: DefaultAppCharacter = {
           max: 10,
         },
       ],
-      applyBuff: ({ inputs, calcItemBonuses }) => {
-        calcItemBonuses.push(
-          {
-            ids: "ES.0",
-            bonus: talentBuff([true, "pct_", [false, 2], 3.3]),
-          },
-          {
-            ids: ["ES.1", "ES.2"],
-            bonus: talentBuff([true, "pct_", [false, 2], 3.3 * Math.floor((inputs[0] || 0) / 0.5)]),
-          }
+      applyBuff: ({ inputs, calcItemBuffs }) => {
+        calcItemBuffs.push(
+          exclBuff(EModSrc.C2, "ES.0", "pct_", 3.3),
+          exclBuff(EModSrc.C2, ["ES.1", "ES.2"], "pct_", 3.3 * Math.floor((inputs[0] || 0) / 0.5))
         );
       },
     },

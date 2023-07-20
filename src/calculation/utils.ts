@@ -1,7 +1,7 @@
-import type { AttackPatternInfoKey, CalcItemBonuses, TrackerRecord } from "@Src/types";
+import type { AttackPatternInfoKey, CalcItemBonus, TrackerRecord } from "@Src/types";
 
-export const getItemBonus = (bonuses: CalcItemBonuses, key: AttackPatternInfoKey) => {
-  return bonuses.reduce((total, bonus) => total + (bonus.bonus[key]?.value || 0), 0);
+export const getExclusiveBonus = (bonuses: CalcItemBonus[], key: AttackPatternInfoKey) => {
+  return bonuses.reduce((total, bonus) => total + (bonus[key]?.value || 0), 0);
 };
 
 export function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(
