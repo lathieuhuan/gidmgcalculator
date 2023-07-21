@@ -140,7 +140,7 @@ export default function SetupManager() {
 
       <PickerCharacter
         active={modalType === "CHARACTERS_PICKER"}
-        sourceType="userData"
+        sourceType="user"
         onPickCharacter={({ artifactIDs }) => {
           if (artifactIDs) {
             dispatch(pickEquippedArtSet(artifactIDs));

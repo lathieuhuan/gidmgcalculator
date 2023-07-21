@@ -58,19 +58,21 @@ export default function MyCharacters() {
           onClickWish={() => setModalType("ADD_CHARACTER")}
         />
       )}
+
       <div className="grow flex-center overflow-y-auto">
         <div className="w-full h-98/100 flex justify-center">{!!characterNames.length && <Info />}</div>
       </div>
 
       <PickerCharacter
         active={modalType === "ADD_CHARACTER"}
-        sourceType="appData"
+        sourceType="app"
         needMassAdd
         filter={({ name }) => !characterNames.includes(name)}
-        onPickCharacter={({ name, weaponType }) => {
-          if (weaponType) {
-            dispatch(addCharacter({ name, weaponType }));
+        onPickCharacter={async (character) => {
+          if (!characterNames.length) {
+            dispatch(chooseCharacter(character.name));
           }
+          dispatch(addCharacter(character));
         }}
         onClose={() => setModalType(null)}
       />

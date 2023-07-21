@@ -3,6 +3,7 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import type { AppCharacter, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+import { getAppDataError } from "@Src/utils";
 import { appData } from "@Data/index";
 
 // Store
@@ -165,7 +166,7 @@ function CharOverview({ touched }: OverviewCharProps) {
             updateUI({
               loadingCharacter: {
                 name: pickedChar.name,
-                vision: pickedChar.vision!,
+                vision: pickedChar.vision,
                 icon: pickedChar.icon,
                 rarity: pickedChar.rarity,
               },
@@ -180,7 +181,7 @@ function CharOverview({ touched }: OverviewCharProps) {
             dispatch(
               updateMessage({
                 type: "error",
-                content: `Cannot get character data (${response.code})`,
+                content: getAppDataError("character", response.code),
               })
             );
           }

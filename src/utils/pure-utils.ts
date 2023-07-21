@@ -132,6 +132,10 @@ export const getCopyName = (originalName: string, existedNames: string[]) => {
   return undefined;
 };
 
+export const getAppDataError = (type: "character", code: number | string) => {
+  return `Cannot get ${type} config (ERROR_CODE: ${code})`;
+};
+
 export const removeEmpty = <T extends Record<string, any>>(obj: T): T => {
   const copy = {} as T;
 

@@ -28,10 +28,8 @@ const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
 
     if (state.current.mounted) {
       if (response.code === 200) {
-        setTimeout(() => {
-          setStatus("success");
-          setDescriptions(response.data || []);
-        }, 2000);
+        setStatus("success");
+        setDescriptions(response.data || []);
       } else {
         setStatus("error");
       }

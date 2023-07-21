@@ -181,14 +181,14 @@ export default function SectionParty() {
 
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
-        sourceType="appData"
+        sourceType="app"
         filter={({ name }) => {
           return name !== charData.name && party.every((tm) => name !== tm?.name);
         }}
         onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 
-          if (vision && weaponType && teammateIndex !== null) {
+          if (teammateIndex !== null) {
             dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
             setDetailSlot(teammateIndex);
           }

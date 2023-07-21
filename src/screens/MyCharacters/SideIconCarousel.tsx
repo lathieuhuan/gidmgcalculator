@@ -131,7 +131,7 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
 
       <PickerCharacter
         active={gridviewOn}
-        sourceType="userData"
+        sourceType="user"
         onPickCharacter={({ name }) => {
           dispatch(chooseCharacter(name));
           scrollList(name);

@@ -160,6 +160,10 @@ export class AppDataService {
     return response;
   }
 
+  isCharFetched(name: string) {
+    return this.characters[name].fetched;
+  }
+
   getCharData(name: string) {
     return this.characters[name].data;
   }

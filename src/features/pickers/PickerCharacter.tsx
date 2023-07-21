@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { AppCharacter } from "@Src/types";
+import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
 import { appData } from "@Data/index";
@@ -11,11 +11,13 @@ import { findByName, pickProps } from "@Src/utils";
 import { withModal } from "@Src/pure-components";
 import { PickerTemplate } from "./PickerTemplate";
 
+type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
+
 export interface CharacterPickerProps {
-  sourceType: "mixed" | "appData" | "userData";
+  sourceType: "mixed" | "app" | "user";
   needMassAdd?: boolean;
   filter?: (character: AppCharacter) => boolean;
-  onPickCharacter: (character: PickerItem) => void;
+  onPickCharacter: (character: PickedCharacter) => void;
   onClose: () => void;
 }
 const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onClose }: CharacterPickerProps) => {
@@ -36,13 +38,13 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
           data.push(charData);
         }
       }
-    } else if (sourceType === "appData") {
+    } else if (sourceType === "app") {
       for (const character of Object.values(characters)) {
         if (!filter || filter(character)) {
           data.push(pickProps(character, fields));
         }
       }
-    } else if (sourceType === "userData") {
+    } else if (sourceType === "user") {
       for (const { name, cons, artifactIDs } of userChars) {
         const found = appData.getCharData(name);
 
@@ -66,7 +68,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
       dataType="character"
       needMassAdd={needMassAdd}
       data={data}
-      onPickItem={onPickCharacter}
+      onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
       onClose={onClose}
     />
   );

@@ -186,7 +186,7 @@ export default function MyWeapons() {
       {chosenWeapon && (
         <PickerCharacter
           active={modalType === "PICK_CHARACTER_FOR_EQUIP"}
-          sourceType="userData"
+          sourceType="user"
           filter={({ name, weaponType }) => {
             return weaponType === chosenWeapon.type && name !== chosenWeapon.owner;
           }}
