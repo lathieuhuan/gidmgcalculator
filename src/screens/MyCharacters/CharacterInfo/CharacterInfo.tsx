@@ -37,7 +37,7 @@ const selectChosenInfo = createSelector(
   }
 );
 
-const MyCharacterInfo = () => {
+const CharacterInfo = () => {
   const dispatch = useDispatch();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
   const [removing, setRemoving] = useState(false);
@@ -47,11 +47,11 @@ const MyCharacterInfo = () => {
   if (isLoading || error) {
     return (
       <div
-        className="py-4 flex h-98/100 space-x-2"
+        className="py-4 flex h-98/100 space-x-2 overflow-auto"
         style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
       >
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="p-4 rounded-lg bg-darkblue-1" style={{ width: 332 }}>
+          <div key={i} className="p-4 rounded-lg bg-darkblue-1 shrink-0" style={{ width: 332 }}>
             {error ? (
               <p className="text-center text-lightred">{getAppDataError("character", error.code)}</p>
             ) : (
@@ -161,4 +161,4 @@ const MyCharacterInfo = () => {
   );
 };
 
-export default memo(MyCharacterInfo);
+export default memo(CharacterInfo);

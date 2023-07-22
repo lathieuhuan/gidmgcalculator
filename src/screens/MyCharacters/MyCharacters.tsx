@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { PickerCharacter } from "@Src/features";
 import { Button } from "@Src/pure-components";
 import CharacterSort from "./CharacterSort";
-import SideIconCarousel from "./SideIconCarousel";
-import Info from "./Info";
+import CharacterList from "./CharacterList";
+import CharacterInfo from "./CharacterInfo";
 
 const selectCharacterNames = createSelector(selectUserChars, (userChars) => userChars.map(({ name }) => name));
 
@@ -19,7 +19,6 @@ type ModalType = "ADD_CHARACTER" | "SORT_CHARACTERS" | null;
 
 export default function MyCharacters() {
   const dispatch = useDispatch();
-
   const chosenChar = useSelector(selectChosenChar);
   const characterNames = useSelector(selectCharacterNames);
 
@@ -51,7 +50,7 @@ export default function MyCharacters() {
           )}
         </div>
       ) : (
-        <SideIconCarousel
+        <CharacterList
           characterNames={characterNames}
           chosenChar={chosenChar}
           onCliceSort={() => setModalType("SORT_CHARACTERS")}
@@ -60,7 +59,7 @@ export default function MyCharacters() {
       )}
 
       <div className="grow flex-center overflow-y-auto">
-        <div className="w-full h-98/100 flex justify-center">{!!characterNames.length && <Info />}</div>
+        <div className="w-full h-98/100 flex justify-center">{!!characterNames.length && <CharacterInfo />}</div>
       </div>
 
       <PickerCharacter

@@ -22,7 +22,7 @@ interface TopBarProps {
   onCliceSort: () => void;
   onClickWish: () => void;
 }
-export default function SideIconCarousel({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
+export default function CharacterList({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
