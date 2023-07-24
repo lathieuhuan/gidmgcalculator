@@ -23,20 +23,10 @@ export type UpdateCalculatorAction = PayloadAction<
   Partial<Pick<CalculatorState, "activeId" | "standardId" | "comparedIds">>
 >;
 
-export type PickedChar = Partial<UserCharacter> & {
-  name: string;
-};
-export type InitSessionWithCharAction = PayloadAction<{
-  pickedChar: PickedChar;
-  userWps: UserWeapon[];
-  userArts: UserArtifact[];
-}>;
-
-type InitSessionWithSetupPayload = PartiallyRequired<Omit<SetupImportInfo, "importType">, "calcSetup" | "target">;
-export type InitSessionWithSetupAction = PayloadAction<InitSessionWithSetupPayload>;
+export type InitNewSessionPayload = PartiallyRequired<SetupImportInfo, "calcSetup">;
 
 export type ImportSetupAction = PayloadAction<{
-  importInfo: InitSessionWithSetupPayload;
+  importInfo: PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
   shouldOverwriteChar: boolean;
   shouldOverwriteTarget: boolean;
 }>;

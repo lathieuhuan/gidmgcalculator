@@ -18,7 +18,6 @@ import type {
   ChangeModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   ImportSetupAction,
-  InitSessionWithCharAction,
   RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
   ToggleTeammateModCtrlAction,
@@ -29,8 +28,8 @@ import type {
   UpdateCustomDebuffCtrlsAction,
   UpdateTeammateWeaponAction,
   UpdateTeammateArtifactAction,
-  InitSessionWithSetupAction,
   ApplySettingsAction,
+  InitNewSessionPayload,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import { appData } from "@Data/index";
@@ -51,7 +50,7 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { calculate, getCharDataFromState, parseUserCharData } from "./utils";
+import { calculate, getCharDataFromState } from "./utils";
 
 const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
   if (artifact.debuffs?.length) {
@@ -96,49 +95,7 @@ export const calculatorSlice = createSlice({
           }
         : { active: false };
     },
-    initSessionWithChar: (state, action: InitSessionWithCharAction) => {
-      const { pickedChar, userWps, userArts } = action.payload;
-      const setupManageInfo = getSetupManageInfo({});
-      const { ID: setupID } = setupManageInfo;
-      const charData = appData.getCharData(pickedChar.name);
-      const data = parseUserCharData({
-        pickedChar,
-        userWps,
-        userArts,
-        weaponType: charData.weaponType,
-        seedID: setupID + 1,
-      });
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
-
-      state.activeId = setupID;
-      state.comparedIds = [];
-      state.standardId = 0;
-      appSettings.set({ charInfoIsSeparated: false });
-
-      state.setupManageInfos = [setupManageInfo];
-      state.setupsById = {
-        [setupID]: {
-          char: data.char,
-          selfBuffCtrls: selfBuffCtrls,
-          selfDebuffCtrls: selfDebuffCtrls,
-          weapon: data.weapon,
-          wpBuffCtrls: data.wpBuffCtrls,
-          artifacts: data.artifacts,
-          artBuffCtrls: data.artBuffCtrls,
-          artDebuffCtrls: createArtDebuffCtrls(),
-          party: [null, null, null],
-          elmtModCtrls: createElmtModCtrls(),
-          customBuffCtrls: [],
-          customDebuffCtrls: [],
-          customInfusion: { element: "phys" },
-        },
-      };
-      // calculate will repopulate statsById
-      state.statsById = {};
-
-      calculate(state);
-    },
-    initSessionWithSetup: (state, action: InitSessionWithSetupAction) => {
+    initNewSession: (state, action: PayloadAction<InitNewSessionPayload>) => {
       const { ID = Date.now(), name, type, calcSetup, target } = action.payload;
 
       state.setupManageInfos = [getSetupManageInfo({ ID, name, type })];
@@ -147,11 +104,14 @@ export const calculatorSlice = createSlice({
       };
       // calculate will repopulate statsById
       state.statsById = {};
-      state.target = target;
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
       appSettings.set({ charInfoIsSeparated: false });
+
+      if (target) {
+        state.target = target;
+      }
 
       calculate(state);
     },
@@ -732,8 +692,7 @@ export const calculatorSlice = createSlice({
 export const {
   updateCalculator,
   updateMessage,
-  initSessionWithChar,
-  initSessionWithSetup,
+  initNewSession,
   importSetup,
   updateCalcSetup,
   duplicateCalcSetup,

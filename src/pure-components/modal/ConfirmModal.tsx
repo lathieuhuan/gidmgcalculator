@@ -1,3 +1,4 @@
+import { cloneElement, useRef } from "react";
 import { ButtonGroup, ButtonGroupItem } from "../button";
 import { withModal } from "./Modal";
 
@@ -16,25 +17,25 @@ export const ConfirmModalBody = ({
   closeOnClickButton = true,
   onClose,
 }: ConfirmModalBodyProps) => {
-  const renderButtons: ButtonGroupItem[] = [];
+  const messageRef = useRef(cloneElement(<p className="py-2 text-center text-1.5xl text-default">{message}</p>));
 
-  buttons.forEach((button, index) => {
+  const renderButtons = buttons.map<ButtonGroupItem>((button, index) => {
     const { text, variant, onClick } = button || {};
     const buttonText = text || (index === buttons.length - 1 ? "Confirm" : !index ? "Cancel" : "");
 
-    renderButtons.push({
+    return {
       text: buttonText,
       variant,
       onClick: () => {
         onClick?.();
         closeOnClickButton && onClose();
       },
-    });
+    };
   });
 
   return (
     <div className={"p-4 rounded-lg " + bgColor}>
-      <p className="py-2 text-center text-1.5xl text-default">{message}</p>
+      {messageRef.current}
       <ButtonGroup
         className="mt-4 flex-wrap"
         space={buttons.length > 2 ? "space-x-4" : undefined}
