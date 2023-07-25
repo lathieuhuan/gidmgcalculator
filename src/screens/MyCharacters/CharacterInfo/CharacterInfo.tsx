@@ -1,7 +1,6 @@
 import { memo, useState } from "react";
 import { FaUserSlash } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
@@ -17,7 +16,7 @@ import getBaseStats from "@Src/calculation/baseStats";
 import { findById, findByName, getAppDataError, getImgSrc } from "@Src/utils";
 
 // Component
-import { StarLine, Button, ConfirmModal } from "@Src/pure-components";
+import { StarLine, Button, ConfirmModal, LoadingIcon } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
 
@@ -40,9 +39,9 @@ const selectChosenInfo = createSelector(
 const CharacterInfo = () => {
   const dispatch = useDispatch();
   const { char, weapon, artifacts } = useSelector(selectChosenInfo);
-  const [removing, setRemoving] = useState(false);
-
   const { isLoading, error, charData } = useCharData(char.name);
+
+  const [removing, setRemoving] = useState(false);
 
   if (isLoading || error) {
     return (
@@ -53,10 +52,10 @@ const CharacterInfo = () => {
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="p-4 rounded-lg bg-darkblue-1 shrink-0" style={{ width: 332 }}>
             {error ? (
-              <p className="text-center text-lightred">{getAppDataError("character", error.code)}</p>
+              <p className="text-center text-lightred">{error}</p>
             ) : (
               <div className="w-full h-full flex-center">
-                <AiOutlineLoading3Quarters className="text-2xl animate-spin" />
+                <LoadingIcon />
               </div>
             )}
           </div>

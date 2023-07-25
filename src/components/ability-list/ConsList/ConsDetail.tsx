@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import type { AppCharacter } from "@Src/types";
 import { appData } from "@Data/index";
 
 // Conponent
-import { CloseButton, Green, Lesser } from "@Src/pure-components";
+import { CloseButton, Green, Lesser, LoadingIcon } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
 const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
@@ -61,6 +60,8 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
   const { vision, constellation } = charData;
   const consInfo = constellation[consLv - 1] || {};
 
+  console.log(isLoading);
+
   return (
     <div className="h-full flex-col hide-scrollbar">
       <SlideShow
@@ -79,7 +80,7 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
         <p className="mt-4">{consInfo.description}</p>
       ) : (
         <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
-          {isLoading && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
+          <LoadingIcon active={isLoading} />
           {isError && <Lesser>Error. Rebooting...</Lesser>}
           {data?.[consLv - 1]}
         </p>

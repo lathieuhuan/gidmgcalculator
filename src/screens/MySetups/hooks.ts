@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { UserArtifacts, UserWeapon } from "@Src/types";
 
 // Util
@@ -17,10 +17,11 @@ type SetupItemInfos = Record<
   }
 >;
 
-export function useSetupItems() {
-  const userSetups = useSelector(selectUserSetups);
+export function useSetupItems(userSetups: ReturnType<typeof selectUserSetups>) {
   const userWps = useSelector(selectUserWps);
   const userArts = useSelector(selectUserArts);
+
+  const [record, setRecord] = useState<SetupItemInfos>({});
 
   const getSetupItems = () => {
     const result: SetupItemInfos = {};
@@ -37,10 +38,9 @@ export function useSetupItems() {
     return result;
   };
 
-  const [record, setRecord] = useState<SetupItemInfos>({});
+  useEffect(() => setRecord(getSetupItems()), [userSetups]);
 
   return {
     itemsBySetupID: record,
-    getSetupItems: () => setRecord(getSetupItems()),
   };
 }

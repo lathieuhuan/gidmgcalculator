@@ -4,30 +4,19 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { appData } from "@Data/index";
 import { getTargetData } from "@Data/controllers";
-import { calculateChosenSetup } from "./utils";
 
 // Component
 import { Lightgold, CollapseList } from "@Src/pure-components";
-import {
-  ArtifactBuffs,
-  ArtifactDebuffs,
-  CustomBuffs,
-  CustomDebuffs,
-  ElementBuffs,
-  ElementDebuffs,
-  PartyBuffs,
-  PartyDebuffs,
-  SelfBuffs,
-  SelfDebuffs,
-  WeaponBuffs,
-} from "../modal-content";
+import { ArtifactBuffs, CustomBuffs, ElementBuffs, PartyBuffs, SelfBuffs, WeaponBuffs } from "./buffs";
+import { ArtifactDebuffs, CustomDebuffs, ElementDebuffs, PartyDebuffs, SelfDebuffs } from "./debuffs";
+import { calculateChosenSetup } from "../../utils";
 
 interface ModifierWrapperProps {
   className?: string;
   title: string;
   children: JSX.Element;
 }
-export const ModifierWrapper = ({ className = "", title, children }: ModifierWrapperProps) => {
+const ModifierWrapper = ({ className = "", title, children }: ModifierWrapperProps) => {
   return (
     <div className={"py-4 shrink-0 " + className}>
       <p className="mb-2 text-lg text-center text-orange font-bold uppercase">{title}</p>

@@ -16,7 +16,7 @@ import { CompareTable } from "./CompareTable";
 
 const { Tr, Th, Td } = Table;
 
-interface DamageDisplayProps {
+export interface DamageDisplayProps {
   char: CharInfo;
   party: Party;
   damageResult: DamageResult;

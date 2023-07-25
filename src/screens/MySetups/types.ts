@@ -1,16 +1,3 @@
-export type MySetupModalType =
-  | "TIPS"
-  | "FIRST_COMBINE"
-  | "COMBINE_MORE"
-  | "SHARE_SETUP"
-  | "REMOVE_SETUP"
-  | "STATS"
-  | "MODIFIERS"
-  | "WEAPON"
-  | "ARTIFACTS"
-  | "";
+import { MySetupsModalType } from "@Store/uiSlice/types";
 
-export type MySetupModal = {
-  type: MySetupModalType;
-  ID?: number;
-};
+export type OpenModalFn = (type: MySetupsModalType) => () => void;

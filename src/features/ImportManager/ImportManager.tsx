@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import isEqual from "react-fast-compare";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import type { PartiallyRequired, SetupImportInfo } from "@Src/types";
 import { EScreen, MAX_CALC_SETUPS } from "@Src/constants";
@@ -15,7 +14,7 @@ import { importSetup, updateMessage } from "@Store/calculatorSlice";
 import { checkBeforeInitNewSession } from "@Store/thunks";
 
 // Component
-import { Modal, ConfirmModal } from "@Src/pure-components";
+import { Modal, ConfirmModal, LoadingIcon } from "@Src/pure-components";
 import { OverrideOptions } from "./OverwriteOptions";
 
 type ImportManagerProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
@@ -130,7 +129,7 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
     case 0:
       return (
         <Modal active closeOnMaskClick={false} onClose={() => {}}>
-          <AiOutlineLoading3Quarters className="text-3.5xl animate-spin" />
+          <LoadingIcon size="large" />
         </Modal>
       );
     case 1:

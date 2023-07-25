@@ -1,24 +1,12 @@
-import type { UserArtifact, UserSetup, UserWeapon } from "@Src/types";
+import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
 import calculateAll from "@Src/calculation";
-import { findById } from "@Src/utils";
 import { appData } from "@Data/index";
 
-export const calculateChosenSetup = (chosenSetup: UserSetup, userWps: UserWeapon[], userArts: UserArtifact[]) => {
+export const calculateChosenSetup = (chosenSetup: UserSetup, weapon: UserWeapon | null, artifacts: UserArtifacts) => {
   const { char, weaponID, artifactIDs, target, ...rest } = chosenSetup;
   const charData = appData.getCharData(char.name);
-  const weapon = findById(userWps, weaponID);
 
   if (charData && weapon) {
-    const artifacts = artifactIDs.reduce((results: UserArtifact[], ID) => {
-      const foundArt = ID ? findById(userArts, ID) : undefined;
-
-      if (foundArt) {
-        return results.concat(foundArt);
-      }
-
-      return results;
-    }, []);
-
     const result = calculateAll({ char, weapon, artifacts, ...rest }, target);
 
     return {

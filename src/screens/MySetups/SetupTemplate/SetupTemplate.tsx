@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { FaLink, FaPlus, FaShareAlt, FaTrashAlt, FaUnlink, FaWrench } from "react-icons/fa";
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
-import type { MySetupModalType } from "../types";
+import type { OpenModalFn } from "../types";
 
 // Constant
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
@@ -21,7 +21,7 @@ import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
 import { CharacterPortrait } from "@Src/components";
-import { TeammateDetail } from "../modal-content/TeammateDetail";
+import { TeammateDetail } from "../modal-content";
 import { GearIcon } from "./GearIcon";
 
 interface SetupLayoutProps {
@@ -31,7 +31,7 @@ interface SetupLayoutProps {
   weapon: UserWeapon | null;
   artifacts?: UserArtifacts;
   allIDs?: Record<string, number>;
-  openModal: (type: MySetupModalType, ID?: number) => () => void;
+  openModal: OpenModalFn;
 }
 export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], allIDs, openModal }: SetupLayoutProps) {
   const { type, char, party } = setup;
@@ -44,6 +44,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
   const teammateInfo = party[teammateDetail.index];
   const isOriginal = type === "original";
+  const isFetched = appData.getCharStatus(char.name) === "fetched";
 
   const closeTeammateDetail = () => {
     setTeammateDetail({
@@ -141,7 +142,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     const gears = (
       <div className="mt-4 mx-auto grid grid-cols-3 gap-2">
         {weaponData ? (
-          <GearIcon item={weaponData} onClick={openModal("WEAPON")} />
+          <GearIcon item={weaponData} disabled={!isFetched} onClick={openModal("WEAPON")} />
         ) : (
           <GearIcon item={{ icon: "7/7b/Icon_Inventory_Weapons" }} />
         )}
@@ -158,6 +159,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
                   beta: artifactData.beta,
                   rarity: artifact.rarity || 5,
                 }}
+                disabled={!isFetched}
                 onClick={openModal("ARTIFACTS")}
               />
             ) : null;
@@ -169,7 +171,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
     );
 
     return { mainCharacter, teammate, gears };
-  }, [`${ID}-${setup.ID}`]);
+  }, [`${ID}-${setup.ID}`, isFetched]);
 
   return (
     <>
@@ -214,16 +216,16 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
             }}
           />
 
-          <Button variant="neutral" icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP", setup.ID)} />
+          <Button variant="neutral" icon={<FaShareAlt />} onClick={openModal("SHARE_SETUP")} />
 
           {isOriginal ? (
-            <Button variant="negative" icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP", setup.ID)} />
+            <Button variant="negative" icon={<FaTrashAlt />} onClick={openModal("REMOVE_SETUP")} />
           ) : (
             <Button
               variant="neutral"
               icon={<FaPlus />}
               disabled={!allIDs || Object.keys(allIDs).length >= 4}
-              onClick={openModal("COMBINE_MORE", ID)}
+              onClick={openModal("COMBINE_MORE")}
             />
           )}
         </div>
@@ -240,13 +242,15 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         <div className="mt-4 lg:mt-0 flex flex-col">
           <div className="flex justify-center space-x-4">
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl"
+              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              disabled={!isFetched}
               onClick={openModal("STATS")}
             >
               Stats
             </button>
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl"
+              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              disabled={!isFetched}
               onClick={openModal("MODIFIERS")}
             >
               Modifiers

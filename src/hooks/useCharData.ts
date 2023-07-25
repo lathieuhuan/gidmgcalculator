@@ -1,22 +1,20 @@
 import { useRef, useState, useEffect } from "react";
 import { appData } from "@Data/index";
 import { AppCharacter } from "@Src/types";
+import { getAppDataError } from "@Src/utils";
 
 type Status = "loading" | "error" | "success";
 
 type State = {
   data: AppCharacter | null;
   dataOf: string;
-  fetchingFor: string;
+  fetchingFor?: string;
   unsubscriber?: () => void;
   status: Status | "";
-  error: null | {
-    code: number;
-    message: string;
-  };
+  error: string | null;
 };
 
-export const useCharData = (name: string) => {
+export const useCharData = (name?: string) => {
   const state = useRef<State>({
     data: null,
     dataOf: "",
@@ -51,8 +49,8 @@ export const useCharData = (name: string) => {
     state.current.fetchingFor = name;
   };
 
-  const fetchData = async () => {
-    const response = await appData.fetchCharacter(name);
+  const fetchData = async (charName: string) => {
+    const response = await appData.fetchCharacter(charName);
 
     if (name !== state.current.fetchingFor) {
       // response is stale (name is old)
@@ -63,15 +61,12 @@ export const useCharData = (name: string) => {
       onSuccess(response.data);
     } else {
       state.current.status = "error";
-      state.current.error = {
-        code: response.code,
-        message: response.message || "Unknown error",
-      };
+      state.current.error = getAppDataError("character", response.code);
     }
     render();
   };
 
-  if (state.current.dataOf !== name) {
+  if (name && state.current.dataOf !== name) {
     state.current.dataOf = name;
     state.current.unsubscriber?.();
 
@@ -90,7 +85,7 @@ export const useCharData = (name: string) => {
         break;
       case "unfetched":
         onFetching();
-        fetchData();
+        fetchData(name);
         break;
       default:
     }
