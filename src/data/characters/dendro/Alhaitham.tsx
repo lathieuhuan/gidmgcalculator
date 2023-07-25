@@ -15,6 +15,10 @@ const Alhaitham: DefaultAppCharacter = {
   vision: "dendro",
   weaponType: "sword",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

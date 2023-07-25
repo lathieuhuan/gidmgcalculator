@@ -11,6 +11,10 @@ const ElectroMC: DefaultAppCharacter = {
   ...TRAVELER_INFO,
   vision: "electro",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

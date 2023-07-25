@@ -11,6 +11,10 @@ const AnemoMC: DefaultAppCharacter = {
   ...TRAVELER_INFO,
   vision: "anemo",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.C2,

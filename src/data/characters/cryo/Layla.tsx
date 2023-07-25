@@ -16,6 +16,10 @@ const Layla: DefaultAppCharacter = {
   vision: "cryo",
   weaponType: "sword",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

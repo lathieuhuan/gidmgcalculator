@@ -16,6 +16,10 @@ const Dehya: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "claymore",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.C1,

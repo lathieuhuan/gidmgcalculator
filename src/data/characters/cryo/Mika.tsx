@@ -33,6 +33,10 @@ const Mika: DefaultAppCharacter = {
   vision: "cryo",
   weaponType: "polearm",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

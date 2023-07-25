@@ -73,6 +73,10 @@ const Raiden: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "polearm",
   EBcost: 90,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

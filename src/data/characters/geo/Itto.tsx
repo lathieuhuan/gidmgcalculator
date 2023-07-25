@@ -18,6 +18,10 @@ const Itto: DefaultAppCharacter = {
   vision: "geo",
   weaponType: "claymore",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

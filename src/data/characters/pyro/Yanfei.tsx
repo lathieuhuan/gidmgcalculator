@@ -22,6 +22,10 @@ const Yanfei: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "catalyst",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   buffs: [
     {
       index: 3,

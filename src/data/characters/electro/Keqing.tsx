@@ -15,6 +15,10 @@ const Keqing: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "sword",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

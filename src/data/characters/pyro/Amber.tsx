@@ -15,6 +15,10 @@ const Amber: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "bow",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A1,

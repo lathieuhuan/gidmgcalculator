@@ -16,6 +16,10 @@ const Yelan: DefaultAppCharacter = {
   vision: "hydro",
   weaponType: "bow",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A1,

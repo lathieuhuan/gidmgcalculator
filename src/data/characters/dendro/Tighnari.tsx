@@ -15,6 +15,10 @@ const Tighnari: DefaultAppCharacter = {
   vision: "dendro",
   weaponType: "bow",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

@@ -16,6 +16,10 @@ const Baizhu: DefaultAppCharacter = {
   vision: "dendro",
   weaponType: "catalyst",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.C6,

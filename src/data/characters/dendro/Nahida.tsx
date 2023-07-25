@@ -30,6 +30,10 @@ const Nahida: DefaultAppCharacter = {
   vision: "dendro",
   weaponType: "catalyst",
   EBcost: 50,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

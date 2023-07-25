@@ -14,6 +14,10 @@ const Lisa: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "catalyst",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   debuffs: [
     {
       index: 0,

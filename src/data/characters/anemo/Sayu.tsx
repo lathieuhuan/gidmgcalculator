@@ -14,6 +14,10 @@ const Sayu: DefaultAppCharacter = {
   vision: "anemo",
   weaponType: "claymore",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.C6,

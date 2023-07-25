@@ -15,6 +15,10 @@ const Klee: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "catalyst",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   buffs: [
     {
       index: 0,

@@ -25,7 +25,7 @@ import type {
 import { findByName, pickOne, toArray } from "./pure-utils";
 import { bareLv } from "./utils";
 
-export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
+export const getArtifactSetBonuses = (artifacts: CalcArtifacts = []): ArtifactSetBonus[] => {
   const sets = [];
   const count: Record<number, number> = {};
 
@@ -42,7 +42,7 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
     }
   }
   return sets;
-}
+};
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
@@ -50,7 +50,7 @@ interface TotalXtraTalentArgs {
   talentType: Talent;
   partyData?: PartyData;
 }
-export function totalXtraTalentLv({ char, charData, talentType, partyData }: TotalXtraTalentArgs) {
+export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: TotalXtraTalentArgs) => {
   let result = 0;
 
   if (talentType === "NAs") {
@@ -59,14 +59,14 @@ export function totalXtraTalentLv({ char, charData, talentType, partyData }: Tot
     }
   }
   if (talentType !== "altSprint") {
-    const { bonusLvAtCons } = charData.activeTalents[talentType];
+    const consLv = charData.talentLvBonusAtCons?.[talentType];
 
-    if (bonusLvAtCons && char.cons >= bonusLvAtCons) {
+    if (consLv && char.cons >= consLv) {
       result += 3;
     }
   }
   return result;
-}
+};
 
 export const finalTalentLv = (args: TotalXtraTalentArgs) => {
   const talentLv = args.talentType === "altSprint" ? 0 : args.char[args.talentType];

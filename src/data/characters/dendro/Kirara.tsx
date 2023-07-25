@@ -16,6 +16,10 @@ const Kirara: DefaultAppCharacter = {
   vision: "dendro",
   weaponType: "sword",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

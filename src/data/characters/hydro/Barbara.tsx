@@ -15,6 +15,10 @@ const Barbara: DefaultAppCharacter = {
   vision: "hydro",
   weaponType: "catalyst",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

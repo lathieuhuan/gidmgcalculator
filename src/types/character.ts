@@ -20,6 +20,7 @@ import type {
   ModifierInput,
   BuffModifierArgsWrapper,
   Tracker,
+  Talent,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
@@ -36,6 +37,7 @@ export type DefaultAppCharacter = Pick<
   | "vision"
   | "weaponType"
   | "EBcost"
+  | "talentLvBonusAtCons"
   | "innateBuffs"
   | "buffs"
   | "debuffs"
@@ -52,12 +54,13 @@ export type AppCharacter = {
   nation: Nation;
   vision: Vision;
   weaponType: WeaponType;
+  EBcost: number;
   stats: number[][];
+  talentLvBonusAtCons?: Partial<Record<Talent, number>>;
   bonusStat: {
     type: AttributeStat;
     value: number;
   };
-  EBcost: number;
   calcListConfig?: {
     NA?: CalcListConfig;
     CA?: CalcListConfig;
@@ -73,10 +76,10 @@ export type AppCharacter = {
     EB: CalcItem[];
   };
   activeTalents: {
-    NAs: ActiveTalent;
-    ES: ActiveTalent;
-    EB: ActiveTalent;
-    altSprint?: ActiveTalent;
+    NAs: Ability;
+    ES: Ability;
+    EB: Ability;
+    altSprint?: Ability;
   };
   passiveTalents: Ability[];
   constellation: Ability[];
@@ -94,10 +97,6 @@ type Ability = {
   name: string;
   image?: string;
   description?: string;
-};
-
-type ActiveTalent = Ability & {
-  bonusLvAtCons?: number;
 };
 
 export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";

@@ -16,6 +16,10 @@ const YaeMiko: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "catalyst",
   EBcost: 90,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

@@ -23,6 +23,10 @@ const Kazuha: DefaultAppCharacter = {
   vision: "anemo",
   weaponType: "sword",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   buffs: [
     {
       index: 1,

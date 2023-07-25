@@ -16,6 +16,10 @@ const Candace: DefaultAppCharacter = {
   vision: "hydro",
   weaponType: "polearm",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

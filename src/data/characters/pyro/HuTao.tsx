@@ -18,6 +18,10 @@ const HuTao: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "polearm",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.C2,

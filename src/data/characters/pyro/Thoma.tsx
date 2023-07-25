@@ -17,6 +17,10 @@ const Thoma: DefaultAppCharacter = {
   vision: "pyro",
   weaponType: "polearm",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

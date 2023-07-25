@@ -15,6 +15,10 @@ const Chongyun: DefaultAppCharacter = {
   vision: "cryo",
   weaponType: "claymore",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 1,

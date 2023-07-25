@@ -19,6 +19,10 @@ const Razor: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "claymore",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

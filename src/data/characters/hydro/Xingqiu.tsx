@@ -15,6 +15,10 @@ const Xingqiu: DefaultAppCharacter = {
   vision: "hydro",
   weaponType: "sword",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

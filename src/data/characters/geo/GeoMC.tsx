@@ -11,6 +11,10 @@ const GeoMC: DefaultAppCharacter = {
   ...TRAVELER_INFO,
   vision: "geo",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

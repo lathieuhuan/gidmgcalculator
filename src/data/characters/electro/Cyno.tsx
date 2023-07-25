@@ -15,6 +15,10 @@ const Cyno: DefaultAppCharacter = {
   vision: "electro",
   weaponType: "polearm",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

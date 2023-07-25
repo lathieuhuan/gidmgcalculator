@@ -17,6 +17,10 @@ const Noelle: DefaultAppCharacter = {
   vision: "geo",
   weaponType: "claymore",
   EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.C2,

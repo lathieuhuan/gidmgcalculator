@@ -18,6 +18,10 @@ const Kokomi: DefaultAppCharacter = {
   vision: "hydro",
   weaponType: "catalyst",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

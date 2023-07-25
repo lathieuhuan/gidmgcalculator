@@ -15,6 +15,10 @@ const Ningguang: DefaultAppCharacter = {
   vision: "geo",
   weaponType: "catalyst",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
+  },
   buffs: [
     {
       index: 0,

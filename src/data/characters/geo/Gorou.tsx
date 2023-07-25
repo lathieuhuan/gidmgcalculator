@@ -19,6 +19,10 @@ const Gorou: DefaultAppCharacter = {
   vision: "geo",
   weaponType: "bow",
   EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

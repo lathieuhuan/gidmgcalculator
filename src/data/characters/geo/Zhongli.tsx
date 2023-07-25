@@ -16,6 +16,10 @@ const Zhongli: DefaultAppCharacter = {
   vision: "geo",
   weaponType: "polearm",
   EBcost: 40,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   innateBuffs: [
     {
       src: EModSrc.A4,

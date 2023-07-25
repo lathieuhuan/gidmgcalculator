@@ -23,6 +23,10 @@ const Xiao: DefaultAppCharacter = {
   vision: "anemo",
   weaponType: "polearm",
   EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
+  },
   buffs: [
     {
       index: 0,
