@@ -107,22 +107,6 @@ export default function getBuffedStats({
 }: GetBuffedStatsArgs) {
   const weaponData = findDataWeapon(weapon)!;
   const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
-  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
-  const setBonuses = getArtifactSetBonuses(artifacts);
-  const usedWpMods: UsedCode[] = [];
-  const usedArtMods: UsedCode[] = [];
-
-  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
-    const usedMods = isWeapon ? usedWpMods : usedArtMods;
-    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
-
-    if (foundItem && foundItem.modIndex === modIndex) {
-      return false;
-    } else {
-      usedMods.push({ itemCode, modIndex });
-      return true;
-    }
-  }
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -175,6 +159,23 @@ export default function getBuffedStats({
     charBuffCtrls: selfBuffCtrls,
     charData,
   });
+
+  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
+  const setBonuses = getArtifactSetBonuses(artifacts);
+  const usedWpMods: UsedCode[] = [];
+  const usedArtMods: UsedCode[] = [];
+
+  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
+    const usedMods = isWeapon ? usedWpMods : usedArtMods;
+    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
+
+    if (foundItem && foundItem.modIndex === modIndex) {
+      return false;
+    } else {
+      usedMods.push({ itemCode, modIndex });
+      return true;
+    }
+  }
 
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
   applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, modifierArgs });
@@ -244,13 +245,6 @@ export default function getBuffedStats({
       }
     }
   }
-
-  applySelfBuffs({
-    isFinal: false,
-    modifierArgs,
-    charBuffCtrls: selfBuffCtrls,
-    charData,
-  });
 
   // APPPLY TEAMMATE BUFFS
 

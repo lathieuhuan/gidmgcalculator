@@ -40,11 +40,14 @@ const goldBows: AppWeapon[] = [
     },
     applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
       if (partyData) {
-        const { [charData.vision]: numOfSameVisions } = countVision(partyData, charData);
-        const valueIndex = numOfSameVisions ? Math.min(numOfSameVisions, 3) - 1 : -1;
-        let bonusValue = 12 + refi * 4;
-        bonusValue += the1stGreateMagicBuffValuesByStack(refi)[valueIndex] || 0;
-        applyModifier(desc, totalAttr, "atk_", bonusValue, tracker);
+        const { [charData.vision]: sameVisionCount } = countVision(partyData, charData);
+        let buffValue = 12 + refi * 4;
+
+        if (sameVisionCount) {
+          const valueIndex = Math.min(sameVisionCount, 3) - 1;
+          buffValue += the1stGreateMagicBuffValuesByStack(refi)[valueIndex] || 0;
+        }
+        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       }
     },
   },

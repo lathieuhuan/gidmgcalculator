@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import type { AppCharacter } from "@Src/types";
+import type { AppCharacter, Talent } from "@Src/types";
 import { appData } from "@Data/index";
 
 // Conponent
@@ -9,12 +9,12 @@ import { SlideShow } from "../components";
 
 const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
   const { auto = true } = options || {};
-  const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">(auto ? "loading" : "idle");
-  const [descriptions, setDescriptions] = useState<string[]>();
   const state = useRef({
-    fetchStarted: false,
     mounted: true,
+    status: "idle" as "idle" | "loading" | "error" | "success",
+    descriptions: null as string[] | null,
   });
+  const [boo, setBoo] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -27,24 +27,30 @@ const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
 
     if (state.current.mounted) {
       if (response.code === 200) {
-        setStatus("success");
-        setDescriptions(response.data || []);
+        state.current.status = "success";
+        state.current.descriptions = response.data || [];
       } else {
-        setStatus("error");
+        state.current.status = "error";
       }
     }
+    setBoo(!boo);
   };
 
-  if (status === "loading" && !state.current.fetchStarted) {
-    state.current.fetchStarted = true;
+  if (auto && state.current.status === "idle") {
+    state.current.status = "loading";
+  }
+
+  if (state.current.status === "loading") {
     getConstellation();
   }
+
+  const { status, descriptions } = state.current;
 
   return {
     isLoading: status === "loading",
     isError: status === "error",
     isSuccess: status === "success",
-    data: descriptions,
+    descriptions,
   };
 };
 
@@ -55,10 +61,25 @@ interface ConsDetailProps {
   onClose?: () => void;
 }
 export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const { isLoading, isError, data } = useConsDescriptions(charData.name);
-
-  const { vision, constellation } = charData;
+  const { vision, constellation, talentLvBonusAtCons = {}, activeTalents } = charData;
   const consInfo = constellation[consLv - 1] || {};
+
+  const { isLoading, isError, descriptions } = useConsDescriptions(charData.name, {
+    auto: !constellation[0].description,
+  });
+
+  let description;
+
+  if (consLv === 3 || consLv === 5) {
+    const [talent] = Object.entries(talentLvBonusAtCons).find(([, cons]) => cons === consLv) || [];
+    const { name } = activeTalents[talent as Talent] || {};
+
+    if (name) {
+      description = `Increases the Level of ${name} by 3.\nMaximum upgrade level is 15.`;
+    }
+  } else {
+    description = consInfo.description;
+  }
 
   return (
     <div className="h-full flex-col hide-scrollbar">
@@ -74,13 +95,13 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
       <p className="text-lg">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>
-      {consInfo.description ? (
-        <p className="mt-4">{consInfo.description}</p>
+      {description ? (
+        <p className="mt-4 whitespace-pre-wrap">{description}</p>
       ) : (
         <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
           <LoadingIcon active={isLoading} />
           {isError && <Lesser>Error. Rebooting...</Lesser>}
-          {data?.[consLv - 1]}
+          {descriptions?.[consLv - 1]}
         </p>
       )}
 

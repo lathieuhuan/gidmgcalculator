@@ -37,6 +37,7 @@ function calculateItem({
 }: CalculateItemArgs) {
   const itemFlatBonus = getExclusiveBonus(calcItemBonues, "flat");
   const itemPctBonus = getExclusiveBonus(calcItemBonues, "pct_");
+  const itemMultPlusBonus = getExclusiveBonus(calcItemBonues, "multPlus");
 
   if (base !== 0 && !stat.type) {
     const flat =
@@ -47,7 +48,7 @@ function calculateItem({
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
     let normalMult = itemPctBonus + attPattBonus.all.pct_;
-    let specialMult = 1;
+    let specialMult = itemMultPlusBonus + attPattBonus.all.multPlus;
 
     if (attPatt !== "none") {
       normalMult += attPattBonus[attPatt].pct_;
@@ -302,7 +303,8 @@ export default function getDamage({
           scale = multScale,
         } = typeof factor === "number" ? { root: factor } : factor;
 
-        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + itemBonusMult;
+        const finalMult =
+          root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + itemBonusMult + attPattBonus[ATT_PATT].mult_;
 
         let flatBonus = 0;
 
