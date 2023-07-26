@@ -56,7 +56,7 @@ export type AppCharacter = {
   weaponType: WeaponType;
   EBcost: number;
   stats: number[][];
-  talentLvBonusAtCons: Partial<Record<Talent, number>>;
+  talentLvBonusAtCons?: Partial<Record<Talent, number>>;
   bonusStat: {
     type: AttributeStat;
     value: number;

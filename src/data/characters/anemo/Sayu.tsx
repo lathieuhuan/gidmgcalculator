@@ -33,7 +33,6 @@ const Sayu: DefaultAppCharacter = {
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         const buffValue = Math.min(totalAttr.em, 2000);
-
         calcItemBuffs.push(
           exclBuff(EModSrc.C6, "EB.0", "mult_", buffValue * 0.2),
           exclBuff(EModSrc.C6, "EB.1", "flat", buffValue * 3)

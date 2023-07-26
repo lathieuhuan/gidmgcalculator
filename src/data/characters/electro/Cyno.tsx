@@ -64,7 +64,7 @@ const Cyno: DefaultAppCharacter = {
       desc: () => (
         <>
           When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at intervals. If he
-          activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> whle affected by this stance, its{" "}
+          activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> while affected by this stance, its{" "}
           <Green>DMG</Green> will be increased by <Green b>35%</Green>
         </>
       ),
