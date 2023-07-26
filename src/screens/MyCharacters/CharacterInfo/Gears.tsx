@@ -28,7 +28,7 @@ export default function Gears(props: GearsProps) {
   const setBonuses = getArtifactSetBonuses(artifacts);
 
   const [activeDetails, setActiveDetails] = useState<DetailsType>(-1);
-  const [showingDetails, setShowingDetails] = useState(false);
+  const [showingDetail, setShowingDetail] = useState(false);
   const [inventoryCode, setInventoryCode] = useState(-1);
 
   const dispatch = useDispatch();
@@ -37,10 +37,10 @@ export default function Gears(props: GearsProps) {
 
   const toggleDetails = (type: DetailsType) => {
     if (activeDetails === type) {
-      setShowingDetails(false);
+      setShowingDetail(false);
       setTimeout(() => setActiveDetails(-1), 200);
     } else {
-      setShowingDetails(true);
+      setShowingDetail(true);
       setActiveDetails(type);
     }
   };
@@ -56,7 +56,7 @@ export default function Gears(props: GearsProps) {
     />
   );
 
-  const detailsComponent = activeDetails !== -1 && (
+  const detailComponent = activeDetails !== -1 && (
     <GearsDetails
       className={clsx(
         "h-full",
@@ -77,7 +77,7 @@ export default function Gears(props: GearsProps) {
           const activeArtifact = artifacts[activeDetails];
 
           if (activeArtifact) {
-            setShowingDetails(false);
+            setShowingDetail(false);
             setTimeout(() => {
               setActiveDetails(-1);
               dispatch(
@@ -98,28 +98,28 @@ export default function Gears(props: GearsProps) {
   return (
     <>
       {onSmallDevice ? (
-        <div className="ml-2 w-75 h-full px-4 shrink-0 rounded-lg bg-darkblue-1 box-content">
+        <div className="w-75 h-full px-4 shrink-0 rounded-lg bg-darkblue-1 box-content">
           <SharedSpace
-            atLeft={!showingDetails}
+            atLeft={!showingDetail}
             leftPart={overviewComponent}
             rightPart={
               <div className="h-full py-4 flex flex-col">
                 <div className="flex justify-center">
                   <CloseButton size="small" onClick={() => toggleDetails(activeDetails)} />
                 </div>
-                <div className="pt-3 grow hide-scrollbar">{detailsComponent}</div>
+                <div className="pt-3 grow hide-scrollbar">{detailComponent}</div>
               </div>
             }
           />
         </div>
       ) : (
-        <div className="ml-2 h-full flex">
+        <div className="h-full flex">
           <div className="w-75 px-4 rounded-lg bg-darkblue-1 box-content">{overviewComponent}</div>
           <div
             className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
-            style={{ width: showingDetails ? "20.25rem" : 0 }}
+            style={{ width: showingDetail ? "20.25rem" : 0 }}
           >
-            {detailsComponent}
+            {detailComponent}
           </div>
         </div>
       )}

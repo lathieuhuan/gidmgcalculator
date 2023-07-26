@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { useIntersectionObserver } from "@Src/hooks";
-
-// Util
 import { getImgSrc } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";
@@ -24,7 +22,7 @@ interface TopBarProps {
   onCliceSort: () => void;
   onClickWish: () => void;
 }
-export default function SideIconCarousel({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
+export default function CharacterList({ characterNames, chosenChar, onCliceSort, onClickWish }: TopBarProps) {
   const dispatch = useDispatch();
 
   const [gridviewOn, setGridviewOn] = useState(false);
@@ -70,11 +68,11 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
-                const databaseChar = findDataCharacter({ name });
-                if (!databaseChar) {
+                const charData = appData.getCharData(name);
+                if (!charData) {
                   return null;
                 }
-                const { sideIcon, icon } = databaseChar;
+                const { sideIcon, icon } = charData;
                 const visible = itemsVisible[name];
 
                 return (
@@ -133,7 +131,7 @@ export default function SideIconCarousel({ characterNames, chosenChar, onCliceSo
 
       <PickerCharacter
         active={gridviewOn}
-        sourceType="userData"
+        sourceType="user"
         onPickCharacter={({ name }) => {
           dispatch(chooseCharacter(name));
           scrollList(name);

@@ -1,19 +1,21 @@
-import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Cryo, Green, Rose } from "@Src/pure-components";
-import { EModAffect } from "@Src/constants";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
+import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { Cryo, Green, Rose } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
-  const level = fromSelf ? finalTalentLv({ char, dataChar: Shenhe, talentType: "EB", partyData }) : inputs[0] || 0;
+  const level = fromSelf
+    ? finalTalentLv({ char, charData: Shenhe as AppCharacter, talentType: "EB", partyData })
+    : inputs[0] || 0;
   return level ? Math.min(5 + level, 15) : 0;
 };
 
-const Shenhe: DataCharacter = {
+const Shenhe: DefaultAppCharacter = {
   code: 47,
   name: "Shenhe",
   icon: "a/af/Shenhe_Icon",
@@ -22,82 +24,11 @@ const Shenhe: DataCharacter = {
   nation: "liyue",
   vision: "cryo",
   weaponType: "polearm",
-  stats: [
-    [1011, 24, 65],
-    [2624, 61, 168],
-    [3491, 82, 223],
-    [5224, 122, 334],
-    [5840, 137, 373],
-    [6719, 157, 429],
-    [7540, 176, 482],
-    [8429, 197, 538],
-    [9045, 211, 578],
-    [9941, 232, 635],
-    [10557, 247, 674],
-    [11463, 268, 732],
-    [12080, 282, 772],
-    [12993, 304, 830],
-  ],
-  bonusStat: { type: "atk_", value: 7.2 },
-  NAsConfig: {
-    name: "Dawnstar Shooter",
+  EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
   },
-  bonusLvFromCons: ["ES", "EB"],
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 43.26 },
-        { name: "2-Hit", multFactors: 40.25 },
-        { name: "3-Hit", multFactors: 53.32 },
-        { name: "4-Hit (1/2)", multFactors: 26.32 },
-        { name: "5-Hit", multFactors: 65.62 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack", multFactors: 110.67 }] },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Spring Spirit Summoning",
-      image: "6/6c/Talent_Spring_Spirit_Summoning",
-      stats: [
-        { name: "Press Skill DMG", multFactors: 139.2 },
-        { name: "Hold Skill DMG", multFactors: 188.8 },
-        { name: "DMG Bonus", notAttack: "other", multFactors: 45.66 },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Press/Hold Duration", value: "10s/15s" },
-      //   { name: "Press/Hold Trigger Quota", value: "5/7" },
-      //   { name: "Press CD", value: "10s" },
-      //   { name: "Hold CD", value: "15s" },
-      // ],
-    },
-    EB: {
-      name: "Divine Maiden's Deliverance",
-      image: "d/d5/Talent_Divine_Maiden%27s_Deliverance",
-      stats: [
-        { name: "Skill DMG", multFactors: 100.8 },
-        { name: "DoT", multFactors: 33.12 },
-      ],
-      // getExtraStats: (lv) => [
-      //   { name: "RES Decrease", value: Math.min(5 + lv, 15) + "%" },
-      //   { name: "Duration", value: "12s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-      energyCost: 80,
-    },
-  },
-  passiveTalents: [
-    { name: "Deific Embrace", image: "2/29/Talent_Deific_Embrace" },
-    { name: "Spirit Communion Seal", image: "5/5c/Talent_Spirit_Communion_Seal" },
-    { name: "Precise Comings and Goings", image: "d/d0/Talent_Precise_Comings_and_Goings" },
-  ],
-  constellation: [
-    { name: "Clarity of Heart", image: "1/13/Constellation_Clarity_of_Heart" },
-    { name: "Centered Spirit", image: "9/90/Constellation_Centered_Spirit" },
-    { name: "Seclusion", image: "d/d9/Constellation_Seclusion" },
-    { name: "Insight", image: "4/46/Constellation_Insight" },
-    { name: "Divine Attainment", image: "5/58/Constellation_Divine_Attainment" },
-    { name: "Mystical Abandon", image: "0/0d/Constellation_Mystical_Abandon" },
-  ],
   buffs: [
     {
       index: 0,
@@ -116,7 +47,9 @@ const Shenhe: DataCharacter = {
       applyFinalBuff: (obj) => {
         const { toSelf, inputs, attElmtBonus } = obj;
         const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
-        const level = toSelf ? finalTalentLv({ ...obj, dataChar: Shenhe, talentType: "ES" }) : inputs[1] || 1;
+        const level = toSelf
+          ? finalTalentLv({ ...obj, charData: Shenhe as AppCharacter, talentType: "ES" })
+          : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
         const finalDesc = obj.desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
 
@@ -229,4 +162,4 @@ const Shenhe: DataCharacter = {
   ],
 };
 
-export default Shenhe;
+export default Shenhe as AppCharacter;

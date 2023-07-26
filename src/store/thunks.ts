@@ -1,17 +1,27 @@
 import { batch } from "react-redux";
 import isEqual from "react-fast-compare";
 import type { CalcArtifacts, UserSetup, UserWeapon } from "@Src/types";
-import type { PickedChar } from "./calculatorSlice/reducer-types";
+import type { InitNewSessionPayload } from "./calculatorSlice/reducer-types";
 import type { AppThunk } from "./index";
 import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_WEAPONS } from "@Src/constants";
 
 // Action
-import { initSessionWithChar, updateAllArtifact, updateMessage } from "./calculatorSlice";
+import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
 import { updateImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
-import { findById, calcItemToUserItem, userItemToCalcItem, findByCode, findByName, deepCopy } from "@Src/utils";
+import { findDataArtifactSet } from "@Data/controllers";
+import { appData } from "@Data/index";
+import {
+  findById,
+  calcItemToUserItem,
+  userItemToCalcItem,
+  findByCode,
+  findByName,
+  deepCopy,
+  getAppDataError,
+} from "@Src/utils";
 import { cleanupCalcSetup, isUserSetup } from "@Src/utils/setup";
 import {
   createArtDebuffCtrls,
@@ -23,13 +33,82 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { findDataArtifactSet } from "@Data/controllers";
+import { parseUserCharacter, type PickedChar } from "./utils";
 
-export const startCalculation = (pickedChar: PickedChar): AppThunk => {
+type Option = {
+  onSuccess?: () => void;
+};
+export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, options?: Option): AppThunk => {
+  return async (dispatch) => {
+    const { char } = payload.calcSetup;
+    const { onSuccess } = options || {};
+
+    if (appData.getCharStatus(char.name) === "fetched") {
+      dispatch(initNewSession(payload));
+      onSuccess?.();
+    } else {
+      const { name, vision, icon, rarity } = appData.getCharData(char.name);
+
+      dispatch(
+        updateUI({
+          loadingCharacter: { name, vision, icon, rarity },
+        })
+      );
+
+      const response = await appData.fetchCharacter(char.name);
+
+      if (response.code === 200) {
+        dispatch(initNewSession(payload));
+        onSuccess?.();
+      } else {
+        dispatch(
+          updateMessage({
+            type: "error",
+            content: getAppDataError("character", response.code),
+          })
+        );
+      }
+
+      dispatch(updateUI({ loadingCharacter: null }));
+    }
+  };
+};
+
+export const initNewSessionWithChar = (pickedChar: PickedChar): AppThunk => {
   return (dispatch, getState) => {
     const { userWps, userArts } = getState().database;
 
-    dispatch(initSessionWithChar({ pickedChar, userWps, userArts }));
+    const ID = Date.now();
+    const charData = appData.getCharData(pickedChar.name);
+    const data = parseUserCharacter({
+      pickedChar,
+      userWps,
+      userArts,
+      weaponType: charData.weaponType,
+      seedID: ID + 1,
+    });
+    const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
+
+    dispatch(
+      checkBeforeInitNewSession({
+        ID,
+        calcSetup: {
+          char: data.char,
+          selfBuffCtrls: selfBuffCtrls,
+          selfDebuffCtrls: selfDebuffCtrls,
+          weapon: data.weapon,
+          wpBuffCtrls: data.wpBuffCtrls,
+          artifacts: data.artifacts,
+          artBuffCtrls: data.artBuffCtrls,
+          artDebuffCtrls: createArtDebuffCtrls(),
+          party: [null, null, null],
+          elmtModCtrls: createElmtModCtrls(),
+          customBuffCtrls: [],
+          customDebuffCtrls: [],
+          customInfusion: { element: "phys" },
+        },
+      })
+    );
   };
 };
 

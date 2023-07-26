@@ -1,21 +1,21 @@
 import type {
   ArtifactAttribute,
-  CharData,
   CalcWeapon,
   CalcArtifacts,
   ArtifactSetBonus,
   CharInfo,
-  DataWeapon,
+  AppWeapon,
   Level,
   TotalAttribute,
   CoreStat,
   Tracker,
+  AppCharacter,
 } from "@Src/types";
 import type { BaseModifierArgsWrapper } from "./types";
 import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
 
 // Util
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import {
   applyPercent,
   ascsFromLv,
@@ -29,12 +29,12 @@ import { addOrInit, addTrackerRecord } from "./utils";
 
 interface InitiateTotalAttrArgs {
   char: CharInfo;
+  charData: AppCharacter;
   weapon: CalcWeapon;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   tracker?: Tracker;
 }
-export function initiateTotalAttr({ char, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
-  const charData = findDataCharacter(char)!;
+export function initiateTotalAttr({ char, charData, weapon, weaponData, tracker }: InitiateTotalAttrArgs) {
   const totalAttr = {} as TotalAttribute;
 
   for (const type of [...BASE_STAT_TYPES, ...ATTRIBUTE_STAT_TYPES]) {
@@ -125,16 +125,11 @@ export function addArtAttr({ artifacts, totalAttr, tracker }: AddArtAttrArgs): A
 
 interface addWeaponSubStatArgs {
   totalAttr: TotalAttribute;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   wpLevel: Level;
   tracker?: Tracker;
 }
-export function addWeaponSubStat({
-  totalAttr,
-  weaponData,
-  wpLevel,
-  tracker,
-}: addWeaponSubStatArgs) {
+export function addWeaponSubStat({ totalAttr, weaponData, wpLevel, tracker }: addWeaponSubStatArgs) {
   if (weaponData.subStat) {
     const { type, scale } = weaponData.subStat;
     const value = weaponSubStatValue(scale, wpLevel);
@@ -170,19 +165,13 @@ export function applyArtPassiveBuffs({ isFinal, setBonuses, modifierArgs }: Appl
 
 interface ApplyWpPassiveBuffsArgs {
   isFinal: boolean;
-  weaponData: DataWeapon;
+  weaponData: AppWeapon;
   refi: number;
   modifierArgs: BaseModifierArgsWrapper;
 }
-export function applyWpPassiveBuffs({
-  isFinal,
-  weaponData,
-  refi,
-  modifierArgs,
-}: ApplyWpPassiveBuffsArgs) {
+export function applyWpPassiveBuffs({ isFinal, weaponData, refi, modifierArgs }: ApplyWpPassiveBuffsArgs) {
   const { name, applyBuff, applyFinalBuff } = weaponData;
-  const applyFn =
-    !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+  const applyFn = !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
 
   if (applyFn) {
     applyFn({ desc: `${name} bonus`, ...modifierArgs, refi });
@@ -197,7 +186,7 @@ export function calcFinalTotalAttrs(totalAttr: TotalAttribute) {
 }
 
 interface GetBaseStatsArgs {
-  charData: CharData;
+  charData: AppCharacter;
   char: CharInfo;
   weapon: CalcWeapon;
   artifacts: CalcArtifacts;
@@ -205,7 +194,7 @@ interface GetBaseStatsArgs {
 export default function getBaseStats({ charData, char, weapon, artifacts }: GetBaseStatsArgs) {
   //
   const weaponData = findDataWeapon(weapon)!;
-  const totalAttr = initiateTotalAttr({ char, weaponData, weapon });
+  const totalAttr = initiateTotalAttr({ char, charData, weaponData, weapon });
   const artAttr = addArtAttr({ artifacts, totalAttr });
   const setBonuses = getArtifactSetBonuses(artifacts);
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level });

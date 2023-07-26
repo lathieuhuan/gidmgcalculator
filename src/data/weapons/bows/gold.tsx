@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { countVision, findByCode } from "@Src/utils";
@@ -14,7 +14,7 @@ const polarStarBuffValuesByStack = (refi: number) => [
 const thunderingPulseBuffValuesByStack = (refi: number) => [9 + refi * 3, 18 + refi * 6, 30 + refi * 10];
 const the1stGreateMagicBuffValuesByStack = (refi: number) => [12 + refi * 4, 24 + refi * 8, 36 + refi * 12];
 
-const goldBows: DataWeapon[] = [
+const goldBows: AppWeapon[] = [
   {
     code: 154,
     name: "The First Great Magic",

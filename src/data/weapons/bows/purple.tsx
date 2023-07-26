@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries, watatsumiSeries } from "../series";
@@ -8,7 +8,7 @@ import { makeWpModApplier } from "../utils";
 
 const fadingTwilightBuffValuesByState = (refi: number) => [4.5 + refi * 1.5, 7.5 + refi * 2.5, 10.5 + refi * 3.5];
 
-const purpleBows: DataWeapon[] = [
+const purpleBows: AppWeapon[] = [
   {
     code: 164,
     name: "Song of Stillness",

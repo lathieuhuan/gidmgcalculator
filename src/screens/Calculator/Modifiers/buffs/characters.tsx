@@ -1,7 +1,7 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-import { selectChar, selectCharData, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
@@ -13,7 +13,7 @@ import {
 } from "@Store/calculatorSlice";
 
 // Util
-import { findDataCharacter, getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { findByIndex } from "@Src/utils";
 
 // Component
@@ -22,14 +22,14 @@ import { ModifierTemplate, renderModifiers } from "@Src/components";
 export function SelfBuffs() {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const charData = useSelector(selectCharData);
-  const partyData = getPartyData(useSelector(selectParty));
+  const charData = appData.getCharData(char.name);
+  const partyData = appData.getPartyData(useSelector(selectParty));
   const totalAttr = useSelector(selectTotalAttr);
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
 
-  const { innateBuffs = [], buffs = [] } = findDataCharacter(char) || {};
+  const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
   const content: JSX.Element[] = [];
 
   innateBuffs.forEach(({ src, isGranted, desc }, index) => {
@@ -104,7 +104,7 @@ export function SelfBuffs() {
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
-  const partyData = getPartyData(useSelector(selectParty));
+  const partyData = appData.getPartyData(useSelector(selectParty));
   const content: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
@@ -124,10 +124,11 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const dispatch = useDispatch();
   const totalAttr = useSelector(selectTotalAttr);
   const char = useSelector(selectChar);
-  const charData = useSelector(selectCharData);
+
+  const charData = appData.getCharData(char.name);
 
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = findDataCharacter(teammate)!;
+  const { buffs = [], vision } = appData.getCharData(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs = [] } = ctrl;

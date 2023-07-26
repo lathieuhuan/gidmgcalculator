@@ -1,7 +1,6 @@
 import type {
   AttackElementBonus,
   AttackPatternBonus,
-  CharData,
   CalcWeapon,
   CalcArtifacts,
   CharInfo,
@@ -13,10 +12,8 @@ import type {
   ReactionBonus,
   TotalAttribute,
   AttackElement,
-  DataCharacter,
-  TalentStat,
+  AppCharacter,
   Target,
-  TalentBuff,
   ResistanceReduction,
   ArtifactDebuffCtrl,
   CustomDebuffCtrl,
@@ -25,6 +22,9 @@ import type {
   Tracker,
   TrackerDamageRecord,
   NormalAttack,
+  CalcItem,
+  CalcItemBuff,
+  CalcItemBonus,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -37,15 +37,14 @@ export type BaseModifierArgsWrapper = {
   attPattBonus?: AttackPatternBonus;
   attElmtBonus?: AttackElementBonus;
   rxnBonus?: ReactionBonus;
-  charData: CharData;
+  charData: AppCharacter;
   partyData?: PartyData;
   tracker?: Tracker;
 };
 
 export type GetBuffedStatsArgs = {
   char: CharInfo;
-  charData: CharData;
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
@@ -59,35 +58,32 @@ export type GetBuffedStatsArgs = {
   tracker?: Tracker;
 };
 
-export interface CalcTalentStatArgs {
-  stat: TalentStat;
+export interface CalculateItemArgs {
+  stat: CalcItem;
   attPatt: ActualAttackPattern;
   attElmt: ActualAttackElement;
   base: number | number[];
   char: CharInfo;
   target: Target;
   rxnMult: number;
-  talentBuff: TalentBuff;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
+  calcItemBonues: CalcItemBonus[];
   resistReduct: ResistanceReduction;
   record: TrackerDamageRecord;
 }
 
-export interface GetDamageArgs {
+export interface GetDamageArgs extends Pick<CalculateItemArgs, "totalAttr" | "attPattBonus" | "attElmtBonus"> {
+  calcItemBuffs: CalcItemBuff[];
   char: CharInfo;
-  charData: CharData;
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   selfBuffCtrls: ModifierCtrl[];
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;
   partyData: PartyData;
   disabledNAs: boolean;
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
   rxnBonus: ReactionBonus;
   customDebuffCtrls: CustomDebuffCtrl[];
   infusion: {

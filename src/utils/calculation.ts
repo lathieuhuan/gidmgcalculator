@@ -10,7 +10,7 @@ import type {
   AttributeStat,
   CalcArtifacts,
   CharInfo,
-  DataCharacter,
+  AppCharacter,
   Level,
   PartyData,
   Reaction,
@@ -23,10 +23,10 @@ import type {
   Tracker,
   TotalAttributeStat,
 } from "@Src/types";
-import { findByName, pickOne, turnArray } from "./pure-utils";
+import { findByName, pickOne, toArray } from "./pure-utils";
 import { bareLv } from "./utils";
 
-export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
+export const getArtifactSetBonuses = (artifacts: CalcArtifacts = []): ArtifactSetBonus[] => {
   const sets = [];
   const count: Record<number, number> = {};
 
@@ -43,39 +43,31 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
     }
   }
   return sets;
-}
+};
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   talentType: Talent;
   partyData?: PartyData;
 }
-export function totalXtraTalentLv({ char, dataChar, talentType, partyData }: TotalXtraTalentArgs) {
+export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: TotalXtraTalentArgs) => {
   let result = 0;
-  const [atCons3, atCons5] = dataChar.bonusLvFromCons;
 
   if (talentType === "NAs") {
     if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
       result++;
     }
   }
+  if (talentType !== "altSprint") {
+    const consLv = charData.talentLvBonusAtCons?.[talentType];
 
-  const increaseByCons = (atCons: typeof talentType) => {
-    if (talentType === atCons) {
+    if (consLv && char.cons >= consLv) {
       result += 3;
     }
-  };
-
-  if (char.cons >= 3) {
-    increaseByCons(atCons3);
   }
-  if (char.cons >= 5) {
-    increaseByCons(atCons5);
-  }
-
   return result;
-}
+};
 
 export const finalTalentLv = (args: TotalXtraTalentArgs) => {
   const talentLv = args.talentType === "altSprint" ? 0 : args.char[args.talentType];
@@ -166,7 +158,7 @@ export function applyModifier(
     }
   };
 
-  turnArray(keys).forEach((key, i) => {
+  toArray(keys).forEach((key, i) => {
     const [field, subField] = key.split(".");
     const value = pickOne(rootValue, i);
     const node = {

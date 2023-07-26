@@ -3,7 +3,7 @@ import { AttackPattern, Infusion, Tracker } from "@Src/types";
 
 // Store
 import { useSelector } from "@Store/hooks";
-import { selectCharData, selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
+import { selectDmgResult, selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
 import calculateAll from "@Src/calculation";
@@ -27,7 +27,6 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
     const { activeId, setupsById } = state.calculator;
     return setupsById[activeId];
   });
-  const charData = useSelector(selectCharData);
   const target = useSelector(selectTarget);
   const dmgResult = useSelector(selectDmgResult);
 
@@ -43,7 +42,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   useEffect(() => {
     if (trackerState === "open") {
       const tracker = initTracker();
-      const calcResult = calculateAll(activeSetup, target, charData, tracker);
+      const calcResult = calculateAll(activeSetup, target, tracker);
 
       setResult(tracker);
       setInfusion({

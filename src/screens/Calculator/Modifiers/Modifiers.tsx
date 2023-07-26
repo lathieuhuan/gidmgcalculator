@@ -1,5 +1,5 @@
 import { selectParty } from "@Store/calculatorSlice/selectors";
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Hook
 import { useSelector } from "@Store/hooks";
@@ -17,7 +17,7 @@ import CustomModifiers from "./custom";
 
 export default function Modifiers() {
   const party = useSelector(selectParty);
-  const partyData = getPartyData(party);
+  const partyData = appData.getPartyData(party);
 
   const { activeIndex, tabs } = useTabs({
     className: "text-lg shrink-0",

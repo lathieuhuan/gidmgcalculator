@@ -276,7 +276,7 @@ export default function MyArtifacts() {
 
       <PickerCharacter
         active={modalType === "EQUIP_CHARACTER" && !!chosenArtifact}
-        sourceType="userData"
+        sourceType="user"
         filter={({ name }) => name !== chosenArtifact?.owner}
         onPickCharacter={({ name }) => {
           if (chosenArtifact?.owner) {

@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useState } from "react";
 import type { UserSetup } from "@Src/types";
+import { appData } from "@Data/index";
 import { CharacterPortrait } from "@Src/components";
-import { findDataCharacter } from "@Data/controllers";
 
 export type SetupOptions = Array<Pick<UserSetup, "ID" | "type" | "name" | "char" | "party">>;
 
@@ -42,7 +42,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
         {options.map((setup) => {
           const { ID } = setup;
           const picked = pickedIDs.includes(ID);
-          const { code = 0, icon = "" } = findDataCharacter(setup.char) || {};
+          const { code = 0, icon = "" } = appData.getCharData(setup.char.name) || {};
 
           return (
             <div
@@ -64,7 +64,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
                 </div>
                 {setup.party.map((teammate, j) => {
                   if (teammate) {
-                    const { code = 0, icon = "" } = findDataCharacter(teammate) || {};
+                    const { code = 0, icon = "" } = appData.getCharData(teammate.name) || {};
 
                     return (
                       <div key={j} className="w-16 rounded-circle">

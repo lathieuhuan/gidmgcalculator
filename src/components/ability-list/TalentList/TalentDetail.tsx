@@ -1,8 +1,8 @@
 import { useState, useRef, useMemo } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-import type { TalentStatAttributeType, DataCharacter, Talent } from "@Src/types";
-import { getTalentDefaultInfo, round, turnArray } from "@Src/utils";
+import type { TalentAttributeType, AppCharacter, Talent } from "@Src/types";
+import { getTalentDefaultInfo, round, toArray } from "@Src/utils";
 import { useTranslation } from "@Src/hooks";
 
 // Constant
@@ -21,14 +21,14 @@ const styles = {
 };
 
 interface TalentDetailProps {
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   detailIndex: number;
   onChangeDetailIndex: (newIndex: number) => void;
   onClose: () => void;
 }
-export const TalentDetail = ({ dataChar, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
+export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClose }: TalentDetailProps) => {
   const { t } = useTranslation();
-  const { weaponType, vision, activeTalents } = dataChar;
+  const { weaponType, vision, activeTalents } = charData;
 
   const [talentLevel, setTalentLevel] = useState(1);
   const intervalRef = useRef<NodeJS.Timer>();
@@ -44,7 +44,7 @@ export const TalentDetail = ({ dataChar, detailIndex, onChangeDetailIndex, onClo
   // }
 
   const talents = useMemo(() => {
-    return processActiveTalents(dataChar, talentLevel, {
+    return processActiveTalents(charData, talentLevel, {
       atk: t("atk"),
       base_atk: t("base_atk"),
       def: t("def"),
@@ -159,19 +159,15 @@ interface ProcessedActiveTalent {
   stats: ProcessedStat[];
 }
 function processActiveTalents(
-  dataChar: DataCharacter,
+  charData: AppCharacter,
   level: number,
-  label: Record<TalentStatAttributeType, string>
+  label: Record<TalentAttributeType, string>
 ): ProcessedActiveTalent[] {
-  const { vision, weaponType, activeTalents } = dataChar;
-  const { ES, EB } = activeTalents;
+  const { vision, weaponType, EBcost, activeTalents, calcListConfig, calcList } = charData;
+  const { NAs, ES, EB } = activeTalents;
 
   const result: Record<Exclude<Talent, "altSprint">, ProcessedActiveTalent> = {
-    NAs: {
-      name: dataChar.NAsConfig.name,
-      type: "NAs",
-      stats: [],
-    },
+    NAs: { name: NAs.name, type: "NAs", stats: [] },
     ES: { name: ES.name, type: "ES", stats: [] },
     EB: { name: EB.name, type: "EB", stats: [] },
   };
@@ -180,13 +176,13 @@ function processActiveTalents(
     const isElemental = attPatt === "ES" || attPatt === "EB";
     const resultKey = isElemental ? attPatt : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, attPatt);
-    const { stats, multScale = defaultInfo.scale, multAttributeType } = activeTalents[attPatt];
+    const { multScale = defaultInfo.scale, multAttributeType } = calcListConfig?.[attPatt] || {};
 
-    for (const stat of stats) {
-      const multFactors = turnArray(stat.multFactors);
+    for (const stat of calcList[attPatt]) {
+      const multFactors = toArray(stat.multFactors);
       const factorStrings = [];
 
-      if (stat.isNotOfficial || multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)) {
+      if (stat.notOfficial || multFactors.some((factor) => typeof factor !== "number" && factor.scale === 0)) {
         continue;
       }
 
@@ -226,7 +222,7 @@ function processActiveTalents(
 
   result.EB.stats.push({
     name: "Energy cost",
-    value: EB.energyCost,
+    value: EBcost,
   });
 
   const results = [result.NAs, result.ES, result.EB];

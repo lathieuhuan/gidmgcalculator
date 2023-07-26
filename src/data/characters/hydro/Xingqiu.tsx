@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
-import { Green } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const Xingqiu: DataCharacter = {
+const Xingqiu: DefaultAppCharacter = {
   code: 17,
   name: "Xingqiu",
   icon: "d/d4/Xingqiu_Icon",
@@ -14,78 +14,11 @@ const Xingqiu: DataCharacter = {
   nation: "liyue",
   vision: "hydro",
   weaponType: "sword",
-  stats: [
-    [857, 17, 64],
-    [2202, 43, 163],
-    [2842, 56, 211],
-    [4257, 84, 316],
-    [4712, 93, 349],
-    [5420, 107, 402],
-    [6027, 119, 447],
-    [6735, 133, 499],
-    [7190, 142, 533],
-    [7897, 156, 585],
-    [8352, 165, 619],
-    [9060, 179, 671],
-    [9514, 188, 705],
-    [10222, 202, 758],
-  ],
-  bonusStat: { type: "atk_", value: 6 },
-  NAsConfig: {
-    name: "Guhua Style",
+  EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
   },
-  bonusLvFromCons: ["EB", "ES"],
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 46.61 },
-        { name: "2-Hit", multFactors: 47.64 },
-        { name: "3-Hit (1/2)", multFactors: 28.55 },
-        { name: "4-Hit", multFactors: 55.99 },
-        { name: "5-Hit (1/2)", multFactors: 35.86 },
-      ],
-    },
-    CA: {
-      stats: [{ name: "Charged Attack", multFactors: [47.3, 56.16] }],
-    },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Guhua Sword: Fatal Rainscreen",
-      image: "5/5d/Talent_Guhua_Sword_Fatal_Rainscreen",
-      stats: [{ name: "Skill DMG", multFactors: [168, 191.2] }],
-      // getExtraStats: (lv) => [
-      //   { name: "DMG Redution Ratio", value: Math.min(19 + lv, 29) + "%" },
-      //   { name: "Duration", value: "15s" },
-      //   { name: "CD", value: "21s" },
-      // ],
-    },
-    EB: {
-      name: "Guhua Sword: Raincutter",
-      image: "2/23/Talent_Guhua_Sword_Raincutter",
-      stats: [{ name: "Sword Rain", multFactors: 54.27 }],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "15s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-      energyCost: 80,
-    },
-  },
-  passiveTalents: [
-    { name: "Hydropathic", image: "f/f6/Talent_Hydropathic" },
-    { name: "Blades Amidst Raindrops", image: "9/90/Talent_Blades_Amidst_Raindrops" },
-    { name: "Flash of Genius", image: "b/bb/Talent_Flash_of_Genius" },
-  ],
-  constellation: [
-    { name: "The Scent Remained", image: "6/6c/Constellation_The_Scent_Remained" },
-    { name: "Rainbow Upon the Azure Sky", image: "a/a5/Constellation_Rainbow_Upon_the_Azure_Sky" },
-    { name: "Weaver of Verses", image: "3/3e/Constellation_Weaver_of_Verses" },
-    { name: "Evilsoother", image: "e/e6/Constellation_Evilsoother" },
-    { name: "Embrace of Rain", image: "9/9b/Constellation_Embrace_of_Rain" },
-    {
-      name: "Hence, Call Them My Own Verses",
-      image: "9/91/Constellation_Hence%2C_Call_Them_My_Own_Verses",
-    },
-  ],
   innateBuffs: [
     {
       src: EModSrc.A4,
@@ -128,4 +61,4 @@ const Xingqiu: DataCharacter = {
   ],
 };
 
-export default Xingqiu;
+export default Xingqiu as AppCharacter;

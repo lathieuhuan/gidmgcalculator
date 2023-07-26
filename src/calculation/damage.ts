@@ -1,12 +1,12 @@
-import type {
+import {
   DamageResult,
   ResistanceReduction,
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
   NormalAttack,
-  CalculatedDamage,
+  CalcItemBonus,
 } from "@Src/types";
-import type { CalcTalentStatArgs, GetDamageArgs } from "./types";
+import type { CalculateItemArgs, GetDamageArgs } from "./types";
 
 // Constant
 import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS, BASE_REACTION_DAMAGE } from "@Src/constants";
@@ -14,35 +14,40 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
-import { findDataArtifactSet, findDataCharacter } from "@Data/controllers";
-import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, turnArray } from "@Src/utils";
+import { findDataArtifactSet } from "@Data/controllers";
+import { appData } from "@Data/index";
+import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { getExclusiveBonus } from "./utils";
 
-function calcTalentDamage({
+function calculateItem({
   stat,
   attElmt,
   attPatt,
   base,
   char,
   target,
-  talentBuff,
   totalAttr,
   attPattBonus,
   attElmtBonus,
+  calcItemBonues,
   rxnMult,
   resistReduct,
   record,
-}: CalcTalentStatArgs): CalculatedDamage {
-  if (base !== 0 && !stat.notAttack) {
+}: CalculateItemArgs) {
+  const itemFlatBonus = getExclusiveBonus(calcItemBonues, "flat");
+  const itemPctBonus = getExclusiveBonus(calcItemBonues, "pct_");
+
+  if (base !== 0 && !stat.type) {
     const flat =
-      (talentBuff.flat?.value || 0) +
+      itemFlatBonus +
       attPattBonus.all.flat +
       (attPatt !== "none" ? attPattBonus[attPatt].flat : 0) +
       (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
 
     // CALCULATE DAMAGE BONUS MULTIPLIERS
-    let normalMult = (talentBuff.pct_?.value || 0) + attPattBonus.all.pct_;
-    let specialMult = (talentBuff.multPlus?.value || 0) + attPattBonus.all.multPlus;
+    let normalMult = itemPctBonus + attPattBonus.all.pct_;
+    let specialMult = 1;
 
     if (attPatt !== "none") {
       normalMult += attPattBonus[attPatt].pct_;
@@ -71,7 +76,7 @@ function calcTalentDamage({
     const totalCrit = (type: "cRate_" | "cDmg_") => {
       return (
         totalAttr[type] +
-        (talentBuff[type]?.value || 0) +
+        getExclusiveBonus(calcItemBonues, type) +
         attPattBonus.all[type] +
         (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
         (attElmt !== "various" ? attElmtBonus[attElmt][type] : 0)
@@ -102,13 +107,13 @@ function calcTalentDamage({
     let flat = 0;
     let normalMult = 1;
 
-    switch (stat.notAttack) {
+    switch (stat.type) {
       case "healing":
-        flat = talentBuff.flat?.value || 0;
+        flat = itemFlatBonus;
         normalMult += totalAttr.healB_ / 100;
         break;
       case "shield":
-        normalMult += (talentBuff.pct_?.value || 0) / 100;
+        normalMult += itemPctBonus / 100;
         break;
     }
     base += flat;
@@ -118,13 +123,6 @@ function calcTalentDamage({
       base *= normalMult;
       record.normalMult = normalMult;
     }
-    if (stat.getLimit) {
-      const limit = stat.getLimit({ totalAttr });
-      if (base > limit) {
-        base = limit;
-        record.note = ` (limited to ${limit})`;
-      }
-    }
     return { nonCrit: base, crit: 0, average: base };
   }
   return { nonCrit: 0, crit: 0, average: 0 };
@@ -133,7 +131,6 @@ function calcTalentDamage({
 export default function getDamage({
   char,
   charData,
-  dataChar,
   selfBuffCtrls,
   selfDebuffCtrls,
   artDebuffCtrls,
@@ -143,6 +140,7 @@ export default function getDamage({
   totalAttr,
   attPattBonus,
   attElmtBonus,
+  calcItemBuffs,
   rxnBonus,
   customDebuffCtrls,
   infusion,
@@ -155,7 +153,7 @@ export default function getDamage({
   for (const key of ATTACK_ELEMENTS) {
     resistReduct[key] = 0;
   }
-  const { activeTalents, weaponType, vision, debuffs } = dataChar;
+  const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
     resistReduct,
@@ -186,7 +184,7 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of party) {
     if (teammate) {
-      const { debuffs = [] } = findDataCharacter(teammate)!;
+      const { debuffs = [] } = appData.getCharData(teammate.name);
       for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
         const debuff = findByIndex(debuffs, index);
 
@@ -246,24 +244,13 @@ export default function getDamage({
   }
 
   ATTACK_PATTERNS.forEach((ATT_PATT) => {
-    const talent = activeTalents[ATT_PATT];
     const resultKey = ATT_PATT === "ES" || ATT_PATT === "EB" ? ATT_PATT : "NAs";
     const defaultInfo = getTalentDefaultInfo(resultKey, weaponType, vision, ATT_PATT);
-    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = talent;
-    const level = finalTalentLv({ dataChar, talentType: resultKey, char, partyData });
+    const config = calcListConfig?.[ATT_PATT] || {};
+    const { multScale = defaultInfo.scale, multAttributeType = defaultInfo.attributeType } = config;
+    const level = finalTalentLv({ charData, talentType: resultKey, char, partyData });
 
-    for (const stat of talent.stats) {
-      const talentBuff = stat.getTalentBuff
-        ? stat.getTalentBuff({
-            char,
-            charData,
-            selfBuffCtrls,
-            selfDebuffCtrls,
-            totalAttr,
-            partyData,
-          })
-        : {};
-
+    for (const stat of calcList[ATT_PATT]) {
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
       let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
@@ -290,25 +277,32 @@ export default function getDamage({
       }
 
       let bases = [];
-      const { flatFactor } = stat;
+      const { id, flatFactor } = stat;
+      const calcItemBonues = id
+        ? calcItemBuffs.reduce<CalcItemBonus[]>((bonuses, buff) => {
+            if (Array.isArray(buff.ids) ? buff.ids.includes(id) : buff.ids === id) {
+              bonuses.push(buff.bonus);
+            }
+            return bonuses;
+          }, [])
+        : [];
+      const itemBonusMult = getExclusiveBonus(calcItemBonues, "mult_");
+
       const record = {
         multFactors: [],
         normalMult: 1,
-        talentBuff,
+        exclusives: calcItemBonues,
       } as TrackerDamageRecord;
 
       // CALCULATE BASE DAMAGE
-      for (const factor of turnArray(stat.multFactors)) {
+      for (const factor of toArray(stat.multFactors)) {
         const {
           root,
           attributeType = multAttributeType,
           scale = multScale,
         } = typeof factor === "number" ? { root: factor } : factor;
 
-        const finalMult =
-          root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) +
-          (talentBuff.mult_?.value || 0) +
-          attPattBonus[ATT_PATT].mult_;
+        const finalMult = root * (scale ? TALENT_LV_MULTIPLIERS[scale][level] : 1) + itemBonusMult;
 
         let flatBonus = 0;
 
@@ -329,29 +323,29 @@ export default function getDamage({
         bases.push((totalAttr[attributeType] * finalMult) / 100 + flatBonus);
       }
 
-      if (stat.isWholeFactor) {
+      if (stat.multFactorsAreOne) {
         bases = [bases.reduce((accumulator, base) => accumulator + base, 0)];
       }
 
       // TALENT DMG
-      if (resultKey === "NAs" && disabledNAs && !stat.notAttack) {
+      if (resultKey === "NAs" && disabledNAs && !stat.type) {
         finalResult[resultKey][stat.name] = {
           nonCrit: 0,
           crit: 0,
           average: 0,
         };
       } else {
-        finalResult[resultKey][stat.name] = calcTalentDamage({
+        finalResult[resultKey][stat.name] = calculateItem({
           stat,
           attPatt,
           attElmt,
           base: bases.length > 1 ? bases : bases[0],
           char,
           target,
-          talentBuff,
           totalAttr,
           attPattBonus,
           attElmtBonus,
+          calcItemBonues,
           rxnMult,
           resistReduct,
           record,

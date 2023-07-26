@@ -1,77 +1,64 @@
-import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useEffect, useRef, useState } from "react";
 
-import type { DataCharacter, Talent } from "@Src/types";
-import { GENSHIN_DEV_URL } from "@Src/constants";
+import type { AppCharacter } from "@Src/types";
+import { appData } from "@Data/index";
 
 // Conponent
-import { CloseButton, Green, Lesser } from "@Src/pure-components";
+import { CloseButton, Green, Lesser, LoadingIcon } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
+const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
+  const { auto = true } = options || {};
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">(auto ? "loading" : "idle");
+  const [descriptions, setDescriptions] = useState<string[]>();
+  const state = useRef({
+    fetchStarted: false,
+    mounted: true,
+  });
+
+  useEffect(() => {
+    return () => {
+      state.current.mounted = false;
+    };
+  }, []);
+
+  const getConstellation = async () => {
+    const response = await appData.fetchConsDescriptions(name);
+
+    if (state.current.mounted) {
+      if (response.code === 200) {
+        setStatus("success");
+        setDescriptions(response.data || []);
+      } else {
+        setStatus("error");
+      }
+    }
+  };
+
+  if (status === "loading" && !state.current.fetchStarted) {
+    state.current.fetchStarted = true;
+    getConstellation();
+  }
+
+  return {
+    isLoading: status === "loading",
+    isError: status === "error",
+    isSuccess: status === "success",
+    data: descriptions,
+  };
+};
+
 interface ConsDetailProps {
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;
 }
-export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const [descArr, setDescArr] = useState([]);
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
+export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
+  const { isLoading, isError, data } = useConsDescriptions(charData.name);
 
-  const {
-    name: charName,
-    vision,
-    bonusLvFromCons,
-    NAsConfig: { name },
-    activeTalents: { ES, EB },
-    constellation,
-  } = dataChar;
+  const { vision, constellation } = charData;
   const consInfo = constellation[consLv - 1] || {};
-  let abilityName = "";
-
-  const getName = (talent: Talent) => {
-    const nameMap: Partial<Record<Talent, string>> = {
-      NAs: name,
-      ES: ES.name,
-      EB: EB.name,
-    };
-    return nameMap[talent] || "";
-  };
-
-  if (consLv === 3) {
-    abilityName = getName(bonusLvFromCons[0]);
-  }
-  if (consLv === 5) {
-    abilityName = getName(bonusLvFromCons[1]);
-  }
-
-  const consDesc = abilityName ? (
-    <>
-      Increases the Level of {abilityName} by 3.
-      <br />
-      Maximum upgrade level is 15.
-    </>
-  ) : (
-    consInfo.desc
-  );
-
-  useEffect(() => {
-    if (!constellation[0].desc) {
-      setStatus("loading");
-
-      fetch(GENSHIN_DEV_URL + `/characters/` + charName)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            setStatus("error");
-          } else {
-            const { constellations = [] } = data;
-            setDescArr(constellations.map((constellation: any) => constellation.description));
-            setStatus("idle");
-          }
-        });
-    }
-  }, []);
 
   return (
     <div className="h-full flex-col hide-scrollbar">
@@ -87,13 +74,13 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
       <p className="text-lg">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>
-      {consDesc ? (
-        <p className="mt-4">{consDesc}</p>
+      {consInfo.description ? (
+        <p className="mt-4">{consInfo.description}</p>
       ) : (
-        <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
-          {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
-          {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
-          {status === "idle" && descArr[consLv - 1]}
+        <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
+          <LoadingIcon active={isLoading} />
+          {isError && <Lesser>Error. Rebooting...</Lesser>}
+          {data?.[consLv - 1]}
         </p>
       )}
 

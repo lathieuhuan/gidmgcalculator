@@ -10,14 +10,14 @@ import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findByIndex, splitLv } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";
 
 const selectCharacterToBeSorted = createSelector(selectUserChars, (userChars) =>
   userChars.map((char, index) => {
-    const { name, rarity } = findDataCharacter(char)!;
+    const { name, rarity } = appData.getCharData(char.name);
     return { name, level: char.level, rarity, index };
   })
 );

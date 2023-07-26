@@ -1,11 +1,11 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { findByCode } from "@Src/utils";
 import { makeWpModApplier } from "../utils";
 
-const otherPolearms: DataWeapon[] = [
+const otherPolearms: AppWeapon[] = [
   {
     code: 74,
     name: "Halberd",

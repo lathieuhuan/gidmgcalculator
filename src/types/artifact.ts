@@ -1,8 +1,6 @@
-import { EModAffect } from "@Src/constants";
 import type { ModInputConfig, Rarity } from "./global";
 import type {
   AttackPatternBonus,
-  CharData,
   BuffModifierArgsWrapper,
   ModifierInput,
   PartyData,
@@ -11,6 +9,8 @@ import type {
   DebuffModifierArgsWrapper,
   Tracker,
 } from "./calculator";
+import type { AppCharacter } from "./character";
+import { EModAffect } from "@Src/constants";
 
 type ArtTypeData = {
   name: string;
@@ -39,7 +39,7 @@ type ApplyArtPassiveBuffArgs = {
   totalAttr: TotalAttribute;
   attPattBonus?: AttackPatternBonus;
   rxnBonus?: ReactionBonus;
-  charData: CharData;
+  charData: AppCharacter;
   partyData?: PartyData;
   desc: string;
   tracker?: Tracker;

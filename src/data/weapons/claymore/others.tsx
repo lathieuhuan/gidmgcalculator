@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
@@ -7,7 +7,7 @@ import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const otherClaymores: DataWeapon[] = [
+const otherClaymores: AppWeapon[] = [
   {
     code: 130,
     name: "White Iron Greatsword",

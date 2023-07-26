@@ -1,10 +1,10 @@
-import type { DataCharacter, ModifierInput, TotalAttribute } from "@Src/types";
-import { Anemo, Green, Red } from "@Src/pure-components";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
+import type { AppCharacter, DefaultAppCharacter, ModifierInput, TotalAttribute } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
-import { EModSrc } from "../constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Anemo, Green, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
@@ -12,7 +12,7 @@ const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: Modi
   return round(+EM * 0.04, 2);
 };
 
-const Kazuha: DataCharacter = {
+const Kazuha: DefaultAppCharacter = {
   code: 35,
   name: "Kazuha",
   GOOD: "KaedeharaKazuha",
@@ -22,87 +22,11 @@ const Kazuha: DataCharacter = {
   nation: "inazuma",
   vision: "anemo",
   weaponType: "sword",
-  stats: [
-    [1039, 23, 63],
-    [2695, 60, 163],
-    [3586, 80, 217],
-    [5366, 119, 324],
-    [5999, 133, 363],
-    [6902, 153, 417],
-    [7747, 172, 468],
-    [8659, 192, 523],
-    [9292, 206, 562],
-    [10213, 227, 617],
-    [10846, 241, 656],
-    [11777, 262, 712],
-    [12410, 276, 750],
-    [13348, 297, 807],
-  ],
-  bonusStat: { type: "em", value: 28.8 },
-  NAsConfig: {
-    name: "Garyuu Bladework",
+  EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
   },
-  bonusLvFromCons: ["ES", "EB"],
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 44.98 },
-        { name: "2-Hit", multFactors: 45.24 },
-        { name: "3-Hit", multFactors: [25.8, 30.96] },
-        { name: "4-Hit", multFactors: 60.72 },
-        { name: "5-Hit (1/3)", multFactors: 25.37 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack", multFactors: [43, 74.65] }] },
-    PA: {
-      stats: [
-        {
-          name: "Plunging Attack: Midare Ranzan",
-          attElmt: "anemo",
-          multFactors: 81.83,
-        },
-        { name: "Plunge DMG", multFactors: 81.83 },
-        { name: "Low Plunge", multFactors: 163.63 },
-        { name: "High Plunge", multFactors: 204.39 },
-      ],
-    },
-    ES: {
-      name: "Chihayaburu",
-      image: "2/22/Talent_Chihayaburu",
-      stats: [
-        { name: "Press DMG", multFactors: 192 },
-        { name: "Hold DMG", multFactors: 260.8 },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Press CD", value: "6s" },
-      //   { name: "Hold CD", value: "9s" },
-      // ],
-    },
-    EB: {
-      name: "Kazuha Slash",
-      image: "0/06/Talent_Kazuha_Slash",
-      stats: [
-        { name: "Slashing DMG", multFactors: 262.4 },
-        { name: "DoT", multFactors: 120 },
-        { name: "Additional Elemental DMG", attElmt: "various", multFactors: 36 },
-      ],
-      // getExtraStats: () => [{ name: "CD", value: "15s" }],
-      energyCost: 60,
-    },
-  },
-  passiveTalents: [
-    { name: "Soumon Swordsmanship", image: "1/16/Talent_Soumon_Swordsmanship" },
-    { name: "Poetics of Fuubutsu", image: "e/e4/Talent_Poetics_of_Fuubutsu" },
-    { name: "Cloud Strider", image: "b/b1/Talent_Cloud_Strider" },
-  ],
-  constellation: [
-    { name: "Scarlet Hills", image: "6/6b/Constellation_Scarlet_Hills" },
-    { name: "Yamaarashi Tailwind", image: "f/f2/Constellation_Yamaarashi_Tailwind" },
-    { name: "Maple Monogatari", image: "c/c3/Constellation_Maple_Monogatari" },
-    { name: "Oozora Genpou", image: "0/07/Constellation_Oozora_Genpou" },
-    { name: "Wisdom of Bansei", image: "f/f7/Constellation_Wisdom_of_Bansei" },
-    { name: "Crimson Momiji", image: "8/87/Constellation_Crimson_Momiji" },
-  ],
   buffs: [
     {
       index: 1,
@@ -170,4 +94,4 @@ const Kazuha: DataCharacter = {
   ],
 };
 
-export default Kazuha;
+export default Kazuha as AppCharacter;

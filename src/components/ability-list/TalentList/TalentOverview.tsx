@@ -1,12 +1,12 @@
 import clsx from "clsx";
-import type { CharInfo, DataCharacter, Party } from "@Src/types";
+import type { CharInfo, AppCharacter, Party } from "@Src/types";
 
 // Constant
 import { TALENT_TYPES } from "@Src/constants";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { ascsFromLv } from "@Src/utils";
 import { totalXtraTalentLv } from "@Src/utils/calculation";
 
@@ -16,22 +16,22 @@ import { AbilityIcon } from "../components";
 
 interface TalentOverviewProps {
   char: CharInfo;
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   party?: Party;
   onChangeLevel: (talentType: "NAs" | "ES" | "EB", newLevel: number) => void;
   onClickInfoSign: (index: number) => void;
 }
-export const TalentOverview = ({ char, dataChar, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
-  const { vision, weaponType, NAsConfig, activeTalents, passiveTalents } = dataChar;
-  const partyData = party ? getPartyData(party) : undefined;
+export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickInfoSign }: TalentOverviewProps) => {
+  const { vision, weaponType, activeTalents, passiveTalents } = charData;
+  const partyData = party ? appData.getPartyData(party) : undefined;
 
   return (
     <div className="h-full hide-scrollbar flex flex-col space-y-3">
       {TALENT_TYPES.map((talentType, i) => {
-        const talentName = talentType === "NAs" ? NAsConfig.name : activeTalents[talentType]?.name;
+        const talentName = activeTalents[talentType]?.name;
         const talentImg = talentType === "NAs" ? undefined : activeTalents[talentType]?.image;
         const xtraLv = totalXtraTalentLv({
-          dataChar,
+          charData,
           talentType,
           char,
           partyData,

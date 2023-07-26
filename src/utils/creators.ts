@@ -12,13 +12,9 @@ import type {
   Teammate,
   WeaponType,
 } from "@Src/types";
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
-import {
-  ATTACK_ELEMENTS,
-  DEFAULT_MODIFIER_INITIAL_VALUES,
-  DEFAULT_WEAPON_CODE,
-  EModAffect,
-} from "@Src/constants";
+import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
+import { appData } from "@Data/index";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { appSettings } from "./utils";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
@@ -54,11 +50,7 @@ interface CreateArtifactArgs {
   code: number;
   rarity: Rarity;
 }
-export function createArtifact({
-  type,
-  code,
-  rarity,
-}: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
+export function createArtifact({ type, code, rarity }: CreateArtifactArgs): Omit<CalcArtifact, "ID"> {
   const { artLevel } = appSettings.get();
   return {
     type,
@@ -78,7 +70,7 @@ export function createArtifact({
 export function createCharModCtrls(forSelf: boolean, name: string) {
   const buffCtrls: ModifierCtrl[] = [];
   const debuffCtrls: ModifierCtrl[] = [];
-  const { buffs = [], debuffs = [] } = findDataCharacter({ name }) || {};
+  const { buffs = [], debuffs = [] } = appData.getCharData(name) || {};
 
   for (const buff of buffs) {
     if (buff.affect === (forSelf ? EModAffect.TEAMMATE : EModAffect.SELF)) {
@@ -91,9 +83,7 @@ export function createCharModCtrls(forSelf: boolean, name: string) {
 
       for (const config of buff.inputConfigs) {
         if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(
-            config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
-          );
+          initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
         }
       }
       if (initialValues.length) {
@@ -113,9 +103,7 @@ export function createCharModCtrls(forSelf: boolean, name: string) {
 
       for (const config of debuff.inputConfigs) {
         if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-          initialValues.push(
-            config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
-          );
+          initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
         }
       }
       if (initialValues.length) {
@@ -146,9 +134,7 @@ export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
 
         for (const config of buff.inputConfigs) {
           if ((forSelf && config.for !== "teammate") || (!forSelf && config.for !== "self")) {
-            initialValues.push(
-              config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0
-            );
+            initialValues.push(config.initialValue ?? DEFAULT_MODIFIER_INITIAL_VALUES[config.type] ?? 0);
           }
         }
         if (initialValues.length) {
@@ -161,10 +147,7 @@ export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
   return buffCtrls;
 }
 
-export function createWeaponBuffCtrls(
-  forSelf: boolean,
-  weapon: { type: WeaponType; code: number }
-) {
+export function createWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
   const { buffs = [] } = findDataWeapon(weapon) || {};
   return createModCtrls(forSelf, buffs);
 }

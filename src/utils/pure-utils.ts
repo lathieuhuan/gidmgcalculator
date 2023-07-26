@@ -1,5 +1,9 @@
 export const deepCopy = <T>(item: T): T => JSON.parse(JSON.stringify(item));
 
+export const randomNumber = (max: number, min = 0, step = 1) => {
+  return Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
+};
+
 export const randomString = (n: number) => {
   return Math.random()
     .toString(36)
@@ -24,7 +28,7 @@ export const getSearchParam = (key: string) => {
   return searchParams.get(key);
 };
 
-export const turnArray = <T>(subject: T | T[]): T[] => {
+export const toArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };
 
@@ -126,6 +130,10 @@ export const getCopyName = (originalName: string, existedNames: string[]) => {
   }
 
   return undefined;
+};
+
+export const getAppDataError = (type: "character", code: number | string) => {
+  return `Cannot get ${type} config (ERROR_CODE: ${code})`;
 };
 
 export const removeEmpty = <T extends Record<string, any>>(obj: T): T => {

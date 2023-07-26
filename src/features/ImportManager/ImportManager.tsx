@@ -3,16 +3,18 @@ import isEqual from "react-fast-compare";
 
 import type { PartiallyRequired, SetupImportInfo } from "@Src/types";
 import { EScreen, MAX_CALC_SETUPS } from "@Src/constants";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calculatorSlice/selectors";
 import { getSearchParam, removeEmpty } from "@Src/utils";
 
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
+import { selectChar, selectSetupManageInfos, selectTarget } from "@Store/calculatorSlice/selectors";
 // Action
 import { updateImportInfo, updateUI } from "@Store/uiSlice";
-import { importSetup, initSessionWithSetup, updateMessage } from "@Store/calculatorSlice";
+import { importSetup, updateMessage } from "@Store/calculatorSlice";
+import { checkBeforeInitNewSession } from "@Store/thunks";
 
 // Component
-import { Modal, ConfirmModalBody } from "@Src/pure-components";
+import { Modal, ConfirmModal, LoadingIcon } from "@Src/pure-components";
 import { OverrideOptions } from "./OverwriteOptions";
 
 type ImportManagerProps = PartiallyRequired<SetupImportInfo, "calcSetup" | "target">;
@@ -30,10 +32,6 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
   const endImport = () => {
     dispatch(updateImportInfo({}));
     dispatch(updateUI({ highManagerWorking: false }));
-
-    if (getSearchParam("importCode")) {
-      window.history.replaceState(null, "", window.location.origin);
-    }
   };
 
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
@@ -59,14 +57,37 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
 
   const startNewSession = () => {
     dispatch(
-      initSessionWithSetup({
-        ...manageInfo,
-        calcSetup,
-        target,
-      })
+      checkBeforeInitNewSession(
+        {
+          ...manageInfo,
+          calcSetup,
+          target,
+        },
+        {
+          onSuccess: () => {
+            dispatch(updateImportInfo({}));
+
+            dispatch(
+              updateUI({
+                atScreen: EScreen.CALCULATOR,
+                highManagerWorking: false,
+              })
+            );
+
+            if (getSearchParam("importCode")) {
+              dispatch(
+                updateMessage({
+                  type: "success",
+                  content: "Successfully import the setup!",
+                })
+              );
+
+              window.history.replaceState(null, "", window.location.origin);
+            }
+          },
+        }
+      )
     );
-    dispatch(updateUI({ atScreen: EScreen.CALCULATOR }));
-    endImport();
   };
 
   useEffect(() => {
@@ -101,25 +122,21 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
       }
     } else {
       delayExecute(startNewSession);
-
-      if (getSearchParam("importCode")) {
-        dispatch(
-          updateMessage({
-            type: "success",
-            content: "Successfully import the setup!",
-          })
-        );
-      }
     }
   }, []);
 
   switch (pendingCode) {
     case 0:
-      return null;
+      return (
+        <Modal active closeOnMaskClick={false} onClose={() => {}}>
+          <LoadingIcon size="large" />
+        </Modal>
+      );
     case 1:
     case 2:
       return (
-        <ConfirmModalBody
+        <ConfirmModal
+          active
           message={
             (pendingCode === 1
               ? "We're calculating another Character."
@@ -131,7 +148,8 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
       );
     case 4:
       return (
-        <ConfirmModalBody
+        <ConfirmModal
+          active
           message="This setup is already in the Calculator."
           buttons={[undefined]}
           onClose={endImport}
@@ -139,28 +157,22 @@ const ImportManagerCore = ({ calcSetup, target, ...manageInfo }: ImportManagerPr
       );
     default:
       return (
-        <OverrideOptions
-          pendingCode={pendingCode}
-          importedChar={calcSetup?.char}
-          importedTarget={target}
-          addImportedSetup={addImportedSetup}
-          endImport={endImport}
-        />
+        <Modal active className="small-modal" onClose={endImport}>
+          <OverrideOptions
+            pendingCode={pendingCode}
+            importedChar={calcSetup?.char}
+            importedTarget={target}
+            addImportedSetup={addImportedSetup}
+            onCancel={() => {
+              dispatch(updateImportInfo({}));
+            }}
+          />
+        </Modal>
       );
   }
 };
 
 export function ImportManager() {
-  const dispatch = useDispatch();
   const { calcSetup, target, ...rest } = useSelector((state) => state.ui.importInfo);
-
-  const onClose = () => {
-    dispatch(updateImportInfo({}));
-  };
-
-  return (
-    <Modal active={Boolean(calcSetup && target)} className="small-modal" onClose={onClose}>
-      <ImportManagerCore calcSetup={calcSetup!} target={target!} {...rest} />
-    </Modal>
-  );
+  return calcSetup && target ? <ImportManagerCore calcSetup={calcSetup} target={target} {...rest} /> : null;
 }

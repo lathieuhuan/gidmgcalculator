@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
-import { Cryo, Green } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { Cryo, Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const Ayaka: DataCharacter = {
+const Ayaka: DefaultAppCharacter = {
   code: 37,
   name: "Ayaka",
   GOOD: "KamisatoAyaka",
@@ -15,79 +15,11 @@ const Ayaka: DataCharacter = {
   nation: "inazuma",
   vision: "cryo",
   weaponType: "sword",
-  stats: [
-    [1001, 27, 61],
-    [2597, 69, 158],
-    [3455, 92, 211],
-    [5170, 138, 315],
-    [5779, 154, 352],
-    [6649, 177, 405],
-    [7462, 198, 455],
-    [8341, 222, 509],
-    [8951, 238, 546],
-    [9838, 262, 600],
-    [10448, 278, 637],
-    [11345, 302, 692],
-    [11954, 318, 729],
-    [12858, 342, 784],
-  ],
-  bonusStat: { type: "cDmg_", value: 9.6 },
-  NAsConfig: {
-    name: "Kamisato Art: Kabuki",
+  EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
   },
-  bonusLvFromCons: ["EB", "ES"],
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 45.73 },
-        { name: "2-Hit", multFactors: 48.68 },
-        { name: "3-Hit", multFactors: 62.62 },
-        { name: "4-Hit (1/3)", multFactors: 22.65 },
-        { name: "5-Hit", multFactors: 78.18 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack (1/3)", multFactors: 55.13 }] },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Kamisato Art: Hyouka",
-      image: "5/56/Talent_Kamisato_Art_Hyouka",
-      stats: [{ name: "Skill DMG", multFactors: 239.2 }],
-      // getExtraStats: () => [{ name: "CD", value: "10s" }],
-    },
-    EB: {
-      name: "Kamisato Art: Soumetsu",
-      image: "1/11/Talent_Kamisato_Art_Soumetsu",
-      stats: [
-        { name: "Cutting DMG", multFactors: 112.3 },
-        { name: "Bloom DMG", multFactors: 168.45 },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "5s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-      energyCost: 80,
-    },
-    altSprint: {
-      name: "Kamisato Art: Senho",
-      image: "d/d8/Talent_Kamisato_Art_Senho",
-    },
-  },
-  passiveTalents: [
-    {
-      name: "Amatsumi Kunitsumi Sanctification",
-      image: "d/d9/Talent_Amatsumi_Kunitsumi_Sanctification",
-    },
-    { name: "Kanten Senmyou Blessing", image: "d/db/Talent_Kanten_Senmyou_Blessing" },
-    { name: "Fruits of Shinsa", image: "0/02/Talent_Fruits_of_Shinsa" },
-  ],
-  constellation: [
-    { name: "Snowswept Sakura", image: "e/eb/Constellation_Snowswept_Sakura" },
-    { name: "Blizzard Blade Seki no To", image: "4/4a/Constellation_Blizzard_Blade_Seki_no_To" },
-    { name: "Frostbloom Kamifubuki", image: "d/d3/Constellation_Frostbloom_Kamifubuki" },
-    { name: "Ebb and Flow", image: "f/f7/Constellation_Ebb_and_Flow" },
-    { name: "Blossom Cloud Irutsuki", image: "d/d2/Constellation_Blossom_Cloud_Irutsuki" },
-    { name: "Dance of Suigetsu", image: "d/d5/Constellation_Dance_of_Suigetsu" },
-  ],
   buffs: [
     {
       index: 0,
@@ -158,4 +90,4 @@ const Ayaka: DataCharacter = {
   ],
 };
 
-export default Ayaka;
+export default Ayaka as AppCharacter;

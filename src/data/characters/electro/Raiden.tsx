@@ -1,26 +1,28 @@
 import type {
-  CharInfo,
-  DataCharacter,
+  AppCharacter,
   BuffDescriptionArgs,
-  GetTalentBuffFn,
-  ModifierCtrl,
+  CharInfo,
+  DefaultAppCharacter,
   PartyData,
   TotalAttribute,
 } from "@Src/types";
-import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
-import { checkAscs, checkCons, findInput, modIsActivated } from "../utils";
-
-const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
+import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const getBuffValue = {
   ES: (args: BuffDescriptionArgs) => {
     const level = args.toSelf
-      ? finalTalentLv({ char: args.char, dataChar: Raiden, talentType: "ES", partyData: args.partyData })
+      ? finalTalentLv({
+          char: args.char,
+          charData: Raiden as AppCharacter,
+          talentType: "ES",
+          partyData: args.partyData,
+        })
       : args.inputs[0] || 0;
     const mult = Math.min(0.21 + level / 100, 0.3);
 
@@ -29,15 +31,14 @@ const getBuffValue = {
       value: round(args.charData.EBcost * mult, 1),
     };
   },
-  EB: (char: CharInfo, selfBuffCtrls: ModifierCtrl[], partyData: PartyData) => {
+  EB: (char: CharInfo, partyData: PartyData, totalEnergy = 0, electroEnergy = 0) => {
+    const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
     const level = finalTalentLv({
       char,
-      dataChar: Raiden,
+      charData: Raiden as AppCharacter,
       talentType: "EB",
       partyData,
     });
-    const totalEnergy = findInput(selfBuffCtrls, 1, 0);
-    const electroEnergy = findInput(selfBuffCtrls, 1, 1);
     let extraEnergy = 0;
 
     if (checkCons[1](char) && electroEnergy <= totalEnergy) {
@@ -61,24 +62,7 @@ const getBuffValue = {
   },
 };
 
-const getEBTalentBuff = (bonusType: "musouBonus" | "isshinBonus"): GetTalentBuffFn => {
-  return ({ char, selfBuffCtrls, partyData }) => {
-    if (modIsActivated(selfBuffCtrls, 1)) {
-      const buffValue = getBuffValue.EB(char, selfBuffCtrls, partyData);
-      if (buffValue.stacks) {
-        return {
-          mult_: {
-            desc: `${buffValue.stacks} Resolve, ${buffValue[bonusType]}% extra multiplier each`,
-            value: round(buffValue.stacks * buffValue[bonusType], 2),
-          },
-        };
-      }
-    }
-    return {};
-  };
-};
-
-const Raiden: DataCharacter = {
+const Raiden: DefaultAppCharacter = {
   code: 40,
   name: "Raiden Shogun",
   GOOD: "RaidenShogun",
@@ -88,140 +72,11 @@ const Raiden: DataCharacter = {
   nation: "inazuma",
   vision: "electro",
   weaponType: "polearm",
-  stats: [
-    [1005, 26, 61],
-    [2606, 68, 159],
-    [3468, 91, 212],
-    [5189, 136, 317],
-    [5801, 152, 355],
-    [6675, 174, 408],
-    [7491, 196, 458],
-    [8373, 219, 512],
-    [8985, 235, 549],
-    [9875, 258, 604],
-    [10487, 274, 641],
-    [11388, 298, 696],
-    [12000, 314, 734],
-    [12907, 337, 789],
-  ],
-  bonusStat: { type: "er_", value: 8 },
-  NAsConfig: {
-    name: "Origin",
+  EBcost: 90,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
   },
-  bonusLvFromCons: ["EB", "ES"],
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 39.65 },
-        { name: "2-Hit", multFactors: 39.73 },
-        { name: "3-Hit", multFactors: 49.88 },
-        { name: "4-Hit (1/2)", multFactors: 28.98 },
-        { name: "5-Hit", multFactors: 65.45 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack", multFactors: 99.59 }] },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Transcendence: Baleful Omen",
-      image: "3/3c/Talent_Transcendence_Baleful_Omen",
-      stats: [
-        { name: "Skill DMG", multFactors: 117.2 },
-        { name: "Coordinated ATK DMG", multFactors: 42 },
-      ],
-      // getExtraStats: (lv) => [
-      //   { name: "Duration", value: "25s" },
-      //   { name: "Elemental Burst DMG Bonus", value: Math.min(21 + lv, 30) / 100 + "% per Energy" },
-      //   { name: "CD", value: "10s" },
-      // ],
-    },
-    EB: {
-      name: "Secret Art: Musou Shinsetsu",
-      image: "e/e0/Talent_Secret_Art_Musou_Shinsetsu",
-      stats: [
-        {
-          name: "Musou no Hitotachi",
-          multFactors: { root: 400.8, scale: 2 },
-          getTalentBuff: getEBTalentBuff("musouBonus"),
-        },
-        {
-          name: "1-Hit",
-          multFactors: 44.74,
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "2-Hit",
-          multFactors: 43.96,
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "3-Hit",
-          multFactors: 53.82,
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "4-Hit",
-          multFactors: [30.89, 30.98],
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "5-Hit",
-          multFactors: 73.94,
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "Charged Attack",
-          multFactors: [61.6, 74.36],
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "Plunge DMG",
-          multFactors: { root: 63.93, scale: 1 },
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "Low Plunge",
-          multFactors: { root: 127.84, scale: 1 },
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-        {
-          name: "High Plunge",
-          multFactors: { root: 159.68, scale: 1 },
-          getTalentBuff: getEBTalentBuff("isshinBonus"),
-        },
-      ],
-      multScale: 4,
-      // getExtraStats: (lv) => [
-      //   {
-      //     name: "Resolve Bonus",
-      //     value:
-      //       `${round(3.89 * TALENT_LV_MULTIPLIERS[2][lv], 2)}% Initial/` +
-      //       `${isshinBonusMults[lv]}% ATK DMG per Stack`,
-      //   },
-      //   {
-      //     name: "Resolve Stacks Gained",
-      //     value: Math.min(Math.ceil(14.5 + lv * 0.5), 20) / 100 + " per Energy Consumed",
-      //   },
-      //   { name: "Charged Attack Stamina Cost", value: 20 },
-      //   { name: "Musshou Isshin Energy Restoration", value: Math.min(15 + lv, 25) / 10 },
-      //   { name: "Musshou Isshin Duration", value: "7s" },
-      //   { name: "CD", value: "18s" },
-      // ],
-      energyCost: 90,
-    },
-  },
-  passiveTalents: [
-    { name: "Wishes Unnumbered", image: "b/bc/Talent_Wishes_Unnumbered" },
-    { name: "Enlightened One", image: "b/b7/Talent_Enlightened_One" },
-    { name: "All-Preserver", image: "0/0e/Talent_All-Preserver" },
-  ],
-  constellation: [
-    { name: "Ominous Inscription", image: "2/24/Constellation_Ominous_Inscription" },
-    { name: "Steelbreaker", image: "4/4e/Constellation_Steelbreaker" },
-    { name: "Shinkage Bygones", image: "4/4d/Constellation_Shinkage_Bygones" },
-    { name: "Pledge of Propriety", image: "c/c4/Constellation_Pledge_of_Propriety" },
-    { name: "Shogun's Descent", image: "8/85/Constellation_Shogun%27s_Descent" },
-    { name: "Wishbearer", image: "5/5e/Constellation_Wishbearer" },
-  ],
   innateBuffs: [
     {
       src: EModSrc.A4,
@@ -266,8 +121,8 @@ const Raiden: DataCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, charBuffCtrls, partyData }) => {
-        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, charBuffCtrls, partyData);
+      desc: ({ char, partyData, inputs }) => {
+        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
         return (
           <>
             Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
@@ -289,7 +144,21 @@ const Raiden: DataCharacter = {
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
-      applyBuff: ({ char, attPattBonus, desc, tracker }) => {
+      applyBuff: ({ char, attPattBonus, calcItemBuffs, inputs, partyData, desc, tracker }) => {
+        const buffValue = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
+        const { stacks, musouBonus, isshinBonus } = buffValue;
+
+        if (stacks) {
+          const musouDesc = `${stacks} Resolve, ${musouBonus}% extra multiplier each`;
+          const isshinDesc = `${stacks} Resolve, ${isshinBonus}% extra multiplier each`;
+          const ids = Array.from({ length: 9 }).map((_, i) => `EB.${i + 1}`);
+
+          calcItemBuffs.push(
+            exclBuff(musouDesc, "EB.0", "mult_", round(stacks * musouBonus, 2)),
+            exclBuff(isshinDesc, ids, "mult_", round(stacks * isshinBonus, 2))
+          );
+        }
+
         if (checkCons[2](char)) {
           const fields: AttackPatternPath[] = ["NA.defIgn_", "CA.defIgn_", "PA.defIgn_", "ES.defIgn_", "EB.defIgn_"];
           applyModifier(desc, attPattBonus, fields, 60, tracker);
@@ -316,4 +185,4 @@ const Raiden: DataCharacter = {
   ],
 };
 
-export default Raiden;
+export default Raiden as AppCharacter;
