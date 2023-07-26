@@ -60,8 +60,6 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
   const { vision, constellation } = charData;
   const consInfo = constellation[consLv - 1] || {};
 
-  console.log(isLoading);
-
   return (
     <div className="h-full flex-col hide-scrollbar">
       <SlideShow

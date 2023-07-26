@@ -10,7 +10,8 @@ export const GENSHIN_DEV_URL_PATH = {
 };
 
 export const BACKEND_URL_PATH = {
-  base: "http://localhost:3001/api",
+  // base: "http://localhost:3001/api",
+  base: "https://gidmgcalculator-lathieuhuan.vercel.app/api",
   character: {
     byName: (name: string) => `${BACKEND_URL_PATH.base}/character?name=${name}`,
   },
