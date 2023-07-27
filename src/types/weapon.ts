@@ -36,8 +36,10 @@ type InputIndex = {
 
 type InputStack = {
   type: "input";
-  index?: number | InputIndex[]; // default to 0
-  maxStackBonus?: number;
+  /** Default to 0 */
+  index?: number | InputIndex[];
+  /** if number, add to main */
+  maxStackBonus?: number | Pick<AutoBuff, "base" | "increment" | "targetGroup" | "targetPath">;
 };
 
 type EnergyStack = {
