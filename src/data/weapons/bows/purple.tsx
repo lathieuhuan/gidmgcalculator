@@ -33,6 +33,16 @@ const purpleBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 12,
+        targetGroup: "attPattBonus",
+        targetPath: "all.pct_",
+      },
+    ],
   },
   {
     code: 163,
@@ -64,6 +74,16 @@ const purpleBows: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 163)?.passiveDesc({ refi }).extra?.[0],
         applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 28),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 21,
+        targetGroup: "attPattBonus",
+        targetPath: "CA.pct_",
       },
     ],
   },
@@ -98,6 +118,25 @@ const purpleBows: AppWeapon[] = [
           const buffValue = (30 + refi * 10) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, "em", buffValue, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        base: 30,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "totalAttr",
+        targetPath: "em",
       },
     ],
   },
@@ -152,6 +191,17 @@ const purpleBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "em", 60, 3),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 40,
+        increment: 20,
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+    ],
   },
   {
     code: 126,
@@ -202,6 +252,25 @@ const purpleBows: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            label: "State number",
+            type: "select",
+            max: 3,
+          },
+        ],
+        base: 3,
+        initialBonus: 1.5,
+        // (1.5 + refi * 0.5) + (3 + refi * 1) * stacks
+        targetGroup: "attPattBonus",
+        targetPath: "all.pct_",
+      },
+    ],
   },
   {
     code: 12,
@@ -242,6 +311,25 @@ const purpleBows: AppWeapon[] = [
           const buffValue = (1.5 + refi * 0.5) * (inputs[0] || 0);
           applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 10,
+          },
+        ],
+        base: 1.5,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "all.pct_",
       },
     ],
   },
@@ -324,6 +412,34 @@ const purpleBows: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 66,
+        increment: 0,
+        targetGroup: "totalAttr",
+        targetPath: "atk",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        base: 10,
+        increment: 0,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "attPattBonus",
+        targetPath: ["NA.pct_", "CA.pct_"],
+      },
+    ],
   },
   {
     code: 17,
@@ -342,6 +458,14 @@ const purpleBows: AppWeapon[] = [
       ),
     }),
     applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 24),
+
+    autoBuffs: [
+      {
+        base: 18,
+        targetGroup: "attPattBonus",
+        targetPath: ["ES.pct_", "EB.pct_"],
+      },
+    ],
   },
   {
     code: 18,
@@ -403,6 +527,23 @@ const purpleBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 20),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetGroup: "attPattBonus",
+        targetPath: "ES.pct_",
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetGroup: "attPattBonus",
+        targetPath: "NA.pct_",
+      },
+    ],
   },
   {
     code: 20,
@@ -437,6 +578,16 @@ const purpleBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 12,
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
+      },
+    ],
   },
   {
     code: 22,
@@ -460,6 +611,20 @@ const purpleBows: AppWeapon[] = [
         applyModifier("Rust passive penalty", attPattBonus, "CA.pct_", -10, tracker);
       }
     },
+
+    autoBuffs: [
+      {
+        base: 30,
+        targetGroup: "attPattBonus",
+        targetPath: "NA.pct_",
+      },
+      {
+        base: -10,
+        increment: 0,
+        targetGroup: "attPattBonus",
+        targetPath: "CA.pct_",
+      },
+    ],
   },
   {
     code: 23,
@@ -483,6 +648,16 @@ const purpleBows: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 23)?.passiveDesc({ refi }).core,
         applyBuff: makeWpModApplier("totalAttr", "atk_", 36),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 27,
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
       },
     ],
   },
@@ -521,6 +696,22 @@ const purpleBows: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        base: [3, 0.9],
+        targetGroup: "totalAttr",
+        targetPath: ["atk_", "naAtkSpd_"],
+      },
+    ],
   },
   {
     code: 25,
@@ -553,6 +744,16 @@ const purpleBows: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleBows, 25)?.passiveDesc({ refi }).extra?.[0],
         applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], [16, 12]),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: [12, 9],
+        targetGroup: "attPattBonus",
+        targetPath: ["NA.pct_", "CA.pct_"],
       },
     ],
   },

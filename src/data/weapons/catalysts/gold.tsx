@@ -44,6 +44,26 @@ const goldCatalysts: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 0.1,
+        increment: 0.2,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+          convertRate: 0.001,
+        },
+        targetGroup: "totalAttr",
+        targetPath: "own element",
+        max: {
+          base: 4,
+          increment: 8,
+        },
+      },
+    ],
   },
   {
     code: 147,
@@ -90,6 +110,32 @@ const goldCatalysts: AppWeapon[] = [
           buffValue = Math.min(buffValue, valuePerStack * 10);
           applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
         },
+      },
+    ],
+
+    autoBuffs: [
+      {
+        base: 7.5,
+        targetGroup: "totalAttr",
+        targetPath: "naAtkSpd_",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          { label: "Seconds passed", type: "text", max: 10 },
+          { label: "Normal attacks hit", type: "text", max: 10 },
+        ],
+        base: 3.6,
+        stacks: {
+          type: "input",
+          index: [{ value: 0 }, { value: 1, convertRate: 2 }],
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "NA.pct_",
+        max: 36,
       },
     ],
   },
@@ -143,6 +189,34 @@ const goldCatalysts: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 24,
+        stacks: {
+          type: "vision",
+          element: "same_excluded",
+        },
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+      {
+        base: 6,
+        increment: 4,
+        targetGroup: "totalAttr",
+        targetPath: "own_element",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        base: 38,
+        increment: 2,
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+    ],
   },
   {
     code: 122,
@@ -183,6 +257,30 @@ const goldCatalysts: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 9,
+        stacks: {
+          type: "input",
+          maxStackBonus: {
+            base: 9,
+            targetGroup: "totalAttr",
+            targetPath: [...VISION_TYPES],
+          },
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "ES.pct_",
+      },
+    ],
   },
   {
     code: 34,
@@ -209,6 +307,23 @@ const goldCatalysts: AppWeapon[] = [
         applyModifier(desc, attPattBonus, "NA.flat", buffValue, tracker);
       }
     },
+
+    autoBuffs: [
+      {
+        base: 7.5,
+        targetGroup: "totalAttr",
+        targetPath: "healB_",
+      },
+      {
+        base: 0.0075,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "NA.flat",
+      },
+    ],
   },
   {
     code: 31,
@@ -228,6 +343,14 @@ const goldCatalysts: AppWeapon[] = [
       ),
     }),
     applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
+
+    autoBuffs: [
+      {
+        base: 9,
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
+      },
+    ],
   },
   {
     code: 32,

@@ -5,7 +5,7 @@ import { applyPercent, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "./utils";
 
-type SeriesInfo = Pick<AppWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc">;
+type SeriesInfo = Pick<AppWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc" | "autoBuffs" | "newBuffs">;
 
 export const desertSeries: Pick<
   AppWeapon,
@@ -90,6 +90,25 @@ export const royalSeries: SeriesInfo = {
       },
     },
   ],
+
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 5,
+        },
+      ],
+      base: 6,
+      stacks: {
+        type: "input",
+      },
+      targetGroup: "totalAttr",
+      targetPath: "cRate_",
+    },
+  ],
 };
 
 export const blackcliffSeries: SeriesInfo = {
@@ -119,6 +138,25 @@ export const blackcliffSeries: SeriesInfo = {
       </>
     ),
   }),
+
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 3,
+        },
+      ],
+      base: 9,
+      stacks: {
+        type: "input",
+      },
+      targetGroup: "totalAttr",
+      targetPath: "atk_",
+    },
+  ],
 };
 
 export const favoniusSeries: SeriesInfo = {
@@ -257,6 +295,16 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
       applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
     },
   ],
+
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      base: 9,
+      targetGroup: "attPattBonus",
+      targetPath: "all.pct_",
+    },
+  ],
 });
 
 export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
@@ -305,6 +353,18 @@ export const watatsumiSeries: SeriesInfo = {
       applyModifier(desc + extraDesc, attPattBonus, "EB.pct_", buffValue, tracker);
     }
   },
+
+  autoBuffs: [
+    {
+      base: 0.09,
+      stacks: {
+        type: "energy",
+      },
+      max: 30,
+      targetGroup: "attPattBonus",
+      targetPath: "EB.pct_",
+    },
+  ],
 };
 
 export const cullTheWeakSeries: SeriesInfo = {

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Rarity, ModInputConfig, AttributeStat } from "./global";
+import type { Rarity, ModInputConfig, AttributeStat, Vision } from "./global";
 import type {
   AttackPatternBonus,
   BuffModifierArgsWrapper,
@@ -16,6 +16,61 @@ export type DefaultAppWeapon = Pick<
   AppWeapon,
   "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
 >;
+
+type VisionStack = {
+  type: "vision";
+  element: "same_included" | "same_excluded" | "various" | "different";
+  max?: number;
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: string | "own_element";
+  convertRate?: number;
+};
+
+type InputIndex = {
+  value: number;
+  convertRate?: number;
+};
+
+type InputStack = {
+  type: "input";
+  index?: number | InputIndex[]; // default to 0
+  maxStackBonus?: number;
+};
+
+type EnergyStack = {
+  type: "energy";
+};
+
+type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack;
+
+type AutoBuff = {
+  /** only for "Predator" bow */
+  charCode?: number;
+  base: number | number[];
+  /** also scale off refi */
+  initialBonus?: number;
+  /** fixed type has no incremen */
+  increment?: number;
+  stacks?: StackConfig;
+  targetGroup: "totalAttr" | "attPattBonus";
+  targetPath: string | string[];
+  /** also scale off refi, increment default to main increment */
+  max?:
+    | number
+    | {
+        base: number;
+        increment: number;
+      };
+};
+
+type NewBuff = AutoBuff & {
+  index: number;
+  affect: EModAffect;
+  inputConfigs?: ModInputConfig[];
+};
 
 /**
  * Weapon in app data
@@ -39,6 +94,9 @@ export type AppWeapon = {
     extra?: JSX.Element[];
   };
   buffs?: WeaponBuff[];
+
+  autoBuffs?: AutoBuff[];
+  newBuffs?: NewBuff[];
 };
 
 type ApplyWpPassiveBuffsArgs = {

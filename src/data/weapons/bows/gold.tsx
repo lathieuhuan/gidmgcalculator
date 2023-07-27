@@ -50,6 +50,24 @@ const goldBows: AppWeapon[] = [
         applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
       }
     },
+
+    autoBuffs: [
+      {
+        base: 12,
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
+      },
+      {
+        base: 12,
+        stacks: {
+          type: "vision",
+          element: "same_included",
+          max: 3,
+        },
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
+      },
+    ],
   },
   {
     code: 133,
@@ -88,6 +106,27 @@ const goldBows: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 9,
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 1.2,
+        stacks: {
+          type: "attribute",
+          field: "em",
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "CA.flat",
+      },
+    ],
   },
   {
     code: 125,
@@ -122,6 +161,23 @@ const goldBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 20),
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 12,
+        targetGroup: "totalAttr",
+        targetPath: "hp_",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetGroup: "attPattBonus",
+        targetPath: "all.pct_",
+      },
+    ],
   },
   {
     code: 5,
@@ -141,6 +197,14 @@ const goldBows: AppWeapon[] = [
       ),
     }),
     applyBuff: makeWpModApplier("totalAttr", "cDmg_", 20),
+
+    autoBuffs: [
+      {
+        base: 15,
+        targetGroup: "totalAttr",
+        targetPath: "cDmg_",
+      },
+    ],
   },
   {
     code: 6,
@@ -186,6 +250,32 @@ const goldBows: AppWeapon[] = [
           const buffValue = polarStarBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
         },
+      },
+    ],
+
+    autoBuffs: [
+      {
+        base: 9,
+        targetGroup: "attPattBonus",
+        targetPath: ["ES.pct_", "EB.pct_"],
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        base: 7.5,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
       },
     ],
   },
@@ -234,6 +324,33 @@ const goldBows: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 15,
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 9,
+        stacks: {
+          type: "input",
+          maxStackBonus: 3,
+        },
+        targetGroup: "attPattBonus",
+        targetPath: "NA.pct_",
+      },
+    ],
   },
   {
     code: 8,
@@ -277,6 +394,32 @@ const goldBows: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 9,
+        targetGroup: "attPattBonus",
+        targetPath: ["NA.pct_", "CA.pct_"],
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
+        base: 6,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "attPattBonus",
+        targetPath: ["NA.pct_", "CA.pct_"],
+      },
+    ],
   },
   {
     code: 9,
@@ -315,6 +458,23 @@ const goldBows: AppWeapon[] = [
         affect: EModAffect.PARTY,
         desc: ({ refi }) => findByCode(goldBows, 9)?.passiveDesc({ refi }).extra?.[0],
         applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [100, 20]),
+      },
+    ],
+
+    autoBuffs: [
+      {
+        base: 45,
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        base: [75, 15],
+        targetGroup: "totalAttr",
+        targetPath: ["em", "atk_"],
       },
     ],
   },

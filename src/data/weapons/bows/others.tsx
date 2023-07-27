@@ -66,6 +66,16 @@ const otherBows: AppWeapon[] = [
         applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 24),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 18,
+        targetGroup: "attPattBonus",
+        targetPath: "CA.pct_",
+      },
+    ],
   },
   {
     code: 4,
@@ -98,6 +108,25 @@ const otherBows: AppWeapon[] = [
         },
       },
     ],
+
+    autoBuffs: [
+      {
+        base: -10,
+        increment: 0,
+        targetGroup: 'totalAttr',
+        targetPath: ["NA.pct_", "CA.pct_"]
+      }
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 40,
+        increment: 6,
+        targetGroup: 'attPattBonus',
+        targetPath: ["NA.pct_", "CA.pct_"]
+      }
+    ]
   },
   {
     code: 10,
