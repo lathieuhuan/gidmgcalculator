@@ -1,10 +1,10 @@
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
-import { DataArtifact } from "@Src/types";
+import { AppArtifact } from "@Src/types";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
-const fontaineSets: DataArtifact[] = [
+const fontaineSets: AppArtifact[] = [
   {
     code: 40,
     name: "Golden Troupe",

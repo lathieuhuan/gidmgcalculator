@@ -2,7 +2,7 @@ import type { AppCharacter, ApplyCharBuffArgs, DefaultAppCharacter, TotalAttribu
 import { EModAffect } from "@Src/constants";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
@@ -33,6 +33,81 @@ const Mona: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [810, 22, 51],
+    [2102, 58, 132],
+    [2797, 77, 176],
+    [4185, 115, 263],
+    [4678, 129, 294],
+    [5383, 148, 338],
+    [6041, 167, 379],
+    [6752, 186, 424],
+    [7246, 200, 455],
+    [7964, 220, 500],
+    [8458, 233, 531],
+    [9184, 253, 576],
+    [9677, 267, 607],
+    [10409, 287, 653],
+  ],
+  bonusStat: {
+    type: "er_",
+    value: 8,
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 37.6 },
+      { name: "2-Hit", multFactors: 36 },
+      { name: "3-Hit", multFactors: 44.8 },
+      { name: "4-Hit", multFactors: 56.16 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: 149.72,
+      },
+    ],
+    PA: LIGHT_PAs,
+    ES: [
+      { name: "DoT", multFactors: 32 },
+      { name: "Explosion DMG", multFactors: 132.8 },
+    ],
+    EB: [
+      {
+        name: "Bubble Explosion DMG",
+        multFactors: 442.4,
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Ripple of Fate",
+    },
+    ES: {
+      name: "Mirror Reflection of Doom",
+      image: "4/45/Talent_Mirror_Reflection_of_Doom",
+    },
+    EB: {
+      name: "Stellaris Phantasm",
+      image: "c/c4/Talent_Stellaris_Phantasm",
+    },
+    altSprint: {
+      name: "Illusory Torrent",
+      image: "9/9a/Talent_Illusory_Torrent",
+    },
+  },
+  passiveTalents: [
+    { name: "Come 'n' Get Me, Hag!", image: `8/8f/Talent_"Come_%27n%27_Get_Me%2C_Hag%21"` },
+    { name: "Waterborne Destiny", image: "6/6a/Talent_Waterborne_Destiny" },
+    { name: "Principium of Astrology", image: "4/48/Talent_Principium_of_Astrology" },
+  ],
+  constellation: [
+    { name: "Prophecy of Submersion", image: "2/27/Constellation_Prophecy_of_Submersion" },
+    { name: "Lunar Chain", image: "1/16/Constellation_Lunar_Chain" },
+    { name: "Restless Revolution", image: "2/2a/Constellation_Restless_Revolution" },
+    { name: "Prophecy of Oblivion", image: "3/38/Constellation_Prophecy_of_Oblivion" },
+    { name: "Mockery of Fortuna", image: "b/bd/Constellation_Mockery_of_Fortuna" },
+    { name: "Rhetorics of Calamitas", image: "6/62/Constellation_Rhetorics_of_Calamitas" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

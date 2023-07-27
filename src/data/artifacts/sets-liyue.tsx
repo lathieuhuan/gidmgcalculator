@@ -1,10 +1,10 @@
-import type { DataArtifact } from "@Src/types";
+import type { AppArtifact } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
-const liyueSets: DataArtifact[] = [
+const liyueSets: AppArtifact[] = [
   {
     code: 5,
     name: "Noblesse Oblige",

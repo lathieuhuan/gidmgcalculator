@@ -4,7 +4,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Green, Hydro, Lightgold } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
 const getEBBuffValue = (toSelf: boolean, char: CharInfo, partyData: PartyData, inputs: ModifierInput[]) => {
@@ -29,6 +29,105 @@ const Ayato: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1068, 23, 60],
+    [2770, 60, 155],
+    [3685, 80, 206],
+    [5514, 120, 309],
+    [6165, 134, 345],
+    [7092, 155, 397],
+    [7960, 174, 446],
+    [8897, 194, 499],
+    [9548, 208, 535],
+    [10494, 229, 588],
+    [11144, 243, 624],
+    [12101, 264, 678],
+    [12751, 278, 715],
+    [13715, 299, 769],
+  ],
+  bonusStat: {
+    type: "cDmg_",
+    value: 9.6,
+  },
+  calcListConfig: {
+    NA: { multScale: 7 },
+    ES: { multScale: 7 },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 44.96 },
+      { name: "2-Hit", multFactors: 47.16 },
+      { name: "3-Hit", multFactors: 58.61 },
+      { name: "4-Hit (1/2)", multFactors: 29.45 },
+      { name: "5-Hit", multFactors: 75.6 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: { root: 129.53, scale: 7 },
+      },
+    ],
+    PA: MEDIUM_PAs,
+    ES: [
+      {
+        id: "ES.0",
+        name: "Shunsuiken 1-Hit DMG",
+        attPatt: "NA",
+        multFactors: 52.89,
+      },
+      {
+        id: "ES.1",
+        name: "Shunsuiken 2-Hit DMG",
+        attPatt: "NA",
+        multFactors: 58.91,
+      },
+      {
+        id: "ES.2",
+        name: "Shunsuiken 3-Hit DMG",
+        attPatt: "NA",
+        multFactors: 64.93,
+      },
+      {
+        id: "ES.3",
+        name: "Extra Shunsuiken strike (1/2) (C6)",
+        attPatt: "NA",
+        multFactors: { root: 450, scale: 0 },
+      },
+      { name: "Water Illusion DMG", multFactors: 101.48 },
+    ],
+    EB: [
+      {
+        name: "Bloomwater Blade DMG",
+        multFactors: 66.46,
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Kamisato Art - Marobashi",
+    },
+    ES: {
+      name: "Kamisato Art: Kyouka",
+      image: "5/5d/Talent_Kamisato_Art_Kyouka",
+    },
+    EB: {
+      name: "Kamisato Art: Suiyuu",
+      image: "e/e8/Talent_Kamisato_Art_Suiyuu",
+    },
+  },
+  passiveTalents: [
+    { name: "Kamisato Art: Mine Wo Matoishi Kiyotaki", image: "7/77/Talent_Kamisato_Art_Mine_Wo_Matoishi_Kiyotaki" },
+    { name: "Kamisato Art: Michiyuku Hagetsu", image: "b/ba/Talent_Kamisato_Art_Michiyuku_Hagetsu" },
+    { name: "Kamisato Art: Daily Cooking", image: "4/43/Talent_Kamisato_Art_Daily_Cooking" },
+  ],
+  constellation: [
+    { name: "Kyouka Fushi", image: "a/ac/Constellation_Kyouka_Fuushi" },
+    { name: "World Source", image: "e/ed/Constellation_World_Source" },
+    { name: "To Admire the Flower", image: "0/06/Constellation_To_Admire_the_Flowers" },
+    { name: "Endles Flow", image: "d/de/Constellation_Endless_Flow" },
+    { name: "Bansui Ichiro", image: "f/f1/Constellation_Bansui_Ichiro" },
+    { name: "Boundless Origin", image: "d/da/Constellation_Boundless_Origin" },
+  ],
   buffs: [
     {
       index: 0,

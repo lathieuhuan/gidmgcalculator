@@ -5,7 +5,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Cryo, Green, Rose } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
@@ -29,6 +29,78 @@ const Shenhe: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1011, 24, 65],
+    [2624, 61, 168],
+    [3491, 82, 223],
+    [5224, 122, 334],
+    [5840, 137, 373],
+    [6719, 157, 429],
+    [7540, 176, 482],
+    [8429, 197, 538],
+    [9045, 211, 578],
+    [9941, 232, 635],
+    [10557, 247, 674],
+    [11463, 268, 732],
+    [12080, 282, 772],
+    [12993, 304, 830],
+  ],
+  bonusStat: { type: "atk_", value: 7.2 },
+  activeTalents: {
+    NAs: {
+      name: "Dawnstar Shooter",
+    },
+    ES: {
+      name: "Spring Spirit Summoning",
+      image: "6/6c/Talent_Spring_Spirit_Summoning",
+    },
+    EB: {
+      name: "Divine Maiden's Deliverance",
+      image: "d/d5/Talent_Divine_Maiden%27s_Deliverance",
+    },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 43.26 },
+      { name: "2-Hit", multFactors: 40.25 },
+      { name: "3-Hit", multFactors: 53.32 },
+      { name: "4-Hit (1/2)", multFactors: 26.32 },
+      { name: "5-Hit", multFactors: 65.62 },
+    ],
+    CA: [{ name: "Charged Attack", multFactors: 110.67 }],
+    PA: MEDIUM_PAs,
+    ES: [
+      { name: "Press Skill DMG", multFactors: 139.2 },
+      { name: "Hold Skill DMG", multFactors: 188.8 },
+      { name: "DMG Bonus", type: "other", multFactors: 45.66 },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 100.8 },
+      { name: "DoT", multFactors: 33.12 },
+    ],
+  },
+  passiveTalents: [
+    { name: "Deific Embrace", image: "2/29/Talent_Deific_Embrace" },
+    {
+      name: "Spirit Communion Seal",
+      image: "5/5c/Talent_Spirit_Communion_Seal",
+    },
+    {
+      name: "Precise Comings and Goings",
+      image: "d/d0/Talent_Precise_Comings_and_Goings",
+    },
+  ],
+  constellation: [
+    { name: "Clarity of Heart", image: "1/13/Constellation_Clarity_of_Heart" },
+    { name: "Centered Spirit", image: "9/90/Constellation_Centered_Spirit" },
+    { name: "Seclusion", image: "d/d9/Constellation_Seclusion" },
+    { name: "Insight", image: "4/46/Constellation_Insight" },
+    {
+      name: "Divine Attainment",
+      image: "5/58/Constellation_Divine_Attainment",
+    },
+    { name: "Mystical Abandon", image: "0/0d/Constellation_Mystical_Abandon" },
+  ],
   buffs: [
     {
       index: 0,

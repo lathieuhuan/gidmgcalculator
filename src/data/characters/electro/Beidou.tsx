@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const Beidou: DefaultAppCharacter = {
@@ -19,6 +19,94 @@ const Beidou: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1094, 19, 54],
+    [2811, 48, 140],
+    [3628, 63, 180],
+    [5435, 94, 270],
+    [6015, 104, 299],
+    [6919, 119, 344],
+    [7694, 133, 382],
+    [8597, 148, 427],
+    [9178, 158, 456],
+    [10081, 174, 501],
+    [10662, 184, 530],
+    [11565, 200, 575],
+    [12146, 210, 603],
+    [13050, 225, 648],
+  ],
+  bonusStat: {
+    type: "electro",
+    value: 6,
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 71.12 },
+      { name: "2-Hit", multFactors: 70.86 },
+      { name: "3-Hit", multFactors: 88.32 },
+      { name: "4-Hit", multFactors: 86.52 },
+      { name: "5-Hit", multFactors: 112.14 },
+    ],
+    CA: [
+      { name: "Charged Attack Spinning", multFactors: 56.24 },
+      { name: "Charged Attack Final", multFactors: 101.82 },
+      {
+        name: "Extra Hit (C4)",
+        attPatt: "none",
+        attElmt: "electro",
+        multFactors: { root: 20, scale: 0 },
+      },
+    ],
+    PA: HEAVY_PAs,
+    ES: [
+      {
+        name: "Shield DMG Absorption",
+        type: "shield",
+        multFactors: { root: 14.4, attributeType: "hp" },
+        flatFactor: 1386,
+      },
+      { name: "Base DMG", multFactors: 121.6 },
+      { name: "DMG Bonus on Hit", multFactors: 160 },
+      { name: "Full Counter", multFactors: 441.6, notOfficial: true },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 121.6 },
+      { name: "Lightning DMG", multFactors: 96 },
+      {
+        name: "Shield DMG Absorption (C1)",
+        multFactors: { root: 16, attributeType: "hp" },
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Oceanborne",
+    },
+    ES: {
+      name: "Tidecaller",
+      image: "9/92/Talent_Tidecaller",
+    },
+    EB: {
+      name: "Stormbreaker",
+      image: "3/33/Talent_Stormbreaker",
+    },
+  },
+  passiveTalents: [
+    { name: "Retribution", image: "6/69/Talent_Retribution" },
+    { name: "Lightning Storm", image: "8/8a/Talent_Lightning_Storm" },
+    { name: "Conqueror of Tides", image: "d/d3/Talent_Conqueror_of_Tides" },
+  ],
+  constellation: [
+    { name: "Sea Beast's Scourge", image: "2/23/Constellation_Sea_Beast%27s_Scourge" },
+    {
+      name: "Upon the Turbulent Sea, the Thunder Arises",
+      image: "d/df/Constellation_Upon_the_Turbulent_Sea%2C_the_Thunder_Arises",
+    },
+    { name: "Summoner of Storm", image: "8/8e/Constellation_Summoner_of_Storm" },
+    { name: "Stunning Revenge", image: "6/63/Constellation_Stunning_Revenge" },
+    { name: "Crimson Tidewalker", image: "2/23/Constellation_Crimson_Tidewalker" },
+    { name: "Bane of Evil", image: "c/c5/Constellation_Bane_of_Evil" },
+  ],
   buffs: [
     {
       index: 0,

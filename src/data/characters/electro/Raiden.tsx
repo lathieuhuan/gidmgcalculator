@@ -11,7 +11,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const getBuffValue = {
@@ -77,6 +77,87 @@ const Raiden: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [1005, 26, 61],
+    [2606, 68, 159],
+    [3468, 91, 212],
+    [5189, 136, 317],
+    [5801, 152, 355],
+    [6675, 174, 408],
+    [7491, 196, 458],
+    [8373, 219, 512],
+    [8985, 235, 549],
+    [9875, 258, 604],
+    [10487, 274, 641],
+    [11388, 298, 696],
+    [12000, 314, 734],
+    [12907, 337, 789],
+  ],
+  bonusStat: {
+    type: "er_",
+    value: 8,
+  },
+  calcListConfig: {
+    EB: { multScale: 4 },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 39.65 },
+      { name: "2-Hit", multFactors: 39.73 },
+      { name: "3-Hit", multFactors: 49.88 },
+      { name: "4-Hit (1/2)", multFactors: 28.98 },
+      { name: "5-Hit", multFactors: 65.45 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: 99.59,
+      },
+    ],
+    PA: MEDIUM_PAs,
+    ES: [
+      { name: "Skill DMG", multFactors: 117.2 },
+      { name: "Coordinated ATK DMG", multFactors: 42 },
+    ],
+    EB: [
+      { id: "EB.0", name: "Musou no Hitotachi", multFactors: { root: 400.8, scale: 2 } },
+      { id: "EB.1", name: "1-Hit", multFactors: 44.74 },
+      { id: "EB.2", name: "2-Hit", multFactors: 43.96 },
+      { id: "EB.3", name: "3-Hit", multFactors: 53.82 },
+      { id: "EB.4", name: "4-Hit", multFactors: [30.89, 30.98] },
+      { id: "EB.5", name: "5-Hit", multFactors: 73.94 },
+      { id: "EB.6", name: "Charged Attack", multFactors: [61.6, 74.36] },
+      { id: "EB.7", name: "Plunge DMG", multFactors: { root: 63.93, scale: 1 } },
+      { id: "EB.8", name: "Low Plunge", multFactors: { root: 127.84, scale: 1 } },
+      { id: "EB.9", name: "High Plunge", multFactors: { root: 159.68, scale: 1 } },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Origin",
+    },
+    ES: {
+      name: "Transcendence: Baleful Omen",
+      image: "3/3c/Talent_Transcendence_Baleful_Omen",
+    },
+    EB: {
+      name: "Secret Art: Musou Shinsetsu",
+      image: "e/e0/Talent_Secret_Art_Musou_Shinsetsu",
+    },
+  },
+  passiveTalents: [
+    { name: "Wishes Unnumbered", image: "b/bc/Talent_Wishes_Unnumbered" },
+    { name: "Enlightened One", image: "b/b7/Talent_Enlightened_One" },
+    { name: "All-Preserver", image: "0/0e/Talent_All-Preserver" },
+  ],
+  constellation: [
+    { name: "Ominous Inscription", image: "2/24/Constellation_Ominous_Inscription" },
+    { name: "Steelbreaker", image: "4/4e/Constellation_Steelbreaker" },
+    { name: "Shinkage Bygones", image: "4/4d/Constellation_Shinkage_Bygones" },
+    { name: "Pledge of Propriety", image: "c/c4/Constellation_Pledge_of_Propriety" },
+    { name: "Shogun's Descent", image: "8/85/Constellation_Shogun%27s_Descent" },
+    { name: "Wishbearer", image: "5/5e/Constellation_Wishbearer" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

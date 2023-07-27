@@ -4,7 +4,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { findByIndex, round } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {
@@ -38,6 +38,87 @@ const Wanderer: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [791, 26, 47],
+    [2053, 66, 123],
+    [2731, 88, 163],
+    [4086, 131, 244],
+    [4568, 147, 273],
+    [5256, 169, 313],
+    [5899, 190, 352],
+    [6593, 213, 394],
+    [7076, 228, 423],
+    [7777, 251, 465],
+    [8259, 266, 493],
+    [8968, 289, 536],
+    [9450, 305, 564],
+    [10164, 328, 607],
+  ],
+  bonusStat: { type: "cRate_", value: 4.8 },
+  activeTalents: {
+    NAs: {
+      name: "Yuuban Meigen",
+    },
+    ES: {
+      name: "Hanega: Song of the Wind",
+      image: "b/b0/Talent_Hanega_Song_of_the_Wind",
+    },
+    EB: {
+      name: "Kyougen: Five Ceremonial Plays",
+      image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
+    },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: { root: 68.71, scale: 1 } },
+      { name: "2-Hit", multFactors: { root: 65.02, scale: 1 } },
+      { name: "3-Hit (1/2)", multFactors: { root: 47.64, scale: 1 } },
+      {
+        name: "Additional 1-Hit (C6)",
+        multFactors: { root: 27.48, scale: 1 },
+      },
+      { name: "Additional 2-Hit (C6)", multFactors: { root: 26, scale: 1 } },
+      {
+        name: "Additional 3-Hit (1/2) (C6)",
+        multFactors: { root: 19.06, scale: 1 },
+      },
+      {
+        id: "NA.0",
+        name: "Wind Arrow DMG (A4) (1/4)",
+        attPatt: "none",
+        multFactors: { root: 35, scale: 0 },
+      },
+    ],
+    CA: [{ name: "Charged Attack", multFactors: { root: 132.08, scale: 2 } }],
+    PA: LIGHT_PAs,
+    ES: [{ name: "Skill DMG", multFactors: 95.2 }],
+    EB: [{ name: "Skill DMG (1/5)", multFactors: 147.2 }],
+  },
+  passiveTalents: [
+    { name: "Jade-Claimed Flower", image: "9/95/Talent_Jade-Claimed_Flower" },
+    { name: "Gales of Reverie", image: "4/4f/Talent_Gales_of_Reverie" },
+    {
+      name: "Strum the Swirling Winds",
+      image: "8/85/Talent_Strum_the_Swirling_Winds",
+    },
+  ],
+  constellation: [
+    { name: "Shoban: Ostentatious Plumage", image: "c/c9/Constellation_Shoban_Ostentatious_Plumage" },
+    {
+      name: "Niban: Moonlit Isle Amidst White Waves",
+      image: "4/4a/Constellation_Niban_Moonlit_Isle_Amidst_White_Waves",
+    },
+    { name: "Sanban: Moonflower Kusemai", image: "c/c0/Constellation_Sanban_Moonflower_Kusemai" },
+    { name: "Yonban: Set Adrift into Spring", image: "7/77/Constellation_Yonban_Set_Adrift_into_Spring" },
+    {
+      name: "Matsuban: Ancient Illuminator From Abroad",
+      image: "8/85/Constellation_Matsuban_Ancient_Illuminator_From_Abroad",
+    },
+    {
+      name: "Shugen: The Curtains' Melancholic Sway",
+      image: "0/01/Constellation_Shugen_The_Curtains%27_Melancholic_Sway",
+    },
+  ],
   buffs: [
     {
       index: 0,

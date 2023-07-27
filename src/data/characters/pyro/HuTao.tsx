@@ -22,6 +22,101 @@ const HuTao: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1211, 8, 68],
+    [3141, 21, 177],
+    [4179, 29, 235],
+    [6253, 43, 352],
+    [6990, 48, 394],
+    [8042, 55, 453],
+    [9026, 62, 508],
+    [10089, 69, 568],
+    [10826, 74, 610],
+    [11899, 81, 670],
+    [12637, 86, 712],
+    [13721, 94, 773],
+    [14459, 99, 815],
+    [15552, 106, 876],
+  ],
+  bonusStat: {
+    type: "cDmg_",
+    value: 9.6,
+  },
+  calcListConfig: {
+    NA: { multScale: 4 },
+    PA: { multScale: 4 },
+    EB: { multScale: 5 },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 46.89 },
+      { name: "2-Hit", multFactors: 48.25 },
+      { name: "3-Hit", multFactors: 61.05 },
+      { name: "4-Hit", multFactors: 65.64 },
+      {
+        name: "5-Hit",
+        multFactors: [33.27, 35.2],
+      },
+      { name: "6-Hit", multFactors: 85.96 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: { root: 135.96, scale: 4 },
+      },
+    ],
+    PA: [
+      { name: "Plunge DMG", multFactors: 65.42 },
+      { name: "Low Plunge", multFactors: 130.81 },
+      { name: "High Plunge", multFactors: 163.39 },
+    ],
+    ES: [
+      {
+        name: "Blood Blossom DMG",
+        multFactors: 64,
+      },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 303.27 },
+      { name: "Low HP Skill DMG", multFactors: 379.09 },
+      {
+        name: "HP Regen.",
+        type: "other",
+        multFactors: { root: 6.26, attributeType: "hp" },
+      },
+      {
+        name: "Low HP Regen.",
+        type: "other",
+        multFactors: { root: 8.35, attributeType: "hp" },
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Secret Spear of Wangsheng",
+    },
+    ES: {
+      name: "Guide to Afterlife",
+      image: "b/be/Talent_Guide_to_Afterlife",
+    },
+    EB: {
+      name: "Spirit Soother",
+      image: "1/11/Talent_Spirit_Soother",
+    },
+  },
+  passiveTalents: [
+    { name: "Flutter By", image: "1/13/Talent_Flutter_By" },
+    { name: "Sanguine Rouge", image: "2/24/Talent_Sanguine_Rouge" },
+    { name: "The More the Merrier", image: "6/68/Talent_The_More_the_Merrier" },
+  ],
+  constellation: [
+    { name: "Crimson Bouquet", image: "0/08/Constellation_Crimson_Bouquet" },
+    { name: "Ominous Rainfall", image: "b/b6/Constellation_Ominous_Rainfall" },
+    { name: "Lingering Carmine", image: "7/7f/Constellation_Lingering_Carmine" },
+    { name: "Garden of Eternal Rest", image: "5/57/Constellation_Garden_of_Eternal_Rest" },
+    { name: "Floral Incense", image: "f/f2/Constellation_Floral_Incense" },
+    { name: "Butterfly's Embrace", image: "0/09/Constellation_Butterfly%27s_Embrace" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.C2,

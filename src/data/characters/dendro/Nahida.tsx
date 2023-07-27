@@ -4,7 +4,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Green, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 function getEBBuff(char: CharInfo, partyData: PartyData) {
@@ -34,6 +34,88 @@ const Nahida: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [807, 23, 49],
+    [2092, 60, 127],
+    [2784, 80, 169],
+    [4165, 120, 253],
+    [4656, 134, 283],
+    [5357, 155, 326],
+    [6012, 174, 366],
+    [6721, 194, 409],
+    [7212, 208, 439],
+    [7926, 229, 482],
+    [8418, 243, 512],
+    [9140, 264, 556],
+    [9632, 278, 586],
+    [10360, 299, 630],
+  ],
+  bonusStat: {
+    type: "em",
+    value: 28.8,
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 40.3 },
+      { name: "2-Hit", multFactors: 36.97 },
+      { name: "3-Hit", multFactors: 45.87 },
+      { name: "4-Hit", multFactors: 58.41 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: 132,
+      },
+    ],
+    PA: LIGHT_PAs,
+    ES: [
+      { name: "Press DMG", multFactors: 98.4 },
+      { name: "Hold DMG", multFactors: 130.4 },
+      {
+        id: "ES.0",
+        name: "Tri-Karma Purification DMG",
+        multFactors: [
+          { root: 103.2, attributeType: "atk" },
+          { root: 206.4, attributeType: "em" },
+        ],
+        multFactorsAreOne: true,
+      },
+      {
+        name: "Karmic Oblivion DMG (C6)",
+        multFactors: [
+          { root: 200, scale: 0 },
+          { root: 400, scale: 0, attributeType: "em" },
+        ],
+      },
+    ],
+    EB: [],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Form",
+    },
+    ES: {
+      name: "All Schemes to Know",
+      image: "7/72/Talent_All_Schemes_to_Know",
+    },
+    EB: {
+      name: "Illusory Heart",
+      image: "e/e9/Talent_Illusory_Heart",
+    },
+  },
+  passiveTalents: [
+    { name: "Compassion Illuminated", image: "6/63/Talent_Compassion_Illuminated" },
+    { name: "Awakening Elucidated", image: "1/1a/Talent_Awakening_Elucidated" },
+    { name: "On All Things Meditated", image: "d/db/Talent_On_All_Things_Meditated" },
+  ],
+  constellation: [
+    { name: "The Seed of Stored Knowledge", image: "5/5f/Constellation_The_Seed_of_Stored_Knowledge" },
+    { name: "The Root of All Fullness", image: "3/38/Constellation_The_Root_of_All_Fullness" },
+    { name: "The Shoot of Conscious Attainment", image: "1/18/Constellation_The_Shoot_of_Conscious_Attainment" },
+    { name: "The Stem of Manifest Inference", image: "8/8b/Constellation_The_Stem_of_Manifest_Inference" },
+    { name: "The Leaves of Enlightening Speech", image: "f/fb/Constellation_The_Leaves_of_Enlightening_Speech" },
+    { name: "The Fruit of Reason's Culmination", image: "b/b5/Constellation_The_Fruit_of_Reason%27s_Culmination" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

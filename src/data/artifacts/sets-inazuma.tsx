@@ -1,11 +1,11 @@
-import type { DataArtifact } from "@Src/types";
+import type { AppArtifact } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { NCPA_PERCENTS } from "@Data/constants";
 
-const inazumaSets: DataArtifact[] = [
+const inazumaSets: AppArtifact[] = [
   {
     code: 32,
     name: "Echoes of an Offering",

@@ -24,24 +24,7 @@ import type {
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
-export type DefaultAppCharacter = Pick<
-  AppCharacter,
-  | "code"
-  | "name"
-  | "beta"
-  | "GOOD"
-  | "icon"
-  | "sideIcon"
-  | "rarity"
-  | "nation"
-  | "vision"
-  | "weaponType"
-  | "EBcost"
-  | "talentLvBonusAtCons"
-  | "innateBuffs"
-  | "buffs"
-  | "debuffs"
->;
+export type DefaultAppCharacter = AppCharacter;
 
 export type AppCharacter = {
   code: number;

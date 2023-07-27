@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Lightgold } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc, TRAVELER_INFO } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const ElectroMC: DefaultAppCharacter = {
@@ -15,6 +15,44 @@ const ElectroMC: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  calcList: {
+    ...TRAVELLER_NCPAs,
+    ES: [
+      {
+        name: "Skill DMG",
+        multFactors: 78.66,
+      },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 114.4 },
+      { name: "Falling Thunder", multFactors: 32.8 },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Foreign Thundershock",
+    },
+    ES: {
+      name: "Lightning Blade",
+      image: "0/03/Talent_Lightning_Blade",
+    },
+    EB: {
+      name: "Bellowing Thunder",
+      image: "a/a7/Talent_Bellowing_Thunder",
+    },
+  },
+  passiveTalents: [
+    { name: "Thunderflash", image: "1/16/Talent_Thunderflash" },
+    { name: "Resounding Roar", image: "2/26/Talent_Resounding_Roar" },
+  ],
+  constellation: [
+    { name: "Spring Thunder of Fertility", image: "2/2f/Constellation_Spring_Thunder_of_Fertility" },
+    { name: "Violet Vehemence", image: "8/8f/Constellation_Violet_Vehemence" },
+    { name: "Distant Crackling", image: "c/c0/Constellation_Distant_Crackling" },
+    { name: "Fickle Cloudstrike", image: "8/84/Constellation_Fickle_Cloudstrike" },
+    { name: "Clamor in the Wilds", image: "8/80/Constellation_Clamor_in_the_Wilds" },
+    { name: "World-Shaker", image: "7/76/Constellation_World-Shaker" },
+  ],
   buffs: [
     {
       index: 0,

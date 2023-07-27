@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { Green, Red } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons } from "../utils";
 
 const Sucrose: DefaultAppCharacter = {
@@ -19,6 +19,68 @@ const Sucrose: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [775, 14, 59],
+    [1991, 37, 151],
+    [2570, 47, 195],
+    [3850, 71, 293],
+    [4261, 78, 324],
+    [4901, 90, 373],
+    [5450, 100, 414],
+    [6090, 112, 463],
+    [6501, 120, 494],
+    [7141, 131, 543],
+    [7552, 139, 574],
+    [8192, 151, 623],
+    [8604, 158, 654],
+    [9244, 170, 703],
+  ],
+  bonusStat: { type: "anemo", value: 6 },
+  activeTalents: {
+    NAs: {
+      name: "Wind Spirit Creation",
+    },
+    ES: {
+      name: "Astable Anemohypostasis Creation - 6308",
+      image: "7/76/Talent_Astable_Anemohypostasis_Creation_-_6308",
+    },
+    EB: {
+      name: "Forbidden Creation - Isomer 75 / Type II",
+      image: "4/4d/Talent_Forbidden_Creation_-_Isomer_75_Type_II",
+    },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 33.46 },
+      { name: "2-Hit", multFactors: 30.62 },
+      { name: "3-Hit", multFactors: 38.45 },
+      { name: "4-Hit", multFactors: 47.92 },
+    ],
+    CA: [{ name: "Charged Attack", multFactors: 120.16 }],
+    PA: LIGHT_PAs,
+    ES: [{ name: "Skill DMG", multFactors: 211.2 }],
+    EB: [
+      { name: "DoT", multFactors: 148 },
+      {
+        name: "Additional Elemental DMG",
+        multFactors: 44,
+        attElmt: "various",
+      },
+    ],
+  },
+  passiveTalents: [
+    { name: "Catalyst Conversion", image: "8/8b/Talent_Catalyst_Conversion" },
+    { name: "Mollis Favonius", image: "0/02/Talent_Mollis_Favonius" },
+    { name: "Astable Invention", image: "7/7e/Talent_Astable_Invention" },
+  ],
+  constellation: [
+    { name: "Clustered Vacuum Field", image: "c/ce/Constellation_Clustered_Vacuum_Field" },
+    { name: "Beth: Unbound Form", image: "3/3c/Constellation_Beth_Unbound_Form" },
+    { name: "Flawless Alchemistress", image: "c/cb/Constellation_Flawless_Alchemistress" },
+    { name: "Alchemania", image: "3/3e/Constellation_Alchemania" },
+    { name: "Caution: Standard Flask", image: "5/5e/Constellation_Caution_Standard_Flask" },
+    { name: "Chaotic Entropy", image: "b/b1/Constellation_Chaotic_Entropy" },
+  ],
   buffs: [
     {
       index: 0,

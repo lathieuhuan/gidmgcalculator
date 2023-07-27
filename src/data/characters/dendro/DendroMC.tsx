@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { applyModifier } from "@Src/utils/calculation";
-import { EModSrc, TRAVELER_INFO } from "../constants";
+import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const DendroMC: DefaultAppCharacter = {
@@ -15,6 +15,48 @@ const DendroMC: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  activeTalents: {
+    NAs: {
+      name: "Foreign Fieldcleaver",
+    },
+    ES: {
+      name: "Razorgrass Blade",
+      image: "2/24/Talent_Razorgrass_Blade",
+    },
+    EB: {
+      name: "Surgent Manifestation",
+      image: "a/af/Talent_Surgent_Manifestation",
+    },
+  },
+  calcList: {
+    ...TRAVELLER_NCPAs,
+    ES: [{ name: "Skill DMG", multFactors: 230.4 }],
+    EB: [
+      { name: "Lea Lotus Lamp Attack DMG", multFactors: 80.16 },
+      { name: "Explosion DMG", multFactors: 400.8 },
+    ],
+  },
+  passiveTalents: [
+    { name: "Verdant Overgrowth", image: "5/55/Talent_Verdant_Overgrowth" },
+    { name: "Verdant Luxury", image: "5/55/Talent_Verdant_Luxury" },
+  ],
+  constellation: [
+    {
+      name: "Symbiotic Creeper",
+      image: "1/16/Constellation_Symbiotic_Creeper",
+    },
+    { name: "Green Resilience", image: "f/f4/Constellation_Green_Resilience" },
+    { name: "Whirling Weeds", image: "3/3c/Constellation_Whirling_Weeds" },
+    { name: "Treacle Grass", image: "f/f5/Constellation_Treacle_Grass" },
+    {
+      name: "Viridian Transience",
+      image: "8/8f/Constellation_Viridian_Transience",
+    },
+    {
+      name: "Withering Aggregation",
+      image: "d/dc/Constellation_Withering_Aggregation",
+    },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

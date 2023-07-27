@@ -20,7 +20,7 @@ type ArtTypeData = {
 /**
  * Artifact in app data
  */
-export type DataArtifact = {
+export type AppArtifact = {
   code: number;
   beta?: boolean;
   name: string;

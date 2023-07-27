@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Ganyu: DefaultAppCharacter = {
@@ -19,6 +19,100 @@ const Ganyu: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [763, 26, 49],
+    [1978, 68, 127],
+    [2632, 90, 169],
+    [3939, 135, 253],
+    [4403, 151, 283],
+    [5066, 173, 326],
+    [5686, 194, 366],
+    [6355, 217, 409],
+    [6820, 233, 439],
+    [7495, 256, 482],
+    [7960, 272, 512],
+    [8643, 295, 556],
+    [9108, 311, 586],
+    [9797, 335, 630],
+  ],
+  bonusStat: { type: "cDmg_", value: 9.6 },
+  activeTalents: {
+    NAs: {
+      name: "Liutian Archery",
+    },
+    ES: {
+      name: "Trail of the Qilin",
+      image: "d/d1/Talent_Trail_of_the_Qilin",
+    },
+    EB: {
+      name: "Celestial Shower",
+      image: "4/47/Talent_Celestial_Shower",
+    },
+  },
+  calcListConfig: {
+    CA: {
+      multScale: 2,
+    },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 31.73 },
+      { name: "2-Hit", multFactors: 35.6 },
+      { name: "3-Hit", multFactors: 45.49 },
+      { name: "4-Hit", multFactors: 45.49 },
+      { name: "5-Hit", multFactors: 48.25 },
+      { name: "6-Hit", multFactors: 57.62 },
+    ],
+    CA: [
+      { name: "Aimed Shot", multFactors: { root: 43.86, scale: 7 } },
+      {
+        name: "Aimed Shot Charged Level 1",
+        subAttPatt: "FCA",
+        multFactors: 124,
+      },
+      {
+        id: "CA.0",
+        name: "Frostflake Arrow",
+        subAttPatt: "FCA",
+        multFactors: 128,
+      },
+      {
+        id: "CA.1",
+        name: "Frostflake Arrow Bloom",
+        subAttPatt: "FCA",
+        multFactors: 217.6,
+      },
+    ],
+    PA: LIGHT_PAs,
+    ES: [
+      {
+        name: "Inherited HP",
+        type: "other",
+        multFactors: { root: 120, attributeType: "hp" },
+      },
+      { name: "Skill DMG", multFactors: 132 },
+    ],
+    EB: [{ name: "Ice shard DMG", multFactors: 70.27 }],
+  },
+  passiveTalents: [
+    { name: "Undivided Heart", image: "a/a3/Talent_Undivided_Heart" },
+    {
+      name: "Harmony between Heaven and Earth",
+      image: "d/d4/Talent_Harmony_between_Heaven_and_Earth",
+    },
+    {
+      name: "Preserved for the Hunt",
+      image: "c/cf/Talent_Preserved_for_the_Hunt",
+    },
+  ],
+  constellation: [
+    { name: "Dew-Drinker", image: "7/74/Constellation_Dew-Drinker" },
+    { name: "The Auspicious", image: "d/d9/Constellation_The_Auspicious" },
+    { name: "Cloud-Strider", image: "b/bf/Constellation_Cloud-Strider" },
+    { name: "Westward Sojourn", image: "e/e0/Constellation_Westward_Sojourn" },
+    { name: "The Merciful", image: "5/57/Constellation_The_Merciful" },
+    { name: "The Clement", image: "b/b5/Constellation_The_Clement" },
+  ],
   buffs: [
     {
       index: 0,

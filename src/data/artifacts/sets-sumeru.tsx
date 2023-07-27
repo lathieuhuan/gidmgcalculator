@@ -1,10 +1,10 @@
-import type { DataArtifact } from "@Src/types";
+import type { AppArtifact } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { EModAffect } from "@Src/constants";
 
-const sumeruSets: DataArtifact[] = [
+const sumeruSets: AppArtifact[] = [
   {
     code: 38,
     name: "Nymph's Dream",

@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Dendro, Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Alhaitham: DefaultAppCharacter = {
@@ -19,6 +19,95 @@ const Alhaitham: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1039, 24, 61],
+    [2695, 63, 158],
+    [3586, 84, 210],
+    [5366, 126, 314],
+    [5999, 141, 351],
+    [6902, 162, 404],
+    [7747, 182, 454],
+    [8659, 203, 507],
+    [9292, 218, 544],
+    [10213, 240, 598],
+    [10846, 255, 635],
+    [11777, 276, 690],
+    [12410, 291, 727],
+    [13348, 313, 782],
+  ],
+  bonusStat: { type: "dendro", value: 7.2 },
+  activeTalents: {
+    NAs: {
+      name: "Abductive Reasoning",
+    },
+    ES: {
+      name: "Universality: An Elaboration on Form",
+      image: "2/29/Talent_Universality_An_Elaboration_on_Form",
+    },
+    EB: {
+      name: "Particular Field: Fetters of Phenomena",
+      image: "0/08/Talent_Particular_Field_Fetters_of_Phenomena",
+    },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 49.53 },
+      { name: "2-Hit", multFactors: 50.75 },
+      { name: "3-Hit (1/2)", multFactors: 34.18 },
+      { name: "4-Hit", multFactors: 66.77 },
+      { name: "5-Hit", multFactors: 83.85 },
+    ],
+    CA: [{ name: "Charged Attack (1/2)", multFactors: 55.26 }],
+    PA: MEDIUM_PAs,
+    ES: [
+      {
+        name: "Rush Attack DMG",
+        multFactors: [
+          { root: 193.6, attributeType: "atk" },
+          { root: 154.88, attributeType: "em" },
+        ],
+        multFactorsAreOne: true,
+      },
+      {
+        id: "ES.0",
+        name: "Mirror Projection DMG",
+        multFactors: [
+          { root: 67.2, attributeType: "atk" },
+          { root: 134.4, attributeType: "em" },
+        ],
+        multFactorsAreOne: true,
+      },
+    ],
+    EB: [
+      {
+        name: "Single-Instance DMG",
+        multFactors: [
+          { root: 121.6, attributeType: "atk" },
+          { root: 97.28, attributeType: "em" },
+        ],
+        multFactorsAreOne: true,
+      },
+    ],
+  },
+  passiveTalents: [
+    {
+      name: "Four-Causal Correction",
+      image: "3/32/Talent_Four-Causal_Correction",
+    },
+    { name: "Mysteries Laid Bare", image: "f/f4/Talent_Mysteries_Laid_Bare" },
+    {
+      name: "Law of Reductive Overdetermination",
+      image: "a/a4/Talent_Law_of_Reductive_Overdetermination",
+    },
+  ],
+  constellation: [
+    { name: "Intuition", image: "c/c9/Constellation_Intuition" },
+    { name: "Debate", image: "9/9d/Constellation_Debate" },
+    { name: "Negation", image: "4/4f/Constellation_Negation" },
+    { name: "Elucidation", image: "b/b5/Constellation_Elucidation" },
+    { name: "Sagacity", image: "c/c0/Constellation_Sagacity" },
+    { name: "Structuration", image: "5/55/Constellation_Structuration" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

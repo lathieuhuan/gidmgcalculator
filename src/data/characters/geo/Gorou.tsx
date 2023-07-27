@@ -4,7 +4,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Geo, Green, Red } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
@@ -23,6 +23,101 @@ const Gorou: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [802, 15, 54],
+    [2061, 39, 140],
+    [2661, 51, 180],
+    [3985, 76, 270],
+    [4411, 84, 299],
+    [5074, 97, 344],
+    [5642, 108, 382],
+    [6305, 120, 427],
+    [6731, 128, 456],
+    [7393, 141, 501],
+    [7818, 149, 530],
+    [8481, 162, 575],
+    [8907, 170, 603],
+    [9570, 183, 648],
+  ],
+  bonusStat: {
+    type: "geo",
+    value: 6,
+  },
+  calcListConfig: {
+    EB: { multAttributeType: "def" },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 37.75 },
+      { name: "2-Hit", multFactors: 37.15 },
+      { name: "3-Hit", multFactors: 49.45 },
+      { name: "4-Hit", multFactors: 59 },
+    ],
+    CA: BOW_CAs,
+    PA: LIGHT_PAs,
+    ES: [
+      {
+        name: "Skill DMG",
+        multFactors: 107.2,
+      },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 98.22 },
+      { name: "Crystal Collapse DMG", multFactors: 61.3 },
+      {
+        name: "Heal Amount (C4)",
+        type: "healing",
+        multFactors: { root: 50, scale: 0 },
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Ripping Fang Fletching",
+    },
+    ES: {
+      name: "Inuzaka All-Round Defense",
+      image: "e/e6/Talent_Inuzaka_All-Round_Defense",
+    },
+    EB: {
+      name: "Juuga: Forward Unto Victory",
+      image: "f/f9/Talent_Juuga_Forward_Unto_Victory",
+    },
+  },
+  passiveTalents: [
+    {
+      name: "Heedless of the Wind and Weather",
+      image: "8/89/Talent_Heedless_of_the_Wind_and_Weather",
+    },
+    { name: "A Favor Repaid", image: "6/61/Talent_A_Favor_Repaid" },
+    { name: "Seeker of Shinies", image: "8/82/Talent_Seeker_of_Shinies" },
+  ],
+  constellation: [
+    {
+      name: "Rushing Hound: Swift as the Wind",
+      image: "2/2e/Constellation_Rushing_Hound_Swift_as_the_Wind",
+    },
+    {
+      name: "Sitting Hound: Steady as a Clock",
+      image: "0/0c/Constellation_Sitting_Hound_Steady_as_a_Clock",
+    },
+    {
+      name: "Mauling Hound: Fierce as Fire",
+      image: "2/25/Constellation_Mauling_Hound_Fierce_as_Fire",
+    },
+    {
+      name: "Lapping Hound: Warm as Water",
+      image: "4/4d/Constellation_Lapping_Hound_Warm_as_Water",
+    },
+    {
+      name: "Striking Hound: Thunderous Force",
+      image: "4/47/Constellation_Striking_Hound_Thunderous_Force",
+    },
+    {
+      name: "Valiant Hound: Mountainous Fealty",
+      image: "9/9d/Constellation_Valiant_Hound_Mountainous_Fealty",
+    },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

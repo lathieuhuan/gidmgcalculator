@@ -1,10 +1,10 @@
-import type { DataArtifact } from "@Src/types";
+import type { AppArtifact } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
-const mondstadtSets: DataArtifact[] = [
+const mondstadtSets: AppArtifact[] = [
   {
     code: 13,
     name: "Gladiator's Finale",

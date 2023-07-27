@@ -1,10 +1,10 @@
-import type { DataArtifact } from "@Src/types";
+import type { AppArtifact } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { findByCode } from "@Src/utils";
 import { makeModApplier } from "@Src/utils/calculation";
 
-const purpleOnlySets: DataArtifact[] = [
+const purpleOnlySets: AppArtifact[] = [
   {
     code: 21,
     name: "Resolution of Sojourner",

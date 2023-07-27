@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 function getA4BuffValue(maxHP: number) {
@@ -25,6 +25,87 @@ const Nilou: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [1182, 18, 57],
+    [3066, 46, 147],
+    [4080, 62, 196],
+    [6105, 92, 293],
+    [6825, 103, 327],
+    [7852, 119, 377],
+    [8813, 133, 423],
+    [9850, 149, 473],
+    [10571, 160, 507],
+    [11618, 176, 557],
+    [12338, 187, 592],
+    [13397, 203, 643],
+    [14117, 213, 677],
+    [15185, 230, 729],
+  ],
+  bonusStat: {
+    type: "hp_",
+    value: 7.2,
+  },
+  calcListConfig: {
+    ES: { multAttributeType: "hp" },
+    EB: { multAttributeType: "hp" },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 50.31 },
+      { name: "2-Hit", multFactors: 45.44 },
+      { name: "3-Hit", multFactors: 70.35 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: [50.22, 54.44],
+      },
+    ],
+    PA: MEDIUM_PAs,
+    ES: [
+      { name: "Skill DMG", multFactors: 3.34 },
+      { name: "Sword Dance 1-Hit DMG", multFactors: 4.55 },
+      { name: "Sword Dance 2-Hit DMG", multFactors: 5.14 },
+      {
+        id: "ES.0",
+        name: "Watery Moon DMG",
+        multFactors: 7.17,
+      },
+      { name: "Whirling Steps 1-Hit DMG", multFactors: 3.26 },
+      { name: "Whirling Steps 2-Hit DMG", multFactors: 3.96 },
+      { name: "Water Wheel DMG", multFactors: 5.06 },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 18.43 },
+      { name: "Lingering Aeon DMG", multFactors: 22.53 },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Dance of Samser",
+    },
+    ES: {
+      name: "Dance of Haftkarsvar",
+      image: "3/3e/Talent_Dance_of_Haftkarsvar",
+    },
+    EB: {
+      name: "Dance of Abzendegi: Distant Dreams, Listening Spring",
+      image: "b/b9/Talent_Dance_of_Abzendegi_Distant_Dreams%2C_Listening_Spring",
+    },
+  },
+  passiveTalents: [
+    { name: "Court of Dancing Petals", image: "7/74/Talent_Court_of_Dancing_Petals" },
+    { name: "Dreamy Dance of Aeons", image: "6/60/Talent_Dreamy_Dance_of_Aeons" },
+    { name: "White Jade Lotus", image: "3/39/Talent_White_Jade_Lotus" },
+  ],
+  constellation: [
+    { name: "Dance of the Waning Moon", image: "0/0a/Constellation_Dance_of_the_Waning_Moon" },
+    { name: "The Starry Skies Their Flowers Rain", image: "0/09/Constellation_The_Starry_Skies_Their_Flowers_Rain" },
+    { name: "Beguiling Shadowstep", image: "6/60/Constellation_Beguiling_Shadowstep" },
+    { name: "Fricative Pulse", image: "1/1e/Constellation_Fricative_Pulse" },
+    { name: "Twirling Light", image: "a/a2/Constellation_Twirling_Light" },
+    { name: "Frostbreaker's Melody", image: "9/93/Constellation_Frostbreaker%27s_Melody" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.C1,

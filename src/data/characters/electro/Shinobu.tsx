@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const Shinobu: DefaultAppCharacter = {
@@ -20,6 +20,95 @@ const Shinobu: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
+  stats: [
+    [1030, 18, 63],
+    [2647, 46, 162],
+    [3417, 59, 209],
+    [5118, 88, 313],
+    [5665, 98, 346],
+    [6516, 113, 398],
+    [7245, 125, 443],
+    [8096, 140, 495],
+    [8643, 149, 528],
+    [9493, 164, 580],
+    [10040, 174, 613],
+    [10891, 188, 665],
+    [11438, 198, 699],
+    [12289, 212, 751],
+  ],
+  bonusStat: {
+    type: "hp_",
+    value: 6,
+  },
+  calcListConfig: {
+    EB: { multAttributeType: "hp" },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 48.76 },
+      { name: "2-Hit", multFactors: 44.55 },
+      { name: "3-Hit", multFactors: 59.34 },
+      { name: "4-Hit", multFactors: 76.11 },
+    ],
+    CA: [
+      {
+        name: "Charged Attack",
+        multFactors: [55.63, 66.77],
+      },
+    ],
+    PA: MEDIUM_PAs,
+    ES: [
+      { name: "Skill DMG", multFactors: 75.71 },
+      {
+        id: "ES.0",
+        name: "Grass Ring of Sanctification Healing",
+        type: "healing",
+        multFactors: { root: 3, attributeType: "hp" },
+        flatFactor: 289,
+      },
+      {
+        id: "ES.1",
+        name: "Grass Ring of Sanctification DMG",
+        multFactors: 25.24,
+      },
+      {
+        name: "Thundergrass Mark (C4)",
+        multFactors: { root: 9.7, attributeType: "hp", scale: 0 },
+        attPatt: "none",
+      },
+    ],
+    EB: [
+      { name: "Single Instance DMG", multFactors: 3.6 },
+      { name: "Total DMG (HP > 50%)", multFactors: 25.23 },
+      { name: "Total DMG", multFactors: 43.26 },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Shinobu's Shadowsword",
+    },
+    ES: {
+      name: "Sanctifying Ring",
+      image: "d/d7/Talent_Sanctifying_Ring",
+    },
+    EB: {
+      name: "Gyoei Narukami Kariyama Rite",
+      image: "4/47/Talent_Gyoei_Narukami_Kariyama_Rite",
+    },
+  },
+  passiveTalents: [
+    { name: "Breaking Free", image: "c/c7/Talent_Breaking_Free" },
+    { name: "Heart's Repose", image: "1/13/Talent_Heart%27s_Repose" },
+    { name: "Protracted Prayers", image: "5/5e/Talent_Protracted_Prayers" },
+  ],
+  constellation: [
+    { name: "To Cloister Compassion", image: "4/4c/Constellation_To_Cloister_Compassion" },
+    { name: "To Forsake Fortune", image: "a/a8/Constellation_To_Forsake_Fortune" },
+    { name: "To Sequester Sorrow", image: "e/e4/Constellation_To_Sequester_Sorrow" },
+    { name: "To Sever Sealing", image: "d/db/Constellation_To_Sever_Sealing" },
+    { name: "To Cease Courtesies", image: "6/6f/Constellation_To_Cease_Courtesies" },
+    { name: "To Ward Weakness", image: "9/9f/Constellation_To_Ward_Weakness" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A4,

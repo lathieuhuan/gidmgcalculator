@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const Yelan: DefaultAppCharacter = {
@@ -20,6 +20,95 @@ const Yelan: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
+  stats: [
+    [1125, 19, 43],
+    [2918, 49, 111],
+    [3883, 66, 147],
+    [5810, 98, 220],
+    [6495, 110, 246],
+    [7472, 126, 283],
+    [8386, 142, 318],
+    [9374, 158, 355],
+    [10059, 170, 381],
+    [11056, 187, 419],
+    [11741, 198, 445],
+    [12749, 215, 483],
+    [13434, 227, 509],
+    [14450, 244, 548],
+  ],
+  bonusStat: {
+    type: "cRate_",
+    value: 4.8,
+  },
+  calcListConfig: {
+    EB: { multAttributeType: "hp" },
+  },
+  calcList: {
+    NA: [
+      { name: "1-Hit", multFactors: 40.68 },
+      { name: "2-Hit", multFactors: 39.04 },
+      { name: "3-Hit", multFactors: 51.6 },
+      { name: "4-Hit (1/2)", multFactors: 32.51 },
+    ],
+    CA: [
+      ...BOW_CAs,
+      {
+        name: "Breakthrough Barb DMG",
+        subAttPatt: "FCA",
+        multFactors: { root: 11.58, scale: 2, attributeType: "hp" },
+      },
+      {
+        name: "Special Breakthrough Barb DMG (C6)",
+        subAttPatt: "FCA",
+        multFactors: { root: 18, scale: 2, attributeType: "hp" },
+        notOfficial: true,
+      },
+    ],
+    PA: LIGHT_PAs,
+    ES: [
+      {
+        name: "Skill DMG",
+        multFactors: { root: 22.61, attributeType: "hp" },
+      },
+    ],
+    EB: [
+      { name: "Skill DMG", multFactors: 7.31 },
+      { name: "Exquisite Throw DMG (1/3)", multFactors: 4.87 },
+      {
+        name: "Additional Water Arrow DMG (C2)",
+        multFactors: { root: 14, scale: 0 },
+      },
+    ],
+  },
+  activeTalents: {
+    NAs: {
+      name: "Stealthy Bowshot",
+    },
+    ES: {
+      name: "Lingering Lifeline",
+      image: "5/59/Talent_Lingering_Lifeline",
+    },
+    EB: {
+      name: "Depth-Clarion Dice",
+      image: "b/bd/Talent_Depth-Clarion_Dice",
+    },
+  },
+  passiveTalents: [
+    { name: "Turn Control", image: "4/42/Talent_Turn_Control" },
+    { name: "Adapt With Ease", image: "9/9d/Talent_Adapt_With_Ease" },
+    { name: "Necessary Calculation", image: "b/bd/Talent_Necessary_Calculation" },
+  ],
+  constellation: [
+    { name: "Enter the Plotters", image: "a/af/Constellation_Enter_the_Plotters" },
+    { name: "Taking All Comers", image: "8/8e/Constellation_Taking_All_Comers" },
+    {
+      name: "Beware the Trickster's Dice",
+      image: "e/ea/Constellation_Beware_the_Trickster%27s_Dice",
+    },
+    { name: "Bait-and-Switch", image: "8/83/Constellation_Bait-and-Switch" },
+    { name: "Dealer's Sleight", image: "6/6f/Constellation_Dealer%27s_Sleight" },
+    { name: "Winner Take All", image: "5/59/Constellation_Winner_Takes_All" },
+  ],
   innateBuffs: [
     {
       src: EModSrc.A1,
