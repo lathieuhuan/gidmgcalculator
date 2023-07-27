@@ -1,7 +1,7 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { findByCode } from "@Src/utils";
+import { countVision, findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
@@ -12,8 +12,45 @@ const polarStarBuffValuesByStack = (refi: number) => [
   36 + refi * 12,
 ];
 const thunderingPulseBuffValuesByStack = (refi: number) => [9 + refi * 3, 18 + refi * 6, 30 + refi * 10];
+const the1stGreateMagicBuffValuesByStack = (refi: number) => [12 + refi * 4, 24 + refi * 8, 36 + refi * 12];
 
-const goldBows: DataWeapon[] = [
+const goldBows: AppWeapon[] = [
+  {
+    code: 154,
+    name: "The First Great Magic",
+    icon: "https://images2.imgbox.com/50/9a/4YTtRZEz_o.png",
+    rarity: 5,
+    mainStatScale: "46",
+    subStat: { type: "cDmg_", scale: "14.4%" },
+    passiveName: "missing passive name",
+    passiveDesc: ({ refi }) => {
+      const msDiff = refi * 2;
+      return {
+        core: (
+          <>
+            <Green>ATK</Green> increased by <Green b>{12 + refi * 4}%</Green>. For every party member with the same
+            Elemental Type as the wielder (including the wielder themselves), gain 1 Gimmick stack. For every party
+            member with a different Elemental Type from the wielder, gain 1 Theatrics stack. When the wielder has 1/2/3
+            or more Gimmick stacks, <Green>ATK</Green> will be increased by{" "}
+            <Green b>{the1stGreateMagicBuffValuesByStack(refi).join("/")}%</Green>. When the wielder has 1/2/3 or more
+            Theatrics stacks, Movement SPD will be increased by {2 + msDiff}/{5 + msDiff}/{8 + msDiff}%.
+          </>
+        ),
+      };
+    },
+    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
+      if (partyData) {
+        const { [charData.vision]: sameVisionCount } = countVision(partyData, charData);
+        let buffValue = 12 + refi * 4;
+
+        if (sameVisionCount) {
+          const valueIndex = Math.min(sameVisionCount, 3) - 1;
+          buffValue += the1stGreateMagicBuffValuesByStack(refi)[valueIndex] || 0;
+        }
+        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
+      }
+    },
+  },
   {
     code: 133,
     name: "Hunter's Path",

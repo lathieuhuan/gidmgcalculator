@@ -1,7 +1,6 @@
 import type {
   AbilityBuff,
   ArtifactSetBonus,
-  CharData,
   CalcWeapon,
   CharInfo,
   CustomBuffCtrl,
@@ -15,6 +14,7 @@ import type {
   InnateBuff,
   Level,
   AttackElement,
+  AppCharacter,
 } from "@Src/types";
 
 // Hook
@@ -23,7 +23,8 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import {
@@ -102,7 +103,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 
 interface SelfBuffsProps {
   char: CharInfo;
-  charData: CharData;
+  charData: AppCharacter;
   buffs: AbilityBuff[];
   totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
@@ -153,7 +154,7 @@ export function SelfBuffs({ char, charData, buffs, totalAttr, selfBuffCtrls, par
 
 interface PartyBuffsProps {
   char: CharInfo;
-  charData: CharData;
+  charData: AppCharacter;
   party: Party;
   partyData: PartyData;
   totalAttr: TotalAttribute;
@@ -166,7 +167,7 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
       continue;
     }
 
-    const teammateData = findDataCharacter(teammate);
+    const teammateData = appData.getCharData(teammate.name);
     if (!teammateData) {
       continue;
     }

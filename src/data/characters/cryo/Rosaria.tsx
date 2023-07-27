@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
-import { Green, Red, Rose } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, MEDIUM_PAs } from "../constants";
+import { Green, Red, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const Rosaria: DataCharacter = {
+const Rosaria: DefaultAppCharacter = {
   code: 32,
   name: "Rosaria",
   icon: "3/35/Rosaria_Icon",
@@ -14,71 +14,11 @@ const Rosaria: DataCharacter = {
   nation: "mondstadt",
   vision: "cryo",
   weaponType: "polearm",
-  stats: [
-    [1030, 20, 60],
-    [2647, 52, 163],
-    [3417, 67, 197],
-    [5118, 100, 296],
-    [5665, 111, 327],
-    [6516, 127, 376],
-    [7245, 141, 418],
-    [8096, 158, 468],
-    [8643, 169, 499],
-    [9493, 185, 548],
-    [10040, 196, 580],
-    [10891, 213, 629],
-    [11438, 223, 661],
-    [12289, 240, 710],
-  ],
-  bonusStat: { type: "atk_", value: 6 },
-  NAsConfig: {
-    name: "Spear of the Church",
+  EBcost: 60,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
   },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 52.46 },
-        { name: "2-Hit", multFactors: 51.6 },
-        { name: "3-Hit (1/2)", multFactors: 31.82 },
-        { name: "4-Hit", multFactors: 69.66 },
-        { name: "5-Hit", multFactors: [41.62, 43] },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack", multFactors: 136.74 }] },
-    PA: { stats: MEDIUM_PAs },
-    ES: {
-      name: "Ravaging Confession",
-      image: "c/ce/Talent_Ravaging_Confession",
-      stats: [{ name: "Skill DMG", multFactors: [58.4, 136] }],
-      // getExtraStats: () => [{ name: "CD", value: "6s" }],
-    },
-    EB: {
-      name: "Rites of Termination",
-      image: "2/26/Talent_Rites_of_Termination",
-      stats: [
-        { name: "Skill DMG", multFactors: [104, 152] },
-        { name: "Ice Lance DoT", multFactors: 132 },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "8s" },
-      //   { name: "CD", value: "15s" },
-      // ],
-      energyCost: 60,
-    },
-  },
-  passiveTalents: [
-    { name: "Regina Probationum", image: "e/e3/Talent_Regina_Probationum" },
-    { name: "Shadow Samaritan", image: "5/53/Talent_Shadow_Samaritan" },
-    { name: "Night Walk", image: "c/c8/Talent_Night_Walk" },
-  ],
-  constellation: [
-    { name: "Unholy Revelation", image: "f/f9/Constellation_Unholy_Revelation" },
-    { name: "Land Without Promise", image: "1/1d/Constellation_Land_Without_Promise" },
-    { name: "The Wages of Sin", image: "3/31/Constellation_The_Wages_of_Sin" },
-    { name: "Painful Grace", image: "5/57/Constellation_Painful_Grace" },
-    { name: "Last Rites", image: "8/88/Constellation_Last_Rites" },
-    { name: "Divine Retribution", image: "b/bd/Constellation_Divine_Retribution" },
-  ],
   buffs: [
     {
       index: 0,
@@ -151,4 +91,4 @@ const Rosaria: DataCharacter = {
   ],
 };
 
-export default Rosaria;
+export default Rosaria as AppCharacter;

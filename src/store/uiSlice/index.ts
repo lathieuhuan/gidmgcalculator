@@ -8,6 +8,8 @@ const initialState: UIState = {
   appModalType: "INTRO",
   highManagerWorking: false,
   importInfo: {},
+  loadingCharacter: null,
+  mySetupsModalType: "",
 };
 
 export const uiSlice = createSlice({

@@ -1,17 +1,13 @@
-import type { DataCharacter, GetTalentBuffFn } from "@Src/types";
-import { Geo, Green } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { EModSrc, HEAVIER_PAs } from "../constants";
+import { Geo, Green } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { checkAscs, checkCons, talentBuff } from "../utils";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
+import { checkAscs, checkCons, exclBuff } from "../utils";
 
-const getA4TalentBuff: GetTalentBuffFn = ({ char, totalAttr }) => {
-  return talentBuff([checkAscs[4](char), "flat", [true, 4], applyPercent(totalAttr.def, 35)]);
-};
-
-const Itto: DataCharacter = {
+const Itto: DefaultAppCharacter = {
   code: 45,
   name: "Itto",
   GOOD: "AratakiItto",
@@ -21,105 +17,11 @@ const Itto: DataCharacter = {
   nation: "inazuma",
   vision: "geo",
   weaponType: "claymore",
-  stats: [
-    [1001, 18, 75],
-    [2597, 46, 194],
-    [3455, 61, 258],
-    [5170, 91, 386],
-    [5779, 102, 431],
-    [6649, 117, 496],
-    [7462, 132, 557],
-    [8341, 147, 622],
-    [8951, 158, 668],
-    [9838, 174, 734],
-    [10448, 185, 779],
-    [11345, 200, 846],
-    [11954, 211, 892],
-    [12858, 227, 959],
-  ],
-  bonusStat: { type: "cRate_", value: 4.8 },
-  NAsConfig: {
-    name: "Fight Club Legend",
-    // getExtraStats: () => [
-    //   { name: "Superlative Superstrength Duration", value: "60s" },
-    //   { name: "Saichimonji Slash Stamina Cost", value: 20 },
-    // ],
+  EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
   },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 79.23 },
-        { name: "2-Hit", multFactors: 76.37 },
-        { name: "3-Hit", multFactors: 91.64 },
-        { name: "4-Hit", multFactors: 117.22 },
-      ],
-    },
-    CA: {
-      stats: [
-        {
-          name: "Arataki Kesagiri Combo Slash DMG",
-          multFactors: 91.16,
-          getTalentBuff: getA4TalentBuff,
-        },
-        {
-          name: "Arataki Kesagiri Final Slash DMG",
-          multFactors: 190.92,
-          getTalentBuff: getA4TalentBuff,
-        },
-        { name: "Saichimonji Slash DMG", multFactors: 90.47 },
-      ],
-    },
-    PA: { stats: HEAVIER_PAs },
-    ES: {
-      name: "Masatsu Zetsugi: Akaushi Burst!",
-      image: "5/51/Talent_Masatsu_Zetsugi_Akaushi_Burst%21",
-      stats: [{ name: "Skill DMG", multFactors: 307.2 }],
-      // getExtraStats: () => [
-      //   { name: "Inherited HP", value: "100%" },
-      //   { name: "Duration", value: "6s" },
-      //   { name: "CD", value: "10s" },
-      // ],
-    },
-    EB: {
-      name: "Royal Descent: Behold, Itto the Evil!",
-      image: "5/50/Talent_Royal_Descent_Behold%2C_Itto_the_Evil%21",
-      stats: [
-        {
-          name: "ATK Bonus",
-          notAttack: "other",
-          multFactors: { root: 57.6, attributeType: "def" },
-        },
-      ],
-      // getExtraStats: () => [
-      //   { name: "ATK SPD Bonus", value: "10%" },
-      //   { name: "Duration", value: "11s" },
-      //   { name: "CD", value: "18s" },
-      // ],
-      energyCost: 70,
-    },
-  },
-  passiveTalents: [
-    { name: "Arataki Ichiban", image: "a/a5/Talent_Arataki_Ichiban" },
-    { name: "Bloodline of the Crimson Oni", image: "d/db/Talent_Bloodline_of_the_Crimson_Oni" },
-    { name: "Woodchuck Chucked", image: "4/47/Talent_Woodchuck_Chucked" },
-  ],
-  constellation: [
-    { name: "Stay a While and Listen Up", image: "6/64/Constellation_Stay_a_While_and_Listen_Up" },
-    {
-      name: "Gather 'Round, It's a Brawl!",
-      image: "0/09/Constellation_Gather_%27Round%2C_It%27s_a_Brawl%21",
-    },
-    {
-      name: "Horns Lowered, Coming Through",
-      image: "a/a5/Constellation_Horns_Lowered%2C_Coming_Through",
-    },
-    { name: "Jailhouse Bread and Butter", image: "d/d4/Constellation_Jailhouse_Bread_and_Butter" },
-    {
-      name: "10 Years of Hanamizaka Fame",
-      image: "f/f3/Constellation_10_Years_of_Hanamizaka_Fame",
-    },
-    { name: "Arataki Itto, Present!", image: "8/89/Constellation_Arataki_Itto%2C_Present%21" },
-  ],
   innateBuffs: [
     {
       src: EModSrc.A4,
@@ -129,6 +31,9 @@ const Itto: DataCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
+      applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
+        calcItemBuffs.push(exclBuff(EModSrc.A4, ["CA.0", "CA.1"], "flat", applyPercent(totalAttr.def, 35)));
+      },
     },
     {
       src: EModSrc.C6,
@@ -156,7 +61,7 @@ const Itto: DataCharacter = {
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
-          dataChar: Itto,
+          charData: Itto as AppCharacter,
           talentType: "EB",
           partyData,
         });
@@ -183,4 +88,4 @@ const Itto: DataCharacter = {
   ],
 };
 
-export default Itto;
+export default Itto as AppCharacter;

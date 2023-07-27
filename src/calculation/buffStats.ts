@@ -8,15 +8,17 @@ import type {
   AttackPatternInfo,
   AttributeStat,
   BuffModifierArgsWrapper,
-  DataCharacter,
+  AppCharacter,
   ModifierCtrl,
   Reaction,
   ReactionBonus,
   ReactionBonusInfo,
   ReactionBonusInfoKey,
+  CalcItemBuff,
 } from "@Src/types";
 import type { GetBuffedStatsArgs, UsedCode } from "./types";
 
+import { appData } from "@Data/index";
 import {
   AMPLIFYING_REACTIONS,
   ATTACK_ELEMENTS,
@@ -30,7 +32,7 @@ import {
 } from "@Src/constants";
 import { RESONANCE_STAT } from "./constants";
 
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import {
   getArtifactSetBonuses,
@@ -52,11 +54,11 @@ interface ApplySelfBuffs {
   isFinal: boolean;
   modifierArgs: BuffModifierArgsWrapper;
   charBuffCtrls: ModifierCtrl[];
-  dataChar: DataCharacter;
+  charData: AppCharacter;
 }
-function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: ApplySelfBuffs) {
+function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, charData }: ApplySelfBuffs) {
   const { char } = modifierArgs;
-  const { innateBuffs = [], buffs = [] } = dataChar;
+  const { innateBuffs = [], buffs = [] } = charData;
 
   for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
     if (isGranted(char)) {
@@ -91,7 +93,6 @@ function applySelfBuffs({ isFinal, modifierArgs, charBuffCtrls, dataChar }: Appl
 export default function getBuffedStats({
   char,
   charData,
-  dataChar,
   selfBuffCtrls,
   weapon,
   wpBuffCtrls,
@@ -105,23 +106,7 @@ export default function getBuffedStats({
   tracker,
 }: GetBuffedStatsArgs) {
   const weaponData = findDataWeapon(weapon)!;
-  const totalAttr = initiateTotalAttr({ char, weapon, weaponData, tracker });
-  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
-  const setBonuses = getArtifactSetBonuses(artifacts);
-  const usedWpMods: UsedCode[] = [];
-  const usedArtMods: UsedCode[] = [];
-
-  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
-    const usedMods = isWeapon ? usedWpMods : usedArtMods;
-    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
-
-    if (foundItem && foundItem.modIndex === modIndex) {
-      return false;
-    } else {
-      usedMods.push({ itemCode, modIndex });
-      return true;
-    }
-  }
+  const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
 
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
@@ -153,6 +138,8 @@ export default function getBuffedStats({
     }
   }
 
+  const calcItemBuffs: CalcItemBuff[] = [];
+
   const modifierArgs: BuffModifierArgsWrapper = {
     char,
     charData,
@@ -160,14 +147,38 @@ export default function getBuffedStats({
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBuffs,
     rxnBonus,
     infusedElement,
     tracker,
   };
-  const { refi } = weapon;
+
+  applySelfBuffs({
+    isFinal: false,
+    modifierArgs,
+    charBuffCtrls: selfBuffCtrls,
+    charData,
+  });
+
+  const artAttr = addArtAttr({ artifacts, totalAttr, tracker });
+  const setBonuses = getArtifactSetBonuses(artifacts);
+  const usedWpMods: UsedCode[] = [];
+  const usedArtMods: UsedCode[] = [];
+
+  function isNewMod(isWeapon: boolean, itemCode: number, modIndex: number) {
+    const usedMods = isWeapon ? usedWpMods : usedArtMods;
+    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
+
+    if (foundItem && foundItem.modIndex === modIndex) {
+      return false;
+    } else {
+      usedMods.push({ itemCode, modIndex });
+      return true;
+    }
+  }
 
   addWeaponSubStat({ totalAttr, weaponData, wpLevel: weapon.level, tracker });
-  applyWpPassiveBuffs({ isFinal: false, weaponData, refi, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: false, weaponData, refi: weapon.refi, modifierArgs });
   applyArtPassiveBuffs({ isFinal: false, setBonuses, modifierArgs });
 
   // APPLY CUSTOM BUFFS
@@ -235,18 +246,11 @@ export default function getBuffedStats({
     }
   }
 
-  applySelfBuffs({
-    isFinal: false,
-    modifierArgs,
-    charBuffCtrls: selfBuffCtrls,
-    dataChar,
-  });
-
   // APPPLY TEAMMATE BUFFS
 
   for (const teammate of party) {
     if (!teammate) continue;
-    const { name, weaponType, buffs = [] } = findDataCharacter(teammate)!;
+    const { name, weaponType, buffs = [] } = appData.getCharData(teammate.name);
 
     for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
       if (!activated) continue;
@@ -325,7 +329,7 @@ export default function getBuffedStats({
       if (activated && isNewMod(true, weaponData.code, index) && applyBuff) {
         applyBuff({
           desc: `${weaponData.name} activated`,
-          refi,
+          refi: weapon.refi,
           inputs,
           ...modifierArgs,
         });
@@ -355,7 +359,7 @@ export default function getBuffedStats({
   calcFinalTotalAttrs(totalAttr);
 
   applyArtPassiveBuffs({ isFinal: true, setBonuses, modifierArgs });
-  applyWpPassiveBuffs({ isFinal: true, weaponData, refi, modifierArgs });
+  applyWpPassiveBuffs({ isFinal: true, weaponData, refi: weapon.refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
   for (const { activated, index, inputs = [] } of wpBuffCtrls) {
@@ -365,7 +369,7 @@ export default function getBuffedStats({
       if (applyFinalBuff) {
         applyFinalBuff({
           desc: `${weaponData.name} activated`,
-          refi,
+          refi: weapon.refi,
           inputs,
           ...modifierArgs,
         });
@@ -379,7 +383,7 @@ export default function getBuffedStats({
     isFinal: true,
     modifierArgs,
     charBuffCtrls: selfBuffCtrls,
-    dataChar,
+    charData,
   });
 
   // APPLY ARTIFACT FINAL BUFFS
@@ -420,6 +424,7 @@ export default function getBuffedStats({
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBuffs,
     rxnBonus,
     artAttr,
   };

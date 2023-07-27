@@ -1,6 +1,6 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 import {
   baneSeries2,
   blackcliffSeries,
@@ -16,7 +16,74 @@ import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purpleClaymores: DataWeapon[] = [
+const purpleClaymores: AppWeapon[] = [
+  {
+    code: 158,
+    name: "Tidal Shadow",
+    icon: "https://images2.imgbox.com/8a/38/CnFqC8ZQ_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "atk_", scale: "9%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          When the wielder is healed, <Green>ATK</Green> will be increased by <Green b>{18 + refi * 6}%</Green> for 8s.
+          This can be triggered even when the character is not on the field.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 158)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
+      },
+    ],
+  },
+  {
+    code: 157,
+    name: "Talking Stick",
+    icon: "https://images2.imgbox.com/f9/77/1D4t0CDh_o.png",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "cRate_", scale: "4%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]} {this.extra?.[1]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          <Green>ATK</Green> will be increased by <Green b>{12 + refi * 4}%</Green> for 10s after being affected by
+          Pyro. This effect can be triggered once every 12s.
+        </>,
+        <>
+          <Green>All Elemental DMG Bonus</Green> will be increased by <Green b>{9 + refi * 3}%</Green> for 10s after
+          being affected by Hydro, Cryo, or Electro. This effect can be triggered once every 12s.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 157)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 157)?.passiveDesc({ refi }).extra?.[1],
+        applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
+      },
+    ],
+  },
   {
     code: 150,
     name: "Mailed Flower",

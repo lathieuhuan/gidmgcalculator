@@ -10,7 +10,7 @@ import type {
   AttributeStat,
   CalcArtifacts,
   CharInfo,
-  DataCharacter,
+  AppCharacter,
   Level,
   PartyData,
   Reaction,
@@ -21,11 +21,12 @@ import type {
   Talent,
   TotalAttribute,
   Tracker,
+  TotalAttributeStat,
 } from "@Src/types";
-import { findByName, pickOne, turnArray } from "./pure-utils";
+import { findByName, pickOne, toArray } from "./pure-utils";
 import { bareLv } from "./utils";
 
-export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSetBonus[] {
+export const getArtifactSetBonuses = (artifacts: CalcArtifacts = []): ArtifactSetBonus[] => {
   const sets = [];
   const count: Record<number, number> = {};
 
@@ -42,44 +43,31 @@ export function getArtifactSetBonuses(artifacts: CalcArtifacts = []): ArtifactSe
     }
   }
   return sets;
-}
+};
 
 interface TotalXtraTalentArgs {
   char: CharInfo;
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   talentType: Talent;
   partyData?: PartyData;
 }
-export function totalXtraTalentLv({ char, dataChar, talentType, partyData }: TotalXtraTalentArgs) {
+export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: TotalXtraTalentArgs) => {
   let result = 0;
 
-  switch (talentType) {
-    case "NAs":
-      if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
-        result++;
-      }
-      break;
-    case "ES":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 5) {
-          result += 3;
-        }
-      } else if (char.cons >= 3) {
-        result += 3;
-      }
-      break;
-    case "EB":
-      if (dataChar.isReverseXtraLv) {
-        if (char.cons >= 3) {
-          result += 3;
-        }
-      } else if (char.cons >= 5) {
-        result += 3;
-      }
+  if (talentType === "NAs") {
+    if (char.name === "Tartaglia" || (partyData && findByName(partyData, "Tartaglia"))) {
+      result++;
+    }
   }
+  if (talentType !== "altSprint") {
+    const consLv = charData.talentLvBonusAtCons?.[talentType];
 
+    if (consLv && char.cons >= consLv) {
+      result += 3;
+    }
+  }
   return result;
-}
+};
 
 export const finalTalentLv = (args: TotalXtraTalentArgs) => {
   const talentLv = args.talentType === "altSprint" ? 0 : args.char[args.talentType];
@@ -100,8 +88,8 @@ export type ModRecipient =
   | ResistanceReduction;
 
 export type ModRecipientKey =
-  | AttributeStat
-  | AttributeStat[]
+  | TotalAttributeStat
+  | TotalAttributeStat[]
   | ReactionBonusPath
   | ReactionBonusPath[]
   | AttackPatternPath
@@ -116,7 +104,7 @@ type RootValue = number | number[];
 export function applyModifier(
   desc: string | undefined,
   recipient: TotalAttribute,
-  keys: AttributeStat | AttributeStat[],
+  keys: TotalAttributeStat | TotalAttributeStat[],
   rootValue: RootValue,
   tracker?: Tracker
 ): void;
@@ -170,7 +158,7 @@ export function applyModifier(
     }
   };
 
-  turnArray(keys).forEach((key, i) => {
+  toArray(keys).forEach((key, i) => {
     const [field, subField] = key.split(".");
     const value = pickOne(rootValue, i);
     const node = {

@@ -1,11 +1,11 @@
-import type { DataCharacter } from "@Src/types";
-import { Green, Red } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { EModSrc, LIGHT_PAs } from "../constants";
+import { Green, Red } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
-const Sucrose: DataCharacter = {
+const Sucrose: DefaultAppCharacter = {
   code: 3,
   name: "Sucrose",
   icon: "0/0e/Sucrose_Icon",
@@ -14,70 +14,11 @@ const Sucrose: DataCharacter = {
   nation: "mondstadt",
   vision: "anemo",
   weaponType: "catalyst",
-  stats: [
-    [775, 14, 59],
-    [1991, 37, 151],
-    [2570, 47, 195],
-    [3850, 71, 293],
-    [4261, 78, 324],
-    [4901, 90, 373],
-    [5450, 100, 414],
-    [6090, 112, 463],
-    [6501, 120, 494],
-    [7141, 131, 543],
-    [7552, 139, 574],
-    [8192, 151, 623],
-    [8604, 158, 654],
-    [9244, 170, 703],
-  ],
-  bonusStat: { type: "anemo", value: 6 },
-  NAsConfig: {
-    name: "Wind Spirit Creation",
+  EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 3,
+    EB: 5,
   },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 33.46 },
-        { name: "2-Hit", multFactors: 30.62 },
-        { name: "3-Hit", multFactors: 38.45 },
-        { name: "4-Hit", multFactors: 47.92 },
-      ],
-    },
-    CA: { stats: [{ name: "Charged Attack", multFactors: 120.16 }] },
-    PA: { stats: LIGHT_PAs },
-    ES: {
-      name: "Astable Anemohypostasis Creation - 6308",
-      image: "7/76/Talent_Astable_Anemohypostasis_Creation_-_6308",
-      stats: [{ name: "Skill DMG", multFactors: 211.2 }],
-      // getExtraStats: () => [{ name: "CD", value: "15s" }],
-    },
-    EB: {
-      name: "Forbidden Creation - Isomer 75 / Type II",
-      image: "4/4d/Talent_Forbidden_Creation_-_Isomer_75_Type_II",
-      stats: [
-        { name: "DoT", multFactors: 148 },
-        { name: "Additional Elemental DMG", multFactors: 44, attElmt: "various" },
-      ],
-      // getExtraStats: () => [
-      //   { name: "Duration", value: "6s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-      energyCost: 80,
-    },
-  },
-  passiveTalents: [
-    { name: "Catalyst Conversion", image: "8/8b/Talent_Catalyst_Conversion" },
-    { name: "Mollis Favonius", image: "0/02/Talent_Mollis_Favonius" },
-    { name: "Astable Invention", image: "7/7e/Talent_Astable_Invention" },
-  ],
-  constellation: [
-    { name: "Clustered Vacuum Field", image: "c/ce/Constellation_Clustered_Vacuum_Field" },
-    { name: "Beth: Unbound Form", image: "3/3c/Constellation_Beth_Unbound_Form" },
-    { name: "Flawless Alchemistress", image: "c/cb/Constellation_Flawless_Alchemistress" },
-    { name: "Alchemania", image: "3/3e/Constellation_Alchemania" },
-    { name: "Caution: Standard Flask", image: "5/5e/Constellation_Caution_Standard_Flask" },
-    { name: "Chaotic Entropy", image: "b/b1/Constellation_Chaotic_Entropy" },
-  ],
   buffs: [
     {
       index: 0,
@@ -140,4 +81,4 @@ const Sucrose: DataCharacter = {
   ],
 };
 
-export default Sucrose;
+export default Sucrose as AppCharacter;

@@ -1,12 +1,12 @@
-import type { DataCharacter } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { Green, Rose } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const Yelan: DataCharacter = {
+const Yelan: DefaultAppCharacter = {
   code: 51,
   name: "Yelan",
   icon: "d/d3/Yelan_Icon",
@@ -15,98 +15,11 @@ const Yelan: DataCharacter = {
   nation: "liyue",
   vision: "hydro",
   weaponType: "bow",
-  stats: [
-    [1125, 19, 43],
-    [2918, 49, 111],
-    [3883, 66, 147],
-    [5810, 98, 220],
-    [6495, 110, 246],
-    [7472, 126, 283],
-    [8386, 142, 318],
-    [9374, 158, 355],
-    [10059, 170, 381],
-    [11056, 187, 419],
-    [11741, 198, 445],
-    [12749, 215, 483],
-    [13434, 227, 509],
-    [14450, 244, 548],
-  ],
-  bonusStat: { type: "cRate_", value: 4.8 },
-  NAsConfig: {
-    name: "Stealthy Bowshot",
+  EBcost: 70,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
   },
-  isReverseXtraLv: true,
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: 40.68 },
-        { name: "2-Hit", multFactors: 39.04 },
-        { name: "3-Hit", multFactors: 51.6 },
-        { name: "4-Hit (1/2)", multFactors: 32.51 },
-      ],
-    },
-    CA: {
-      stats: [
-        ...BOW_CAs,
-        {
-          name: "Breakthrough Barb DMG",
-          subAttPatt: "FCA",
-          multFactors: { root: 11.58, attributeType: "hp" },
-        },
-        {
-          name: "Special Breakthrough Barb DMG (C6)",
-          subAttPatt: "FCA",
-          multFactors: { root: 18, attributeType: "hp" },
-          isNotOfficial: true,
-        },
-      ],
-      multScale: 2,
-    },
-    PA: { stats: LIGHT_PAs },
-    ES: {
-      name: "Lingering Lifeline",
-      image: "5/59/Talent_Lingering_Lifeline",
-      stats: [{ name: "Skill DMG", multFactors: { root: 22.61, attributeType: "hp" } }],
-      // getExtraStats: () => [
-      //   { name: "Max Duration (Hold)", value: "3s" },
-      //   { name: "CD", value: "10" },
-      // ],
-    },
-    EB: {
-      name: "Depth-Clarion Dice",
-      image: "b/bd/Talent_Depth-Clarion_Dice",
-      stats: [
-        { name: "Skill DMG", multFactors: 7.31 },
-        { name: "Exquisite Throw DMG (1/3)", multFactors: 4.87 },
-        {
-          name: "Additional Water Arrow DMG (C2)",
-          multFactors: { root: 14, scale: 0 },
-        },
-      ],
-      multAttributeType: "hp",
-      // otherStats: () => [
-      //   { name: "Duration", value: "15s" },
-      //   { name: "CD", value: "18s" },
-      // ],
-      energyCost: 70,
-    },
-  },
-  passiveTalents: [
-    { name: "Turn Control", image: "4/42/Talent_Turn_Control" },
-    { name: "Adapt With Ease", image: "9/9d/Talent_Adapt_With_Ease" },
-    { name: "Necessary Calculation", image: "b/bd/Talent_Necessary_Calculation" },
-  ],
-  constellation: [
-    { name: "Enter the Plotters", image: "a/af/Constellation_Enter_the_Plotters" },
-    { name: "Taking All Comers", image: "8/8e/Constellation_Taking_All_Comers" },
-    {
-      name: "Beware the Trickster's Dice",
-      image: "e/ea/Constellation_Beware_the_Trickster%27s_Dice",
-    },
-    { name: "Bait-and-Switch", image: "8/83/Constellation_Bait-and-Switch" },
-    { name: "Dealer's Sleight", image: "6/6f/Constellation_Dealer%27s_Sleight" },
-    { name: "Winner Take All", image: "5/59/Constellation_Winner_Takes_All" },
-  ],
   innateBuffs: [
     {
       src: EModSrc.A1,
@@ -178,4 +91,4 @@ const Yelan: DataCharacter = {
   ],
 };
 
-export default Yelan;
+export default Yelan as AppCharacter;

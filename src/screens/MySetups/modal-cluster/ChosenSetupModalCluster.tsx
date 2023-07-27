@@ -1,57 +1,49 @@
 import type { UserArtifacts, UserSetup, UserWeapon } from "@Src/types";
-import type { MySetupModal } from "../types";
-
-// Store
-import { useDispatch, useSelector } from "@Store/hooks";
-import { removeSetup } from "@Store/userDatabaseSlice";
-import { selectUserArts, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { calculateChosenSetup } from "./utils";
+import { calculateChosenSetup } from "../utils";
+
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
+import { selectMySetupModalType } from "@Store/uiSlice/selectors";
+// Action
+import { updateUI } from "@Store/uiSlice";
+import { removeSetup } from "@Store/userDatabaseSlice";
 
 // Component
-import { CloseButton, Modal, ConfirmModal } from "@Src/pure-components";
+import { CloseButton, ConfirmModal, Modal } from "@Src/pure-components";
 import {
-  AttributeTable,
-  SetBonusesDisplay,
-  OwnerLabel,
   ArtifactCard,
-  WeaponCard,
-  DamageDisplay,
+  AttributeTable,
+  OwnerLabel,
+  SetBonusesDisplay,
   SetupExporter,
+  WeaponCard,
 } from "@Src/components";
-import { ChosenSetupModifiers } from "./ChosenSetupModifiers";
+import { ChosenSetupModifiers } from "../modal-content";
 
-interface ChosenSetupInfoProps {
+interface ModalClusterProps {
   chosenSetup: UserSetup;
   weapon: UserWeapon | null;
   artifacts: UserArtifacts;
-  modal: MySetupModal;
-  onCloseModal: () => void;
+  calcResult?: ReturnType<typeof calculateChosenSetup>;
 }
-export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onCloseModal }: ChosenSetupInfoProps) => {
+export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcResult }: ModalClusterProps) => {
   const dispatch = useDispatch();
-  const userWps = useSelector(selectUserWps);
-  const userArts = useSelector(selectUserArts);
+  const modalType = useSelector(selectMySetupModalType);
 
-  const calcResult = calculateChosenSetup(chosenSetup, userWps, userArts);
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  return (
-    <div className="h-full flex flex-col">
-      <div>
-        <p className="text-sm text-center truncate">{chosenSetup.name}</p>
-      </div>
-      <div className="mt-2 grow hide-scrollbar">
-        {calcResult?.damage && (
-          <DamageDisplay char={chosenSetup.char} party={chosenSetup.party} damageResult={calcResult.damage} />
-        )}
-      </div>
+  const closeModal = () => {
+    dispatch(updateUI({ mySetupsModalType: "" }));
+  };
 
+  return (
+    <>
       <ConfirmModal
-        active={modal.type === "REMOVE_SETUP"}
+        active={modalType === "REMOVE_SETUP"}
         message={
           <>
             Remove "<b>{chosenSetup.name}</b>"?
@@ -63,23 +55,23 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
             onClick: () => dispatch(removeSetup(chosenSetup.ID)),
           },
         ]}
-        onClose={onCloseModal}
+        onClose={closeModal}
       />
 
       {weapon && (
         <SetupExporter
-          active={modal.type === "SHARE_SETUP"}
+          active={modalType === "SHARE_SETUP"}
           setupName={chosenSetup.name}
           calcSetup={userSetupToCalcSetup(chosenSetup, weapon, artifacts)}
           target={chosenSetup.target}
-          onClose={onCloseModal}
+          onClose={closeModal}
         />
       )}
 
       <Modal
-        active={modal.type === "WEAPON"}
+        active={modalType === "WEAPON"}
         className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
-        onClose={onCloseModal}
+        onClose={closeModal}
       >
         <div className="relative">
           <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
@@ -90,9 +82,9 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
       </Modal>
 
       <Modal
-        active={modal.type === "ARTIFACTS"}
+        active={modalType === "ARTIFACTS"}
         className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
-        onClose={onCloseModal}
+        onClose={closeModal}
       >
         {artifacts?.map((artifact, i) => {
           if (artifact) {
@@ -108,11 +100,12 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
       </Modal>
 
       <Modal
-        active={modal.type === "STATS"}
+        active={modalType === "STATS"}
         className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
-        onClose={onCloseModal}
+        onClose={closeModal}
       >
-        <CloseButton className="absolute top-1 right-1" boneOnly onClick={onCloseModal} />
+        <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
+
         <div className="h-full flex divide-x-2 divide-darkblue-2">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange font-bold">Final Attributes</p>
@@ -138,11 +131,12 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
 
       {calcResult && weapon && (
         <Modal
-          active={modal.type === "MODIFIERS"}
+          active={modalType === "MODIFIERS"}
           className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
-          onClose={onCloseModal}
+          onClose={closeModal}
         >
-          <CloseButton className="absolute top-1 right-1" boneOnly onClick={onCloseModal} />
+          <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
+
           <ChosenSetupModifiers
             calcResult={calcResult}
             chosenSetup={chosenSetup}
@@ -151,6 +145,6 @@ export const ChosenSetupInfo = ({ chosenSetup, weapon, artifacts, modal, onClose
           />
         </Modal>
       )}
-    </div>
+    </>
   );
 };

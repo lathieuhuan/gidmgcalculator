@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import {
@@ -10,11 +10,53 @@ import {
   royalSeries,
   watatsumiSeries,
 } from "../series";
-import { findByCode } from "@Src/utils";
+import { countVision, findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purplePolearms: DataWeapon[] = [
+const purplePolearms: AppWeapon[] = [
+  {
+    code: 160,
+    name: "Rightful Reward",
+    icon: "https://images2.imgbox.com/d8/99/aC6TxTrF_o.png",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "hp_", scale: "6%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          When the wielder is healed, restore {6 + refi * 2} Energy. This effect can be triggered once every 10s, and
+          can occur even when the character is not on the field.
+        </>
+      ),
+    }),
+  },
+  {
+    code: 159,
+    name: "Ballad of the Fjords",
+    icon: "https://images2.imgbox.com/85/5a/qt8NiEXW_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "cRate_", scale: "6%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          When there are at least 3 different Elemental Types in your party, <Green>Elemental Mastery</Green> will be
+          increased by <Green b>{90 + refi * 30}</Green>.
+        </>
+      ),
+    }),
+    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
+      if (partyData) {
+        const visionCount = countVision(partyData, charData);
+        if (Object.keys(visionCount).length >= 3) {
+          applyModifier(desc, totalAttr, "em", 90 + refi * 30, tracker);
+        }
+      }
+    },
+  },
   {
     code: 141,
     name: "Missive Windspear",

@@ -6,7 +6,7 @@ import { EStatDamageKey } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 
@@ -16,7 +16,7 @@ import { CompareTable } from "./CompareTable";
 
 const { Tr, Th, Td } = Table;
 
-interface DamageDisplayProps {
+export interface DamageDisplayProps {
   char: CharInfo;
   party: Party;
   damageResult: DamageResult;
@@ -26,7 +26,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
   const { t } = useTranslation();
 
   const [closedItems, setClosedItems] = useState<boolean[]>([]);
-  const { tableKeys, dataChar } = useMemo(() => getTableKeys(char.name), [char.name]);
+  const { tableKeys, charData } = useMemo(() => getTableKeys(char.name), [char.name]);
 
   const toggleTable = (index: number) => () => {
     setClosedItems((prev) => {
@@ -42,12 +42,12 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
         const standardValues = damageResult[key.main];
         const isReactionDmg = key.main === "RXN";
         const talentLevel =
-          !isReactionDmg && dataChar
+          !isReactionDmg && charData
             ? finalTalentLv({
                 char,
-                dataChar,
+                charData,
                 talentType: key.main,
-                partyData: getPartyData(party),
+                partyData: appData.getPartyData(party),
               })
             : 0;
 
@@ -121,11 +121,11 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                         </Tr>
 
                         {key.subs.map((subKey, i) => {
-                          const { nonCrit, crit, average } = standardValues[subKey] || {};
+                          const { nonCrit, crit, average, attElmt } = standardValues[subKey] || {};
 
                           return nonCrit === undefined ? null : (
                             <Tr key={subKey}>
-                              <Td>{isReactionDmg ? t(subKey) : subKey}</Td>
+                              <Td title={attElmt?.toUpperCase()}>{isReactionDmg ? t(subKey) : subKey}</Td>
                               <Td>{displayValue(nonCrit)}</Td>
                               <Td>{displayValue(crit)}</Td>
                               <Td className="text-lightgold">{displayValue(average)}</Td>

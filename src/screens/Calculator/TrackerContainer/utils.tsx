@@ -7,6 +7,7 @@ import {
   ATTACK_PATTERNS,
   ATTACK_PATTERN_INFO_KEYS,
   ATTRIBUTE_STAT_TYPES,
+  BASE_STAT_TYPES,
   REACTIONS,
   REACTION_BONUS_INFO_KEYS,
 } from "@Src/constants";
@@ -28,6 +29,9 @@ export function initTracker() {
     RXN: {},
   } as Tracker;
 
+  for (const baseStat of BASE_STAT_TYPES) {
+    tracker.totalAttr[baseStat] = [];
+  }
   for (const stat of ATTRIBUTE_STAT_TYPES) {
     tracker.totalAttr[stat] = [];
   }

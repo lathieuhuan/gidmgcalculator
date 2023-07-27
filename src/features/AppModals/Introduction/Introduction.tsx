@@ -9,7 +9,7 @@ export const Introduction = (props: ModalControl) => {
     <StandardModal
       title={
         <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.1.0</sup>
+          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.2.0</sup>
         </h1>
       }
       {...props}
@@ -92,6 +92,9 @@ export const Introduction = (props: ModalControl) => {
             "Only_Pumpkin_801",
             "Jenny-sama",
             "L1itTru",
+            "Izzo",
+            "Hounth",
+            "StockedSix",
           ].map((name, i) => (
             <li key={i}>
               <Lightgold>{name}</Lightgold>

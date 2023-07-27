@@ -1,5 +1,4 @@
 import type {
-  CharData,
   CalcSetup,
   CalcSetupManageInfo,
   DamageResult,
@@ -16,7 +15,6 @@ export type CalculatorState = {
   standardId: number;
   comparedIds: number[];
 
-  charData: CharData;
   setupManageInfos: CalcSetupManageInfo[];
   setupsById: Record<string, CalcSetup>;
   statsById: Record<

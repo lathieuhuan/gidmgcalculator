@@ -18,14 +18,14 @@ interface OverrideOptions {
   importedChar: CharInfo;
   importedTarget: Target;
   addImportedSetup: (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => void;
-  endImport: () => void;
+  onCancel: () => void;
 }
 export function OverrideOptions({
   pendingCode,
   importedChar,
   importedTarget,
   addImportedSetup,
-  endImport,
+  onCancel,
 }: OverrideOptions) {
   const { t } = useTranslation();
   const setupsById = useSelector(selectCalcSetupsById);
@@ -165,7 +165,7 @@ export function OverrideOptions({
       <ButtonGroup
         className={expandedIndex === pendingCode % 10 ? "mt-2" : "mt-4"}
         buttons={[
-          { text: "Cancel", onClick: endImport },
+          { text: "Cancel", onClick: onCancel },
           { text: "Confirm", onClick: onConfirm },
         ]}
       />

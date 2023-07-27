@@ -63,7 +63,6 @@ export const userDatabaseSlice = createSlice({
       const { name, weaponType } = action.payload;
       const weaponID = Date.now();
 
-      state.chosenChar = name;
       state.userChars.push({
         name,
         ...createCharInfo(),

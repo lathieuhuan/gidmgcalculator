@@ -16,9 +16,10 @@ interface ModalProps extends ModalControl {
   className?: string;
   style?: CSSProperties;
   withDefaultStyle?: boolean;
+  closeOnMaskClick?: boolean;
   children: ReactNode;
 }
-export const Modal = ({ active, state: stateProp, onClose, ...rest }: ModalProps) => {
+export const Modal = ({ active, closeOnMaskClick = true, state: stateProp, onClose, ...rest }: ModalProps) => {
   const [state, setState] = useState({
     active: false,
     animate: false,
@@ -74,7 +75,7 @@ export const Modal = ({ active, state: stateProp, onClose, ...rest }: ModalProps
               "w-full h-full bg-black transition duration-150 ease-linear",
               state.animate ? "opacity-60" : "opacity-20"
             )}
-            onClick={closeModal}
+            onClick={closeOnMaskClick ? closeModal : undefined}
           />
           <ModalBody animate={state.animate} {...rest} />
         </div>,
@@ -84,7 +85,7 @@ export const Modal = ({ active, state: stateProp, onClose, ...rest }: ModalProps
 };
 
 export function withModal<T>(
-  Component: (props: T) => JSX.Element,
+  Component: (props: T) => JSX.Element | null,
   modalProps?: Partial<Omit<ModalProps, "active" | "onClose">>,
   closeButton?: Partial<Omit<CloseButtonProps, "onClick">>
 ) {

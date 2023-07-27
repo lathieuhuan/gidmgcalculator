@@ -18,7 +18,6 @@ import type {
   ChangeModCtrlInputAction,
   ChangeTeammateModCtrlInputAction,
   ImportSetupAction,
-  InitSessionWithCharAction,
   RemoveCustomModCtrlAction,
   ToggleModCtrlAction,
   ToggleTeammateModCtrlAction,
@@ -29,15 +28,15 @@ import type {
   UpdateCustomDebuffCtrlsAction,
   UpdateTeammateWeaponAction,
   UpdateTeammateArtifactAction,
-  InitSessionWithSetupAction,
   ApplySettingsAction,
+  InitNewSessionPayload,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
+import { appData } from "@Data/index";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { findDataCharacter, getCharData, getPartyData } from "@Data/controllers";
-import { bareLv, deepCopy, findById, turnArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -51,7 +50,7 @@ import {
   createWeapon,
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
-import { calculate, parseUserCharData } from "./utils";
+import { calculate, getCharDataFromState } from "./utils";
 
 const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
   if (artifact.debuffs?.length) {
@@ -69,7 +68,6 @@ const initialState: CalculatorState = {
   activeId: 0,
   standardId: 0,
   comparedIds: [],
-  charData: getCharData(defaultChar),
   setupManageInfos: [],
   setupsById: {},
   statsById: {},
@@ -97,64 +95,23 @@ export const calculatorSlice = createSlice({
           }
         : { active: false };
     },
-    initSessionWithChar: (state, action: InitSessionWithCharAction) => {
-      const { pickedChar, userWps, userArts } = action.payload;
-      const setupManageInfo = getSetupManageInfo({});
-      const { ID: setupID } = setupManageInfo;
-      const charData = getCharData(pickedChar);
-      const data = parseUserCharData({
-        pickedChar,
-        userWps,
-        userArts,
-        weaponType: charData.weaponType,
-        seedID: setupID + 1,
-      });
-      const [selfBuffCtrls, selfDebuffCtrls] = createCharModCtrls(true, data.char.name);
-
-      state.activeId = setupID;
-      state.comparedIds = [];
-      state.standardId = 0;
-      appSettings.set({ charInfoIsSeparated: false });
-
-      state.charData = charData;
-      state.setupManageInfos = [setupManageInfo];
-      state.setupsById = {
-        [setupID]: {
-          char: data.char,
-          selfBuffCtrls: selfBuffCtrls,
-          selfDebuffCtrls: selfDebuffCtrls,
-          weapon: data.weapon,
-          wpBuffCtrls: data.wpBuffCtrls,
-          artifacts: data.artifacts,
-          artBuffCtrls: data.artBuffCtrls,
-          artDebuffCtrls: createArtDebuffCtrls(),
-          party: [null, null, null],
-          elmtModCtrls: createElmtModCtrls(),
-          customBuffCtrls: [],
-          customDebuffCtrls: [],
-          customInfusion: { element: "phys" },
-        },
-      };
-      // calculate will repopulate statsById
-      state.statsById = {};
-
-      calculate(state);
-    },
-    initSessionWithSetup: (state, action: InitSessionWithSetupAction) => {
+    initNewSession: (state, action: PayloadAction<InitNewSessionPayload>) => {
       const { ID = Date.now(), name, type, calcSetup, target } = action.payload;
 
-      state.charData = getCharData(calcSetup.char);
       state.setupManageInfos = [getSetupManageInfo({ ID, name, type })];
       state.setupsById = {
         [ID]: calcSetup,
       };
       // calculate will repopulate statsById
       state.statsById = {};
-      state.target = target;
       state.activeId = ID;
       state.standardId = 0;
       state.comparedIds = [];
       appSettings.set({ charInfoIsSeparated: false });
+
+      if (target) {
+        state.target = target;
+      }
 
       calculate(state);
     },
@@ -265,20 +222,21 @@ export const calculatorSlice = createSlice({
     // PARTY
     addTeammate: (state, action: AddTeammateAction) => {
       const { name, vision, weaponType, teammateIndex } = action.payload;
+      const charData = getCharDataFromState(state);
       const setup = state.setupsById[state.activeId];
       const { party, elmtModCtrls } = setup;
 
-      const oldVisionCount = countVision(getPartyData(party), state.charData);
+      const oldVisionCount = countVision(appData.getPartyData(party), charData);
       const oldTeammate = party[teammateIndex];
       // assign to party
       party[teammateIndex] = createTeammate({ name, weaponType });
 
-      const newVisionCount = countVision(getPartyData(party), state.charData);
+      const newVisionCount = countVision(appData.getPartyData(party), charData);
       // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
       const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
-        const { vision: oldVision } = findDataCharacter(oldTeammate) || {};
+        const { vision: oldVision } = appData.getCharData(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
@@ -308,13 +266,14 @@ export const calculatorSlice = createSlice({
     },
     removeTeammate: (state, action: PayloadAction<number>) => {
       const teammateIndex = action.payload;
+      const charData = getCharDataFromState(state);
       const { party, elmtModCtrls } = state.setupsById[state.activeId];
       const teammate = party[teammateIndex];
 
       if (teammate) {
-        const { vision } = findDataCharacter(teammate)!;
+        const { vision } = appData.getCharData(teammate.name);
         party[teammateIndex] = null;
-        const newVisionCount = countVision(getPartyData(party), state.charData);
+        const newVisionCount = countVision(appData.getPartyData(party), charData);
 
         if (newVisionCount[vision] === 1) {
           elmtModCtrls.resonances = elmtModCtrls.resonances.filter((resonance) => {
@@ -498,10 +457,10 @@ export const calculatorSlice = createSlice({
 
       switch (actionType) {
         case "add":
-          activeSetup.customBuffCtrls.push(...turnArray(ctrls));
+          activeSetup.customBuffCtrls.push(...toArray(ctrls));
           break;
         case "edit":
-          for (const { index, ...newInfo } of turnArray(ctrls)) {
+          for (const { index, ...newInfo } of toArray(ctrls)) {
             activeSetup.customBuffCtrls[index] = {
               ...activeSetup.customBuffCtrls[index],
               ...newInfo,
@@ -509,7 +468,7 @@ export const calculatorSlice = createSlice({
           }
           break;
         case "replace":
-          activeSetup.customBuffCtrls = turnArray(ctrls);
+          activeSetup.customBuffCtrls = toArray(ctrls);
           break;
       }
       calculate(state);
@@ -520,10 +479,10 @@ export const calculatorSlice = createSlice({
 
       switch (actionType) {
         case "add":
-          activeSetup.customDebuffCtrls.unshift(...turnArray(ctrls));
+          activeSetup.customDebuffCtrls.unshift(...toArray(ctrls));
           break;
         case "edit":
-          for (const { index, ...newInfo } of turnArray(ctrls)) {
+          for (const { index, ...newInfo } of toArray(ctrls)) {
             activeSetup.customDebuffCtrls[index] = {
               ...activeSetup.customDebuffCtrls[index],
               ...newInfo,
@@ -531,7 +490,7 @@ export const calculatorSlice = createSlice({
           }
           break;
         case "replace":
-          activeSetup.customDebuffCtrls = turnArray(ctrls);
+          activeSetup.customDebuffCtrls = toArray(ctrls);
           break;
       }
       calculate(state);
@@ -558,7 +517,7 @@ export const calculatorSlice = createSlice({
       if (dataMonster?.code) {
         const { resistance, variant } = dataMonster;
         const { base, ...otherResistances } = resistance;
-        const inputConfigs = dataMonster.inputConfigs ? turnArray(dataMonster.inputConfigs) : [];
+        const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;
@@ -620,7 +579,8 @@ export const calculatorSlice = createSlice({
     },
     updateSetups: (state, action: UpdateSetupsAction) => {
       const { newSetupManageInfos, newStandardId } = action.payload;
-      const { setupManageInfos, setupsById, charData, activeId } = state;
+      const charData = getCharDataFromState(state);
+      const { setupManageInfos, setupsById, activeId } = state;
       const removedIds = [];
       // Reset comparedIds before repopulate with newSetupManageInfos
       state.comparedIds = [];
@@ -732,8 +692,7 @@ export const calculatorSlice = createSlice({
 export const {
   updateCalculator,
   updateMessage,
-  initSessionWithChar,
-  initSessionWithSetup,
+  initNewSession,
   importSetup,
   updateCalcSetup,
   duplicateCalcSetup,

@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import {
@@ -13,7 +13,90 @@ import { findByCode } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purpleCatalysts: DataWeapon[] = [
+const purpleCatalysts: AppWeapon[] = [
+  {
+    code: 162,
+    name: "Flowing Purity",
+    icon: "https://images2.imgbox.com/56/62/FXT7IK0o_o.png",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]}, and a Bond of Life worth 24% of Max HP will be granted. This effect can be triggered once
+            every 10s. {this.extra?.[1]} Bond of Life: Absorbs healing for the character based on its base value, and
+            clears after healing equal to this value is obtained.
+          </>
+        );
+      },
+      extra: [
+        <>
+          When using an Elemental Skill, <Green>All Elemental DMG Bonus</Green> will be increased by{" "}
+          <Green b>{6 + refi * 2}%</Green> for 12s
+        </>,
+        <>
+          When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide{" "}
+          <Green b>{1.5 + refi * 0.5}%</Green> <Green>All Elemental DMG Bonus</Green>. Up to a maximum of{" "}
+          <Rose>{9 + refi * 3}%</Rose> All Elemental DMG can be gained this way. This effect lasts 12s.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 8),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[1],
+        applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
+          const bondValue = Math.round(totalAttr.hp * 0.24);
+          const stacks = bondValue / 1000;
+          const limit = 9 + refi * 3;
+          let buffValue = (1.5 + refi * 0.5) * stacks;
+          let finalDesc = desc + ` / ${1.5 + refi * 0.5}% * ${stacks} stacks (Bond ${bondValue})`;
+          if (buffValue > limit) {
+            buffValue = limit;
+            finalDesc += ` / limit to ${limit}%`;
+          }
+          applyModifier(finalDesc, totalAttr, [...VISION_TYPES], buffValue, tracker);
+        },
+      },
+    ],
+  },
+  {
+    code: 161,
+    name: "Sacrificial Jade",
+    icon: "https://images2.imgbox.com/80/94/Ke393kt9_o.png",
+    rarity: 4,
+    mainStatScale: "41",
+    subStat: { type: "cRate_", scale: "8%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          When not on the field for more than 6s, <Green>Max HP</Green> will be increased by{" "}
+          <Green b>{15 + refi * 5}%</Green> and <Green>Elemental Mastery</Green> will be increased by{" "}
+          <Green b>{60 + refi * 20}</Green>. These effects will be canceled after the wielder has been on the field for
+          6s.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 161)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("totalAttr", ["hp_", "em"], [20, 80]),
+      },
+    ],
+  },
   {
     code: 144,
     name: "Wandering Evenstar",

@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries, watatsumiSeries } from "../series";
@@ -8,7 +8,65 @@ import { makeWpModApplier } from "../utils";
 
 const fadingTwilightBuffValuesByState = (refi: number) => [4.5 + refi * 1.5, 7.5 + refi * 2.5, 10.5 + refi * 3.5];
 
-const purpleBows: DataWeapon[] = [
+const purpleBows: AppWeapon[] = [
+  {
+    code: 164,
+    name: "Song of Stillness",
+    icon: "https://images2.imgbox.com/5b/49/z9GEFv7l_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "atk_", scale: "9%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After the wielder is healed, they will deal <Green b>{12 + refi * 4}%</Green> more <Green>DMG</Green> for 8s.
+          This can be triggered even when the character is not on the field.
+        </>
+      ),
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 164)?.passiveDesc({ refi }).core,
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
+      },
+    ],
+  },
+  {
+    code: 163,
+    name: "Scion of the Blazing Sun",
+    icon: "https://images2.imgbox.com/6f/b7/efQwDBFc_o.png",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "cRate_", scale: "4%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            After a Charged Attack hits an opponent, a Sunfire Arrow will descend and deal {45 + refi * 15}% ATK as DMG.{" "}
+            {this.extra?.[0]} A Sunfire Arrow can be triggered once every 12s.
+          </>
+        );
+      },
+      extra: [
+        <>
+          After a Sunfire Arrow hits an opponent, it will increase the <Green>Charged Attack DMG</Green> taken by this
+          opponent from the wielder by <Green b>{21 + refi * 7}%</Green>.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleBows, 163)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 28),
+      },
+    ],
+  },
   {
     code: 153,
     name: "Ibis Piercer",
@@ -42,6 +100,24 @@ const purpleBows: DataWeapon[] = [
         },
       },
     ],
+  },
+  {
+    code: 166,
+    name: "End of the Line",
+    icon: "7/71/Weapon_End_of_the_Line",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "er_", scale: "10%" },
+    passiveName: "Net Snapper",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Triggers the Flowrider effect after using an Elemental Skill, dealing {60 + refi * 20}% ATK as AoE DMG upon
+          hitting an opponent with an attack. Flowrider will be removed after 15s or after causing 3 instances of AoE
+          DMG. Only 1 instance of AoE DMG can be caused every 2s in this way. Flowrider can be triggered once every 12s.
+        </>
+      ),
+    }),
   },
   {
     code: 138,

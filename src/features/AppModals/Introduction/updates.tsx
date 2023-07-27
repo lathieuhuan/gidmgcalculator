@@ -1,6 +1,84 @@
-import { Green, Lightgold, Red } from "@Src/pure-components";
+import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
+  {
+    date: "July 17th, 2023",
+    content: [
+      <>
+        Updated characters (v2): <Lightgold>Lyney</Lightgold>, <Lightgold>Hydro Traveler</Lightgold>,{" "}
+        <Lightgold>Freminet</Lightgold>.
+      </>,
+      <>
+        Updated weapon <Lightgold>The First Great Magic</Lightgold>.
+      </>,
+      <>
+        Updated artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
+      </>,
+      <>
+        Fixed <Lightgold>Raiden Shogun</Lightgold>'s A4 buff did not work properly. Thank you{" "}
+        <Red>RememberTelannas</Red>!
+      </>,
+    ],
+  },
+  {
+    date: "July 13th, 2023",
+    content: [
+      <>
+        Added characters: <Lightgold>Hydro Traveler</Lightgold>, <Lightgold>Freminet</Lightgold>.
+      </>,
+      <>
+        Added bow: <Lightgold>End of the Line</Lightgold>.
+      </>,
+    ],
+  },
+  {
+    date: "July 11th, 2023",
+    content: [
+      <>
+        Added artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
+      </>,
+      <>
+        Added bows: <Lightgold>Song of Stillness</Lightgold>, <Lightgold>Scion of the Blazing Sun</Lightgold>.
+      </>,
+      <>
+        Added catalysts: <Lightgold>Flowing Purity</Lightgold>, <Lightgold>Sacrificial Jade</Lightgold>.
+      </>,
+      <>
+        Added claymores: <Lightgold>Tidal Shadow</Lightgold>, <Lightgold>Talking Stick</Lightgold>.
+      </>,
+      <>
+        Added polearms: <Lightgold>Rightful Reward</Lightgold>, <Lightgold>Ballad of the Fjords</Lightgold>.
+      </>,
+      <>
+        Added swords: <Lightgold>Crossing of Fleuve Cendre</Lightgold>, <Lightgold>Finale of the Deep</Lightgold>,{" "}
+        <Lightgold>Wolf-Fang</Lightgold>.
+      </>,
+    ],
+  },
+  {
+    date: "July 10th, 2023",
+    content: [
+      <>
+        Corrected damage type of <Lightgold>Lyney</Lightgold>'s "Pyrotechnic Strike" and "Spiritbreath Thorn" to Pyro.
+        Thank you <Red>Antixique</Red>!
+      </>,
+    ],
+  },
+  {
+    date: "July 9th, 2023 (v3.2.0)",
+    content: [
+      <>
+        Added characters: <Lightgold>Lyney</Lightgold> and <Lightgold>Lynette</Lightgold>.
+      </>,
+      <>
+        Added weapon: <Lightgold>The First Great Magic</Lightgold> (bow).
+      </>,
+      <>
+        Note: I don't know what Lyney's A4 buff increases and not quite understand <Lightgold>Freminet</Lightgold>'s kit
+        for now. I will follow more of his gameplay.
+      </>,
+    ],
+  },
   {
     date: "June 22th, 2023",
     content: ["Fixed a bug where removing a teammate's artifact with active debuff, the debuff was not removed."],
@@ -24,97 +102,6 @@ export const UPDATES = [
         Added additional attacks or shield for: <Lightgold>Razor</Lightgold> C6, <Lightgold>Chongyun</Lightgold> C1,{" "}
         <Lightgold>Xiangling</Lightgold> C2, <Lightgold>Noelle</Lightgold> A1 & C4, <Lightgold>Wanderer</Lightgold> C6.
         Thank you <Red>Meiflower</Red>!
-      </>,
-    ],
-  },
-  {
-    date: "May 3rd, 2023 (v3.1.0)",
-    content: [
-      <>
-        Updated <Lightgold>Baizhu</Lightgold> and <Lightgold>Kaveh</Lightgold>.
-      </>,
-      <>
-        Released <Lightgold>Export Setup</Lightgold> feature.
-      </>,
-    ],
-  },
-  {
-    date: "April 13th, 2023",
-    content: [
-      <>
-        Added <Lightgold>Kirara</Lightgold>.
-      </>,
-      <>
-        Fixed <Lightgold>Tighnari</Lightgold>'s A4 did not factor in some Elemenetal Mastery bonuses.
-      </>,
-      <>
-        Fixed <Lightgold>Raiden Shogun</Lightgold>'s resolve count did not work at C1, when Total Energy spent by all
-        characters is equal to Total Energy spent by Electro characters. Thank you <Red>Only_Pumpkin_801</Red>!
-      </>,
-      <>
-        Changed buffs that are based on characters' Max HP from --[1 bonus value each 1,000 Max HP]-- to --[0.001 bonus
-        value each 1 Max HP]--. For example, <Lightgold>Nilou</Lightgold>'s A4 will now get 0.009% Bloom DMG bonus every
-        1 Max HP above 30,000, instead of 9% bonus every 1,000 Max HP above 30,000. Thank you <Red>StockedSix</Red> for
-        the testing on Nilou!
-      </>,
-      <>
-        Other characters affected by the above change: <Lightgold>Baizhu, Candace, Kirara</Lightgold>.
-      </>,
-    ],
-  },
-  {
-    date: "March 30th, 2023",
-    content: [
-      <>
-        Prevented <Lightgold>Wanderer</Lightgold>'s A1 from triggering the third infused element buff when he is not yet
-        at C4. Thank you <Red>Only_Pumpkin_801</Red>!
-      </>,
-      <>
-        Corrected <Lightgold>Desert Pavilion Chronicle</Lightgold>'s description form 10s to 15s. Thank you{" "}
-        <Red>Hounth</Red>!
-      </>,
-    ],
-  },
-  {
-    date: "March 28th, 2023",
-    content: [
-      <>
-        Fixed setting "Keep artifact stats when switching to a new set" did not work properly. Thank you{" "}
-        <Red>Only_Pumpkin_801</Red>!
-      </>,
-    ],
-  },
-  {
-    date: "March 20th, 2023",
-    content: [
-      <>Fixed broken image links.</>,
-      <>
-        Setting "Keep artifact stats when switching to a new set" will be no longer applied when switching to your saved
-        artifacts.
-      </>,
-    ],
-  },
-  {
-    date: "March 19th, 2023",
-    content: [
-      <>
-        Updated <Lightgold>Baizhu</Lightgold>, <Lightgold>Jadefall's Splendor</Lightgold>, and{" "}
-        <Lightgold>Dewflower's Glow</Lightgold>.
-      </>,
-      <>
-        Corrected a wrong label on <Lightgold>Lisa</Lightgold>'s A4 debuff. Thank you <Red>Izzo</Red>!
-      </>,
-      <>Added limits to the amount of items that can be uploaded from a file.</>,
-      <>
-        Enabled <Green>Download</Green> function. Removed options for downloading & uploading data from local storage.
-      </>,
-      <>
-        Added a <Green>new setting</Green> that will make the App <Green>auto save your database</Green> to browser's
-        local storage.
-      </>,
-      <>
-        <Red b>GI DMG Calculator v3.0.0</Red> is officially released! Head to <Green b>New in v3.0.0</Green> to see the
-        recap of changes and new functionalities compared to previous version.
       </>,
     ],
   },

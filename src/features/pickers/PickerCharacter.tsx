@@ -1,32 +1,30 @@
 import { useMemo } from "react";
-
-// Type
-import type { DataCharacter } from "@Src/types";
+import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
+import { appData } from "@Data/index";
 import characters from "@Data/characters";
 import { useSelector } from "@Store/hooks";
-
-// Util
 import { findByName, pickProps } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
 
 // Component
 import { withModal } from "@Src/pure-components";
 import { PickerTemplate } from "./PickerTemplate";
 
+type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
+
 export interface CharacterPickerProps {
-  sourceType: "mixed" | "appData" | "userData";
+  sourceType: "mixed" | "app" | "user";
   needMassAdd?: boolean;
-  filter?: (character: DataCharacter) => boolean;
-  onPickCharacter: (character: PickerItem) => void;
+  filter?: (character: AppCharacter) => boolean;
+  onPickCharacter: (character: PickedCharacter) => void;
   onClose: () => void;
 }
 const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onClose }: CharacterPickerProps) => {
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
-    const fields: Array<keyof DataCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
+    const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const data: PickerItem[] = [];
 
     if (sourceType === "mixed") {
@@ -40,15 +38,15 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
           data.push(charData);
         }
       }
-    } else if (sourceType === "appData") {
+    } else if (sourceType === "app") {
       for (const character of Object.values(characters)) {
         if (!filter || filter(character)) {
           data.push(pickProps(character, fields));
         }
       }
-    } else if (sourceType === "userData") {
+    } else if (sourceType === "user") {
       for (const { name, cons, artifactIDs } of userChars) {
-        const found = findDataCharacter({ name });
+        const found = appData.getCharData(name);
 
         if (found) {
           if (!filter || filter(found)) {
@@ -70,7 +68,7 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
       dataType="character"
       needMassAdd={needMassAdd}
       data={data}
-      onPickItem={onPickCharacter}
+      onPickItem={(character) => onPickCharacter(character as PickedCharacter)}
       onClose={onClose}
     />
   );

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FaUserSlash } from "react-icons/fa";
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+import { useCharData } from "@Src/hooks/useCharData";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -12,11 +13,10 @@ import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from
 
 // Util
 import getBaseStats from "@Src/calculation/baseStats";
-import { findById, findByName, getImgSrc } from "@Src/utils";
-import { findDataCharacter } from "@Data/controllers";
+import { findById, findByName, getAppDataError, getImgSrc } from "@Src/utils";
 
 // Component
-import { StarLine, Modal, ConfirmModalBody, Button } from "@Src/pure-components";
+import { StarLine, Button, ConfirmModal, LoadingIcon } from "@Src/pure-components";
 import { AttributeTable, TalentList, ConsList } from "@Src/components";
 import Gears from "./Gears";
 
@@ -36,28 +36,42 @@ const selectChosenInfo = createSelector(
   }
 );
 
-export default function MyCharacterInfo() {
-  const [removing, setRemoving] = useState(false);
-  const { char, weapon, artifacts } = useSelector(selectChosenInfo);
+const CharacterInfo = () => {
   const dispatch = useDispatch();
+  const { char, weapon, artifacts } = useSelector(selectChosenInfo);
+  const { isLoading, error, charData } = useCharData(char.name);
 
-  const dataChar = findDataCharacter(char);
-  if (!dataChar || !weapon) {
+  const [removing, setRemoving] = useState(false);
+
+  if (isLoading || error) {
+    return (
+      <div
+        className="py-4 flex h-98/100 space-x-2 overflow-auto"
+        style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
+      >
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="p-4 rounded-lg bg-darkblue-1 shrink-0" style={{ width: 332 }}>
+            {error ? (
+              <p className="text-center text-lightred">{error}</p>
+            ) : (
+              <div className="w-full h-full flex-center">
+                <LoadingIcon />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (!charData || !weapon) {
     return null;
   }
-  const { code, name, icon, rarity, nation, vision } = dataChar;
+  const { name, icon, rarity, vision } = charData;
 
   const { totalAttr, artAttr } = getBaseStats({
     char,
-    charData: {
-      code,
-      name,
-      icon,
-      nation,
-      vision,
-      weaponType: dataChar.weaponType,
-      EBcost: dataChar.activeTalents.EB.energyCost,
-    },
+    charData,
     weapon,
     artifacts,
   });
@@ -65,7 +79,7 @@ export default function MyCharacterInfo() {
 
   return (
     <div
-      className="py-4 flex h-98/100 overflow-auto"
+      className="py-4 flex h-98/100 space-x-2 overflow-auto"
       style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
     >
       <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
@@ -104,7 +118,7 @@ export default function MyCharacterInfo() {
 
       <Gears weapon={weapon} artifacts={artifacts} artAttr={artAttr} />
 
-      <div className="ml-2 p-4 rounded-lg bg-darkblue-1">
+      <div className="p-4 rounded-lg bg-darkblue-1">
         <div className="h-full w-75">
           <ConsList
             char={char}
@@ -120,7 +134,7 @@ export default function MyCharacterInfo() {
         </div>
       </div>
 
-      <div className="ml-2 p-4 rounded-lg bg-darkblue-1">
+      <div className="p-4 rounded-lg bg-darkblue-1">
         <div className="h-full w-75">
           <TalentList
             key={char.name}
@@ -132,17 +146,18 @@ export default function MyCharacterInfo() {
         </div>
       </div>
 
-      <Modal active={removing} className="small-modal" onClose={() => setRemoving(false)}>
-        <ConfirmModalBody
-          message={
-            <>
-              Remove <b>{name}</b>?
-            </>
-          }
-          buttons={[undefined, { onClick: () => dispatch(removeUserCharacter(name)) }]}
-          onClose={() => setRemoving(false)}
-        />
-      </Modal>
+      <ConfirmModal
+        active={removing}
+        message={
+          <>
+            Remove <b>{name}</b>?
+          </>
+        }
+        buttons={[undefined, { onClick: () => dispatch(removeUserCharacter(name)) }]}
+        onClose={() => setRemoving(false)}
+      />
     </div>
   );
-}
+};
+
+export default memo(CharacterInfo);

@@ -1,16 +1,16 @@
-import type { CharInfo, DataCharacter, ModifierInput, PartyData } from "@Src/types";
-import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
+import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
-import { finalTalentLv, applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc } from "../constants";
 import { checkAscs } from "../utils";
 
 const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: ModifierInput[] }) => {
   const level = finalTalentLv({
     char: args.char,
-    dataChar: Aloy,
+    charData: Aloy as AppCharacter,
     talentType: "ES",
     partyData: args.partyData,
   });
@@ -19,7 +19,7 @@ const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: Mod
   return round(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks, 2);
 };
 
-const Aloy: DataCharacter = {
+const Aloy: DefaultAppCharacter = {
   code: 39,
   name: "Aloy",
   icon: "e/e5/Aloy_Icon",
@@ -28,79 +28,7 @@ const Aloy: DataCharacter = {
   nation: "outland",
   vision: "cryo",
   weaponType: "bow",
-  stats: [
-    [848, 18, 53],
-    [2201, 47, 137],
-    [2928, 63, 182],
-    [4382, 94, 272],
-    [4899, 105, 304],
-    [5636, 121, 350],
-    [6325, 136, 393],
-    [7070, 152, 439],
-    [7587, 163, 471],
-    [8339, 179, 517],
-    [8856, 190, 550],
-    [9616, 206, 597],
-    [10133, 217, 629],
-    [10899, 234, 676],
-  ],
-  bonusStat: { type: "cryo", value: 7.2 },
-  NAsConfig: {
-    name: "Rapid Fire",
-  },
-  activeTalents: {
-    NA: {
-      stats: [
-        { name: "1-Hit", multFactors: [21.12, 23.76] },
-        { name: "2-Hit", multFactors: 43.12 },
-        { name: "3-Hit", multFactors: 52.8 },
-        { name: "4-Hit", multFactors: 65.65 },
-      ],
-      multScale: 4,
-    },
-    CA: { stats: BOW_CAs },
-    PA: { stats: LIGHT_PAs },
-    ES: {
-      name: "Frozen Wilds",
-      image: "9/9a/Talent_Frozen_Wilds",
-      stats: [
-        { name: "Freeze Bomb", multFactors: 177.6 },
-        { name: "Chillwater Bomblets", multFactors: 40 },
-      ],
-      // getExtraStats: (lv) => [
-      //   {
-      //     name: "ATK Decrease",
-      //     value: Math.min(11 + Math.ceil(lv / 3), 15) + "%",
-      //   },
-      //   { name: "ATK Decrease Duration", value: "6s" },
-      //   {
-      //     name: "Coil Normal Attack DMG Bonus",
-      //     value: [1, 2, 3]
-      //       .map((stack) => round(5.846 * TALENT_LV_MULTIPLIERS[5][lv] * stack, 2) + "%")
-      //       .join(" / "),
-      //   },
-      //   {
-      //     name: "Rushing Ice Normal Attack DMG Bonus",
-      //     value: round(29.23 * TALENT_LV_MULTIPLIERS[5][lv], 2) + "%",
-      //   },
-      //   { name: "Rushing Ice Duration", value: "10s" },
-      //   { name: "CD", value: "20s" },
-      // ],
-    },
-    EB: {
-      name: "Prophecies of Dawn",
-      image: "b/b4/Talent_Prophecies_of_Dawn",
-      stats: [{ name: "Skill DMG", multFactors: 359.2 }],
-      // getExtraStats: () => [{ name: "CD", value: "12s" }],
-      energyCost: 40,
-    },
-  },
-  passiveTalents: [
-    { name: "Combat Override", image: "0/01/Talent_Combat_Override" },
-    { name: "Strong Strike", image: "b/ba/Talent_Strong_Strike" },
-    { name: "Easy Does It", image: "0/0f/Talent_Easy_Does_It" },
-  ],
-  constellation: [],
+  EBcost: 40,
   buffs: [
     {
       index: 0,
@@ -159,4 +87,4 @@ const Aloy: DataCharacter = {
   ],
 };
 
-export default Aloy;
+export default Aloy as AppCharacter;

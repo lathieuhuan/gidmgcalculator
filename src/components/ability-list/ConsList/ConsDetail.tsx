@@ -1,67 +1,85 @@
-import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useEffect, useRef, useState } from "react";
 
-import type { DataCharacter } from "@Src/types";
-import { GENSHIN_DEV_URL } from "@Src/constants";
+import type { AppCharacter, Talent } from "@Src/types";
+import { appData } from "@Data/index";
 
 // Conponent
-import { CloseButton, Green, Lesser } from "@Src/pure-components";
+import { CloseButton, Green, Lesser, LoadingIcon } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
+const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
+  const { auto = true } = options || {};
+  const state = useRef({
+    mounted: true,
+    status: "idle" as "idle" | "loading" | "error" | "success",
+    descriptions: null as string[] | null,
+  });
+  const [boo, setBoo] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      state.current.mounted = false;
+    };
+  }, []);
+
+  const getConstellation = async () => {
+    const response = await appData.fetchConsDescriptions(name);
+
+    if (state.current.mounted) {
+      if (response.code === 200) {
+        state.current.status = "success";
+        state.current.descriptions = response.data || [];
+      } else {
+        state.current.status = "error";
+      }
+    }
+    setBoo(!boo);
+  };
+
+  if (auto && state.current.status === "idle") {
+    state.current.status = "loading";
+  }
+
+  if (state.current.status === "loading") {
+    getConstellation();
+  }
+
+  const { status, descriptions } = state.current;
+
+  return {
+    isLoading: status === "loading",
+    isError: status === "error",
+    isSuccess: status === "success",
+    descriptions,
+  };
+};
+
 interface ConsDetailProps {
-  dataChar: DataCharacter;
+  charData: AppCharacter;
   consLv: number;
   onChangeConsLv?: (newLv: number) => void;
   onClose?: () => void;
 }
-export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
-  const [descArr, setDescArr] = useState([]);
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("loading");
-
-  const {
-    name: charName,
-    vision,
-    isReverseXtraLv,
-    activeTalents: { ES, EB },
-    constellation,
-  } = dataChar;
+export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDetailProps) => {
+  const { vision, constellation, talentLvBonusAtCons = {}, activeTalents } = charData;
   const consInfo = constellation[consLv - 1] || {};
-  let abilityName = "";
 
-  if (consLv === 3) {
-    abilityName = isReverseXtraLv ? EB.name : ES.name;
-  }
-  if (consLv === 5) {
-    abilityName = isReverseXtraLv ? ES.name : EB.name;
-  }
+  const { isLoading, isError, descriptions } = useConsDescriptions(charData.name, {
+    auto: !constellation[0].description,
+  });
 
-  const consDesc = abilityName ? (
-    <>
-      Increases the Level of {abilityName} by 3.
-      <br />
-      Maximum upgrade level is 15.
-    </>
-  ) : (
-    consInfo.desc
-  );
+  let description;
 
-  useEffect(() => {
-    if (!constellation[0].desc) {
-      setStatus("loading");
+  if (consLv === 3 || consLv === 5) {
+    const [talent] = Object.entries(talentLvBonusAtCons).find(([, cons]) => cons === consLv) || [];
+    const { name } = activeTalents[talent as Talent] || {};
 
-      fetch(GENSHIN_DEV_URL + `/characters/` + charName)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            setStatus("error");
-          } else {
-            const { constellations = [] } = data;
-            setDescArr(constellations.map((constellation: any) => constellation.description));
-            setStatus("idle");
-          }
-        });
+    if (name) {
+      description = `Increases the Level of ${name} by 3.\nMaximum upgrade level is 15.`;
     }
-  }, []);
+  } else {
+    description = consInfo.description;
+  }
 
   return (
     <div className="h-full flex-col hide-scrollbar">
@@ -77,13 +95,13 @@ export const ConsDetail = ({ dataChar, consLv, onChangeConsLv, onClose }: ConsDe
       <p className="text-lg">
         Constellation Lv. <Green b>{consLv}</Green>
       </p>
-      {consDesc ? (
-        <p className="mt-4">{consDesc}</p>
+      {description ? (
+        <p className="mt-4 whitespace-pre-wrap">{description}</p>
       ) : (
-        <p className={"mt-4" + (status === "loading" ? " py-4 flex justify-center" : "")}>
-          {status === "loading" && <AiOutlineLoading3Quarters className="text-2xl animate-spin" />}
-          {status === "error" && <Lesser>Error. Rebooting...</Lesser>}
-          {status === "idle" && descArr[consLv - 1]}
+        <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
+          <LoadingIcon active={isLoading} />
+          {isError && <Lesser>Error. Rebooting...</Lesser>}
+          {descriptions?.[consLv - 1]}
         </p>
       )}
 

@@ -15,11 +15,11 @@ import {
 } from "@Store/calculatorSlice";
 
 // Selector
-import { selectCharData, selectActiveId, selectSetupManageInfos, selectParty } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectActiveId, selectSetupManageInfos, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { findById } from "@Src/utils";
-import { getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/features";
@@ -34,11 +34,12 @@ interface ModalState {
 
 export default function SectionParty() {
   const dispatch = useDispatch();
-
-  const charData = useSelector(selectCharData);
+  const char = useSelector(selectChar);
   const activeId = useSelector(selectActiveId);
   const setupManageInfos = useSelector(selectSetupManageInfos);
   const party = useSelector(selectParty);
+
+  const charData = appData.getCharData(char.name);
 
   const [modal, setModal] = useState<ModalState>({
     type: "",
@@ -46,7 +47,7 @@ export default function SectionParty() {
   });
   const [detailSlot, setDetailSlot] = useState<number | null>(null);
 
-  const partyData = useMemo(() => getPartyData(party), [party]);
+  const partyData = useMemo(() => appData.getPartyData(party), [party]);
 
   const isCombined = findById(setupManageInfos, activeId)?.type === "combined";
   const detailTeammate = detailSlot === null ? undefined : party[detailSlot];
@@ -180,14 +181,14 @@ export default function SectionParty() {
 
       <PickerCharacter
         active={modal.type === "CHARACTER" && modal.teammateIndex !== null}
-        sourceType="appData"
+        sourceType="app"
         filter={({ name }) => {
           return name !== charData.name && party.every((tm) => name !== tm?.name);
         }}
         onPickCharacter={({ name, vision, weaponType }) => {
           const { teammateIndex } = modal;
 
-          if (vision && weaponType && teammateIndex !== null) {
+          if (teammateIndex !== null) {
             dispatch(addTeammate({ name, vision, weaponType, teammateIndex }));
             setDetailSlot(teammateIndex);
           }

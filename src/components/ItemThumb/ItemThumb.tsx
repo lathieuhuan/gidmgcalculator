@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import type { Level, Rarity } from "@Src/types";
-import { findDataCharacter } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { Image } from "@Src/pure-components";
@@ -23,7 +23,7 @@ interface ItemThumbProps {
 export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, chosen }: ItemThumbProps) => {
   //
   const renderSideIcon = (owner: string) => {
-    const { icon = "", sideIcon } = findDataCharacter({ name: owner }) || {};
+    const { icon = "", sideIcon } = appData.getCharData(owner) || {};
     return (
       <div
         className={clsx(

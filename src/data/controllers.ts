@@ -1,23 +1,10 @@
-import type {
-  ArtifactType,
-  CharData,
-  DataCharacter,
-  PartyData,
-  Target,
-  WeaponType,
-} from "@Src/types";
-import { turnArray } from "@Src/utils";
+import type { ArtifactType, PartyData, Target, WeaponType } from "@Src/types";
+import { toArray } from "@Src/utils";
 import artifacts from "./artifacts";
-import characters from "./characters";
 import monsters from "./monsters";
 import weapons from "./weapons";
 
-type HasName = { name: string };
 type HasCode = { code: number };
-
-export const findDataCharacter = (char: HasName): DataCharacter | undefined => {
-  return characters[char.name as keyof typeof characters];
-};
 
 export const findDataArtifactSet = ({ code }: HasCode) => {
   // no artifact with code 0
@@ -43,23 +30,6 @@ export const findMonster = ({ code }: { code: number }) => {
   return monsters.find((monster) => monster.code === code);
 };
 
-export const getCharData = (char: HasName): CharData => {
-  const { code, name, icon, vision, nation, weaponType, activeTalents } = findDataCharacter(char)!;
-  return {
-    code,
-    name,
-    icon,
-    vision,
-    nation,
-    weaponType,
-    EBcost: activeTalents.EB.energyCost,
-  };
-};
-
-export function getPartyData(party: (HasName | null)[]): PartyData {
-  return party.map((teammate) => (teammate ? getCharData(teammate) || null : null));
-}
-
 export const getTargetData = (target: Target) => {
   const dataMonster = findMonster(target);
   let variant = "";
@@ -80,7 +50,7 @@ export const getTargetData = (target: Target) => {
   }
 
   if (target.inputs?.length && dataMonster?.inputConfigs) {
-    const inputConfigs = turnArray(dataMonster.inputConfigs);
+    const inputConfigs = toArray(dataMonster.inputConfigs);
 
     target.inputs.forEach((input, index) => {
       const { label, type = "check", options = [] } = inputConfigs[index] || {};

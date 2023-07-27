@@ -1,6 +1,6 @@
-import type { CalcSetup, CharData, NormalAttack, Target, Tracker } from "@Src/types";
+import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { findDataCharacter, getPartyData } from "@Data/controllers";
+import { appData } from "@Data/index";
 import getBuffedStats from "./buffStats";
 import getDamage from "./damage";
 
@@ -21,11 +21,10 @@ export default function calculateAll(
     customInfusion,
   }: CalcSetup,
   target: Target,
-  charData: CharData,
   tracker?: Tracker
 ) {
-  const dataChar = findDataCharacter(char)!;
-  const partyData = getPartyData(party);
+  const charData = appData.getCharData(char.name);
+  const partyData = appData.getPartyData(party);
   let infusedElement = customInfusion.element;
   let infusedAttacks: NormalAttack[] = ["NA", "CA", "PA"];
   let isCustomInfusion = true;
@@ -34,10 +33,10 @@ export default function calculateAll(
   /** false = overwritable infusion. true = unoverwritable. undefined = no infusion */
   let selfInfused: boolean | undefined = undefined;
 
-  if (dataChar.buffs) {
+  if (charData.buffs) {
     for (const { activated, index } of selfBuffCtrls) {
       if (activated) {
-        const buff = findByIndex(dataChar.buffs, index);
+        const buff = findByIndex(charData.buffs, index);
 
         if (buff && buff.infuseConfig) {
           if (!selfInfused) {
@@ -52,20 +51,19 @@ export default function calculateAll(
   }
 
   if (infusedElement === "phys" && selfInfused !== undefined) {
-    infusedElement = dataChar.vision;
+    infusedElement = charData.vision;
     isCustomInfusion = false;
-  } else if (infusedElement === dataChar.vision) {
+  } else if (infusedElement === charData.vision) {
     isCustomInfusion = false;
   }
 
-  if (dataChar.weaponType === "bow") {
+  if (charData.weaponType === "bow") {
     infusedAttacks = ["NA"];
   }
 
-  const { totalAttr, artAttr, attPattBonus, attElmtBonus, rxnBonus } = getBuffedStats({
+  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBuffs, rxnBonus } = getBuffedStats({
     char,
     charData,
-    dataChar,
     selfBuffCtrls,
     weapon,
     wpBuffCtrls,
@@ -82,7 +80,6 @@ export default function calculateAll(
   const dmgResult = getDamage({
     char,
     charData,
-    dataChar,
     selfBuffCtrls,
     selfDebuffCtrls,
     artDebuffCtrls,
@@ -92,6 +89,7 @@ export default function calculateAll(
     totalAttr,
     attPattBonus,
     attElmtBonus,
+    calcItemBuffs,
     rxnBonus,
     customDebuffCtrls,
     infusion: {

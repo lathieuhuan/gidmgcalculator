@@ -1,7 +1,7 @@
 import type {
   AttributeStat,
   CharInfo,
-  DataWeapon,
+  AppWeapon,
   ModifierCtrl,
   ModInputConfig,
   Party,
@@ -14,9 +14,10 @@ import type {
 } from "@Src/types";
 
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
+import { appData } from "@Data/index";
 import { mapVerson3_0 } from "./constants";
 
-import { findDataArtifactSet, findDataCharacter, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createArtDebuffCtrls, createWeapon } from "../creators";
@@ -129,7 +130,7 @@ const convertCharacter = (
 
   if (!weaponID || !findById(weapons, weaponID)) {
     finalWeaponID = seedID++;
-    const { weaponType = "sword" } = findDataCharacter(char) || {};
+    const { weaponType = "sword" } = appData.getCharData(char.name) || {};
 
     xtraWeapon = {
       ID: finalWeaponID,
@@ -216,7 +217,7 @@ const convertSetup = (
   seedID: number
 ): ConvertSetupResult => {
   const { weapon, art } = setup;
-  const { buffs = [], debuffs = [] } = findDataCharacter(setup.char) || {};
+  const { buffs = [], debuffs = [] } = appData.getCharData(setup.char.name) || {};
   let weaponID: number;
   let xtraWeapon: UserWeapon | undefined;
   const artifactIDs: (number | null)[] = [];
@@ -235,7 +236,7 @@ const convertSetup = (
     }, []) || [];
 
   // WEAPON
-  let dataWeapon: DataWeapon | undefined;
+  let dataWeapon: AppWeapon | undefined;
   const { BCs: wpBuffCtrls, ...weaponInfo } = weapon;
 
   const existedWeapon = findById(weapons, weaponInfo.ID);
@@ -301,7 +302,7 @@ const convertSetup = (
     if (!teammate) {
       party.push(null);
     } else {
-      const dataTeammate = findDataCharacter(teammate);
+      const dataTeammate = appData.getCharData(teammate);
 
       if (!dataTeammate) {
         party.push(null);

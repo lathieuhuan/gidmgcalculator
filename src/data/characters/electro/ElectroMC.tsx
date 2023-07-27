@@ -1,66 +1,20 @@
-import type { DataCharacter } from "@Src/types";
-import { Green, Lightgold } from "@Src/pure-components";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
+import { Green, Lightgold } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModSrc, TRAVELER_INFO } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const ElectroMC: DataCharacter = {
+const ElectroMC: DefaultAppCharacter = {
   code: 46,
   name: "Electro Traveler",
   ...TRAVELER_INFO,
   vision: "electro",
-  NAsConfig: {
-    name: "Foreign Thundershock",
+  EBcost: 80,
+  talentLvBonusAtCons: {
+    ES: 5,
+    EB: 3,
   },
-  isReverseXtraLv: true,
-  activeTalents: {
-    ...TRAVELLER_NCPAs,
-    ES: {
-      name: "Lightning Blade",
-      image: "0/03/Talent_Lightning_Blade",
-      stats: [{ name: "Skill DMG", multFactors: 78.66 }],
-      // getExtraStats: (lv) => [
-      //   {
-      //     name: "Energy Regeneration	",
-      //     value: Math.min(2.5 + Math.ceil(lv / 3) * 0.5, 4) + " per Amulet",
-      //   },
-      //   { name: "Energy Recharge Increase", value: "20%" },
-      //   { name: "Duration", value: "6s" },
-      //   { name: "Abundance Amulet Duration", value: "15s" },
-      //   { name: "CD", value: "13.5s" },
-      // ],
-    },
-    EB: {
-      name: "Bellowing Thunder",
-      image: "a/a7/Talent_Bellowing_Thunder",
-      stats: [
-        { name: "Skill DMG", multFactors: 114.4 },
-        { name: "Falling Thunder", multFactors: 32.8 },
-      ],
-      getExtraStats: (lv) => [
-        { name: "Energy Regeneration", value: Math.min((7 + Math.ceil(lv / 3) * 1) / 10, 1) },
-        { name: "Duration", value: "12s" },
-        { name: "CD", value: "20s" },
-      ],
-      energyCost: 80,
-    },
-  },
-  passiveTalents: [
-    { name: "Thunderflash", image: "1/16/Talent_Thunderflash" },
-    { name: "Resounding Roar", image: "2/26/Talent_Resounding_Roar" },
-  ],
-  constellation: [
-    {
-      name: "Spring Thunder of Fertility",
-      image: "2/2f/Constellation_Spring_Thunder_of_Fertility",
-    },
-    { name: "Violet Vehemence", image: "8/8f/Constellation_Violet_Vehemence" },
-    { name: "Distant Crackling", image: "c/c0/Constellation_Distant_Crackling" },
-    { name: "Fickle Cloudstrike", image: "8/84/Constellation_Fickle_Cloudstrike" },
-    { name: "Clamor in the Wilds", image: "8/80/Constellation_Clamor_in_the_Wilds" },
-    { name: "World-Shaker", image: "7/76/Constellation_World-Shaker" },
-  ],
   buffs: [
     {
       index: 0,
@@ -105,4 +59,4 @@ const ElectroMC: DataCharacter = {
   ],
 };
 
-export default ElectroMC;
+export default ElectroMC as AppCharacter;

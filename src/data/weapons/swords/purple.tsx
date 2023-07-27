@@ -1,4 +1,4 @@
-import type { DataWeapon } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
@@ -6,7 +6,166 @@ import { applyPercent, findByCode, round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { makeWpModApplier } from "../utils";
 
-const purpleSwords: DataWeapon[] = [
+const purpleSwords: AppWeapon[] = [
+  {
+    code: 165,
+    name: "Crossing of Fleuve Cendre",
+    icon: "https://images2.imgbox.com/75/99/6Ym3kHce_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "er_", scale: "10%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            Increases <Green>Elemental Skill CRIT Rate</Green> by <Green b>{6 + refi * 2}%</Green>. {this.extra?.[0]}
+          </>
+        );
+      },
+      extra: [
+        <>
+          Increases <Green>Energy Recharge</Green> by <Green b>{12 + refi * 4}%</Green> for 5s after using an Elemental
+          Skill.
+        </>,
+      ],
+    }),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.cRate_", 8),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 165)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "er_", 16),
+      },
+    ],
+  },
+  {
+    code: 156,
+    name: "Finale of the Deep",
+    icon: "https://images2.imgbox.com/11/aa/6uT27dLW_o.png",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            {this.extra?.[0]}, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once
+            every 10s. {this.extra?.[1]} Bond of Life: Absorbs healing for the character based on its base value, and
+            clears after healing equal to this value is obtained.
+          </>
+        );
+      },
+      extra: [
+        <>
+          When using an Elemental Skill, <Green>ATK</Green> will be increased by <Green b>{9 + refi * 3}%</Green> for
+          12s
+        </>,
+        <>
+          When the Bond of Life is cleared, a maximum of <Rose>{112.5 + refi * 37.5}</Rose> ATK will be gained based on{" "}
+          <Green b>{1.8 + refi * 0.6}%</Green> of the Bond for 12s.
+        </>,
+      ],
+    }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[1],
+        applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
+          const bondValue = Math.round(totalAttr.hp * 0.25);
+          const multiplier = 1.8 + refi * 0.6;
+          const limit = 112.5 + refi * 37.5;
+          let buffValue = applyPercent(bondValue, multiplier);
+          let finalDesc = desc + ` / ${multiplier}% of the Bond ${bondValue}`;
+          if (buffValue > limit) {
+            buffValue = limit;
+            finalDesc += ` / limit to ${limit}`;
+          }
+          applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
+        },
+      },
+    ],
+  },
+  {
+    code: 155,
+    name: "Wolf-Fang",
+    icon: "https://images2.imgbox.com/e3/69/glrRYvtm_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "cRate_", scale: "6%" },
+    passiveName: "",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            DMG dealt by <Green>Elemental Skill</Green> and <Green>Elemental Burst</Green> will be increased by{" "}
+            <Green b>{12 + refi * 4}%</Green>. {this.extra?.[0]} {this.extra?.[1]} Both of these effects last 10s
+            separately, have 4 max stacks, and can be triggered once every 0.1s.
+          </>
+        );
+      },
+      extra: [
+        <>
+          When an <Green>Elemental Skill</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
+          <Green b>{1.5 + refi * 0.5}%</Green>.
+        </>,
+        <>
+          When an <Green>Elemental Burst</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
+          <Green b>{1.5 + refi * 0.5}%</Green>.
+        </>,
+      ],
+    }),
+    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 16),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => (
+          <>
+            {findByCode(purpleSwords, 155)?.passiveDesc({ refi }).extra?.[0]} This effect lasts 10s, have <Rose>4</Rose>{" "}
+            max stacks, and can be triggered once every 0.1s.
+          </>
+        ),
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
+          applyModifier(desc, attPattBonus, "ES.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        },
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => (
+          <>
+            {findByCode(purpleSwords, 155)?.passiveDesc({ refi }).extra?.[1]} This effect lasts 10s, have <Rose>4</Rose>{" "}
+            max stacks, and can be triggered once every 0.1s.
+          </>
+        ),
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
+          applyModifier(desc, attPattBonus, "EB.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        },
+      },
+    ],
+  },
   {
     code: 149,
     name: "Toukabou Shigure",
