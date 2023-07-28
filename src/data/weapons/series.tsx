@@ -9,7 +9,7 @@ type SeriesInfo = Pick<AppWeapon, "applyBuff" | "buffs" | "passiveName" | "passi
 
 export const desertSeries: Pick<
   AppWeapon,
-  "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat"
+  "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat" | "newBuffs"
 > = {
   rarity: 4,
   mainStatScale: "42",
@@ -59,6 +59,36 @@ export const desertSeries: Pick<
         const finalDesc = desc + ` / ${mult}% of ${inputs[0] || 0} EM`;
         applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
       },
+    },
+  ],
+
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      base: 0.18,
+      stacks: {
+        type: "attribute",
+        field: "em",
+      },
+      targetGroup: "totalAttr",
+      targetPath: "atk",
+    },
+    {
+      index: 1,
+      affect: EModAffect.TEAMMATE,
+      inputConfigs: [
+        {
+          label: "Elemental Mastery",
+          type: "text",
+        },
+      ],
+      base: 0.054,
+      stacks: {
+        type: "input",
+      },
+      targetGroup: "totalAttr",
+      targetPath: "atk",
     },
   ],
 };
@@ -252,6 +282,37 @@ export const liyueSeries: SeriesInfo = {
       },
     },
   ],
+
+  autoBuffs: [
+    {
+      base: 15,
+      targetGroup: "totalAttr",
+      targetPath: "shieldS_",
+    },
+  ],
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 5,
+        },
+        {
+          label: "Protected by a Shield",
+          type: "check",
+        },
+      ],
+      base: 3,
+      stacks: {
+        type: "input",
+        doubledAtInput: 1,
+      },
+      targetGroup: "totalAttr",
+      targetPath: "atk_",
+    },
+  ],
 };
 
 export const lithicSeries: SeriesInfo = {
@@ -265,6 +326,7 @@ export const lithicSeries: SeriesInfo = {
       </>
     ),
   }),
+  // #weirdo
   applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
     if (partyData) {
       const stacks = partyData.reduce(

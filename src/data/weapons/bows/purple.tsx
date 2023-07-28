@@ -707,9 +707,20 @@ const purpleBows: AppWeapon[] = [
             max: 4,
           },
         ],
-        base: [3, 0.9],
         targetGroup: "totalAttr",
-        targetPath: ["atk_", "naAtkSpd_"],
+        stacks: {
+          type: "input",
+        },
+        buffBonuses: [
+          {
+            base: 3,
+            targetPath: "atk_",
+          },
+          {
+            base: 0.9,
+            targetPath: "naAtkSpd_",
+          },
+        ],
       },
     ],
   },
@@ -751,9 +762,17 @@ const purpleBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        base: [12, 9],
         targetGroup: "attPattBonus",
-        targetPath: ["NA.pct_", "CA.pct_"],
+        buffBonuses: [
+          {
+            base: 12,
+            targetPath: "NA.pct_",
+          },
+          {
+            base: 9,
+            targetPath: "CA.pct_",
+          },
+        ],
       },
     ],
   },

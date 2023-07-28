@@ -472,9 +472,17 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        base: [75, 15],
         targetGroup: "totalAttr",
-        targetPath: ["em", "atk_"],
+        buffBonuses: [
+          {
+            base: 75,
+            targetPath: "em",
+          },
+          {
+            base: 15,
+            targetPath: "atk_",
+          },
+        ],
       },
     ],
   },

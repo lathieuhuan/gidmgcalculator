@@ -116,6 +116,32 @@ const goldSwords: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 0.09,
+        stacks: [
+          {
+            type: "attribute",
+            field: "hp",
+            convertRate: 0.01,
+          },
+          {
+            type: "input",
+          },
+        ],
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+    ],
   },
   {
     code: 124,
@@ -210,6 +236,26 @@ const goldSwords: AppWeapon[] = [
           const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
           applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 6,
+        stacks: {
+          type: "input",
+          maxStackBonus: 3,
+        },
+        targetGroup: "totalAttr",
+        targetPath: "own_element",
       },
     ],
   },
@@ -308,6 +354,25 @@ const goldSwords: AppWeapon[] = [
           applyModifier(desc, totalAttr, "atk_", 15 + refi * 5, tracker);
         },
         desc: ({ refi }) => findByCode(goldSwords, 104)!.passiveDesc({ refi })!.extra![0],
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        buffBonuses: [
+          {
+            base: 12,
+            targetGroup: "attPattBonus",
+            targetPath: [...NCPA_PERCENTS],
+          },
+          {
+            base: 15,
+            targetGroup: "totalAttr",
+            targetPath: "atk_",
+          },
+        ],
       },
     ],
   },

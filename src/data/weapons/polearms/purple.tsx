@@ -56,6 +56,18 @@ const purplePolearms: AppWeapon[] = [
         }
       }
     },
+
+    autoBuffs: [
+      {
+        base: 90,
+        checkInput: {
+          source: "various_vision",
+          compareValue: 3,
+        },
+        targetGroup: "totalAttr",
+        targetPath: "em",
+      },
+    ],
   },
   {
     code: 141,
@@ -294,6 +306,32 @@ const purplePolearms: AppWeapon[] = [
             applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);
           }
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            label: "Fewer than 2 opponents",
+            type: "check",
+          },
+        ],
+        targetGroup: "totalAttr",
+        buffBonuses: [
+          {
+            checkInput: 1,
+            base: 18,
+            targetPath: "atk_",
+          },
+          {
+            checkInput: 0,
+            base: 12,
+            targetPath: ["atk_", "def_"],
+          },
+        ],
       },
     ],
   },

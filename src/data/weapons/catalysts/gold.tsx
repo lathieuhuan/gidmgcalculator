@@ -57,7 +57,7 @@ const goldCatalysts: AppWeapon[] = [
           convertRate: 0.001,
         },
         targetGroup: "totalAttr",
-        targetPath: "own element",
+        targetPath: "own_element",
         max: {
           base: 4,
           increment: 8,
@@ -268,17 +268,22 @@ const goldCatalysts: AppWeapon[] = [
             max: 3,
           },
         ],
-        base: 9,
-        stacks: {
-          type: "input",
-          maxStackBonus: {
+        buffBonuses: [
+          {
+            base: 9,
+            stacks: {
+              type: "input",
+            },
+            targetGroup: "attPattBonus",
+            targetPath: "ES.pct_",
+          },
+          {
+            checkInput: 3,
             base: 9,
             targetGroup: "totalAttr",
             targetPath: [...VISION_TYPES],
           },
-        },
-        targetGroup: "attPattBonus",
-        targetPath: "ES.pct_",
+        ],
       },
     ],
   },
@@ -386,6 +391,25 @@ const goldCatalysts: AppWeapon[] = [
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
+        base: 6,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
       },
     ],
   },

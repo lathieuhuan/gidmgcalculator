@@ -170,12 +170,22 @@ interface ApplyWpPassiveBuffsArgs {
   modifierArgs: BaseModifierArgsWrapper;
 }
 export function applyWpPassiveBuffs({ isFinal, weaponData, refi, modifierArgs }: ApplyWpPassiveBuffsArgs) {
-  const { name, applyBuff, applyFinalBuff } = weaponData;
-  const applyFn = !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+  const { name, autoBuffs = [], applyBuff, applyFinalBuff } = weaponData;
+  const { totalAttr } = modifierArgs;
 
-  if (applyFn) {
-    applyFn({ desc: `${name} bonus`, ...modifierArgs, refi });
+  for (const autoBuff of autoBuffs) {
+    const { base, targetGroup, targetPath } = autoBuff;
+
+    switch (targetGroup) {
+      case "totalAttr":
+      // applyModifier(`${name} bonus`, totalAttr, 'atk_', 2);
+    }
   }
+  // const applyFn = !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
+
+  // if (applyFn) {
+  //   applyFn({ desc: `${name} bonus`, ...modifierArgs, refi });
+  // }
 }
 
 export function calcFinalTotalAttrs(totalAttr: TotalAttribute) {

@@ -66,6 +66,31 @@ const goldPolearms: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 0.21,
+        stacks: [
+          {
+            type: "attribute",
+            field: "em",
+          },
+          {
+            type: "input",
+          },
+        ],
+        targetGroup: "totalAttr",
+        targetPath: "atk",
+      },
+    ],
   },
   {
     code: 77,
@@ -128,6 +153,33 @@ const goldPolearms: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 7,
+          },
+        ],
+        buffBonuses: [
+          {
+            base: 2.5,
+            increment: 0.7,
+            targetGroup: "totalAttr",
+            targetPath: "atk_",
+          },
+          {
+            checkInput: 7,
+            base: 9,
+            targetGroup: "attPattBonus",
+            targetPath: "all.pct_",
+          },
+        ],
+      },
+    ],
   },
   {
     code: 79,
@@ -152,6 +204,7 @@ const goldPolearms: AppWeapon[] = [
         </>,
       ],
     }),
+    // #weirdo
     applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
       const ER = round(totalAttr.er_ - 100, 1);
       const mult = 21 + refi * 7;
@@ -277,6 +330,30 @@ const goldPolearms: AppWeapon[] = [
           const buffValue = (2.4 + refi * 0.8) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
           applyModifier(desc, totalAttr, "atk_", round(buffValue, 1), tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 6,
+          },
+          {
+            label: "Not on the field",
+            type: "check",
+          },
+        ],
+        base: 2.4,
+        stacks: {
+          type: "input",
+          doubledAtInput: 1,
+        },
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
       },
     ],
   },

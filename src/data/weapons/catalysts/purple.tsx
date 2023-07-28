@@ -69,6 +69,29 @@ const purpleCatalysts: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 6,
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 1.5,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+          convertRate: 0.00024,
+        },
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
+        max: 9,
+      },
+    ],
   },
   {
     code: 161,
@@ -94,6 +117,24 @@ const purpleCatalysts: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 161)?.passiveDesc({ refi }).core,
         applyBuff: makeWpModApplier("totalAttr", ["hp_", "em"], [20, 80]),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        targetGroup: "totalAttr",
+        buffBonuses: [
+          {
+            base: 15,
+            targetPath: "hp_",
+          },
+          {
+            base: 60,
+            targetPath: "em",
+          },
+        ],
       },
     ],
   },
@@ -145,6 +186,35 @@ const purpleCatalysts: AppWeapon[] = [
           const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
           applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "totalAttr",
+        buffBonuses: [
+          {
+            base: 21,
+            increment: 3,
+            targetPath: "em",
+          },
+          {
+            base: -5,
+            increment: 0,
+            targetPath: "atk_",
+          },
+        ],
       },
     ],
   },
@@ -205,6 +275,16 @@ const purpleCatalysts: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetGroup: "totalAttr",
+        targetPath: "atk_",
+      },
+    ],
   },
   {
     code: 38,
@@ -232,6 +312,16 @@ const purpleCatalysts: AppWeapon[] = [
         applyBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
           applyModifier(desc, totalAttr, charData.vision, 7.5 + refi * 2.5, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        base: 7.5,
+        targetGroup: "totalAttr",
+        targetPath: "own_element",
       },
     ],
   },
@@ -275,6 +365,25 @@ const purpleCatalysts: AppWeapon[] = [
           const buffValue = (6 + refi * 2) * (inputs[0] || 0);
           applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        base: 6,
+        stacks: {
+          type: "input",
+        },
+        targetGroup: "totalAttr",
+        targetPath: [...VISION_TYPES],
       },
     ],
   },
@@ -321,6 +430,39 @@ const purpleCatalysts: AppWeapon[] = [
               applyModifier(desc, totalAttr, "em", 180 + refi * 60, tracker);
           }
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            label: "Theme Song",
+            type: "select",
+            initialValue: 0,
+            options: ["Recitative", "Aria", "Interlude"],
+          },
+        ],
+        targetGroup: "totalAttr",
+        buffBonuses: [
+          {
+            checkInput: 0,
+            base: 45,
+            targetPath: "atk_",
+          },
+          {
+            checkInput: 1,
+            base: 36,
+            targetPath: [...VISION_TYPES],
+          },
+          {
+            checkInput: 2,
+            base: 180,
+            targetPath: "em",
+          },
+        ],
       },
     ],
   },

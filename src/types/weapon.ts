@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Rarity, ModInputConfig, AttributeStat, Vision } from "./global";
+import type { Rarity, ModInputConfig, AttributeStat, PartiallyOptional } from "./global";
 import type {
   AttackPatternBonus,
   BuffModifierArgsWrapper,
@@ -10,6 +10,8 @@ import type {
   Tracker,
 } from "./calculator";
 import type { AppCharacter } from "./character";
+import type { AttackPatternPath } from "../utils/calculation";
+
 import { EModAffect } from "@Src/constants";
 
 export type DefaultAppWeapon = Pick<
@@ -31,6 +33,7 @@ type AttributeStack = {
 
 type InputIndex = {
   value: number;
+  /** Tulaytullah's Remembrance */
   convertRate?: number;
 };
 
@@ -38,8 +41,11 @@ type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number | InputIndex[];
+  /** liyueSeries */
+  doubledAtInput?: number;
   /** if number, add to main */
-  maxStackBonus?: number | Pick<AutoBuff, "base" | "increment" | "targetGroup" | "targetPath">;
+  maxStackBonus?: number;
+  //  | Pick<AutoBuff, "base" | "increment" | "targetGroup" | "targetPath">;
 };
 
 type EnergyStack = {
@@ -51,14 +57,14 @@ type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack;
 type AutoBuff = {
   /** only for "Predator" bow */
   charCode?: number;
-  base: number | number[];
+  base: number;
   /** also scale off refi */
   initialBonus?: number;
   /** fixed type has no incremen */
   increment?: number;
-  stacks?: StackConfig;
+  stacks?: StackConfig | StackConfig[];
   targetGroup: "totalAttr" | "attPattBonus";
-  targetPath: string | string[];
+  targetPath: "own_element" | AttributeStat | AttackPatternPath | AttributeStat[] | AttackPatternPath[];
   /** also scale off refi, increment default to main increment */
   max?:
     | number
@@ -66,12 +72,40 @@ type AutoBuff = {
         base: number;
         increment: number;
       };
+  /**
+   * On buffs, if number, it's compareValue, index default to 0
+   * On autobuffs, need source
+   */
+  checkInput?:
+    | number
+    | {
+        index?: number;
+        source?: "various_vision";
+        compareValue: number;
+      };
 };
 
-type NewBuff = AutoBuff & {
+/**
+ * If there's base outside, calculate bonus.
+ * If there're buffBonuses, calculate bonuses, with outside targetGroup, increment as default
+ */
+type NewBuff = Partial<AutoBuff> & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
+  /** only for The Widsith */
+  // selectIndex?: number;
+  buffBonuses?: Array<
+    PartiallyOptional<AutoBuff, "targetGroup"> & {
+      /** if number, it compareValue, index default to 0 */
+      checkInput?:
+        | number
+        | {
+            index: number;
+            compareValue: number;
+          };
+    }
+  >;
 };
 
 /**
