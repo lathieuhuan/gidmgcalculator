@@ -203,6 +203,21 @@ const goldClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "atk_", 40),
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttribute: "atk_",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        base: 30,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 57,
@@ -230,6 +245,21 @@ const goldClaymores: AppWeapon[] = [
         applyModifier(finalDesc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       }
     },
+
+    autoBuffs: [
+      {
+        base: 21,
+        targetAttribute: "def_",
+      },
+      {
+        base: 0.3,
+        stacks: {
+          type: "attribute",
+          field: "def",
+        },
+        targetAttPatt: ["NA.flat", "CA.flat"],
+      },
+    ],
   },
 ];
 

@@ -115,7 +115,6 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        isFinal: true,
         base: 1.2,
         stacks: {
           type: "attribute",

@@ -66,7 +66,6 @@ export const desertSeries: Pick<
     {
       index: 0,
       affect: EModAffect.SELF,
-      isFinal: true,
       base: 0.18,
       stacks: {
         type: "attribute",
@@ -379,6 +378,16 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
       affect: EModAffect.SELF,
       desc: ({ refi }) => baneSeries2(name, elements).passiveDesc({ refi }).core,
       applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 20),
+    },
+  ],
+
+  newBuffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      base: 16,
+      increment: 4,
+      targetAttPatt: "all.pct_",
     },
   ],
 });

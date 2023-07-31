@@ -80,7 +80,6 @@ const purpleCatalysts: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.SELF,
-        isFinal: true,
         base: 1.5,
         stacks: {
           type: "attribute",

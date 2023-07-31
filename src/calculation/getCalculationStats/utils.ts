@@ -241,20 +241,24 @@ export const calcFinalTotalAttributes = (totalAttr: TotalAttribute) => {
 
 interface ApplyWeaponBuffArgs {
   description: string;
-  buff: PartiallyOptional<AutoBuff, "base">;
+  buff: AutoBuff;
   refi: number;
   inputs: number[];
   modifierArgs: BuffModifierArgsWrapper;
   inputConfigs?: ModInputConfig[];
 }
 const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputConfigs }: ApplyWeaponBuffArgs) => {
-  if (!buff.base) return;
+  if (!buff.base) {
+    console.log("no base", buff);
+    return;
+  }
 
   if (buff.checkInput !== undefined) {
     const { index = 0, compareValue } =
       typeof buff.checkInput === "number" ? { compareValue: buff.checkInput } : buff.checkInput;
 
     if (inputs[index] !== compareValue) {
+      console.log("checkInput fail", buff.checkInput);
       return;
     }
   }
@@ -269,8 +273,6 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
 
   if (stacks) {
     for (const stack of toArray(stacks)) {
-      console.log("before", buffValue);
-
       switch (stack.type) {
         case "input": {
           const { index = 0, maxStackBonus = 0, doubledAtInput } = stack;
@@ -317,7 +319,7 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
                 break;
               case "different": {
                 const { [charData.vision]: sameCount, ...others } = countVision(partyData);
-                input = Object.values(others).reduce((total, count) => total + count || 0, 0);
+                input = Object.values(others).reduce<number>((total, count) => total + (count as number) || 0, 0);
                 break;
               }
             }
@@ -336,7 +338,6 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
           break;
         }
       }
-      console.log("after", buffValue);
     }
   }
   buffValue += initialValue;
@@ -344,6 +345,8 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
   if (maxValue && buffValue > maxValue) {
     buffValue = maxValue;
   }
+
+  console.log("buffValue", buffValue);
 
   if (targetAttribute) {
     const attributeKey = targetAttribute === "own_element" ? modifierArgs.charData.vision : targetAttribute;
@@ -363,11 +366,18 @@ interface ApplyWeaponAutoBuffsArgs {
 export const applyWeaponAutoBuffs = ({ isFinal, weaponData, refi, modifierArgs }: ApplyWeaponAutoBuffsArgs) => {
   if (weaponData.autoBuffs?.length) {
     for (const autoBuff of weaponData.autoBuffs) {
-      if (isFinal === (autoBuff.isFinal ?? false)) {
+      if (isFinal === checkIfFinal(autoBuff.stacks)) {
         applyWeaponBuff({ description: `${weaponData.name} bonus`, buff: autoBuff, refi, inputs: [], modifierArgs });
       }
     }
   }
+};
+
+const checkIfFinal = (stacks: AutoBuff["stacks"]) => {
+  if (!stacks) {
+    return false;
+  }
+  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
 };
 
 interface ApplyMainWeaponsBuffsArgs {
@@ -394,13 +404,18 @@ export const applyMainWeaponsBuffs = ({
       if (activated && buff) {
         const { inputConfigs } = buff;
 
-        if (buff.base && isFinal === (buff.isFinal ?? false)) {
+        if (buff.base && isFinal === checkIfFinal(buff.stacks)) {
           applyWeaponBuff({ description, buff, refi, inputs, modifierArgs, inputConfigs });
         }
-        for (const bonus of buff.buffBonuses || []) {
-          if (isFinal === (bonus.isFinal ?? false)) {
-            const { stacks = buff.stacks, ...rest } = bonus;
-            applyWeaponBuff({ description, buff: { stacks, ...rest }, refi, inputs, modifierArgs, inputConfigs });
+        for (const buffBonus of buff.buffBonuses || []) {
+          const bonus = {
+            ...buffBonus,
+            base: buffBonus.base ?? buff.base,
+            stacks: buffBonus.stacks ?? buff.stacks,
+          };
+
+          if (isFinal === checkIfFinal(bonus.stacks)) {
+            applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs, inputConfigs });
           }
         }
       }

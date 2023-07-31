@@ -57,9 +57,9 @@ type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack;
 type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
 export type AutoBuff = {
-  isFinal?: boolean;
+  // isFinal?: boolean;
   // charCode?: number; // "Predator" bow for Aloy only
-  base: number;
+  base?: number;
   /** only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
   /** fixed type has no increment */
@@ -90,7 +90,7 @@ export type AutoBuff = {
  * If there's base outside, calculate bonus.
  * If there're buffBonuses, calculate bonuses, with outside targetGroup, increment as default
  */
-type NewBuff = Partial<AutoBuff> & {
+type NewBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];

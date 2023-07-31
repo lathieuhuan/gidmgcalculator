@@ -41,6 +41,15 @@ const purpleClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 18,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 157,
@@ -83,6 +92,21 @@ const purpleClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 12,
+        targetAttribute: "atk_",
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 9,
+        targetAttribute: [...VISION_TYPES],
+      },
+    ],
   },
   {
     code: 150,
@@ -109,6 +133,23 @@ const purpleClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [12, 48]),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        buffBonuses: [
+          {
+            base: 9,
+            targetAttribute: "atk_",
+          },
+          {
+            base: 36,
+            targetAttribute: "em",
+          },
+        ],
+      },
+    ],
   },
   {
     code: 145,
@@ -124,14 +165,6 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.ONE_UNIT,
-        applyBuff: makeWpModApplier("totalAttr", "em", 60),
-        desc: ({ refi }) => findByCode(purpleClaymores, 136)?.passiveDesc({ refi }).extra?.[0],
-      },
-    ],
     passiveName: "Forest Sanctuary",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -153,6 +186,23 @@ const purpleClaymores: AppWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.ONE_UNIT,
+        desc: ({ refi }) => findByCode(purpleClaymores, 136)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", "em", 60),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.ONE_UNIT,
+        base: 45,
+        targetAttribute: "em",
+      },
+    ],
   },
   {
     code: 60,
@@ -231,6 +281,24 @@ const purpleClaymores: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        base: 4.5,
+        stacks: {
+          type: "input",
+        },
+        buffBonuses: [{ targetAttribute: "atk_" }, { targetAttribute: "def_" }],
+      },
+    ],
   },
   {
     code: 65,
@@ -294,6 +362,25 @@ const purpleClaymores: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 5,
+          },
+        ],
+        base: 5,
+        increment: 1,
+        stacks: {
+          type: "input",
+        },
+        targetAttPatt: "all.pct_",
+      },
+    ],
   },
   {
     code: 68,
@@ -311,7 +398,6 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
     passiveName: "Samurai Conduct",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -323,6 +409,14 @@ const purpleClaymores: AppWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
+
+    autoBuffs: [
+      {
+        base: 4.5,
+        targetAttPatt: "ES.pct_",
+      },
+    ],
   },
   {
     code: 70,
@@ -331,14 +425,6 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "hp_", scale: "9%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
-        desc: ({ refi }) => findByCode(purpleClaymores, 70)?.passiveDesc({ refi }).extra?.[0],
-      },
-    ],
     passiveName: "Rebellious Guardian",
     passiveDesc: ({ refi }) => ({
       get core() {
@@ -356,6 +442,23 @@ const purpleClaymores: AppWeapon[] = [
         </>,
       ],
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleClaymores, 70)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 9,
+        targetAttPatt: "all.pct_",
+      },
+    ],
   },
   {
     code: 71,
@@ -373,7 +476,6 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    applyBuff: makeWpModApplier("attPattBonus", "EB.pct_", 12),
     passiveName: "Oceanic Victory",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -384,6 +486,14 @@ const purpleClaymores: AppWeapon[] = [
         </>
       ),
     }),
+    applyBuff: makeWpModApplier("attPattBonus", "EB.pct_", 12),
+
+    autoBuffs: [
+      {
+        base: 9,
+        targetAttPatt: "EB.pct_",
+      },
+    ],
   },
   {
     code: 73,

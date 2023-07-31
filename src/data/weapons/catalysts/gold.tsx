@@ -49,7 +49,6 @@ const goldCatalysts: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        isFinal: true,
         base: 0.1,
         increment: 0.2,
         stacks: {
@@ -316,7 +315,6 @@ const goldCatalysts: AppWeapon[] = [
         targetAttribute: "healB_",
       },
       {
-        isFinal: true,
         base: 0.75,
         stacks: {
           type: "attribute",

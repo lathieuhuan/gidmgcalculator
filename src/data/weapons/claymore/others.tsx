@@ -41,6 +41,16 @@ const otherClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 30, 6),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 25,
+        increment: 5,
+        targetAttPatt: "CA.pct_",
+      },
+    ],
   },
   {
     code: 50,
@@ -72,6 +82,25 @@ const otherClaymores: AppWeapon[] = [
         applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
           applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs[0] || 0), tracker);
         },
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 4,
+          },
+        ],
+        base: 5,
+        increment: 1,
+        stacks: {
+          type: "input",
+        },
+        targetAttribute: "atk_",
       },
     ],
   },
