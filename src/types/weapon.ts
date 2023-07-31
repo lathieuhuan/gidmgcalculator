@@ -27,7 +27,7 @@ type VisionStack = {
 
 type AttributeStack = {
   type: "attribute";
-  field: string | "own_element";
+  field: "hp" | "def" | "em";
   convertRate?: number;
 };
 
@@ -54,18 +54,19 @@ type EnergyStack = {
 
 type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack;
 
-type AutoBuff = {
-  /** only for "Predator" bow */
-  charCode?: number;
+type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
+
+export type AutoBuff = {
+  isFinal?: boolean;
+  // charCode?: number; // "Predator" bow for Aloy only
   base: number;
-  /** also scale off refi */
+  /** only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
-  /** fixed type has no incremen */
+  /** fixed type has no increment */
   increment?: number;
   stacks?: StackConfig | StackConfig[];
-  targetGroup: "totalAttr" | "attPattBonus";
-  targetPath: "own_element" | AttributeStat | AttackPatternPath | AttributeStat[] | AttackPatternPath[];
-  /** also scale off refi, increment default to main increment */
+  targetAttribute?: TargetAttribute;
+  targetAttPatt?: AttackPatternPath | AttackPatternPath[];
   max?:
     | number
     | {
@@ -95,17 +96,7 @@ type NewBuff = Partial<AutoBuff> & {
   inputConfigs?: ModInputConfig[];
   /** only for The Widsith */
   // selectIndex?: number;
-  buffBonuses?: Array<
-    PartiallyOptional<AutoBuff, "targetGroup"> & {
-      /** if number, it compareValue, index default to 0 */
-      checkInput?:
-        | number
-        | {
-            index: number;
-            compareValue: number;
-          };
-    }
-  >;
+  buffBonuses?: AutoBuff[];
 };
 
 /**

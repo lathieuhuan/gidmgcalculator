@@ -44,6 +44,15 @@ const otherCatalysts: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 28,
@@ -71,6 +80,16 @@ const otherCatalysts: AppWeapon[] = [
         },
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 10,
+        increment: 2,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 29,
@@ -94,6 +113,15 @@ const otherCatalysts: AppWeapon[] = [
         affect: EModAffect.TEAMMATE,
         desc: ({ refi }) => findByCode(otherCatalysts, 29)?.passiveDesc({ refi }).core,
         applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.TEAMMATE,
+        base: 18,
+        targetAttribute: "atk_",
       },
     ],
   },

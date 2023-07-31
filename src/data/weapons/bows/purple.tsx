@@ -39,8 +39,7 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 12,
-        targetGroup: "attPattBonus",
-        targetPath: "all.pct_",
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -82,8 +81,7 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 21,
-        targetGroup: "attPattBonus",
-        targetPath: "CA.pct_",
+        targetAttPatt: "CA.pct_",
       },
     ],
   },
@@ -135,8 +133,7 @@ const purpleBows: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
       },
     ],
   },
@@ -198,8 +195,7 @@ const purpleBows: AppWeapon[] = [
         affect: EModAffect.SELF,
         base: 40,
         increment: 20,
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
       },
     ],
   },
@@ -264,11 +260,13 @@ const purpleBows: AppWeapon[] = [
             max: 3,
           },
         ],
+        stacks: {
+          type: "input",
+        },
+        // (1.5 + refi * 0.5) + (3 + refi * 1) * stacks
         base: 3,
         initialBonus: 1.5,
-        // (1.5 + refi * 0.5) + (3 + refi * 1) * stacks
-        targetGroup: "attPattBonus",
-        targetPath: "all.pct_",
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -328,8 +326,7 @@ const purpleBows: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "attPattBonus",
-        targetPath: "all.pct_",
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -417,8 +414,7 @@ const purpleBows: AppWeapon[] = [
       {
         base: 66,
         increment: 0,
-        targetGroup: "totalAttr",
-        targetPath: "atk",
+        targetAttribute: "atk",
       },
     ],
     newBuffs: [
@@ -436,8 +432,7 @@ const purpleBows: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "attPattBonus",
-        targetPath: ["NA.pct_", "CA.pct_"],
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
   },
@@ -462,8 +457,7 @@ const purpleBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 18,
-        targetGroup: "attPattBonus",
-        targetPath: ["ES.pct_", "EB.pct_"],
+        targetAttPatt: ["ES.pct_", "EB.pct_"],
       },
     ],
   },
@@ -533,15 +527,13 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 15,
-        targetGroup: "attPattBonus",
-        targetPath: "ES.pct_",
+        targetAttPatt: "ES.pct_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
         base: 15,
-        targetGroup: "attPattBonus",
-        targetPath: "NA.pct_",
+        targetAttPatt: "NA.pct_",
       },
     ],
   },
@@ -584,8 +576,7 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 12,
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -615,14 +606,12 @@ const purpleBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 30,
-        targetGroup: "attPattBonus",
-        targetPath: "NA.pct_",
+        targetAttPatt: "NA.pct_",
       },
       {
         base: -10,
         increment: 0,
-        targetGroup: "attPattBonus",
-        targetPath: "CA.pct_",
+        targetAttPatt: "CA.pct_",
       },
     ],
   },
@@ -656,8 +645,7 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 27,
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -707,18 +695,17 @@ const purpleBows: AppWeapon[] = [
             max: 4,
           },
         ],
-        targetGroup: "totalAttr",
         stacks: {
           type: "input",
         },
         buffBonuses: [
           {
             base: 3,
-            targetPath: "atk_",
+            targetAttribute: "atk_",
           },
           {
             base: 0.9,
-            targetPath: "naAtkSpd_",
+            targetAttribute: "naAtkSpd_",
           },
         ],
       },
@@ -758,19 +745,28 @@ const purpleBows: AppWeapon[] = [
       },
     ],
 
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: "NA.pct_",
+      },
+      {
+        base: 9,
+        targetAttPatt: "CA.pct_",
+      },
+    ],
     newBuffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        targetGroup: "attPattBonus",
         buffBonuses: [
           {
             base: 12,
-            targetPath: "NA.pct_",
+            targetAttPatt: "NA.pct_",
           },
           {
             base: 9,
-            targetPath: "CA.pct_",
+            targetAttPatt: "CA.pct_",
           },
         ],
       },

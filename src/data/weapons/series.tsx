@@ -66,13 +66,13 @@ export const desertSeries: Pick<
     {
       index: 0,
       affect: EModAffect.SELF,
+      isFinal: true,
       base: 0.18,
       stacks: {
         type: "attribute",
         field: "em",
       },
-      targetGroup: "totalAttr",
-      targetPath: "atk",
+      targetAttribute: "atk",
     },
     {
       index: 1,
@@ -87,8 +87,7 @@ export const desertSeries: Pick<
       stacks: {
         type: "input",
       },
-      targetGroup: "totalAttr",
-      targetPath: "atk",
+      targetAttribute: "atk",
     },
   ],
 };
@@ -135,8 +134,7 @@ export const royalSeries: SeriesInfo = {
       stacks: {
         type: "input",
       },
-      targetGroup: "totalAttr",
-      targetPath: "cRate_",
+      targetAttribute: "cRate_",
     },
   ],
 };
@@ -183,8 +181,7 @@ export const blackcliffSeries: SeriesInfo = {
       stacks: {
         type: "input",
       },
-      targetGroup: "totalAttr",
-      targetPath: "atk_",
+      targetAttribute: "atk_",
     },
   ],
 };
@@ -286,8 +283,7 @@ export const liyueSeries: SeriesInfo = {
   autoBuffs: [
     {
       base: 15,
-      targetGroup: "totalAttr",
-      targetPath: "shieldS_",
+      targetAttribute: "shieldS_",
     },
   ],
   newBuffs: [
@@ -309,8 +305,7 @@ export const liyueSeries: SeriesInfo = {
         type: "input",
         doubledAtInput: 1,
       },
-      targetGroup: "totalAttr",
-      targetPath: "atk_",
+      targetAttribute: "atk_",
     },
   ],
 };
@@ -363,8 +358,7 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
       index: 0,
       affect: EModAffect.SELF,
       base: 9,
-      targetGroup: "attPattBonus",
-      targetPath: "all.pct_",
+      targetAttPatt: "all.pct_",
     },
   ],
 });
@@ -423,8 +417,7 @@ export const watatsumiSeries: SeriesInfo = {
         type: "energy",
       },
       max: 30,
-      targetGroup: "attPattBonus",
-      targetPath: "EB.pct_",
+      targetAttPatt: "EB.pct_",
     },
   ],
 };

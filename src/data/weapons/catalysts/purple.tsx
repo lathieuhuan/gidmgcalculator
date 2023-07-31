@@ -75,20 +75,19 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 6,
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
+        isFinal: true,
         base: 1.5,
         stacks: {
           type: "attribute",
           field: "hp",
           convertRate: 0.00024,
         },
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
         max: 9,
       },
     ],
@@ -124,15 +123,14 @@ const purpleCatalysts: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        targetGroup: "totalAttr",
         buffBonuses: [
           {
             base: 15,
-            targetPath: "hp_",
+            targetAttribute: "hp_",
           },
           {
             base: 60,
-            targetPath: "em",
+            targetAttribute: "em",
           },
         ],
       },
@@ -202,17 +200,16 @@ const purpleCatalysts: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "totalAttr",
         buffBonuses: [
           {
             base: 21,
             increment: 3,
-            targetPath: "em",
+            targetAttribute: "em",
           },
           {
             base: -5,
             increment: 0,
-            targetPath: "atk_",
+            targetAttribute: "atk_",
           },
         ],
       },
@@ -281,8 +278,7 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 15,
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -320,8 +316,7 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         base: 7.5,
-        targetGroup: "totalAttr",
-        targetPath: "own_element",
+        targetAttribute: "own_element",
       },
     ],
   },
@@ -382,8 +377,7 @@ const purpleCatalysts: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
       },
     ],
   },
@@ -445,22 +439,21 @@ const purpleCatalysts: AppWeapon[] = [
             options: ["Recitative", "Aria", "Interlude"],
           },
         ],
-        targetGroup: "totalAttr",
         buffBonuses: [
           {
             checkInput: 0,
             base: 45,
-            targetPath: "atk_",
+            targetAttribute: "atk_",
           },
           {
             checkInput: 1,
             base: 36,
-            targetPath: [...VISION_TYPES],
+            targetAttribute: [...VISION_TYPES],
           },
           {
             checkInput: 2,
             base: 180,
-            targetPath: "em",
+            targetAttribute: "em",
           },
         ],
       },
@@ -514,6 +507,21 @@ const purpleCatalysts: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
         applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 20),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetAttPatt: ["ES.pct_", "EB.pct_"],
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetAttPatt: "NA.pct_",
       },
     ],
   },
@@ -590,6 +598,21 @@ const purpleCatalysts: AppWeapon[] = [
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[1],
         applyBuff: makeWpModApplier("totalAttr", "atk_", 8),
+      },
+    ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 12,
+        targetAttPatt: "CA.pct_",
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 6,
+        targetAttribute: "atk_",
       },
     ],
   },

@@ -58,6 +58,27 @@ const goldClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", "hp_", 32),
       },
     ],
+
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetAttribute: "atk_",
+      },
+      {
+        index: 1,
+        affect: EModAffect.SELF,
+        base: 15,
+        targetAttribute: "atk_",
+      },
+      {
+        index: 2,
+        affect: EModAffect.SELF,
+        base: 24,
+        targetAttribute: "hp_",
+      },
+    ],
   },
   {
     code: 53,
@@ -97,6 +118,23 @@ const goldClaymores: AppWeapon[] = [
         applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd_", "atk_"], [12, 20]),
       },
     ],
+
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttribute: "atk_",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        buffBonuses: [
+          { base: 9, targetAttribute: "naAtkSpd_" },
+          { base: 15, targetAttribute: "atk_" },
+        ],
+      },
+    ],
   },
   {
     code: 54,
@@ -116,6 +154,13 @@ const goldClaymores: AppWeapon[] = [
       ),
     }),
     applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 8),
+
+    autoBuffs: [
+      {
+        base: 6,
+        targetAttPatt: "all.pct_",
+      },
+    ],
   },
   {
     code: 55,

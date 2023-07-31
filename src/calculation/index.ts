@@ -1,7 +1,7 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
 import { appData } from "@Data/index";
-import getBuffedStats from "./buffStats";
+import getCalculationStats from "./getCalculationStats";
 import getDamage from "./damage";
 
 export default function calculateAll(
@@ -61,7 +61,7 @@ export default function calculateAll(
     infusedAttacks = ["NA"];
   }
 
-  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBuffs, rxnBonus } = getBuffedStats({
+  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBuffs, rxnBonus } = getCalculationStats({
     char,
     charData,
     selfBuffCtrls,
@@ -110,3 +110,5 @@ export default function calculateAll(
     dmgResult,
   };
 }
+
+export { getCalculationStats };

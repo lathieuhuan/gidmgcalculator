@@ -72,8 +72,7 @@ const otherBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 18,
-        targetGroup: "attPattBonus",
-        targetPath: "CA.pct_",
+        targetAttPatt: "CA.pct_",
       },
     ],
   },
@@ -113,8 +112,7 @@ const otherBows: AppWeapon[] = [
       {
         base: -10,
         increment: 0,
-        targetGroup: 'totalAttr',
-        targetPath: ["NA.pct_", "CA.pct_"]
+        targetAttPatt: ["NA.pct_", "CA.pct_"]
       }
     ],
     newBuffs: [
@@ -123,8 +121,7 @@ const otherBows: AppWeapon[] = [
         affect: EModAffect.SELF,
         base: 40,
         increment: 6,
-        targetGroup: 'attPattBonus',
-        targetPath: ["NA.pct_", "CA.pct_"]
+        targetAttPatt: ["NA.pct_", "CA.pct_"]
       }
     ]
   },

@@ -32,29 +32,20 @@ export type UsedCode = {
   modIndex: number;
 };
 
-export type BaseModifierArgsWrapper = {
-  totalAttr: TotalAttribute;
-  attPattBonus?: AttackPatternBonus;
-  attElmtBonus?: AttackElementBonus;
-  rxnBonus?: ReactionBonus;
-  charData: AppCharacter;
-  partyData?: PartyData;
-  tracker?: Tracker;
-};
-
-export type GetBuffedStatsArgs = {
+export type GetStatsArgs = {
   char: CharInfo;
   charData: AppCharacter;
-  selfBuffCtrls: ModifierCtrl[];
   weapon: CalcWeapon;
-  wpBuffCtrls: ModifierCtrl[];
   artifacts: CalcArtifacts;
-  artBuffCtrls: ModifierCtrl[];
-  elmtModCtrls: ElementModCtrl;
-  party: Party;
-  partyData: PartyData;
-  customBuffCtrls: CustomBuffCtrl[];
-  infusedElement: AttackElement;
+
+  selfBuffCtrls?: ModifierCtrl[];
+  wpBuffCtrls?: ModifierCtrl[];
+  artBuffCtrls?: ModifierCtrl[];
+  elmtModCtrls?: ElementModCtrl;
+  party?: Party;
+  partyData?: PartyData;
+  customBuffCtrls?: CustomBuffCtrl[];
+  infusedElement?: AttackElement;
   tracker?: Tracker;
 };
 

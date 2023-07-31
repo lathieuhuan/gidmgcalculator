@@ -54,8 +54,7 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 12,
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
       {
         base: 12,
@@ -64,8 +63,7 @@ const goldBows: AppWeapon[] = [
           element: "same_included",
           max: 3,
         },
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -110,21 +108,20 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 9,
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
       },
     ],
     newBuffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        isFinal: true,
         base: 1.2,
         stacks: {
           type: "attribute",
           field: "em",
         },
-        targetGroup: "attPattBonus",
-        targetPath: "CA.flat",
+        targetAttPatt: "CA.flat",
       },
     ],
   },
@@ -165,8 +162,7 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 12,
-        targetGroup: "totalAttr",
-        targetPath: "hp_",
+        targetAttribute: "hp_",
       },
     ],
     newBuffs: [
@@ -174,35 +170,7 @@ const goldBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         base: 15,
-        targetGroup: "attPattBonus",
-        targetPath: "all.pct_",
-      },
-    ],
-  },
-  {
-    code: 5,
-    name: "Skyward Harp",
-    icon: "1/19/Weapon_Skyward_Harp",
-    rarity: 5,
-    mainStatScale: "48",
-    subStat: { type: "cRate_", scale: "4.8%" },
-    passiveName: "Echoing Ballad",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>CRIT DMG</Green> by <Green b>{15 + refi * 5}%</Green>. Hits have a{" "}
-          <Green b>{50 + refi * 10}%</Green> <Green>chance</Green> to inflict a small AoE attack, dealing{" "}
-          <Green>125% Physical ATK DMG</Green>. Can only occur once every <Green b>{4.5 - refi * 0.5}s</Green>.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("totalAttr", "cDmg_", 20),
-
-    autoBuffs: [
-      {
-        base: 15,
-        targetGroup: "totalAttr",
-        targetPath: "cDmg_",
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -256,8 +224,7 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 9,
-        targetGroup: "attPattBonus",
-        targetPath: ["ES.pct_", "EB.pct_"],
+        targetAttPatt: ["ES.pct_", "EB.pct_"],
       },
     ],
     newBuffs: [
@@ -273,9 +240,9 @@ const goldBows: AppWeapon[] = [
         base: 7.5,
         stacks: {
           type: "input",
+          maxStackBonus: 6,
         },
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -328,8 +295,7 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 15,
-        targetGroup: "totalAttr",
-        targetPath: "atk_",
+        targetAttribute: "atk_",
       },
     ],
     newBuffs: [
@@ -347,8 +313,71 @@ const goldBows: AppWeapon[] = [
           type: "input",
           maxStackBonus: 3,
         },
-        targetGroup: "attPattBonus",
-        targetPath: "NA.pct_",
+        targetAttPatt: "NA.pct_",
+      },
+    ],
+  },
+
+  {
+    code: 9,
+    name: "Elegy for the End",
+    icon: "a/a5/Weapon_Elegy_for_the_End",
+    rarity: 5,
+    mainStatScale: "46",
+    subStat: { type: "er_", scale: "12%" },
+    passiveName: "The Parting Refrain",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
+            <Green>Elemental Mastery</Green> by <Green b>{45 + refi * 15}</Green>. When Elemental Skill or Elemental
+            Burst hit opponents, the character gains a Sigil of Remembrance. This effect can be triggered once every
+            0.2s and can be triggered even if said character is not on the field. When you possess four Sigils of
+            Remembrance, all of them will be consumed and all nearby party members will obtain the "Millennial Movement:
+            Farewell Song" effect for 12s. {this.extra?.[0]} Once this effect is triggered, you will not gain Sigils of
+            Remembrance for 20s. Of the many effects of the "Millennial Movement", buffs of the same type will not
+            stack.
+          </>
+        );
+      },
+      extra: [
+        <>
+          "Millennial Movement: Farewell Song" increases <Green>Elemental Mastery</Green> by{" "}
+          <Green b>{75 + refi * 25}</Green> and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>.
+        </>,
+      ],
+    }),
+    applyBuff: makeWpModApplier("totalAttr", "em", 60),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        desc: ({ refi }) => findByCode(goldBows, 9)?.passiveDesc({ refi }).extra?.[0],
+        applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [100, 20]),
+      },
+    ],
+
+    autoBuffs: [
+      {
+        base: 45,
+        targetAttribute: "em",
+      },
+    ],
+    newBuffs: [
+      {
+        index: 0,
+        affect: EModAffect.PARTY,
+        buffBonuses: [
+          {
+            base: 75,
+            targetAttribute: "em",
+          },
+          {
+            base: 15,
+            targetAttribute: "atk_",
+          },
+        ],
       },
     ],
   },
@@ -398,8 +427,7 @@ const goldBows: AppWeapon[] = [
     autoBuffs: [
       {
         base: 9,
-        targetGroup: "attPattBonus",
-        targetPath: ["NA.pct_", "CA.pct_"],
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
     newBuffs: [
@@ -416,73 +444,33 @@ const goldBows: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "attPattBonus",
-        targetPath: ["NA.pct_", "CA.pct_"],
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
   },
   {
-    code: 9,
-    name: "Elegy for the End",
-    icon: "a/a5/Weapon_Elegy_for_the_End",
+    code: 5,
+    name: "Skyward Harp",
+    icon: "1/19/Weapon_Skyward_Harp",
     rarity: 5,
-    mainStatScale: "46",
-    subStat: { type: "er_", scale: "12%" },
-    passiveName: "The Parting Refrain",
+    mainStatScale: "48",
+    subStat: { type: "cRate_", scale: "4.8%" },
+    passiveName: "Echoing Ballad",
     passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            A part of the "Millennial Movement" that wanders amidst the winds. Increases{" "}
-            <Green>Elemental Mastery</Green> by <Green b>{45 + refi * 15}</Green>. When Elemental Skill or Elemental
-            Burst hit opponents, the character gains a Sigil of Remembrance. This effect can be triggered once every
-            0.2s and can be triggered even if said character is not on the field. When you possess four Sigils of
-            Remembrance, all of them will be consumed and all nearby party members will obtain the "Millennial Movement:
-            Farewell Song" effect for 12s. {this.extra?.[0]} Once this effect is triggered, you will not gain Sigils of
-            Remembrance for 20s. Of the many effects of the "Millennial Movement", buffs of the same type will not
-            stack.
-          </>
-        );
-      },
-      extra: [
+      core: (
         <>
-          "Millennial Movement: Farewell Song" increases <Green>Elemental Mastery</Green> by{" "}
-          <Green b>{75 + refi * 25}</Green> and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>.
-        </>,
-      ],
+          Increases <Green>CRIT DMG</Green> by <Green b>{15 + refi * 5}%</Green>. Hits have a{" "}
+          <Green b>{50 + refi * 10}%</Green> <Green>chance</Green> to inflict a small AoE attack, dealing{" "}
+          <Green>125% Physical ATK DMG</Green>. Can only occur once every <Green b>{4.5 - refi * 0.5}s</Green>.
+        </>
+      ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "em", 60),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
-        desc: ({ refi }) => findByCode(goldBows, 9)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [100, 20]),
-      },
-    ],
+    applyBuff: makeWpModApplier("totalAttr", "cDmg_", 20),
 
     autoBuffs: [
       {
-        base: 45,
-        targetGroup: "totalAttr",
-        targetPath: "em",
-      },
-    ],
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
-        targetGroup: "totalAttr",
-        buffBonuses: [
-          {
-            base: 75,
-            targetPath: "em",
-          },
-          {
-            base: 15,
-            targetPath: "atk_",
-          },
-        ],
+        base: 15,
+        targetAttribute: "cDmg_",
       },
     ],
   },

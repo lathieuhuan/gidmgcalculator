@@ -49,6 +49,7 @@ const goldCatalysts: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
+        isFinal: true,
         base: 0.1,
         increment: 0.2,
         stacks: {
@@ -56,8 +57,7 @@ const goldCatalysts: AppWeapon[] = [
           field: "hp",
           convertRate: 0.001,
         },
-        targetGroup: "totalAttr",
-        targetPath: "own_element",
+        targetAttribute: "own_element",
         max: {
           base: 4,
           increment: 8,
@@ -116,8 +116,7 @@ const goldCatalysts: AppWeapon[] = [
     autoBuffs: [
       {
         base: 7.5,
-        targetGroup: "totalAttr",
-        targetPath: "naAtkSpd_",
+        targetAttribute: "naAtkSpd_",
       },
     ],
     newBuffs: [
@@ -133,8 +132,7 @@ const goldCatalysts: AppWeapon[] = [
           type: "input",
           index: [{ value: 0 }, { value: 1, convertRate: 2 }],
         },
-        targetGroup: "attPattBonus",
-        targetPath: "NA.pct_",
+        targetAttPatt: "NA.pct_",
         max: 36,
       },
     ],
@@ -197,14 +195,16 @@ const goldCatalysts: AppWeapon[] = [
           type: "vision",
           element: "same_excluded",
         },
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
       },
       {
         base: 6,
         increment: 4,
-        targetGroup: "totalAttr",
-        targetPath: "own_element",
+        stacks: {
+          type: "vision",
+          element: "different",
+        },
+        targetAttribute: "own_element",
       },
     ],
     newBuffs: [
@@ -213,8 +213,7 @@ const goldCatalysts: AppWeapon[] = [
         affect: EModAffect.TEAMMATE,
         base: 38,
         increment: 2,
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
       },
     ],
   },
@@ -274,14 +273,12 @@ const goldCatalysts: AppWeapon[] = [
             stacks: {
               type: "input",
             },
-            targetGroup: "attPattBonus",
-            targetPath: "ES.pct_",
+            targetAttPatt: "ES.pct_",
           },
           {
             checkInput: 3,
             base: 9,
-            targetGroup: "totalAttr",
-            targetPath: [...VISION_TYPES],
+            targetAttribute: [...VISION_TYPES],
           },
         ],
       },
@@ -316,17 +313,17 @@ const goldCatalysts: AppWeapon[] = [
     autoBuffs: [
       {
         base: 7.5,
-        targetGroup: "totalAttr",
-        targetPath: "healB_",
+        targetAttribute: "healB_",
       },
       {
-        base: 0.0075,
+        isFinal: true,
+        base: 0.75,
         stacks: {
           type: "attribute",
           field: "hp",
+          convertRate: 0.01,
         },
-        targetGroup: "attPattBonus",
-        targetPath: "NA.flat",
+        targetAttPatt: "NA.flat",
       },
     ],
   },
@@ -352,8 +349,7 @@ const goldCatalysts: AppWeapon[] = [
     autoBuffs: [
       {
         base: 9,
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
       },
     ],
   },
@@ -408,8 +404,7 @@ const goldCatalysts: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        targetGroup: "totalAttr",
-        targetPath: [...VISION_TYPES],
+        targetAttribute: [...VISION_TYPES],
       },
     ],
   },
