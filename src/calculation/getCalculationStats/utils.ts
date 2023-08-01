@@ -255,7 +255,6 @@ export const applyWeaponBuff = ({
   inputConfigs,
 }: ApplyWeaponBuffArgs) => {
   if (!buff.base) {
-    console.log("no base", buff);
     return;
   }
   const { charData, partyData } = modifierArgs;
@@ -263,7 +262,6 @@ export const applyWeaponBuff = ({
   if (buff.checkInput !== undefined) {
     if (typeof buff.checkInput === "number") {
       if (inputs[0] !== buff.checkInput) {
-        console.log("checkInput fail", buff.checkInput);
         return;
       }
     } else {
@@ -274,7 +272,6 @@ export const applyWeaponBuff = ({
         if (partyData) {
           input = Object.keys(countVision(partyData, charData)).length;
         } else {
-          console.log("checkInput fail", buff.checkInput);
           return;
         }
       } else {
@@ -284,13 +281,11 @@ export const applyWeaponBuff = ({
       switch (compareType) {
         case "equal":
           if (input !== compareValue) {
-            console.log("checkInput fail", buff.checkInput);
             return;
           }
           break;
         case "atleast":
           if (input < compareValue) {
-            console.log("checkInput fail", buff.checkInput);
             return;
           }
           break;
@@ -388,8 +383,6 @@ export const applyWeaponBuff = ({
   if (maxValue && buffValue > maxValue) {
     buffValue = maxValue;
   }
-
-  console.log("buffValue", buffValue);
 
   if (targetAttribute) {
     const attributeKey = targetAttribute === "own_element" ? modifierArgs.charData.vision : targetAttribute;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
@@ -27,6 +28,23 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
+
+  const passiveDescription = useMemo(() => {
+    const { description, seeds } = wpData.passive;
+
+    return description.replace(/\{[0-9]+\}/g, (match) => {
+      const seed = seeds[+match.slice(1, 2)];
+
+      if (typeof seed === "number") {
+        return `<span class="text-green font-semibold">${seed + (seed / 3) * refi}</span>`;
+      }
+      if (seed) {
+        const { base, increment, dull } = seed;
+        return `<span${dull ? "" : ' class="text-green"'}>${base + increment * refi}</span>`;
+      }
+      return match;
+    });
+  }, [weapon.code, refi]);
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
@@ -98,8 +116,9 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
-        <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p>
+        <p className="text-lg font-semibold text-orange">{wpData.passive.name}</p>
+        {/* <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p> */}
+        <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>
   );

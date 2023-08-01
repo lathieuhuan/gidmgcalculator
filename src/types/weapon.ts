@@ -1,17 +1,7 @@
 import type { ReactNode } from "react";
-import type { Rarity, ModInputConfig, AttributeStat } from "./global";
-import type {
-  AttackPatternBonus,
-  BuffModifierArgsWrapper,
-  ModifierInput,
-  PartyData,
-  ReactionBonus,
-  TotalAttribute,
-  Tracker,
-} from "./calculator";
-import type { AppCharacter } from "./character";
 import type { AttackPatternPath } from "../utils/calculation";
-
+import type { TotalAttribute } from "./calculator";
+import type { AttributeStat, ModInputConfig, Rarity } from "./global";
 import { EModAffect } from "@Src/constants";
 
 // export type DefaultAppWeapon = Pick<
@@ -95,13 +85,6 @@ export type AutoBuff = {
       };
 };
 
-type NewBuff = AutoBuff & {
-  index: number;
-  affect: EModAffect;
-  inputConfigs?: ModInputConfig[];
-  buffBonuses?: AutoBuff[];
-};
-
 /**
  * Weapon in app data
  */
@@ -116,40 +99,18 @@ export type AppWeapon = {
     type: AttributeStat;
     scale: string;
   };
-  passiveName: string;
-  passiveDesc: (args: WeaponDescArgs) => {
-    core?: JSX.Element;
-    extra?: JSX.Element[];
+  passive?: {
+    name: string;
+    description: string;
+    seeds: Array<number | { base: number; increment: number; dull?: boolean }>;
   };
-  // applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  // applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  // passiveName: string;
+  // passiveDesc: (args: WeaponDescArgs) => {
+  //   core?: JSX.Element;
+  //   extra?: JSX.Element[];
+  // };
   autoBuffs?: AutoBuff[];
   buffs?: WeaponBuff[];
-
-  // newBuffs?: NewBuff[];
-};
-
-type ApplyWpPassiveBuffsArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus?: AttackPatternBonus;
-  rxnBonus?: ReactionBonus;
-  charData: AppCharacter;
-  partyData?: PartyData;
-  refi: number;
-  desc: string;
-  tracker?: Tracker;
-};
-
-type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  refi: number;
-  desc?: string;
-};
-
-type ApplyWpFinalBuffArgs = BuffModifierArgsWrapper & {
-  refi: number;
-  desc?: string;
-  inputs: ModifierInput[];
 };
 
 type WeaponDescArgs = {
@@ -160,8 +121,6 @@ type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  // applyBuff?: (args: ApplyWpBuffArgs) => void;
-  // applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
   desc: (
     args: WeaponDescArgs & {
       totalAttr: TotalAttribute;

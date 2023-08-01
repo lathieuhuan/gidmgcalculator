@@ -2,7 +2,7 @@ import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 
-type SeriesInfo = Pick<AppWeapon, "passiveName" | "passiveDesc" | "autoBuffs" | "buffs">;
+type SeriesInfo = Pick<AppWeapon, "passive" | "autoBuffs" | "buffs">;
 
 export const desertSeries: Pick<AppWeapon, "passiveDesc" | "rarity" | "mainStatScale" | "subStat" | "buffs"> = {
   rarity: 4,
@@ -250,20 +250,21 @@ export const lithicSeries: SeriesInfo = {
 };
 
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
-  passiveName: `Bane of ${name}`,
-  passiveDesc: ({ refi }) => ({
-    core: (
-      <>
-        Increases <Green>DMG</Green> against opponents affected by <Green>{elements}</Green> by{" "}
-        <Green b>{9 + refi * 3}%</Green>.
-      </>
-    ),
-  }),
+  passive: {
+    name: `Bane of ${name}`,
+    description: `Increases DMG against opponents affected by ${elements} by {0}%.`,
+    seeds: [9],
+  },
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
-      desc: ({ refi }) => baneSeries1(name, elements).passiveDesc({ refi }).core,
+      desc: ({ refi }) => (
+        <>
+          Increases <Green>DMG</Green> against opponents affected by <Green>{elements}</Green> by{" "}
+          <Green b>{9 + refi * 3}%</Green>.
+        </>
+      ),
       base: 9,
       targetAttPatt: "all.pct_",
     },
@@ -316,8 +317,9 @@ export const watatsumiSeries: SeriesInfo = {
 };
 
 export const cullTheWeakSeries: SeriesInfo = {
-  passiveName: "Cull the Weak",
-  passiveDesc: ({ refi }) => ({
-    core: <>Defeating an opponent restores {6 + refi * 2}% HP.</>,
-  }),
+  passive: {
+    name: "Cull the Weak",
+    description: "Defeating an opponent restores {6 + refi * 2}% HP",
+    seeds: [6],
+  },
 };
