@@ -1,11 +1,9 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { liyueSeries } from "../series";
-import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const mistsplitterBuffValuesByStack = (refi: number) => [6 + refi * 2, 12 + refi * 4, 21 + refi * 7];
 
@@ -35,16 +33,23 @@ const goldSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "cRate_", 4),
+    autoBuffs: [
+      {
+        base: 3,
+        targetAttribute: "cRate_",
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldSwords, 148)?.passiveDesc({ refi }).extra?.[0],
-        applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
-          const buffValue = totalAttr.em * (0.9 + 0.3 * refi);
-          applyModifier(desc, attPattBonus, ["NA.flat", "ES.flat"], buffValue, tracker);
+        base: 0.9,
+        stacks: {
+          type: "attribute",
+          field: "em",
         },
+        targetAttPatt: ["NA.flat", "ES.flat"],
       },
     ],
   },
@@ -77,50 +82,17 @@ const goldSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttribute: "hp_",
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
-        applyFinalBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const stacks = inputs[0] || 0;
-          const mult = 0.09 + refi * 0.03;
-          const buffValue = applyPercent(totalAttr.hp, mult * stacks);
-          const xtraDesc = ` / ${stacks} stacks * ${mult}% of ${Math.round(totalAttr.hp)} HP`;
-          applyModifier(desc + xtraDesc, totalAttr, "em", buffValue, tracker);
-        },
-      },
-      {
-        index: 1,
-        affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
-        inputConfigs: [
-          {
-            label: "Max HP",
-            type: "text",
-            max: 99999,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const mult = 0.15 + refi * 0.05;
-          const buffValue = applyPercent(inputs[0] || 0, mult);
-          const xtraDesc = ` / ${mult}% of ${inputs[0] || 0} HP`;
-          applyModifier(desc + xtraDesc, totalAttr, "em", buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         inputConfigs: [
           {
             type: "stacks",
@@ -138,8 +110,23 @@ const goldSwords: AppWeapon[] = [
             type: "input",
           },
         ],
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
+      },
+      {
+        index: 1,
+        affect: EModAffect.TEAMMATE,
+        desc: ({ refi }) => findByCode(goldSwords, 140)!.passiveDesc({ refi }).extra?.[1],
+        inputConfigs: [
+          {
+            label: "Max HP",
+            type: "text",
+            max: 99999,
+          },
+        ],
+        base: 0.0015,
+        stacks: {
+          type: "input",
+        },
       },
     ],
   },
@@ -170,7 +157,12 @@ const goldSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
+    autoBuffs: [
+      {
+        base: 9,
+        targetAttribute: [...VISION_TYPES],
+      },
+    ],
     buffs: [
       {
         index: 1,
@@ -182,10 +174,11 @@ const goldSwords: AppWeapon[] = [
             max: 2,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (15 + refi * 5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
+        base: 15,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "NA.pct_",
       },
     ],
   },
@@ -219,7 +212,12 @@ const goldSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
+    autoBuffs: [
+      {
+        base: 9,
+        targetAttribute: [...VISION_TYPES],
+      },
+    ],
     buffs: [
       {
         index: 0,
@@ -231,87 +229,12 @@ const goldSwords: AppWeapon[] = [
             max: 3,
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, charData, desc, tracker }) => {
-          const valueIndex = (inputs[0] || 0) - 1;
-          const buffValue = mistsplitterBuffValuesByStack(refi)[valueIndex];
-          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
         base: 6,
         stacks: {
           type: "input",
           maxStackBonus: 3,
         },
-        targetGroup: "totalAttr",
-        targetPath: "own_element",
-      },
-    ],
-  },
-  {
-    code: 102,
-    name: "Aquila Favonia",
-    icon: "6/6a/Weapon_Aquila_Favonia",
-    rarity: 5,
-    mainStatScale: "48",
-    subStat: { type: "phys", scale: "9%" },
-    passiveName: "Falcon's Defiance",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green>. Triggers on taking DMG: the soul of the
-          Falcon of the West awakens, holding the banner of the resistance aloft, regenerating HP equal to{" "}
-          {85 + refi * 15}% of ATK and dealing <Green b>{160 + refi * 40}%</Green>
-          of <Green>ATK</Green> as DMG to surrounding opponents. This effect can only occur once every 15s.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-  },
-  {
-    code: 103,
-    name: "Skyward Blade",
-    icon: "0/03/Weapon_Skyward_Blade",
-    rarity: 5,
-    mainStatScale: "46",
-    subStat: { type: "er_", scale: "12%" },
-    passiveName: "Sky-Piercing Fang",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            <Green>Crit Rate</Green> increased by <Green b>{3 + refi}%</Green>. And Normal and Charged hits deal
-            additional DMG equal to {15 + refi * 5}% of ATK. Skypiercing Might lasts for 12s. {this.extra}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and <Green>ATK SPD</Green> by{" "}
-          <Green b>10%</Green>.
-        </>,
-      ],
-    }),
-    applyBuff: makeWpModApplier("totalAttr", "cRate_", 4),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
-        },
+        targetAttribute: "own_element",
       },
     ],
   },
@@ -344,35 +267,60 @@ const goldSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 10),
+    autoBuffs: [
+      {
+        base: 7.5,
+        targetAttPatt: "all.pct_",
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        applyBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], 12 + refi * 4, tracker);
-          applyModifier(desc, totalAttr, "atk_", 15 + refi * 5, tracker);
-        },
         desc: ({ refi }) => findByCode(goldSwords, 104)!.passiveDesc({ refi })!.extra![0],
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
         buffBonuses: [
           {
             base: 12,
-            targetGroup: "attPattBonus",
-            targetPath: [...NCPA_PERCENTS],
+            targetAttPatt: [...NCPA_PERCENTS],
           },
           {
             base: 15,
-            targetGroup: "totalAttr",
-            targetPath: "atk_",
+            targetAttribute: "atk_",
           },
         ],
+      },
+    ],
+  },
+  {
+    code: 106,
+    name: "Primordial Jade Cutter",
+    icon: "2/2a/Weapon_Primordial_Jade_Cutter",
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "cRate_", scale: "9.6%b" },
+    passiveName: "Protector's Virtue",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides an{" "}
+          <Green>ATK Bonus</Green> based on <Green b>{(9 + refi * 3) / 10}%</Green> of the wielder's{" "}
+          <Green>Max HP</Green>.
+        </>
+      ),
+    }),
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttribute: "hp_",
+      },
+      {
+        base: 0.9,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+          convertRate: 0.01,
+        },
+        targetAttribute: "atk",
       },
     ],
   },
@@ -386,28 +334,70 @@ const goldSwords: AppWeapon[] = [
     ...liyueSeries,
   },
   {
-    code: 106,
-    name: "Primordial Jade Cutter",
-    icon: "2/2a/Weapon_Primordial_Jade_Cutter",
+    code: 102,
+    name: "Aquila Favonia",
+    icon: "6/6a/Weapon_Aquila_Favonia",
     rarity: 5,
-    mainStatScale: "44b",
-    subStat: { type: "cRate_", scale: "9.6%b" },
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 20),
-    applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-      const bnPct = 0.9 + refi * 0.3;
-      const xtraDesc = ` / ${bnPct}% of ${Math.round(totalAttr.hp)} HP`;
-      applyModifier(desc + xtraDesc, totalAttr, "atk", applyPercent(totalAttr.hp, bnPct), tracker);
-    },
-    passiveName: "Protector's Virtue",
+    mainStatScale: "48",
+    subStat: { type: "phys", scale: "9%" },
+    passiveName: "Falcon's Defiance",
     passiveDesc: ({ refi }) => ({
       core: (
         <>
-          <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides an{" "}
-          <Green>ATK Bonus</Green> based on <Green b>{(9 + refi * 3) / 10}%</Green> of the wielder's{" "}
-          <Green>Max HP</Green>.
+          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green>. Triggers on taking DMG: the soul of the
+          Falcon of the West awakens, holding the banner of the resistance aloft, regenerating HP equal to{" "}
+          {85 + refi * 15}% of ATK and dealing <Green b>{160 + refi * 40}%</Green>
+          of <Green>ATK</Green> as DMG to surrounding opponents. This effect can only occur once every 15s.
         </>
       ),
     }),
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttribute: "atk_",
+      },
+    ],
+  },
+  {
+    code: 103,
+    name: "Skyward Blade",
+    icon: "0/03/Weapon_Skyward_Blade",
+    rarity: 5,
+    mainStatScale: "46",
+    subStat: { type: "er_", scale: "12%" },
+    passiveName: "Sky-Piercing Fang",
+    passiveDesc: ({ refi }) => ({
+      get core() {
+        return (
+          <>
+            <Green>Crit Rate</Green> increased by <Green b>{3 + refi}%</Green>. And Normal and Charged hits deal
+            additional DMG equal to {15 + refi * 5}% of ATK. Skypiercing Might lasts for 12s. {this.extra}
+          </>
+        );
+      },
+      extra: [
+        <>
+          Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and <Green>ATK SPD</Green> by{" "}
+          <Green b>10%</Green>.
+        </>,
+      ],
+    }),
+    autoBuffs: [
+      {
+        base: 3,
+        targetAttribute: "cRate_",
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldSwords, 103)!.passiveDesc({ refi }).extra![0],
+        base: 10,
+        increment: 0,
+        targetAttribute: "naAtkSpd_",
+      },
+    ],
   },
 ];
 

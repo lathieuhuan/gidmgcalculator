@@ -1,10 +1,8 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { liyueSeries } from "../series";
-import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const goldClaymores: AppWeapon[] = [
   {
@@ -43,38 +41,20 @@ const goldClaymores: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+        base: 15,
+        targetAttribute: "atk_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[1],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
+        base: 15,
+        targetAttribute: "atk_",
       },
       {
         index: 2,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldClaymores, 151)?.passiveDesc({ refi }).extra?.[2],
-        applyBuff: makeWpModApplier("totalAttr", "hp_", 32),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        base: 15,
-        targetAttribute: "atk_",
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        base: 15,
-        targetAttribute: "atk_",
-      },
-      {
-        index: 2,
-        affect: EModAffect.SELF,
         base: 24,
         targetAttribute: "hp_",
       },
@@ -109,26 +89,17 @@ const goldClaymores: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
-        desc: ({ refi }) => findByCode(goldClaymores, 53)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", ["naAtkSpd_", "atk_"], [12, 20]),
-      },
-    ],
-
     autoBuffs: [
       {
         base: 12,
         targetAttribute: "atk_",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
+        desc: ({ refi }) => findByCode(goldClaymores, 53)?.passiveDesc({ refi }).extra?.[0],
         buffBonuses: [
           { base: 9, targetAttribute: "naAtkSpd_" },
           { base: 15, targetAttribute: "atk_" },
@@ -153,8 +124,6 @@ const goldClaymores: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 8),
-
     autoBuffs: [
       {
         base: 6,
@@ -194,26 +163,17 @@ const goldClaymores: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
-        desc: ({ refi }) => findByCode(goldClaymores, 56)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 40),
-      },
-    ],
-
     autoBuffs: [
       {
         base: 15,
         targetAttribute: "atk_",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
+        desc: ({ refi }) => findByCode(goldClaymores, 56)?.passiveDesc({ refi }).extra?.[0],
         base: 30,
         targetAttribute: "atk_",
       },
@@ -236,16 +196,6 @@ const goldClaymores: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "def_", 28),
-    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
-      if (attPattBonus) {
-        const mult = 30 + refi * 10;
-        const buffValue = applyPercent(totalAttr.def, mult);
-        const finalDesc = desc + ` / ${mult}% of ${Math.round(totalAttr.def)} DEF`;
-        applyModifier(finalDesc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
-      }
-    },
-
     autoBuffs: [
       {
         base: 21,

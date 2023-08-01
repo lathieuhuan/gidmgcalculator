@@ -1,11 +1,9 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakSeries } from "../series";
-import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const otherBows: AppWeapon[] = [
   {
@@ -63,14 +61,6 @@ const otherBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherBows, 3)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 24),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 18,
         targetAttPatt: "CA.pct_",
       },
@@ -92,38 +82,23 @@ const otherBows: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: ({ attPattBonus, desc, tracker }) => {
-      if (attPattBonus) {
-        applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], -10, tracker);
-      }
-    },
+    autoBuffs: [
+      {
+        base: -10,
+        increment: 0,
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherBows, 4)?.passiveDesc({ refi }).core,
-        applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 40 + refi * 6, tracker);
-        },
-      },
-    ],
-
-    autoBuffs: [
-      {
-        base: -10,
-        increment: 0,
-        targetAttPatt: ["NA.pct_", "CA.pct_"]
-      }
-    ],
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 40,
         increment: 6,
-        targetAttPatt: ["NA.pct_", "CA.pct_"]
-      }
-    ]
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
   },
   {
     code: 10,

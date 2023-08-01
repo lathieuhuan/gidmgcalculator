@@ -1,9 +1,7 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { countVision, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 
 const polarStarBuffValuesByStack = (refi: number) => [
   7.5 + refi * 2.5,
@@ -38,19 +36,6 @@ const goldBows: AppWeapon[] = [
         ),
       };
     },
-    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      if (partyData) {
-        const { [charData.vision]: sameVisionCount } = countVision(partyData, charData);
-        let buffValue = 12 + refi * 4;
-
-        if (sameVisionCount) {
-          const valueIndex = Math.min(sameVisionCount, 3) - 1;
-          buffValue += the1stGreateMagicBuffValuesByStack(refi)[valueIndex] || 0;
-        }
-        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
-      }
-    },
-
     autoBuffs: [
       {
         base: 12,
@@ -92,18 +77,6 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldBows, 133)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: ({ desc, refi, totalAttr, attPattBonus, tracker }) => {
-          const buffValue = totalAttr.em * (1.2 + refi * 0.4);
-          applyModifier(desc, attPattBonus, "CA.flat", buffValue, tracker);
-        },
-      },
-    ],
 
     autoBuffs: [
       {
@@ -111,10 +84,11 @@ const goldBows: AppWeapon[] = [
         targetAttribute: [...VISION_TYPES],
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldBows, 133)?.passiveDesc({ refi }).extra?.[0],
         base: 1.2,
         stacks: {
           type: "attribute",
@@ -148,26 +122,17 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "hp_", 16),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldBows, 125)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 20),
-      },
-    ],
-
     autoBuffs: [
       {
         base: 12,
         targetAttribute: "hp_",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldBows, 125)?.passiveDesc({ refi }).extra?.[0],
         base: 15,
         targetAttPatt: "all.pct_",
       },
@@ -200,36 +165,17 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 12),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldBows, 6)?.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 4,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const valueIndex = (inputs[0] || 0) - 1;
-          const buffValue = polarStarBuffValuesByStack(refi)[valueIndex];
-          applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
-        },
-      },
-    ],
-
     autoBuffs: [
       {
         base: 9,
         targetAttPatt: ["ES.pct_", "EB.pct_"],
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldBows, 6)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -271,36 +217,17 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldBows, 7)?.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const valueIndex = (inputs[0] || 0) - 1;
-          const buffValue = thunderingPulseBuffValuesByStack(refi)[valueIndex];
-          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
-        },
-      },
-    ],
-
     autoBuffs: [
       {
         base: 15,
         targetAttribute: "atk_",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldBows, 7)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -316,7 +243,6 @@ const goldBows: AppWeapon[] = [
       },
     ],
   },
-
   {
     code: 9,
     name: "Elegy for the End",
@@ -347,26 +273,17 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "em", 60),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
-        desc: ({ refi }) => findByCode(goldBows, 9)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", ["em", "atk_"], [100, 20]),
-      },
-    ],
-
     autoBuffs: [
       {
         base: 45,
         targetAttribute: "em",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
+        desc: ({ refi }) => findByCode(goldBows, 9)?.passiveDesc({ refi }).extra?.[0],
         buffBonuses: [
           {
             base: 75,
@@ -404,35 +321,17 @@ const goldBows: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 12),
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldBows, 8)?.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 5,
-          },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
-        },
-      },
-    ],
-
     autoBuffs: [
       {
         base: 9,
         targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldBows, 8)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             type: "stacks",
@@ -464,8 +363,6 @@ const goldBows: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "cDmg_", 20),
-
     autoBuffs: [
       {
         base: 15,

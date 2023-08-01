@@ -48,6 +48,7 @@ import {
   addTrackerRecord,
   calcFinalTotalAttributes,
   initiateTotalAttr,
+  applyWeaponBuff,
 } from "./utils";
 
 export const getCalculationStats = ({
@@ -60,7 +61,7 @@ export const getCalculationStats = ({
   artBuffCtrls,
   elmtModCtrls,
   party,
-  partyData,
+  partyData = [],
   customBuffCtrls,
   infusedElement,
   tracker,
@@ -250,13 +251,18 @@ export const getCalculationStats = ({
           const buff = findByIndex(buffs, index);
 
           if (buff) {
-            if (activated && isNewMod(true, code, index) && buff?.applyBuff) {
-              buff.applyBuff({
-                desc: `${name} activated`,
-                refi,
-                inputs,
-                ...modifierArgs,
-              });
+            if (activated && isNewMod(true, code, index) && buff) {
+              applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
+
+              for (const buffBonus of buff.buffBonuses || []) {
+                const bonus = {
+                  ...buffBonus,
+                  base: buffBonus.base ?? buff.base,
+                  stacks: buffBonus.stacks ?? buff.stacks,
+                };
+
+                applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, modifierArgs });
+              }
             }
           } else {
             console.log(`buff #${index} of weapon #${code} not found`);
@@ -288,7 +294,7 @@ export const getCalculationStats = ({
   }
 
   // APPLY WEAPON BUFFS
-  if (weaponData.newBuffs && wpBuffCtrls?.length) {
+  if (wpBuffCtrls?.length) {
     applyMainWeaponsBuffs({ isFinal: false, weaponData, refi, wpBuffCtrls, modifierArgs });
   }
 
@@ -315,7 +321,7 @@ export const getCalculationStats = ({
   applyWeaponAutoBuffs({ isFinal: true, weaponData, refi, modifierArgs });
 
   // APPLY WEAPON FINAL BUFFS
-  if (weaponData.newBuffs && wpBuffCtrls?.length) {
+  if (wpBuffCtrls?.length) {
     applyMainWeaponsBuffs({ isFinal: true, weaponData, refi, wpBuffCtrls, modifierArgs });
   }
 

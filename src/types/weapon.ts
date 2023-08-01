@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Rarity, ModInputConfig, AttributeStat, PartiallyOptional } from "./global";
+import type { Rarity, ModInputConfig, AttributeStat } from "./global";
 import type {
   AttackPatternBonus,
   BuffModifierArgsWrapper,
@@ -14,26 +14,27 @@ import type { AttackPatternPath } from "../utils/calculation";
 
 import { EModAffect } from "@Src/constants";
 
-export type DefaultAppWeapon = Pick<
-  AppWeapon,
-  "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
->;
+// export type DefaultAppWeapon = Pick<
+//   AppWeapon,
+//   "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
+// >;
 
 type VisionStack = {
   type: "vision";
-  element: "same_included" | "same_excluded" | "various" | "different";
+  element: "same_included" | "same_excluded" | "different";
   max?: number;
 };
 
 type AttributeStack = {
   type: "attribute";
-  field: "hp" | "def" | "em";
+  field: "hp" | "base_atk" | "def" | "em" | "er_";
   convertRate?: number;
+  pedestal?: number;
 };
 
 type InputIndex = {
   value: number;
-  /** Tulaytullah's Remembrance */
+  /** only on Tulaytullah's Remembrance */
   convertRate?: number;
 };
 
@@ -45,20 +46,24 @@ type InputStack = {
   doubledAtInput?: number;
   /** if number, add to main */
   maxStackBonus?: number;
-  //  | Pick<AutoBuff, "base" | "increment" | "targetGroup" | "targetPath">;
 };
 
+/** Watatsumi series */
 type EnergyStack = {
   type: "energy";
 };
 
-type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack;
+/** Lythic series */
+type NationStack = {
+  type: "nation";
+};
+
+type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
 type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
 export type AutoBuff = {
-  // isFinal?: boolean;
-  // charCode?: number; // "Predator" bow for Aloy only
+  // charCode?: number; // only on Predator for Aloy
   base?: number;
   /** only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
@@ -69,33 +74,31 @@ export type AutoBuff = {
   targetAttPatt?: AttackPatternPath | AttackPatternPath[];
   max?:
     | number
+    // only on Jadefall's Splendor
     | {
         base: number;
         increment: number;
       };
   /**
-   * On buffs, if number, it's compareValue, index default to 0
-   * On autobuffs, need source
+   * If number, it's compareValue, index default to 0
    */
   checkInput?:
     | number
+    // only on Ballad of the Fjords
     | {
         index?: number;
+        /** No index when there's source */
         source?: "various_vision";
         compareValue: number;
+        /** Default to equal */
+        compareType?: "equal" | "atleast";
       };
 };
 
-/**
- * If there's base outside, calculate bonus.
- * If there're buffBonuses, calculate bonuses, with outside targetGroup, increment as default
- */
 type NewBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  /** only for The Widsith */
-  // selectIndex?: number;
   buffBonuses?: AutoBuff[];
 };
 
@@ -113,17 +116,17 @@ export type AppWeapon = {
     type: AttributeStat;
     scale: string;
   };
-  applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
   passiveName: string;
   passiveDesc: (args: WeaponDescArgs) => {
     core?: JSX.Element;
     extra?: JSX.Element[];
   };
+  // applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  // applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
+  autoBuffs?: AutoBuff[];
   buffs?: WeaponBuff[];
 
-  autoBuffs?: AutoBuff[];
-  newBuffs?: NewBuff[];
+  // newBuffs?: NewBuff[];
 };
 
 type ApplyWpPassiveBuffsArgs = {
@@ -153,15 +156,17 @@ type WeaponDescArgs = {
   refi: number;
 };
 
-type WeaponBuff = {
+type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  applyBuff?: (args: ApplyWpBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
+  // applyBuff?: (args: ApplyWpBuffArgs) => void;
+  // applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
   desc: (
     args: WeaponDescArgs & {
       totalAttr: TotalAttribute;
     }
   ) => ReactNode;
+
+  buffBonuses?: AutoBuff[];
 };

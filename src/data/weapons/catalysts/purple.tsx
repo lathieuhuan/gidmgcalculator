@@ -1,17 +1,15 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import {
   blackcliffSeries,
   desertSeries,
   dragonspineSeries,
   favoniusSeries,
   royalSeries,
-  sacrificialSeries,
+  sacrificialSeries
 } from "../series";
-import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const purpleCatalysts: AppWeapon[] = [
   {
@@ -49,37 +47,13 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 8),
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[1],
-        applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const bondValue = Math.round(totalAttr.hp * 0.24);
-          const stacks = bondValue / 1000;
-          const limit = 9 + refi * 3;
-          let buffValue = (1.5 + refi * 0.5) * stacks;
-          let finalDesc = desc + ` / ${1.5 + refi * 0.5}% * ${stacks} stacks (Bond ${bondValue})`;
-          if (buffValue > limit) {
-            buffValue = limit;
-            finalDesc += ` / limit to ${limit}%`;
-          }
-          applyModifier(finalDesc, totalAttr, [...VISION_TYPES], buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 6,
         targetAttribute: [...VISION_TYPES],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[1],
         base: 1.5,
         stacks: {
           type: "attribute",
@@ -114,14 +88,6 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 161)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("totalAttr", ["hp_", "em"], [20, 80]),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         buffBonuses: [
           {
             base: 15,
@@ -178,24 +144,6 @@ const purpleCatalysts: AppWeapon[] = [
             max: 5,
           },
         ],
-        applyBuff: ({ totalAttr, refi, desc, inputs, tracker }) => {
-          const stacks = inputs[0] || 0;
-          const buffValues = [(21 + refi * 3) * stacks, -5 * stacks];
-          applyModifier(desc, totalAttr, ["em", "atk_"], buffValues, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 5,
-          },
-        ],
         stacks: {
           type: "input",
         },
@@ -221,14 +169,6 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "er_", 24),
-        desc: ({ refi }) => findByCode(purpleCatalysts, 123)?.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "People of the Faltering Light",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -238,6 +178,15 @@ const purpleCatalysts: AppWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 123)?.passiveDesc({ refi }).core,
+        base: 18,
+        targetAttribute: "er_",
+      },
+    ],
   },
   {
     code: 37,
@@ -268,14 +217,6 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 37)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 15,
         targetAttribute: "atk_",
       },
@@ -304,16 +245,6 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         desc: ({ refi }) => findByCode(purpleCatalysts, 38)?.passiveDesc({ refi }).core,
-        applyBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
-          applyModifier(desc, totalAttr, charData.vision, 7.5 + refi * 2.5, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.PARTY,
         base: 7.5,
         targetAttribute: "own_element",
       },
@@ -355,23 +286,6 @@ const purpleCatalysts: AppWeapon[] = [
             max: 2,
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 2,
-          },
-        ],
         base: 6,
         stacks: {
           type: "input",
@@ -403,33 +317,6 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 41)?.passiveDesc({ refi }).core,
-        inputConfigs: [
-          {
-            label: "Theme Song",
-            type: "select",
-            initialValue: 0,
-            options: ["Recitative", "Aria", "Interlude"],
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          switch (inputs[0] || 0) {
-            case 0:
-              applyModifier(desc, totalAttr, "atk_", 45 + refi * 15, tracker);
-              break;
-            case 1:
-              applyModifier(desc, totalAttr, [...VISION_TYPES], 36 + refi * 12, tracker);
-              break;
-            default:
-              applyModifier(desc, totalAttr, "em", 180 + refi * 60, tracker);
-          }
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         inputConfigs: [
           {
             label: "Theme Song",
@@ -499,26 +386,13 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 20),
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 20),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 15,
         targetAttPatt: ["ES.pct_", "EB.pct_"],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
         base: 15,
         targetAttPatt: "NA.pct_",
       },
@@ -590,26 +464,13 @@ const purpleCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 16),
-      },
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[1],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 8),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 12,
         targetAttPatt: "CA.pct_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[1],
         base: 6,
         targetAttribute: "atk_",
       },

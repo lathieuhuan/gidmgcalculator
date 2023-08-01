@@ -9,6 +9,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Component
 import { StatsTable, CollapseSpace, Green } from "@Src/pure-components";
+import { round } from "@Src/utils";
 
 interface EmSectionProps {
   em: number;
@@ -29,7 +30,7 @@ const EmSection = ({ em }: EmSectionProps) => {
             className={clsx("duration-150 ease-linear", dropped ? "text-green" : "text-default rotate-90")}
           />
         </div>
-        <p className="mr-2">{em}</p>
+        <p className="mr-2">{round(em, 1)}</p>
       </StatsTable.Row>
       <CollapseSpace active={dropped}>
         <ul className="px-2 py-1 text-sm flex flex-col space-y-1">

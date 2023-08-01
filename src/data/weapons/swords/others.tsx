@@ -1,10 +1,9 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1 } from "../series";
-import { findByCode } from "@Src/utils";
-import { makeWpModApplier } from "../utils";
 
 const otherSwords: AppWeapon[] = [
   {
@@ -26,14 +25,6 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "em", scale: "31" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-        desc: ({ refi }) => findByCode(otherSwords, 131)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Overloaded",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -43,6 +34,15 @@ const otherSwords: AppWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherSwords, 131)!.passiveDesc({ refi }).core,
+        base: 15,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 97,
@@ -68,14 +68,6 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "cRate_", 14),
-        desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Vigorous",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -84,6 +76,15 @@ const otherSwords: AppWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
+        base: 10.5,
+        targetAttribute: "cRate_",
+      },
+    ],
   },
   {
     code: 99,
@@ -101,14 +102,6 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "er_", scale: "11.3%" },
-    buffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
-        desc: ({ refi }) => findByCode(otherSwords, 100)!.passiveDesc({ refi }).core,
-      },
-    ],
     passiveName: "Determination",
     passiveDesc: ({ refi }) => ({
       core: (
@@ -118,6 +111,15 @@ const otherSwords: AppWeapon[] = [
         </>
       ),
     }),
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(otherSwords, 100)!.passiveDesc({ refi }).core,
+        base: 9,
+        targetAttribute: "atk_",
+      },
+    ],
   },
   {
     code: 107,

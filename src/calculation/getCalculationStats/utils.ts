@@ -12,7 +12,6 @@ import type {
   Level,
   ModifierCtrl,
   ModInputConfig,
-  PartiallyOptional,
   TotalAttribute,
   Tracker,
   TrackerRecord,
@@ -247,25 +246,60 @@ interface ApplyWeaponBuffArgs {
   modifierArgs: BuffModifierArgsWrapper;
   inputConfigs?: ModInputConfig[];
 }
-const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputConfigs }: ApplyWeaponBuffArgs) => {
+export const applyWeaponBuff = ({
+  description,
+  buff,
+  refi,
+  inputs,
+  modifierArgs,
+  inputConfigs,
+}: ApplyWeaponBuffArgs) => {
   if (!buff.base) {
     console.log("no base", buff);
     return;
   }
+  const { charData, partyData } = modifierArgs;
 
   if (buff.checkInput !== undefined) {
-    const { index = 0, compareValue } =
-      typeof buff.checkInput === "number" ? { compareValue: buff.checkInput } : buff.checkInput;
+    if (typeof buff.checkInput === "number") {
+      if (inputs[0] !== buff.checkInput) {
+        console.log("checkInput fail", buff.checkInput);
+        return;
+      }
+    } else {
+      const { index = 0, source, compareValue, compareType = "equal" } = buff.checkInput;
+      let input = 0;
 
-    if (inputs[index] !== compareValue) {
-      console.log("checkInput fail", buff.checkInput);
-      return;
+      if (source === "various_vision") {
+        if (partyData) {
+          input = Object.keys(countVision(partyData, charData)).length;
+        } else {
+          console.log("checkInput fail", buff.checkInput);
+          return;
+        }
+      } else {
+        input = inputs[index];
+      }
+
+      switch (compareType) {
+        case "equal":
+          if (input !== compareValue) {
+            console.log("checkInput fail", buff.checkInput);
+            return;
+          }
+          break;
+        case "atleast":
+          if (input < compareValue) {
+            console.log("checkInput fail", buff.checkInput);
+            return;
+          }
+          break;
+      }
     }
   }
 
   const scaleRefi = (base: number, increment = base / 3) => base + increment * refi;
 
-  const { charData, partyData } = modifierArgs;
   const { stacks, targetAttribute, max } = buff;
   const maxValue = max ? (typeof max === "number" ? scaleRefi(max) : scaleRefi(max.base, max.increment)) : undefined;
   const initialValue = buff.initialBonus ? scaleRefi(buff.initialBonus) : 0;
@@ -299,8 +333,8 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
           break;
         }
         case "attribute": {
-          const { field, convertRate = 1 } = stack;
-          buffValue *= modifierArgs.totalAttr[field] * convertRate;
+          const { field, convertRate = 1, pedestal = 0 } = stack;
+          buffValue *= (modifierArgs.totalAttr[field] - pedestal) * convertRate;
           break;
         }
         case "vision": {
@@ -334,6 +368,15 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs, inputC
         case "energy": {
           if (partyData) {
             buffValue *= partyData.reduce((result, data) => result + (data?.EBcost || 0), charData.EBcost);
+          }
+          break;
+        }
+        case "nation": {
+          if (partyData) {
+            buffValue *= partyData.reduce(
+              (result, data) => result + (data?.nation === "liyue" ? 1 : 0),
+              charData.nation === "liyue" ? 1 : 0
+            );
           }
           break;
         }
@@ -394,12 +437,12 @@ export const applyMainWeaponsBuffs = ({
   wpBuffCtrls,
   modifierArgs,
 }: ApplyMainWeaponsBuffsArgs) => {
-  if (weaponData.newBuffs) {
+  if (weaponData.buffs) {
     const description = `${weaponData.name} activated`;
 
     // #to-do: check if buff exist
     for (const { activated, index, inputs = [] } of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.newBuffs, index);
+      const buff = findByIndex(weaponData.buffs, index);
 
       if (activated && buff) {
         const { inputConfigs } = buff;

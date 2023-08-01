@@ -1,10 +1,8 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { liyueSeries } from "../series";
-import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const goldCatalysts: AppWeapon[] = [
   {
@@ -37,18 +35,6 @@ const goldCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldCatalysts, 152)?.passiveDesc({ refi }).extra?.[0],
-        applyFinalBuff: ({ totalAttr, refi, charData, desc, tracker }) => {
-          const stacks = Math.floor(totalAttr.hp / 1000);
-          const buffValue = Math.min(stacks * (0.1 + refi * 0.2), 4 + refi * 8);
-          applyModifier(desc, totalAttr, charData.vision, buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 0.1,
         increment: 0.2,
         stacks: {
@@ -92,36 +78,17 @@ const goldCatalysts: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("totalAttr", "naAtkSpd_", 10),
-    buffs: [
-      {
-        index: 1,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldCatalysts, 147)?.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          { label: "Seconds passed", type: "text", max: 10 },
-          { label: "Normal attacks hit", type: "text", max: 10 },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const stacks = (inputs[0] || 0) + (inputs[1] || 0) * 2;
-          const valuePerStack = (36 + refi * 12) / 10;
-          let buffValue = stacks * valuePerStack;
-          buffValue = Math.min(buffValue, valuePerStack * 10);
-          applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
-        },
-      },
-    ],
-
     autoBuffs: [
       {
         base: 7.5,
         targetAttribute: "naAtkSpd_",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 1,
         affect: EModAffect.SELF,
+        desc: ({ refi }) => findByCode(goldCatalysts, 147)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           { label: "Seconds passed", type: "text", max: 10 },
           { label: "Normal attacks hit", type: "text", max: 10 },
@@ -164,29 +131,6 @@ const goldCatalysts: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      if (partyData) {
-        const sameVision = partyData.reduce((result, data) => {
-          return data?.vision === charData.vision ? result + 1 : result;
-        }, 0);
-        const emBuffValue = sameVision * (24 + refi * 8);
-        const elmtDmgBuffValue = (partyData.filter(Boolean).length - sameVision) * (6 + refi * 4);
-
-        applyModifier(desc, totalAttr, "em", emBuffValue, tracker);
-        applyModifier(desc, totalAttr, charData.vision, elmtDmgBuffValue, tracker);
-      }
-    },
-    buffs: [
-      {
-        index: 1,
-        affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => findByCode(goldCatalysts, 143)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "em", 38 + refi * 2, tracker);
-        },
-      },
-    ],
-
     autoBuffs: [
       {
         base: 24,
@@ -206,10 +150,11 @@ const goldCatalysts: AppWeapon[] = [
         targetAttribute: "own_element",
       },
     ],
-    newBuffs: [
+    buffs: [
       {
         index: 1,
         affect: EModAffect.TEAMMATE,
+        desc: ({ refi }) => findByCode(goldCatalysts, 143)?.passiveDesc({ refi }).extra?.[0],
         base: 38,
         increment: 2,
         targetAttribute: "em",
@@ -239,27 +184,6 @@ const goldCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldCatalysts, 122)?.passiveDesc({ refi }).core,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 3,
-          },
-        ],
-        applyBuff: ({ totalAttr, attPattBonus, refi, inputs, desc, tracker }) => {
-          const stack = inputs[0] || 0;
-          applyModifier(desc, attPattBonus, "ES.pct_", (9 + refi * 3) * stack, tracker);
-
-          if (stack === 3) {
-            applyModifier(desc, totalAttr, [...VISION_TYPES], 9 + refi * 3, tracker);
-          }
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         inputConfigs: [
           {
             type: "stacks",
@@ -301,14 +225,6 @@ const goldCatalysts: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", "healB_", 10),
-    applyFinalBuff: ({ totalAttr, attPattBonus, refi, desc, tracker }) => {
-      if (attPattBonus) {
-        const buffValue = applyPercent(totalAttr.hp, 0.75 + refi * 0.25);
-        applyModifier(desc, attPattBonus, "NA.flat", buffValue, tracker);
-      }
-    },
-
     autoBuffs: [
       {
         base: 7.5,
@@ -342,8 +258,6 @@ const goldCatalysts: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("totalAttr", [...VISION_TYPES], 12),
-
     autoBuffs: [
       {
         base: 9,
@@ -375,23 +289,6 @@ const goldCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(goldCatalysts, 32)?.passiveDesc({ refi }).extra?.[0],
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 5,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, [...VISION_TYPES], buffValue, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         inputConfigs: [
           {
             type: "stacks",

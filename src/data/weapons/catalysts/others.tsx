@@ -1,11 +1,9 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1 } from "../series";
-import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const otherCatalysts: AppWeapon[] = [
   {
@@ -41,14 +39,6 @@ const otherCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherCatalysts, 27)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 15,
         targetAttribute: "atk_",
       },
@@ -75,16 +65,6 @@ const otherCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherCatalysts, 28)?.passiveDesc({ refi }).core,
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 10 + refi * 2, tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 10,
         increment: 2,
         targetAttribute: "atk_",
@@ -112,14 +92,6 @@ const otherCatalysts: AppWeapon[] = [
         index: 0,
         affect: EModAffect.TEAMMATE,
         desc: ({ refi }) => findByCode(otherCatalysts, 29)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 24),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.TEAMMATE,
         base: 18,
         targetAttribute: "atk_",
       },

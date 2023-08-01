@@ -1,16 +1,10 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { applyPercent, round } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "./utils";
+import { Green, Rose } from "@Src/pure-components";
 
-type SeriesInfo = Pick<AppWeapon, "applyBuff" | "buffs" | "passiveName" | "passiveDesc" | "autoBuffs" | "newBuffs">;
+type SeriesInfo = Pick<AppWeapon, "passiveName" | "passiveDesc" | "autoBuffs" | "buffs">;
 
-export const desertSeries: Pick<
-  AppWeapon,
-  "applyBuff" | "buffs" | "passiveDesc" | "rarity" | "mainStatScale" | "subStat" | "newBuffs"
-> = {
+export const desertSeries: Pick<AppWeapon, "passiveDesc" | "rarity" | "mainStatScale" | "subStat" | "buffs"> = {
   rarity: 4,
   mainStatScale: "42",
   subStat: { type: "em", scale: "36" },
@@ -36,36 +30,6 @@ export const desertSeries: Pick<
       index: 0,
       affect: EModAffect.SELF,
       desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
-      applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-        const mult = 18 + refi * 6;
-        const buffValue = applyPercent(totalAttr.em, mult);
-        const finalDesc = desc + ` / ${mult}% of ${totalAttr.em} EM`;
-        applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
-      },
-    },
-    {
-      index: 1,
-      affect: EModAffect.TEAMMATE,
-      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
-      inputConfigs: [
-        {
-          label: "Elemental Mastery",
-          type: "text",
-        },
-      ],
-      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const mult = (54 + refi * 18) / 10;
-        const buffValue = applyPercent(inputs[0] || 0, mult);
-        const finalDesc = desc + ` / ${mult}% of ${inputs[0] || 0} EM`;
-        applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
-      },
-    },
-  ],
-
-  newBuffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
       base: 0.18,
       stacks: {
         type: "attribute",
@@ -76,6 +40,7 @@ export const desertSeries: Pick<
     {
       index: 1,
       affect: EModAffect.TEAMMATE,
+      desc: ({ refi }) => desertSeries.passiveDesc({ refi }).extra?.[0],
       inputConfigs: [
         {
           label: "Elemental Mastery",
@@ -112,23 +77,6 @@ export const royalSeries: SeriesInfo = {
           max: 5,
         },
       ],
-      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-        applyModifier(desc, totalAttr, "cRate_", buffValue, tracker);
-      },
-    },
-  ],
-
-  newBuffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 5,
-        },
-      ],
       base: 6,
       stacks: {
         type: "input",
@@ -139,23 +87,6 @@ export const royalSeries: SeriesInfo = {
 };
 
 export const blackcliffSeries: SeriesInfo = {
-  buffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
-      desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 3,
-        },
-      ],
-      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (9 + refi * 3) * (inputs[0] || 0);
-        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
-      },
-    },
-  ],
   passiveName: "Press the Advantage",
   passiveDesc: ({ refi }) => ({
     core: (
@@ -165,11 +96,11 @@ export const blackcliffSeries: SeriesInfo = {
       </>
     ),
   }),
-
-  newBuffs: [
+  buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
+      desc: ({ refi }) => blackcliffSeries.passiveDesc({ refi }).core,
       inputConfigs: [
         {
           type: "stacks",
@@ -256,39 +187,17 @@ export const liyueSeries: SeriesInfo = {
       </>,
     ],
   }),
-  applyBuff: makeWpModApplier("totalAttr", "shieldS_", 20),
-  buffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
-      desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 5,
-        },
-        {
-          label: "Protected by a Shield",
-          type: "check",
-        },
-      ],
-      applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-        const buffValue = (3 + refi) * (inputs[0] || 0) * (inputs[1] === 1 ? 2 : 1);
-        applyModifier(desc, totalAttr, "atk_", buffValue, tracker);
-      },
-    },
-  ],
-
   autoBuffs: [
     {
       base: 15,
       targetAttribute: "shieldS_",
     },
   ],
-  newBuffs: [
+  buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
+      desc: ({ refi }) => liyueSeries.passiveDesc!({ refi }).extra![0],
       inputConfigs: [
         {
           type: "stacks",
@@ -320,17 +229,24 @@ export const lithicSeries: SeriesInfo = {
       </>
     ),
   }),
-  // #weirdo
-  applyBuff: ({ totalAttr, refi, charData, partyData, desc, tracker }) => {
-    if (partyData) {
-      const stacks = partyData.reduce(
-        (result, data) => (data?.nation === "liyue" ? result + 1 : result),
-        charData.nation === "liyue" ? 1 : 0
-      );
-      const buffValues = [(6 + refi) * stacks, (2 + refi) * stacks];
-      applyModifier(desc, totalAttr, ["atk_", "cRate_"], buffValues, tracker);
-    }
-  },
+  autoBuffs: [
+    {
+      base: 6,
+      increment: 1,
+      stacks: {
+        type: "nation",
+      },
+      targetAttribute: "atk_",
+    },
+    {
+      base: 2,
+      increment: 1,
+      stacks: {
+        type: "nation",
+      },
+      targetAttribute: "cRate_",
+    },
+  ],
 };
 
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
@@ -348,14 +264,6 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
       index: 0,
       affect: EModAffect.SELF,
       desc: ({ refi }) => baneSeries1(name, elements).passiveDesc({ refi }).core,
-      applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
-    },
-  ],
-
-  newBuffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
       base: 9,
       targetAttPatt: "all.pct_",
     },
@@ -377,14 +285,6 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
       index: 0,
       affect: EModAffect.SELF,
       desc: ({ refi }) => baneSeries2(name, elements).passiveDesc({ refi }).core,
-      applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 20),
-    },
-  ],
-
-  newBuffs: [
-    {
-      index: 0,
-      affect: EModAffect.SELF,
       base: 16,
       increment: 4,
       targetAttPatt: "all.pct_",
@@ -403,30 +303,14 @@ export const watatsumiSeries: SeriesInfo = {
       </>
     ),
   }),
-  applyBuff: ({ attPattBonus, refi, charData, partyData, desc, tracker }) => {
-    if (partyData && attPattBonus) {
-      const energyCap = partyData.reduce((result, data) => result + (data?.EBcost || 0), charData.EBcost);
-      const mult = (9 + refi * 3) / 100;
-      let extraDesc = ` / Energy Cap. ${energyCap} * ${mult}%`;
-      let buffValue = round(energyCap * mult, 2);
-      const maxValue = 30 + refi * 10;
-
-      if (buffValue > maxValue) {
-        buffValue = maxValue;
-        extraDesc += ` / limited to ${maxValue}%`;
-      }
-      applyModifier(desc + extraDesc, attPattBonus, "EB.pct_", buffValue, tracker);
-    }
-  },
-
   autoBuffs: [
     {
       base: 0.09,
       stacks: {
         type: "energy",
       },
-      max: 30,
       targetAttPatt: "EB.pct_",
+      max: 30,
     },
   ],
 };

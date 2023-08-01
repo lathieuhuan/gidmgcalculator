@@ -1,10 +1,8 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
-import { applyPercent, findByCode, round } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const purpleSwords: AppWeapon[] = [
   {
@@ -30,13 +28,19 @@ const purpleSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "ES.cRate_", 8),
+    autoBuffs: [
+      {
+        base: 6,
+        targetAttPatt: "ES.cRate_",
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 165)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "er_", 16),
+        base: 12,
+        targetAttribute: "er_",
       },
     ],
   },
@@ -74,24 +78,21 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
+        base: 9,
+        targetAttribute: "atk_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[1],
-        applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const bondValue = Math.round(totalAttr.hp * 0.25);
-          const multiplier = 1.8 + refi * 0.6;
-          const limit = 112.5 + refi * 37.5;
-          let buffValue = applyPercent(bondValue, multiplier);
-          let finalDesc = desc + ` / ${multiplier}% of the Bond ${bondValue}`;
-          if (buffValue > limit) {
-            buffValue = limit;
-            finalDesc += ` / limit to ${limit}`;
-          }
-          applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
+        base: 0.018,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+          convertRate: 0.25,
         },
+        targetAttribute: "atk",
+        max: 112.5,
       },
     ],
   },
@@ -124,7 +125,12 @@ const purpleSwords: AppWeapon[] = [
         </>,
       ],
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 16),
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: ["ES.pct_", "EB.pct_"],
+      },
+    ],
     buffs: [
       {
         index: 0,
@@ -141,9 +147,11 @@ const purpleSwords: AppWeapon[] = [
             max: 4,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "ES.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        base: 1.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "ES.cRate_",
       },
       {
         index: 1,
@@ -160,9 +168,11 @@ const purpleSwords: AppWeapon[] = [
             max: 4,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "EB.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        base: 1.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "EB.cRate_",
       },
     ],
   },
@@ -196,7 +206,8 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 149)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
+        base: 12,
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -231,11 +242,12 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
-          const finalDesc = desc + ` / ${(27 + refi * 9) / 1000}% * ${totalAttr.em} EM`;
-          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
+        base: 0.027,
+        stacks: {
+          type: "attribute",
+          field: "em",
         },
+        targetAttribute: "er_",
       },
       {
         index: 1,
@@ -247,12 +259,11 @@ const purpleSwords: AppWeapon[] = [
             type: "text",
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const mult = (81 + refi * 27) / 10000;
-          const buffValue = round((inputs[0] || 0) * mult, 1);
-          const finalDesc = desc + ` / ${mult}% * ${inputs[0] || 0} EM`;
-          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
+        base: 0.0081,
+        stacks: {
+          type: "input",
         },
+        targetAttribute: "er_",
       },
     ],
   },
@@ -278,9 +289,9 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 142)?.passiveDesc({ refi }).core,
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 15, tracker);
-        },
+        base: 15,
+        increment: 0,
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -315,7 +326,8 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.ONE_UNIT,
         desc: ({ refi }) => findByCode(purpleSwords, 134)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "em", 60),
+        base: 45,
+        targetAttribute: "em",
       },
     ],
   },
@@ -340,7 +352,8 @@ const purpleSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purpleSwords, 109)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
+        base: 9,
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -380,10 +393,11 @@ const purpleSwords: AppWeapon[] = [
             max: 4,
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
+        base: 3,
+        stacks: {
+          type: "input",
         },
+        targetAttribute: ["atk_", "def_"],
       },
     ],
   },
@@ -403,7 +417,16 @@ const purpleSwords: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "ES.cRate_"], [16, 6]),
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: "ES.pct_",
+      },
+      {
+        base: 6,
+        targetAttPatt: "ES.cRate_",
+      },
+    ],
   },
   {
     code: 113,
@@ -422,7 +445,12 @@ const purpleSwords: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 20),
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
   },
   {
     code: 114,
@@ -487,10 +515,11 @@ const purpleSwords: AppWeapon[] = [
             max: 2,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
+        base: 4.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -547,14 +576,16 @@ const purpleSwords: AppWeapon[] = [
         </>
       ),
     }),
-    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
-      if (attPattBonus) {
-        const mult = 30 + refi * 10;
-        const buffValue = applyPercent(totalAttr.def, mult);
-        const finalDesc = desc + ` / ${mult}% of ${Math.round(totalAttr.def)} DEF`;
-        applyModifier(finalDesc, attPattBonus, "ES.flat", buffValue, tracker);
-      }
-    },
+    autoBuffs: [
+      {
+        base: 0.3,
+        stacks: {
+          type: "attribute",
+          field: "def",
+        },
+        targetAttPatt: "ES.flat",
+      },
+    ],
   },
 ];
 

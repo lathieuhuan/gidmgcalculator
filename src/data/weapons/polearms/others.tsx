@@ -38,12 +38,10 @@ const otherPolearms: AppWeapon[] = [
         </>
       ),
     }),
-    buffs: [
+    autoBuffs: [
       {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherPolearms, 75)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 24),
+        base: 18,
+        targetAttPatt: "NA.pct_",
       },
     ],
   },
@@ -67,7 +65,8 @@ const otherPolearms: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherPolearms, 76)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 40),
+        base: 30,
+        targetAttPatt: "all.pct_",
       },
     ],
   },

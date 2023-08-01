@@ -1,6 +1,7 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import {
   baneSeries2,
   blackcliffSeries,
@@ -8,11 +9,8 @@ import {
   favoniusSeries,
   lithicSeries,
   royalSeries,
-  watatsumiSeries,
+  watatsumiSeries
 } from "../series";
-import { countVision, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const purplePolearms: AppWeapon[] = [
   {
@@ -48,24 +46,15 @@ const purplePolearms: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      if (partyData) {
-        const visionCount = countVision(partyData, charData);
-        if (Object.keys(visionCount).length >= 3) {
-          applyModifier(desc, totalAttr, "em", 90 + refi * 30, tracker);
-        }
-      }
-    },
-
     autoBuffs: [
       {
         base: 90,
         checkInput: {
           source: "various_vision",
           compareValue: 3,
+          compareType: "atleast",
         },
-        targetGroup: "totalAttr",
-        targetPath: "em",
+        targetAttribute: "em",
       },
     ],
   },
@@ -91,7 +80,16 @@ const purplePolearms: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(purplePolearms, 141)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [12, 48]),
+        buffBonuses: [
+          {
+            base: 9,
+            targetAttribute: "atk_",
+          },
+          {
+            base: 36,
+            targetAttribute: "em",
+          },
+        ],
       },
     ],
   },
@@ -125,7 +123,8 @@ const purplePolearms: AppWeapon[] = [
         index: 0,
         affect: EModAffect.ONE_UNIT,
         desc: ({ refi }) => findByCode(purplePolearms, 135)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
+        base: 12,
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -137,23 +136,6 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "45",
     subStat: { type: "atk_", scale: "3%" },
     ...watatsumiSeries,
-  },
-  {
-    code: 86,
-    name: "Crescent Pike",
-    icon: "4/4c/Weapon_Crescent_Pike",
-    rarity: 4,
-    mainStatScale: "44",
-    subStat: { type: "phys", scale: "7.5%" },
-    passiveName: "Infusion Needle",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15 + refi * 5}% ATK
-          as DMG for 5s.
-        </>
-      ),
-    }),
   },
   {
     code: 87,
@@ -181,25 +163,65 @@ const purplePolearms: AppWeapon[] = [
         </>
       ),
     }),
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
+    autoBuffs: [
+      {
+        base: 4.5,
+        targetAttPatt: "ES.pct_",
+      },
+    ],
   },
   {
-    code: 89,
-    name: "Royal Spear",
-    icon: "f/fd/Weapon_Royal_Spear",
+    code: 92,
+    name: `"The Catch"`,
+    icon: "f/f5/Weapon_The_Catch",
     rarity: 4,
-    mainStatScale: "44",
-    subStat: { type: "atk_", scale: "6%" },
-    ...royalSeries,
+    mainStatScale: "42",
+    subStat: { type: "er_", scale: "10%" },
+    passiveName: "Shanty",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          Increases <Green>Elemental Burst DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
+          <Green>Elemental Burst CRIT Rate</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
+        </>
+      ),
+    }),
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: "EB.pct_",
+      },
+      {
+        base: 4.5,
+        targetAttPatt: "EB.cRate_",
+      },
+    ],
   },
   {
-    code: 90,
-    name: "Favonius Lance",
-    icon: "5/57/Weapon_Favonius_Lance",
+    code: 94,
+    name: "Dragonspine Spear",
+    icon: "1/1a/Weapon_Dragonspine_Spear",
+    rarity: 4,
+    mainStatScale: "41",
+    subStat: { type: "phys", scale: "15%" },
+    ...dragonspineSeries,
+  },
+  {
+    code: 86,
+    name: "Crescent Pike",
+    icon: "4/4c/Weapon_Crescent_Pike",
     rarity: 4,
     mainStatScale: "44",
-    subStat: { type: "er_", scale: "6.7%" },
-    ...favoniusSeries,
+    subStat: { type: "phys", scale: "7.5%" },
+    passiveName: "Infusion Needle",
+    passiveDesc: ({ refi }) => ({
+      core: (
+        <>
+          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15 + refi * 5}% ATK
+          as DMG for 5s.
+        </>
+      ),
+    }),
   },
   {
     code: 91,
@@ -228,30 +250,22 @@ const purplePolearms: AppWeapon[] = [
             max: 2,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
+        base: 6,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
   },
   {
-    code: 92,
-    name: `"The Catch"`,
-    icon: "f/f5/Weapon_The_Catch",
+    code: 89,
+    name: "Royal Spear",
+    icon: "f/fd/Weapon_Royal_Spear",
     rarity: 4,
-    mainStatScale: "42",
-    subStat: { type: "er_", scale: "10%" },
-    passiveName: "Shanty",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Burst DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
-          <Green>Elemental Burst CRIT Rate</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct_", "EB.cRate_"], [16, 6]),
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    ...royalSeries,
   },
   {
     code: 93,
@@ -261,15 +275,6 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cDmg_", scale: "12%" },
     ...blackcliffSeries,
-  },
-  {
-    code: 94,
-    name: "Dragonspine Spear",
-    icon: "1/1a/Weapon_Dragonspine_Spear",
-    rarity: 4,
-    mainStatScale: "41",
-    subStat: { type: "phys", scale: "15%" },
-    ...dragonspineSeries,
   },
   {
     code: 95,
@@ -299,41 +304,29 @@ const purplePolearms: AppWeapon[] = [
             type: "check",
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          if (inputs[0] === 1) {
-            applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);
-          } else {
-            applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);
-          }
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
-        inputConfigs: [
-          {
-            label: "Fewer than 2 opponents",
-            type: "check",
-          },
-        ],
-        targetGroup: "totalAttr",
         buffBonuses: [
           {
             checkInput: 1,
             base: 18,
-            targetPath: "atk_",
+            targetAttribute: "atk_",
           },
           {
             checkInput: 0,
             base: 12,
-            targetPath: ["atk_", "def_"],
+            targetAttribute: ["atk_", "def_"],
           },
         ],
       },
     ],
+  },
+  {
+    code: 90,
+    name: "Favonius Lance",
+    icon: "5/57/Weapon_Favonius_Lance",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "er_", scale: "6.7%" },
+    ...favoniusSeries,
   },
   {
     code: 96,

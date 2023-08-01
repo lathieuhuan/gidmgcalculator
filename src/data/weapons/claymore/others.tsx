@@ -1,11 +1,9 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
+import { Green, Rose } from "@Src/pure-components";
+import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakSeries } from "../series";
-import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const otherClaymores: AppWeapon[] = [
   {
@@ -38,14 +36,6 @@ const otherClaymores: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherClaymores, 129)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 30, 6),
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         base: 25,
         increment: 5,
         targetAttPatt: "CA.pct_",
@@ -73,22 +63,6 @@ const otherClaymores: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         desc: ({ refi }) => findByCode(otherClaymores, 50)?.passiveDesc({ refi }).core,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 4,
-          },
-        ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", (5 + refi) * (inputs[0] || 0), tracker);
-        },
-      },
-    ],
-
-    newBuffs: [
-      {
-        index: 0,
-        affect: EModAffect.SELF,
         inputConfigs: [
           {
             type: "stacks",

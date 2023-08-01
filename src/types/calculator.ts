@@ -195,7 +195,7 @@ export type PartyData = (TeammateData | null)[];
 export type BuffModifierArgsWrapper = {
   char: CharInfo;
   charData: AppCharacter;
-  partyData?: PartyData;
+  partyData: PartyData;
   totalAttr: TotalAttribute;
   attPattBonus: AttackPatternBonus;
   attElmtBonus: AttackElementBonus;
