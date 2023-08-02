@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { CalcWeapon, Level } from "@Src/types";
+import type { CalcWeapon, DescriptionSeed, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
@@ -15,7 +15,26 @@ import { BetaMark } from "@Src/pure-components";
 const groupStyles = "bg-darkblue-2 px-2";
 
 const wrapText = (text: string | number, dull?: boolean) => {
-  return `<span${dull ? "" : ' class="text-green font-semibold"'}>${text}</span>`;
+  return `<span${dull ? "" : ' class="text-green font-bold"'}>${text}</span>`;
+};
+
+const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) => {
+  return pot.replace(/\{[0-9]+\}/g, (match) => {
+    const seed = seeds[+match.slice(1, 2)];
+
+    if (typeof seed === "number") {
+      return wrapText(round(seed + (seed / 3) * refi, 3));
+    }
+    if (seed) {
+      if ("base" in seed) {
+        const { base, increment = base / 3 } = seed;
+        const value = base + increment * refi;
+        return wrapText(round(value, 3), seed.dull);
+      }
+      return wrapText(seed.options[refi - 1], seed.dull);
+    }
+    return match;
+  });
 };
 
 interface WeaponCardProps {
@@ -24,7 +43,7 @@ interface WeaponCardProps {
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
+const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   const { t } = useTranslation();
   if (!weapon) return null;
 
@@ -38,52 +57,8 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
       return "";
     }
     const { pots, seeds } = wpData.description;
-
-    return pots
-      .map((content) => {
-        return content.replace(/\{[0-9]+\}/g, (match) => {
-          const seed = seeds[+match.slice(1, 2)];
-
-          if (typeof seed === "number") {
-            return wrapText(round(seed + (seed / 3) * refi, 3));
-          }
-          if (seed) {
-            if ("base" in seed) {
-              const { base, increment = base / 3 } = seed;
-              const value = base + increment * refi;
-              return wrapText(round(value, 3), seed.dull);
-            }
-            return wrapText(seed.options[refi - 1], seed.dull);
-          }
-          return match;
-        });
-      })
-      .join(" ");
+    return pots.map((content) => decoDescription(content, seeds, refi)).join(" ");
   }, [weapon.code, refi]);
-
-  // const passiveDescription = useMemo(() => {
-  //   if (!wpData.passive) {
-  //     return "";
-  //   }
-  //   const { description, seeds } = wpData.passive;
-
-  //   return description.replace(/\{[0-9]+\}/g, (match) => {
-  //     const seed = seeds[+match.slice(1, 2)];
-
-  //     if (typeof seed === "number") {
-  //       return wrapText(round(seed + (seed / 3) * refi, 3));
-  //     }
-  //     if (seed) {
-  //       if ("base" in seed) {
-  //         const { base, increment = base / 3 } = seed;
-  //         const value = base + increment * refi;
-  //         return wrapText(round(value, 3), seed.dull);
-  //       }
-  //       return wrapText(seed.options[refi - 1], seed.dull);
-  //     }
-  //     return match;
-  //   });
-  // }, [weapon.code, refi]);
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
@@ -156,9 +131,12 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
       </div>
       <div className="mt-2">
         <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
-        {/* <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p> */}
         <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>
   );
 };
+
+WeaponCard.decoDescription = decoDescription;
+
+export { WeaponCard };

@@ -120,9 +120,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
             },
             {
               heading: "Weapons",
-              body: weapon ? (
-                <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} totalAttr={totalAttr} party={party} />
-              ) : null,
+              body: weapon ? <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} party={party} /> : null,
             },
             {
               heading: "Artifacts",

@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { liyueSeries } from "../series";
 
 const goldPolearms: AppWeapon[] = [
@@ -11,11 +10,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
-    passive: {
-      name: "Heat Haze at Horizon's End",
-      description: `The equipping character gains {0}% of their Elemental Mastery as bonus ATK. When an Elemental Skill
-      hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the equipping character will gain
-      {1}% of their Elemental Mastery as bonus ATK. Max 3 stacks.`,
+    passiveName: "Heat Haze at Horizon's End",
+    description: {
+      pots: [
+        `The equipping character gains {0}% of their Elemental Mastery as bonus ATK.`,
+        `When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
+        equipping character will gain {1}% of their Elemental Mastery as bonus ATK. Max 3 stacks.`,
+      ],
       seeds: [39, 21],
     },
     autoBuffs: [
@@ -32,13 +33,7 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
-            equipping character will gain <Green b>{21 + refi * 7}%</Green> of their <Green>Elemental Mastery</Green> as
-            bonus <Green>ATK</Green>. Max <Rose>3</Rose> stacks.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",
@@ -66,11 +61,14 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "49",
     subStat: { type: "atk_", scale: "3.6%" },
-    passive: {
-      name: "Eagle Spear of Justice",
-      description: `Gain {0}% All Elemental DMG Bonus. Obtain Consummation for 20s after using an Elemental Skill,
-      causing ATK to increase by {1}% per second, up to 6 times. When the character equipped with this weapon is not on
-      the field, Consummation's ATK increase is doubled.`,
+    passiveName: "Eagle Spear of Justice",
+    description: {
+      pots: [
+        `Gain {0}% All Elemental DMG Bonus.`,
+        `Obtain Consummation for 20s after using an Elemental Skill, causing ATK to increase by {1}% per second, up to
+        6 times. When the character equipped with this weapon is not on the field, Consummation's ATK increase is
+        doubled.`,
+      ],
       seeds: [9, 2.4],
     },
     autoBuffs: [
@@ -83,13 +81,7 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Obtain Consummation for 20s after using an Elemental Skill, causing <Green>ATK</Green> to increase by{" "}
-            <Green b>{(24 + refi * 8) / 10}%</Green> per second, up to <Rose>6</Rose> times. When the character equipped
-            with this weapon is not on the field, Consummation's ATK increase is <Green>doubled</Green>.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",
@@ -116,10 +108,12 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
-    passive: {
-      name: "Timeless Dream: Eternal Stove",
-      description: `ATK increased by {0}% of Energy Recharge over the base 100%. You can gain a maximum bonus of {1}%
-      ATK. Gain {2}% Energy Recharge for 12s after using an Elemental Burst.`,
+    passiveName: "Timeless Dream: Eternal Stove",
+    description: {
+      pots: [
+        `ATK increased by {0}% of Energy Recharge over the base 100%. You can gain a maximum bonus of {1}% ATK.`,
+        `Gain {2}% Energy Recharge for 12s after using an Elemental Burst.`,
+      ],
       seeds: [21, { base: 70, increment: 10, dull: true }, { base: 25, increment: 5 }],
     },
     // #to-do
@@ -149,12 +143,7 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Gain <Green b>{25 + refi * 5}%</Green> <Green>Energy Recharge</Green> for 12s after using an Elemental
-            Burst.
-          </>
-        ),
+        description: 1,
         base: 25,
         increment: 5,
         targetAttribute: "er_",
@@ -168,10 +157,12 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passive: {
-      name: "Reckless Cinnabar",
-      description: `HP increased by {0}%. Additionally, provides an ATK Bonus based on {1}% of the wielder's Max HP.
-      When the wielder's HP is less than 50%, this ATK Bonus is increased by an additional {2}% of Max HP.`,
+    passiveName: "Reckless Cinnabar",
+    description: {
+      pots: [
+        `HP increased by {0}%. Additionally, provides an ATK Bonus based on {1}% of the wielder's Max HP.`,
+        `When the wielder's HP is less than 50%, this ATK Bonus is increased by an additional {2}% of Max HP.`,
+      ],
       seeds: [15, 0.6, { base: 0.8, increment: 0.2 }],
     },
     autoBuffs: [
@@ -193,12 +184,7 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When the wielder's HP is less than 50%, this <Green>ATK Bonus</Green> is increased by an additional{" "}
-            <Green b>{(8 + refi * 2) / 10}%</Green> of <Green>Max HP</Green>.
-          </>
-        ),
+        description: 1,
         base: 0.8,
         increment: 0.2,
         stacks: {
@@ -226,23 +212,18 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cRate_", scale: "4.8%" },
-    passive: {
-      name: "Eagle Spear of Justice",
-      description: `On hit, increases ATK by {0}% for 6s. Max 7 stacks. This effect can only occur once every 0.3s.
-      While in possession of the maximum possible stacks, DMG dealt is increased by {1}%.`,
+    passiveName: "Eagle Spear of Justice",
+    description: {
+      pots: [
+        `On hit, increases ATK by {0}% for 6s. Max 7 stacks. This effect can only occur once every 0.3s. While in
+        possession of the maximum possible stacks, DMG dealt is increased by {1}%.`,
+      ],
       seeds: [{ base: 2.5, increment: 0.7 }, 9],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            On hit, increases <Green>ATK</Green> by <Green b>{2.5 + refi * 0.7}%</Green> for 6s. Max <Rose>7</Rose>{" "}
-            stacks. This effect can only occur once every 0.3s. While in possession of the maximum possible stacks,{" "}
-            <Green>DMG</Green> dealt is increased by <Green b>{9 + refi * 3}%</Green>.
-          </>
-        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -274,11 +255,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "er_", scale: "8%" },
-    passive: {
-      name: "Blackwing",
-      description: `Increases CRIT Rate by {0}% and increases mal ATK SPD by 12%. Additionally, Normal and Charged
-      Attacks hits on opponents have a 50% chance to trigger a vacuum blade that deals {1}% of ATK as DMG in a small
-      AoE. This effect can occur no more than once every 2s.`,
+    passiveName: "Blackwing",
+    description: {
+      pots: [
+        `Increases CRIT Rate by {0}% and increases mal ATK SPD by 12%. Additionally, Normal and Charged Attacks hits on
+        opponents have a 50% chance to trigger a vacuum blade that deals {1}% of ATK as DMG in a small AoE. This effect
+        can occur no more than once every 2s.`,
+      ],
       seeds: [6, { base: 25, increment: 15, dull: true }],
     },
     autoBuffs: [

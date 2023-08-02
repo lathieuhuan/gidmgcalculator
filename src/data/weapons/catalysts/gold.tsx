@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { liyueSeries } from "../series";
 
 const goldCatalysts: AppWeapon[] = [
@@ -11,11 +10,14 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
-    passive: {
-      name: "Primordial Jade Regalia",
-      description: `When using an Elemental Burst or creating a shield, the equipping character's corresponding
-      Elemental DMG is increased by {0}% for every 1,000 Max HP they possess for 3s, up to {1}%. At the same time, they
-      will regain {2} Energy every 2.5s. This will still take effect even if the character is not on the field.`,
+    passiveName: "Primordial Jade Regalia",
+    description: {
+      pots: [
+        `When using an Elemental Burst or creating a shield, the equipping character's corresponding Elemental DMG is
+        increased by {0}% for every 1,000 Max HP they possess for 3s, up to {1}%.`,
+        `At the same time, they will regain {2} Energy every 2.5s. This will still take effect even if the character
+        is not on the field.`,
+      ],
       seeds: [
         { base: 0.1, increment: 0.2 },
         { base: 4, increment: 8, dull: true },
@@ -26,13 +28,6 @@ const goldCatalysts: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When using an Elemental Burst or creating a shield, the equipping character's{" "}
-            <Green>corresponding Elemental DMG</Green> is increased by <Green b>{(10 + refi * 20) / 100}%</Green> for
-            every 1,000 Max HP they possess for 3s, up to <Rose>{4 + refi * 8}%</Rose>.
-          </>
-        ),
         base: 0.1,
         increment: 0.2,
         stacks: {
@@ -55,13 +50,16 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cDmg_", scale: "9.6%b" },
-    passive: {
-      name: "Bygone Azure Teardrop",
-      description: `Normal Attack SPD is increased by {0}%. After the wielder unleashes an Elemental Skill, Normal
-      Attack DMG will increase by {1}% every second for 12s. After this character hits an opponent with a Normal Attack
-      during this duration, Normal Attack DMG will be increased by {2}%. This increase can be triggered once every
-      0.3s. Total maximum bonus is {3}%. The effect will be removed when the wielder leaves the field, and using the
-      Elemental Skill again will reset all DMG buffs.`,
+    passiveName: "Bygone Azure Teardrop",
+    description: {
+      pots: [
+        `Normal Attack SPD is increased by {0}%.`,
+        `After the wielder unleashes an Elemental Skill, Normal Attack DMG will increase by {1}% every second for 12s.
+        After this character hits an opponent with a Normal Attack during this duration, Normal Attack DMG will be
+        increased by {2}%. This increase can be triggered once every 0.3s. Total maximum bonus is {3}%.`,
+        `The effect will be removed when the wielder leaves the field, and using the Elemental Skill again will reset
+        all DMG buffs.`,
+      ],
       seeds: [7.5, 3.6, 7.2, { base: 36, dull: true }],
     },
     autoBuffs: [
@@ -74,15 +72,7 @@ const goldCatalysts: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            After the wielder unleashes an Elemental Skill, <Green>Normal Attack DMG</Green> will increase by{" "}
-            <Green b>{(36 + refi * 12) / 10}%</Green> every second for 12s. After this character hits an opponent with a
-            Normal Attack during this duration, <Green>Normal Attack DMG</Green> will be increased by{" "}
-            <Green b>{(72 + refi * 24) / 10}%</Green>. This increase can be triggered once every 0.3s. Total maximum
-            bonus is <Rose>{36 + refi * 12}%</Rose>.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           { label: "Seconds passed", type: "text", max: 10 },
           { label: "Normal attacks hit", type: "text", max: 10 },
@@ -104,13 +94,16 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "em", scale: "58" },
-    passive: {
-      name: "A Thousand Nights' Dawnsong",
-      description: `Party members other than the equipping character will provide the equipping character with buffs
-      based on whether their Elemental Type is the same as the latter or not. If their Elemental Types are the same,
-      increase Elemental Mastery by {0}. If not, increase the equipping character's DMG Bonus from their Elemental
-      Type by {1}%. Max 3 stacks. Additionally, all nearby party members other than the equipping character will
-      have their Elemental Mastery increased by {2}. Multiple such effects from multiple such weapons can stack.`,
+    passiveName: "A Thousand Nights' Dawnsong",
+    description: {
+      pots: [
+        `Party members other than the equipping character will provide the equipping character with buffs based on
+        whether their Elemental Type is the same as the latter or not. If their Elemental Types are the same, increase
+        Elemental Mastery by {0}. If not, increase the equipping character's DMG Bonus from their Elemental Type by
+        {1}%. Max 3 stacks.`,
+        `Additionally, all nearby party members other than the equipping character will have their Elemental Mastery
+        increased by {2}. Multiple such effects from multiple such weapons can stack.`,
+      ],
       seeds: [24, { base: 6, increment: 4 }, { base: 38, increment: 2 }],
     },
     autoBuffs: [
@@ -136,12 +129,7 @@ const goldCatalysts: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => (
-          <>
-            All nearby party members other than the equipping character will have their <Green>Elemental Mastery</Green>{" "}
-            increased by <Green b>{38 + refi * 2}</Green>. Multiple such effects from multiple such weapons can stack.
-          </>
-        ),
+        description: 1,
         base: 38,
         increment: 2,
         targetAttribute: "em",
@@ -155,25 +143,19 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passive: {
-      name: "Kagura Dance of the Sacred Sakura",
-      description: `Gains the Kagura Dance effect when using an Elemental Skill, causing the Elemental Skill DMG of the
-      character wielding this weapon to increase by {0}% for 16s. Max 3 stacks. This character will gain {0}% All
-      Elemental DMG Bonus when they possess 3 stacks.`,
+    passiveName: "Kagura Dance of the Sacred Sakura",
+    description: {
+      pots: [
+        `Gains the Kagura Dance effect when using an Elemental Skill, causing the Elemental Skill DMG of the character
+        wielding this weapon to increase by {0}% for 16s. Max 3 stacks. This character will gain {0}% All Elemental DMG
+        Bonus when they possess 3 stacks.`,
+      ],
       seeds: [9],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Gains the Kagura Dance effect when using an Elemental Skill, causing the <Green>Elemental Skill DMG</Green>{" "}
-            of the character wielding this weapon to increase by <Green b>{9 + refi * 3}%</Green> for 16s. Max{" "}
-            <Rose>3</Rose> stacks. This character will gain <Green b>{9 + refi * 3}%</Green>{" "}
-            <Green>All Elemental DMG Bonus</Green> when they possess 3 stacks.
-          </>
-        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -204,11 +186,13 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
-    passive: {
-      name: "Byakuya Kougetsu",
-      description: `Healing Bonus increased by {0}%, Normal Attack DMG is increased by {1}% of the Max HP of the
-      character equipping this weapon. For 12s after using an Elemental Burst, Normal Attacks that hit opponents will
-      restore 0.6 Energy. Energy can be restored this way once every 0.1s.`,
+    passiveName: "Byakuya Kougetsu",
+    description: {
+      pots: [
+        `Healing Bonus increased by {0}%, Normal Attack DMG is increased by {1}% of the Max HP of the character
+        equipping this weapon. For 12s after using an Elemental Burst, Normal Attacks that hit opponents will restore
+        0.6 Energy. Energy can be restored this way once every 0.1s.`,
+      ],
       seeds: [7.5, { base: 0.5, increment: 0.5 }],
     },
     autoBuffs: [
@@ -234,11 +218,13 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "atk_", scale: "7.2%" },
-    passive: {
-      name: "Wandering Clouds",
-      description: `Increases Elemental DMG Bonus by {0}%. Normal Attack hits have a 50% chance to earn the favor of
-      the clouds. which actively seek out nearby opponents to attack for 15s, dealing {1}% ATK DMG. Can only occur once
-      every 30s.`,
+    passiveName: "Wandering Clouds",
+    description: {
+      pots: [
+        `Increases Elemental DMG Bonus by {0}%. Normal Attack hits have a 50% chance to earn the favor of the clouds.
+        which actively seek out nearby opponents to attack for 15s, dealing {1}% ATK DMG. Can only occur once every
+        30s.`,
+      ],
       seeds: [9, { base: 120, dull: true }],
     },
     autoBuffs: [
@@ -255,22 +241,20 @@ const goldCatalysts: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
-    passive: {
-      name: "Boundless Blessing",
-      description: `Increases Movement SPD by 10%. When in battle, gain an {0}% Elemental DMG Bonus every 4s. Max 4
-      stacks. Lasts until the character falls or leaves combat.`,
+    passiveName: "Boundless Blessing",
+    description: {
+      pots: [
+        `Increases Movement SPD by 10%.`,
+        `When in battle, gain an {0}% Elemental DMG Bonus every 4s. Max 4 stacks.`,
+        `Lasts until the character falls or leaves combat.`,
+      ],
       seeds: [6],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When in battle, gain an <Green b>{6 + refi * 2}%</Green> <Green>Elemental DMG Bonus</Green> every 4s. Max{" "}
-            <Rose>4</Rose> stacks.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",

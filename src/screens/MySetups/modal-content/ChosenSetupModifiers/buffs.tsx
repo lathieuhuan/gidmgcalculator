@@ -213,10 +213,9 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
 interface WeaponBuffsProps {
   weapon: CalcWeapon;
   wpBuffCtrls: ModifierCtrl[];
-  totalAttr: TotalAttribute;
   party: Party;
 }
-export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuffsProps) {
+export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
   const content = [];
 
   for (const { index, inputs = [] } of wpBuffCtrls) {
@@ -225,7 +224,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
       continue;
     }
 
-    const { name, buffs = [] } = weaponData;
+    const { name, buffs = [], description } = weaponData;
     const buff = findByIndex(buffs, index);
 
     if (buff) {
@@ -234,7 +233,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
           key={`${weapon.code}-${index}`}
           mutable={false}
           heading={name}
-          desc={buff.desc({ refi: weapon.refi, totalAttr })}
+          desc={ModifierTemplate.getWeaponDescription(description, buff, weapon.refi)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
         />
@@ -244,7 +243,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
 
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
-    const { name, buffs = [] } = findDataWeapon(teammate.weapon) || {};
+    const { name, buffs = [], description } = findDataWeapon(teammate.weapon) || {};
 
     for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
       const buff = findByIndex(buffs, index);
@@ -255,7 +254,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, totalAttr, party }: WeaponBuf
             key={`${teammateIndex}-${index}`}
             mutable={false}
             heading={name}
-            desc={buff.desc({ refi: teammate.weapon.refi, totalAttr })}
+            desc={ModifierTemplate.getWeaponDescription(description, buff, teammate.weapon.refi)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />

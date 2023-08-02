@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "../series";
 
 const purpleSwords: AppWeapon[] = [
@@ -11,10 +10,12 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passive: {
-      name: "",
-      description: `Increases Elemental Skill CRIT Rate by {0}%. Increases Energy Recharge by {1}% for 5s after using
-      an Elemental Skill.`,
+    passiveName: "",
+    description: {
+      pots: [
+        `Increases Elemental Skill CRIT Rate by {0}%. Increases Energy Recharge by {1}% for 5s after using an Elemental
+        Skill.`,
+      ],
       seeds: [6, 12],
     },
     autoBuffs: [
@@ -27,12 +28,6 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Increases <Green>Energy Recharge</Green> by <Green b>{12 + refi * 4}%</Green> for 5s after using an
-            Elemental Skill.
-          </>
-        ),
         base: 12,
         targetAttribute: "er_",
       },
@@ -45,36 +40,28 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    passive: {
-      name: "",
-      description: `When using an Elemental Skill, ATK will be increased by {0}% for 12s, and a Bond of Life worth 25%
-      of Max HP will be granted. This effect can be triggered once every 10s. When the Bond of Life is cleared, a
-      maximum of {1} ATK will be gained based on {2}% of the Bond for 12s. Bond of Life: Absorbs healing for the
-      character based on its base value, and clears after healing equal to this value is obtained.`,
+    passiveName: "",
+    description: {
+      pots: [
+        `When using an Elemental Skill, ATK will be increased by {0}% for 12s`,
+        `, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once every 10s.`,
+        `When the Bond of Life is cleared, a maximum of {1} ATK will be gained based on {2}% of the Bond for 12s.`,
+        `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
+        this value is obtained.`,
+      ],
       seeds: [9, { base: 112.5, dull: true }, 1.8],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When using an Elemental Skill, <Green>ATK</Green> will be increased by <Green b>{9 + refi * 3}%</Green> for
-            12s
-          </>
-        ),
         base: 9,
         targetAttribute: "atk_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When the Bond of Life is cleared, a maximum of <Rose>{112.5 + refi * 37.5}</Rose> ATK will be gained based
-            on <Green b>{1.8 + refi * 0.6}%</Green> of the Bond for 12s.
-          </>
-        ),
+        description: 2,
         base: 0.018,
         stacks: {
           type: "attribute",
@@ -93,12 +80,14 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passive: {
-      name: "",
-      description: `DMG dealt by Elemental Skill and Elemental Burst will be increased by {0}%. When an Elemental Skill
-      hits an opponent, its CRIT Rate will be increased by {1}%. When an Elemental Burst hits an opponent, its CRIT
-      Rate will be increased by {1}%. Both of these effects last 10s separately, have 4 max stacks, and can be
-      triggered once every 0.1s.`,
+    passiveName: "",
+    description: {
+      pots: [
+        `DMG dealt by Elemental Skill and Elemental Burst will be increased by {0}%. When an Elemental Skill hits an
+        opponent, its CRIT Rate will be increased by {1}%. When an Elemental Burst hits an opponent, its CRIT Rate will
+        be increased by {1}%. Both of these effects last 10s separately, have 4 max stacks, and can be triggered once
+        every 0.1s.`,
+      ],
       seeds: [12, 1.5],
     },
     autoBuffs: [
@@ -111,13 +100,7 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When an <Green>Elemental Skill</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
-            <Green b>{1.5 + refi * 0.5}%</Green>. This effect lasts 10s, have <Rose>4</Rose> max stacks, and can be
-            triggered once every 0.1s.
-          </>
-        ),
+        description: `When an Elemental Skill hits an opponent, its CRIT Rate will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
@@ -133,13 +116,7 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When an <Green>Elemental Burst</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
-            <Green b>{1.5 + refi * 0.5}%</Green>. This effect lasts 10s, have <Rose>4</Rose> max stacks, and can be
-            triggered once every 0.1s.
-          </>
-        ),
+        description: `When an Elemental Burst hits an opponent, its CRIT Rate will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
@@ -161,24 +138,21 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    passive: {
-      name: "Kaidan: Rainfall Earthbinder",
-      description: `After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for
-      10s. This effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration,
-      Cursed Parasol's CD will be refreshed immediately. The character wielding this weapon will deal {0}% more DMG to
-      the opponent affected by Cursed Parasol.`,
+    passiveName: "Kaidan: Rainfall Earthbinder",
+    description: {
+      pots: [
+        `After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for 10s. This
+        effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration, Cursed
+        Parasol's CD will be refreshed immediately.`,
+        `The character wielding this weapon will deal {0}% more DMG to the opponent affected by Cursed Parasol.`,
+      ],
       seeds: [12],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            The character wielding this weapon will deal <Green b>{12 + refi * 4}%</Green> more <Green>DMG</Green> to
-            the opponent affected by Cursed Parasol.
-          </>
-        ),
+        description: 1,
         base: 12,
         targetAttPatt: "all.pct_",
       },
@@ -191,26 +165,21 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    passive: {
-      name: "Jinni's Whisper",
-      description: `The following effect will trigger every 10s: the equipping character will gain {0}% Energy Recharge
-      for each point of Elemental Mastery they possess for 12s, with nearby party members gaining 30% of this buff for
-      the same duration. Multiple instances of this weapon can allow this buff to stack. This effect will still trigger
-      even if the character is not on the field.`,
+    passiveName: "Jinni's Whisper",
+    description: {
+      pots: [
+        `The following effect will trigger every 10s: the equipping character will gain {0}% Energy Recharge for each
+        point of Elemental Mastery they possess for 12s, with nearby party members gaining 30% of this buff for the
+        same duration.`,
+        `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
+        character is not on the field.`,
+      ],
       seeds: [0.027],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            The following effect will trigger every 10s: the equipping character will gain{" "}
-            <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point of{" "}
-            <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members gaining <Green>30%</Green>{" "}
-            of this buff for the same duration.
-          </>
-        ),
         base: 0.027,
         stacks: {
           type: "attribute",
@@ -221,14 +190,6 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => (
-          <>
-            The following effect will trigger every 10s: the equipping character will gain{" "}
-            <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point of{" "}
-            <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members gaining <Green>30%</Green>{" "}
-            of this buff for the same duration.
-          </>
-        ),
         inputConfigs: [
           {
             label: "Elemental Mastery",
@@ -250,23 +211,18 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    passive: {
-      name: "Isshin Art Clarity",
-      description: `When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
-      equal to 180% of ATK and increasing ATK by 15% for 8s. This effect can be triggered once every 8s.`,
+    passiveName: "Isshin Art Clarity",
+    description: {
+      pots: [
+        `When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
+        equal to 180% of ATK and increasing ATK by 15% for 8s. This effect can be triggered once every 8s.`,
+      ],
       seeds: [],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => (
-          <>
-            When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
-            equal to 180% of ATK and increasing <Green>ATK</Green> by <Green b>15%</Green> for 8s. This effect can be
-            triggered once every 8s.
-          </>
-        ),
         base: 15,
         increment: 0,
         targetAttribute: "atk_",
@@ -280,24 +236,22 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    passive: {
-      name: "Forest Sanctuary",
-      description: `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of
-      Consciousness will be created around the character for a maximum of 10s. When picked up, the Leaf will grant the
-      character {0} Elemental Mastery for 12s. Only 1 Leaf can be generated this way every 20s. This effect can still
-      be triggered if the character is not on the field. The Leaf of Consciousness' effect cannot stack.`,
+    passiveName: "Forest Sanctuary",
+    description: {
+      pots: [
+        `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
+        will be created around the character for a maximum of 10s.`,
+        `When picked up, the Leaf will grant the character {0} Elemental Mastery for 12s.`,
+        `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
+        the field. The Leaf of Consciousness' effect cannot stack.`,
+      ],
       seeds: [45],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.ONE_UNIT,
-        desc: ({ refi }) => (
-          <>
-            When picked up, the Leaf will grant the character <Green b>{45 + refi * 15}</Green>{" "}
-            <Green>Elemental Mastery</Green> for 12s.
-          </>
-        ),
+        description: 1,
         base: 45,
         targetAttribute: "em",
       },
@@ -310,22 +264,17 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "45",
     subStat: { type: "em", scale: "12" },
-    passive: {
-      name: "Itinerant Hero",
-      description: `Increases DMG dealt by the character equipping this weapon by {0}%. Taking DMG disables this effect
-      for 5s.`,
+    passiveName: "Itinerant Hero",
+    description: {
+      pots: [
+        `Increases DMG dealt by the character equipping this weapon by {0}%. Taking DMG disables this effect for 5s.`,
+      ],
       seeds: [9],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Increases <Green>DMG</Green> dealt by the character equipping this weapon by{" "}
-            <Green b>{9 + refi * 3}%</Green>. Taking DMG disables this effect for 5s.
-          </>
-        ),
         base: 9,
         targetAttPatt: "all.pct_",
       },
@@ -347,22 +296,18 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
-    passive: {
-      name: "Smashed Stone",
-      description: `On hit, Normal or Charged Attacks increase ATK and DEF by {0}% for 6s. Max 4 stacks. Can only occur
-      once every 0.3s.`,
+    passiveName: "Smashed Stone",
+    description: {
+      pots: [
+        `On hit, Normal or Charged Attacks increase ATK and DEF by {0}% for 6s. Max 4 stacks. Can only occur once every
+        0.3s.`,
+      ],
       seeds: [3],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            On hit, Normal or Charged Attacks increase <Green>ATK</Green> and <Green>DEF</Green> by{" "}
-            <Green b>{3 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every 0.3s.
-          </>
-        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -384,9 +329,9 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passive: {
-      name: "Undying Admiration",
-      description: `Increases Elemental Skill DMG by {0}% and Elemental Skill CRIT Rate by {1}%.`,
+    passiveName: "Undying Admiration",
+    description: {
+      pots: [`Increases Elemental Skill DMG by {0}% and Elemental Skill CRIT Rate by {1}%.`],
       seeds: [12, 4.5],
     },
     autoBuffs: [
@@ -407,10 +352,12 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passive: {
-      name: "Justice",
-      description: `Increases DMG dealt by Normal and Charged Attacks by {0}%. Additionally, regenerates {1}% of ATK as
-      HP when Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.`,
+    passiveName: "Justice",
+    description: {
+      pots: [
+        `Increases DMG dealt by Normal and Charged Attacks by {0}%. Additionally, regenerates {1}% of ATK as HP when
+        Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.`,
+      ],
       seeds: [15, { base: 50, increment: 10, dull: true }],
     },
     autoBuffs: [
@@ -427,11 +374,12 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    passive: {
-      name: "Chord",
-      description: `Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music
-      and deals {0}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained every
-      0.5s.`,
+    passiveName: "Chord",
+    description: {
+      pots: [
+        `Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music and deals
+        {0}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained every 0.5s.`,
+      ],
       seeds: [{ base: 75, dull: true }],
     },
   },
@@ -460,21 +408,15 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
-    passive: {
-      name: "Infusion Stinger",
-      description: `Dealing Elemental DMG increases all DMG by {0}% for 6s. Max 2 stacks. Can only occur once every 1s.`,
+    passiveName: "Infusion Stinger",
+    description: {
+      pots: [`Dealing Elemental DMG increases all DMG by {0}% for 6s. Max 2 stacks. Can only occur once every 1s.`],
       seeds: [4.5],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Dealing Elemental DMG increases <Green>all DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max{" "}
-            <Rose>2</Rose> stacks. Can only occur once every 1s.
-          </>
-        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -496,12 +438,14 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    passive: {
-      name: "Iwakura Succession",
-      description: `After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered once every
-      5s. The Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist simultaneously. After using an
-      Elemental Burst, all Succession Seeds are consumed and after 2s, the character regenerates {0} Energy for each
-      seed consumed.`,
+    passiveName: "Iwakura Succession",
+    description: {
+      pots: [
+        `After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered once every 5s. The
+        Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist simultaneously. After using an Elemental
+        Burst, all Succession Seeds are consumed and after 2s, the character regenerates {0} Energy for each seed
+        consumed.`,
+      ],
       seeds: [{ base: 4.5, dull: true }],
     },
   },
@@ -512,7 +456,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    passive: favoniusPassive,
+    ...favoniusPassive,
   },
   {
     code: 120,
@@ -521,7 +465,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    passive: sacrificialPassive,
+    ...sacrificialPassive,
   },
   {
     code: 121,
@@ -530,10 +474,12 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "def_", scale: "15%" },
-    passive: {
-      name: "Spotless Heart",
-      description: `Elemental Skill DMG is increased by {0}% of DEF. The effect will be triggered no more than once
-      every 1.5s and will be cleared 0.1s after the Elemental Skill deals DMG.`,
+    passiveName: "Spotless Heart",
+    description: {
+      pots: [
+        `Elemental Skill DMG is increased by {0}% of DEF. The effect will be triggered no more than once every 1.5s and
+        will be cleared 0.1s after the Elemental Skill deals DMG.`,
+      ],
       seeds: [30],
     },
     autoBuffs: [

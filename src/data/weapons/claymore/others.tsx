@@ -1,7 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
-import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakPassive } from "../series";
 
@@ -13,7 +11,7 @@ const otherClaymores: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "def_", scale: "9.6%a" },
-    passive: cullTheWeakPassive,
+    ...cullTheWeakPassive,
   },
   {
     code: 129,
@@ -22,10 +20,12 @@ const otherClaymores: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
-    passive: {
-      name: "Unbending",
-      description: `When HP falls below {0}%, increases Charged Attack DMG by {1}%, and Charged Attacks become much
-      harder to interrupt.`,
+    passiveName: "Unbending",
+    description: {
+      pots: [
+        `When HP falls below {0}%, increases Charged Attack DMG by {1}%, and Charged Attacks become much harder to
+        interrupt.`,
+      ],
       seeds: [
         { base: 65, increment: 5, dull: true },
         { base: 25, increment: 5 },
@@ -35,12 +35,6 @@ const otherClaymores: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When HP falls below {65 + refi * 5}%, increases <Green>Charged Attack DMG</Green> by{" "}
-            <Green b>{25 + refi * 5}%</Green>, and Charged Attacks become much harder to interrupt.
-          </>
-        ),
         base: 25,
         increment: 5,
         targetAttPatt: "CA.pct_",
@@ -54,22 +48,17 @@ const otherClaymores: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "phys", scale: "9.6%a" },
-    passive: {
-      name: "Courage",
-      description: `On hit, Normal or Charged Attacks increase ATK by {0}% for 6s. Max 4 stacks. Can only occur once
-      every 0.5s.`,
+    passiveName: "Courage",
+    description: {
+      pots: [
+        `On hit, Normal or Charged Attacks increase ATK by {0}% for 6s. Max 4 stacks. Can only occur once every 0.5s.`,
+      ],
       seeds: [{ base: 5, increment: 1 }],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            On hit, Normal or Charged Attacks increase <Green>ATK</Green> by <Green b>{5 + refi}%</Green> for 6s. Max{" "}
-            <Rose>4</Rose> stacks. Can only occur once every 0.5s.
-          </>
-        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -92,10 +81,12 @@ const otherClaymores: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "atk_", scale: "7.7%" },
-    passive: {
-      name: "Blunt Conclusion",
-      description: `After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional {0}% ATK DMG
-      in a small area. Effect lasts 15s. DMG can only occur once every 3s.`,
+    passiveName: "Blunt Conclusion",
+    description: {
+      pots: [
+        `After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional {0}% ATK DMG in a small
+        area. Effect lasts 15s. DMG can only occur once every 3s.`,
+      ],
       seeds: [{ base: 45, dull: true }],
     },
   },

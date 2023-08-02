@@ -1,6 +1,4 @@
-import type { ReactNode } from "react";
 import type { AttackPatternPath } from "../utils/calculation";
-import type { TotalAttribute } from "./calculator";
 import type { AttributeStat, ModInputConfig, Rarity } from "./global";
 import { EModAffect } from "@Src/constants";
 
@@ -85,7 +83,7 @@ export type AutoBuff = {
       };
 };
 
-type DescriptionSeed =
+export type DescriptionSeed =
   | number
   | { base: number; increment?: number; dull?: boolean }
   | { options: number[]; dull?: boolean };
@@ -105,11 +103,6 @@ export type AppWeapon = {
     scale: string;
   };
   passiveName?: string;
-  // passive?: {
-  //   name: string;
-  //   description: string;
-  //   seeds: DescriptionSeed[];
-  // };
   description?: {
     pots: string[];
     seeds: DescriptionSeed[];
@@ -118,19 +111,10 @@ export type AppWeapon = {
   buffs?: WeaponBuff[];
 };
 
-type WeaponDescArgs = {
-  refi: number;
-};
-
-type WeaponBuff = AutoBuff & {
+export type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  // desc: (
-  //   args: WeaponDescArgs & {
-  //     totalAttr: TotalAttribute;
-  //   }
-  // ) => ReactNode;
 
   description?: number | string;
   buffBonuses?: AutoBuff[];
