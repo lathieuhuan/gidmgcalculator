@@ -1,7 +1,7 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Cryo, Green, Red, Rose } from "@Src/pure-components";
-import { blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries, watatsumiSeries } from "../series";
+import { blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive, watatsumiSeries } from "../series";
 
 const purpleBows: AppWeapon[] = [
   {
@@ -253,7 +253,7 @@ const purpleBows: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    ...sacrificialSeries,
+    passive: sacrificialPassive,
   },
   {
     code: 16,
@@ -574,7 +574,7 @@ const purpleBows: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...favoniusSeries,
+    passive: favoniusPassive,
   },
 ];
 

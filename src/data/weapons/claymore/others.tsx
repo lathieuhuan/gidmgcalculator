@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 import { findByCode } from "@Src/utils";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { baneSeries1, cullTheWeakSeries } from "../series";
+import { baneSeries1, cullTheWeakPassive } from "../series";
 
 const otherClaymores: AppWeapon[] = [
   {
@@ -13,7 +13,7 @@ const otherClaymores: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "def_", scale: "9.6%a" },
-    ...cullTheWeakSeries,
+    passive: cullTheWeakPassive,
   },
   {
     code: 129,

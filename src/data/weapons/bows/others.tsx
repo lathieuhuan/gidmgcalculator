@@ -2,7 +2,7 @@ import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green } from "@Src/pure-components";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { baneSeries1, cullTheWeakSeries } from "../series";
+import { baneSeries1, cullTheWeakPassive } from "../series";
 
 const otherBows: AppWeapon[] = [
   {
@@ -12,7 +12,7 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
-    ...cullTheWeakSeries,
+    passive: cullTheWeakPassive,
   },
   {
     code: 1,

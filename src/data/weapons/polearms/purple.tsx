@@ -4,8 +4,8 @@ import { Green, Rose } from "@Src/pure-components";
 import {
   baneSeries2,
   blackcliffSeries,
-  dragonspineSeries,
-  favoniusSeries,
+  dragonspinePassive,
+  favoniusPassive,
   lithicSeries,
   royalSeries,
   watatsumiSeries,
@@ -187,7 +187,7 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "phys", scale: "15%" },
-    ...dragonspineSeries,
+    passive: dragonspinePassive,
   },
   {
     code: 86,
@@ -311,7 +311,7 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    ...favoniusSeries,
+    passive: favoniusPassive,
   },
   {
     code: 96,

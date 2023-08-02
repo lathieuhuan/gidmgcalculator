@@ -4,10 +4,10 @@ import { Green, Rose } from "@Src/pure-components";
 import {
   blackcliffSeries,
   desertSeries,
-  dragonspineSeries,
-  favoniusSeries,
+  dragonspinePassive,
+  favoniusPassive,
   royalSeries,
-  sacrificialSeries,
+  sacrificialPassive,
 } from "../series";
 
 const purpleCatalysts: AppWeapon[] = [
@@ -347,7 +347,7 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    ...dragonspineSeries,
+    passive: dragonspinePassive,
   },
   {
     code: 43,
@@ -410,7 +410,7 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    ...favoniusSeries,
+    passive: favoniusPassive,
   },
   {
     code: 46,
@@ -484,7 +484,7 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "em", scale: "48" },
-    ...sacrificialSeries,
+    passive: sacrificialPassive,
   },
 ];
 

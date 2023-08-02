@@ -6,11 +6,11 @@ import {
   baneSeries2,
   blackcliffSeries,
   desertSeries,
-  dragonspineSeries,
-  favoniusSeries,
+  dragonspinePassive,
+  favoniusPassive,
   lithicSeries,
   royalSeries,
-  sacrificialSeries,
+  sacrificialPassive,
   watatsumiSeries,
 } from "../series";
 
@@ -164,7 +164,7 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
-    ...dragonspineSeries,
+    passive: dragonspinePassive,
   },
   {
     code: 61,
@@ -173,7 +173,7 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    ...sacrificialSeries,
+    passive: sacrificialPassive,
   },
   {
     code: 62,
@@ -387,7 +387,7 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...favoniusSeries,
+    passive: favoniusPassive,
   },
 ];
 

@@ -1,7 +1,7 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
-import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
+import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "../series";
 
 const purpleSwords: AppWeapon[] = [
   {
@@ -512,7 +512,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...favoniusSeries,
+    passive: favoniusPassive,
   },
   {
     code: 120,
@@ -521,7 +521,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...sacrificialSeries,
+    passive: sacrificialPassive,
   },
   {
     code: 121,

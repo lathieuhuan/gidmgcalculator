@@ -123,56 +123,36 @@ export const blackcliffSeries: SeriesInfo = {
   ],
 };
 
-export const favoniusSeries: SeriesInfo = {
-  passive: {
-    name: "Windfall",
-    description: `CRIT hits have a {0}% chance to generate a small amount of Elemental Particles, which will regenerate
+export const favoniusPassive: AppWeapon["passive"] = {
+  name: "Windfall",
+  description: `CRIT hits have a {0}% chance to generate a small amount of Elemental Particles, which will regenerate
     6 Energy for the character. Can only occur once every {1}s.`,
-    seeds: [
-      { base: 50, increment: 10, dull: true },
-      { base: 13.5, increment: -1.5, dull: true },
-    ],
-  },
+  seeds: [
+    { base: 50, increment: 10, dull: true },
+    { base: 13.5, increment: -1.5, dull: true },
+  ],
 };
 
-export const sacrificialSeries: SeriesInfo = {
-  passive: {
-    name: "Composed",
-    description: `After dealing damage to an opponent with an Elemental Skill, the skill has a {0}% chance to end its
+export const sacrificialPassive: AppWeapon["passive"] = {
+  name: "Composed",
+  description: `After dealing damage to an opponent with an Elemental Skill, the skill has a {0}% chance to end its
     own CD. Can only occur once every {1}s.`,
-    seeds: [
-      { base: 30, dull: true },
-      { options: [30, 26, 22, 19, 16], dull: true },
-    ],
-  },
+  seeds: [
+    { base: 30, dull: true },
+    { options: [30, 26, 22, 19, 16], dull: true },
+  ],
 };
 
-export const dragonspineSeries: SeriesInfo = {
-  // pasvProcD: [
-  //   {
-  //     name: "Usual DMG",
-  //     baseSType: "ATK",
-  //     mult: [0, 0.8, 0.95, 1.1, 1.25, 1.4],
-  //     dmgType: "Physical"
-  //   },
-  //   {
-  //     name: "Boosted DMG",
-  //     baseSType: "ATK",
-  //     mult: [0, 2, 2.4, 2.8, 3.2, 3.6],
-  //     dmgType: "Physical"
-  //   }
-  // ],
-  passive: {
-    name: "Frost Burial",
-    description: `Hitting an opponent with Normal and Charged Attacks has a {0}% chance of forming and dropping an
+export const dragonspinePassive: AppWeapon["passive"] = {
+  name: "Frost Burial",
+  description: `Hitting an opponent with Normal and Charged Attacks has a {0}% chance of forming and dropping an
     Everfrost Icicle above them, dealing {1}% AoE ATK DMG. Opponents affected by Cryo are dealt {2}% AoE ATK DMG
     instead by the icicle. Can only occur once every 10s.`,
-    seeds: [
-      { base: 50, increment: 10, dull: true },
-      { base: 65, increment: 15, dull: true },
-      { base: 160, increment: 40, dull: true },
-    ],
-  },
+  seeds: [
+    { base: 50, increment: 10, dull: true },
+    { base: 65, increment: 15, dull: true },
+    { base: 160, increment: 40, dull: true },
+  ],
 };
 
 export const liyueSeries: SeriesInfo = {
@@ -314,10 +294,8 @@ export const watatsumiSeries: SeriesInfo = {
   ],
 };
 
-export const cullTheWeakSeries: SeriesInfo = {
-  passive: {
-    name: "Cull the Weak",
-    description: "Defeating an opponent restores {0}% HP",
-    seeds: [6],
-  },
+export const cullTheWeakPassive: AppWeapon["passive"] = {
+  name: "Cull the Weak",
+  description: "Defeating an opponent restores {0}% HP",
+  seeds: [6],
 };
