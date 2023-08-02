@@ -37,9 +37,9 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
     if (!wpData.description) {
       return "";
     }
-    const { contents, seeds } = wpData.description;
+    const { pots, seeds } = wpData.description;
 
-    return contents
+    return pots
       .map((content) => {
         return content.replace(/\{[0-9]+\}/g, (match) => {
           const seed = seeds[+match.slice(1, 2)];
@@ -155,7 +155,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange">{wpData.passive?.name}</p>
+        <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
         {/* <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p> */}
         <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
