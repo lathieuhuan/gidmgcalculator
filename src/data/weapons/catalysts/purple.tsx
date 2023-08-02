@@ -1,14 +1,13 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
-import { findByCode } from "@Src/utils";
 import {
   blackcliffSeries,
   desertSeries,
   dragonspineSeries,
   favoniusSeries,
   royalSeries,
-  sacrificialSeries
+  sacrificialSeries,
 } from "../series";
 
 const purpleCatalysts: AppWeapon[] = [
@@ -19,41 +18,38 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]}, and a Bond of Life worth 24% of Max HP will be granted. This effect can be triggered once
-            every 10s. {this.extra?.[1]} Bond of Life: Absorbs healing for the character based on its base value, and
-            clears after healing equal to this value is obtained.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When using an Elemental Skill, <Green>All Elemental DMG Bonus</Green> will be increased by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 12s
-        </>,
-        <>
-          When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide{" "}
-          <Green b>{1.5 + refi * 0.5}%</Green> <Green>All Elemental DMG Bonus</Green>. Up to a maximum of{" "}
-          <Rose>{9 + refi * 3}%</Rose> All Elemental DMG can be gained this way. This effect lasts 12s.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "",
+      description: `When using an Elemental Skill, All Elemental DMG Bonus will be increased by {0}% for 12s, and a
+      Bond of Life worth 24% of Max HP will be granted. This effect can be triggered once every 10s. When the Bond of
+      Life is cleared, every 1,000 HP cleared in the process will provide {1}% All Elemental DMG Bonus. Up to a maximum
+      of {2}% All Elemental DMG can be gained this way. This effect lasts 12s. Bond of Life: Absorbs healing for the
+      character based on its base value, and clears after healing equal to this value is obtained.`,
+      seeds: [6, 1.5, { base: 9, dull: true }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            When using an Elemental Skill, <Green>All Elemental DMG Bonus</Green> will be increased by{" "}
+            <Green b>{6 + refi * 2}%</Green> for 12s
+          </>
+        ),
         base: 6,
         targetAttribute: [...VISION_TYPES],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 162)?.passiveDesc({ refi }).extra?.[1],
+        desc: ({ refi }) => (
+          <>
+            When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide{" "}
+            <Green b>{1.5 + refi * 0.5}%</Green> <Green>All Elemental DMG Bonus</Green>. Up to a maximum of{" "}
+            <Rose>{9 + refi * 3}%</Rose> All Elemental DMG can be gained this way. This effect lasts 12s.
+          </>
+        ),
         base: 1.5,
         stacks: {
           type: "attribute",
@@ -72,22 +68,24 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },
-    passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When not on the field for more than 6s, <Green>Max HP</Green> will be increased by{" "}
-          <Green b>{15 + refi * 5}%</Green> and <Green>Elemental Mastery</Green> will be increased by{" "}
-          <Green b>{60 + refi * 20}</Green>. These effects will be canceled after the wielder has been on the field for
-          6s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "",
+      description: `When not on the field for more than 6s, Max HP will be increased by {0}% and Elemental Mastery will
+      be increased by {1}. These effects will be canceled after the wielder has been on the field for 6s.`,
+      seeds: [15, 60],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 161)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            When not on the field for more than 6s, <Green>Max HP</Green> will be increased by{" "}
+            <Green b>{15 + refi * 5}%</Green> and <Green>Elemental Mastery</Green> will be increased by{" "}
+            <Green b>{60 + refi * 20}</Green>. These effects will be canceled after the wielder has been on the field
+            for 6s.
+          </>
+        ),
         buffBonuses: [
           {
             base: 15,
@@ -105,7 +103,6 @@ const purpleCatalysts: AppWeapon[] = [
     code: 144,
     name: "Wandering Evenstar",
     icon: "4/44/Weapon_Wandering_Evenstar",
-    passiveName: "Wildling Nightstar",
     ...desertSeries,
   },
   {
@@ -115,29 +112,25 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passiveName: "Full Circle",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]} For every 6s that go by without an Elemental Reaction being triggered, 1 stack will be
-            lost. This effect can be triggered even when the character is off-field.
-          </>
-        );
-      },
-      extra: [
-        <>
-          Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
-          <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK. For every 0.3s, 1 stack
-          of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Full Circle",
+      description: `Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining {0} Elemental
+      Mastery while losing 5% ATK. For every 0.3s, 1 stack of Wax and Wane can be gained. Max 5 stacks. For every 6s
+      that go by without an Elemental Reaction being triggered, 1 stack will be lost. This effect can be triggered even
+      when the character is off-field.`,
+      seeds: [{ base: 21, increment: 3 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 137)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining{" "}
+            <Green b>{21 + refi * 3}</Green> <Green>Elemental Mastery</Green> while losing 5% ATK. For every 0.3s, 1
+            stack of Wax and Wane can be gained. Max <Rose>5</Rose> stacks.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -169,20 +162,21 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    passiveName: "People of the Faltering Light",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Energy Recharge</Green> by <Green b>{18 + refi * 6}%</Green> for 10s after using an Elemental
-          Skill.
-        </>
-      ),
-    }),
+    passive: {
+      name: "People of the Faltering Light",
+      description: "Increases Energy Recharge by {0}% for 10s after using an Elemental Skill.",
+      seeds: [18],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 123)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            Increases <Green>Energy Recharge</Green> by <Green b>{18 + refi * 6}%</Green> for 10s after using an
+            Elemental Skill.
+          </>
+        ),
         base: 18,
         targetAttribute: "er_",
       },
@@ -195,28 +189,22 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    passiveName: "Ever-Changing",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or Alternate sprint by{" "}
-            {12 + refi * 2}% for 5s. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Using a Sprint or Alternate Sprint ability increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>{" "}
-          for 5s.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Ever-Changing",
+      description: `Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or Alternate
+      sprint by {0}% for 5s. Using a Sprint or Alternate Sprint ability increases ATK by {1}% for 5s.`,
+      seeds: [{ base: 12, increment: 2, dull: true }, 15],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 37)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Using a Sprint or Alternate Sprint ability increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>{" "}
+            for 5s.
+          </>
+        ),
         base: 15,
         targetAttribute: "atk_",
       },
@@ -229,22 +217,25 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
-    passiveName: "Sakura Saiguu",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After the character equipped with this weapon triggers an Electro elemental reaction, nearby party members of
-          an Elemental Type involved in the elemental reaction receive a <Green b>{7.5 + refi * 2.5}%</Green>{" "}
-          <Green>Elemental DMG Bonus for their element</Green>, lasting 6s. Elemental Bonuses gained in this way cannot
-          be stacked.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Sakura Saiguu",
+      description: `After the character equipped with this weapon triggers an Electro elemental reaction, nearby party
+      members of an Elemental Type involved in the elemental reaction receive a {0}% Elemental DMG Bonus for their
+      element, lasting 6s. Elemental Bonuses gained in this way cannot be stacked.`,
+      seeds: [7.5],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 38)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            After the character equipped with this weapon triggers an Electro elemental reaction, nearby party members
+            of an Elemental Type involved in the elemental reaction receive a <Green b>{7.5 + refi * 2.5}%</Green>{" "}
+            <Green>Elemental DMG Bonus for their element</Green>, lasting 6s. Elemental Bonuses gained in this way
+            cannot be stacked.
+          </>
+        ),
         base: 7.5,
         targetAttribute: "own_element",
       },
@@ -266,20 +257,21 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
-    passiveName: "Infusion Scroll",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green> <Green>Elemental DMG Bonus</Green>{" "}
-          for 10s. Max <Rose>2</Rose> stacks.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Infusion Scroll",
+      description: `Triggering an Elemental reaction grants a {0}% Elemental DMG Bonus for 10s. Max 2 stacks.`,
+      seeds: [6],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 40)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            Triggering an Elemental reaction grants a <Green b>{6 + refi * 2}%</Green>{" "}
+            <Green>Elemental DMG Bonus</Green> for 10s. Max <Rose>2</Rose> stacks.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -301,22 +293,25 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cDmg_", scale: "12%" },
-    passiveName: "Debut",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When a character takes the field, they will gain a random theme song for 10s. This can only occur once every
-          30s. Recitative: <Green>ATK</Green> is increased by <Green b>{45 + refi * 15}%</Green>. Aria: increases{" "}
-          <Green>all Elemental DMG</Green> by <Green b>{36 + refi * 12}%</Green>. Interlude:{" "}
-          <Green>Elemental Mastery</Green> is increased by <Green b>{180 + refi * 60}</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Debut",
+      description: `When a character takes the field, they will gain a random theme song for 10s. This can only occur
+      once every 30s. Recitative: ATK is increased by {0}%. Aria: increases all Elemental DMG by {1}%. Interlude:
+      Elemental Mastery is increased by {2}.`,
+      seeds: [45, 36, 180],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 41)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            When a character takes the field, they will gain a random theme song for 10s. This can only occur once every
+            30s. Recitative: <Green>ATK</Green> is increased by <Green b>{45 + refi * 15}%</Green>. Aria: increases{" "}
+            <Green>all Elemental DMG</Green> by <Green b>{36 + refi * 12}%</Green>. Interlude:{" "}
+            <Green>Elemental Mastery</Green> is increased by <Green b>{180 + refi * 60}</Green>.
+          </>
+        ),
         inputConfigs: [
           {
             label: "Theme Song",
@@ -361,38 +356,34 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passiveName: "Solar Shine",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]} {this.extra?.[1]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Normal Attack hits increase <Green>Elemental Skill</Green> and <Green>Elemental Burst DMG</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green> for 6s.
-        </>,
-        <>
-          Likewise, Elemental Skill or Elemental Burst hits increase <Green>Normal Attack DMG</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green> for 6s.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Solar Shine",
+      description: `Normal Attack hits increase Elemental Skill and Elemental Burst DMG by {0}% for 6s. Likewise,
+      Elemental Skill or Elemental Burst hits increase Normal Attack DMG by {0}% for 6s.`,
+      seeds: [15],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Normal Attack hits increase <Green>Elemental Skill</Green> and <Green>Elemental Burst DMG</Green> by{" "}
+            <Green b>{15 + refi * 5}%</Green> for 6s.
+          </>
+        ),
         base: 15,
         targetAttPatt: ["ES.pct_", "EB.pct_"],
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 43)?.passiveDesc({ refi }).extra?.[1],
+        desc: ({ refi }) => (
+          <>
+            Likewise, Elemental Skill or Elemental Burst hits increase <Green>Normal Attack DMG</Green> by{" "}
+            <Green b>{15 + refi * 5}%</Green> for 6s.
+          </>
+        ),
         base: 15,
         targetAttPatt: "NA.pct_",
       },
@@ -405,15 +396,12 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "hp_", scale: "9%" },
-    passiveName: "Gilding",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Using an Elemental Burst regenerates <Green b>{3.5 + refi * 0.5}</Green> <Green>Energy</Green> every 2s for
-          6s. All party members will regenerate <Green b>{3.5 + refi * 0.5}%</Green> HP every 2s for this duration.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Gilding",
+      description: `Using an Elemental Burst regenerates {0} Energy every 2s for 6s. All party members will regenerate
+      {0} HP every 2s for this duration.`,
+      seeds: [{ base: 3.5, increment: 0.5 }],
+    },
   },
   {
     code: 45,
@@ -440,37 +428,33 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    passiveName: "Dodoventure!",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]} {this.extra?.[1]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Normal Attack hits on opponents increase <Green>Charged Attack DMG</Green> by{" "}
-          <Green b>{12 + refi * 4}%</Green> for 6s.
-        </>,
-        <>
-          Charged Attack hits on opponents increase <Green>ATK</Green> by <Green b>{6 + refi * 2}%</Green> for 6s.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Dodoventure!",
+      description: `Normal Attack hits on opponents increase Charged Attack DMG by {0}% for 6s. Charged Attack hits on
+      opponents increase ATK by {1}% for 6s`,
+      seeds: [12, 6],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Normal Attack hits on opponents increase <Green>Charged Attack DMG</Green> by{" "}
+            <Green b>{12 + refi * 4}%</Green> for 6s.
+          </>
+        ),
         base: 12,
         targetAttPatt: "CA.pct_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleCatalysts, 47)?.passiveDesc({ refi }).extra?.[1],
+        desc: ({ refi }) => (
+          <>
+            Charged Attack hits on opponents increase <Green>ATK</Green> by <Green b>{6 + refi * 2}%</Green> for 6s.
+          </>
+        ),
         base: 6,
         targetAttribute: "atk_",
       },
@@ -483,16 +467,15 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
-    passiveName: "Echo",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Normal and Charged Attacks have a <Green>50% chance</Green> to fire a Bolt of Perception, dealing{" "}
-          <Green b>{210 + refi * 30}%</Green> <Green>ATK</Green> as DMG. This bolt can bounce between opponents a
-          maximum of 4 times. This effect can occur once every <Green b>{13 - refi}s</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Echo",
+      description: `Normal and Charged Attacks have a 50% chance to fire a Bolt of Perception, dealing {0}% ATK as DMG.
+      This bolt can bounce between opponents a maximum of 4 times. This effect can occur once every {1}s.`,
+      seeds: [
+        { base: 210, increment: 30, dull: true },
+        { base: 13, increment: -1, dull: true },
+      ],
+    },
   },
   {
     code: 49,

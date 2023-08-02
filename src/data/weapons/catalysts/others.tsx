@@ -13,10 +13,11 @@ const otherCatalysts: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "er_", scale: "8.5%" },
-    passiveName: "Energy Shower",
-    passiveDesc: ({ refi }) => ({
-      core: <>Each Elemental Orb or Particle collected restores {0.75 + refi * 0.25}% HP.</>,
-    }),
+    passive: {
+      name: "Energy Shower",
+      description: `Each Elemental Orb or Particle collected restores {0}% HP.`,
+      seeds: [{ base: 0.75, dull: true }],
+    },
   },
   {
     code: 27,
@@ -25,20 +26,22 @@ const otherCatalysts: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "em", scale: "20" },
-    passiveName: "Rapids",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases{" "}
-          <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> for 12s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Rapids",
+      description: `Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases ATK
+      by {0}% for 12s.`,
+      seeds: [15],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherCatalysts, 27)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases{" "}
+            <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green> for 12s.
+          </>
+        ),
         base: 15,
         targetAttribute: "atk_",
       },
@@ -51,20 +54,21 @@ const otherCatalysts: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "cRate_", scale: "3.4%" },
-    passiveName: "Rapids",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Defeating an opponent increases Movement SPD and <Green>ATK</Green> by <Green b>{10 + refi * 2}%</Green> for
-          15s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Rapids",
+      description: "Defeating an opponent increases Movement SPD and ATK by {0}% for 15s.",
+      seeds: [{ base: 10, increment: 2 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherCatalysts, 28)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            Defeating an opponent increases Movement SPD and <Green>ATK</Green> by <Green b>{10 + refi * 2}%</Green> for
+            15s.
+          </>
+        ),
         base: 10,
         increment: 2,
         targetAttribute: "atk_",
@@ -78,20 +82,22 @@ const otherCatalysts: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
-    passiveName: "Legacy",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When switching characters, the new character taking the field has their <Green>ATK</Green> increased by{" "}
-          <Green b>{18 + refi * 6}%</Green> for 10s. This effect can only occur once every 20s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Legacy",
+      description: `When switching characters, the new character taking the field has their ATK increased by {0}% for
+      10s. This effect can only occur once every 20s.`,
+      seeds: [18],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => findByCode(otherCatalysts, 29)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            When switching characters, the new character taking the field has their <Green>ATK</Green> increased by{" "}
+            <Green b>{18 + refi * 6}%</Green> for 10s. This effect can only occur once every 20s.
+          </>
+        ),
         base: 18,
         targetAttribute: "atk_",
       },

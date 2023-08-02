@@ -1,7 +1,6 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
-import { findByCode } from "@Src/utils";
 import {
   baneSeries2,
   blackcliffSeries,
@@ -9,7 +8,7 @@ import {
   favoniusSeries,
   lithicSeries,
   royalSeries,
-  watatsumiSeries
+  watatsumiSeries,
 } from "../series";
 
 const purplePolearms: AppWeapon[] = [
@@ -20,15 +19,12 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
-    passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When the wielder is healed, restore {6 + refi * 2} Energy. This effect can be triggered once every 10s, and
-          can occur even when the character is not on the field.
-        </>
-      ),
-    }),
+    passive: {
+      name: "",
+      description: `When the wielder is healed, restore {0} Energy. This effect can be triggered once every 10s, and
+      can occur even when the character is not on the field.`,
+      seeds: [{ base: 6, dull: true }],
+    },
   },
   {
     code: 159,
@@ -37,15 +33,12 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When there are at least 3 different Elemental Types in your party, <Green>Elemental Mastery</Green> will be
-          increased by <Green b>{90 + refi * 30}</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "",
+      description: `When there are at least 3 different Elemental Types in your party, Elemental Mastery will be
+      increased by {0}.`,
+      seeds: [90],
+    },
     autoBuffs: [
       {
         base: 90,
@@ -65,21 +58,23 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    passiveName: "The Wind Unattained",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Within 10s after an Elemental Reaction is triggered, <Green>ATK</Green> is increased by{" "}
-          <Green b>{9 + refi * 3}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
-          <Green b>{36 + refi * 12}</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "The Wind Unattained",
+      description: `Within 10s after an Elemental Reaction is triggered, ATK is increased by {0}% and Elemental Mastery
+      is increased by {1}.`,
+      seeds: [9, 36],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 141)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            Within 10s after an Elemental Reaction is triggered, <Green>ATK</Green> is increased by{" "}
+            <Green b>{9 + refi * 3}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
+            <Green b>{36 + refi * 12}</Green>.
+          </>
+        ),
         buffBonuses: [
           {
             base: 9,
@@ -100,29 +95,24 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
-    passiveName: "Stillwood Moonshadow",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will
-            be created around the character for a maximum of 10s. {this.extra?.[0]} Only 1 Leaf can be generated this
-            way every 20s. This effect can still be triggered if the character is not on the field.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green> <Green>ATK</Green> for
-          12s.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Stillwood Moonshadow",
+      description: `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of
+      Revival will be created around the character for a maximum of 10s. When picked up, the Leaf will grant the
+      character {0}% ATK for 12s. Only 1 Leaf can be generated this way every 20s. This effect can still be triggered
+      if the character is not on the field.`,
+      seeds: [12],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.ONE_UNIT,
-        desc: ({ refi }) => findByCode(purplePolearms, 135)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green> <Green>ATK</Green> for
+            12s.
+          </>
+        ),
         base: 12,
         targetAttribute: "atk_",
       },
@@ -153,16 +143,13 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
-    passiveName: "Samurai Conduct",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>. After Elemental Skill
-          hits an opponent, the character loses 3 Energy but regenerates {2.5 + refi * 0.5} Energy every 2s for the next
-          6s. This effect can occur once every 10s. Can be triggered even when the character is not on the field.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Samurai Conduct",
+      description: `Increases Elemental Skill DMG by {0}%. After Elemental Skill hits an opponent, the character loses
+      3 Energy but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be
+      triggered even when the character is not on the field.`,
+      seeds: [4.5, { base: 2.5, increment: 0.5, dull: true }],
+    },
     autoBuffs: [
       {
         base: 4.5,
@@ -177,15 +164,11 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passiveName: "Shanty",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Burst DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
-          <Green>Elemental Burst CRIT Rate</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Shanty",
+      description: `Increases Elemental Burst DMG by {0}% and Elemental Burst CRIT Rate by {1}%.`,
+      seeds: [12, 4.5],
+    },
     autoBuffs: [
       {
         base: 12,
@@ -213,15 +196,12 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
-    passiveName: "Infusion Needle",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15 + refi * 5}% ATK
-          as DMG for 5s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Infusion Needle",
+      description: `After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {0}% ATK
+      as DMG for 5s.`,
+      seeds: [{ base: 15, dull: true }],
+    },
   },
   {
     code: 91,
@@ -230,20 +210,22 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passiveName: "Magic Affinity",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Magic Affinity",
+      description: `After using an Elemental Skill, increases Normal and Charged Attack DMG by {0}% for 12s. Max 2
+      stacks.`,
+      seeds: [6],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 91)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
+            <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -283,21 +265,24 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },
-    passiveName: "Gladiator",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by <Green b>{12 + refi * 4}%</Green>{" "}
-          and <Green>DEF</Green> is increased by <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents
-          nearby, <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Gladiator",
+      description: `If there are at least 2 opponents nearby, ATK is increased by {0}% and DEF is increased by {0}%. If
+      there are fewer than 2 opponents nearby, ATK is increased by {1}%.`,
+      seeds: [12, 18],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 95)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
+            <Green b>{12 + refi * 4}%</Green> and <Green>DEF</Green> is increased by <Green b>{12 + refi * 4}%</Green>.
+            If there are fewer than 2 opponents nearby, <Green>ATK</Green> is increased by{" "}
+            <Green b>{18 + refi * 6}%</Green>.
+          </>
+        ),
         inputConfigs: [
           {
             label: "Fewer than 2 opponents",

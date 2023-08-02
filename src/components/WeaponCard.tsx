@@ -6,13 +6,17 @@ import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
+import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, round } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
 // Component
 import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
+
+const wrapText = (text: string | number, dull?: boolean) => {
+  return `<span${dull ? "" : ' class="text-green font-semibold"'}>${text}</span>`;
+};
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;
@@ -30,17 +34,24 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   const passiveDescription = useMemo(() => {
+    if (!wpData.passive) {
+      return "";
+    }
     const { description, seeds } = wpData.passive;
 
     return description.replace(/\{[0-9]+\}/g, (match) => {
       const seed = seeds[+match.slice(1, 2)];
 
       if (typeof seed === "number") {
-        return `<span class="text-green font-semibold">${seed + (seed / 3) * refi}</span>`;
+        return wrapText(round(seed + (seed / 3) * refi, 3));
       }
       if (seed) {
-        const { base, increment, dull } = seed;
-        return `<span${dull ? "" : ' class="text-green"'}>${base + increment * refi}</span>`;
+        if ("base" in seed) {
+          const { base, increment = base / 3 } = seed;
+          const value = base + increment * refi;
+          return wrapText(round(value, 3), seed.dull);
+        }
+        return wrapText(seed.options[refi - 1], seed.dull);
       }
       return match;
     });
@@ -116,7 +127,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange">{wpData.passive.name}</p>
+        <p className="text-lg font-semibold text-orange">{wpData.passive?.name}</p>
         {/* <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p> */}
         <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>

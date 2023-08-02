@@ -102,7 +102,7 @@ export type AppWeapon = {
   passive?: {
     name: string;
     description: string;
-    seeds: Array<number | { base: number; increment: number; dull?: boolean }>;
+    seeds: Array<number | { base: number; increment?: number; dull?: boolean } | { options: number[]; dull?: boolean }>;
   };
   // passiveName: string;
   // passiveDesc: (args: WeaponDescArgs) => {

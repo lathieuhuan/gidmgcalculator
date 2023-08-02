@@ -312,7 +312,7 @@ const goldBows: AppWeapon[] = [
       name: "Echoing Ballad",
       description: `Increases CRIT DMG by {0}%. Hits have a {1}% chance to inflict a small AoE attack, dealing 125%
       Physical ATK DMG. Can only occur once every {2}s.`,
-      seeds: [15, { base: 50, increment: 10, dull: true }, 4.5],
+      seeds: [15, { base: 50, increment: 10, dull: true }, { base: 4.5, increment: -0.5, dull: true }],
     },
     autoBuffs: [
       {

@@ -1,16 +1,7 @@
-import type { AppWeapon, TotalAttribute } from "@Src/types";
+import type { AppWeapon } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Red, Rose } from "@Src/pure-components";
-import { applyPercent, findByCode, round } from "@Src/utils";
+import { Green, Rose } from "@Src/pure-components";
 import { liyueSeries } from "../series";
-
-const getStaffOfHomaBuff = (totalAttr: TotalAttribute, refi: number) => {
-  const mult = 0.8 + refi * 0.2;
-  return {
-    desc: ` / ${round(mult, 1)}% of ${Math.round(totalAttr.hp)} HP`,
-    value: applyPercent(totalAttr.hp, mult),
-  };
-};
 
 const goldPolearms: AppWeapon[] = [
   {
@@ -20,24 +11,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
-    passiveName: "Heat Haze at Horizon's End",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            The equipping character gains <Green b>{39 + refi * 13}%</Green> of their <Green>Elemental Mastery</Green>{" "}
-            as bonus <Green>ATK</Green>. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
-          equipping character will gain <Green b>{21 + refi * 7}%</Green> of their <Green>Elemental Mastery</Green> as
-          bonus <Green>ATK</Green>. Max <Rose>3</Rose> stacks.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Heat Haze at Horizon's End",
+      description: `The equipping character gains {0}% of their Elemental Mastery as bonus ATK. When an Elemental Skill
+      hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the equipping character will gain
+      {1}% of their Elemental Mastery as bonus ATK. Max 3 stacks.`,
+      seeds: [39, 21],
+    },
     autoBuffs: [
       {
         base: 0.39,
@@ -52,7 +32,13 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldPolearms, 139)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
+            equipping character will gain <Green b>{21 + refi * 7}%</Green> of their <Green>Elemental Mastery</Green> as
+            bonus <Green>ATK</Green>. Max <Rose>3</Rose> stacks.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -80,23 +66,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "49",
     subStat: { type: "atk_", scale: "3.6%" },
-    passiveName: "Eagle Spear of Justice",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Gain <Green b>{9 + refi * 3}%</Green> <Green>All Elemental DMG Bonus</Green>. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Obtain Consummation for 20s after using an Elemental Skill, causing <Green>ATK</Green> to increase by{" "}
-          <Green b>{(24 + refi * 8) / 10}%</Green> per second, up to <Rose>6</Rose> times. When the character equipped
-          with this weapon is not on the field, Consummation's ATK increase is <Green>doubled</Green>.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Eagle Spear of Justice",
+      description: `Gain {0}% All Elemental DMG Bonus. Obtain Consummation for 20s after using an Elemental Skill,
+      causing ATK to increase by {1}% per second, up to 6 times. When the character equipped with this weapon is not on
+      the field, Consummation's ATK increase is doubled.`,
+      seeds: [9, 2.4],
+    },
     autoBuffs: [
       {
         base: 9,
@@ -107,7 +83,13 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldPolearms, 82)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Obtain Consummation for 20s after using an Elemental Skill, causing <Green>ATK</Green> to increase by{" "}
+            <Green b>{(24 + refi * 8) / 10}%</Green> per second, up to <Rose>6</Rose> times. When the character equipped
+            with this weapon is not on the field, Consummation's ATK increase is <Green>doubled</Green>.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -134,22 +116,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
-    passiveName: "Timeless Dream: Eternal Stove",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            <Green>ATK</Green> increased by <Green b>{21 + refi * 7}%</Green> of <Green>Energy Recharge</Green> over the
-            base 100%. You can gain a maximum bonus of {70 + refi * 10}% ATK. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Gain <Green b>{25 + refi * 5}%</Green> <Green>Energy Recharge</Green> for 12s after using an Elemental Burst.
-        </>,
-      ],
-    }),
+    passive: {
+      name: "Timeless Dream: Eternal Stove",
+      description: `ATK increased by {0}% of Energy Recharge over the base 100%. You can gain a maximum bonus of {1}%
+      ATK. Gain {2}% Energy Recharge for 12s after using an Elemental Burst.`,
+      seeds: [21, { base: 70, increment: 10, dull: true }, { base: 25, increment: 5 }],
+    },
+    // #to-do
     autoBuffs: [
       {
         base: 0.21,
@@ -176,7 +149,12 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldPolearms, 79)?.passiveDesc({ refi }).extra?.[0],
+        desc: ({ refi }) => (
+          <>
+            Gain <Green b>{25 + refi * 5}%</Green> <Green>Energy Recharge</Green> for 12s after using an Elemental
+            Burst.
+          </>
+        ),
         base: 25,
         increment: 5,
         targetAttribute: "er_",
@@ -190,25 +168,12 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passiveName: "Reckless Cinnabar",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            <Green>HP</Green> increased by <Green b>{15 + refi * 5}%</Green>. Additionally, provides an{" "}
-            <Green>ATK Bonus</Green> based on <Green b>{Math.round(6 + refi * 2) / 10}%</Green> of the wielder's{" "}
-            <Green>Max HP</Green>. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          When the wielder's HP is less than 50%, this <Green>ATK Bonus</Green> is increased by an additional{" "}
-          <Green b>{Math.round(8 + refi * 2) / 10}%</Green> of <Green>Max HP</Green>.
-        </>,
-      ],
-    }),
-
+    passive: {
+      name: "Reckless Cinnabar",
+      description: `HP increased by {0}%. Additionally, provides an ATK Bonus based on {1}% of the wielder's Max HP.
+      When the wielder's HP is less than 50%, this ATK Bonus is increased by an additional {2}% of Max HP.`,
+      seeds: [15, 0.6, { base: 0.8, increment: 0.2 }],
+    },
     autoBuffs: [
       {
         base: 15,
@@ -228,10 +193,10 @@ const goldPolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi, totalAttr }) => (
+        desc: ({ refi }) => (
           <>
-            {findByCode(goldPolearms, 80)?.passiveDesc({ refi }).extra?.[0]}{" "}
-            <Red>ATK bonus: {getStaffOfHomaBuff(totalAttr, refi).value}.</Red>
+            When the wielder's HP is less than 50%, this <Green>ATK Bonus</Green> is increased by an additional{" "}
+            <Green b>{(8 + refi * 2) / 10}%</Green> of <Green>Max HP</Green>.
           </>
         ),
         base: 0.8,
@@ -261,21 +226,23 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cRate_", scale: "4.8%" },
-    passiveName: "Eagle Spear of Justice",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          On hit, increases <Green>ATK</Green> by <Green b>{2.5 + refi * 0.7}%</Green> for 6s. Max <Rose>7</Rose>{" "}
-          stacks. This effect can only occur once every 0.3s. While in possession of the maximum possible stacks,{" "}
-          <Green>DMG</Green> dealt is increased by <Green b>{9 + refi * 3}%</Green>.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Eagle Spear of Justice",
+      description: `On hit, increases ATK by {0}% for 6s. Max 7 stacks. This effect can only occur once every 0.3s.
+      While in possession of the maximum possible stacks, DMG dealt is increased by {1}%.`,
+      seeds: [{ base: 2.5, increment: 0.7 }, 9],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(goldPolearms, 78)?.passiveDesc({ refi }).core,
+        desc: ({ refi }) => (
+          <>
+            On hit, increases <Green>ATK</Green> by <Green b>{2.5 + refi * 0.7}%</Green> for 6s. Max <Rose>7</Rose>{" "}
+            stacks. This effect can only occur once every 0.3s. While in possession of the maximum possible stacks,{" "}
+            <Green>DMG</Green> dealt is increased by <Green b>{9 + refi * 3}%</Green>.
+          </>
+        ),
         inputConfigs: [
           {
             type: "stacks",
@@ -307,17 +274,13 @@ const goldPolearms: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "er_", scale: "8%" },
-    passiveName: "Blackwing",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>CRIT Rate</Green> by <Green b>{6 + refi * 2}%</Green> and increases{" "}
-          <Green>Normal ATK SPD</Green> by <Green b>12%</Green>. Additionally, Normal and Charged Attacks hits on
-          opponents have a 50% chance to trigger a vacuum blade that deals {25 + refi * 15}% of ATK as DMG in a small
-          AoE. This effect can occur no more than once every 2s.
-        </>
-      ),
-    }),
+    passive: {
+      name: "Blackwing",
+      description: `Increases CRIT Rate by {0}% and increases mal ATK SPD by 12%. Additionally, Normal and Charged
+      Attacks hits on opponents have a 50% chance to trigger a vacuum blade that deals {1}% of ATK as DMG in a small
+      AoE. This effect can occur no more than once every 2s.`,
+      seeds: [6, { base: 25, increment: 15, dull: true }],
+    },
     autoBuffs: [
       {
         base: 6,
