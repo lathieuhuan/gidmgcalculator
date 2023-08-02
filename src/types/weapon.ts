@@ -85,6 +85,11 @@ export type AutoBuff = {
       };
 };
 
+type DescriptionSeed =
+  | number
+  | { base: number; increment?: number; dull?: boolean }
+  | { options: number[]; dull?: boolean };
+
 /**
  * Weapon in app data
  */
@@ -99,16 +104,16 @@ export type AppWeapon = {
     type: AttributeStat;
     scale: string;
   };
-  passive?: {
-    name: string;
-    description: string;
-    seeds: Array<number | { base: number; increment?: number; dull?: boolean } | { options: number[]; dull?: boolean }>;
-  };
-  // passiveName: string;
-  // passiveDesc: (args: WeaponDescArgs) => {
-  //   core?: JSX.Element;
-  //   extra?: JSX.Element[];
+  passiveName?: string;
+  // passive?: {
+  //   name: string;
+  //   description: string;
+  //   seeds: DescriptionSeed[];
   // };
+  description?: {
+    pots: string[];
+    seeds: DescriptionSeed[];
+  };
   autoBuffs?: AutoBuff[];
   buffs?: WeaponBuff[];
 };
@@ -121,11 +126,12 @@ type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  desc: (
-    args: WeaponDescArgs & {
-      totalAttr: TotalAttribute;
-    }
-  ) => ReactNode;
+  // desc: (
+  //   args: WeaponDescArgs & {
+  //     totalAttr: TotalAttribute;
+  //   }
+  // ) => ReactNode;
 
+  description?: number | string;
   buffBonuses?: AutoBuff[];
 };

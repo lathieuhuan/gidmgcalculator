@@ -6,11 +6,15 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/
 import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { deepCopy, findByIndex } from "@Src/utils";
+import { deepCopy, findByIndex, round } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
+
+const wrapText = (text: string | number, dull?: boolean) => {
+  return `<span${dull ? "" : ' class="text-green font-semibold"'}>${text}</span>`;
+};
 
 export default function WeaponBuffs() {
   const dispatch = useDispatch();
@@ -21,7 +25,7 @@ export default function WeaponBuffs() {
   });
   const party = useSelector(selectParty);
 
-  const { name, buffs: mainBuffs = [] } = findDataWeapon(weapon)!;
+  const { name, buffs: mainBuffs = [], description } = findDataWeapon(weapon)!;
   const content: JSX.Element[] = [];
 
   weaponBuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
@@ -33,13 +37,37 @@ export default function WeaponBuffs() {
       ctrlIndex,
     };
 
+    let desc;
+
+    if (description) {
+      desc = typeof buff.description === "number" ? description.pots[buff.description] : buff.description;
+      desc = desc?.replace(/\{[0-9]+\}/g, (match) => {
+        const seed = description.seeds[+match.slice(1, 2)];
+
+        if (typeof seed === "number") {
+          return wrapText(round(seed + (seed / 3) * weapon.refi, 3));
+        }
+        if (seed) {
+          if ("base" in seed) {
+            const { base, increment = base / 3 } = seed;
+            const value = base + increment * weapon.refi;
+            return wrapText(round(value, 3), seed.dull);
+          }
+          return wrapText(seed.options[weapon.refi - 1], seed.dull);
+        }
+        return match;
+      });
+    }
+
     content.push(
       <ModifierTemplate
         key={weapon.code.toString() + ctrlIndex}
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + ` R${weapon.refi} (self)`}
-        desc={buff.desc({ refi: weapon.refi, totalAttr })}
+        //
+        desc={desc}
+        // desc={buff.desc({ refi: weapon.refi, totalAttr })}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onChangeText={(value, i) => {

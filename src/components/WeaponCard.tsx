@@ -34,28 +34,56 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   const passiveDescription = useMemo(() => {
-    if (!wpData.passive) {
+    if (!wpData.description) {
       return "";
     }
-    const { description, seeds } = wpData.passive;
+    const { contents, seeds } = wpData.description;
 
-    return description.replace(/\{[0-9]+\}/g, (match) => {
-      const seed = seeds[+match.slice(1, 2)];
+    return contents
+      .map((content) => {
+        return content.replace(/\{[0-9]+\}/g, (match) => {
+          const seed = seeds[+match.slice(1, 2)];
 
-      if (typeof seed === "number") {
-        return wrapText(round(seed + (seed / 3) * refi, 3));
-      }
-      if (seed) {
-        if ("base" in seed) {
-          const { base, increment = base / 3 } = seed;
-          const value = base + increment * refi;
-          return wrapText(round(value, 3), seed.dull);
-        }
-        return wrapText(seed.options[refi - 1], seed.dull);
-      }
-      return match;
-    });
+          if (typeof seed === "number") {
+            return wrapText(round(seed + (seed / 3) * refi, 3));
+          }
+          if (seed) {
+            if ("base" in seed) {
+              const { base, increment = base / 3 } = seed;
+              const value = base + increment * refi;
+              return wrapText(round(value, 3), seed.dull);
+            }
+            return wrapText(seed.options[refi - 1], seed.dull);
+          }
+          return match;
+        });
+      })
+      .join(" ");
   }, [weapon.code, refi]);
+
+  // const passiveDescription = useMemo(() => {
+  //   if (!wpData.passive) {
+  //     return "";
+  //   }
+  //   const { description, seeds } = wpData.passive;
+
+  //   return description.replace(/\{[0-9]+\}/g, (match) => {
+  //     const seed = seeds[+match.slice(1, 2)];
+
+  //     if (typeof seed === "number") {
+  //       return wrapText(round(seed + (seed / 3) * refi, 3));
+  //     }
+  //     if (seed) {
+  //       if ("base" in seed) {
+  //         const { base, increment = base / 3 } = seed;
+  //         const value = base + increment * refi;
+  //         return wrapText(round(value, 3), seed.dull);
+  //       }
+  //       return wrapText(seed.options[refi - 1], seed.dull);
+  //     }
+  //     return match;
+  //   });
+  // }, [weapon.code, refi]);
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>

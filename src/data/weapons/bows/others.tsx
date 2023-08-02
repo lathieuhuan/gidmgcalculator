@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1, cullTheWeakPassive } from "../series";
 
@@ -12,7 +11,7 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
-    passive: cullTheWeakPassive,
+    ...cullTheWeakPassive,
   },
   {
     code: 1,
@@ -21,10 +20,11 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "40",
     subStat: { type: "cDmg_", scale: "6.8%" },
-    passive: {
-      name: "Archer's Message",
-      description:
+    passiveName: "Archer's Message",
+    description: {
+      pots: [
         "Charged Attack hits on weak spots deal an additional {0}% ATK DMG as CRIT DMG. Can only occur once every 10s.",
+      ],
       seeds: [75],
     },
   },
@@ -44,20 +44,15 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
-    passive: {
-      name: "Precise",
-      description: "Increases DMG against weak spots by {0}%.",
+    passiveName: "Precise",
+    description: {
+      pots: ["Increases DMG against weak spots by {0}%."],
       seeds: [18],
     },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Increases <Green>DMG</Green> against weak spots by <Green b>{18 + refi * 6}%</Green>.
-          </>
-        ),
         base: 18,
         targetAttPatt: "CA.pct_",
       },
@@ -70,10 +65,12 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "cRate_", scale: "6.8%" },
-    passive: {
-      name: "Slingshot",
-      description: `If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by {0}%.
-      Otherwise, decreases DMG by 10%.`,
+    passiveName: "Slingshot",
+    description: {
+      pots: [
+        `If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by {0}%. Otherwise,
+        decreases DMG by 10%.`,
+      ],
       seeds: [{ base: 30, increment: 6 }],
     },
     autoBuffs: [
@@ -87,12 +84,6 @@ const otherBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            If a <Green>Normal or Charged Attack</Green> hits a target within 0.3s of being fired, increases{" "}
-            <Green>DMG</Green> by <Green b>{30 + refi * 6}%</Green>. Otherwise, decreases DMG by 10%.
-          </>
-        ),
         base: 40,
         increment: 6,
         targetAttPatt: ["NA.pct_", "CA.pct_"],

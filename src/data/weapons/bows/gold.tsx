@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 
 const goldBows: AppWeapon[] = [
   {
@@ -10,13 +9,15 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passive: {
-      name: "missing passive name",
-      description: `ATK increased by {0}%. For every party member with the same Elemental Type as the wielder
-      (including the wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type
-      from the wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, ATK will be
-      increased by {1}/{2}/{3}%. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased
-      by {4}/{5}/{6}%.`,
+    passiveName: "missing passive name",
+    description: {
+      pots: [
+        `ATK increased by {0}%. For every party member with the same Elemental Type as the wielder (including the
+      wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type from the
+      wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, ATK will be increased by
+      {1}/{2}/{3}%. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
+      {4}/{5}/{6}%.`,
+      ],
       seeds: [
         12,
         12,
@@ -50,11 +51,13 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
-    passive: {
-      name: "At the End of the Beast-Paths",
-      description: `Gain {0}% All Elemental DMG Bonus. Obtain the Tireless Hunt effect when hitting an opponent with a
-      Charged Attack. This effect increases Charged Attack DMG by {1}% of Elemental Mastery. This effect will be
-      removed after 12 Charged Attacks or 10s. Only 1 instance of Tireless Hunt can be gained every 12s.`,
+    passiveName: "At the End of the Beast-Paths",
+    description: {
+      pots: [
+        "Gain {0}% All Elemental DMG Bonus.",
+        "Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This effect increases Charged Attack DMG by {1}% of Elemental Mastery.",
+        "This effect will be removed after 12 Charged Attacks or 10s. Only 1 instance of Tireless Hunt can be gained every 12s.",
+      ],
       seeds: [9, 120],
     },
     autoBuffs: [
@@ -67,13 +70,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This effect increases{" "}
-            <Green>Charged Attack DMG</Green> by <Green b>{120 + refi * 40}%</Green> of <Green>Elemental Mastery</Green>
-            .
-          </>
-        ),
+        description: 1,
         base: 1.2,
         stacks: {
           type: "attribute",
@@ -90,10 +87,13 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "44b",
     subStat: { type: "cDmg_", scale: "19.2%" },
-    passive: {
-      name: "The Cleansing Form",
-      description: `HP is increased by {0}%. When there are opponents nearby, the DMG dealt by the wielder of this
-      weapon is increased by {1}%. This will take effect whether the character is on-field or not.`,
+    passiveName: "The Cleansing Form",
+    description: {
+      pots: [
+        "HP is increased by {0}%.",
+        "When there are opponents nearby, the DMG dealt by the wielder of this weapon is increased by {1}%.",
+        "This will take effect whether the character is on-field or not.",
+      ],
       seeds: [12, 15],
     },
     autoBuffs: [
@@ -106,12 +106,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When there are opponents nearby, the <Green>DMG</Green> dealt by the wielder of this weapon is increased by{" "}
-            <Green b>{15 + refi * 5}%</Green>.
-          </>
-        ),
+        description: 1,
         base: 15,
         targetAttPatt: "all.pct_",
       },
@@ -124,13 +119,15 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
-    passive: {
-      name: "Daylight's Augury",
-      description: `Elemental Skill and Elemental Burst DMG increased by {0}%. After a Normal Attack, Charged Attack,
-      Elemental Skill or Elemental Burst hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s. When
-      1/2/3/4 stacks of Ashen Nightstar are present, ATK is increased by {1}/{2}/{3}/{4}%. The stack of Ashen Nightstar
-      created by the Normal Attack, Charged Attack, Elemental Skill or Elemental Burst will be counted independently of
-      the others.`,
+    passiveName: "Daylight's Augury",
+    description: {
+      pots: [
+        `Elemental Skill and Elemental Burst DMG increased by {0}%. After a Normal Attack, Charged Attack, Elemental
+        Skill or Elemental Burst hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s.`,
+        `When 1/2/3/4 stacks of Ashen Nightstar are present, ATK is increased by {1}/{2}/{3}/{4}%.`,
+        `The stack of Ashen Nightstar created by the Normal Attack, Charged Attack, Elemental Skill or Elemental Burst
+        will be counted independently of the others.`,
+      ],
       seeds: [9, 7.5, 15, 22.5, 36],
     },
     autoBuffs: [
@@ -143,12 +140,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            When 1/2/3/4 stacks of Ashen Nightstar are present, <Green>ATK</Green> is increased by{" "}
-            <Green b>{[7.5 + refi * 2.5, 15 + refi * 5, 22.5 + refi * 7.5, 36 + refi * 12].join("/")}%</Green>.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",
@@ -171,13 +163,15 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passive: {
-      name: "Rule by Thunder",
-      description: `Increases ATK by {0}% and grants the might of the Thunder Emblem. At stack levels 1/2/3, the
-      Thunder Emblem increases Normal Attack DMG by {1}/{2}/{3}%. The character will obtain 1 stack of Thunder Emblem
-      in each of the following scenarios: Normal Attack deals DMG (stack lasts 5s), casting Elemental Skill (stack
-      lasts 10s); Energy is less than 100% (stack disappears when Energy is full). Each stack's duration is
-      calculated independently.`,
+    passiveName: "Rule by Thunder",
+    description: {
+      pots: [
+        `Increases ATK by {0}% and grants the might of the Thunder Emblem.`,
+        `At stack levels 1/2/3, the Thunder Emblem increases Normal Attack DMG by {1}/{2}/{3}%.`,
+        `The character will obtain 1 stack of Thunder Emblem in each of the following scenarios: Normal Attack deals
+        DMG (stack lasts 5s), casting Elemental Skill (stack lasts 10s); Energy is less than 100% (stack disappears
+        when Energy is full). Each stack's duration is calculated independently.`,
+      ],
       seeds: [15, 9, 18, 30],
     },
     autoBuffs: [
@@ -190,12 +184,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            At stack levels 1/2/3, the Thunder Emblem increases <Green>Normal Attack DMG</Green> by{" "}
-            <Green b>{[9 + refi * 3, 18 + refi * 6, 30 + refi * 10].join("/")}%</Green>.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",
@@ -218,15 +207,18 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
-    passive: {
-      name: "The Parting Refrain",
-      description: `A part of the "Millennial Movement" that wanders amidst the winds. Increases Elemental Mastery by
-      {0}. When Elemental Skill or Elemental Burst hit opponents, the character gains a Sigil of Remembrance. This
-      effect can be triggered once every 0.2s and can be triggered even if said character is not on the field. When
-      you possess four Sigils of Remembrance, all of them will be consumed and all nearby party members will obtain
-      the "Millennial Movement: Farewell Song" effect for 12s. "Millennial Movement: Farewell Song" increases Elemental
-      Mastery by {1} and increases ATK by {2}%. Once this effect is triggered, you will not gain Sigils of Remembrance
-      for 20s. Of the many effects of the "Millennial Movement", buffs of the same type will not stack.`,
+    passiveName: "The Parting Refrain",
+    description: {
+      pots: [
+        `A part of the "Millennial Movement" that wanders amidst the winds. Increases Elemental Mastery by {0}. When
+        Elemental Skill or Elemental Burst hit opponents, the character gains a Sigil of Remembrance. This effect can
+        be triggered once every 0.2s and can be triggered even if said character is not on the field. When you possess
+        four Sigils of Remembrance, all of them will be consumed and all nearby party members will obtain the
+        "Millennial Movement: Farewell Song" effect for 12s.`,
+        `"Millennial Movement: Farewell Song" increases Elemental Mastery by {1} and increases ATK by {2}%.`,
+        `Once this effect is triggered, you will not gain Sigils of Remembrance for 20s. Of the many effects of the
+        "Millennial Movement", buffs of the same type will not stack.`,
+      ],
       seeds: [45, 75, 15],
     },
     autoBuffs: [
@@ -239,12 +231,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        desc: ({ refi }) => (
-          <>
-            "Millennial Movement: Farewell Song" increases <Green>Elemental Mastery</Green> by{" "}
-            <Green b>{75 + refi * 25}</Green> and increases <Green>ATK</Green> by <Green b>{15 + refi * 5}%</Green>.
-          </>
-        ),
+        description: 1,
         buffBonuses: [
           {
             base: 75,
@@ -265,10 +252,13 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
-    passive: {
-      name: "Strong-Willed",
-      description: `Increases Normal Attack and Charged Attack DMG by {0}%. After a Normal or Charged Attack is fired,
-      DMG dealt increases by a further {1}% every 0.1 seconds the arrow is in the air for up to 5 times.`,
+    passiveName: "Strong-Willed",
+    description: {
+      pots: [
+        `Increases Normal Attack and Charged Attack DMG by {0}%.`,
+        `After a Normal or Charged Attack is fired, DMG dealt increases by a further {1}% every 0.1 seconds the arrow
+        is in the air for up to 5 times.`,
+      ],
       seeds: [9, 6],
     },
     autoBuffs: [
@@ -281,12 +271,7 @@ const goldBows: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            After a Normal or Charged Attack is fired, <Green>DMG</Green> dealt increases by a further{" "}
-            <Green b>{6 + refi * 2}%</Green> every 0.1 seconds the arrow is in the air for up to <Rose>5</Rose> times.
-          </>
-        ),
+        description: 1,
         inputConfigs: [
           {
             type: "stacks",
@@ -308,10 +293,12 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "48",
     subStat: { type: "cRate_", scale: "4.8%" },
-    passive: {
-      name: "Echoing Ballad",
-      description: `Increases CRIT DMG by {0}%. Hits have a {1}% chance to inflict a small AoE attack, dealing 125%
-      Physical ATK DMG. Can only occur once every {2}s.`,
+    passiveName: "Echoing Ballad",
+    description: {
+      pots: [
+        `Increases CRIT DMG by {0}%. Hits have a {1}% chance to inflict a small AoE attack, dealing 125% Physical ATK
+        DMG. Can only occur once every {2}s.`,
+      ],
       seeds: [15, { base: 50, increment: 10, dull: true }, { base: 4.5, increment: -0.5, dull: true }],
     },
     autoBuffs: [

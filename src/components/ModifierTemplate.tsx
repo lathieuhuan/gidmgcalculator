@@ -183,7 +183,11 @@ export const ModifierTemplate = ({
           </span>
         </label>
       </div>
-      <p className="text-sm">{desc}</p>
+      {typeof desc === "string" ? (
+        <p className="text-sm" dangerouslySetInnerHTML={{ __html: desc }} />
+      ) : (
+        <p className="text-sm">{desc}</p>
+      )}
 
       {inputConfigs.length ? (
         <div className={clsx("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}>

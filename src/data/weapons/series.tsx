@@ -2,7 +2,7 @@ import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { Green, Rose } from "@Src/pure-components";
 
-type SeriesInfo = Pick<AppWeapon, "passive" | "autoBuffs" | "buffs">;
+type SeriesInfo = Pick<AppWeapon, "passiveName" | "description" | "autoBuffs" | "buffs">;
 
 export const desertSeries: Pick<AppWeapon, "rarity" | "mainStatScale" | "subStat" | "passive" | "buffs"> = {
   rarity: 4,
@@ -59,22 +59,17 @@ export const desertSeries: Pick<AppWeapon, "rarity" | "mainStatScale" | "subStat
 };
 
 export const royalSeries: SeriesInfo = {
-  passive: {
-    name: "Focus",
-    description: `Upon dealing damage to an opponent, increases CRIT Rate by {0}%. Max 5 stacks. A CRIT hit removes all
-    existing stacks.`,
+  passiveName: "Focus",
+  description: {
+    pots: [
+      `Upon dealing damage to an opponent, increases CRIT Rate by {0}%. Max 5 stacks. A CRIT hit removes all existing stacks.`,
+    ],
     seeds: [6],
   },
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
-      desc: ({ refi }) => (
-        <>
-          Upon dealing damage to an opponent, increases <Green>CRIT Rate</Green> by <Green b>{6 + refi * 2}%</Green>.
-          Max <Rose>5</Rose> stacks. A CRIT hit removes all existing stacks.
-        </>
-      ),
       inputConfigs: [
         {
           type: "stacks",
@@ -91,23 +86,19 @@ export const royalSeries: SeriesInfo = {
 };
 
 export const blackcliffSeries: SeriesInfo = {
-  passive: {
-    name: "Press the Advantage",
-    description: `After defeating an opponent, ATK is increased by {0}% for 30s. This effect has a maximum of 3 stacks,
-    and the duration of each stack is independent of the others.`,
+  passiveName: "Press the Advantage",
+  description: {
+    pots: [
+      `After defeating an opponent, ATK is increased by {0}% for 30s. This effect has a maximum of 3 stacks, and the
+      duration of each stack is independent of the others.`,
+    ],
     seeds: [9],
   },
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
-      desc: ({ refi }) => (
-        <>
-          After defeating an opponent, <Green>ATK</Green> is increased by <Green b>{9 + refi * 3}%</Green> for 30s. This
-          effect has a maximum of <Green b>3</Green> stacks, and the duration of each stack is independent of the
-          others.
-        </>
-      ),
+      description: 0,
       inputConfigs: [
         {
           type: "stacks",
@@ -123,24 +114,32 @@ export const blackcliffSeries: SeriesInfo = {
   ],
 };
 
-export const favoniusPassive: AppWeapon["passive"] = {
-  name: "Windfall",
-  description: `CRIT hits have a {0}% chance to generate a small amount of Elemental Particles, which will regenerate
-    6 Energy for the character. Can only occur once every {1}s.`,
-  seeds: [
-    { base: 50, increment: 10, dull: true },
-    { base: 13.5, increment: -1.5, dull: true },
-  ],
+export const favoniusPassive: SeriesInfo = {
+  passiveName: "Windfall",
+  description: {
+    pots: [
+      `CRIT hits have a {0}% chance to generate a small amount of Elemental Particles, which will regenerate 6 Energy
+      for the character. Can only occur once every {1}s.`,
+    ],
+    seeds: [
+      { base: 50, increment: 10, dull: true },
+      { base: 13.5, increment: -1.5, dull: true },
+    ],
+  },
 };
 
-export const sacrificialPassive: AppWeapon["passive"] = {
-  name: "Composed",
-  description: `After dealing damage to an opponent with an Elemental Skill, the skill has a {0}% chance to end its
-    own CD. Can only occur once every {1}s.`,
-  seeds: [
-    { base: 30, dull: true },
-    { options: [30, 26, 22, 19, 16], dull: true },
-  ],
+export const sacrificialPassive: SeriesInfo = {
+  passiveName: "Composed",
+  description: {
+    pots: [
+      `After dealing damage to an opponent with an Elemental Skill, the skill has a {0}% chance to end its own CD. Can
+      only occur once every {1}s.`,
+    ],
+    seeds: [
+      { base: 30, dull: true },
+      { options: [30, 26, 22, 19, 16], dull: true },
+    ],
+  },
 };
 
 export const dragonspinePassive: AppWeapon["passive"] = {
@@ -231,21 +230,16 @@ export const lithicSeries: SeriesInfo = {
 };
 
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
-  passive: {
-    name: `Bane of ${name}`,
-    description: `Increases DMG against opponents affected by ${elements} by {0}%.`,
+  passiveName: `Bane of ${name}`,
+  description: {
+    pots: [`Increases DMG against opponents affected by ${elements} by {0}%.`],
     seeds: [9],
   },
   buffs: [
     {
       index: 0,
       affect: EModAffect.SELF,
-      desc: ({ refi }) => (
-        <>
-          Increases <Green>DMG</Green> against opponents affected by <Green>{elements}</Green> by{" "}
-          <Green b>{9 + refi * 3}%</Green>.
-        </>
-      ),
+      description: 0,
       base: 9,
       targetAttPatt: "all.pct_",
     },
@@ -276,10 +270,12 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
 });
 
 export const watatsumiSeries: SeriesInfo = {
-  passive: {
-    name: "Watatsumi Wavewalker",
-    description: `For every point of the entire party's combined maximum Energy capacity, the Elemental Burst DMG of
-    the character equipping this weapon is increased by {0}%, up to a maximum of {1}%.`,
+  passiveName: "Watatsumi Wavewalker",
+  description: {
+    pots: [
+      `For every point of the entire party's combined maximum Energy capacity, the Elemental Burst DMG of the character
+      equipping this weapon is increased by {0}%, up to a maximum of {1}%.`,
+    ],
     seeds: [0.09, { base: 30, dull: true }],
   },
   autoBuffs: [
@@ -294,8 +290,10 @@ export const watatsumiSeries: SeriesInfo = {
   ],
 };
 
-export const cullTheWeakPassive: AppWeapon["passive"] = {
-  name: "Cull the Weak",
-  description: "Defeating an opponent restores {0}% HP",
-  seeds: [6],
+export const cullTheWeakPassive: SeriesInfo = {
+  passiveName: "Cull the Weak",
+  description: {
+    pots: ["Defeating an opponent restores {0}% HP"],
+    seeds: [6],
+  },
 };
