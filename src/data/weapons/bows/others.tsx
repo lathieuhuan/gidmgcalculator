@@ -25,7 +25,7 @@ const otherBows: AppWeapon[] = [
       pots: [
         "Charged Attack hits on weak spots deal an additional {0}% ATK DMG as CRIT DMG. Can only occur once every 10s.",
       ],
-      seeds: [75],
+      seeds: [{ base: 75, seedType: "dull" }],
     },
   },
   {
@@ -46,7 +46,7 @@ const otherBows: AppWeapon[] = [
     subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Precise",
     description: {
-      pots: ["Increases DMG against weak spots by {0}%."],
+      pots: ["Increases {DMG} against weak spots by {0}%."],
       seeds: [18],
     },
     buffs: [
@@ -68,7 +68,7 @@ const otherBows: AppWeapon[] = [
     passiveName: "Slingshot",
     description: {
       pots: [
-        `If a Normal or Charged Attack hits a target within 0.3s of being fired, increases DMG by {0}%. Otherwise,
+        `If a {Normal or Charged Attack} hits a target within 0.3s of being fired, increases {DMG} by {0}%. Otherwise,
         decreases DMG by 10%.`,
       ],
       seeds: [{ base: 30, increment: 6 }],

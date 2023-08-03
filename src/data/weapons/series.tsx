@@ -1,6 +1,5 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 
 type SeriesInfo = Pick<AppWeapon, "passiveName" | "description" | "autoBuffs" | "buffs">;
 
@@ -54,9 +53,9 @@ export const royalSeries: SeriesInfo = {
   passiveName: "Focus",
   description: {
     pots: [
-      `Upon dealing damage to an opponent, increases CRIT Rate by {0}%. Max 5 stacks. A CRIT hit removes all existing stacks.`,
+      `Upon dealing damage to an opponent, increases {CRIT Rate} by {0}%. Max {1} stacks. A CRIT hit removes all existing stacks.`,
     ],
-    seeds: [6],
+    seeds: [6, { base: 5, seedType: "red" }],
   },
   buffs: [
     {
@@ -81,10 +80,10 @@ export const blackcliffSeries: SeriesInfo = {
   passiveName: "Press the Advantage",
   description: {
     pots: [
-      `After defeating an opponent, ATK is increased by {0}% for 30s. This effect has a maximum of 3 stacks, and the
+      `After defeating an opponent, {ATK} is increased by {0}% for 30s. This effect has a maximum of {1} stacks, and the
       duration of each stack is independent of the others.`,
     ],
-    seeds: [9],
+    seeds: [9, { base: 3, seedType: "red" }],
   },
   buffs: [
     {
@@ -114,8 +113,8 @@ export const favoniusPassive: SeriesInfo = {
       for the character. Can only occur once every {1}s.`,
     ],
     seeds: [
-      { base: 50, increment: 10, dull: true },
-      { base: 13.5, increment: -1.5, dull: true },
+      { base: 50, increment: 10, seedType: "dull" },
+      { base: 13.5, increment: -1.5, seedType: "dull" },
     ],
   },
 };
@@ -128,8 +127,8 @@ export const sacrificialPassive: SeriesInfo = {
       only occur once every {1}s.`,
     ],
     seeds: [
-      { base: 30, dull: true },
-      { options: [30, 26, 22, 19, 16], dull: true },
+      { base: 30, seedType: "dull" },
+      { options: [30, 26, 22, 19, 16], seedType: "dull" },
     ],
   },
 };
@@ -143,9 +142,9 @@ export const dragonspinePassive: SeriesInfo = {
       icicle. Can only occur once every 10s.`,
     ],
     seeds: [
-      { base: 50, increment: 10, dull: true },
-      { base: 65, increment: 15, dull: true },
-      { base: 160, increment: 40, dull: true },
+      { base: 50, increment: 10, seedType: "dull" },
+      { base: 65, increment: 15, seedType: "dull" },
+      { base: 160, increment: 40, seedType: "dull" },
     ],
   },
 };
@@ -226,7 +225,7 @@ export const lithicSeries: SeriesInfo = {
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
   passiveName: `Bane of ${name}`,
   description: {
-    pots: [`Increases DMG against opponents affected by ${elements} by {0}%.`],
+    pots: [`Increases {DMG} against opponents affected by ${elements} by {0}%.`],
     seeds: [9],
   },
   buffs: [
@@ -261,10 +260,10 @@ export const watatsumiSeries: SeriesInfo = {
   passiveName: "Watatsumi Wavewalker",
   description: {
     pots: [
-      `For every point of the entire party's combined maximum Energy capacity, the Elemental Burst DMG of the character
+      `For every point of the entire party's combined maximum Energy capacity, the {Elemental Burst DMG} of the character
       equipping this weapon is increased by {0}%, up to a maximum of {1}%.`,
     ],
-    seeds: [0.09, { base: 30, dull: true }],
+    seeds: [0.09, { base: 30, increment: 10, seedType: "red" }],
   },
   autoBuffs: [
     {
@@ -281,7 +280,7 @@ export const watatsumiSeries: SeriesInfo = {
 export const cullTheWeakPassive: SeriesInfo = {
   passiveName: "Cull the Weak",
   description: {
-    pots: ["Defeating an opponent restores {0}% HP"],
-    seeds: [6],
+    pots: ["Defeating an opponent restores {0}% HP."],
+    seeds: [{ base: 6, seedType: "dull" }],
   },
 };

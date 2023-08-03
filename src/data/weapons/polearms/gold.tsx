@@ -114,7 +114,7 @@ const goldPolearms: AppWeapon[] = [
         `ATK increased by {0}% of Energy Recharge over the base 100%. You can gain a maximum bonus of {1}% ATK.`,
         `Gain {2}% Energy Recharge for 12s after using an Elemental Burst.`,
       ],
-      seeds: [21, { base: 70, increment: 10, dull: true }, { base: 25, increment: 5 }],
+      seeds: [21, { base: 70, increment: 10, seedType: "dull" }, { base: 25, increment: 5 }],
     },
     // #to-do
     autoBuffs: [
@@ -262,7 +262,7 @@ const goldPolearms: AppWeapon[] = [
         opponents have a 50% chance to trigger a vacuum blade that deals {1}% of ATK as DMG in a small AoE. This effect
         can occur no more than once every 2s.`,
       ],
-      seeds: [6, { base: 25, increment: 15, dull: true }],
+      seeds: [6, { base: 25, increment: 15, seedType: "dull" }],
     },
     autoBuffs: [
       {

@@ -3,8 +3,6 @@ import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { liyueSeries } from "../series";
 
-const mistsplitterBuffValuesByStack = (refi: number) => [6 + refi * 2, 12 + refi * 4, 21 + refi * 7];
-
 const goldSwords: AppWeapon[] = [
   {
     code: 148,
@@ -293,7 +291,7 @@ const goldSwords: AppWeapon[] = [
         banner of the resistance aloft, regenerating HP equal to {1}% of ATK and dealing {2}% of ATK as DMG to
         surrounding opponents. This effect can only occur once every 15s.`,
       ],
-      seeds: [15, { base: 85, increment: 15, dull: true }, { base: 160, increment: 40, dull: true }],
+      seeds: [15, { base: 85, increment: 15, seedType: "dull" }, { base: 160, increment: 40, seedType: "dull" }],
     },
     autoBuffs: [
       {
@@ -316,7 +314,7 @@ const goldSwords: AppWeapon[] = [
         Might lasts for 12s.`,
         `Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and ATK SPD by 10%.`,
       ],
-      seeds: [3, { base: 15, dull: true }],
+      seeds: [3, { base: 15, seedType: "dull" }],
     },
     autoBuffs: [
       {

@@ -27,7 +27,7 @@ const otherClaymores: AppWeapon[] = [
         interrupt.`,
       ],
       seeds: [
-        { base: 65, increment: 5, dull: true },
+        { base: 65, increment: 5, seedType: "dull" },
         { base: 25, increment: 5 },
       ],
     },
@@ -87,7 +87,7 @@ const otherClaymores: AppWeapon[] = [
         `After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional {0}% ATK DMG in a small
         area. Effect lasts 15s. DMG can only occur once every 3s.`,
       ],
-      seeds: [{ base: 45, dull: true }],
+      seeds: [{ base: 45, seedType: "dull" }],
     },
   },
   {

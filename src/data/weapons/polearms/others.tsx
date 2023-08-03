@@ -13,7 +13,7 @@ const otherPolearms: AppWeapon[] = [
     passiveName: "Heavy",
     description: {
       pots: [`Normal Attacks deal an additional {0}% DMG. Can only occur once every 10s.`],
-      seeds: [{ base: 120, dull: true }],
+      seeds: [{ base: 120, seedType: "dull" }],
     },
   },
   {

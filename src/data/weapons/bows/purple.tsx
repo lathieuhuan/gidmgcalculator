@@ -13,7 +13,7 @@ const purpleBows: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `After the wielder is healed, they will deal {0}% more DMG for 8s. This can be triggered even when the
+        `After the wielder is healed, they will deal {0}% more {DMG} for 8s. This can be triggered even when the
         character is not on the field.`,
       ],
       seeds: [12],
@@ -38,10 +38,10 @@ const purpleBows: AppWeapon[] = [
     description: {
       pots: [
         `After a Charged Attack hits an opponent, a Sunfire Arrow will descend and deal {0}% ATK as DMG.`,
-        `After a Sunfire Arrow hits an opponent, it will increase the Charged Attack DMG taken by this opponent from
+        `After a Sunfire Arrow hits an opponent, it will increase the {Charged Attack DMG} taken by this opponent from
         the wielder by {1}%. A Sunfire Arrow can be triggered once every 12s.`,
       ],
-      seeds: [{ base: 45, dull: true }, 21],
+      seeds: [{ base: 45, seedType: "dull" }, 21],
     },
     buffs: [
       {
@@ -63,10 +63,10 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Secret Wisdom's Favor",
     description: {
       pots: [
-        `The character's Elemental Mastery will increase by {0} within 6s after Charged Attacks hit opponents. Max 2
+        `The character's {Elemental Mastery} will increase by {0} within 6s after Charged Attacks hit opponents. Max {1}
         stacks. This effect can triggered once every 0.5s.`,
       ],
-      seeds: [30],
+      seeds: [30, { base: 2, seedType: "red" }],
     },
     buffs: [
       {
@@ -100,7 +100,7 @@ const purpleBows: AppWeapon[] = [
         opponent with an attack. Flowrider will be removed after 15s or after causing 3 instances of AoE DMG. Only 1
         instance of AoE DMG can be caused every 2s in this way. Flowrider can be triggered once every 12s.`,
       ],
-      seeds: [{ base: 60, dull: true }],
+      seeds: [{ base: 60, seedType: "dull" }],
     },
   },
   {
@@ -113,15 +113,15 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Labyrinth Lord's Instruction",
     description: {
       pots: [
-        `Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts, increasing Elemental
-        Mastery by {0} for 12s.`,
+        `Obtain the Teachings of the Forest effect when unleashing Elemental Skills and Bursts, increasing
+        {Elemental Mastery} by {0} for 12s.`,
         `This effect will be removed when switching characters. When the Teachings of the Forest effect ends or is
         removed, it will deal {1}% of ATK as DMG to 1 nearby opponent. The Teachings of the Forest effect can be
         triggered once every 20s.`,
       ],
       seeds: [
         { base: 40, increment: 20 },
-        { base: 80, increment: 20, dull: true },
+        { base: 80, increment: 20, seedType: "dull" },
       ],
     },
     buffs: [
@@ -144,7 +144,7 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Radiance of the Deeps",
     description: {
       pots: [
-        `Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase DMG dealt by {0}/{1}/{2}%
+        `Has three states, Evengleam (1), Afterglow (2), and Dawnblaze (3), which increase {DMG} dealt by {0}/{1}/{2}%
         respectively.`,
         `When attacks hit opponents, this weapon will switch to the next state. This weapon can change states once
         every 7s. The character equipping this weapon can still trigger the state switch while not on the field.`,
@@ -182,12 +182,12 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Oppidan Ambush",
     description: {
       pots: [
-        `While the character equipped with this weapon is in the party but not on the field, their DMG increases by
+        `While the character equipped with this weapon is in the party but not on the field, their {DMG} increases by
         {0}% every second up to a max of {1}%.`,
         `When the character is on the field for more than 4s, the aforementioned DMG buff decreases by 4% per second
         until it reaches 0%.`,
       ],
-      seeds: [1.5, { base: 15, dull: true }],
+      seeds: [1.5, { base: 15, increment: 5, seedType: "red" }],
     },
     buffs: [
       {
@@ -244,13 +244,14 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Strong Strike",
     description: {
       pots: [
-        `When Aloy equips Predator, ATK is increased by {0}.`,
-        `Dealing Cryo DMG to opponents increases this character's Normal and Charged Attack DMG by {1}% for 6s. This
-        effect can have a maximum of 2 stacks.<br />• Effective for players on "PlayStation Network" only.`,
+        `When Aloy equips Predator, {ATK} is increased by {0}.`,
+        `Dealing Cryo DMG to opponents increases this character's {Normal and Charged Attack DMG} by {1}% for 6s. This
+        effect can have a maximum of {2} stacks.<br />• Effective for players on "PlayStation Network" only.`,
       ],
       seeds: [
         { base: 66, increment: 0 },
         { base: 10, increment: 0 },
+        { base: 2, seedType: "red" },
       ],
     },
     autoBuffs: [
@@ -289,7 +290,7 @@ const purpleBows: AppWeapon[] = [
     subStat: { type: "em", scale: "36" },
     passiveName: "Arrowless Song",
     description: {
-      pots: ["Increases Elemental Skill and Elemental Burst DMG by {0}%."],
+      pots: ["Increases {Elemental Skill and Elemental Burst DMG} by {0}%."],
       seeds: [18],
     },
     autoBuffs: [
@@ -314,8 +315,8 @@ const purpleBows: AppWeapon[] = [
         only occur once every {1}s.`,
       ],
       seeds: [
-        { base: 30, dull: true },
-        { base: 15, increment: -1, dull: true },
+        { base: 30, seedType: "dull" },
+        { base: 15, increment: -1, seedType: "dull" },
       ],
     },
   },
@@ -329,8 +330,8 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Evernight Duet",
     description: {
       pots: [
-        `Normal Attack hits on opponents increase Elemental Skill DMG by {0}% for 5s.`,
-        `Elemental Skill hits on opponents increase Normal Attack DMG by {0}% for 5s.`,
+        `Normal Attack hits on opponents increase {Elemental Skill DMG} by {0}% for 5s.`,
+        `Elemental Skill hits on opponents increase {Normal Attack DMG} by {0}% for 5s.`,
       ],
       seeds: [15],
     },
@@ -369,7 +370,7 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Windblume Wish",
     description: {
       pots: [
-        `After using an Elemental Skill, receive a boon from the ancient wish of the Windblume, increasing ATK by {0}%
+        `After using an Elemental Skill, receive a boon from the ancient wish of the Windblume, increasing {ATK} by {0}%
         for 6s.`,
       ],
       seeds: [12],
@@ -392,7 +393,7 @@ const purpleBows: AppWeapon[] = [
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "Rapid Firing",
     description: {
-      pots: ["Increases Normal Attack DMG by {0}% but decreases Charged Attack DMG by 10%."],
+      pots: ["Increases {Normal Attack DMG} by {0}% but decreases Charged Attack DMG by 10%."],
       seeds: [30],
     },
     autoBuffs: [
@@ -416,7 +417,7 @@ const purpleBows: AppWeapon[] = [
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "Unreturning",
     description: {
-      pots: ["Charged Attack hits on weak points increase Movement SPD by 10% and ATK by {0}% for 10s."],
+      pots: ["Charged Attack hits on weak points increase Movement SPD by 10% and {ATK} by {0}% for 10s."],
       seeds: [27],
     },
     buffs: [
@@ -438,10 +439,10 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Infusion Arrow",
     description: {
       pots: [
-        `Normal Attack and Charged Attack hits increase ATK by {0}% and Normal ATK SPD by {1}% for 6s. Max 4 stacks.
+        `Normal Attack and Charged Attack hits increase {ATK} by {0}% and {Normal ATK SPD} by {1}% for 6s. Max {2} stacks.
         Can only occur once every 0.3s.`,
       ],
-      seeds: [3, 0.9],
+      seeds: [3, 0.9, { base: 4, seedType: "red" }],
     },
     buffs: [
       {
@@ -479,10 +480,10 @@ const purpleBows: AppWeapon[] = [
     passiveName: "Full Draw",
     description: {
       pots: [
-        `Increases Normal Attack DMG by {0}% and Charged Attack DMG by {1}%.`,
-        `When the equipping character's Energy reaches 100%, the DMG Bonuses are increased by 100%.`,
+        `Increases {Normal Attack DMG} by {0}% and {Charged Attack DMG} by {1}%.`,
+        `When the equipping character's Energy reaches 100%, the {DMG} Bonuses are increased by {2}%.`,
       ],
-      seeds: [12, 9],
+      seeds: [12, 9, { base: 100, increment: 0 }],
     },
     autoBuffs: [
       {

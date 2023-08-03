@@ -30,7 +30,7 @@ export class AppDataService {
   constructor() {
     Object.entries(characters).forEach(([name, data]) => {
       this.characters[name] = {
-        status: "unfetched",
+        status: "fetched",
         data,
       };
     });

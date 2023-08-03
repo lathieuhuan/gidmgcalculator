@@ -83,10 +83,12 @@ export type AutoBuff = {
       };
 };
 
+export type DescriptionSeedType = "dull" | "green" | "red";
+
 export type DescriptionSeed =
   | number
-  | { base: number; increment?: number; dull?: boolean }
-  | { options: number[]; dull?: boolean };
+  | { base: number; increment?: number; seedType?: DescriptionSeedType }
+  | { options: number[]; seedType?: DescriptionSeedType };
 
 /**
  * Weapon in app data

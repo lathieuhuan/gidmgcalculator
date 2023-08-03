@@ -24,7 +24,7 @@ const purplePolearms: AppWeapon[] = [
         `When the wielder is healed, restore {0} Energy. This effect can be triggered once every 10s, and can occur
         even when the character is not on the field.`,
       ],
-      seeds: [{ base: 6, dull: true }],
+      seeds: [{ base: 6, seedType: "dull" }],
     },
   },
   {
@@ -145,7 +145,7 @@ const purplePolearms: AppWeapon[] = [
         but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
         even when the character is not on the field.`,
       ],
-      seeds: [4.5, { base: 2.5, increment: 0.5, dull: true }],
+      seeds: [4.5, { base: 2.5, increment: 0.5, seedType: "dull" }],
     },
     autoBuffs: [
       {
@@ -199,7 +199,7 @@ const purplePolearms: AppWeapon[] = [
         `After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {0}% ATK as DMG for
         5s.`,
       ],
-      seeds: [{ base: 15, dull: true }],
+      seeds: [{ base: 15, seedType: "dull" }],
     },
   },
   {

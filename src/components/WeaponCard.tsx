@@ -1,5 +1,6 @@
+import clsx from "clsx";
 import { useMemo } from "react";
-import type { CalcWeapon, DescriptionSeed, Level } from "@Src/types";
+import type { CalcWeapon, DescriptionSeed, DescriptionSeedType, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
@@ -14,26 +15,43 @@ import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 
-const wrapText = (text: string | number, dull?: boolean) => {
-  return `<span${dull ? "" : ' class="text-green font-bold"'}>${text}</span>`;
+const wrapText = (text: string | number, type: DescriptionSeedType = "dull", bold = true) => {
+  return `<span class="${clsx({
+    "text-green": type === "green",
+    "text-rose-500": type === "red",
+    "font-bold": type === "green" && bold,
+  })}">${text}</span>`;
 };
 
 const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) => {
-  return pot.replace(/\{[0-9]+\}/g, (match) => {
-    const seed = seeds[+match.slice(1, 2)];
+  return pot.replace(/\{[a-zA-Z0-9 -]+\}%?/g, (match) => {
+    let seed: string | DescriptionSeed;
+    let suffix = "";
 
-    if (typeof seed === "number") {
-      return wrapText(round(seed + (seed / 3) * refi, 3));
+    if (match[match.length - 1] === "%") {
+      seed = seeds[+match.slice(1, -2)];
+      suffix = "%";
+    } else {
+      const key = match.slice(1, -1);
+      seed = isNaN(+key) ? key : seeds[+key];
     }
-    if (seed) {
-      if ("base" in seed) {
-        const { base, increment = base / 3 } = seed;
-        const value = base + increment * refi;
-        return wrapText(round(value, 3), seed.dull);
-      }
-      return wrapText(seed.options[refi - 1], seed.dull);
+
+    switch (typeof seed) {
+      case "number":
+        return wrapText(round(seed + (seed / 3) * refi, 3) + suffix, "green");
+      case "string":
+        return wrapText(seed, "green", false);
+      case "object":
+        const { seedType = "green" } = seed;
+
+        if ("base" in seed) {
+          const { base, increment = seedType === "red" ? 0 : base / 3 } = seed;
+          return wrapText(round(base + increment * refi, 3) + suffix, seedType);
+        }
+        return wrapText(seed.options[refi - 1] + suffix, seedType);
+      default:
+        return match;
     }
-    return match;
   });
 };
 

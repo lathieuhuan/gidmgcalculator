@@ -14,7 +14,7 @@ const otherSwords: AppWeapon[] = [
     passiveName: "Journey",
     description: {
       pots: [`Each Elemental Orb or Particle collected restores {0}% HP.`],
-      seeds: [{ base: 0.75, dull: true }],
+      seeds: [{ base: 0.75, seedType: "dull" }],
     },
   },
   {
@@ -52,8 +52,8 @@ const otherSwords: AppWeapon[] = [
     description: {
       pots: [`On hit, has 50% chance to deal {0}% ATK DMG to a single enemy. Can only occur once every {1}s.`],
       seeds: [
-        { base: 200, increment: 40, dull: true },
-        { base: 16, increment: -1, dull: true },
+        { base: 200, increment: 40, seedType: "dull" },
+        { base: 16, increment: -1, seedType: "dull" },
       ],
     },
   },

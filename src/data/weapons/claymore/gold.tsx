@@ -162,7 +162,7 @@ const goldClaymores: AppWeapon[] = [
         `Increases all DMG by {0}%. After using an Elemental Burst, Normal or Charged Attack, on hit, creates a vacuum
         blade that does {1}% of ATK as DMG to opponents along its path. Lasts for 20s or 8 vacuum blades.`,
       ],
-      seeds: [6, { base: 60, dull: true }],
+      seeds: [6, { base: 60, seedType: "dull" }],
     },
     autoBuffs: [
       {

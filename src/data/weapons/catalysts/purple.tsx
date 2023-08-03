@@ -27,7 +27,7 @@ const purpleCatalysts: AppWeapon[] = [
         `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
         this value is obtained.`,
       ],
-      seeds: [6, 1.5, { base: 9, dull: true }],
+      seeds: [6, 1.5, { base: 9, seedType: "dull" }],
     },
     buffs: [
       {
@@ -170,7 +170,7 @@ const purpleCatalysts: AppWeapon[] = [
         {0}% for 5s.`,
         `Using a Sprint or Alternate Sprint ability increases ATK by {1}% for 5s.`,
       ],
-      seeds: [{ base: 12, increment: 2, dull: true }, 15],
+      seeds: [{ base: 12, increment: 2, seedType: "dull" }, 15],
     },
     buffs: [
       {
@@ -413,8 +413,8 @@ const purpleCatalysts: AppWeapon[] = [
         can bounce between opponents a maximum of 4 times. This effect can occur once every {1}s.`,
       ],
       seeds: [
-        { base: 210, increment: 30, dull: true },
-        { base: 13, increment: -1, dull: true },
+        { base: 210, increment: 30, seedType: "dull" },
+        { base: 13, increment: -1, seedType: "dull" },
       ],
     },
   },

@@ -49,7 +49,7 @@ const purpleSwords: AppWeapon[] = [
         `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
         this value is obtained.`,
       ],
-      seeds: [9, { base: 112.5, dull: true }, 1.8],
+      seeds: [9, { base: 112.5, seedType: "dull" }, 1.8],
     },
     buffs: [
       {
@@ -358,7 +358,7 @@ const purpleSwords: AppWeapon[] = [
         `Increases DMG dealt by Normal and Charged Attacks by {0}%. Additionally, regenerates {1}% of ATK as HP when
         Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.`,
       ],
-      seeds: [15, { base: 50, increment: 10, dull: true }],
+      seeds: [15, { base: 50, increment: 10, seedType: "dull" }],
     },
     autoBuffs: [
       {
@@ -380,7 +380,7 @@ const purpleSwords: AppWeapon[] = [
         `Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music and deals
         {0}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained every 0.5s.`,
       ],
-      seeds: [{ base: 75, dull: true }],
+      seeds: [{ base: 75, seedType: "dull" }],
     },
   },
   {
@@ -446,7 +446,7 @@ const purpleSwords: AppWeapon[] = [
         Burst, all Succession Seeds are consumed and after 2s, the character regenerates {0} Energy for each seed
         consumed.`,
       ],
-      seeds: [{ base: 4.5, dull: true }],
+      seeds: [{ base: 4.5, seedType: "dull" }],
     },
   },
   {

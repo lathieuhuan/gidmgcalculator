@@ -14,7 +14,7 @@ const otherCatalysts: AppWeapon[] = [
     passiveName: "Energy Shower",
     description: {
       pots: [`Each Elemental Orb or Particle collected restores {0}% HP.`],
-      seeds: [{ base: 0.75, dull: true }],
+      seeds: [{ base: 0.75, seedType: "dull" }],
     },
   },
   {

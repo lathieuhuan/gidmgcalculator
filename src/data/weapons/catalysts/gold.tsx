@@ -20,8 +20,8 @@ const goldCatalysts: AppWeapon[] = [
       ],
       seeds: [
         { base: 0.1, increment: 0.2 },
-        { base: 4, increment: 8, dull: true },
-        { base: 4, increment: 0.5, dull: true },
+        { base: 4, increment: 8, seedType: "dull" },
+        { base: 4, increment: 0.5, seedType: "dull" },
       ],
     },
     buffs: [
@@ -60,7 +60,7 @@ const goldCatalysts: AppWeapon[] = [
         `The effect will be removed when the wielder leaves the field, and using the Elemental Skill again will reset
         all DMG buffs.`,
       ],
-      seeds: [7.5, 3.6, 7.2, { base: 36, dull: true }],
+      seeds: [7.5, 3.6, 7.2, { base: 36, seedType: "dull" }],
     },
     autoBuffs: [
       {
@@ -225,7 +225,7 @@ const goldCatalysts: AppWeapon[] = [
         which actively seek out nearby opponents to attack for 15s, dealing {1}% ATK DMG. Can only occur once every
         30s.`,
       ],
-      seeds: [9, { base: 120, dull: true }],
+      seeds: [9, { base: 120, seedType: "dull" }],
     },
     autoBuffs: [
       {

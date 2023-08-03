@@ -176,7 +176,7 @@ const purpleClaymores: AppWeapon[] = [
         `On hit, Normal or Charged Attacks have a 50% chance to deal an additional {0}% ATK DMG to opponents within a
         small AoE. Can only occur once every 15s.`,
       ],
-      seeds: [{ base: 180, dull: true }],
+      seeds: [{ base: 180, seedType: "dull" }],
     },
   },
   {
@@ -289,7 +289,7 @@ const purpleClaymores: AppWeapon[] = [
         but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
         even when the character is not on the field.`,
       ],
-      seeds: [4.5, { base: 2.5, increment: 0.5, dull: true }],
+      seeds: [4.5, { base: 2.5, increment: 0.5, seedType: "dull" }],
     },
     autoBuffs: [
       {
@@ -312,7 +312,7 @@ const purpleClaymores: AppWeapon[] = [
         broken, and can only be triggered once every 45s.`,
         `While protected by a shield, the character gains {1}% increased DMG.`,
       ],
-      seeds: [{ base: 17, increment: 3, dull: true }, 9],
+      seeds: [{ base: 17, increment: 3, seedType: "dull" }, 9],
     },
     buffs: [
       {
@@ -346,7 +346,7 @@ const purpleClaymores: AppWeapon[] = [
         `Increases Elemental Burst DMG by {0}%. When Elemental Burst hits opponents, there is a 100% chance of
         summoning a titanic tuna that charges and deals {1}% ATK as AoE DMG. This effect can occur once every 15s.`,
       ],
-      seeds: [9, { base: 75, dull: true }],
+      seeds: [9, { base: 75, seedType: "dull" }],
     },
     autoBuffs: [
       {
