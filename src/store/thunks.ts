@@ -47,13 +47,7 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
       dispatch(initNewSession(payload));
       onSuccess?.();
     } else {
-      const { name, vision, icon, rarity } = appData.getCharData(char.name);
-
-      dispatch(
-        updateUI({
-          loadingCharacter: { name, vision, icon, rarity },
-        })
-      );
+      dispatch(updateUI({ loading: true }));
 
       const response = await appData.fetchCharacter(char.name);
 
@@ -69,7 +63,7 @@ export const checkBeforeInitNewSession = (payload: InitNewSessionPayload, option
         );
       }
 
-      dispatch(updateUI({ loadingCharacter: null }));
+      dispatch(updateUI({ loading: false }));
     }
   };
 };

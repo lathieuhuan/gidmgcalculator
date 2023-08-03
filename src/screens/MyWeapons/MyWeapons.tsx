@@ -167,7 +167,7 @@ export default function MyWeapons() {
         onPickWeapon={(item) => {
           if (checkIfMaxWeaponsReached()) {
             return {
-              shouldStopPicking: true,
+              isValid: false,
             };
           }
 

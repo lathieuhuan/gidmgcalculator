@@ -8,14 +8,14 @@ import artifacts from "@Data/artifacts";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
 
 interface ArtifactPickerProps {
   type?: string;
   artifactType: ArtifactType;
   needMassAdd?: boolean;
   forFeature?: "TEAMMATE_MODIFIERS";
-  onPickArtifact: (info: ReturnType<typeof createArtifact>) => ReturnType<PickerTemplateProps["onPickItem"]>;
+  onPickArtifact: (info: ReturnType<typeof createArtifact>) => OnPickItemReturn;
   onClose: () => void;
 }
 const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact, onClose }: ArtifactPickerProps) => {

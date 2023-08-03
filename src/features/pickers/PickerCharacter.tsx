@@ -9,7 +9,7 @@ import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
 
 type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
 
@@ -17,7 +17,7 @@ export interface CharacterPickerProps {
   sourceType: "mixed" | "app" | "user";
   needMassAdd?: boolean;
   filter?: (character: AppCharacter) => boolean;
-  onPickCharacter: (character: PickedCharacter) => void;
+  onPickCharacter: (character: PickedCharacter) => OnPickItemReturn;
   onClose: () => void;
 }
 const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onClose }: CharacterPickerProps) => {

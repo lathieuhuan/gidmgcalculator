@@ -12,11 +12,18 @@ import { MemoItem } from "./Item";
 
 const DEFAULT_FILTER: Filter = { type: "", value: "" };
 
+type Return = void | {
+  /** default to true */
+  isValid: boolean;
+};
+
+export type OnPickItemReturn = Return | Promise<Return>;
+
 export interface PickerTemplateProps {
   data: PickerItem[];
   dataType: DataType;
   needMassAdd?: boolean;
-  onPickItem: (item: PickerItem) => { shouldStopPicking: boolean } | void;
+  onPickItem: (item: PickerItem) => OnPickItemReturn;
   onClose: () => void;
 }
 export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClose }: PickerTemplateProps) => {
@@ -57,25 +64,26 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
     }
   }
 
-  const onClickItem = (item: PickerItem, index: number) => {
-    const { shouldStopPicking } = onPickItem(item) || {};
+  const onClickItem = async (item: PickerItem, index: number) => {
+    const { isValid = true } = (await onPickItem(item)) || {};
 
-    if (!massAdd) {
-      onClose();
-    } //
-    else if (dataType !== "character") {
-      if (!shouldStopPicking) {
+    if (isValid) {
+      if (!massAdd) {
+        onClose();
+      } //
+      else if (dataType === "character") {
+        setPickedNames((prevPickedNames) => ({
+          ...prevPickedNames,
+          [item.name]: true,
+        }));
+      } //
+      else {
         setItemCounts((prev) => {
           const newItems = { ...prev };
           newItems[index] = (newItems[index] || 0) + 1;
           return newItems;
         });
       }
-    } else {
-      setPickedNames((prevPickedNames) => ({
-        ...prevPickedNames,
-        [item.name]: true,
-      }));
     }
   };
 

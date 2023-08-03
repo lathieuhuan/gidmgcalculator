@@ -3,6 +3,10 @@ import { FaSyncAlt } from "react-icons/fa";
 
 import type { AppCharacter, Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
+
+// Util
+import { getAppDataError } from "@Src/utils";
+import { notification } from "@Src/utils/notification";
 import { appData } from "@Data/index";
 
 // Store
@@ -10,6 +14,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar } from "@Store/calculatorSlice/selectors";
 // Action
 import { updateCharacter } from "@Store/calculatorSlice";
+import { updateUI } from "@Store/uiSlice";
 import { initNewSessionWithChar } from "@Store/thunks";
 
 // Component
@@ -159,8 +164,29 @@ function CharOverview({ touched }: OverviewCharProps) {
       <PickerCharacter
         active={modalType === "CHARACTER_PICKER"}
         sourceType="mixed"
-        onPickCharacter={(pickedChar) => {
-          dispatch(initNewSessionWithChar(pickedChar));
+        onPickCharacter={async (pickedChar) => {
+          if (appData.getCharStatus(pickedChar.name) === "fetched") {
+            dispatch(initNewSessionWithChar(pickedChar));
+            return;
+          }
+          dispatch(updateUI({ loading: true }));
+
+          const response = await appData.fetchCharacter(pickedChar.name);
+
+          if (response.code === 200) {
+            dispatch(initNewSessionWithChar(pickedChar));
+            dispatch(updateUI({ loading: false }));
+          } else {
+            notification.error({
+              content: getAppDataError("character", response.code),
+              duration: 0,
+            });
+            dispatch(updateUI({ loading: false }));
+
+            return {
+              isValid: false,
+            };
+          }
         }}
         onClose={closeModal}
       />

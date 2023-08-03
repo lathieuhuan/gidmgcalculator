@@ -1,10 +1,14 @@
-import { notifRoot } from "./root";
 import type { NotificationRequest } from "./types";
+import { notifRoot, location } from "./root";
 import { NotificationCenter } from "./NotificationCenter";
 
 export let notiRequests: NotificationRequest[] = [];
 
 const updateNotification = () => {
+  if (!document.getElementById("#notif")) {
+    document.body.append(location);
+  }
+
   notifRoot.render(
     <NotificationCenter
       requests={notiRequests}

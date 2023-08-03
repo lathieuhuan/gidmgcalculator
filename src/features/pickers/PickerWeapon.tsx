@@ -9,13 +9,13 @@ import { createWeapon } from "@Src/utils/creators";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type PickerTemplateProps } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
 
 interface WeaponPickerProps {
   type?: string;
   weaponType: WeaponType;
   needMassAdd?: boolean;
-  onPickWeapon: (info: ReturnType<typeof createWeapon>) => ReturnType<PickerTemplateProps["onPickItem"]>;
+  onPickWeapon: (info: ReturnType<typeof createWeapon>) => OnPickItemReturn;
   onClose: () => void;
 }
 function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: WeaponPickerProps) {

@@ -258,7 +258,7 @@ export default function MyArtifacts() {
         onPickArtifact={(item) => {
           if (checkIfMaxArtifactsReached()) {
             return {
-              shouldStopPicking: true,
+              isValid: false,
             };
           }
 
