@@ -2,7 +2,7 @@ import type { AppCharacter, AppWeapon, Party, PartyData } from "@Src/types";
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { pickProps } from "@Src/utils";
 import characters from "./characters";
-// import weapons from "./weapons";
+import weapons from "./weapons";
 
 type Response<T> = Promise<{
   code: number;
@@ -15,30 +15,34 @@ type DataControl<T> = {
   data: T;
 };
 
-type Subscriber = (charData: AppCharacter) => void;
+type Subscriber<T> = (data: T) => void;
+
+type CharacterSubscriber = Subscriber<AppCharacter>;
+type WeaponSubscriber = Subscriber<AppWeapon>;
 
 export class AppDataService {
   private characters: Record<PropertyKey, DataControl<AppCharacter>> = {};
-  private subscribers: Map<string, Set<Subscriber>> = new Map();
+  private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
 
-  // private weapons: Array<DataControl<AppWeapon>> = [];
+  private weapons: Array<DataControl<AppWeapon>> = [];
+  private weaponSubscribers: Map<string, Set<WeaponSubscriber>> = new Map();
 
   constructor() {
     Object.entries(characters).forEach(([name, data]) => {
       this.characters[name] = {
-        status: "fetched",
+        status: "unfetched",
         data,
       };
     });
 
-    // for (const list of Object.values(weapons)) {
-    //   list.forEach((item) => {
-    //     this.weapons.push({
-    //       status: "unfetched",
-    //       data: item,
-    //     });
-    //   });
-    // }
+    for (const list of Object.values(weapons)) {
+      list.forEach((item) => {
+        this.weapons[item.code] = {
+          status: "unfetched",
+          data: item,
+        };
+      });
+    }
   }
 
   private async fetchData<T>(url: string): Response<T> {
@@ -51,20 +55,20 @@ export class AppDataService {
       }));
   }
 
-  public subscribe(name: string, subscriber: Subscriber) {
-    const existSubscribers = this.subscribers.get(name);
+  public subscribeCharacter(name: string, subscriber: CharacterSubscriber) {
+    const existSubscribers = this.characterSubscribers.get(name);
 
     if (existSubscribers) {
       existSubscribers.add(subscriber);
     } else {
-      this.subscribers.set(name, new Set([subscriber]));
+      this.characterSubscribers.set(name, new Set([subscriber]));
     }
 
-    return () => this.unsubscribe(name, subscriber);
+    return () => this.unsubscribeCharacter(name, subscriber);
   }
 
-  public unsubscribe(name: string, subscriber: Subscriber) {
-    this.subscribers.get(name)?.delete(subscriber);
+  public unsubscribeCharacter(name: string, subscriber: CharacterSubscriber) {
+    this.characterSubscribers.get(name)?.delete(subscriber);
   }
 
   async fetchCharacter(name: string): Response<AppCharacter> {
@@ -92,10 +96,10 @@ export class AppDataService {
       control.status = "fetched";
       Object.assign(control.data, response.data);
 
-      const subscribers = this.subscribers.get(name);
+      const characterSubscribers = this.characterSubscribers.get(name);
 
-      if (subscribers) {
-        subscribers.forEach((subscriber) => {
+      if (characterSubscribers) {
+        characterSubscribers.forEach((subscriber) => {
           subscriber(control.data);
         });
       }
@@ -156,39 +160,6 @@ export class AppDataService {
     };
   }
 
-  // async fetchWeapon(code: number): Response<AppWeapon> {
-  //   const control = this.weapons.find((weapon) => weapon.data.code === code);
-
-  //   if (!control) {
-  //     return {
-  //       code: 404,
-  //       message: "Character not found",
-  //       data: null,
-  //     };
-  //   }
-
-  //   if (control.fetched) {
-  //     return {
-  //       code: 200,
-  //       data: control.data,
-  //     };
-  //   }
-
-  //   const response = await this.fetchData<AppWeapon>(BACKEND_URL_PATH.weapon.byCode(code));
-
-  //   if (response.data) {
-  //     control.fetched = true;
-  //     Object.assign(control.data, response.data);
-
-  //     return {
-  //       ...response,
-  //       data: control.data,
-  //     };
-  //   }
-
-  //   return response;
-  // }
-
   getCharStatus(name: string) {
     return this.characters[name].status;
   }
@@ -207,7 +178,47 @@ export class AppDataService {
     });
   }
 
-  // getWeaponData(code: number) {
-  //   return this.weapons.find((weapon) => weapon.data.code === code);
-  // }
+  // WEAPON
+
+  async fetchWeapon(code: number): Response<AppWeapon> {
+    const control = this.weapons[code];
+
+    if (!control) {
+      return {
+        code: 404,
+        message: "Weapon not found",
+        data: null,
+      };
+    }
+
+    if (control.status === "fetched") {
+      return {
+        code: 200,
+        data: control.data,
+      };
+    }
+
+    control.status = "fetching";
+    const response = await this.fetchData<AppWeapon>(BACKEND_URL_PATH.weapon.byCode(code));
+
+    if (response.data) {
+      control.status = "fetched";
+      Object.assign(control.data, response.data);
+
+      const weaponSubscribers = this.weaponSubscribers.get(`${code}`);
+
+      if (weaponSubscribers) {
+        weaponSubscribers.forEach((subscriber) => {
+          subscriber(control.data);
+        });
+      }
+
+      return {
+        ...response,
+        data: control.data,
+      };
+    }
+
+    return response;
+  }
 }
