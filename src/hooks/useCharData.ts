@@ -77,7 +77,7 @@ export const useCharData = (name?: string) => {
       case "fetching":
         onFetching();
 
-        state.current.unsubscriber = appData.subscribe(name, (data) => {
+        state.current.unsubscriber = appData.subscribeCharacter(name, (data) => {
           if (data.name === state.current.fetchingFor) {
             onSuccess(data);
           }
