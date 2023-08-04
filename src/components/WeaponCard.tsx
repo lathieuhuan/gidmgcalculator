@@ -1,11 +1,13 @@
-import type { CalcWeapon, Level } from "@Src/types";
+import clsx from "clsx";
+import { useMemo } from "react";
+import type { CalcWeapon, DescriptionSeed, DescriptionSeedType, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue } from "@Src/utils";
+import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, round } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
 // Component
@@ -13,13 +15,57 @@ import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 
+const wrapText = (text: string | number, type: DescriptionSeedType = "dull", bold = true) => {
+  return `<span class="${clsx({
+    "text-green": type === "green",
+    "text-rose-500": type === "red",
+    "font-bold": type === "green" && bold,
+  })}">${text}</span>`;
+};
+
+const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
+
+const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) => {
+  return pot.replace(/\{[a-zA-Z0-9 ',-]+\}%?/g, (match) => {
+    let seed: string | DescriptionSeed;
+    let suffix = "";
+
+    if (match[match.length - 1] === "%") {
+      seed = seeds[+match.slice(1, -2)];
+      suffix = "%";
+    } else {
+      const key = match.slice(1, -1);
+      seed = isNaN(+key) ? key : seeds[+key];
+    }
+
+    switch (typeof seed) {
+      case "number":
+        return wrapText(scaleRefi(seed, refi) + suffix, "green");
+      case "string":
+        return wrapText(seed, "green", false);
+      case "object":
+        if ("base" in seed) {
+          const { seedType = "green" } = seed;
+          return wrapText(scaleRefi(seed.base, refi, seed.increment) + suffix, seedType);
+        }
+        if ("options" in seed) {
+          const { seedType = "green" } = seed;
+          return wrapText(seed.options[refi - 1] + suffix, seedType);
+        }
+        return wrapText(scaleRefi(seed.max, refi, seed.increment) + suffix, "red");
+      default:
+        return match;
+    }
+  });
+};
+
 interface WeaponCardProps {
   weapon?: CalcWeapon;
   mutable?: boolean;
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
+const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   const { t } = useTranslation();
   if (!weapon) return null;
 
@@ -27,6 +73,14 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
+
+  const passiveDescription = useMemo(() => {
+    if (!wpData.description) {
+      return "";
+    }
+    const { pots, seeds } = wpData.description;
+    return pots.map((content) => decoDescription(content, seeds, refi)).join(" ");
+  }, [weapon.code, refi]);
 
   return (
     <div className="w-full" onDoubleClick={() => console.log(weapon)}>
@@ -99,8 +153,12 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
       </div>
       <div className="mt-2">
         <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
-        <p className="indent-4">{wpData.passiveDesc({ refi }).core}</p>
+        <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>
   );
 };
+
+WeaponCard.decoDescription = decoDescription;
+
+export { WeaponCard };

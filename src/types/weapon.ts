@@ -1,21 +1,98 @@
-import type { ReactNode } from "react";
-import type { Rarity, ModInputConfig, AttributeStat } from "./global";
-import type {
-  AttackPatternBonus,
-  BuffModifierArgsWrapper,
-  ModifierInput,
-  PartyData,
-  ReactionBonus,
-  TotalAttribute,
-  Tracker,
-} from "./calculator";
-import type { AppCharacter } from "./character";
+import type { AttackPatternPath } from "../utils/calculation";
+import type { AttributeStat, ModInputConfig, Rarity } from "./global";
 import { EModAffect } from "@Src/constants";
 
-export type DefaultAppWeapon = Pick<
-  AppWeapon,
-  "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
->;
+// export type DefaultAppWeapon = Pick<
+//   AppWeapon,
+//   "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
+// >;
+
+type VisionStack = {
+  type: "vision";
+  element: "same_included" | "same_excluded" | "different";
+  max?: number;
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: "hp" | "base_atk" | "def" | "em" | "er_";
+  convertRate?: number;
+  minus?: number;
+};
+
+type InputIndex = {
+  value: number;
+  /** only on Tulaytullah's Remembrance */
+  convertRate?: number;
+};
+
+type InputStack = {
+  type: "input";
+  /** Default to 0 */
+  index?: number | InputIndex[];
+  /** liyueSeries */
+  doubledAtInput?: number;
+};
+
+/** Watatsumi series */
+type EnergyStack = {
+  type: "energy";
+};
+
+/** Lythic series */
+type NationStack = {
+  type: "nation";
+};
+
+export type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
+
+type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
+
+export type AutoBuff = {
+  // charCode?: number; // only on Predator for Aloy
+  base?: number;
+  /** need "stacks", number of stacks - 1 = index of options, each option scale off refi, increment is 1/3 */
+  options?: number[];
+  /** only on Fading Twilight, also scale off refi, increment is 1/3 */
+  initialBonus?: number;
+  /** fixed type has no increment */
+  increment?: number;
+  stacks?: StackConfig | StackConfig[];
+  targetAttribute?: TargetAttribute;
+  targetAttPatt?: AttackPatternPath | AttackPatternPath[];
+  max?:
+    | number
+    // only on Jadefall's Splendor
+    | {
+        base: number;
+        increment: number;
+      };
+  /**
+   * If number, it's compareValue, index default to 0
+   */
+  checkInput?:
+    | number
+    // only on Ballad of the Fjords
+    | {
+        index?: number;
+        /** No index when there's source */
+        source?: "various_vision";
+        compareValue: number;
+        /** Default to equal */
+        compareType?: "equal" | "atleast";
+      };
+};
+
+export type DescriptionSeedType = "dull" | "green" | "red";
+
+export type DescriptionSeed =
+  | number
+  // default increment = base / 3, default seedType is "green"
+  | { base: number; increment?: number; seedType?: Exclude<DescriptionSeedType, "red"> }
+  // default increment = base / 3, seedType is "red"
+  | { max: number; increment?: number }
+  // options for each refi, default seedType is "green"
+  | { options: number[]; seedType?: DescriptionSeedType };
 
 /**
  * Weapon in app data
@@ -31,52 +108,20 @@ export type AppWeapon = {
     type: AttributeStat;
     scale: string;
   };
-  applyBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  applyFinalBuff?: (args: ApplyWpPassiveBuffsArgs) => void;
-  passiveName: string;
-  passiveDesc: (args: WeaponDescArgs) => {
-    core?: JSX.Element;
-    extra?: JSX.Element[];
+  passiveName?: string;
+  description?: {
+    pots: string[];
+    seeds: DescriptionSeed[];
   };
+  autoBuffs?: AutoBuff[];
   buffs?: WeaponBuff[];
 };
 
-type ApplyWpPassiveBuffsArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus?: AttackPatternBonus;
-  rxnBonus?: ReactionBonus;
-  charData: AppCharacter;
-  partyData?: PartyData;
-  refi: number;
-  desc: string;
-  tracker?: Tracker;
-};
-
-type ApplyWpBuffArgs = BuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  refi: number;
-  desc?: string;
-};
-
-type ApplyWpFinalBuffArgs = BuffModifierArgsWrapper & {
-  refi: number;
-  desc?: string;
-  inputs: ModifierInput[];
-};
-
-type WeaponDescArgs = {
-  refi: number;
-};
-
-type WeaponBuff = {
+export type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-  applyBuff?: (args: ApplyWpBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyWpFinalBuffArgs) => void;
-  desc: (
-    args: WeaponDescArgs & {
-      totalAttr: TotalAttribute;
-    }
-  ) => ReactNode;
+
+  description?: number | string;
+  buffBonuses?: AutoBuff[];
 };

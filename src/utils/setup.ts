@@ -69,8 +69,14 @@ export function cleanupCalcSetup(
         name: teammate.name,
         buffCtrls: teammate.buffCtrls.filter((ctrl) => ctrl.activated),
         debuffCtrls: teammate.debuffCtrls.filter((ctrl) => ctrl.activated),
-        weapon: teammate.weapon,
-        artifact: teammate.artifact,
+        weapon: {
+          ...teammate.weapon,
+          buffCtrls: teammate.weapon.buffCtrls.filter((ctrl) => ctrl.activated),
+        },
+        artifact: {
+          ...teammate.artifact,
+          buffCtrls: teammate.artifact.buffCtrls.filter((ctrl) => ctrl.activated),
+        },
       });
     }
   }
@@ -133,12 +139,21 @@ export const restoreCalcSetup = (data: CalcSetup) => {
 
     if (teammate) {
       const [buffCtrls, debuffCtrls] = createCharModCtrls(false, teammate.name);
+      const weapon = deepCopy(teammate.weapon);
+      const artifact = deepCopy(teammate.artifact);
+
       party.push({
         name: teammate.name,
         buffCtrls: restoreModCtrls(buffCtrls, teammate.buffCtrls),
         debuffCtrls: restoreModCtrls(debuffCtrls, teammate.debuffCtrls),
-        weapon: deepCopy(teammate.weapon),
-        artifact: deepCopy(teammate.artifact),
+        weapon: {
+          ...weapon,
+          buffCtrls: restoreModCtrls(createWeaponBuffCtrls(false, weapon), weapon.buffCtrls),
+        },
+        artifact: {
+          ...artifact,
+          buffCtrls: restoreModCtrls(createArtifactBuffCtrls(false, artifact), artifact.buffCtrls),
+        },
       });
     } else {
       party.push(null);

@@ -1,10 +1,7 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
 import { baneSeries1 } from "../series";
-import { findByCode } from "@Src/utils";
-import { makeWpModApplier } from "../utils";
 
 const otherSwords: AppWeapon[] = [
   {
@@ -15,9 +12,10 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "def_", scale: "6.4%" },
     passiveName: "Journey",
-    passiveDesc: ({ refi }) => ({
-      core: <>Each Elemental Orb or Particle collected restores {0.75 + refi * 0.25}% HP.</>,
-    }),
+    description: {
+      pots: [`Each Elemental Orb or Particle collected restores {0}% HP.`],
+      seeds: [{ base: 0.75, seedType: "dull" }],
+    },
   },
   {
     code: 131,
@@ -26,23 +24,22 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "em", scale: "31" },
+    passiveName: "Overloaded",
+    description: {
+      pots: [
+        `Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction, {ATK} is
+        increased by {0}% for 12s.`,
+      ],
+      seeds: [15],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 20),
-        desc: ({ refi }) => findByCode(otherSwords, 131)!.passiveDesc({ refi }).core,
+        base: 15,
+        targetAttribute: "atk_",
       },
     ],
-    passiveName: "Overloaded",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction,{" "}
-          <Green>ATK</Green> is increased by <Green b>{15 + refi * 5}%</Green> for 12s.
-        </>
-      ),
-    }),
   },
   {
     code: 97,
@@ -52,14 +49,13 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "atk_", scale: "7.7%" },
     passiveName: "Gash",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          On hit, has <Green>50% chance</Green> to deal <Green b>{200 + refi * 40}%</Green> <Green>ATK</Green> DMG to a
-          single enemy. Can only occur once every <Green b>{16 - refi}s</Green>.
-        </>
-      ),
-    }),
+    description: {
+      pots: [`On hit, has 50% chance to deal {0}% ATK DMG to a single enemy. Can only occur once every {1}s.`],
+      seeds: [
+        { base: 200, increment: 40, seedType: "dull" },
+        { base: 16, increment: -1, seedType: "dull" },
+      ],
+    },
   },
   {
     code: 98,
@@ -68,22 +64,16 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
+    passiveName: "Vigorous",
+    description: { pots: [`When HP is above 90%, increases {CRIT Rate} by {0}%.`], seeds: [10.5] },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "cRate_", 14),
-        desc: ({ refi }) => findByCode(otherSwords, 98)!.passiveDesc({ refi }).core,
+        base: 10.5,
+        targetAttribute: "cRate_",
       },
     ],
-    passiveName: "Vigorous",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When HP is above 90%, increases <Green>CRIT Rate</Green> by <Green b>{10.5 + refi * 3.5}%</Green>.
-        </>
-      ),
-    }),
   },
   {
     code: 99,
@@ -101,23 +91,19 @@ const otherSwords: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "er_", scale: "11.3%" },
+    passiveName: "Determination",
+    description: {
+      pots: [`Using an Elemental Burst grants a {0}% increase in {ATK} and Movement SPD for 15s.`],
+      seeds: [9],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
-        desc: ({ refi }) => findByCode(otherSwords, 100)!.passiveDesc({ refi }).core,
+        base: 9,
+        targetAttribute: "atk_",
       },
     ],
-    passiveName: "Determination",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Using an Elemental Burst grants a <Green b>{9 + refi * 3}%</Green> increase in <Green>ATK</Green> and Movement
-          SPD for 15s.
-        </>
-      ),
-    }),
   },
   {
     code: 107,

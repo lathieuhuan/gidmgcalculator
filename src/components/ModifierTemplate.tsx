@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import type { ModifierInput, ModInputConfig } from "@Src/types";
+import type { AppWeapon, ModifierInput, ModInputConfig, WeaponBuff } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
 import { Input, Green } from "@Src/pure-components";
+import { WeaponCard } from "./WeaponCard";
 
 export type ModSelectOption = {
   label: string | number;
@@ -73,6 +74,15 @@ export const resonanceRenderInfo = {
   },
 };
 
+const getWeaponDescription = (description: AppWeapon["description"], buff: WeaponBuff, refi: number) => {
+  if (description) {
+    const { description: buffDesc = 0 } = buff;
+    const desc = typeof buffDesc === "number" ? description.pots[buffDesc] : buffDesc;
+    return WeaponCard.decoDescription(desc || "", description.seeds, refi);
+  }
+  return "";
+};
+
 interface ModifierTemplateProps {
   mutable?: boolean;
   checked?: boolean;
@@ -85,7 +95,7 @@ interface ModifierTemplateProps {
   onToggleCheck?: (currentInput: number, inputIndex: number) => void;
   onSelectOption?: (value: number, inputIndex: number) => void;
 }
-export const ModifierTemplate = ({
+const ModifierTemplate = ({
   mutable = true,
   checked,
   heading,
@@ -183,7 +193,11 @@ export const ModifierTemplate = ({
           </span>
         </label>
       </div>
-      <p className="text-sm">{desc}</p>
+      {typeof desc === "string" ? (
+        <p className="text-sm" dangerouslySetInnerHTML={{ __html: desc }} />
+      ) : (
+        <p className="text-sm">{desc}</p>
+      )}
 
       {inputConfigs.length ? (
         <div className={clsx("flex flex-col", mutable ? "pt-2 pb-1 pr-1 space-y-3" : "mt-1 space-y-2")}>
@@ -199,3 +213,7 @@ export const ModifierTemplate = ({
     </div>
   );
 };
+
+ModifierTemplate.getWeaponDescription = getWeaponDescription;
+
+export { ModifierTemplate };

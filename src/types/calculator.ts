@@ -201,7 +201,7 @@ export type BuffModifierArgsWrapper = {
   attElmtBonus: AttackElementBonus;
   calcItemBuffs: CalcItemBuff[];
   rxnBonus: ReactionBonus;
-  infusedElement: AttackElement;
+  infusedElement?: AttackElement;
   tracker?: Tracker;
 };
 

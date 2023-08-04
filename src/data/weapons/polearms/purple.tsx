@@ -1,18 +1,14 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import {
   baneSeries2,
   blackcliffSeries,
-  dragonspineSeries,
-  favoniusSeries,
+  dragonspinePassive,
+  favoniusPassive,
   lithicSeries,
   royalSeries,
   watatsumiSeries,
 } from "../series";
-import { countVision, findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
 
 const purplePolearms: AppWeapon[] = [
   {
@@ -23,14 +19,13 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
     passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When the wielder is healed, restore {6 + refi * 2} Energy. This effect can be triggered once every 10s, and
-          can occur even when the character is not on the field.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `When the wielder is healed, restore {0} Energy. This effect can be triggered once every 10s, and can occur
+        even when the character is not on the field.`,
+      ],
+      seeds: [{ base: 6, seedType: "dull" }],
+    },
   },
   {
     code: 159,
@@ -40,22 +35,23 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
     passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          When there are at least 3 different Elemental Types in your party, <Green>Elemental Mastery</Green> will be
-          increased by <Green b>{90 + refi * 30}</Green>.
-        </>
-      ),
-    }),
-    applyBuff: ({ totalAttr, charData, partyData, refi, desc, tracker }) => {
-      if (partyData) {
-        const visionCount = countVision(partyData, charData);
-        if (Object.keys(visionCount).length >= 3) {
-          applyModifier(desc, totalAttr, "em", 90 + refi * 30, tracker);
-        }
-      }
+    description: {
+      pots: [
+        `When there are at least 3 different Elemental Types in your party, {Elemental Mastery} will be increased by {0}.`,
+      ],
+      seeds: [90],
     },
+    autoBuffs: [
+      {
+        base: 90,
+        checkInput: {
+          source: "various_vision",
+          compareValue: 3,
+          compareType: "atleast",
+        },
+        targetAttribute: "em",
+      },
+    ],
   },
   {
     code: 141,
@@ -65,21 +61,27 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "The Wind Unattained",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Within 10s after an Elemental Reaction is triggered, <Green>ATK</Green> is increased by{" "}
-          <Green b>{9 + refi * 3}%</Green> and <Green>Elemental Mastery</Green> is increased by{" "}
-          <Green b>{36 + refi * 12}</Green>.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `Within 10s after an Elemental Reaction is triggered, {ATK} is increased by {0}% and {Elemental Mastery} is
+        increased by {1}.`,
+      ],
+      seeds: [9, 36],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 141)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("totalAttr", ["atk_", "em"], [12, 48]),
+        buffBonuses: [
+          {
+            base: 9,
+            targetAttribute: "atk_",
+          },
+          {
+            base: 36,
+            targetAttribute: "em",
+          },
+        ],
       },
     ],
   },
@@ -91,29 +93,23 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
     passiveName: "Stillwood Moonshadow",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will
-            be created around the character for a maximum of 10s. {this.extra?.[0]} Only 1 Leaf can be generated this
-            way every 20s. This effect can still be triggered if the character is not on the field.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When picked up, the Leaf will grant the character <Green b>{12 + refi * 4}%</Green> <Green>ATK</Green> for
-          12s.
-        </>,
+    description: {
+      pots: [
+        `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will be
+        created around the character for a maximum of 10s.`,
+        `When picked up, the Leaf will grant the character {0}% {ATK} for 12s.`,
+        `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
+        the field.`,
       ],
-    }),
+      seeds: [12],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.ONE_UNIT,
-        desc: ({ refi }) => findByCode(purplePolearms, 135)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 16),
+        description: 1,
+        base: 12,
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -125,23 +121,6 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "45",
     subStat: { type: "atk_", scale: "3%" },
     ...watatsumiSeries,
-  },
-  {
-    code: 86,
-    name: "Crescent Pike",
-    icon: "4/4c/Weapon_Crescent_Pike",
-    rarity: 4,
-    mainStatScale: "44",
-    subStat: { type: "phys", scale: "7.5%" },
-    passiveName: "Infusion Needle",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15 + refi * 5}% ATK
-          as DMG for 5s.
-        </>
-      ),
-    }),
   },
   {
     code: 87,
@@ -160,66 +139,18 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
     passiveName: "Samurai Conduct",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Skill DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green>. After Elemental Skill
-          hits an opponent, the character loses 3 Energy but regenerates {2.5 + refi * 0.5} Energy every 2s for the next
-          6s. This effect can occur once every 10s. Can be triggered even when the character is not on the field.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", "ES.pct_", 6),
-  },
-  {
-    code: 89,
-    name: "Royal Spear",
-    icon: "f/fd/Weapon_Royal_Spear",
-    rarity: 4,
-    mainStatScale: "44",
-    subStat: { type: "atk_", scale: "6%" },
-    ...royalSeries,
-  },
-  {
-    code: 90,
-    name: "Favonius Lance",
-    icon: "5/57/Weapon_Favonius_Lance",
-    rarity: 4,
-    mainStatScale: "44",
-    subStat: { type: "er_", scale: "6.7%" },
-    ...favoniusSeries,
-  },
-  {
-    code: 91,
-    name: "Prototype Starglitter",
-    icon: "7/7e/Weapon_Prototype_Starglitter",
-    rarity: 4,
-    mainStatScale: "42",
-    subStat: { type: "er_", scale: "10%" },
-    passiveName: "Magic Affinity",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After using an Elemental Skill, increases <Green>Normal and Charged Attack DMG</Green> by{" "}
-          <Green b>{6 + refi * 2}%</Green> for 12s. Max <Rose>2</Rose> stacks.
-        </>
-      ),
-    }),
-    buffs: [
+    description: {
+      pots: [
+        `Increases {Elemental Skill DMG} by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
+        but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
+        even when the character is not on the field.`,
+      ],
+      seeds: [4.5, { base: 2.5, increment: 0.5, seedType: "dull" }],
+    },
+    autoBuffs: [
       {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 91)?.passiveDesc({ refi }).core,
-        inputConfigs: [
-          {
-            type: "stacks",
-            max: 2,
-          },
-        ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (6 + refi * 2) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], buffValue, tracker);
-        },
+        base: 4.5,
+        targetAttPatt: "ES.pct_",
       },
     ],
   },
@@ -231,15 +162,86 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Shanty",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Burst DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
-          <Green>Elemental Burst CRIT Rate</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", ["EB.pct_", "EB.cRate_"], [16, 6]),
+    description: {
+      pots: [`Increases {Elemental Burst DMG} by {0}% and {Elemental Burst CRIT Rate} by {1}%.`],
+      seeds: [12, 4.5],
+    },
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: "EB.pct_",
+      },
+      {
+        base: 4.5,
+        targetAttPatt: "EB.cRate_",
+      },
+    ],
+  },
+  {
+    code: 94,
+    name: "Dragonspine Spear",
+    icon: "1/1a/Weapon_Dragonspine_Spear",
+    rarity: 4,
+    mainStatScale: "41",
+    subStat: { type: "phys", scale: "15%" },
+    ...dragonspinePassive,
+  },
+  {
+    code: 86,
+    name: "Crescent Pike",
+    icon: "4/4c/Weapon_Crescent_Pike",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "phys", scale: "7.5%" },
+    passiveName: "Infusion Needle",
+    description: {
+      pots: [
+        `After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {0}% ATK as DMG for
+        5s.`,
+      ],
+      seeds: [{ base: 15, seedType: "dull" }],
+    },
+  },
+  {
+    code: 91,
+    name: "Prototype Starglitter",
+    icon: "7/7e/Weapon_Prototype_Starglitter",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "er_", scale: "10%" },
+    passiveName: "Magic Affinity",
+    description: {
+      pots: [
+        `After using an Elemental Skill, increases {Normal and Charged Attack DMG} by {0}% for 12s. Max {1} stacks.`,
+      ],
+      seeds: [6, { max: 2, increment: 0 }],
+    },
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 2,
+          },
+        ],
+        base: 6,
+        stacks: {
+          type: "input",
+        },
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
+  },
+  {
+    code: 89,
+    name: "Royal Spear",
+    icon: "f/fd/Weapon_Royal_Spear",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    ...royalSeries,
   },
   {
     code: 93,
@@ -251,15 +253,6 @@ const purplePolearms: AppWeapon[] = [
     ...blackcliffSeries,
   },
   {
-    code: 94,
-    name: "Dragonspine Spear",
-    icon: "1/1a/Weapon_Dragonspine_Spear",
-    rarity: 4,
-    mainStatScale: "41",
-    subStat: { type: "phys", scale: "15%" },
-    ...dragonspineSeries,
-  },
-  {
     code: 95,
     name: "Deathmatch",
     icon: "6/69/Weapon_Deathmatch",
@@ -267,35 +260,46 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },
     passiveName: "Gladiator",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          If there are at least 2 opponents nearby, <Green>ATK</Green> is increased by <Green b>{12 + refi * 4}%</Green>{" "}
-          and <Green>DEF</Green> is increased by <Green b>{12 + refi * 4}%</Green>. If there are fewer than 2 opponents
-          nearby, <Green>ATK</Green> is increased by <Green b>{18 + refi * 6}%</Green>.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `If there are at least 2 opponents nearby, {ATK} is increased by {0}% and {DEF} is increased by {0}%. If there are
+        fewer than 2 opponents nearby, {ATK} is increased by {1}%.`,
+      ],
+      seeds: [12, 18],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purplePolearms, 95)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             label: "Fewer than 2 opponents",
             type: "check",
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          if (inputs[0] === 1) {
-            applyModifier(desc, totalAttr, "atk_", 18 + refi * 6, tracker);
-          } else {
-            applyModifier(desc, totalAttr, ["atk_", "def_"], 12 + refi * 4, tracker);
-          }
-        },
+        buffBonuses: [
+          {
+            checkInput: 1,
+            base: 18,
+            targetAttribute: "atk_",
+          },
+          {
+            checkInput: 0,
+            base: 12,
+            targetAttribute: ["atk_", "def_"],
+          },
+        ],
       },
     ],
+  },
+  {
+    code: 90,
+    name: "Favonius Lance",
+    icon: "5/57/Weapon_Favonius_Lance",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "er_", scale: "6.7%" },
+    ...favoniusPassive,
   },
   {
     code: 96,

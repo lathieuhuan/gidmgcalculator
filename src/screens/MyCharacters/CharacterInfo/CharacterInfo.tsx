@@ -12,8 +12,8 @@ import { removeUserCharacter, updateUserCharacter } from "@Store/userDatabaseSli
 import { selectChosenChar, selectUserArts, selectUserChars, selectUserWps } from "@Store/userDatabaseSlice/selectors";
 
 // Util
-import getBaseStats from "@Src/calculation/baseStats";
-import { findById, findByName, getAppDataError, getImgSrc } from "@Src/utils";
+import { getCalculationStats } from "@Src/calculation";
+import { findById, findByName, getImgSrc } from "@Src/utils";
 
 // Component
 import { StarLine, Button, ConfirmModal, LoadingIcon } from "@Src/pure-components";
@@ -69,7 +69,7 @@ const CharacterInfo = () => {
   }
   const { name, icon, rarity, vision } = charData;
 
-  const { totalAttr, artAttr } = getBaseStats({
+  const { totalAttr, artAttr } = getCalculationStats({
     char,
     charData,
     weapon,

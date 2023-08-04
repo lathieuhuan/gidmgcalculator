@@ -3,7 +3,7 @@ import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
-import { selectParty, selectTotalAttr, selectWeapon } from "@Store/calculatorSlice/selectors";
+import { selectParty, selectWeapon } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { deepCopy, findByIndex } from "@Src/utils";
@@ -15,13 +15,12 @@ import { ModifierTemplate, renderModifiers } from "@Src/components";
 export default function WeaponBuffs() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
-  const totalAttr = useSelector(selectTotalAttr);
   const weaponBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].wpBuffCtrls;
   });
   const party = useSelector(selectParty);
 
-  const { name, buffs: mainBuffs = [] } = findDataWeapon(weapon)!;
+  const { name, buffs: mainBuffs = [], description } = findDataWeapon(weapon)!;
   const content: JSX.Element[] = [];
 
   weaponBuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
@@ -39,7 +38,7 @@ export default function WeaponBuffs() {
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + ` R${weapon.refi} (self)`}
-        desc={buff.desc({ refi: weapon.refi, totalAttr })}
+        desc={ModifierTemplate.getWeaponDescription(description, buff, weapon.refi)}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onChangeText={(value, i) => {
@@ -78,7 +77,7 @@ export default function WeaponBuffs() {
 
     const { weapon } = teammate;
     const { code, refi, buffCtrls } = weapon;
-    const { name, buffs = [] } = findDataWeapon(weapon) || {};
+    const { name, buffs = [], description } = findDataWeapon(weapon) || {};
 
     const updateWeaponInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
       const newBuffCtrls = deepCopy(buffCtrls);
@@ -116,7 +115,7 @@ export default function WeaponBuffs() {
             );
           }}
           heading={name + ` R${refi}`}
-          desc={buff.desc({ refi, totalAttr })}
+          desc={ModifierTemplate.getWeaponDescription(description, buff, refi)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
           onChangeText={(text, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, text)}

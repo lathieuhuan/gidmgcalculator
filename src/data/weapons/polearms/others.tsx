@@ -1,9 +1,6 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { findByCode } from "@Src/utils";
-import { makeWpModApplier } from "../utils";
 
 const otherPolearms: AppWeapon[] = [
   {
@@ -14,14 +11,10 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "atk_", scale: "5.1%" },
     passiveName: "Heavy",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Normal Attacks deal an additional <Green b>{120 + refi * 40}%</Green> <Green>DMG</Green>. Can only occur once
-          every 10s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [`Normal Attacks deal an additional {0}% DMG. Can only occur once every 10s.`],
+      seeds: [{ base: 120, seedType: "dull" }],
+    },
   },
   {
     code: 75,
@@ -31,19 +24,11 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cRate_", scale: "5.1%" },
     passiveName: "Sharp",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Normal Attack DMG</Green> by <Green b>{18 + refi * 6}%</Green>.
-        </>
-      ),
-    }),
-    buffs: [
+    description: { pots: [`Increases {Normal Attack DMG} by {0}%.`], seeds: [18] },
+    autoBuffs: [
       {
-        index: 0,
-        affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherPolearms, 75)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "NA.pct_", 24),
+        base: 18,
+        targetAttPatt: "NA.pct_",
       },
     ],
   },
@@ -55,19 +40,13 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
     passiveName: "Bane of the Soft",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>DMG</Green> against slimes by <Green b>{30 + refi * 10}%</Green>.
-        </>
-      ),
-    }),
+    description: { pots: [`Increases {DMG} against slimes by {0}%.`], seeds: [30] },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherPolearms, 76)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 40),
+        base: 30,
+        targetAttPatt: "all.pct_",
       },
     ],
   },

@@ -1,11 +1,7 @@
 import type { AppWeapon } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
 import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { baneSeries1, cullTheWeakSeries } from "../series";
-import { findByCode } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
+import { baneSeries1, cullTheWeakPassive } from "../series";
 
 const otherBows: AppWeapon[] = [
   {
@@ -15,7 +11,7 @@ const otherBows: AppWeapon[] = [
     rarity: 3,
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
-    ...cullTheWeakSeries,
+    ...cullTheWeakPassive,
   },
   {
     code: 1,
@@ -25,14 +21,12 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "cDmg_", scale: "6.8%" },
     passiveName: "Archer's Message",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Charged Attack hits on weak spots deal an additional <Green b>{75 + refi * 25}%</Green> <Green>ATK</Green> DMG
-          as CRIT DMG. Can only occur once every 10s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        "Charged Attack hits on weak spots deal an additional {0}% ATK DMG as CRIT DMG. Can only occur once every 10s.",
+      ],
+      seeds: [{ base: 75, seedType: "dull" }],
+    },
   },
   {
     code: 2,
@@ -51,19 +45,16 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Precise",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>DMG</Green> against weak spots by <Green b>{18 + refi * 6}%</Green>.
-        </>
-      ),
-    }),
+    description: {
+      pots: ["Increases {DMG} against weak spots by {0}%."],
+      seeds: [18],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherBows, 3)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "CA.pct_", 24),
+        base: 18,
+        targetAttPatt: "CA.pct_",
       },
     ],
   },
@@ -75,27 +66,27 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "cRate_", scale: "6.8%" },
     passiveName: "Slingshot",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          If a <Green>Normal or Charged Attack</Green> hits a target within 0.3s of being fired, increases{" "}
-          <Green>DMG</Green> by <Green b>{30 + refi * 6}%</Green>. Otherwise, decreases DMG by 10%.
-        </>
-      ),
-    }),
-    applyBuff: ({ attPattBonus, desc, tracker }) => {
-      if (attPattBonus) {
-        applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], -10, tracker);
-      }
+    description: {
+      pots: [
+        `If a {Normal or Charged Attack} hits a target within 0.3s of being fired, increases {DMG} by {0}%. Otherwise,
+        decreases DMG by 10%.`,
+      ],
+      seeds: [{ base: 30, increment: 6 }],
     },
+    autoBuffs: [
+      {
+        base: -10,
+        increment: 0,
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(otherBows, 4)?.passiveDesc({ refi }).core,
-        applyBuff: ({ attPattBonus, refi, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 40 + refi * 6, tracker);
-        },
+        base: 40,
+        increment: 6,
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
       },
     ],
   },

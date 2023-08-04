@@ -1,10 +1,6 @@
 import type { AppWeapon } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { baneSeries2, blackcliffSeries, favoniusSeries, royalSeries, sacrificialSeries } from "../series";
-import { applyPercent, findByCode, round } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { makeWpModApplier } from "../utils";
+import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "../series";
 
 const purpleSwords: AppWeapon[] = [
   {
@@ -15,28 +11,25 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            Increases <Green>Elemental Skill CRIT Rate</Green> by <Green b>{6 + refi * 2}%</Green>. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          Increases <Green>Energy Recharge</Green> by <Green b>{12 + refi * 4}%</Green> for 5s after using an Elemental
-          Skill.
-        </>,
+    description: {
+      pots: [
+        `Increases {Elemental Skill CRIT Rate} by {0}%. Increases {Energy Recharge} by {1}% for 5s after using an Elemental
+        Skill.`,
       ],
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", "ES.cRate_", 8),
+      seeds: [6, 12],
+    },
+    autoBuffs: [
+      {
+        base: 6,
+        targetAttPatt: "ES.cRate_",
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 165)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "er_", 16),
+        base: 12,
+        targetAttribute: "er_",
       },
     ],
   },
@@ -48,50 +41,35 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
     passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]}, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once
-            every 10s. {this.extra?.[1]} Bond of Life: Absorbs healing for the character based on its base value, and
-            clears after healing equal to this value is obtained.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When using an Elemental Skill, <Green>ATK</Green> will be increased by <Green b>{9 + refi * 3}%</Green> for
-          12s
-        </>,
-        <>
-          When the Bond of Life is cleared, a maximum of <Rose>{112.5 + refi * 37.5}</Rose> ATK will be gained based on{" "}
-          <Green b>{1.8 + refi * 0.6}%</Green> of the Bond for 12s.
-        </>,
+    description: {
+      pots: [
+        `When using an Elemental Skill, {ATK} will be increased by {0}% for 12s`,
+        `, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once every 10s.`,
+        `When the Bond of Life is cleared, a maximum of {1} ATK will be gained based on {2}% of the {Bond} for 12s.`,
+        `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
+        this value is obtained.`,
       ],
-    }),
+      seeds: [9, { max: 112.5 }, 1.8],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "atk_", 12),
+        base: 9,
+        targetAttribute: "atk_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 156)?.passiveDesc({ refi }).extra?.[1],
-        applyFinalBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const bondValue = Math.round(totalAttr.hp * 0.25);
-          const multiplier = 1.8 + refi * 0.6;
-          const limit = 112.5 + refi * 37.5;
-          let buffValue = applyPercent(bondValue, multiplier);
-          let finalDesc = desc + ` / ${multiplier}% of the Bond ${bondValue}`;
-          if (buffValue > limit) {
-            buffValue = limit;
-            finalDesc += ` / limit to ${limit}`;
-          }
-          applyModifier(finalDesc, totalAttr, "atk", buffValue, tracker);
+        description: 2,
+        base: 0.018,
+        stacks: {
+          type: "attribute",
+          field: "hp",
+          convertRate: 0.25,
         },
+        targetAttribute: "atk",
+        max: 112.5,
       },
     ],
   },
@@ -103,66 +81,53 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
     passiveName: "",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            DMG dealt by <Green>Elemental Skill</Green> and <Green>Elemental Burst</Green> will be increased by{" "}
-            <Green b>{12 + refi * 4}%</Green>. {this.extra?.[0]} {this.extra?.[1]} Both of these effects last 10s
-            separately, have 4 max stacks, and can be triggered once every 0.1s.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When an <Green>Elemental Skill</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
-          <Green b>{1.5 + refi * 0.5}%</Green>.
-        </>,
-        <>
-          When an <Green>Elemental Burst</Green> hits an opponent, its <Green>CRIT Rate</Green> will be increased by{" "}
-          <Green b>{1.5 + refi * 0.5}%</Green>.
-        </>,
+    description: {
+      pots: [
+        `{DMG} dealt by {Elemental Skill and Elemental Burst} will be increased by {0}%. When an Elemental Skill hits an
+        opponent, its {CRIT Rate} will be increased by {1}%. When an Elemental Burst hits an opponent, its {CRIT Rate} will
+        be increased by {1}%. Both of these effects last 10s separately, have 4 max stacks, and can be triggered once
+        every 0.1s.`,
       ],
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 16),
+      seeds: [12, 1.5],
+    },
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: ["ES.pct_", "EB.pct_"],
+      },
+    ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            {findByCode(purpleSwords, 155)?.passiveDesc({ refi }).extra?.[0]} This effect lasts 10s, have <Rose>4</Rose>{" "}
-            max stacks, and can be triggered once every 0.1s.
-          </>
-        ),
+        description: `When an Elemental Skill hits an opponent, its {CRIT Rate} will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
             max: 4,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "ES.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        base: 1.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "ES.cRate_",
       },
       {
         index: 1,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => (
-          <>
-            {findByCode(purpleSwords, 155)?.passiveDesc({ refi }).extra?.[1]} This effect lasts 10s, have <Rose>4</Rose>{" "}
-            max stacks, and can be triggered once every 0.1s.
-          </>
-        ),
+        description: `When an Elemental Burst hits an opponent, its {CRIT Rate} will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
             max: 4,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "EB.cRate_", (1.5 + refi * 0.5) * (inputs[0] || 0), tracker);
+        base: 1.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "EB.cRate_",
       },
     ],
   },
@@ -174,29 +139,22 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
     passiveName: "Kaidan: Rainfall Earthbinder",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for 10s. This
-            effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration,
-            Cursed Parasol's CD will be refreshed immediately. {this.extra?.[0]}
-          </>
-        );
-      },
-      extra: [
-        <>
-          The character wielding this weapon will deal <Green b>{12 + refi * 4}%</Green> more <Green>DMG</Green> to the
-          opponent affected by Cursed Parasol.
-        </>,
+    description: {
+      pots: [
+        `After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for 10s. This
+        effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration, Cursed
+        Parasol's CD will be refreshed immediately.`,
+        `The character wielding this weapon will deal {0}% more {DMG} to the opponent affected by Cursed Parasol.`,
       ],
-    }),
+      seeds: [12],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 149)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 16),
+        description: 1,
+        base: 12,
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -208,51 +166,41 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
     passiveName: "Jinni's Whisper",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            {this.extra?.[0]} Multiple instances of this weapon can allow this buff to stack. This effect will still
-            trigger even if the character is not on the field.
-          </>
-        );
-      },
-      extra: [
-        <>
-          The following effect will trigger every 10s: the equipping character will gain{" "}
-          <Green b>{(27 + refi * 9) / 1000}%</Green> <Green>Energy Recharge</Green> for each point of{" "}
-          <Green>Elemental Mastery</Green> they possess for 12s, with nearby party members gaining <Green>30%</Green> of
-          this buff for the same duration.
-        </>,
+    description: {
+      pots: [
+        `The following effect will trigger every 10s: the equipping character will gain {0}% {Energy Recharge} for each
+        point of {Elemental Mastery} they possess for 12s, with nearby party members gaining {1}% of this buff for the
+        same duration.`,
+        `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
+        character is not on the field.`,
       ],
-    }),
+      seeds: [0.027, { base: 30, increment: 0 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: ({ totalAttr, refi, desc, tracker }) => {
-          const buffValue = applyPercent(totalAttr.em, 2.7 + refi * 0.9);
-          const finalDesc = desc + ` / ${(27 + refi * 9) / 1000}% * ${totalAttr.em} EM`;
-          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
+        base: 0.027,
+        stacks: {
+          type: "attribute",
+          field: "em",
         },
+        targetAttribute: "er_",
       },
       {
         index: 1,
         affect: EModAffect.TEAMMATE,
-        desc: ({ refi }) => findByCode(purpleSwords, 146)?.passiveDesc({ refi }).extra?.[0],
         inputConfigs: [
           {
             label: "Elemental Mastery",
             type: "text",
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const mult = (81 + refi * 27) / 10000;
-          const buffValue = round((inputs[0] || 0) * mult, 1);
-          const finalDesc = desc + ` / ${mult}% * ${inputs[0] || 0} EM`;
-          applyModifier(finalDesc, totalAttr, "er_", buffValue, tracker);
+        base: 0.0081,
+        stacks: {
+          type: "input",
         },
+        targetAttribute: "er_",
       },
     ],
   },
@@ -264,23 +212,20 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "Isshin Art Clarity",
-    passiveDesc: () => ({
-      core: (
-        <>
-          When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
-          equal to 180% of ATK and increasing <Green>ATK</Green> by <Green b>15%</Green> for 8s. This effect can be
-          triggered once every 8s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
+        equal to 180% of ATK and increasing {ATK} by {0}% for 8s. This effect can be triggered once every 8s.`,
+      ],
+      seeds: [{ base: 15, increment: 0 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 142)?.passiveDesc({ refi }).core,
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 15, tracker);
-        },
+        base: 15,
+        increment: 0,
+        targetAttribute: "atk_",
       },
     ],
   },
@@ -292,30 +237,23 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Forest Sanctuary",
-    passiveDesc: ({ refi }) => ({
-      get core() {
-        return (
-          <>
-            After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
-            will be created around the character for a maximum of 10s. {this.extra?.[0]} Only 1 Leaf can be generated
-            this way every 20s. This effect can still be triggered if the character is not on the field. The Leaf of
-            Consciousness' effect cannot stack.
-          </>
-        );
-      },
-      extra: [
-        <>
-          When picked up, the Leaf will grant the character <Green b>{45 + refi * 15}</Green>{" "}
-          <Green>Elemental Mastery</Green> for 12s.
-        </>,
+    description: {
+      pots: [
+        `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
+        will be created around the character for a maximum of 10s.`,
+        `When picked up, the Leaf will grant the character {0} {Elemental Mastery} for 12s.`,
+        `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
+        the field. The Leaf of Consciousness' effect cannot stack.`,
       ],
-    }),
+      seeds: [45],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.ONE_UNIT,
-        desc: ({ refi }) => findByCode(purpleSwords, 134)?.passiveDesc({ refi }).extra?.[0],
-        applyBuff: makeWpModApplier("totalAttr", "em", 60),
+        description: 1,
+        base: 45,
+        targetAttribute: "em",
       },
     ],
   },
@@ -327,20 +265,18 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "45",
     subStat: { type: "em", scale: "12" },
     passiveName: "Itinerant Hero",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>DMG</Green> dealt by the character equipping this weapon by <Green b>{9 + refi * 3}%</Green>.
-          Taking DMG disables this effect for 5s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `Increases {DMG} dealt by the character equipping this weapon by {0}%. Taking DMG disables this effect for 5s.`,
+      ],
+      seeds: [9],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 109)?.passiveDesc({ refi }).core,
-        applyBuff: makeWpModApplier("attPattBonus", "all.pct_", 12),
+        base: 9,
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -361,29 +297,28 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
     passiveName: "Smashed Stone",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          On hit, Normal or Charged Attacks increase <Green>ATK</Green> and <Green>DEF</Green> by{" "}
-          <Green b>{3 + refi}%</Green> for 6s. Max <Rose>4</Rose> stacks. Can only occur once every 0.3s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `On hit, Normal or Charged Attacks increase {ATK} and {DEF} by {0}% for 6s. Max {1} stacks. Can only occur once every
+        0.3s.`,
+      ],
+      seeds: [3, { max: 4, increment: 0 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 111)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
             max: 4,
           },
         ],
-        applyBuff: ({ totalAttr, refi, inputs, desc, tracker }) => {
-          const buffValue = (3 + refi * 1) * (inputs[0] || 0);
-          applyModifier(desc, totalAttr, ["atk_", "def_"], buffValue, tracker);
+        base: 3,
+        stacks: {
+          type: "input",
         },
+        targetAttribute: ["atk_", "def_"],
       },
     ],
   },
@@ -395,15 +330,20 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Undying Admiration",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>Elemental Skill DMG</Green> by <Green b>{12 + refi * 4}%</Green> and{" "}
-          <Green>Elemental Skill CRIT Rate</Green> by <Green b>{4.5 + refi * 1.5}%</Green>.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", ["ES.pct_", "ES.cRate_"], [16, 6]),
+    description: {
+      pots: [`Increases {Elemental Skill DMG} by {0}% and {Elemental Skill CRIT Rate} by {1}%.`],
+      seeds: [12, 4.5],
+    },
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttPatt: "ES.pct_",
+      },
+      {
+        base: 6,
+        targetAttPatt: "ES.cRate_",
+      },
+    ],
   },
   {
     code: 113,
@@ -413,16 +353,19 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Justice",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Increases <Green>DMG</Green> dealt by <Green>Normal and Charged Attacks</Green> by{" "}
-          <Green b>{15 + refi * 5}%</Green>. Additionally, regenerates {50 + refi * 10}% of ATK as HP when Normal and
-          Charged Attacks score a CRIT Hit. This effect can occur once every 5s.
-        </>
-      ),
-    }),
-    applyBuff: makeWpModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 20),
+    description: {
+      pots: [
+        `Increases {DMG} dealt by {Normal and Charged Attacks} by {0}%. Additionally, regenerates {1}% of ATK as HP when
+        Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.`,
+      ],
+      seeds: [15, { base: 50, increment: 10, seedType: "dull" }],
+    },
+    autoBuffs: [
+      {
+        base: 15,
+        targetAttPatt: ["NA.pct_", "CA.pct_"],
+      },
+    ],
   },
   {
     code: 114,
@@ -432,15 +375,13 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "Chord",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music and deals{" "}
-          {75 + refi * 25}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained
-          every 0.5s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `Normal or Charged Attacks grant a Harmonic on hits. Gaining 5 Harmonics triggers the power of music and deals
+        {0}% ATK DMG to surrounding enemies. Harmonics last up to 30s, and a maximum of 1 can be gained every 0.5s.`,
+      ],
+      seeds: [{ base: 75, seedType: "dull" }],
+    },
   },
   {
     code: 115,
@@ -468,29 +409,25 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "em", scale: "36" },
     passiveName: "Infusion Stinger",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          Dealing Elemental DMG increases <Green>all DMG</Green> by <Green b>{4.5 + refi * 1.5}%</Green> for 6s. Max{" "}
-          <Rose>2</Rose> stacks. Can only occur once every 1s.
-        </>
-      ),
-    }),
+    description: {
+      pots: [`Dealing Elemental DMG increases all {DMG} by {0}% for 6s. Max {1} stacks. Can only occur once every 1s.`],
+      seeds: [4.5, { max: 2, increment: 0 }],
+    },
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: ({ refi }) => findByCode(purpleSwords, 117)?.passiveDesc({ refi }).core,
         inputConfigs: [
           {
             type: "stacks",
             max: 2,
           },
         ],
-        applyBuff: ({ attPattBonus, refi, inputs, desc, tracker }) => {
-          const buffValue = (4.5 + refi * 1.5) * (inputs[0] || 0);
-          applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
+        base: 4.5,
+        stacks: {
+          type: "input",
         },
+        targetAttPatt: "all.pct_",
       },
     ],
   },
@@ -502,16 +439,15 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
     passiveName: "Iwakura Succession",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered once every 5s. The
-          Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist simultaneously. After using an Elemental
-          Burst, all Succession Seeds are consumed and after 2s, the character regenerates {4.5 + refi * 1.5} Energy for
-          each seed consumed.
-        </>
-      ),
-    }),
+    description: {
+      pots: [
+        `After casting an Elemental Skill, gain 1 Succession Seed. This effect can be triggered once every 5s. The
+        Succession Seed lasts for 30s. Up to 3 Succession Seeds may exist simultaneously. After using an Elemental
+        Burst, all Succession Seeds are consumed and after 2s, the character regenerates {0} Energy for each seed
+        consumed.`,
+      ],
+      seeds: [{ base: 4.5, seedType: "dull" }],
+    },
   },
   {
     code: 119,
@@ -520,7 +456,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...favoniusSeries,
+    ...favoniusPassive,
   },
   {
     code: 120,
@@ -529,7 +465,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "er_", scale: "13.3%" },
-    ...sacrificialSeries,
+    ...sacrificialPassive,
   },
   {
     code: 121,
@@ -539,22 +475,23 @@ const purpleSwords: AppWeapon[] = [
     mainStatScale: "41",
     subStat: { type: "def_", scale: "15%" },
     passiveName: "Spotless Heart",
-    passiveDesc: ({ refi }) => ({
-      core: (
-        <>
-          <Green>Elemental Skill DMG</Green> is increased by <Green b>{30 + refi * 10}%</Green> of DEF. The effect will
-          be triggered no more than once every 1.5s and will be cleared 0.1s after the Elemental Skill deals DMG.
-        </>
-      ),
-    }),
-    applyFinalBuff: ({ attPattBonus, refi, totalAttr, desc, tracker }) => {
-      if (attPattBonus) {
-        const mult = 30 + refi * 10;
-        const buffValue = applyPercent(totalAttr.def, mult);
-        const finalDesc = desc + ` / ${mult}% of ${Math.round(totalAttr.def)} DEF`;
-        applyModifier(finalDesc, attPattBonus, "ES.flat", buffValue, tracker);
-      }
+    description: {
+      pots: [
+        `{Elemental Skill DMG} is increased by {0}% of {DEF}. The effect will be triggered no more than once every 1.5s and
+        will be cleared 0.1s after the Elemental Skill deals DMG.`,
+      ],
+      seeds: [30],
     },
+    autoBuffs: [
+      {
+        base: 0.3,
+        stacks: {
+          type: "attribute",
+          field: "def",
+        },
+        targetAttPatt: "ES.flat",
+      },
+    ],
   },
 ];
 

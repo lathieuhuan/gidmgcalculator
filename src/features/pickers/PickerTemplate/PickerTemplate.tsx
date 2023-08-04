@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 
 import type { BooleanRecord } from "@Src/types";
 import type { DataType, Filter, PickerItem } from "../types";
@@ -27,6 +27,7 @@ export interface PickerTemplateProps {
   onClose: () => void;
 }
 export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClose }: PickerTemplateProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [pickedNames, setPickedNames] = useState<BooleanRecord>({});
 
   const [filterOn, setFilterOn] = useState(false);
@@ -37,6 +38,20 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
   const [itemCounts, setItemCounts] = useState<number[]>([]);
 
   const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+
+  useEffect(() => {
+    const focus = (e: KeyboardEvent) => {
+      if (e.key.length === 1 && dataType === "character" && document.activeElement !== inputRef.current) {
+        inputRef.current?.focus();
+      }
+    };
+
+    document.body.addEventListener("keydown", focus);
+
+    return () => {
+      document.body.removeEventListener("keydown", focus);
+    };
+  }, [dataType]);
 
   const visibleNames: BooleanRecord = {};
 
@@ -87,6 +102,16 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
     }
   };
 
+  const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === "Enter" && keyword) {
+      const firstVisibleIndex = data.findIndex((item) => visibleNames[item.name]);
+
+      if (firstVisibleIndex !== -1) {
+        onClickItem(data[firstVisibleIndex], firstVisibleIndex);
+      }
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
@@ -96,9 +121,11 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
               <ModalHeader.FilterButton active={filterOn} onClick={() => setFilterOn(!filterOn)} />
 
               <Input
+                ref={inputRef}
                 className="w-24 ml-3 px-2 py-1 leading-none font-semibold shadow-common"
                 placeholder="Search..."
                 onChange={setKeyword}
+                onKeyDown={onKeyDown}
               />
 
               <div className="absolute w-full top-full left-0 z-50">

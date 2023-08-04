@@ -1,8 +1,8 @@
-import { addArtAttr } from "@Src/calculation/baseStats";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
+import { addArtifactAttributes } from "@Src/calculation/getCalculationStats";
 
-// Selector
+// Store
+import { useDispatch, useSelector } from "@Store/hooks";
 import {
   selectArtifacts,
   selectChar,
@@ -10,9 +10,10 @@ import {
   selectTotalAttr,
   selectWeapon,
 } from "@Store/calculatorSlice/selectors";
+// Action
+import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 
 // Hook
-import { useDispatch, useSelector } from "@Store/hooks";
 import { useTabs } from "@Src/hooks";
 
 // Component
@@ -46,7 +47,7 @@ const contentByTab: Record<string, () => JSX.Element> = {
     const artifacts = useSelector(selectArtifacts);
     const totalAttr = useSelector(selectTotalAttr);
 
-    const artAttr = addArtAttr({ artifacts, totalAttr: { ...totalAttr } });
+    const artAttr = addArtifactAttributes({ artifacts, totalAttr: { ...totalAttr } });
 
     const { activeIndex, tabs } = useTabs({
       level: 2,

@@ -1,10 +1,11 @@
-import {
+import type {
   DamageResult,
   ResistanceReduction,
   DebuffModifierArgsWrapper,
   TrackerDamageRecord,
   NormalAttack,
   CalcItemBonus,
+  AttackPatternInfoKey,
 } from "@Src/types";
 import type { CalculateItemArgs, GetDamageArgs } from "./types";
 
@@ -18,7 +19,10 @@ import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
-import { getExclusiveBonus } from "./utils";
+
+const getExclusiveBonus = (bonuses: CalcItemBonus[], key: AttackPatternInfoKey) => {
+  return bonuses.reduce((total, bonus) => total + (bonus[key]?.value || 0), 0);
+};
 
 function calculateItem({
   stat,
