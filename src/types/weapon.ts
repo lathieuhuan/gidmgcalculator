@@ -17,7 +17,7 @@ type AttributeStack = {
   type: "attribute";
   field: "hp" | "base_atk" | "def" | "em" | "er_";
   convertRate?: number;
-  pedestal?: number;
+  minus?: number;
 };
 
 type InputIndex = {
@@ -32,8 +32,6 @@ type InputStack = {
   index?: number | InputIndex[];
   /** liyueSeries */
   doubledAtInput?: number;
-  /** if number, add to main */
-  maxStackBonus?: number;
 };
 
 /** Watatsumi series */
@@ -46,13 +44,15 @@ type NationStack = {
   type: "nation";
 };
 
-type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
+export type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
 type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
 export type AutoBuff = {
   // charCode?: number; // only on Predator for Aloy
   base?: number;
+  /** need "stacks", number of stacks - 1 = index of options, each option scale off refi, increment is 1/3 */
+  options?: number[];
   /** only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
   /** fixed type has no increment */
@@ -87,7 +87,11 @@ export type DescriptionSeedType = "dull" | "green" | "red";
 
 export type DescriptionSeed =
   | number
-  | { base: number; increment?: number; seedType?: DescriptionSeedType }
+  // default increment = base / 3, default seedType is "green"
+  | { base: number; increment?: number; seedType?: Exclude<DescriptionSeedType, "red"> }
+  // default increment = base / 3, seedType is "red"
+  | { max: number; increment?: number }
+  // options for each refi, default seedType is "green"
   | { options: number[]; seedType?: DescriptionSeedType };
 
 /**

@@ -23,7 +23,7 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `When the wielder is healed, ATK will be increased by {0}% for 8s. This can be triggered even when the
+        `When the wielder is healed, {ATK} will be increased by {0}% for 8s. This can be triggered even when the
         character is not on the field.`,
       ],
       seeds: [18],
@@ -47,9 +47,9 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `ATK will be increased by {0}% for 10s after being affected by Pyro. This effect can be triggered once every
+        `{ATK} will be increased by {0}% for 10s after being affected by Pyro. This effect can be triggered once every
         12s. `,
-        `All Elemental DMG Bonus will be increased by {1}% for 10s after being affected by Hydro, Cryo, or Electro.
+        `{All Elemental DMG Bonus} will be increased by {1}% for 10s after being affected by Hydro, Cryo, or Electro.
         This effect can be triggered once every 12s.`,
       ],
       seeds: [12, 9],
@@ -80,8 +80,8 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "Whispers of Wind and Flower",
     description: {
       pots: [
-        `Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction, ATK is increased by
-        {0}% and Elemental Mastery is increased by {1}.`,
+        `Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction, {ATK} is increased by
+        {0}% and {Elemental Mastery} is increased by {1}.`,
       ],
       seeds: [9, 36],
     },
@@ -120,7 +120,7 @@ const purpleClaymores: AppWeapon[] = [
       pots: [
         `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
         will be created around the character for a maximum of 10s.`,
-        `When picked up, the Leaf will grant the character {0} Elemental Mastery for 12s.`,
+        `When picked up, the Leaf will grant the character {0} {Elemental Mastery} for 12s.`,
         `Only 1 Leaf can be generated this way every 20s. This effect can still  be triggered if the character is not
         on the field. The Leaf of Consciousness' effect cannot stack.`,
       ],
@@ -189,7 +189,7 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "Infusion Blade",
     description: {
       pots: [
-        `On hit, Normal or Charged Attacks increase ATK and DEF by {0}% for 6s. Max 4 stacks. Can only occur once every
+        `On hit, Normal or Charged Attacks increase {ATK} and {DEF} by {0}% for 6s. Max 4 stacks. Can only occur once every
         0.5s.`,
       ],
       seeds: [4.5],
@@ -240,12 +240,12 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "Wavesplitter",
     description: {
       pots: [
-        `Every 4s a character is on the field, they will deal {0}% more DMG and take {1}% more DMG. This effect has a
-        maximum of 5 stacks`,
+        `Every 4s a character is on the field, they will deal {0}% more {DMG} and take {1}% more DMG. This effect has a
+        maximum of {2} stacks`,
         `and will not be reset if the character leaves the field, but will be reduced by 1 stack when the character
         takes DMG.`,
       ],
-      seeds: [{ base: 5, increment: 1 }, { options: [3, 2.7, 2.4, 2.2, 2] }],
+      seeds: [{ base: 5, increment: 1 }, { options: [3, 2.7, 2.4, 2.2, 2] }, { max: 5, increment: 0 }],
     },
     buffs: [
       {
@@ -285,7 +285,7 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "Samurai Conduct",
     description: {
       pots: [
-        `Increases Elemental Skill DMG by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
+        `Increases {Elemental Skill DMG} by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
         but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
         even when the character is not on the field.`,
       ],
@@ -310,7 +310,7 @@ const purpleClaymores: AppWeapon[] = [
       pots: [
         `Taking DMG generates a shield which absorbs DMG up to {0}% of max HP. This shield lasts for 10s or until
         broken, and can only be triggered once every 45s.`,
-        `While protected by a shield, the character gains {1}% increased DMG.`,
+        `While protected by a shield, the character gains {1}% increased {DMG}.`,
       ],
       seeds: [{ base: 17, increment: 3, seedType: "dull" }, 9],
     },
@@ -343,7 +343,7 @@ const purpleClaymores: AppWeapon[] = [
     passiveName: "Oceanic Victory",
     description: {
       pots: [
-        `Increases Elemental Burst DMG by {0}%. When Elemental Burst hits opponents, there is a 100% chance of
+        `Increases {Elemental Burst DMG} by {0}%. When Elemental Burst hits opponents, there is a 100% chance of
         summoning a titanic tuna that charges and deals {1}% ATK as AoE DMG. This effect can occur once every 15s.`,
       ],
       seeds: [9, { base: 75, seedType: "dull" }],

@@ -13,12 +13,12 @@ export const desertSeries: Pick<
   passiveName: "Wildling Nightstar",
   description: {
     pots: [
-      `Every 10s, the equipping character will gain {0}% of their Elemental Mastery as bonus ATK for 12s, with nearby
-      party members gaining 30% of this buff for the same duration.`,
+      `Every 10s, the equipping character will gain {0}% of their {Elemental Mastery} as bonus {ATK} for 12s, with nearby
+      party members gaining {1}% of this buff for the same duration.`,
       `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
       character is not on the field.`,
     ],
-    seeds: [18],
+    seeds: [18, { base: 30, increment: 0 }],
   },
   buffs: [
     {
@@ -55,7 +55,7 @@ export const royalSeries: SeriesInfo = {
     pots: [
       `Upon dealing damage to an opponent, increases {CRIT Rate} by {0}%. Max {1} stacks. A CRIT hit removes all existing stacks.`,
     ],
-    seeds: [6, { base: 5, seedType: "red" }],
+    seeds: [6, { max: 5, increment: 0 }],
   },
   buffs: [
     {
@@ -83,7 +83,7 @@ export const blackcliffSeries: SeriesInfo = {
       `After defeating an opponent, {ATK} is increased by {0}% for 30s. This effect has a maximum of {1} stacks, and the
       duration of each stack is independent of the others.`,
     ],
-    seeds: [9, { base: 3, seedType: "red" }],
+    seeds: [9, { max: 3, increment: 0 }],
   },
   buffs: [
     {
@@ -153,11 +153,11 @@ export const liyueSeries: SeriesInfo = {
   passiveName: "Golden Majesty",
   description: {
     pots: [
-      `Increases Shield Strength by {0}%.`,
-      `Scoring hits on opponents increases ATK by {1}% for 8s. Max 5 stacks. Can only occur once every 0.3s. While
-      protected by a shield, this ATK increase effect is increased by 100%.`,
+      `Increases {Shield Strength} by {0}%.`,
+      `Scoring hits on opponents increases {ATK} by {1}% for 8s. Max {2} stacks. Can only occur once every 0.3s. While
+      protected by a shield, this {ATK increase} effect is increased by {3}%.`,
     ],
-    seeds: [15, 3],
+    seeds: [15, 3, { max: 5, increment: 0 }, { base: 100, increment: 0 }],
   },
   autoBuffs: [
     {
@@ -194,12 +194,13 @@ export const lithicSeries: SeriesInfo = {
   passiveName: "Lithic Axiom - Unity",
   description: {
     pots: [
-      `For every character in the party who hails from Liyue, the character who equips this weapon gains {0}% ATK
-      increase and {1}% CRIT Rate increase. This effect stacks up to 4 times.`,
+      `For every character in the party who hails from Liyue, the character who equips this weapon gains {0}% {ATK}
+      increase and {1}% {CRIT Rate} increase. This effect stacks up to {2} times.`,
     ],
     seeds: [
       { base: 6, increment: 1 },
       { base: 2, increment: 1 },
+      { max: 4, increment: 0 },
     ],
   },
   autoBuffs: [
@@ -242,7 +243,7 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
 export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
   passiveName: `Bane of ${name}`,
   description: {
-    pots: [`Increases DMG against opponents affected by ${elements} by {0}%.`],
+    pots: [`Increases {DMG} against opponents affected by ${elements} by {0}%.`],
     seeds: [{ base: 16, increment: 4 }],
   },
   buffs: [
@@ -263,7 +264,7 @@ export const watatsumiSeries: SeriesInfo = {
       `For every point of the entire party's combined maximum Energy capacity, the {Elemental Burst DMG} of the character
       equipping this weapon is increased by {0}%, up to a maximum of {1}%.`,
     ],
-    seeds: [0.09, { base: 30, increment: 10, seedType: "red" }],
+    seeds: [0.09, { max: 30 }],
   },
   autoBuffs: [
     {

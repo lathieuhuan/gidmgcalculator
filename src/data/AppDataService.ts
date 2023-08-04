@@ -2,7 +2,7 @@ import type { AppCharacter, AppWeapon, Party, PartyData } from "@Src/types";
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { pickProps } from "@Src/utils";
 import characters from "./characters";
-import weapons from "./weapons";
+// import weapons from "./weapons";
 
 type Response<T> = Promise<{
   code: number;
@@ -18,14 +18,14 @@ type DataControl<T> = {
 type Subscriber<T> = (data: T) => void;
 
 type CharacterSubscriber = Subscriber<AppCharacter>;
-type WeaponSubscriber = Subscriber<AppWeapon>;
+// type WeaponSubscriber = Subscriber<AppWeapon>;
 
 export class AppDataService {
   private characters: Record<PropertyKey, DataControl<AppCharacter>> = {};
   private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
 
-  private weapons: Array<DataControl<AppWeapon>> = [];
-  private weaponSubscribers: Map<string, Set<WeaponSubscriber>> = new Map();
+  // private weapons: Array<DataControl<AppWeapon>> = [];
+  // private weaponSubscribers: Map<string, Set<WeaponSubscriber>> = new Map();
 
   constructor() {
     Object.entries(characters).forEach(([name, data]) => {
@@ -35,14 +35,14 @@ export class AppDataService {
       };
     });
 
-    for (const list of Object.values(weapons)) {
-      list.forEach((item) => {
-        this.weapons[item.code] = {
-          status: "unfetched",
-          data: item,
-        };
-      });
-    }
+    // for (const list of Object.values(weapons)) {
+    //   list.forEach((item) => {
+    //     this.weapons[item.code] = {
+    //       status: "unfetched",
+    //       data: item,
+    //     };
+    //   });
+    // }
   }
 
   private async fetchData<T>(url: string): Response<T> {
@@ -180,45 +180,45 @@ export class AppDataService {
 
   // WEAPON
 
-  async fetchWeapon(code: number): Response<AppWeapon> {
-    const control = this.weapons[code];
+  // async fetchWeapon(code: number): Response<AppWeapon> {
+  //   const control = this.weapons[code];
 
-    if (!control) {
-      return {
-        code: 404,
-        message: "Weapon not found",
-        data: null,
-      };
-    }
+  //   if (!control) {
+  //     return {
+  //       code: 404,
+  //       message: "Weapon not found",
+  //       data: null,
+  //     };
+  //   }
 
-    if (control.status === "fetched") {
-      return {
-        code: 200,
-        data: control.data,
-      };
-    }
+  //   if (control.status === "fetched") {
+  //     return {
+  //       code: 200,
+  //       data: control.data,
+  //     };
+  //   }
 
-    control.status = "fetching";
-    const response = await this.fetchData<AppWeapon>(BACKEND_URL_PATH.weapon.byCode(code));
+  //   control.status = "fetching";
+  //   const response = await this.fetchData<AppWeapon>(BACKEND_URL_PATH.weapon.byCode(code));
 
-    if (response.data) {
-      control.status = "fetched";
-      Object.assign(control.data, response.data);
+  //   if (response.data) {
+  //     control.status = "fetched";
+  //     Object.assign(control.data, response.data);
 
-      const weaponSubscribers = this.weaponSubscribers.get(`${code}`);
+  //     const weaponSubscribers = this.weaponSubscribers.get(`${code}`);
 
-      if (weaponSubscribers) {
-        weaponSubscribers.forEach((subscriber) => {
-          subscriber(control.data);
-        });
-      }
+  //     if (weaponSubscribers) {
+  //       weaponSubscribers.forEach((subscriber) => {
+  //         subscriber(control.data);
+  //       });
+  //     }
 
-      return {
-        ...response,
-        data: control.data,
-      };
-    }
+  //     return {
+  //       ...response,
+  //       data: control.data,
+  //     };
+  //   }
 
-    return response;
-  }
+  //   return response;
+  // }
 }

@@ -24,7 +24,7 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cRate_", scale: "5.1%" },
     passiveName: "Sharp",
-    description: { pots: [`Increases Normal Attack DMG by {0}%.`], seeds: [18] },
+    description: { pots: [`Increases {Normal Attack DMG} by {0}%.`], seeds: [18] },
     autoBuffs: [
       {
         base: 18,
@@ -40,7 +40,7 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
     passiveName: "Bane of the Soft",
-    description: { pots: [`Increases DMG against slimes by {0}%.`], seeds: [30] },
+    description: { pots: [`Increases {DMG} against slimes by {0}%.`], seeds: [30] },
     buffs: [
       {
         index: 0,

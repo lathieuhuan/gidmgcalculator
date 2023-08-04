@@ -27,7 +27,7 @@ const otherCatalysts: AppWeapon[] = [
     passiveName: "Rapids",
     description: {
       pots: [
-        `Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases ATK by {0}% for
+        `Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases {ATK} by {0}% for
         12s.`,
       ],
       seeds: [15],
@@ -50,7 +50,7 @@ const otherCatalysts: AppWeapon[] = [
     subStat: { type: "cRate_", scale: "3.4%" },
     passiveName: "Rapids",
     description: {
-      pots: ["Defeating an opponent increases Movement SPD and ATK by {0}% for 15s."],
+      pots: ["Defeating an opponent increases Movement SPD and {ATK} by {0}% for 15s."],
       seeds: [{ base: 10, increment: 2 }],
     },
     buffs: [
@@ -73,7 +73,7 @@ const otherCatalysts: AppWeapon[] = [
     passiveName: "Legacy",
     description: {
       pots: [
-        `When switching characters, the new character taking the field has their ATK increased by {0}% for 10s. This
+        `When switching characters, the new character taking the field has their {ATK} increased by {0}% for 10s. This
         effect can only occur once every 20s.`,
       ],
       seeds: [18],

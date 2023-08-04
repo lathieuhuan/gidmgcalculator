@@ -3,7 +3,6 @@ import type {
   AppWeapon,
   ArtifactAttribute,
   ArtifactSetBonus,
-  AutoBuff,
   BuffModifierArgsWrapper,
   CalcArtifacts,
   CalcWeapon,
@@ -11,7 +10,6 @@ import type {
   CoreStat,
   Level,
   ModifierCtrl,
-  ModInputConfig,
   TotalAttribute,
   Tracker,
   TrackerRecord,
@@ -22,10 +20,7 @@ import {
   applyPercent,
   artifactMainStatValue,
   ascsFromLv,
-  countVision,
   findByIndex,
-  toArray,
-  toMult,
   weaponMainStatValue,
   weaponSubStatValue,
 } from "@Src/utils";
@@ -233,228 +228,7 @@ export const applyArtifactAutoBuffs = ({ isFinal, setBonuses, modifierArgs }: ap
 
 export const calcFinalTotalAttributes = (totalAttr: TotalAttribute) => {
   for (const type of CORE_STAT_TYPES) {
-    totalAttr[type] += Math.round(totalAttr[`base_${type}`]) * toMult(totalAttr[`${type}_`]);
-    delete totalAttr[`${type}_`];
-  }
-};
-
-interface ApplyWeaponBuffArgs {
-  description: string;
-  buff: AutoBuff;
-  refi: number;
-  inputs: number[];
-  modifierArgs: BuffModifierArgsWrapper;
-  inputConfigs?: ModInputConfig[];
-}
-export const applyWeaponBuff = ({
-  description,
-  buff,
-  refi,
-  inputs,
-  modifierArgs,
-  inputConfigs,
-}: ApplyWeaponBuffArgs) => {
-  if (!buff.base) {
-    return;
-  }
-  const { charData, partyData } = modifierArgs;
-
-  if (buff.checkInput !== undefined) {
-    if (typeof buff.checkInput === "number") {
-      if (inputs[0] !== buff.checkInput) {
-        return;
-      }
-    } else {
-      const { index = 0, source, compareValue, compareType = "equal" } = buff.checkInput;
-      let input = 0;
-
-      if (source === "various_vision") {
-        if (partyData) {
-          input = Object.keys(countVision(partyData, charData)).length;
-        } else {
-          return;
-        }
-      } else {
-        input = inputs[index];
-      }
-
-      switch (compareType) {
-        case "equal":
-          if (input !== compareValue) {
-            return;
-          }
-          break;
-        case "atleast":
-          if (input < compareValue) {
-            return;
-          }
-          break;
-      }
-    }
-  }
-
-  const scaleRefi = (base: number, increment = base / 3) => base + increment * refi;
-
-  const { stacks, targetAttribute, max } = buff;
-  const maxValue = max ? (typeof max === "number" ? scaleRefi(max) : scaleRefi(max.base, max.increment)) : undefined;
-  const initialValue = buff.initialBonus ? scaleRefi(buff.initialBonus) : 0;
-  let buffValue = scaleRefi(buff.base, buff.increment);
-
-  if (stacks) {
-    for (const stack of toArray(stacks)) {
-      switch (stack.type) {
-        case "input": {
-          const { index = 0, maxStackBonus = 0, doubledAtInput } = stack;
-
-          if (typeof index === "number") {
-            let input = inputs[index] || 0;
-
-            if (doubledAtInput && inputs[doubledAtInput]) {
-              input *= 2;
-            }
-
-            buffValue *= input;
-
-            if (input === inputConfigs?.[index].max) {
-              buffValue += maxStackBonus + refi * (maxStackBonus / 3);
-            }
-          } else {
-            const input = index.reduce(
-              (total, { value, convertRate = 1 }) => total + (inputs[value] || 0) * convertRate,
-              0
-            );
-            buffValue *= input;
-          }
-          break;
-        }
-        case "attribute": {
-          const { field, convertRate = 1, pedestal = 0 } = stack;
-          buffValue *= (modifierArgs.totalAttr[field] - pedestal) * convertRate;
-          break;
-        }
-        case "vision": {
-          if (partyData) {
-            const { element, max } = stack;
-            let input = 0;
-
-            switch (element) {
-              case "same_included":
-              case "same_excluded":
-                let { [charData.vision]: sameCount = 0 } = countVision(partyData);
-                if (element === "same_included") {
-                  sameCount++;
-                }
-                input = sameCount;
-                break;
-              case "different": {
-                const { [charData.vision]: sameCount, ...others } = countVision(partyData);
-                input = Object.values(others).reduce<number>((total, count) => total + (count as number) || 0, 0);
-                break;
-              }
-            }
-            if (max && input > max) {
-              input = max;
-            }
-
-            buffValue *= input;
-          }
-          break;
-        }
-        case "energy": {
-          if (partyData) {
-            buffValue *= partyData.reduce((result, data) => result + (data?.EBcost || 0), charData.EBcost);
-          }
-          break;
-        }
-        case "nation": {
-          if (partyData) {
-            buffValue *= partyData.reduce(
-              (result, data) => result + (data?.nation === "liyue" ? 1 : 0),
-              charData.nation === "liyue" ? 1 : 0
-            );
-          }
-          break;
-        }
-      }
-    }
-  }
-  buffValue += initialValue;
-
-  if (maxValue && buffValue > maxValue) {
-    buffValue = maxValue;
-  }
-
-  if (targetAttribute) {
-    const attributeKey = targetAttribute === "own_element" ? modifierArgs.charData.vision : targetAttribute;
-    applyModifier(description, modifierArgs.totalAttr, attributeKey, buffValue, modifierArgs.tracker);
-  }
-  if (buff.targetAttPatt) {
-    applyModifier(description, modifierArgs.attPattBonus, buff.targetAttPatt, buffValue, modifierArgs.tracker);
-  }
-};
-
-interface ApplyWeaponAutoBuffsArgs {
-  isFinal: boolean;
-  weaponData: AppWeapon;
-  refi: number;
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyWeaponAutoBuffs = ({ isFinal, weaponData, refi, modifierArgs }: ApplyWeaponAutoBuffsArgs) => {
-  if (weaponData.autoBuffs?.length) {
-    for (const autoBuff of weaponData.autoBuffs) {
-      if (isFinal === checkIfFinal(autoBuff.stacks)) {
-        applyWeaponBuff({ description: `${weaponData.name} bonus`, buff: autoBuff, refi, inputs: [], modifierArgs });
-      }
-    }
-  }
-};
-
-const checkIfFinal = (stacks: AutoBuff["stacks"]) => {
-  if (!stacks) {
-    return false;
-  }
-  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
-};
-
-interface ApplyMainWeaponsBuffsArgs {
-  isFinal: boolean;
-  weaponData: AppWeapon;
-  refi: number;
-  wpBuffCtrls: ModifierCtrl[];
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyMainWeaponsBuffs = ({
-  isFinal,
-  weaponData,
-  refi,
-  wpBuffCtrls,
-  modifierArgs,
-}: ApplyMainWeaponsBuffsArgs) => {
-  if (weaponData.buffs) {
-    const description = `${weaponData.name} activated`;
-
-    // #to-do: check if buff exist
-    for (const { activated, index, inputs = [] } of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.buffs, index);
-
-      if (activated && buff) {
-        const { inputConfigs } = buff;
-
-        if (buff.base && isFinal === checkIfFinal(buff.stacks)) {
-          applyWeaponBuff({ description, buff, refi, inputs, modifierArgs, inputConfigs });
-        }
-        for (const buffBonus of buff.buffBonuses || []) {
-          const bonus = {
-            ...buffBonus,
-            base: buffBonus.base ?? buff.base,
-            stacks: buffBonus.stacks ?? buff.stacks,
-          };
-
-          if (isFinal === checkIfFinal(bonus.stacks)) {
-            applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs, inputConfigs });
-          }
-        }
-      }
-    }
+    totalAttr[type] += applyPercent(totalAttr[`base_${type}`], totalAttr[`${type}_`]);
+    totalAttr[`${type}_`] = 0;
   }
 };

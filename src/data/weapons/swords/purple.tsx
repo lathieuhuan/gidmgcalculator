@@ -13,7 +13,7 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `Increases Elemental Skill CRIT Rate by {0}%. Increases Energy Recharge by {1}% for 5s after using an Elemental
+        `Increases {Elemental Skill CRIT Rate} by {0}%. Increases {Energy Recharge} by {1}% for 5s after using an Elemental
         Skill.`,
       ],
       seeds: [6, 12],
@@ -43,13 +43,13 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `When using an Elemental Skill, ATK will be increased by {0}% for 12s`,
+        `When using an Elemental Skill, {ATK} will be increased by {0}% for 12s`,
         `, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once every 10s.`,
-        `When the Bond of Life is cleared, a maximum of {1} ATK will be gained based on {2}% of the Bond for 12s.`,
+        `When the Bond of Life is cleared, a maximum of {1} ATK will be gained based on {2}% of the {Bond} for 12s.`,
         `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
         this value is obtained.`,
       ],
-      seeds: [9, { base: 112.5, seedType: "dull" }, 1.8],
+      seeds: [9, { max: 112.5 }, 1.8],
     },
     buffs: [
       {
@@ -83,8 +83,8 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `DMG dealt by Elemental Skill and Elemental Burst will be increased by {0}%. When an Elemental Skill hits an
-        opponent, its CRIT Rate will be increased by {1}%. When an Elemental Burst hits an opponent, its CRIT Rate will
+        `{DMG} dealt by {Elemental Skill and Elemental Burst} will be increased by {0}%. When an Elemental Skill hits an
+        opponent, its {CRIT Rate} will be increased by {1}%. When an Elemental Burst hits an opponent, its {CRIT Rate} will
         be increased by {1}%. Both of these effects last 10s separately, have 4 max stacks, and can be triggered once
         every 0.1s.`,
       ],
@@ -100,7 +100,7 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        description: `When an Elemental Skill hits an opponent, its CRIT Rate will be increased by {1}%. Max 4 stacks.`,
+        description: `When an Elemental Skill hits an opponent, its {CRIT Rate} will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
@@ -116,7 +116,7 @@ const purpleSwords: AppWeapon[] = [
       {
         index: 1,
         affect: EModAffect.SELF,
-        description: `When an Elemental Burst hits an opponent, its CRIT Rate will be increased by {1}%. Max 4 stacks.`,
+        description: `When an Elemental Burst hits an opponent, its {CRIT Rate} will be increased by {1}%. Max 4 stacks.`,
         inputConfigs: [
           {
             type: "stacks",
@@ -144,7 +144,7 @@ const purpleSwords: AppWeapon[] = [
         `After an attack hits opponents, it will inflict an instance of Cursed Parasol upon one of them for 10s. This
         effect can be triggered once every 15s. If this opponent is taken out during Cursed Parasol's duration, Cursed
         Parasol's CD will be refreshed immediately.`,
-        `The character wielding this weapon will deal {0}% more DMG to the opponent affected by Cursed Parasol.`,
+        `The character wielding this weapon will deal {0}% more {DMG} to the opponent affected by Cursed Parasol.`,
       ],
       seeds: [12],
     },
@@ -168,13 +168,13 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "Jinni's Whisper",
     description: {
       pots: [
-        `The following effect will trigger every 10s: the equipping character will gain {0}% Energy Recharge for each
-        point of Elemental Mastery they possess for 12s, with nearby party members gaining 30% of this buff for the
+        `The following effect will trigger every 10s: the equipping character will gain {0}% {Energy Recharge} for each
+        point of {Elemental Mastery} they possess for 12s, with nearby party members gaining {1}% of this buff for the
         same duration.`,
         `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
         character is not on the field.`,
       ],
-      seeds: [0.027],
+      seeds: [0.027, { base: 30, increment: 0 }],
     },
     buffs: [
       {
@@ -215,9 +215,9 @@ const purpleSwords: AppWeapon[] = [
     description: {
       pots: [
         `When a Normal, Charged, or Plunging Attack hits an opponent, it will whip up a Hewing Gale, dealing AoE DMG
-        equal to 180% of ATK and increasing ATK by 15% for 8s. This effect can be triggered once every 8s.`,
+        equal to 180% of ATK and increasing {ATK} by {0}% for 8s. This effect can be triggered once every 8s.`,
       ],
-      seeds: [],
+      seeds: [{ base: 15, increment: 0 }],
     },
     buffs: [
       {
@@ -241,7 +241,7 @@ const purpleSwords: AppWeapon[] = [
       pots: [
         `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
         will be created around the character for a maximum of 10s.`,
-        `When picked up, the Leaf will grant the character {0} Elemental Mastery for 12s.`,
+        `When picked up, the Leaf will grant the character {0} {Elemental Mastery} for 12s.`,
         `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
         the field. The Leaf of Consciousness' effect cannot stack.`,
       ],
@@ -267,7 +267,7 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "Itinerant Hero",
     description: {
       pots: [
-        `Increases DMG dealt by the character equipping this weapon by {0}%. Taking DMG disables this effect for 5s.`,
+        `Increases {DMG} dealt by the character equipping this weapon by {0}%. Taking DMG disables this effect for 5s.`,
       ],
       seeds: [9],
     },
@@ -299,10 +299,10 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "Smashed Stone",
     description: {
       pots: [
-        `On hit, Normal or Charged Attacks increase ATK and DEF by {0}% for 6s. Max 4 stacks. Can only occur once every
+        `On hit, Normal or Charged Attacks increase {ATK} and {DEF} by {0}% for 6s. Max {1} stacks. Can only occur once every
         0.3s.`,
       ],
-      seeds: [3],
+      seeds: [3, { max: 4, increment: 0 }],
     },
     buffs: [
       {
@@ -331,7 +331,7 @@ const purpleSwords: AppWeapon[] = [
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Undying Admiration",
     description: {
-      pots: [`Increases Elemental Skill DMG by {0}% and Elemental Skill CRIT Rate by {1}%.`],
+      pots: [`Increases {Elemental Skill DMG} by {0}% and {Elemental Skill CRIT Rate} by {1}%.`],
       seeds: [12, 4.5],
     },
     autoBuffs: [
@@ -355,7 +355,7 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "Justice",
     description: {
       pots: [
-        `Increases DMG dealt by Normal and Charged Attacks by {0}%. Additionally, regenerates {1}% of ATK as HP when
+        `Increases {DMG} dealt by {Normal and Charged Attacks} by {0}%. Additionally, regenerates {1}% of ATK as HP when
         Normal and Charged Attacks score a CRIT Hit. This effect can occur once every 5s.`,
       ],
       seeds: [15, { base: 50, increment: 10, seedType: "dull" }],
@@ -410,8 +410,8 @@ const purpleSwords: AppWeapon[] = [
     subStat: { type: "em", scale: "36" },
     passiveName: "Infusion Stinger",
     description: {
-      pots: [`Dealing Elemental DMG increases all DMG by {0}% for 6s. Max 2 stacks. Can only occur once every 1s.`],
-      seeds: [4.5],
+      pots: [`Dealing Elemental DMG increases all {DMG} by {0}% for 6s. Max {1} stacks. Can only occur once every 1s.`],
+      seeds: [4.5, { max: 2, increment: 0 }],
     },
     buffs: [
       {
@@ -477,7 +477,7 @@ const purpleSwords: AppWeapon[] = [
     passiveName: "Spotless Heart",
     description: {
       pots: [
-        `Elemental Skill DMG is increased by {0}% of DEF. The effect will be triggered no more than once every 1.5s and
+        `{Elemental Skill DMG} is increased by {0}% of {DEF}. The effect will be triggered no more than once every 1.5s and
         will be cleared 0.1s after the Elemental Skill deals DMG.`,
       ],
       seeds: [30],

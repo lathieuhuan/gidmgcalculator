@@ -42,14 +42,12 @@ import {
   addArtifactAttributes,
   addWeaponSubStat,
   applyArtifactAutoBuffs,
-  applyMainWeaponsBuffs,
   applySelfBuffs,
-  applyWeaponAutoBuffs,
   addTrackerRecord,
   calcFinalTotalAttributes,
   initiateTotalAttr,
-  applyWeaponBuff,
 } from "./utils";
+import { applyMainWeaponBuffs, applyWeaponAutoBuffs, applyWeaponBuff } from "./weapon-buffs";
 
 export const getCalculationStats = ({
   char,
@@ -251,7 +249,7 @@ export const getCalculationStats = ({
           const buff = findByIndex(buffs, index);
 
           if (buff) {
-            if (activated && isNewMod(true, code, index) && buff) {
+            if (activated && isNewMod(true, code, index)) {
               applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
 
               for (const buffBonus of buff.buffBonuses || []) {
@@ -295,7 +293,7 @@ export const getCalculationStats = ({
 
   // APPLY WEAPON BUFFS
   if (wpBuffCtrls?.length) {
-    applyMainWeaponsBuffs({ isFinal: false, weaponData, refi, wpBuffCtrls, modifierArgs });
+    applyMainWeaponBuffs({ isFinal: false, weaponData, refi, wpBuffCtrls, modifierArgs });
   }
 
   // APPLY ARTIFACT BUFFS
@@ -315,6 +313,10 @@ export const getCalculationStats = ({
     }
   }
 
+  totalAttr.hp += totalAttr.base_hp;
+  totalAttr.atk += totalAttr.base_atk;
+  totalAttr.def += totalAttr.base_def;
+
   calcFinalTotalAttributes(totalAttr);
 
   applyArtifactAutoBuffs({ isFinal: true, setBonuses, modifierArgs });
@@ -322,8 +324,10 @@ export const getCalculationStats = ({
 
   // APPLY WEAPON FINAL BUFFS
   if (wpBuffCtrls?.length) {
-    applyMainWeaponsBuffs({ isFinal: true, weaponData, refi, wpBuffCtrls, modifierArgs });
+    applyMainWeaponBuffs({ isFinal: true, weaponData, refi, wpBuffCtrls, modifierArgs });
   }
+
+  calcFinalTotalAttributes(totalAttr);
 
   applySelfBuffs({
     isFinal: true,

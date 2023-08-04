@@ -37,7 +37,7 @@ const purplePolearms: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `When there are at least 3 different Elemental Types in your party, Elemental Mastery will be increased by {0}.`,
+        `When there are at least 3 different Elemental Types in your party, {Elemental Mastery} will be increased by {0}.`,
       ],
       seeds: [90],
     },
@@ -63,7 +63,7 @@ const purplePolearms: AppWeapon[] = [
     passiveName: "The Wind Unattained",
     description: {
       pots: [
-        `Within 10s after an Elemental Reaction is triggered, ATK is increased by {0}% and Elemental Mastery is
+        `Within 10s after an Elemental Reaction is triggered, {ATK} is increased by {0}% and {Elemental Mastery} is
         increased by {1}.`,
       ],
       seeds: [9, 36],
@@ -97,7 +97,7 @@ const purplePolearms: AppWeapon[] = [
       pots: [
         `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will be
         created around the character for a maximum of 10s.`,
-        `When picked up, the Leaf will grant the character {0}% ATK for 12s.`,
+        `When picked up, the Leaf will grant the character {0}% {ATK} for 12s.`,
         `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
         the field.`,
       ],
@@ -141,7 +141,7 @@ const purplePolearms: AppWeapon[] = [
     passiveName: "Samurai Conduct",
     description: {
       pots: [
-        `Increases Elemental Skill DMG by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
+        `Increases {Elemental Skill DMG} by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
         but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
         even when the character is not on the field.`,
       ],
@@ -163,7 +163,7 @@ const purplePolearms: AppWeapon[] = [
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Shanty",
     description: {
-      pots: [`Increases Elemental Burst DMG by {0}% and Elemental Burst CRIT Rate by {1}%.`],
+      pots: [`Increases {Elemental Burst DMG} by {0}% and {Elemental Burst CRIT Rate} by {1}%.`],
       seeds: [12, 4.5],
     },
     autoBuffs: [
@@ -211,8 +211,10 @@ const purplePolearms: AppWeapon[] = [
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Magic Affinity",
     description: {
-      pots: [`After using an Elemental Skill, increases Normal and Charged Attack DMG by {0}% for 12s. Max 2 stacks.`],
-      seeds: [6],
+      pots: [
+        `After using an Elemental Skill, increases {Normal and Charged Attack DMG} by {0}% for 12s. Max {1} stacks.`,
+      ],
+      seeds: [6, { max: 2, increment: 0 }],
     },
     buffs: [
       {
@@ -260,8 +262,8 @@ const purplePolearms: AppWeapon[] = [
     passiveName: "Gladiator",
     description: {
       pots: [
-        `If there are at least 2 opponents nearby, ATK is increased by {0}% and DEF is increased by {0}%. If there are
-        fewer than 2 opponents nearby, ATK is increased by {1}%.`,
+        `If there are at least 2 opponents nearby, {ATK} is increased by {0}% and {DEF} is increased by {0}%. If there are
+        fewer than 2 opponents nearby, {ATK} is increased by {1}%.`,
       ],
       seeds: [12, 18],
     },

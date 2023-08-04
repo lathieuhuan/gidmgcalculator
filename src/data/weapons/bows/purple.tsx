@@ -66,7 +66,7 @@ const purpleBows: AppWeapon[] = [
         `The character's {Elemental Mastery} will increase by {0} within 6s after Charged Attacks hit opponents. Max {1}
         stacks. This effect can triggered once every 0.5s.`,
       ],
-      seeds: [30, { base: 2, seedType: "red" }],
+      seeds: [30, { max: 2, increment: 0 }],
     },
     buffs: [
       {
@@ -187,7 +187,7 @@ const purpleBows: AppWeapon[] = [
         `When the character is on the field for more than 4s, the aforementioned DMG buff decreases by 4% per second
         until it reaches 0%.`,
       ],
-      seeds: [1.5, { base: 15, increment: 5, seedType: "red" }],
+      seeds: [1.5, { max: 15 }],
     },
     buffs: [
       {
@@ -251,7 +251,7 @@ const purpleBows: AppWeapon[] = [
       seeds: [
         { base: 66, increment: 0 },
         { base: 10, increment: 0 },
-        { base: 2, seedType: "red" },
+        { max: 2, increment: 0 },
       ],
     },
     autoBuffs: [
@@ -442,7 +442,7 @@ const purpleBows: AppWeapon[] = [
         `Normal Attack and Charged Attack hits increase {ATK} by {0}% and {Normal ATK SPD} by {1}% for 6s. Max {2} stacks.
         Can only occur once every 0.3s.`,
       ],
-      seeds: [3, 0.9, { base: 4, seedType: "red" }],
+      seeds: [3, 0.9, { max: 4, increment: 0 }],
     },
     buffs: [
       {

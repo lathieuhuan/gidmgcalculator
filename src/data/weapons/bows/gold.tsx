@@ -15,11 +15,10 @@ const goldBows: AppWeapon[] = [
         `{ATK} increased by {0}%. For every party member with the same Elemental Type as the wielder (including the
       wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type from the
       wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, {ATK} will be increased by
-      {1}%/{2}%/{3}%. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
-      {4}%/{5}%/{6}%.`,
+      {0}%/{1}%/{2}%. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
+      {3}%/{4}%/{5}%.`,
       ],
       seeds: [
-        12,
         12,
         24,
         36,
@@ -148,10 +147,9 @@ const goldBows: AppWeapon[] = [
             max: 4,
           },
         ],
-        base: 7.5,
+        options: [7.5, 15, 22.5, 36],
         stacks: {
           type: "input",
-          maxStackBonus: 6,
         },
         targetAttribute: "atk_",
       },
@@ -192,10 +190,9 @@ const goldBows: AppWeapon[] = [
             max: 3,
           },
         ],
-        base: 9,
+        options: [9, 18, 30],
         stacks: {
           type: "input",
-          maxStackBonus: 3,
         },
         targetAttPatt: "NA.pct_",
       },
@@ -258,9 +255,9 @@ const goldBows: AppWeapon[] = [
       pots: [
         `Increases {Normal Attack and Charged Attack DMG} by {0}%.`,
         `After a Normal or Charged Attack is fired, {DMG} dealt increases by a further {1}% every 0.1 seconds the arrow
-        is in the air for up to 5 times.`,
+        is in the air for up to {2} times.`,
       ],
-      seeds: [9, 6],
+      seeds: [9, 6, { max: 2, increment: 0 }],
     },
     autoBuffs: [
       {

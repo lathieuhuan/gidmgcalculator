@@ -27,7 +27,7 @@ const otherSwords: AppWeapon[] = [
     passiveName: "Overloaded",
     description: {
       pots: [
-        `Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction, ATK is
+        `Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction, {ATK} is
         increased by {0}% for 12s.`,
       ],
       seeds: [15],
@@ -65,7 +65,7 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Vigorous",
-    description: { pots: [`When HP is above 90%, increases CRIT Rate by {0}%.`], seeds: [10.5] },
+    description: { pots: [`When HP is above 90%, increases {CRIT Rate} by {0}%.`], seeds: [10.5] },
     buffs: [
       {
         index: 0,
@@ -93,7 +93,7 @@ const otherSwords: AppWeapon[] = [
     subStat: { type: "er_", scale: "11.3%" },
     passiveName: "Determination",
     description: {
-      pots: [`Using an Elemental Burst grants a {0}% increase in ATK and Movement SPD for 15s.`],
+      pots: [`Using an Elemental Burst grants a {0}% increase in {ATK} and Movement SPD for 15s.`],
       seeds: [9],
     },
     buffs: [

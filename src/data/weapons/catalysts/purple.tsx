@@ -20,14 +20,14 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `When using an Elemental Skill, All Elemental DMG Bonus will be increased by {0}% for 12s`,
+        `When using an Elemental Skill, {All Elemental DMG Bonus} will be increased by {0}% for 12s`,
         `, and a Bond of Life worth 24% of Max HP will be granted. This effect can be triggered once every 10s.`,
-        `When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide {1}% All Elemental DMG
-        Bonus. Up to a maximum of {2}% All Elemental DMG can be gained this way. This effect lasts 12s.`,
+        `When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide {1}% {All Elemental DMG Bonus}.
+        Up to a maximum of {2}% All Elemental DMG can be gained this way. This effect lasts 12s.`,
         `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
         this value is obtained.`,
       ],
-      seeds: [6, 1.5, { base: 9, seedType: "dull" }],
+      seeds: [6, 1.5, { max: 9 }],
     },
     buffs: [
       {
@@ -61,7 +61,7 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "",
     description: {
       pots: [
-        `When not on the field for more than 6s, Max HP will be increased by {0}% and Elemental Mastery will be
+        `When not on the field for more than 6s, {Max HP} will be increased by {0}% and {Elemental Mastery} will be
         increased by {1}.`,
         `These effects will be canceled after the wielder has been on the field for 6s.`,
       ],
@@ -100,12 +100,15 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "Full Circle",
     description: {
       pots: [
-        `Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining {0} Elemental Mastery while
-        losing 5% ATK. For every 0.3s, 1 stack of Wax and Wane can be gained. Max 5 stacks.`,
+        `Obtain the "Wax and Wane" effect after an Elemental Reaction is triggered, gaining {0} {Elemental Mastery} while
+        losing 5% ATK. For every 0.3s, 1 stack of Wax and Wane can be gained. Max {1} stacks.`,
         `For every 6s that go by without an Elemental Reaction being triggered, 1 stack will be lost. This effect can
         be triggered even when the character is off-field.`,
       ],
-      seeds: [{ base: 21, increment: 3 }],
+      seeds: [
+        { base: 21, increment: 3 },
+        { max: 5, increment: 0 },
+      ],
     },
     buffs: [
       {
@@ -144,7 +147,7 @@ const purpleCatalysts: AppWeapon[] = [
     subStat: { type: "atk_", scale: "6%" },
     passiveName: "People of the Faltering Light",
     description: {
-      pots: ["Increases Energy Recharge by {0}% for 10s after using an Elemental Skill."],
+      pots: ["Increases {Energy Recharge} by {0}% for 10s after using an Elemental Skill."],
       seeds: [18],
     },
     buffs: [
@@ -168,7 +171,7 @@ const purpleCatalysts: AppWeapon[] = [
       pots: [
         `Hitting an opponent with a Normal Attack decreases the Stamina consumption of Sprint or Alternate sprint by
         {0}% for 5s.`,
-        `Using a Sprint or Alternate Sprint ability increases ATK by {1}% for 5s.`,
+        `Using a Sprint or Alternate Sprint ability increases {ATK} by {1}% for 5s.`,
       ],
       seeds: [{ base: 12, increment: 2, seedType: "dull" }, 15],
     },
@@ -193,7 +196,7 @@ const purpleCatalysts: AppWeapon[] = [
     description: {
       pots: [
         `After the character equipped with this weapon triggers an Electro elemental reaction, nearby party members of
-        an Elemental Type involved in the elemental reaction receive a {0}% Elemental DMG Bonus for their element,
+        an Elemental Type involved in the elemental reaction receive a {0}% {Elemental DMG Bonus for their element},
         lasting 6s. Elemental Bonuses gained in this way cannot be stacked.`,
       ],
       seeds: [7.5],
@@ -225,8 +228,8 @@ const purpleCatalysts: AppWeapon[] = [
     subStat: { type: "em", scale: "24" },
     passiveName: "Infusion Scroll",
     description: {
-      pots: [`Triggering an Elemental reaction grants a {0}% Elemental DMG Bonus for 10s. Max 2 stacks.`],
-      seeds: [6],
+      pots: [`Triggering an Elemental reaction grants a {0}% {Elemental DMG Bonus} for 10s. Max {1} stacks.`],
+      seeds: [6, { max: 2, increment: 0 }],
     },
     buffs: [
       {
@@ -257,8 +260,8 @@ const purpleCatalysts: AppWeapon[] = [
     description: {
       pots: [
         `When a character takes the field, they will gain a random theme song for 10s. This can only occur once every
-        30s. Recitative: ATK is increased by {0}%. Aria: increases all Elemental DMG by {1}%. Interlude: Elemental
-        Mastery is increased by {2}.`,
+        30s. Recitative: {ATK} is increased by {0}%. Aria: increases {All Elemental DMG} by {1}%. Interlude:
+        {Elemental Mastery} is increased by {2}.`,
       ],
       seeds: [45, 36, 180],
     },
@@ -313,8 +316,8 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "Solar Shine",
     description: {
       pots: [
-        `Normal Attack hits increase Elemental Skill and Elemental Burst DMG by {0}% for 6s.`,
-        `Likewise, Elemental Skill or Elemental Burst hits increase Normal Attack DMG by {0}% for 6s.`,
+        `Normal Attack hits increase {Elemental Skill and Elemental Burst DMG} by {0}% for 6s.`,
+        `Likewise, Elemental Skill or Elemental Burst hits increase {Normal Attack DMG} by {0}% for 6s.`,
       ],
       seeds: [15],
     },
@@ -344,10 +347,10 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "Gilding",
     description: {
       pots: [
-        `Using an Elemental Burst regenerates {0} Energy every 2s for 6s. All party members will regenerate {0} HP
+        `Using an Elemental Burst regenerates {0} Energy every 2s for 6s. All party members will regenerate {0}% HP
         every 2s for this duration.`,
       ],
-      seeds: [{ base: 3.5, increment: 0.5 }],
+      seeds: [{ base: 3.5, increment: 0.5, seedType: "dull" }],
     },
   },
   {
@@ -378,8 +381,8 @@ const purpleCatalysts: AppWeapon[] = [
     passiveName: "Dodoventure!",
     description: {
       pots: [
-        `Normal Attack hits on opponents increase Charged Attack DMG by {0}% for 6s.`,
-        `Charged Attack hits on opponents increase ATK by {1}% for 6s`,
+        `Normal Attack hits on opponents increase {Charged Attack DMG} by {0}% for 6s.`,
+        `Charged Attack hits on opponents increase {ATK} by {1}% for 6s`,
       ],
       seeds: [12, 6],
     },

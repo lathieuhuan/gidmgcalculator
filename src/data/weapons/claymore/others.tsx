@@ -23,7 +23,7 @@ const otherClaymores: AppWeapon[] = [
     passiveName: "Unbending",
     description: {
       pots: [
-        `When HP falls below {0}%, increases Charged Attack DMG by {1}%, and Charged Attacks become much harder to
+        `When HP falls below {0}%, increases {Charged Attack DMG} by {1}%, and Charged Attacks become much harder to
         interrupt.`,
       ],
       seeds: [
@@ -51,9 +51,12 @@ const otherClaymores: AppWeapon[] = [
     passiveName: "Courage",
     description: {
       pots: [
-        `On hit, Normal or Charged Attacks increase ATK by {0}% for 6s. Max 4 stacks. Can only occur once every 0.5s.`,
+        `On hit, Normal or Charged Attacks increase {ATK} by {0}% for 6s. Max {1} stacks. Can only occur once every 0.5s.`,
       ],
-      seeds: [{ base: 5, increment: 1 }],
+      seeds: [
+        { base: 5, increment: 1 },
+        { max: 4, increment: 0 },
+      ],
     },
     buffs: [
       {

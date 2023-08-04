@@ -23,8 +23,10 @@ const wrapText = (text: string | number, type: DescriptionSeedType = "dull", bol
   })}">${text}</span>`;
 };
 
+const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
+
 const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) => {
-  return pot.replace(/\{[a-zA-Z0-9 -]+\}%?/g, (match) => {
+  return pot.replace(/\{[a-zA-Z0-9 ',-]+\}%?/g, (match) => {
     let seed: string | DescriptionSeed;
     let suffix = "";
 
@@ -38,17 +40,19 @@ const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) =>
 
     switch (typeof seed) {
       case "number":
-        return wrapText(round(seed + (seed / 3) * refi, 3) + suffix, "green");
+        return wrapText(scaleRefi(seed, refi) + suffix, "green");
       case "string":
         return wrapText(seed, "green", false);
       case "object":
-        const { seedType = "green" } = seed;
-
         if ("base" in seed) {
-          const { base, increment = seedType === "red" ? 0 : base / 3 } = seed;
-          return wrapText(round(base + increment * refi, 3) + suffix, seedType);
+          const { seedType = "green" } = seed;
+          return wrapText(scaleRefi(seed.base, refi, seed.increment) + suffix, seedType);
         }
-        return wrapText(seed.options[refi - 1] + suffix, seedType);
+        if ("options" in seed) {
+          const { seedType = "green" } = seed;
+          return wrapText(seed.options[refi - 1] + suffix, seedType);
+        }
+        return wrapText(scaleRefi(seed.max, refi, seed.increment) + suffix, "red");
       default:
         return match;
     }

@@ -13,10 +13,10 @@ const goldClaymores: AppWeapon[] = [
     passiveName: "Desert Watch",
     description: {
       pots: [
-        `After an Elemental Skill hits an opponent, your ATK will be increased by {0}% for 8s.`,
-        `After you take DMG, your ATK will be increased by {0}% for 8s.`,
+        `After an Elemental Skill hits an opponent, your {ATK} will be increased by {0}% for 8s.`,
+        `After you take DMG, your {ATK} will be increased by {0}% for 8s.`,
         `The 2 aforementioned effects can be triggered even when the character is not on the field.`,
-        `When not protected by a shield, your character's Max HP will be increased by {1}%.`,
+        `When not protected by a shield, your character's {Max HP} will be increased by {1}%.`,
       ],
       seeds: [15, 24],
     },
@@ -52,7 +52,7 @@ const goldClaymores: AppWeapon[] = [
     subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "Gokadaiou Otogibanashi",
     description: {
-      pots: [`DEF is increased by {0}%. Normal and Charged Attack DMG is increased by {1}% of DEF.`],
+      pots: [`{DEF} is increased by {0}%. {Normal and Charged Attack DMG} is increased by {1}% of {DEF}.`],
       seeds: [21, 30],
     },
     autoBuffs: [
@@ -80,11 +80,11 @@ const goldClaymores: AppWeapon[] = [
     passiveName: "Rebel's Banner Hymn",
     description: {
       pots: [
-        `A part of the "Millennial Movement" that wanders amidst the winds. Increases ATK by {0}%, and when Normal or
+        `A part of the "Millennial Movement" that wanders amidst the winds. Increases {ATK} by {0}%, and when Normal or
         Charged Attacks hit opponents, the character gains a Sigil of Whispers. This effect can be triggered once every
         0.3s. When you possess four Sigils of Whispers, all of them will be consumed and all nearby party members will
         obtain the "Millennial Movement: Banner-Hymn" effect for 12s.`,
-        `"Millennial Movement: Banner-Hymn" increases Normal ATK SPD by {1}% and increases ATK by {2}%. Once this
+        `"Millennial Movement: Banner-Hymn" increases {Normal ATK SPD} by {1}% and increases {ATK} by {2}%. Once this
         effect is triggered, you will not gain Sigils of Whispers for 20s.`,
         `Of the many effects of the "Millennial Movement", buffs of the same type will not stack.`,
       ],
@@ -127,8 +127,8 @@ const goldClaymores: AppWeapon[] = [
     passiveName: "Wolfish Tracker",
     description: {
       pots: [
-        `Increases ATK by {0}%.`,
-        `On hit, attacks against opponents with less than 30% HP increase all party members' ATK by {1}% for 12s. Can
+        `Increases {ATK} by {0}%.`,
+        `On hit, attacks against opponents with less than 30% HP increase all party members' {ATK} by {1}% for 12s. Can
         only occur once every 30s.`,
       ],
       seeds: [15, 30],
@@ -159,7 +159,7 @@ const goldClaymores: AppWeapon[] = [
     passiveName: "Sky-ripping Dragon Spine",
     description: {
       pots: [
-        `Increases all DMG by {0}%. After using an Elemental Burst, Normal or Charged Attack, on hit, creates a vacuum
+        `Increases all {DMG} by {0}%. After using an Elemental Burst, Normal or Charged Attack, on hit, creates a vacuum
         blade that does {1}% of ATK as DMG to opponents along its path. Lasts for 20s or 8 vacuum blades.`,
       ],
       seeds: [6, { base: 60, seedType: "dull" }],
