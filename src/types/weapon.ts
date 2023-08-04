@@ -20,9 +20,9 @@ type AttributeStack = {
   minus?: number;
 };
 
+/** Only on Tulaytullah's Remembrance */
 type InputIndex = {
   value: number;
-  /** only on Tulaytullah's Remembrance */
   convertRate?: number;
 };
 
@@ -30,16 +30,19 @@ type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number | InputIndex[];
-  /** liyueSeries */
+  /**
+   * The index of the input which when activated (equal to 1), buffValue is doubled.
+   * Only on Liyue Series.
+   */
   doubledAtInput?: number;
 };
 
-/** Watatsumi series */
+/** Only on Watatsumi series */
 type EnergyStack = {
   type: "energy";
 };
 
-/** Lythic series */
+/** Only on Lythic series */
 type NationStack = {
   type: "nation";
 };
@@ -51,28 +54,29 @@ type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 export type AutoBuff = {
   // charCode?: number; // only on Predator for Aloy
   base?: number;
-  /** need "stacks", number of stacks - 1 = index of options, each option scale off refi, increment is 1/3 */
+  /** Need "stacks", number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
   options?: number[];
-  /** only on Fading Twilight, also scale off refi, increment is 1/3 */
+  /** Only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
-  /** fixed type has no increment */
+  /** Fixed type has no increment */
   increment?: number;
   stacks?: StackConfig | StackConfig[];
   targetAttribute?: TargetAttribute;
   targetAttPatt?: AttackPatternPath | AttackPatternPath[];
   max?:
     | number
-    // only on Jadefall's Splendor
+    // Only on Jadefall's Splendor
     | {
         base: number;
         increment: number;
       };
   /**
-   * If number, it's compareValue, index default to 0
+   * For this buff to available, the input at the index must equal to compareValue.
+   * If number, it's compareValue, index default to 0.
    */
   checkInput?:
     | number
-    // only on Ballad of the Fjords
+    // Only on Ballad of the Fjords
     | {
         index?: number;
         /** No index when there's source */
@@ -87,11 +91,11 @@ export type DescriptionSeedType = "dull" | "green" | "red";
 
 export type DescriptionSeed =
   | number
-  // default increment = base / 3, default seedType is "green"
+  // Default increment = base / 3, default seedType is "green"
   | { base: number; increment?: number; seedType?: Exclude<DescriptionSeedType, "red"> }
-  // default increment = base / 3, seedType is "red"
+  // Default increment = base / 3, seedType is "red"
   | { max: number; increment?: number }
-  // options for each refi, default seedType is "green"
+  // Options for each refi, default seedType is "green"
   | { options: number[]; seedType?: DescriptionSeedType };
 
 /**
@@ -121,7 +125,12 @@ export type WeaponBuff = AutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
-
+  /**
+   * If number, it's the index of weapon's description's pots.
+   * If string, it can use weapon's description's seeds.
+   * Default to 0.
+   */
   description?: number | string;
+  /** buffBonus use outside "base", "stacks" as default */
   buffBonuses?: AutoBuff[];
 };

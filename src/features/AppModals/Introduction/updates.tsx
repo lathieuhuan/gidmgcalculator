@@ -2,6 +2,15 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "August 4th, 2023 (v3.3.0)",
+    content: [
+      <>
+        Update <Lightgold>Lyney</Lightgold>.
+      </>,
+      <>Optimize system.</>,
+    ],
+  },
+  {
     date: "July 17th, 2023",
     content: [
       <>

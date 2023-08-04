@@ -2,7 +2,7 @@ import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Sr
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { Green, Rose } from "@Src/pure-components";
-import { applyPercent, countVision, round } from "@Src/utils";
+import { countVision, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
@@ -99,7 +99,7 @@ const Lyney: DefaultAppCharacter = {
       name: "Perilous Performance",
       image: "",
       description:
-        "If Lyney consumes HP via firing a Prop Arrow, the Grin-Malkin Hat summoned will deal 80% more ATK as DMG.",
+        "If Lyney consumes HP when firing off a Prop Arrow, the Grin-Malkin hat summoned by the arrow will, upon hitting an opponent, restore 3 Energy to Lyney and increase DMG dealt by 80% of his ATK.",
     },
     {
       name: "Conclusive Ovation",
@@ -181,20 +181,18 @@ const Lyney: DefaultAppCharacter = {
       desc: () => (
         <>
           When dealing DMG to opponents affected by Pyro, Lyney will receive the following buffs:
-          <br />• <Green>Base ATK</Green> increased by <Green b>60%</Green>.
-          <br />• Each Pyro party member other than Lyney will cause this effect to receive a further{" "}
-          <Green b>20%</Green> bonus.
+          <br />• Increases the <Green>DMG</Green> dealt by <Green b>60%</Green>.
+          <br />• Each Pyro party member other than Lyney will cause the DMG dealt to increase by an additional{" "}
+          <Green b>20%</Green>.
           <br />
-          Lyney can gain a total of <Rose>100%</Rose> increased DMG to opponents affected by Pyro in this way.
+          Lyney can deal up to <Rose>100%</Rose> increased DMG to opponents affected by Pyro in this way.
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, partyData, desc, tracker }) => {
+      applyBuff: ({ attPattBonus, partyData, desc, tracker }) => {
         const { pyro = 0 } = countVision(partyData);
-        const percent = Math.min(60 + pyro * 20, 100);
-        const buffValue = applyPercent(totalAttr.base_atk, percent);
-        const finalDesc = desc + ` / ${percent}% of ${totalAttr.base_atk} Base ATK`;
-        applyModifier(finalDesc, totalAttr, "base_atk", buffValue, tracker);
+        const buffValue = Math.min(60 + pyro * 20, 100);
+        applyModifier(desc, attPattBonus, "all.pct_", buffValue, tracker);
       },
     },
     {
