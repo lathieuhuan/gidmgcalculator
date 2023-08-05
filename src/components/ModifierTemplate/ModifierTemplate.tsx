@@ -6,7 +6,7 @@ import { genNumberSequenceOptions } from "@Src/utils";
 
 // Component
 import { Input, Green } from "@Src/pure-components";
-import { WeaponCard } from "./WeaponCard";
+import { WeaponCard } from "../WeaponCard";
 
 export type ModSelectOption = {
   label: string | number;

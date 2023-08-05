@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { checkCons } from "../utils";
@@ -45,6 +44,7 @@ const AnemoMC: DefaultAppCharacter = {
       image: "9/98/Talent_Gust_Surge",
     },
   },
+
   passiveTalents: [
     { name: "Slitting Wind", image: "2/22/Talent_Slitting_Wind" },
     { name: "Second Wind", image: "5/5e/Talent_Second_Wind" },
@@ -60,11 +60,7 @@ const AnemoMC: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Increases <Green>Energy Recharge</Green> by <Green b>16%</Green>.
-        </>
-      ),
+      description: `Increases {Energy Recharge}#[Gr] by {16%}#[B,Gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "er_", 16),
     },
@@ -73,12 +69,8 @@ const AnemoMC: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Gust Surge [EB] decreases targets' <Green>Anemo RES</Green> by <Green b>20%</Green>. Also decreases{" "}
-          <Green>RES</Green> towards the <Green>absorbed Element</Green> (if any) by <Green b>20%</Green>.
-        </>
-      ),
+      description: `Gust Surge [EB] decreases targets' {Anemo RES}#[Gr] by {20%}#[B,Gr]. Also decreases {RES}#[Gr] towards the
+      {absorbed Element}#[Gr] (if any) by {20%}#[B,Gr].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

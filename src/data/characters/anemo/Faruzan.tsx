@@ -100,23 +100,17 @@ const Faruzan: DefaultAppCharacter = {
     { name: "Wonderland of Rumination", image: "f/f7/Constellation_Wonderland_of_Rumination" },
     { name: "The Wondrous Path of Truth", image: "9/9a/Constellation_The_Wondrous_Path_of_Truth" },
   ],
+
+  seeds: [],
+
   buffs: [
     {
       index: 0,
       src: "Prayerful Wind's Benefit",
       affect: EModAffect.PARTY,
-      desc: (args) => {
-        return (
-          <>
-            Increases <Green>Anemo DMG Bonus</Green> to all nearby characters by{" "}
-            <Green b>{getWindGiftBuffValue(args)}%</Green>.
-            <br />• At <Lightgold>A4</Lightgold>, increases <Anemo>Anemo DMG</Anemo> based on <Green b>32%</Green> of
-            Faruzan's <Green>Base ATK</Green>.
-            <br />• At <Lightgold>C6</Lightgold>, increases <Anemo>Anemo</Anemo> <Green>CRIT DMG</Green> by{" "}
-            <Green b>40%</Green>.
-          </>
-        );
-      },
+      description: `Increases {Anemo DMG Bonus}#[Gr] to all nearby characters by {getWindGiftBuffValue(args)}%}#[B,Gr].
+      <br />• At {A4}#[G], increases {Anemo DMG}#[anemo] based on {32%}#[B,Gr] of Faruzan's {Base ATK}#[Gr].
+      <br />• At {C6}#[G], increases {Anemo CRIT DMG}#[Gr] by {40%}#[B,Gr].`,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Ascension 4", type: "check", for: "teammate" },
@@ -147,11 +141,7 @@ const Faruzan: DefaultAppCharacter = {
     {
       index: 0,
       src: "Perfidious Wind's Bale",
-      desc: () => (
-        <>
-          Decreases opponents' <Green>Anemo RES</Green> by <Green b>30%</Green>.
-        </>
-      ),
+      description: `Decreases opponents' {Anemo RES}#[Gr] by {30%}#[B,Gr].`,
       applyDebuff: makeModApplier("resistReduct", "anemo", 30),
     },
   ],

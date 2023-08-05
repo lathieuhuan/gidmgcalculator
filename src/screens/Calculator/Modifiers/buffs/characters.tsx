@@ -17,7 +17,7 @@ import { appData } from "@Data/index";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { decoCharacterDescription, ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -32,14 +32,15 @@ export function SelfBuffs() {
   const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, isGranted, desc }, index) => {
+  innateBuffs.forEach(({ src, isGranted, description }, index) => {
     if (isGranted(char)) {
       content.push(
         <ModifierTemplate
           key={`innate-${index}`}
           mutable={false}
           heading={src}
-          desc={desc({ totalAttr, charData, partyData })}
+          desc={decoCharacterDescription(description)}
+          // desc={desc({ totalAttr, charData, partyData })}
         />
       );
     }
@@ -60,15 +61,16 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrlIndex}`}
           heading={buff.src}
-          desc={buff.desc({
-            toSelf: true,
-            totalAttr,
-            char,
-            charBuffCtrls: selfBuffCtrls,
-            inputs,
-            charData,
-            partyData,
-          })}
+          desc={decoCharacterDescription(buff.description)}
+          // desc={buff.desc({
+          //   toSelf: true,
+          //   totalAttr,
+          //   char,
+          //   charBuffCtrls: selfBuffCtrls,
+          //   inputs,
+          //   charData,
+          //   partyData,
+          // })}
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
           inputs={inputs}
@@ -147,15 +149,16 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
-        desc={buff.desc({
-          toSelf: false,
-          char,
-          charData,
-          partyData,
-          inputs: inputs || [],
-          charBuffCtrls: teammate.buffCtrls,
-          totalAttr,
-        })}
+        desc={decoCharacterDescription(buff.description)}
+        // desc={buff.desc({
+        //   toSelf: false,
+        //   char,
+        //   charData,
+        //   partyData,
+        //   inputs: inputs || [],
+        //   charBuffCtrls: teammate.buffCtrls,
+        //   totalAttr,
+        // })}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onChangeText={(value, i) => {

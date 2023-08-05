@@ -64,6 +64,10 @@ export type AppCharacter = {
     EB: Ability;
     altSprint?: Ability;
   };
+
+  pots?: string[];
+  seeds?: number[];
+
   passiveTalents: Ability[];
   constellation: Ability[];
   innateBuffs?: InnateBuff[];
@@ -126,7 +130,10 @@ export type CalcItem = {
 export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
-  desc: (args: { charData: AppCharacter; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
+
+  // desc: (args: { charData: AppCharacter; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
+  description: number | string;
+
   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
@@ -156,7 +163,10 @@ export type AbilityBuff = AbilityModifier & {
     range?: NormalAttack[];
     disabledNAs?: boolean;
   };
-  desc: (args: BuffDescriptionArgs) => ReactNode;
+
+  // desc: (args: BuffDescriptionArgs) => ReactNode;
+  description: number | string;
+
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
@@ -172,7 +182,10 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-  desc: (args: { fromSelf: boolean; char: CharInfo; inputs: ModifierInput[]; partyData: PartyData }) => ReactNode;
+
+  // desc: (args: { fromSelf: boolean; char: CharInfo; inputs: ModifierInput[]; partyData: PartyData }) => ReactNode;
+  description: number | string;
+
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
     attPattBonus: AttackPatternBonus;
