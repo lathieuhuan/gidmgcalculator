@@ -2,6 +2,15 @@ import { Lightgold, Red } from "@Src/pure-components";
 
 export const UPDATES = [
   {
+    date: "August 5th, 2023",
+    content: [
+      <>
+        Fixed <Lightgold>Alhaitham</Lightgold>'s A4 and <Lightgold>Dendro Traveler</Lightgold>'s A4 did not work
+        properly.
+      </>,
+    ],
+  },
+  {
     date: "August 4th, 2023 (v3.3.0)",
     content: [
       <>
@@ -91,27 +100,5 @@ export const UPDATES = [
   {
     date: "June 22th, 2023",
     content: ["Fixed a bug where removing a teammate's artifact with active debuff, the debuff was not removed."],
-  },
-  {
-    date: "May 25th, 2023",
-    content: [
-      <>
-        Added <Lightgold>Ibis Piercer</Lightgold>.
-      </>,
-    ],
-  },
-  {
-    date: "May 16th, 2023",
-    content: [
-      <>
-        Corrected <Lightgold>King's Squire</Lightgold> substat from Energy Recharge to ATK%. Thank you{" "}
-        <Red>Victor H</Red>!
-      </>,
-      <>
-        Added additional attacks or shield for: <Lightgold>Razor</Lightgold> C6, <Lightgold>Chongyun</Lightgold> C1,{" "}
-        <Lightgold>Xiangling</Lightgold> C2, <Lightgold>Noelle</Lightgold> A1 & C4, <Lightgold>Wanderer</Lightgold> C6.
-        Thank you <Red>Meiflower</Red>!
-      </>,
-    ],
   },
 ];

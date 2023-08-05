@@ -1,3 +1,9 @@
+
+May 25th, 2023
+- Added Ibis Piercer.
+May 16th, 2023
+- Corrected King's Squire substat from Energy Recharge to ATK%. (Victor H)
+- Added additional attacks or shield for: Razor C6, Chongyun C1, Xiangling C2, Noelle A1 & C4, Wanderer C6. (Meiflower)
 March 19th, 2023
 - Added limits to the amount of items that can be uploaded from a file.
 - Enabled Download function. Removed options for downloading & uploading data from local storage.
