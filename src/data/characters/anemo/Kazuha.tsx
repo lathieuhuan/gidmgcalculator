@@ -109,20 +109,9 @@ const Kazuha: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      desc: ({ toSelf, totalAttr, inputs }) => {
-        const elmtIndex = inputs[0] || 0;
-        return (
-          <>
-            Upon triggering a Swirl, Kazuha will grant all party members a <Green b>0.04%</Green>{" "}
-            <Green>Elemental DMG Bonus</Green> to the element absorbed by Swirl for every point of{" "}
-            <Green>Elemental Mastery</Green> he has for 8s.{" "}
-            <Red className="capitalize">
-              {VISION_TYPES[elmtIndex]} DMG Bonus: {ascs4BuffValue(toSelf, totalAttr, inputs)}
-              %.
-            </Red>
-          </>
-        );
-      },
+      description: `Upon triggering a Swirl, Kazuha will grant all party members a {0.04%}#[B,Gr]
+      {Elemental DMG Bonus}#[Gr] to the element absorbed by Swirl for every point of {Elemental Mastery}#[Gr] he has
+      for 8s.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         { label: "Element Swirled", type: "anemoable" },
@@ -138,12 +127,8 @@ const Kazuha: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          Kazuha Slash's [EB] field increases the <Green>Elemental Mastery</Green> of him and characters within the
-          field by <Green b>200</Green>.
-        </>
-      ),
+      description: `Kazuha Slash's [EB] field increases the {Elemental Mastery}#[Gr] of him and characters within the
+      field by {200}#[B,Gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "em", 200),
     },
@@ -151,14 +136,9 @@ const Kazuha: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: ({ totalAttr }) => (
-        <>
-          After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an <Anemo>Anemo Infusion</Anemo> for 5s. Each
-          point of <Green>Elemental Mastery</Green> will increase Kazuha's{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> by <Green b>0.2%</Green>.{" "}
-          <Red>DMG bonus: {Math.round(totalAttr.em * 0.2)}%.</Red>
-        </>
-      ),
+      description: `After using Chihayaburu [ES] or Kazuha Slash [EB], Kazuha gains an {Anemo Infusion}#[anemo] for 5s.
+      Each point of {Elemental Mastery}#[Gr] will increase Kazuha's {Normal, Charged, and Plunging Attack DMG}#[Gr] by
+      {0.2%}#[B,Gr].`,
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const buffValue = Math.round(totalAttr.em * 0.2);

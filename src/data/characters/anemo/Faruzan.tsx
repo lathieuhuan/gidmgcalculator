@@ -1,7 +1,6 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Anemo, Green, Lightgold } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
@@ -100,15 +99,12 @@ const Faruzan: DefaultAppCharacter = {
     { name: "Wonderland of Rumination", image: "f/f7/Constellation_Wonderland_of_Rumination" },
     { name: "The Wondrous Path of Truth", image: "9/9a/Constellation_The_Wondrous_Path_of_Truth" },
   ],
-
-  seeds: [],
-
   buffs: [
     {
       index: 0,
       src: "Prayerful Wind's Benefit",
       affect: EModAffect.PARTY,
-      description: `Increases {Anemo DMG Bonus}#[Gr] to all nearby characters by {getWindGiftBuffValue(args)}%}#[B,Gr].
+      description: `Increases {Anemo DMG Bonus}#[Gr] to all nearby characters.
       <br />• At {A4}#[G], increases {Anemo DMG}#[anemo] based on {32%}#[B,Gr] of Faruzan's {Base ATK}#[Gr].
       <br />• At {C6}#[G], increases {Anemo CRIT DMG}#[Gr] by {40%}#[B,Gr].`,
       inputConfigs: [

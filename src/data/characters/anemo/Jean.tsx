@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -106,12 +105,8 @@ const Jean: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and increases the{" "}
-          <Green>DMG</Green> dealt by <Green b>40%</Green>.
-        </>
-      ),
+      description: `Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and increases the
+      {DMG}#[Gr] dealt by {40%}#[B,Gr].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "ES.pct_", 40),
     },
@@ -119,12 +114,8 @@ const Jean: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When Jean picks up an Elemental Orb/Particle, all party members have their <Green>Movement SPD</Green> and{" "}
-          <Green>ATK SPD</Green> increased by <Green b>15%</Green> for 15s.
-        </>
-      ),
+      description: `When Jean picks up an Elemental Orb/Particle, all party members have their Movement SPD and
+      {ATK SPD}#[Gr] increased by {15%}#[B,Gr] for 15s.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
@@ -133,12 +124,8 @@ const Jean: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      desc: () => (
-        <>
-          Within the field of Dandelion Breeze [EB], all opponents have their <Green>Anemo RES</Green> decreased by{" "}
-          <Green b>40%</Green>.
-        </>
-      ),
+      description: `Within the field of Dandelion Breeze [EB], all opponents have their {Anemo RES}#[Gr] decreased by
+      {40%}#[B,Gr].`,
       isGranted: checkCons[4],
       applyDebuff: makeModApplier("resistReduct", "anemo", 40),
     },

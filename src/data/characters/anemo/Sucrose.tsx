@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Red } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -86,26 +85,17 @@ const Sucrose: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.TEAMMATE,
-      desc: () => (
-        <>
-          When Sucrose triggers a Swirl, all characters in the party with the matching element (excluding Sucrose) have
-          their <Green>Elemental Mastery</Green> increased by <Green b>50</Green> for 8s.
-        </>
-      ),
+      description: `When Sucrose triggers a Swirl, all characters in the party with the matching element (excluding Sucrose) have
+      their {Elemental Mastery}#[Gr] increased by {50}#[B,Gr] for 8s.`,
       applyBuff: makeModApplier("totalAttr", "em", 50),
     },
     {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
-      desc: ({ inputs }) => (
-        <>
-          When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type II [EB] hits an
-          opponent, increases all party members' (excluding Sucrose) <Green>Elemental Mastery</Green> based on{" "}
-          <Green b>20%</Green> of Sucrose's <Green>Elemental Mastery</Green> for 8s.{" "}
-          <Red>Elemental Mastery bonus: {Math.round((inputs[0] || 0) * 0.2)}.</Red>
-        </>
-      ),
+      description: `When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type II [EB]
+      hits an opponent, increases all party members' (excluding Sucrose) {Elemental Mastery}#[Gr] based on {20%}#[B,Gr]
+      of Sucrose's {Elemental Mastery}#[Gr] for 8s.`,
       inputConfigs: [
         {
           label: "Elemental Mastery",
@@ -121,13 +111,9 @@ const Sucrose: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all party members gain a{" "}
-          <Green b>20%</Green> <Green>Elemental DMG Bonus</Green> for the corresponding <Green>absorbed element</Green>{" "}
-          during its duration.
-        </>
-      ),
+      description: `If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all party
+      members gain a {20%}#[B,Gr] {Elemental DMG Bonus}#[Gr] for the corresponding {absorbed element}#[Gr] during its
+      duration.`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

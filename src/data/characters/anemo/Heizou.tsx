@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -96,23 +95,15 @@ const Heizou: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
-      desc: () => (
-        <>
-          When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding Heizou){" "}
-          <Green>Elemental Mastery</Green> by <Green b>80</Green> for 10s.
-        </>
-      ),
+      description: `When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding Heizou)
+      {Elemental Mastery}#[Gr] by {80}#[B,Gr] for 10s.`,
       applyBuff: makeModApplier("totalAttr", "em", 80),
     },
     {
       index: 1,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          For 5s after Heizou takes the field, his <Green>Normal Attack SPD</Green> is increased by <Green>15%</Green>.
-        </>
-      ),
+      description: `For 5s after Heizou takes the field, his {Normal Attack SPD}#[Gr] is increased by {15%}#[B,Gr].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
@@ -120,13 +111,8 @@ const Heizou: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Each Declension stack increases Heartstopper Strike <Green>[ES] CRIT Rate</Green> by <Green b>4%</Green>. When
-          Heizou possesses Conviction, Heartstoppper Strike's <Green>[ES] CRIT DMG</Green> is increased by{" "}
-          <Green b>32%</Green>.
-        </>
-      ),
+      description: `Each Declension stack increases Heartstopper Strike {[ES] CRIT Rate}#[Gr] by {4%}#[B,Gr]. When
+      Heizou possesses Conviction, Heartstoppper Strike's {[ES] CRIT DMG}#[Gr] is increased by {32%}#[B,Gr]`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

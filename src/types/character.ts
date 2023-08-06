@@ -65,8 +65,10 @@ export type AppCharacter = {
     altSprint?: Ability;
   };
 
-  pots?: string[];
-  seeds?: number[];
+  description?: {
+    pots?: string[];
+    seeds?: number[];
+  };
 
   passiveTalents: Ability[];
   constellation: Ability[];

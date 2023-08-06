@@ -1,6 +1,6 @@
 export const decoCharacterDescription = (pot: string | number) => {
   if (typeof pot === "string") {
-    return pot.replace(/\{[a-zA-Z0-9% ]+\}#\[[a-zA-Z0-9,]+\]/g, (match) => {
+    return pot.replace(/\{[a-zA-Z0-9,\.%\[\] ]+\}#\[[a-zA-Z0-9,]+\]/g, (match) => {
       let [content, colorCode = ""] = match.split("#");
       let classNames = "";
 
@@ -11,6 +11,7 @@ export const decoCharacterDescription = (pot: string | number) => {
           const colorCodeToCls: Record<string, string> = {
             B: "font-bold",
             Gr: "text-green",
+            R: "text-rose-500",
             G: "text-lightgold",
             anemo: "text-anemo",
           };

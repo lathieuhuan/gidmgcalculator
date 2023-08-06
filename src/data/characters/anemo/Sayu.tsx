@@ -123,15 +123,9 @@ const Sayu: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Each point of Sayu's <Green>Elemental Mastery</Green> will:
-          <br />• Increases <Green>Daruma DMG</Green> by <Green b>0.2%</Green> <Green>ATK</Green>, up to{" "}
-          <Rose>400%</Rose> ATK.
-          <br />• Increases <Green>HP restored</Green> by Daruma by <Green b>3</Green>, up to <Rose>6,000</Rose>{" "}
-          additional HP.
-        </>
-      ),
+      description: `Each point of Sayu's {Elemental Mastery}#[Gr] will:
+      <br />• Increases {Daruma DMG}#[Gr] by {0.2%}#[B,Gr] {ATK}#[Gr], up to {400%}#[R].
+      <br />• Increases {HP restored}#[Gr] by Daruma by {3}#[B,Gr], up to {6,000}#[R] additional HP.`,
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         const buffValue = Math.min(totalAttr.em, 2000);
@@ -147,14 +141,10 @@ const Sayu: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Yoohoo Art: Fuuin Dash [ES] gains the following effects:
-          <br />• <Green>Press Kick DMG</Green> increased by <Green b>3.3%</Green>.
-          <br />• <Green>Hold Kick DMG</Green> increased by <Green b>3.3%</Green> for every 0.5s Sayu in Fuufuu
-          Windwheel state, up to <Rose>66%</Rose>.
-        </>
-      ),
+      description: `Yoohoo Art: Fuuin Dash [ES] gains the following effects:
+      <br />• {Press Kick DMG}#[Gr] increased by {3.3%}#[B,Gr].
+      <br />• {Hold Kick DMG}#[Gr] increased by {3.3%}#[B,Gr] for every 0.5s Sayu in Fuufuu Windwheel state, up to
+      {66%}#[R].`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
