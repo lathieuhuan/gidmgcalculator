@@ -67,7 +67,7 @@ const DendroMC: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
+      applyFinalBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
         const buffValue1 = totalAttr.em * 0.15;
         const buffValue2 = totalAttr.em * 0.1;
         applyModifier(desc, attPattBonus, ["ES.pct_", "EB.pct_"], [buffValue1, buffValue2], tracker);

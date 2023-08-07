@@ -21,16 +21,10 @@ const otherClaymores: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
     passiveName: "Unbending",
-    description: {
-      pots: [
-        `When HP falls below {0}%, increases {Charged Attack DMG} by {1}%, and Charged Attacks become much harder to
-        interrupt.`,
-      ],
-      seeds: [
-        { base: 65, increment: 5, seedType: "dull" },
-        { base: 25, increment: 5 },
-      ],
-    },
+    descriptions: [
+      `When HP falls below {65^5}%, increases {Charged Attack DMG}#[k] by {25^5%}#[v], and Charged Attacks become much
+      harder to interrupt.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -49,15 +43,10 @@ const otherClaymores: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "phys", scale: "9.6%a" },
     passiveName: "Courage",
-    description: {
-      pots: [
-        `On hit, Normal or Charged Attacks increase {ATK} by {0}% for 6s. Max {1} stacks. Can only occur once every 0.5s.`,
-      ],
-      seeds: [
-        { base: 5, increment: 1 },
-        { max: 4, increment: 0 },
-      ],
-    },
+    descriptions: [
+      `On hit, Normal or Charged Attacks increase {ATK}#[k] by {5^1%}#[v] for 6s. Max {4}#[m] stacks. Can only occur
+      once every 0.5s.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -85,13 +74,10 @@ const otherClaymores: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "atk_", scale: "7.7%" },
     passiveName: "Blunt Conclusion",
-    description: {
-      pots: [
-        `After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional {0}% ATK DMG in a small
-        area. Effect lasts 15s. DMG can only occur once every 3s.`,
-      ],
-      seeds: [{ base: 45, seedType: "dull" }],
-    },
+    descriptions: [
+      `After using an Elemental Skill, Normal or Charged Attacks, on hit, deal an additional {45^}% ATK DMG in a small
+      area. Effect lasts 15s. DMG can only occur once every 3s.`,
+    ],
   },
   {
     code: 52,

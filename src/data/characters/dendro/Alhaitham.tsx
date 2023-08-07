@@ -119,7 +119,7 @@ const Alhaitham: DefaultAppCharacter = {
         </>
       ),
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, attPattBonus, calcItemBuffs, desc, tracker }) => {
         const buffValue = Math.min(totalAttr.em * 0.1, 100);
         applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
         calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "pct_", buffValue));

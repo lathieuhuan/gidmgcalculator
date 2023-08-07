@@ -21,12 +21,9 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "cDmg_", scale: "6.8%" },
     passiveName: "Archer's Message",
-    description: {
-      pots: [
-        "Charged Attack hits on weak spots deal an additional {0}% ATK DMG as CRIT DMG. Can only occur once every 10s.",
-      ],
-      seeds: [{ base: 75, seedType: "dull" }],
-    },
+    descriptions: [
+      "Charged Attack hits on weak spots deal an additional {75^}% ATK DMG as CRIT DMG. Can only occur once every 10s.",
+    ],
   },
   {
     code: 2,
@@ -45,10 +42,7 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Precise",
-    description: {
-      pots: ["Increases {DMG} against weak spots by {0}%."],
-      seeds: [18],
-    },
+    descriptions: ["Increases {DMG}#[k] against weak spots by {18^%}#[v]."],
     buffs: [
       {
         index: 0,
@@ -66,13 +60,10 @@ const otherBows: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "cRate_", scale: "6.8%" },
     passiveName: "Slingshot",
-    description: {
-      pots: [
-        `If a {Normal or Charged Attack} hits a target within 0.3s of being fired, increases {DMG} by {0}%. Otherwise,
-        decreases DMG by 10%.`,
-      ],
-      seeds: [{ base: 30, increment: 6 }],
-    },
+    descriptions: [
+      `If a {Normal or Charged Attack}#[k] hits a target within 0.3s of being fired, increases {DMG}#[k] by {30^6%}#[v]. Otherwise,
+      decreases DMG by 10%.`,
+    ],
     autoBuffs: [
       {
         base: -10,

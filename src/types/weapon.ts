@@ -87,17 +87,6 @@ export type AutoBuff = {
       };
 };
 
-export type DescriptionSeedType = "dull" | "green" | "red";
-
-export type DescriptionSeed =
-  | number
-  // Default increment = base / 3, default seedType is "green"
-  | { base: number; increment?: number; seedType?: Exclude<DescriptionSeedType, "red"> }
-  // Default increment = base / 3, seedType is "red"
-  | { max: number; increment?: number }
-  // Options for each refi, default seedType is "green"
-  | { options: number[]; seedType?: DescriptionSeedType };
-
 /**
  * Weapon in app data
  */
@@ -113,10 +102,7 @@ export type AppWeapon = {
     scale: string;
   };
   passiveName?: string;
-  description?: {
-    pots: string[];
-    seeds: DescriptionSeed[];
-  };
+  descriptions?: string[];
   autoBuffs?: AutoBuff[];
   buffs?: WeaponBuff[];
 };

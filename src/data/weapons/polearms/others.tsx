@@ -11,10 +11,7 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "atk_", scale: "5.1%" },
     passiveName: "Heavy",
-    description: {
-      pots: [`Normal Attacks deal an additional {0}% DMG. Can only occur once every 10s.`],
-      seeds: [{ base: 120, seedType: "dull" }],
-    },
+    descriptions: [`Normal Attacks deal an additional {120^}% DMG. Can only occur once every 10s.`],
   },
   {
     code: 75,
@@ -24,7 +21,7 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cRate_", scale: "5.1%" },
     passiveName: "Sharp",
-    description: { pots: [`Increases {Normal Attack DMG} by {0}%.`], seeds: [18] },
+    descriptions: [`Increases {Normal Attack DMG}#[k] by {18^%}#[v].`],
     autoBuffs: [
       {
         base: 18,
@@ -40,7 +37,7 @@ const otherPolearms: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "hp_", scale: "10.2%" },
     passiveName: "Bane of the Soft",
-    description: { pots: [`Increases {DMG} against slimes by {0}%.`], seeds: [30] },
+    descriptions: [`Increases {DMG}#[k] against slimes by {30^%}#[v].`],
     buffs: [
       {
         index: 0,

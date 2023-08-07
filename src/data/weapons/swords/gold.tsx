@@ -12,15 +12,12 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "Whitemoon Bristle",
-    description: {
-      pots: [
-        `{CRIT Rate} is increased by {0}%.`,
-        `When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained, increasing
-        {Normal Attack and Elemental Skill DMG} by {1}% of {Elemental Mastery}.`,
-        `This effect will disappear after {2} DMG instances or 12s. You can obtain Foliar Incision once every 12s.`,
-      ],
-      seeds: [3, 90, { max: 28, increment: 0 }],
-    },
+    descriptions: [
+      `{CRIT Rate}#[k] is increased by {3^%}#[v].`,
+      `When Normal Attacks deal Elemental DMG, the Foliar Incision effect will be obtained, increasing
+      {Normal Attack and Elemental Skill DMG}#[k] by {90^%}#[v] of {Elemental Mastery}#[k].`,
+      `This effect will disappear after {28}#[m] DMG instances or 12s. You can obtain Foliar Incision once every 12s.`,
+    ],
     autoBuffs: [
       {
         base: 3,
@@ -49,17 +46,14 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "hp_", scale: "14.4%" },
     passiveName: "Sunken Song of the Sands",
-    description: {
-      pots: [
-        `{HP} increased by {0}%.`,
-        `When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This effect increases the
-        equipping character's {Elemental Mastery} by {1}% of their {Max HP}. This effect can trigger once every 0.3s. Max {2}
-        stacks.`,
-        `When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed, the {Elemental Mastery}
-        of all nearby party members will be increased by {3}% of the equipping character's {Max HP} for 20s.`,
-      ],
-      seeds: [15, 0.09, { max: 3, increment: 0 }, 0.15],
-    },
+    descriptions: [
+      `{HP}#[k] increased by {15^%}#[v].`,
+      `When an Elemental Skill hits opponents, you gain the Grand Hymn effect for 20s. This effect increases the
+      equipping character's {Elemental Mastery}#[k] by {0.09^%}#[v] of their {Max HP}#[k]. This effect can trigger once
+      every 0.3s. Max {3}#[m] stacks.`,
+      `When Grand Hymn effect gains 3 stacks, or when the third stack's duration is refreshed, the {Elemental Mastery}#[k]
+      of all nearby party members will be increased by {0.15^%}#[v] of the equipping character's {Max HP}#[k] for 20s.`,
+    ],
     autoBuffs: [
       {
         base: 15,
@@ -117,16 +111,13 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Honed Flow",
-    description: {
-      pots: [
-        `Obtain {0}% {All Elemental DMG Bonus}. When other nearby party members use Elemental Skills, the character
-        equipping this weapon will gain 1 Wavespike stack. Max {1} stacks. This effect can be triggered once every 0.3s.
-        When the character equipping this weapon uses an Elemental Skill, all stacks of Wavespike will be consumed to
-        gain Ripping Upheaval.`,
-        `Each stack of Wavepike consumed will increase Normal Attack DMG by {2}% for 8s.`,
-      ],
-      seeds: [9, { max: 2, increment: 0 }, 15],
-    },
+    descriptions: [
+      `Obtain {9^%}#[v] {All Elemental DMG Bonus}#[k]. When other nearby party members use Elemental Skills, the
+      character equipping this weapon will gain 1 Wavespike stack. Max {2}#[m] stacks. This effect can be triggered
+      once every 0.3s. When the character equipping this weapon uses an Elemental Skill, all stacks of Wavespike will
+      be consumed to gain Ripping Upheaval.`,
+      `Each stack of Wavepike consumed will increase {Normal Attack DMG}#[k] by {15^%}#[v] for 8s.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -160,17 +151,14 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "cDmg_", scale: "9.6%b" },
     passiveName: "Mistsplitter's Edge",
-    description: {
-      pots: [
-        `Gain a {0}% {Elemental DMG Bonus} for every element and receive the might of Mistsplitter's Emblem.`,
-        `At stack levels 1/2/3, Mistsplitter's Emblem provides a {1}/{2}/{3}% {Elemental DMG Bonus} for the
-        {character's Elemental Type}.`,
-        `The character will obtain 1 stack of Mistsplitter's Emblem in each of the following scenarios: Normal Attack
-        deals Elemental DMG (stack lasts 5s), casting Elemental Burst (stack lasts 10s); Energy is less than 100%
-        (stack disappears when Energy is full). Each stack's duration is calculated independently.`,
-      ],
-      seeds: [9, 6, 12, 21],
-    },
+    descriptions: [
+      `Gain a {9^%}#[v] {Elemental DMG Bonus}#[k] for every element and receive the might of Mistsplitter's Emblem.`,
+      `At stack levels 1/2/3, Mistsplitter's Emblem provides a {6^%}#[v]/{12^%}#[v]/{21^%}#[v] {Elemental DMG Bonus}#[k]
+      for the {character's Elemental Type}#[k].`,
+      `The character will obtain 1 stack of Mistsplitter's Emblem in each of the following scenarios: Normal Attack
+      deals Elemental DMG (stack lasts 5s), casting Elemental Burst (stack lasts 10s); Energy is less than 100%
+      (stack disappears when Energy is full). Each stack's duration is calculated independently.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -204,18 +192,15 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "em", scale: "43" },
     passiveName: "Revolutionary Chorale",
-    description: {
-      pots: [
-        `A part of the "Millennial Movement" that wanders amidst the winds. Increases {DMG} by {0}%. When triggering
-        Elemental Reactions, the character gains a Sigil of Rebellion. This effect can be triggered once every 0.5s.
-        When you possess 2 Sigils of Rebellion, all of them will be consumed and all nearby party members will obtain
-        the "Millennial Movement: Song of Resistance" effect for 12s.`,
-        `"Millennial Movement: Song of Resistance" increases {Normal, Charged, and Plunging Attack DMG} by {1}% and
-        increases {ATK} by {2}%. Once this effect is triggered, you will not gain Sigils of Rebellion for 20s.`,
-        `Of the many effects of the "Millennial Movement", buffs of the same type will not stack.`,
-      ],
-      seeds: [7.5, 12, 15],
-    },
+    descriptions: [
+      `A part of the "Millennial Movement" that wanders amidst the winds. Increases {DMG}#[k] by {7.5^%}#[v]. When
+      triggering Elemental Reactions, the character gains a Sigil of Rebellion. This effect can be triggered once every
+      0.5s. When you possess 2 Sigils of Rebellion, all of them will be consumed and all nearby party members will
+      obtain the "Millennial Movement: Song of Resistance" effect for 12s.`,
+      `"Millennial Movement: Song of Resistance" increases {Normal, Charged, and Plunging Attack DMG}#[k] by {12^%}#[v]
+      and increases {ATK}#[k] by {15^%}#[v]. Once this effect is triggered, you will not gain Sigils of Rebellion for 20s.`,
+      `Of the many effects of the "Millennial Movement", buffs of the same type will not stack.`,
+    ],
     autoBuffs: [
       {
         base: 7.5,
@@ -248,10 +233,10 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
     passiveName: "Protector's Virtue",
-    description: {
-      pots: [`{HP} increased by {0}%. Additionally, provides an {ATK Bonus} based on {1}% of the wielder's {Max HP}.`],
-      seeds: [15, 0.9],
-    },
+    descriptions: [
+      `{HP}#[k] increased by {15^%}#[v]. Additionally, provides an {ATK Bonus}#[k] based on {0.9^%}#[v] of the
+      wielder's {Max HP}#[k].`,
+    ],
     autoBuffs: [
       {
         base: 15,
@@ -285,14 +270,11 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "phys", scale: "9%" },
     passiveName: "Falcon's Defiance",
-    description: {
-      pots: [
-        `{ATK} is increased by {0}%. Triggers on taking DMG: the soul of the Falcon of the West awakens, holding the
-        banner of the resistance aloft, regenerating HP equal to {1}% of ATK and dealing {2}% of ATK as DMG to
-        surrounding opponents. This effect can only occur once every 15s.`,
-      ],
-      seeds: [15, { base: 85, increment: 15, seedType: "dull" }, { base: 160, increment: 40, seedType: "dull" }],
-    },
+    descriptions: [
+      `{ATK}#[k] is increased by {15^%}#[v]. Triggers on taking DMG: the soul of the Falcon of the West awakens,
+      holding the banner of the resistance aloft, regenerating HP equal to {85^15}% of ATK and dealing {160^40}% of ATK
+      as DMG to surrounding opponents. This effect can only occur once every 15s.`,
+    ],
     autoBuffs: [
       {
         base: 15,
@@ -308,14 +290,11 @@ const goldSwords: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
     passiveName: "Sky-Piercing Fang",
-    description: {
-      pots: [
-        `{Crit Rate} increased by {0}%. And Normal and Charged hits deal additional DMG equal to {1}% of ATK. Skypiercing
-        Might lasts for 12s.`,
-        `Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and {ATK SPD} by {2}%.`,
-      ],
-      seeds: [3, { base: 15, seedType: "dull" }, { base: 10, increment: 0 }],
-    },
+    descriptions: [
+      `{Crit Rate}#[k] increased by {3^%}#[v]. And Normal and Charged hits deal additional DMG equal to {15^}% of ATK.
+      Skypiercing Might lasts for 12s.`,
+      `Gains Skypiercing Might upon using Elemental Burst: Increases Movement SPD and {ATK SPD}#[k] by {10%}#[v].`,
+    ],
     autoBuffs: [
       {
         base: 3,

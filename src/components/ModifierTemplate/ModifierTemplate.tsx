@@ -74,11 +74,11 @@ export const resonanceRenderInfo = {
   },
 };
 
-const getWeaponDescription = (description: AppWeapon["description"], buff: WeaponBuff, refi: number) => {
-  if (description) {
-    const { description: buffDesc = 0 } = buff;
-    const desc = typeof buffDesc === "number" ? description.pots[buffDesc] : buffDesc;
-    return WeaponCard.decoDescription(desc || "", description.seeds, refi);
+const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {
+  if (descriptions?.length) {
+    let { description = 0 } = buff;
+    description = typeof description === "number" ? descriptions[description] : description;
+    return WeaponCard.parseDescription(description || "", refi);
   }
   return "";
 };
