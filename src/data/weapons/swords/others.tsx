@@ -12,10 +12,7 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "def_", scale: "6.4%" },
     passiveName: "Journey",
-    description: {
-      pots: [`Each Elemental Orb or Particle collected restores {0}% HP.`],
-      seeds: [{ base: 0.75, seedType: "dull" }],
-    },
+    descriptions: [`Each Elemental Orb or Particle collected restores {0.75^}% HP.`],
   },
   {
     code: 131,
@@ -25,13 +22,10 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "em", scale: "31" },
     passiveName: "Overloaded",
-    description: {
-      pots: [
-        `Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction, {ATK} is
-        increased by {0}% for 12s.`,
-      ],
-      seeds: [15],
-    },
+    descriptions: [
+      `Upon causing an Overloaded, Superconduct, Electro-Charged, or an Electro-infused Swirl reaction, {ATK}#[k] is
+      increased by {15^%}#[v] for 12s.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -49,13 +43,9 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "atk_", scale: "7.7%" },
     passiveName: "Gash",
-    description: {
-      pots: [`On hit, has 50% chance to deal {0}% ATK DMG to a single enemy. Can only occur once every {1}s.`],
-      seeds: [
-        { base: 200, increment: 40, seedType: "dull" },
-        { base: 16, increment: -1, seedType: "dull" },
-      ],
-    },
+    descriptions: [
+      `On hit, has 50% chance to deal {200^40}% ATK DMG to a single enemy. Can only occur once every {16^-1}s.`,
+    ],
   },
   {
     code: 98,
@@ -65,7 +55,7 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "cDmg_", scale: "10.2%" },
     passiveName: "Vigorous",
-    description: { pots: [`When HP is above 90%, increases {CRIT Rate} by {0}%.`], seeds: [10.5] },
+    descriptions: [`When HP is above 90%, increases {CRIT Rate}#[k] by {10.5^%}#[v].`],
     buffs: [
       {
         index: 0,
@@ -92,10 +82,7 @@ const otherSwords: AppWeapon[] = [
     mainStatScale: "38",
     subStat: { type: "er_", scale: "11.3%" },
     passiveName: "Determination",
-    description: {
-      pots: [`Using an Elemental Burst grants a {0}% increase in {ATK} and Movement SPD for 15s.`],
-      seeds: [9],
-    },
+    descriptions: [`Using an Elemental Burst grants a {9^%}#[v] increase in {ATK}#[k] and Movement SPD for 15s.`],
     buffs: [
       {
         index: 0,

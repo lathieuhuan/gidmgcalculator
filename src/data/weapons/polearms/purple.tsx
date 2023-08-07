@@ -19,13 +19,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
     passiveName: "",
-    description: {
-      pots: [
-        `When the wielder is healed, restore {0} Energy. This effect can be triggered once every 10s, and can occur
-        even when the character is not on the field.`,
-      ],
-      seeds: [{ base: 6, seedType: "dull" }],
-    },
+    descriptions: [
+      `When the wielder is healed, restore {6^} Energy. This effect can be triggered once every 10s, and can occur
+      even when the character is not on the field.`,
+    ],
   },
   {
     code: 159,
@@ -35,12 +32,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
     passiveName: "",
-    description: {
-      pots: [
-        `When there are at least 3 different Elemental Types in your party, {Elemental Mastery} will be increased by {0}.`,
-      ],
-      seeds: [90],
-    },
+    descriptions: [
+      `When there are at least 3 different Elemental Types in your party, {Elemental Mastery}#[k] will be increased by
+      {90^}#[v].`,
+    ],
     autoBuffs: [
       {
         base: 90,
@@ -61,13 +56,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "The Wind Unattained",
-    description: {
-      pots: [
-        `Within 10s after an Elemental Reaction is triggered, {ATK} is increased by {0}% and {Elemental Mastery} is
-        increased by {1}.`,
-      ],
-      seeds: [9, 36],
-    },
+    descriptions: [
+      `Within 10s after an Elemental Reaction is triggered, {ATK}#[k] is increased by {9^%}#[v] and
+      {Elemental Mastery}#[k] is increased by {36^}#[v].`,
+    ],
     buffs: [
       {
         index: 0,
@@ -93,16 +85,13 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
     passiveName: "Stillwood Moonshadow",
-    description: {
-      pots: [
-        `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will be
-        created around the character for a maximum of 10s.`,
-        `When picked up, the Leaf will grant the character {0}% {ATK} for 12s.`,
-        `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
-        the field.`,
-      ],
-      seeds: [12],
-    },
+    descriptions: [
+      `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Revival will be
+      created around the character for a maximum of 10s.`,
+      `When picked up, the Leaf will grant the character {12^%}#[v] {ATK}#[k] for 12s.`,
+      `Only 1 Leaf can be generated this way every 20s. This effect can still be triggered if the character is not on
+      the field.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -139,14 +128,11 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
     passiveName: "Samurai Conduct",
-    description: {
-      pots: [
-        `Increases {Elemental Skill DMG} by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
-        but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
-        even when the character is not on the field.`,
-      ],
-      seeds: [4.5, { base: 2.5, increment: 0.5, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {Elemental Skill DMG}#[k] by {4.5^%}#[v]. After Elemental Skill hits an opponent, the character loses
+      3 Energy but regenerates {2.5^0.5} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
+      even when the character is not on the field.`,
+    ],
     autoBuffs: [
       {
         base: 4.5,
@@ -162,10 +148,9 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Shanty",
-    description: {
-      pots: [`Increases {Elemental Burst DMG} by {0}% and {Elemental Burst CRIT Rate} by {1}%.`],
-      seeds: [12, 4.5],
-    },
+    descriptions: [
+      `Increases {Elemental Burst DMG}#[k] by {12^%}#[v] and {Elemental Burst CRIT Rate}#[k] by {4.5^%}#[v].`,
+    ],
     autoBuffs: [
       {
         base: 12,
@@ -194,13 +179,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "phys", scale: "7.5%" },
     passiveName: "Infusion Needle",
-    description: {
-      pots: [
-        `After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {0}% ATK as DMG for
-        5s.`,
-      ],
-      seeds: [{ base: 15, seedType: "dull" }],
-    },
+    descriptions: [
+      `After picking up an Elemental Orb/Particle, Normal and Charged Attacks deal an additional {15^}% ATK as DMG for
+      5s.`,
+    ],
   },
   {
     code: 91,
@@ -210,12 +192,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Magic Affinity",
-    description: {
-      pots: [
-        `After using an Elemental Skill, increases {Normal and Charged Attack DMG} by {0}% for 12s. Max {1} stacks.`,
-      ],
-      seeds: [6, { max: 2, increment: 0 }],
-    },
+    descriptions: [
+      `After using an Elemental Skill, increases {Normal and Charged Attack DMG}#[k] by {6^%}#[v] for 12s. Max {2}#[m]
+      stacks.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -260,13 +240,10 @@ const purplePolearms: AppWeapon[] = [
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },
     passiveName: "Gladiator",
-    description: {
-      pots: [
-        `If there are at least 2 opponents nearby, {ATK} is increased by {0}% and {DEF} is increased by {0}%. If there are
-        fewer than 2 opponents nearby, {ATK} is increased by {1}%.`,
-      ],
-      seeds: [12, 18],
-    },
+    descriptions: [
+      `If there are at least 2 opponents nearby, {ATK}#[k] is increased by {12^%}#[v] and {DEF}#[k] is increased by
+      {12^%}#[v]. If there are fewer than 2 opponents nearby, {ATK}#[k] is increased by {18^%}#[v].`,
+    ],
     buffs: [
       {
         index: 0,

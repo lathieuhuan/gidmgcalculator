@@ -1,25 +1,22 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 
-type SeriesInfo = Pick<AppWeapon, "passiveName" | "description" | "autoBuffs" | "buffs">;
+type SeriesInfo = Pick<AppWeapon, "passiveName" | "descriptions" | "autoBuffs" | "buffs">;
 
 export const desertSeries: Pick<
   AppWeapon,
-  "rarity" | "mainStatScale" | "subStat" | "passiveName" | "description" | "buffs"
+  "rarity" | "mainStatScale" | "subStat" | "passiveName" | "descriptions" | "buffs"
 > = {
   rarity: 4,
   mainStatScale: "42",
   subStat: { type: "em", scale: "36" },
   passiveName: "Wildling Nightstar",
-  description: {
-    pots: [
-      `Every 10s, the equipping character will gain {0}% of their {Elemental Mastery} as bonus {ATK} for 12s, with nearby
-      party members gaining {1}% of this buff for the same duration.`,
-      `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
-      character is not on the field.`,
-    ],
-    seeds: [18, { base: 30, increment: 0 }],
-  },
+  descriptions: [
+    `Every 10s, the equipping character will gain {18^%}#[v] of their {Elemental Mastery}#[k] as bonus {ATK}#[k] for
+    12s, with nearby party members gaining {30%}#[v] of this buff for the same duration.`,
+    `Multiple instances of this weapon can allow this buff to stack. This effect will still trigger even if the
+    character is not on the field.`,
+  ],
   buffs: [
     {
       index: 0,
@@ -51,12 +48,10 @@ export const desertSeries: Pick<
 
 export const royalSeries: SeriesInfo = {
   passiveName: "Focus",
-  description: {
-    pots: [
-      `Upon dealing damage to an opponent, increases {CRIT Rate} by {0}%. Max {1} stacks. A CRIT hit removes all existing stacks.`,
-    ],
-    seeds: [6, { max: 5, increment: 0 }],
-  },
+  descriptions: [
+    `Upon dealing damage to an opponent, increases {CRIT Rate}#[k] by {6^%}#[v]. Max {5}#[m] stacks. A CRIT hit removes
+    all existing stacks.`,
+  ],
   buffs: [
     {
       index: 0,
@@ -78,13 +73,10 @@ export const royalSeries: SeriesInfo = {
 
 export const blackcliffSeries: SeriesInfo = {
   passiveName: "Press the Advantage",
-  description: {
-    pots: [
-      `After defeating an opponent, {ATK} is increased by {0}% for 30s. This effect has a maximum of {1} stacks, and the
-      duration of each stack is independent of the others.`,
-    ],
-    seeds: [9, { max: 3, increment: 0 }],
-  },
+  descriptions: [
+    `After defeating an opponent, {ATK}#[k] is increased by {9^%}#[v] for 30s. This effect has a maximum of {3}#[m]
+    stacks, and the duration of each stack is independent of the others.`,
+  ],
   buffs: [
     {
       index: 0,
@@ -107,58 +99,36 @@ export const blackcliffSeries: SeriesInfo = {
 
 export const favoniusPassive: SeriesInfo = {
   passiveName: "Windfall",
-  description: {
-    pots: [
-      `CRIT hits have a {0}% chance to generate a small amount of Elemental Particles, which will regenerate 6 Energy
-      for the character. Can only occur once every {1}s.`,
-    ],
-    seeds: [
-      { base: 50, increment: 10, seedType: "dull" },
-      { base: 13.5, increment: -1.5, seedType: "dull" },
-    ],
-  },
+  descriptions: [
+    `CRIT hits have a {50^10}% chance to generate a small amount of Elemental Particles, which will regenerate 6 Energy
+    for the character. Can only occur once every {13.5^-1.5}s.`,
+  ],
 };
 
 export const sacrificialPassive: SeriesInfo = {
   passiveName: "Composed",
-  description: {
-    pots: [
-      `After dealing damage to an opponent with an Elemental Skill, the skill has a {0}% chance to end its own CD. Can
-      only occur once every {1}s.`,
-    ],
-    seeds: [
-      { base: 30, seedType: "dull" },
-      { options: [30, 26, 22, 19, 16], seedType: "dull" },
-    ],
-  },
+  descriptions: [
+    `After dealing damage to an opponent with an Elemental Skill, the skill has a {30^%} chance to end its own CD. Can
+    only occur once every {30$26$22$19$16}s.`,
+  ],
 };
 
 export const dragonspinePassive: SeriesInfo = {
   passiveName: "Frost Burial",
-  description: {
-    pots: [
-      `Hitting an opponent with Normal and Charged Attacks has a {0}% chance of forming and dropping an Everfrost
-      Icicle above them, dealing {1}% AoE ATK DMG. Opponents affected by Cryo are dealt {2}% AoE ATK DMG instead by the
-      icicle. Can only occur once every 10s.`,
-    ],
-    seeds: [
-      { base: 50, increment: 10, seedType: "dull" },
-      { base: 65, increment: 15, seedType: "dull" },
-      { base: 160, increment: 40, seedType: "dull" },
-    ],
-  },
+  descriptions: [
+    `Hitting an opponent with Normal and Charged Attacks has a {50^10}% chance of forming and dropping an Everfrost
+    Icicle above them, dealing {65^15}% AoE ATK DMG. Opponents affected by Cryo are dealt {160^40}% AoE ATK DMG instead by the
+    icicle. Can only occur once every 10s.`,
+  ],
 };
 
 export const liyueSeries: SeriesInfo = {
   passiveName: "Golden Majesty",
-  description: {
-    pots: [
-      `Increases {Shield Strength} by {0}%.`,
-      `Scoring hits on opponents increases {ATK} by {1}% for 8s. Max {2} stacks. Can only occur once every 0.3s. While
-      protected by a shield, this {ATK increase} effect is increased by {3}%.`,
-    ],
-    seeds: [15, 3, { max: 5, increment: 0 }, { base: 100, increment: 0 }],
-  },
+  descriptions: [
+    `Increases {Shield Strength}#[k] by {15^%}#[v].`,
+    `Scoring hits on opponents increases {ATK}#[k] by {3^%}#[v] for 8s. Max {2}#[m] stacks. Can only occur once every 0.3s. While
+    protected by a shield, this {ATK increase}#[k] effect is increased by {100%}#[v].`,
+  ],
   autoBuffs: [
     {
       base: 15,
@@ -192,17 +162,10 @@ export const liyueSeries: SeriesInfo = {
 
 export const lithicSeries: SeriesInfo = {
   passiveName: "Lithic Axiom - Unity",
-  description: {
-    pots: [
-      `For every character in the party who hails from Liyue, the character who equips this weapon gains {0}% {ATK}
-      increase and {1}% {CRIT Rate} increase. This effect stacks up to {2} times.`,
-    ],
-    seeds: [
-      { base: 6, increment: 1 },
-      { base: 2, increment: 1 },
-      { max: 4, increment: 0 },
-    ],
-  },
+  descriptions: [
+    `For every character in the party who hails from Liyue, the character who equips this weapon gains {6^1%}#[v]
+    {ATK}#[k] increase and {2^1%}#[v] {CRIT Rate}#[k] increase. This effect stacks up to {4}#[m] times.`,
+  ],
   autoBuffs: [
     {
       base: 6,
@@ -225,10 +188,7 @@ export const lithicSeries: SeriesInfo = {
 
 export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
   passiveName: `Bane of ${name}`,
-  description: {
-    pots: [`Increases {DMG} against opponents affected by ${elements} by {0}%.`],
-    seeds: [9],
-  },
+  descriptions: [`Increases {DMG}#[k] against opponents affected by ${elements} by {9^%}#[v].`],
   buffs: [
     {
       index: 0,
@@ -242,10 +202,7 @@ export const baneSeries1 = (name: string, elements: string): SeriesInfo => ({
 
 export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
   passiveName: `Bane of ${name}`,
-  description: {
-    pots: [`Increases {DMG} against opponents affected by ${elements} by {0}%.`],
-    seeds: [{ base: 16, increment: 4 }],
-  },
+  descriptions: [`Increases {DMG}#[k] against opponents affected by ${elements} by {16^4%}#[v].`],
   buffs: [
     {
       index: 0,
@@ -259,13 +216,10 @@ export const baneSeries2 = (name: string, elements: string): SeriesInfo => ({
 
 export const watatsumiSeries: SeriesInfo = {
   passiveName: "Watatsumi Wavewalker",
-  description: {
-    pots: [
-      `For every point of the entire party's combined maximum Energy capacity, the {Elemental Burst DMG} of the character
-      equipping this weapon is increased by {0}%, up to a maximum of {1}%.`,
-    ],
-    seeds: [0.09, { max: 30 }],
-  },
+  descriptions: [
+    `For every point of the entire party's combined maximum Energy capacity, the {Elemental Burst DMG}#[k] of the character
+    equipping this weapon is increased by {0.09^%}#[v], up to a maximum of {30^%}#[m].`,
+  ],
   autoBuffs: [
     {
       base: 0.09,
@@ -280,8 +234,5 @@ export const watatsumiSeries: SeriesInfo = {
 
 export const cullTheWeakPassive: SeriesInfo = {
   passiveName: "Cull the Weak",
-  description: {
-    pots: ["Defeating an opponent restores {0}% HP."],
-    seeds: [{ base: 6, seedType: "dull" }],
-  },
+  descriptions: ["Defeating an opponent restores {6^%} HP."],
 };

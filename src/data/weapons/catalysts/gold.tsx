@@ -11,19 +11,12 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
     passiveName: "Primordial Jade Regalia",
-    description: {
-      pots: [
-        `When using an Elemental Burst or creating a shield, the equipping character's {corresponding Elemental DMG} is
-        increased by {0}% for every 1,000 Max HP they possess for 3s, up to {1}%.`,
-        `At the same time, they will regain {2} Energy every 2.5s. This will still take effect even if the character
-        is not on the field.`,
-      ],
-      seeds: [
-        { base: 0.1, increment: 0.2 },
-        { max: 4, increment: 8 },
-        { base: 4, increment: 0.5, seedType: "dull" },
-      ],
-    },
+    descriptions: [
+      `When using an Elemental Burst or creating a shield, the equipping character's {corresponding Elemental DMG}#[k]
+      is increased by {0.1^0.2%}#[v] for every 1,000 Max HP they possess for 3s, up to {4^8%}#[m].`,
+      `At the same time, they will regain {4^0.5} Energy every 2.5s. This will still take effect even if the character
+      is not on the field.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -51,17 +44,14 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "cDmg_", scale: "9.6%b" },
     passiveName: "Bygone Azure Teardrop",
-    description: {
-      pots: [
-        `{Normal Attack SPD} is increased by {0}%.`,
-        `After the wielder unleashes an Elemental Skill, {Normal Attack DMG} will increase by {1}% every second for 12s.
-        After this character hits an opponent with a Normal Attack during this duration, {Normal Attack DMG} will be
-        increased by {2}%. This increase can be triggered once every 0.3s. Total maximum bonus is {3}%.`,
-        `The effect will be removed when the wielder leaves the field, and using the Elemental Skill again will reset
-        all DMG buffs.`,
-      ],
-      seeds: [7.5, 3.6, 7.2, { max: 36 }],
-    },
+    descriptions: [
+      `{Normal Attack SPD}#[k] is increased by {7.5^%}#[v].`,
+      `After the wielder unleashes an Elemental Skill, {Normal Attack DMG}#[k] will increase by {3.6^%}#[v] every second
+      for 12s. After this character hits an opponent with a Normal Attack during this duration, {Normal Attack DMG}#[k]
+      will be increased by {7.2^%}#[v]. This increase can be triggered once every 0.3s. Total maximum bonus is {36^%}#[m].`,
+      `The effect will be removed when the wielder leaves the field, and using the Elemental Skill again will reset
+      all DMG buffs.`,
+    ],
     autoBuffs: [
       {
         base: 7.5,
@@ -95,17 +85,14 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "em", scale: "58" },
     passiveName: "A Thousand Nights' Dawnsong",
-    description: {
-      pots: [
-        `Party members other than the equipping character will provide the equipping character with buffs based on
-        whether their Elemental Type is the same as the latter or not. If their Elemental Types are the same, increase
-        {Elemental Mastery} by {0}. If not, increase the equipping character's {DMG Bonus} from {their Elemental Type} by
-        {1}%. Max {2} stacks.`,
-        `Additionally, all nearby party members other than the equipping character will have their {Elemental Mastery}
-        increased by {3}. Multiple such effects from multiple such weapons can stack.`,
-      ],
-      seeds: [24, { base: 6, increment: 4 }, { max: 3, increment: 0 }, { base: 38, increment: 2 }],
-    },
+    descriptions: [
+      `Party members other than the equipping character will provide the equipping character with buffs based on
+      whether their Elemental Type is the same as the latter or not. If their Elemental Types are the same, increase
+      {Elemental Mastery}#[k] by {24^}#[v]. If not, increase the equipping character's {DMG Bonus}#[k] from
+      {their Elemental Type}#[k] by {6^4%}#[v]. Max {3}#[m] stacks.`,
+      `Additionally, all nearby party members other than the equipping character will have their {Elemental Mastery}#[k]
+      increased by {38^2}#[v]. Multiple such effects from multiple such weapons can stack.`,
+    ],
     autoBuffs: [
       {
         base: 24,
@@ -144,14 +131,11 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Kagura Dance of the Sacred Sakura",
-    description: {
-      pots: [
-        `Gains the Kagura Dance effect when using an Elemental Skill, causing the {Elemental Skill DMG} of the character
-        wielding this weapon to increase by {0}% for 16s. Max {1} stacks. This character will gain {0}%
-        {All Elemental DMG Bonus} when they possess 3 stacks.`,
-      ],
-      seeds: [9, { max: 3, increment: 0 }],
-    },
+    descriptions: [
+      `Gains the Kagura Dance effect when using an Elemental Skill, causing the {Elemental Skill DMG}#[k] of the
+      character wielding this weapon to increase by {9^%}#[v] for 16s. Max {3}#[m] stacks. This character will gain
+      {9^%}#[v] {All Elemental DMG Bonus}#[k] when they possess 3 stacks.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -187,14 +171,11 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "hp_", scale: "10.8%" },
     passiveName: "Byakuya Kougetsu",
-    description: {
-      pots: [
-        `{Healing Bonus} increased by {0}%, {Normal Attack DMG} is increased by {1}% of the {Max HP} of the character
-        equipping this weapon. For 12s after using an Elemental Burst, Normal Attacks that hit opponents will restore
-        0.6 Energy. Energy can be restored this way once every 0.1s.`,
-      ],
-      seeds: [7.5, { base: 0.5, increment: 0.5 }],
-    },
+    descriptions: [
+      `{Healing Bonus}#[k] increased by {7.5^%}#[v], {Normal Attack DMG}#[k] is increased by {0.5^0.5%}#[v] of the
+      {Max HP}#[k] of the character equipping this weapon. For 12s after using an Elemental Burst, Normal Attacks that
+      hit opponents will restore 0.6 Energy. Energy can be restored this way once every 0.1s.`,
+    ],
     autoBuffs: [
       {
         base: 7.5,
@@ -220,14 +201,11 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "atk_", scale: "7.2%" },
     passiveName: "Wandering Clouds",
-    description: {
-      pots: [
-        `Increases {Elemental DMG Bonus} by {0}%. Normal Attack hits have a 50% chance to earn the favor of the clouds.
-        which actively seek out nearby opponents to attack for 15s, dealing {1}% ATK DMG. Can only occur once every
-        30s.`,
-      ],
-      seeds: [9, { base: 120, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {Elemental DMG Bonus}#[k] by {9^%}#[v]. Normal Attack hits have a 50% chance to earn the favor of the
+      clouds. which actively seek out nearby opponents to attack for 15s, dealing {120^}% ATK DMG. Can only occur once
+      every 30s.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -243,14 +221,11 @@ const goldCatalysts: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Boundless Blessing",
-    description: {
-      pots: [
-        `Increases Movement SPD by 10%.`,
-        `When in battle, gain an {0}% {Elemental DMG Bonus} every 4s. Max {1} stacks.`,
-        `Lasts until the character falls or leaves combat.`,
-      ],
-      seeds: [6, { max: 4, increment: 0 }],
-    },
+    descriptions: [
+      `Increases Movement SPD by 10%.`,
+      `When in battle, gain an {6^%}#[v] {Elemental DMG Bonus}#[k] every 4s. Max {4}#[m] stacks.`,
+      `Lasts until the character falls or leaves combat.`,
+    ],
     buffs: [
       {
         index: 0,

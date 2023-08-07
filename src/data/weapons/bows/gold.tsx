@@ -10,23 +10,13 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "missing passive name",
-    description: {
-      pots: [
-        `{ATK} increased by {0}%. For every party member with the same Elemental Type as the wielder (including the
-      wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type from the
-      wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, {ATK} will be increased by
-      {0}%/{1}%/{2}%. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
-      {3}%/{4}%/{5}%.`,
-      ],
-      seeds: [
-        12,
-        24,
-        36,
-        { base: 2, increment: 2, seedType: "dull" },
-        { base: 5, increment: 2, seedType: "dull" },
-        { base: 8, increment: 2, seedType: "dull" },
-      ],
-    },
+    descriptions: [
+      `{ATK}#[k] increased by {12^%}#[v]. For every party member with the same Elemental Type as the wielder (including the
+    wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type from the
+    wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, {ATK}#[k] will be increased by
+    {12^%}#[v]/{24^%}#[v]/{36^%}#[v]. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
+    {2^2}%/{5^2}%/{8^2}%.`,
+    ],
     autoBuffs: [
       {
         base: 12,
@@ -51,15 +41,12 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
     passiveName: "At the End of the Beast-Paths",
-    description: {
-      pots: [
-        `Gain {0}% {All Elemental DMG Bonus}.`,
-        `Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This effect increases
-        {Charged Attack DMG} by {1}% of {Elemental Mastery}.`,
-        `This effect will be removed after 12 Charged Attacks or 10s. Only 1 instance of Tireless Hunt can be gained every 12s.`,
-      ],
-      seeds: [9, 120],
-    },
+    descriptions: [
+      `Gain {9^%}#[v] {All Elemental DMG Bonus}#[k].`,
+      `Obtain the Tireless Hunt effect when hitting an opponent with a Charged Attack. This effect increases
+      {Charged Attack DMG}#[k] by {120^%}#[v] of {Elemental Mastery}#[k].`,
+      `This effect will be removed after 12 Charged Attacks or 10s. Only 1 instance of Tireless Hunt can be gained every 12s.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -88,14 +75,11 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "cDmg_", scale: "19.2%" },
     passiveName: "The Cleansing Form",
-    description: {
-      pots: [
-        "{HP} is increased by {0}%.",
-        "When there are opponents nearby, the {DMG} dealt by the wielder of this weapon is increased by {1}%.",
-        "This will take effect whether the character is on-field or not.",
-      ],
-      seeds: [12, 15],
-    },
+    descriptions: [
+      "{HP}#[k] is increased by {12^%}#[v].",
+      "When there are opponents nearby, the {DMG}#[k] dealt by the wielder of this weapon is increased by {15^%}#[v].",
+      "This will take effect whether the character is on-field or not.",
+    ],
     autoBuffs: [
       {
         base: 12,
@@ -120,16 +104,14 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cRate_", scale: "7.2%" },
     passiveName: "Daylight's Augury",
-    description: {
-      pots: [
-        `{Elemental Skill and Elemental Burst DMG} increased by {0}%. After a Normal Attack, Charged Attack, Elemental
-        Skill or Elemental Burst hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s.`,
-        `When 1/2/3/4 stacks of Ashen Nightstar are present, {ATK} is increased by {1}/{2}/{3}/{4}%.`,
-        `The stack of Ashen Nightstar created by the Normal Attack, Charged Attack, Elemental Skill or Elemental Burst
-        will be counted independently of the others.`,
-      ],
-      seeds: [9, 7.5, 15, 22.5, 36],
-    },
+    descriptions: [
+      `{Elemental Skill and Elemental Burst DMG}#[k] increased by {9^%}#[v]. After a Normal Attack, Charged Attack, Elemental
+      Skill or Elemental Burst hits an opponent, 1 stack of Ashen Nightstar will be gained for 12s.`,
+      `When 1/2/3/4 stacks of Ashen Nightstar are present, {ATK}#[k] is increased by
+      {7.5^%}#[v]/{15^%}#[v]/{22.5^%}#[v]/{36^%}#[v].`,
+      `The stack of Ashen Nightstar created by the Normal Attack, Charged Attack, Elemental Skill or Elemental Burst
+      will be counted independently of the others.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -163,16 +145,13 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Rule by Thunder",
-    description: {
-      pots: [
-        `Increases {ATK} by {0}% and grants the might of the Thunder Emblem.`,
-        `At stack levels 1/2/3, the Thunder Emblem increases {Normal Attack DMG} by {1}/{2}/{3}%.`,
-        `The character will obtain 1 stack of Thunder Emblem in each of the following scenarios: Normal Attack deals
-        DMG (stack lasts 5s), casting Elemental Skill (stack lasts 10s); Energy is less than 100% (stack disappears
-        when Energy is full). Each stack's duration is calculated independently.`,
-      ],
-      seeds: [15, 9, 18, 30],
-    },
+    descriptions: [
+      `Increases {ATK}#[k] by {15^%}#[v] and grants the might of the Thunder Emblem.`,
+      `At stack levels 1/2/3, the Thunder Emblem increases {Normal Attack DMG}#[k] by {9^%}#[v]/{18^%}#[v]/{30^%}#[v].`,
+      `The character will obtain 1 stack of Thunder Emblem in each of the following scenarios: Normal Attack deals
+      DMG (stack lasts 5s), casting Elemental Skill (stack lasts 10s); Energy is less than 100% (stack disappears
+      when Energy is full). Each stack's duration is calculated independently.`,
+    ],
     autoBuffs: [
       {
         base: 15,
@@ -206,19 +185,18 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
     passiveName: "The Parting Refrain",
-    description: {
-      pots: [
-        `A part of the "Millennial Movement" that wanders amidst the winds. Increases {Elemental Mastery} by {0}. When
-        Elemental Skill or Elemental Burst hit opponents, the character gains a Sigil of Remembrance. This effect can
-        be triggered once every 0.2s and can be triggered even if said character is not on the field. When you possess
-        four Sigils of Remembrance, all of them will be consumed and all nearby party members will obtain the
-        "Millennial Movement: Farewell Song" effect for 12s.`,
-        `"Millennial Movement: Farewell Song" increases {Elemental Mastery} by {1} and increases {ATK} by {2}%.`,
-        `Once this effect is triggered, you will not gain Sigils of Remembrance for 20s. Of the many effects of the
-        "Millennial Movement", buffs of the same type will not stack.`,
-      ],
-      seeds: [45, 75, 15],
-    },
+    descriptions: [
+      `A part of the "Millennial Movement" that wanders amidst the winds. Increases {Elemental Mastery}#[k] by {45^}#[v]
+      When Elemental Skill or Elemental Burst hit opponents, the character gains a Sigil of Remembrance. This effect can
+      be triggered once every 0.2s and can be triggered even if said character is not on the field. When you possess
+      four Sigils of Remembrance, all of them will be consumed and all nearby party members will obtain the
+      "Millennial Movement: Farewell Song" effect for 12s.`,
+      `"Millennial Movement: Farewell Song" increases {Elemental Mastery}#[k] by {75^}#[v] and increases {ATK}#[k] by
+      {12^%}#[v].`,
+      `Once this effect is triggered, you will not gain Sigils of Remembrance for 20s. Of the many effects of the
+      "Millennial Movement", buffs of the same type will not stack.`,
+    ],
+    // seeds: [45, 75, 15],
     autoBuffs: [
       {
         base: 45,
@@ -251,14 +229,11 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "atk_", scale: "10.8%" },
     passiveName: "Strong-Willed",
-    description: {
-      pots: [
-        `Increases {Normal Attack and Charged Attack DMG} by {0}%.`,
-        `After a Normal or Charged Attack is fired, {DMG} dealt increases by a further {1}% every 0.1 seconds the arrow
-        is in the air for up to {2} times.`,
-      ],
-      seeds: [9, 6, { max: 2, increment: 0 }],
-    },
+    descriptions: [
+      `Increases {Normal Attack and Charged Attack DMG}#[k] by {9^%}#[v].`,
+      `After a Normal or Charged Attack is fired, {DMG}#[k] dealt increases by a further {6^%}#[v] every 0.1 seconds the arrow
+      is in the air for up to {5}#[m] times.`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -292,13 +267,10 @@ const goldBows: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "cRate_", scale: "4.8%" },
     passiveName: "Echoing Ballad",
-    description: {
-      pots: [
-        `Increases {CRIT DMG} by {0}%. Hits have a {1}% chance to inflict a small AoE attack, dealing 125% Physical ATK
-        DMG. Can only occur once every {2}s.`,
-      ],
-      seeds: [15, { base: 50, increment: 10, seedType: "dull" }, { base: 4.5, increment: -0.5, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {CRIT DMG}#[k] by {15^%}#[v]. Hits have a {50^10}% chance to inflict a small AoE attack, dealing 125%
+      Physical ATK DMG. Can only occur once every {4.5^-0.5}s.`,
+    ],
     autoBuffs: [
       {
         base: 15,

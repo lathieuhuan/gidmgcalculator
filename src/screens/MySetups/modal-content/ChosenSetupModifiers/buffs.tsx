@@ -224,7 +224,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
       continue;
     }
 
-    const { name, buffs = [], description } = weaponData;
+    const { name, buffs = [], descriptions } = weaponData;
     const buff = findByIndex(buffs, index);
 
     if (buff) {
@@ -233,7 +233,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
           key={`${weapon.code}-${index}`}
           mutable={false}
           heading={name}
-          desc={ModifierTemplate.getWeaponDescription(description, buff, weapon.refi)}
+          desc={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
         />
@@ -243,7 +243,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
 
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
-    const { name, buffs = [], description } = findDataWeapon(teammate.weapon) || {};
+    const { name, buffs = [], descriptions } = findDataWeapon(teammate.weapon) || {};
 
     for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
       const buff = findByIndex(buffs, index);
@@ -254,7 +254,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
             key={`${teammateIndex}-${index}`}
             mutable={false}
             heading={name}
-            desc={ModifierTemplate.getWeaponDescription(description, buff, teammate.weapon.refi)}
+            desc={ModifierTemplate.getWeaponDescription(descriptions, buff, teammate.weapon.refi)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />

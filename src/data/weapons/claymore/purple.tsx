@@ -21,13 +21,10 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
     passiveName: "",
-    description: {
-      pots: [
-        `When the wielder is healed, {ATK} will be increased by {0}% for 8s. This can be triggered even when the
-        character is not on the field.`,
-      ],
-      seeds: [18],
-    },
+    descriptions: [
+      `When the wielder is healed, {ATK}#[k] will be increased by {18^%}#[v] for 8s. This can be triggered even when
+      the character is not on the field.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -45,15 +42,12 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "cRate_", scale: "4%" },
     passiveName: "",
-    description: {
-      pots: [
-        `{ATK} will be increased by {0}% for 10s after being affected by Pyro. This effect can be triggered once every
-        12s. `,
-        `{All Elemental DMG Bonus} will be increased by {1}% for 10s after being affected by Hydro, Cryo, or Electro.
-        This effect can be triggered once every 12s.`,
-      ],
-      seeds: [12, 9],
-    },
+    descriptions: [
+      `{ATK}#[k] will be increased by {12^%}#[v] for 10s after being affected by Pyro. This effect can be triggered
+      once every 12s. `,
+      `{All Elemental DMG Bonus}#[k] will be increased by {9^%}#[v] for 10s after being affected by Hydro, Cryo, or
+      Electro. This effect can be triggered once every 12s.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -78,13 +72,10 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "em", scale: "24" },
     passiveName: "Whispers of Wind and Flower",
-    description: {
-      pots: [
-        `Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction, {ATK} is increased by
-        {0}% and {Elemental Mastery} is increased by {1}.`,
-      ],
-      seeds: [9, 36],
-    },
+    descriptions: [
+      `Within 8s after an Elemental Skill hits an opponent or triggers an Elemental Reaction, {ATK}#[k] is increased by
+      {9^%}#[v] and {Elemental Mastery}#[k] is increased by {36^}#[v].`,
+    ],
     buffs: [
       {
         index: 0,
@@ -116,16 +107,13 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },
     passiveName: "Forest Sanctuary",
-    description: {
-      pots: [
-        `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
-        will be created around the character for a maximum of 10s.`,
-        `When picked up, the Leaf will grant the character {0} {Elemental Mastery} for 12s.`,
-        `Only 1 Leaf can be generated this way every 20s. This effect can still  be triggered if the character is not
-        on the field. The Leaf of Consciousness' effect cannot stack.`,
-      ],
-      seeds: [45],
-    },
+    descriptions: [
+      `After triggering Burning, Quicken, Aggravate, Spread, Bloom, Hyperbloom, or Burgeon, a Leaf of Consciousness
+      will be created around the character for a maximum of 10s.`,
+      `When picked up, the Leaf will grant the character {45^}#[v] {Elemental Mastery}#[k] for 12s.`,
+      `Only 1 Leaf can be generated this way every 20s. This effect can still  be triggered if the character is not
+      on the field. The Leaf of Consciousness' effect cannot stack.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -171,13 +159,10 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
     passiveName: "Crush",
-    description: {
-      pots: [
-        `On hit, Normal or Charged Attacks have a 50% chance to deal an additional {0}% ATK DMG to opponents within a
-        small AoE. Can only occur once every 15s.`,
-      ],
-      seeds: [{ base: 180, seedType: "dull" }],
-    },
+    descriptions: [
+      `On hit, Normal or Charged Attacks have a 50% chance to deal an additional {180^}% ATK DMG to opponents within a
+      small AoE. Can only occur once every 15s.`,
+    ],
   },
   {
     code: 64,
@@ -187,13 +172,10 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "def_", scale: "11.3%" },
     passiveName: "Infusion Blade",
-    description: {
-      pots: [
-        `On hit, Normal or Charged Attacks increase {ATK} and {DEF} by {0}% for 6s. Max 4 stacks. Can only occur once every
-        0.5s.`,
-      ],
-      seeds: [4.5],
-    },
+    descriptions: [
+      `On hit, Normal or Charged Attacks increase {ATK}#[k] and {DEF}#[k] by {4.5^%}#[v] for 6s. Max {4}#[m] stacks.
+      Can only occur once every 0.5s.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -238,15 +220,12 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
     passiveName: "Wavesplitter",
-    description: {
-      pots: [
-        `Every 4s a character is on the field, they will deal {0}% more {DMG} and take {1}% more DMG. This effect has a
-        maximum of {2} stacks`,
-        `and will not be reset if the character leaves the field, but will be reduced by 1 stack when the character
-        takes DMG.`,
-      ],
-      seeds: [{ base: 5, increment: 1 }, { options: [3, 2.7, 2.4, 2.2, 2] }, { max: 5, increment: 0 }],
-    },
+    descriptions: [
+      `Every 4s a character is on the field, they will deal {5^1%}#[v] more {DMG}#[k] and take {3$2.7$2.4$2.2$2}% more
+      DMG. This effect has a maximum of {5}#[m] stacks`,
+      `and will not be reset if the character leaves the field, but will be reduced by 1 stack when the character
+      takes DMG.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -283,14 +262,11 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
     passiveName: "Samurai Conduct",
-    description: {
-      pots: [
-        `Increases {Elemental Skill DMG} by {0}%. After Elemental Skill hits an opponent, the character loses 3 Energy
-        but regenerates {1} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be triggered
-        even when the character is not on the field.`,
-      ],
-      seeds: [4.5, { base: 2.5, increment: 0.5, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {Elemental Skill DMG}#[k] by {4.5^%}#[v]. After Elemental Skill hits an opponent, the character loses
+      3 Energy but regenerates {2.5^0.5} Energy every 2s for the next 6s. This effect can occur once every 10s. Can be
+      triggered even when the character is not on the field.`,
+    ],
     autoBuffs: [
       {
         base: 4.5,
@@ -306,14 +282,11 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "42",
     subStat: { type: "hp_", scale: "9%" },
     passiveName: "Rebellious Guardian",
-    description: {
-      pots: [
-        `Taking DMG generates a shield which absorbs DMG up to {0}% of max HP. This shield lasts for 10s or until
-        broken, and can only be triggered once every 45s.`,
-        `While protected by a shield, the character gains {1}% increased {DMG}.`,
-      ],
-      seeds: [{ base: 17, increment: 3, seedType: "dull" }, 9],
-    },
+    descriptions: [
+      `Taking DMG generates a shield which absorbs DMG up to {17^3}% of max HP. This shield lasts for 10s or until
+      broken, and can only be triggered once every 45s.`,
+      `While protected by a shield, the character gains {9^%}#[v] increased {DMG}#[k].`,
+    ],
     buffs: [
       {
         index: 0,
@@ -341,13 +314,10 @@ const purpleClaymores: AppWeapon[] = [
     mainStatScale: "41",
     subStat: { type: "atk_", scale: "12%" },
     passiveName: "Oceanic Victory",
-    description: {
-      pots: [
-        `Increases {Elemental Burst DMG} by {0}%. When Elemental Burst hits opponents, there is a 100% chance of
-        summoning a titanic tuna that charges and deals {1}% ATK as AoE DMG. This effect can occur once every 15s.`,
-      ],
-      seeds: [9, { base: 75, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {Elemental Burst DMG}#[k] by {9^%}#[v]. When Elemental Burst hits opponents, there is a 100% chance of
+      summoning a titanic tuna that charges and deals {75^}% ATK as AoE DMG. This effect can occur once every 15s.`,
+    ],
     autoBuffs: [
       {
         base: 9,
