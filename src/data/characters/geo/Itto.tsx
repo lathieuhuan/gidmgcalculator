@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Geo, Green } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVIER_PAs } from "../constants";
@@ -101,11 +100,7 @@ const Itto: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          <Green>Arataki Kesagiri DMG</Green> is increased by <Green b>35%</Green> of Itto's <Green>DEF</Green>.
-        </>
-      ),
+      description: `{Arataki Kesagiri DMG}#[gr] is increased by {35%}#[b,gr] of Itto's {DEF}#[gr}.`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(exclBuff(EModSrc.A4, ["CA.0", "CA.1"], "flat", applyPercent(totalAttr.def, 35)));
@@ -113,11 +108,7 @@ const Itto: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Itto's <Green>Charged Attacks</Green> deal <Green b>+70%</Green> <Green>CRIT DMG</Green>.
-        </>
-      ),
+      description: `Itto's {Charged Attacks}#[gr] deal +{70%}#[b,gr] {CRIT DMG}#[gr].`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "CA.cDmg_", 70),
     },
@@ -127,13 +118,9 @@ const Itto: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          • Grants Itto a <Geo>Geo Infusion</Geo> that cannot be overridden.
-          <br />• Increases Itto's <Green>Normal Attack SPD</Green> by <Green b>10%</Green>. Also increases his{" "}
-          <Green>ATK</Green> based on his <Green>DEF</Green>.
-        </>
-      ),
+      description: `• Grants Itto a {Geo Infusion}#[geo] that cannot be overridden.
+      <br />• Increases Itto's {Normal Attack SPD}#[gr] by {10%}#[b,gr]. Also increases his {ATK}#[gr] based on his
+      {DEF}#[gr}.`,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
@@ -152,12 +139,8 @@ const Itto: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When the Raging Oni King state [EB] ends, all nearby party members gain <Green b>20%</Green>{" "}
-          <Green>DEF</Green> and <Green b>20%</Green> <Green>ATK</Green> for 10s.
-        </>
-      ),
+      description: `When the Raging Oni King state [EB] ends, all nearby party members gain {20%}#[b,gr] {DEF}#[gr} and
+      {20%}#[b,gr] {ATK}#[gr] for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", ["def_", "atk_"], 20),
     },

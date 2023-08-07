@@ -96,14 +96,14 @@ const Heizou: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
       description: `When Heartstopper Strike [ES] hits an opponent, increases all party members' (excluding Heizou)
-      {Elemental Mastery}#[Gr] by {80}#[B,Gr] for 10s.`,
+      {Elemental Mastery}#[gr] by {80}#[b,gr] for 10s.`,
       applyBuff: makeModApplier("totalAttr", "em", 80),
     },
     {
       index: 1,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `For 5s after Heizou takes the field, his {Normal Attack SPD}#[Gr] is increased by {15%}#[B,Gr].`,
+      description: `For 5s after Heizou takes the field, his {Normal Attack SPD}#[gr] is increased by {15%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
@@ -111,8 +111,8 @@ const Heizou: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `Each Declension stack increases Heartstopper Strike {[ES] CRIT Rate}#[Gr] by {4%}#[B,Gr]. When
-      Heizou possesses Conviction, Heartstoppper Strike's {[ES] CRIT DMG}#[Gr] is increased by {32%}#[B,Gr]`,
+      description: `Each Declension stack increases Heartstopper Strike {[ES] CRIT Rate}#[gr] by {4%}#[b,gr]. When
+      Heizou possesses Conviction, Heartstoppper Strike's {[ES] CRIT DMG}#[gr] is increased by {32%}#[b,gr]`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

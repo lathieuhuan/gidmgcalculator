@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -110,12 +109,8 @@ const Yaoyao: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When White Jade Radishes [~ES] explode, active characters within their AoE will gain <Green b>15%</Green>{" "}
-          <Green b>Dendro DMG Bonus</Green> for 8s
-        </>
-      ),
+      description: `When White Jade Radishes [~ES] explode, active characters within their AoE will gain {15%}#[b,gr]
+      {Dendro DMG Bonus}#[gr] for 8s`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "dendro", 15),
     },
@@ -123,13 +118,8 @@ const Yaoyao: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After using Raphanus Sky Cluster [ES] or Moonjade Descent [EB], Yaoyao's <Green>Elemental Mastery</Green> will
-          be increased based on <Green b>0.3%</Green> of her <Green>Max HP</Green> for 8s. Max <Rose>120</Rose>{" "}
-          Elemental Mastery.
-        </>
-      ),
+      description: `After using Raphanus Sky Cluster [ES] or Moonjade Descent [EB], Yaoyao's {Elemental Mastery}#[gr] will
+      be increased based on {0.3%}#[b,gr] of her {Max HP}#[gr] for 8s. Max {120}#[r] Elemental Mastery.`,
       isGranted: checkCons[4],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const buffValue = Math.min(Math.round(totalAttr.hp * 0.003), 120);

@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Lightgold } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -103,14 +102,9 @@ const Candace: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          Prayer of the Crimson Crown [~EB] has the following properties:
-          <br />• Characters deal <Green b>20%</Green> increased <Green>Elemental Normal Attack DMG</Green>.
-          <br />• At <Lightgold>A4</Lightgold>, increases the above bonus by <Green b>0.5%</Green> for every 1,000
-          points of Candace's <Green>Max HP</Green>.
-        </>
-      ),
+      description: `Prayer of the Crimson Crown [~EB] has the following properties:
+      <br />• Characters deal {20%}#[b,gr] increased {Elemental Normal Attack DMG}#[gr].
+      <br />• At {A4}#[g], increases the above bonus by {0.5%}#[b,gr] for every 1,000 points of Candace's {Max HP}#[gr].`,
       inputConfigs: [
         {
           label: "Max HP (A4)",
@@ -134,12 +128,8 @@ const Candace: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's <Green>Max HP</Green> will be increased by{" "}
-          <Green>20%</Green> for 15s.
-        </>
-      ),
+      description: `When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's {Max HP}#[gr] will be increased by
+      {20%}#[b,gr] for 15s.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "hp_", 20),
     },

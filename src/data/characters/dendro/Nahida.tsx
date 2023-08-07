@@ -1,7 +1,6 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Green, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
@@ -119,13 +118,9 @@ const Nahida: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          Each point of Nahida's <Green>Elemental Mastery</Green> beyond 200 will grant <Green b>0.1%</Green>{" "}
-          <Green>Bonus DMG</Green> (max <Rose>80%</Rose>) and <Green b>0.03%</Green> <Green>CRIT Rate</Green> (max{" "}
-          <Rose>24%</Rose>) to <Green>Tri-Karma Purification</Green>.
-        </>
-      ),
+      description: `Each point of Nahida's {Elemental Mastery}#[gr] beyond 200 will grant {0.1%}#[b,gr]
+      {Bonus DMG}#[gr] (max {80%}#[r]) and {0.03%}#[b,gr] {CRIT Rate}#[gr] (max {24%}#[r]) to
+      {Tri-Karma Purification}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const excessEM = Math.max(totalAttr.em - 200, 0);
@@ -141,15 +136,7 @@ const Nahida: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, partyData }) => {
-        const { value, pyroCount } = getEBBuff(char, partyData);
-        return (
-          <>
-            Within the Shrine of Maya, <Green>Tri-Karma Purification DMG</Green> is increased by{" "}
-            <Green b>{value}%</Green> ({pyroCount} Pyro teammates).
-          </>
-        );
-      },
+      description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased.`,
       applyFinalBuff: ({ calcItemBuffs, char, partyData }) => {
         const { value, pyroCount } = getEBBuff(char, partyData);
 
@@ -162,13 +149,9 @@ const Nahida: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          The Elemental Mastery of the active character within the Shrine of Maya will be increased by{" "}
-          <Green>25%</Green> of the <Green>Elemental Mastery</Green> of the party member with the highest Elemental
-          Mastery. Maximum <Rose>250</Rose> Elemental Mastery.
-        </>
-      ),
+      description: `The Elemental Mastery of the active character within the Shrine of Maya will be increased by
+      {25%}#[b,gr] of the {Elemental Mastery}#[gr] of the party member with the highest Elemental Mastery. Maximum
+      {250}#[r] Elemental Mastery.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -185,12 +168,8 @@ const Nahida: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          <Green>Burning, Bloom, Hyperbloom, Burgeon Reaction DMG</Green> can score CRIT Hits. <Green>CRIT Rate</Green>{" "}
-          and <Green>CRIT DMG</Green> are fixed at <Green b>20%</Green> and <Green b>100%</Green> respectively.
-        </>
-      ),
+      description: `{Burning, Bloom, Hyperbloom, Burgeon Reaction DMG}#[gr] can score CRIT Hits. {CRIT Rate}#[gr] and
+      {CRIT DMG}#[gr] are fixed at {20%}#[b,gr] and {100%}#[b,gr] respectively.`,
       isGranted: checkCons[2],
       applyBuff: ({ rxnBonus, desc, tracker }) => {
         applyModifier(
@@ -213,12 +192,8 @@ const Nahida: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When 1/2/3/(4 or more) nearby opponents are affected by Seeds of Skandha [~ES], Nahida's{" "}
-          <Green>Elemental Mastery</Green> will be increased by <Green b>100/120/140/160</Green>.
-        </>
-      ),
+      description: `When 1/2/3/(4 or more) nearby opponents are affected by Seeds of Skandha [~ES], Nahida's
+      {Elemental Mastery}#[gr] will be increased by {100}#[b,gr]/{120}#[b,gr]/{140}#[b,gr]/{160}#[b,gr].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -237,12 +212,7 @@ const Nahida: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          Within 8s of being affected by Quicken, Aggravate, Spread, <Green>DEF</Green> is decreased by{" "}
-          <Green b>30%</Green>.
-        </>
-      ),
+      description: `Within 8s of being affected by Quicken, Aggravate, Spread, {DEF}#[gr} is decreased by {30%}#[b,gr].`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "def", 30),
     },

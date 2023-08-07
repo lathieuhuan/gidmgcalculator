@@ -1,6 +1,5 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -120,23 +119,12 @@ const Mika: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: (obj) => (
-        <>
-          Grants nearby active characters Soulwind, increasing their ATK SPD.
-          <br />• At <Lightgold>A1</Lightgold>, Soulwind can grant characters the Detector effect, increasing their{" "}
-          <Green>Physical DMG</Green> by <Green>10%</Green> each stack. Max <Rose>3</Rose> stacks.
-          <br />• At <Lightgold>A4</Lightgold>, the maximum number of <Green>stacks</Green> is increased by{" "}
-          <Green>1</Green>.
-          <br />• At <Lightgold>C6</Lightgold>, the maximum number of <Green>stacks</Green> is increased by{" "}
-          <Green>1</Green>. Grants <Green b>60%</Green> <Green>Physical CRIT DMG</Green> bonus.
-          {obj.toSelf && (
-            <>
-              <br />
-              <Red>--- Max Detector stacks: {checkAscs[1](obj.char) ? detectorBuff(obj).maxStacks : 0} ---</Red>
-            </>
-          )}
-        </>
-      ),
+      description: `Grants nearby active characters Soulwind, increasing their ATK SPD.
+      <br />• At {A1}#[g], Soulwind can grant characters the Detector effect, increasing their {Physical DMG}#[gr] by
+      {10%}#[b,gr] each stack. Max {3}#[r] stacks.
+      <br />• At {A4}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr].
+      <br />• At {C6}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr]. Grants {60%}#[b,gr]
+      {Physical CRIT DMG}#[gr] bonus.`,
       inputConfigs: [
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
         { label: "Detector stacks (A1)", type: "select", initialValue: 0, max: 5 },

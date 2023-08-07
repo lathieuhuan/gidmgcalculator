@@ -93,7 +93,7 @@ const Amber: DefaultAppCharacter = {
       src: EModSrc.A1,
       desc: () => (
         <>
-          Increases Fiery Rain <Green>[EB] CRIT Rate</Green> by <Green b>10%</Green>.
+          Increases Fiery Rain <Green>[EB] CRIT Rate</Green> by {10%}#[b,gr].
         </>
       ),
       isGranted: checkAscs[1],
@@ -107,7 +107,7 @@ const Amber: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Aimed Shot hits on weak spots increase <Green>ATK</Green> by <Green b>15%</Green> for 10s.
+          Aimed Shot hits on weak spots increase {ATK}#[gr] by {15%}#[b,gr] for 10s.
         </>
       ),
       isGranted: checkAscs[4],
@@ -119,7 +119,7 @@ const Amber: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases Baron Bunny <Green>[ES] DMG</Green> via manual detonation by <Green b>200%</Green>.
+          Increases Baron Bunny {[ES] DMG}#[gr] via manual detonation by <Green b>200%</Green>.
         </>
       ),
       isGranted: checkCons[2],
@@ -131,8 +131,8 @@ const Amber: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and <Green>ATK</Green> by{" "}
-          <Green b>15%</Green> for 10s.
+          Fiery Rain [EB] increases all party members' <Green>Movement SPD</Green> and {ATK}#[gr] by{" "}
+          {15%}#[b,gr] for 10s.
         </>
       ),
       isGranted: checkCons[6],

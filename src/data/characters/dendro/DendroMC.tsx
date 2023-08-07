@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -60,12 +59,8 @@ const DendroMC: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          Every point of Elemental Mastery the Traveler possesses increases Razorgrass Blade <Green>[ES] DMG</Green> by{" "}
-          <Green b>0.15%</Green> and Surgent Manifestation <Green>[EB] DMG</Green> by <Green b>0.1%</Green>.
-        </>
-      ),
+      description: `Every point of Elemental Mastery the Traveler possesses increases Razorgrass Blade {[ES] DMG}#[gr]
+      by {0.15%}#[b,gr] and Surgent Manifestation {[EB] DMG}#[gr] by {0.1%}#[b,gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
         const buffValue1 = totalAttr.em * 0.15;
@@ -79,13 +74,9 @@ const DendroMC: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          Lea Lotus Lamp [~EB] will obtain one level of Overflowing Lotuslight every second it is on the field,
-          increasing the <Green>Elemental Mastery</Green> of active character(s) within its AoE by <Green b>6</Green>.
-          Maximum <Rose>10</Rose> stacks.
-        </>
-      ),
+      description: `Lea Lotus Lamp [~EB] will obtain one level of Overflowing Lotuslight every second it is on the
+      field, increasing the {Elemental Mastery}#[gr] of active character(s) within its AoE by {6}#[b,gr]. Maximum
+      {10}#[r] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -101,14 +92,9 @@ const DendroMC: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          The <Green>Dendro DMG Bonus</Green> of the character under the effect of Overflowing Lotuslight [~EB] is
-          increased by <Green b>12%</Green>. If the Lamp has experienced a Lotuslight Transfiguration previously, the
-          character will also gain <Green b>12%</Green> <Green>DMG Bonus</Green> for the{" "}
-          <Green>corresponding element</Green>.
-        </>
-      ),
+      description: `The {Dendro DMG Bonus}#[gr] of the character under the effect of Overflowing Lotuslight [~EB] is
+      increased by {12%}#[b,gr]. If the Lamp has experienced a Lotuslight Transfiguration previously, the character will
+      also gain {12%}#[b,gr] {DMG Bonus}#[gr] for the {corresponding element}#[gr].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

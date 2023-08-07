@@ -1,7 +1,6 @@
 import type { AppCharacter, AttributeStat, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Geo, Green, Red } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
@@ -121,12 +120,8 @@ const Gorou: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          • Inuzaka All-Round Defense <Green>[ES] DMG</Green> increased by <Green b>156%</Green> of DEF.
-          <br />• Juuga: Forward Unto Victory <Green>[ES] DMG</Green> increased by <Green b>15.6%</Green> of DEF.
-        </>
-      ),
+      description: `• Inuzaka All-Round Defense {[ES] DMG}#[gr] increased by {156%}#[b,gr] of DEF.
+      <br />• Juuga: Forward Unto Victory {[ES] DMG}#[gr] increased by {15.6%}#[b,gr] of DEF.`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const buffValues = [totalAttr.def * 1.56, totalAttr.def * 0.156];
@@ -139,34 +134,11 @@ const Gorou: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: ({ toSelf, charData, inputs, partyData }) => {
-        const { geo = 0 } = countVision(partyData, charData);
-        return (
-          <>
-            Provides up to 3 buffs to active characters within the skill's AoE based on the number of <Geo>Geo</Geo>{" "}
-            characters in the party:
-            <br />
-            <span className={geo >= 1 ? "" : "opacity-50"}>
-              • 1 Geo character: Adds "Standing Firm" - <Green>DEF bonus</Green>
-              {toSelf ? (
-                "."
-              ) : (
-                <>
-                  : <Red>{getESBuffValue(inputs[0] || 0)}.</Red>
-                </>
-              )}
-            </span>
-            <br />
-            <span className={geo >= 2 ? "" : "opacity-50"}>
-              • 2 Geo characters: Adds "Impregnable" - Increased resistance to interruption.
-            </span>
-            <br />
-            <span className={geo >= 3 ? "" : "opacity-50"}>
-              • 3 Geo character: Adds "Crunch" - <Green b>15%</Green> <Green>Geo DMG Bonus</Green>.
-            </span>
-          </>
-        );
-      },
+      description: `Provides up to 3 buffs to active characters within the skill's AoE based on the number of Geo
+      characters in the party:
+      <br />• 1 Geo character: Adds "Standing Firm" - {DEF bonus}#[gr]
+      <br />• 2 Geo characters: Adds "Impregnable" - Increased resistance to interruption.
+      <br />• 3 Geo character: Adds "Crunch" - {15%}#[b,gr] {Geo DMG Bonus}#[gr].`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -193,12 +165,8 @@ const Gorou: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          After using Juuga: Forward Unto Victory [EB], all nearby party members' <Green>DEF</Green> is increased by{" "}
-          <Green b>25%</Green> for 12s.
-        </>
-      ),
+      description: `After using Juuga: Forward Unto Victory [EB], all nearby party members' {DEF}#[gr} is increased by
+      {25%}#[b,gr] for 12s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "def_", 25),
     },
@@ -206,27 +174,11 @@ const Gorou: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.PARTY,
-      desc: ({ charData, partyData }) => {
-        const { geo = 0 } = countVision(partyData, charData);
-        return (
-          <>
-            For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB], increases all nearby
-            party members' <Geo>Geo</Geo> <Green>CRIT DMG</Green> based on the buff level of the skill's field:
-            <br />
-            <span className={geo === 1 ? "" : "opacity-50"}>
-              • "Standing Firm": <Green b>+10%</Green>
-            </span>
-            <br />
-            <span className={geo === 2 ? "" : "opacity-50"}>
-              • "Impregnable": <Green b>+20%</Green>
-            </span>
-            <br />
-            <span className={geo >= 3 ? "" : "opacity-50"}>
-              • "Crunch": <Green b>+40%</Green>
-            </span>
-          </>
-        );
-      },
+      description: `For 12s after using Inuzaka All-Round Defense [ES] or Juuga: Forward Unto Victory [EB], increases all nearby
+      party members' {Geo CRIT DMG}#[gr] based on the buff level of the skill's field:
+      <br />• "Standing Firm": {10%}#[b,gr]
+      <br />• "Impregnable": {20%}#[b,gr]
+      <br />• "Crunch": {40%}#[b,gr]`,
       isGranted: checkCons[6],
       applyBuff: (obj) => {
         const { geo = 0 } = countVision(obj.partyData, obj.charData);

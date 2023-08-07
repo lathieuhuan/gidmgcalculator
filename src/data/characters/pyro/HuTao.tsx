@@ -122,8 +122,8 @@ const HuTao: DefaultAppCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Increases the Blood Blossom <Green>[ES] DMG</Green> by an amount equal to <Green b>10%</Green> of Hu Tao's{" "}
-          <Green>Max HP</Green>.
+          Increases the Blood Blossom {[ES] DMG}#[gr] by an amount equal to {10%}#[b,gr] of Hu Tao's{" "}
+          {Max HP}#[gr].
         </>
       ),
       isGranted: checkCons[2],
@@ -139,7 +139,7 @@ const HuTao: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases Hu Tao's <Green>ATK</Green> based on her <Green>Max HP</Green>, and grants her a{" "}
+          Increases Hu Tao's {ATK}#[gr] based on her {Max HP}#[gr], and grants her a{" "}
           <Pyro>Pyro Infusion</Pyro>.
         </>
       ),
@@ -165,7 +165,7 @@ const HuTao: DefaultAppCharacter = {
       desc: () => (
         <>
           When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will have their{" "}
-          <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 8s.
+          {CRIT Rate}#[gr] increased by {12%}#[b,gr] for 8s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -191,7 +191,7 @@ const HuTao: DefaultAppCharacter = {
       desc: () => (
         <>
           Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all nearby allies in the
-          party (excluding Hu Tao) will have their <Green>CRIT Rate</Green> increased by <Green b>12%</Green> for 15s.
+          party (excluding Hu Tao) will have their {CRIT Rate}#[gr] increased by {12%}#[b,gr] for 15s.
         </>
       ),
       isGranted: checkCons[4],
@@ -203,8 +203,8 @@ const HuTao: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her <Green>CRIT Rate</Green> is
-          increased by <Green b>100%</Green> for 10s.
+          When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her {CRIT Rate}#[gr] is
+          increased by {100%}#[b,gr] for 10s.
         </>
       ),
       isGranted: checkCons[6],

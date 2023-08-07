@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { ATTACK_ELEMENTS, EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { AttackPatternPath, applyModifier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -103,15 +102,11 @@ const Zhongli: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          • <Green>Normal Attack, Charged Attack, and Plunging Attack DMG</Green> increased by <Green b>1.39%</Green> of{" "}
-          <Green>Max HP</Green>.
-          <br />• Dominus Lapidis Stone Stele, resonance, and hold <Green>[ES] DMG</Green> increased by{" "}
-          <Green b>1.9%</Green> of <Green>Max HP</Green>.
-          <br />• Planet Befall <Green>[EB] DMG</Green> increased by <Green b>33%</Green> of <Green>Max HP</Green>.
-        </>
-      ),
+      description: `• {Normal Attack, Charged Attack, and Plunging Attack DMG}#[gr] increased by {1.39%}#[b,gr] of
+      {Max HP}#[gr].
+      <br />• Dominus Lapidis Stone Stele, resonance, and hold {[ES] DMG}#[gr] increased by {1.9%}#[b,gr] of
+      {Max HP}#[gr].
+      <br />• Planet Befall {[EB] DMG}#[gr] increased by {33%}#[b,gr] of {Max HP}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "PA.flat", "ES.flat", "EB.flat"];
@@ -125,12 +120,8 @@ const Zhongli: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          When Jade Shield takes DMG, the characters have their <Green>Shield Strength</Green> increased by{" "}
-          <Green b>5%</Green> until the Jade Shield disappears. Max <Rose>5</Rose> stacks.
-        </>
-      ),
+      description: `When Jade Shield takes DMG, the characters have their {Shield Strength}#[gr] increased by
+      {5%}#[b,gr] until the Jade Shield disappears. Max {5}#[r] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -147,12 +138,8 @@ const Zhongli: DefaultAppCharacter = {
     {
       index: 0,
       src: "Jade Shield",
-      desc: () => (
-        <>
-          Jade Shield decreases <Green>Elemental RES</Green> and <Green>Physical RES</Green> of opponents in a small AoE
-          by <Green b>20%</Green>. Cannot be stacked.
-        </>
-      ),
+      description: `Jade Shield decreases {Elemental RES}#[gr] and {Physical RES}#[gr] of opponents in a small AoE
+      by {20%}#[b,gr]. Cannot be stacked.`,
       applyDebuff: ({ resistReduct, desc, tracker }) => {
         applyModifier(desc, resistReduct, [...ATTACK_ELEMENTS], 20, tracker);
       },

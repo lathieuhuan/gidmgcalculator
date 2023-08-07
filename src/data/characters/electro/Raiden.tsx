@@ -8,7 +8,6 @@ import type {
 } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -161,12 +160,8 @@ const Raiden: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: ({ totalAttr }) => (
-        <>
-          Each 1% above 100% <Green>Energy Recharge</Green> grants the Raiden Shogun <Green b>0.4%</Green>{" "}
-          <Green>Electro DMG Bonus</Green>. <Red>Electro DMG Bonus: {getBuffValue.A4(totalAttr)}%.</Red>
-        </>
-      ),
+      description: `Each 1% above 100% {Energy Recharge}#[gr] grants the Raiden Shogun {0.4%}#[b,gr]
+      {Electro DMG Bonus}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const buffValue = getBuffValue.A4(totalAttr);
@@ -179,12 +174,8 @@ const Raiden: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
-      desc: (obj) => (
-        <>
-          Eye of Stormy Judgment increases <Green>Elemental Burst DMG</Green> based on the <Green>Energy Cost</Green> of
-          the Elemental Burst during the eye's duration. <Red>DMG bonus: {getBuffValue.ES(obj).value}%.</Red>
-        </>
-      ),
+      description: `Eye of Stormy Judgment increases {Elemental Burst DMG}#[gr] based on the {Energy Cost}#[gr] of
+      the Elemental Burst during the eye's duration.`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -202,25 +193,12 @@ const Raiden: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, partyData, inputs }) => {
-        const { stackPerEnergy, stacks, extraStacks } = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
-        return (
-          <>
-            Musou no Hitotachi and Musou Isshin's attacks <Green>[EB] DMG</Green> will be increased based on the number
-            of Chakra Desiderata's Resolve stacks consumed.{" "}
-            <Red>
-              Resolve per Energy spent: {stackPerEnergy / 100}. Total Resolve: {stacks}
-            </Red>
-            <br />
-            Grants an <Electro>Electro Infusion</Electro> which cannot be overridden.
-            <br />• At <Lightgold>C1</Lightgold>, increases <Green>Resolve</Green> gained from Electro characters by{" "}
-            <Green b>80%</Green>, from characters of other visions by <Green b>20%</Green>.{" "}
-            <Red>Extra Resolve: {extraStacks}</Red>
-            <br />• At <Lightgold>C2</Lightgold>, the Raiden Shogun's attacks ignore <Green b>60%</Green> of opponents'{" "}
-            <Green>DEF</Green>.
-          </>
-        );
-      },
+      description: `Musou no Hitotachi and Musou Isshin's attacks {[EB] DMG}#[gr] will be increased based on the number
+      of Chakra Desiderata's Resolve stacks consumed.
+      <br />Grants an {Electro Infusion}#[electro] which cannot be overridden.
+      <br />• At {C1}#[g], increases {Resolve}#[gr] gained from Electro characters by {80%}#[b,gr], from characters of
+      other visions by {20%}#[b,gr].
+      <br />• At {C2}#[g], the Raiden Shogun's attacks ignore {60%}#[b,gr] of opponents' {DEF}#[gr}.`,
       inputConfigs: [
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
@@ -254,12 +232,8 @@ const Raiden: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.TEAMMATE,
-      desc: () => (
-        <>
-          When the Musou Isshin state expires, all nearby party members (excluding the Raiden Shogun) gain{" "}
-          <Green b>30%</Green> <Green>ATK</Green> for 10s.
-        </>
-      ),
+      description: `When the Musou Isshin state expires, all nearby party members (excluding the Raiden Shogun) gain
+      {30%}#[b,gr] {ATK}#[gr] for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "atk_", 30),
     },

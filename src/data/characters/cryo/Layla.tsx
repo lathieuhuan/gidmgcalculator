@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -111,11 +110,7 @@ const Layla: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          <Green>Shooting Star DMG</Green> [~ES] is increased by <Green b>1.5%</Green> of Layla's <Green>Max HP</Green>.
-        </>
-      ),
+      description: `{Shooting Star DMG}#[gr] [~ES] is increased by {1.5%}#[b,gr] of Layla's {Max HP}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "flat", applyPercent(totalAttr.hp, 1.5)));
@@ -123,11 +118,7 @@ const Layla: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C1,
-      desc: () => (
-        <>
-          The <Green>Shield Absorption</Green> of the Curtain of Slumber [~ES] is increased by <Green b>20%</Green>.
-        </>
-      ),
+      description: `The {Shield Absorption}#[gr] of the Curtain of Slumber [~ES] is increased by {20%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.1", "pct_", 20));
@@ -135,12 +126,7 @@ const Layla: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Increases <Green>Shooting Star DMG</Green> [~ES] and <Green>Starlight Slug DMG</Green> [~EB] by{" "}
-          <Green b>40%</Green>.
-        </>
-      ),
+      description: `Increases {Shooting Star DMG}#[gr] [~ES] and {Starlight Slug DMG}#[gr] [~EB] by {40%}#[b,gr].`,
       isGranted: checkCons[6],
       applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "EB.pct_", 40, tracker);
@@ -153,14 +139,9 @@ const Layla: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          While the Curtain of Slumber [~ES] is active, each time the Curtain gains a Night Star:
-          <br />• The <Green>Shield Strength</Green> of the character is increased by <Green b>6%</Green>. Max{" "}
-          <Rose>4</Rose> stacks.
-          <br />• This effect persists until the Curtain of Slumber disappears.
-        </>
-      ),
+      description: `While the Curtain of Slumber [~ES] is active, each time the Curtain gains a Night Star:
+      <br />• The {Shield Strength}#[gr] of the character is increased by {6%}#[b,gr]. Max {4}#[r] stacks.
+      <br />• This effect persists until the Curtain of Slumber disappears.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -176,13 +157,8 @@ const Layla: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will increases{" "}
-          <Green>Normal and Charged Attack DMG</Green> of nearby party members based on <Green b>5%</Green> of Layla's{" "}
-          <Green>Max HP</Green>.
-        </>
-      ),
+      description: `When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will increases
+      {Normal and Charged Attack DMG}#[gr] of nearby party members based on {5%}#[b,gr] of Layla's {Max HP}#[gr].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {

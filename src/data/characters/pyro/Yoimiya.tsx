@@ -105,10 +105,10 @@ const Yoimiya: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
-          Yoimiya's <Green>Normal Attack DMG</Green> will be increased by{" "}
+          Yoimiya's {Normal Attack DMG}#[gr] will be increased by{" "}
           <Green b>{1 + round(getESBuffValue(char, partyData) / 100, 3)}</Green> times and converted to Blazing Arrows
           dealing <Pyro>Pyro DMG</Pyro>.
-          <br />• At <Lightgold>A1</Lightgold>, Normal Attacks on hit will increase Yoimiya's{" "}
+          <br />• At {A1}#[g], Normal Attacks on hit will increase Yoimiya's{" "}
           <Green>Pyro DMG Bonus</Green> by <Green b>2%</Green> for 3s. Maximum <Rose>10 stacks</Rose>.
         </>
       ),
@@ -138,8 +138,8 @@ const Yoimiya: DefaultAppCharacter = {
       affect: EModAffect.TEAMMATE,
       desc: () => (
         <>
-          Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a <Green b>10%</Green>{" "}
-          <Green>ATK Bonus</Green> for 15s. A further <Green b>1%</Green> <Green>ATK Bonus</Green> will be added for
+          Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a {10%}#[b,gr]{" "}
+          {ATK Bonus}#[gr] for 15s. A further <Green b>1%</Green> {ATK Bonus}#[gr] will be added for
           each "Tricks of the Trouble-Maker" [A1] stacks Yoimiya possesses when using Ryuukin Saxifrage.
         </>
       ),
@@ -161,8 +161,8 @@ const Yoimiya: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's <Green>ATK</Green>{" "}
-          is increased by <Green b>20%</Green> for 20s.
+          When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's {ATK}#[gr]{" "}
+          is increased by {20%}#[b,gr] for 20s.
         </>
       ),
       isGranted: checkCons[1],
@@ -174,7 +174,7 @@ const Yoimiya: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a <Green b>25%</Green>{" "}
+          When Yoimiya's <Pyro>Pyro DMG</Pyro> scores a CRIT Hit, she will gain a {25%}#[b,gr]{" "}
           <Green>Pyro DMG Bonus</Green> for 6s. Can work off-field.
         </>
       ),

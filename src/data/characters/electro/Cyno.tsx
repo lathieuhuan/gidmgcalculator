@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Electro, Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
@@ -113,14 +112,9 @@ const Cyno: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          • Pactsworn Pathclearer's [EB] <Green>Normal Attack DMG</Green> is increased by <Green b>150%</Green> of
-          Cyno's <Green>Elemental Mastery</Green>.
-          <br />• <Green>Duststalker Bolt DMG</Green> [A1] is increased by <Green b>250%</Green> of Cyno's{" "}
-          <Green>Elemental Mastery</Green>.
-        </>
-      ),
+      description: `• Pactsworn Pathclearer's [EB] {Normal Attack DMG}#[gr] is increased by {150%}#[b,gr] of Cyno's
+      {Elemental Mastery}#[gr].
+      <br />• {Duststalker Bolt DMG}#[gr] [A1] is increased by {250%}#[b,gr] of Cyno's {Elemental Mastery}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(
@@ -135,13 +129,9 @@ const Cyno: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Under Pactsworn Pathclearer state:
-          <br />• Cyno's <Green>Elemental Mastery</Green> is increased by <Green b>100</Green>.
-          <br />• Cyno gains an <Electro>Electro Infusion</Electro> that cannot be overriden.
-        </>
-      ),
+      description: `Under Pactsworn Pathclearer state:
+      <br />• Cyno's {Elemental Mastery}#[gr] is increased by {100}#[b,gr].
+      <br />• Cyno gains an {Electro Infusion}#[electro] that cannot be overriden.`,
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
         overwritable: false,
@@ -152,13 +142,9 @@ const Cyno: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at intervals. If he
-          activates Secret Rite: Chasmic Soulfarer <Green>[ES]</Green> while affected by this stance, its{" "}
-          <Green>DMG</Green> will be increased by <Green b>35%</Green>
-        </>
-      ),
+      description: `When Cyno is in the Pactsworn Pathclearer state, he will enter the Endseer stance at intervals. If
+      he activates Secret Rite: Chasmic Soulfarer {[ES]}#[gr] while affected by this stance, its {DMG}#[gr] will be
+      increased by {35%}#[b,gr]`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.A1, "ES.0", "pct_", 35));
@@ -168,12 +154,8 @@ const Cyno: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After using Sacred Rite: Wolf's Swiftness, Cyno's <Green>Normal Attack SPD</Green> will be increased by{" "}
-          <Green b>20%</Green> for 10s.
-        </>
-      ),
+      description: `After using Sacred Rite: Wolf's Swiftness, Cyno's {Normal Attack SPD}#[gr] will be increased by
+      {20%}#[b,gr] for 10s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 20),
     },
@@ -181,12 +163,8 @@ const Cyno: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Cyno's Normal Attacks hit opponents, his <Green>Electro DMG Bonus</Green> will increase by{" "}
-          <Green b>10%</Green> for 4s. This effect can be triggered once every 0.1s. Max <Rose>5</Rose> stacks.
-        </>
-      ),
+      description: `When Cyno's Normal Attacks hit opponents, his {Electro DMG Bonus}#[gr] will increase by {10%}#[b,gr]
+      for 4s. This effect can be triggered once every 0.1s. Max {5}#[r] stacks.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {

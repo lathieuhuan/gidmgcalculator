@@ -2,7 +2,6 @@ import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyD
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Cryo, Green, Rose } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -106,12 +105,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal <Cryo>Cryo</Cryo>{" "}
-          <Green>DMG</Green> the DMG dealt is increased based on Shenhe's <Green>current ATK</Green>.
-        </>
-      ),
+      description: `When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal {Cryo}#[cryo]
+      DMG the {DMG}#[gr] dealt is increased based on Shenhe's {current ATK}#[gr].`,
       inputConfigs: [
         { label: "Current ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
@@ -132,12 +127,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          An active character within Divine Maiden's Deliverance [EB] field gain <Green b>15%</Green>{" "}
-          <Green>Cryo DMG Bonus</Green>.
-        </>
-      ),
+      description: `An active character within Divine Maiden's Deliverance [EB] field gain {15%}#[b,gr]
+      {Cryo DMG Bonus}#[gr].`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "cryo", 15),
     },
@@ -145,19 +136,9 @@ const Shenhe: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      desc: ({ inputs }) => (
-        <>
-          After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the following effects:
-          <br />
-          <span className={inputs[0] ? "" : "opacity-50"}>
-            • Press: <Green>Elemental Skill and Elemental Burst DMG</Green> increased by <Green b>15%</Green> for 10s.
-          </span>
-          <br />
-          <span className={inputs[1] ? "" : "opacity-50"}>
-            • Hold: <Green>Normal, Charged and Plunging Attack DMG</Green> increased by <Green b>15%</Green> for 15s.
-          </span>
-        </>
-      ),
+      description: `After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the following effects:
+      <br />• Press: {Elemental Skill and Elemental Burst DMG}#[gr] increased by {15%}#[b,gr] for 10s.
+      <br />• Hold: {Normal, Charged and Plunging Attack DMG}#[gr] increased by {15%}#[b,gr] for 15s.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         { label: "Press", type: "check", initialValue: 1 },
@@ -176,12 +157,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          Active characters within Divine Maiden's Deliverance's field deal <Green b>15%</Green> increased{" "}
-          <Cryo>Cryo</Cryo> <Green>CRIT DMG</Green>.
-        </>
-      ),
+      description: `Active characters within Divine Maiden's Deliverance's field deal {15%}#[b,gr] increased
+      {Cryo CRIT DMG}#[gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attElmtBonus", "cryo.cDmg_", 15),
     },
@@ -189,13 +166,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra stack for 60s. Each
-          stack increases her next Spring Spirit Summoning <Green>[ES] DMG</Green> by <Green b>5%</Green>. Maximum{" "}
-          <Rose>50</Rose> stacks.
-        </>
-      ),
+      description: `Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra stack for
+      60s. Each stack increases her next Spring Spirit Summoning {[ES] DMG}#[gr] by {5%}#[b,gr]. Maximum {50}#[r] stacks.`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -213,12 +185,7 @@ const Shenhe: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      desc: ({ fromSelf, char, inputs, partyData }) => (
-        <>
-          The field decreases opponents' <Green>Cryo RES</Green> and <Green>Physical RES</Green> by{" "}
-          <Green b>{getEBDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
-        </>
-      ),
+      description: `The field decreases opponents' {Cryo RES}#[gr] and {Physical RES}#[gr].`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",

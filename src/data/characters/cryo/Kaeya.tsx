@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -89,12 +88,8 @@ const Kaeya: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Kaeya's <Green>Normal and Charged Attack CRIT Rate</Green> against opponents affected by Cryo is increased by{" "}
-          <Green b>15%</Green>.
-        </>
-      ),
+      description: `Kaeya's {Normal and Charged Attack CRIT Rate}#[gr] against opponents affected by Cryo is increased
+      by {15%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", ["NA.cRate_", "CA.cRate_"], 15),
     },

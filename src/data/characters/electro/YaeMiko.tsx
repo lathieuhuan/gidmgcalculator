@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Red } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -93,12 +92,8 @@ const YaeMiko: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: ({ totalAttr }) => (
-        <>
-          Every point of <Green>Elemental Mastery</Green> Yae Miko possesses will increase Sesshou Sakura{" "}
-          <Green>[ES] DMG</Green> by <Green b>0.15%</Green>. <Red>DMG bonus: {(totalAttr.em * 15) / 100}%.</Red>
-        </>
-      ),
+      description: `Every point of {Elemental Mastery}#[gr] Yae Miko possesses will increase Sesshou Sakura
+      {[ES] DMG}#[gr] by {0.15%}#[b,gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct_", (totalAttr.em * 15) / 100, tracker);
@@ -110,12 +105,8 @@ const YaeMiko: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When Sesshou Sakura thunderbolt [ES] hit opponents, the <Green>Electro DMG Bonus</Green> of all nearby party
-          members is increased by <Green b>20%</Green> for 5s.
-        </>
-      ),
+      description: `When Sesshou Sakura thunderbolt [ES] hit opponents, the {Electro DMG Bonus}#[gr] of all nearby party
+      members is increased by {20%}#[b,gr] for 5s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "electro", 20),
     },
@@ -123,11 +114,7 @@ const YaeMiko: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Sesshou Sakura's attacks will ignore <Green b>60%</Green> of the opponents' <Green>DEF</Green>.
-        </>
-      ),
+      description: `Sesshou Sakura's attacks will ignore {60%}#[b,gr] of the opponents' {DEF}#[gr}.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "ES.defIgn_", 60),
     },

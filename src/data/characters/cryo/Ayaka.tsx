@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Cryo, Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -106,11 +105,7 @@ const Ayaka: DefaultAppCharacter = {
       index: 0,
       src: "Alternate Sprint",
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Ayaka reappears from Senho form, she gains a <Cryo>Cryo Infusion</Cryo> for a brief period.
-        </>
-      ),
+      description: `When Ayaka reappears from Senho form, she gains a {Cryo Infusion}#[cryo] for a brief period.`,
       infuseConfig: {
         overwritable: true,
       },
@@ -119,12 +114,8 @@ const Ayaka: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After using Kamisato Art: Hyouka [ES], Ayaka's <Green>Normal and Charged attack DMG</Green> is increased by{" "}
-          <Green b>30%</Green> for 6s.
-        </>
-      ),
+      description: `After using Kamisato Art: Hyouka [ES], Ayaka's {Normal and Charged attack DMG}#[gr] is increased by
+      {30%}#[b,gr] for 6s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 30),
     },
@@ -132,12 +123,8 @@ const Ayaka: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains <Green b>18%</Green>{" "}
-          <Green>Cryo DMG Bonus</Green> for 10s.
-        </>
-      ),
+      description: `When the Cryo application at the end of Kamisato Art: Senho hits an opponent, Ayaka gains
+      {18%}#[b,gr] {Cryo DMG Bonus}#[gr] for 10s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "cryo", 18),
     },
@@ -145,12 +132,7 @@ const Ayaka: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Ayaka gains Usurahi Butou every 10s, increasing her <Green>Charged Attack DMG</Green> by <Green b>298%</Green>
-          .
-        </>
-      ),
+      description: `Ayaka gains Usurahi Butou every 10s, increasing her {Charged Attack DMG}#[gr] by {298%}#[b,gr].`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "CA.pct_", 298),
     },
@@ -159,12 +141,8 @@ const Ayaka: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      desc: () => (
-        <>
-          Opponents damaged by Frostflake Seki no To [~EB] will have their <Green>DEF</Green> decreased by{" "}
-          <Green b>30%</Green> for 6s.
-        </>
-      ),
+      description: `Opponents damaged by Frostflake Seki no To [~EB] will have their {DEF}#[gr} decreased by
+      {30%}#[b,gr] for 6s.`,
       isGranted: checkCons[4],
       applyDebuff: makeModApplier("resistReduct", "def", 30),
     },

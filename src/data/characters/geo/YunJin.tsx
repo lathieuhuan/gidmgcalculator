@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Green, Lightgold, Red } from "@Src/pure-components";
 import { applyPercent, countVision, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -130,20 +129,9 @@ const YunJin: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: ({ charData, partyData }) => {
-        const visionCount = countVision(partyData, charData);
-        const n = Object.keys(visionCount).length;
-        return (
-          <>
-            The <Green>Normal Attack DMG Bonus</Green> granted by Flying Cloud Flag Formation [~EB] is further increased
-            by <Green className={n === 1 ? "" : "opacity-50"}>2.5%</Green>/
-            <Green className={n === 2 ? "" : "opacity-50"}>5%</Green>/
-            <Green className={n === 3 ? "" : "opacity-50"}>7.5%</Green>/
-            <Green className={n === 4 ? "" : "opacity-50"}>11.5%</Green> of Yun Jin's <Green>DEF</Green> when the party
-            contains characters of 1/2/3/4 Elemental Types, respectively.
-          </>
-        );
-      },
+      description: `The {Normal Attack DMG Bonus}#[gr] granted by Flying Cloud Flag Formation [~EB] is further increased
+      by {2.5%}#[b,gr]/{5%}#[b,gr]/{7.5%}#[b,gr]/{11.5%}#[b,gr] of Yun Jin's {DEF}#[gr} when the party contains
+      characters of 1/2/3/4 Elemental Types, respectively.`,
       isGranted: checkAscs[4],
     },
   ],
@@ -151,16 +139,10 @@ const YunJin: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      desc: (obj) => (
-        <>
-          Increases <Green>Normal Attack DMG</Green> based on Yun Jin's <Green>current DEF</Green>.{" "}
-          {!obj.toSelf && <Red>Total bonus: {getNaBonus(obj).value}.</Red>}
-          <br />• At <Lightgold>A4</Lightgold>, further increases the bonus based on how many element types in the
-          party.
-          <br />• At <Lightgold>C2</Lightgold>, increases <Green>Normal Attack DMG</Green> by <Green b>15%</Green>.
-          <br />• At <Lightgold>C6</Lightgold>, increases <Green>Normal ATK SPD</Green> by <Green b>12%</Green>.
-        </>
-      ),
+      description: `Increases {Normal Attack DMG}#[gr] based on Yun Jin's {current DEF}#[gr].
+      <br />• At {A4}#[g], further increases the bonus based on how many element types in the party.
+      <br />• At {C2}#[g], increases {Normal Attack DMG}#[gr] by {15%}#[b,gr].
+      <br />• At {C6}#[g], increases {Normal ATK SPD}#[gr] by {12%}#[b,gr].`,
       affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
@@ -187,12 +169,7 @@ const YunJin: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Yun Jin trigger the Crystallize Reaction, her <Green>DEF</Green> is increased by <Green b>20%</Green> for
-          12s.
-        </>
-      ),
+      description: `When Yun Jin trigger the Crystallize Reaction, her {DEF}#[gr} is increased by {20%}#[b,gr] for 12s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "def_", 20),
     },

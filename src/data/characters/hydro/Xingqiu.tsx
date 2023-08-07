@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -94,11 +93,7 @@ const Xingqiu: DefaultAppCharacter = {
     {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
-      desc: () => (
-        <>
-          Xingqiu gains a <Green b>20%</Green> <Green>Hydro DMG Bonus</Green>.
-        </>
-      ),
+      description: `Xingqiu gains a {20%}#[b,gr] {Hydro DMG Bonus}#[gr].`,
       applyBuff: makeModApplier("totalAttr", "hydro", 20),
     },
   ],
@@ -107,12 +102,8 @@ const Xingqiu: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen <Green>[ES] DMG</Green> is increased by{" "}
-          <Green b>50%</Green>.
-        </>
-      ),
+      description: `During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen {[ES] DMG}#[gr] is increased by
+      {50%}#[b,gr].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "ES.multPlus", 50),
     },
@@ -121,11 +112,7 @@ const Xingqiu: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Decreases the <Green>Hydro RES</Green> of opponents hit by sword rain attacks by <Green b>15%</Green> for 4s.
-        </>
-      ),
+      description: `Decreases the {Hydro RES}#[gr] of opponents hit by sword rain attacks by {15%}#[b,gr] for 4s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "hydro", 15),
     },

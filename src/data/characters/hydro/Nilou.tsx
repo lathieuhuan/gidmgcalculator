@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -110,23 +109,15 @@ const Nilou: DefaultAppCharacter = {
     {
       src: EModSrc.C1,
       isGranted: checkCons[1],
-      desc: () => (
-        <>
-          <Green>Watery moon DMG</Green> is increased by <Green b>65%</Green>.
-        </>
-      ),
+      description: `{Watery moon DMG}#[gr] is increased by {65%}#[b,gr].`,
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.0", "pct_", 65));
       },
     },
     {
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          For every 1,000 points of Max HP, Nilou's <Green>CRIT Rate</Green> is increased by <Green b>0.6%</Green> (max{" "}
-          <Rose>30%</Rose>) and her <Green>CRIT DMG</Green> is increase by <Green b>1.2%</Green> (max <Rose>60%</Rose>).
-        </>
-      ),
+      description: `For every 1,000 points of Max HP, Nilou's {CRIT Rate}#[gr] is increased by {0.6%}#[b,gr] (max
+      {30%}#[r]) and her {CRIT DMG}#[gr] is increase by {1.2%}#[b,gr] (max {60%}#[r]).`,
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const baseValue = round(Math.min((totalAttr.hp / 1000) * 0.6, 30), 1);
@@ -140,15 +131,10 @@ const Nilou: DefaultAppCharacter = {
       index: 0,
       src: "Golden Chalice's Bounty",
       affect: EModAffect.PARTY,
-      desc: ({ toSelf, totalAttr, inputs }) => (
-        <>
-          Increases characters' <Green>Elemental Mastery</Green> by <Green b>100</Green> for 10s whenever they are hit
-          by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
-          <br />• At <Lightgold>A4</Lightgold>, each 1,000 points of Nilou <Green>Max HP</Green> above 30,000 will cause{" "}
-          <Green>Bountiful Cores DMG</Green> to increase by <Green>9%</Green>. Maximum <Rose>400%</Rose>.{" "}
-          <Red>DMG bonus: {getA4BuffValue(toSelf ? totalAttr.hp : inputs[0] ?? 0)}%.</Red>
-        </>
-      ),
+      description: `Increases characters' {Elemental Mastery}#[gr] by {100}#[b,gr] for 10s whenever they are hit
+      by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
+      <br />• At {A4}#[g], each 1,000 points of Nilou {Max HP}#[gr] above 30,000 will cause
+      {Bountiful Cores DMG}#[gr] to increase by {9%}#[b.gr]. Maximum {400%}#[r].`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -176,12 +162,8 @@ const Nilou: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After the third dance step of Pirouette state [~ES] hits opponents, Dance of the Lotus: Distant Dreams,
-          Listening Spring <Green>[EB] DMG</Green> will be increased by <Green b>50%</Green> for 8s.
-        </>
-      ),
+      description: `After the third dance step of Pirouette state [~ES] hits opponents, Dance of the Lotus: Distant Dreams,
+      Listening Spring {[EB] DMG}#[gr] will be increased by {50%}#[b,gr] for 8s.`,
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 50),
     },
   ],
@@ -189,24 +171,16 @@ const Nilou: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          After characters affected by the Golden Chalice's Bounty deal Hydro DMG to opponents, that opponent's{" "}
-          <Green>Hydro RES</Green> will be decreased by <Green b>35%</Green> for 10s.
-        </>
-      ),
+      description: `After characters affected by the Golden Chalice's Bounty deal Hydro DMG to opponents, that opponent's
+      {Hydro RES}#[gr] will be decreased by {35%}#[b,gr] for 10s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "hydro", 35),
     },
     {
       index: 1,
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          After a triggered Bloom reaction deals DMG to opponents, their <Green>Dendro RES</Green> will be decreased by{" "}
-          <Green b>35%</Green> for 10s.
-        </>
-      ),
+      description: `After a triggered Bloom reaction deals DMG to opponents, their {Dendro RES}#[gr] will be decreased by
+      {35%}#[b,gr] for 10s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "dendro", 35),
     },

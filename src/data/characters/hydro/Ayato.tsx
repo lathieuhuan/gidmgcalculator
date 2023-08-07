@@ -1,7 +1,6 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Green, Hydro, Lightgold } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -133,15 +132,10 @@ const Ayato: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          • Converts his Normal Attack DMG into AoE <Hydro>Hydro DMG</Hydro> (Shunsuiken) that cannot be overridden.
-          <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase <Green>Shunsuiken DMG</Green> based on
-          his <Green>current Max HP</Green>.
-          <br />• At <Lightgold>C2</Lightgold>, Ayato's <Green>Max HP</Green> is increased by <Green b>50%</Green> when
-          he has at least 3 Namisen stacks.
-        </>
-      ),
+      description: `• Converts his Normal Attack DMG into AoE {Hydro DMG}#[hydro] (Shunsuiken) that cannot be overridden.
+      <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase {Shunsuiken DMG}#[gr] based on his
+      {current Max HP}#[gr].
+      <br />• At {C2}#[g], Ayato's {Max HP}#[gr] is increased by {50%}#[b,gr] when he has at least 3 Namisen stacks.`,
       inputConfigs: [
         {
           label: "Namisen stacks",
@@ -176,12 +170,7 @@ const Ayato: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: ({ toSelf, char, partyData, inputs }) => (
-        <>
-          Increases the <Green>Normal Attack DMG</Green> of characters within its AoE by{" "}
-          <Green b>{getEBBuffValue(toSelf, char, partyData, inputs)}%</Green>.
-        </>
-      ),
+      description: `Increases the {Normal Attack DMG}#[gr] of characters within its AoE.`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",
@@ -198,11 +187,7 @@ const Ayato: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          <Green>Shunsuiken DMG</Green> is increased by <Green b>40%</Green> against opponents with 50% HP or less.
-        </>
-      ),
+      description: `{Shunsuiken DMG}#[gr] is increased by {40%}#[b,gr] against opponents with 50% HP or less.`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.C1, ["ES.0", "ES.1", "ES.2", "ES.3"], "pct_", 40));
@@ -212,12 +197,8 @@ const Ayato: DefaultAppCharacter = {
       index: 5,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          After using Kamisato Art: Suiyuu [EB], all nearby party members will have <Green b>15%</Green> increased{" "}
-          <Green>Normal Attack SPD</Green> for 15s.
-        </>
-      ),
+      description: `After using Kamisato Art: Suiyuu [EB], all nearby party members will have {15%}#[b,gr] increased
+      {Normal Attack SPD}#[gr] for 15s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },

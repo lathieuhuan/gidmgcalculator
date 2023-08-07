@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -92,12 +91,8 @@ const Venti: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Venti picks up an Elemental Orb or Particle, he receives a <Green b>25%</Green>{" "}
-          <Green>Anemo DMG Bonus</Green> for 10s.
-        </>
-      ),
+      description: `When Venti picks up an Elemental Orb or Particle, he receives a {25%}#[b,gr] {Anemo DMG Bonus}#[gr]
+      for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "anemo", 25),
     },
@@ -106,13 +101,9 @@ const Venti: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Skyward Sonnet [ES] decreases opponents' <Green>Anemo RES</Green> and <Green>Physical RES</Green> by{" "}
-          <Green b>12%</Green> for 10s. Opponents launched by Skyward Sonnet suffer an additional <Green b>12%</Green>{" "}
-          <Green>Anemo RES</Green> and <Green>Physical RES</Green> decrease while airborne.
-        </>
-      ),
+      description: `Skyward Sonnet [ES] decreases opponents' {Anemo RES}#[gr] and {Physical RES}#[gr] by {12%}#[b,gr]
+      for 10s. Opponents launched by Skyward Sonnet suffer an additional {12%}#[b,gr] {Anemo RES}#[gr] and
+      {Physical RES}#[gr] decrease while airborne.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -128,12 +119,8 @@ const Venti: DefaultAppCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Wind's Grand Ode decreases opponents' <Green>Anemo RES</Green> and <Green>RES</Green> towards the{" "}
-          <Green>Element absorbed</Green> by <Green b>20%</Green>.
-        </>
-      ),
+      description: `Wind's Grand Ode decreases opponents' {Anemo RES}#[gr] and {RES}#[gr] towards the
+      {Element absorbed}#[gr] by {20%}#[b,gr].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

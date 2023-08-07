@@ -111,7 +111,7 @@ const Yanfei: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: ({ char, partyData }) => (
         <>
-          Increases <Green>Charged Attack DMG</Green> by <Green b>{getEBBuffValue(char, partyData)}%</Green>.
+          Increases {Charged Attack DMG}#[gr] by <Green b>{getEBBuffValue(char, partyData)}%</Green>.
         </>
       ),
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
@@ -125,7 +125,7 @@ const Yanfei: DefaultAppCharacter = {
       desc: () => (
         <>
           When Yanfei's Charged Attack consumes Scarlet Seals, each Scarlet Seal will increase her{" "}
-          <Green>Pyro DMG Bonus</Green> by <Green b>5%</Green> for 6s.
+          <Green>Pyro DMG Bonus</Green> by {5%}#[b,gr] for 6s.
         </>
       ),
       isGranted: checkAscs[1],
@@ -145,7 +145,7 @@ const Yanfei: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by <Green b>20%</Green> against enemies below 50%
+          Increases Yanfei's <Green>Charged Attack CRIT Rate</Green> by {20%}#[b,gr] against enemies below 50%
           HP.
         </>
       ),

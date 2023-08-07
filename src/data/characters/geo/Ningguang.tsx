@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs } from "../utils";
@@ -109,12 +108,8 @@ const Ningguang: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          A character that passes through the Jade Screen [~ES] will gain a <Green b>12%</Green>{" "}
-          <Green>Geo DMG Bonus</Green> for 10s.
-        </>
-      ),
+      description: `A character that passes through the Jade Screen [~ES] will gain a {12%}#[b,gr] {Geo DMG Bonus}#[gr]
+      for 10s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "geo", 12),
     },

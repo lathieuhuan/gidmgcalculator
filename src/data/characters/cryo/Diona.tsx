@@ -123,12 +123,8 @@ const Diona: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Increases Icy Paws <Green>[ES] DMG</Green> by <Green b>15%</Green>, and increases its shield's{" "}
-          <Green>DMG Absorption</Green> by <Green b>15%</Green>.
-        </>
-      ),
+      description: `Increases Icy Paws {[ES] DMG}#[gr] by {15%}#[b,gr], and increases its shield's {DMG Absorption}#[gr]
+      by {15%}#[b,gr].`,
       isGranted: checkCons[2],
       applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct_", 15, tracker);
@@ -141,12 +137,8 @@ const Diona: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          When characters within Signature Mix's radius have more than 50% HP, their <Green>Elemental Mastery</Green> is
-          increased by <Green b>200</Green>.
-        </>
-      ),
+      description: `When characters within Signature Mix's radius have more than 50% HP, their {Elemental Mastery}#[gr]
+      is increased by {200}#[b,gr].`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "em", 200),
     },

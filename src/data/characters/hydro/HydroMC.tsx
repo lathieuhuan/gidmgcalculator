@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Green, Lesser, Rose } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
@@ -105,12 +104,8 @@ const HydroMC: DefaultAppCharacter = {
       index: 0,
       src: "Suffusion [~ES]",
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When the Traveler's HP is higher than 50%, they will continuously lose HP and cause Dewdrop DMG to increase
-          based on their HP.
-        </>
-      ),
+      description: `When the Traveler's HP is higher than 50%, they will continuously lose HP and cause Dewdrop DMG to increase
+      based on their HP.`,
       applyFinalBuff: ({ calcItemBuffs, char, partyData, totalAttr }) => {
         const level = finalTalentLv({ char, charData: HydroMC as AppCharacter, talentType: "ES", partyData });
         const multiplier = round(0.64 * TALENT_LV_MULTIPLIERS[2][level], 2);
@@ -123,17 +118,10 @@ const HydroMC: DefaultAppCharacter = {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          If HP has been consumed via Suffusion [~ES], increases the <Green>Torrent Surge DMG</Green> by{" "}
-          <Green b>45%</Green> of the <Green>total HP consumed</Green>. The maximum DMG Bonus that can be gained this
-          way is <Rose>5,000</Rose>.{" "}
-          <Lesser>
-            HP comsumed will be calculated based on "Suffusion time". "HP consumed" is manually input and should be used
-            when Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".
-          </Lesser>
-        </>
-      ),
+      description: `If HP has been consumed via Suffusion [~ES], increases the {Torrent Surge DMG}#[gr] by {45%}#[b,gr]
+      of the {total HP consumed}#[gr]. The maximum DMG Bonus that can be gained this way is {5,000}#[r].`,
+      // HP comsumed will be calculated based on "Suffusion time". "HP consumed" is manually input and should be used when
+      // Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".
       inputConfigs: [
         {
           type: "stacks",

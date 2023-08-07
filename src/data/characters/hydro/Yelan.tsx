@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
@@ -112,19 +111,8 @@ const Yelan: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A1,
-      desc: ({ charData, partyData }) => {
-        const visionCount = countVision(partyData, charData);
-        const n = Object.keys(visionCount).length;
-        return (
-          <>
-            When the party has 1/2/3/4 Elemental Types, Yelan's <Green>Max HP</Green> is increased by{" "}
-            <Green className={n === 1 ? "" : "opacity-50"}>6%</Green>/
-            <Green className={n === 2 ? "" : "opacity-50"}>12%</Green>/
-            <Green className={n === 3 ? "" : "opacity-50"}>18%</Green>/
-            <Green className={n === 4 ? "" : "opacity-50"}>30%</Green>.
-          </>
-        );
-      },
+      description: `When the party has 1/2/3/4 Elemental Types, Yelan's {Max HP}#[gr] is increased by
+      {6%}#[b,gr]/{12%}#[b,gr]/{18%}#[b,gr]/{30%}#[b,gr]`,
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
         const visionCount = countVision(partyData, charData);
@@ -138,12 +126,8 @@ const Yelan: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          During Depth-Clarion Dice [EB], your own active character gains <Green b>1%</Green> <Green>DMG Bonus</Green>{" "}
-          which will increase by a further <Green b>3.5%</Green> every second. Maximum <Rose>50%</Rose>.
-        </>
-      ),
+      description: `During Depth-Clarion Dice [EB], your own active character gains {1%}#[b,gr] {DMG Bonus}#[gr] which
+      will increase by a further {3.5%}#[b,gr] every second. Maximum {50%}#[r].`,
       isGranted: checkAscs[4],
       inputConfigs: [
         {
@@ -160,12 +144,8 @@ const Yelan: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          Increases all party members' <Green>Max HP</Green> by <Green b>10%</Green> for 25s for every opponent marked
-          by Lifeline [~ES] when the Lifeline explodes. Maximum <Rose>40%</Rose>.
-        </>
-      ),
+      description: `Increases all party members' {Max HP}#[gr] by {10%}#[b,gr] for 25s for every opponent marked by
+      Lifeline [~ES] when the Lifeline explodes. Maximum {40%}#[r].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {

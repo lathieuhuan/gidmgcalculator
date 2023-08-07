@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -111,12 +110,8 @@ const Barbara: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C2,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          During Let the Show Begin's [ES] duration, your active character gains a <Green b>15%</Green>{" "}
-          <Green>Hydro DMG Bonus</Green>.
-        </>
-      ),
+      description: `During Let the Show Begin's [ES] duration, your active character gains a {15%}#[b,gr]
+      {Hydro DMG Bonus}#[gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "hydro", 15),
     },

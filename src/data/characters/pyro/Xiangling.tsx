@@ -106,7 +106,7 @@ const Xiangling: DefaultAppCharacter = {
       affect: EModAffect.ONE_UNIT,
       desc: () => (
         <>
-          Picking up a chili pepper increases <Green>ATK</Green> by <Green b>10%</Green> for 10s.
+          Picking up a chili pepper increases {ATK}#[gr] by {10%}#[b,gr] for 10s.
         </>
       ),
       isGranted: checkAscs[4],
@@ -118,7 +118,7 @@ const Xiangling: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          For the duration of Pyronado, all party members receive a <Green b>15%</Green> <Green>Pyro DMG Bonus</Green>.
+          For the duration of Pyronado, all party members receive a {15%}#[b,gr] <Green>Pyro DMG Bonus</Green>.
         </>
       ),
       isGranted: checkCons[6],
@@ -131,7 +131,7 @@ const Xiangling: DefaultAppCharacter = {
       src: EModSrc.C1,
       desc: () => (
         <>
-          Opponents hit by Guoba's attacks have their <Green>Pyro RES</Green> reduced by <Green b>15%</Green> for 6s.
+          Opponents hit by Guoba's attacks have their <Green>Pyro RES</Green> reduced by {15%}#[b,gr] for 6s.
         </>
       ),
       isGranted: checkCons[1],

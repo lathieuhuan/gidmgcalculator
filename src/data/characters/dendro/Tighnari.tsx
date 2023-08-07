@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -106,12 +105,8 @@ const Tighnari: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          For every point of Elemental Mastery Tighnari possesses, his <Green>Charged Attack DMG</Green> and Fashioner's
-          Tanglevine Shaft <Green>[EB] DMG</Green> are increased by <Green b>0.08%</Green>. Max <Rose>80%</Rose>.
-        </>
-      ),
+      description: `For every point of Elemental Mastery Tighnari possesses, his {Charged Attack DMG}#[gr] and Fashioner's
+      Tanglevine Shaft {[EB] DMG}#[gr] are increased by {0.08%}#[b,gr]. Max {80%}#[r].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {
         const buffValue = Math.min(totalAttr.em, 1000) * 0.08;
@@ -120,11 +115,7 @@ const Tighnari: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C1,
-      desc: () => (
-        <>
-          Tighnari's <Green>Charged Attack CRIT Rate</Green> is increased by <Green b>15%</Green>.
-        </>
-      ),
+      description: `Tighnari's {Charged Attack CRIT Rate}#[gr] is increased by {15%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 15),
     },
@@ -134,12 +125,8 @@ const Tighnari: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After Tighnari fires a Wreath Arrow, his <Green>Elemental Mastery</Green> is increased by <Green b>50</Green>{" "}
-          for 4s.
-        </>
-      ),
+      description: `After Tighnari fires a Wreath Arrow, his {Elemental Mastery}#[gr] is increased by {50}#[b,gr]
+      for 4s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "em", 50),
     },
@@ -147,12 +134,8 @@ const Tighnari: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains <Green b>20%</Green>{" "}
-          <Green>Dendro DMG Bonus</Green>.
-        </>
-      ),
+      description: `When there are opponents within Vijnana-Phala Mine [ES] field, Tighnari gains {20%}#[b,gr]
+      {Dendro DMG Bonus}#[gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "dendro", 20),
     },
@@ -160,13 +143,9 @@ const Tighnari: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain <Green b>60</Green>{" "}
-          <Green>Elemental Mastery</Green> for 8s. If this skill triggers a Burning, Bloom, Aggravate, or Spread
-          reaction, their <Green>Elemental Mastery</Green> will be further increased by <Green b>60</Green>.
-        </>
-      ),
+      description: `When Fashioner's Tanglevine Shaft [EB] is unleashed, all party members gain {60}#[b,gr]
+      {Elemental Mastery}#[gr] for 8s. If this skill triggers a Burning, Bloom, Aggravate, or Spread reaction, their
+      {Elemental Mastery}#[gr] will be further increased by {60}#[b,gr].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {

@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Red, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -92,12 +91,8 @@ const Rosaria: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her <Green>CRIT Rate</Green>{" "}
-          increased by <Green b>12%</Green> for 5s.
-        </>
-      ),
+      description: `When Rosaria strikes an opponent from behind using Ravaging Confession [ES], her {CRIT Rate}#[gr]
+      increased by {12%}#[b,gr] for 5s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
@@ -105,13 +100,8 @@ const Rosaria: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
-      desc: ({ inputs }) => (
-        <>
-          Casting Rites of Termination [EB] increases <Green>CRIT Rate</Green> of all nearby party members (excluding
-          Rosaria) by <Green b>15%</Green> of Rosaria's <Green>CRIT Rate</Green> for 10s. Maximum <Rose>15%</Rose>.{" "}
-          <Red>CRIT Rate bonus: {Math.round((inputs[0] || 0) * 15) / 100}%.</Red>
-        </>
-      ),
+      description: `Casting Rites of Termination [EB] increases {CRIT Rate}#[gr] of all nearby party members (excluding
+      Rosaria) by {15%}#[b,gr] of Rosaria's {CRIT Rate}#[gr] for 10s. Maximum {15%}#[r].`,
       isGranted: checkAscs[4],
       inputConfigs: [
         {
@@ -130,12 +120,8 @@ const Rosaria: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When Rosaria deals a CRIT Hit, her <Green>Normal Attack Speed and DMG</Green> increases by{" "}
-          <Green b>10%</Green> for 4s.
-        </>
-      ),
+      description: `When Rosaria deals a CRIT Hit, her {Normal Attack Speed and DMG}#[gr] increases by {10%}#[b,gr]
+      for 4s.`,
       isGranted: checkCons[1],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct_", 10, tracker);
@@ -147,12 +133,7 @@ const Rosaria: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C6,
-      desc: () => (
-        <>
-          Rites of Termination's [EB] attack decreases opponents' <Green>Physical RES</Green> by <Green b>20%</Green>{" "}
-          for 10s.
-        </>
-      ),
+      description: `Rites of Termination's [EB] attack decreases opponents' {Physical RES}#[gr] by {20%}#[b,gr] for 10s.`,
       isGranted: checkCons[6],
       applyDebuff: makeModApplier("resistReduct", "phys", 20),
     },

@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Lightgold } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -58,13 +57,8 @@ const ElectroMC: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ONE_UNIT,
-      desc: () => (
-        <>
-          Increases <Green>Energy Recharge</Green> during the Abundance Amulet's duration.
-          <br />• At <Lightgold>A4</Lightgold>, increases the bonus by <Green b>10%</Green> of the Traveler's{" "}
-          <Green>Energy Recharge</Green>.
-        </>
-      ),
+      description: `Increases {Energy Recharge}#[gr] during the Abundance Amulet's duration.
+      <br />• At {A4}#[g], increases the bonus by {10%}#[b,gr] of the Traveler's {Energy Recharge}#[gr].`,
       inputConfigs: [
         { label: "A4 Passive", type: "check", for: "teammate" },
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
@@ -85,12 +79,8 @@ const ElectroMC: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          When Falling Thunder created by Bellowing Thunder hits an opponent, it will decrease their{" "}
-          <Green>Electro RES</Green> by <Green b>15%</Green> for 8s.
-        </>
-      ),
+      description: `When Falling Thunder created by Bellowing Thunder hits an opponent, it will decrease their
+      {Electro RES}#[gr] by {15%}#[b,gr] for 8s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "electro", 15),
     },

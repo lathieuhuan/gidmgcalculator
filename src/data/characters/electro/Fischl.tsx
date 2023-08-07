@@ -1,5 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
@@ -110,11 +109,7 @@ const Fischl: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Nightrider's <Green>Summoning DMG</Green> is increased by <Green b>200%</Green> of <Green>ATK</Green>.
-        </>
-      ),
+      description: `Nightrider's {Summoning DMG}#[gr] is increased by {200%}#[b,gr] of {ATK}#[gr].`,
       isGranted: checkCons[2],
       applyFinalBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "mult_", 200));

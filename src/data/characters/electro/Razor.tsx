@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
@@ -111,15 +110,7 @@ const Razor: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, partyData }) => (
-        <>
-          Raises Razor's <Green>ATK SPD</Green> by{" "}
-          <Green b>
-            {getEBBuffValue(finalTalentLv({ char, charData: Razor as AppCharacter, talentType: "EB", partyData }))}%
-          </Green>
-          .
-        </>
-      ),
+      description: `Raises Razor's {ATK SPD}#[gr].`,
       applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,
@@ -134,11 +125,7 @@ const Razor: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Picking up an Elemental Orb or Particle increases Razor's <Green>DMG</Green> by <Green b>10%</Green> for 8s.
-        </>
-      ),
+      description: `Picking up an Elemental Orb or Particle increases Razor's {DMG}#[gr] by {10%}#[b,gr] for 8s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "all.pct_", 10),
     },
@@ -146,11 +133,7 @@ const Razor: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Increases <Green>CRIT Rate</Green> against opponents with less than 30% HP by <Green b>10%</Green>.
-        </>
-      ),
+      description: `Increases {CRIT Rate}#[gr] against opponents with less than 30% HP by {10%}#[b,gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "cRate_", 10),
     },
@@ -159,11 +142,7 @@ const Razor: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      desc: () => (
-        <>
-          Claw and Thunder [ES] (Press) decreases opponents' <Green>DEF</Green> by <Green b>15%</Green> for 7s.
-        </>
-      ),
+      description: `Claw and Thunder [ES] (Press) decreases opponents' {DEF}#[gr} by {15%}#[b,gr] for 7s.`,
       isGranted: checkCons[4],
       applyDebuff: makeModApplier("resistReduct", "def", 15),
     },

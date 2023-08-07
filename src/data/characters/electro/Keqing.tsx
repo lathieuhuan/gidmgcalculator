@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Electro, Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -95,12 +94,8 @@ const Keqing: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing gains an{" "}
-          <Electro>Electro Infusion</Electro> for 5s.
-        </>
-      ),
+      description: `After recasting Stellar Restoration [ES] while a Lightning Stiletto is present, Keqing gains an
+      {Electro Infusion}#[electro] for 5s.`,
       isGranted: checkAscs[1],
       infuseConfig: {
         overwritable: true,
@@ -110,12 +105,8 @@ const Keqing: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After casting Starward Sword [EB], Keqing's <Green>CRIT Rate</Green> and <Green>Energy Recharge</Green> are
-          increased by <Green b>15%</Green> for 8s.
-        </>
-      ),
+      description: `After casting Starward Sword [EB], Keqing's {CRIT Rate}#[gr] and {Energy Recharge}#[gr] are
+      increased by {15%}#[b,gr] for 8s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", ["cRate_", "er_"], 15),
     },
@@ -123,12 +114,8 @@ const Keqing: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          For 10s after Keqing triggers an Electro-related Elemental Reaction, her <Green>ATK</Green> is increased by{" "}
-          <Green b>25%</Green>.
-        </>
-      ),
+      description: `For 10s after Keqing triggers an Electro-related Elemental Reaction, her {ATK}#[gr] is increased by
+      {25%}#[b,gr].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "atk_", 25),
     },
@@ -136,13 +123,9 @@ const Keqing: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst, Keqing gains a{" "}
-          <Green b>6%</Green> <Green>Electro DMG Bonus</Green> for 8s. Effects triggered by different sources are
-          considered independent entities.
-        </>
-      ),
+      description: `When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst, Keqing
+      gains a {6%}#[b,gr] {Electro DMG Bonus}#[gr] for 8s. Effects triggered by different sources are considered
+      independent entities.`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

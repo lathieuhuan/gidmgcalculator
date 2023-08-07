@@ -1,6 +1,5 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
@@ -128,12 +127,8 @@ const Eula: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Every time Grimheart stacks [~ES] are consumed, Eula's <Green>Physical DMG</Green> is increased by{" "}
-          <Green b>30%</Green> for 6s. Each stack consumed increases the duration by 6s.
-        </>
-      ),
+      description: `Every time Grimheart stacks [~ES] are consumed, Eula's {Physical DMG}#[gr] is increased by
+      {30%}#[b,gr] for 6s. Each stack consumed increases the duration by 6s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "phys", 30),
     },
@@ -141,12 +136,8 @@ const Eula: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          <Green>Lightfall Swords DMG</Green> is increased by <Green b>25%</Green> against opponents with less than 50%
-          HP.
-        </>
-      ),
+      description: `{Lightfall Swords DMG}#[gr] [~EB] is increased by {25%}#[b,gr] against opponents with less than 50%
+      HP.`,
       isGranted: checkCons[4],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.C4, ["EB.0", "EB.1"], "pct_", 25));
@@ -157,12 +148,8 @@ const Eula: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
-      desc: ({ fromSelf, char, inputs, partyData }) => (
-        <>
-          If Grimheart stacks are consumed, surrounding opponents will have their <Green>Physical RES</Green> and{" "}
-          <Green>Cryo RES</Green> decreased by <Green b>{getESDebuffValue(fromSelf, char, inputs, partyData)}%</Green>.
-        </>
-      ),
+      description: `If Grimheart stacks are consumed, surrounding opponents will have their {Physical RES}#[gr] and
+      {Cryo RES}#[gr] decreased.`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",

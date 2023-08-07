@@ -1,6 +1,5 @@
 import type { AppCharacter, ApplyCharBuffArgs, DefaultAppCharacter, TotalAttribute } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -111,12 +110,8 @@ const Mona: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: ({ totalAttr }) => (
-        <>
-          Increases Mona's <Green>Hydro DMG Bonus</Green> by a degree equivalent to <Green b>20%</Green> of her{" "}
-          <Green>Energy Recharge</Green> rate. <Red>Hydro DMG Bonus: {getA4BuffValue(totalAttr)}%.</Red>
-        </>
-      ),
+      description: `Increases Mona's {Hydro DMG Bonus}#[gr] by a degree equivalent to {20%}#[b,gr] of her
+      {Energy Recharge}#[gr] rate.`,
       isGranted: checkAscs[4],
       applyBuff: ({ totalAttr, desc, tracker }) => {
         applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);
@@ -128,14 +123,10 @@ const Mona: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
-      desc: (obj) => (
-        <>
-          Omen increases <Green b>{getEBBuffValue(obj)}%</Green> <Green>DMG</Green> taken by opponents.
-          <br />• At <Lightgold>C1</Lightgold>, increases <Green>Electro-Charged DMG</Green>,{" "}
-          <Green>Vaporize DMG</Green>, and <Green>Hydro Swirl DMG</Green> by <Green b>15%</Green> for 8s.
-          <br />• At <Lightgold>C4</Lightgold>, increases <Green>CRIT Rate</Green> by <Green b>15%</Green>.
-        </>
-      ),
+      description: `Omen increases {DMG}#[gr] taken by opponents.
+      <br />• At {C1}#[g], increases {Electro-Charged DMG}#[gr], {Vaporize DMG}#[gr], and {Hydro Swirl DMG}#[gr] by
+      {15%}#[b,gr] for 8s.
+      <br />• At {C4}#[g], increases {CRIT Rate}#[gr] by {15%}#[b,gr].`,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
@@ -157,12 +148,8 @@ const Mona: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Upon entering Illusory Torrent, Mona gains a <Green b>60%</Green> <Green>DMG increase</Green> of her next{" "}
-          <Green>Charged Attack</Green> per second of movement (up to <Rose b>180%</Rose>) for 8s.
-        </>
-      ),
+      description: `Upon entering Illusory Torrent, Mona gains a {60%}#[b,gr] {DMG bonus}#[gr] of her next
+      {Charged Attack}#[gr] per second of movement (up to {180%}#[r]) for 8s.`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

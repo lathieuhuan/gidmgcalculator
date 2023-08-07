@@ -196,7 +196,6 @@ const goldBows: AppWeapon[] = [
       `Once this effect is triggered, you will not gain Sigils of Remembrance for 20s. Of the many effects of the
       "Millennial Movement", buffs of the same type will not stack.`,
     ],
-    // seeds: [45, 75, 15],
     autoBuffs: [
       {
         base: 45,

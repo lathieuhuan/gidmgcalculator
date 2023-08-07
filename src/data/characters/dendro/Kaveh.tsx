@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Dendro, Green, Lightgold, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -114,19 +113,12 @@ const Kaveh: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: (args) => {
-        const level = finalTalentLv({ ...args, charData: Kaveh as AppCharacter, talentType: "EB" });
-        return (
-          <>
-            • Grants <Dendro>Dendro Infusion</Dendro>.<br />• Increases Bloom DMG triggered by all party members by{" "}
-            <Green b>{getEBbuffValue(level)}%</Green>.
-            <br />• At <Lightgold>A4</Lightgold>, after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his{" "}
-            <Green>Elemental Mastery</Green> will increase by <Green b>25</Green>. Max <Rose>4</Rose> stacks.
-            <br />• At <Lightgold>C2</Lightgold>, within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES
-            and Incoming Healing Bonus will be increased by 50% and 25% respectively.
-          </>
-        );
-      },
+      description: `• Grants {Dendro Infusion}#[dendro].
+      <br />• Increases {Bloom DMG}#[gr] triggered by all party members.
+      <br />• At {A4}#[g], after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his{" "}
+      {Elemental Mastery}#[gr] will increase by {25}#[b,gr]. Max {4}#[r] stacks.
+      <br />• At {C2}#[g], within 3.5s after using Artistic Ingenuity [ES], Kaveh's Dendro RES and Incoming Healing
+      Bonus will be increased by 50% and 25% respectively.`,
       inputConfigs: [
         {
           label: "A4 stacks",
@@ -155,11 +147,7 @@ const Kaveh: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.TEAMMATE,
-      desc: ({ inputs }) => (
-        <>
-          Increases Bloom DMG triggered by all party members by <Green b>{getEBbuffValue(inputs[0])}%</Green>.
-        </>
-      ),
+      description: `Increases {Bloom DMG}#[gr] triggered by all party members.`,
       inputConfigs: [
         {
           label: "Elemental Burst level",
@@ -176,12 +164,8 @@ const Kaveh: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       isGranted: checkCons[4],
-      desc: () => (
-        <>
-          Dendro Cores created from <Green>Bloom</Green> reactions Kaveh triggers will deal <Green b>60%</Green> more
-          DMG when they burst.
-        </>
-      ),
+      description: `Dendro Cores created from {Bloom}#[gr] reactions Kaveh triggers will deal {60%}#[b,gr] more DMG when
+      they burst.`,
       applyBuff: makeModApplier("rxnBonus", "bloom.pct_", 60),
     },
   ],

@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -101,12 +100,8 @@ const Kirara: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          Every 1,000 Max HP Kirara possesses will increase the Meow-teor Kick <Green>[ES] DMG</Green> by{" "}
-          <Green b>0.4%</Green>, and the Secret Art: Surprise Dispatch <Green>[EB] DMG</Green> by <Green b>0.3%</Green>.
-        </>
-      ),
+      description: `Every 1,000 Max HP Kirara possesses will increase the Meow-teor Kick {[ES] DMG}#[gr] by {0.4%}#[b,gr],
+      and the Secret Art: Surprise Dispatch {[EB] DMG}#[gr] by {0.3%}#[b,gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const stacks = totalAttr.hp / 1000;
@@ -121,12 +116,8 @@ const Kirara: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          All nearby party members will gain <Green b>12%</Green> <Green>All Elemental DMG Bonus</Green> within 15s
-          after Kirara uses her Elemental Skill or Burst.
-        </>
-      ),
+      description: `All nearby party members will gain {12%}#[b,gr] {All Elemental DMG Bonus}#[gr] within 15s after
+      Kirara uses her Elemental Skill or Burst.`,
       applyBuff: makeModApplier("totalAttr", [...VISION_TYPES], 12),
     },
   ],

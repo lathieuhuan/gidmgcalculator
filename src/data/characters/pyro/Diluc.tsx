@@ -105,7 +105,7 @@ const Diluc: DefaultAppCharacter = {
       desc: () => (
         <>
           After casting Dawn [EB], Diluc gains a <Pyro>Pyro Infusion</Pyro>.
-          <br />• At <Lightgold>A4</Lightgold>, Diluc gains <Green b>20%</Green> <Green>Pyro DMG Bonus</Green> during
+          <br />• At {A4}#[g], Diluc gains {20%}#[b,gr] <Green>Pyro DMG Bonus</Green> during
           this duration.
         </>
       ),
@@ -119,7 +119,7 @@ const Diluc: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Diluc deals <Green b>15%</Green> <Green>more DMG</Green> to opponents whose HP is above 50%.
+          Diluc deals {15%}#[b,gr] <Green>more DMG</Green> to opponents whose HP is above 50%.
         </>
       ),
       isGranted: checkCons[1],
@@ -131,8 +131,8 @@ const Diluc: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          When Diluc takes DMG, his <Green>ATK</Green> increases by <Green b>10%</Green> and <Green>ATK SPD</Green>{" "}
-          increases by <Green b>5%</Green> for 10s, up to <Rose>3</Rose> times.
+          When Diluc takes DMG, his {ATK}#[gr] increases by {10%}#[b,gr] and {ATK SPD}#[gr]{" "}
+          increases by {5%}#[b,gr] for 10s, up to {3}#[r] times.
         </>
       ),
       isGranted: checkCons[2],
@@ -155,7 +155,7 @@ const Diluc: DefaultAppCharacter = {
       desc: () => (
         <>
           Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the combo deals{" "}
-          <Green b>40%</Green> <Green>DMG Bonus</Green>. This effect lasts for 2s.
+          {40%}#[b,gr] {DMG Bonus}#[gr]. This effect lasts for 2s.
         </>
       ),
       isGranted: checkCons[4],
@@ -167,8 +167,8 @@ const Diluc: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Within 6s after casting Searing Onslaught [ES], the next <Rose>2</Rose> <Green>Normal Attacks</Green> will
-          have their <Green>DMG and ATK SPD</Green> increased by <Green b>30%</Green>.
+          Within 6s after casting Searing Onslaught [ES], the next {2}#[r] <Green>Normal Attacks</Green> will
+          have their <Green>DMG and ATK SPD</Green> increased by {30%}#[b,gr].
         </>
       ),
       isGranted: checkCons[6],

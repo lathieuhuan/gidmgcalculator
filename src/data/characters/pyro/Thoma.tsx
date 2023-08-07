@@ -112,7 +112,7 @@ const Thoma: DefaultAppCharacter = {
       src: EModSrc.A4,
       desc: () => (
         <>
-          <Green>Fiery Collapse DMG</Green> [~EB] is increased by <Green b>2.2%</Green> of Thoma's <Green>Max HP</Green>
+          <Green>Fiery Collapse DMG</Green> [~EB] is increased by <Green b>2.2%</Green> of Thoma's {Max HP}#[gr]
           .
         </>
       ),
@@ -130,7 +130,7 @@ const Thoma: DefaultAppCharacter = {
       desc: () => (
         <>
           When your current active character obtains or refreshes a Blazing Barrier, this character's{" "}
-          <Green>Shield Strength</Green> will increase by <Green b>5%</Green> for 6s. Max <Rose>5</Rose> stacks, each
+          {Shield Strength}#[gr] will increase by {5%}#[b,gr] for 6s. Max {5}#[r] stacks, each
           stack can be obtained once every 0.3 seconds.
         </>
       ),
@@ -152,7 +152,7 @@ const Thoma: DefaultAppCharacter = {
       desc: () => (
         <>
           When a Blazing Barrier is obtained or refreshed, all party members'{" "}
-          <Green>Normal, Charged, and Plunging Attack DMG</Green> is increased by <Green b>15%</Green> for 6s.
+          <Green>Normal, Charged, and Plunging Attack DMG</Green> is increased by {15%}#[b,gr] for 6s.
         </>
       ),
       affect: EModAffect.PARTY,

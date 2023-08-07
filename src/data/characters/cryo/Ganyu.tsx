@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
@@ -118,12 +117,8 @@ const Ganyu: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          After firing a Frostflake Arrow, the <Green>CRIT Rate</Green> of subsequent <Green>Frostflake Arrows</Green>{" "}
-          and their resulting <Green>bloom effects</Green> is increased by <Green b>20%</Green> for 5s.
-        </>
-      ),
+      description: `After firing a Frostflake Arrow, the {CRIT Rate}#[gr] of subsequent {Frostflake Arrows}#[gr] and
+      their resulting {bloom effects}#[gr] is increased by {20%}#[b,gr] for 5s.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(exclBuff(EModSrc.A1, ["CA.0", "CA.1"], "cRate_", 20));
@@ -133,12 +128,7 @@ const Ganyu: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          Celestial Shower [EB] grants a <Green b>20%</Green> <Green>Cryo DMG Bonus</Green> to active members in the
-          AoE.
-        </>
-      ),
+      description: `Celestial Shower [EB] grants a {20%}#[b,gr] {Cryo DMG Bonus}#[gr] to active members in the AoE.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "cryo", 20),
     },
@@ -146,12 +136,8 @@ const Ganyu: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      desc: () => (
-        <>
-          Opponents within Celestial Shower [EB] take increased DMG which begins at <Green b>5%</Green> and increases by{" "}
-          <Green b>5%</Green> every 3s. Maximum <Rose>25%</Rose>.
-        </>
-      ),
+      description: `Opponents within Celestial Shower [EB] take increased DMG which begins at {5%}#[b,gr] and increases
+      by {5%}#[b,gr] every 3s. Maximum {25%}#[r].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -168,12 +154,8 @@ const Ganyu: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
-      desc: () => (
-        <>
-          Charge Level 2 Frostflake Arrows or Frostflake Arrow Blooms decrease opponents' <Green>Cryo RES</Green> by{" "}
-          <Green b>15%</Green> for 6s upon hit.
-        </>
-      ),
+      description: `Charge Level 2 Frostflake Arrows or Frostflake Arrow Blooms decrease opponents' {Cryo RES}#[gr] by
+      {15%}#[b,gr] for 6s upon hit.`,
       isGranted: checkCons[1],
       applyDebuff: makeModApplier("resistReduct", "cryo", 15),
     },

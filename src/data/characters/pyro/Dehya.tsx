@@ -115,11 +115,11 @@ const Dehya: DefaultAppCharacter = {
       isGranted: checkCons[1],
       desc: () => (
         <>
-          Dehya's <Green>Max HP</Green> is increased by <Green>20%</Green>, and:
-          <br />• Molten Inferno's <Green>[ES] DMG</Green> will be increased by <Green b>3.6%</Green> of her{" "}
-          <Green>Max HP</Green>.
-          <br />• The Lioness's Bite's <Green>[EB] DMG</Green> will be increased by <Green b>6%</Green> of her{" "}
-          <Green>Max HP</Green>.
+          Dehya's {Max HP}#[gr] is increased by <Green>20%</Green>, and:
+          <br />• Molten Inferno's {[ES] DMG}#[gr] will be increased by <Green b>3.6%</Green> of her{" "}
+          {Max HP}#[gr].
+          <br />• The Lioness's Bite's {[EB] DMG}#[gr] will be increased by {6%}#[b,gr] of her{" "}
+          {Max HP}#[gr].
         </>
       ),
       applyBuff: makeModApplier("totalAttr", "hp_", 20),
@@ -142,8 +142,8 @@ const Dehya: DefaultAppCharacter = {
       isGranted: checkCons[2],
       desc: () => (
         <>
-          When a <Green>Fiery Sanctum</Green> exists on the field, <Green>DMG</Green> dealt by its next coordinated
-          attack will be increased by <Green b>50%</Green> when active character(s) within the Fiery Sanctum field are
+          When a <Green>Fiery Sanctum</Green> exists on the field, {DMG}#[gr] dealt by its next coordinated
+          attack will be increased by {50%}#[b,gr] when active character(s) within the Fiery Sanctum field are
           attacked.
         </>
       ),
@@ -158,9 +158,9 @@ const Dehya: DefaultAppCharacter = {
       isGranted: checkCons[6],
       desc: () => (
         <>
-          The <Green>CRIT Rate</Green> of The Lioness's Bite [EB] is increased by <Green b>10%</Green>. After a
-          Flame-Mane's Fist attack hits an opponent and deals CRIT hits, it will cause the <Green>CRIT DMG</Green> of
-          The Lioness's Bite to increase by <Green b>15%</Green> for the rest of Blazing Lioness's duration. Max{" "}
+          The {CRIT Rate}#[gr] of The Lioness's Bite [EB] is increased by {10%}#[b,gr]. After a
+          Flame-Mane's Fist attack hits an opponent and deals CRIT hits, it will cause the {CRIT DMG}#[gr] of
+          The Lioness's Bite to increase by {15%}#[b,gr] for the rest of Blazing Lioness's duration. Max{" "}
           <Rose>60%</Rose>.
         </>
       ),

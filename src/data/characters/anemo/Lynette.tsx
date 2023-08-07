@@ -124,7 +124,7 @@ const Lynette: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.PARTY,
       description: `Within 10s after using Magic Trick: Astonishing Shift [EB], when there are 1/2/3/4 Elemental Types in
-      the party, all party members' {ATK}#[Gr] will be increased by {8%}#[B,Gr]/{12%}#[B,Gr]/{16%}#[B,Gr]/{20%}#[B,Gr]
+      the party, all party members' {ATK}#[gr] will be increased by {8%}#[b,gr]/{12%}#[b,gr]/{16%}#[b,gr]/{20%}#[b,gr]
       respectively.`,
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
@@ -136,8 +136,8 @@ const Lynette: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      description: `After the Bogglecat Box [~EB] performs Elemental Coversion, Lynette's {Elemental Burst DMG}#[Gr]
-      will be increased by {15%}#[B,Gr]. This effect will persist until the Bogglecat Box's duration ends.`,
+      description: `After the Bogglecat Box [~EB] performs Elemental Coversion, Lynette's {Elemental Burst DMG}#[gr]
+      will be increased by {15%}#[b,gr]. This effect will persist until the Bogglecat Box's duration ends.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 15),
     },
@@ -145,8 +145,8 @@ const Lynette: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `When Lynette uses Enigma Thrust [~ES], she will gain an {Anemo Infusion}#[anemo] and {20%}#[B,Gr]
-      {Anemo DMG Bonus}#[Gr] for 6s.`,
+      description: `When Lynette uses Enigma Thrust [~ES], she will gain an {Anemo Infusion}#[anemo] and {20%}#[b,gr]
+      {Anemo DMG Bonus}#[gr] for 6s.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "anemo", 20),
       infuseConfig: {

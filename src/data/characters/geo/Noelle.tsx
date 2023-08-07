@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Geo, Green, Lightgold } from "@Src/pure-components";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
@@ -115,11 +114,7 @@ const Noelle: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      desc: () => (
-        <>
-          Increases her <Green>Charged Attack DMG</Green> by <Green b>15%</Green>.
-        </>
-      ),
+      description: `Increases her {Charged Attack DMG}#[gr] by {15%}#[b,gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attPattBonus", "CA.pct_", 15),
     },
@@ -129,13 +124,9 @@ const Noelle: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          • Grants Noelle a <Geo>Geo Infusion</Geo> that cannot be overridden.
-          <br />• Increases Noelle's <Green>ATK</Green> based on her <Green>DEF</Green>. At <Lightgold>C6</Lightgold>,
-          the multipler bonus is increased by <Green b>50%</Green>.
-        </>
-      ),
+      description: `• Grants Noelle a {Geo Infusion}#[geo] that cannot be overridden.
+      <br />• Increases Noelle's {ATK}#[gr] based on her {DEF}#[gr}. At {C6}#[g],
+      the multipler bonus is increased by {50%}#[b,gr].`,
       applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
         const level = finalTalentLv({
           char,

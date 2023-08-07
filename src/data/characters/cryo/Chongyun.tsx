@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -94,12 +93,8 @@ const Chongyun: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          Sword, Claymore, or Polearm-wielding characters within Spirit Blade: Chonghua's Layered Frost [ES] field have
-          their <Green>Normal ATK SPD</Green> increased by <Green b>8%</Green>.
-        </>
-      ),
+      description: `Sword, Claymore, or Polearm-wielding characters within Spirit Blade: Chonghua's Layered Frost [ES]
+      field have their {Normal ATK SPD}#[gr] increased by {8%}#[b,gr].`,
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, desc, tracker }) => {
         if (["sword", "claymore", "polearm"].includes(charData.weaponType))
@@ -110,12 +105,8 @@ const Chongyun: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Spirit Blade: Cloud-Parting Star <Green>[EB]</Green> deals <Green b>15%</Green> <Green>more DMG</Green> to
-          opponents with a lower percentage of their Max HP remaining than Chongyun.
-        </>
-      ),
+      description: `Spirit Blade: Cloud-Parting Star {[EB]}#[gr] deals {15%}#[b,gr] more {DMG}#[gr] to opponents with
+      a lower percentage of their Max HP remaining than Chongyun.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 15),
     },
@@ -124,12 +115,8 @@ const Chongyun: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
-      desc: () => (
-        <>
-          When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another spirit blade will be
-          summoned to strike nearby opponents and decrease their <Green>Cryo RES</Green> by <Green b>10%</Green> for 8s.
-        </>
-      ),
+      description: `When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another spirit
+      blade will be summoned to strike nearby opponents and decrease their {Cryo RES}#[gr] by {10%}#[b,gr] for 8s.`,
       isGranted: checkAscs[4],
       applyDebuff: makeModApplier("resistReduct", "cryo", 10),
     },

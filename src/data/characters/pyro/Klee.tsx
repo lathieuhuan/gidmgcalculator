@@ -95,7 +95,7 @@ const Klee: DefaultAppCharacter = {
       desc: () => (
         <>
           Explosive Spark is consumed by the next <Green>Charged Attacks</Green>, which costs no Stamina and deals{" "}
-          <Green b>50%</Green> increased <Green>DMG</Green>.
+          {50%}#[b,gr] increased {DMG}#[gr].
         </>
       ),
       isGranted: checkAscs[1],
@@ -107,7 +107,7 @@ const Klee: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       desc: () => (
         <>
-          When Sparks 'n' Splash [EB] is used, all party members will gain a <Green b>10%</Green>{" "}
+          When Sparks 'n' Splash [EB] is used, all party members will gain a {10%}#[b,gr]{" "}
           <Green>Pyro DMG Bonus</Green> for 25s.
         </>
       ),
@@ -121,7 +121,7 @@ const Klee: DefaultAppCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          On hit, Jumpy Dumpty's [ES] mines decreases opponents' <Green>DEF</Green> by <Green b>23%</Green> for 10s.
+          On hit, Jumpy Dumpty's [ES] mines decreases opponents' {DEF}#[gr} by <Green b>23%</Green> for 10s.
         </>
       ),
       isGranted: checkCons[2],

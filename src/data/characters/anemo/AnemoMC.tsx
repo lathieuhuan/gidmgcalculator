@@ -60,7 +60,7 @@ const AnemoMC: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      description: `Increases {Energy Recharge}#[Gr] by {16%}#[B,Gr].`,
+      description: `Increases {Energy Recharge}#[gr] by {16%}#[b,gr].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "er_", 16),
     },
@@ -69,8 +69,8 @@ const AnemoMC: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C6,
-      description: `Gust Surge [EB] decreases targets' {Anemo RES}#[Gr] by {20%}#[B,Gr]. Also decreases {RES}#[Gr] towards the
-      {absorbed Element}#[Gr] (if any) by {20%}#[B,Gr].`,
+      description: `Gust Surge [EB] decreases targets' {Anemo RES}#[gr] by {20%}#[b,gr]. Also decreases {RES}#[gr] towards the
+      {absorbed Element}#[gr] (if any) by {20%}#[b,gr].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

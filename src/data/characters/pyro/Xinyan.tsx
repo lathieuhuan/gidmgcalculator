@@ -115,7 +115,7 @@ const Xinyan: DefaultAppCharacter = {
       src: EModSrc.C2,
       desc: () => (
         <>
-          Riff Revolution's <Green>[EB] Physical CRIT Rate</Green> is increased by <Green b>100%</Green>.
+          Riff Revolution's <Green>[EB] Physical CRIT Rate</Green> is increased by {100%}#[b,gr].
         </>
       ),
       isGranted: checkCons[2],
@@ -127,7 +127,7 @@ const Xinyan: DefaultAppCharacter = {
       src: EModSrc.C6,
       desc: () => (
         <>
-          Xinyan's <Green>Charged Attacks DMG</Green> is increased by <Green b>50%</Green> of her <Green>DEF</Green>.
+          Xinyan's <Green>Charged Attacks DMG</Green> is increased by {50%}#[b,gr] of her {DEF}#[gr}.
         </>
       ),
       isGranted: checkCons[6],
@@ -143,7 +143,7 @@ const Xinyan: DefaultAppCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       desc: () => (
         <>
-          Characters shielded by Sweeping Fervor [ES] deal <Green b>15%</Green> increased <Green>Physical DMG</Green>.
+          Characters shielded by Sweeping Fervor [ES] deal {15%}#[b,gr] increased {Physical DMG}#[gr].
         </>
       ),
       isGranted: checkAscs[1],
@@ -155,8 +155,8 @@ const Xinyan: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       desc: () => (
         <>
-          Upon scoring a CRIT Hit, increases <Green>ATK SPD</Green> of Xinyan's{" "}
-          <Green>Normal and Charged Attacks</Green> by <Green b>12%</Green> for 5s.
+          Upon scoring a CRIT Hit, increases {ATK SPD}#[gr] of Xinyan's{" "}
+          <Green>Normal and Charged Attacks</Green> by {12%}#[b,gr] for 5s.
         </>
       ),
       isGranted: checkCons[1],
@@ -169,7 +169,7 @@ const Xinyan: DefaultAppCharacter = {
       src: EModSrc.C4,
       desc: () => (
         <>
-          Sweeping Fervor's swing DMG decreases opponent's <Green>Physical RES</Green> by <Green b>15%</Green> for 12s.
+          Sweeping Fervor's swing DMG decreases opponent's {Physical RES}#[gr] by {15%}#[b,gr] for 12s.
         </>
       ),
       isGranted: checkCons[4],

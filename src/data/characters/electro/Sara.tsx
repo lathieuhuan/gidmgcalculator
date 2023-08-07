@@ -1,7 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter, ModifierInput } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Electro, Green, Lightgold, Red } from "@Src/pure-components";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
@@ -101,14 +100,9 @@ const Sara: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: ({ toSelf, inputs }) => (
-        <>
-          Grants the active character within its AoE an <Green>ATK Bonus</Green> based on Kujou Sara's{" "}
-          <Green>Base ATK</Green>. {!toSelf && <Red>ATK bonus: {getAttackBuffValue(inputs)[0]}.</Red>}
-          <br />• At <Lightgold>C6</Lightgold>, it also increases <Electro>Electro</Electro> <Green>Crit DMG</Green> by{" "}
-          <Green b>60%</Green>.
-        </>
-      ),
+      description: `Grants the active character within its AoE an {ATK Bonus}#[gr] based on Kujou Sara's
+      {Base ATK}#[gr].
+      <br />• At {C6}#[g], it also increases {Electro Crit DMG}#[gr] by {60%}#[b,gr].`,
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Skill Level", type: "level", for: "teammate" },

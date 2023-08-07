@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkCons } from "../utils";
@@ -101,12 +100,8 @@ const Dori: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.ACTIVE_UNIT,
-      desc: () => (
-        <>
-          When Energy of the character connected to the Lamp Spirit is less than 50%, they gain <Green b>30%</Green>{" "}
-          <Green>Energy Recharge</Green>.
-        </>
-      ),
+      description: `When Energy of the character connected to the Lamp Spirit is less than 50%, they gain {30%}#[b,gr]
+      {Energy Recharge}#[gr].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "er_", 30),
     },

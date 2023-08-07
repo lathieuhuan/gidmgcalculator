@@ -112,8 +112,7 @@ export type WeaponBuff = AutoBuff & {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   /**
-   * If number, it's the index of weapon's description's pots.
-   * If string, it can use weapon's description's seeds.
+   * If number, it's the index of weapon's descriptions.
    * Default to 0.
    */
   description?: number | string;

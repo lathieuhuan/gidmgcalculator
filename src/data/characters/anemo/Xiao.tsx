@@ -2,7 +2,6 @@ import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Sr
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Anemo, Green, Lightgold, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, HEAVIER_PAs } from "../constants";
@@ -100,15 +99,10 @@ const Xiao: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      desc: ({ char, partyData }) => (
-        <>
-          Increases Xiao's <Green>Normal / Charged / Plunge Attack DMG</Green> by{" "}
-          <Green b>{getEBBuffValue(char, partyData)}%</Green> and grants him an <Anemo>Anemo Infusion</Anemo> that
-          cannot be overridden.
-          <br />• At <Lightgold>A1</Lightgold>, Xiao's <Green>DMG</Green> is increased by <Green b>5%</Green>, and a
-          further <Green b>5%</Green> for every 3s the ability persists. Max <Rose>25%</Rose>
-        </>
-      ),
+      description: `Increases Xiao's {Normal / Charged / Plunge Attack DMG}#[gr] and grants him an {Anemo Infusion}#[anemo]
+      that cannot be overridden.
+      <br />• At {A1}#[g], Xiao's {DMG}#[gr] is increased by {5%}#[b,gr], and a further {5%}#[b,gr] for every 3s the
+      ability persists. Max {25%}#[r].`,
       inputConfigs: [
         {
           type: "stacks",
@@ -131,12 +125,8 @@ const Xiao: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      desc: () => (
-        <>
-          Using Lemniscatic Wind Cycling increases subsequent Lemniscatic Wind Cycling <Green>[ES] DMG</Green> by{" "}
-          <Green b>15%</Green>. This effect lasts for 7s, and has a maximum of <Rose>3</Rose> stacks.
-        </>
-      ),
+      description: `Using Lemniscatic Wind Cycling increases subsequent Lemniscatic Wind Cycling {[ES] DMG}#[gr] by
+      {15%}#[b,gr]. This effect lasts for 7s, and has a maximum of {3}#[r] stacks.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         {
