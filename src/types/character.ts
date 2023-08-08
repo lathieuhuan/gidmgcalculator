@@ -68,7 +68,7 @@ export type AppCharacter = {
   description?: {
     pots?: string[];
     // buffs: Faruzan 0, Wanderer 0, Xiao 0, Aloy 0, Mika 0, Rosaria 1, Kaveh 0 + 1, Nahida 0, Raiden 0 + 1, Razor 0, Gorou 0,
-    // Yunjin innate + 0, Ayato 1, Hydro MC 1, Mona 0
+    // Yunjin innate + 0, Ayato 1, Hydro MC 1, Mona 0, Lyney 0, Yanfei 3, Yoimiya 0
     // debuffs: Eula 0, Shenhe: 0
     seeds?: CharacterDescriptionSeed[];
   };

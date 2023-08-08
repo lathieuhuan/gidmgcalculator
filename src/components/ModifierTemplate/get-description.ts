@@ -19,6 +19,7 @@ export const decoCharacterDescription = (pot: string | number) => {
             electro: "text-electro",
             geo: "text-geo",
             hydro: "text-hydro",
+            pyro: "text-pyro",
           };
           classNames += (i ? " " : "") + colorCodeToCls[config];
         });
