@@ -91,8 +91,7 @@ const Klee: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `Explosive Spark is consumed by the next {Charged Attacks}#[gr], which costs no Stamina and deals
-      {50%}#[b,gr] increased {DMG}#[gr].`,
+      description: `Explosive Spark increases the next {Charged Attack DMG}#[gr] by {50%}#[b,gr].`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("attPattBonus", "CA.pct_", 50),
     },

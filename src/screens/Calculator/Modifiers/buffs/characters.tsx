@@ -17,7 +17,7 @@ import { appData } from "@Data/index";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { decoCharacterDescription, ModifierTemplate, renderModifiers } from "@Src/components";
+import { parseCharacterDescription, ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ export function SelfBuffs() {
           key={`innate-${index}`}
           mutable={false}
           heading={src}
-          desc={decoCharacterDescription(description)}
+          desc={parseCharacterDescription(description)}
           // desc={desc({ totalAttr, charData, partyData })}
         />
       );
@@ -61,7 +61,7 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrlIndex}`}
           heading={buff.src}
-          desc={decoCharacterDescription(buff.description)}
+          desc={parseCharacterDescription(buff.description)}
           // desc={buff.desc({
           //   toSelf: true,
           //   totalAttr,
@@ -149,7 +149,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
-        desc={decoCharacterDescription(buff.description)}
+        desc={parseCharacterDescription(buff.description)}
         // desc={buff.desc({
         //   toSelf: false,
         //   char,

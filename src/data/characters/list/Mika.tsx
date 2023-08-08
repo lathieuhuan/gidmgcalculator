@@ -119,7 +119,7 @@ const Mika: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Grants nearby active characters Soulwind, increasing their ATK SPD.
+      description: `Grants nearby active characters Soulwind, increasing their {ATK SPD}#[gr].
       <br />• At {A1}#[g], Soulwind can grant characters the Detector effect, increasing their {Physical DMG}#[gr] by
       {10%}#[b,gr] each stack. Max {3}#[r] stacks.
       <br />• At {A4}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr].

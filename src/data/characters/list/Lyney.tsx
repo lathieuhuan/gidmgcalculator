@@ -168,11 +168,8 @@ const Lyney: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      description: `When dealing DMG to opponents affected by Pyro, Lyney will receive the following buffs:
-      <br />• Increases the {DMG}#[gr] dealt by {60%}#[b,gr].
-      <br />• Each Pyro party member other than Lyney will cause the DMG dealt to increase by an additional
-      {20%}#[b,gr].
-      <br />Lyney can deal up to {100%}#[r] increased DMG to opponents affected by Pyro in this way.`,
+      description: `When dealing DMG to opponents affected by Pyro, Lyney will receive {60%}#[b,gr] {DMG Bonus}#[gr].
+      Each Pyro party member other than Lyney will increase the bonus by {20%}#[b,gr], upto {100%}#[r].`,
       isGranted: checkAscs[4],
       applyBuff: ({ attPattBonus, partyData, desc, tracker }) => {
         const { pyro = 0 } = countVision(partyData);
@@ -184,8 +181,8 @@ const Lyney: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Lyney is on the field, he will gain a stack of Crisp Focus every 2s. This will increase his
-      {CRIT DMG}#[gr] by {20%}#[b,gr]. Max {3}#[r] stacks. This effect will be canceled when Lyney leaves the field.`,
+      description: `When Lyney is on the field, he will gain {20%}#[b,gr] {CRIT DMG}#[gr] every 2s. Max {3}#[r] stacks.
+      This effect is canceled when Lyney leaves the field.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -202,8 +199,7 @@ const Lyney: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      description: `After an opponent is hit by Lyney's Pyro Charged Attack, this opponent's {Pyro RES}#[gr] will be
-      decreased by {20%}#[b,gr] for 6s.`,
+      description: `Lyney's {Pyro}#[pyro] Charged Attacks decreases opponent's {Pyro RES}#[gr] by {20%}#[b,gr] for 6s.`,
       isGranted: checkCons[1],
       applyDebuff: makeModApplier("resistReduct", "pyro", 20),
     },

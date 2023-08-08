@@ -139,9 +139,8 @@ const Layla: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `While the Curtain of Slumber [~ES] is active, each time the Curtain gains a Night Star:
-      <br />• The {Shield Strength}#[gr] of the character is increased by {6%}#[b,gr]. Max {4}#[r] stacks.
-      <br />• This effect persists until the Curtain of Slumber disappears.`,
+      description: `Each time the Curtain of Slumber [~ES] gains a Night Star, the {Shield Strength}#[gr] of the
+      character is increased by {6%}#[b,gr]. Max {4}#[r] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {

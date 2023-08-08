@@ -1,6 +1,6 @@
-export const decoCharacterDescription = (pot: string | number) => {
+export const parseCharacterDescription = (pot: string | number) => {
   if (typeof pot === "string") {
-    return pot.replace(/\{[a-zA-Z0-9 /,%\.\[\]]+\}#\[[a-zA-Z0-9,]+\]/g, (match) => {
+    return pot.replace(/\{[a-zA-Z0-9 /,%-\.\[\]]+\}#\[[a-zA-Z0-9,]+\]/g, (match) => {
       const [content, colorCode = ""] = match.split("#");
       let classNames = "";
 

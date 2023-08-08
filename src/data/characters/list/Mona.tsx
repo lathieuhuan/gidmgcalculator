@@ -110,8 +110,7 @@ const Mona: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `Increases Mona's {Hydro DMG Bonus}#[gr] by a degree equivalent to {20%}#[b,gr] of her
-      {Energy Recharge}#[gr] rate.`,
+      description: `Increases Mona's {Hydro DMG Bonus}#[gr] by {20%}#[b,gr] of her {Energy Recharge}#[gr].`,
       isGranted: checkAscs[4],
       applyBuff: ({ totalAttr, desc, tracker }) => {
         applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);

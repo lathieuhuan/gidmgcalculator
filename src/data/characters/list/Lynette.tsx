@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Anemo, Green } from "@Src/pure-components";
 import { countVision } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
@@ -137,7 +136,7 @@ const Lynette: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.SELF,
       description: `After the Bogglecat Box [~EB] performs Elemental Coversion, Lynette's {Elemental Burst DMG}#[gr]
-      will be increased by {15%}#[b,gr]. This effect will persist until the Bogglecat Box's duration ends.`,
+      will be increased by {15%}#[b,gr] until the duration ends.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 15),
     },

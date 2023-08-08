@@ -136,7 +136,8 @@ const Nahida: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased.`,
+      description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased based on the number of
+      {Pyro}#[pyro] party members.`,
       applyFinalBuff: ({ calcItemBuffs, char, partyData }) => {
         const { value, pyroCount } = getEBBuff(char, partyData);
 
@@ -150,8 +151,7 @@ const Nahida: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
       description: `The Elemental Mastery of the active character within the Shrine of Maya will be increased by
-      {25%}#[b,gr] of the {Elemental Mastery}#[gr] of the party member with the highest Elemental Mastery. Maximum
-      {250}#[r] Elemental Mastery.`,
+      {25%}#[b,gr] of the {Elemental Mastery}#[gr] (upto {250}#[r]) of the party member with the highest Elemental Mastery.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -212,7 +212,8 @@ const Nahida: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
-      description: `Within 8s of being affected by Quicken, Aggravate, Spread, {DEF}#[gr] is decreased by {30%}#[b,gr].`,
+      description: `When opponents marked by Seeds of Skandha [~ES] are affected by Quicken, Aggravate, Spread,
+      their {DEF}#[gr] is decreased by {30%}#[b,gr] for 8s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "def", 30),
     },
