@@ -172,8 +172,8 @@ const Baizhu: DefaultAppCharacter = {
       below 50,000 will increase their {Burning, Bloom, Hyperbloom, and Burgeon DMG}#[gr] by {2%}#[b,gr], while their
       {Aggravate and Spread DMG}#[gr] will be increased by {0.8%}#[b,gr], for lasts 6s.`,
       inputConfigs: [{ label: "Max HP", type: "text", max: 99999, for: "teammate" }],
-      applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
-        const hp = toSelf ? totalAttr.hp : inputs[0] || 0;
+      applyFinalBuff: ({ fromSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
+        const hp = fromSelf ? totalAttr.hp : inputs[0] || 0;
         const stacks = round(Math.min(hp, 50000) / 1000, 1);
         const fields: ReactionBonusPath[] = ["burning.pct_", "bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"];
 

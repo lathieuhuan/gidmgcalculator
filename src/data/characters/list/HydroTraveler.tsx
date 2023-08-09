@@ -119,9 +119,8 @@ const HydroTraveler: DefaultAppCharacter = {
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
       description: `If HP has been consumed via Suffusion [~ES], increases the {Torrent Surge DMG}#[gr] by {45%}#[b,gr]
-      of the {total HP consumed}#[gr]. The maximum DMG Bonus that can be gained this way is {5,000}#[r].`,
-      // HP comsumed will be calculated based on "Suffusion time". "HP consumed" is manually input and should be used when
-      // Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".
+      of the {total HP consumed}#[gr]. The maximum DMG Bonus that can be gained this way is {5,000}#[r].
+      <br />{HP comsumed will be calculated based on "Suffusion time". "HP consumed" can be manually input and should be used when Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".}#[l]`,
       inputConfigs: [
         {
           type: "stacks",

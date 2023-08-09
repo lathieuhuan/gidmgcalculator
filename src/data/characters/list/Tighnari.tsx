@@ -105,7 +105,7 @@ const Tighnari: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `For every point of Elemental Mastery Tighnari possesses, his {Charged Attack DMG}#[gr] and Fashioner's
+      description: `For every point of Tighnari's Elemental Mastery, his {Charged Attack DMG}#[gr] and Fashioner's
       Tanglevine Shaft {[EB] DMG}#[gr] are increased by {0.08%}#[b,gr]. Max {80%}#[r].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ desc, totalAttr, attPattBonus, tracker }) => {

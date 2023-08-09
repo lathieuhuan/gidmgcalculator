@@ -92,7 +92,7 @@ const YaeMiko: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `Every point of {Elemental Mastery}#[gr] Yae Miko possesses will increase Sesshou Sakura
+      description: `Every point of Yae Miko's {Elemental Mastery}#[gr] will increase Sesshou Sakura
       {[ES] DMG}#[gr] by {0.15%}#[b,gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {

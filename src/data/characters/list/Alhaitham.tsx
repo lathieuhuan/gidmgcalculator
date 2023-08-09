@@ -165,10 +165,10 @@ const Alhaitham: DefaultAppCharacter = {
           max: 3,
         },
       ],
-      applyBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
+      applyBuff: ({ fromSelf, totalAttr, inputs, desc, tracker }) => {
         const stacks = inputs[0] || 0;
 
-        if (toSelf) {
+        if (fromSelf) {
           applyModifier(desc, totalAttr, "dendro", (3 - stacks) * 10, tracker);
         } else {
           applyModifier(desc, totalAttr, "em", stacks * 30, tracker);

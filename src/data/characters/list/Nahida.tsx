@@ -131,13 +131,17 @@ const Nahida: DefaultAppCharacter = {
       },
     },
   ],
+  dsGetters: [
+    (args) => `${getEBBuff(args.char, args.partyData).value}%`,
+    (args) => `${getEBBuff(args.char, args.partyData).pyroCount}`,
+  ],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased based on the number of
-      {Pyro}#[pyro] party members.`,
+      description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased by {@0}#[b,gr] based on the number of
+      {Pyro}#[pyro] party members ({@1}#[]).`,
       applyFinalBuff: ({ calcItemBuffs, char, partyData }) => {
         const { value, pyroCount } = getEBBuff(char, partyData);
 

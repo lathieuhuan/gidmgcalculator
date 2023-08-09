@@ -103,12 +103,13 @@ const Yanfei: DefaultAppCharacter = {
     { name: "Abiding Affidavit", image: "9/9f/Constellation_Abiding_Affidavit" },
     { name: "Extra Clause", image: "c/c5/Constellation_Extra_Clause" },
   ],
+  dsGetters: [(args) => `${getEBBuffValue(args.char, args.partyData)}%`],
   buffs: [
     {
       index: 3,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Increases {Charged Attack DMG}#[gr].`,
+      description: `Increases {Charged Attack DMG}#[gr] by {@0}#[b,gr].`,
       applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "CA.pct_", getEBBuffValue(char, partyData), tracker);
       },
@@ -134,7 +135,7 @@ const Yanfei: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `Increases Yanfei's {Charged Attack CRIT Rate} by {20%}#[b,gr] against enemies below 50% HP.`,
+      description: `Increases Yanfei's {Charged Attack CRIT Rate}#[gr] by {20%}#[b,gr] against enemies below 50% HP.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 20),
     },

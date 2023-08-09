@@ -1,4 +1,4 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
@@ -6,17 +6,16 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-interface GetWindGiftBuffValueArgs {
-  toSelf: boolean;
-  inputs: ModifierInput[];
-  char: CharInfo;
-  partyData: PartyData;
-}
-const getWindGiftBuffValue = ({ toSelf, inputs, char, partyData }: GetWindGiftBuffValueArgs) => {
-  const level = toSelf
-    ? finalTalentLv({ char, charData: Faruzan as AppCharacter, talentType: "EB", partyData })
+const getWindGiftBuffResult = ({ fromSelf, inputs, char, partyData }: DescriptionSeedGetterArgs) => {
+  const level = fromSelf
+    ? finalTalentLv({ talentType: "EB", char, charData: Faruzan as AppCharacter, partyData })
     : inputs[0] || 0;
-  return level ? round(18 * TALENT_LV_MULTIPLIERS[2][level], 1) : 0;
+
+  if (level) {
+    const mult = round(18 * TALENT_LV_MULTIPLIERS[2][level], 2);
+    return [level, mult];
+  }
+  return [0, 0];
 };
 
 const Faruzan: DefaultAppCharacter = {
@@ -99,12 +98,13 @@ const Faruzan: DefaultAppCharacter = {
     { name: "Wonderland of Rumination", image: "f/f7/Constellation_Wonderland_of_Rumination" },
     { name: "The Wondrous Path of Truth", image: "9/9a/Constellation_The_Wondrous_Path_of_Truth" },
   ],
+  dsGetters: [(args) => `${getWindGiftBuffResult(args)[1]}%`],
   buffs: [
     {
       index: 0,
       src: "Prayerful Wind's Benefit",
       affect: EModAffect.PARTY,
-      description: `Increases {Anemo DMG Bonus}#[gr] to all nearby characters.
+      description: `Increases {Anemo DMG Bonus}#[gr] by {@0}#[b,gr] to all nearby characters.
       <br />• At {A4}#[g], increases {Anemo DMG}#[anemo] based on {32%}#[b,gr] of Faruzan's {Base ATK}#[gr].
       <br />• At {C6}#[g], increases {Anemo CRIT DMG}#[gr] by {40%}#[b,gr].`,
       inputConfigs: [
@@ -113,22 +113,22 @@ const Faruzan: DefaultAppCharacter = {
         { label: "Base ATK (A4)", type: "text", max: 9999, for: "teammate" },
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
-      applyFinalBuff: ({ toSelf, char, totalAttr, inputs, attElmtBonus, partyData, desc, tracker }) => {
-        applyModifier(desc, totalAttr, "anemo", getWindGiftBuffValue({ toSelf, inputs, char, partyData }), tracker);
+      applyFinalBuff: (obj) => {
+        const { fromSelf, attElmtBonus, inputs } = obj;
+        const [EBlevel, anemoBonus] = getWindGiftBuffResult(obj);
 
-        if (toSelf ? checkAscs[4](char) : inputs[1]) {
-          const ATK = toSelf ? totalAttr.base_atk : inputs[2] || 0;
-          const level = toSelf
-            ? finalTalentLv({ char, charData: Faruzan as AppCharacter, talentType: "EB", partyData })
-            : inputs[0] || 1;
+        applyModifier(obj.desc, obj.totalAttr, "anemo", anemoBonus, obj.tracker);
+
+        if (fromSelf ? checkAscs[4](obj.char) : inputs[1]) {
+          const baseAtk = fromSelf ? obj.totalAttr.base_atk : inputs[2] || 0;
           const mult = 32;
-          const finalDesc = desc + ` / Lv. ${level} / ${mult}% of ${ATK} Base ATK`;
+          const description = obj.desc + ` Lv. ${EBlevel} / ${mult}% of ${baseAtk} Base ATK`;
 
-          applyModifier(finalDesc, attElmtBonus, "anemo.flat", applyPercent(ATK, mult), tracker);
+          applyModifier(description, attElmtBonus, "anemo.flat", applyPercent(baseAtk, mult), obj.tracker);
         }
-        if (toSelf ? checkCons[6](char) : inputs[3]) {
-          const descC6 = `${toSelf ? "Self" : "Faruzan"} / ${EModSrc.C6}`;
-          applyModifier(descC6, attElmtBonus, "anemo.cDmg_", 40, tracker);
+        if (fromSelf ? checkCons[6](obj.char) : inputs[3]) {
+          const description = `${fromSelf ? "Self" : "Faruzan"} / ${EModSrc.C6}`;
+          applyModifier(description, attElmtBonus, "anemo.cDmg_", 40, obj.tracker);
         }
       },
     },

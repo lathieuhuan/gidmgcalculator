@@ -1,4 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, ModifierInput } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
@@ -6,19 +6,17 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons } from "../utils";
 
-function getEBBuffValue(inputs: ModifierInput[]): [number, string] {
-  const baseATK = inputs[0] || 0;
-  const level = inputs[1] || 0;
-  const boosted = (inputs[2] || 0) === 1;
-  let mult = 56 * TALENT_LV_MULTIPLIERS[2][level];
-  let desc = level.toString();
+const getEBBuffResult = ({ fromSelf, char, partyData, inputs }: DescriptionSeedGetterArgs) => {
+  const level = fromSelf
+    ? finalTalentLv({ talentType: "EB", char, charData: Bennett as AppCharacter, partyData })
+    : inputs[1] || 0;
 
-  if (level && boosted) {
-    mult += 20;
-    desc += ` / C1: 20% extra`;
+  if (level) {
+    const mult = round(56 * TALENT_LV_MULTIPLIERS[2][level], 2);
+    return [level, mult];
   }
-  return [applyPercent(baseATK, mult), desc + ` / ${round(mult, 2)}% of ${baseATK} Base ATK`];
-}
+  return [0, 0];
+};
 
 const Bennett: DefaultAppCharacter = {
   code: 19,
@@ -112,12 +110,14 @@ const Bennett: DefaultAppCharacter = {
     { name: "True Explorer", image: "3/39/Constellation_True_Explorer" },
     { name: "Fire Ventures with Me", image: "3/3a/Constellation_Fire_Ventures_With_Me" },
   ],
+  dsGetters: [(args) => `${getEBBuffResult(args)[1]}%`],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Increases {ATK}#[gr] of the characters within its AoE based on Bennett's {Base ATK}#[gr].
+      description: `Increases {ATK}#[gr] of the characters within its AoE based on {@0}#[b,gr]
+      of Bennett's {Base ATK}#[gr].
       <br />• At {C1}#[g], the {ATK Bonus}#[gr] is further increased by {20%}#[b,gr] of his Base ATK.
       <br />• At {C6}#[g], the characters also gain a {15%}#[b,gr] {Pyro DMG Bonus}#[gr].`,
       inputConfigs: [
@@ -127,21 +127,25 @@ const Bennett: DefaultAppCharacter = {
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {
-        const { toSelf, char, totalAttr, inputs } = obj;
-        const args = toSelf
-          ? [
-              totalAttr.base_atk,
-              finalTalentLv({ ...obj, charData: Bennett as AppCharacter, talentType: "EB" }),
-              checkCons[1](char) ? 1 : 0,
-            ]
-          : inputs;
-        const [buffValue, xtraDesc] = getEBBuffValue(args);
-        const desc = `${obj.desc} / Lv. ${xtraDesc}`;
-        applyModifier(desc, totalAttr, "atk", buffValue, obj.tracker);
+        const { fromSelf, totalAttr, inputs } = obj;
+        let [level, multiplier] = getEBBuffResult(obj);
 
-        if (toSelf ? checkCons[6](char) : inputs[3]) {
-          const descC6 = `${toSelf ? "Self" : "Bennet"} / ${EModSrc.C6}`;
-          applyModifier(descC6, totalAttr, "pyro", 15, obj.tracker);
+        if (multiplier) {
+          const baseAtk = fromSelf ? totalAttr.base_atk : inputs[0] || 0;
+          const boosted = fromSelf ? checkCons[1](obj.char) : inputs[2] === 1;
+          let description = obj.desc + ` Lv. ${level}`;
+
+          if (boosted) {
+            multiplier += 20;
+            description += ` + C1 (20%)`;
+          }
+          description += ` / ${multiplier}% of ${baseAtk} Base ATK`;
+          applyModifier(description, totalAttr, "atk", applyPercent(baseAtk, multiplier), obj.tracker);
+        }
+
+        if (fromSelf ? checkCons[6](obj.char) : inputs[3]) {
+          const descriptionC6 = `${fromSelf ? "Self" : "Bennet"} / ${EModSrc.C6}`;
+          applyModifier(descriptionC6, totalAttr, "pyro", 15, obj.tracker);
         }
       },
     },

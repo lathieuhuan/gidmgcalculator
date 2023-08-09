@@ -7,8 +7,8 @@ import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const ascs4BuffValue = (toSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
-  const EM = toSelf ? totalAttr.em : inputs[1] || 0;
+const ascs4BuffValue = (fromSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {
+  const EM = fromSelf ? totalAttr.em : inputs[1] || 0;
   return round(+EM * 0.04, 2);
 };
 
@@ -117,9 +117,9 @@ const Kazuha: DefaultAppCharacter = {
         { label: "Element Swirled", type: "anemoable" },
         { label: "Elemental Mastery", type: "text", max: 9999, for: "teammate" },
       ],
-      applyFinalBuff: ({ toSelf, totalAttr, inputs, desc, tracker }) => {
+      applyFinalBuff: ({ fromSelf, totalAttr, inputs, desc, tracker }) => {
         const elmtIndex = inputs[0] || 0;
-        const buffValue = ascs4BuffValue(toSelf, totalAttr, inputs);
+        const buffValue = ascs4BuffValue(fromSelf, totalAttr, inputs);
         applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], buffValue, tracker);
       },
     },

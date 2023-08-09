@@ -63,12 +63,12 @@ const ElectroTraveler: DefaultAppCharacter = {
         { label: "A4 Passive", type: "check", for: "teammate" },
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
       ],
-      applyBuff: ({ totalAttr, char, inputs, toSelf, desc, tracker }) => {
+      applyBuff: ({ totalAttr, char, inputs, fromSelf, desc, tracker }) => {
         let buffValue = 20;
-        const boosted = toSelf ? checkAscs[4](char) : inputs[0] === 1;
+        const boosted = fromSelf ? checkAscs[4](char) : inputs[0] === 1;
 
         if (boosted) {
-          const ER = toSelf ? totalAttr.er_ : inputs[1] || 0;
+          const ER = fromSelf ? totalAttr.er_ : inputs[1] || 0;
           buffValue += Math.round(ER) / 10;
         }
         applyModifier(desc, totalAttr, "er_", buffValue, tracker);

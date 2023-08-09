@@ -121,9 +121,8 @@ const Thoma: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `When your current active character obtains or refreshes a Blazing Barrier, this character's
-      {Shield Strength}#[gr] will increase by {5%}#[b,gr] for 6s. Max {5}#[r] stacks, each stack can be obtained once
-      every 0.3 seconds.`,
+      description: `When your active character obtains or refreshes a Blazing Barrier, this character's
+      {Shield Strength}#[gr] will increase by {5%}#[b,gr] for 6s. Max {5}#[r] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {

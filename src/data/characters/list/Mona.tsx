@@ -5,12 +5,12 @@ import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const getEBBuffValue = ({
-  toSelf,
+  fromSelf,
   char,
   partyData,
   inputs,
-}: Pick<ApplyCharBuffArgs, "toSelf" | "char" | "partyData" | "inputs">) => {
-  const level = toSelf
+}: Pick<ApplyCharBuffArgs, "fromSelf" | "char" | "partyData" | "inputs">) => {
+  const level = fromSelf
     ? finalTalentLv({ char, charData: Mona as AppCharacter, talentType: "EB", partyData })
     : inputs[0] || 0;
   return level ? Math.min(40 + level * 2, 60) : 0;
@@ -132,13 +132,13 @@ const Mona: DefaultAppCharacter = {
         { label: "Constellation 4", type: "check", for: "teammate" },
       ],
       applyBuff: ({ totalAttr, attPattBonus, rxnBonus, desc, tracker, ...rest }) => {
-        const { toSelf, inputs, char } = rest;
+        const { fromSelf, inputs, char } = rest;
         applyModifier(desc, attPattBonus, "all.pct_", getEBBuffValue(rest), tracker);
 
-        if ((toSelf && checkCons[1](char)) || (!toSelf && inputs[1])) {
+        if ((fromSelf && checkCons[1](char)) || (!fromSelf && inputs[1])) {
           applyModifier(desc, rxnBonus, ["electroCharged.pct_", "swirl.pct_", "vaporize.pct_"], 15, tracker);
         }
-        if ((toSelf && checkCons[4](char)) || (!toSelf && inputs[2])) {
+        if ((fromSelf && checkCons[4](char)) || (!fromSelf && inputs[2])) {
           applyModifier(desc, totalAttr, "cRate_", 15, tracker);
         }
       },

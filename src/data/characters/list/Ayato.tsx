@@ -1,4 +1,4 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent } from "@Src/utils";
@@ -6,11 +6,16 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
-const getEBBuffValue = (toSelf: boolean, char: CharInfo, partyData: PartyData, inputs: ModifierInput[]) => {
-  const level = toSelf
-    ? finalTalentLv({ char, charData: Ayato as AppCharacter, talentType: "EB", partyData })
-    : inputs[0] || 1;
-  return level ? Math.min(level + 10, 20) : 0;
+const getEBBuffResult = (args: DescriptionSeedGetterArgs) => {
+  const level = args.fromSelf
+    ? finalTalentLv({ talentType: "EB", char: args.char, charData: Ayato as AppCharacter, partyData: args.partyData })
+    : args.inputs[0] || 0;
+
+  if (level) {
+    const mult = Math.min(level + 10, 20);
+    return [level, mult];
+  }
+  return [0, 0];
 };
 
 const Ayato: DefaultAppCharacter = {
@@ -127,6 +132,7 @@ const Ayato: DefaultAppCharacter = {
     { name: "Bansui Ichiro", image: "f/f1/Constellation_Bansui_Ichiro" },
     { name: "Boundless Origin", image: "d/da/Constellation_Boundless_Origin" },
   ],
+  dsGetters: [(args) => `${getEBBuffResult(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -170,7 +176,7 @@ const Ayato: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Increases the {Normal Attack DMG}#[gr] of characters within its AoE.`,
+      description: `Increases the {Normal Attack DMG}#[gr] of characters within its AoE by {@0}#[b,gr].`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",
@@ -178,9 +184,9 @@ const Ayato: DefaultAppCharacter = {
           for: "teammate",
         },
       ],
-      applyBuff: ({ toSelf, char, partyData, inputs, attPattBonus, desc, tracker }) => {
-        const buffValue = getEBBuffValue(toSelf, char, partyData, inputs);
-        applyModifier(desc, attPattBonus, "NA.pct_", buffValue, tracker);
+      applyBuff: (obj) => {
+        const [level, buffValue] = getEBBuffResult(obj);
+        applyModifier(obj.desc + ` Lv. ${level}`, obj.attPattBonus, "NA.pct_", buffValue, obj.tracker);
       },
     },
     {

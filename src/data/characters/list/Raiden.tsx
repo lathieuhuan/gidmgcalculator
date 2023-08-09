@@ -1,9 +1,8 @@
 import type {
   AppCharacter,
   BuffDescriptionArgs,
-  CharInfo,
   DefaultAppCharacter,
-  PartyData,
+  DescriptionSeedGetterArgs,
   TotalAttribute,
 } from "@Src/types";
 import { EModAffect } from "@Src/constants";
@@ -15,7 +14,7 @@ import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const getBuffValue = {
   ES: (args: BuffDescriptionArgs) => {
-    const level = args.toSelf
+    const level = args.fromSelf
       ? finalTalentLv({
           char: args.char,
           charData: Raiden as AppCharacter,
@@ -30,7 +29,7 @@ const getBuffValue = {
       value: round(args.charData.EBcost * mult, 1),
     };
   },
-  EB: (char: CharInfo, partyData: PartyData, totalEnergy = 0, electroEnergy = 0) => {
+  EB: ({ char, partyData, inputs: [totalEnergy = 0, electroEnergy = 0] }: DescriptionSeedGetterArgs) => {
     const isshinBonusMults = [0, 0.73, 0.78, 0.84, 0.91, 0.96, 1.02, 1.09, 1.16, 1.23, 1.31, 1.38, 1.45, 1.54];
     const level = finalTalentLv({
       char,
@@ -169,13 +168,14 @@ const Raiden: DefaultAppCharacter = {
       },
     },
   ],
+  dsGetters: [(args) => `${getBuffValue.EB(args).stacks}`, (args) => `${getBuffValue.EB(args).extraStacks}`],
   buffs: [
     {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
       description: `Eye of Stormy Judgment increases {Elemental Burst DMG}#[gr] based on the {Energy Cost}#[gr] of
-      the Elemental Burst during the eye's duration.`,
+      the Elemental Burst.`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -194,17 +194,19 @@ const Raiden: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `Musou no Hitotachi and Musou Isshin's attacks {[EB] DMG}#[gr] will be increased based on the number
-      of Chakra Desiderata's Resolve stacks consumed.
+      of Resolve consumed.
+      <br />--- Total Resolve: {@0}#[b] ---
       <br />Grants an {Electro Infusion}#[electro] which cannot be overridden.
       <br />• At {C1}#[g], increases {Resolve}#[gr] gained from Electro characters by {80%}#[b,gr], from characters of
       other visions by {20%}#[b,gr].
+      <br />--- Extra Resolve: {@1}#[b] ---
       <br />• At {C2}#[g], the Raiden Shogun's attacks ignore {60%}#[b,gr] of opponents' {DEF}#[gr].`,
       inputConfigs: [
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
       ],
-      applyBuff: ({ char, attPattBonus, calcItemBuffs, inputs, partyData, desc, tracker }) => {
-        const buffValue = getBuffValue.EB(char, partyData, inputs[0], inputs[1]);
+      applyBuff: (obj) => {
+        const buffValue = getBuffValue.EB(obj);
         const { stacks, musouBonus, isshinBonus } = buffValue;
 
         if (stacks) {
@@ -212,15 +214,15 @@ const Raiden: DefaultAppCharacter = {
           const isshinDesc = `${stacks} Resolve, ${isshinBonus}% extra multiplier each`;
           const ids = Array.from({ length: 9 }).map((_, i) => `EB.${i + 1}`);
 
-          calcItemBuffs.push(
+          obj.calcItemBuffs.push(
             exclBuff(musouDesc, "EB.0", "mult_", round(stacks * musouBonus, 2)),
             exclBuff(isshinDesc, ids, "mult_", round(stacks * isshinBonus, 2))
           );
         }
 
-        if (checkCons[2](char)) {
+        if (checkCons[2](obj.char)) {
           const fields: AttackPatternPath[] = ["NA.defIgn_", "CA.defIgn_", "PA.defIgn_", "ES.defIgn_", "EB.defIgn_"];
-          applyModifier(desc, attPattBonus, fields, 60, tracker);
+          applyModifier(obj.desc, obj.attPattBonus, fields, 60, obj.tracker);
         }
       },
       infuseConfig: {

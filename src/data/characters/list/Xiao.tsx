@@ -94,13 +94,14 @@ const Xiao: DefaultAppCharacter = {
     { name: "Evolution Eon: Origin of Ignorance", image: "f/f9/Constellation_Evolution_Eon_-_Origin_of_Ignorance" },
     { name: "Conqueror of Evil: Guardian Yaksha", image: "d/d7/Constellation_Conqueror_of_Evil_-_Guardian_Yaksha" },
   ],
+  dsGetters: [(args) => `${getEBBuffValue(args.char, args.partyData)}%`],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Increases Xiao's {Normal / Charged / Plunge Attack DMG}#[gr] and grants him an {Anemo Infusion}#[anemo]
-      that cannot be overridden.
+      description: `Increases Xiao's {Normal / Charged / Plunge Attack DMG}#[gr] by {@0}#[b,gr] and grants him an
+      {Anemo Infusion}#[anemo] that cannot be overridden.
       <br />• At {A1}#[g], Xiao's {DMG}#[gr] is increased by {5%}#[b,gr], and a further {5%}#[b,gr] for every 3s the
       ability persists. Max {25%}#[r].`,
       inputConfigs: [
@@ -126,7 +127,7 @@ const Xiao: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.SELF,
       description: `Using Lemniscatic Wind Cycling increases subsequent Lemniscatic Wind Cycling {[ES] DMG}#[gr] by
-      {15%}#[b,gr]. This effect lasts for 7s, and has a maximum of {3}#[r] stacks.`,
+      {15%}#[b,gr] for 7s. Maximum of {3}#[r] stacks.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         {

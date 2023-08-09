@@ -38,7 +38,7 @@ export default function WeaponBuffs() {
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + ` R${weapon.refi} (self)`}
-        desc={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
+        description={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onChangeText={(value, i) => {
@@ -115,7 +115,7 @@ export default function WeaponBuffs() {
             );
           }}
           heading={name + ` R${refi}`}
-          desc={ModifierTemplate.getWeaponDescription(descriptions, buff, refi)}
+          description={ModifierTemplate.getWeaponDescription(descriptions, buff, refi)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
           onChangeText={(text, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, text)}

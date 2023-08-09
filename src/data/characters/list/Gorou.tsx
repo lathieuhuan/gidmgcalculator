@@ -1,4 +1,4 @@
-import type { AppCharacter, AttributeStat, DefaultAppCharacter } from "@Src/types";
+import type { AppCharacter, AttributeStat, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { countVision } from "@Src/utils";
@@ -6,7 +6,12 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const getESBuffValue = (level: number) => Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
+const getESBuffValue = (args: DescriptionSeedGetterArgs) => {
+  const level = args.fromSelf
+    ? finalTalentLv({ talentType: "ES", char: args.char, charData: Gorou as AppCharacter, partyData: args.partyData })
+    : args.inputs[0] || 1;
+  return Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
+};
 
 const Gorou: DefaultAppCharacter = {
   code: 44,
@@ -129,6 +134,7 @@ const Gorou: DefaultAppCharacter = {
       },
     },
   ],
+  dsGetters: [(args) => `${getESBuffValue(args)}`],
   buffs: [
     {
       index: 0,
@@ -136,7 +142,7 @@ const Gorou: DefaultAppCharacter = {
       affect: EModAffect.ACTIVE_UNIT,
       description: `Provides up to 3 buffs to active characters within the skill's AoE based on the number of {Geo}#[geo]
       characters in the party:
-      <br />• 1 character: Adds "Standing Firm" - {DEF bonus}#[gr]
+      <br />• 1 character: Adds "Standing Firm" - {@0}#[b,gr] {DEF bonus}#[gr]
       <br />• 2 characters: Adds "Impregnable" - Increased resistance to interruption.
       <br />• 3 characters: Adds "Crunch" - {15%}#[b,gr] {Geo DMG Bonus}#[gr].`,
       inputConfigs: [
@@ -147,11 +153,8 @@ const Gorou: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const level = obj.toSelf
-          ? finalTalentLv({ ...obj, charData: Gorou as AppCharacter, talentType: "ES" })
-          : obj.inputs[0] || 1;
         const fields: AttributeStat[] = ["def"];
-        const buffValues = [getESBuffValue(level)];
+        const buffValues = [getESBuffValue(obj)];
         const { geo = 0 } = countVision(obj.partyData, obj.charData);
 
         if (geo > 2) {

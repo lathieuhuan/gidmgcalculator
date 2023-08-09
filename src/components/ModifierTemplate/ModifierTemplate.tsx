@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import type { AppWeapon, ModifierInput, ModInputConfig, WeaponBuff } from "@Src/types";
+import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
+import { getWeaponDescription } from "./get-description";
 
 // Component
 import { Input, Green } from "@Src/pure-components";
-import { WeaponCard } from "../WeaponCard";
 
 export type ModSelectOption = {
   label: string | number;
@@ -74,20 +74,11 @@ export const resonanceRenderInfo = {
   },
 };
 
-const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {
-  if (descriptions?.length) {
-    let { description = 0 } = buff;
-    description = typeof description === "number" ? descriptions[description] : description;
-    return WeaponCard.parseDescription(description || "", refi);
-  }
-  return "";
-};
-
 interface ModifierTemplateProps {
   mutable?: boolean;
   checked?: boolean;
   heading: ReactNode;
-  desc: ReactNode;
+  description: ReactNode;
   inputConfigs?: ModInputConfig[];
   inputs?: ModifierInput[];
   onToggle?: () => void;
@@ -99,7 +90,7 @@ const ModifierTemplate = ({
   mutable = true,
   checked,
   heading,
-  desc,
+  description,
   inputConfigs = [],
   inputs = [],
   onToggle,
@@ -193,10 +184,10 @@ const ModifierTemplate = ({
           </span>
         </label>
       </div>
-      {typeof desc === "string" ? (
-        <p className="text-sm" dangerouslySetInnerHTML={{ __html: desc }} />
+      {typeof description === "string" ? (
+        <p className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />
       ) : (
-        <p className="text-sm">{desc}</p>
+        <p className="text-sm">{description}</p>
       )}
 
       {inputConfigs.length ? (

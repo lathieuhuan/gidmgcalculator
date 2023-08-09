@@ -1,7 +1,7 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { round } from "@Src/utils";
+import { round, toMult } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
@@ -97,12 +97,13 @@ const Yoimiya: DefaultAppCharacter = {
     { name: "A Summer Festival's Eve", image: "b/bc/Constellation_A_Summer_Festival%27s_Eve" },
     { name: "Naganohara Meteor Swarm", image: "c/cc/Constellation_Naganohara_Meteor_Swarm" },
   ],
+  dsGetters: [(args) => `${round(toMult(getESBuffValue(args.char, args.partyData)), 3)}`],
   buffs: [
     {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Yoimiya's {Normal Attack DMG}#[gr] will be increased and converted to Blazing Arrows dealing
+      description: `Yoimiya's {Normal Attack DMG}#[gr] will be increased by {@0}#[b,gr] times and converted to
       {Pyro DMG}#[pyro].
       <br />• At {A1}#[g], Normal Attacks on hit will increase Yoimiya's {Pyro DMG Bonus}#[gr] by {2%}#[b,gr] for 3s.
       Maximum {10}#[r] stacks.`,

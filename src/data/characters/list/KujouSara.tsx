@@ -109,8 +109,8 @@ const KujouSara: DefaultAppCharacter = {
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
       applyBuff: (obj) => {
-        const { toSelf } = obj;
-        const buffValueArgs = toSelf
+        const { fromSelf } = obj;
+        const buffValueArgs = fromSelf
           ? [obj.totalAttr.base_atk, finalTalentLv({ ...obj, charData: KujouSara as AppCharacter, talentType: "ES" })]
           : obj.inputs;
         const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
@@ -118,8 +118,8 @@ const KujouSara: DefaultAppCharacter = {
 
         applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
 
-        if ((toSelf && checkCons[6](obj.char)) || (!toSelf && obj.inputs[2])) {
-          const descC6 = `${toSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
+        if ((fromSelf && checkCons[6](obj.char)) || (!fromSelf && obj.inputs[2])) {
+          const descC6 = `${fromSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
           applyModifier(descC6, obj.attElmtBonus, "electro.cDmg_", 60, obj.tracker);
         }
       },

@@ -34,7 +34,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
         key="sc"
         mutable={false}
         heading="Superconduct"
-        desc={
+        description={
           <>
             Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12 seconds.
           </>
@@ -44,7 +44,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
   }
   if (resonances.some((rsn) => rsn.vision === "geo")) {
     const { name, desc } = resonanceRenderInfo.geo;
-    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} desc={desc} />);
+    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} description={desc} />);
   }
 
   return renderModifiers(content, "debuffs", false);
@@ -68,7 +68,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
           key={index}
           mutable={false}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char, partyData, inputs })}
+          description={debuff.desc({ fromSelf: true, char, partyData, inputs })}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
@@ -115,7 +115,7 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
             key={`${name}-${index}`}
             mutable={false}
             heading={debuff.src}
-            desc={debuff.desc({ fromSelf: false, char, inputs, partyData })}
+            description={debuff.desc({ fromSelf: false, char, inputs, partyData })}
             inputs={inputs}
             inputConfigs={debuff.inputConfigs}
           />
@@ -146,7 +146,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
           key={`${code}-${index}`}
           mutable={false}
           heading={name}
-          desc={debuff.desc()}
+          description={debuff.desc()}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs}
         />

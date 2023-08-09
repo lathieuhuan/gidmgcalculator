@@ -114,10 +114,10 @@ const Candace: DefaultAppCharacter = {
         },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, char, charData, totalAttr, attPattBonus, inputs } = obj;
+        const { fromSelf, char, charData, totalAttr, attPattBonus, inputs } = obj;
 
         if (charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
-          const maxHP = toSelf && checkAscs[4](char) ? totalAttr.hp : !toSelf ? inputs[0] || 0 : 0;
+          const maxHP = fromSelf && checkAscs[4](char) ? totalAttr.hp : !fromSelf ? inputs[0] || 0 : 0;
           const buffValue = round(20 + (maxHP / 1000) * 0.5, 1);
 
           applyModifier(obj.desc, attPattBonus, "NA.pct_", buffValue, obj.tracker);

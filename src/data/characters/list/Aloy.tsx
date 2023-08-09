@@ -1,17 +1,16 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { Cryo, Green, Lightgold, Red, Rose } from "@Src/pure-components";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs } from "../utils";
 
-const getNApctBonus = (args: { char: CharInfo; partyData: PartyData; inputs: ModifierInput[] }) => {
+const getCoilStackBuffValue = (args: DescriptionSeedGetterArgs) => {
   const level = finalTalentLv({
+    talentType: "ES",
     char: args.char,
     charData: Aloy as AppCharacter,
-    talentType: "ES",
     partyData: args.partyData,
   });
   let stacks = args.inputs[0] || 0;
@@ -85,12 +84,13 @@ const Aloy: DefaultAppCharacter = {
     { name: "Easy Does It", image: "0/0f/Talent_Easy_Does_It" },
   ],
   constellation: [],
+  dsGetters: [(args) => `${getCoilStackBuffValue(args)}%`],
   buffs: [
     {
       index: 0,
       src: "Coil stacks",
       affect: EModAffect.SELF,
-      description: `Increases Aloy's {Normal Attack DMG}#[gr]. When she has 4 stacks, all stacks are cleared, Aloy
+      description: `Increases Aloy's {Normal Attack DMG}#[gr] {@0}#[b,gr]. When she has 4 stacks, all stacks are cleared, Aloy
       then enters the Rushing Ice state, which further increases her {Normal Attack DMG}#[gr] and converts it to
       {Cryo DMG}#[cryo].
       <br />• At {A1}#[g] when Aloy receives Coil effect, her {ATK}#[gr] is increased by {16%}#[b,gr] for 10s.
@@ -108,13 +108,13 @@ const Aloy: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const { char, desc, tracker } = obj;
-        applyModifier(desc, obj.attPattBonus, "NA.pct_", getNApctBonus(obj), tracker);
+        const { desc, tracker } = obj;
+        applyModifier(desc, obj.attPattBonus, "NA.pct_", getCoilStackBuffValue(obj), tracker);
 
-        if (checkAscs[1](char)) {
+        if (checkAscs[1](obj.char)) {
           applyModifier(desc, obj.totalAttr, "atk_", 16, tracker);
         }
-        if (checkAscs[4](char)) {
+        if (checkAscs[4](obj.char)) {
           applyModifier(desc, obj.totalAttr, "cryo", 3.5 * (obj.inputs[1] || 0), tracker);
         }
       },

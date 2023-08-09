@@ -223,14 +223,14 @@ export const getCalculationStats = ({
         if (buff) {
           buff.applyBuff?.({
             desc: `${name} / ${buff.src}`,
-            toSelf: false,
+            fromSelf: false,
             inputs,
             charBuffCtrls: teammate.buffCtrls,
             ...modifierArgs,
           });
           buff.applyFinalBuff?.({
             desc: `${name} / ${buff.src}`,
-            toSelf: false,
+            fromSelf: false,
             inputs,
             charBuffCtrls: teammate.buffCtrls,
             ...modifierArgs,

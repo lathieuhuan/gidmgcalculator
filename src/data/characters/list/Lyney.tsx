@@ -8,7 +8,7 @@ import { checkAscs, checkCons, exclBuff } from "../utils";
 
 const getPropSurplusValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({ char, charData: Lyney as AppCharacter, talentType: "ES", partyData });
-  return round(53.2 * TALENT_LV_MULTIPLIERS[2][level], 2);
+  return 53.2 * TALENT_LV_MULTIPLIERS[2][level];
 };
 
 const Lyney: DefaultAppCharacter = {
@@ -136,12 +136,13 @@ const Lyney: DefaultAppCharacter = {
         "When Lyney fires a Prop Arrow, he will fire a Pyrotechnic Strike: Reprised that will deal 80% of a Pyrotechnic Strike's DMG. This DMG is considered Charged Attack DMG.",
     },
   ],
+  dsGetters: [(args) => `${getPropSurplusValue(args.char, args.partyData)}%`],
   buffs: [
     {
       index: 0,
       src: "Prop Surplus",
       affect: EModAffect.SELF,
-      description: `Each stack increases Bewildering Lights {[ES] DMG}#[gr].`,
+      description: `Each stack increases Bewildering Lights {[ES] DMG}#[gr] by {@0}#[b,gr] of {ATK}#[gr].`,
       inputConfigs: [
         {
           type: "stacks",

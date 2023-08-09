@@ -36,7 +36,7 @@ export function ElementDebuffs() {
           );
         }}
         heading="Superconduct"
-        desc={
+        description={
           <>
             Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12 seconds.
           </>
@@ -50,7 +50,7 @@ export function ElementDebuffs() {
             dispatch(updateResonance({ ...geoResonance, activated: !geoResonance.activated }));
           }}
           heading="Enduring Rock"
-          desc={
+          description={
             <>
               Shielded characters dealing DMG to enemies will decrease their <Green>Geo RES</Green> by{" "}
               <Green b>20%</Green> for 15s.
@@ -115,7 +115,7 @@ export function ArtifactDebuffs() {
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
-        desc={debuffs?.[index]?.desc()}
+        description={debuffs?.[index]?.desc()}
         inputs={inputs}
         inputConfigs={debuff.inputConfigs}
         onSelectOption={(value, inputIndex) => {

@@ -25,8 +25,8 @@ const wrapText = (text: string | number, type: string) => {
 
 const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
 
-const parseDescription = (pot: string, refi: number) => {
-  return pot.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
+const parseDescription = (description: string, refi: number) => {
+  return description.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
     const [bodyPart, typePart = ""] = match.split("#");
     const type = typePart?.slice(1, -1);
     let body = bodyPart.slice(1, -1);

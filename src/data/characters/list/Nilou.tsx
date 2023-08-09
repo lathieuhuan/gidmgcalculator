@@ -134,7 +134,7 @@ const Nilou: DefaultAppCharacter = {
       description: `Increases characters' {Elemental Mastery}#[gr] by {100}#[b,gr] for 10s whenever they are hit
       by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
       <br />• At {A4}#[g], each 1,000 points of Nilou {Max HP}#[gr] above 30,000 will cause
-      {Bountiful Cores DMG}#[gr] to increase by {9%}#[b.gr]. Maximum {400%}#[r].`,
+      {Bountiful Cores DMG}#[gr] to increase by {9%}#[b,gr]. Maximum {400%}#[r].`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -151,9 +151,9 @@ const Nilou: DefaultAppCharacter = {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },
-      applyFinalBuff: ({ toSelf, totalAttr, rxnBonus, inputs, char, desc, tracker }) => {
-        if (toSelf ? checkAscs[4](char) : inputs[0]) {
-          const buffValue = getA4BuffValue(toSelf ? totalAttr.hp : inputs[0]);
+      applyFinalBuff: ({ fromSelf, totalAttr, rxnBonus, inputs, char, desc, tracker }) => {
+        if (fromSelf ? checkAscs[4](char) : inputs[0]) {
+          const buffValue = getA4BuffValue(fromSelf ? totalAttr.hp : inputs[0]);
           applyModifier(desc, rxnBonus, "bloom.pct_", buffValue, tracker);
         }
       },

@@ -1,25 +1,14 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-interface DetectorBuffValueArgs {
-  toSelf: boolean;
-  char: CharInfo;
-  inputs: ModifierInput[];
-}
-const detectorBuff = ({ toSelf, char, inputs }: DetectorBuffValueArgs) => {
-  let maxStacks = 5;
-
-  if (toSelf) {
-    if (!checkAscs[4](char)) maxStacks--;
-    if (!checkCons[6](char)) maxStacks--;
-  }
-  return {
-    value: Math.min(toSelf ? inputs[0] || 0 : inputs[1] || 0, maxStacks) * 10,
-    maxStacks,
-  };
+const getESBuffValue = ({ fromSelf, char, partyData, inputs }: DescriptionSeedGetterArgs) => {
+  const level = fromSelf
+    ? finalTalentLv({ talentType: "ES", char: char, charData: Mika as AppCharacter, partyData })
+    : inputs[0] || 0;
+  return level ? Math.min(12 + level, 25) : 0;
 };
 
 const Mika: DefaultAppCharacter = {
@@ -114,12 +103,13 @@ const Mika: DefaultAppCharacter = {
     { name: "Signal Arrow", image: "a/af/Constellation_Signal_Arrow" },
     { name: "Companion's Counsel", image: "e/e0/Constellation_Companion%27s_Counsel" },
   ],
+  dsGetters: [(args) => `${getESBuffValue(args)}%`],
   buffs: [
     {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Grants nearby active characters Soulwind, increasing their {ATK SPD}#[gr].
+      description: `Grants nearby active characters Soulwind, increasing their {ATK SPD}#[gr] by {@0}#[b,gr].
       <br />• At {A1}#[g], Soulwind can grant characters the Detector effect, increasing their {Physical DMG}#[gr] by
       {10%}#[b,gr] each stack. Max {3}#[r] stacks.
       <br />• At {A4}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr].
@@ -130,19 +120,23 @@ const Mika: DefaultAppCharacter = {
         { label: "Detector stacks (A1)", type: "select", initialValue: 0, max: 5 },
         { label: "Constellation 6", type: "check", for: "teammate" },
       ],
-      applyBuff: ({ toSelf, char, totalAttr, attElmtBonus, inputs, partyData, desc, tracker }) => {
-        const level = toSelf
-          ? finalTalentLv({ char, charData: Mika as AppCharacter, talentType: "ES", partyData })
-          : inputs[0] || 0;
-        const buffValue = level ? Math.min(12 + level, 25) : 0;
-        applyModifier(desc, totalAttr, "naAtkSpd_", buffValue, tracker);
+      applyBuff: (obj) => {
+        const { fromSelf, char, inputs, desc, tracker } = obj;
+        applyModifier(desc, obj.totalAttr, "naAtkSpd_", getESBuffValue(obj), tracker);
 
-        if (!toSelf || checkAscs[1](char)) {
-          const buffValue = detectorBuff({ toSelf, char, inputs }).value;
-          applyModifier(desc + ` + ${EModSrc.A1}`, totalAttr, "phys", buffValue, tracker);
+        if (!fromSelf || checkAscs[1](char)) {
+          let maxStacks = 5;
+
+          if (fromSelf) {
+            if (!checkAscs[4](char)) maxStacks--;
+            if (!checkCons[6](char)) maxStacks--;
+          }
+
+          const detectorBuffValue = Math.min(fromSelf ? inputs[0] || 0 : inputs[1] || 0, maxStacks) * 10;
+          applyModifier(desc + ` + ${EModSrc.A1}`, obj.totalAttr, "phys", detectorBuffValue, tracker);
         }
-        if ((toSelf && checkCons[6](char)) || (!toSelf && inputs[2])) {
-          applyModifier(desc + ` + ${EModSrc.C6}`, attElmtBonus, "phys.cDmg_", 60, tracker);
+        if ((fromSelf && checkCons[6](char)) || (!fromSelf && inputs[2])) {
+          applyModifier(desc + ` + ${EModSrc.C6}`, obj.attElmtBonus, "phys.cDmg_", 60, tracker);
         }
       },
     },

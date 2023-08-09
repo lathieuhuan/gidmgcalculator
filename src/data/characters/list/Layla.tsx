@@ -167,8 +167,8 @@ const Layla: DefaultAppCharacter = {
           for: "teammate",
         },
       ],
-      applyFinalBuff: ({ toSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
-        const maxHP = toSelf ? totalAttr.hp : inputs[0] || 0;
+      applyFinalBuff: ({ fromSelf, totalAttr, attPattBonus, inputs, desc, tracker }) => {
+        const maxHP = fromSelf ? totalAttr.hp : inputs[0] || 0;
         const buffValue = applyPercent(maxHP, 5);
         applyModifier(desc, attPattBonus, ["NA.flat", "CA.flat"], buffValue, tracker);
       },

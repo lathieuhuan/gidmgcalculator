@@ -1,4 +1,4 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -7,11 +7,16 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const getEBDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
-  const level = fromSelf
-    ? finalTalentLv({ char, charData: Shenhe as AppCharacter, talentType: "EB", partyData })
-    : inputs[0] || 0;
-  return level ? Math.min(5 + level, 15) : 0;
+const getEBDebuffValue = (args: DescriptionSeedGetterArgs) => {
+  const level = args.fromSelf
+    ? finalTalentLv({ talentType: "EB", char: args.char, charData: Shenhe as AppCharacter, partyData: args.partyData })
+    : args.inputs[0] || 0;
+
+  if (level) {
+    const value = Math.min(5 + level, 15);
+    return [level, value];
+  }
+  return [0, 0];
 };
 
 const Shenhe: DefaultAppCharacter = {
@@ -100,6 +105,7 @@ const Shenhe: DefaultAppCharacter = {
     },
     { name: "Mystical Abandon", image: "0/0d/Constellation_Mystical_Abandon" },
   ],
+  dsGetters: [(args) => `${getEBDebuffValue(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -112,9 +118,9 @@ const Shenhe: DefaultAppCharacter = {
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { toSelf, inputs, attElmtBonus } = obj;
-        const ATK = toSelf ? obj.totalAttr.atk : inputs[0] || 0;
-        const level = toSelf
+        const { fromSelf, inputs, attElmtBonus } = obj;
+        const ATK = fromSelf ? obj.totalAttr.atk : inputs[0] || 0;
+        const level = fromSelf
           ? finalTalentLv({ ...obj, charData: Shenhe as AppCharacter, talentType: "ES" })
           : inputs[1] || 1;
         const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
@@ -136,9 +142,9 @@ const Shenhe: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      description: `After Shenhe uses Spring Spirit Summoning, she will grant all nearby party members the following effects:
-      <br />• Press: {Elemental Skill and Elemental Burst DMG}#[gr] increased by {15%}#[b,gr] for 10s.
-      <br />• Hold: {Normal, Charged and Plunging Attack DMG}#[gr] increased by {15%}#[b,gr] for 15s.`,
+      description: `After Shenhe uses Spring Spirit Summoning [ES], she will grant all nearby party members:
+      <br />• Press: {15%}#[b,gr] {Elemental Skill and Elemental Burst DMG}#[gr] for 10s.
+      <br />• Hold: {15%}#[b,gr] {Normal, Charged and Plunging Attack DMG}#[gr] for 15s.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         { label: "Press", type: "check", initialValue: 1 },
@@ -185,7 +191,7 @@ const Shenhe: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      description: `The field decreases opponents' {Cryo RES}#[gr] and {Physical RES}#[gr].`,
+      description: `The field decreases opponents' {Cryo RES}#[gr] and {Physical RES}#[gr] by {@0}#[b,gr].`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",
@@ -193,9 +199,9 @@ const Shenhe: DefaultAppCharacter = {
           for: "teammate",
         },
       ],
-      applyDebuff: ({ fromSelf, resistReduct, inputs, char, partyData, desc, tracker }) => {
-        const pntValue = getEBDebuffValue(fromSelf, char, inputs, partyData);
-        applyModifier(desc, resistReduct, ["phys", "cryo"], pntValue, tracker);
+      applyDebuff: (obj) => {
+        const [level, penaltyValue] = getEBDebuffValue(obj);
+        applyModifier(obj.desc + ` Lv. ${level}`, obj.resistReduct, ["phys", "cryo"], penaltyValue, obj.tracker);
       },
     },
   ],

@@ -1,7 +1,7 @@
 import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierCtrl, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { findByIndex, round } from "@Src/utils";
+import { findByIndex, round, toMult } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, exclBuff } from "../utils";
@@ -12,14 +12,14 @@ const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] 
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({
+    talentType: "ES",
     char,
     charData: Wanderer as AppCharacter,
-    talentType: "ES",
     partyData,
   });
   return {
-    NA: round(32.98 * TALENT_LV_MULTIPLIERS[5][level], 1),
-    CA: round(26.39 * TALENT_LV_MULTIPLIERS[5][level], 1),
+    NA: 32.98 * TALENT_LV_MULTIPLIERS[5][level],
+    CA: 26.39 * TALENT_LV_MULTIPLIERS[5][level],
   };
 };
 
@@ -118,12 +118,17 @@ const Wanderer: DefaultAppCharacter = {
       image: "0/01/Constellation_Shugen_The_Curtains%27_Melancholic_Sway",
     },
   ],
+  dsGetters: [
+    (args) => `${round(toMult(getESBuffValue(args.char, args.partyData).NA), 3)}`,
+    (args) => `${round(toMult(getESBuffValue(args.char, args.partyData).CA), 3)}`,
+  ],
   buffs: [
     {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Increases {Normal Attack DMG}#[gr] and {Charged Attack DMG}#[gr].
+      description: `Increases {Normal Attack DMG}#[gr] by {@0}#[b,gr] times and {Charged Attack DMG}#[gr] by {@1}#[b,gr]
+      times.
       <br />• At {C1}#[g], increases {Normal and Charged Attack SPD}#[gr] by {10%}#[b,gr], increases
       {Wind Arrow DMG}#[gr] [~A4] by {25%}#[b,gr] of {ATK}#[gr].`,
       applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, char, partyData, desc, tracker }) => {
@@ -140,8 +145,7 @@ const Wanderer: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `If Hanega: Song of the Wind [ES] comes into contact with Hydro/Pyro/Cryo/Electro, the Windfavored state will
-      obtain buffs:
+      description: `If Hanega: Song of the Wind [ES] comes into contact with:
       <br />• Hydro: {Kuugoryoku Point cap}#[gr] increases by {20}#[b,gr].
       <br />• Pyro: {ATK}#[gr] increases by {30%}#[b,gr].
       <br />• Cryo: {CRIT Rate}#[gr] increases by {20%}#[b,gr].`,

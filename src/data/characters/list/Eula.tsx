@@ -1,14 +1,19 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierInput, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
-const getESDebuffValue = (fromSelf: boolean, char: CharInfo, inputs: ModifierInput[], partyData: PartyData) => {
-  const level = fromSelf
-    ? finalTalentLv({ char, charData: Eula as AppCharacter, talentType: "ES", partyData })
-    : inputs[0] || 0;
-  return level ? Math.min(15 + level, 25) : 0;
+const getESDebuffResult = (args: DescriptionSeedGetterArgs) => {
+  const level = args.fromSelf
+    ? finalTalentLv({ talentType: "ES", char: args.char, charData: Eula as AppCharacter, partyData: args.partyData })
+    : args.inputs[0] || 0;
+
+  if (level) {
+    const value = Math.min(15 + level, 25);
+    return [level, value];
+  }
+  return [0, 0];
 };
 
 const Eula: DefaultAppCharacter = {
@@ -122,6 +127,7 @@ const Eula: DefaultAppCharacter = {
     },
     { name: "Noble Obligation", image: "3/34/Constellation_Noble_Obligation" },
   ],
+  dsGetters: [(args) => `${getESDebuffResult(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -149,7 +155,7 @@ const Eula: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       description: `If Grimheart stacks are consumed, surrounding opponents will have their {Physical RES}#[gr] and
-      {Cryo RES}#[gr] decreased.`,
+      {Cryo RES}#[gr] decreased by {@0}#[b,gr].`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",
@@ -157,9 +163,9 @@ const Eula: DefaultAppCharacter = {
           for: "teammate",
         },
       ],
-      applyDebuff: ({ fromSelf, resistReduct, char, inputs, partyData, desc, tracker }) => {
-        const penaltyValue = getESDebuffValue(fromSelf, char, inputs, partyData);
-        applyModifier(desc, resistReduct, ["phys", "cryo"], penaltyValue, tracker);
+      applyDebuff: (obj) => {
+        const [level, penaltyValue] = getESDebuffResult(obj);
+        applyModifier(obj.desc + ` Lv. ${level}`, obj.resistReduct, ["phys", "cryo"], penaltyValue, obj.tracker);
       },
     },
   ],

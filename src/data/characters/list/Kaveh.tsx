@@ -6,7 +6,7 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const getEBbuffValue = (level: number) => (level ? round(27.49 * TALENT_LV_MULTIPLIERS[2][level], 2) : 0);
+const getEBbuffValue = (level: number) => (level ? 27.49 * TALENT_LV_MULTIPLIERS[2][level] : 0);
 
 const Kaveh: DefaultAppCharacter = {
   code: 69,
@@ -108,13 +108,28 @@ const Kaveh: DefaultAppCharacter = {
       image: "6/61/Constellation_Pairidaeza%27s_Dreams",
     },
   ],
+  dsGetters: [
+    (args) => {
+      const buffValue = getEBbuffValue(
+        args.fromSelf
+          ? finalTalentLv({
+              talentType: "EB",
+              char: args.char,
+              charData: Kaveh as AppCharacter,
+              partyData: args.partyData,
+            })
+          : args.inputs[0]
+      );
+      return `${round(buffValue, 2)}%`;
+    },
+  ],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `• Grants {Dendro Infusion}#[dendro].
-      <br />• Increases {Bloom DMG}#[gr] triggered by all party members.
+      <br />• Increases {Bloom DMG}#[gr] triggered by all party members by {@0}#[b,gr].
       <br />• At {A4}#[g], after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his
       {Elemental Mastery}#[gr] will increase by {25}#[b,gr]. Max {4}#[r] stacks.`,
       inputConfigs: [
@@ -126,7 +141,7 @@ const Kaveh: DefaultAppCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, rxnBonus, char, partyData, inputs, desc, tracker }) => {
-        const level = finalTalentLv({ char, charData: Kaveh as AppCharacter, talentType: "EB", partyData });
+        const level = finalTalentLv({ talentType: "EB", char, charData: Kaveh as AppCharacter, partyData });
         applyModifier(desc, rxnBonus, "bloom.pct_", getEBbuffValue(level), tracker);
 
         if (checkAscs[4](char)) {
@@ -145,7 +160,7 @@ const Kaveh: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.TEAMMATE,
-      description: `Increases {Bloom DMG}#[gr] triggered by all party members.`,
+      description: `Increases {Bloom DMG}#[gr] triggered by all party members by {@0}#[b,gr].`,
       inputConfigs: [
         {
           label: "Elemental Burst level",

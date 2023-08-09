@@ -1,10 +1,16 @@
-import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
-const getEBBuffValue = (level: number) => {
+const getEBBuffValue = (args: DescriptionSeedGetterArgs) => {
+  const level = finalTalentLv({
+    talentType: "EB",
+    char: args.char,
+    charData: Razor as AppCharacter,
+    partyData: args.partyData,
+  });
   return Math.min(24 + level * 2 - Math.max(level - 6, 0), 40);
 };
 
@@ -105,20 +111,15 @@ const Razor: DefaultAppCharacter = {
     { name: "Sharpened Claws", image: "c/c4/Constellation_Sharpened_Claws" },
     { name: "Lupus Fulguris", image: "1/12/Constellation_Lupus_Fulguris" },
   ],
+  dsGetters: [(args) => `${getEBBuffValue(args)}%`],
   buffs: [
     {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Raises Razor's {ATK SPD}#[gr].`,
-      applyBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv({
-          char,
-          charData: Razor as AppCharacter,
-          talentType: "EB",
-          partyData,
-        });
-        applyModifier(desc, totalAttr, "naAtkSpd_", getEBBuffValue(level), tracker);
+      description: `Increases Razor's {ATK SPD}#[gr] by {@0}#[b,gr].`,
+      applyBuff: (obj) => {
+        applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", getEBBuffValue(obj), obj.tracker);
       },
     },
     {

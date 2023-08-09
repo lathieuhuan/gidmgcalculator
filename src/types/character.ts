@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type {
   AttackElement,
   AttackPattern,
@@ -16,7 +15,6 @@ import type {
   PartyData,
   ResistanceReduction,
   AttackPatternBonus,
-  TotalAttribute,
   ModifierInput,
   BuffModifierArgsWrapper,
   Tracker,
@@ -65,13 +63,8 @@ export type AppCharacter = {
     altSprint?: Ability;
   };
 
-  description?: {
-    pots?: string[];
-    // buffs: Faruzan 0, Wanderer 0, Xiao 0, Aloy 0, Mika 0, Rosaria 1, Kaveh 0 + 1, Nahida 0, Raiden 0 + 1, Razor 0, Gorou 0,
-    // Yunjin innate + 0, Ayato 1, Hydro MC 1, Mona 0, Lyney 0, Yanfei 3, Yoimiya 0
-    // debuffs: Eula 0, Shenhe: 0
-    seeds?: CharacterDescriptionSeed[];
-  };
+  // ds: description seed
+  dsGetters?: DescriptionSeedGetter[];
 
   passiveTalents: Ability[];
   constellation: Ability[];
@@ -80,9 +73,9 @@ export type AppCharacter = {
   debuffs?: AbilityDebuff[];
 };
 
-type CharacterDescriptionSeed = CalcItemMultFactor & {
-  talentType: Talent;
-};
+export type DescriptionSeedGetterArgs = Pick<ApplyCharBuffArgs, "fromSelf" | "char" | "partyData" | "inputs">;
+
+export type DescriptionSeedGetter = (args: DescriptionSeedGetterArgs) => string;
 
 type CalcListConfig = {
   multScale?: number;
@@ -139,10 +132,7 @@ export type CalcItem = {
 export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
-
-  // desc: (args: { charData: AppCharacter; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
   description: number | string;
-
   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
@@ -161,7 +151,7 @@ type AbilityModifier = {
 // ============ BUFFS ============
 export type BuffDescriptionArgs = Pick<
   ApplyCharBuffArgs,
-  "toSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
+  "fromSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
 >;
 
 export type AbilityBuff = AbilityModifier & {
@@ -172,17 +162,14 @@ export type AbilityBuff = AbilityModifier & {
     range?: NormalAttack[];
     disabledNAs?: boolean;
   };
-
-  // desc: (args: BuffDescriptionArgs) => ReactNode;
   description: number | string;
-
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
 export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
   inputs: ModifierInput[];
-  toSelf: boolean;
+  fromSelf: boolean;
   charBuffCtrls: ModifierCtrl[];
   desc: string;
 };
@@ -191,10 +178,7 @@ export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-
-  // desc: (args: { fromSelf: boolean; char: CharInfo; inputs: ModifierInput[]; partyData: PartyData }) => ReactNode;
   description: number | string;
-
   applyDebuff?: (args: {
     resistReduct: ResistanceReduction;
     attPattBonus: AttackPatternBonus;
