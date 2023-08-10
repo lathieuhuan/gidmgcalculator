@@ -1,7 +1,7 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-import { selectChar, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
@@ -24,7 +24,6 @@ export function SelfBuffs() {
   const char = useSelector(selectChar);
   const charData = appData.getCharData(char.name);
   const partyData = appData.getPartyData(useSelector(selectParty));
-  const totalAttr = useSelector(selectTotalAttr);
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
@@ -32,14 +31,18 @@ export function SelfBuffs() {
   const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, isGranted, desc }, index) => {
-    if (isGranted(char)) {
+  innateBuffs.forEach((buff, index) => {
+    if (buff.isGranted(char)) {
       content.push(
         <ModifierTemplate
           key={`innate-${index}`}
           mutable={false}
-          heading={src}
-          desc={desc({ totalAttr, charData, partyData })}
+          heading={buff.src}
+          description={ModifierTemplate.parseCharacterDescription(
+            buff.description,
+            { fromSelf: true, char, partyData, inputs: [] },
+            charData.dsGetters
+          )}
         />
       );
     }
@@ -60,15 +63,11 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrlIndex}`}
           heading={buff.src}
-          desc={buff.desc({
-            toSelf: true,
-            totalAttr,
-            char,
-            charBuffCtrls: selfBuffCtrls,
-            inputs,
-            charData,
-            partyData,
-          })}
+          description={ModifierTemplate.parseCharacterDescription(
+            buff.description,
+            { fromSelf: true, char, partyData, inputs },
+            charData.dsGetters
+          )}
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
           inputs={inputs}
@@ -122,17 +121,14 @@ interface TeammateBuffsProps {
 }
 function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProps) {
   const dispatch = useDispatch();
-  const totalAttr = useSelector(selectTotalAttr);
   const char = useSelector(selectChar);
 
-  const charData = appData.getCharData(char.name);
-
   const subContent: JSX.Element[] = [];
-  const { buffs = [], vision } = appData.getCharData(teammate.name);
+  const teammateData = appData.getCharData(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { activated, index, inputs = [] } = ctrl;
-    const buff = findByIndex(buffs, index);
+    const buff = findByIndex(teammateData.buffs || [], index);
     if (!buff) return;
 
     const path: ToggleTeammateModCtrlPath = {
@@ -147,15 +143,11 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
-        desc={buff.desc({
-          toSelf: false,
-          char,
-          charData,
-          partyData,
-          inputs: inputs || [],
-          charBuffCtrls: teammate.buffCtrls,
-          totalAttr,
-        })}
+        description={ModifierTemplate.parseCharacterDescription(
+          buff.description,
+          { fromSelf: false, char, partyData, inputs },
+          teammateData.dsGetters
+        )}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onChangeText={(value, i) => {
@@ -190,7 +182,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   });
   return (
     <div>
-      <p className={`text-lg text-${vision} font-bold text-center uppercase`}>{teammate.name}</p>
+      <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
       <div className="mt-1 space-y-3">{subContent}</div>
     </div>
   );

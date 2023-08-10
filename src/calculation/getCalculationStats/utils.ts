@@ -140,7 +140,7 @@ export const applySelfBuffs = ({ isFinal, modifierArgs, charBuffCtrls, charData 
 
         applyFn?.({
           desc: `Self / ${buff.src}`,
-          toSelf: true,
+          fromSelf: true,
           charBuffCtrls,
           inputs,
           ...modifierArgs,

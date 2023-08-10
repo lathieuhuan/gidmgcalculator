@@ -1,85 +1,85 @@
-import Albedo from "./geo/Albedo";
-import Alhaitham from "./dendro/Alhaitham";
-import Aloy from "./cryo/Aloy";
-import Ayato from "./hydro/Ayato";
-import Amber from "./pyro/Amber";
-import AnemoMC from "./anemo/AnemoMC";
-import Ayaka from "./cryo/Ayaka";
-import Baizhu from "./dendro/Baizhu";
-import Barbara from "./hydro/Barbara";
-import Beidou from "./electro/Beidou";
-import Bennett from "./pyro/Bennett";
-import Candace from "./hydro/Candace";
-import Collei from "./dendro/Collei";
-import Chongyun from "./cryo/Chongyun";
-import Cyno from "./electro/Cyno";
-import Dehya from "./pyro/Dehya";
-import DendroMC from "./dendro/DendroMC";
-import Diluc from "./pyro/Diluc";
-import Diona from "./cryo/Diona";
-import Dori from "./electro/Dori";
-import Eula from "./cryo/Eula";
-import ElectroMC from "./electro/ElectroMC";
-import Fischl from "./electro/Fischl";
-import Freminet from "./cryo/Freminet";
-import Faruzan from "./anemo/Faruzan";
-import Ganyu from "./cryo/Ganyu";
-import GeoMC from "./geo/GeoMC";
-import Gorou from "./geo/Gorou";
-import Heizou from "./anemo/Heizou";
-import HuTao from "./pyro/HuTao";
-import HydroMC from "./hydro/HydroMC";
-import Itto from "./geo/Itto";
-import Jean from "./anemo/Jean";
-import Kaeya from "./cryo/Kaeya";
-import Kaveh from "./dendro/Kaveh";
-import Kazuha from "./anemo/Kazuha";
-import Keqing from "./electro/Keqing";
-import Kirara from "./dendro/Kirara";
-import Klee from "./pyro/Klee";
-import Kokomi from "./hydro/Kokomi";
-import Layla from "./cryo/Layla";
-import Lisa from "./electro/Lisa";
-import Lynette from "./anemo/Lynette";
-import Lyney from "./pyro/Lyney";
-import Mika from "./cryo/Mika";
-import Mona from "./hydro/Mona";
-import Nahida from "./dendro/Nahida";
-import Nilou from "./hydro/Nilou";
-import Ningguang from "./geo/Ningguang";
-import Noelle from "./geo/Noelle";
-import Qiqi from "./cryo/Qiqi";
-import Raiden from "./electro/Raiden";
-import Razor from "./electro/Razor";
-import Rosaria from "./cryo/Rosaria";
-import Sara from "./electro/Sara";
-import Sayu from "./anemo/Sayu";
-import Shenhe from "./cryo/Shenhe";
-import Shinobu from "./electro/Shinobu";
-import Sucrose from "./anemo/Sucrose";
-import Tartaglia from "./hydro/Tartaglia";
-import Tighnari from "./dendro/Tighnari";
-import Thoma from "./pyro/Thoma";
-import Venti from "./anemo/Venti";
-import Wanderer from "./anemo/Wanderer";
-import Xiangling from "./pyro/Xiangling";
-import Xiao from "./anemo/Xiao";
-import Xingqiu from "./hydro/Xingqiu";
-import Xinyan from "./pyro/Xinyan";
-import YaeMiko from "./electro/YaeMiko";
-import Yanfei from "./pyro/Yanfei";
-import Yaoyao from "./dendro/Yaoyao";
-import Yelan from "./hydro/Yelan";
-import Yoimiya from "./pyro/Yoimiya";
-import YunJin from "./geo/YunJin";
-import Zhongli from "./geo/Zhongli";
+import Albedo from "./list/Albedo";
+import Alhaitham from "./list/Alhaitham";
+import Aloy from "./list/Aloy";
+import Amber from "./list/Amber";
+import AnemoTraveler from "./list/AnemoTraveler";
+import Ayaka from "./list/Ayaka";
+import Ayato from "./list/Ayato";
+import Baizhu from "./list/Baizhu";
+import Barbara from "./list/Barbara";
+import Beidou from "./list/Beidou";
+import Bennett from "./list/Bennett";
+import Candace from "./list/Candace";
+import Chongyun from "./list/Chongyun";
+import Collei from "./list/Collei";
+import Cyno from "./list/Cyno";
+import Dehya from "./list/Dehya";
+import DendroTraveler from "./list/DendroTraveler";
+import Diluc from "./list/Diluc";
+import Diona from "./list/Diona";
+import Dori from "./list/Dori";
+import ElectroTraveler from "./list/ElectroTraveler";
+import Eula from "./list/Eula";
+import Faruzan from "./list/Faruzan";
+import Fischl from "./list/Fischl";
+import Freminet from "./list/Freminet";
+import Ganyu from "./list/Ganyu";
+import GeoTraveler from "./list/GeoTraveler";
+import Gorou from "./list/Gorou";
+import Heizou from "./list/Heizou";
+import HuTao from "./list/HuTao";
+import HydroTraveler from "./list/HydroTraveler";
+import Itto from "./list/Itto";
+import Jean from "./list/Jean";
+import Kaeya from "./list/Kaeya";
+import Kaveh from "./list/Kaveh";
+import Kazuha from "./list/Kazuha";
+import Keqing from "./list/Keqing";
+import Kirara from "./list/Kirara";
+import Klee from "./list/Klee";
+import Kokomi from "./list/Kokomi";
+import KujouSara from "./list/KujouSara";
+import Layla from "./list/Layla";
+import Lisa from "./list/Lisa";
+import Lynette from "./list/Lynette";
+import Lyney from "./list/Lyney";
+import Mika from "./list/Mika";
+import Mona from "./list/Mona";
+import Nahida from "./list/Nahida";
+import Nilou from "./list/Nilou";
+import Ningguang from "./list/Ningguang";
+import Noelle from "./list/Noelle";
+import Qiqi from "./list/Qiqi";
+import Raiden from "./list/Raiden";
+import Razor from "./list/Razor";
+import Rosaria from "./list/Rosaria";
+import Sayu from "./list/Sayu";
+import Shenhe from "./list/Shenhe";
+import Shinobu from "./list/Shinobu";
+import Sucrose from "./list/Sucrose";
+import Tartaglia from "./list/Tartaglia";
+import Thoma from "./list/Thoma";
+import Tighnari from "./list/Tighnari";
+import Venti from "./list/Venti";
+import Wanderer from "./list/Wanderer";
+import Xiangling from "./list/Xiangling";
+import Xiao from "./list/Xiao";
+import Xingqiu from "./list/Xingqiu";
+import Xinyan from "./list/Xinyan";
+import YaeMiko from "./list/YaeMiko";
+import Yanfei from "./list/Yanfei";
+import Yaoyao from "./list/Yaoyao";
+import Yelan from "./list/Yelan";
+import Yoimiya from "./list/Yoimiya";
+import YunJin from "./list/YunJin";
+import Zhongli from "./list/Zhongli";
 
 const characters = {
   Albedo,
   Alhaitham,
   Aloy,
   Amber,
-  "Anemo Traveler": AnemoMC,
+  "Anemo Traveler": AnemoTraveler,
   Ayaka,
   Ayato,
   Baizhu,
@@ -91,21 +91,21 @@ const characters = {
   Collei,
   Cyno,
   Dehya,
-  "Dendro Traveler": DendroMC,
+  "Dendro Traveler": DendroTraveler,
   Diluc,
   Diona,
   Dori,
-  "Electro Traveler": ElectroMC,
+  "Electro Traveler": ElectroTraveler,
   Eula,
   Faruzan,
   Fischl,
   Freminet,
   Ganyu,
-  "Geo Traveler": GeoMC,
+  "Geo Traveler": GeoTraveler,
   Gorou,
   Heizou,
   "Hu Tao": HuTao,
-  "Hydro Traveler": HydroMC,
+  "Hydro Traveler": HydroTraveler,
   Itto,
   Jean,
   Kaeya,
@@ -115,6 +115,7 @@ const characters = {
   Kirara,
   Klee,
   Kokomi,
+  "Kujou Sara": KujouSara,
   Layla,
   Lisa,
   Lynette,
@@ -129,7 +130,6 @@ const characters = {
   "Raiden Shogun": Raiden,
   Razor,
   Rosaria,
-  "Kujou Sara": Sara,
   Sayu,
   Shenhe,
   Shinobu,

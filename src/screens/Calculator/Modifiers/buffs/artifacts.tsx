@@ -39,7 +39,7 @@ export default function ArtifactBuffs() {
         checked={ctrl.activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
-        desc={buff.desc()}
+        description={buff.desc()}
         inputs={ctrl.inputs}
         inputConfigs={buff.inputConfigs}
         onSelectOption={(value, inputIndex) => {
@@ -96,7 +96,7 @@ export default function ArtifactBuffs() {
             );
           }}
           heading={name}
-          desc={buff.desc()}
+          description={buff.desc()}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
           onSelectOption={(value, inputIndex) => updateArtifactInputs(ctrlIndex, inputIndex, value)}

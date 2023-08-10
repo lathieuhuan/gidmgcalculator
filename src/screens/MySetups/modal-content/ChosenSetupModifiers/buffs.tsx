@@ -9,7 +9,6 @@ import type {
   Party,
   PartyData,
   ReactionBonus,
-  TotalAttribute,
   Vision,
   InnateBuff,
   Level,
@@ -50,7 +49,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 
   for (const { vision } of resonances) {
     const { name, desc } = resonanceRenderInfo[vision];
-    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} desc={desc} />);
+    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={desc} />);
   }
 
   if (infusedElement !== "phys") {
@@ -59,7 +58,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         key="infusion"
         mutable={false}
         heading="Custom Infusion"
-        desc={
+        description={
           <>
             Infused with <span className={`capitalize text-${infusedElement}`}>{infusedElement}.</span>
           </>
@@ -82,7 +81,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
           key={"amp-" + attReaction}
           mutable={false}
           heading={renderAmpReactionHeading(element, reation)}
-          desc={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
+          description={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
         />
       );
     } else if (reation === "spread" || reation === "aggravate") {
@@ -90,7 +89,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         key={"quicken-" + attReaction}
         mutable={false}
         heading={renderQuickenHeading(element, reation)}
-        desc={renderQuickenDesc(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
+        description={renderQuickenDesc(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
       />;
     }
   };
@@ -105,21 +104,24 @@ interface SelfBuffsProps {
   char: CharInfo;
   charData: AppCharacter;
   buffs: AbilityBuff[];
-  totalAttr: TotalAttribute;
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
   innateBuffs: InnateBuff[];
 }
-export function SelfBuffs({ char, charData, buffs, totalAttr, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
+export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, desc }, index) => {
+  innateBuffs.forEach(({ src, description }, index) => {
     content.push(
       <ModifierTemplate
         key={"innate-" + index}
         mutable={false}
         heading={src}
-        desc={desc({ charData, partyData, totalAttr })}
+        description={ModifierTemplate.parseCharacterDescription(
+          description,
+          { fromSelf: true, char, partyData, inputs: [] },
+          charData.dsGetters
+        )}
       />
     );
   });
@@ -133,15 +135,11 @@ export function SelfBuffs({ char, charData, buffs, totalAttr, selfBuffCtrls, par
           key={index}
           mutable={false}
           heading={buff.src}
-          desc={buff.desc({
-            toSelf: true,
-            totalAttr,
-            char,
-            charBuffCtrls: selfBuffCtrls,
-            charData,
-            partyData,
-            inputs,
-          })}
+          description={ModifierTemplate.parseCharacterDescription(
+            buff.description,
+            { fromSelf: true, char, partyData, inputs },
+            charData.dsGetters
+          )}
           inputs={inputs}
           inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
@@ -154,29 +152,23 @@ export function SelfBuffs({ char, charData, buffs, totalAttr, selfBuffCtrls, par
 
 interface PartyBuffsProps {
   char: CharInfo;
-  charData: AppCharacter;
   party: Party;
   partyData: PartyData;
-  totalAttr: TotalAttribute;
 }
-export function PartyBuffs({ char, charData, party, partyData, totalAttr }: PartyBuffsProps) {
+export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
   const content = [];
 
   for (const teammate of party) {
-    if (!teammate || !teammate.buffCtrls.length) {
-      continue;
-    }
+    if (!teammate || !teammate.buffCtrls.length) continue;
 
     const teammateData = appData.getCharData(teammate.name);
-    if (!teammateData) {
-      continue;
-    }
+    if (!teammateData) continue;
 
-    const { name, vision, buffs = [] } = teammateData;
+    const { name, buffs = [] } = teammateData;
 
     if (buffs.length) {
       content.push(
-        <p key={name} className={`text-lg text-${vision} font-bold text-center uppercase`}>
+        <p key={name} className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>
           {name}
         </p>
       );
@@ -191,15 +183,11 @@ export function PartyBuffs({ char, charData, party, partyData, totalAttr }: Part
             key={`${name}-${index}`}
             mutable={false}
             heading={buff.src}
-            desc={buff.desc({
-              toSelf: false,
-              totalAttr,
-              charBuffCtrls: teammate.buffCtrls,
-              inputs,
-              char,
-              charData,
-              partyData,
-            })}
+            description={ModifierTemplate.parseCharacterDescription(
+              buff.description,
+              { fromSelf: false, char, partyData, inputs },
+              teammateData.dsGetters
+            )}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />
@@ -220,11 +208,9 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
 
   for (const { index, inputs = [] } of wpBuffCtrls) {
     const weaponData = findDataWeapon(weapon);
-    if (!weaponData) {
-      continue;
-    }
+    if (!weaponData) continue;
 
-    const { name, buffs = [], description } = weaponData;
+    const { name, buffs = [], descriptions } = weaponData;
     const buff = findByIndex(buffs, index);
 
     if (buff) {
@@ -233,7 +219,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
           key={`${weapon.code}-${index}`}
           mutable={false}
           heading={name}
-          desc={ModifierTemplate.getWeaponDescription(description, buff, weapon.refi)}
+          description={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
         />
@@ -243,7 +229,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
 
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
-    const { name, buffs = [], description } = findDataWeapon(teammate.weapon) || {};
+    const { name, buffs = [], descriptions } = findDataWeapon(teammate.weapon) || {};
 
     for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
       const buff = findByIndex(buffs, index);
@@ -254,7 +240,7 @@ export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
             key={`${teammateIndex}-${index}`}
             mutable={false}
             heading={name}
-            desc={ModifierTemplate.getWeaponDescription(description, buff, teammate.weapon.refi)}
+            description={ModifierTemplate.getWeaponDescription(descriptions, buff, teammate.weapon.refi)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />
@@ -277,9 +263,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
 
   for (const { index, inputs = [] } of artBuffCtrls) {
     const artifactData = findDataArtifactSet({ code: mainCode });
-    if (!artifactData) {
-      continue;
-    }
+    if (!artifactData) continue;
 
     const { name, buffs = [] } = artifactData;
     const buff = buffs[index];
@@ -290,7 +274,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
           key={`${mainCode}-${index}`}
           mutable={false}
           heading={name + " (self)"}
-          desc={buff.desc()}
+          description={buff.desc()}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
         />
@@ -311,7 +295,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
             key={`${code}-${index}`}
             mutable={false}
             heading={name}
-            desc={buff.desc()}
+            description={buff.desc()}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />

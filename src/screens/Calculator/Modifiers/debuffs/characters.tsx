@@ -20,15 +20,15 @@ import { ModifierTemplate, renderModifiers } from "@Src/components";
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const selfDebuffCtrls = useSelector((state) => {
-    return state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls;
-  });
+  const selfDebuffCtrls = useSelector(
+    (state) => state.calculator.setupsById[state.calculator.activeId].selfDebuffCtrls
+  );
 
-  const { debuffs = [] } = appData.getCharData(char.name) || {};
+  const charData = appData.getCharData(char.name) || {};
   const content: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
-    const debuff = findByIndex(debuffs, index);
+    const debuff = findByIndex(charData.debuffs || [], index);
 
     if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
       const path: ToggleModCtrlPath = {
@@ -43,7 +43,11 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char, inputs: inputs || [], partyData })}
+          description={ModifierTemplate.parseCharacterDescription(
+            debuff.description,
+            { fromSelf: true, char, partyData, inputs },
+            charData.dsGetters
+          )}
           inputs={inputs}
           inputConfigs={inputConfigs}
           onChangeText={(value, i) => {
@@ -94,14 +98,13 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
   const char = useSelector(selectChar);
   const dispatch = useDispatch();
 
-  const tmData = appData.getCharData(teammate.name);
-  if (!tmData) return null;
+  const teammateData = appData.getCharData(teammate.name);
+  if (!teammateData) return null;
 
-  const { vision, debuffs = [] } = tmData;
   const subContent: JSX.Element[] = [];
 
   teammate.debuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
-    const debuff = findByIndex(debuffs, index);
+    const debuff = findByIndex(teammateData.debuffs || [], index);
     if (!debuff) return;
 
     const path: ToggleTeammateModCtrlPath = {
@@ -117,7 +120,11 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={debuff.src}
-        desc={debuff.desc({ fromSelf: false, char, inputs: inputs || [], partyData })}
+        description={ModifierTemplate.parseCharacterDescription(
+          debuff.description,
+          { fromSelf: false, char, partyData, inputs },
+          teammateData.dsGetters
+        )}
         inputs={inputs}
         inputConfigs={inputConfigs}
         onChangeText={(value, inputIndex) => {
@@ -145,7 +152,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
 
   return (
     <>
-      <p className={`text-lg text-${vision} font-bold text-center uppercase`}>{teammate.name}</p>
+      <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
       {subContent}
     </>
   );

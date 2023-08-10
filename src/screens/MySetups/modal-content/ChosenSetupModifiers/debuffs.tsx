@@ -1,5 +1,6 @@
 import type {
   AbilityDebuff,
+  AppCharacter,
   ArtifactDebuffCtrl,
   CharInfo,
   CustomDebuffCtrl,
@@ -34,7 +35,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
         key="sc"
         mutable={false}
         heading="Superconduct"
-        desc={
+        description={
           <>
             Reduces the <Green>Physical RES</Green> of enemies by <Green b>40%</Green> for 12 seconds.
           </>
@@ -44,7 +45,7 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
   }
   if (resonances.some((rsn) => rsn.vision === "geo")) {
     const { name, desc } = resonanceRenderInfo.geo;
-    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} desc={desc} />);
+    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} description={desc} />);
   }
 
   return renderModifiers(content, "debuffs", false);
@@ -53,10 +54,11 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
 interface SelfDebuffsProps {
   char: CharInfo;
   selfDebuffCtrls: ModifierCtrl[];
+  charData: AppCharacter;
   partyData: PartyData;
   debuffs: AbilityDebuff[];
 }
-export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfDebuffsProps) {
+export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuffs }: SelfDebuffsProps) {
   const content: JSX.Element[] = [];
 
   for (const { index, inputs = [] } of selfDebuffCtrls) {
@@ -68,7 +70,11 @@ export function SelfDebuffs({ char, selfDebuffCtrls, debuffs, partyData }: SelfD
           key={index}
           mutable={false}
           heading={debuff.src}
-          desc={debuff.desc({ fromSelf: true, char, partyData, inputs })}
+          description={ModifierTemplate.parseCharacterDescription(
+            debuff.description,
+            { fromSelf: true, char, partyData, inputs },
+            charData.dsGetters
+          )}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
@@ -87,20 +93,16 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
   const content = [];
 
   for (const teammate of party) {
-    if (!teammate || !teammate.debuffCtrls.length) {
-      continue;
-    }
+    if (!teammate || !teammate.debuffCtrls.length) continue;
 
     const teammateData = appData.getCharData(teammate.name);
-    if (!teammateData) {
-      continue;
-    }
+    if (!teammateData) continue;
 
-    const { name, vision, debuffs = [] } = teammateData;
+    const { name, debuffs = [] } = teammateData;
 
     if (debuffs.length) {
       content.push(
-        <p key={name} className={`pt-2 -mb-1 text-lg text-${vision} font-bold text-center uppercase`}>
+        <p key={name} className={`pt-2 -mb-1 text-lg text-${teammateData.vision} font-bold text-center uppercase`}>
           {name}
         </p>
       );
@@ -115,7 +117,11 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
             key={`${name}-${index}`}
             mutable={false}
             heading={debuff.src}
-            desc={debuff.desc({ fromSelf: false, char, inputs, partyData })}
+            description={ModifierTemplate.parseCharacterDescription(
+              debuff.description,
+              { fromSelf: false, char, partyData, inputs },
+              teammateData.dsGetters
+            )}
             inputs={inputs}
             inputConfigs={debuff.inputConfigs}
           />
@@ -134,9 +140,8 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
 
   for (const { code, index, inputs } of artDebuffCtrls) {
     const artifactData = findDataArtifactSet({ code });
-    if (!artifactData) {
-      continue;
-    }
+    if (!artifactData) continue;
+
     const { name, debuffs = [] } = artifactData;
     const debuff = debuffs[index];
 
@@ -146,7 +151,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
           key={`${code}-${index}`}
           mutable={false}
           heading={name}
-          desc={debuff.desc()}
+          description={debuff.desc()}
           inputs={inputs}
           inputConfigs={debuff.inputConfigs}
         />

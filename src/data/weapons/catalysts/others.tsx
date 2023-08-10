@@ -12,10 +12,7 @@ const otherCatalysts: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "er_", scale: "8.5%" },
     passiveName: "Energy Shower",
-    description: {
-      pots: [`Each Elemental Orb or Particle collected restores {0}% HP.`],
-      seeds: [{ base: 0.75, seedType: "dull" }],
-    },
+    descriptions: [`Each Elemental Orb or Particle collected restores {0.75^}% HP.`],
   },
   {
     code: 27,
@@ -25,13 +22,10 @@ const otherCatalysts: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "em", scale: "20" },
     passiveName: "Rapids",
-    description: {
-      pots: [
-        `Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases {ATK} by {0}% for
-        12s.`,
-      ],
-      seeds: [15],
-    },
+    descriptions: [
+      `Upon causing a Vaporize, Electro-Charged, Frozen, or a Hydro-infused Swirl reaction, increases {ATK}#[k] by
+      {15^%}#[v] for 12s.`,
+    ],
     buffs: [
       {
         index: 0,
@@ -49,10 +43,7 @@ const otherCatalysts: AppWeapon[] = [
     mainStatScale: "40",
     subStat: { type: "cRate_", scale: "3.4%" },
     passiveName: "Rapids",
-    description: {
-      pots: ["Defeating an opponent increases Movement SPD and {ATK} by {0}% for 15s."],
-      seeds: [{ base: 10, increment: 2 }],
-    },
+    descriptions: ["Defeating an opponent increases Movement SPD and {ATK}#[k] by {10^2%}#[v] for 15s."],
     buffs: [
       {
         index: 0,
@@ -71,13 +62,10 @@ const otherCatalysts: AppWeapon[] = [
     mainStatScale: "39",
     subStat: { type: "hp_", scale: "7.7%" },
     passiveName: "Legacy",
-    description: {
-      pots: [
-        `When switching characters, the new character taking the field has their {ATK} increased by {0}% for 10s. This
-        effect can only occur once every 20s.`,
-      ],
-      seeds: [18],
-    },
+    descriptions: [
+      `When switching characters, the new character taking the field has their {ATK}#[k] increased by {18^%}#[v] for
+      10s. This effect can only occur once every 20s.`,
+    ],
     buffs: [
       {
         index: 0,

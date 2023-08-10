@@ -11,14 +11,11 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "44b",
     subStat: { type: "cRate_", scale: "9.6%b" },
     passiveName: "Heat Haze at Horizon's End",
-    description: {
-      pots: [
-        `The equipping character gains {0}% of their {Elemental Mastery} as bonus {ATK}.`,
-        `When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
-        equipping character will gain {1}% of their {Elemental Mastery} as bonus {ATK}. Max {2} stacks.`,
-      ],
-      seeds: [39, 21, { max: 3, increment: 0 }],
-    },
+    descriptions: [
+      `The equipping character gains {39^%}#[v] of their {Elemental Mastery}#[k] as bonus {ATK}#[k].`,
+      `When an Elemental Skill hits opponents, the Dream of the Scarlet Sands effect will be gained for 10s: the
+      equipping character will gain {21^%}#[v] of their {Elemental Mastery}#[k] as bonus {ATK}#[k]. Max {3}#[m] stacks.`,
+    ],
     autoBuffs: [
       {
         base: 0.39,
@@ -62,15 +59,12 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "49",
     subStat: { type: "atk_", scale: "3.6%" },
     passiveName: "Eagle Spear of Justice",
-    description: {
-      pots: [
-        `Gain {0}% {All Elemental DMG Bonus}.`,
-        `Obtain Consummation for 20s after using an Elemental Skill, causing {ATK} to increase by {1}% per second, up to
-        {2} times. When the character equipped with this weapon is not on the field, Consummation's {ATK} increase is
-        {doubled}.`,
-      ],
-      seeds: [9, 2.4, { max: 6, increment: 0 }],
-    },
+    descriptions: [
+      `Gain {9^%}#[v] {All Elemental DMG Bonus}#[k].`,
+      `Obtain Consummation for 20s after using an Elemental Skill, causing {ATK}#[k] to increase by {2.4^%}#[v] per
+      second, up to {6}#[m] times. When the character equipped with this weapon is not on the field, Consummation's
+      {ATK increase}#[k] is {doubled}#[v].`,
+    ],
     autoBuffs: [
       {
         base: 9,
@@ -109,13 +103,11 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "er_", scale: "12%" },
     passiveName: "Timeless Dream: Eternal Stove",
-    description: {
-      pots: [
-        `{ATK} increased by {0}% of {Energy Recharge} over the base 100%. You can gain a maximum bonus of {1}% ATK.`,
-        `Gain {2}% {Energy Recharge} for 12s after using an Elemental Burst.`,
-      ],
-      seeds: [21, { max: 70, increment: 10 }, { base: 25, increment: 5 }],
-    },
+    descriptions: [
+      `{ATK}#[k] increased by {21^%}#[v] of {Energy Recharge}#[k] over the base 100%. You can gain a maximum bonus of
+      {70^10%}#[m] ATK.`,
+      `Gain {25^5%}#[v] {Energy Recharge}#[k] for 12s after using an Elemental Burst.`,
+    ],
     autoBuffs: [
       {
         base: 0.21,
@@ -152,13 +144,12 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
     passiveName: "Reckless Cinnabar",
-    description: {
-      pots: [
-        `{HP} increased by {0}%. Additionally, provides an {ATK Bonus} based on {1}% of the wielder's {Max HP}.`,
-        `When the wielder's HP is less than 50%, this {ATK Bonus} is increased by an additional {2}% of {Max HP}.`,
-      ],
-      seeds: [15, 0.6, { base: 0.8, increment: 0.2 }],
-    },
+    descriptions: [
+      `{HP}#[k] increased by {15^%}#[v]. Additionally, provides an {ATK Bonus}#[k] based on {0.6^%}#[v] of the
+      wielder's {Max HP}#[k].`,
+      `When the wielder's HP is less than 50%, this {ATK Bonus}#[k] is increased by an additional {0.8^0.2%}#[v] of
+      {Max HP}#[k].`,
+    ],
     autoBuffs: [
       {
         base: 15,
@@ -207,13 +198,10 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "cRate_", scale: "4.8%" },
     passiveName: "Eagle Spear of Justice",
-    description: {
-      pots: [
-        `On hit, increases {ATK} by {0}% for 6s. Max {1} stacks. This effect can only occur once every 0.3s. While in
-        possession of the maximum possible stacks, DMG dealt is increased by {2}%.`,
-      ],
-      seeds: [{ base: 2.5, increment: 0.7 }, { max: 7, increment: 0 }, 9],
-    },
+    descriptions: [
+      `On hit, increases {ATK}#[k] by {2.5^0.7%}#[v] for 6s. Max {7}#[m] stacks. This effect can only occur once every
+      0.3s. While in possession of the maximum possible stacks, {DMG}#[k] dealt is increased by {9^%}#[v].`,
+    ],
     buffs: [
       {
         index: 0,
@@ -250,14 +238,11 @@ const goldPolearms: AppWeapon[] = [
     mainStatScale: "48",
     subStat: { type: "er_", scale: "8%" },
     passiveName: "Blackwing",
-    description: {
-      pots: [
-        `Increases {CRIT Rate} by {0}% and increases {Normal ATK SPD} by {1}%. Additionally, Normal and Charged Attacks hits on
-        opponents have a 50% chance to trigger a vacuum blade that deals {2}% of ATK as DMG in a small AoE. This effect
-        can occur no more than once every 2s.`,
-      ],
-      seeds: [6, { base: 12, increment: 0 }, { base: 25, increment: 15, seedType: "dull" }],
-    },
+    descriptions: [
+      `Increases {CRIT Rate}#[k] by {6^%}#[v] and increases {Normal ATK SPD}#[k] by {12%}#[v]. Additionally, Normal
+      and Charged Attacks hits on opponents have a 50% chance to trigger a vacuum blade that deals {25^15}% of ATK as
+      DMG in a small AoE. This effect can occur no more than once every 2s.`,
+    ],
     autoBuffs: [
       {
         base: 6,

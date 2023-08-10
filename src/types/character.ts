@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type {
   AttackElement,
   AttackPattern,
@@ -16,7 +15,6 @@ import type {
   PartyData,
   ResistanceReduction,
   AttackPatternBonus,
-  TotalAttribute,
   ModifierInput,
   BuffModifierArgsWrapper,
   Tracker,
@@ -64,12 +62,18 @@ export type AppCharacter = {
     EB: Ability;
     altSprint?: Ability;
   };
+  /** ds: description seed */
+  dsGetters?: DescriptionSeedGetter[];
   passiveTalents: Ability[];
   constellation: Ability[];
   innateBuffs?: InnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
+
+export type DescriptionSeedGetterArgs = Pick<ApplyCharBuffArgs, "fromSelf" | "char" | "partyData" | "inputs">;
+
+export type DescriptionSeedGetter = (args: DescriptionSeedGetterArgs) => string;
 
 type CalcListConfig = {
   multScale?: number;
@@ -123,17 +127,23 @@ export type CalcItem = {
       };
 };
 
-export type InnateBuff = {
-  src: string;
-  isGranted: (char: CharInfo) => boolean;
-  desc: (args: { charData: AppCharacter; partyData: PartyData; totalAttr: TotalAttribute }) => ReactNode;
-  applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
-};
+// ============ BUFFS ============
+export type BuffDescriptionArgs = Pick<
+  ApplyCharBuffArgs,
+  "fromSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
+>;
 
 type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
   charBuffCtrls: ModifierCtrl[];
   desc: string;
+};
+
+export type InnateBuff = {
+  src: string;
+  isGranted: (char: CharInfo) => boolean;
+  description: number | string;
+  applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
+  applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
 
 type AbilityModifier = {
@@ -142,11 +152,10 @@ type AbilityModifier = {
   isGranted?: (char: CharInfo) => boolean;
 };
 
-// ============ BUFFS ============
-export type BuffDescriptionArgs = Pick<
-  ApplyCharBuffArgs,
-  "toSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
->;
+export type ApplyCharBuffArgs = ApplyCharInnateBuffArgs & {
+  inputs: ModifierInput[];
+  fromSelf: boolean;
+};
 
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
@@ -156,31 +165,26 @@ export type AbilityBuff = AbilityModifier & {
     range?: NormalAttack[];
     disabledNAs?: boolean;
   };
-  desc: (args: BuffDescriptionArgs) => ReactNode;
+  description: number | string;
   applyBuff?: (args: ApplyCharBuffArgs) => void;
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
-export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
+// ============ DEBUFFS ============
+type ApplyCharDebuffArgs = {
+  resistReduct: ResistanceReduction;
+  attPattBonus: AttackPatternBonus;
+  char: CharInfo;
   inputs: ModifierInput[];
-  toSelf: boolean;
-  charBuffCtrls: ModifierCtrl[];
+  partyData: PartyData;
+  fromSelf: boolean;
   desc: string;
+  tracker?: Tracker;
 };
 
-// ============ DEBUFFS ============
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-  desc: (args: { fromSelf: boolean; char: CharInfo; inputs: ModifierInput[]; partyData: PartyData }) => ReactNode;
-  applyDebuff?: (args: {
-    resistReduct: ResistanceReduction;
-    attPattBonus: AttackPatternBonus;
-    char: CharInfo;
-    inputs: ModifierInput[];
-    partyData: PartyData;
-    fromSelf: boolean;
-    desc: string;
-    tracker?: Tracker;
-  }) => void;
+  description: number | string;
+  applyDebuff?: (args: ApplyCharDebuffArgs) => void;
 };

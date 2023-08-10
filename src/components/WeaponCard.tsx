@@ -1,6 +1,5 @@
-import clsx from "clsx";
 import { useMemo } from "react";
-import type { CalcWeapon, DescriptionSeed, DescriptionSeedType, Level } from "@Src/types";
+import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
@@ -15,47 +14,38 @@ import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 
-const wrapText = (text: string | number, type: DescriptionSeedType = "dull", bold = true) => {
-  return `<span class="${clsx({
-    "text-green": type === "green",
-    "text-rose-500": type === "red",
-    "font-bold": type === "green" && bold,
-  })}">${text}</span>`;
+const wrapText = (text: string | number, type: string) => {
+  const typeToCls: Record<string, string> = {
+    k: "text-green",
+    v: "text-green font-bold",
+    m: "text-rose-500",
+  };
+  return `<span class="${typeToCls[type] || ""}">${text}</span>`;
 };
 
 const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
 
-const decoDescription = (pot: string, seeds: DescriptionSeed[], refi: number) => {
-  return pot.replace(/\{[a-zA-Z0-9 ',-]+\}%?/g, (match) => {
-    let seed: string | DescriptionSeed;
+const parseDescription = (description: string, refi: number) => {
+  return description.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
+    const [bodyPart, typePart = ""] = match.split("#");
+    const type = typePart?.slice(1, -1);
+    let body = bodyPart.slice(1, -1);
     let suffix = "";
 
-    if (match[match.length - 1] === "%") {
-      seed = seeds[+match.slice(1, -2)];
+    if (body[body.length - 1] === "%") {
+      body = body.slice(0, -1);
       suffix = "%";
-    } else {
-      const key = match.slice(1, -1);
-      seed = isNaN(+key) ? key : seeds[+key];
     }
 
-    switch (typeof seed) {
-      case "number":
-        return wrapText(scaleRefi(seed, refi) + suffix, "green");
-      case "string":
-        return wrapText(seed, "green", false);
-      case "object":
-        if ("base" in seed) {
-          const { seedType = "green" } = seed;
-          return wrapText(scaleRefi(seed.base, refi, seed.increment) + suffix, seedType);
-        }
-        if ("options" in seed) {
-          const { seedType = "green" } = seed;
-          return wrapText(seed.options[refi - 1] + suffix, seedType);
-        }
-        return wrapText(scaleRefi(seed.max, refi, seed.increment) + suffix, "red");
-      default:
-        return match;
+    if (body.includes("^")) {
+      const [base, increment] = body.split("^");
+      return wrapText(scaleRefi(+base, refi, increment ? +increment : undefined) + suffix, type);
     }
+    if (body.includes("$")) {
+      const values = body.split("$");
+      return wrapText(values[refi - 1] + suffix, type);
+    }
+    return wrapText(body + suffix, type);
   });
 };
 
@@ -75,11 +65,10 @@ const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   const passiveDescription = useMemo(() => {
-    if (!wpData.description) {
+    if (!wpData.descriptions) {
       return "";
     }
-    const { pots, seeds } = wpData.description;
-    return pots.map((content) => decoDescription(content, seeds, refi)).join(" ");
+    return wpData.descriptions.map((content) => parseDescription(content, refi)).join(" ");
   }, [weapon.code, refi]);
 
   return (
@@ -159,6 +148,6 @@ const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   );
 };
 
-WeaponCard.decoDescription = decoDescription;
+WeaponCard.parseDescription = parseDescription;
 
 export { WeaponCard };

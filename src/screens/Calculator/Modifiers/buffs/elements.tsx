@@ -61,7 +61,7 @@ export default function ElementBuffs() {
           );
         }}
         heading={name}
-        desc={desc}
+        description={desc}
         inputs={resonance.inputs}
         inputConfigs={inputConfigs}
         onToggleCheck={(currentInput, inputIndex) => {
@@ -99,7 +99,7 @@ export default function ElementBuffs() {
           );
         }}
         heading={renderAmpReactionHeading(element, reaction)}
-        desc={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
+        description={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
       />
     );
   };
@@ -126,7 +126,7 @@ export default function ElementBuffs() {
           );
         }}
         heading={renderQuickenHeading(element, reaction)}
-        desc={renderQuickenDesc(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
+        description={renderQuickenDesc(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
       />
     );
   };
@@ -173,7 +173,7 @@ export default function ElementBuffs() {
       <div key="custom-infusion">
         <ModifierTemplate
           heading="Custom Infusion"
-          desc={
+          description={
             <>
               This infusion overwrites self infusion but does not overwrite elemental nature of attacks{" "}
               <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.

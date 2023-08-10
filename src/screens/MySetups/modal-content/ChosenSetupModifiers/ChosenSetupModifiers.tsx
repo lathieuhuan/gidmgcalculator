@@ -47,7 +47,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
     customDebuffCtrls,
     target,
   } = chosenSetup;
-  const { charData, infusedElement, totalAttr, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
+  const { charData, infusedElement, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
 
   const partyData = appData.getPartyData(party);
   const { title, variant, statuses } = getTargetData(target);
@@ -63,13 +63,11 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
             },
             {
               heading: "Self",
-              body: (
-                <SelfDebuffs char={char} selfDebuffCtrls={selfDebuffCtrls} debuffs={debuffs} partyData={partyData} />
-              ),
+              body: <SelfDebuffs {...{ char, selfDebuffCtrls, charData, partyData, debuffs }} />,
             },
             {
               heading: "Party",
-              body: <PartyDebuffs char={char} party={party} partyData={partyData} />,
+              body: <PartyDebuffs {...{ char, party, partyData }} />,
             },
             {
               heading: "Artifacts",
@@ -92,39 +90,25 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
                 <ElementBuffs
                   charLv={char.level}
                   vision={charData?.vision}
-                  elmtModCtrls={elmtModCtrls}
-                  rxnBonus={rxnBonus}
-                  infusedElement={infusedElement}
+                  {...{ elmtModCtrls, rxnBonus, infusedElement }}
                 />
               ),
             },
             {
               heading: "Self",
-              body: (
-                <SelfBuffs
-                  char={char}
-                  charData={charData}
-                  totalAttr={totalAttr}
-                  selfBuffCtrls={selfBuffCtrls}
-                  partyData={partyData}
-                  buffs={buffs}
-                  innateBuffs={innateBuffs}
-                />
-              ),
+              body: <SelfBuffs {...{ char, charData, selfBuffCtrls, partyData, buffs, innateBuffs }} />,
             },
             {
               heading: "Party",
-              body: (
-                <PartyBuffs char={char} charData={charData} party={party} partyData={partyData} totalAttr={totalAttr} />
-              ),
+              body: <PartyBuffs {...{ char, party, partyData }} />,
             },
             {
               heading: "Weapons",
-              body: weapon ? <WeaponBuffs weapon={weapon} wpBuffCtrls={wpBuffCtrls} party={party} /> : null,
+              body: weapon ? <WeaponBuffs {...{ weapon, wpBuffCtrls, party }} /> : null,
             },
             {
               heading: "Artifacts",
-              body: <ArtifactBuffs setBonuses={setBonuses} artBuffCtrls={artBuffCtrls} party={party} />,
+              body: <ArtifactBuffs {...{ setBonuses, artBuffCtrls, party }} />,
             },
             {
               heading: "Custom",
