@@ -62,10 +62,8 @@ export type AppCharacter = {
     EB: Ability;
     altSprint?: Ability;
   };
-
   /** ds: description seed */
   dsGetters?: DescriptionSeedGetter[];
-
   passiveTalents: Ability[];
   constellation: Ability[];
   innateBuffs?: InnateBuff[];

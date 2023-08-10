@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Hydro } from "@Src/pure-components";
 import { BOW_CAs, EModSrc, MEDIUM_PAs } from "../constants";
 
 const Tartaglia: DefaultAppCharacter = {
