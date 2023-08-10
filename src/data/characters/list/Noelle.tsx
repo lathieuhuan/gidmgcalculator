@@ -1,10 +1,9 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { applyPercent } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyPercent, round } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkCons } from "../utils";
+import { checkCons, getTalentMultiplier } from "../utils";
 
 const Noelle: DefaultAppCharacter = {
   code: 14,
@@ -125,17 +124,20 @@ const Noelle: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `• Grants Noelle a {Geo Infusion}#[geo] that cannot be overridden.
-      <br />• Increases Noelle's {ATK}#[gr] based on her {DEF}#[gr]. At {C6}#[g],
-      the multipler bonus is increased by {50%}#[b,gr].`,
-      applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv({
-          char,
-          charData: Noelle as AppCharacter,
-          talentType: "EB",
-          partyData,
-        });
-        const mult = 40 * TALENT_LV_MULTIPLIERS[2][level] + (checkCons[6](char) ? 50 : 0);
-        applyModifier(desc, totalAttr, "atk", applyPercent(totalAttr.def, mult), tracker);
+      <br />• Increases Noelle's {ATK}#[gr] based on her {DEF}#[gr]. At {C6}#[g], the multipler bonus is increased by
+      {50%}#[b,gr].`,
+      applyFinalBuff: (obj) => {
+        let [level, mult] = getTalentMultiplier({ talentType: "EB", root: 40 }, Noelle as AppCharacter, obj);
+        let description = obj.desc + ` Lv.${level}`;
+
+        if (checkCons[6](obj.char)) {
+          mult += 50;
+          description += ` + ${EModSrc.C6}`;
+        }
+        description += ` / ${round(mult, 2)}% of DEF`;
+        const buffValue = applyPercent(obj.totalAttr.def, mult);
+
+        applyModifier(description, obj.totalAttr, "atk", buffValue, obj.tracker);
       },
       infuseConfig: {
         overwritable: false,

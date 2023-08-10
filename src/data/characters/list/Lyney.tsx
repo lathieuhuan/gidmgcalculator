@@ -1,14 +1,12 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { countVision, round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
 
-const getPropSurplusValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, charData: Lyney as AppCharacter, talentType: "ES", partyData });
-  return 53.2 * TALENT_LV_MULTIPLIERS[2][level];
+const getPropSurplusValue = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "ES", root: 53.2 }, Lyney as AppCharacter, args);
 };
 
 const Lyney: DefaultAppCharacter = {
@@ -136,7 +134,7 @@ const Lyney: DefaultAppCharacter = {
         "When Lyney fires a Prop Arrow, he will fire a Pyrotechnic Strike: Reprised that will deal 80% of a Pyrotechnic Strike's DMG. This DMG is considered Charged Attack DMG.",
     },
   ],
-  dsGetters: [(args) => `${getPropSurplusValue(args.char, args.partyData)}%`],
+  dsGetters: [(args) => `${round(getPropSurplusValue(args)[1], 2)}%`],
   buffs: [
     {
       index: 0,
@@ -149,9 +147,9 @@ const Lyney: DefaultAppCharacter = {
           max: 5,
         },
       ],
-      applyBuff: ({ attPattBonus, char, partyData, inputs, desc, tracker }) => {
-        const buffValue = getPropSurplusValue(char, partyData) * (inputs[0] || 0);
-        applyModifier(desc, attPattBonus, "ES.mult_", buffValue, tracker);
+      applyBuff: (obj) => {
+        const buffValue = getPropSurplusValue(obj)[1] * (obj.inputs[0] || 0);
+        applyModifier(obj.desc, obj.attPattBonus, "ES.mult_", buffValue, obj.tracker);
       },
     },
     {

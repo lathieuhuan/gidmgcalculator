@@ -185,7 +185,7 @@ const Raiden: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         const result = getBuffValue.ES(obj);
-        const desc = `${obj.desc} / Lv. ${result.desc}`;
+        const desc = `${obj.desc} / Lv.${result.desc}`;
         applyModifier(desc, obj.attPattBonus, "EB.pct_", result.value, obj.tracker);
       },
     },

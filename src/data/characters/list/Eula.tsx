@@ -4,7 +4,7 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, HEAVY_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
-const getESDebuffResult = (args: DescriptionSeedGetterArgs) => {
+const getESPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
     ? finalTalentLv({ talentType: "ES", char: args.char, charData: Eula as AppCharacter, partyData: args.partyData })
     : args.inputs[0] || 0;
@@ -127,7 +127,7 @@ const Eula: DefaultAppCharacter = {
     },
     { name: "Noble Obligation", image: "3/34/Constellation_Noble_Obligation" },
   ],
-  dsGetters: [(args) => `${getESDebuffResult(args)[1]}%`],
+  dsGetters: [(args) => `${getESPenalty(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -164,8 +164,8 @@ const Eula: DefaultAppCharacter = {
         },
       ],
       applyDebuff: (obj) => {
-        const [level, penaltyValue] = getESDebuffResult(obj);
-        applyModifier(obj.desc + ` Lv. ${level}`, obj.resistReduct, ["phys", "cryo"], penaltyValue, obj.tracker);
+        const [level, penalty] = getESPenalty(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.resistReduct, ["phys", "cryo"], penalty, obj.tracker);
       },
     },
   ],

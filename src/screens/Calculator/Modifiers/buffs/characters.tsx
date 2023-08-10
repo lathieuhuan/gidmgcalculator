@@ -1,7 +1,7 @@
 import type { PartyData, Teammate } from "@Src/types";
 import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
-import { selectChar, selectParty, selectTotalAttr } from "@Store/calculatorSlice/selectors";
+import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
@@ -17,14 +17,13 @@ import { appData } from "@Data/index";
 import { findByIndex } from "@Src/utils";
 
 // Component
-import { parseCharacterDescription, ModifierTemplate, renderModifiers } from "@Src/components";
+import { ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function SelfBuffs() {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const charData = appData.getCharData(char.name);
   const partyData = appData.getPartyData(useSelector(selectParty));
-  const totalAttr = useSelector(selectTotalAttr);
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
@@ -32,15 +31,15 @@ export function SelfBuffs() {
   const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, isGranted, description }, index) => {
-    if (isGranted(char)) {
+  innateBuffs.forEach((buff, index) => {
+    if (buff.isGranted(char)) {
       content.push(
         <ModifierTemplate
           key={`innate-${index}`}
           mutable={false}
-          heading={src}
-          description={parseCharacterDescription(
-            description,
+          heading={buff.src}
+          description={ModifierTemplate.parseCharacterDescription(
+            buff.description,
             { fromSelf: true, char, partyData, inputs: [] },
             charData.dsGetters
           )}
@@ -64,7 +63,7 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrlIndex}`}
           heading={buff.src}
-          description={parseCharacterDescription(
+          description={ModifierTemplate.parseCharacterDescription(
             buff.description,
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
@@ -122,10 +121,8 @@ interface TeammateBuffsProps {
 }
 function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProps) {
   const dispatch = useDispatch();
-  const totalAttr = useSelector(selectTotalAttr);
   const char = useSelector(selectChar);
 
-  const charData = appData.getCharData(char.name);
   const subContent: JSX.Element[] = [];
   const teammateData = appData.getCharData(teammate.name);
 
@@ -146,7 +143,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
-        description={parseCharacterDescription(
+        description={ModifierTemplate.parseCharacterDescription(
           buff.description,
           { fromSelf: false, char, partyData, inputs },
           teammateData.dsGetters

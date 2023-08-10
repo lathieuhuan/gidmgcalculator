@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
-import { getWeaponDescription } from "./get-description";
+import { getWeaponDescription, parseCharacterDescription } from "./get-description";
 
 // Component
 import { Input, Green } from "@Src/pure-components";
@@ -206,5 +206,6 @@ const ModifierTemplate = ({
 };
 
 ModifierTemplate.getWeaponDescription = getWeaponDescription;
+ModifierTemplate.parseCharacterDescription = parseCharacterDescription;
 
 export { ModifierTemplate };

@@ -1,14 +1,12 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, charData: Yanfei as AppCharacter, talentType: "EB", partyData });
-  return round(33.4 * TALENT_LV_MULTIPLIERS[5][level], 1);
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 33.4 }, Yanfei as AppCharacter, args);
 };
 
 const Yanfei: DefaultAppCharacter = {
@@ -103,15 +101,16 @@ const Yanfei: DefaultAppCharacter = {
     { name: "Abiding Affidavit", image: "9/9f/Constellation_Abiding_Affidavit" },
     { name: "Extra Clause", image: "c/c5/Constellation_Extra_Clause" },
   ],
-  dsGetters: [(args) => `${getEBBuffValue(args.char, args.partyData)}%`],
+  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
   buffs: [
     {
       index: 3,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `Increases {Charged Attack DMG}#[gr] by {@0}#[b,gr].`,
-      applyBuff: ({ attPattBonus, char, partyData, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "CA.pct_", getEBBuffValue(char, partyData), tracker);
+      applyBuff: (obj) => {
+        const [level, mult] = getEBBonus(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.attPattBonus, "CA.pct_", mult, obj.tracker);
       },
     },
     {

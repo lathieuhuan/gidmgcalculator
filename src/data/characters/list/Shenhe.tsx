@@ -1,13 +1,12 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getEBDebuffValue = (args: DescriptionSeedGetterArgs) => {
+const getEBPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
     ? finalTalentLv({ talentType: "EB", char: args.char, charData: Shenhe as AppCharacter, partyData: args.partyData })
     : args.inputs[0] || 0;
@@ -105,7 +104,7 @@ const Shenhe: DefaultAppCharacter = {
     },
     { name: "Mystical Abandon", image: "0/0d/Constellation_Mystical_Abandon" },
   ],
-  dsGetters: [(args) => `${getEBDebuffValue(args)[1]}%`],
+  dsGetters: [(args) => `${getEBPenalty(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -118,15 +117,15 @@ const Shenhe: DefaultAppCharacter = {
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
       ],
       applyFinalBuff: (obj) => {
-        const { fromSelf, inputs, attElmtBonus } = obj;
-        const ATK = fromSelf ? obj.totalAttr.atk : inputs[0] || 0;
-        const level = fromSelf
-          ? finalTalentLv({ ...obj, charData: Shenhe as AppCharacter, talentType: "ES" })
-          : inputs[1] || 1;
-        const mult = 45.66 * TALENT_LV_MULTIPLIERS[2][level];
-        const finalDesc = obj.desc + ` / Lv. ${level} / ${round(mult, 2)}% of ${ATK} ATK`;
-
-        applyModifier(finalDesc, attElmtBonus, "cryo.flat", applyPercent(ATK, mult), obj.tracker);
+        const ATK = obj.fromSelf ? obj.totalAttr.atk : obj.inputs[0] || 0;
+        const [level, mult] = getTalentMultiplier(
+          { talentType: "ES", root: 45.66, inputIndex: 1 },
+          Shenhe as AppCharacter,
+          obj
+        );
+        const description = obj.desc + ` Lv.${level} / ${round(mult, 2)}% of ATK`;
+        const buffValue = applyPercent(ATK, mult);
+        applyModifier(description, obj.attElmtBonus, "cryo.flat", buffValue, obj.tracker);
       },
     },
     {
@@ -200,8 +199,8 @@ const Shenhe: DefaultAppCharacter = {
         },
       ],
       applyDebuff: (obj) => {
-        const [level, penaltyValue] = getEBDebuffValue(obj);
-        applyModifier(obj.desc + ` Lv. ${level}`, obj.resistReduct, ["phys", "cryo"], penaltyValue, obj.tracker);
+        const [level, penalty] = getEBPenalty(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.resistReduct, ["phys", "cryo"], penalty, obj.tracker);
       },
     },
   ],

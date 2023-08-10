@@ -1,21 +1,22 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { countVision, round } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
 
-function getEBBuff(char: CharInfo, partyData: PartyData) {
-  const level = finalTalentLv({ char, charData: Nahida as AppCharacter, talentType: "EB", partyData });
-  const pyroCount = partyData.reduce(
-    (result, data) => (data?.vision === "pyro" ? result + 1 : result),
-    checkCons[1](char) ? 1 : 0
+function getEBBonus(args: DescriptionSeedGetterArgs) {
+  let { pyro = 0 } = countVision(args.partyData);
+  if (checkCons[1](args.char)) pyro++;
+  const [level, mult] = getTalentMultiplier(
+    { talentType: "EB", root: pyro === 1 ? 14.88 : pyro >= 2 ? 22.32 : 0 },
+    Nahida as AppCharacter,
+    args
   );
-  const root = pyroCount === 1 ? 14.88 : pyroCount >= 2 ? 22.32 : 0;
   return {
-    value: round(root * TALENT_LV_MULTIPLIERS[2][level], 2),
-    pyroCount,
+    level: level,
+    value: mult,
+    pyroCount: pyro,
   };
 }
 
@@ -131,10 +132,7 @@ const Nahida: DefaultAppCharacter = {
       },
     },
   ],
-  dsGetters: [
-    (args) => `${getEBBuff(args.char, args.partyData).value}%`,
-    (args) => `${getEBBuff(args.char, args.partyData).pyroCount}`,
-  ],
+  dsGetters: [(args) => `${getEBBonus(args).value}%`, (args) => `${getEBBonus(args).pyroCount}`],
   buffs: [
     {
       index: 0,
@@ -142,11 +140,13 @@ const Nahida: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `Within the Shrine of Maya, {Tri-Karma Purification DMG}#[gr] is increased by {@0}#[b,gr] based on the number of
       {Pyro}#[pyro] party members ({@1}#[]).`,
-      applyFinalBuff: ({ calcItemBuffs, char, partyData }) => {
-        const { value, pyroCount } = getEBBuff(char, partyData);
+      applyFinalBuff: (obj) => {
+        const { level, value, pyroCount } = getEBBonus(obj);
 
         if (value) {
-          calcItemBuffs.push(exclBuff(`${EModSrc.EB} / ${pyroCount} Pyro teammates`, "ES.0", "pct_", value));
+          obj.calcItemBuffs.push(
+            exclBuff(`${EModSrc.EB} Lv.${level} / ${pyroCount} Pyro teammates`, "ES.0", "pct_", value)
+          );
         }
       },
     },

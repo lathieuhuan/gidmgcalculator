@@ -1,21 +1,12 @@
-import type { AppCharacter, ApplyCharBuffArgs, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, countVision, round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getEBBuffResult = (args: DescriptionSeedGetterArgs) => {
-  const level = args.fromSelf
-    ? finalTalentLv({ talentType: "EB", char: args.char, charData: YunJin as AppCharacter, partyData: args.partyData })
-    : args.inputs[1] || 0;
-
-  if (level) {
-    const mult = 32.16 * TALENT_LV_MULTIPLIERS[2][level];
-    return [level, mult];
-  }
-  return [0, 0];
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 32.16 }, YunJin as AppCharacter, args);
 };
 
 const YunJin: DefaultAppCharacter = {
@@ -124,7 +115,7 @@ const YunJin: DefaultAppCharacter = {
       isGranted: checkAscs[4],
     },
   ],
-  dsGetters: [(args) => `${round(getEBBuffResult(args)[1], 2)}%`],
+  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
   buffs: [
     {
       index: 0,
@@ -143,28 +134,28 @@ const YunJin: DefaultAppCharacter = {
       ],
       applyFinalBuff: (obj) => {
         const { fromSelf, inputs, char, tracker } = obj;
+        const descRoot = fromSelf ? "Self" : "Yun Jin";
         const DEF = fromSelf ? obj.totalAttr.def : inputs[0] || 0;
-        let [level, mult] = getEBBuffResult(obj);
-        let description = `${obj.desc} Lv. ${level}`;
+        let [level, mult] = getEBBonus(obj);
+        let description = `${obj.desc} Lv.${level}`;
 
         if (fromSelf ? checkAscs[4](char) : inputs[2]) {
           const visionCount = countVision(obj.partyData, obj.charData);
           const numOfElmts = Object.keys(visionCount).length;
-          const xtraMult = numOfElmts * 2.5 + (numOfElmts === 4 ? 1.5 : 0);
-
-          mult += xtraMult;
-          description += ` + A4 (${xtraMult}%)`;
+          mult += numOfElmts * 2.5 + (numOfElmts === 4 ? 1.5 : 0);
+          description += ` + ${EModSrc.A4}`;
         }
+        description += ` / ${round(mult, 2)}% of DEF`;
+        const buffValue = applyPercent(DEF, mult);
 
-        description += ` / ${round(mult, 2)}% of ${DEF} DEF`;
-        applyModifier(description, obj.attPattBonus, "NA.flat", applyPercent(DEF, mult), tracker);
+        applyModifier(description, obj.attPattBonus, "NA.flat", buffValue, tracker);
 
         if (fromSelf ? checkCons[2](char) : inputs[3]) {
-          const descriptionC2 = `${fromSelf ? "Self" : "Yun Jin"} / ${EModSrc.C2}`;
+          const descriptionC2 = `${descRoot} / ${EModSrc.C2}`;
           applyModifier(descriptionC2, obj.attPattBonus, "NA.pct_", 15, tracker);
         }
         if (fromSelf ? checkCons[6](char) : inputs[4]) {
-          const descriptionC6 = `${fromSelf ? "Self" : "Yun Jin"} / ${EModSrc.C6}`;
+          const descriptionC6 = `${descRoot} / ${EModSrc.C6}`;
           applyModifier(descriptionC6, obj.totalAttr, "naAtkSpd_", 12, tracker);
         }
       },

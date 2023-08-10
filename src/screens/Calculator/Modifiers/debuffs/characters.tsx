@@ -15,7 +15,7 @@ import {
 } from "@Store/calculatorSlice";
 
 // Component
-import { ModifierTemplate, parseCharacterDescription, renderModifiers } from "@Src/components";
+import { ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
           checked={activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
           heading={debuff.src}
-          description={parseCharacterDescription(
+          description={ModifierTemplate.parseCharacterDescription(
             debuff.description,
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
@@ -120,7 +120,7 @@ function TeammateDebuffs({ teammate, tmIndex, partyData }: TeammateDebuffsProps)
         checked={activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={debuff.src}
-        description={parseCharacterDescription(
+        description={ModifierTemplate.parseCharacterDescription(
           debuff.description,
           { fromSelf: false, char, partyData, inputs },
           teammateData.dsGetters

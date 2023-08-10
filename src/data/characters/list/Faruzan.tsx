@@ -1,21 +1,12 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getWindGiftBuffResult = ({ fromSelf, inputs, char, partyData }: DescriptionSeedGetterArgs) => {
-  const level = fromSelf
-    ? finalTalentLv({ talentType: "EB", char, charData: Faruzan as AppCharacter, partyData })
-    : inputs[0] || 0;
-
-  if (level) {
-    const mult = round(18 * TALENT_LV_MULTIPLIERS[2][level], 2);
-    return [level, mult];
-  }
-  return [0, 0];
+const getWindGiftBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 18 }, Faruzan as AppCharacter, args);
 };
 
 const Faruzan: DefaultAppCharacter = {
@@ -98,7 +89,7 @@ const Faruzan: DefaultAppCharacter = {
     { name: "Wonderland of Rumination", image: "f/f7/Constellation_Wonderland_of_Rumination" },
     { name: "The Wondrous Path of Truth", image: "9/9a/Constellation_The_Wondrous_Path_of_Truth" },
   ],
-  dsGetters: [(args) => `${getWindGiftBuffResult(args)[1]}%`],
+  dsGetters: [(args) => `${round(getWindGiftBonus(args)[1], 2)}%`],
   buffs: [
     {
       index: 0,
@@ -115,19 +106,21 @@ const Faruzan: DefaultAppCharacter = {
       ],
       applyFinalBuff: (obj) => {
         const { fromSelf, attElmtBonus, inputs } = obj;
-        const [EBlevel, anemoBonus] = getWindGiftBuffResult(obj);
+        const [level, anemoBonus] = getWindGiftBonus(obj);
+        const descRoot = fromSelf ? "Self" : "Faruzan";
 
-        applyModifier(obj.desc, obj.totalAttr, "anemo", anemoBonus, obj.tracker);
-
+        if (anemoBonus) {
+          applyModifier(obj.desc + ` Lv.${level}`, obj.totalAttr, "anemo", anemoBonus, obj.tracker);
+        }
         if (fromSelf ? checkAscs[4](obj.char) : inputs[1]) {
           const baseAtk = fromSelf ? obj.totalAttr.base_atk : inputs[2] || 0;
           const mult = 32;
-          const description = obj.desc + ` Lv. ${EBlevel} / ${mult}% of ${baseAtk} Base ATK`;
+          const description = `${descRoot} / ${EModSrc.C6} / ${mult}% of Base ATK`;
 
           applyModifier(description, attElmtBonus, "anemo.flat", applyPercent(baseAtk, mult), obj.tracker);
         }
         if (fromSelf ? checkCons[6](obj.char) : inputs[3]) {
-          const description = `${fromSelf ? "Self" : "Faruzan"} / ${EModSrc.C6}`;
+          const description = `${descRoot} / ${EModSrc.C6}`;
           applyModifier(description, attElmtBonus, "anemo.cDmg_", 40, obj.tracker);
         }
       },

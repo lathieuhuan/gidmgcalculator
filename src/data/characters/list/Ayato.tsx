@@ -6,7 +6,7 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons, exclBuff } from "../utils";
 
-const getEBBuffResult = (args: DescriptionSeedGetterArgs) => {
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
     ? finalTalentLv({ talentType: "EB", char: args.char, charData: Ayato as AppCharacter, partyData: args.partyData })
     : args.inputs[0] || 0;
@@ -132,7 +132,7 @@ const Ayato: DefaultAppCharacter = {
     { name: "Bansui Ichiro", image: "f/f1/Constellation_Bansui_Ichiro" },
     { name: "Boundless Origin", image: "d/da/Constellation_Boundless_Origin" },
   ],
-  dsGetters: [(args) => `${getEBBuffResult(args)[1]}%`],
+  dsGetters: [(args) => `${getEBBonus(args)[1]}%`],
   buffs: [
     {
       index: 0,
@@ -185,8 +185,8 @@ const Ayato: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const [level, buffValue] = getEBBuffResult(obj);
-        applyModifier(obj.desc + ` Lv. ${level}`, obj.attPattBonus, "NA.pct_", buffValue, obj.tracker);
+        const [level, buffValue] = getEBBonus(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.attPattBonus, "NA.pct_", buffValue, obj.tracker);
       },
     },
     {

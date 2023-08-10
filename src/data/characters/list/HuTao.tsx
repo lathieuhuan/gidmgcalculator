@@ -1,10 +1,9 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { applyPercent } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyPercent, round } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
 const HuTao: DefaultAppCharacter = {
   code: 31,
@@ -132,16 +131,21 @@ const HuTao: DefaultAppCharacter = {
       src: EModSrc.ES,
       affect: EModAffect.SELF,
       description: `Increases Hu Tao's {ATK}#[gr] based on her {Max HP}#[gr] and grants her a {Pyro Infusion}#[pyro].`,
-      applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv({
-          char,
-          charData: HuTao as AppCharacter,
-          talentType: "ES",
-          partyData,
-        });
-        let buffValue = applyPercent(totalAttr.hp, 3.84 * TALENT_LV_MULTIPLIERS[5][level]);
-        buffValue = Math.min(buffValue, totalAttr.base_atk * 4);
-        applyModifier(desc, totalAttr, "atk", buffValue, tracker);
+      applyFinalBuff: (obj) => {
+        const [level, mult] = getTalentMultiplier(
+          { talentType: "ES", root: 3.84, scale: 5 },
+          HuTao as AppCharacter,
+          obj
+        );
+        let description = obj.desc + ` Lv.${level} / ${round(mult, 2)} of Max HP`;
+        let buffValue = applyPercent(obj.totalAttr.hp, mult);
+        const limit = obj.totalAttr.base_atk * 4;
+
+        if (buffValue > limit) {
+          buffValue = limit;
+          description += ` / limited to ${limit}`;
+        }
+        applyModifier(description, obj.totalAttr, "atk", buffValue, obj.tracker);
       },
       infuseConfig: {
         overwritable: false,

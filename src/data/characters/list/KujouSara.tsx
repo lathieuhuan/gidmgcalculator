@@ -1,17 +1,9 @@
-import type { AppCharacter, DefaultAppCharacter, ModifierInput } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
-import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkCons } from "../utils";
-
-const getAttackBuffValue = (inputs: ModifierInput[]): [number, string] => {
-  const baseATK = inputs[0] || 0;
-  const level = inputs[1] || 1;
-  const mult = 42.96 * TALENT_LV_MULTIPLIERS[2][level];
-  return [applyPercent(baseATK, mult), `${level} / ${round(mult, 2)}% of ${baseATK} Base ATK`];
-};
+import { checkCons, getTalentMultiplier } from "../utils";
 
 const KujouSara: DefaultAppCharacter = {
   code: 41,
@@ -110,17 +102,18 @@ const KujouSara: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         const { fromSelf } = obj;
-        const buffValueArgs = fromSelf
-          ? [obj.totalAttr.base_atk, finalTalentLv({ ...obj, charData: KujouSara as AppCharacter, talentType: "ES" })]
-          : obj.inputs;
-        const [buffValue, xtraDesc] = getAttackBuffValue(buffValueArgs);
-        const desc = `${obj.desc} / Lv. ${xtraDesc}`;
+        const baseATK = fromSelf ? obj.totalAttr.base_atk : obj.inputs[0];
+        const [level, mult] = getTalentMultiplier({ talentType: "ES", root: 42.96 }, KujouSara as AppCharacter, obj);
 
-        applyModifier(desc, obj.totalAttr, "atk", buffValue, obj.tracker);
+        if (mult) {
+          const description = `${obj.desc} Lv.${level} / ${round(mult, 2)}% of Base ATK`;
+          const buffValue = applyPercent(baseATK, mult);
+          applyModifier(description, obj.totalAttr, "atk", buffValue, obj.tracker);
+        }
 
-        if ((fromSelf && checkCons[6](obj.char)) || (!fromSelf && obj.inputs[2])) {
-          const descC6 = `${fromSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
-          applyModifier(descC6, obj.attElmtBonus, "electro.cDmg_", 60, obj.tracker);
+        if (fromSelf ? checkCons[6](obj.char) : obj.inputs[2]) {
+          const descriptionC6 = `${fromSelf ? "Self" : "Kujou Sara"} / ${EModSrc.C6}`;
+          applyModifier(descriptionC6, obj.attElmtBonus, "electro.cDmg_", 60, obj.tracker);
         }
       },
     },

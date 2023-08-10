@@ -1,16 +1,12 @@
-import type { AppCharacter, AttributeStat, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { countVision } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getESBuffValue = (args: DescriptionSeedGetterArgs) => {
-  const level = args.fromSelf
-    ? finalTalentLv({ talentType: "ES", char: args.char, charData: Gorou as AppCharacter, partyData: args.partyData })
-    : args.inputs[0] || 1;
-  return Math.round(206 * TALENT_LV_MULTIPLIERS[2][level]);
+const getESBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "ES", root: 206 }, Gorou as AppCharacter, args);
 };
 
 const Gorou: DefaultAppCharacter = {
@@ -134,7 +130,7 @@ const Gorou: DefaultAppCharacter = {
       },
     },
   ],
-  dsGetters: [(args) => `${getESBuffValue(args)}`],
+  dsGetters: [(args) => `${Math.round(getESBonus(args)[1])}`],
   buffs: [
     {
       index: 0,
@@ -153,15 +149,13 @@ const Gorou: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const fields: AttributeStat[] = ["def"];
-        const buffValues = [getESBuffValue(obj)];
+        const buffValue = getESBonus(obj)[1];
         const { geo = 0 } = countVision(obj.partyData, obj.charData);
 
+        applyModifier(obj.desc, obj.totalAttr, "def", buffValue, obj.tracker);
         if (geo > 2) {
-          fields.push("geo");
-          buffValues.push(15);
+          applyModifier(obj.desc, obj.totalAttr, "geo", 15, obj.tracker);
         }
-        applyModifier(obj.desc, obj.totalAttr, fields, buffValues, obj.tracker);
       },
     },
     {

@@ -63,7 +63,7 @@ export type AppCharacter = {
     altSprint?: Ability;
   };
 
-  // ds: description seed
+  /** ds: description seed */
   dsGetters?: DescriptionSeedGetter[];
 
   passiveTalents: Ability[];
@@ -129,6 +129,17 @@ export type CalcItem = {
       };
 };
 
+// ============ BUFFS ============
+export type BuffDescriptionArgs = Pick<
+  ApplyCharBuffArgs,
+  "fromSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
+>;
+
+type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
+  charBuffCtrls: ModifierCtrl[];
+  desc: string;
+};
+
 export type InnateBuff = {
   src: string;
   isGranted: (char: CharInfo) => boolean;
@@ -137,22 +148,16 @@ export type InnateBuff = {
   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
 };
 
-type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
-  charBuffCtrls: ModifierCtrl[];
-  desc: string;
-};
-
 type AbilityModifier = {
   index: number;
   src: string;
   isGranted?: (char: CharInfo) => boolean;
 };
 
-// ============ BUFFS ============
-export type BuffDescriptionArgs = Pick<
-  ApplyCharBuffArgs,
-  "fromSelf" | "char" | "charData" | "charBuffCtrls" | "partyData" | "totalAttr" | "inputs"
->;
+export type ApplyCharBuffArgs = ApplyCharInnateBuffArgs & {
+  inputs: ModifierInput[];
+  fromSelf: boolean;
+};
 
 export type AbilityBuff = AbilityModifier & {
   affect: EModAffect;
@@ -167,26 +172,21 @@ export type AbilityBuff = AbilityModifier & {
   applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
-export type ApplyCharBuffArgs = BuffModifierArgsWrapper & {
+// ============ DEBUFFS ============
+type ApplyCharDebuffArgs = {
+  resistReduct: ResistanceReduction;
+  attPattBonus: AttackPatternBonus;
+  char: CharInfo;
   inputs: ModifierInput[];
+  partyData: PartyData;
   fromSelf: boolean;
-  charBuffCtrls: ModifierCtrl[];
   desc: string;
+  tracker?: Tracker;
 };
 
-// ============ DEBUFFS ============
 export type AbilityDebuff = AbilityModifier & {
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
   description: number | string;
-  applyDebuff?: (args: {
-    resistReduct: ResistanceReduction;
-    attPattBonus: AttackPatternBonus;
-    char: CharInfo;
-    inputs: ModifierInput[];
-    partyData: PartyData;
-    fromSelf: boolean;
-    desc: string;
-    tracker?: Tracker;
-  }) => void;
+  applyDebuff?: (args: ApplyCharDebuffArgs) => void;
 };

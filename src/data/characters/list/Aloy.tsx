@@ -1,21 +1,15 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs } from "../utils";
+import { checkAscs, getTalentMultiplier } from "../utils";
 
 const getCoilStackBuffValue = (args: DescriptionSeedGetterArgs) => {
-  const level = finalTalentLv({
-    talentType: "ES",
-    char: args.char,
-    charData: Aloy as AppCharacter,
-    partyData: args.partyData,
-  });
+  const [, mult] = getTalentMultiplier({ root: 5.846, talentType: "ES", scale: 5 }, Aloy as AppCharacter, args);
   let stacks = args.inputs[0] || 0;
   stacks = stacks === 4 ? 5 : stacks;
-  return round(5.846 * TALENT_LV_MULTIPLIERS[5][level] * stacks, 2);
+  return mult * stacks;
 };
 
 const Aloy: DefaultAppCharacter = {
@@ -84,7 +78,7 @@ const Aloy: DefaultAppCharacter = {
     { name: "Easy Does It", image: "0/0f/Talent_Easy_Does_It" },
   ],
   constellation: [],
-  dsGetters: [(args) => `${getCoilStackBuffValue(args)}%`],
+  dsGetters: [(args) => `${round(getCoilStackBuffValue(args), 3)}%`],
   buffs: [
     {
       index: 0,

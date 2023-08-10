@@ -1,12 +1,13 @@
-import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getEBbuffValue = (level: number) => (level ? 27.49 * TALENT_LV_MULTIPLIERS[2][level] : 0);
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 27.49 }, Kaveh as AppCharacter, args);
+};
 
 const Kaveh: DefaultAppCharacter = {
   code: 69,
@@ -108,21 +109,7 @@ const Kaveh: DefaultAppCharacter = {
       image: "6/61/Constellation_Pairidaeza%27s_Dreams",
     },
   ],
-  dsGetters: [
-    (args) => {
-      const buffValue = getEBbuffValue(
-        args.fromSelf
-          ? finalTalentLv({
-              talentType: "EB",
-              char: args.char,
-              charData: Kaveh as AppCharacter,
-              partyData: args.partyData,
-            })
-          : args.inputs[0]
-      );
-      return `${round(buffValue, 2)}%`;
-    },
-  ],
+  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
   buffs: [
     {
       index: 0,
@@ -140,16 +127,17 @@ const Kaveh: DefaultAppCharacter = {
           max: 4,
         },
       ],
-      applyBuff: ({ totalAttr, rxnBonus, char, partyData, inputs, desc, tracker }) => {
-        const level = finalTalentLv({ talentType: "EB", char, charData: Kaveh as AppCharacter, partyData });
-        applyModifier(desc, rxnBonus, "bloom.pct_", getEBbuffValue(level), tracker);
+      applyBuff: (obj) => {
+        const { desc } = obj;
+        const [level, mult] = getEBBonus(obj);
+        applyModifier(desc + ` Lv.${level}`, obj.rxnBonus, "bloom.pct_", mult, obj.tracker);
 
-        if (checkAscs[4](char)) {
-          const stacks = inputs[0];
-          applyModifier(desc + ` / ${EModSrc.A4}`, totalAttr, "em", stacks * 25);
+        if (checkAscs[4](obj.char)) {
+          const stacks = obj.inputs[0];
+          applyModifier(`Self / ${EModSrc.A4}`, obj.totalAttr, "em", stacks * 25, obj.tracker);
         }
-        if (checkCons[2](char)) {
-          applyModifier(desc + ` / ${EModSrc.C2}`, totalAttr, "naAtkSpd_", 15);
+        if (checkCons[2](obj.char)) {
+          applyModifier(`Self / ${EModSrc.C2}`, obj.totalAttr, "naAtkSpd_", 15, obj.tracker);
         }
       },
       infuseConfig: {
@@ -168,8 +156,8 @@ const Kaveh: DefaultAppCharacter = {
           for: "teammate",
         },
       ],
-      applyBuff: ({ rxnBonus, inputs, desc, tracker }) => {
-        applyModifier(desc, rxnBonus, "bloom.pct_", getEBbuffValue(inputs[0]), tracker);
+      applyBuff: (obj) => {
+        applyModifier(obj.desc, obj.rxnBonus, "bloom.pct_", getEBBonus(obj)[1], obj.tracker);
       },
     },
     {

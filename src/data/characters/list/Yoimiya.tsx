@@ -1,14 +1,12 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round, toMult } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
-const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, charData: Yoimiya as AppCharacter, talentType: "ES", partyData });
-  return round(37.91 * TALENT_LV_MULTIPLIERS[5][level], 2);
+const getESBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "ES", root: 37.91, scale: 5 }, Yoimiya as AppCharacter, args);
 };
 
 const Yoimiya: DefaultAppCharacter = {
@@ -97,7 +95,7 @@ const Yoimiya: DefaultAppCharacter = {
     { name: "A Summer Festival's Eve", image: "b/bc/Constellation_A_Summer_Festival%27s_Eve" },
     { name: "Naganohara Meteor Swarm", image: "c/cc/Constellation_Naganohara_Meteor_Swarm" },
   ],
-  dsGetters: [(args) => `${round(toMult(getESBuffValue(args.char, args.partyData)), 3)}`],
+  dsGetters: [(args) => `${round(toMult(getESBonus(args)[1]), 3)}`],
   buffs: [
     {
       index: 0,
@@ -115,12 +113,12 @@ const Yoimiya: DefaultAppCharacter = {
           max: 10,
         },
       ],
-      applyBuff: ({ totalAttr, attPattBonus, char, partyData, inputs, desc, tracker }) => {
-        const buffValue = getESBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, "NA.multPlus", buffValue, tracker);
+      applyBuff: (obj) => {
+        const [level, mult] = getESBonus(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.attPattBonus, "NA.multPlus", mult, obj.tracker);
 
-        if (checkAscs[1](char)) {
-          applyModifier(desc, totalAttr, "pyro", 2 * (inputs[0] || 0), tracker);
+        if (checkAscs[1](obj.char)) {
+          applyModifier(EModSrc.A1, obj.totalAttr, "pyro", 2 * (obj.inputs[0] || 0), obj.tracker);
         }
       },
       infuseConfig: {

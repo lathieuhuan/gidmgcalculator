@@ -1,15 +1,13 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round } from "@Src/utils";
-import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, HEAVIER_PAs } from "../constants";
-import { checkAscs } from "../utils";
+import { checkAscs, getTalentMultiplier } from "../utils";
 
-const getEBBuffValue = (char: CharInfo, partyData: PartyData) => {
-  const level = finalTalentLv({ char, charData: Xiao as AppCharacter, talentType: "EB", partyData });
-  return round(58.45 * TALENT_LV_MULTIPLIERS[5][level], 2);
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 58.45 }, Xiao as AppCharacter, args);
 };
 
 const Xiao: DefaultAppCharacter = {
@@ -94,7 +92,7 @@ const Xiao: DefaultAppCharacter = {
     { name: "Evolution Eon: Origin of Ignorance", image: "f/f9/Constellation_Evolution_Eon_-_Origin_of_Ignorance" },
     { name: "Conqueror of Evil: Guardian Yaksha", image: "d/d7/Constellation_Conqueror_of_Evil_-_Guardian_Yaksha" },
   ],
-  dsGetters: [(args) => `${getEBBuffValue(args.char, args.partyData)}%`],
+  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
   buffs: [
     {
       index: 0,
@@ -110,12 +108,12 @@ const Xiao: DefaultAppCharacter = {
           max: 5,
         },
       ],
-      applyBuff: ({ attPattBonus, char, partyData, inputs, desc, tracker }) => {
-        const buffValue = getEBBuffValue(char, partyData);
-        applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], buffValue, tracker);
+      applyBuff: (obj) => {
+        const [level, mult] = getEBBonus(obj);
+        applyModifier(obj.desc + ` Lv.${level}`, obj.attPattBonus, [...NCPA_PERCENTS], mult, obj.tracker);
 
-        if (checkAscs[1](char)) {
-          applyModifier(desc, attPattBonus, "all.pct_", 5 * (inputs[0] || 0), tracker);
+        if (checkAscs[1](obj.char)) {
+          applyModifier(EModSrc.A1, obj.attPattBonus, "all.pct_", 5 * (obj.inputs[0] || 0), obj.tracker);
         }
       },
       infuseConfig: {

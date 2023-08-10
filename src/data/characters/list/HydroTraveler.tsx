@@ -1,10 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent, round } from "@Src/utils";
-import { finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { checkAscs, exclBuff } from "../utils";
+import { checkAscs, exclBuff, getTalentMultiplier } from "../utils";
 
 const HydroTraveler: DefaultAppCharacter = {
   code: 75,
@@ -106,11 +104,11 @@ const HydroTraveler: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `When the Traveler's HP is higher than 50%, they will continuously lose HP and cause
       {Dewdrop DMG}#[gr] to increase based on their {HP}#[gr].`,
-      applyFinalBuff: ({ calcItemBuffs, char, partyData, totalAttr }) => {
-        const level = finalTalentLv({ char, charData: HydroTraveler as AppCharacter, talentType: "ES", partyData });
-        const multiplier = round(0.64 * TALENT_LV_MULTIPLIERS[2][level], 2);
-        const desc = `Suffusion / ${multiplier}% of ${totalAttr.hp} HP`;
-        calcItemBuffs.push(exclBuff(desc, "ES.1", "flat", applyPercent(totalAttr.hp, multiplier)));
+      applyFinalBuff: (obj) => {
+        const [level, mult] = getTalentMultiplier({ talentType: "ES", root: 2 }, HydroTraveler as AppCharacter, obj);
+        const buffValue = applyPercent(obj.totalAttr.hp, mult);
+        const description = `Suffusion Lv.${level} / ${round(mult, 2)}% of Max HP`;
+        obj.calcItemBuffs.push(exclBuff(description, "ES.1", "flat", buffValue));
       },
     },
     {

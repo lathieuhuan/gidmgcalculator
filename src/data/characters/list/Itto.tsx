@@ -1,10 +1,9 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { applyPercent } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyPercent, round } from "@Src/utils";
+import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVIER_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
 
 const Itto: DefaultAppCharacter = {
   code: 45,
@@ -121,15 +120,11 @@ const Itto: DefaultAppCharacter = {
       description: `• Grants Itto a {Geo Infusion}#[geo] that cannot be overridden.
       <br />• Increases Itto's {Normal Attack SPD}#[gr] by {10%}#[b,gr]. Also increases his {ATK}#[gr] based on his
       {DEF}#[gr].`,
-      applyFinalBuff: ({ totalAttr, char, partyData, desc, tracker }) => {
-        const level = finalTalentLv({
-          char,
-          charData: Itto as AppCharacter,
-          talentType: "EB",
-          partyData,
-        });
-        const buffValue = applyPercent(totalAttr.def, 57.6 * TALENT_LV_MULTIPLIERS[2][level]);
-        applyModifier(desc, totalAttr, ["atk", "naAtkSpd_"], [buffValue, 10], tracker);
+      applyFinalBuff: (obj) => {
+        const [level, mult] = getTalentMultiplier({ talentType: "EB", root: 57.6 }, Itto as AppCharacter, obj);
+        const description = obj.desc + ` Lv.${level} / ${round(mult, 2)}% of DEF`;
+        const buffValue = applyPercent(obj.totalAttr.def, mult);
+        applyModifier(description, obj.totalAttr, ["atk", "naAtkSpd_"], [buffValue, 10], obj.tracker);
       },
       infuseConfig: {
         overwritable: false,
