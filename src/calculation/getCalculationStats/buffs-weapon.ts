@@ -2,7 +2,7 @@ import type { AppWeapon, AutoBuff, BuffModifierArgsWrapper, ModifierCtrl, StackC
 import { countVision, findByIndex, toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 
-const checkIfFinal = (stacks: AutoBuff["stacks"]) => {
+const checkFinal = (stacks: AutoBuff["stacks"]) => {
   if (!stacks) {
     return false;
   }
@@ -174,11 +174,9 @@ interface ApplyWeaponAutoBuffsArgs {
   modifierArgs: BuffModifierArgsWrapper;
 }
 export const applyWeaponAutoBuffs = ({ isFinal, weaponData, refi, modifierArgs }: ApplyWeaponAutoBuffsArgs) => {
-  if (weaponData.autoBuffs?.length) {
-    for (const autoBuff of weaponData.autoBuffs) {
-      if (isFinal === checkIfFinal(autoBuff.stacks)) {
-        applyWeaponBuff({ description: `${weaponData.name} bonus`, buff: autoBuff, refi, inputs: [], modifierArgs });
-      }
+  for (const autoBuff of weaponData.autoBuffs || []) {
+    if (isFinal === checkFinal(autoBuff.stacks)) {
+      applyWeaponBuff({ description: `${weaponData.name} bonus`, buff: autoBuff, refi, inputs: [], modifierArgs });
     }
   }
 };
@@ -197,28 +195,26 @@ export const applyMainWeaponBuffs = ({
   wpBuffCtrls,
   modifierArgs,
 }: ApplyMainWeaponsBuffsArgs) => {
-  if (weaponData.buffs) {
-    const description = `${weaponData.name} activated`;
+  if (!weaponData.buffs) return;
+  const description = `${weaponData.name} activated`;
 
-    // #to-do: check if buff exist
-    for (const { activated, index, inputs = [] } of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.buffs, index);
+  // #to-do: check if buff exist
+  for (const { activated, index, inputs = [] } of wpBuffCtrls) {
+    const buff = findByIndex(weaponData.buffs, index);
+    if (!activated || !buff) continue;
 
-      if (activated && buff) {
-        if (isFinal === checkIfFinal(buff.stacks)) {
-          applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
-        }
-        for (const buffBonus of buff.buffBonuses || []) {
-          const bonus = {
-            ...buffBonus,
-            base: buffBonus.base ?? buff.base,
-            stacks: buffBonus.stacks ?? buff.stacks,
-          };
+    if (isFinal === checkFinal(buff.stacks)) {
+      applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
+    }
+    for (const buffBonus of buff.buffBonuses || []) {
+      const bonus = {
+        ...buffBonus,
+        base: buffBonus.base ?? buff.base,
+        stacks: buffBonus.stacks ?? buff.stacks,
+      };
 
-          if (isFinal === checkIfFinal(bonus.stacks)) {
-            applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
-          }
-        }
+      if (isFinal === checkFinal(bonus.stacks)) {
+        applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
       }
     }
   }

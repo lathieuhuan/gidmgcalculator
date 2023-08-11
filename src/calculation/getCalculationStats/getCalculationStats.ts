@@ -31,7 +31,7 @@ import { RESONANCE_STAT } from "../constants";
 
 import { appData } from "@Data/index";
 import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
+import { findByIndex, toArray } from "@Src/utils";
 import {
   applyModifier,
   getArtifactSetBonuses,
@@ -41,34 +41,16 @@ import {
 import {
   addArtifactAttributes,
   addWeaponSubStat,
-  applyArtifactAutoBuffs,
   applySelfBuffs,
   addTrackerRecord,
   calcFinalTotalAttributes,
   initiateTotalAttr,
+  checkFinal,
 } from "./utils";
-import { applyMainWeaponBuffs, applyWeaponAutoBuffs, applyWeaponBuff } from "./weapon-buffs";
+import { applyMainWeaponBuffs, applyWeaponAutoBuffs, applyWeaponBuff } from "./buffs-weapon";
+import { applyArtifactAutoBuffs, applyArtifactBuff } from "./buffs-artifact";
 
-export const getCalculationStats = ({
-  char,
-  charData,
-  selfBuffCtrls,
-  weapon,
-  wpBuffCtrls,
-  artifacts,
-  artBuffCtrls,
-  elmtModCtrls,
-  party,
-  partyData = [],
-  customBuffCtrls,
-  infusedElement,
-  tracker,
-}: GetStatsArgs) => {
-  const { resonances = [], reaction, infuse_reaction } = elmtModCtrls || {};
-  const { refi } = weapon;
-  const weaponData = findDataWeapon(weapon)!;
-  const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
-
+const init = () => {
   // INIT ATTACK DAMAGE BONUSES
   const attPattBonus = {} as AttackPatternBonus;
   const attElmtBonus = {} as AttackElementBonus;
@@ -101,6 +83,39 @@ export const getCalculationStats = ({
 
   const calcItemBuffs: CalcItemBuff[] = [];
 
+  return {
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
+    calcItemBuffs,
+  };
+};
+
+export const getCalculationStats = ({
+  char,
+  charData,
+  selfBuffCtrls,
+  weapon,
+  wpBuffCtrls,
+  artifacts,
+  artBuffCtrls,
+  elmtModCtrls,
+  party,
+  partyData = [],
+  customBuffCtrls,
+  infusedElement,
+  tracker,
+}: GetStatsArgs) => {
+  const { resonances = [], reaction, infuse_reaction } = elmtModCtrls || {};
+  const { refi } = weapon;
+  const setBonuses = getArtifactSetBonuses(artifacts);
+
+  const weaponData = findDataWeapon(weapon)!;
+  const artSet1Data = setBonuses[0] ? findDataArtifactSet({ code: setBonuses[0].code }) : undefined;
+  const artSet2Data = setBonuses[1] ? findDataArtifactSet({ code: setBonuses[1].code }) : undefined;
+  const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
+
+  const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = init();
   const modifierArgs: BuffModifierArgsWrapper = {
     char,
     charData,
@@ -122,7 +137,6 @@ export const getCalculationStats = ({
   });
 
   const artAttr = addArtifactAttributes({ artifacts, totalAttr, tracker });
-  const setBonuses = getArtifactSetBonuses(artifacts);
   const usedWpMods: UsedCode[] = [];
   const usedArtMods: UsedCode[] = [];
 
@@ -210,34 +224,34 @@ export const getCalculationStats = ({
   }
 
   // APPPLY TEAMMATE BUFFS
-  if (party) {
+  if (party?.length) {
     for (const teammate of party) {
       if (!teammate) continue;
       const { name, weaponType, buffs = [] } = appData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         if (!activated) continue;
-
         const buff = findByIndex(buffs, index);
 
-        if (buff) {
-          buff.applyBuff?.({
-            desc: `${name} / ${buff.src}`,
-            fromSelf: false,
-            inputs,
-            charBuffCtrls: teammate.buffCtrls,
-            ...modifierArgs,
-          });
-          buff.applyFinalBuff?.({
-            desc: `${name} / ${buff.src}`,
-            fromSelf: false,
-            inputs,
-            charBuffCtrls: teammate.buffCtrls,
-            ...modifierArgs,
-          });
-        } else {
+        if (!buff) {
           console.log(`buff #${index} of teammate ${name} not found`);
+          continue;
         }
+
+        buff.applyBuff?.({
+          desc: `${name} / ${buff.src}`,
+          fromSelf: false,
+          inputs,
+          charBuffCtrls: teammate.buffCtrls,
+          ...modifierArgs,
+        });
+        buff.applyFinalBuff?.({
+          desc: `${name} / ${buff.src}`,
+          fromSelf: false,
+          inputs,
+          charBuffCtrls: teammate.buffCtrls,
+          ...modifierArgs,
+        });
       }
 
       // #to-check: should be applied before main weapon buffs?
@@ -246,24 +260,23 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = findDataWeapon({ code, type: weaponType }) || {};
 
         for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
+          if (!activated || !isNewMod(true, code, index)) continue;
           const buff = findByIndex(buffs, index);
 
-          if (buff) {
-            if (activated && isNewMod(true, code, index)) {
-              applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
-
-              for (const buffBonus of buff.buffBonuses || []) {
-                const bonus = {
-                  ...buffBonus,
-                  base: buffBonus.base ?? buff.base,
-                  stacks: buffBonus.stacks ?? buff.stacks,
-                };
-
-                applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, modifierArgs });
-              }
-            }
-          } else {
+          if (!buff) {
             console.log(`buff #${index} of weapon #${code} not found`);
+            continue;
+          }
+
+          applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
+
+          for (const buffBonus of buff.buffBonuses || []) {
+            const bonus = {
+              ...buffBonus,
+              base: buffBonus.base ?? buff.base,
+              stacks: buffBonus.stacks ?? buff.stacks,
+            };
+            applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, modifierArgs });
           }
         }
       })();
@@ -273,18 +286,20 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = findDataArtifactSet({ code }) || {};
 
         for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
+          if (!activated || !isNewMod(false, code, index)) continue;
           const buff = findByIndex(buffs, index);
 
-          if (buff) {
-            if (activated && isNewMod(false, code, index) && buff.applyBuff) {
-              buff.applyBuff({
-                desc: `${name} / 4-Piece activated`,
-                inputs,
-                ...modifierArgs,
-              });
-            }
-          } else {
+          if (!buff) {
             console.log(`buff #${index} of artifact #${code} not found`);
+            continue;
+          }
+
+          if (buff.bonuses) {
+            const description = `${name} / 4-Piece activated`;
+
+            for (const bonus of toArray(buff.bonuses)) {
+              applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs });
+            }
           }
         }
       })();
@@ -296,22 +311,27 @@ export const getCalculationStats = ({
     applyMainWeaponBuffs({ isFinal: false, weaponData, refi, wpBuffCtrls, modifierArgs });
   }
 
-  // APPLY ARTIFACT BUFFS
-  const mainArtCode = setBonuses[0]?.code;
-  if (mainArtCode && artBuffCtrls?.length) {
-    for (const { index, activated, inputs = [] } of artBuffCtrls) {
-      const { name, buffs } = findDataArtifactSet({ code: mainArtCode }) || {};
-      const { applyBuff } = buffs?.[index] || {};
+  const applyMainArtifactBuffs = (isFinal: boolean) => {
+    if (!artSet1Data) return;
 
-      if (activated && isNewMod(false, mainArtCode, index) && applyBuff) {
-        applyBuff({
-          desc: `${name} (self) / 4-piece activated`,
-          inputs,
-          ...modifierArgs,
-        });
+    for (const ctrl of artBuffCtrls || []) {
+      if (!ctrl.activated || !isNewMod(false, artSet1Data.code, ctrl.index)) continue;
+      const buff = artSet1Data.buffs?.[ctrl.index];
+
+      if (buff) {
+        const description = `${artSet1Data.name} (self) / 4-piece activated`;
+
+        for (const bonus of toArray(buff.bonuses)) {
+          if (isFinal === checkFinal(bonus.stacks)) {
+            applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
+          }
+        }
       }
     }
-  }
+  };
+
+  // APPLY ARTIFACT BUFFS
+  applyMainArtifactBuffs(false);
 
   totalAttr.hp += totalAttr.base_hp;
   totalAttr.atk += totalAttr.base_atk;
@@ -329,27 +349,10 @@ export const getCalculationStats = ({
 
   calcFinalTotalAttributes(totalAttr);
 
-  applySelfBuffs({
-    isFinal: true,
-    modifierArgs,
-    charBuffCtrls: selfBuffCtrls,
-    charData,
-  });
+  applySelfBuffs({ isFinal: true, modifierArgs, charBuffCtrls: selfBuffCtrls, charData });
 
   // APPLY ARTIFACT FINAL BUFFS
-  if (artBuffCtrls?.length) {
-    for (const ctrl of artBuffCtrls) {
-      const { name, buffs } = findDataArtifactSet({ code: setBonuses[0].code }) || {};
-      const { applyFinalBuff } = buffs?.[ctrl.index] || {};
-
-      if (ctrl.activated && applyFinalBuff) {
-        applyFinalBuff({
-          desc: `${name} (self) / 4-piece activated`,
-          ...modifierArgs,
-        });
-      }
-    }
-  }
+  applyMainArtifactBuffs(true);
 
   // CALCULATE FINAL REACTION BONUSES
   const { transformative, amplifying, quicken } = getRxnBonusesFromEM(totalAttr.em);

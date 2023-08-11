@@ -2,7 +2,6 @@ import type {
   AppCharacter,
   AppWeapon,
   ArtifactAttribute,
-  ArtifactSetBonus,
   BuffModifierArgsWrapper,
   CalcArtifacts,
   CalcWeapon,
@@ -25,7 +24,6 @@ import {
   weaponSubStatValue,
 } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { findDataArtifactSet } from "@Data/controllers";
 
 function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(obj: T, key: K, value: number) {
   obj[key] = (((obj[key] as number | undefined) || 0) + value) as T[K];
@@ -201,34 +199,19 @@ export const addWeaponSubStat = ({ totalAttr, weaponData, wpLevel, tracker }: ad
   }
 };
 
-interface applyArtifactAutoBuffsArgs {
-  isFinal: boolean;
-  setBonuses: ArtifactSetBonus[];
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyArtifactAutoBuffs = ({ isFinal, setBonuses, modifierArgs }: applyArtifactAutoBuffsArgs) => {
-  for (const { code, bonusLv } of setBonuses) {
-    //
-    for (let i = 0; i <= bonusLv; i++) {
-      const artData = findDataArtifactSet({ code });
-
-      if (artData) {
-        const { applyBuff, applyFinalBuff } = artData.setBonuses[i];
-        const desc = `${artData.name} / ${i * 2 + 2}-piece bonus`;
-
-        if (!isFinal && applyBuff) {
-          applyBuff({ ...modifierArgs, desc });
-        } else if (isFinal && applyFinalBuff) {
-          applyFinalBuff({ ...modifierArgs, desc });
-        }
-      }
-    }
-  }
-};
-
 export const calcFinalTotalAttributes = (totalAttr: TotalAttribute) => {
   for (const type of CORE_STAT_TYPES) {
     totalAttr[type] += applyPercent(totalAttr[`base_${type}`], totalAttr[`${type}_`]);
     totalAttr[`${type}_`] = 0;
   }
+};
+
+type Stack = {
+  type: string;
+};
+export const checkFinal = (stacks?: Stack | Stack[]) => {
+  if (!stacks) {
+    return false;
+  }
+  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
 };
