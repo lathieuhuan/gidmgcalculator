@@ -47,6 +47,20 @@ export const parseCharacterDescription = (
   return "";
 };
 
+export const parseArtifactDescription = (description: string) => {
+  const typeToCls: Record<string, string> = {
+    k: "text-green",
+    v: "text-green font-bold",
+    m: "text-rose-500",
+  };
+  return description.replace(/\{[a-zA-Z0-9 -%]+\}#\[[kvm]\]/g, (match) => {
+    const [bodyPart, typePart = ""] = match.split("#");
+    const body = bodyPart.slice(1, -1);
+    const type = typePart?.slice(1, -1);
+    return `<span class="${typeToCls[type] || ""}">${body}</span>`;
+  });
+};
+
 export const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {
   if (descriptions?.length) {
     let { description = 0 } = buff;

@@ -108,7 +108,7 @@ type RxnBonusSetBonus = SetBonusCommon & {
   path: ReactionBonusPath | ReactionBonusPath[];
 };
 
-type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
+export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
 
 type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
   inputs: ModifierInput[];
@@ -127,7 +127,7 @@ export type ArtifactBuff = {
   inputConfigs?: ModInputConfig[];
   // applyBuff?: (args: ApplyArtBuffArgs) => void;
   // applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
-  description: string | number;
+  description: number | number[];
   bonuses: ArtifactBonus | ArtifactBonus[];
 };
 
@@ -149,6 +149,6 @@ type ArtifactDebuff = {
   // desc: () => JSX.Element | undefined;
   inputConfigs?: ModInputConfig[];
   // applyDebuff: (args: ApplyArtDebuffArgs) => void;
-  description: string | number;
+  description: number | number[];
   penalties: SetPenalty;
 };

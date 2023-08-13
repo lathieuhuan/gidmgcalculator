@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { findDataArtifactSet } from "@Data/controllers";
-import { findByIndex } from "@Src/utils";
+import { findByIndex, toArray } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
@@ -99,10 +99,11 @@ export function ArtifactDebuffs() {
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
     const { index, activated, inputs = [] } = ctrl;
-    const { name, debuffs = [] } = findDataArtifactSet(ctrl) || {};
+    const { name, debuffs = [], descriptions = [] } = findDataArtifactSet(ctrl) || {};
     const debuff = findByIndex(debuffs, index);
-
     if (!debuff) return;
+
+    const description = toArray(debuff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
 
     const path: ToggleModCtrlPath = {
       modCtrlName: "artDebuffCtrls",
@@ -115,7 +116,7 @@ export function ArtifactDebuffs() {
         checked={activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name}
-        description={debuffs?.[index]?.desc()}
+        description={ModifierTemplate.parseArtifactDescription(description)}
         inputs={inputs}
         inputConfigs={debuff.inputConfigs}
         onSelectOption={(value, inputIndex) => {

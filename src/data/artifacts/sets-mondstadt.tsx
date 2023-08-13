@@ -120,7 +120,8 @@ const mondstadtSets: AppArtifact[] = [
     },
     descriptions: [
       "Anemo DMG Bonus +{15%}#[v].",
-      "Increases {Swirl DMG}#[k] by {60%}#[v]. Decreases opponent's {Elemental RES}#[k] to the element infused in the Swirl by {40%}#[v] for 10s.",
+      "Increases {Swirl DMG}#[k] by {60%}#[v].",
+      "Decreases opponent's {Elemental RES}#[k] to the element infused in the Swirl by {40%}#[v] for 10s.",
     ],
     setBonuses: [
       {
@@ -141,8 +142,7 @@ const mondstadtSets: AppArtifact[] = [
     debuffs: [
       {
         index: 0,
-        description:
-          "Decreases opponent's {Elemental RES}#[k] to the element infused in the Swirl by {40%}#[v] for 10s.",
+        description: 2,
         inputConfigs: [
           {
             label: "Element swirled",

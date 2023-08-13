@@ -30,9 +30,10 @@ const inazumaSets: AppArtifact[] = [
     descriptions: [
       "{ATK}#[k] +{18%}#[v].",
       `When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase
-      {Normal Attack DMG}#[k] by {70%}#[v] {ATK}#[k]. This effect will be dispelled 0.05s after a Normal Attack deals
-      DMG. If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by
-      20%. This trigger can occur once every 0.2s.`,
+      {Normal Attack DMG}#[k] by {70%}#[v] {ATK}#[k].`,
+      `This effect will be dispelled 0.05s after a Normal Attack deals DMG.`,
+      `If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%.`,
+      `This trigger can occur once every 0.2s.`,
     ],
     setBonuses: [
       {
@@ -42,13 +43,14 @@ const inazumaSets: AppArtifact[] = [
           path: "atk_",
         },
       },
+      {
+        description: [1, 2, 3, 4],
+      },
     ],
     buffs: [
       {
         index: 0,
-        description: `When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which
-        will increase {Normal Attack DMG}#[k] by {70%}#[v] {ATK}#[k]. If a Normal Attack fails to trigger Valley Rite,
-        the odds of it triggering the next time will increase by 20%.`,
+        description: [1, 3],
         affect: EModAffect.SELF,
         bonuses: {
           value: 0.7,
@@ -90,7 +92,8 @@ const inazumaSets: AppArtifact[] = [
       "{ATK}#[k] +{18%}#[v].",
       `After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their {ATK}#[k]
       by {8%}#[v] for 16s. When the character's HP decreases, Their {ATK}#[k] will further increase by {10%}#[v]. This
-      increase can occur this way a maximum of {4}#[m] times. This effect can be triggered once every 0.8s. Nascent
+      increase can occur this way a maximum of {4}#[m] times.`,
+      `This effect can be triggered once every 0.8s. Nascent
       Light will be dispelled when the character leaves the field. If an Elemental Burst is used again during the
       duration of Nascent Light, the original Nascent Light will be dispelled.`,
     ],
@@ -106,9 +109,7 @@ const inazumaSets: AppArtifact[] = [
     buffs: [
       {
         index: 0,
-        description: `After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their {ATK}#[k]
-        by {8%}#[v] for 16s. When the character's HP decreases, Their {ATK}#[k] will further increase by {10%}#[v]. This
-        increase can occur this way a maximum of {4}#[m] times.`,
+        description: 1,
         affect: EModAffect.SELF,
         inputConfigs: [
           {

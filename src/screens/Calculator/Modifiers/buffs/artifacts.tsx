@@ -6,7 +6,7 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Stor
 import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { deepCopy, findByIndex } from "@Src/utils";
+import { deepCopy, findByIndex, toArray } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { findDataArtifactSet } from "@Data/controllers";
 
@@ -25,9 +25,11 @@ export default function ArtifactBuffs() {
   const mainCode = getArtifactSetBonuses(artifacts)[0]?.code;
 
   artBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { name, buffs } = findDataArtifactSet({ code: mainCode })!;
+    const { name, buffs = [], descriptions = [] } = findDataArtifactSet({ code: mainCode }) || {};
     const buff = findByIndex(buffs!, ctrl.index);
     if (!buff) return;
+
+    const description = toArray(buff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
 
     const path: ToggleModCtrlPath = {
       modCtrlName: "artBuffCtrls",
@@ -39,7 +41,7 @@ export default function ArtifactBuffs() {
         checked={ctrl.activated}
         onToggle={() => dispatch(toggleModCtrl(path))}
         heading={name + " (self)"}
-        description={buff.desc()}
+        description={ModifierTemplate.parseArtifactDescription(description)}
         inputs={ctrl.inputs}
         inputConfigs={buff.inputConfigs}
         onSelectOption={(value, inputIndex) => {
@@ -58,7 +60,7 @@ export default function ArtifactBuffs() {
   party.forEach((teammate, teammateIndex) => {
     if (!teammate) return;
     const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [] } = findDataArtifactSet(teammate.artifact) || {};
+    const { name, buffs = [], descriptions = [] } = findDataArtifactSet(teammate.artifact) || {};
     if (!name) return;
 
     const updateArtifactInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
@@ -80,6 +82,8 @@ export default function ArtifactBuffs() {
       const buff = findByIndex(buffs, index);
       if (!buff) return;
 
+      const description = toArray(buff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
+
       content.push(
         <ModifierTemplate
           key={teammateIndex.toString() + code + ctrlIndex}
@@ -96,7 +100,7 @@ export default function ArtifactBuffs() {
             );
           }}
           heading={name}
-          description={buff.desc()}
+          description={ModifierTemplate.parseArtifactDescription(description)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs}
           onSelectOption={(value, inputIndex) => updateArtifactInputs(ctrlIndex, inputIndex, value)}

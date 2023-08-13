@@ -1,8 +1,5 @@
-import type { ArtifactBonus, ArtifactSetBonus, BuffModifierArgsWrapper } from "@Src/types";
-import { findDataArtifactSet } from "@Data/controllers";
-import { toArray } from "@Src/utils";
+import type { ArtifactBonus, BuffModifierArgsWrapper } from "@Src/types";
 import { applyModifier } from "@Src/utils/calculation";
-import { checkFinal } from "./utils";
 
 interface ApplyArtifactBuffArgs {
   description: string;
@@ -26,32 +23,32 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
   }
 };
 
-interface ApplyArtifactAutoBuffsArgs {
-  isFinal: boolean;
-  setBonuses: ArtifactSetBonus[];
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyArtifactAutoBuffs = ({ isFinal, setBonuses, modifierArgs }: ApplyArtifactAutoBuffsArgs) => {
-  for (const { code, bonusLv } of setBonuses) {
-    //
-    for (let i = 0; i <= bonusLv; i++) {
-      const data = findDataArtifactSet({ code });
+// interface ApplyArtifactAutoBuffsArgs {
+//   isFinal: boolean;
+//   setBonuses: ArtifactSetBonus[];
+//   modifierArgs: BuffModifierArgsWrapper;
+// }
+// export const applyArtifactAutoBuffs = ({ isFinal, setBonuses, modifierArgs }: ApplyArtifactAutoBuffsArgs) => {
+//   for (const { code, bonusLv } of setBonuses) {
+//     //
+//     for (let i = 0; i <= bonusLv; i++) {
+//       const data = findDataArtifactSet({ code });
 
-      if (!data) {
-        console.log(`artifact #${code} not found`);
-        continue;
-      }
-      const { bonuses } = data.setBonuses?.[i] || {};
+//       if (!data) {
+//         console.log(`artifact #${code} not found`);
+//         continue;
+//       }
+//       const { bonuses } = data.setBonuses?.[i] || {};
 
-      if (bonuses) {
-        const description = `${data.name} / ${i * 2 + 2}-piece bonus`;
+//       if (bonuses) {
+//         const description = `${data.name} / ${i * 2 + 2}-piece bonus`;
 
-        for (const bonus of toArray(bonuses)) {
-          if (isFinal === checkFinal(bonus.stacks)) {
-            applyArtifactBuff({ description, buff: bonus, modifierArgs });
-          }
-        }
-      }
-    }
-  }
-};
+//         for (const bonus of toArray(bonuses)) {
+//           if (isFinal === checkFinal(bonus.stacks)) {
+//             applyArtifactBuff({ description, buff: bonus, modifierArgs });
+//           }
+//         }
+//       }
+//     }
+//   }
+// };
