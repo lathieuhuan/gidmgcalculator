@@ -1,7 +1,4 @@
 import type { AppArtifact } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
-import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { EModAffect } from "@Src/constants";
 
 const sumeruSets: AppArtifact[] = [
@@ -29,50 +26,48 @@ const sumeruSets: AppArtifact[] = [
       name: "Fell Dragon's Monocle",
       icon: "f/ff/Item_Fell_Dragon%27s_Monocle",
     },
+    descriptions: [
+      "Increase {Hydro DMG Bonus}#[k] by {15%}#[v].",
+      `When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an opponent, each attack
+      type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks. Each stack's duration is counted independently.`,
+      `While 1, 2, or 3 or more Nymph's Croix stacks are in effect, {ATK}#[k] is increased by
+      {7%}#[v]/{16%}#[v]/{25%}#[v], and {Hydro DMG}#[k] is increased by {4%}#[v]/{9%}#[v]/{15%}#[v].`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Hydro DMG Bonus</Green> +<Green b>15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "hydro", 15),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "hydro",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an opponent, each
-              attack type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks. Each stack's duration is counted
-              independently. {this.xtraDesc?.[0]}
-            </>
-          );
-        },
-        xtraDesc: [
-          <>
-            While 1, 2, or 3 or more Nymph's Croix stacks are in effect, <Green>ATK</Green> is increased by{" "}
-            <Green b>7%/16%/25%</Green>, and <Green>Hydro DMG</Green> is increased by <Green b>4%/9%/15%</Green>.
-          </>,
-        ],
+        description: [1, 2],
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(sumeruSets, 38)?.setBonuses[1].xtraDesc?.[0],
+        description: 2,
         inputConfigs: [
           {
             type: "stacks",
             max: 3,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const index = (inputs[0] || 1) - 1;
-          const atkBuff = [7, 16, 25][index];
-          const hydroBuff = [4, 9, 15][index];
-          applyModifier(desc, totalAttr, ["atk_", "hydro"], [atkBuff, hydroBuff], tracker);
-        },
+        artBonuses: [
+          {
+            value: [7, 16, 25],
+            target: "totalAttr",
+            path: "atk_",
+          },
+          {
+            value: [4, 9, 15],
+            target: "totalAttr",
+            path: "hydro",
+          },
+        ],
       },
     ],
   },
@@ -100,48 +95,49 @@ const sumeruSets: AppArtifact[] = [
       name: "Heart of Khvarena's Brilliance",
       icon: "f/fa/Item_Heart_of_Khvarena%27s_Brilliance",
     },
+    descriptions: [
+      "Increases {HP}#[k] by {20%}#[v].",
+      "Increases {Elemental Skill and Elemental Burst DMG}#[k] by {10%}#[v].",
+      `When the equipping character takes DMG, Increases {Elemental Skill and Elemental Burst DMG}#[k] by {8%}#[v] for
+      5s. Max {5}#[m] stacks.`,
+      `The duration of each stack is counted independently. These stacks will continue to take effect even when the
+      equipping character is not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>HP</Green> +<Green b>20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "hp_", 20),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "hp_",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by <Green b>10%</Green>.{" "}
-              {this.xtraDesc?.[0]} The duration of each stack is counted independently. These stacks will continue to
-              take effect even when the equipping character is not on the field.
-            </>
-          );
+        description: [1, 2, 3],
+        artBonuses: {
+          value: 10,
+          target: "attPattBonus",
+          path: ["ES.pct_", "EB.pct_"],
         },
-        xtraDesc: [
-          <>
-            When the equipping character takes DMG, Increases <Green>Elemental Skill and Elemental Burst DMG</Green> by{" "}
-            <Green b>8%</Green> for 5s. Max <Rose>5</Rose> stacks.
-          </>,
-        ],
-        applyBuff: makeModApplier("attPattBonus", ["ES.pct_", "EB.pct_"], 10),
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(sumeruSets, 37)?.setBonuses[1].xtraDesc?.[0],
+        description: 2,
         inputConfigs: [
           {
             type: "stacks",
             max: 5,
           },
         ],
-        applyBuff: ({ attPattBonus, inputs, desc, tracker }) => {
-          const stacks = inputs[0] || 0;
-          applyModifier(desc, attPattBonus, ["ES.pct_", "EB.pct_"], stacks * 8, tracker);
+        artBonuses: {
+          value: 8,
+          stacks: {
+            type: "input",
+          },
+          target: "attPattBonus",
+          path: ["ES.pct_", "EB.pct_"],
         },
       },
     ],
@@ -170,34 +166,37 @@ const sumeruSets: AppArtifact[] = [
       name: "Legacy of the Desert High-Born",
       icon: "0/0c/Item_Legacy_of_the_Desert_High-Born",
     },
+    descriptions: [
+      "Increases {Anemo DMG Bonus}#[k] by {15%}#[v].",
+      `When Charged Attacks hit opponents, the equipping character's {Normal Attack SPD}#[k] will increase by
+      {10%}#[v] while {Normal, Charged, and Plunging Attack DMG}#[k] will increase by {40%}#[v] for 15s.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green b>15%</Green> <Green>Anemo DMG Bonus</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "anemo", 15),
-      },
-      {
-        desc: (
-          <>
-            When Charged Attacks hit opponents, the equipping character's <Green>Normal Attack SPD</Green> will increase
-            by <Green b>10%</Green> while <Green>Normal, Charged, and Plunging Attack DMG</Green> will increase by{" "}
-            <Green b>40%</Green> for 15s.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "anemo",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(sumeruSets, 36)?.setBonuses[1].desc,
-        applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "naAtkSpd_", 10, tracker);
-          applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_", "PA.pct_"], 40, tracker);
-        },
+        description: 1,
+        artBonuses: [
+          {
+            value: 10,
+            target: "totalAttr",
+            path: "naAtkSpd_",
+          },
+          {
+            value: 40,
+            target: "attPattBonus",
+            path: ["NA.pct_", "CA.pct_", "PA.pct_"],
+          },
+        ],
       },
     ],
   },
@@ -225,49 +224,49 @@ const sumeruSets: AppArtifact[] = [
       name: "Amethyst Crown",
       icon: "0/09/Item_Amethyst_Crown",
     },
+    descriptions: [
+      "Increases {Elemental Mastery}#[k] by {80}#[v].",
+      "The equipping character's {Bloom, Hyperbloom, and Burgeon reaction DMG}#[k] are increased by {40%}#[v].",
+      `When the equipping character triggers Bloom, Hyperbloom, or Burgeon, they will gain another {10%}#[v]
+      {DMG bonus}#[k] to those reations for 10s. Max {4}#[m] stacks.`,
+      `This effect can only be triggered once per second. The character who equips this can still trigger its effects
+      when not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Mastery</Green> by <Green b>80</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "em", 80),
+        artBonuses: {
+          value: 80,
+          target: "totalAttr",
+          path: "em",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              The equipping character's <Green>Bloom, Hyperbloom, and Burgeon reaction DMG</Green> are increased by{" "}
-              <Green b>40%</Green>. {this.xtraDesc?.[0]} This effect can only be triggered once per second. The
-              character who equips this can still trigger its effects when not on the field.
-            </>
-          );
+        description: [1, 2, 3],
+        artBonuses: {
+          value: 40,
+          target: "rxnBonus",
+          path: ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"],
         },
-        xtraDesc: [
-          <>
-            When the equipping character triggers Bloom, Hyperbloom, or Burgeon, they will gain another{" "}
-            <Green b>10%</Green> <Green>DMG bonus</Green> to those reations. Max <Rose>4</Rose> stacks. Each stack lasts
-            10s.
-          </>,
-        ],
-        applyBuff: makeModApplier("rxnBonus", ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"], 40),
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(sumeruSets, 35)?.setBonuses[1]?.xtraDesc?.[0],
+        description: 2,
         inputConfigs: [
           {
             type: "stacks",
             max: 4,
           },
         ],
-        applyBuff: ({ rxnBonus, inputs, desc, tracker }) => {
-          const fields: ReactionBonusPath[] = ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"];
-          applyModifier(desc, rxnBonus, fields, 10 * inputs[0], tracker);
+        artBonuses: {
+          value: 10,
+          stacks: {
+            type: "input",
+          },
+          target: "rxnBonus",
+          path: ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"],
         },
       },
     ],
@@ -296,30 +295,28 @@ const sumeruSets: AppArtifact[] = [
       name: "Laurel Coronet",
       icon: "b/b8/Item_Laurel_Coronet",
     },
+    descriptions: [
+      "Increases {Dendro DMG Bonus}#[k] by {15%}#[v].",
+      `After Elemental Skills or Bursts hit opponents, the targets' {Dendro RES}#[k] will be decreased by {30%}#[v]
+      for 8s. This effect can be triggered even if the equipping character is not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Dendro DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "dendro", 15),
-      },
-      {
-        desc: (
-          <>
-            After Elemental Skills or Bursts hit opponents, the targets' <Green>Dendro RES</Green> will be decreased by{" "}
-            <Green b>30%</Green> for 8s. This effect can be triggered even if the equipping character is not on the
-            field.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "dendro",
+        },
       },
     ],
     debuffs: [
       {
         index: 0,
-        desc: () => findByCode(sumeruSets, 33)?.setBonuses[1].desc,
-        applyDebuff: makeModApplier("resistReduct", "dendro", 30),
+        description: 1,
+        penalties: {
+          value: 30,
+          path: "dendro",
+        },
       },
     ],
   },
@@ -347,57 +344,53 @@ const sumeruSets: AppArtifact[] = [
       name: "Shadow of the Sand King",
       icon: "2/2b/Item_Shadow_of_the_Sand_King",
     },
+    descriptions: [
+      "Increases {Elemental Mastery}#[k]  by {80}#[v].",
+      `Within 8s of triggering an Elemental Reaction,`,
+      `the character equipping this will obtain buffs based on the Elemental Type of the other party members.`,
+      `{ATK}#[k] is increased by {14%}#[v] for each party member whose Elemental Type is the same as the equipping
+      character, and {Elemental Mastery}#[k] is increased by {50}#[v] for every party member with a different Elemental
+      Type.`,
+      `Each of the aforementioned buffs will count up to 3 characters. This effect can be triggered once every 8s. The
+      character who equips this can still trigger its effects when not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Elemental Mastery</Green> +<Green b>80</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "em", 80),
+        artBonuses: {
+          value: 80,
+          target: "totalAttr",
+          path: "em",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              Within 8s of triggering an Elemental Reaction, the character equipping this will obtain buffs based on the
-              Elemental Type of the other party members. {this.xtraDesc?.[0]} Each of the aforementioned buffs will
-              count up to 3 characters. This effect can be triggered once every 8s. The character who equips this can
-              still trigger its effects when not on the field.
-            </>
-          );
-        },
-        xtraDesc: [
-          <>
-            <Green>ATK</Green> is increased by <Green b>14%</Green> for each party member whose Elemental Type is the
-            same as the equipping character, and <Green b>Elemental Mastery</Green> is increased by <Green b>50</Green>{" "}
-            for every party member with a different Elemental Type.
-          </>,
-        ],
+        description: [1, 2, 3, 4],
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(sumeruSets, 34)?.setBonuses[1].xtraDesc?.[0],
-        applyBuff: ({ desc, totalAttr, charData, partyData, tracker }) => {
-          if (partyData) {
-            let atkBuff = 0;
-            let emBuff = 0;
-
-            for (const teammate of partyData) {
-              if (teammate) {
-                if (teammate.vision === charData.vision) {
-                  atkBuff += 14;
-                } else {
-                  emBuff += 50;
-                }
-              }
-            }
-            applyModifier(desc, totalAttr, ["atk_", "em"], [atkBuff, emBuff], tracker);
-          }
-        },
+        description: [1, 3],
+        artBonuses: [
+          {
+            value: 14,
+            stacks: {
+              type: "vision",
+              element: "same_excluded",
+            },
+            target: "totalAttr",
+            path: "atk_",
+          },
+          {
+            value: 50,
+            stacks: {
+              type: "vision",
+              element: "different",
+            },
+            target: "totalAttr",
+            path: "em",
+          },
+        ],
       },
     ],
   },

@@ -1,16 +1,9 @@
-import type { AppWeapon, AutoBuff, BuffModifierArgsWrapper, ModifierCtrl, StackConfig } from "@Src/types";
-import { countVision, findByIndex, toArray } from "@Src/utils";
+import type { WeaponAutoBuff, BuffModifierArgsWrapper, WeaponStackConfig } from "@Src/types";
+import { countVision, toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 
-const checkIfFinal = (stacks: AutoBuff["stacks"]) => {
-  if (!stacks) {
-    return false;
-  }
-  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
-};
-
 const getStackValue = (
-  stack: StackConfig,
+  stack: WeaponStackConfig,
   inputs: number[],
   { charData, partyData, totalAttr }: BuffModifierArgsWrapper
 ) => {
@@ -78,7 +71,7 @@ const getStackValue = (
 const applyBuffValue = (
   buffValue: number,
   description: string,
-  buff: AutoBuff,
+  buff: WeaponAutoBuff,
   modifierArgs: BuffModifierArgsWrapper
 ) => {
   if (buffValue) {
@@ -94,7 +87,7 @@ const applyBuffValue = (
 
 interface ApplyWeaponBuffArgs {
   description: string;
-  buff: AutoBuff;
+  buff: WeaponAutoBuff;
   refi: number;
   inputs: number[];
   modifierArgs: BuffModifierArgsWrapper;
@@ -165,61 +158,4 @@ export const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs 
     buffValue = maxValue;
   }
   applyBuffValue(buffValue, description, buff, modifierArgs);
-};
-
-interface ApplyWeaponAutoBuffsArgs {
-  isFinal: boolean;
-  weaponData: AppWeapon;
-  refi: number;
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyWeaponAutoBuffs = ({ isFinal, weaponData, refi, modifierArgs }: ApplyWeaponAutoBuffsArgs) => {
-  if (weaponData.autoBuffs?.length) {
-    for (const autoBuff of weaponData.autoBuffs) {
-      if (isFinal === checkIfFinal(autoBuff.stacks)) {
-        applyWeaponBuff({ description: `${weaponData.name} bonus`, buff: autoBuff, refi, inputs: [], modifierArgs });
-      }
-    }
-  }
-};
-
-interface ApplyMainWeaponsBuffsArgs {
-  isFinal: boolean;
-  weaponData: AppWeapon;
-  refi: number;
-  wpBuffCtrls: ModifierCtrl[];
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyMainWeaponBuffs = ({
-  isFinal,
-  weaponData,
-  refi,
-  wpBuffCtrls,
-  modifierArgs,
-}: ApplyMainWeaponsBuffsArgs) => {
-  if (weaponData.buffs) {
-    const description = `${weaponData.name} activated`;
-
-    // #to-do: check if buff exist
-    for (const { activated, index, inputs = [] } of wpBuffCtrls) {
-      const buff = findByIndex(weaponData.buffs, index);
-
-      if (activated && buff) {
-        if (isFinal === checkIfFinal(buff.stacks)) {
-          applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
-        }
-        for (const buffBonus of buff.buffBonuses || []) {
-          const bonus = {
-            ...buffBonus,
-            base: buffBonus.base ?? buff.base,
-            stacks: buffBonus.stacks ?? buff.stacks,
-          };
-
-          if (isFinal === checkIfFinal(bonus.stacks)) {
-            applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
-          }
-        }
-      }
-    }
-  }
 };

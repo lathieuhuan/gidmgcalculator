@@ -10,7 +10,13 @@ import type {
 import type { CalculateItemArgs, GetDamageArgs } from "./types";
 
 // Constant
-import { ATTACK_ELEMENTS, ATTACK_PATTERNS, TRANSFORMATIVE_REACTIONS, BASE_REACTION_DAMAGE } from "@Src/constants";
+import {
+  ATTACK_ELEMENTS,
+  ATTACK_PATTERNS,
+  TRANSFORMATIVE_REACTIONS,
+  BASE_REACTION_DAMAGE,
+  VISION_TYPES,
+} from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
@@ -209,12 +215,12 @@ export default function getDamage({
   for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
       const { name, debuffs = [] } = findDataArtifactSet({ code }) || {};
-      if (name) {
-        debuffs[index]?.applyDebuff({
-          desc: `${name} / 4-piece activated`,
-          inputs,
-          ...modifierArgs,
-        });
+
+      if (debuffs[index]) {
+        const { value, path, inputIndex = 0 } = debuffs[index].penalties;
+        const elementIndex = inputs?.[inputIndex] ?? 0;
+        const finalPath = path === "input_element" ? VISION_TYPES[elementIndex] : path;
+        applyModifier(`${name} / 4-piece activated`, resistReduct, finalPath, value, tracker);
       }
     }
   }

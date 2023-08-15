@@ -64,7 +64,7 @@ const purplePolearms: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 9,
             targetAttribute: "atk_",
@@ -254,7 +254,7 @@ const purplePolearms: AppWeapon[] = [
             type: "check",
           },
         ],
-        buffBonuses: [
+        wpBonuses: [
           {
             checkInput: 1,
             base: 18,

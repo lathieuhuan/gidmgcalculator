@@ -7,13 +7,13 @@ import { useTabs } from "@Src/hooks";
 
 // Component
 import { CollapseList } from "@Src/pure-components";
-import ElementBuffs from "./buffs/elements";
+import { ElementBuffs } from "./buffs/elements";
 import { PartyBuffs, SelfBuffs } from "./buffs/characters";
-import WeaponBuffs from "./buffs/weapons";
-import ArtifactBuffs from "./buffs/artifacts";
+import { WeaponBuffs } from "./buffs/weapons";
+import { ArtifactBuffs } from "./buffs/artifacts";
 import { ArtifactDebuffs, ElementDebuffs } from "./debuffs/others";
 import { PartyDebuffs, SelfDebuffs } from "./debuffs/characters";
-import CustomModifiers from "./custom";
+import { CustomModifiers } from "./custom";
 
 export default function Modifiers() {
   const party = useSelector(selectParty);

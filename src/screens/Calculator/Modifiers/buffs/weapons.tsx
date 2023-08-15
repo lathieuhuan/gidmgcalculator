@@ -1,18 +1,18 @@
 import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
+// Store
 import { useDispatch, useSelector } from "@Store/hooks";
 import { changeModCtrlInput, toggleModCtrl, updateTeammateWeapon } from "@Store/calculatorSlice";
 import { selectParty, selectWeapon } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { deepCopy, findByIndex } from "@Src/utils";
-import { findDataWeapon } from "@Data/controllers";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { renderModifiers, renderWeaponModifiers } from "@Src/components";
 
-export default function WeaponBuffs() {
+export const WeaponBuffs = () => {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
   const weaponBuffCtrls = useSelector((state) => {
@@ -20,110 +20,104 @@ export default function WeaponBuffs() {
   });
   const party = useSelector(selectParty);
 
-  const { name, buffs: mainBuffs = [], descriptions } = findDataWeapon(weapon)!;
-  const content: JSX.Element[] = [];
+  const content: (JSX.Element | null)[] = [];
 
-  weaponBuffCtrls.forEach(({ activated, index, inputs = [] }, ctrlIndex) => {
-    const buff = findByIndex(mainBuffs, index);
-    if (!buff) return;
-
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "wpBuffCtrls",
-      ctrlIndex,
-    };
-
-    content.push(
-      <ModifierTemplate
-        key={weapon.code.toString() + ctrlIndex}
-        checked={activated}
-        onToggle={() => dispatch(toggleModCtrl(path))}
-        heading={name + ` R${weapon.refi} (self)`}
-        description={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
-        inputs={inputs}
-        inputConfigs={buff.inputConfigs}
-        onChangeText={(value, i) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value,
-            })
-          );
-        }}
-        onToggleCheck={(currentInput, i) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value: currentInput === 1 ? 0 : 1,
-            })
-          );
-        }}
-        onSelectOption={(value, i) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value,
-            })
-          );
-        }}
-      />
-    );
-  });
-
-  party.forEach((teammate, teammateIndex) => {
-    if (!teammate) return null;
-
-    const { weapon } = teammate;
-    const { code, refi, buffCtrls } = weapon;
-    const { name, buffs = [], descriptions } = findDataWeapon(weapon) || {};
-
-    const updateWeaponInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
-      const newBuffCtrls = deepCopy(buffCtrls);
-      const { inputs } = newBuffCtrls[ctrlIndex];
-
-      if (inputs) {
-        inputs[inputIndex] = value;
-        dispatch(
-          updateTeammateWeapon({
-            teammateIndex,
-            buffCtrls: newBuffCtrls,
-          })
-        );
-      }
-    };
-
-    buffCtrls.forEach((buffCtrl, ctrlIndex) => {
-      const { activated, inputs = [], index } = buffCtrl;
-      const buff = findByIndex(buffs, index);
-      if (!buff) return;
-
-      content.push(
-        <ModifierTemplate
-          key={teammateIndex.toString() + code + ctrlIndex}
-          checked={activated}
-          onToggle={() => {
-            const newBuffCtrls = deepCopy(buffCtrls);
-            newBuffCtrls[ctrlIndex].activated = !activated;
-
+  content.push(
+    ...renderWeaponModifiers({
+      fromSelf: true,
+      keyPrefix: "main",
+      weapon,
+      ctrls: weaponBuffCtrls,
+      renderProps: (ctrl) => {
+        const path: ToggleModCtrlPath = {
+          modCtrlName: "wpBuffCtrls",
+          ctrlIndex: ctrl.index,
+        };
+        return {
+          checked: ctrl.activated,
+          onToggle: () => dispatch(toggleModCtrl(path)),
+          onChangeText: (value, inputIndex) => {
             dispatch(
-              updateTeammateWeapon({
-                teammateIndex,
-                buffCtrls: newBuffCtrls,
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value,
               })
             );
-          }}
-          heading={name + ` R${refi}`}
-          description={ModifierTemplate.getWeaponDescription(descriptions, buff, refi)}
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs}
-          onChangeText={(text, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, text)}
-          onSelectOption={(value, inputIndex) => updateWeaponInputs(ctrlIndex, inputIndex, value)}
-        />
+          },
+          onToggleCheck: (currentInput, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value: currentInput === 1 ? 0 : 1,
+              })
+            );
+          },
+          onSelectOption: (value, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value,
+              })
+            );
+          },
+        };
+      },
+    })
+  );
+
+  party.forEach((teammate, teammateIndex) => {
+    if (teammate) {
+      const { buffCtrls } = teammate.weapon;
+
+      content.push(
+        ...renderWeaponModifiers({
+          keyPrefix: teammate.name,
+          weapon: teammate.weapon,
+          ctrls: teammate.weapon.buffCtrls,
+          renderProps: (ctrl) => {
+            const updateWeaponInputs = (value: ModifierInput, inputIndex: number) => {
+              const newBuffCtrls = deepCopy(buffCtrls);
+              const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);
+
+              if (targetCtrl?.inputs) {
+                targetCtrl.inputs[inputIndex] = value;
+                dispatch(
+                  updateTeammateWeapon({
+                    teammateIndex,
+                    buffCtrls: newBuffCtrls,
+                  })
+                );
+              }
+            };
+
+            return {
+              checked: ctrl.activated,
+              onToggle: () => {
+                const newBuffCtrls = deepCopy(buffCtrls);
+                const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);
+
+                if (targetCtrl) {
+                  targetCtrl.activated = !ctrl.activated;
+
+                  dispatch(
+                    updateTeammateWeapon({
+                      teammateIndex,
+                      buffCtrls: newBuffCtrls,
+                    })
+                  );
+                }
+              },
+              onChangeText: updateWeaponInputs,
+              onSelectOption: updateWeaponInputs,
+            };
+          },
+        })
       );
-    });
+    }
   });
 
   return renderModifiers(content, "buffs", true);
-}
+};

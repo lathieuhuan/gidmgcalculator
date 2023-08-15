@@ -1,16 +1,7 @@
-import type { ModInputConfig, Rarity } from "./global";
-import type {
-  AttackPatternBonus,
-  BuffModifierArgsWrapper,
-  ModifierInput,
-  PartyData,
-  ReactionBonus,
-  TotalAttribute,
-  DebuffModifierArgsWrapper,
-  Tracker,
-} from "./calculator";
-import type { AppCharacter } from "./character";
+import type { AttributeStat, ModInputConfig, Rarity, WeaponType } from "./global";
+import type { ModifierInput, DebuffModifierArgsWrapper, Tracker, ResistanceReductionKey } from "./calculator";
 import { EModAffect } from "@Src/constants";
+import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
 
 type ArtTypeData = {
   name: string;
@@ -30,45 +21,85 @@ export type AppArtifact = {
   sands: ArtTypeData;
   goblet: ArtTypeData;
   circlet: ArtTypeData;
-  setBonuses: [SetBonus, SetBonus];
+
+  descriptions: string[];
+  setBonuses?: SetBonus[];
   buffs?: ArtifactBuff[];
   debuffs?: ArtifactDebuff[];
 };
 
-type ApplyArtPassiveBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus?: AttackPatternBonus;
-  rxnBonus?: ReactionBonus;
-  charData: AppCharacter;
-  partyData?: PartyData;
-  desc: string;
-  tracker?: Tracker;
-};
-
 type SetBonus = {
-  desc: JSX.Element;
-  xtraDesc?: JSX.Element[];
-  applyBuff?: (args: ApplyArtPassiveBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyArtPassiveBuffArgs) => void;
+  description?: number[];
+  artBonuses?: ArtifactBonus | ArtifactBonus[];
 };
 
-type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  desc?: string;
+type TargetAttribute = "input_element" | AttributeStat | AttributeStat[];
+
+type InputStack = {
+  type: "input";
+  /** Default to 0 */
+  index?: number;
 };
 
-type ApplyArtFinalBuffArgs = BuffModifierArgsWrapper & {
-  desc?: string;
-  tracker?: Tracker;
+type AttributeStack = {
+  type: "attribute";
+  field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_";
 };
 
-export type ArtifactBuff = {
-  index: number;
-  desc: () => JSX.Element | undefined;
-  affect: EModAffect;
+type VisionStack = {
+  type: "vision";
+  element: "same_excluded" | "different";
+  max?: number;
+};
+
+type SetBonusCommon = {
+  /** Only on Vermillion Hereafter */
+  initialValue?: number;
+  value: number | number[];
+  stacks?: InputStack | AttributeStack | VisionStack;
+  /**
+   * For this buff to available, the input at the index must equal to compareValue.
+   * If number, it's compareValue, index default to 0.
+   */
+  checkInput?:
+    | number
+    | {
+        /** Default to 0 */
+        index?: number;
+        value: number;
+      };
+  max?: number;
+};
+
+type AttributeSetBonus = SetBonusCommon & {
+  target: "totalAttr";
+  path: TargetAttribute;
+  /** Only when path = "input_element". Default to 0 */
+  inputIndex?: number;
+};
+
+type AttPattSetBonus = SetBonusCommon & {
+  target: "attPattBonus";
+  path: AttackPatternPath | AttackPatternPath[];
+  weaponTypes?: WeaponType[];
+};
+
+type RxnBonusSetBonus = SetBonusCommon & {
+  target: "rxnBonus";
+  path: ReactionBonusPath | ReactionBonusPath[];
+};
+
+export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
+
+export type ArtifactModifier = {
   inputConfigs?: ModInputConfig[];
-  applyBuff?: (args: ApplyArtBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
+  description: number | number[];
+};
+
+export type ArtifactBuff = ArtifactModifier & {
+  index: number;
+  affect: EModAffect;
+  artBonuses: ArtifactBonus | ArtifactBonus[];
 };
 
 export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
@@ -77,9 +108,14 @@ export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
   tracker?: Tracker;
 };
 
-type ArtifactDebuff = {
+type SetPenalty = {
+  value: number;
+  path: "input_element" | ResistanceReductionKey;
+  /** Only when path = "input_element". Default to 0 */
+  inputIndex?: number;
+};
+
+type ArtifactDebuff = ArtifactModifier & {
   index: number;
-  desc: () => JSX.Element | undefined;
-  inputConfigs?: ModInputConfig[];
-  applyDebuff: (args: ApplyArtDebuffArgs) => void;
+  penalties: SetPenalty;
 };

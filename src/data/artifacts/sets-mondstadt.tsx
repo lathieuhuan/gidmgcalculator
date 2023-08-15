@@ -1,8 +1,5 @@
 import type { AppArtifact } from "@Src/types";
-import { Green } from "@Src/pure-components";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModAffect } from "@Src/constants";
 
 const mondstadtSets: AppArtifact[] = [
   {
@@ -29,27 +26,24 @@ const mondstadtSets: AppArtifact[] = [
       name: "Gladiator's Triumphus",
       icon: "9/9b/Item_Gladiator%27s_Triumphus",
     },
+    descriptions: [
+      "Increases {ATK}#[k] by {18%}#[v].",
+      "If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their {Normal Attack DMG}#[k] by {35%}#[v].",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
       {
-        desc: (
-          <>
-            If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their{" "}
-            <Green>Normal Attack DMG</Green> by <Green b>35%</Green>.
-          </>
-        ),
-        applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
-          const supported = ["sword", "claymore", "polearm"];
-          if (attPattBonus && supported.includes(charData.weaponType)) {
-            applyModifier(desc, attPattBonus, "NA.pct_", 35, tracker);
-          }
+        artBonuses: {
+          value: 35,
+          target: "attPattBonus",
+          path: "NA.pct_",
+          weaponTypes: ["sword", "claymore", "polearm"],
         },
       },
     ],
@@ -78,25 +72,24 @@ const mondstadtSets: AppArtifact[] = [
       name: "Conductor's Top Hat",
       icon: "8/81/Item_Conductor%27s_Top_Hat",
     },
+    descriptions: [
+      "Increases {Elemental Mastery}#[k] by {80}#[v].",
+      "Increases {Charged Attack DMG}#[k] by {35%}#[v] if the character uses a Catalyst or Bow.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Mastery</Green> by <Green b>80</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "em", 80),
+        artBonuses: {
+          value: 80,
+          target: "totalAttr",
+          path: "em",
+        },
       },
       {
-        desc: (
-          <>
-            Increases <Green>Charged Attack DMG</Green> by <Green b>35%</Green> if the character uses a Catalyst or Bow.
-          </>
-        ),
-        applyBuff: ({ attPattBonus, charData, desc, tracker }) => {
-          if (attPattBonus && ["catalyst", "bow"].includes(charData.weaponType)) {
-            applyModifier(desc, attPattBonus, "CA.pct_", 35, tracker);
-          }
+        artBonuses: {
+          value: 35,
+          target: "attPattBonus",
+          path: "CA.pct_",
+          weaponTypes: ["catalyst", "bow"],
         },
       },
     ],
@@ -125,43 +118,40 @@ const mondstadtSets: AppArtifact[] = [
       name: "Viridescent Venerer's Diadem",
       icon: "8/8b/Item_Viridescent_Venerer%27s_Diadem",
     },
+    descriptions: [
+      "Increases {Anemo DMG Bonus}#[k] by {15%}#[v].",
+      "Increases {Swirl DMG}#[k] by {60%}#[v].",
+      "Decreases opponent's {Elemental RES}#[k] to the element infused in the Swirl by {40%}#[v] for 10s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Anemo DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "anemo", 15),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "anemo",
+        },
       },
       {
-        desc: (
-          <>
-            Increases <Green>Swirl DMG</Green> by <Green b>60%</Green>. Decreases opponent's{" "}
-            <Green>Elemental RES</Green> to the element infused in the Swirl by <Green b>40%</Green> for 10s.
-          </>
-        ),
-        applyBuff: makeModApplier("rxnBonus", "swirl.pct_", 60),
+        artBonuses: {
+          value: 60,
+          target: "rxnBonus",
+          path: "swirl.pct_",
+        },
       },
     ],
     debuffs: [
       {
         index: 0,
-        desc: () => (
-          <>
-            Decreases opponent's <Green>Elemental RES</Green> to the element infused in the Swirl by{" "}
-            <Green b>40%</Green> for 10s.
-          </>
-        ),
+        description: 2,
         inputConfigs: [
           {
             label: "Element swirled",
             type: "anemoable",
           },
         ],
-        applyDebuff: ({ resistReduct, inputs, desc, tracker }) => {
-          const elmtIndex = inputs[0] || 0;
-          applyModifier(desc, resistReduct, VISION_TYPES[elmtIndex], 40, tracker);
+        penalties: {
+          value: 40,
+          path: "input_element",
         },
       },
     ],
@@ -190,17 +180,17 @@ const mondstadtSets: AppArtifact[] = [
       name: "Maiden's Fading Beauty",
       icon: "8/82/Item_Maiden%27s_Fading_Beauty",
     },
+    descriptions: [
+      "Increases {Healing Bonus}#[k] by {15%}#[v].",
+      "Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Character <Green>Healing Effectiveness</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "healB_", 15),
-      },
-      {
-        desc: <>Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s.</>,
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "healB_",
+        },
       },
     ],
   },
@@ -224,37 +214,37 @@ const mondstadtSets: AppArtifact[] = [
       name: "Omen of Thunderstorm",
       icon: "c/cd/Item_Omen_of_Thunderstorm",
     },
-    circlet: { name: "Thunder Summoner's Crown", icon: "a/a5/Item_Thunder_Summoner%27s_Crown" },
+    circlet: {
+      name: "Thunder Summoner's Crown",
+      icon: "a/a5/Item_Thunder_Summoner%27s_Crown",
+    },
+    descriptions: [
+      "Increases {Electro DMG Bonus}#[k] by {15%}#[v].",
+      `Increases damage caused by {Overloaded, Electro-Charged, Superconduct and Hyperbloom}#[k] by {40%}#[v], and the
+      DMG Bonus conferred by {Aggravate}#[k] is increased by {20%}#[v]. When Quicken or the aforementioned Elemental
+      Reactions are triggered, Elemental Skill CD is decreased by 1s. Can only occur once every 0.8s.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Electro DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "electro", 15),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "electro",
+        },
       },
       {
-        desc: (
-          <>
-            Increases damage caused by <Green>Overloaded, Electro-Charged, Superconduct and Hyperbloom</Green> by{" "}
-            <Green b>40%</Green>, and the DMG Bonus conferred by <Green>Aggravate</Green> is increased by{" "}
-            <Green b>20%</Green>. When Quicken or the aforementioned Elemental Reactions are triggered, Elemental Skill
-            CD is decreased by 1s. Can only occur once every 0.8s.
-          </>
-        ),
-        applyBuff: ({ rxnBonus, desc, tracker }) => {
-          if (rxnBonus) {
-            applyModifier(
-              desc,
-              rxnBonus,
-              ["overloaded.pct_", "electroCharged.pct_", "superconduct.pct_", "hyperbloom.pct_"],
-              40,
-              tracker
-            );
-            applyModifier(desc, rxnBonus, "aggravate.pct_", 20, tracker);
-          }
-        },
+        artBonuses: [
+          {
+            value: 40,
+            target: "rxnBonus",
+            path: ["overloaded.pct_", "electroCharged.pct_", "superconduct.pct_", "hyperbloom.pct_"],
+          },
+          {
+            value: 20,
+            target: "rxnBonus",
+            path: "aggravate.pct_",
+          },
+        ],
       },
     ],
   },
@@ -282,24 +272,20 @@ const mondstadtSets: AppArtifact[] = [
       name: "Thundersoother's Diadem",
       icon: "1/14/Item_Thundersoother%27s_Diadem",
     },
-    setBonuses: [
-      {
-        desc: <>Electro RES increased by 40%.</>,
-      },
-      {
-        desc: (
-          <>
-            Increases <Green>DMG</Green> against opponents affected by Electro by <Green b>35%</Green>.
-          </>
-        ),
-      },
+    descriptions: [
+      "Electro RES increased by 40%.",
+      "Increases {DMG}#[k] against opponents affected by Electro by {35%}#[v].",
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(mondstadtSets, 18)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "all.pct_", 35),
+        artBonuses: {
+          value: 35,
+          target: "attPattBonus",
+          path: "all.pct_",
+        },
       },
     ],
   },
@@ -327,50 +313,42 @@ const mondstadtSets: AppArtifact[] = [
       name: "Broken Rime's Echo",
       icon: "d/df/Item_Broken_Rime%27s_Echo",
     },
+    descriptions: [
+      "Increases {Cryo DMG Bonus}#[k] by {15%}#[v].",
+      "When a character attacks an opponent affected by Cryo, their {CRIT Rate}#[k] is increased by {20%}#[v].",
+      "If the opponent is Frozen, {CRIT Rate}#[k] is increased by an additional {20%}#[v].",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Cryo DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "cryo", 15),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "cryo",
+        },
       },
       {
-        desc: (
-          <>
-            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is increased by{" "}
-            <Green b>20%</Green>. If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional{" "}
-            <Green b>20%</Green>.
-          </>
-        ),
+        description: [1, 2],
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => (
-          <>
-            When a character attacks an opponent affected by Cryo, their <Green>CRIT Rate</Green> is increased by{" "}
-            <Green b>20%</Green>.
-          </>
-        ),
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          const noteDesc = `${desc} on affected by Cryo`;
-          applyModifier(noteDesc, totalAttr, "cRate_", 20, tracker);
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "cRate_",
         },
       },
       {
         index: 1,
-        desc: () => (
-          <>
-            If the opponent is Frozen, <Green>CRIT Rate</Green> is increased by an additional <Green b>20%</Green>.
-          </>
-        ),
+        description: 2,
         affect: EModAffect.SELF,
-        applyBuff: ({ totalAttr, desc, tracker }) => {
-          applyModifier(`${desc} on frozen`, totalAttr, "cRate_", 20, tracker);
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "cRate_",
         },
       },
     ],
@@ -399,30 +377,29 @@ const mondstadtSets: AppArtifact[] = [
       name: "Wine-Stained Tricorne",
       icon: "a/a6/Item_Wine-Stained_Tricorne",
     },
+    descriptions: [
+      "Increases {Hydro DMG Bonus}#[k] by {15%}#[v]",
+      "After using an Elemental Skill, increases {Normal Attack and Charged Attack DMG}#[k] {30%}#[v] for 15s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Hydro DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "hydro", 15),
-      },
-      {
-        desc: (
-          <>
-            After using an Elemental Skill, increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
-            <Green b>30%</Green> for 15s.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "hydro",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(mondstadtSets, 20)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 30),
+        artBonuses: {
+          value: 30,
+          target: "attPattBonus",
+          path: ["NA.pct_", "CA.pct_"],
+        },
       },
     ],
   },

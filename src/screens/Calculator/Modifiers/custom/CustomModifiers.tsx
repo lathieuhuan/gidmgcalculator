@@ -24,7 +24,7 @@ const isBuffCtrl = (ctrl: CustomBuffCtrl | CustomDebuffCtrl): ctrl is CustomBuff
 interface CustomModifiersProps {
   isBuffs: boolean;
 }
-export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
+export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const key = isBuffs ? "customBuffCtrls" : "customDebuffCtrls";
@@ -157,4 +157,4 @@ export default function CustomModifiers({ isBuffs }: CustomModifiersProps) {
       </Modal>
     </div>
   );
-}
+};

@@ -66,7 +66,7 @@ const purpleCatalysts: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 15,
             targetAttribute: "hp_",
@@ -113,7 +113,7 @@ const purpleCatalysts: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 21,
             increment: 3,
@@ -254,7 +254,7 @@ const purpleCatalysts: AppWeapon[] = [
             options: ["Recitative", "Aria", "Interlude"],
           },
         ],
-        buffBonuses: [
+        wpBonuses: [
           {
             checkInput: 0,
             base: 45,

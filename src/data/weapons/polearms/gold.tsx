@@ -212,7 +212,7 @@ const goldPolearms: AppWeapon[] = [
             max: 7,
           },
         ],
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 2.5,
             increment: 0.7,

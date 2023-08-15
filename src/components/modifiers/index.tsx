@@ -2,8 +2,11 @@ import type { AmplifyingReaction, QuickenReaction, Vision } from "@Src/types";
 import { Green } from "@Src/pure-components";
 import { round } from "@Src/utils";
 
-export const renderModifiers = (modifiers: JSX.Element[], type: "buffs" | "debuffs", mutable?: boolean) => {
-  return modifiers.length ? (
+export * from "./renderWeaponModifiers";
+export * from "./renderArtifactModifiers";
+
+export const renderModifiers = (modifiers: (JSX.Element | null)[], type: "buffs" | "debuffs", mutable?: boolean) => {
+  return modifiers.some((modifier) => modifier !== null) ? (
     <div className={mutable ? "pt-2 space-y-3" : "space-y-2"}>{modifiers}</div>
   ) : (
     <p className="pt-6 pb-4 text-center">No {type} found</p>

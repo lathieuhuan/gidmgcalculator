@@ -80,7 +80,7 @@ const purpleClaymores: AppWeapon[] = [
       {
         index: 0,
         affect: EModAffect.SELF,
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 9,
             targetAttribute: "atk_",

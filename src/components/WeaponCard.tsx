@@ -6,7 +6,7 @@ import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, round } from "@Src/utils";
+import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseDescription } from "@Src/utils";
 import { findDataWeapon } from "@Data/controllers";
 
 // Component
@@ -14,48 +14,13 @@ import { BetaMark } from "@Src/pure-components";
 
 const groupStyles = "bg-darkblue-2 px-2";
 
-const wrapText = (text: string | number, type: string) => {
-  const typeToCls: Record<string, string> = {
-    k: "text-green",
-    v: "text-green font-bold",
-    m: "text-rose-500",
-  };
-  return `<span class="${typeToCls[type] || ""}">${text}</span>`;
-};
-
-const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
-
-const parseDescription = (description: string, refi: number) => {
-  return description.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
-    const [bodyPart, typePart = ""] = match.split("#");
-    const type = typePart?.slice(1, -1);
-    let body = bodyPart.slice(1, -1);
-    let suffix = "";
-
-    if (body[body.length - 1] === "%") {
-      body = body.slice(0, -1);
-      suffix = "%";
-    }
-
-    if (body.includes("^")) {
-      const [base, increment] = body.split("^");
-      return wrapText(scaleRefi(+base, refi, increment ? +increment : undefined) + suffix, type);
-    }
-    if (body.includes("$")) {
-      const values = body.split("$");
-      return wrapText(values[refi - 1] + suffix, type);
-    }
-    return wrapText(body + suffix, type);
-  });
-};
-
 interface WeaponCardProps {
   weapon?: CalcWeapon;
   mutable?: boolean;
   upgrade?: (newLevel: Level) => void;
   refine?: (newRefi: number) => void;
 }
-const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
+export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
   const { t } = useTranslation();
   if (!weapon) return null;
 
@@ -147,7 +112,3 @@ const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps) => {
     </div>
   );
 };
-
-WeaponCard.parseDescription = parseDescription;
-
-export { WeaponCard };

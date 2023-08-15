@@ -12,7 +12,7 @@ import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
 import { Green } from "@Src/pure-components";
-import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -98,37 +98,38 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const { index, activated, inputs = [] } = ctrl;
-    const { name, debuffs = [] } = findDataArtifactSet(ctrl) || {};
-    const debuff = findByIndex(debuffs, index);
+    const data = findDataArtifactSet(ctrl);
+    if (!data) return;
 
-    if (!debuff) return;
+    const { debuffs = [] } = data;
+    const debuff = findByIndex(debuffs, ctrl.index);
 
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "artDebuffCtrls",
-      ctrlIndex,
-    };
-
-    content.push(
-      <ModifierTemplate
-        key={ctrlIndex}
-        checked={activated}
-        onToggle={() => dispatch(toggleModCtrl(path))}
-        heading={name}
-        description={debuffs?.[index]?.desc()}
-        inputs={inputs}
-        inputConfigs={debuff.inputConfigs}
-        onSelectOption={(value, inputIndex) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex,
-              value,
-            })
-          );
-        }}
-      />
-    );
+    if (debuff) {
+      const path: ToggleModCtrlPath = {
+        modCtrlName: "artDebuffCtrls",
+        ctrlIndex,
+      };
+      content.push(
+        <ModifierTemplate
+          key={ctrlIndex}
+          heading={data.name}
+          description={getArtifactDescription(data, debuff)}
+          inputs={ctrl.inputs}
+          inputConfigs={debuff.inputConfigs}
+          checked={ctrl.activated}
+          onToggle={() => dispatch(toggleModCtrl(path))}
+          onSelectOption={(value, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value,
+              })
+            );
+          }}
+        />
+      );
+    }
   });
   return renderModifiers(content, "debuffs", true);
 }

@@ -1,8 +1,5 @@
 import type { AppArtifact } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { applyPercent, findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { NCPA_PERCENTS } from "@Data/constants";
 
 const inazumaSets: AppArtifact[] = [
@@ -30,51 +27,39 @@ const inazumaSets: AppArtifact[] = [
       name: "Flowing Rings",
       icon: "5/53/Item_Flowing_Rings",
     },
+    descriptions: [
+      "Increases {ATK}#[k] by {18%}#[v].",
+      `When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase
+      {Normal Attack DMG}#[k] by {70%}#[v] {ATK}#[k].`,
+      `This effect will be dispelled 0.05s after a Normal Attack deals DMG.`,
+      `If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%.`,
+      `This trigger can occur once every 0.2s.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              {this.xtraDesc![0]} This effect will be dispelled 0.05s after a Normal Attack deals DMG.{" "}
-              {this.xtraDesc![1]} This trigger can occur once every 0.2s.
-            </>
-          );
-        },
-        xtraDesc: [
-          <>
-            When Normal Attacks hit opponents, there is a <Green b>36%</Green> <Green>chance</Green> that it will
-            trigger Valley Rite, which will increase <Green>Normal Attack DMG</Green> by <Green b>70%</Green> of{" "}
-            <Green>ATK</Green>.
-          </>,
-          <>
-            If a Normal Attack fails to trigger Valley Rite, the <Green>odds</Green> of it triggering the next time will
-            increase by <Green b>20%</Green>.
-          </>,
-        ],
+        description: [1, 2, 3, 4],
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => {
-          const { xtraDesc } = findByCode(inazumaSets, 32)!.setBonuses[1];
-          return (
-            <>
-              {xtraDesc![0]} {xtraDesc![1]}
-            </>
-          );
-        },
+        description: [1, 3],
         affect: EModAffect.SELF,
-        applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, "NA.flat", applyPercent(totalAttr.atk, 70), tracker);
+        artBonuses: {
+          value: 0.7,
+          stacks: {
+            type: "attribute",
+            field: "atk",
+          },
+          target: "attPattBonus",
+          path: "NA.flat",
         },
       },
     ],
@@ -103,39 +88,28 @@ const inazumaSets: AppArtifact[] = [
       name: "Thundering Poise",
       icon: "0/0e/Item_Thundering_Poise",
     },
+    descriptions: [
+      "Increases {ATK}#[k] by {18%}#[v].",
+      `After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their {ATK}#[k]
+      by {8%}#[v] for 16s. When the character's HP decreases, Their {ATK}#[k] will further increase by {10%}#[v]. This
+      increase can occur this way a maximum of {4}#[m] times.`,
+      `This effect can be triggered once every 0.8s. Nascent
+      Light will be dispelled when the character leaves the field. If an Elemental Burst is used again during the
+      duration of Nascent Light, the original Nascent Light will be dispelled.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
-      },
-      {
-        get desc() {
-          return (
-            <>
-              {this.xtraDesc![0]} This effect can be triggered once every 0.8s. Nascent Light will be dispelled when the
-              character leaves the field. If an Elemental Burst is used again during the duration of Nascent Light, the
-              original Nascent Light will be dispelled.
-            </>
-          );
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
         },
-        xtraDesc: [
-          <>
-            After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their{" "}
-            <Green>ATK</Green> by <Green b>8%</Green> for 16s. When the character's HP decreases, Their{" "}
-            <Green>ATK</Green> will further increase by <Green b>10%</Green>. This increase can occur this way a maximum
-            of <Rose>4</Rose> times.
-          </>,
-        ],
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(inazumaSets, 31)!.setBonuses[1].xtraDesc![0],
+        description: 1,
         affect: EModAffect.SELF,
         inputConfigs: [
           {
@@ -144,8 +118,14 @@ const inazumaSets: AppArtifact[] = [
             max: 4,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "atk_", 10 * (inputs[0] || 0) + 8, tracker);
+        artBonuses: {
+          initialValue: 8,
+          value: 10,
+          stacks: {
+            type: "input",
+          },
+          target: "totalAttr",
+          path: "atk_",
         },
       },
     ],
@@ -174,28 +154,29 @@ const inazumaSets: AppArtifact[] = [
       name: "Ornate Kabuto",
       icon: "0/04/Item_Ornate_Kabuto",
     },
+    descriptions: [
+      "Increases {Energy Recharge}#[k] by {20%}#[v].",
+      `Increases {Elemental Burst DMG}#[k] by {25%}#[v] of {Energy Recharge}#[k]. A maximum of {75%}#[m] bonus DMG can
+      be obtained in this way.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Energy Recharge</Green> <Green b>+20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "er_", 20),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "er_",
+        },
       },
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Burst DMG</Green> by <Green b>25%</Green> of <Green>Energy Recharge</Green>. A
-            maximum of <Green b>75%</Green> <Green>bonus DMG</Green> can be obtained in this way.
-          </>
-        ),
-        applyFinalBuff: ({ attPattBonus, totalAttr, desc, tracker }) => {
-          if (attPattBonus) {
-            let buffValue = Math.round(totalAttr.er_ * 25) / 100;
-            buffValue = Math.min(buffValue, 75);
-            applyModifier(desc, attPattBonus, "EB.pct_", Math.min(buffValue, 75), tracker);
-          }
+        artBonuses: {
+          value: 0.25,
+          stacks: {
+            type: "attribute",
+            field: "er_",
+          },
+          target: "attPattBonus",
+          path: "EB.pct_",
+          max: 75,
         },
       },
     ],
@@ -224,31 +205,29 @@ const inazumaSets: AppArtifact[] = [
       name: "Capricious Visage",
       icon: "8/8f/Item_Capricious_Visage",
     },
+    descriptions: [
+      "Increases {ATK}#[k] by {18%}#[v].",
+      `When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and
+      {Normal, Charged, and Plunging Attack DMG}#[k] is increased by {50%}#[v] for 10s.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
-      },
-      {
-        desc: (
-          <>
-            When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and{" "}
-            <Green>Normal/Charged/Plunging Attack DMG</Green> is increased by <Green b>50%</Green> for 10s.
-          </>
-        ),
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(inazumaSets, 2)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: ({ attPattBonus, desc, tracker }) => {
-          applyModifier(desc, attPattBonus, [...NCPA_PERCENTS], 50, tracker);
+        artBonuses: {
+          value: 50,
+          target: "attPattBonus",
+          path: [...NCPA_PERCENTS],
         },
       },
     ],
@@ -277,38 +256,30 @@ const inazumaSets: AppArtifact[] = [
       name: "Skeletal Hat",
       icon: "8/84/Item_Skeletal_Hat",
     },
+    descriptions: [
+      "Increases {DEF}#[k] by {30%}#[v].",
+      `A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions: When
+      on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a maximum of
+      once every 0.3s. When off the field, the character gains 1 stack every 3s.`,
+      "Curiosity can stack up to {4}#[m] times, each providing {6%}#[v] {DEF}#[k] and a {6%}#[v] {Geo DMG Bonus}#[k].",
+      "When 6 seconds pass without gaining a Curiosity stack, 1 stack is lost.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>DEF</Green> <Green b>+30%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "def_", 30),
+        artBonuses: {
+          value: 30,
+          target: "totalAttr",
+          path: "def_",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions:
-              When on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a
-              maximum of once every 0.3s. When off the field, the character gains 1 stack every 3s. {this.xtraDesc?.[0]}{" "}
-              When 6 seconds pass without gaining a Curiosity stack, 1 stack is lost.
-            </>
-          );
-        },
-        xtraDesc: [
-          <>
-            Curiosity can stack up to <Rose>4</Rose> times, each providing <Green b>6%</Green> <Green>DEF</Green> and a{" "}
-            <Green b>6%</Green> <Green>Geo DMG Bonus</Green>.
-          </>,
-        ],
+        description: [1, 2, 3],
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(inazumaSets, 3)?.setBonuses[1].xtraDesc?.[0],
+        description: 2,
         affect: EModAffect.SELF,
         inputConfigs: [
           {
@@ -316,8 +287,13 @@ const inazumaSets: AppArtifact[] = [
             max: 4,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, ["def_", "geo"], 6 * (inputs[0] || 0), tracker);
+        artBonuses: {
+          value: 6,
+          stacks: {
+            type: "input",
+          },
+          target: "totalAttr",
+          path: ["def_", "geo"],
         },
       },
     ],
@@ -346,28 +322,24 @@ const inazumaSets: AppArtifact[] = [
       name: "Crown of Watatsumi",
       icon: "6/60/Item_Crown_of_Watatsumi",
     },
+    descriptions: [
+      "Increases {Healing Bonus}#[k] by {15%}#[v].",
+      `When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear
+      for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end
+      of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the
+      accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and
+      Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only
+      one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP
+      (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This
+      effect can still be triggered even when the character who is using this artifact set is not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Healing Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "healB_", 15),
-      },
-      {
-        desc: (
-          <>
-            When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear
-            for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end
-            of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the
-            accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and
-            Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only
-            one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP
-            (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This
-            effect can still be triggered even when the character who is using this artifact set is not on the field.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "healB_",
+        },
       },
     ],
   },

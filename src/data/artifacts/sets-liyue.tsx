@@ -1,8 +1,5 @@
 import type { AppArtifact } from "@Src/types";
-import { Green, Rose } from "@Src/pure-components";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { EModAffect } from "@Src/constants";
 
 const liyueSets: AppArtifact[] = [
   {
@@ -29,30 +26,29 @@ const liyueSets: AppArtifact[] = [
       name: "Royal Masque",
       icon: "e/eb/Item_Royal_Masque",
     },
+    descriptions: [
+      "Increases {Elemental Burst DMG}#[k] by {20%}#[v].",
+      "Using an Elemental Burst increases all party members' {ATK}#[k] by {20%}#[v] for 12s. This effect cannot stack.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Elemental Burst DMG</Green> <Green b>+20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", "EB.pct_", 20),
-      },
-      {
-        desc: (
-          <>
-            Using an Elemental Burst increases all party members' <Green>ATK</Green> by <Green b>20%</Green> for 12s.
-            This effect cannot stack.
-          </>
-        ),
+        artBonuses: {
+          value: 20,
+          target: "attPattBonus",
+          path: "EB.pct_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 5)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.PARTY,
-        applyBuff: makeModApplier("totalAttr", "atk_", 20),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
     ],
   },
@@ -80,30 +76,29 @@ const liyueSets: AppArtifact[] = [
       name: "Bloodstained Iron Mask",
       icon: "0/0c/Item_Bloodstained_Iron_Mask",
     },
+    descriptions: [
+      "Increase {Physical DMG}#[k] by {25%}#[v].",
+      "After defeating an opponent, increases {Charged Attack DMG}#[k] by {50%}#[v], and reduces its Stamina cost to 0 for 10s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Physical DMG</Green> <Green b>+25%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "phys", 25),
-      },
-      {
-        desc: (
-          <>
-            After defeating an opponent, increases <Green>Charged Attack DMG</Green> by <Green b>50%</Green>, and
-            reduces its Stamina cost to 0 for 10s.
-          </>
-        ),
+        artBonuses: {
+          value: 25,
+          target: "totalAttr",
+          path: "phys",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 6)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "CA.pct_", 50),
+        artBonuses: {
+          value: 50,
+          target: "attPattBonus",
+          path: "CA.pct_",
+        },
       },
     ],
   },
@@ -131,41 +126,41 @@ const liyueSets: AppArtifact[] = [
       name: "Witch's Scorching Hat",
       icon: "e/ea/Item_Witch%27s_Scorching_Hat",
     },
+    descriptions: [
+      "Increase {Pyro DMG Bonus}#[k] by {15%}#[v].",
+      `Increases {Overloaded, Burning, and Burngeon DMG}#[k] by {40%}#[v]. Increases {Vaporize and Melt DMG}#[k] by
+      {15%}#[v].`,
+      `Using an Elemental Skill increases the {2-Piece Set Bonus}#[k] by {50%}#[v] of its starting value for 10s. Max
+      {3}#[m] stacks.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Pyro DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "pyro", 15),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "pyro",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              Increases <Green>Overloaded, Burning, and Burngeon DMG</Green> by <Green b>40%</Green>. Increases{" "}
-              <Green>Vaporize and Melt DMG</Green> by <Green b>15%</Green> {this.xtraDesc![0]}
-            </>
-          );
-        },
-        xtraDesc: [
-          <>
-            Using an Elemental Skill increases the <Green>2-Piece Set Bonus</Green> by <Green b>50%</Green> of its
-            starting value for 10s. Max <Rose>3</Rose> stacks.
-          </>,
+        description: [1, 2],
+        artBonuses: [
+          {
+            value: 40,
+            target: "rxnBonus",
+            path: ["overloaded.pct_", "burning.pct_", "burgeon.pct_"],
+          },
+          {
+            value: 15,
+            target: "rxnBonus",
+            path: ["melt.pct_", "vaporize.pct_"],
+          },
         ],
-        applyBuff: makeModApplier(
-          "rxnBonus",
-          ["overloaded.pct_", "burning.pct_", "burgeon.pct_", "melt.pct_", "vaporize.pct_"],
-          [40, 40, 40, 15, 15]
-        ),
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 7)!.setBonuses[1].xtraDesc![0],
+        description: 2,
         affect: EModAffect.SELF,
         inputConfigs: [
           {
@@ -173,8 +168,13 @@ const liyueSets: AppArtifact[] = [
             max: 3,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "pyro", 7.5 * (inputs[0] || 0), tracker);
+        artBonuses: {
+          value: 7.5,
+          target: "totalAttr",
+          stacks: {
+            type: "input",
+          },
+          path: "pyro",
         },
       },
     ],
@@ -203,24 +203,20 @@ const liyueSets: AppArtifact[] = [
       name: "Lavawalker's Wisdom",
       icon: "6/63/Item_Lavawalker%27s_Wisdom",
     },
-    setBonuses: [
-      {
-        desc: <>Pyro RES increased by 40%.</>,
-      },
-      {
-        desc: (
-          <>
-            Increases <Green>DMG</Green> against opponents affected by Pyro by <Green b>35%</Green>.
-          </>
-        ),
-      },
+    descriptions: [
+      "Pyro RES increased by 40%.",
+      "Increases {DMG}#[k] against opponents affected by Pyro by {35%}#[v].",
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 8)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "all.pct_", 35),
+        artBonuses: {
+          value: 35,
+          target: "attPattBonus",
+          path: "all.pct_",
+        },
       },
     ],
   },
@@ -248,29 +244,25 @@ const liyueSets: AppArtifact[] = [
       name: "Mask of Solitude Basalt",
       icon: "0/09/Item_Mask_of_Solitude_Basalt",
     },
+    descriptions: [
+      "Increases {Geo DMG Bonus}#[k] by {15%}#[v]",
+      `Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party members gain {35%}#[v]
+      {DMG Bonus}#[k] for {that particular element}#[k] for 10s. Only one form of Elemental DMG Bonus can be gained
+      in this manner at any one time.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Geo DMG Bonus</Green> <Green b>+15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "geo", 15),
-      },
-      {
-        desc: (
-          <>
-            Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party members gain{" "}
-            <Green b>35%</Green> <Green>DMG Bonus</Green> for <Green>that particular element</Green> for 10s. Only one
-            form of Elemental DMG Bonus can be gained in this manner at any one time.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "totalAttr",
+          path: "geo",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 9)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.PARTY,
         inputConfigs: [
           {
@@ -278,9 +270,10 @@ const liyueSets: AppArtifact[] = [
             type: "anemoable",
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const elmtIndex = inputs[0] || 0;
-          applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 35, tracker);
+        artBonuses: {
+          value: 35,
+          target: "totalAttr",
+          path: "input_element",
         },
       },
     ],
@@ -309,30 +302,29 @@ const liyueSets: AppArtifact[] = [
       name: "Summer Night's Mask",
       icon: "8/8a/Item_Summer_Night%27s_Mask",
     },
+    descriptions: [
+      "Increases {Shield Strength}#[k] by {35%}#[v].",
+      "While protected by a shield, gain an additional {40%}#[v] {Normal and Charged Attack DMG}#[k].",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Shield Strength</Green> by <Green b>35%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "shieldS_", 35),
-      },
-      {
-        desc: (
-          <>
-            While protected by a shield, gain an additional <Green b>40%</Green>{" "}
-            <Green>Normal and Charged Attack DMG</Green>.
-          </>
-        ),
+        artBonuses: {
+          value: 35,
+          target: "totalAttr",
+          path: "shieldS_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 10)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 40),
+        artBonuses: {
+          value: 40,
+          target: "attPattBonus",
+          path: ["NA.pct_", "CA.pct_"],
+        },
       },
     ],
   },
@@ -360,29 +352,25 @@ const liyueSets: AppArtifact[] = [
       name: "Mocking Mask",
       icon: "2/23/Item_Mocking_Mask",
     },
+    descriptions: [
+      "Increases {Physical DMG}#[k] by {25%}#[v].",
+      `When an Elemental Skill hits an opponent, {ATK}#[k] is increased by {9%}#[k] for 7s. This effect stacks up to
+      {2}#[m] times and can be triggered once every 0.3s. Once 2 stacks are reached, the {2-set effect}#[k] is
+      increased by {100%}#[v].`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Physical DMG</Green> <Green b>+25%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "phys", 25),
-      },
-      {
-        desc: (
-          <>
-            When an Elemental Skill hits an opponent, <Green>ATK</Green> is increased by <Green b>9%</Green> for 7s.
-            This effect stacks up to <Green b>2</Green> <Green>times</Green> and can be triggered once every 0.3s. Once
-            2 stacks are reached, the <Green>2-set effect</Green> is increased by <Green b>100%</Green>.
-          </>
-        ),
+        artBonuses: {
+          value: 25,
+          target: "totalAttr",
+          path: "phys",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 11)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
         inputConfigs: [
           {
@@ -390,14 +378,22 @@ const liyueSets: AppArtifact[] = [
             max: 2,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          const stacks = inputs[0] || 0;
-          applyModifier(desc, totalAttr, "atk_", 9 * stacks, tracker);
-
-          if (stacks === 2) {
-            applyModifier(desc, totalAttr, "phys", 25, tracker);
-          }
-        },
+        artBonuses: [
+          {
+            value: 9,
+            stacks: {
+              type: "input",
+            },
+            target: "totalAttr",
+            path: "atk_",
+          },
+          {
+            value: 25,
+            target: "totalAttr",
+            path: "phys",
+            checkInput: 2,
+          },
+        ],
       },
     ],
   },
@@ -425,32 +421,38 @@ const liyueSets: AppArtifact[] = [
       name: "General's Ancient Helm",
       icon: "b/b9/Item_General%27s_Ancient_Helm",
     },
+    descriptions: [
+      "Increases {HP}#[k] by {20%}#[v].",
+      `When an Elemental Skill hits an opponent, the {ATK}#[k] of all nearby party members is increased by {20%}#[v]
+      and their {Shield Strength}#[k] is increased by {30%}#[v] for 3s. This effect can be triggered once every 0.5s.
+      This effect can still be triggered even when the character who is using this artifact set is not on the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>HP</Green> <Green b>+20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "hp_", 20),
-      },
-      {
-        desc: (
-          <>
-            When an Elemental Skill hits an opponent, the <Green>ATK</Green> of all nearby party members is increased by{" "}
-            <Green b>20%</Green> and their <Green>Shield Strength</Green> is increased by <Green b>30%</Green> for 3s.
-            This effect can be triggered once every 0.5s. This effect can still be triggered even when the character who
-            is using this artifact set is not on the field.
-          </>
-        ),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "hp_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(liyueSets, 12)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.PARTY,
-        applyBuff: makeModApplier("totalAttr", ["atk_", "shieldS_"], [20, 30]),
+        artBonuses: [
+          {
+            value: 20,
+            target: "totalAttr",
+            path: "atk_",
+          },
+          {
+            value: 30,
+            target: "totalAttr",
+            path: "shieldS_",
+          },
+        ],
       },
     ],
   },

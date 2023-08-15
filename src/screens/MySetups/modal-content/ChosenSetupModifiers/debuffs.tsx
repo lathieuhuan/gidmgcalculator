@@ -14,13 +14,13 @@ import type {
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { findByIndex } from "@Src/utils";
+import { findByIndex, parseCharacterDescription } from "@Src/utils";
 import { appData } from "@Data/index";
 import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
 import { Green } from "@Src/pure-components";
-import { ModifierTemplate, resonanceRenderInfo, renderModifiers } from "@Src/components";
+import { ModifierTemplate, resonanceRenderInfo, renderModifiers, getArtifactDescription } from "@Src/components";
 
 interface ElementDebuffsProps {
   superconduct: boolean;
@@ -61,16 +61,18 @@ interface SelfDebuffsProps {
 export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuffs }: SelfDebuffsProps) {
   const content: JSX.Element[] = [];
 
-  for (const { index, inputs = [] } of selfDebuffCtrls) {
-    const debuff = findByIndex(debuffs, index);
+  selfDebuffCtrls.forEach((ctrl) => {
+    const debuff = findByIndex(debuffs, ctrl.index);
 
     if (debuff) {
+      const { inputs = [] } = ctrl;
+
       content.push(
         <ModifierTemplate
-          key={index}
+          key={ctrl.index}
           mutable={false}
           heading={debuff.src}
-          description={ModifierTemplate.parseCharacterDescription(
+          description={parseCharacterDescription(
             debuff.description,
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
@@ -80,7 +82,8 @@ export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuff
         />
       );
     }
-  }
+  });
+
   return renderModifiers(content, "debuffs", false);
 }
 
@@ -90,13 +93,13 @@ interface PartyDebuffsProps {
   partyData: PartyData;
 }
 export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
-  const content = [];
+  const content: JSX.Element[] = [];
 
-  for (const teammate of party) {
-    if (!teammate || !teammate.debuffCtrls.length) continue;
+  party.forEach((teammate) => {
+    if (!teammate || !teammate.debuffCtrls.length) return;
 
     const teammateData = appData.getCharData(teammate.name);
-    if (!teammateData) continue;
+    if (!teammateData) return;
 
     const { name, debuffs = [] } = teammateData;
 
@@ -108,16 +111,18 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
       );
     }
 
-    for (const { index, inputs = [] } of teammate.debuffCtrls) {
-      const debuff = findByIndex(debuffs, index);
+    teammate.debuffCtrls.forEach((ctrl) => {
+      const debuff = findByIndex(debuffs, ctrl.index);
 
       if (debuff) {
+        const { inputs = [] } = ctrl;
+
         content.push(
           <ModifierTemplate
-            key={`${name}-${index}`}
+            key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={debuff.src}
-            description={ModifierTemplate.parseCharacterDescription(
+            description={parseCharacterDescription(
               debuff.description,
               { fromSelf: false, char, partyData, inputs },
               teammateData.dsGetters
@@ -127,8 +132,9 @@ export function PartyDebuffs({ char, party, partyData }: PartyDebuffsProps) {
           />
         );
       }
-    }
-  }
+    });
+  });
+
   return renderModifiers(content, "debuffs", false);
 }
 
@@ -138,26 +144,26 @@ interface ArtifactDebuffsProps {
 export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
-  for (const { code, index, inputs } of artDebuffCtrls) {
-    const artifactData = findDataArtifactSet({ code });
-    if (!artifactData) continue;
+  artDebuffCtrls.forEach((ctrl) => {
+    const data = findDataArtifactSet(ctrl);
+    if (!data) return;
 
-    const { name, debuffs = [] } = artifactData;
-    const debuff = debuffs[index];
+    const { name, debuffs = [] } = data;
+    const debuff = findByIndex(debuffs, ctrl.index);
 
     if (debuff) {
       content.push(
         <ModifierTemplate
-          key={`${code}-${index}`}
+          key={`${ctrl.code}-${ctrl.index}`}
           mutable={false}
           heading={name}
-          description={debuff.desc()}
-          inputs={inputs}
+          description={getArtifactDescription(data, debuff)}
+          inputs={ctrl.inputs}
           inputConfigs={debuff.inputConfigs}
         />
       );
     }
-  }
+  });
   return renderModifiers(content, "debuffs", false);
 }
 

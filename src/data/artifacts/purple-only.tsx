@@ -1,8 +1,5 @@
 import type { AppArtifact } from "@Src/types";
-import { Green } from "@Src/pure-components";
 import { EModAffect } from "@Src/constants";
-import { findByCode } from "@Src/utils";
-import { makeModApplier } from "@Src/utils/calculation";
 
 const purpleOnlySets: AppArtifact[] = [
   {
@@ -29,22 +26,21 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Crown of Parting",
       icon: "2/25/Item_Crown_of_Parting",
     },
+    descriptions: ["{ATK}#[k] +{18%}#[v].", "Increases {Charged Attack CRIT Rate}#[k] by {30%}#[v]."],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
       {
-        desc: (
-          <>
-            Increases <Green>Charged Attack CRIT Rate</Green> by <Green b>30%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", "CA.cRate_", 30),
+        artBonuses: {
+          value: 30,
+          target: "attPattBonus",
+          path: "CA.cRate_",
+        },
       },
     ],
   },
@@ -72,22 +68,9 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Tiny Miracle's Earrings",
       icon: "7/73/Item_Tiny_Miracle%27s_Earrings",
     },
-    setBonuses: [
-      {
-        desc: (
-          <>
-            <Green>All Elemental RES</Green> increased by <Green b>20%</Green>.
-          </>
-        ),
-      },
-      {
-        desc: (
-          <>
-            Incoming Elemental DMG increases <Green>corresponding Elemental RES</Green> by <Green b>30%</Green> for 10s.
-            Can only occur once every 10s.
-          </>
-        ),
-      },
+    descriptions: [
+      "All Elemental RES increased by 20%.",
+      "Incoming Elemental DMG increases corresponding Elemental RES by 30% for 10s. Can only occur once every 10s.",
     ],
   },
   {
@@ -114,29 +97,31 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Berserker's Battle Mask",
       icon: "5/5e/Item_Berserker%27s_Battle_Mask",
     },
+    descriptions: [
+      "{CRIT Rate}#[k] +{12%}#[v]",
+      "When HP is below 70%, {CRIT Rate}#[k] increases by an additional {24%}#[v].",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>CRIT Rate</Green> <Green b>+12%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "cRate_", 12),
-      },
-      {
-        desc: (
-          <>
-            When HP is below 70%, <Green>CRIT Rate</Green> increases by an additional <Green b>24%</Green>.
-          </>
-        ),
+        artBonuses: {
+          value: 12,
+          target: "totalAttr",
+          path: "cRate_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(purpleOnlySets, 23)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("totalAttr", "cRate_", 24),
+        description: 1,
+        artBonuses: [
+          {
+            value: 24,
+            target: "totalAttr",
+            path: "cRate_",
+          },
+        ],
       },
     ],
   },
@@ -164,30 +149,31 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Instructor's Cap",
       icon: "d/da/Item_Instructor%27s_Cap",
     },
+    descriptions: [
+      "Increases {Elemental Mastery}#[k] by {80}#[v].",
+      "Upon triggering an Elemental Reaction, increases all party members' {Elemental Mastery}#[k] by {120}#[v] for 8s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Mastery</Green> by <Green b>80</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "em", 80),
-      },
-      {
-        desc: (
-          <>
-            Upon triggering an Elemental Reaction, increases all party members' <Green>Elemental Mastery</Green> by{" "}
-            <Green b>120</Green> for 8s.
-          </>
-        ),
+        artBonuses: {
+          value: 80,
+          target: "totalAttr",
+          path: "em",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.PARTY,
-        desc: () => findByCode(purpleOnlySets, 24)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("totalAttr", "em", 120),
+        description: 1,
+        artBonuses: [
+          {
+            value: 120,
+            target: "totalAttr",
+            path: "em",
+          },
+        ],
       },
     ],
   },
@@ -215,22 +201,17 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Exile's Circlet",
       icon: "b/b3/Item_Exile%27s_Circlet",
     },
+    descriptions: [
+      "{Energy Recharge}#[k] +{20%}#[v].",
+      "Using an Elemental Burst regenerates 2 Energy for all party members (excluding the wearer) every 2s for 6s. This effect cannot stack.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Energy Recharge</Green> <Green b>+20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "er_", 20),
-      },
-      {
-        desc: (
-          <>
-            Using an Elemental Burst regenerates <Green b>2</Green> <Green>Energy</Green> for all party members
-            (excluding the wearer) every 2s for 6s. This effect cannot stack.
-          </>
-        ),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "er_",
+        },
       },
     ],
   },
@@ -258,22 +239,17 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Guardian's Band",
       icon: "c/c4/Item_Guardian%27s_Band",
     },
+    descriptions: [
+      "{DEF}#[k] +{30%}#[v].",
+      "For each different element present in your own party, the wearer's Elemental RES to that corresponding element is increased by 30%.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>DEF</Green> <Green b>+30%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "def_", 30),
-      },
-      {
-        desc: (
-          <>
-            For each different element present in your own party, the wearer's <Green>Elemental RES</Green> to that{" "}
-            <Green>corresponding element</Green> is increased by <Green b>30%</Green>.
-          </>
-        ),
+        artBonuses: {
+          value: 30,
+          target: "totalAttr",
+          path: "def",
+        },
       },
     ],
   },
@@ -301,29 +277,31 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Crown of the Brave",
       icon: "b/b3/Item_Crown_of_the_Brave",
     },
+    descriptions: [
+      "{ATK}#[k] +{18%}#[v].",
+      "Increases {DMG}#[k] by {30%}#[v] against opponents with more than 50% HP.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>ATK</Green> <Green b>+18%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "atk_", 18),
-      },
-      {
-        desc: (
-          <>
-            Increases <Green>DMG</Green> by <Green b>30%</Green> against opponents with more than 50% HP.
-          </>
-        ),
+        artBonuses: {
+          value: 18,
+          target: "totalAttr",
+          path: "atk_",
+        },
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(purpleOnlySets, 27)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("attPattBonus", "all.pct_", 30),
+        description: 1,
+        artBonuses: [
+          {
+            value: 30,
+            target: "attPattBonus",
+            path: "all.pct_",
+          },
+        ],
       },
     ],
   },
@@ -351,30 +329,31 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Martial Artist's Bandana",
       icon: "4/4c/Item_Martial_Artist%27s_Bandana",
     },
+    descriptions: [
+      "Increases {Normal Attack and Charged Attack DMG}#[k] by {15%}#[v].",
+      "After using Elemental Skill, increases {Normal Attack and Charged Attack DMG}#[k] by {25%}#[v] for 8s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Normal Attack and Charged Attack DMG</Green> by <Green b>15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 15),
-      },
-      {
-        desc: (
-          <>
-            After using Elemental Skill, increases <Green>Normal Attack and Charged Attack DMG</Green> by{" "}
-            <Green b>25%</Green> for 8s.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "attPattBonus",
+          path: ["NA.pct_", "CA.pct_"],
+        },
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        desc: () => findByCode(purpleOnlySets, 28)?.setBonuses[1].desc,
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 25),
+        description: 1,
+        artBonuses: [
+          {
+            value: 25,
+            target: "attPattBonus",
+            path: ["NA.pct_", "CA.pct_"],
+          },
+        ],
       },
     ],
   },
@@ -402,22 +381,17 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Gambler's Earrings",
       icon: "4/43/Item_Gambler%27s_Earrings",
     },
+    descriptions: [
+      "Increases {Elemental Skill DMG}#[k] by {20%}#[v].",
+      "Defeating an opponent has 100% chance to remove Elemental Skill CD. Can only occur once every 15s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Skill DMG</Green> by <Green b>20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 20),
-      },
-      {
-        desc: (
-          <>
-            Defeating an opponent has <Green b>100%</Green> <Green>chance</Green> to remove{" "}
-            <Green>Elemental Skill CD</Green>. Can only occur once every 15s.
-          </>
-        ),
+        artBonuses: {
+          value: 20,
+          target: "attPattBonus",
+          path: "ES.pct_",
+        },
       },
     ],
   },
@@ -445,22 +419,17 @@ const purpleOnlySets: AppArtifact[] = [
       name: "Scholar's Lens",
       icon: "9/93/Item_Scholar%27s_Lens",
     },
+    descriptions: [
+      "{Energy Recharge}#[k] +{20%}#[v].",
+      "Gaining Elemental Particles or Orbs gives 3 Energy to all party members who have a bow or a catalyst equipped. Can only occur once every 3s.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Energy Recharge</Green> <Green b>+20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("totalAttr", "er_", 20),
-      },
-      {
-        desc: (
-          <>
-            Gaining Elemental Particles or Orbs gives <Green b>3</Green> <Green>Energy</Green> to all party members who
-            have a bow or a catalyst equipped. Can only occur once every 3s.
-          </>
-        ),
+        artBonuses: {
+          value: 20,
+          target: "totalAttr",
+          path: "er_",
+        },
       },
     ],
   },

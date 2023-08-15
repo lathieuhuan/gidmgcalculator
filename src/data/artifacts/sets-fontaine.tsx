@@ -1,8 +1,5 @@
+import type { AppArtifact } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
-import { AppArtifact } from "@Src/types";
-import { findByCode } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 
 const fontaineSets: AppArtifact[] = [
   {
@@ -29,38 +26,39 @@ const fontaineSets: AppArtifact[] = [
       name: "Circlet",
       icon: "https://images2.imgbox.com/8d/07/qRBikoYo_o.png",
     },
+    descriptions: [
+      "Increases {Elemental Skill DMG}#[k] by {20%}#[v].",
+      "Increases {Elemental Skill DMG}#[k] by {25%}#[v].",
+      `When not on the field, {Elemental Skill DMG}#[k] will be further increased by {25%}#[v]. This effect will be
+      cleared 2s after taking the field.`,
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            Increases <Green>Elemental Skill DMG</Green> by <Green b>20%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 20),
+        artBonuses: {
+          value: 20,
+          target: "attPattBonus",
+          path: "ES.pct_",
+        },
       },
       {
-        get desc() {
-          return (
-            <>
-              Increases <Green>Elemental Skill DMG</Green> by <Green b>25%</Green>. {this.xtraDesc?.[0]}
-            </>
-          );
+        description: [1, 2],
+        artBonuses: {
+          value: 25,
+          target: "attPattBonus",
+          path: "ES.pct_",
         },
-        xtraDesc: [
-          <>
-            When not on the field, <Green>Elemental Skill DMG</Green> will be further increased by <Green b>25%</Green>.
-            This effect will be cleared 2s after taking the field
-          </>,
-        ],
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 25),
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(fontaineSets, 40)!.setBonuses[1].xtraDesc?.[0],
+        description: 2,
         affect: EModAffect.SELF,
-        applyBuff: makeModApplier("attPattBonus", "ES.pct_", 25),
+        artBonuses: {
+          value: 25,
+          target: "attPattBonus",
+          path: "ES.pct_",
+        },
       },
     ],
   },
@@ -88,28 +86,23 @@ const fontaineSets: AppArtifact[] = [
       name: "Circlet",
       icon: "https://images2.imgbox.com/73/4b/C6Hhb7dB_o.png",
     },
+    descriptions: [
+      "Increases {Normal and Charged Attack DMG}#[k] by {15%}#[v].",
+      "When current HP changes, {CRIT Rate}#[k] will be increased by {12%}#[v] for 5s. Max {3}#[m] stacks.",
+    ],
     setBonuses: [
       {
-        desc: (
-          <>
-            <Green>Normal and Charged Attack DMG</Green> +<Green b>15%</Green>.
-          </>
-        ),
-        applyBuff: makeModApplier("attPattBonus", ["NA.pct_", "CA.pct_"], 15),
-      },
-      {
-        desc: (
-          <>
-            When current HP changes, <Green>CRIT Rate</Green> will be increased by <Green>12%</Green> for 5s. Max{" "}
-            <Rose>3</Rose> stacks.
-          </>
-        ),
+        artBonuses: {
+          value: 15,
+          target: "attPattBonus",
+          path: ["NA.pct_", "CA.pct_"],
+        },
       },
     ],
     buffs: [
       {
         index: 0,
-        desc: () => findByCode(fontaineSets, 39)!.setBonuses[1].desc,
+        description: 1,
         affect: EModAffect.SELF,
         inputConfigs: [
           {
@@ -117,8 +110,13 @@ const fontaineSets: AppArtifact[] = [
             max: 3,
           },
         ],
-        applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-          applyModifier(desc, totalAttr, "cRate_", 12 * (inputs[0] || 0), tracker);
+        artBonuses: {
+          value: 12,
+          stacks: {
+            type: "input",
+          },
+          target: "totalAttr",
+          path: "cRate_",
         },
       },
     ],

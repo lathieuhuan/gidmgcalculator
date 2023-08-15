@@ -2,39 +2,41 @@ import type {
   AppCharacter,
   AppWeapon,
   ArtifactAttribute,
-  ArtifactSetBonus,
-  BuffModifierArgsWrapper,
+  AttackElementBonus,
+  AttacklementInfo,
+  AttackPatternBonus,
+  AttackPatternInfo,
   CalcArtifacts,
+  CalcItemBuff,
   CalcWeapon,
   CharInfo,
   CoreStat,
-  Level,
-  ModifierCtrl,
+  ReactionBonus,
+  ReactionBonusInfo,
   TotalAttribute,
   Tracker,
   TrackerRecord,
 } from "@Src/types";
-import { ATTRIBUTE_STAT_TYPES, BASE_STAT_TYPES, CORE_STAT_TYPES, LEVELS } from "@Src/constants";
-
 import {
-  applyPercent,
-  artifactMainStatValue,
-  ascsFromLv,
-  findByIndex,
-  weaponMainStatValue,
-  weaponSubStatValue,
-} from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { findDataArtifactSet } from "@Data/controllers";
+  ATTACK_ELEMENTS,
+  ATTACK_ELEMENT_INFO_KEYS,
+  ATTACK_PATTERNS,
+  ATTACK_PATTERN_INFO_KEYS,
+  ATTRIBUTE_STAT_TYPES,
+  BASE_STAT_TYPES,
+  CORE_STAT_TYPES,
+  LEVELS,
+  REACTIONS,
+  REACTION_BONUS_INFO_KEYS,
+} from "@Src/constants";
+import { applyPercent, artifactMainStatValue, ascsFromLv, weaponMainStatValue } from "@Src/utils";
 
 function addOrInit<T extends Partial<Record<K, number | undefined>>, K extends keyof T>(obj: T, key: K, value: number) {
   obj[key] = (((obj[key] as number | undefined) || 0) + value) as T[K];
 }
 
 export const addTrackerRecord = (list: TrackerRecord[] | undefined, desc: string, value: number) => {
-  if (!list) {
-    return;
-  }
+  if (!list) return;
 
   const existed = list.find((note: any) => note.desc === desc);
   if (existed) {
@@ -104,50 +106,42 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   return totalAttr;
 };
 
-interface ApplySelfBuffs {
-  isFinal: boolean;
-  modifierArgs: BuffModifierArgsWrapper;
-  charBuffCtrls?: ModifierCtrl[];
-  charData: AppCharacter;
-}
-export const applySelfBuffs = ({ isFinal, modifierArgs, charBuffCtrls, charData }: ApplySelfBuffs) => {
-  if (charBuffCtrls?.length) {
-    const { char } = modifierArgs;
-    const { innateBuffs = [], buffs = [] } = charData;
+export const initiateBonuses = () => {
+  const attPattBonus = {} as AttackPatternBonus;
+  for (const pattern of [...ATTACK_PATTERNS, "all"] as const) {
+    attPattBonus[pattern] = {} as AttackPatternInfo;
 
-    for (const { src, isGranted, applyBuff, applyFinalBuff } of innateBuffs) {
-      if (isGranted(char)) {
-        const applyFn = !isFinal && applyBuff ? applyBuff : isFinal && applyFinalBuff ? applyFinalBuff : undefined;
-
-        applyFn?.({
-          desc: `Self / ${src}`,
-          charBuffCtrls,
-          ...modifierArgs,
-        });
-      }
-    }
-
-    for (const { index, activated, inputs = [] } of charBuffCtrls) {
-      const buff = findByIndex(buffs, index);
-
-      if (buff && (!buff.isGranted || buff.isGranted(char)) && activated) {
-        const applyFn =
-          !isFinal && buff.applyBuff
-            ? buff.applyBuff
-            : isFinal && buff.applyFinalBuff
-            ? buff.applyFinalBuff
-            : undefined;
-
-        applyFn?.({
-          desc: `Self / ${buff.src}`,
-          fromSelf: true,
-          charBuffCtrls,
-          inputs,
-          ...modifierArgs,
-        });
-      }
+    for (const key of ATTACK_PATTERN_INFO_KEYS) {
+      attPattBonus[pattern][key] = 0;
     }
   }
+
+  const attElmtBonus = {} as AttackElementBonus;
+  for (const element of ATTACK_ELEMENTS) {
+    attElmtBonus[element] = {} as AttacklementInfo;
+
+    for (const key of ATTACK_ELEMENT_INFO_KEYS) {
+      attElmtBonus[element][key] = 0;
+    }
+  }
+
+  const rxnBonus = {} as ReactionBonus;
+  for (const rxn of REACTIONS) {
+    rxnBonus[rxn] = {} as ReactionBonusInfo;
+
+    for (const key of REACTION_BONUS_INFO_KEYS) {
+      rxnBonus[rxn][key] = 0;
+    }
+  }
+
+  const calcItemBuffs: CalcItemBuff[] = [];
+
+  return {
+    attPattBonus,
+    attElmtBonus,
+    rxnBonus,
+    calcItemBuffs,
+  };
 };
 
 interface AddArtAttrArgs {
@@ -186,49 +180,12 @@ export const addArtifactAttributes = ({ artifacts, totalAttr, tracker }: AddArtA
   return artAttr;
 };
 
-interface addWeaponSubStatArgs {
-  totalAttr: TotalAttribute;
-  weaponData: AppWeapon;
-  wpLevel: Level;
-  tracker?: Tracker;
-}
-export const addWeaponSubStat = ({ totalAttr, weaponData, wpLevel, tracker }: addWeaponSubStatArgs) => {
-  if (weaponData.subStat) {
-    const { type, scale } = weaponData.subStat;
-    const value = weaponSubStatValue(scale, wpLevel);
-
-    applyModifier(`${weaponData.name} sub-stat`, totalAttr, type, value, tracker);
-  }
+type Stack = {
+  type: string;
 };
-
-interface applyArtifactAutoBuffsArgs {
-  isFinal: boolean;
-  setBonuses: ArtifactSetBonus[];
-  modifierArgs: BuffModifierArgsWrapper;
-}
-export const applyArtifactAutoBuffs = ({ isFinal, setBonuses, modifierArgs }: applyArtifactAutoBuffsArgs) => {
-  for (const { code, bonusLv } of setBonuses) {
-    //
-    for (let i = 0; i <= bonusLv; i++) {
-      const artData = findDataArtifactSet({ code });
-
-      if (artData) {
-        const { applyBuff, applyFinalBuff } = artData.setBonuses[i];
-        const desc = `${artData.name} / ${i * 2 + 2}-piece bonus`;
-
-        if (!isFinal && applyBuff) {
-          applyBuff({ ...modifierArgs, desc });
-        } else if (isFinal && applyFinalBuff) {
-          applyFinalBuff({ ...modifierArgs, desc });
-        }
-      }
-    }
+export const checkFinal = (stacks?: Stack | Stack[]) => {
+  if (!stacks) {
+    return false;
   }
-};
-
-export const calcFinalTotalAttributes = (totalAttr: TotalAttribute) => {
-  for (const type of CORE_STAT_TYPES) {
-    totalAttr[type] += applyPercent(totalAttr[`base_${type}`], totalAttr[`${type}_`]);
-    totalAttr[`${type}_`] = 0;
-  }
+  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
 };

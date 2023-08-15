@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 
 import type { ModifierInput, ModInputConfig } from "@Src/types";
 import { genNumberSequenceOptions } from "@Src/utils";
-import { getWeaponDescription, parseCharacterDescription } from "./get-description";
 
 // Component
 import { Input, Green } from "@Src/pure-components";
@@ -74,7 +73,7 @@ export const resonanceRenderInfo = {
   },
 };
 
-interface ModifierTemplateProps {
+export interface ModifierTemplateProps {
   mutable?: boolean;
   checked?: boolean;
   heading: ReactNode;
@@ -86,7 +85,7 @@ interface ModifierTemplateProps {
   onToggleCheck?: (currentInput: number, inputIndex: number) => void;
   onSelectOption?: (value: number, inputIndex: number) => void;
 }
-const ModifierTemplate = ({
+export const ModifierTemplate = ({
   mutable = true,
   checked,
   heading,
@@ -204,8 +203,3 @@ const ModifierTemplate = ({
     </div>
   );
 };
-
-ModifierTemplate.getWeaponDescription = getWeaponDescription;
-ModifierTemplate.parseCharacterDescription = parseCharacterDescription;
-
-export { ModifierTemplate };

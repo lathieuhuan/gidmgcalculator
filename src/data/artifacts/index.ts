@@ -5,6 +5,6 @@ import sumeruSets from "./sets-sumeru";
 import fontaineSets from "./sets-fontaine";
 import purpleOnlySets from "./purple-only";
 
-const artifacts = fontaineSets.concat(sumeruSets, liyueSets, mondstadtSets, inazumaSets, purpleOnlySets);
+const artifacts = fontaineSets.concat(sumeruSets, inazumaSets, liyueSets, mondstadtSets, purpleOnlySets);
 
 export default artifacts;
