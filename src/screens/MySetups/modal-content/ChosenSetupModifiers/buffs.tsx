@@ -20,9 +20,8 @@ import type {
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { findByIndex, percentSign, toCustomBuffLabel } from "@Src/utils";
+import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { appData } from "@Data/index";
 
 // Component
@@ -34,6 +33,8 @@ import {
   renderModifiers,
   renderQuickenDesc,
   renderQuickenHeading,
+  renderArtifactBuffs,
+  renderWeaponModifiers,
 } from "@Src/components";
 
 interface ElementBuffsProps {
@@ -111,14 +112,14 @@ interface SelfBuffsProps {
 export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];
 
-  innateBuffs.forEach(({ src, description }, index) => {
+  innateBuffs.forEach((buff, index) => {
     content.push(
       <ModifierTemplate
         key={"innate-" + index}
         mutable={false}
-        heading={src}
-        description={ModifierTemplate.parseCharacterDescription(
-          description,
+        heading={buff.src}
+        description={parseCharacterDescription(
+          buff.description,
           { fromSelf: true, char, partyData, inputs: [] },
           charData.dsGetters
         )}
@@ -126,16 +127,18 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
     );
   });
 
-  for (const { index, inputs = [] } of selfBuffCtrls) {
-    const buff = findByIndex(buffs, index);
+  selfBuffCtrls.forEach((ctrl) => {
+    const buff = findByIndex(buffs, ctrl.index);
 
     if (buff) {
+      const { inputs = [] } = ctrl;
+
       content.push(
         <ModifierTemplate
-          key={index}
+          key={ctrl.index}
           mutable={false}
           heading={buff.src}
-          description={ModifierTemplate.parseCharacterDescription(
+          description={parseCharacterDescription(
             buff.description,
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
@@ -145,7 +148,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
         />
       );
     }
-  }
+  });
 
   return renderModifiers(content, "buffs", false);
 }
@@ -156,13 +159,13 @@ interface PartyBuffsProps {
   partyData: PartyData;
 }
 export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
-  const content = [];
+  const content: JSX.Element[] = [];
 
-  for (const teammate of party) {
-    if (!teammate || !teammate.buffCtrls.length) continue;
+  party.forEach((teammate) => {
+    if (!teammate || !teammate.buffCtrls.length) return;
 
     const teammateData = appData.getCharData(teammate.name);
-    if (!teammateData) continue;
+    if (!teammateData) return;
 
     const { name, buffs = [] } = teammateData;
 
@@ -174,16 +177,18 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
       );
     }
 
-    for (const { index, inputs = [] } of teammate.buffCtrls) {
-      const buff = findByIndex(buffs, index);
+    teammate.buffCtrls.forEach((ctrl) => {
+      const buff = findByIndex(buffs, ctrl.index);
 
       if (buff) {
+        const { inputs = [] } = ctrl;
+
         content.push(
           <ModifierTemplate
-            key={`${name}-${index}`}
+            key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={buff.src}
-            description={ModifierTemplate.parseCharacterDescription(
+            description={parseCharacterDescription(
               buff.description,
               { fromSelf: false, char, partyData, inputs },
               teammateData.dsGetters
@@ -193,8 +198,9 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
           />
         );
       }
-    }
-  }
+    });
+  });
+
   return renderModifiers(content, "buffs", false);
 }
 
@@ -206,46 +212,26 @@ interface WeaponBuffsProps {
 export function WeaponBuffs({ weapon, wpBuffCtrls, party }: WeaponBuffsProps) {
   const content = [];
 
-  for (const { index, inputs = [] } of wpBuffCtrls) {
-    const weaponData = findDataWeapon(weapon);
-    if (!weaponData) continue;
+  content.push(
+    ...renderWeaponModifiers({
+      fromSelf: true,
+      keyPrefix: "main",
+      mutable: false,
+      weapon,
+      ctrls: wpBuffCtrls,
+    })
+  );
 
-    const { name, buffs = [], descriptions } = weaponData;
-    const buff = findByIndex(buffs, index);
-
-    if (buff) {
+  party.forEach((teammate) => {
+    if (teammate) {
       content.push(
-        <ModifierTemplate
-          key={`${weapon.code}-${index}`}
-          mutable={false}
-          heading={name}
-          description={ModifierTemplate.getWeaponDescription(descriptions, buff, weapon.refi)}
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs}
-        />
+        ...renderWeaponModifiers({
+          keyPrefix: teammate.name,
+          fromSelf: false,
+          weapon: teammate.weapon,
+          ctrls: teammate.weapon.buffCtrls,
+        })
       );
-    }
-  }
-
-  party.forEach((teammate, teammateIndex) => {
-    if (!teammate) return;
-    const { name, buffs = [], descriptions } = findDataWeapon(teammate.weapon) || {};
-
-    for (const { index, inputs = [] } of teammate.weapon.buffCtrls) {
-      const buff = findByIndex(buffs, index);
-
-      if (buff) {
-        content.push(
-          <ModifierTemplate
-            key={`${teammateIndex}-${index}`}
-            mutable={false}
-            heading={name}
-            description={ModifierTemplate.getWeaponDescription(descriptions, buff, teammate.weapon.refi)}
-            inputs={inputs}
-            inputConfigs={buff.inputConfigs}
-          />
-        );
-      }
     }
   });
 
@@ -261,48 +247,31 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   const content = [];
   const mainCode = setBonuses[0]?.code;
 
-  for (const { index, inputs = [] } of artBuffCtrls) {
-    const artifactData = findDataArtifactSet({ code: mainCode });
-    if (!artifactData) continue;
+  if (mainCode) {
+    content.push(
+      ...renderArtifactBuffs({
+        fromSelf: true,
+        keyPrefix: "main",
+        mutable: false,
+        code: mainCode,
+        ctrls: artBuffCtrls,
+      })
+    );
+  }
 
-    const { name, buffs = [] } = artifactData;
-    const buff = buffs[index];
-
-    if (buff) {
+  party.forEach((teammate) => {
+    if (teammate) {
       content.push(
-        <ModifierTemplate
-          key={`${mainCode}-${index}`}
-          mutable={false}
-          heading={name + " (self)"}
-          description={buff.desc()}
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs}
-        />
+        ...renderArtifactBuffs({
+          mutable: false,
+          keyPrefix: teammate.name,
+          code: teammate.artifact.code,
+          ctrls: teammate.artifact.buffCtrls,
+        })
       );
     }
-  }
-  for (const teammate of party) {
-    if (!teammate) continue;
-    const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [] } = findDataArtifactSet(teammate.artifact) || {};
+  });
 
-    for (const { index, inputs = [] } of buffCtrls) {
-      const buff = findByIndex(buffs, index);
-
-      if (buff) {
-        content.push(
-          <ModifierTemplate
-            key={`${code}-${index}`}
-            mutable={false}
-            heading={name}
-            description={buff.desc()}
-            inputs={inputs}
-            inputConfigs={buff.inputConfigs}
-          />
-        );
-      }
-    }
-  }
   return renderModifiers(content, "buffs", false);
 }
 

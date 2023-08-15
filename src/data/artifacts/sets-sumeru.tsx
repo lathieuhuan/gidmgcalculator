@@ -27,7 +27,7 @@ const sumeruSets: AppArtifact[] = [
       icon: "f/ff/Item_Fell_Dragon%27s_Monocle",
     },
     descriptions: [
-      "{Hydro DMG Bonus}#[k] +{15%}#[v].",
+      "Increase {Hydro DMG Bonus}#[k] by {15%}#[v].",
       `When Normal, Charged, or Plunging Attacks, Elemental Skills or Elemental Bursts hit an opponent, each attack
       type can provide 1 stack of Nymph's Croix for 8s. Max 5 stacks. Each stack's duration is counted independently.`,
       `While 1, 2, or 3 or more Nymph's Croix stacks are in effect, {ATK}#[k] is increased by
@@ -35,7 +35,7 @@ const sumeruSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "hydro",
@@ -56,15 +56,18 @@ const sumeruSets: AppArtifact[] = [
             max: 3,
           },
         ],
-        bonuses: [
-          //
+        artBonuses: [
+          {
+            value: [7, 16, 25],
+            target: "totalAttr",
+            path: "atk_",
+          },
+          {
+            value: [4, 9, 15],
+            target: "totalAttr",
+            path: "hydro",
+          },
         ],
-        // applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        //   const index = (inputs[0] || 1) - 1;
-        //   const atkBuff = [7, 16, 25][index];
-        //   const hydroBuff = [4, 9, 15][index];
-        //   applyModifier(desc, totalAttr, ["atk_", "hydro"], [atkBuff, hydroBuff], tracker);
-        // },
       },
     ],
   },
@@ -93,7 +96,7 @@ const sumeruSets: AppArtifact[] = [
       icon: "f/fa/Item_Heart_of_Khvarena%27s_Brilliance",
     },
     descriptions: [
-      "{HP}#[k] +{20%}#[v].",
+      "Increases {HP}#[k] by {20%}#[v].",
       "Increases {Elemental Skill and Elemental Burst DMG}#[k] by {10%}#[v].",
       `When the equipping character takes DMG, Increases {Elemental Skill and Elemental Burst DMG}#[k] by {8%}#[v] for
       5s. Max {5}#[m] stacks.`,
@@ -102,7 +105,7 @@ const sumeruSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "hp_",
@@ -110,7 +113,7 @@ const sumeruSets: AppArtifact[] = [
       },
       {
         description: [1, 2, 3],
-        bonuses: {
+        artBonuses: {
           value: 10,
           target: "attPattBonus",
           path: ["ES.pct_", "EB.pct_"],
@@ -128,7 +131,7 @@ const sumeruSets: AppArtifact[] = [
             max: 5,
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 8,
           stacks: {
             type: "input",
@@ -164,13 +167,13 @@ const sumeruSets: AppArtifact[] = [
       icon: "0/0c/Item_Legacy_of_the_Desert_High-Born",
     },
     descriptions: [
-      "Increases {15%}#[v] {Anemo DMG Bonus}#[k].",
+      "Increases {Anemo DMG Bonus}#[k] by {15%}#[v].",
       `When Charged Attacks hit opponents, the equipping character's {Normal Attack SPD}#[k] will increase by
       {10%}#[v] while {Normal, Charged, and Plunging Attack DMG}#[k] will increase by {40%}#[v] for 15s.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "anemo",
@@ -182,7 +185,7 @@ const sumeruSets: AppArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         description: 1,
-        bonuses: [
+        artBonuses: [
           {
             value: 10,
             target: "totalAttr",
@@ -231,7 +234,7 @@ const sumeruSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 80,
           target: "totalAttr",
           path: "em",
@@ -239,7 +242,7 @@ const sumeruSets: AppArtifact[] = [
       },
       {
         description: [1, 2, 3],
-        bonuses: {
+        artBonuses: {
           value: 40,
           target: "rxnBonus",
           path: ["bloom.pct_", "hyperbloom.pct_", "burgeon.pct_"],
@@ -257,7 +260,7 @@ const sumeruSets: AppArtifact[] = [
             max: 4,
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 10,
           stacks: {
             type: "input",
@@ -293,13 +296,13 @@ const sumeruSets: AppArtifact[] = [
       icon: "b/b8/Item_Laurel_Coronet",
     },
     descriptions: [
-      "{Dendro DMG Bonus}#[k] +{15%}#[v].",
+      "Increases {Dendro DMG Bonus}#[k] by {15%}#[v].",
       `After Elemental Skills or Bursts hit opponents, the targets' {Dendro RES}#[k] will be decreased by {30%}#[v]
       for 8s. This effect can be triggered even if the equipping character is not on the field.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "dendro",
@@ -342,9 +345,9 @@ const sumeruSets: AppArtifact[] = [
       icon: "2/2b/Item_Shadow_of_the_Sand_King",
     },
     descriptions: [
-      "{Elemental Mastery}#[k] +{80}#[v].",
-      `Within 8s of triggering an Elemental Reaction, the character equipping this will obtain buffs based on the
-      Elemental Type of the other party members.`,
+      "Increases {Elemental Mastery}#[k]  by {80}#[v].",
+      `Within 8s of triggering an Elemental Reaction,`,
+      `the character equipping this will obtain buffs based on the Elemental Type of the other party members.`,
       `{ATK}#[k] is increased by {14%}#[v] for each party member whose Elemental Type is the same as the equipping
       character, and {Elemental Mastery}#[k] is increased by {50}#[v] for every party member with a different Elemental
       Type.`,
@@ -353,22 +356,22 @@ const sumeruSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 80,
           target: "totalAttr",
           path: "em",
         },
       },
       {
-        description: [1, 2, 3],
+        description: [1, 2, 3, 4],
       },
     ],
     buffs: [
       {
         index: 0,
         affect: EModAffect.SELF,
-        description: 2,
-        bonuses: [
+        description: [1, 3],
+        artBonuses: [
           {
             value: 14,
             stacks: {

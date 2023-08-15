@@ -1,5 +1,5 @@
-import type { AppWeapon, DescriptionSeedGetter, DescriptionSeedGetterArgs, WeaponBuff } from "@Src/types";
-import { WeaponCard } from "../WeaponCard";
+import { DescriptionSeedGetter, DescriptionSeedGetterArgs } from "@Src/types";
+import { round } from "./pure-utils";
 
 export const parseCharacterDescription = (
   description: string | number,
@@ -53,7 +53,7 @@ export const parseArtifactDescription = (description: string) => {
     v: "text-green font-bold",
     m: "text-rose-500",
   };
-  return description.replace(/\{[a-zA-Z0-9 -%]+\}#\[[kvm]\]/g, (match) => {
+  return description.replace(/\{[a-zA-Z0-9 ,%-]+\}#\[[kvm]\]/g, (match) => {
     const [bodyPart, typePart = ""] = match.split("#");
     const body = bodyPart.slice(1, -1);
     const type = typePart?.slice(1, -1);
@@ -61,11 +61,37 @@ export const parseArtifactDescription = (description: string) => {
   });
 };
 
-export const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {
-  if (descriptions?.length) {
-    let { description = 0 } = buff;
-    description = typeof description === "number" ? descriptions[description] : description;
-    return WeaponCard.parseDescription(description || "", refi);
-  }
-  return "";
+const wrapText = (text: string | number, type: string) => {
+  const typeToCls: Record<string, string> = {
+    k: "text-green",
+    v: "text-green font-bold",
+    m: "text-rose-500",
+  };
+  return `<span class="${typeToCls[type] || ""}">${text}</span>`;
+};
+
+const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
+
+export const parseDescription = (description: string, refi: number) => {
+  return description.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
+    const [bodyPart, typePart = ""] = match.split("#");
+    const type = typePart?.slice(1, -1);
+    let body = bodyPart.slice(1, -1);
+    let suffix = "";
+
+    if (body[body.length - 1] === "%") {
+      body = body.slice(0, -1);
+      suffix = "%";
+    }
+
+    if (body.includes("^")) {
+      const [base, increment] = body.split("^");
+      return wrapText(scaleRefi(+base, refi, increment ? +increment : undefined) + suffix, type);
+    }
+    if (body.includes("$")) {
+      const values = body.split("$");
+      return wrapText(values[refi - 1] + suffix, type);
+    }
+    return wrapText(body + suffix, type);
+  });
 };

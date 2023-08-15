@@ -1,16 +1,5 @@
 import type { AttributeStat, ModInputConfig, Rarity, WeaponType } from "./global";
-import type {
-  AttackPatternBonus,
-  BuffModifierArgsWrapper,
-  ModifierInput,
-  PartyData,
-  ReactionBonus,
-  TotalAttribute,
-  DebuffModifierArgsWrapper,
-  Tracker,
-  ResistanceReductionKey,
-} from "./calculator";
-import type { AppCharacter } from "./character";
+import type { ModifierInput, DebuffModifierArgsWrapper, Tracker, ResistanceReductionKey } from "./calculator";
 import { EModAffect } from "@Src/constants";
 import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
 
@@ -41,17 +30,7 @@ export type AppArtifact = {
 
 type SetBonus = {
   description?: number[];
-  bonuses?: ArtifactBonus | ArtifactBonus[];
-};
-
-type ApplyArtPassiveBuffArgs = {
-  totalAttr: TotalAttribute;
-  attPattBonus?: AttackPatternBonus;
-  rxnBonus?: ReactionBonus;
-  charData: AppCharacter;
-  partyData?: PartyData;
-  desc: string;
-  tracker?: Tracker;
+  artBonuses?: ArtifactBonus | ArtifactBonus[];
 };
 
 type TargetAttribute = "input_element" | AttributeStat | AttributeStat[];
@@ -65,8 +44,6 @@ type InputStack = {
 type AttributeStack = {
   type: "attribute";
   field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_";
-  convertRate?: number;
-  // minus?: number;
 };
 
 type VisionStack = {
@@ -78,22 +55,26 @@ type VisionStack = {
 type SetBonusCommon = {
   /** Only on Vermillion Hereafter */
   initialValue?: number;
-  value: number;
+  value: number | number[];
   stacks?: InputStack | AttributeStack | VisionStack;
-  checkInput?: {
-    /** Default to 0 */
-    index?: number;
-    value: number;
-    /** Default to 'equal' */
-    type?: "equal";
-  };
+  /**
+   * For this buff to available, the input at the index must equal to compareValue.
+   * If number, it's compareValue, index default to 0.
+   */
+  checkInput?:
+    | number
+    | {
+        /** Default to 0 */
+        index?: number;
+        value: number;
+      };
   max?: number;
 };
 
 type AttributeSetBonus = SetBonusCommon & {
   target: "totalAttr";
   path: TargetAttribute;
-  /** Only when path = "input_element" Default to 0 */
+  /** Only when path = "input_element". Default to 0 */
   inputIndex?: number;
 };
 
@@ -110,25 +91,15 @@ type RxnBonusSetBonus = SetBonusCommon & {
 
 export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
 
-type ApplyArtBuffArgs = BuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  desc?: string;
-};
-
-type ApplyArtFinalBuffArgs = BuffModifierArgsWrapper & {
-  desc?: string;
-  tracker?: Tracker;
-};
-
-export type ArtifactBuff = {
-  index: number;
-  // desc: () => JSX.Element | undefined;
-  affect: EModAffect;
+export type ArtifactModifier = {
   inputConfigs?: ModInputConfig[];
-  // applyBuff?: (args: ApplyArtBuffArgs) => void;
-  // applyFinalBuff?: (args: ApplyArtFinalBuffArgs) => void;
   description: number | number[];
-  bonuses: ArtifactBonus | ArtifactBonus[];
+};
+
+export type ArtifactBuff = ArtifactModifier & {
+  index: number;
+  affect: EModAffect;
+  artBonuses: ArtifactBonus | ArtifactBonus[];
 };
 
 export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
@@ -140,15 +111,11 @@ export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
 type SetPenalty = {
   value: number;
   path: "input_element" | ResistanceReductionKey;
-  /** Only when path = "input_element" Default to 0 */
+  /** Only when path = "input_element". Default to 0 */
   inputIndex?: number;
 };
 
-type ArtifactDebuff = {
+type ArtifactDebuff = ArtifactModifier & {
   index: number;
-  // desc: () => JSX.Element | undefined;
-  inputConfigs?: ModInputConfig[];
-  // applyDebuff: (args: ApplyArtDebuffArgs) => void;
-  description: number | number[];
   penalties: SetPenalty;
 };

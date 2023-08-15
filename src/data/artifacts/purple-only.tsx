@@ -29,14 +29,14 @@ const purpleOnlySets: AppArtifact[] = [
     descriptions: ["{ATK}#[k] +{18%}#[v].", "Increases {Charged Attack CRIT Rate}#[k] by {30%}#[v]."],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
         },
       },
       {
-        bonuses: {
+        artBonuses: {
           value: 30,
           target: "attPattBonus",
           path: "CA.cRate_",
@@ -103,7 +103,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 12,
           target: "totalAttr",
           path: "cRate_",
@@ -115,7 +115,7 @@ const purpleOnlySets: AppArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         description: 1,
-        bonuses: [
+        artBonuses: [
           {
             value: 24,
             target: "totalAttr",
@@ -155,7 +155,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 80,
           target: "totalAttr",
           path: "em",
@@ -167,7 +167,7 @@ const purpleOnlySets: AppArtifact[] = [
         index: 0,
         affect: EModAffect.PARTY,
         description: 1,
-        bonuses: [
+        artBonuses: [
           {
             value: 120,
             target: "totalAttr",
@@ -207,7 +207,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "er_",
@@ -245,7 +245,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 30,
           target: "totalAttr",
           path: "def",
@@ -283,7 +283,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
@@ -295,7 +295,7 @@ const purpleOnlySets: AppArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         description: 1,
-        bonuses: [
+        artBonuses: [
           {
             value: 30,
             target: "attPattBonus",
@@ -335,7 +335,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "attPattBonus",
           path: ["NA.pct_", "CA.pct_"],
@@ -347,7 +347,7 @@ const purpleOnlySets: AppArtifact[] = [
         index: 0,
         affect: EModAffect.SELF,
         description: 1,
-        bonuses: [
+        artBonuses: [
           {
             value: 25,
             target: "attPattBonus",
@@ -387,7 +387,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "attPattBonus",
           path: "ES.pct_",
@@ -425,7 +425,7 @@ const purpleOnlySets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "er_",

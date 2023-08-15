@@ -404,7 +404,7 @@ const purpleBows: AppWeapon[] = [
         stacks: {
           type: "input",
         },
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 3,
             targetAttribute: "atk_",
@@ -444,7 +444,7 @@ const purpleBows: AppWeapon[] = [
         index: 0,
         affect: EModAffect.SELF,
         description: 1,
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 12,
             targetAttPatt: "NA.pct_",

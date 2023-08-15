@@ -146,7 +146,7 @@ const goldCatalysts: AppWeapon[] = [
             max: 3,
           },
         ],
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 9,
             stacks: {

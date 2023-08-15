@@ -34,7 +34,7 @@ const fontaineSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "attPattBonus",
           path: "ES.pct_",
@@ -42,7 +42,7 @@ const fontaineSets: AppArtifact[] = [
       },
       {
         description: [1, 2],
-        bonuses: {
+        artBonuses: {
           value: 25,
           target: "attPattBonus",
           path: "ES.pct_",
@@ -54,7 +54,7 @@ const fontaineSets: AppArtifact[] = [
         index: 0,
         description: 2,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 25,
           target: "attPattBonus",
           path: "ES.pct_",
@@ -87,12 +87,12 @@ const fontaineSets: AppArtifact[] = [
       icon: "https://images2.imgbox.com/73/4b/C6Hhb7dB_o.png",
     },
     descriptions: [
-      "{Normal and Charged Attack DMG}#[k] +{15%}#[v].",
+      "Increases {Normal and Charged Attack DMG}#[k] by {15%}#[v].",
       "When current HP changes, {CRIT Rate}#[k] will be increased by {12%}#[v] for 5s. Max {3}#[m] stacks.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "attPattBonus",
           path: ["NA.pct_", "CA.pct_"],
@@ -110,7 +110,7 @@ const fontaineSets: AppArtifact[] = [
             max: 3,
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 12,
           stacks: {
             type: "input",

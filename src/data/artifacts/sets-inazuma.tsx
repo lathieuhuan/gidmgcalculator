@@ -28,7 +28,7 @@ const inazumaSets: AppArtifact[] = [
       icon: "5/53/Item_Flowing_Rings",
     },
     descriptions: [
-      "{ATK}#[k] +{18%}#[v].",
+      "Increases {ATK}#[k] by {18%}#[v].",
       `When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase
       {Normal Attack DMG}#[k] by {70%}#[v] {ATK}#[k].`,
       `This effect will be dispelled 0.05s after a Normal Attack deals DMG.`,
@@ -37,7 +37,7 @@ const inazumaSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
@@ -52,7 +52,7 @@ const inazumaSets: AppArtifact[] = [
         index: 0,
         description: [1, 3],
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 0.7,
           stacks: {
             type: "attribute",
@@ -89,7 +89,7 @@ const inazumaSets: AppArtifact[] = [
       icon: "0/0e/Item_Thundering_Poise",
     },
     descriptions: [
-      "{ATK}#[k] +{18%}#[v].",
+      "Increases {ATK}#[k] by {18%}#[v].",
       `After using an Elemental Burst, this character will gain the Nascent Light effect, increasing their {ATK}#[k]
       by {8%}#[v] for 16s. When the character's HP decreases, Their {ATK}#[k] will further increase by {10%}#[v]. This
       increase can occur this way a maximum of {4}#[m] times.`,
@@ -99,7 +99,7 @@ const inazumaSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
@@ -118,7 +118,7 @@ const inazumaSets: AppArtifact[] = [
             max: 4,
           },
         ],
-        bonuses: {
+        artBonuses: {
           initialValue: 8,
           value: 10,
           stacks: {
@@ -155,20 +155,20 @@ const inazumaSets: AppArtifact[] = [
       icon: "0/04/Item_Ornate_Kabuto",
     },
     descriptions: [
-      "{Energy Recharge}#[k] +{20%}#[v].",
+      "Increases {Energy Recharge}#[k] by {20%}#[v].",
       `Increases {Elemental Burst DMG}#[k] by {25%}#[v] of {Energy Recharge}#[k]. A maximum of {75%}#[m] bonus DMG can
       be obtained in this way.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "er_",
         },
       },
       {
-        bonuses: {
+        artBonuses: {
           value: 0.25,
           stacks: {
             type: "attribute",
@@ -206,13 +206,13 @@ const inazumaSets: AppArtifact[] = [
       icon: "8/8f/Item_Capricious_Visage",
     },
     descriptions: [
-      "{ATK}#[k] +{18%}#[v].",
+      "Increases {ATK}#[k] by {18%}#[v].",
       `When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and
       {Normal, Charged, and Plunging Attack DMG}#[k] is increased by {50%}#[v] for 10s.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
@@ -224,7 +224,7 @@ const inazumaSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 50,
           target: "attPattBonus",
           path: [...NCPA_PERCENTS],
@@ -257,7 +257,7 @@ const inazumaSets: AppArtifact[] = [
       icon: "8/84/Item_Skeletal_Hat",
     },
     descriptions: [
-      "{DEF}#[k] +{30%}#[v].",
+      "Increases {DEF}#[k] by {30%}#[v].",
       `A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions: When
       on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a maximum of
       once every 0.3s. When off the field, the character gains 1 stack every 3s.`,
@@ -266,7 +266,7 @@ const inazumaSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 30,
           target: "totalAttr",
           path: "def_",
@@ -287,7 +287,7 @@ const inazumaSets: AppArtifact[] = [
             max: 4,
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 6,
           stacks: {
             type: "input",
@@ -323,7 +323,7 @@ const inazumaSets: AppArtifact[] = [
       icon: "6/60/Item_Crown_of_Watatsumi",
     },
     descriptions: [
-      "{Healing Bonus}#[k] +{15%}#[v].",
+      "Increases {Healing Bonus}#[k] by {15%}#[v].",
       `When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear
       for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end
       of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the
@@ -335,7 +335,7 @@ const inazumaSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "healB_",

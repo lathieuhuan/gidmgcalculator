@@ -36,13 +36,22 @@ import { appData } from "@Data/index";
 import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
+import {
+  bareLv,
+  deepCopy,
+  findById,
+  toArray,
+  countVision,
+  findByCode,
+  getCopyName,
+  appSettings,
+  findByIndex,
+} from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
   createArtDebuffCtrls,
   createArtifactBuffCtrls,
-  createCharInfo,
   createCharModCtrls,
   createElmtModCtrls,
   createTarget,
@@ -59,10 +68,10 @@ const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) =
   return accumulator;
 }, []);
 
-const defaultChar = {
-  name: "Albedo",
-  ...createCharInfo(),
-};
+// const defaultChar = {
+//   name: "Albedo",
+//   ...createCharInfo(),
+// };
 
 const initialState: CalculatorState = {
   activeId: 0,
@@ -331,7 +340,8 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrls = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [];
+      const ctrl = findByIndex(ctrls, ctrlIndex);
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -340,7 +350,8 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
+      const ctrls = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [];
+      const ctrl = findByIndex(ctrls, ctrlIndex);
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -434,7 +445,7 @@ export const calculatorSlice = createSlice({
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -443,10 +454,10 @@ export const calculatorSlice = createSlice({
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const { inputs } = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
+      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
 
-      if (inputs) {
-        inputs[inputIndex] = value;
+      if (ctrl?.inputs) {
+        ctrl.inputs[inputIndex] = value;
         calculate(state);
       }
     },

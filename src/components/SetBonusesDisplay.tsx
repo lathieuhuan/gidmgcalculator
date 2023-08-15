@@ -1,6 +1,6 @@
 import type { ArtifactSetBonus } from "@Src/types";
 import { findDataArtifactSet } from "@Data/controllers";
-import { toArray } from "@Src/utils";
+import { parseArtifactDescription, toArray } from "@Src/utils";
 import { ModifierTemplate } from "./ModifierTemplate";
 
 interface SetBonusesDisplayProps {
@@ -23,7 +23,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
             const { description = i } = data.setBonuses?.[i] || {};
             const parsedDescription = toArray(description).reduce((acc, index) => {
               if (descriptions[index]) {
-                const parsedText = ModifierTemplate.parseArtifactDescription(descriptions[index]);
+                const parsedText = parseArtifactDescription(descriptions[index]);
                 return `${acc} ${parsedText}`;
               }
               return acc;

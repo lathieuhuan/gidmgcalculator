@@ -7,6 +7,26 @@ import { EModAffect } from "@Src/constants";
 //   "code" | "beta" | "name" | "rarity" | "icon" | "applyBuff" | "applyFinalBuff" | "buffs"
 // >;
 
+/**
+ * Weapon in app data
+ */
+export type AppWeapon = {
+  code: number;
+  beta?: boolean;
+  name: string;
+  rarity: Rarity;
+  icon: string;
+  mainStatScale: string;
+  subStat?: {
+    type: AttributeStat;
+    scale: string;
+  };
+  passiveName?: string;
+  descriptions?: string[];
+  autoBuffs?: WeaponAutoBuff[];
+  buffs?: WeaponBuff[];
+};
+
 type VisionStack = {
   type: "vision";
   element: "same_included" | "same_excluded" | "different";
@@ -47,20 +67,19 @@ type NationStack = {
   type: "nation";
 };
 
-export type StackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
+export type WeaponStackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
 type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
-export type AutoBuff = {
-  // charCode?: number; // only on Predator for Aloy
+export type WeaponAutoBuff = {
   base?: number;
   /** Need "stacks", number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
   options?: number[];
   /** Only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
-  /** Fixed type has no increment */
+  /** Default to 1/3 base. Fixed type has increment = 0 */
   increment?: number;
-  stacks?: StackConfig | StackConfig[];
+  stacks?: WeaponStackConfig | WeaponStackConfig[];
   targetAttribute?: TargetAttribute;
   targetAttPatt?: AttackPatternPath | AttackPatternPath[];
   max?:
@@ -71,7 +90,7 @@ export type AutoBuff = {
         increment: number;
       };
   /**
-   * For this buff to available, the input at the index must equal to compareValue.
+   * For this buff to available, the input at the index must meet compareValue by compareType.
    * If number, it's compareValue, index default to 0.
    */
   checkInput?:
@@ -79,7 +98,7 @@ export type AutoBuff = {
     // Only on Ballad of the Fjords
     | {
         index?: number;
-        /** No index when there's source */
+        /** Only on Ballad of the Fjords. No index when there's source */
         source?: "various_vision";
         compareValue: number;
         /** Default to equal */
@@ -87,27 +106,7 @@ export type AutoBuff = {
       };
 };
 
-/**
- * Weapon in app data
- */
-export type AppWeapon = {
-  code: number;
-  beta?: boolean;
-  name: string;
-  rarity: Rarity;
-  icon: string;
-  mainStatScale: string;
-  subStat?: {
-    type: AttributeStat;
-    scale: string;
-  };
-  passiveName?: string;
-  descriptions?: string[];
-  autoBuffs?: AutoBuff[];
-  buffs?: WeaponBuff[];
-};
-
-export type WeaponBuff = AutoBuff & {
+export type WeaponBuff = WeaponAutoBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
@@ -117,5 +116,5 @@ export type WeaponBuff = AutoBuff & {
    */
   description?: number | string;
   /** buffBonus use outside "base", "stacks" as default */
-  buffBonuses?: AutoBuff[];
+  wpBonuses?: WeaponAutoBuff[];
 };

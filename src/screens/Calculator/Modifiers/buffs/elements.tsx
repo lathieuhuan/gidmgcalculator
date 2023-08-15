@@ -22,7 +22,7 @@ import {
   renderQuickenHeading,
 } from "@Src/components";
 
-export default function ElementBuffs() {
+export const ElementBuffs = () => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
   const { vision, weaponType } = appData.getCharData(char.name);
@@ -236,4 +236,4 @@ export default function ElementBuffs() {
   }
 
   return renderModifiers(content, "buffs", true);
-}
+};

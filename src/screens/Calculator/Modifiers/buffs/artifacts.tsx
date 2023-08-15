@@ -1,4 +1,3 @@
-import type { ModifierInput } from "@Src/types";
 import type { ToggleModCtrlPath } from "@Store/calculatorSlice/reducer-types";
 
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -6,14 +5,13 @@ import { changeModCtrlInput, toggleModCtrl, updateTeammateArtifact } from "@Stor
 import { selectArtifacts, selectParty } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { deepCopy, findByIndex, toArray } from "@Src/utils";
+import { deepCopy } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
-import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { renderArtifactBuffs, renderModifiers } from "@Src/components";
 
-export default function ArtifactBuffs() {
+export const ArtifactBuffs = () => {
   const dispatch = useDispatch();
   const artifacts = useSelector(selectArtifacts);
   const artBuffCtrls = useSelector((state) => {
@@ -21,93 +19,80 @@ export default function ArtifactBuffs() {
   });
   const party = useSelector(selectParty);
 
-  const content: JSX.Element[] = [];
+  const content: (JSX.Element | null)[] = [];
   const mainCode = getArtifactSetBonuses(artifacts)[0]?.code;
 
-  artBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { name, buffs = [], descriptions = [] } = findDataArtifactSet({ code: mainCode }) || {};
-    const buff = findByIndex(buffs!, ctrl.index);
-    if (!buff) return;
-
-    const description = toArray(buff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
-
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "artBuffCtrls",
-      ctrlIndex,
-    };
+  if (mainCode) {
     content.push(
-      <ModifierTemplate
-        key={mainCode.toString() + ctrlIndex}
-        checked={ctrl.activated}
-        onToggle={() => dispatch(toggleModCtrl(path))}
-        heading={name + " (self)"}
-        description={ModifierTemplate.parseArtifactDescription(description)}
-        inputs={ctrl.inputs}
-        inputConfigs={buff.inputConfigs}
-        onSelectOption={(value, inputIndex) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex,
-              value,
-            })
-          );
-        }}
-      />
+      ...renderArtifactBuffs({
+        fromSelf: true,
+        keyPrefix: "main",
+        code: mainCode,
+        ctrls: artBuffCtrls,
+        getHanlders: (ctrl) => {
+          const path: ToggleModCtrlPath = {
+            modCtrlName: "artBuffCtrls",
+            ctrlIndex: ctrl.index,
+          };
+          return {
+            onToggle: () => dispatch(toggleModCtrl(path)),
+            onSelectOption: (value, inputIndex) => {
+              dispatch(
+                changeModCtrlInput({
+                  ...path,
+                  inputIndex,
+                  value,
+                })
+              );
+            },
+          };
+        },
+      })
     );
-  });
+  }
 
   party.forEach((teammate, teammateIndex) => {
-    if (!teammate) return;
-    const { code, buffCtrls } = teammate.artifact;
-    const { name, buffs = [], descriptions = [] } = findDataArtifactSet(teammate.artifact) || {};
-    if (!name) return;
-
-    const updateArtifactInputs = (ctrlIndex: number, inputIndex: number, value: ModifierInput) => {
-      const newBuffCtrls = deepCopy(buffCtrls);
-      const { inputs } = newBuffCtrls[ctrlIndex];
-
-      if (inputs) {
-        inputs[inputIndex] = value;
-        dispatch(
-          updateTeammateArtifact({
-            teammateIndex,
-            buffCtrls: newBuffCtrls,
-          })
-        );
-      }
-    };
-
-    buffCtrls.forEach(({ index, activated, inputs = [] }, ctrlIndex) => {
-      const buff = findByIndex(buffs, index);
-      if (!buff) return;
-
-      const description = toArray(buff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
+    if (teammate) {
+      const { buffCtrls } = teammate.artifact;
 
       content.push(
-        <ModifierTemplate
-          key={teammateIndex.toString() + code + ctrlIndex}
-          checked={activated}
-          onToggle={() => {
-            const newBuffCtrls = deepCopy(buffCtrls);
-            newBuffCtrls[ctrlIndex].activated = !activated;
+        ...renderArtifactBuffs({
+          keyPrefix: teammate.name,
+          code: teammate.artifact.code,
+          ctrls: buffCtrls,
+          getHanlders: (ctrl) => {
+            return {
+              onToggle: () => {
+                const newBuffCtrls = deepCopy(buffCtrls);
+                newBuffCtrls[ctrl.index].activated = !ctrl.activated;
 
-            dispatch(
-              updateTeammateArtifact({
-                teammateIndex,
-                buffCtrls: newBuffCtrls,
-              })
-            );
-          }}
-          heading={name}
-          description={ModifierTemplate.parseArtifactDescription(description)}
-          inputs={inputs}
-          inputConfigs={buff.inputConfigs}
-          onSelectOption={(value, inputIndex) => updateArtifactInputs(ctrlIndex, inputIndex, value)}
-        />
+                dispatch(
+                  updateTeammateArtifact({
+                    teammateIndex,
+                    buffCtrls: newBuffCtrls,
+                  })
+                );
+              },
+              onSelectOption: (value, inputIndex) => {
+                const newBuffCtrls = deepCopy(buffCtrls);
+                const { inputs } = newBuffCtrls[ctrl.index];
+
+                if (inputs) {
+                  inputs[inputIndex] = value;
+                  dispatch(
+                    updateTeammateArtifact({
+                      teammateIndex,
+                      buffCtrls: newBuffCtrls,
+                    })
+                  );
+                }
+              },
+            };
+          },
+        })
       );
-    });
+    }
   });
 
   return renderModifiers(content, "buffs", true);
-}
+};

@@ -94,7 +94,7 @@ const goldClaymores: AppWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         description: 1,
-        buffBonuses: [
+        wpBonuses: [
           { base: 9, targetAttribute: "naAtkSpd_" },
           { base: 15, targetAttribute: "atk_" },
         ],

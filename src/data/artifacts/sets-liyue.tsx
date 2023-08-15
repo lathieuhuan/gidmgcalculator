@@ -27,12 +27,12 @@ const liyueSets: AppArtifact[] = [
       icon: "e/eb/Item_Royal_Masque",
     },
     descriptions: [
-      "{Elemental Burst DMG}#[k] +{20%}#[v].",
+      "Increases {Elemental Burst DMG}#[k] by {20%}#[v].",
       "Using an Elemental Burst increases all party members' {ATK}#[k] by {20%}#[v] for 12s. This effect cannot stack.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "attPattBonus",
           path: "EB.pct_",
@@ -44,7 +44,7 @@ const liyueSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.PARTY,
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "atk_",
@@ -77,12 +77,12 @@ const liyueSets: AppArtifact[] = [
       icon: "0/0c/Item_Bloodstained_Iron_Mask",
     },
     descriptions: [
-      "{Physical DMG}#[k] +{25%}#[v].",
+      "Increase {Physical DMG}#[k] by {25%}#[v].",
       "After defeating an opponent, increases {Charged Attack DMG}#[k] by {50%}#[v], and reduces its Stamina cost to 0 for 10s.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 25,
           target: "totalAttr",
           path: "phys",
@@ -94,7 +94,7 @@ const liyueSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 50,
           target: "attPattBonus",
           path: "CA.pct_",
@@ -127,7 +127,7 @@ const liyueSets: AppArtifact[] = [
       icon: "e/ea/Item_Witch%27s_Scorching_Hat",
     },
     descriptions: [
-      "{Pyro DMG Bonus}#[k] +{15%}#[v].",
+      "Increase {Pyro DMG Bonus}#[k] by {15%}#[v].",
       `Increases {Overloaded, Burning, and Burngeon DMG}#[k] by {40%}#[v]. Increases {Vaporize and Melt DMG}#[k] by
       {15%}#[v].`,
       `Using an Elemental Skill increases the {2-Piece Set Bonus}#[k] by {50%}#[v] of its starting value for 10s. Max
@@ -135,7 +135,7 @@ const liyueSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "pyro",
@@ -143,7 +143,7 @@ const liyueSets: AppArtifact[] = [
       },
       {
         description: [1, 2],
-        bonuses: [
+        artBonuses: [
           {
             value: 40,
             target: "rxnBonus",
@@ -168,7 +168,7 @@ const liyueSets: AppArtifact[] = [
             max: 3,
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 7.5,
           target: "totalAttr",
           stacks: {
@@ -212,7 +212,7 @@ const liyueSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "attPattBonus",
           path: "all.pct_",
@@ -245,14 +245,14 @@ const liyueSets: AppArtifact[] = [
       icon: "0/09/Item_Mask_of_Solitude_Basalt",
     },
     descriptions: [
-      "{Geo DMG Bonus}#[k] +{15%}#[v]",
+      "Increases {Geo DMG Bonus}#[k] by {15%}#[v]",
       `Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party members gain {35%}#[v]
       {DMG Bonus}#[k] for {that particular element}#[k] for 10s. Only one form of Elemental DMG Bonus can be gained
       in this manner at any one time.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "geo",
@@ -270,15 +270,11 @@ const liyueSets: AppArtifact[] = [
             type: "anemoable",
           },
         ],
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "totalAttr",
           path: "input_element",
         },
-        // applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
-        //   const elmtIndex = inputs[0] || 0;
-        //   applyModifier(desc, totalAttr, VISION_TYPES[elmtIndex], 35, tracker);
-        // },
       },
     ],
   },
@@ -312,7 +308,7 @@ const liyueSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "totalAttr",
           path: "shieldS_",
@@ -324,7 +320,7 @@ const liyueSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 40,
           target: "attPattBonus",
           path: ["NA.pct_", "CA.pct_"],
@@ -357,14 +353,14 @@ const liyueSets: AppArtifact[] = [
       icon: "2/23/Item_Mocking_Mask",
     },
     descriptions: [
-      "{Physical DMG}#[k] +{25%}#[v].",
+      "Increases {Physical DMG}#[k] by {25%}#[v].",
       `When an Elemental Skill hits an opponent, {ATK}#[k] is increased by {9%}#[k] for 7s. This effect stacks up to
       {2}#[m] times and can be triggered once every 0.3s. Once 2 stacks are reached, the {2-set effect}#[k] is
       increased by {100%}#[v].`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 25,
           target: "totalAttr",
           path: "phys",
@@ -382,7 +378,7 @@ const liyueSets: AppArtifact[] = [
             max: 2,
           },
         ],
-        bonuses: [
+        artBonuses: [
           {
             value: 9,
             stacks: {
@@ -395,9 +391,7 @@ const liyueSets: AppArtifact[] = [
             value: 25,
             target: "totalAttr",
             path: "phys",
-            checkInput: {
-              value: 2,
-            },
+            checkInput: 2,
           },
         ],
       },
@@ -428,14 +422,14 @@ const liyueSets: AppArtifact[] = [
       icon: "b/b9/Item_General%27s_Ancient_Helm",
     },
     descriptions: [
-      "{HP}#[k] {20%}#[v].",
+      "Increases {HP}#[k] by {20%}#[v].",
       `When an Elemental Skill hits an opponent, the {ATK}#[k] of all nearby party members is increased by {20%}#[v]
       and their {Shield Strength}#[k] is increased by {30%}#[v] for 3s. This effect can be triggered once every 0.5s.
       This effect can still be triggered even when the character who is using this artifact set is not on the field.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "hp_",
@@ -447,7 +441,7 @@ const liyueSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.PARTY,
-        bonuses: [
+        artBonuses: [
           {
             value: 20,
             target: "totalAttr",

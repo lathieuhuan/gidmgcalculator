@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
 import { findDataArtifactSet } from "@Data/controllers";
-import { findByIndex, toArray } from "@Src/utils";
+import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
 import { Green } from "@Src/pure-components";
-import { ModifierTemplate, renderModifiers } from "@Src/components";
+import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -98,38 +98,38 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const { index, activated, inputs = [] } = ctrl;
-    const { name, debuffs = [], descriptions = [] } = findDataArtifactSet(ctrl) || {};
-    const debuff = findByIndex(debuffs, index);
-    if (!debuff) return;
+    const data = findDataArtifactSet(ctrl);
+    if (!data) return;
 
-    const description = toArray(debuff.description).reduce((acc, index) => `${acc} ${descriptions[index] || ""}`, "");
+    const { debuffs = [] } = data;
+    const debuff = findByIndex(debuffs, ctrl.index);
 
-    const path: ToggleModCtrlPath = {
-      modCtrlName: "artDebuffCtrls",
-      ctrlIndex,
-    };
-
-    content.push(
-      <ModifierTemplate
-        key={ctrlIndex}
-        checked={activated}
-        onToggle={() => dispatch(toggleModCtrl(path))}
-        heading={name}
-        description={ModifierTemplate.parseArtifactDescription(description)}
-        inputs={inputs}
-        inputConfigs={debuff.inputConfigs}
-        onSelectOption={(value, inputIndex) => {
-          dispatch(
-            changeModCtrlInput({
-              ...path,
-              inputIndex,
-              value,
-            })
-          );
-        }}
-      />
-    );
+    if (debuff) {
+      const path: ToggleModCtrlPath = {
+        modCtrlName: "artDebuffCtrls",
+        ctrlIndex,
+      };
+      content.push(
+        <ModifierTemplate
+          key={ctrlIndex}
+          heading={data.name}
+          description={getArtifactDescription(data, debuff)}
+          inputs={ctrl.inputs}
+          inputConfigs={debuff.inputConfigs}
+          checked={ctrl.activated}
+          onToggle={() => dispatch(toggleModCtrl(path))}
+          onSelectOption={(value, inputIndex) => {
+            dispatch(
+              changeModCtrlInput({
+                ...path,
+                inputIndex,
+                value,
+              })
+            );
+          }}
+        />
+      );
+    }
   });
   return renderModifiers(content, "debuffs", true);
 }

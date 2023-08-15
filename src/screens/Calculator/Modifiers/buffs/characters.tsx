@@ -14,7 +14,7 @@ import {
 
 // Util
 import { appData } from "@Data/index";
-import { findByIndex } from "@Src/utils";
+import { findByIndex, parseCharacterDescription } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
@@ -38,7 +38,7 @@ export function SelfBuffs() {
           key={`innate-${index}`}
           mutable={false}
           heading={buff.src}
-          description={ModifierTemplate.parseCharacterDescription(
+          description={parseCharacterDescription(
             buff.description,
             { fromSelf: true, char, partyData, inputs: [] },
             charData.dsGetters
@@ -48,27 +48,27 @@ export function SelfBuffs() {
     }
   });
 
-  selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
-    const buff = findByIndex(buffs, index);
+  selfBuffCtrls.forEach((ctrl) => {
+    const buff = findByIndex(buffs, ctrl.index);
 
     if (buff && (!buff.isGranted || buff.isGranted(char))) {
+      const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfBuffCtrls",
-        ctrlIndex,
+        ctrlIndex: ctrl.index,
       };
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
       content.push(
         <ModifierTemplate
-          key={`self-${ctrlIndex}`}
+          key={`self-${ctrl.index}`}
           heading={buff.src}
-          description={ModifierTemplate.parseCharacterDescription(
+          description={parseCharacterDescription(
             buff.description,
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
           )}
-          checked={activated}
+          checked={ctrl.activated}
           onToggle={() => dispatch(toggleModCtrl(path))}
           inputs={inputs}
           inputConfigs={inputConfigs}
@@ -126,24 +126,24 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const subContent: JSX.Element[] = [];
   const teammateData = appData.getCharData(teammate.name);
 
-  teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
-    const { activated, index, inputs = [] } = ctrl;
-    const buff = findByIndex(teammateData.buffs || [], index);
+  teammate.buffCtrls.forEach((ctrl) => {
+    const { inputs = [] } = ctrl;
+    const buff = findByIndex(teammateData.buffs || [], ctrl.index);
     if (!buff) return;
 
     const path: ToggleTeammateModCtrlPath = {
       teammateIndex,
       modCtrlName: "buffCtrls",
-      ctrlIndex,
+      ctrlIndex: ctrl.index,
     };
 
     subContent.push(
       <ModifierTemplate
-        key={ctrlIndex}
-        checked={activated}
+        key={ctrl.index}
+        checked={ctrl.activated}
         onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
-        description={ModifierTemplate.parseCharacterDescription(
+        description={parseCharacterDescription(
           buff.description,
           { fromSelf: false, char, partyData, inputs },
           teammateData.dsGetters

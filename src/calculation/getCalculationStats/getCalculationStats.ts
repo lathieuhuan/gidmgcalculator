@@ -48,6 +48,23 @@ export const getCalculationStats = ({
   const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
+  // const usedWpMods: UsedCode[] = [];
+  // const usedArtMods: UsedCode[] = [];
+
+  // const isNewMod = (isWeapon: boolean, itemCode: number, modIndex: number) => {
+  //   const usedMods = isWeapon ? usedWpMods : usedArtMods;
+  //   const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
+
+  //   console.log(JSON.stringify(usedMods));
+
+  //   if (foundItem && foundItem.modIndex === modIndex) {
+  //     return false;
+  //   } else {
+  //     usedMods.push({ itemCode, modIndex });
+  //     return true;
+  //   }
+  // };
+
   const modifierArgs: BuffModifierArgsWrapper = {
     char,
     charData,
@@ -119,7 +136,7 @@ export const getCalculationStats = ({
       if (isFinal === checkFinal(buff.stacks)) {
         applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
       }
-      for (const buffBonus of buff.buffBonuses || []) {
+      for (const buffBonus of buff.wpBonuses || []) {
         const bonus = {
           ...buffBonus,
           base: buffBonus.base ?? buff.base,
@@ -143,12 +160,12 @@ export const getCalculationStats = ({
           console.log(`artifact #${code} not found`);
           continue;
         }
-        const { bonuses } = data.setBonuses?.[i] || {};
+        const { artBonuses } = data.setBonuses?.[i] || {};
 
-        if (bonuses) {
+        if (artBonuses) {
           const description = `${data.name} / ${i * 2 + 2}-piece bonus`;
 
-          for (const bonus of toArray(bonuses)) {
+          for (const bonus of toArray(artBonuses)) {
             if (isFinal === checkFinal(bonus.stacks)) {
               applyArtifactBuff({ description, buff: bonus, modifierArgs });
             }
@@ -163,13 +180,13 @@ export const getCalculationStats = ({
     if (!mainArtifactData) return;
 
     for (const ctrl of artBuffCtrls || []) {
-      if (!ctrl.activated || !isNewMod(false, mainArtifactData.code, ctrl.index)) continue;
+      if (!ctrl.activated) continue;
       const buff = mainArtifactData.buffs?.[ctrl.index];
 
       if (buff) {
         const description = `${mainArtifactData.name} (self) / 4-piece activated`;
 
-        for (const bonus of toArray(buff.bonuses)) {
+        for (const bonus of toArray(buff.artBonuses)) {
           if (isFinal === checkFinal(bonus.stacks)) {
             applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
           }
@@ -188,20 +205,6 @@ export const getCalculationStats = ({
   APPLY_SELF_BUFFS(false);
 
   const artAttr = addArtifactAttributes({ artifacts, totalAttr, tracker });
-  const usedWpMods: UsedCode[] = [];
-  const usedArtMods: UsedCode[] = [];
-
-  const isNewMod = (isWeapon: boolean, itemCode: number, modIndex: number) => {
-    const usedMods = isWeapon ? usedWpMods : usedArtMods;
-    const foundItem = usedMods.find((mod) => mod.itemCode === itemCode);
-
-    if (foundItem && foundItem.modIndex === modIndex) {
-      return false;
-    } else {
-      usedMods.push({ itemCode, modIndex });
-      return true;
-    }
-  };
 
   // ========== ADD WEAPON SUBSTAT ==========
   if (weaponData.subStat) {
@@ -318,7 +321,7 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = findDataWeapon({ code, type: weaponType }) || {};
 
         for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
-          if (!activated || !isNewMod(true, code, index)) continue;
+          if (!activated) continue;
           const buff = findByIndex(buffs, index);
 
           if (!buff) {
@@ -328,7 +331,7 @@ export const getCalculationStats = ({
 
           applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
 
-          for (const buffBonus of buff.buffBonuses || []) {
+          for (const buffBonus of buff.wpBonuses || []) {
             const bonus = {
               ...buffBonus,
               base: buffBonus.base ?? buff.base,
@@ -344,7 +347,7 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = findDataArtifactSet({ code }) || {};
 
         for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
-          if (!activated || !isNewMod(false, code, index)) continue;
+          if (!activated) continue;
           const buff = findByIndex(buffs, index);
 
           if (!buff) {
@@ -352,10 +355,10 @@ export const getCalculationStats = ({
             continue;
           }
 
-          if (buff.bonuses) {
+          if (buff.artBonuses) {
             const description = `${name} / 4-Piece activated`;
 
-            for (const bonus of toArray(buff.bonuses)) {
+            for (const bonus of toArray(buff.artBonuses)) {
               applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs });
             }
           }

@@ -27,19 +27,19 @@ const mondstadtSets: AppArtifact[] = [
       icon: "9/9b/Item_Gladiator%27s_Triumphus",
     },
     descriptions: [
-      "{ATK}#[k] +{18%}#[v].",
+      "Increases {ATK}#[k] by {18%}#[v].",
       "If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their {Normal Attack DMG}#[k] by {35%}#[v].",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 18,
           target: "totalAttr",
           path: "atk_",
         },
       },
       {
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "attPattBonus",
           path: "NA.pct_",
@@ -78,14 +78,14 @@ const mondstadtSets: AppArtifact[] = [
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 80,
           target: "totalAttr",
           path: "em",
         },
       },
       {
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "attPattBonus",
           path: "CA.pct_",
@@ -119,20 +119,20 @@ const mondstadtSets: AppArtifact[] = [
       icon: "8/8b/Item_Viridescent_Venerer%27s_Diadem",
     },
     descriptions: [
-      "Anemo DMG Bonus +{15%}#[v].",
+      "Increases {Anemo DMG Bonus}#[k] by {15%}#[v].",
       "Increases {Swirl DMG}#[k] by {60%}#[v].",
       "Decreases opponent's {Elemental RES}#[k] to the element infused in the Swirl by {40%}#[v] for 10s.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "anemo",
         },
       },
       {
-        bonuses: {
+        artBonuses: {
           value: 60,
           target: "rxnBonus",
           path: "swirl.pct_",
@@ -181,12 +181,12 @@ const mondstadtSets: AppArtifact[] = [
       icon: "8/82/Item_Maiden%27s_Fading_Beauty",
     },
     descriptions: [
-      "Character {Healing Effectiveness}#[k] +{15%}#[v].",
+      "Increases {Healing Bonus}#[k] by {15%}#[v].",
       "Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "healB_",
@@ -219,21 +219,21 @@ const mondstadtSets: AppArtifact[] = [
       icon: "a/a5/Item_Thunder_Summoner%27s_Crown",
     },
     descriptions: [
-      "{Electro DMG Bonus}#[k] +{15%}#[v].",
+      "Increases {Electro DMG Bonus}#[k] by {15%}#[v].",
       `Increases damage caused by {Overloaded, Electro-Charged, Superconduct and Hyperbloom}#[k] by {40%}#[v], and the
       DMG Bonus conferred by {Aggravate}#[k] is increased by {20%}#[v]. When Quicken or the aforementioned Elemental
       Reactions are triggered, Elemental Skill CD is decreased by 1s. Can only occur once every 0.8s.`,
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "electro",
         },
       },
       {
-        bonuses: [
+        artBonuses: [
           {
             value: 40,
             target: "rxnBonus",
@@ -281,7 +281,7 @@ const mondstadtSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 35,
           target: "attPattBonus",
           path: "all.pct_",
@@ -314,13 +314,13 @@ const mondstadtSets: AppArtifact[] = [
       icon: "d/df/Item_Broken_Rime%27s_Echo",
     },
     descriptions: [
-      "{Cryo DMG Bonus}#[k] +{15%}#[v].",
+      "Increases {Cryo DMG Bonus}#[k] by {15%}#[v].",
       "When a character attacks an opponent affected by Cryo, their {CRIT Rate}#[k] is increased by {20%}#[v].",
       "If the opponent is Frozen, {CRIT Rate}#[k] is increased by an additional {20%}#[v].",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "cryo",
@@ -335,7 +335,7 @@ const mondstadtSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "cRate_",
@@ -345,7 +345,7 @@ const mondstadtSets: AppArtifact[] = [
         index: 1,
         description: 2,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 20,
           target: "totalAttr",
           path: "cRate_",
@@ -378,12 +378,12 @@ const mondstadtSets: AppArtifact[] = [
       icon: "a/a6/Item_Wine-Stained_Tricorne",
     },
     descriptions: [
-      "{Hydro DMG Bonus}#[k] +{15%}#[v]",
+      "Increases {Hydro DMG Bonus}#[k] by {15%}#[v]",
       "After using an Elemental Skill, increases {Normal Attack and Charged Attack DMG}#[k] {30%}#[v] for 15s.",
     ],
     setBonuses: [
       {
-        bonuses: {
+        artBonuses: {
           value: 15,
           target: "totalAttr",
           path: "hydro",
@@ -395,7 +395,7 @@ const mondstadtSets: AppArtifact[] = [
         index: 0,
         description: 1,
         affect: EModAffect.SELF,
-        bonuses: {
+        artBonuses: {
           value: 30,
           target: "attPattBonus",
           path: ["NA.pct_", "CA.pct_"],

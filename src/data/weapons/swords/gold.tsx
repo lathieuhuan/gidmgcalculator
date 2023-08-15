@@ -212,7 +212,7 @@ const goldSwords: AppWeapon[] = [
         index: 0,
         affect: EModAffect.PARTY,
         description: 1,
-        buffBonuses: [
+        wpBonuses: [
           {
             base: 12,
             targetAttPatt: [...NCPA_PERCENTS],
