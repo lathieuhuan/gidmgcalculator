@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { FaBars, FaCog, FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
+import { FaBars, FaCoffee, FaCog, FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
 import type { UIState } from "@Store/uiSlice/types";
 
 // Hook
@@ -41,30 +41,45 @@ export function NavBar() {
           ) : null}
         </div>
 
-        <div ref={ref} className="relative text-default">
-          <button className="w-8 h-8 flex-center bg-darkblue-3 text-xl" onClick={() => setMenuDropped(!menuDropped)}>
-            <FaBars />
-          </button>
-
-          <div
-            className={
-              "absolute top-full right-0 z-50 origin-top-right transition-transform duration-200 pt-2 pr-2 " +
-              (menuDropped ? "scale-100" : "scale-0")
-            }
+        <div className="flex">
+          <a
+            className="px-2 h-full flex-center font-semibold text-black bg-lightgold space-x-2"
+            href="https://www.buymeacoffee.com/ronqueroc"
+            target="_blank"
           >
-            <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
-              <ActionButton label="Introduction" icon={<FaInfoCircle size="1.125rem" />} onClick={openModal("INTRO")} />
-              <ActionButton label="Guides" icon={<FaQuestionCircle />} onClick={openModal("GUIDES")} />
-              {isLargeView ? null : (
-                <NavTabs
-                  className="px-4 py-2"
-                  activeClassName="border-l-4 border-darkred bg-darkblue-1 text-default"
-                  onClickTab={closeMenu}
+            <FaCoffee />
+            <span>Buy me a coffee</span>
+          </a>
+
+          <div ref={ref} className="relative text-default">
+            <button className="w-8 h-8 flex-center bg-darkblue-3 text-xl" onClick={() => setMenuDropped(!menuDropped)}>
+              <FaBars />
+            </button>
+
+            <div
+              className={
+                "absolute top-full right-0 z-50 origin-top-right transition-transform duration-200 pt-2 pr-2 " +
+                (menuDropped ? "scale-100" : "scale-0")
+              }
+            >
+              <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
+                <ActionButton
+                  label="Introduction"
+                  icon={<FaInfoCircle size="1.125rem" />}
+                  onClick={openModal("INTRO")}
                 />
-              )}
-              <ActionButton label="Settings" icon={<FaCog />} onClick={openModal("SETTINGS")} />
-              <ActionButton label="Download" icon={<FaDownload />} onClick={openModal("DOWNLOAD")} />
-              <ActionButton label="Upload" icon={<FaUpload />} onClick={openModal("UPLOAD")} />
+                <ActionButton label="Guides" icon={<FaQuestionCircle />} onClick={openModal("GUIDES")} />
+                {isLargeView ? null : (
+                  <NavTabs
+                    className="px-4 py-2"
+                    activeClassName="border-l-4 border-darkred bg-darkblue-1 text-default"
+                    onClickTab={closeMenu}
+                  />
+                )}
+                <ActionButton label="Settings" icon={<FaCog />} onClick={openModal("SETTINGS")} />
+                <ActionButton label="Download" icon={<FaDownload />} onClick={openModal("DOWNLOAD")} />
+                <ActionButton label="Upload" icon={<FaUpload />} onClick={openModal("UPLOAD")} />
+              </div>
             </div>
           </div>
         </div>
