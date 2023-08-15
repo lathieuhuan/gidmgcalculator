@@ -144,45 +144,6 @@ export const initiateBonuses = () => {
   };
 };
 
-// interface ApplySelfBuffs {
-//   isFinal: boolean;
-//   modifierArgs: BuffModifierArgsWrapper;
-//   charBuffCtrls?: ModifierCtrl[];
-//   charData: AppCharacter;
-// }
-// export const applySelfBuffs = ({ isFinal, modifierArgs, charBuffCtrls, charData }: ApplySelfBuffs) => {
-//   if (!charBuffCtrls?.length) return;
-//   const { char } = modifierArgs;
-//   const { innateBuffs = [], buffs = [] } = charData;
-
-//   for (const buff of innateBuffs) {
-//     if (buff.isGranted(char)) {
-//       const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-//       applyFn?.({
-//         desc: `Self / ${buff.src}`,
-//         charBuffCtrls,
-//         ...modifierArgs,
-//       });
-//     }
-//   }
-//   for (const ctrl of charBuffCtrls) {
-//     const buff = findByIndex(buffs, ctrl.index);
-
-//     if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
-//       const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-//       applyFn?.({
-//         desc: `Self / ${buff.src}`,
-//         fromSelf: true,
-//         charBuffCtrls,
-//         inputs: ctrl.inputs || [],
-//         ...modifierArgs,
-//       });
-//     }
-//   }
-// };
-
 interface AddArtAttrArgs {
   artifacts: CalcArtifacts;
   totalAttr: TotalAttribute;
