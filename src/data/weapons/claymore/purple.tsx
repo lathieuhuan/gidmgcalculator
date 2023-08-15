@@ -20,7 +20,7 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    passiveName: "",
+    passiveName: "White Cruising Wave",
     descriptions: [
       `When the wielder is healed, {ATK}#[k] will be increased by {18^%}#[v] for 8s. This can be triggered even when
       the character is not on the field.`,
@@ -41,11 +41,11 @@ const purpleClaymores: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cRate_", scale: "4%" },
-    passiveName: "",
+    passiveName: '"The Silver Tongue"',
     descriptions: [
-      `{ATK}#[k] will be increased by {12^%}#[v] for 10s after being affected by Pyro. This effect can be triggered
-      once every 12s. `,
-      `{All Elemental DMG Bonus}#[k] will be increased by {9^%}#[v] for 10s after being affected by Hydro, Cryo, or
+      `{ATK}#[k] will be increased by {12^%}#[v] for 15s after being affected by Pyro. This effect can be triggered
+      once every 12s.`,
+      `{All Elemental DMG Bonus}#[k] will be increased by {9^%}#[v] for 15s after being affected by Hydro, Cryo, or
       Electro. This effect can be triggered once every 12s.`,
     ],
     buffs: [

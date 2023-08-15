@@ -1,100 +1,58 @@
-import { Lightgold, Red } from "@Src/pure-components";
-
-export const UPDATES = [
+export const UPDATES: Array<{ date: string; content: string[] }> = [
+  {
+    date: "August 15th, 2023 (v3.3.1)",
+    content: [
+      `Updated weapons: {The First Great Magic}#[g], {Flowing Purity}#[g], {Sacrificial Jade}#[g], {Talking Stick}#[g],
+      {Finale of the Deep}#[g]. Thank you {Edvard Neto}#[r]!`,
+      "Optimize system.",
+    ],
+  },
   {
     date: "August 5th, 2023",
     content: [
-      <>
-        Fixed <Lightgold>Alhaitham</Lightgold>'s A4 and <Lightgold>Dendro Traveler</Lightgold>'s A4 did not work
-        properly.
-      </>,
+      `Fixed {Alhaitham}#[g]'s A4 and {Dendro Traveler}#[g]'s A4 did not work properly. Thank you {Edvard Neto}#[r]!`,
     ],
   },
   {
     date: "August 4th, 2023 (v3.3.0)",
-    content: [
-      <>
-        Update <Lightgold>Lyney</Lightgold>.
-      </>,
-      <>Optimize system.</>,
-    ],
+    content: ["Update {Lyney}#[g].", "Optimize system."],
   },
   {
     date: "July 17th, 2023",
     content: [
-      <>
-        Updated characters (v2): <Lightgold>Lyney</Lightgold>, <Lightgold>Hydro Traveler</Lightgold>,{" "}
-        <Lightgold>Freminet</Lightgold>.
-      </>,
-      <>
-        Updated weapon <Lightgold>The First Great Magic</Lightgold>.
-      </>,
-      <>
-        Updated artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
-      </>,
-      <>
-        Fixed <Lightgold>Raiden Shogun</Lightgold>'s A4 buff did not work properly. Thank you{" "}
-        <Red>RememberTelannas</Red>!
-      </>,
+      "Updated characters (v2): {Lyney}#[g], {Hydro Traveler}#[g], {Freminet}#[g].",
+      "Updated weapon {The First Great Magic}#[g].",
+      "Updated artifacts: {Golden Troupe}#[g], {Marechaussee Hunter}#[g].",
+      "Fixed {Raiden Shogun}#[g]'s A4 buff did not work properly. Thank you {RememberTelannas}#[r]!",
     ],
   },
   {
     date: "July 13th, 2023",
-    content: [
-      <>
-        Added characters: <Lightgold>Hydro Traveler</Lightgold>, <Lightgold>Freminet</Lightgold>.
-      </>,
-      <>
-        Added bow: <Lightgold>End of the Line</Lightgold>.
-      </>,
-    ],
+    content: ["Added characters: {Hydro Traveler}#[g], {Freminet}#[g].", "Added bow: {End of the Line}#[g]."],
   },
   {
     date: "July 11th, 2023",
     content: [
-      <>
-        Added artifacts: <Lightgold>Golden Troupe</Lightgold>, <Lightgold>Marechaussee Hunter</Lightgold>.
-      </>,
-      <>
-        Added bows: <Lightgold>Song of Stillness</Lightgold>, <Lightgold>Scion of the Blazing Sun</Lightgold>.
-      </>,
-      <>
-        Added catalysts: <Lightgold>Flowing Purity</Lightgold>, <Lightgold>Sacrificial Jade</Lightgold>.
-      </>,
-      <>
-        Added claymores: <Lightgold>Tidal Shadow</Lightgold>, <Lightgold>Talking Stick</Lightgold>.
-      </>,
-      <>
-        Added polearms: <Lightgold>Rightful Reward</Lightgold>, <Lightgold>Ballad of the Fjords</Lightgold>.
-      </>,
-      <>
-        Added swords: <Lightgold>Crossing of Fleuve Cendre</Lightgold>, <Lightgold>Finale of the Deep</Lightgold>,{" "}
-        <Lightgold>Wolf-Fang</Lightgold>.
-      </>,
+      "Added artifacts: {Golden Troupe}#[g], {Marechaussee Hunter}#[g].",
+      "Added bows: {Song of Stillness}#[g], {Scion of the Blazing Sun}#[g].",
+      "Added catalysts: {Flowing Purity}#[g], {Sacrificial Jade}#[g].",
+      "Added claymores: {Tidal Shadow}#[g], {Talking Stick}#[g].",
+      "Added polearms: {Rightful Reward}#[g], {Ballad of the Fjords}#[g].",
+      "Added swords: {Crossing of Fleuve Cendre}#[g], {Finale of the Deep}#[g], {Wolf-Fang}#[g].",
     ],
   },
   {
     date: "July 10th, 2023",
     content: [
-      <>
-        Corrected damage type of <Lightgold>Lyney</Lightgold>'s "Pyrotechnic Strike" and "Spiritbreath Thorn" to Pyro.
-        Thank you <Red>Antixique</Red>!
-      </>,
+      `Corrected damage type of {Lyney}#[g]'s "Pyrotechnic Strike" and "Spiritbreath Thorn" to Pyro. Thank you {Antixique}#[r]!`,
     ],
   },
   {
     date: "July 9th, 2023 (v3.2.0)",
     content: [
-      <>
-        Added characters: <Lightgold>Lyney</Lightgold> and <Lightgold>Lynette</Lightgold>.
-      </>,
-      <>
-        Added weapon: <Lightgold>The First Great Magic</Lightgold> (bow).
-      </>,
-      <>
-        Note: I don't know what Lyney's A4 buff increases and not quite understand <Lightgold>Freminet</Lightgold>'s kit
-        for now. I will follow more of his gameplay.
-      </>,
+      "Added characters: {Lyney}#[g] and {Lynette}#[g].",
+      "Added weapon: {The First Great Magic}#[g] (bow).",
+      "Note: I don't know what Lyney's A4 buff increases and not quite understand {Freminet}#[g]'s kit for now. I will follow more of his gameplay.",
     ],
   },
   {

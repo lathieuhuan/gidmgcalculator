@@ -10,7 +10,7 @@ const purpleBows: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
-    passiveName: "",
+    passiveName: "Benthic Pulse",
     descriptions: [
       `After the wielder is healed, they will deal {12^%}#[v] more {DMG}#[k] for 8s. This can be triggered even when
       the character is not on the field.`,
@@ -31,7 +31,7 @@ const purpleBows: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cRate_", scale: "4%" },
-    passiveName: "",
+    passiveName: "The Way of Sunfire",
     descriptions: [
       `After a Charged Attack hits an opponent, a Sunfire Arrow will descend and deal {45^}% ATK as DMG.`,
       `After a Sunfire Arrow hits an opponent, it will increase the {Charged Attack DMG}#[k] taken by this opponent from

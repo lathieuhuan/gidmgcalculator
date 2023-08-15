@@ -18,7 +18,7 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
-    passiveName: "",
+    passiveName: "Tip of the Spear",
     descriptions: [
       `When the wielder is healed, restore {6^} Energy. This effect can be triggered once every 10s, and can occur
       even when the character is not on the field.`,
@@ -31,7 +31,7 @@ const purplePolearms: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passiveName: "",
+    passiveName: "Tales of the Tundra",
     descriptions: [
       `When there are at least 3 different Elemental Types in your party, {Elemental Mastery}#[k] will be increased by
       {90^}#[v].`,

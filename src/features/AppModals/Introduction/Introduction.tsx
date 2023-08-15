@@ -5,6 +5,20 @@ import { UPDATES } from "./updates";
 import { VersionRecap } from "./VersionRecap";
 
 export const Introduction = (props: ModalControl) => {
+  const typeToCls: Record<string, string> = {
+    g: "text-lightgold",
+    r: "text-lightred",
+  };
+
+  const parseContent = (content: string) => {
+    return content.replace(/\{[a-zA-Z0-9 ]+\}#\[[gr]\]/g, (match) => {
+      const [bodyPart, typePart = ""] = match.split("#");
+      const body = bodyPart.slice(1, -1);
+      const type = typePart?.slice(1, -1);
+      return `<span class="${typeToCls[type] || ""}">${body}</span>`;
+    });
+  };
+
   return (
     <StandardModal
       title={
@@ -25,7 +39,7 @@ export const Introduction = (props: ModalControl) => {
                     <p className="text-orange font-bold">{date}</p>
                     <ul className="mt-1 space-y-1">
                       {content.map((line, j) => (
-                        <li key={j}>- {line}</li>
+                        <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />
                       ))}
                     </ul>
                   </div>

@@ -10,7 +10,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
-    passiveName: "",
+    passiveName: "Ironbone",
     descriptions: [
       `Increases {Elemental Skill CRIT Rate}#[k] by {6^%}#[v]. Increases {Energy Recharge}#[k] by {12^%}#[v] for 5s
       after using an Elemental Skill.`,
@@ -37,14 +37,14 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    passiveName: "",
+    passiveName: "An End Sublime",
     descriptions: [
-      `When using an Elemental Skill, {ATK}#[k] will be increased by {9^%}#[v] for 12s`,
+      `When using an Elemental Skill, {ATK}#[k] will be increased by {9^%}#[v] for 15s`,
       `, and a Bond of Life worth 25% of Max HP will be granted. This effect can be triggered once every 10s.`,
-      `When the Bond of Life is cleared, a maximum of {112.5^}#[m] ATK will be gained based on {1.8^%}#[v] of the
-      {Bond}#[k] for 12s.`,
-      `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to
-      this value is obtained.`,
+      `When the Bond of Life is cleared, a maximum of {112.5^}#[m] ATK will be gained based on {1.8^%}#[v] of the total
+      amount of the Life Bond cleared, lasting for 15s.`,
+      `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to this
+      value is obtained.`,
     ],
     buffs: [
       {
@@ -75,7 +75,7 @@ const purpleSwords: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },
-    passiveName: "",
+    passiveName: "Northwind Wolf",
     descriptions: [
       `{DMG}#[k] dealt by {Elemental Skill and Elemental Burst}#[k] will be increased by {12^%}#[v]. When an Elemental
       Skill hits an opponent, its {CRIT Rate}#[k] will be increased by {1.5^%}#[v]. When an Elemental Burst hits an

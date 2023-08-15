@@ -1,5 +1,5 @@
 import type { AttributeStat, ModInputConfig, Rarity, WeaponType } from "./global";
-import type { ModifierInput, DebuffModifierArgsWrapper, Tracker, ResistanceReductionKey } from "./calculator";
+import type { ResistanceReductionKey } from "./calculator";
 import { EModAffect } from "@Src/constants";
 import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
 
@@ -96,16 +96,10 @@ export type ArtifactModifier = {
   description: number | number[];
 };
 
-export type ArtifactBuff = ArtifactModifier & {
+type ArtifactBuff = ArtifactModifier & {
   index: number;
   affect: EModAffect;
   artBonuses: ArtifactBonus | ArtifactBonus[];
-};
-
-export type ApplyArtDebuffArgs = DebuffModifierArgsWrapper & {
-  inputs: ModifierInput[];
-  desc: string;
-  tracker?: Tracker;
 };
 
 type SetPenalty = {

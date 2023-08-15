@@ -9,18 +9,18 @@ const goldBows: AppWeapon[] = [
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },
-    passiveName: "missing passive name",
+    passiveName: "Parsifal the Great",
     descriptions: [
-      `{ATK}#[k] increased by {12^%}#[v]. For every party member with the same Elemental Type as the wielder (including the
-    wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental Type from the
-    wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, {ATK}#[k] will be increased by
-    {12^%}#[v]/{24^%}#[v]/{36^%}#[v]. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD will be increased by
-    {2^2}%/{5^2}%/{8^2}%.`,
+      `{Charged Attacks DMG}#[k] increased by {12^%}#[v]. For every party member with the same Elemental Type as the
+    wielder (including the wielder themselves), gain 1 Gimmick stack. For every party member with a different Elemental
+    Type from the wielder, gain 1 Theatrics stack. When the wielder has 1/2/3 or more Gimmick stacks, {ATK}#[k] will be
+    increased by {12^%}#[v]/{24^%}#[v]/{36^%}#[v]. When the wielder has 1/2/3 or more Theatrics stacks, Movement SPD
+    will be increased by {2^2}%/{5^2}%/{8^2}%.`,
     ],
     autoBuffs: [
       {
         base: 12,
-        targetAttribute: "atk_",
+        targetAttPatt: "CA.pct_",
       },
       {
         base: 12,

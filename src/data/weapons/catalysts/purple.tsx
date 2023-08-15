@@ -17,15 +17,12 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
-    passiveName: "",
+    passiveName: "Unfinished Masterpiece",
     descriptions: [
-      `When using an Elemental Skill, {All Elemental DMG Bonus}#[k] will be increased by {6^%}#[v] for 12s`,
+      `When using an Elemental Skill, {All Elemental DMG Bonus}#[k] will be increased by {6^%}#[v] for 15s`,
       `, and a Bond of Life worth 24% of Max HP will be granted. This effect can be triggered once every 10s.`,
       `When the Bond of Life is cleared, every 1,000 HP cleared in the process will provide {1.5^%}#[v]
-      {All Elemental DMG Bonus}#[k]. Up to a maximum of {9^%}#[m] All Elemental DMG can be gained this way. This effect
-      lasts 12s.`,
-      `Bond of Life: Absorbs healing for the character based on its base value, and clears after healing equal to this
-      value is obtained.`,
+      {All Elemental DMG Bonus}#[k], up to a maximum of {9^%}#[m]. This effect lasts 15s.`,
     ],
     buffs: [
       {
@@ -56,10 +53,10 @@ const purpleCatalysts: AppWeapon[] = [
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "cRate_", scale: "8%" },
-    passiveName: "",
+    passiveName: "Jade Circulation",
     descriptions: [
-      `When not on the field for more than 6s, {Max HP}#[k] will be increased by {15^%}#[v] and {Elemental Mastery}#[k]
-      will be increased by {60^}#[v].`,
+      `When not on the field for more than 6s, {Max HP}#[k] will be increased by {24^%}#[v] and {Elemental Mastery}#[k]
+      will be increased by {30^}#[v].`,
       `These effects will be canceled after the wielder has been on the field for 6s.`,
     ],
     buffs: [
@@ -68,11 +65,11 @@ const purpleCatalysts: AppWeapon[] = [
         affect: EModAffect.SELF,
         wpBonuses: [
           {
-            base: 15,
+            base: 24,
             targetAttribute: "hp_",
           },
           {
-            base: 60,
+            base: 30,
             targetAttribute: "em",
           },
         ],
