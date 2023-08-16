@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from "react";
 
-import type { CalculatedDamageCluster, Infusion, CalcItemBonus, TrackerDamageRecord } from "@Src/types";
+import type { CalculatedDamageCluster, Infusion, TrackerDamageRecord } from "@Src/types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
@@ -51,7 +51,24 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
           <div key={i}>
             <p className="font-medium">{t(attackName)}</p>
             <ul className="pl-4 text-lesser text-sm leading-6 list-disc">
-              {renderExclusiveBonuses(record.exclusives, t)}
+              {record.exclusives?.length ? (
+                <li>
+                  <p className="text-lightgold">Exclusive</p>
+                  {record.exclusives.map((bonus, i) => {
+                    return Object.entries(bonus).map(([key, record]) => {
+                      return (
+                        <p key={i}>
+                          + {t(key)}: {record.desc}{" "}
+                          <Green>
+                            {record.value}
+                            {percentSign(key)}
+                          </Green>
+                        </p>
+                      );
+                    });
+                  })}
+                </li>
+              ) : null}
 
               <li>
                 Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
@@ -132,29 +149,5 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
         );
       })}
     </div>
-  );
-}
-
-function renderExclusiveBonuses(bonuses: CalcItemBonus[] = [], t: (str: string) => string) {
-  if (!bonuses.length) {
-    return null;
-  }
-  return (
-    <li>
-      <p className="text-lightgold">Exclusive</p>
-      {bonuses.map((bonus, i) => {
-        return Object.entries(bonus).map(([key, record]) => {
-          return (
-            <p key={i} className="list-disc">
-              + {t(key)}: {record.desc}{" "}
-              <Green>
-                {record.value}
-                {percentSign(key)}
-              </Green>
-            </p>
-          );
-        });
-      })}
-    </li>
   );
 }
