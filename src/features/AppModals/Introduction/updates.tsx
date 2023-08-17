@@ -1,6 +1,10 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
     date: "August 15th, 2023 (v3.3.1)",
+    content: [`Fixed {Deepwood Memories}#[g]'s debuff could not be activated. Thank you {Victor H}#[r]!`],
+  },
+  {
+    date: "August 15th, 2023 (v3.3.1)",
     content: [
       `Updated weapons: {The First Great Magic}#[g], {Flowing Purity}#[g], {Sacrificial Jade}#[g], {Talking Stick}#[g],
       {Finale of the Deep}#[g]. Thank you {Edvard Neto}#[r]!`,

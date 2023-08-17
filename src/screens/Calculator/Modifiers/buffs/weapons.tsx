@@ -28,13 +28,12 @@ export const WeaponBuffs = () => {
       keyPrefix: "main",
       weapon,
       ctrls: weaponBuffCtrls,
-      renderProps: (ctrl) => {
+      getHanlders: (ctrl, ctrlIndex) => {
         const path: ToggleModCtrlPath = {
           modCtrlName: "wpBuffCtrls",
-          ctrlIndex: ctrl.index,
+          ctrlIndex,
         };
         return {
-          checked: ctrl.activated,
           onToggle: () => dispatch(toggleModCtrl(path)),
           onChangeText: (value, inputIndex) => {
             dispatch(
@@ -77,7 +76,7 @@ export const WeaponBuffs = () => {
           keyPrefix: teammate.name,
           weapon: teammate.weapon,
           ctrls: teammate.weapon.buffCtrls,
-          renderProps: (ctrl) => {
+          getHanlders: (ctrl) => {
             const updateWeaponInputs = (value: ModifierInput, inputIndex: number) => {
               const newBuffCtrls = deepCopy(buffCtrls);
               const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);

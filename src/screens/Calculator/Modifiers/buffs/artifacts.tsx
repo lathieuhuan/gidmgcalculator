@@ -29,10 +29,10 @@ export const ArtifactBuffs = () => {
         keyPrefix: "main",
         code: mainCode,
         ctrls: artBuffCtrls,
-        getHanlders: (ctrl) => {
+        getHanlders: (ctrl, ctrlIndex) => {
           const path: ToggleModCtrlPath = {
             modCtrlName: "artBuffCtrls",
-            ctrlIndex: ctrl.index,
+            ctrlIndex,
           };
           return {
             onToggle: () => dispatch(toggleModCtrl(path)),

@@ -18,9 +18,10 @@ interface RenderWeaponModifiersArgs {
   mutable?: boolean;
   weapon: Pick<Weapon, "code" | "type" | "refi">;
   ctrls: ModifierCtrl[];
-  renderProps?: (
-    ctrl: ModifierCtrl
-  ) => Pick<ModifierTemplateProps, "checked" | "onToggle" | "onChangeText" | "onSelectOption" | "onToggleCheck">;
+  getHanlders?: (
+    ctrl: ModifierCtrl,
+    ctrlIndex: number
+  ) => Pick<ModifierTemplateProps, "onToggle" | "onChangeText" | "onSelectOption" | "onToggleCheck">;
 }
 export const renderWeaponModifiers = ({
   fromSelf,
@@ -28,26 +29,26 @@ export const renderWeaponModifiers = ({
   mutable,
   weapon,
   ctrls,
-  renderProps,
+  getHanlders,
 }: RenderWeaponModifiersArgs) => {
   const data = findDataWeapon(weapon);
   if (!data) return [null];
   const { buffs = [], descriptions = [] } = data;
 
-  return ctrls.map((ctrl) => {
+  return ctrls.map((ctrl, index) => {
     const buff = findByIndex(buffs, ctrl.index);
-    if (!buff) return null;
 
-    return (
+    return buff ? (
       <ModifierTemplate
         key={`${keyPrefix}-${data.code}-${ctrl.index}`}
         mutable={mutable}
+        checked={ctrl.activated}
         heading={`${data.name} R${weapon.refi} ${fromSelf ? "(self)" : ""}`}
         description={getWeaponDescription(descriptions, buff, weapon.refi)}
         inputs={ctrl.inputs}
         inputConfigs={buff.inputConfigs}
-        {...renderProps?.(ctrl)}
+        {...getHanlders?.(ctrl, index)}
       />
-    );
+    ) : null;
   });
 };

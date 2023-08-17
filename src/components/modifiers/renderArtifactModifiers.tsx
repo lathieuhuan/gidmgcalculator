@@ -15,7 +15,7 @@ interface RenderArtifactBuffsArgs {
   mutable?: boolean;
   code: number;
   ctrls: ModifierCtrl[];
-  getHanlders?: (ctrl: ModifierCtrl) => Pick<ModifierTemplateProps, "onToggle" | "onSelectOption">;
+  getHanlders?: (ctrl: ModifierCtrl, ctrlIndex: number) => Pick<ModifierTemplateProps, "onToggle" | "onSelectOption">;
 }
 export const renderArtifactBuffs = ({
   fromSelf,
@@ -29,7 +29,7 @@ export const renderArtifactBuffs = ({
   if (!data) return [];
   const { buffs = [] } = data;
 
-  return ctrls.map((ctrl) => {
+  return ctrls.map((ctrl, index) => {
     const buff = findByIndex(buffs, ctrl.index);
     if (!buff) return null;
 
@@ -44,7 +44,7 @@ export const renderArtifactBuffs = ({
         description={description}
         inputs={ctrl.inputs}
         inputConfigs={buff.inputConfigs}
-        {...getHanlders?.(ctrl)}
+        {...getHanlders?.(ctrl, index)}
       />
     );
   });

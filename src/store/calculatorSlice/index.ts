@@ -340,8 +340,7 @@ export const calculatorSlice = createSlice({
     },
     toggleTeammateModCtrl: (state, action: ToggleTeammateModCtrlAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex } = action.payload;
-      const ctrls = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [];
-      const ctrl = findByIndex(ctrls, ctrlIndex);
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -350,8 +349,7 @@ export const calculatorSlice = createSlice({
     },
     changeTeammateModCtrlInput: (state, action: ChangeTeammateModCtrlInputAction) => {
       const { teammateIndex, modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrls = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName] || [];
-      const ctrl = findByIndex(ctrls, ctrlIndex);
+      const ctrl = state.setupsById[state.activeId].party[teammateIndex]?.[modCtrlName][ctrlIndex];
 
       if (ctrl && ctrl.inputs) {
         ctrl.inputs[inputIndex] = value;
@@ -445,7 +443,7 @@ export const calculatorSlice = createSlice({
     },
     toggleModCtrl: (state, action: ToggleModCtrlAction) => {
       const { modCtrlName, ctrlIndex } = action.payload;
-      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
+      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
 
       if (ctrl) {
         ctrl.activated = !ctrl.activated;
@@ -454,7 +452,7 @@ export const calculatorSlice = createSlice({
     },
     changeModCtrlInput: (state, action: ChangeModCtrlInputAction) => {
       const { modCtrlName, ctrlIndex, inputIndex, value } = action.payload;
-      const ctrl = findByIndex(state.setupsById[state.activeId][modCtrlName], ctrlIndex);
+      const ctrl = state.setupsById[state.activeId][modCtrlName][ctrlIndex];
 
       if (ctrl?.inputs) {
         ctrl.inputs[inputIndex] = value;

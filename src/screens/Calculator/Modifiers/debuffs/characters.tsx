@@ -104,7 +104,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
 
   const subContent: JSX.Element[] = [];
 
-  teammate.debuffCtrls.forEach((ctrl) => {
+  teammate.debuffCtrls.forEach((ctrl, ctrlIndex) => {
     const debuff = findByIndex(teammateData.debuffs || [], ctrl.index);
     if (!debuff) return;
 
@@ -112,7 +112,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
     const path: ToggleTeammateModCtrlPath = {
       teammateIndex,
       modCtrlName: "debuffCtrls",
-      ctrlIndex: ctrl.index,
+      ctrlIndex,
     };
     const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "self");
 

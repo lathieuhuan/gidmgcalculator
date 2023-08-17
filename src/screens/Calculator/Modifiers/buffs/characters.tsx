@@ -48,14 +48,14 @@ export function SelfBuffs() {
     }
   });
 
-  selfBuffCtrls.forEach((ctrl) => {
+  selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const buff = findByIndex(buffs, ctrl.index);
 
     if (buff && (!buff.isGranted || buff.isGranted(char))) {
       const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfBuffCtrls",
-        ctrlIndex: ctrl.index,
+        ctrlIndex,
       };
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
@@ -126,7 +126,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const subContent: JSX.Element[] = [];
   const teammateData = appData.getCharData(teammate.name);
 
-  teammate.buffCtrls.forEach((ctrl) => {
+  teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
     const { inputs = [] } = ctrl;
     const buff = findByIndex(teammateData.buffs || [], ctrl.index);
     if (!buff) return;
@@ -134,7 +134,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
     const path: ToggleTeammateModCtrlPath = {
       teammateIndex,
       modCtrlName: "buffCtrls",
-      ctrlIndex: ctrl.index,
+      ctrlIndex,
     };
 
     subContent.push(
