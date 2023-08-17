@@ -4,6 +4,89 @@ import { liyueSeries } from "./series";
 
 const goldCatalysts: AppWeapon[] = [
   {
+    code: 168,
+    name: "Rite of the Eternal Flow",
+    icon: "",
+    rarity: 5,
+    mainStatScale: "44b",
+    subStat: { type: "cDmg_", scale: "19.2%" },
+    passiveName: "",
+    descriptions: [
+      `{HP}#[k] increased by {12^%}#[v].`,
+      `When current HP increases or decreases, {Charged Attack DMG}#[k] will be increased by {8^4%}#[v] for 4s. Max
+      {3}#[m] stacks, can be triggered once every 0.3s.`,
+      `When you reach the maximum number of stacks or refresh stack duration, {7^1} Energy will be restored. This effect
+      can be triggered once every 12s.`,
+    ],
+    autoBuffs: [
+      {
+        base: 12,
+        targetAttribute: "hp_",
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        description: 1,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        base: 8,
+        increment: 4,
+        stacks: {
+          type: "input",
+        },
+        targetAttPatt: "CA.pct_",
+      },
+    ],
+  },
+  {
+    code: 167,
+    name: "Cashflow Supervision",
+    icon: "",
+    rarity: 5,
+    mainStatScale: "48",
+    subStat: { type: "cRate_", scale: "4.8%" },
+    passiveName: "",
+    descriptions: [
+      `{ATK}#[k] is increased by {9^%}#[v].`,
+      `When current HP increases or decreases, {Normal Attack DMG}#[k] will be increased by {10.5^%}#[v], and
+      {Charged Attack DMG}#[k] will be increased by {9^%}#[v] for 4s. Max {3}#[m] stacks. This effect can be triggered once
+      every 0.3s. At the maximum number of stacks, {ATK SPD}#[k] will be increased by {6^%}#[v].`,
+    ],
+    autoBuffs: [
+      {
+        base: 9,
+        targetAttribute: "atk_",
+      },
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        description: 1,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        stacks: {
+          type: "input",
+        },
+        wpBonuses: [
+          { base: 10.5, targetAttPatt: "NA.pct_" },
+          { base: 9, targetAttPatt: "CA.pct_" },
+          { checkInput: 3, base: 6, targetAttribute: "naAtkSpd_" },
+        ],
+      },
+    ],
+  },
+  {
     code: 152,
     name: "Jadefall's Splendor",
     icon: "7/7a/Weapon_Jadefall%27s_Splendor",
