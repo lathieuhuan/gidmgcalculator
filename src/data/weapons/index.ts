@@ -1,20 +1,19 @@
-import goldBows from "./bows/gold";
-import otherBows from "./bows/others";
-import purpleBows from "./bows/purple";
-import goldCatalysts from "./catalysts/gold";
-import otherCatalysts from "./catalysts/others";
-import purpleCatalysts from "./catalysts/purple";
-import goldClaymores from "./claymore/gold";
-import otherClaymores from "./claymore/others";
-import purpleClaymores from "./claymore/purple";
-import goldPolearms from "./polearms/gold";
-import otherPolearms from "./polearms/others";
-import purplePolearms from "./polearms/purple";
-import goldSwords from "./swords/gold";
-import otherSwords from "./swords/others";
-import purpleSwords from "./swords/purple";
+import goldBows from "./bow-gold";
+import otherBows from "./bow-other";
+import purpleBows from "./bow-purple";
+import goldCatalysts from "./catalyst-gold";
+import otherCatalysts from "./catalyst-other";
+import purpleCatalysts from "./catalyst-purple";
+import goldClaymores from "./claymore-gold";
+import otherClaymores from "./claymore-other";
+import purpleClaymores from "./claymore-purple";
+import goldPolearms from "./polearm-gold";
+import otherPolearms from "./polearm-other";
+import purplePolearms from "./polearm-purple";
+import goldSwords from "./sword-gold";
+import otherSwords from "./sword-other";
+import purpleSwords from "./sword-purple";
 
-// total 146
 const weapons = {
   bow: goldBows.concat(purpleBows, otherBows),
   catalyst: goldCatalysts.concat(purpleCatalysts, otherCatalysts),

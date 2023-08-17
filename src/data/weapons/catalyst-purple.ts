@@ -7,7 +7,7 @@ import {
   favoniusPassive,
   royalSeries,
   sacrificialPassive,
-} from "../series";
+} from "./series";
 
 const purpleCatalysts: AppWeapon[] = [
   {

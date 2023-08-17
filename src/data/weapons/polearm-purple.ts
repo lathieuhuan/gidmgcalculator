@@ -8,7 +8,7 @@ import {
   lithicSeries,
   royalSeries,
   watatsumiSeries,
-} from "../series";
+} from "./series";
 
 const purplePolearms: AppWeapon[] = [
   {

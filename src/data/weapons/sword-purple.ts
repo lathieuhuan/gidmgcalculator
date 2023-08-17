@@ -1,6 +1,6 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "../series";
+import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "./series";
 
 const purpleSwords: AppWeapon[] = [
   {

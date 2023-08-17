@@ -1,6 +1,6 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { GRAY_INFO, GREEN_INFO } from "../constants";
+import { GRAY_INFO, GREEN_INFO } from "./constants";
 
 const otherPolearms: AppWeapon[] = [
   {

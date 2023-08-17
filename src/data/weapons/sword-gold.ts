@@ -1,7 +1,7 @@
 import type { AppWeapon } from "@Src/types";
 import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { liyueSeries } from "../series";
+import { liyueSeries } from "./series";
 
 const goldSwords: AppWeapon[] = [
   {

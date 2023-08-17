@@ -10,7 +10,7 @@ import {
   royalSeries,
   sacrificialPassive,
   watatsumiSeries,
-} from "../series";
+} from "./series";
 
 const purpleClaymores: AppWeapon[] = [
   {
