@@ -6,7 +6,7 @@ import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
 const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 32.16 }, YunJin as AppCharacter, args);
+  return getTalentMultiplier({ talentType: "EB", root: 32.16, inputIndex: 1 }, YunJin as AppCharacter, args);
 };
 
 const YunJin: DefaultAppCharacter = {

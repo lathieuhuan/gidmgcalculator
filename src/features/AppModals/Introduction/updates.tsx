@@ -1,7 +1,11 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
-    date: "August 15th, 2023 (v3.3.1)",
-    content: [`Fixed {Deepwood Memories}#[g]'s debuff could not be activated. Thank you {Victor H}#[r]!`],
+    date: "August 17th, 2023",
+    content: [
+      `Fixed {Deepwood Memories}#[g]'s debuff could not be activated. Thank you {Victor H}#[r]!`,
+      `Fixed {Yun Jin}#[g]'s EB buff did not work properly when she was in teammate position.
+      Thank you {Wrong_Improvement143}#[r]!`,
+    ],
   },
   {
     date: "August 15th, 2023 (v3.3.1)",

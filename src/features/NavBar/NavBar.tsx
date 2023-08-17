@@ -43,7 +43,7 @@ export function NavBar() {
 
         <div className="flex">
           <a
-            className="px-2 h-full flex-center font-semibold text-black bg-lightgold space-x-2"
+            className="px-2 h-full flex-center font-bold text-black bg-lightgold space-x-2"
             href="https://www.buymeacoffee.com/ronqueroc"
             target="_blank"
           >
