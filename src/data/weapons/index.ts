@@ -1,25 +1,25 @@
-import goldBows from "./bow-gold";
-import otherBows from "./bow-other";
-import purpleBows from "./bow-purple";
-import goldCatalysts from "./catalyst-gold";
-import otherCatalysts from "./catalyst-other";
-import purpleCatalysts from "./catalyst-purple";
-import goldClaymores from "./claymore-gold";
-import otherClaymores from "./claymore-other";
-import purpleClaymores from "./claymore-purple";
-import goldPolearms from "./polearm-gold";
-import otherPolearms from "./polearm-other";
-import purplePolearms from "./polearm-purple";
-import goldSwords from "./sword-gold";
-import otherSwords from "./sword-other";
-import purpleSwords from "./sword-purple";
+import bowGold from "./bow-gold";
+import bowOther from "./bow-other";
+import bowPurple from "./bow-purple";
+import catalystGold from "./catalyst-gold";
+import catalystOther from "./catalyst-other";
+import catalystPurple from "./catalyst-purple";
+import claymoreGold from "./claymore-gold";
+import claymoreOther from "./claymore-other";
+import claymorePurple from "./claymore-purple";
+import polearmGold from "./polearm-gold";
+import polearmOther from "./polearm-other";
+import polearmPurple from "./polearm-purple";
+import swordGold from "./sword-gold";
+import swordOther from "./sword-other";
+import swordPurple from "./sword-purple";
 
 const weapons = {
-  bow: goldBows.concat(purpleBows, otherBows),
-  catalyst: goldCatalysts.concat(purpleCatalysts, otherCatalysts),
-  claymore: goldClaymores.concat(purpleClaymores, otherClaymores),
-  polearm: goldPolearms.concat(purplePolearms, otherPolearms),
-  sword: goldSwords.concat(purpleSwords, otherSwords),
+  bow: bowGold.concat(bowPurple, bowOther),
+  catalyst: catalystGold.concat(catalystPurple, catalystOther),
+  claymore: claymoreGold.concat(claymorePurple, claymoreOther),
+  polearm: polearmGold.concat(polearmPurple, polearmOther),
+  sword: swordGold.concat(swordPurple, swordOther),
 };
 
 export default weapons;
