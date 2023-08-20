@@ -1,13 +1,9 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { applyPercent, round } from "@Src/utils";
+import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
 import { checkCons, getTalentMultiplier } from "../utils";
-
-const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 56, inputIndex: 1 }, Bennett as AppCharacter, args);
-};
 
 const Bennett: DefaultAppCharacter = {
   code: 19,

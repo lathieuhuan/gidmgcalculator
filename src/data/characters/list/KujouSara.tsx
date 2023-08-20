@@ -103,7 +103,11 @@ const KujouSara: DefaultAppCharacter = {
       applyBuff: (obj) => {
         const { fromSelf } = obj;
         const baseATK = fromSelf ? obj.totalAttr.base_atk : obj.inputs[0];
-        const [level, mult] = getTalentMultiplier({ talentType: "ES", root: 42.96 }, KujouSara as AppCharacter, obj);
+        const [level, mult] = getTalentMultiplier(
+          { talentType: "ES", root: 42.96, inputIndex: 1 },
+          KujouSara as AppCharacter,
+          obj
+        );
 
         if (mult) {
           const description = `${obj.desc} Lv.${level} / ${round(mult, 2)}% of Base ATK`;

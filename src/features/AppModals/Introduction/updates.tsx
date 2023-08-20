@@ -1,5 +1,9 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
+    date: "August 21st, 2023",
+    content: [`Fixed {Kujou Sara}#[g]'s ES buff did not work properly when she was in teammate position.`],
+  },
+  {
     date: "August 17th, 2023",
     content: [
       `Fixed {Deepwood Memories}#[g]'s debuff could not be activated. Thank you {Victor H}#[r]!`,

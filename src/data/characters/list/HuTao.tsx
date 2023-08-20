@@ -137,7 +137,7 @@ const HuTao: DefaultAppCharacter = {
           HuTao as AppCharacter,
           obj
         );
-        let description = obj.desc + ` Lv.${level} / ${round(mult, 2)} of Max HP`;
+        let description = obj.desc + ` Lv.${level} / ${round(mult, 2)}% of Max HP`;
         let buffValue = applyPercent(obj.totalAttr.hp, mult);
         const limit = obj.totalAttr.base_atk * 4;
 
