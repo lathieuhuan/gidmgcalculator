@@ -6,6 +6,7 @@ import {
   desertSeries,
   dragonspinePassive,
   favoniusPassive,
+  fontaineSeries2,
   lithicSeries,
   royalSeries,
   sacrificialPassive,
@@ -13,6 +14,17 @@ import {
 } from "./series";
 
 const purpleClaymores: AppWeapon[] = [
+  {
+    code: 172,
+    beta: true,
+    name: "Portable Power Saw",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "41",
+    subStat: { type: "hp_", scale: "12%" },
+    passiveName: "",
+    ...fontaineSeries2,
+  },
   {
     code: 158,
     name: "Tidal Shadow",

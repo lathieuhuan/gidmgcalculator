@@ -1,8 +1,25 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive, watatsumiSeries } from "./series";
+import {
+  blackcliffSeries,
+  favoniusPassive,
+  fontaineSeries1,
+  royalSeries,
+  sacrificialPassive,
+  watatsumiSeries,
+} from "./series";
 
 const purpleBows: AppWeapon[] = [
+  {
+    code: 170,
+    beta: true,
+    name: "Range Gauge",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    ...fontaineSeries1,
+  },
   {
     code: 164,
     name: "Song of Stillness",

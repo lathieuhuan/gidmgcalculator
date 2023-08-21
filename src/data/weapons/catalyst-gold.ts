@@ -5,6 +5,7 @@ import { liyueSeries } from "./series";
 const goldCatalysts: AppWeapon[] = [
   {
     code: 168,
+    beta: true,
     name: "Rite of the Eternal Flow",
     icon: "",
     rarity: 5,
@@ -46,6 +47,7 @@ const goldCatalysts: AppWeapon[] = [
   },
   {
     code: 167,
+    beta: true,
     name: "Cashflow Supervision",
     icon: "",
     rarity: 5,
@@ -75,13 +77,23 @@ const goldCatalysts: AppWeapon[] = [
             max: 3,
           },
         ],
-        stacks: {
-          type: "input",
-        },
+
         wpBonuses: [
-          { base: 10.5, targetAttPatt: "NA.pct_" },
-          { base: 9, targetAttPatt: "CA.pct_" },
-          { checkInput: 3, base: 6, targetAttribute: "naAtkSpd_" },
+          {
+            base: 10.5,
+            stacks: { type: "input" },
+            targetAttPatt: "NA.pct_",
+          },
+          {
+            base: 9,
+            stacks: { type: "input" },
+            targetAttPatt: "CA.pct_",
+          },
+          {
+            checkInput: 3,
+            base: 6,
+            targetAttribute: "naAtkSpd_",
+          },
         ],
       },
     ],

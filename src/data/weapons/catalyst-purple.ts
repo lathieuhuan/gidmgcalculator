@@ -11,6 +11,46 @@ import {
 
 const purpleCatalysts: AppWeapon[] = [
   {
+    code: 169,
+    beta: true,
+    name: "Ballad of the Boundless Blue",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "er_", scale: "6.7%" },
+    passiveName: "",
+    descriptions: [
+      `When Normal and Charged Attacks hit, {Normal Attack DMG}#[k] will be increased by {6^%}#[v] and
+      {Charged Attack DMG}#[k] by {4.5^%}#[v] for 6s. Max {3}#[m] stacks.`,
+      `This effect can be triggered once every 0.3s.`,
+    ],
+    buffs: [
+      {
+        index: 0,
+        affect: EModAffect.SELF,
+        inputConfigs: [
+          {
+            type: "stacks",
+            max: 3,
+          },
+        ],
+        stacks: {
+          type: "input",
+        },
+        wpBonuses: [
+          {
+            base: 6,
+            targetAttPatt: "NA.pct_",
+          },
+          {
+            base: 4.5,
+            targetAttPatt: "CA.pct_",
+          },
+        ],
+      },
+    ],
+  },
+  {
     code: 162,
     name: "Flowing Purity",
     icon: "https://images2.imgbox.com/56/62/FXT7IK0o_o.png",

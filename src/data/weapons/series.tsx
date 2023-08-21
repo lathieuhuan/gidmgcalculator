@@ -1,5 +1,5 @@
 import type { AppWeapon } from "@Src/types";
-import { EModAffect } from "@Src/constants";
+import { EModAffect, VISION_TYPES } from "@Src/constants";
 
 type SeriesInfo = Pick<AppWeapon, "passiveName" | "descriptions" | "autoBuffs" | "buffs">;
 
@@ -228,6 +228,73 @@ export const watatsumiSeries: SeriesInfo = {
       },
       targetAttPatt: "EB.pct_",
       max: 30,
+    },
+  ],
+};
+
+export const fontaineSeries1: SeriesInfo = {
+  passiveName: "",
+  descriptions: [
+    `When this character is healed or causes healing, even off-field, they will gain a Mark for 30s. Max {3}#[m]
+    Marks. When a Marked character uses an Elemental Skill or Burst, all Marks will be consumed. Each stack increases
+    {ATK}#[k] by {2^1%}#[v] and increase {all Elemental DMG}#[k] by {5.5^1.5%}#[v]. The Effect lasts 10s, and can be
+    gained once every 15s.`,
+  ],
+  buffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      description: `When a Marked character uses an Elemental Skill or Burst, all Marks will be consumed. Each stack
+      increases {ATK}#[k] by {2^1%}#[v] and increase {all Elemental DMG}#[k] by {5.5^1.5%}#[v]. Max {3}#[m] stacks.`,
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 3,
+        },
+      ],
+      stacks: {
+        type: "input",
+      },
+      wpBonuses: [
+        {
+          base: 2,
+          increment: 1,
+          targetAttribute: "atk_",
+        },
+        {
+          base: 5.5,
+          increment: 1.5,
+          targetAttribute: [...VISION_TYPES],
+        },
+      ],
+    },
+  ],
+};
+
+export const fontaineSeries2: SeriesInfo = {
+  passiveName: "",
+  descriptions: [
+    `When this character is healed or causes healing, even off-field, they will gain a Mark for 30s. Max {3}#[m]
+    Marks. When a Marked character uses an Elemental Skill or Burst, all Marks will be consumed. Each stack will
+    restore {1.5^} Energy and increase {Elemental Mastery}#[k] by {30^}#[v]. The Effect lasts 10s, and can be gained
+    once every 15s.`,
+  ],
+  buffs: [
+    {
+      index: 0,
+      affect: EModAffect.SELF,
+      description: `Each stack will increase {Elemental Mastery}#[k] by {30^}#[v]. Max {3}#[m] stacks.`,
+      inputConfigs: [
+        {
+          type: "stacks",
+          max: 3,
+        },
+      ],
+      base: 30,
+      stacks: {
+        type: "input",
+      },
+      targetAttribute: "em",
     },
   ],
 };

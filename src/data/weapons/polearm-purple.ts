@@ -5,12 +5,23 @@ import {
   blackcliffSeries,
   dragonspinePassive,
   favoniusPassive,
+  fontaineSeries1,
   lithicSeries,
   royalSeries,
   watatsumiSeries,
 } from "./series";
 
 const purplePolearms: AppWeapon[] = [
+  {
+    code: 171,
+    beta: true,
+    name: "Prospector's Drill",
+    icon: "",
+    rarity: 4,
+    mainStatScale: "44",
+    subStat: { type: "atk_", scale: "6%" },
+    ...fontaineSeries1,
+  },
   {
     code: 160,
     name: "Rightful Reward",
