@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff, getTalentMultiplier } from "../utils";
 
 const getPropSurplusValue = (args: DescriptionSeedGetterArgs) => {
   return getTalentMultiplier({ talentType: "ES", root: 53.2 }, Lyney as AppCharacter, args);
@@ -160,7 +160,7 @@ const Lyney: DefaultAppCharacter = {
       more {ATK}#[gr] as DMG.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A1, "CA.0", "mult_", 80));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "CA.0", "mult_", 80));
       },
     },
     {

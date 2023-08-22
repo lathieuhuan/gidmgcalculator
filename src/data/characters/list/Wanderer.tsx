@@ -1,14 +1,10 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierCtrl, PartyData } from "@Src/types";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { findByIndex, round, toMult } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
-
-const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {
-  return checkCons[4](args.char) ? findByIndex(args.charBuffCtrls, 1)?.inputs?.includes(2) : false;
-};
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({
@@ -67,20 +63,17 @@ const Wanderer: DefaultAppCharacter = {
       image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
     },
   },
+  calcListConfig: {
+    NA: { multScale: 7 },
+  },
   calcList: {
     NA: [
-      { name: "1-Hit", multFactors: { root: 68.71, scale: 1 } },
-      { name: "2-Hit", multFactors: { root: 65.02, scale: 1 } },
-      { name: "3-Hit (1/2)", multFactors: { root: 47.64, scale: 1 } },
-      {
-        name: "Additional 1-Hit (C6)",
-        multFactors: { root: 27.48, scale: 1 },
-      },
-      { name: "Additional 2-Hit (C6)", multFactors: { root: 26, scale: 1 } },
-      {
-        name: "Additional 3-Hit (1/2) (C6)",
-        multFactors: { root: 19.06, scale: 1 },
-      },
+      { name: "1-Hit", multFactors: 68.71 },
+      { name: "2-Hit", multFactors: 65.02 },
+      { name: "3-Hit (1/2)", multFactors: 47.64 },
+      { name: "Additional 1-Hit (C6)", multFactors: 27.48 },
+      { name: "Additional 2-Hit (C6)", multFactors: 26 },
+      { name: "Additional 3-Hit (1/2) (C6)", multFactors: 19.06 },
       {
         id: "NA.0",
         name: "Wind Arrow DMG (A4) (1/4)",
@@ -137,7 +130,7 @@ const Wanderer: DefaultAppCharacter = {
 
         if (checkCons[1](char)) {
           applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
-          calcItemBuffs.push(exclBuff(EModSrc.C1, "NA.0", "mult_", 25));
+          calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "NA.0", "mult_", 25));
         }
       },
     },
@@ -195,7 +188,10 @@ const Wanderer: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const difference = (isHydroInfusedES(obj) ? 120 : 100) - (obj.inputs[0] || 0);
+        const isHydroInfusedES = checkCons[4](obj.char)
+          ? findByIndex(obj.charBuffCtrls, 1)?.inputs?.includes(2)
+          : false;
+        const difference = (isHydroInfusedES ? 120 : 100) - (obj.inputs[0] || 0);
         const buffValue = Math.min(Math.max(difference, 0) * 4, 200);
         applyModifier(obj.desc, obj.attPattBonus, "EB.pct_", buffValue, obj.tracker);
       },

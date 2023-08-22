@@ -1,8 +1,7 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green, Rose } from "@Src/pure-components";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const Sayu: DefaultAppCharacter = {
   code: 36,
@@ -60,7 +59,7 @@ const Sayu: DefaultAppCharacter = {
       { id: "ES.0", name: "Press Kick", multFactors: 158.4 },
       { id: "ES.1", name: "Hold Kick", multFactors: 217.6 },
       {
-        id: "ES.2",
+        id: "ES.1",
         name: "Kick's Elemental DMG",
         attElmt: "various",
         multFactors: 76.16,
@@ -130,8 +129,8 @@ const Sayu: DefaultAppCharacter = {
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         const buffValue = Math.min(totalAttr.em, 2000);
         calcItemBuffs.push(
-          exclBuff(EModSrc.C6, "EB.0", "mult_", buffValue * 0.2),
-          exclBuff(EModSrc.C6, "EB.1", "flat", buffValue * 3)
+          genExclusiveBuff(EModSrc.C6, "EB.0", "mult_", buffValue * 0.2),
+          genExclusiveBuff(EModSrc.C6, "EB.1", "flat", buffValue * 3)
         );
       },
     },
@@ -155,8 +154,8 @@ const Sayu: DefaultAppCharacter = {
       ],
       applyBuff: ({ inputs, calcItemBuffs }) => {
         calcItemBuffs.push(
-          exclBuff(EModSrc.C2, "ES.0", "pct_", 3.3),
-          exclBuff(EModSrc.C2, ["ES.1", "ES.2"], "pct_", 3.3 * Math.floor((inputs[0] || 0) / 0.5))
+          genExclusiveBuff(EModSrc.C2, "ES.0", "pct_", 3.3),
+          genExclusiveBuff(EModSrc.C2, "ES.1", "pct_", 3.3 * Math.floor((inputs[0] || 0) / 0.5))
         );
       },
     },

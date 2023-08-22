@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 function getA4BuffValue(maxHP: number) {
   const stacks = maxHP / 1000 - 30;
@@ -111,7 +111,7 @@ const Nilou: DefaultAppCharacter = {
       isGranted: checkCons[1],
       description: `{Watery moon DMG}#[gr] is increased by {65%}#[b,gr].`,
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.0", "pct_", 65));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.0", "pct_", 65));
       },
     },
     {

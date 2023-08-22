@@ -4,7 +4,7 @@ import { EModAffect } from "@Src/constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Thoma: DefaultAppCharacter = {
   code: 43,
@@ -112,7 +112,7 @@ const Thoma: DefaultAppCharacter = {
       description: `{Fiery Collapse DMG}#[gr] [~EB] is increased by {2.2%}#[b,gr] of Thoma's {Max HP}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A4, "EB.0", "flat", applyPercent(totalAttr.hp, 2.2)));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "EB.0", "flat", applyPercent(totalAttr.hp, 2.2)));
       },
     },
   ],

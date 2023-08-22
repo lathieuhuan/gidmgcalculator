@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { EModSrc, TRAVELER_INFO, TRAVELLER_NCPAs } from "../constants";
-import { checkAscs, exclBuff, getTalentMultiplier } from "../utils";
+import { checkAscs, genExclusiveBuff, getTalentMultiplier } from "../utils";
 
 const HydroTraveler: DefaultAppCharacter = {
   code: 75,
@@ -108,7 +108,7 @@ const HydroTraveler: DefaultAppCharacter = {
         const [level, mult] = getTalentMultiplier({ talentType: "ES", root: 2 }, HydroTraveler as AppCharacter, obj);
         const buffValue = applyPercent(obj.totalAttr.hp, mult);
         const description = `Suffusion Lv.${level} / ${round(mult, 2)}% of Max HP`;
-        obj.calcItemBuffs.push(exclBuff(description, "ES.1", "flat", buffValue));
+        obj.calcItemBuffs.push(genExclusiveBuff(description, "ES.1", "flat", buffValue));
       },
     },
     {
@@ -142,7 +142,7 @@ const HydroTraveler: DefaultAppCharacter = {
           buffValue = 5000;
           desc += " / limit to 5000";
         }
-        calcItemBuffs.push(exclBuff(desc, "ES.0", "flat", buffValue));
+        calcItemBuffs.push(genExclusiveBuff(desc, "ES.0", "flat", buffValue));
       },
     },
   ],

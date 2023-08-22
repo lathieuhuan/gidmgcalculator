@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } fro
 import { EModAffect } from "@Src/constants";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const getESPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
@@ -79,7 +79,7 @@ const Eula: DefaultAppCharacter = {
         multFactors: { root: 367.05, scale: 1 },
       },
       {
-        id: "EB.1",
+        id: "EB.0",
         name: "DMG per Stack",
         attElmt: "phys",
         multFactors: { root: 74.99, scale: 1 },
@@ -146,7 +146,7 @@ const Eula: DefaultAppCharacter = {
       HP.`,
       isGranted: checkCons[4],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C4, ["EB.0", "EB.1"], "pct_", 25));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C4, "EB.0", "pct_", 25));
       },
     },
   ],

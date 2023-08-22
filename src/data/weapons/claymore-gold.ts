@@ -1,6 +1,6 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { liyueSeries } from "../series";
+import { liyueSeries } from "./series";
 
 const goldClaymores: AppWeapon[] = [
   {

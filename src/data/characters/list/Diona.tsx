@@ -1,9 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { Green } from "@Src/pure-components";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const Diona: DefaultAppCharacter = {
   code: 24,
@@ -128,7 +127,7 @@ const Diona: DefaultAppCharacter = {
       isGranted: checkCons[2],
       applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.pct_", 15, tracker);
-        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "pct_", 15));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C2, "ES.0", "pct_", 15));
       },
     },
   ],

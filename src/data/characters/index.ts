@@ -46,6 +46,7 @@ import Lyney from "./list/Lyney";
 import Mika from "./list/Mika";
 import Mona from "./list/Mona";
 import Nahida from "./list/Nahida";
+import Neuvillette from "./list/Neuvillette";
 import Nilou from "./list/Nilou";
 import Ningguang from "./list/Ningguang";
 import Noelle from "./list/Noelle";
@@ -62,6 +63,7 @@ import Thoma from "./list/Thoma";
 import Tighnari from "./list/Tighnari";
 import Venti from "./list/Venti";
 import Wanderer from "./list/Wanderer";
+import Wriothesley from "./list/Wriothesley";
 import Xiangling from "./list/Xiangling";
 import Xiao from "./list/Xiao";
 import Xingqiu from "./list/Xingqiu";
@@ -122,6 +124,7 @@ const characters = {
   Lyney,
   Mika,
   Mona,
+  Neuvillette,
   Nahida,
   Nilou,
   Ningguang,
@@ -139,6 +142,7 @@ const characters = {
   Tighnari,
   Venti,
   Wanderer,
+  Wriothesley,
   Xiangling,
   Xiao,
   Xingqiu,

@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const Dehya: DefaultAppCharacter = {
   code: 68,
@@ -136,7 +136,7 @@ const Dehya: DefaultAppCharacter = {
       description: `When active character(s) within the {Fiery Sanctum}#[gr] field are attacked, its next coordinated
       attack will deal {50%}#[b,gr] increased {DMG}#[gr].`,
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "pct_", 50));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C2, "ES.0", "pct_", 50));
       },
     },
     {

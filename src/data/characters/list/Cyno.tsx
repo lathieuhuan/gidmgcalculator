@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Cyno: DefaultAppCharacter = {
   code: 59,
@@ -70,10 +70,10 @@ const Cyno: DefaultAppCharacter = {
     ],
     EB: [
       { id: "EB.0", name: "1-Hit", attPatt: "NA", multFactors: 78.28 },
-      { id: "EB.1", name: "2-Hit", attPatt: "NA", multFactors: 82.47 },
-      { id: "EB.2", name: "3-Hit", attPatt: "NA", multFactors: 104.63 },
-      { id: "EB.3", name: "4-Hit (1/2)", attPatt: "NA", multFactors: 51.69 },
-      { id: "EB.4", name: "5-Hit", attPatt: "NA", multFactors: 130.84 },
+      { id: "EB.0", name: "2-Hit", attPatt: "NA", multFactors: 82.47 },
+      { id: "EB.0", name: "3-Hit", attPatt: "NA", multFactors: 104.63 },
+      { id: "EB.0", name: "4-Hit (1/2)", attPatt: "NA", multFactors: 51.69 },
+      { id: "EB.0", name: "5-Hit", attPatt: "NA", multFactors: 130.84 },
       { name: "Charged Attack DMG", attPatt: "CA", multFactors: 101.05 },
       { name: "Plunge DMG", attPatt: "PA", multFactors: 63.93 },
       { name: "Low Plunge", attPatt: "PA", multFactors: 127.84 },
@@ -118,8 +118,8 @@ const Cyno: DefaultAppCharacter = {
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(
-          exclBuff(EModSrc.A4, "ES.1", "flat", totalAttr.em * 2.5),
-          exclBuff(EModSrc.A4, ["EB.0", "EB.1", "EB.2", "EB.3", "EB.4"], "flat", Math.round(totalAttr.em * 1.5))
+          genExclusiveBuff(EModSrc.A4, "ES.1", "flat", totalAttr.em * 2.5),
+          genExclusiveBuff(EModSrc.A4, "EB.0", "flat", Math.round(totalAttr.em * 1.5))
         );
       },
     },
@@ -146,7 +146,7 @@ const Cyno: DefaultAppCharacter = {
       {DMG}#[gr] will be increased by {35%}#[b,gr].`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A1, "ES.0", "pct_", 35));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "ES.0", "pct_", 35));
       },
     },
     {

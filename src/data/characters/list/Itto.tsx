@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVIER_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff, getTalentMultiplier } from "../utils";
 
 const Itto: DefaultAppCharacter = {
   code: 45,
@@ -49,7 +49,7 @@ const Itto: DefaultAppCharacter = {
     ],
     CA: [
       { id: "CA.0", name: "Arataki Kesagiri Combo Slash DMG", multFactors: 91.16 },
-      { id: "CA.1", name: "Arataki Kesagiri Final Slash DMG", multFactors: 190.92 },
+      { id: "CA.0", name: "Arataki Kesagiri Final Slash DMG", multFactors: 190.92 },
       { name: "Saichimonji Slash DMG", multFactors: 90.47 },
     ],
     PA: HEAVIER_PAs,
@@ -102,7 +102,7 @@ const Itto: DefaultAppCharacter = {
       description: `{Arataki Kesagiri DMG}#[gr] is increased by {35%}#[b,gr] of Itto's {DEF}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A4, ["CA.0", "CA.1"], "flat", applyPercent(totalAttr.def, 35)));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "CA.0", "flat", applyPercent(totalAttr.def, 35)));
       },
     },
     {

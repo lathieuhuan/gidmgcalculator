@@ -1,7 +1,7 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { GRAY_INFO, GREEN_INFO } from "../constants";
-import { baneSeries1, cullTheWeakPassive } from "../series";
+import { GRAY_INFO, GREEN_INFO } from "./constants";
+import { baneSeries1, cullTheWeakPassive } from "./series";
 
 const otherClaymores: AppWeapon[] = [
   {

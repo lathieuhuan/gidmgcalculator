@@ -1,8 +1,25 @@
 import type { AppWeapon } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { baneSeries2, blackcliffSeries, favoniusPassive, royalSeries, sacrificialPassive } from "../series";
+import {
+  baneSeries2,
+  blackcliffSeries,
+  favoniusPassive,
+  fontaineSeries2,
+  royalSeries,
+  sacrificialPassive,
+} from "./series";
 
 const purpleSwords: AppWeapon[] = [
+  {
+    code: 173,
+    beta: true,
+    name: "The Dock",
+    icon: "https://images2.imgbox.com/82/cd/Fj0ZJP4i_o.png",
+    rarity: 4,
+    mainStatScale: "42",
+    subStat: { type: "hp_", scale: "9%" },
+    ...fontaineSeries2,
+  },
   {
     code: 165,
     name: "Crossing of Fleuve Cendre",
