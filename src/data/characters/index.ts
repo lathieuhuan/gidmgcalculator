@@ -46,6 +46,7 @@ import Lyney from "./list/Lyney";
 import Mika from "./list/Mika";
 import Mona from "./list/Mona";
 import Nahida from "./list/Nahida";
+import Neuvillette from "./list/Neuvillette";
 import Nilou from "./list/Nilou";
 import Ningguang from "./list/Ningguang";
 import Noelle from "./list/Noelle";
@@ -123,6 +124,7 @@ const characters = {
   Lyney,
   Mika,
   Mona,
+  Neuvillette,
   Nahida,
   Nilou,
   Ningguang,

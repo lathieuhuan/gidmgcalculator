@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Layla: DefaultAppCharacter = {
   code: 61,
@@ -113,7 +113,7 @@ const Layla: DefaultAppCharacter = {
       description: `{Shooting Star DMG}#[gr] [~ES] is increased by {1.5%}#[b,gr] of Layla's {Max HP}#[gr].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "flat", applyPercent(totalAttr.hp, 1.5)));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "ES.0", "flat", applyPercent(totalAttr.hp, 1.5)));
       },
     },
     {
@@ -121,7 +121,7 @@ const Layla: DefaultAppCharacter = {
       description: `The {Shield Absorption}#[gr] of the Curtain of Slumber [~ES] is increased by {20%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C1, "ES.1", "pct_", 20));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.1", "pct_", 20));
       },
     },
     {
@@ -130,7 +130,7 @@ const Layla: DefaultAppCharacter = {
       isGranted: checkCons[6],
       applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "EB.pct_", 40, tracker);
-        calcItemBuffs.push(exclBuff(EModSrc.C6, "ES.0", "pct_", 40));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C6, "ES.0", "pct_", 40));
       },
     },
   ],

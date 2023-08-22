@@ -4,7 +4,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const getEBBonus = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
@@ -80,19 +80,19 @@ const Ayato: DefaultAppCharacter = {
         multFactors: 52.89,
       },
       {
-        id: "ES.1",
+        id: "ES.0",
         name: "Shunsuiken 2-Hit DMG",
         attPatt: "NA",
         multFactors: 58.91,
       },
       {
-        id: "ES.2",
+        id: "ES.0",
         name: "Shunsuiken 3-Hit DMG",
         attPatt: "NA",
         multFactors: 64.93,
       },
       {
-        id: "ES.3",
+        id: "ES.1",
         name: "Extra Shunsuiken strike (1/2) (C6)",
         attPatt: "NA",
         multFactors: { root: 450, scale: 0 },
@@ -163,9 +163,7 @@ const Ayato: DefaultAppCharacter = {
         });
         const finalMult = 0.56 * (inputs[0] || 0) * TALENT_LV_MULTIPLIERS[7][level];
 
-        calcItemBuffs.push(
-          exclBuff(EModSrc.ES, ["ES.0", "ES.1", "ES.2"], "flat", applyPercent(totalAttr.hp, finalMult))
-        );
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.ES, "ES.0", "flat", applyPercent(totalAttr.hp, finalMult)));
       },
       infuseConfig: {
         overwritable: false,
@@ -196,7 +194,7 @@ const Ayato: DefaultAppCharacter = {
       description: `{Shunsuiken DMG}#[gr] is increased by {40%}#[b,gr] against opponents with 50% HP or less.`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C1, ["ES.0", "ES.1", "ES.2", "ES.3"], "pct_", 40));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, ["ES.0", "ES.1"], "pct_", 40));
       },
     },
     {

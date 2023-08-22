@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Alhaitham: DefaultAppCharacter = {
   code: 65,
@@ -116,7 +116,7 @@ const Alhaitham: DefaultAppCharacter = {
       applyFinalBuff: ({ totalAttr, attPattBonus, calcItemBuffs, desc, tracker }) => {
         const buffValue = Math.min(totalAttr.em * 0.1, 100);
         applyModifier(desc, attPattBonus, "EB.pct_", buffValue, tracker);
-        calcItemBuffs.push(exclBuff(EModSrc.A4, "ES.0", "pct_", buffValue));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "ES.0", "pct_", buffValue));
       },
     },
   ],

@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Freminet: DefaultAppCharacter = {
   code: 74,
@@ -63,40 +63,40 @@ const Freminet: DefaultAppCharacter = {
         multFactors: 200.48,
       },
       {
-        id: "ES.2",
+        id: "ES.1",
         name: "Level 1 Shattering Pressure (cryo)",
         multFactors: 100.24,
       },
       {
-        id: "ES.3",
+        id: "ES.1",
         name: "Level 1 Shattering Pressure (physical)",
         multFactors: 48.7,
         attElmt: "phys",
       },
       {
-        id: "ES.4",
+        id: "ES.1",
         name: "Level 2 Shattering Pressure (cryo)",
         multFactors: 70.17,
       },
       {
-        id: "ES.5",
+        id: "ES.1",
         name: "Level 2 Shattering Pressure (physical)",
         multFactors: 85.2,
         attElmt: "phys",
       },
       {
-        id: "ES.6",
+        id: "ES.1",
         name: "Level 3 Shattering Pressure (cryo)",
         multFactors: 40.1,
       },
       {
-        id: "ES.7",
+        id: "ES.1",
         name: "Level 3 Shattering Pressure (physical)",
         multFactors: 121.7,
         attElmt: "phys",
       },
       {
-        id: "ES.8",
+        id: "ES.1",
         name: "Level 4 Shattering Pressure",
         multFactors: 243.4,
         attElmt: "phys",
@@ -166,8 +166,7 @@ const Freminet: DefaultAppCharacter = {
       description: `The {CRIT Rate}#[gr] of {Shattering Pressure}#[gr] will be increased by {15%}#[b,gr].`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
-        const ids = Array.from({ length: 8 }).map((_, i) => `ES.${i + 1}`);
-        calcItemBuffs.push(exclBuff(EModSrc.C1, ids, "cRate_", 15));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.1", "cRate_", 15));
       },
     },
   ],
@@ -178,7 +177,7 @@ const Freminet: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `{Frost}#[gr] released by Freminet's Normal Attacks deal {200%}#[b,gr] of their original DMG.`,
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff("Stalking mode", "ES.0", "multPlus", 100));
+        calcItemBuffs.push(genExclusiveBuff("Stalking mode", "ES.0", "multPlus", 100));
       },
     },
     {
@@ -189,8 +188,7 @@ const Freminet: DefaultAppCharacter = {
       increased by {40%}#[b,gr] for 5s.`,
       isGranted: checkAscs[4],
       applyBuff: ({ calcItemBuffs }) => {
-        const ids = Array.from({ length: 8 }).map((_, i) => `ES.${i + 1}`);
-        calcItemBuffs.push(exclBuff(EModSrc.A4, ids, "pct_", 40));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "ES.1", "pct_", 40));
       },
     },
     {

@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, HEAVY_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Xinyan: DefaultAppCharacter = {
   code: 27,
@@ -115,7 +115,7 @@ const Xinyan: DefaultAppCharacter = {
       description: `Riff Revolution's {[EB] Physical CRIT Rate}#[gr] is increased by {100%}#[b,gr].`,
       isGranted: checkCons[2],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C2, "EB.0", "cRate_", 100));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C2, "EB.0", "cRate_", 100));
       },
     },
     {

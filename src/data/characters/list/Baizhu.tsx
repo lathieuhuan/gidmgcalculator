@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier, ReactionBonusPath } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Baizhu: DefaultAppCharacter = {
   code: 70,
@@ -145,7 +145,7 @@ const Baizhu: DefaultAppCharacter = {
       isGranted: checkCons[6],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const desc = `${EModSrc.C6} / 8% of ${Math.round(totalAttr.hp)} HP`;
-        calcItemBuffs.push(exclBuff(desc, "EB.0", "flat", Math.round(totalAttr.hp * 0.08)));
+        calcItemBuffs.push(genExclusiveBuff(desc, "EB.0", "flat", Math.round(totalAttr.hp * 0.08)));
       },
     },
   ],

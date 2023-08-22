@@ -55,7 +55,7 @@ export const getTalentMultiplier = (config: Config, charData: AppCharacter, args
   return [0, 0];
 };
 
-export const exclBuff = (
+export const genExclusiveBuff = (
   desc: string,
   ids: string | string[],
   key: AttackPatternInfoKey,

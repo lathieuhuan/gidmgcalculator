@@ -10,7 +10,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const getBuffValue = {
   ES: (args: BuffDescriptionArgs) => {
@@ -120,14 +120,14 @@ const Raiden: DefaultAppCharacter = {
     EB: [
       { id: "EB.0", name: "Musou no Hitotachi", multFactors: { root: 400.8, scale: 2 } },
       { id: "EB.1", name: "1-Hit", multFactors: 44.74 },
-      { id: "EB.2", name: "2-Hit", multFactors: 43.96 },
-      { id: "EB.3", name: "3-Hit", multFactors: 53.82 },
-      { id: "EB.4", name: "4-Hit", multFactors: [30.89, 30.98] },
-      { id: "EB.5", name: "5-Hit", multFactors: 73.94 },
-      { id: "EB.6", name: "Charged Attack", multFactors: [61.6, 74.36] },
-      { id: "EB.7", name: "Plunge DMG", multFactors: { root: 63.93, scale: 1 } },
-      { id: "EB.8", name: "Low Plunge", multFactors: { root: 127.84, scale: 1 } },
-      { id: "EB.9", name: "High Plunge", multFactors: { root: 159.68, scale: 1 } },
+      { id: "EB.1", name: "2-Hit", multFactors: 43.96 },
+      { id: "EB.1", name: "3-Hit", multFactors: 53.82 },
+      { id: "EB.1", name: "4-Hit", multFactors: [30.89, 30.98] },
+      { id: "EB.1", name: "5-Hit", multFactors: 73.94 },
+      { id: "EB.1", name: "Charged Attack", multFactors: [61.6, 74.36] },
+      { id: "EB.1", name: "Plunge DMG", multFactors: { root: 63.93, scale: 1 } },
+      { id: "EB.1", name: "Low Plunge", multFactors: { root: 127.84, scale: 1 } },
+      { id: "EB.1", name: "High Plunge", multFactors: { root: 159.68, scale: 1 } },
     ],
   },
   activeTalents: {
@@ -212,11 +212,10 @@ const Raiden: DefaultAppCharacter = {
         if (stacks) {
           const musouDesc = `${stacks} Resolve, ${musouBonus}% extra multiplier each`;
           const isshinDesc = `${stacks} Resolve, ${isshinBonus}% extra multiplier each`;
-          const ids = Array.from({ length: 9 }).map((_, i) => `EB.${i + 1}`);
 
           obj.calcItemBuffs.push(
-            exclBuff(musouDesc, "EB.0", "mult_", round(stacks * musouBonus, 2)),
-            exclBuff(isshinDesc, ids, "mult_", round(stacks * isshinBonus, 2))
+            genExclusiveBuff(musouDesc, "EB.0", "mult_", round(stacks * musouBonus, 2)),
+            genExclusiveBuff(isshinDesc, "EB.1", "mult_", round(stacks * isshinBonus, 2))
           );
         }
 

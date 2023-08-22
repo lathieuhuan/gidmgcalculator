@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, MEDIUM_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Albedo: DefaultAppCharacter = {
   code: 29,
@@ -100,7 +100,7 @@ const Albedo: DefaultAppCharacter = {
       description: `{Transient Blossoms}#[gr] deal {25%}#[b,gr] more {DMG}#[gr] to opponents whose HP is below 50%.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A1, "ES.0", "pct_", 25));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "ES.0", "pct_", 25));
       },
     },
     {

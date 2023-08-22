@@ -1,12 +1,12 @@
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { round, toMult } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
 import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
 const getESBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "ES", root: 34.07, scale: 5 }, Wriothesley as AppCharacter, args);
+  return getTalentMultiplier({ talentType: "ES", root: 36.87, scale: 5 }, Wriothesley as AppCharacter, args);
 };
 
 const Wriothesley: DefaultAppCharacter = {
@@ -122,6 +122,7 @@ const Wriothesley: DefaultAppCharacter = {
     {
       index: 1,
       src: "Gracious Rebuke [A1]",
+      isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       description: `When Wriothesley's HP is less than 60%, his next {Charged Attack}#[gr] becomes
       <b>Rebuke: Vaulting Fist</b> dealing {30%}#[b,gr] increased {DMG}#[gr]. Effect cooldown: 5s.
@@ -141,6 +142,7 @@ const Wriothesley: DefaultAppCharacter = {
     {
       index: 2,
       src: EModSrc.C4,
+      isGranted: checkCons[4],
       affect: EModAffect.PARTY,
       description: `When Wriothesley is over healed, if he is on the field, his {ATK SPD}#[gr] will be increased by
       {20%}#[b,gr] for 4s, otherwise all party members' {ATK SPD}#[gr] will be increased by {10%}#[b,gr] for 6s.`,

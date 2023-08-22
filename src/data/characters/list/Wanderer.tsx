@@ -1,14 +1,10 @@
-import type { AppCharacter, CharInfo, DefaultAppCharacter, ModifierCtrl, PartyData } from "@Src/types";
+import type { AppCharacter, CharInfo, DefaultAppCharacter, PartyData } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { findByIndex, round, toMult } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
-
-const isHydroInfusedES = (args: { char: CharInfo; charBuffCtrls: ModifierCtrl[] }) => {
-  return checkCons[4](args.char) ? findByIndex(args.charBuffCtrls, 1)?.inputs?.includes(2) : false;
-};
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({
@@ -137,7 +133,7 @@ const Wanderer: DefaultAppCharacter = {
 
         if (checkCons[1](char)) {
           applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 10, tracker);
-          calcItemBuffs.push(exclBuff(EModSrc.C1, "NA.0", "mult_", 25));
+          calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "NA.0", "mult_", 25));
         }
       },
     },
@@ -195,7 +191,10 @@ const Wanderer: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const difference = (isHydroInfusedES(obj) ? 120 : 100) - (obj.inputs[0] || 0);
+        const isHydroInfusedES = checkCons[4](obj.char)
+          ? findByIndex(obj.charBuffCtrls, 1)?.inputs?.includes(2)
+          : false;
+        const difference = (isHydroInfusedES ? 120 : 100) - (obj.inputs[0] || 0);
         const buffValue = Math.min(Math.max(difference, 0) * 4, 200);
         applyModifier(obj.desc, obj.attPattBonus, "EB.pct_", buffValue, obj.tracker);
       },

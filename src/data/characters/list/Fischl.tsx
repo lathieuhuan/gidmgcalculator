@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { BOW_CAs, EModSrc, LIGHT_PAs } from "../constants";
-import { checkCons, exclBuff } from "../utils";
+import { checkCons, genExclusiveBuff } from "../utils";
 
 const Fischl: DefaultAppCharacter = {
   code: 8,
@@ -112,7 +112,7 @@ const Fischl: DefaultAppCharacter = {
       description: `Nightrider's {Summoning DMG}#[gr] is increased by {200%}#[b,gr] of {ATK}#[gr].`,
       isGranted: checkCons[2],
       applyFinalBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.C2, "ES.0", "mult_", 200));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.C2, "ES.0", "mult_", 200));
       },
     },
   ],

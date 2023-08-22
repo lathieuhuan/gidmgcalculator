@@ -3,7 +3,7 @@ import { EModAffect } from "@Src/constants";
 import { countVision, round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff, getTalentMultiplier } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff, getTalentMultiplier } from "../utils";
 
 function getEBBonus(args: DescriptionSeedGetterArgs) {
   let { pyro = 0 } = countVision(args.partyData);
@@ -126,8 +126,8 @@ const Nahida: DefaultAppCharacter = {
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const excessEM = Math.max(totalAttr.em - 200, 0);
         calcItemBuffs.push(
-          exclBuff(EModSrc.A4, "ES.0", "pct_", Math.min(excessEM / 10, 80)),
-          exclBuff(EModSrc.A4, "ES.0", "cRate_", Math.min(round(excessEM * 0.03, 1), 24))
+          genExclusiveBuff(EModSrc.A4, "ES.0", "pct_", Math.min(excessEM / 10, 80)),
+          genExclusiveBuff(EModSrc.A4, "ES.0", "cRate_", Math.min(round(excessEM * 0.03, 1), 24))
         );
       },
     },
@@ -145,7 +145,7 @@ const Nahida: DefaultAppCharacter = {
 
         if (value) {
           obj.calcItemBuffs.push(
-            exclBuff(`${EModSrc.EB} Lv.${level} / ${pyroCount} Pyro teammates`, "ES.0", "pct_", value)
+            genExclusiveBuff(`${EModSrc.EB} Lv.${level} / ${pyroCount} Pyro teammates`, "ES.0", "pct_", value)
           );
         }
       },

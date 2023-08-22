@@ -121,7 +121,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
                 value={talentLevel}
                 onChange={(e) => setTalentLevel(+e.target.value)}
               >
-                {Array.from({ length: 13 }).map((_, i) => (
+                {Array.from({ length: 15 }).map((_, i) => (
                   <option key={i}>{i + 1}</option>
                 ))}
               </select>

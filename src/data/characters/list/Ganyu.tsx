@@ -2,7 +2,7 @@ import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc, LIGHT_PAs } from "../constants";
-import { checkAscs, checkCons, exclBuff } from "../utils";
+import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Ganyu: DefaultAppCharacter = {
   code: 28,
@@ -76,7 +76,7 @@ const Ganyu: DefaultAppCharacter = {
         multFactors: 128,
       },
       {
-        id: "CA.1",
+        id: "CA.0",
         name: "Frostflake Arrow Bloom",
         subAttPatt: "FCA",
         multFactors: 217.6,
@@ -121,7 +121,7 @@ const Ganyu: DefaultAppCharacter = {
       their resulting {bloom effects}#[gr] is increased by {20%}#[b,gr] for 5s.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(exclBuff(EModSrc.A1, ["CA.0", "CA.1"], "cRate_", 20));
+        calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "CA.0", "cRate_", 20));
       },
     },
     {
