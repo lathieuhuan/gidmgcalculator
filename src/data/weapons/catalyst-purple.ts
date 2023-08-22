@@ -14,7 +14,7 @@ const purpleCatalysts: AppWeapon[] = [
     code: 169,
     beta: true,
     name: "Ballad of the Boundless Blue",
-    icon: "",
+    icon: "https://images2.imgbox.com/db/c3/da2hjHUA_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "er_", scale: "6.7%" },

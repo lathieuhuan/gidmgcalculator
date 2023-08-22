@@ -16,7 +16,7 @@ const purplePolearms: AppWeapon[] = [
     code: 171,
     beta: true,
     name: "Prospector's Drill",
-    icon: "",
+    icon: "https://images2.imgbox.com/c1/fd/i7yS4aCy_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },

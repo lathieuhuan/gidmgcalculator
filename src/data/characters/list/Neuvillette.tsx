@@ -8,7 +8,7 @@ const Neuvillette: DefaultAppCharacter = {
   code: 77,
   beta: true,
   name: "Neuvillette",
-  icon: "",
+  icon: "https://images2.imgbox.com/ae/d2/PqXhvc16_o.png",
   sideIcon: "",
   rarity: 5,
   nation: "fontaine",

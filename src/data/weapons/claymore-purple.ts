@@ -18,7 +18,7 @@ const purpleClaymores: AppWeapon[] = [
     code: 172,
     beta: true,
     name: "Portable Power Saw",
-    icon: "",
+    icon: "https://images2.imgbox.com/7f/57/26UtkATM_o.png",
     rarity: 4,
     mainStatScale: "41",
     subStat: { type: "hp_", scale: "12%" },

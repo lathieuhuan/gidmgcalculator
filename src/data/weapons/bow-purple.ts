@@ -14,7 +14,7 @@ const purpleBows: AppWeapon[] = [
     code: 170,
     beta: true,
     name: "Range Gauge",
-    icon: "",
+    icon: "https://images2.imgbox.com/5e/cc/k0VhSN8p_o.png",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },

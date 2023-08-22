@@ -13,7 +13,7 @@ const Wriothesley: DefaultAppCharacter = {
   code: 76,
   beta: true,
   name: "Wriothesley",
-  icon: "",
+  icon: "https://images2.imgbox.com/79/1a/J4kqz7Qn_o.png",
   sideIcon: "",
   rarity: 5,
   nation: "fontaine",
