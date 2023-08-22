@@ -63,20 +63,17 @@ const Wanderer: DefaultAppCharacter = {
       image: "6/64/Talent_Kyougen_Five_Ceremonial_Plays",
     },
   },
+  calcListConfig: {
+    NA: { multScale: 7 },
+  },
   calcList: {
     NA: [
-      { name: "1-Hit", multFactors: { root: 68.71, scale: 1 } },
-      { name: "2-Hit", multFactors: { root: 65.02, scale: 1 } },
-      { name: "3-Hit (1/2)", multFactors: { root: 47.64, scale: 1 } },
-      {
-        name: "Additional 1-Hit (C6)",
-        multFactors: { root: 27.48, scale: 1 },
-      },
-      { name: "Additional 2-Hit (C6)", multFactors: { root: 26, scale: 1 } },
-      {
-        name: "Additional 3-Hit (1/2) (C6)",
-        multFactors: { root: 19.06, scale: 1 },
-      },
+      { name: "1-Hit", multFactors: 68.71 },
+      { name: "2-Hit", multFactors: 65.02 },
+      { name: "3-Hit (1/2)", multFactors: 47.64 },
+      { name: "Additional 1-Hit (C6)", multFactors: 27.48 },
+      { name: "Additional 2-Hit (C6)", multFactors: 26 },
+      { name: "Additional 3-Hit (1/2) (C6)", multFactors: 19.06 },
       {
         id: "NA.0",
         name: "Wind Arrow DMG (A4) (1/4)",

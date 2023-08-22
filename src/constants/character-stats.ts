@@ -11,6 +11,6 @@ export const TALENT_LV_MULTIPLIERS: Record<number, number[]> = {
   5: [0, 1, 1.06, 1.12, 1.198, 1.258, 1.318, 1.396, 1.474, 1.552, 1.629, 1.708, 1.784, 1.862, 1.94, 2.018],
   // zhongli Q
   6: [0, 1, 1.108, 1.216, 1.351, 1.473, 1.595, 1.757, 1.919, 2.081, 2.243, 2.405, 2.568, 2.703, 2.838, 2.973],
-  // plunge, most Aim Shot, razor CA, ayato NA+CA+PA+ES, cyno NA+CA+PA while EB, Neuvillette CA
+  // plunge, most Aim Shot, razor CA, ayato NA+CA+PA+ES, cyno NA+CA+PA while EB, wanderer NA, Neuvillette CA
   7: [0, 1, 1.081, 1.163, 1.279, 1.361, 1.454, 1.581, 1.709, 1.837, 1.977, 2.116, 2.256, 2.395, 2.535, 2.675],
 };

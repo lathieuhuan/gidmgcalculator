@@ -125,9 +125,9 @@ const Raiden: DefaultAppCharacter = {
       { id: "EB.1", name: "4-Hit", multFactors: [30.89, 30.98] },
       { id: "EB.1", name: "5-Hit", multFactors: 73.94 },
       { id: "EB.1", name: "Charged Attack", multFactors: [61.6, 74.36] },
-      { id: "EB.1", name: "Plunge DMG", multFactors: { root: 63.93, scale: 1 } },
-      { id: "EB.1", name: "Low Plunge", multFactors: { root: 127.84, scale: 1 } },
-      { id: "EB.1", name: "High Plunge", multFactors: { root: 159.68, scale: 1 } },
+      { id: "EB.1", name: "Plunge DMG", multFactors: { root: 63.93, scale: 7 } },
+      { id: "EB.1", name: "Low Plunge", multFactors: { root: 127.84, scale: 7 } },
+      { id: "EB.1", name: "High Plunge", multFactors: { root: 159.68, scale: 7 } },
     ],
   },
   activeTalents: {
