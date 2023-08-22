@@ -28,7 +28,7 @@ const purpleClaymores: AppWeapon[] = [
   {
     code: 158,
     name: "Tidal Shadow",
-    icon: "https://images2.imgbox.com/8a/38/CnFqC8ZQ_o.png",
+    icon: "6/69/Weapon_Tidal_Shadow",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
@@ -49,7 +49,7 @@ const purpleClaymores: AppWeapon[] = [
   {
     code: 157,
     name: "Talking Stick",
-    icon: "https://images2.imgbox.com/f9/77/1D4t0CDh_o.png",
+    icon: "2/28/Weapon_Talking_Stick",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cRate_", scale: "4%" },

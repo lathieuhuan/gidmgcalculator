@@ -11,7 +11,7 @@ export const Introduction = (props: ModalControl) => {
   };
 
   const parseContent = (content: string) => {
-    return content.replace(/\{[a-zA-Z0-9 _]+\}#\[[gr]\]/g, (match) => {
+    return content.replace(/\{[a-zA-Z0-9 _']+\}#\[[gr]\]/g, (match) => {
       const [bodyPart, typePart = ""] = match.split("#");
       const body = bodyPart.slice(1, -1);
       const type = typePart?.slice(1, -1);

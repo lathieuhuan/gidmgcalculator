@@ -1,7 +1,12 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
-    date: "August 21st, 2023",
-    content: [`Fixed {Kujou Sara}#[g]'s ES buff did not work properly when she was in teammate position.`],
+    date: "August 22nd, 2023",
+    content: [
+      `Add new characters: {Wriothesley}#[g] and {Neuvillette}#[g].`,
+      `Add new weapons: {The Dock}#[g], {Portable Power Saw}#[g], {Prospector's Drill}#[g], {Range Gauge}#[g],
+      {Ballad of the Boundless Blue}#[g], {Cashflow supervision}#[g], {Rite of the Eternal Flow}#[g].`,
+      `Fixed {Kujou Sara}#[g]'s ATK buff did not work properly when she was in teammate position.`,
+    ],
   },
   {
     date: "August 17th, 2023",

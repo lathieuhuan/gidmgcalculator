@@ -22,8 +22,8 @@ const purpleSwords: AppWeapon[] = [
   },
   {
     code: 165,
-    name: "Crossing of Fleuve Cendre",
-    icon: "https://images2.imgbox.com/75/99/6Ym3kHce_o.png",
+    name: "Fleuve Cendre Ferryman",
+    icon: "7/7e/Weapon_Fleuve_Cendre_Ferryman",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "er_", scale: "10%" },
@@ -50,7 +50,7 @@ const purpleSwords: AppWeapon[] = [
   {
     code: 156,
     name: "Finale of the Deep",
-    icon: "https://images2.imgbox.com/11/aa/6uT27dLW_o.png",
+    icon: "5/5a/Weapon_Finale_of_the_Deep",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "atk_", scale: "6%" },
@@ -88,7 +88,7 @@ const purpleSwords: AppWeapon[] = [
   {
     code: 155,
     name: "Wolf-Fang",
-    icon: "https://images2.imgbox.com/e3/69/glrRYvtm_o.png",
+    icon: "e/e3/Weapon_Wolf-Fang",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },

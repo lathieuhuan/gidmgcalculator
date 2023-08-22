@@ -25,7 +25,7 @@ const purplePolearms: AppWeapon[] = [
   {
     code: 160,
     name: "Rightful Reward",
-    icon: "https://images2.imgbox.com/d8/99/aC6TxTrF_o.png",
+    icon: "8/8d/Weapon_Rightful_Reward",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "hp_", scale: "6%" },
@@ -38,7 +38,7 @@ const purplePolearms: AppWeapon[] = [
   {
     code: 159,
     name: "Ballad of the Fjords",
-    icon: "https://images2.imgbox.com/85/5a/qt8NiEXW_o.png",
+    icon: "8/82/Weapon_Ballad_of_the_Fjords",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "cRate_", scale: "6%" },

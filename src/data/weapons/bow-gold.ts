@@ -5,7 +5,7 @@ const goldBows: AppWeapon[] = [
   {
     code: 154,
     name: "The First Great Magic",
-    icon: "https://images2.imgbox.com/50/9a/4YTtRZEz_o.png",
+    icon: "0/03/Weapon_The_First_Great_Magic",
     rarity: 5,
     mainStatScale: "46",
     subStat: { type: "cDmg_", scale: "14.4%" },

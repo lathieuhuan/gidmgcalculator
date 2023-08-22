@@ -23,7 +23,7 @@ const purpleBows: AppWeapon[] = [
   {
     code: 164,
     name: "Song of Stillness",
-    icon: "https://images2.imgbox.com/5b/49/z9GEFv7l_o.png",
+    icon: "b/bd/Weapon_Song_of_Stillness",
     rarity: 4,
     mainStatScale: "42",
     subStat: { type: "atk_", scale: "9%" },
@@ -44,7 +44,7 @@ const purpleBows: AppWeapon[] = [
   {
     code: 163,
     name: "Scion of the Blazing Sun",
-    icon: "https://images2.imgbox.com/6f/b7/efQwDBFc_o.png",
+    icon: "8/83/Weapon_Scion_of_the_Blazing_Sun",
     rarity: 4,
     mainStatScale: "44",
     subStat: { type: "cRate_", scale: "4%" },
