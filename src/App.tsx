@@ -24,6 +24,7 @@ import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
 import { Message, NavBar, ImportManager, AppModals } from "@Src/features";
+import { appData } from "./data";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ function App() {
         );
       }
     }
+
+    (async () => {
+      const isOk = await appData.fetchMetaData();
+    })();
 
     return () => {
       window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });

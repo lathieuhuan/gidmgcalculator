@@ -20,6 +20,10 @@ type Subscriber<T> = (data: T) => void;
 type CharacterSubscriber = Subscriber<AppCharacter>;
 // type WeaponSubscriber = Subscriber<AppWeapon>;
 
+type Metadata = {
+  characters: Record<string, AppCharacter>;
+};
+
 export class AppDataService {
   private characters: Record<PropertyKey, DataControl<AppCharacter>> = {};
   private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
@@ -54,6 +58,22 @@ export class AppDataService {
         data: null,
       }));
   }
+
+  public async fetchMetaData() {
+    const response = await this.fetchData<Metadata>(BACKEND_URL_PATH.metadata());
+
+    if (response.data) {
+      Object.entries(response.data.characters).forEach(([key, data]) => {
+        Object.assign(this.characters[key].data, data);
+      });
+
+      return true;
+    }
+
+    return false;
+  }
+
+  // ========== CHARACTERS ==========
 
   public subscribeCharacter(name: string, subscriber: CharacterSubscriber) {
     const existSubscribers = this.characterSubscribers.get(name);
@@ -178,7 +198,7 @@ export class AppDataService {
     });
   }
 
-  // WEAPON
+  // ========== WEAPONS ==========
 
   // async fetchWeapon(code: number): Response<AppWeapon> {
   //   const control = this.weapons[code];

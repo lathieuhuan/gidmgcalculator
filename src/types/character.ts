@@ -22,7 +22,23 @@ import type {
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
-export type DefaultAppCharacter = AppCharacter;
+export type DefaultAppCharacter = Pick<
+  AppCharacter,
+  | "code"
+  | "name"
+  | "icon"
+  | "sideIcon"
+  | "rarity"
+  | "nation"
+  | "vision"
+  | "weaponType"
+  | "EBcost"
+  | "talentLvBonusAtCons"
+  | "dsGetters"
+  | "innateBuffs"
+  | "buffs"
+  | "debuffs"
+>;
 
 export type AppCharacter = {
   code: number;
@@ -36,8 +52,8 @@ export type AppCharacter = {
   vision: Vision;
   weaponType: WeaponType;
   EBcost: number;
-  stats: number[][];
   talentLvBonusAtCons?: Partial<Record<Talent, number>>;
+  stats: number[][];
   bonusStat: {
     type: AttributeStat;
     value: number;
@@ -62,10 +78,10 @@ export type AppCharacter = {
     EB: Ability;
     altSprint?: Ability;
   };
-  /** ds: description seed */
-  dsGetters?: DescriptionSeedGetter[];
   passiveTalents: Ability[];
   constellation: Ability[];
+  /** ds: description seed */
+  dsGetters?: DescriptionSeedGetter[];
   innateBuffs?: InnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
