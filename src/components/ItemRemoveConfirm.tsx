@@ -1,5 +1,6 @@
 import type { UserArtifact, UserWeapon } from "@Src/types";
-import { findDataArtifact, findDataWeapon } from "@Data/controllers";
+import { findDataArtifact } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { ConfirmModal, type ModalControl } from "@Src/pure-components";
 
 interface WeaponRemoveConfirmProps {
@@ -19,7 +20,7 @@ export const ItemRemoveConfirm = ({
   onConfirm,
   onClose,
 }: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) => {
-  const itemData = itemType === "weapon" ? findDataWeapon(item) : findDataArtifact(item);
+  const itemData = itemType === "weapon" ? appData.getWeaponData(item.code) : findDataArtifact(item);
 
   return (
     <ConfirmModal

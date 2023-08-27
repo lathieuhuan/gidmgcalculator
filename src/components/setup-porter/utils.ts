@@ -32,7 +32,6 @@ import {
   ATTACK_PATTERNS,
   REACTIONS,
 } from "@Src/constants";
-import characters from "@Data/characters";
 
 // Util
 import { findByCode } from "@Src/utils";
@@ -191,6 +190,7 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
 };
 
 export const decodeSetup = (code: string): SetupImportInfo => {
+  const characters = appData.getAllCharacters();
   const [
     _charCode,
     _selfBCsCode,
@@ -237,7 +237,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
 
   const [charCode, levelIndex, cons, NAs, ES, EB] = split(_charCode, 1);
   const [wpCode, wpTypeIndex, wpLvIndex, wpRefi] = split(_wpCode, 1);
-  const { name = "" } = findByCode(Object.values(characters), +charCode) || {};
+  const { name = "" } = findByCode(characters, +charCode) || {};
 
   const decodeArtifact = (str: string | null, artType: ArtifactType): CalcArtifact | null => {
     if (!str) return null;

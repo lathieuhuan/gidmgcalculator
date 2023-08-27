@@ -1,7 +1,5 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
 
-import characters from "@Data/characters";
-import weapons from "@Data/weapons";
 import artifacts from "@Data/artifacts";
 import { appData } from "@Data/index";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
@@ -24,8 +22,9 @@ const convertName = (str: any) => {
 
 const searchCharacterByKey = (key: any) => {
   if (!key) return undefined;
+  const characters = appData.getAllCharacters();
 
-  for (const { name, GOOD } of Object.values(characters)) {
+  for (const { name, GOOD } of characters) {
     if (name === key || GOOD === key) {
       return name;
     }
@@ -34,16 +33,14 @@ const searchCharacterByKey = (key: any) => {
 };
 
 const searchWeaponByKey = (key: any) => {
-  for (const type in weapons) {
-    const weaponType = type as keyof typeof weapons;
+  const weapons = appData.getAllWeapons();
 
-    for (const wp of weapons[weaponType]) {
-      if (key === convertName(wp.name)) {
-        return {
-          code: wp.code,
-          type: weaponType,
-        };
-      }
+  for (const weapon of weapons) {
+    if (key === convertName(weapon.name)) {
+      return {
+        code: weapon.code,
+        type: weapon.type,
+      };
     }
   }
   return undefined;

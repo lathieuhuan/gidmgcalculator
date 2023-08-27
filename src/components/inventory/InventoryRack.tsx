@@ -6,14 +6,15 @@ import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
-import { findDataArtifact, findDataWeapon } from "@Data/controllers";
+import { findDataArtifact } from "@Data/controllers";
 import { itemIsWeapon } from "@Src/utils";
 
 // Component
 import { ItemThumb } from "../ItemThumb";
+import { appData } from "@Data/index";
 
-export const getWeaponInfo = ({ type, code, owner, refi, level, setupIDs }: UserWeapon) => {
-  const { beta, name, icon = "", rarity = 5 } = findDataWeapon({ type, code }) || {};
+export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon) => {
+  const { beta, name, icon = "", rarity = 5 } = appData.getWeaponData(code) || {};
   return { beta, name, icon, rarity, level, refi, owner, setupIDs };
 };
 

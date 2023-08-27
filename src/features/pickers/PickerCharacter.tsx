@@ -3,7 +3,6 @@ import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
 import { appData } from "@Data/index";
-import characters from "@Data/characters";
 import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
 
@@ -24,11 +23,12 @@ const CharacterPicker = ({ sourceType, needMassAdd, filter, onPickCharacter, onC
   const userChars = useSelector((state) => state.database.userChars);
 
   const data = useMemo(() => {
+    const characters = appData.getAllCharacters();
     const fields: Array<keyof AppCharacter> = ["code", "beta", "name", "icon", "rarity", "vision", "weaponType"];
     const data: PickerItem[] = [];
 
     if (sourceType === "mixed") {
-      for (const character of Object.values(characters)) {
+      for (const character of characters) {
         const charData = pickProps(character, fields);
         const existedChar = findByName(userChars, character.name);
 

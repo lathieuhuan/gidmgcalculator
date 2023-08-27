@@ -1,5 +1,5 @@
 import type { AttackPatternPath } from "../utils/calculation";
-import type { AttributeStat, ModInputConfig, Rarity } from "./global";
+import type { AttributeStat, ModInputConfig, Rarity, WeaponType } from "./global";
 import { EModAffect } from "@Src/constants";
 
 // export type DefaultAppWeapon = Pick<
@@ -13,6 +13,7 @@ import { EModAffect } from "@Src/constants";
 export type AppWeapon = {
   code: number;
   beta?: boolean;
+  type: WeaponType;
   name: string;
   rarity: Rarity;
   icon: string;

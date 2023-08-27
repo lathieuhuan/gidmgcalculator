@@ -1,8 +1,7 @@
-import type { ArtifactType, PartyData, Target, WeaponType } from "@Src/types";
+import type { ArtifactType, Target } from "@Src/types";
 import { toArray } from "@Src/utils";
 import artifacts from "./artifacts";
 import monsters from "./monsters";
-import weapons from "./weapons";
 
 type HasCode = { code: number };
 
@@ -20,11 +19,6 @@ export function findDataArtifact({ code, type }: { type: ArtifactType } & HasCod
   }
   return undefined;
 }
-
-export const findDataWeapon = ({ code, type }: { type: WeaponType } & HasCode) => {
-  // no weapon with code 0
-  return code ? weapons[type].find((weapon) => weapon.code === code) : undefined;
-};
 
 export const findMonster = ({ code }: { code: number }) => {
   return monsters.find((monster) => monster.code === code);

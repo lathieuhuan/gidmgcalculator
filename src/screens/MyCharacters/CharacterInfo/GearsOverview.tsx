@@ -9,7 +9,8 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findDataArtifact, findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { findDataArtifact, findDataArtifactSet } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { InfoSign } from "@Src/pure-components";
@@ -38,7 +39,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = findDataWeapon(weapon);
+    const dataWeapon = appData.getWeaponData(weapon.code);
 
     if (!dataWeapon) {
       return null;

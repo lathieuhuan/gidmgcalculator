@@ -13,7 +13,7 @@ import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIV
 import { RESONANCE_STAT } from "../constants";
 
 import { appData } from "@Data/index";
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { findDataArtifactSet } from "@Data/controllers";
 import { applyPercent, findByIndex, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
@@ -44,7 +44,7 @@ export const getCalculationStats = ({
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const weaponData = findDataWeapon(weapon)!;
+  const weaponData = appData.getWeaponData(weapon.code)!;
   const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
@@ -288,7 +288,7 @@ export const getCalculationStats = ({
   if (party?.length) {
     for (const teammate of party) {
       if (!teammate) continue;
-      const { name, weaponType, buffs = [] } = appData.getCharData(teammate.name);
+      const { name, buffs = [] } = appData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         if (!activated) continue;
@@ -318,7 +318,7 @@ export const getCalculationStats = ({
       // #to-check: should be applied before main weapon buffs?
       (() => {
         const { code, refi } = teammate.weapon;
-        const { name, buffs = [] } = findDataWeapon({ code, type: weaponType }) || {};
+        const { name, buffs = [] } = appData.getWeaponData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
           if (!activated) continue;
