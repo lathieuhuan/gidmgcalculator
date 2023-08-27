@@ -14,7 +14,6 @@ import type {
 } from "@Src/types";
 import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
 import { appData } from "@Data/index";
-import { findDataArtifactSet } from "@Data/controllers";
 import { appSettings } from "./utils";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
@@ -156,7 +155,7 @@ export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: num
   if (!hasCode?.code) {
     return [];
   }
-  const { buffs = [] } = findDataArtifactSet({ code: hasCode.code }) || {};
+  const { buffs = [] } = appData.getArtifactSetData(hasCode.code) || {};
   return createModCtrls(forSelf, buffs);
 }
 

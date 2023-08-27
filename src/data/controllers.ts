@@ -1,24 +1,6 @@
-import type { ArtifactType, Target } from "@Src/types";
+import type { Target } from "@Src/types";
 import { toArray } from "@Src/utils";
-import artifacts from "./artifacts";
 import monsters from "./monsters";
-
-type HasCode = { code: number };
-
-export const findDataArtifactSet = ({ code }: HasCode) => {
-  // no artifact with code 0
-  return code ? artifacts.find((artifact) => artifact.code === code) : undefined;
-};
-
-export function findDataArtifact({ code, type }: { type: ArtifactType } & HasCode) {
-  const targetSet = findDataArtifactSet({ code });
-
-  if (targetSet) {
-    const { name, icon } = targetSet[type];
-    return { beta: targetSet.beta, name, icon };
-  }
-  return undefined;
-}
 
 export const findMonster = ({ code }: { code: number }) => {
   return monsters.find((monster) => monster.code === code);

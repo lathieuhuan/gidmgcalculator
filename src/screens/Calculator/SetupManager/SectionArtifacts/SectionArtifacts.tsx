@@ -10,13 +10,13 @@ import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { appSettings, getImgSrc } from "@Src/utils";
-import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { PickerArtifact } from "@Src/features";
 import { CollapseSpace } from "@Src/pure-components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
+import { appData } from "@Data/index";
 
 export default function SectionArtifacts() {
   const dispatch = useDispatch();
@@ -59,7 +59,9 @@ export default function SectionArtifacts() {
       <div className="flex">
         {ARTIFACT_TYPES.map((type, index) => {
           const artifact = artifacts[index];
-          const icon = artifact ? findDataArtifact({ code: artifact.code, type })?.icon || "" : ARTIFACT_ICONS[type];
+          const icon = artifact
+            ? appData.getArtifactData({ code: artifact.code, type })?.icon || ""
+            : ARTIFACT_ICONS[type];
 
           return (
             <div

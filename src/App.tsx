@@ -3,16 +3,8 @@ import { useEffect } from "react";
 // Constant
 import { EScreen } from "./constants";
 
-// Util
-import { decodeSetup } from "@Src/components/setup-porter/utils";
-import { getSearchParam } from "./utils";
-
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-
-// Action
-import { updateImportInfo } from "@Store/uiSlice";
-import { updateMessage } from "@Store/calculatorSlice";
 
 // Selector
 import { selectAtScreen } from "@Store/uiSlice/selectors";
@@ -23,11 +15,9 @@ import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
-import { Message, NavBar, ImportManager, AppModals } from "@Src/features";
-import { appData } from "./data";
+import { Message, NavBar, ImportManager, AppModals, AppSetup } from "@Src/features";
 
 function App() {
-  const dispatch = useDispatch();
   const atScreen = useSelector(selectAtScreen);
 
   useEffect(() => {
@@ -36,25 +26,6 @@ function App() {
       return (e.returnValue = "Are you sure you want to exit?");
     };
     window.addEventListener("beforeunload", beforeunloadAlert, { capture: true });
-
-    const importCode = getSearchParam("importCode");
-
-    if (importCode) {
-      try {
-        dispatch(updateImportInfo(decodeSetup(importCode)));
-      } catch (error) {
-        dispatch(
-          updateMessage({
-            type: "error",
-            content: "An unknown error has occurred. This setup cannot be imported.",
-          })
-        );
-      }
-    }
-
-    (async () => {
-      const isOk = await appData.fetchMetaData();
-    })();
 
     return () => {
       window.removeEventListener("beforeunload", beforeunloadAlert, { capture: true });
@@ -89,6 +60,7 @@ function App() {
       <AppModals />
       <Message />
       <ImportManager />
+      <AppSetup />
     </div>
   );
 }

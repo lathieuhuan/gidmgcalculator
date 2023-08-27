@@ -1,4 +1,4 @@
-import type { AppCharacter, AppWeapon, Party, PartyData, WeaponType } from "@Src/types";
+import type { AppArtifact, AppCharacter, AppWeapon, ArtifactType, Party, PartyData, WeaponType } from "@Src/types";
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { pickProps } from "@Src/utils";
 import characters from "./characters";
@@ -21,6 +21,7 @@ type CharacterSubscriber = Subscriber<AppCharacter>;
 type Metadata = {
   characters: AppCharacter[];
   weapons: AppWeapon[];
+  artifacts: AppArtifact[];
 };
 
 export class AppDataService {
@@ -28,6 +29,7 @@ export class AppDataService {
   private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
 
   private weapons: Array<DataControl<AppWeapon>> = [];
+  private artifacts: Array<DataControl<AppArtifact>> = [];
 
   constructor() {
     this.characters = characters.map((character) => ({
@@ -40,8 +42,12 @@ export class AppDataService {
     return this.characters.find((character) => character.data.name === name);
   }
 
-  private getItemControl(type: "weapons", code: number) {
-    return this.weapons.find((weapon) => weapon.data.code === code);
+  private getItemControl(type: "weapons", code: number): DataControl<AppWeapon> | undefined;
+  private getItemControl(type: "artifacts", code: number): DataControl<AppArtifact> | undefined;
+  private getItemControl(type: "weapons" | "artifacts", code: number) {
+    return type === "weapons"
+      ? this.weapons.find((weapon) => weapon.data.code === code)
+      : this.artifacts.find((artifact) => artifact.data.code === code);
   }
 
   private async fetchData<T>(url: string): Response<T> {
@@ -69,6 +75,11 @@ export class AppDataService {
       this.weapons = response.data.weapons.map((dataWeapon) => ({
         status: "fetched",
         data: dataWeapon,
+      }));
+
+      this.artifacts = response.data.artifacts.map((dataArtifact) => ({
+        status: "fetched",
+        data: dataArtifact,
       }));
 
       return true;
@@ -226,5 +237,25 @@ export class AppDataService {
   getWeaponData(code: number) {
     const control = this.getItemControl("weapons", code)!;
     return control!.data;
+  }
+
+  // ========== ARTIFACTS ==========
+
+  getAllArtifacts() {
+    return this.artifacts.map((artifact) => artifact.data);
+  }
+
+  getArtifactSetData(code: number) {
+    // no artifact with code 0
+    return code ? this.getItemControl("artifacts", code)?.data : undefined;
+  }
+
+  getArtifactData(artifact: { code: number; type: ArtifactType }) {
+    const data = this.getArtifactSetData(artifact.code);
+    if (data) {
+      const { name, icon } = data[artifact.type];
+      return { beta: data.beta, name, icon };
+    }
+    return undefined;
   }
 }

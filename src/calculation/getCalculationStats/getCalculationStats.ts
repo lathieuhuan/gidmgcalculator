@@ -13,7 +13,6 @@ import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIV
 import { RESONANCE_STAT } from "../constants";
 
 import { appData } from "@Data/index";
-import { findDataArtifactSet } from "@Data/controllers";
 import { applyPercent, findByIndex, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
@@ -154,7 +153,7 @@ export const getCalculationStats = ({
     for (const { code, bonusLv } of setBonuses) {
       //
       for (let i = 0; i <= bonusLv; i++) {
-        const data = findDataArtifactSet({ code });
+        const data = appData.getArtifactSetData(code);
 
         if (!data) {
           console.log(`artifact #${code} not found`);
@@ -175,7 +174,7 @@ export const getCalculationStats = ({
     }
   };
 
-  const mainArtifactData = setBonuses[0]?.code ? findDataArtifactSet(setBonuses[0]) : undefined;
+  const mainArtifactData = setBonuses[0]?.code ? appData.getArtifactSetData(setBonuses[0].code) : undefined;
   const APLY_MAIN_ARTIFACT_BUFFS = (isFinal: boolean) => {
     if (!mainArtifactData) return;
 
@@ -344,7 +343,7 @@ export const getCalculationStats = ({
 
       (() => {
         const { code } = teammate.artifact;
-        const { name, buffs = [] } = findDataArtifactSet({ code }) || {};
+        const { name, buffs = [] } = appData.getArtifactSetData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
           if (!activated) continue;

@@ -3,7 +3,7 @@ import { CSSProperties } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const sizeCls = {
-  small: "text-2xl",
+  small: "text-lg",
   medium: "text-2xl",
   large: "text-3.5xl",
 };

@@ -33,20 +33,9 @@ import type {
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import { appData } from "@Data/index";
-import artifacts from "@Data/artifacts";
 import monsters from "@Data/monsters";
 
-import {
-  bareLv,
-  deepCopy,
-  findById,
-  toArray,
-  countVision,
-  findByCode,
-  getCopyName,
-  appSettings,
-  findByIndex,
-} from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
@@ -60,13 +49,6 @@ import {
   createWeaponBuffCtrls,
 } from "@Src/utils/creators";
 import { calculate, getCharDataFromState } from "./utils";
-
-const debuffArtifactCodes = artifacts.reduce<number[]>((accumulator, artifact) => {
-  if (artifact.debuffs?.length) {
-    accumulator.push(artifact.code);
-  }
-  return accumulator;
-}, []);
 
 // const defaultChar = {
 //   name: "Albedo",
@@ -96,11 +78,12 @@ export const calculatorSlice = createSlice({
         ...action.payload,
       };
     },
-    updateMessage: (state, action: PayloadAction<NonNullable<Pick<AppMessage, "type" | "content">> | null>) => {
+    updateMessage: (state, action: PayloadAction<Partial<AppMessage> | null>) => {
       state.message = action.payload
         ? {
-            ...action.payload,
             active: true,
+            closable: true,
+            ...action.payload,
           }
         : { active: false };
     },
@@ -320,6 +303,13 @@ export const calculatorSlice = createSlice({
         };
         if (newArtifactInfo.code) {
           if (newArtifactInfo.code === -1) {
+            const debuffArtifactCodes = appData.getAllArtifacts().reduce<number[]>((accumulator, artifact) => {
+              if (artifact.debuffs?.length) {
+                accumulator.push(artifact.code);
+              }
+              return accumulator;
+            }, []);
+
             // Deactivate artifact that has debuff
             if (debuffArtifactCodes.includes(prevArtifactCode)) {
               const debuffArtifact = state.setupsById[state.activeId].artDebuffCtrls.find(

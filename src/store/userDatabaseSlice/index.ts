@@ -18,7 +18,6 @@ import type {
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
@@ -338,8 +337,8 @@ export const userDatabaseSlice = createSlice({
           };
           return type[b.type] - type[a.type];
         }
-        const aName = findDataArtifactSet({ code: a.code })?.name || "";
-        const bName = findDataArtifactSet({ code: b.code })?.name || "";
+        const aName = appData.getArtifactSetData(a.code)?.name || "";
+        const bName = appData.getArtifactSetData(b.code)?.name || "";
         return bName.localeCompare(aName);
       });
     },

@@ -2,7 +2,6 @@ import { FaTimes } from "react-icons/fa";
 
 import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
-import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 
 // Component
@@ -28,7 +27,7 @@ export const TeammateItems = ({
 }: TeammateItemsProps) => {
   const { weapon, artifact } = teammate;
   const weaponData = appData.getWeaponData(weapon.code);
-  const { name: artifactSetName, flower } = findDataArtifactSet(artifact) || {};
+  const { name: artifactSetName, flower } = appData.getArtifactSetData(artifact.code) || {};
   const { icon: artifactSetIcon = "" } = flower || {};
 
   return (

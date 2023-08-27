@@ -6,7 +6,6 @@ import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
-import { findDataArtifact } from "@Data/controllers";
 import { itemIsWeapon } from "@Src/utils";
 
 // Component
@@ -19,7 +18,7 @@ export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon
 };
 
 export const getArtifactInfo = ({ code, type, owner, rarity, level, setupIDs }: UserArtifact) => {
-  const { beta, name, icon = "" } = findDataArtifact({ code, type }) || {};
+  const { beta, name, icon = "" } = appData.getArtifactData({ code, type }) || {};
   return { beta, name, icon, rarity, level, owner, setupIDs };
 };
 

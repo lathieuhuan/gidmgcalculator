@@ -1,6 +1,5 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
 
-import artifacts from "@Data/artifacts";
 import { appData } from "@Data/index";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
@@ -47,6 +46,8 @@ const searchWeaponByKey = (key: any) => {
 };
 
 const searchArtifactByKey = (key: any) => {
+  const artifacts = appData.getAllArtifacts();
+
   for (const { name, code } of artifacts) {
     if (key === convertName(name)) {
       return code;

@@ -17,7 +17,6 @@ import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } fr
 import { appData } from "@Data/index";
 import { mapVerson3_0 } from "./constants";
 
-import { findDataArtifactSet } from "@Data/controllers";
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createArtDebuffCtrls, createWeapon } from "../creators";
@@ -295,7 +294,7 @@ const convertSetup = (
     }
   }
   const { code: setBonusesCode = 0 } = getArtifactSetBonuses(finalArtifacts)[0] || {};
-  const { buffs: artifactBuffs = [] } = findDataArtifactSet({ code: setBonusesCode }) || {};
+  const { buffs: artifactBuffs = [] } = appData.getArtifactSetData(setBonusesCode) || {};
 
   // PARTY
   for (const teammate of setup.party) {

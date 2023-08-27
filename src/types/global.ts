@@ -118,6 +118,7 @@ export type AppMessage = {
   active: boolean;
   type?: "error" | "success" | "info";
   content?: string;
+  closable?: boolean;
 };
 
 /**

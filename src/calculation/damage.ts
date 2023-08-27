@@ -21,7 +21,6 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
 
 // Util
-import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
@@ -214,7 +213,7 @@ export default function getDamage({
   // APPLY ARTIFACT DEBUFFS
   for (const { activated, code, index, inputs = [] } of artDebuffCtrls) {
     if (activated) {
-      const { name, debuffs = [] } = findDataArtifactSet({ code }) || {};
+      const { name, debuffs = [] } = appData.getArtifactSetData(code) || {};
 
       if (debuffs[index]) {
         const { value, path, inputIndex = 0 } = debuffs[index].penalties;

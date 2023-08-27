@@ -16,7 +16,6 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { appData } from "@Data/index";
-import { findDataArtifact } from "@Data/controllers";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
@@ -149,7 +148,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = findDataArtifact(artifact);
+            const artifactData = appData.getArtifactData(artifact);
 
             return artifactData ? (
               <GearIcon
