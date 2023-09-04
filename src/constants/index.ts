@@ -10,8 +10,7 @@ export const GENSHIN_DEV_URL_PATH = {
 };
 
 export const BACKEND_URL_PATH = {
-  // base: "http://localhost:3001/api",
-  base: "https://gidmgcalculator-lathieuhuan.vercel.app/api",
+  base: import.meta.env.DEV ? "http://localhost:3001/api" : "https://gidmgcalculator-lathieuhuan.vercel.app/api",
   metadata() {
     return `${this.base}/meta-data`;
   },

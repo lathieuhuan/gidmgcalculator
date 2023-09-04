@@ -78,7 +78,7 @@ export const getCalculationStats = ({
   };
 
   const APPLY_SELF_BUFFS = (isFinal: boolean) => {
-    if (!selfBuffCtrls?.length) return;
+    const charBuffCtrls = selfBuffCtrls || [];
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
@@ -87,12 +87,12 @@ export const getCalculationStats = ({
 
         applyFn?.({
           desc: `Self / ${buff.src}`,
-          charBuffCtrls: selfBuffCtrls,
+          charBuffCtrls,
           ...modifierArgs,
         });
       }
     }
-    for (const ctrl of selfBuffCtrls) {
+    for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
       if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
@@ -101,7 +101,7 @@ export const getCalculationStats = ({
         applyFn?.({
           desc: `Self / ${buff.src}`,
           fromSelf: true,
-          charBuffCtrls: selfBuffCtrls,
+          charBuffCtrls,
           inputs: ctrl.inputs || [],
           ...modifierArgs,
         });

@@ -20,6 +20,9 @@ export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
 }
 
 export const getImgSrc = (src: string) => {
+  if (import.meta.env.DEV) {
+    return "";
+  }
   return src.split("/")[0].length === 1 ? `https://static.wikia.nocookie.net/gensin-impact/images/${src}.png` : src;
 };
 
