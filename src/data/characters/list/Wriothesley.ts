@@ -6,7 +6,7 @@ import { EModSrc } from "../constants";
 import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
 const getESBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "ES", root: 36.87, scale: 5 }, Wriothesley as AppCharacter, args);
+  return getTalentMultiplier({ talentType: "ES", root: 43.2, scale: 5 }, Wriothesley as AppCharacter, args);
 };
 
 const Wriothesley: DefaultAppCharacter = {
@@ -62,14 +62,14 @@ const Wriothesley: DefaultAppCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       description: `When Wriothesley's HP is less than 60%, his next {Charged Attack}#[gr] becomes
-      <b>Rebuke: Vaulting Fist</b> dealing {30%}#[b,gr] increased {DMG}#[gr]. Effect cooldown: 5s.
+      <b>Rebuke: Vaulting Fist</b> dealing {50%}#[b,gr] increased {DMG}#[gr]. Effect cooldown: 5s.
       <br />• At {C1}#[g], this effect triggers when Wriothesley's HP is less than 50% or while he is in the Chilling
-      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {50%}#[b,gr] increased {DMG}#[gr].
+      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {100%}#[b,gr] increased {DMG}#[gr].
       Effect cooldown: 2.5s.
       <br/ >• At {C6}#[g], increases Rebuke: Vaulting Fist {CRIT Rate}#[gr] by {10%}#[b,gr] and {CRIT DMG}#[gr] by
       {80%}#[b,gr]`,
       applyBuff: (obj) => {
-        applyModifier(obj.desc, obj.attPattBonus, "CA.pct_", checkCons[1](obj.char) ? 50 : 30, obj.tracker);
+        applyModifier(obj.desc, obj.attPattBonus, "CA.pct_", checkCons[1](obj.char) ? 100 : 50, obj.tracker);
 
         if (checkCons[6](obj.char)) {
           applyModifier(EModSrc.C6, obj.attPattBonus, ["CA.cRate_", "CA.cDmg_"], [10, 80], obj.tracker);

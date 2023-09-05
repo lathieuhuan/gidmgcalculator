@@ -26,7 +26,7 @@ const Neuvillette: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `When a party member triggers a hydro-related reaction, Neuvillette obtains 1 stack of Past Draconic
       Glories for 30s. Max 3 stacks. The effect increases Charged Attack: {Equitable Judgment DMG}#[gr] by
-      {1.1}#[b,gr]/{1.3}#[b,gr]/{1.6}#[b,gr] times.
+      {1.1}#[b,gr]/{1.25}#[b,gr]/{1.6}#[b,gr] times.
       <br/>• At {C2}#[g], each stack also increases {Equitable Judgment CRIT DMG}#[gr] by {14%}#[b,gr].`,
       inputConfigs: [
         {
@@ -36,7 +36,7 @@ const Neuvillette: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         const stacks = obj.inputs[0] || 0;
-        const buffValue = [10, 30, 60][stacks - 1] || 0;
+        const buffValue = [10, 25, 60][stacks - 1] || 0;
 
         obj.calcItemBuffs.push(genExclusiveBuff(obj.desc, "CA.0", "multPlus", buffValue));
 
