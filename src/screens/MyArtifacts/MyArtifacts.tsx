@@ -29,7 +29,7 @@ import {
   initArtifactStatsFilter,
   type StatsFilter,
 } from "@Src/components/inventory/utils";
-import { findDataArtifact } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { PickerArtifact, PickerCharacter } from "@Src/features";
@@ -318,7 +318,7 @@ export default function MyArtifacts() {
           message={
             <>
               <b>{chosenArtifact.owner}</b> is currently using "
-              <b>{findDataArtifact(chosenArtifact)?.name || "<name missing>"}</b>
+              <b>{appData.getArtifactData(chosenArtifact)?.name || "<name missing>"}</b>
               ". Swap?
             </>
           }

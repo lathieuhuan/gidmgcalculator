@@ -1,5 +1,13 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
+    date: "September 5th, 2023",
+    content: [
+      "Updated characters: {Wriothesley}#[g] and {Neuvillette}#[g].",
+      "Updated weapons: {Cashflow supervision}#[g] and {Rite of the Eternal Flow}#[g].",
+      "Fixed {Fischl}#[g]'s C2 buff did not work. Thank you {DeathGusta01}#[r]!",
+    ],
+  },
+  {
     date: "August 22nd, 2023",
     content: [
       `Add new characters: {Wriothesley}#[g] and {Neuvillette}#[g].`,

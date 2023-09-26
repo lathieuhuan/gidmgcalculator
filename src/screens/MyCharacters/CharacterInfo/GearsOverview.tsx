@@ -9,7 +9,7 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { findDataArtifact, findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { InfoSign } from "@Src/pure-components";
@@ -38,7 +38,7 @@ export function GearsOverview({
   //
   const renderWeaponThumb = () => {
     const { type, code, ...rest } = weapon;
-    const dataWeapon = findDataWeapon(weapon);
+    const dataWeapon = appData.getWeaponData(weapon.code);
 
     if (!dataWeapon) {
       return null;
@@ -70,7 +70,7 @@ export function GearsOverview({
                   item={{
                     rarity: artifact.rarity,
                     level: artifact.level,
-                    icon: findDataArtifact(artifact)?.icon || "",
+                    icon: appData.getArtifactData(artifact)?.icon || "",
                     setupIDs: artifact.setupIDs,
                   }}
                   chosen={window.innerWidth < 686 ? false : activeDetails === i}
@@ -102,11 +102,11 @@ export function GearsOverview({
             {setBonuses.length ? (
               <>
                 <p className="text-green font-medium">
-                  {findDataArtifactSet({ code: setBonuses[0].code })?.name} ({setBonuses[0].bonusLv * 2 + 2})
+                  {appData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
                   <p className="mt-1 text-green font-medium">
-                    {findDataArtifactSet({ code: setBonuses[1].code })?.name} (2)
+                    {appData.getArtifactSetData(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
               </>

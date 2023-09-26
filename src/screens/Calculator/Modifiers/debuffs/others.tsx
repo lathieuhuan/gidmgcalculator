@@ -6,13 +6,13 @@ import { selectArtifacts, selectElmtModCtrls, selectParty } from "@Store/calcula
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Util
-import { findDataArtifactSet } from "@Data/controllers";
 import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 
 // Component
 import { Green } from "@Src/pure-components";
 import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
+import { appData } from "@Data/index";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -98,7 +98,7 @@ export function ArtifactDebuffs() {
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
-    const data = findDataArtifactSet(ctrl);
+    const data = appData.getArtifactSetData(ctrl.code);
     if (!data) return;
 
     const { debuffs = [] } = data;

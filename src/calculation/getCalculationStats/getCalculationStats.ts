@@ -13,7 +13,6 @@ import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIV
 import { RESONANCE_STAT } from "../constants";
 
 import { appData } from "@Data/index";
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { applyPercent, findByIndex, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
@@ -44,7 +43,7 @@ export const getCalculationStats = ({
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);
 
-  const weaponData = findDataWeapon(weapon)!;
+  const weaponData = appData.getWeaponData(weapon.code)!;
   const totalAttr = initiateTotalAttr({ char, charData, weapon, weaponData, tracker });
   const { attPattBonus, attElmtBonus, rxnBonus, calcItemBuffs } = initiateBonuses();
 
@@ -79,7 +78,7 @@ export const getCalculationStats = ({
   };
 
   const APPLY_SELF_BUFFS = (isFinal: boolean) => {
-    if (!selfBuffCtrls?.length) return;
+    const charBuffCtrls = selfBuffCtrls || [];
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
@@ -88,12 +87,12 @@ export const getCalculationStats = ({
 
         applyFn?.({
           desc: `Self / ${buff.src}`,
-          charBuffCtrls: selfBuffCtrls,
+          charBuffCtrls,
           ...modifierArgs,
         });
       }
     }
-    for (const ctrl of selfBuffCtrls) {
+    for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
       if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
@@ -102,7 +101,7 @@ export const getCalculationStats = ({
         applyFn?.({
           desc: `Self / ${buff.src}`,
           fromSelf: true,
-          charBuffCtrls: selfBuffCtrls,
+          charBuffCtrls,
           inputs: ctrl.inputs || [],
           ...modifierArgs,
         });
@@ -154,7 +153,7 @@ export const getCalculationStats = ({
     for (const { code, bonusLv } of setBonuses) {
       //
       for (let i = 0; i <= bonusLv; i++) {
-        const data = findDataArtifactSet({ code });
+        const data = appData.getArtifactSetData(code);
 
         if (!data) {
           console.log(`artifact #${code} not found`);
@@ -175,7 +174,7 @@ export const getCalculationStats = ({
     }
   };
 
-  const mainArtifactData = setBonuses[0]?.code ? findDataArtifactSet(setBonuses[0]) : undefined;
+  const mainArtifactData = setBonuses[0]?.code ? appData.getArtifactSetData(setBonuses[0].code) : undefined;
   const APLY_MAIN_ARTIFACT_BUFFS = (isFinal: boolean) => {
     if (!mainArtifactData) return;
 
@@ -288,7 +287,7 @@ export const getCalculationStats = ({
   if (party?.length) {
     for (const teammate of party) {
       if (!teammate) continue;
-      const { name, weaponType, buffs = [] } = appData.getCharData(teammate.name);
+      const { name, buffs = [] } = appData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
         if (!activated) continue;
@@ -318,7 +317,7 @@ export const getCalculationStats = ({
       // #to-check: should be applied before main weapon buffs?
       (() => {
         const { code, refi } = teammate.weapon;
-        const { name, buffs = [] } = findDataWeapon({ code, type: weaponType }) || {};
+        const { name, buffs = [] } = appData.getWeaponData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
           if (!activated) continue;
@@ -344,7 +343,7 @@ export const getCalculationStats = ({
 
       (() => {
         const { code } = teammate.artifact;
-        const { name, buffs = [] } = findDataArtifactSet({ code }) || {};
+        const { name, buffs = [] } = appData.getArtifactSetData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
           if (!activated) continue;

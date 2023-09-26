@@ -19,7 +19,7 @@ export const ConfirmModalBody = ({
 }: ConfirmModalBodyProps) => {
   const messageRef = useRef(cloneElement(<p className="py-2 text-center text-1.5xl text-default">{message}</p>));
 
-  const renderButtons = buttons.map<ButtonGroupItem>((button, index) => {
+  const renderedButtons = buttons.map<ButtonGroupItem>((button, index) => {
     const { text, variant, onClick } = button || {};
     const buttonText = text || (index === buttons.length - 1 ? "Confirm" : !index ? "Cancel" : "");
 
@@ -36,12 +36,14 @@ export const ConfirmModalBody = ({
   return (
     <div className={"p-4 rounded-lg " + bgColor}>
       {messageRef.current}
-      <ButtonGroup
-        className="mt-4 flex-wrap"
-        space={buttons.length > 2 ? "space-x-4" : undefined}
-        buttons={renderButtons}
-        autoFocusIndex={buttons.length - 1}
-      />
+      {renderedButtons.length ? (
+        <ButtonGroup
+          className="mt-4 flex-wrap"
+          space={buttons.length > 2 ? "space-x-4" : undefined}
+          buttons={renderedButtons}
+          autoFocusIndex={buttons.length - 1}
+        />
+      ) : null}
     </div>
   );
 };

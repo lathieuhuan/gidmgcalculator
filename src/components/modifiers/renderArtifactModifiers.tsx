@@ -1,4 +1,4 @@
-import { findDataArtifactSet } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { AppArtifact, ArtifactModifier, ModifierCtrl } from "@Src/types";
 import { findByIndex, parseArtifactDescription, toArray } from "@Src/utils";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";
@@ -25,7 +25,7 @@ export const renderArtifactBuffs = ({
   ctrls,
   getHanlders,
 }: RenderArtifactBuffsArgs) => {
-  const data = findDataArtifactSet({ code });
+  const data = appData.getArtifactSetData(code);
   if (!data) return [];
   const { buffs = [] } = data;
 

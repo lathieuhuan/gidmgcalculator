@@ -1,7 +1,6 @@
+import { appData } from "@Data/index";
 import type { ArtifactSetBonus } from "@Src/types";
-import { findDataArtifactSet } from "@Data/controllers";
 import { parseArtifactDescription, toArray } from "@Src/utils";
-import { ModifierTemplate } from "./ModifierTemplate";
 
 interface SetBonusesDisplayProps {
   setBonuses: ArtifactSetBonus[];
@@ -15,7 +14,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
       {setBonuses.length > 0 ? (
         setBonuses.map((bonus, index) => {
           const content = [];
-          const data = findDataArtifactSet(bonus);
+          const data = appData.getArtifactSetData(bonus.code);
           if (!data) return;
           const { descriptions } = data;
 

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import type { WeaponType } from "@Src/types";
-import weapons from "@Data/weapons";
 
 // Util
 import { pickProps } from "@Src/utils";
@@ -10,6 +9,7 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { withModal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
+import { appData } from "@Data/index";
 
 interface WeaponPickerProps {
   type?: string;
@@ -20,7 +20,8 @@ interface WeaponPickerProps {
 }
 function WeaponPicker({ weaponType, needMassAdd, onPickWeapon, onClose }: WeaponPickerProps) {
   const data = useMemo(() => {
-    return weapons[weaponType].map((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "rarity"]));
+    const weapons = appData.getAllWeapons(weaponType);
+    return weapons.map((weapon) => pickProps(weapon, ["code", "name", "beta", "icon", "rarity"]));
   }, []);
 
   return (

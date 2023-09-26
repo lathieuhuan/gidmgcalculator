@@ -11,7 +11,6 @@ import { updateImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
-import { findDataArtifactSet } from "@Data/controllers";
 import { appData } from "@Data/index";
 import {
   findById,
@@ -323,7 +322,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       let artifacts: CalcArtifacts = [null, null, null, null, null];
 
       if (artifact.code) {
-        const { variants = [] } = findDataArtifactSet({ code: artifact.code }) || {};
+        const { variants = [] } = appData.getArtifactSetData(artifact.code) || {};
         const maxRarity = variants[variants.length - 1];
 
         if (maxRarity) {

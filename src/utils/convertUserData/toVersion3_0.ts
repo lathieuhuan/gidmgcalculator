@@ -17,7 +17,6 @@ import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } fr
 import { appData } from "@Data/index";
 import { mapVerson3_0 } from "./constants";
 
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
 import { getArtifactSetBonuses } from "../calculation";
 import { findById, findByIndex } from "../pure-utils";
 import { createArtDebuffCtrls, createWeapon } from "../creators";
@@ -243,7 +242,7 @@ const convertSetup = (
 
   if (weaponInfo.ID && existedWeapon) {
     weaponID = weaponInfo.ID;
-    dataWeapon = findDataWeapon(existedWeapon);
+    dataWeapon = appData.getWeaponData(existedWeapon.code);
 
     if (!existedWeapon.setupIDs?.includes(setup.ID)) {
       existedWeapon.setupIDs = (existedWeapon.setupIDs || []).concat(setup.ID);
@@ -257,7 +256,7 @@ const convertSetup = (
       owner: null,
       setupIDs: [setup.ID],
     };
-    dataWeapon = findDataWeapon(xtraWeapon);
+    dataWeapon = appData.getWeaponData(xtraWeapon.code);
   }
 
   // ARTIFACTS
@@ -295,7 +294,7 @@ const convertSetup = (
     }
   }
   const { code: setBonusesCode = 0 } = getArtifactSetBonuses(finalArtifacts)[0] || {};
-  const { buffs: artifactBuffs = [] } = findDataArtifactSet({ code: setBonusesCode }) || {};
+  const { buffs: artifactBuffs = [] } = appData.getArtifactSetData(setBonusesCode) || {};
 
   // PARTY
   for (const teammate of setup.party) {

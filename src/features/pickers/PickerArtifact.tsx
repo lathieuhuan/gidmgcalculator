@@ -4,7 +4,7 @@ import type { ArtifactType } from "@Src/types";
 import type { PickerItem } from "./types";
 import { EModAffect } from "@Src/constants";
 import { createArtifact } from "@Src/utils/creators";
-import artifacts from "@Data/artifacts";
+import { appData } from "@Data/index";
 
 // Component
 import { withModal } from "@Src/pure-components";
@@ -20,6 +20,8 @@ interface ArtifactPickerProps {
 }
 const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact, onClose }: ArtifactPickerProps) => {
   const [gold, purple] = useMemo(() => {
+    const artifacts = appData.getAllArtifacts();
+
     switch (forFeature) {
       case "TEAMMATE_MODIFIERS":
         return artifacts.reduce<PickerItem[][]>(

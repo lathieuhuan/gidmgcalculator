@@ -4,4 +4,5 @@ export * from "./AppModals";
 export * from "./Message";
 export * from "./ImportManager";
 export * from "./PersistControl";
+export * from "./AppSetup";
 export * from "./pickers";

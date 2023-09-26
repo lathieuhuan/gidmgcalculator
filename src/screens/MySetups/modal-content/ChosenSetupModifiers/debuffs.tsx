@@ -16,7 +16,6 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, parseCharacterDescription } from "@Src/utils";
 import { appData } from "@Data/index";
-import { findDataArtifactSet } from "@Data/controllers";
 
 // Component
 import { Green } from "@Src/pure-components";
@@ -145,7 +144,7 @@ export function ArtifactDebuffs({ artDebuffCtrls }: ArtifactDebuffsProps) {
   const content: JSX.Element[] = [];
 
   artDebuffCtrls.forEach((ctrl) => {
-    const data = findDataArtifactSet(ctrl);
+    const data = appData.getArtifactSetData(ctrl.code);
     if (!data) return;
 
     const { name, debuffs = [] } = data;

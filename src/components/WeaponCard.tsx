@@ -7,7 +7,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseDescription } from "@Src/utils";
-import { findDataWeapon } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { BetaMark } from "@Src/pure-components";
@@ -24,7 +24,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
   const { t } = useTranslation();
   if (!weapon) return null;
 
-  const wpData = findDataWeapon(weapon)!;
+  const wpData = appData.getWeaponData(weapon.code)!;
   const { level, refi } = weapon;
   const { rarity, subStat } = wpData;
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;

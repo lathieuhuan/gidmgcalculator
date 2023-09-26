@@ -8,6 +8,7 @@ import { CloseButton, type CloseButtonProps } from "../button";
 
 export interface ModalControl {
   active?: boolean;
+  closeOnMaskClick?: boolean;
   state?: "open" | "close" | "hidden";
   onClose: () => void;
 }
@@ -16,7 +17,6 @@ interface ModalProps extends ModalControl {
   className?: string;
   style?: CSSProperties;
   withDefaultStyle?: boolean;
-  closeOnMaskClick?: boolean;
   children: ReactNode;
 }
 export const Modal = ({ active, closeOnMaskClick = true, state: stateProp, onClose, ...rest }: ModalProps) => {
@@ -91,7 +91,7 @@ export function withModal<T>(
 ) {
   return (props: ModalControl & T): JSX.Element => {
     return (
-      <Modal active={props.active} onClose={props.onClose} {...modalProps}>
+      <Modal active={props.active} onClose={props.onClose} closeOnMaskClick={props.closeOnMaskClick} {...modalProps}>
         {closeButton ? <CloseButton {...closeButton} onClick={props.onClose} /> : null}
         <Component {...props} />
       </Modal>

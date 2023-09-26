@@ -4,7 +4,7 @@ import type { ArtifactType, CalcArtifact } from "@Src/types";
 
 // Util
 import { findByCode, getImgSrc } from "@Src/utils";
-import { findDataArtifact } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { Button } from "@Src/pure-components";
@@ -29,7 +29,7 @@ export function useArtifactSetFilter({ artifactType = "flower", artifacts, codes
 
     for (const { code } of artifacts) {
       if (!findByCode(result, code)) {
-        const { icon = "" } = findDataArtifact({ code, type: artifactType }) || {};
+        const { icon = "" } = appData.getArtifactData({ code, type: artifactType }) || {};
 
         result.push({
           code,

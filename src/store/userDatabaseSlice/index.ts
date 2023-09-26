@@ -18,7 +18,7 @@ import type {
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { findDataArtifactSet, findDataWeapon } from "@Data/controllers";
+import { appData } from "@Data/index";
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { createCharInfo, createWeapon } from "@Src/utils/creators";
@@ -219,8 +219,8 @@ export const userDatabaseSlice = createSlice({
     },
     sortWeapons: (state) => {
       state.userWps.sort((a, b) => {
-        const rA = findDataWeapon(a)?.rarity || 4;
-        const rB = findDataWeapon(b)?.rarity || 4;
+        const rA = appData.getWeaponData(a.code)?.rarity || 4;
+        const rB = appData.getWeaponData(b.code)?.rarity || 4;
         if (rA !== rB) {
           return rB - rA;
         }
@@ -337,8 +337,8 @@ export const userDatabaseSlice = createSlice({
           };
           return type[b.type] - type[a.type];
         }
-        const aName = findDataArtifactSet({ code: a.code })?.name || "";
-        const bName = findDataArtifactSet({ code: b.code })?.name || "";
+        const aName = appData.getArtifactSetData(a.code)?.name || "";
+        const bName = appData.getArtifactSetData(b.code)?.name || "";
         return bName.localeCompare(aName);
       });
     },

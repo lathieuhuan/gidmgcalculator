@@ -10,19 +10,19 @@ import { selectWeapon } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 
 // Util
-import { findDataWeapon } from "@Data/controllers";
 import { getImgSrc } from "@Src/utils";
 
 // Component
 import { PickerWeapon } from "@Src/features";
 import { BetaMark } from "@Src/pure-components";
+import { appData } from "@Data/index";
 
 export default function SectionWeapon() {
   const dispatch = useDispatch();
   const weapon = useSelector(selectWeapon);
   const [pickerOn, setPickerOn] = useState(false);
 
-  const { beta, name = "", icon = "", rarity = 5 } = findDataWeapon(weapon) || {};
+  const { beta, name = "", icon = "", rarity = 5 } = appData.getWeaponData(weapon.code) || {};
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (

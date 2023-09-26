@@ -10,7 +10,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc } from "@Src/utils";
-import { findDataArtifact } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Component
 import { BetaMark, Button } from "@Src/pure-components";
@@ -33,7 +33,7 @@ export const ArtifactCard = ({
   const { t } = useTranslation();
   if (!artifact) return null;
 
-  const { beta, name, icon = "" } = findDataArtifact(artifact) || {};
+  const { beta, name, icon = "" } = appData.getArtifactData(artifact) || {};
   const { rarity = 5, mainStatType } = artifact;
   const possibleMainStatTypes = ARTIFACT_MAIN_STATS[artifact.type];
   const maxLevel = rarity === 5 ? 20 : 16;

@@ -16,7 +16,6 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
 import { appData } from "@Data/index";
-import { findDataArtifact, findDataWeapon } from "@Data/controllers";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
@@ -76,7 +75,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
   const display = useMemo(() => {
     let mainCharacter = null;
     const charData = appData.getCharData(char.name);
-    const weaponData = weapon ? findDataWeapon(weapon) : undefined;
+    const weaponData = weapon ? appData.getWeaponData(weapon.code) : undefined;
 
     if (charData) {
       const talents = (["NAs", "ES", "EB"] as const).map((talentType) => {
@@ -149,7 +148,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
 
         {artifacts.map((artifact, i) => {
           if (artifact) {
-            const artifactData = findDataArtifact(artifact);
+            const artifactData = appData.getArtifactData(artifact);
 
             return artifactData ? (
               <GearIcon
