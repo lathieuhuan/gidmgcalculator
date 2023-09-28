@@ -23,6 +23,7 @@ import Eula from "./list/Eula";
 import Faruzan from "./list/Faruzan";
 import Fischl from "./list/Fischl";
 import Freminet from "./list/Freminet";
+import Furina from "./list/Furina";
 import Ganyu from "./list/Ganyu";
 import GeoTraveler from "./list/GeoTraveler";
 import Gorou from "./list/Gorou";
@@ -102,6 +103,7 @@ const characters = [
   Faruzan,
   Fischl,
   Freminet,
+  Furina,
   Ganyu,
   GeoTraveler,
   Gorou,

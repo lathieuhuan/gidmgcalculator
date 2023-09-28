@@ -1,4 +1,22 @@
-
+July 17th, 2023
+- Fixed Raiden Shogun's A4 buff did not work properly. (RememberTelannas)
+July 13th, 2023
+- Added characters: Hydro Traveler, Freminet.
+- Added bow End of the Line.
+July 11th, 2023
+- Added artifacts: Golden Troupe, Marechaussee Hunter.
+- Added bows: Song of Stillness, Scion of the Blazing Sun.
+- Added catalysts: Flowing Purity, Sacrificial Jade.
+- Added claymores: Tidal Shadow, Talking Stick.
+- Added polearms: Rightful Reward, Ballad of the Fjords.
+- Added swords: Crossing of Fleuve Cendre, Finale of the Deep, Wolf-Fang.
+July 10th, 2023
+- Corrected damage type of Lyney's "Pyrotechnic Strike" and "Spiritbreath Thorn" to Pyro. (Antixique)
+July 9th, 2023 (v3.2.0)
+- Added characters: Lyney and Lynette.
+- Added weapon The First Great Magic (bow).
+June 22th, 2023
+- Fixed a bug where removing a teammate's artifact with active debuff, the debuff was not removed.
 May 25th, 2023
 - Added Ibis Piercer.
 May 16th, 2023
