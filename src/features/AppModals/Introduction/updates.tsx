@@ -1,5 +1,12 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
+    date: "October 2nd, 2023",
+    content: [
+      "Added character {Charlotte}#[g].",
+      "Fixed {Furina}#[g]'s Fanfare buff did not work properly when she is at teammate position.",
+    ],
+  },
+  {
     date: "September 28th, 2023",
     content: [
       "Added character {Furina}#[g].",
