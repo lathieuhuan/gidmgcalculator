@@ -6,8 +6,10 @@ import { EModSrc } from "../constants";
 import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const getESBonus = (args: DescriptionSeedGetterArgs) => {
-  const level = finalTalentLv({ ...args, charData: Furina as AppCharacter, talentType: "EB" });
-  return (12 + level) / 100;
+  const level = args.fromSelf
+    ? finalTalentLv({ ...args, charData: Furina as AppCharacter, talentType: "EB" })
+    : args.inputs[1];
+  return [level, (12 + level) / 100];
 };
 
 const Furina: DefaultAppCharacter = {
@@ -24,10 +26,10 @@ const Furina: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${getESBonus(args)}%`],
+  dsGetters: [(args) => `${getESBonus(args)[1]}%`],
   innateBuffs: [
     {
-      src: EModSrc.ES,
+      src: EModSrc.A4,
       isGranted: checkAscs[4],
       description: `Every 1,000 points of Furina's Max HP will increase {Salon Member DMG}#[gr] by {0.7%}#[b,gr],
       upto {28%}#[r].`,
@@ -69,11 +71,26 @@ const Furina: DefaultAppCharacter = {
           label: "Fanfare (max 450)",
           max: 450,
         },
+        {
+          type: "level",
+          label: "Elemental Burst level",
+          for: "teammate",
+        },
+        {
+          type: "check",
+          label: "Constellation 1",
+          for: "teammate",
+        },
       ],
       applyBuff: (obj) => {
-        const stacks = Math.min(obj.inputs[0] || 0) + (checkCons[1](obj.char) ? 150 : 0);
-        const dmgBonus = getESBonus(obj) * stacks;
-        applyModifier(obj.desc, obj.attPattBonus, "all.pct_", dmgBonus, obj.tracker);
+        let stacks = Math.min(obj.inputs[0] || 0);
+        const [level, buffPerStack] = getESBonus(obj);
+        const atC1 = obj.fromSelf ? checkCons[1](obj.char) : obj.inputs[2];
+        if (atC1) {
+          stacks += 150;
+        }
+        const xtraDesc = ` / Lv.${level}${atC1 ? " + C1" : ""} / ${buffPerStack}% per stack / ${stacks} stacks`;
+        applyModifier(obj.desc + xtraDesc, obj.attPattBonus, "all.pct_", buffPerStack * stacks, obj.tracker);
       },
     },
     {
