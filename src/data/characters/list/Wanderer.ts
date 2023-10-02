@@ -6,7 +6,7 @@ import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
-const getESBuffValue = (char: CharInfo, partyData: PartyData) => {
+const getESBonus = (char: CharInfo, partyData: PartyData) => {
   const level = finalTalentLv({
     talentType: "ES",
     char,
@@ -34,8 +34,8 @@ const Wanderer: DefaultAppCharacter = {
     EB: 3,
   },
   dsGetters: [
-    (args) => `${round(toMult(getESBuffValue(args.char, args.partyData).NA), 3)}`,
-    (args) => `${round(toMult(getESBuffValue(args.char, args.partyData).CA), 3)}`,
+    (args) => `${round(toMult(getESBonus(args.char, args.partyData).NA), 3)}`,
+    (args) => `${round(toMult(getESBonus(args.char, args.partyData).CA), 3)}`,
   ],
   buffs: [
     {
@@ -47,7 +47,7 @@ const Wanderer: DefaultAppCharacter = {
       <br />• At {C1}#[g], increases {Normal and Charged Attack SPD}#[gr] by {10%}#[b,gr], increases
       {Wind Arrow DMG}#[gr] [~A4] by {25%}#[b,gr] of {ATK}#[gr].`,
       applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, char, partyData, desc, tracker }) => {
-        const { NA, CA } = getESBuffValue(char, partyData);
+        const { NA, CA } = getESBonus(char, partyData);
         applyModifier(desc, attPattBonus, ["NA.multPlus", "CA.multPlus"], [NA, CA], tracker);
 
         if (checkCons[1](char)) {

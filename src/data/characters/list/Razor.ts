@@ -4,7 +4,7 @@ import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calcula
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
-const getEBBuffValue = (args: DescriptionSeedGetterArgs) => {
+const getEBBonus = (args: DescriptionSeedGetterArgs) => {
   const level = finalTalentLv({
     talentType: "EB",
     char: args.char,
@@ -28,7 +28,7 @@ const Razor: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${getEBBuffValue(args)}%`],
+  dsGetters: [(args) => `${getEBBonus(args)}%`],
   buffs: [
     {
       index: 0,
@@ -36,7 +36,7 @@ const Razor: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `Increases Razor's {ATK SPD}#[gr] by {@0}#[b,gr].`,
       applyBuff: (obj) => {
-        applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", getEBBuffValue(obj), obj.tracker);
+        applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", getEBBonus(obj), obj.tracker);
       },
     },
     {

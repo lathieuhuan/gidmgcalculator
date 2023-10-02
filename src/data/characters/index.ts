@@ -10,6 +10,7 @@ import Barbara from "./list/Barbara";
 import Beidou from "./list/Beidou";
 import Bennett from "./list/Bennett";
 import Candace from "./list/Candace";
+import Charlotte from "./list/Charlotte";
 import Chongyun from "./list/Chongyun";
 import Collei from "./list/Collei";
 import Cyno from "./list/Cyno";
@@ -90,6 +91,7 @@ const characters = [
   Beidou,
   Bennett,
   Candace,
+  Charlotte,
   Chongyun,
   Collei,
   Cyno,
