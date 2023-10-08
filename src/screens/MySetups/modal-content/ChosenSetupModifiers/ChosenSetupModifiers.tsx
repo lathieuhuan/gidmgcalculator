@@ -3,7 +3,6 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { appData } from "@Data/index";
-import { getTargetData } from "@Data/controllers";
 
 // Component
 import { Lightgold, CollapseList } from "@Src/pure-components";
@@ -50,7 +49,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
   const { charData, infusedElement, rxnBonus, innateBuffs, buffs, debuffs } = calcResult;
 
   const partyData = appData.getPartyData(party);
-  const { title, variant, statuses } = getTargetData(target);
+  const { title, variant, statuses } = appData.getTargetData(target);
 
   return (
     <div className="h-full px-4 flex space-x-4">

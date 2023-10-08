@@ -41,7 +41,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
           [[], []]
         );
       default:
-        return artifacts.reduce(
+        return artifacts.reduce<PickerItem[][]>(
           (accumulator, set) => {
             const { code, beta, name } = set;
 
@@ -54,7 +54,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
 
             return accumulator;
           },
-          [[], []] as [PickerItem[], PickerItem[]]
+          [[], []]
         );
     }
   }, []);

@@ -33,7 +33,6 @@ import type {
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import { appData } from "@Data/index";
-import monsters from "@Data/monsters";
 
 import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
@@ -509,14 +508,14 @@ export const calculatorSlice = createSlice({
       };
 
       const { target } = state;
-      const { code, variantType, inputs = [] } = target;
-      const dataMonster = findByCode(monsters, code);
+      const { variantType, inputs = [] } = target;
+      const monsData = appData.getMonsData(target);
 
       // not update target if monster code === 0 (custom target)
-      if (dataMonster?.code) {
-        const { resistance, variant } = dataMonster;
+      if (monsData?.code) {
+        const { resistance, variant } = monsData;
         const { base, ...otherResistances } = resistance;
-        const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
+        const inputConfigs = monsData.inputConfigs ? toArray(monsData.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;

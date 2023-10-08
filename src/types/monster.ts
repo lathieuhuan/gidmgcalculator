@@ -24,7 +24,7 @@ type MonsterInputConfig = {
   optionChange?: number;
 };
 
-export type DataMonster = {
+export type AppMonster = {
   code: number;
   title: string;
   subtitle?: string;

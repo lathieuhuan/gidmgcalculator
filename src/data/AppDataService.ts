@@ -1,6 +1,16 @@
-import type { AppArtifact, AppCharacter, AppWeapon, ArtifactType, Party, PartyData, WeaponType } from "@Src/types";
+import type {
+  AppArtifact,
+  AppCharacter,
+  AppMonster,
+  AppWeapon,
+  ArtifactType,
+  Party,
+  PartyData,
+  Target,
+  WeaponType,
+} from "@Src/types";
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
-import { pickProps } from "@Src/utils";
+import { findByCode, pickProps, toArray } from "@Src/utils";
 import characters from "./characters";
 
 type Response<T> = Promise<{
@@ -22,6 +32,7 @@ type Metadata = {
   characters: AppCharacter[];
   weapons: AppWeapon[];
   artifacts: AppArtifact[];
+  monsters: AppMonster[];
 };
 
 export class AppDataService {
@@ -30,6 +41,7 @@ export class AppDataService {
 
   private weapons: Array<DataControl<AppWeapon>> = [];
   private artifacts: Array<DataControl<AppArtifact>> = [];
+  private monsters: AppMonster[] = [];
 
   constructor() {
     this.characters = characters.map((character) => ({
@@ -81,6 +93,8 @@ export class AppDataService {
         status: "fetched",
         data: dataArtifact,
       }));
+
+      this.monsters = response.data.monsters;
 
       return true;
     }
@@ -257,5 +271,66 @@ export class AppDataService {
       return { beta: data.beta, name, icon };
     }
     return undefined;
+  }
+
+  // ========== MONSTERS ==========
+
+  getAllMonsters() {
+    return this.monsters;
+  }
+
+  getMonsData({ code }: { code: number }) {
+    return findByCode(this.monsters, code);
+  }
+
+  getTargetData(target: Target) {
+    const dataMonster = this.getMonsData(target);
+    let variant = "";
+    const statuses: string[] = [];
+
+    if (target.variantType && dataMonster?.variant) {
+      for (const type of dataMonster.variant.types) {
+        if (typeof type === "string") {
+          if (type === target.variantType) {
+            variant = target.variantType;
+            break;
+          }
+        } else if (type.value === target.variantType) {
+          variant = type.label;
+          break;
+        }
+      }
+    }
+
+    if (target.inputs?.length && dataMonster?.inputConfigs) {
+      const inputConfigs = toArray(dataMonster.inputConfigs);
+
+      target.inputs.forEach((input, index) => {
+        const { label, type = "check", options = [] } = inputConfigs[index] || {};
+
+        switch (type) {
+          case "check":
+            if (input) {
+              statuses.push(label);
+            }
+            break;
+          case "select":
+            const option = options[input];
+            const selectedLabel = typeof option === "string" ? option : option?.label;
+
+            if (selectedLabel) {
+              statuses.push(`${label}: ${selectedLabel}`);
+            }
+            break;
+        }
+      });
+    }
+
+    return {
+      title: dataMonster?.title,
+      names: dataMonster?.names,
+      variant,
+      statuses,
+    };
   }
 }

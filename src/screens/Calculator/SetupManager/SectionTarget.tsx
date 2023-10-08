@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
-import { getTargetData } from "@Data/controllers";
+import { appData } from "@Data/index";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
@@ -18,7 +18,7 @@ interface SectionTargetProps {
 export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps) {
   const dispatch = useDispatch();
   const target = useSelector(selectTarget);
-  const { title, names, variant, statuses } = getTargetData(target);
+  const { title, names, variant, statuses } = appData.getTargetData(target);
 
   return (
     <Fragment>
