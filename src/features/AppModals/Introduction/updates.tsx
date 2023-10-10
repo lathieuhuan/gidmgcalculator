@@ -1,5 +1,12 @@
 export const UPDATES: Array<{ date: string; content: string[] }> = [
   {
+    date: "October 10th, 2023 (v3.3.2)",
+    content: [
+      "Update {Furina}#[g].",
+      "Minor system optimization.",
+    ],
+  },
+  {
     date: "October 2nd, 2023",
     content: [
       "Added character {Charlotte}#[g].",
@@ -46,15 +53,5 @@ export const UPDATES: Array<{ date: string; content: string[] }> = [
       {Finale of the Deep}#[g]. Thank you {Edvard Neto}#[r]!`,
       "Optimize system.",
     ],
-  },
-  {
-    date: "August 5th, 2023",
-    content: [
-      `Fixed {Alhaitham}#[g]'s A4 and {Dendro Traveler}#[g]'s A4 did not work properly. Thank you {Edvard Neto}#[r]!`,
-    ],
-  },
-  {
-    date: "August 4th, 2023 (v3.3.0)",
-    content: ["Update {Lyney}#[g].", "Optimize system."],
   },
 ];
