@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { FaBars, FaCoffee, FaCog, FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
+import { FaBars, FaDonate, FaCog, FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
 import type { UIState } from "@Store/uiSlice/types";
 
 // Hook
@@ -10,6 +10,7 @@ import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
 // Component
+import { Button } from "@Src/pure-components";
 import { ActionButton, NavTabs } from "./components";
 
 export function NavBar() {
@@ -42,14 +43,9 @@ export function NavBar() {
         </div>
 
         <div className="flex">
-          <a
-            className="px-2 h-full flex-center font-bold text-black bg-lightgold space-x-2"
-            href="https://www.buymeacoffee.com/ronqueroc"
-            target="_blank"
-          >
-            <FaCoffee />
-            <span>Buy me a coffee</span>
-          </a>
+          <Button variant="positive" shape="square" icon={<FaDonate />} onClick={openModal("DONATE")}>
+            Donate
+          </Button>
 
           <div ref={ref} className="relative text-default">
             <button className="w-8 h-8 flex-center bg-darkblue-3 text-xl" onClick={() => setMenuDropped(!menuDropped)}>

@@ -1,4 +1,4 @@
-import type { AppCharacter, SetupImportInfo } from "@Src/types";
+import type { SetupImportInfo } from "@Src/types";
 import { EScreen } from "@Src/constants";
 
 export type MySetupsModalType =
@@ -15,7 +15,7 @@ export type MySetupsModalType =
 
 export interface UIState {
   atScreen: EScreen;
-  appModalType: "" | "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD";
+  appModalType: "" | "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD" | "DONATE";
   highManagerWorking: boolean;
   importInfo: SetupImportInfo;
   loading: boolean;

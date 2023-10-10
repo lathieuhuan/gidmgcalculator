@@ -23,7 +23,7 @@ export const Introduction = (props: ModalControl) => {
     <StandardModal
       title={
         <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.3.0</sup>
+          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.3.2</sup>
         </h1>
       }
       {...props}
@@ -31,12 +31,19 @@ export const Introduction = (props: ModalControl) => {
       <CollapseList
         list={[
           {
-            heading: "Updates",
+            heading: (expanded) => (
+              <>
+                Updates
+                {expanded ? null : (
+                  <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{UPDATES[0].date}</span>
+                )}
+              </>
+            ),
             body: (
               <div className="space-y-2 contains-inline-svg">
-                {UPDATES.map(({ date, content }, i) => (
+                {UPDATES.map(({ date, patch, content }, i) => (
                   <div key={i}>
-                    <p className="text-orange font-bold">{date}</p>
+                    <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
                     <ul className="mt-1 space-y-1">
                       {content.map((line, j) => (
                         <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />

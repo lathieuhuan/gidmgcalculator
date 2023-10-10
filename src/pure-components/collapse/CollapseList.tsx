@@ -4,7 +4,7 @@ import { CollapseSpace } from "./CollapseSpace";
 
 interface CollapseListProps {
   list: Array<{
-    heading: string;
+    heading: ReactNode | ((expanded?: boolean) => ReactNode);
     body: ReactNode;
   }>;
 }
@@ -27,7 +27,7 @@ export const CollapseList = ({ list }: CollapseListProps) => {
               })
             }
           >
-            {heading}
+            {typeof heading === "function" ? heading(expanded[i]) : heading}
           </p>
           <CollapseSpace active={!!expanded[i]}>
             <div className="pr-4 pl-2">{body}</div>

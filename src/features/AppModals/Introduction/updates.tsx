@@ -1,10 +1,8 @@
-export const UPDATES: Array<{ date: string; content: string[] }> = [
+export const UPDATES: Array<{ date: string; content: string[]; patch?: string }> = [
   {
-    date: "October 10th, 2023 (v3.3.2)",
-    content: [
-      "Update {Furina}#[g].",
-      "Minor system optimization.",
-    ],
+    patch: "3.3.2",
+    date: "October 10th, 2023",
+    content: ["Update {Furina}#[g].", "Added donation option via {Paypal}#[r]!", "Minor system optimization."],
   },
   {
     date: "October 2nd, 2023",
@@ -47,7 +45,8 @@ export const UPDATES: Array<{ date: string; content: string[] }> = [
     ],
   },
   {
-    date: "August 15th, 2023 (v3.3.1)",
+    patch: "3.3.1",
+    date: "August 15th, 2023",
     content: [
       `Updated weapons: {The First Great Magic}#[g], {Flowing Purity}#[g], {Sacrificial Jade}#[g], {Talking Stick}#[g],
       {Finale of the Deep}#[g]. Thank you {Edvard Neto}#[r]!`,
