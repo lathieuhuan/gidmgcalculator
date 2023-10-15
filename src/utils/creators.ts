@@ -196,6 +196,7 @@ export const createElmtModCtrls = (): ElementModCtrl => ({
   reaction: null,
   superconduct: false,
   resonances: [],
+  absorption: null
 });
 
 export function createTarget() {

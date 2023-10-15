@@ -12,8 +12,8 @@ const getPropSurplusValue = (args: DescriptionSeedGetterArgs) => {
 const Lyney: DefaultAppCharacter = {
   code: 73,
   name: "Lyney",
-  icon: "https://images2.imgbox.com/0d/a5/ZREwNoes_o.png",
-  sideIcon: "",
+  icon: "b/b2/Lyney_Icon",
+  sideIcon: "6/6a/Lyney_Side_Icon",
   rarity: 5,
   nation: "fontaine",
   vision: "pyro",

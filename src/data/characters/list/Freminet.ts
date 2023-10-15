@@ -7,8 +7,8 @@ import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 const Freminet: DefaultAppCharacter = {
   code: 74,
   name: "Freminet",
-  icon: "https://images2.imgbox.com/fa/bf/A2tmjH1a_o.png",
-  sideIcon: "",
+  icon: "e/ee/Freminet_Icon",
+  sideIcon: "2/21/Freminet_Side_Icon",
   rarity: 4,
   nation: "fontaine",
   vision: "cryo",

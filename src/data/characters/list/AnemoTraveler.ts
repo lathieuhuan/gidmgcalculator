@@ -31,7 +31,7 @@ const AnemoTraveler: DefaultAppCharacter = {
       isGranted: checkCons[6],
       inputConfigs: [
         {
-          label: "Element Absorbed",
+          label: "Element absorbed",
           type: "anemoable",
         },
       ],

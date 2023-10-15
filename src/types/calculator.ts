@@ -107,6 +107,7 @@ export type AttackReaction = null | "melt" | "vaporize" | "aggravate" | "spread"
 export type ElementModCtrl = {
   infuse_reaction: AttackReaction;
   reaction: AttackReaction;
+  absorption: Vision | null;
   superconduct: boolean;
   resonances: Resonance[];
 };

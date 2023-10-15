@@ -354,6 +354,7 @@ const convertSetup = (
         reaction: null,
         resonances,
         superconduct: !!setup.elmtMCs?.superconduct,
+        absorption: null
       },
       selfBuffCtrls: cleanModifiers(setup.selfMCs?.BCs || [], buffs),
       selfDebuffCtrls: cleanModifiers(setup.selfMCs?.DCs || [], debuffs),

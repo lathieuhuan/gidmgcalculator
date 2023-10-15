@@ -23,7 +23,8 @@ export const Introduction = (props: ModalControl) => {
     <StandardModal
       title={
         <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator <sup className="text-base text-lesser">v3.3.2</sup>
+          Welcome to GI DMG Calculator{" "}
+          <sup className="text-base text-lesser">v{UPDATES.find((update) => !!update.patch)?.patch}</sup>
         </h1>
       }
       {...props}
