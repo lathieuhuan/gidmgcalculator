@@ -9,7 +9,7 @@ const getESBonus = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
     ? finalTalentLv({ ...args, charData: Furina as AppCharacter, talentType: "EB" })
     : args.inputs[1];
-  return [level, (15 + level) / 100];
+  return [level, (5 + level * 2) / 100];
 };
 
 const Furina: DefaultAppCharacter = {
@@ -63,8 +63,8 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
       description: `Every 1% of a party member's HP changed will grant Furina 1 Fanfare point. Each point increases
-      {@0}#[b,gr] {DMG}#[gr] of all party members. Max {300}#[r] points. At {C1}#[g], gains {150}#[b,gr] points by
-      default (auto added).`,
+      {@0}#[b,gr] {DMG}#[gr] of all party members. Max {300}#[r] points.
+      <br/>At {C1}#[g], gains {150}#[b,gr] points by default (auto added) and the limit is increased by 100.`,
       inputConfigs: [
         {
           type: "text",
@@ -83,11 +83,11 @@ const Furina: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        let stacks = Math.min(obj.inputs[0] || 0);
+        let stacks = obj.inputs[0] || 0;
         const [level, buffPerStack] = getESBonus(obj);
         const atC1 = obj.fromSelf ? checkCons[1](obj.char) : obj.inputs[2];
         if (atC1) {
-          stacks += 150;
+          stacks = Math.min(stacks + 150, 400);
         }
         const xtraDesc = ` / Lv.${level}${atC1 ? " + C1" : ""} / ${buffPerStack}% per stack / ${stacks} stacks`;
         applyModifier(obj.desc + xtraDesc, obj.attPattBonus, "all.pct_", buffPerStack * stacks, obj.tracker);
@@ -97,9 +97,9 @@ const Furina: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `Fanfare gain (not by C1) is increased by 200%. Each Fanfare point above the limit (450) will
-      increase Furina's {Max HP}#[gr] by {0.4%}#[b,gr], upto {140%}#[r].`,
-      isGranted: checkCons[6],
+      description: `Fanfare gain (not by C1) is increased by 250%. Each Fanfare point above the limit (400) will
+      increase Furina's {Max HP}#[gr] by {0.35%}#[b,gr], upto {140%}#[r].`,
+      isGranted: checkCons[2],
       inputConfigs: [
         {
           type: "text",
@@ -108,7 +108,7 @@ const Furina: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const bonusValue = Math.min((obj.inputs[0] || 0) * 0.4, 140);
+        const bonusValue = Math.min((obj.inputs[0] || 0) * 0.35, 140);
         applyModifier(obj.desc, obj.totalAttr, "hp_", bonusValue, obj.tracker);
       },
     },
@@ -118,8 +118,8 @@ const Furina: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `When using Salon Solitaire [ES] Furina gains "Center of Attention" for 10s. Grants a Hydro
       Infusion and increases {Normal, Charged, and Plunging Attack DMG}#[gr] by {15%}#[b,gr] of Furina
-      {Max HP}#[gr]. At Pneuma alignment this bonus is increased further by {15%}#[b,gr] of her {Max HP}#[gr].`,
-      isGranted: checkCons[2],
+      {Max HP}#[gr]. At Pneuma alignment this bonus is increased further by {20%}#[b,gr] of her {Max HP}#[gr].`,
+      isGranted: checkCons[6],
       inputConfigs: [
         {
           type: "check",
@@ -127,7 +127,7 @@ const Furina: DefaultAppCharacter = {
         },
       ],
       applyFinalBuff: (obj) => {
-        const bonusValue = Math.round((obj.totalAttr.hp * (obj.inputs[0] ? 30 : 15)) / 100);
+        const bonusValue = Math.round((obj.totalAttr.hp * (obj.inputs[0] ? 35 : 15)) / 100);
         applyModifier(obj.desc, obj.attPattBonus, ["NA.flat", "CA.flat", "PA.flat"], bonusValue, obj.tracker);
       },
       infuseConfig: { overwritable: false },

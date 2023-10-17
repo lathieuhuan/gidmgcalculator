@@ -1,10 +1,18 @@
 export const UPDATES: Array<{ date: string; content: string[]; patch?: string }> = [
   {
+    date: "October 17th, 2023",
+    content: [
+      "Updated {Furina}#[g].",
+      `Corrected the condition for {Furina}#[g]'s C2 and C6 buffs to appear in the Buffs section.
+      Thank you <span class='text-lightgold'>Ілля Захватов</span>!`,
+    ],
+  },
+  {
     patch: "3.4.0",
     date: "October 15th, 2023",
     content: [
       "New control in Buffs > Resonance & Reactions: Anemo Absorption for the attacks that can absorb Pyro / Hydro / Electro / Cyro to deal according elemental damage.",
-      "Added {Amber}#[g]'s extra arrow DMG from C1."
+      "Added {Amber}#[g]'s extra arrow DMG from C1.",
     ],
   },
   {
