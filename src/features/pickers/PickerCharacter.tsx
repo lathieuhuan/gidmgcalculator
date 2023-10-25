@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
 

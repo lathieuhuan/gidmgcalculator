@@ -1,5 +1,7 @@
 import type { AppCharacter } from "@Src/types";
 
+export const NCPA_PERCENTS = ["NA.pct_", "CA.pct_", "PA.pct_"] as const;
+
 export enum EModSrc {
   ES = "Elemental Skill",
   EB = "Elemental Burst",

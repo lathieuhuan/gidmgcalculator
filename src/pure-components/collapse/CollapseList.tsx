@@ -14,7 +14,7 @@ export const CollapseList = ({ list }: CollapseListProps) => {
     <div>
       {list.map(({ heading, body }, i) => (
         <div key={i} className={expanded[i] ? "mb-4" : "mb-1"}>
-          <p
+          <div
             className={clsx(
               "mb-2 pt-1 px-6 cursor-pointer font-bold leading-relaxed transition duration-200",
               expanded[i] ? "bg-dullyellow text-black" : "bg-darkblue-3"
@@ -28,7 +28,7 @@ export const CollapseList = ({ list }: CollapseListProps) => {
             }
           >
             {typeof heading === "function" ? heading(expanded[i]) : heading}
-          </p>
+          </div>
           <CollapseSpace active={!!expanded[i]}>
             <div className="pr-4 pl-2">{body}</div>
           </CollapseSpace>

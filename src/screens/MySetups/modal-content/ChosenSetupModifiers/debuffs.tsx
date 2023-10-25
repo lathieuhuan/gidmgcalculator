@@ -15,7 +15,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { findByIndex, parseCharacterDescription } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Green } from "@Src/pure-components";

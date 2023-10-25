@@ -1,5 +1,5 @@
 import type { UserArtifact, UserWeapon } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { ConfirmModal, type ModalControl } from "@Src/pure-components";
 
 interface WeaponRemoveConfirmProps {

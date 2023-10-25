@@ -10,7 +10,7 @@ import { selectUserChars } from "@Store/userDatabaseSlice/selectors";
 
 // Util
 import { findByIndex, splitLv } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { ButtonGroup, Popover, SharedSpace, withModal, Button } from "@Src/pure-components";

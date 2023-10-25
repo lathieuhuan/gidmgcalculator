@@ -9,7 +9,7 @@ import { createWeapon } from "@Src/utils/creators";
 // Component
 import { withModal } from "@Src/pure-components";
 import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 interface WeaponPickerProps {
   type?: string;

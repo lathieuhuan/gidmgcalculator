@@ -1,9 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter, ModifierInput, TotalAttribute } from "@Src/types";
-import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect, VISION_TYPES } from "@Src/constants";
 import { round } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, NCPA_PERCENTS } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
 const ascs4BuffValue = (fromSelf: boolean, totalAttr: TotalAttribute, inputs: ModifierInput[]) => {

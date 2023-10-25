@@ -4,7 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 
 import type { Vision, AppMonster } from "@Src/types";
 import { toArray } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 interface ComboBoxProps {
   className: string;

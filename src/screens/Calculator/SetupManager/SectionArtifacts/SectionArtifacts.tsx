@@ -16,7 +16,7 @@ import { PickerArtifact } from "@Src/features";
 import { CollapseSpace } from "@Src/pure-components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 export default function SectionArtifacts() {
   const dispatch = useDispatch();

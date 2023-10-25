@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { AppCharacter } from "@Src/types";
 import { getAppDataError } from "@Src/utils";
 

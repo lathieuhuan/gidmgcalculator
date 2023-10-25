@@ -29,7 +29,7 @@ import {
   initArtifactStatsFilter,
   type StatsFilter,
 } from "@Src/components/inventory/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { PickerArtifact, PickerCharacter } from "@Src/features";

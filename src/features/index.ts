@@ -5,4 +5,5 @@ export * from "./Message";
 export * from "./ImportManager";
 export * from "./PersistControl";
 export * from "./AppSetup";
+export * from "./RefetchMetadata";
 export * from "./pickers";

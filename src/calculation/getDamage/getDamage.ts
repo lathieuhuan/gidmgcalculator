@@ -5,7 +5,6 @@ import type {
   TrackerDamageRecord,
   NormalAttack,
   CalcItemBonus,
-  AttackElement,
 } from "@Src/types";
 import type { GetDamageArgs } from "../types";
 
@@ -21,7 +20,7 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { bareLv, findByIndex, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { getExclusiveBonus } from "./utils";

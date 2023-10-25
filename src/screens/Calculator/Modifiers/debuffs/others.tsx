@@ -12,7 +12,7 @@ import { getArtifactSetBonuses } from "@Src/utils/calculation";
 // Component
 import { Green } from "@Src/pure-components";
 import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();

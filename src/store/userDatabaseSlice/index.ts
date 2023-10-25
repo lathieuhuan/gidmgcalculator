@@ -18,7 +18,7 @@ import type {
 } from "./reducer-types";
 import { ARTIFACT_TYPES } from "@Src/constants";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { findById, findByName, indexById, indexByName, splitLv } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { createCharInfo, createWeapon } from "@Src/utils/creators";

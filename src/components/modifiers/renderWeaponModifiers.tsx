@@ -1,6 +1,6 @@
 import type { AppWeapon, ModifierCtrl, Weapon, WeaponBuff } from "@Src/types";
 import { findByIndex, parseDescription } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";
 
 const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: WeaponBuff, refi: number) => {

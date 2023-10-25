@@ -11,37 +11,19 @@ import type {
 } from "@Src/types";
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { findByCode, pickProps, toArray } from "@Src/utils";
+import { CharacterSubscriber, DataControl, Metadata, Response, Update } from "./types";
 import characters from "./characters";
 
-type Response<T> = Promise<{
-  code: number;
-  message?: string;
-  data: T | null;
-}>;
-
-type DataControl<T> = {
-  status: "unfetched" | "fetching" | "fetched";
-  data: T;
-};
-
-type Subscriber<T> = (data: T) => void;
-
-type CharacterSubscriber = Subscriber<AppCharacter>;
-
-type Metadata = {
-  characters: AppCharacter[];
-  weapons: AppWeapon[];
-  artifacts: AppArtifact[];
-  monsters: AppMonster[];
-};
-
 export class AppDataService {
+  private isFetchedMetadata = false;
+
   private characters: Array<DataControl<AppCharacter>> = [];
   private characterSubscribers: Map<string, Set<CharacterSubscriber>> = new Map();
 
   private weapons: Array<DataControl<AppWeapon>> = [];
   private artifacts: Array<DataControl<AppArtifact>> = [];
   private monsters: AppMonster[] = [];
+  public updates: Update[] = [];
 
   constructor() {
     this.characters = characters.map((character) => ({
@@ -72,10 +54,15 @@ export class AppDataService {
       }));
   }
 
-  public async fetchMetaData() {
+  public async fetchMetadata() {
+    if (this.isFetchedMetadata) {
+      return true;
+    }
     const response = await this.fetchData<Metadata>(BACKEND_URL_PATH.metadata());
 
     if (response.data) {
+      this.isFetchedMetadata = true;
+
       response.data.characters.forEach((dataCharacter) => {
         const control = this.getCharacterControl(dataCharacter.name);
 
@@ -95,6 +82,7 @@ export class AppDataService {
       }));
 
       this.monsters = response.data.monsters;
+      this.updates = response.data.updates;
 
       return true;
     }

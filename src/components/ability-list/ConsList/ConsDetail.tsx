@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { AppCharacter, Talent } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Conponent
 import { CloseButton, Green, Lesser, LoadingIcon } from "@Src/pure-components";

@@ -3,7 +3,7 @@ import type { AmplifyingReaction, AttackElement, CalcItem, ModInputConfig, Visio
 
 import { VISION_TYPES } from "@Src/constants";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";

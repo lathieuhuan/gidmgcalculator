@@ -10,7 +10,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { BetaMark, Button } from "@Src/pure-components";

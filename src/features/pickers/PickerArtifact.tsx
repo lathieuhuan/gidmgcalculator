@@ -4,7 +4,7 @@ import type { ArtifactType } from "@Src/types";
 import type { PickerItem } from "./types";
 import { EModAffect } from "@Src/constants";
 import { createArtifact } from "@Src/utils/creators";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { withModal } from "@Src/pure-components";

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { FaChevronDown, FaEdit, FaMinus } from "react-icons/fa";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";

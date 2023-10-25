@@ -11,7 +11,7 @@ import { updateImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import {
   findById,
   calcItemToUserItem,

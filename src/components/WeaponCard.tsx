@@ -7,7 +7,7 @@ import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseDescription } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { BetaMark } from "@Src/pure-components";

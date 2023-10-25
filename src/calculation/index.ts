@@ -1,6 +1,6 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import getCalculationStats from "./getCalculationStats";
 import getDamage from "./getDamage";
 

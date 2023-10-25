@@ -10,7 +10,7 @@ import { itemIsWeapon } from "@Src/utils";
 
 // Component
 import { ItemThumb } from "../ItemThumb";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 export const getWeaponInfo = ({ code, owner, refi, level, setupIDs }: UserWeapon) => {
   const { beta, name, icon = "", rarity = 5 } = appData.getWeaponData(code) || {};

@@ -7,7 +7,7 @@ import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
 import { toArray } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Hook
 import { useTranslation } from "@Src/hooks";

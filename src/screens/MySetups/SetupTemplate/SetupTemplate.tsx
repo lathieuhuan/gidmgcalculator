@@ -15,7 +15,7 @@ import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@St
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";

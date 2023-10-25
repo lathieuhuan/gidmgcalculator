@@ -1,9 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { round } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, NCPA_PERCENTS } from "../constants";
 import { checkAscs, getTalentMultiplier } from "../utils";
 
 const getEBBonus = (args: DescriptionSeedGetterArgs) => {

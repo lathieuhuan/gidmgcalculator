@@ -1,10 +1,34 @@
-import { Lightgold, CollapseList, StandardModal, type ModalControl } from "@Src/pure-components";
+import { appData, Update } from "@Src/data";
+import { RefetchMetadata } from "@Src/features/RefetchMetadata";
+import { useGetMetadata } from "@Src/hooks";
+import {
+  Lightgold,
+  CollapseList,
+  StandardModal,
+  type ModalControl,
+  LoadingIcon,
+  Skeleton,
+  Button,
+} from "@Src/pure-components";
+import { useState } from "react";
 import { About } from "./About";
 import { Notes } from "./Notes";
-import { UPDATES } from "./updates";
 import { VersionRecap } from "./VersionRecap";
 
 export const Introduction = (props: ModalControl) => {
+  const [updates, setUpdates] = useState<Update[]>([]);
+
+  const { status, getMetadata } = useGetMetadata({
+    onSuccess: () => {
+      setUpdates(appData.updates);
+    },
+  });
+
+  const isLoadingMetadata = status === "loading";
+  // const isLoadingMetadata = true;
+  const patch = updates.find((update) => !!update.patch)?.patch;
+  const latestDate: string | undefined = updates[0]?.date;
+
   const typeToCls: Record<string, string> = {
     g: "text-lightgold",
     r: "text-lightred",
@@ -22,36 +46,54 @@ export const Introduction = (props: ModalControl) => {
   return (
     <StandardModal
       title={
-        <h1 className="px-6 mb-2 text-2xl text-center text-orange font-bold">
-          Welcome to GI DMG Calculator{" "}
-          <sup className="text-base text-lesser">v{UPDATES.find((update) => !!update.patch)?.patch}</sup>
-        </h1>
+        <div className={"px-6 flex flex-col items-center justify-center " + (status === "error" ? "mb-4" : "mb-2")}>
+          <h1 className="text-2xl text-orange font-bold relative">
+            Welcome to GI DMG Calculator
+            <span className="absolute top-0 left-full ml-2 text-base text-lesser">
+              {isLoadingMetadata ? <Skeleton className="w-14 h-4 rounded" /> : patch ? <span>v{patch}</span> : null}
+            </span>
+          </h1>
+          <RefetchMetadata isLoading={isLoadingMetadata} isError={status === "error"} onRefetch={getMetadata} />
+        </div>
       }
       {...props}
+      closable={status === "done"}
     >
       <CollapseList
         list={[
           {
             heading: (expanded) => (
-              <>
-                Updates
-                {expanded ? null : (
-                  <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{UPDATES[0].date}</span>
-                )}
-              </>
+              <div className="flex items-center space-x-2">
+                <span>Updates</span>
+                {expanded ? null : isLoadingMetadata ? (
+                  <Skeleton className="w-28 h-4 rounded" />
+                ) : latestDate ? (
+                  <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{latestDate}</span>
+                ) : null}
+              </div>
             ),
             body: (
               <div className="space-y-2 contains-inline-svg">
-                {UPDATES.map(({ date, patch, content }, i) => (
-                  <div key={i}>
-                    <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
-                    <ul className="mt-1 space-y-1">
-                      {content.map((line, j) => (
-                        <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />
-                      ))}
-                    </ul>
+                {isLoadingMetadata ? (
+                  <div className="h-20 flex-center">
+                    <LoadingIcon />
                   </div>
-                ))}
+                ) : updates.length ? (
+                  updates.map(({ date, patch, content }, i) => (
+                    <div key={i}>
+                      <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
+                      <ul className="mt-1 space-y-1">
+                        {content.map((line, j) => (
+                          <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />
+                        ))}
+                      </ul>
+                    </div>
+                  ))
+                ) : (
+                  <div className="h-20 flex-center">
+                    <p>No Updates</p>
+                  </div>
+                )}
               </div>
             ),
           },
@@ -119,6 +161,7 @@ export const Introduction = (props: ModalControl) => {
             "StockedSix",
             "Antixique",
             "RememberTelannas",
+            "Edvard Neto",
           ].map((name, i) => (
             <li key={i}>
               <Lightgold>{name}</Lightgold>

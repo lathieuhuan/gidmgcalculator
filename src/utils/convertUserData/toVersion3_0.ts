@@ -14,7 +14,7 @@ import type {
 } from "@Src/types";
 
 import { DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, VISION_TYPES } from "@Src/constants";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { mapVerson3_0 } from "./constants";
 
 import { getArtifactSetBonuses } from "../calculation";

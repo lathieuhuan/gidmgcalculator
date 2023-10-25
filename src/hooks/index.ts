@@ -4,3 +4,4 @@ export * from "./useTabs";
 export * from "./useTranslation";
 export * from "./useClickOutside";
 export * from "./useIntersectionObserver";
+export * from "./useGetMetadata";

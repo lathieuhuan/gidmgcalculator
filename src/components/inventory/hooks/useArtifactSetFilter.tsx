@@ -4,7 +4,7 @@ import type { ArtifactType, CalcArtifact } from "@Src/types";
 
 // Util
 import { findByCode, getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button } from "@Src/pure-components";

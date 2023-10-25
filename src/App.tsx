@@ -60,7 +60,7 @@ function App() {
       <AppModals />
       <Message />
       <ImportManager />
-      <AppSetup />
+      {/* <AppSetup /> */}
     </div>
   );
 }

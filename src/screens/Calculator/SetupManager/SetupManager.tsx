@@ -5,7 +5,7 @@ import { IoDocumentText } from "react-icons/io5";
 import type { ArtifactType } from "@Src/types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { updateUI } from "@Store/uiSlice";

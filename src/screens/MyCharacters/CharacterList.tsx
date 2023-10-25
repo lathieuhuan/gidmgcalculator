@@ -4,7 +4,7 @@ import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { useIntersectionObserver } from "@Src/hooks";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";

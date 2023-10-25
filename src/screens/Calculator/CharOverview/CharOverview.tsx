@@ -7,7 +7,7 @@ import { LEVELS } from "@Src/constants";
 // Util
 import { getAppDataError } from "@Src/utils";
 import { notification } from "@Src/utils/notification";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";

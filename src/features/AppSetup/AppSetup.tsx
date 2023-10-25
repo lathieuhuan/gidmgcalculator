@@ -8,7 +8,7 @@ import { updateImportInfo } from "@Store/uiSlice";
 // Util
 import { decodeSetup } from "@Src/components/setup-porter/utils";
 import { getSearchParam } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button, LoadingIcon, Modal } from "@Src/pure-components";
@@ -71,7 +71,7 @@ export const AppSetup = () => {
   const getAppData = async () => {
     setStatus("loading");
 
-    const isOk = await appData.fetchMetaData();
+    const isOk = await appData.fetchMetadata();
 
     if (isOk) {
       const importCode = getSearchParam("importCode");

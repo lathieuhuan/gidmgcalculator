@@ -37,7 +37,7 @@ import {
 // Util
 import { findByCode } from "@Src/utils";
 import { restoreCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 const DIVIDERS = ["*", "D1", "D2", "D3", "D4"];
 const DIVIDER_MC = "D8";

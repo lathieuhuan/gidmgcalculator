@@ -1,7 +1,7 @@
 import { FaCalculator, FaTimes, FaSyncAlt } from "react-icons/fa";
 
 import type { Teammate } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button } from "@Src/pure-components";

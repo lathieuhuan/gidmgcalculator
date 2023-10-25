@@ -1,4 +1,4 @@
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { AppArtifact, ArtifactModifier, ModifierCtrl } from "@Src/types";
 import { findByIndex, parseArtifactDescription, toArray } from "@Src/utils";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";

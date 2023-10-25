@@ -32,7 +32,7 @@ import type {
   InitNewSessionPayload,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";

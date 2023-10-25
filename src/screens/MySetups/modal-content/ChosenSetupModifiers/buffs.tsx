@@ -22,7 +22,7 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import {

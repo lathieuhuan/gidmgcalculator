@@ -2,7 +2,7 @@ import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Lightgold, CollapseList } from "@Src/pure-components";
