@@ -1,13 +1,13 @@
-import { ReactElement } from "react";
+import { ReactNode, ReactElement } from "react";
 
 interface IfElseProps {
   value: undefined | string | number | boolean | Record<PropertyKey, any>;
-  then: ReactElement | ReactElement[] | null;
-  else: ReactElement | ReactElement[] | null;
+  then: ReactNode;
+  else: ReactNode;
 }
 interface IfProps {
   value: undefined | string | number | boolean | Record<PropertyKey, any>;
-  children: ReactElement | ReactElement[] | null;
+  children: ReactNode;
 }
 
 const isIfElseProps = (props: IfProps | IfElseProps): props is IfElseProps => "then" in props;
