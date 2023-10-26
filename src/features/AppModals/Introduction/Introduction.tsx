@@ -1,31 +1,31 @@
-import { appData, Update } from "@Src/data";
-import { RefetchMetadata } from "@Src/features/RefetchMetadata";
-import { useGetMetadata } from "@Src/hooks";
-import {
-  Lightgold,
-  CollapseList,
-  StandardModal,
-  type ModalControl,
-  LoadingIcon,
-  Skeleton,
-  Button,
-} from "@Src/pure-components";
+import clsx from "clsx";
 import { useState } from "react";
+
+import { appData, Update } from "@Src/data";
+import { useGetMetadata } from "@Src/hooks";
+import { useDispatch } from "@Store/hooks";
+import { updateUI } from "@Store/uiSlice";
+
+import { CollapseList, StandardModal, ModalControl, LoadingIcon, Skeleton } from "@Src/pure-components";
+import { MetadataRefetcher } from "../../MetadataRefetcher";
 import { About } from "./About";
 import { Notes } from "./Notes";
 import { VersionRecap } from "./VersionRecap";
 
 export const Introduction = (props: ModalControl) => {
+  const dispatch = useDispatch();
   const [updates, setUpdates] = useState<Update[]>([]);
+  const [supporters, setSupporters] = useState<string[]>([]);
 
   const { status, getMetadata } = useGetMetadata({
     onSuccess: () => {
       setUpdates(appData.updates);
+      setSupporters(appData.supporters);
+      dispatch(updateUI({ ready: true }));
     },
   });
 
   const isLoadingMetadata = status === "loading";
-  // const isLoadingMetadata = true;
   const patch = updates.find((update) => !!update.patch)?.patch;
   const latestDate: string | undefined = updates[0]?.date;
 
@@ -43,18 +43,35 @@ export const Introduction = (props: ModalControl) => {
     });
   };
 
+  const renderTitle = (content: string, className?: string) => {
+    return (
+      <h1 className={clsx("text-2xl text-orange text-center font-bold relative", className)}>
+        {content}
+        <span className="absolute top-0 left-full ml-2 text-base text-lesser">
+          {isLoadingMetadata ? <Skeleton className="w-14 h-4 rounded" /> : patch ? <span>v{patch}</span> : null}
+        </span>
+      </h1>
+    );
+  };
+
   return (
     <StandardModal
       title={
-        <div className={"px-6 flex flex-col items-center justify-center " + (status === "error" ? "mb-4" : "mb-2")}>
-          <h1 className="text-2xl text-orange font-bold relative">
-            Welcome to GI DMG Calculator
-            <span className="absolute top-0 left-full ml-2 text-base text-lesser">
-              {isLoadingMetadata ? <Skeleton className="w-14 h-4 rounded" /> : patch ? <span>v{patch}</span> : null}
-            </span>
-          </h1>
-          <RefetchMetadata isLoading={isLoadingMetadata} isError={status === "error"} onRefetch={getMetadata} />
-        </div>
+        <>
+          <div className="mb-2 flex flex-col items-center">
+            {renderTitle("Welcome to GI DMG Calculator", "hidden md1:block")}
+
+            <p className="text-xl font-semibold md1:hidden">Welcome to</p>
+            {renderTitle("GI DMG Calculator", "md1:hidden")}
+          </div>
+
+          <MetadataRefetcher
+            className="mb-4"
+            isLoading={isLoadingMetadata}
+            isError={status === "error"}
+            onRefetch={getMetadata}
+          />
+        </>
       }
       {...props}
       closable={status === "done"}
@@ -76,7 +93,7 @@ export const Introduction = (props: ModalControl) => {
               <div className="space-y-2 contains-inline-svg">
                 {isLoadingMetadata ? (
                   <div className="h-20 flex-center">
-                    <LoadingIcon />
+                    <LoadingIcon size="large" />
                   </div>
                 ) : updates.length ? (
                   updates.map(({ date, patch, content }, i) => (
@@ -127,47 +144,18 @@ export const Introduction = (props: ModalControl) => {
           </a>
           , all data is collected from their site.
         </p>
-        <p>- Huge and special thanks to these users for the bug reports!</p>
-        <ul className="ml-4 columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
-          {[
-            "K3y87",
-            "Pastrynoms",
-            "Ithireal (and their friend)",
-            "CosSheCute",
-            "Chronopolize",
-            "333mage11",
-            "Gustavo Mota Derzi",
-            "Goldy4282",
-            "G_0st08",
-            "FlyingJetpa",
-            "Nono",
-            "mozz",
-            "niczan0728",
-            "Izah DLP",
-            "Meiflower",
-            "rock1017",
-            "Street_Term9205",
-            "Sevenempest",
-            "_65535_",
-            "arthur cavalaro",
-            "Spiderninja_1",
-            "Gabriel Caminha",
-            "Ayan",
-            "Only_Pumpkin_801",
-            "Jenny-sama",
-            "L1itTru",
-            "Izzo",
-            "Hounth",
-            "StockedSix",
-            "Antixique",
-            "RememberTelannas",
-            "Edvard Neto",
-          ].map((name, i) => (
-            <li key={i}>
-              <Lightgold>{name}</Lightgold>
-            </li>
-          ))}
-        </ul>
+        <p>- Huge and special thanks to these supporters for the bug reports!</p>
+        {supporters.length ? (
+          <ul className="ml-4 text-lightgold columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
+            {supporters.map((name, i) => (
+              <li key={i}>{name}</li>
+            ))}
+          </ul>
+        ) : (
+          <div className="h-28 flex-center">
+            <p>Getting supporters info...</p>
+          </div>
+        )}
         <p>- Last but not least, thank you for using my App and please give me some feedback if you can.</p>
       </div>
     </StandardModal>

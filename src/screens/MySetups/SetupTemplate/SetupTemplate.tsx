@@ -8,7 +8,7 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Store
 import { useDispatch } from "@Store/hooks";
-import { updateImportInfo } from "@Store/uiSlice";
+import { updateSetupImportInfo } from "@Store/uiSlice";
 import { makeTeammateSetup } from "@Store/thunks";
 import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@Store/userDatabaseSlice";
 
@@ -203,7 +203,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               if (weapon) {
                 const { ID, name, type, target } = setup;
                 dispatch(
-                  updateImportInfo({
+                  updateSetupImportInfo({
                     ID,
                     name,
                     type,

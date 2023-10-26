@@ -3,19 +3,17 @@ import { useEffect } from "react";
 // Constant
 import { EScreen } from "./constants";
 
-// Hook
-import { useDispatch, useSelector } from "@Store/hooks";
-
-// Selector
+// Store
+import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Screen
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
-import MyWeapons from "@Screens/MyWeapons";
 import MySetups from "@Screens/MySetups";
-import { Message, NavBar, ImportManager, AppModals, AppSetup } from "@Src/features";
+import MyWeapons from "@Screens/MyWeapons";
+import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort } from "@Src/features";
 
 function App() {
   const atScreen = useSelector(selectAtScreen);
@@ -59,8 +57,8 @@ function App() {
 
       <AppModals />
       <Message />
-      <ImportManager />
-      {/* <AppSetup /> */}
+      <SetupTransshipmentPort />
+      <SetupImportCenter />
     </div>
   );
 }

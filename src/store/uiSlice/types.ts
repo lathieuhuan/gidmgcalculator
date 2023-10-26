@@ -19,5 +19,6 @@ export interface UIState {
   highManagerWorking: boolean;
   importInfo: SetupImportInfo;
   loading: boolean;
+  ready: boolean;
   mySetupsModalType: MySetupsModalType;
 }

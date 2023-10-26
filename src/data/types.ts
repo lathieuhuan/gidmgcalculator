@@ -27,4 +27,5 @@ export type Metadata = {
   artifacts: AppArtifact[];
   monsters: AppMonster[];
   updates: Update[];
+  supporters: string[];
 };

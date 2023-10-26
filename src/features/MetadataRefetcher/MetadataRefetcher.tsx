@@ -1,13 +1,20 @@
 import { Button } from "@Src/pure-components";
 import { useEffect, useRef, useState } from "react";
 
-interface IRefetchMetadataProps {
+interface IMetadataRefetcherProps {
+  className?: string;
   cooldown?: number;
   isLoading: boolean;
   isError: boolean;
   onRefetch: () => void;
 }
-export const RefetchMetadata = ({ cooldown = 10, isLoading, isError, onRefetch }: IRefetchMetadataProps) => {
+export const MetadataRefetcher = ({
+  className = "",
+  cooldown = 10,
+  isLoading,
+  isError,
+  onRefetch,
+}: IMetadataRefetcherProps) => {
   const startTime = useRef(0);
   const [time, setTime] = useState(0);
 
@@ -43,11 +50,11 @@ export const RefetchMetadata = ({ cooldown = 10, isLoading, isError, onRefetch }
   }, [isError]);
 
   if (isLoading) {
-    return <p>Loading App Data...</p>;
+    return <p className={"text-center " + className}>Loading App Data...</p>;
   }
   if (isError) {
     return (
-      <div className="flex flex-col items-center">
+      <div className={"flex flex-col items-center " + className}>
         <p className="text-lightred">
           Failed to fetch App Data. <span>{time ? `Try again in ${time}s.` : "Please try again."}</span>
         </p>

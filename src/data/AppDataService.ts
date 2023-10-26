@@ -24,6 +24,7 @@ export class AppDataService {
   private artifacts: Array<DataControl<AppArtifact>> = [];
   private monsters: AppMonster[] = [];
   public updates: Update[] = [];
+  public supporters: string[] = [];
 
   constructor() {
     this.characters = characters.map((character) => ({
@@ -83,6 +84,7 @@ export class AppDataService {
 
       this.monsters = response.data.monsters;
       this.updates = response.data.updates;
+      this.supporters = response.data.supporters;
 
       return true;
     }

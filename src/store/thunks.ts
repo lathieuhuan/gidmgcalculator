@@ -7,7 +7,7 @@ import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_
 
 // Action
 import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
-import { updateImportInfo, updateUI } from "./uiSlice";
+import { updateSetupImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
@@ -357,7 +357,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       };
 
       dispatch(
-        updateImportInfo({
+        updateSetupImportInfo({
           ID: seedID++,
           name: "New setup",
           target: setup.target,

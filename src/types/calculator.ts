@@ -139,6 +139,7 @@ export type Target = {
 };
 
 export type SetupImportInfo = {
+  importRoute?: "url" | "highManager";
   ID?: number;
   name?: string;
   type?: "original" | "combined";
