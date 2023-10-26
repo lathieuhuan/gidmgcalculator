@@ -6,7 +6,7 @@ import { useGetMetadata } from "@Src/hooks";
 import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
 
-import { CollapseList, StandardModal, ModalControl, LoadingIcon, Skeleton } from "@Src/pure-components";
+import { CollapseList, StandardModal, ModalControl, LoadingIcon, Skeleton, If } from "@Src/pure-components";
 import { MetadataRefetcher } from "../../MetadataRefetcher";
 import { About } from "./About";
 import { Notes } from "./Notes";
@@ -82,35 +82,50 @@ export const Introduction = (props: ModalControl) => {
             heading: (expanded) => (
               <div className="flex items-center space-x-2">
                 <span>Updates</span>
-                {expanded ? null : isLoadingMetadata ? (
-                  <Skeleton className="w-28 h-4 rounded" />
-                ) : latestDate ? (
-                  <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{latestDate}</span>
-                ) : null}
+
+                <If value={!expanded}>
+                  <If
+                    value={isLoadingMetadata}
+                    then={<Skeleton className="w-28 h-4 rounded" />}
+                    else={
+                      <If value={latestDate}>
+                        <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{latestDate}</span>
+                      </If>
+                    }
+                  />
+                </If>
               </div>
             ),
             body: (
               <div className="space-y-2 contains-inline-svg">
-                {isLoadingMetadata ? (
-                  <div className="h-20 flex-center">
-                    <LoadingIcon size="large" />
-                  </div>
-                ) : updates.length ? (
-                  updates.map(({ date, patch, content }, i) => (
-                    <div key={i}>
-                      <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
-                      <ul className="mt-1 space-y-1">
-                        {content.map((line, j) => (
-                          <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />
-                        ))}
-                      </ul>
+                <If
+                  value={isLoadingMetadata}
+                  then={
+                    <div className="h-20 flex-center">
+                      <LoadingIcon size="large" />
                     </div>
-                  ))
-                ) : (
-                  <div className="h-20 flex-center">
-                    <p>No Updates</p>
-                  </div>
-                )}
+                  }
+                  else={
+                    <If
+                      value={updates.length}
+                      then={updates.map(({ date, patch, content }, i) => (
+                        <div key={i}>
+                          <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
+                          <ul className="mt-1 space-y-1">
+                            {content.map((line, j) => (
+                              <li key={j} dangerouslySetInnerHTML={{ __html: `- ${parseContent(line)}` }} />
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      else={
+                        <div className="h-20 flex-center text-lightred">
+                          <p>Failed to get updates</p>
+                        </div>
+                      }
+                    />
+                  }
+                />
               </div>
             ),
           },
@@ -145,17 +160,33 @@ export const Introduction = (props: ModalControl) => {
           , all data is collected from their site.
         </p>
         <p>- Huge and special thanks to these supporters for the bug reports!</p>
-        {supporters.length ? (
-          <ul className="ml-4 text-lightgold columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
-            {supporters.map((name, i) => (
-              <li key={i}>{name}</li>
-            ))}
-          </ul>
-        ) : (
-          <div className="h-28 flex-center">
-            <p>Getting supporters info...</p>
-          </div>
-        )}
+        <If
+          value={isLoadingMetadata}
+          then={
+            <div className="ml-4 grid grid-cols-4">
+              {Array.from({ length: 4 }, (_, i) => (
+                <Skeleton key={i} className="w-28 h-4 rounded" />
+              ))}
+            </div>
+          }
+          else={
+            <If
+              value={supporters.length}
+              then={
+                <ul className="ml-4 text-lightgold columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
+                  {supporters.map((name, i) => (
+                    <li key={i}>{name}</li>
+                  ))}
+                </ul>
+              }
+              else={
+                <div className="h-20 flex-center text-lightred">
+                  <p>Failed to get supporters</p>
+                </div>
+              }
+            />
+          }
+        />
         <p>- Last but not least, thank you for using my App and please give me some feedback if you can.</p>
       </div>
     </StandardModal>

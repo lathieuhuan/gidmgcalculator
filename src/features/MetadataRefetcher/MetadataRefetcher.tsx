@@ -1,7 +1,7 @@
 import { Button } from "@Src/pure-components";
 import { useEffect, useRef, useState } from "react";
 
-interface IMetadataRefetcherProps {
+interface MetadataRefetcherProps {
   className?: string;
   cooldown?: number;
   isLoading: boolean;
@@ -14,7 +14,7 @@ export const MetadataRefetcher = ({
   isLoading,
   isError,
   onRefetch,
-}: IMetadataRefetcherProps) => {
+}: MetadataRefetcherProps) => {
   const startTime = useRef(0);
   const [time, setTime] = useState(0);
 

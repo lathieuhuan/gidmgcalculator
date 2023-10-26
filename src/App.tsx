@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 
 // Constant
-import { EScreen } from "./constants";
+import { EScreen } from "@Src/constants";
 
 // Store
 import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice/selectors";
 
-// Screen
+// Component
+import { If, SwitchCase } from "@Src/pure-components";
+import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort } from "@Src/features";
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
 import MySetups from "@Screens/MySetups";
 import MyWeapons from "@Screens/MyWeapons";
-import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort } from "@Src/features";
 
 function App() {
   const atScreen = useSelector(selectAtScreen);
@@ -30,21 +31,6 @@ function App() {
     };
   }, []);
 
-  const renderTabContent = () => {
-    switch (atScreen) {
-      case EScreen.MY_CHARACTERS:
-        return <MyCharacters />;
-      case EScreen.MY_WEAPONS:
-        return <MyWeapons />;
-      case EScreen.MY_ARTIFACTS:
-        return <MyArtifacts />;
-      case EScreen.MY_SETUPS:
-        return <MySetups />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="App h-screen pt-8 text-default bg-default">
       <NavBar />
@@ -52,7 +38,19 @@ function App() {
       <div className="h-full flex-center relative">
         <Calculator />
 
-        {atScreen !== EScreen.CALCULATOR && <div className="absolute full-stretch z-30">{renderTabContent()}</div>}
+        <If value={atScreen !== EScreen.CALCULATOR}>
+          <div className="absolute full-stretch z-30">
+            <SwitchCase
+              value={atScreen}
+              cases={[
+                { value: EScreen.MY_CHARACTERS, element: <MyCharacters /> },
+                { value: EScreen.MY_WEAPONS, element: <MyWeapons /> },
+                { value: EScreen.MY_ARTIFACTS, element: <MyArtifacts /> },
+                { value: EScreen.MY_SETUPS, element: <MySetups /> },
+              ]}
+            />
+          </div>
+        </If>
       </div>
 
       <AppModals />

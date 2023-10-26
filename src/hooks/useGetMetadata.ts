@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { appData } from "@Src/data";
 
-interface IuseGetMetadataOptions {
+interface UseGetMetadataOptions {
   onSuccess?: () => void;
   onError?: () => void;
 }
-export const useGetMetadata = (options: IuseGetMetadataOptions = {}) => {
+export const useGetMetadata = (options: UseGetMetadataOptions = {}) => {
   const [status, setStatus] = useState<"done" | "loading" | "error" | "idle">("loading");
 
   const getMetadata = async () => {
