@@ -83,12 +83,12 @@ export const Introduction = (props: ModalControl) => {
               <div className="flex items-center space-x-2">
                 <span>Updates</span>
 
-                <If value={!expanded}>
+                <If this={!expanded}>
                   <If
-                    value={isLoadingMetadata}
+                    this={isLoadingMetadata}
                     then={<Skeleton className="w-28 h-4 rounded" />}
                     else={
-                      <If value={latestDate}>
+                      <If this={latestDate}>
                         <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{latestDate}</span>
                       </If>
                     }
@@ -99,7 +99,7 @@ export const Introduction = (props: ModalControl) => {
             body: (
               <div className="space-y-2 contains-inline-svg">
                 <If
-                  value={isLoadingMetadata}
+                  this={isLoadingMetadata}
                   then={
                     <div className="h-20 flex-center">
                       <LoadingIcon size="large" />
@@ -107,7 +107,7 @@ export const Introduction = (props: ModalControl) => {
                   }
                   else={
                     <If
-                      value={updates.length}
+                      this={updates.length}
                       then={updates.map(({ date, patch, content }, i) => (
                         <div key={i}>
                           <p className="text-orange font-bold">{date + (patch ? ` (v${patch})` : "")}</p>
@@ -161,7 +161,7 @@ export const Introduction = (props: ModalControl) => {
         </p>
         <p>- Huge and special thanks to these supporters for the bug reports!</p>
         <If
-          value={isLoadingMetadata}
+          this={isLoadingMetadata}
           then={
             <div className="ml-4 grid grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => (
@@ -171,7 +171,7 @@ export const Introduction = (props: ModalControl) => {
           }
           else={
             <If
-              value={supporters.length}
+              this={supporters.length}
               then={
                 <ul className="ml-4 text-lightgold columns-1 md1:columns-2 md2:columns-3 lg:columns-4">
                   {supporters.map((name, i) => (

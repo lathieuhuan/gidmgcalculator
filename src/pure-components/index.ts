@@ -15,4 +15,4 @@ export * from "./SharedSpace";
 export * from "./StarLine";
 export * from "./Vision";
 export * from "./If";
-export * from "./SwitchCase";
+export * from "./Switch";
