@@ -22,9 +22,8 @@ import { findById } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Component
-import { PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/features";
 import { Image, CollapseSpace } from "@Src/pure-components";
-import { TeammateItems } from "@Src/components";
+import { TeammateItems, PickerArtifact, PickerCharacter, PickerWeapon } from "@Src/components";
 import { CopySelect } from "./CopySelect";
 
 interface ModalState {

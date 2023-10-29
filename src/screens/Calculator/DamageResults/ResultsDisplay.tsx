@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { selectChar, selectComparedIds, selectDmgResult, selectParty } from "@Store/calculatorSlice/selectors";
 import { useSelector } from "@Store/hooks";
 import { EStatDamageKey } from "@Src/constants";
+import { findById } from "@Src/utils";
 
 // Component
 import { DamageDisplay } from "@Src/components";
@@ -13,10 +14,11 @@ const FOCUS_LABELS = {
   [EStatDamageKey.NON_CRIT]: "Non-crit",
 };
 
-interface ResultsDisplayProps {
-  activeSetupName: string;
-}
-export function ResultsDisplay({ activeSetupName }: ResultsDisplayProps) {
+export function ResultsDisplay() {
+  const activeSetupName = useSelector((state) => {
+    const { activeId, setupManageInfos } = state.calculator;
+    return findById(setupManageInfos, activeId)?.name || "";
+  });
   const dmgResult = useSelector(selectDmgResult);
   const char = useSelector(selectChar);
   const party = useSelector(selectParty);

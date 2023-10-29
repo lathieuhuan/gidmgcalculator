@@ -14,9 +14,16 @@ import { addUserWeapon, removeWeapon, sortWeapons, swapWeaponOwner, updateUserWe
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Component
-import { PickerCharacter, PickerWeapon } from "@Src/features";
 import { ButtonGroup, CollapseSpace, WarehouseLayout, Button } from "@Src/pure-components";
-import { OwnerLabel, TypeSelect, WeaponCard, InventoryRack, ItemRemoveConfirm } from "@Src/components";
+import {
+  OwnerLabel,
+  TypeSelect,
+  WeaponCard,
+  InventoryRack,
+  ItemRemoveConfirm,
+  PickerCharacter,
+  PickerWeapon,
+} from "@Src/components";
 
 import styles from "../styles.module.scss";
 

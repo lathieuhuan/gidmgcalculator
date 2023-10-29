@@ -32,9 +32,16 @@ import {
 import { appData } from "@Src/data";
 
 // Component
-import { PickerArtifact, PickerCharacter } from "@Src/features";
 import { ButtonGroup, WarehouseLayout, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, ArtifactCard, TypeSelect, InventoryRack, ItemRemoveConfirm } from "@Src/components";
+import {
+  OwnerLabel,
+  ArtifactCard,
+  TypeSelect,
+  InventoryRack,
+  ItemRemoveConfirm,
+  PickerArtifact,
+  PickerCharacter,
+} from "@Src/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";

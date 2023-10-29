@@ -8,7 +8,7 @@ import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
 

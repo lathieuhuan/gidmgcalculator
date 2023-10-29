@@ -13,7 +13,7 @@ import { useSelector } from "@Store/hooks";
 import { getImgSrc } from "@Src/utils";
 
 // Component
-import { PickerWeapon } from "@Src/features";
+import { PickerWeapon } from "@Src/components";
 import { BetaMark } from "@Src/pure-components";
 import { appData } from "@Src/data";
 

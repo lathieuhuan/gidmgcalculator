@@ -9,14 +9,14 @@ import { changeArtifact } from "@Store/calculatorSlice";
 import { selectArtifacts } from "@Store/calculatorSlice/selectors";
 
 // Util
+import { appData } from "@Src/data";
 import { appSettings, getImgSrc } from "@Src/utils";
 
 // Component
-import { PickerArtifact } from "@Src/features";
+import { PickerArtifact } from "@Src/components";
 import { CollapseSpace } from "@Src/pure-components";
 import { ArtifactInfo } from "./ArtifactInfo";
 import { CopySelect } from "./CopySelect";
-import { appData } from "@Src/data";
 
 export default function SectionArtifacts() {
   const dispatch = useDispatch();

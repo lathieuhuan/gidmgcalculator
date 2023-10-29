@@ -8,7 +8,7 @@ import { appData } from "@Src/data";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 interface ArtifactPickerProps {
   type?: string;

@@ -8,6 +8,7 @@ const initialState: UIState = {
   appModalType: "INTRO",
   mySetupsModalType: "",
   highManagerWorking: false,
+  trackerState: "close",
   importInfo: {},
   loading: false,
   ready: false,

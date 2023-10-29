@@ -3,13 +3,13 @@ import { useMemo } from "react";
 import type { WeaponType } from "@Src/types";
 
 // Util
+import { appData } from "@Src/data";
 import { pickProps } from "@Src/utils";
 import { createWeapon } from "@Src/utils/creators";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
-import { appData } from "@Src/data";
+import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 interface WeaponPickerProps {
   type?: string;

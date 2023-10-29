@@ -18,9 +18,8 @@ import { updateUI } from "@Store/uiSlice";
 import { initNewSessionWithChar } from "@Store/thunks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
 import { Button, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-components";
-import { SetupImporter } from "@Src/components";
+import { SetupImporter, PickerCharacter } from "@Src/components";
 import contentByTab from "./content";
 
 type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";

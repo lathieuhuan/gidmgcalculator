@@ -11,7 +11,7 @@ import { chooseCharacter } from "@Store/userDatabaseSlice";
 import { useDispatch } from "@Store/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
+import { PickerCharacter } from "@Src/components";
 import { Button } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";

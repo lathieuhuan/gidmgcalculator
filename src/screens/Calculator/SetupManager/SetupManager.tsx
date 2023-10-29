@@ -18,9 +18,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useElementSize } from "@Src/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
 import { Button, Modal } from "@Src/pure-components";
-import { TypeSelect, InventoryWeapon, InventoryArtifact } from "@Src/components";
+import { TypeSelect, InventoryWeapon, InventoryArtifact, PickerCharacter } from "@Src/components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";

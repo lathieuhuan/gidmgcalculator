@@ -1,4 +1,5 @@
 import type { SetupImportInfo } from "@Src/types";
+import type { TrackerState } from "@Src/features";
 import { EScreen } from "@Src/constants";
 
 export type MySetupsModalType =
@@ -17,6 +18,7 @@ export interface UIState {
   atScreen: EScreen;
   appModalType: "" | "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD" | "DONATE";
   highManagerWorking: boolean;
+  trackerState: TrackerState;
   importInfo: SetupImportInfo;
   loading: boolean;
   ready: boolean;

@@ -9,7 +9,7 @@ import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Component
 import { Switch } from "@Src/pure-components";
-import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort } from "@Src/features";
+import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort, Tracker } from "@Src/features";
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
 import MyCharacters from "@Screens/MyCharacters";
@@ -54,6 +54,7 @@ function App() {
       </div>
 
       <AppModals />
+      <Tracker />
       <Message />
       <SetupTransshipmentPort />
       <SetupImportCenter />
