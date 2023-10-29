@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { FaEllipsisH } from "react-icons/fa";
 import type { WeaponType } from "@Src/types";
 
@@ -81,7 +81,7 @@ export default function MyWeapons() {
           {window.innerWidth >= 500 ? (
             renderTypeFilter()
           ) : (
-            <Fragment>
+            <>
               <Button
                 className={clsx("ml-1", filterIsActive ? "bg-green" : "bg-white")}
                 icon={<FaEllipsisH />}
@@ -91,7 +91,7 @@ export default function MyWeapons() {
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
                 <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
               </CollapseSpace>
-            </Fragment>
+            </>
           )}
         </WarehouseLayout.ButtonBar>
 

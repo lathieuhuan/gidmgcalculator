@@ -8,7 +8,7 @@ import { useSelector } from "@Store/hooks";
 import { selectAtScreen } from "@Store/uiSlice/selectors";
 
 // Component
-import { If, Switch } from "@Src/pure-components";
+import { Switch } from "@Src/pure-components";
 import { AppModals, Message, NavBar, SetupImportCenter, SetupTransshipmentPort } from "@Src/features";
 import Calculator from "@Screens/Calculator";
 import MyArtifacts from "@Screens/MyArtifacts";
@@ -38,7 +38,7 @@ function App() {
       <div className="h-full flex-center relative">
         <Calculator />
 
-        <If this={atScreen !== EScreen.CALCULATOR}>
+        {atScreen !== EScreen.CALCULATOR ? (
           <div className="absolute full-stretch z-30">
             <Switch
               value={atScreen}
@@ -50,7 +50,7 @@ function App() {
               ]}
             />
           </div>
-        </If>
+        ) : null}
       </div>
 
       <AppModals />

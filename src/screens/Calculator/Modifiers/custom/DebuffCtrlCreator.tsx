@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 import type { CustomDebuffCtrl, CustomDebuffCtrlType } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
@@ -40,7 +40,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
   };
 
   return (
-    <Fragment>
+    <>
       <div className="mx-auto mt-4 px-2 flex items-center">
         <select
           className="pr-2 text-default text-right text-last-right"
@@ -78,6 +78,6 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
           { text: "Confirm", onClick: onConfirm },
         ]}
       />
-    </Fragment>
+    </>
   );
 }

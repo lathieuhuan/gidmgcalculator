@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { Fragment } from "react";
 import type { ReactNode } from "react";
 
 import { EScreen } from "@Src/constants";
@@ -38,7 +37,7 @@ export function NavTabs({ className = "", activeClassName, idleClassName, onClic
   const dispatch = useDispatch();
 
   return (
-    <Fragment>
+    <>
       {[EScreen.MY_CHARACTERS, EScreen.MY_WEAPONS, EScreen.MY_ARTIFACTS, EScreen.MY_SETUPS, EScreen.CALCULATOR].map(
         (tab, i) => (
           <button
@@ -57,6 +56,6 @@ export function NavTabs({ className = "", activeClassName, idleClassName, onClic
           </button>
         )
       )}
-    </Fragment>
+    </>
   );
 }
