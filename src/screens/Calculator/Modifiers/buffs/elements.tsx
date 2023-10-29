@@ -125,7 +125,7 @@ export const ElementBuffs = () => {
     content.push(
       <div>
         {elmtModCtrls.resonances.map((resonance) => {
-          const { name, desc } = resonanceRenderInfo[resonance.vision];
+          const { name, description } = resonanceRenderInfo[resonance.vision];
           const inputConfigs: ModInputConfig[] =
             resonance.vision === "dendro"
               ? [
@@ -147,7 +147,7 @@ export const ElementBuffs = () => {
                 );
               }}
               heading={name}
-              description={desc}
+              description={description}
               inputs={resonance.inputs}
               inputConfigs={inputConfigs}
               onToggleCheck={(currentInput, inputIndex) => {

@@ -223,15 +223,13 @@ export const calculatorSlice = createSlice({
       party[teammateIndex] = createTeammate({ name, weaponType });
 
       const newVisionCount = countVision(appData.getPartyData(party), charData);
-      // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
-      const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
         const { vision: oldVision } = appData.getCharData(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
-          resonanceVisionTypes.includes(oldVision) &&
+          RESONANCE_VISION_TYPES.includes(oldVision) &&
           oldVisionCount[oldVision] === 2 &&
           newVisionCount[oldVision] === 1
         ) {
@@ -241,7 +239,7 @@ export const calculatorSlice = createSlice({
         }
       }
       // new teammate form new resonance
-      if (resonanceVisionTypes.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
+      if (RESONANCE_VISION_TYPES.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
         const newResonance = {
           vision,
           activated: ["pyro", "hydro", "dendro"].includes(vision),

@@ -10,7 +10,6 @@ import type {
   AttributeStat,
   PartiallyRequired,
   NormalAttack,
-  ResonanceVision,
   Weapon,
   Artifact,
   TotalAttributeStat,
@@ -97,7 +96,7 @@ export type Party = (Teammate | null)[];
 // PARTY ends
 
 export type Resonance = {
-  vision: ResonanceVision;
+  vision: Vision;
   activated: boolean;
   inputs?: ModifierInput[];
 };

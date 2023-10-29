@@ -43,8 +43,8 @@ export function ElementDebuffs({ superconduct, resonances }: ElementDebuffsProps
     );
   }
   if (resonances.some((rsn) => rsn.vision === "geo")) {
-    const { name, desc } = resonanceRenderInfo.geo;
-    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} description={desc} />);
+    const { name, description } = resonanceRenderInfo.geo;
+    content.push(<ModifierTemplate key="geo" mutable={false} heading={name} description={description} />);
   }
 
   return renderModifiers(content, "debuffs", false);

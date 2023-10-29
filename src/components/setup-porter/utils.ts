@@ -9,7 +9,6 @@ import type {
   ModifierCtrl,
   Rarity,
   Resonance,
-  ResonanceVision,
   SetupImportInfo,
   Target,
   Teammate,
@@ -308,7 +307,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
     ? split(_resonancesCode, 1).map((rsn) => {
         const [vision, activated, inputs] = split(rsn, 2);
         const resonance: Resonance = {
-          vision: vision as ResonanceVision,
+          vision: vision as Vision,
           activated: activated === "1",
         };
         if (inputs) {

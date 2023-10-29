@@ -172,7 +172,7 @@ export const BASE_REACTION_DAMAGE: Record<number, number> = {
   90: 1446.85,
 };
 
-export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"] as const;
+export const RESONANCE_VISION_TYPES = ["pyro", "cryo", "geo", "hydro", "dendro"];
 
 export const DEFAULT_WEAPON_CODE = {
   bow: 11,

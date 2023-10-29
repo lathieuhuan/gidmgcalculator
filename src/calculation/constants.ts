@@ -1,16 +1,11 @@
-import type {
-  ActualAttackElement,
-  AttributeStat,
-  ResonanceVision,
-  TransformativeReaction,
-} from "@Src/types";
+import type { ActualAttackElement, AttributeStat, Vision, TransformativeReaction } from "@Src/types";
 
 type ResonanceStat = {
   key: AttributeStat;
   value: number;
 };
 
-export const RESONANCE_STAT: Record<ResonanceVision, ResonanceStat> = {
+export const RESONANCE_STAT: Record<string, ResonanceStat> = {
   pyro: { key: "atk_", value: 25 },
   cryo: { key: "cRate_", value: 15 },
   geo: { key: "shieldS_", value: 15 },

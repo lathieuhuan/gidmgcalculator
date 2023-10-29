@@ -49,8 +49,8 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
   const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
   for (const { vision } of resonances) {
-    const { name, desc } = resonanceRenderInfo[vision];
-    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={desc} />);
+    const { name, description } = resonanceRenderInfo[vision];
+    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={description} />);
   }
 
   if (infusedElement !== "phys") {
