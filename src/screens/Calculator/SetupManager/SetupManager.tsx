@@ -69,7 +69,7 @@ export default function SetupManager() {
             className="mx-auto"
             variant="positive"
             icon={<IoDocumentText />}
-            onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
+            onClick={() => dispatch(updateUI({ highManagerActive: true }))}
           />
         </div>
 

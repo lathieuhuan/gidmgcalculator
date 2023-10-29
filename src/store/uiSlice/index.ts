@@ -7,7 +7,7 @@ const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
   appModalType: "INTRO",
   mySetupsModalType: "",
-  highManagerWorking: false,
+  highManagerActive: false,
   trackerState: "close",
   importInfo: {},
   loading: false,

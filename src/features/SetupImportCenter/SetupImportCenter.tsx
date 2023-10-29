@@ -32,7 +32,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
 
   const endImport = () => {
     dispatch(updateSetupImportInfo({}));
-    dispatch(updateUI({ highManagerWorking: false }));
+    dispatch(updateUI({ highManagerActive: false }));
   };
 
   const addImportedSetup = (shouldOverwriteChar: boolean, shouldOverwriteTarget: boolean) => {
@@ -50,7 +50,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
     dispatch(
       updateUI({
         atScreen: EScreen.CALCULATOR,
-        highManagerWorking: false,
+        highManagerActive: false,
       })
     );
     endImport();
@@ -71,7 +71,7 @@ const SetupImportCenterCore = ({ calcSetup, target, ...manageInfo }: SetupImport
             dispatch(
               updateUI({
                 atScreen: EScreen.CALCULATOR,
-                highManagerWorking: false,
+                highManagerActive: false,
               })
             );
 

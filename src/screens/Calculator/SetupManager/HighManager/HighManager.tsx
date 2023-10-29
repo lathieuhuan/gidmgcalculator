@@ -143,14 +143,14 @@ function HiddenManager() {
         newStandardId: tempStandardId,
       })
     );
-    dispatch(updateUI({ highManagerWorking: false }));
+    dispatch(updateUI({ highManagerActive: false }));
   };
 
   return (
     <div className="p-4 h-full flex flex-col">
       <button
         className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-darkred"
-        onClick={() => dispatch(updateUI({ highManagerWorking: false }))}
+        onClick={() => dispatch(updateUI({ highManagerActive: false }))}
       >
         <FaTimes />
       </button>
@@ -225,11 +225,11 @@ interface HighManagerProps {
   height: number;
 }
 export default function HighManager({ height }: HighManagerProps) {
-  const highManagerWorking = useSelector((state) => state.ui.highManagerWorking);
+  const highManagerActive = useSelector((state) => state.ui.highManagerActive);
 
   return (
     <CollapseAndMount
-      active={highManagerWorking}
+      active={highManagerActive}
       className={clsx("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}

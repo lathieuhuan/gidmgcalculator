@@ -15,12 +15,12 @@ export type MySetupsModalType =
   | "";
 
 export interface UIState {
+  ready: boolean;
+  loading: boolean;
   atScreen: EScreen;
   appModalType: "" | "INTRO" | "GUIDES" | "SETTINGS" | "UPLOAD" | "DOWNLOAD" | "DONATE";
-  highManagerWorking: boolean;
+  highManagerActive: boolean;
   trackerState: TrackerState;
-  importInfo: SetupImportInfo;
-  loading: boolean;
-  ready: boolean;
   mySetupsModalType: MySetupsModalType;
+  importInfo: SetupImportInfo;
 }
