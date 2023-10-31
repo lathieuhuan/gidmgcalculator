@@ -106,6 +106,7 @@ export const ATTRIBUTE_STAT_TYPES = [
   "cDmg_",
   ...ATTACK_ELEMENTS,
   "healB_",
+  "inHealB_",
   "shieldS_",
   "naAtkSpd_",
   "caAtkSpd_",

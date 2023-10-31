@@ -15,7 +15,7 @@ import type {
   CustomDebuffCtrl,
   ActualAttackPattern,
   Tracker,
-  TrackerDamageRecord,
+  TrackerCalcItemRecord,
   NormalAttack,
   CalcItem,
   CalcItemBonus,
@@ -56,7 +56,7 @@ export interface CalculateItemArgs
   calcItemBonues: CalcItemBonus[];
   absorbedElmt?: Vision;
   resistReduct: ResistanceReduction;
-  record: TrackerDamageRecord;
+  record: TrackerCalcItemRecord;
 }
 
 export interface GetDamageArgs extends Omit<BuffModifierArgsWrapper, "infusedElement"> {

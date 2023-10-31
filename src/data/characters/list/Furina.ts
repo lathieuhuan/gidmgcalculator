@@ -9,7 +9,11 @@ const getESBonus = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
     ? finalTalentLv({ ...args, charData: Furina as AppCharacter, talentType: "EB" })
     : args.inputs[1];
-  return [level, (5 + level * 2) / 100];
+  return {
+    level,
+    dmgBonusPerS: (5 + level * 2) / 100,
+    inHealBonusPerS: level / 100,
+  };
 };
 
 const Furina: DefaultAppCharacter = {
@@ -26,7 +30,7 @@ const Furina: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${getESBonus(args)[1]}%`],
+  dsGetters: [(args) => `${getESBonus(args).dmgBonusPerS}%`],
   innateBuffs: [
     {
       src: EModSrc.A4,
@@ -84,13 +88,16 @@ const Furina: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         let stacks = obj.inputs[0] || 0;
-        const [level, buffPerStack] = getESBonus(obj);
+        const { level, dmgBonusPerS, inHealBonusPerS } = getESBonus(obj);
         const atC1 = obj.fromSelf ? checkCons[1](obj.char) : obj.inputs[2];
         if (atC1) {
           stacks = Math.min(stacks + 150, 400);
         }
-        const xtraDesc = ` / Lv.${level}${atC1 ? " + C1" : ""} / ${buffPerStack}% per stack / ${stacks} stacks`;
-        applyModifier(obj.desc + xtraDesc, obj.attPattBonus, "all.pct_", buffPerStack * stacks, obj.tracker);
+        const xtraDesc = ` Lv.${level}${atC1 ? " + C1" : ""}`;
+        const dmgDesc = `${xtraDesc} / ${dmgBonusPerS}% per stack / ${stacks} stacks`;
+        applyModifier(obj.desc + dmgDesc, obj.attPattBonus, "all.pct_", dmgBonusPerS * stacks, obj.tracker);
+        const healDesc = `${xtraDesc} / ${inHealBonusPerS}% per stack / ${stacks} stacks`;
+        applyModifier(obj.desc + healDesc, obj.totalAttr, "inHealB_", inHealBonusPerS * stacks, obj.tracker);
       },
     },
     {

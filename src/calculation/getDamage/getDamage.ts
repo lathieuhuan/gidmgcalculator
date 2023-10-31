@@ -2,7 +2,7 @@ import type {
   DamageResult,
   ResistanceReduction,
   DebuffModifierArgsWrapper,
-  TrackerDamageRecord,
+  TrackerCalcItemRecord,
   NormalAttack,
   CalcItemBonus,
 } from "@Src/types";
@@ -176,7 +176,7 @@ export default function getDamage({
       }
 
       let bases = [];
-      const { id, flatFactor } = stat;
+      const { id, type = "attack", flatFactor } = stat;
       const calcItemBonues = id
         ? calcItemBuffs.reduce<CalcItemBonus[]>((bonuses, buff) => {
             if (Array.isArray(buff.ids) ? buff.ids.includes(id) : buff.ids === id) {
@@ -188,10 +188,11 @@ export default function getDamage({
       const itemBonusMult = getExclusiveBonus(calcItemBonues, "mult_");
 
       const record = {
+        itemType: type,
         multFactors: [],
         normalMult: 1,
         exclusives: calcItemBonues,
-      } as TrackerDamageRecord;
+      } as TrackerCalcItemRecord;
 
       // CALCULATE BASE DAMAGE
       for (const factor of toArray(stat.multFactors)) {
@@ -277,6 +278,7 @@ export default function getDamage({
 
     if (tracker) {
       tracker.RXN[rxn] = {
+        itemType: "attack",
         multFactors: [{ value: Math.round(baseValue), desc: "Base DMG" }],
         normalMult,
         resMult,

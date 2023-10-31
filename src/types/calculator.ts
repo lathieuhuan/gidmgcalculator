@@ -1,4 +1,4 @@
-import type { ActualAttackElement } from "./character";
+import type { ActualAttackElement, CalcItemType } from "./character";
 import type {
   AttackElement,
   AttackPattern,
@@ -223,7 +223,8 @@ export type TrackerRecord = {
   value: number;
 };
 
-export type TrackerDamageRecord = {
+export type TrackerCalcItemRecord = {
+  itemType: CalcItemType;
   multFactors: Array<{
     desc?: string;
     value: number;
@@ -247,8 +248,8 @@ export type Tracker = {
   attElmtBonus: Record<`${AttackElement}.${AttackElementInfoKey}`, TrackerRecord[]>;
   rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
   resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
-  NAs: Record<string, TrackerDamageRecord>;
-  ES: Record<string, TrackerDamageRecord>;
-  EB: Record<string, TrackerDamageRecord>;
-  RXN: Record<string, TrackerDamageRecord>;
+  NAs: Record<string, TrackerCalcItemRecord>;
+  ES: Record<string, TrackerCalcItemRecord>;
+  EB: Record<string, TrackerCalcItemRecord>;
+  RXN: Record<string, TrackerCalcItemRecord>;
 };

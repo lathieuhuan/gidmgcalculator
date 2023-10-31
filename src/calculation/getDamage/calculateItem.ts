@@ -102,6 +102,9 @@ export function calculateItem({
       base *= normalMult;
       record.normalMult = normalMult;
     }
+    if (stat.type === "healing") {
+      base *= 1 + totalAttr.inHealB_ / 100;
+    }
     return { nonCrit: base, crit: 0, average: base };
   }
   return { nonCrit: 0, crit: 0, average: 0 };

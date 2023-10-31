@@ -116,10 +116,12 @@ type CalcItemMultFactor = {
   attributeType?: TalentAttributeType;
 };
 
+export type CalcItemType = "attack" | "healing" | "shield" | "other";
+
 export type CalcItem = {
   id?: string;
   name: string;
-  type?: "attack" | "healing" | "shield" | "other";
+  type?: CalcItemType;
   notOfficial?: boolean;
   attPatt?: ActualAttackPattern;
   attElmt?: ActualAttackElement;

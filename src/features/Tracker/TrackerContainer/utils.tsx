@@ -82,23 +82,3 @@ export function renderRecord(calcFn?: (value: number) => string | number, extraD
       </li>
     ) : null;
 }
-
-interface RenderDmgComponentArgs {
-  desc: ReactNode;
-  value?: number;
-  sign?: string;
-  nullValue?: number | null;
-  processor?: (value: number) => string | number;
-}
-export function renderDmgComponent({ desc, value, sign = "*", nullValue = 0, processor }: RenderDmgComponentArgs) {
-  return value !== undefined && value !== nullValue ? (
-    <>
-      {" "}
-      <Green>{sign}</Green> {desc} <Green>{processor ? processor(value) : value}</Green>
-    </>
-  ) : null;
-}
-
-export function renderDmgValue(value: number | number[], callback: (value: number) => string | number = Math.round) {
-  return Array.isArray(value) ? callback(value.reduce((total, num) => total + num, 0)) : callback(value);
-}
