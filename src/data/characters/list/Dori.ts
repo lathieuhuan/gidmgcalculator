@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { makeModApplier } from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
@@ -23,10 +23,18 @@ const Dori: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `When Energy of the character connected to the Lamp Spirit is less than 50%, they gain {30%}#[b,gr]
-      {Energy Recharge}#[gr].`,
+      description: `Buff the character connected to the Jinni. When their HP < 50%, they gain {50%}#[b,gr]
+      {Incoming Healing Bonus}#[gr]. When their Energy < 50%, they gain {30%}#[b,gr] {Energy Recharge}#[gr].`,
       isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "er_", 30),
+      inputConfigs: [
+        { type: "check", label: "HP < 50%" },
+        { type: "check", label: "Energy < 50%" },
+      ],
+      applyBuff: (obj) => {
+        const [isBelowHalfHP, isBelowHalfEnergy] = obj.inputs;
+        if (isBelowHalfHP) applyModifier(obj.desc, obj.totalAttr, "inHealB_", 50, obj.tracker);
+        if (isBelowHalfEnergy) applyModifier(obj.desc, obj.totalAttr, "er_", 30, obj.tracker);
+      },
     },
   ],
 };
