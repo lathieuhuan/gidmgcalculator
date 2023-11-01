@@ -1,27 +1,27 @@
 import { DescriptionSeedGetter, DescriptionSeedGetterArgs } from "@Src/types";
 import { round } from "./pure-utils";
 
+const colorCodeToCls: Record<string, string> = {
+  b: "font-bold",
+  gr: "text-green",
+  r: "text-rose-500",
+  g: "text-lightgold",
+  l: "text-lesser",
+  anemo: "text-anemo",
+  cryo: "text-cryo",
+  dendro: "text-dendro",
+  electro: "text-electro",
+  geo: "text-geo",
+  hydro: "text-hydro",
+  pyro: "text-pyro",
+};
+
 export const parseCharacterDescription = (
   description: string | number,
   getterArgs: DescriptionSeedGetterArgs,
   dsGetters: DescriptionSeedGetter[] = []
 ) => {
   if (typeof description === "string") {
-    const colorCodeToCls: Record<string, string> = {
-      b: "font-bold",
-      gr: "text-green",
-      r: "text-rose-500",
-      g: "text-lightgold",
-      l: "text-lesser",
-      anemo: "text-anemo",
-      cryo: "text-cryo",
-      dendro: "text-dendro",
-      electro: "text-electro",
-      geo: "text-geo",
-      hydro: "text-hydro",
-      pyro: "text-pyro",
-    };
-
     return description.replace(/\{[a-zA-Z0-9 /,%-^"\.\[\]]+\}#\[[a-zA-Z0-9,]*\]/g, (match) => {
       let [content, colorCode = ""] = match.split("#");
       content = content.slice(1, -1);
@@ -40,39 +40,33 @@ export const parseCharacterDescription = (
           content = "?";
         }
       }
-
       return `<span class='${classNames}'>${content}</span>`;
     });
   }
   return "";
 };
 
+const typeToCls: Record<string, string> = {
+  k: "text-green",
+  v: "text-green font-bold",
+  m: "text-rose-500",
+};
+const wrapText = (text: string | number, type: string) => {
+  return `<span class="${typeToCls[type] || ""}">${text}</span>`;
+};
+
 export const parseArtifactDescription = (description: string) => {
-  const typeToCls: Record<string, string> = {
-    k: "text-green",
-    v: "text-green font-bold",
-    m: "text-rose-500",
-  };
   return description.replace(/\{[a-zA-Z0-9 ,%-]+\}#\[[kvm]\]/g, (match) => {
     const [bodyPart, typePart = ""] = match.split("#");
     const body = bodyPart.slice(1, -1);
     const type = typePart?.slice(1, -1);
-    return `<span class="${typeToCls[type] || ""}">${body}</span>`;
+    return wrapText(body, type);
   });
-};
-
-const wrapText = (text: string | number, type: string) => {
-  const typeToCls: Record<string, string> = {
-    k: "text-green",
-    v: "text-green font-bold",
-    m: "text-rose-500",
-  };
-  return `<span class="${typeToCls[type] || ""}">${text}</span>`;
 };
 
 const scaleRefi = (base: number, refi: number, increment = base / 3) => round(base + increment * refi, 3);
 
-export const parseDescription = (description: string, refi: number) => {
+export const parseWeaponDescription = (description: string, refi: number) => {
   return description.replace(/\{[a-zA-Z0-9 ',-^$%]+\}(#\[[kvm]\])?/g, (match) => {
     const [bodyPart, typePart = ""] = match.split("#");
     const type = typePart?.slice(1, -1);

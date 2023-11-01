@@ -1,5 +1,5 @@
 import type { AppWeapon, ModifierCtrl, Weapon, WeaponBuff } from "@Src/types";
-import { findByIndex, parseDescription } from "@Src/utils";
+import { findByIndex, parseWeaponDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplate";
 
@@ -7,7 +7,7 @@ const getWeaponDescription = (descriptions: AppWeapon["descriptions"], buff: Wea
   if (descriptions?.length) {
     let { description = 0 } = buff;
     description = typeof description === "number" ? descriptions[description] : description;
-    return parseDescription(description || "", refi);
+    return parseWeaponDescription(description || "", refi);
   }
   return "";
 };

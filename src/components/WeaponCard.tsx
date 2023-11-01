@@ -6,7 +6,7 @@ import { LEVELS } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseDescription } from "@Src/utils";
+import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseWeaponDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Component
@@ -33,7 +33,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
     if (!wpData.descriptions) {
       return "";
     }
-    return wpData.descriptions.map((content) => parseDescription(content, refi)).join(" ");
+    return wpData.descriptions.map((content) => parseWeaponDescription(content, refi)).join(" ");
   }, [weapon.code, refi]);
 
   return (

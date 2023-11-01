@@ -30,12 +30,13 @@ export const Introduction = (props: ModalControl) => {
   const latestDate: string | undefined = updates[0]?.date;
 
   const typeToCls: Record<string, string> = {
-    g: "text-lightgold",
-    r: "text-lightred",
+    e: "text-lightgold",
+    u: "text-lightred",
+    f: "text-green",
   };
 
   const parseContent = (content: string) => {
-    return content.replace(/\{[a-zA-Z0-9 _']+\}#\[[gr]\]/g, (match) => {
+    return content.replace(/\{[a-zA-Z0-9 _']+\}#\[[euf]\]/g, (match) => {
       const [bodyPart, typePart = ""] = match.split("#");
       const body = bodyPart.slice(1, -1);
       const type = typePart?.slice(1, -1);
