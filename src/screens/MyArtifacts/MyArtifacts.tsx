@@ -85,6 +85,8 @@ export default function MyArtifacts() {
   );
   const chosenArtifact = findById(filteredArtifacts, chosenID);
 
+  const closeModal = () => setModalType("");
+
   const checkIfMaxArtifactsReached = () => {
     if (totalCount + 1 > MAX_USER_ARTIFACTS) {
       dispatch(
@@ -93,7 +95,6 @@ export default function MyArtifacts() {
           content: "Number of stored artifacts has reached its limit.",
         })
       );
-
       return true;
     }
   };
@@ -103,8 +104,6 @@ export default function MyArtifacts() {
       dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenID }));
     }
   };
-
-  const closeModal = () => setModalType("");
 
   const isFiltered =
     filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");

@@ -37,7 +37,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
   const [massAdd, setMassAdd] = useState(false);
   const [itemCounts, setItemCounts] = useState<number[]>([]);
 
-  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { observedAreaRef, observedItemCls, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
 
   useEffect(() => {
     const focus = (e: KeyboardEvent) => {
@@ -45,7 +45,6 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
         inputRef.current?.focus();
       }
     };
-
     document.body.addEventListener("keydown", focus);
 
     return () => {
@@ -61,7 +60,6 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
         visibleNames[char.name] = true;
       }
     }
-
     if (keyword) {
       for (const name in visibleNames) {
         if (!name.toLowerCase().includes(keyword)) {
@@ -69,7 +67,6 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
         }
       }
     }
-
     if (Object.keys(pickedNames).length) {
       for (const name in visibleNames) {
         if (pickedNames[name]) {
@@ -167,15 +164,15 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
       </div>
 
       <div className="px-4 pt-2 pb-4 flex-grow overflow-auto">
-        <div ref={ref} className="pr-2 h-full custom-scrollbar">
+        <div ref={observedAreaRef} className="pr-2 h-full custom-scrollbar">
           <div className="flex flex-wrap">
             {data.map((item, i) => {
               return (
                 <div
-                  key={item.code.toString() + item.rarity}
+                  key={`${item.code}-${item.rarity}`}
                   data-id={item.code}
                   className={clsx(
-                    observedItemCN,
+                    observedItemCls,
                     "grow-0 max-w-1/3 basis-1/3 md1:max-w-1/5 md1:basis-1/5 md2:max-w-1/6 md2:basis-1/6 lg:max-w-1/8 lg:basis-[12.5%] relative",
                     item.vision ? "p-1.5 sm:pt-3 sm:pr-3 md1:p-2" : "p-1 sm:p-2",
                     { hidden: dataType === "character" && !visibleNames[item.name] }

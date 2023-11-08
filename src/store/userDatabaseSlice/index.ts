@@ -348,14 +348,11 @@ export const userDatabaseSlice = createSlice({
 
       if (removedIndex !== -1) {
         userArts.splice(removedIndex, 1);
+        const ownerInfo = owner ? findByName(userChars, owner) : undefined;
 
-        if (owner) {
+        if (ownerInfo) {
           const artIndex = ARTIFACT_TYPES.indexOf(type);
-
-          const ownerInfo = findByName(userChars, owner);
-          if (ownerInfo) {
-            ownerInfo.artifactIDs[artIndex] = null;
-          }
+          ownerInfo.artifactIDs[artIndex] = null;
         }
       }
     },
