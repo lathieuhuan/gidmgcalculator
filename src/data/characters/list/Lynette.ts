@@ -8,8 +8,8 @@ import { checkAscs, checkCons } from "../utils";
 const Lynette: DefaultAppCharacter = {
   code: 72,
   name: "Lynette",
-  icon: "https://images2.imgbox.com/5b/1a/kApSKvQl_o.png",
-  sideIcon: "",
+  icon: "a/ad/Lynette_Icon",
+  sideIcon: "1/16/Lynette_Side_Icon",
   rarity: 4,
   nation: "fontaine",
   vision: "anemo",

@@ -1,4 +1,4 @@
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import type { ArtifactSetBonus } from "@Src/types";
 import { parseArtifactDescription, toArray } from "@Src/utils";
 

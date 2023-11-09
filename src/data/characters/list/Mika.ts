@@ -4,7 +4,7 @@ import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const getESBuffValue = ({ fromSelf, char, partyData, inputs }: DescriptionSeedGetterArgs) => {
+const getESBonus = ({ fromSelf, char, partyData, inputs }: DescriptionSeedGetterArgs) => {
   const level = fromSelf
     ? finalTalentLv({ talentType: "ES", char: char, charData: Mika as AppCharacter, partyData })
     : inputs[0] || 0;
@@ -25,7 +25,7 @@ const Mika: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${getESBuffValue(args)}%`],
+  dsGetters: [(args) => `${getESBonus(args)}%`],
   buffs: [
     {
       index: 0,
@@ -44,7 +44,7 @@ const Mika: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         const { fromSelf, char, inputs, desc, tracker } = obj;
-        applyModifier(desc, obj.totalAttr, "naAtkSpd_", getESBuffValue(obj), tracker);
+        applyModifier(desc, obj.totalAttr, "naAtkSpd_", getESBonus(obj), tracker);
 
         if (!fromSelf || checkAscs[1](char)) {
           let maxStacks = 5;

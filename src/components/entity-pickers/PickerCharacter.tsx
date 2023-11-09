@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import type { AppCharacter, PartiallyRequired } from "@Src/types";
 import type { PickerItem } from "./types";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { useSelector } from "@Store/hooks";
 import { findByName, pickProps } from "@Src/utils";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 type PickedCharacter = PartiallyRequired<PickerItem, "weaponType" | "vision">;
 

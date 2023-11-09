@@ -7,7 +7,7 @@ import { selectChosenChar, selectUserChars } from "@Store/userDatabaseSlice/sele
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
+import { PickerCharacter } from "@Src/components";
 import { Button } from "@Src/pure-components";
 import CharacterSort from "./CharacterSort";
 import CharacterList from "./CharacterList";

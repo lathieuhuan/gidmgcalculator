@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, type DependencyList } from "react";
 import { BooleanRecord } from "@Src/types";
 
 export const useIntersectionObserver = <T extends HTMLElement>(dependecies: DependencyList = []) => {
-  const observeAreaRef = useRef<T>(null);
+  const observedAreaRef = useRef<T>(null);
   const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
 
-  const observedItemCN = "observed-item";
+  const observedItemCls = "observed-item";
 
   useEffect(() => {
     const handleIntersection: IntersectionObserverCallback = (entries) => {
@@ -23,10 +23,10 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
     };
 
     const observer = new IntersectionObserver(handleIntersection, {
-      root: observeAreaRef.current,
+      root: observedAreaRef.current,
     });
 
-    observeAreaRef.current?.querySelectorAll(`.${observedItemCN}`).forEach((item) => {
+    observedAreaRef.current?.querySelectorAll(`.${observedItemCls}`).forEach((item) => {
       if (item) {
         observer.observe(item);
       }
@@ -36,8 +36,8 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
   }, dependecies);
 
   return {
-    ref: observeAreaRef,
-    observedItemCN,
+    observedAreaRef,
+    observedItemCls,
     itemsVisible,
   };
 };

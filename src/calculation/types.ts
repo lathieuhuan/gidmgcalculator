@@ -1,6 +1,4 @@
 import type {
-  AttackElementBonus,
-  AttackPatternBonus,
   CalcWeapon,
   CalcArtifacts,
   CharInfo,
@@ -9,8 +7,6 @@ import type {
   ModifierCtrl,
   Party,
   PartyData,
-  ReactionBonus,
-  TotalAttribute,
   AttackElement,
   AppCharacter,
   Target,
@@ -18,13 +14,13 @@ import type {
   ArtifactDebuffCtrl,
   CustomDebuffCtrl,
   ActualAttackPattern,
-  ActualAttackElement,
   Tracker,
-  TrackerDamageRecord,
+  TrackerCalcItemRecord,
   NormalAttack,
   CalcItem,
-  CalcItemBuff,
   CalcItemBonus,
+  BuffModifierArgsWrapper,
+  Vision,
 } from "@Src/types";
 
 export type UsedCode = {
@@ -49,33 +45,25 @@ export type GetStatsArgs = {
   tracker?: Tracker;
 };
 
-export interface CalculateItemArgs {
+export interface CalculateItemArgs
+  extends Pick<BuffModifierArgsWrapper, "char" | "totalAttr" | "attElmtBonus" | "attPattBonus"> {
   stat: CalcItem;
   attPatt: ActualAttackPattern;
-  attElmt: ActualAttackElement;
+  attElmt: AttackElement;
   base: number | number[];
-  char: CharInfo;
   target: Target;
   rxnMult: number;
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  attElmtBonus: AttackElementBonus;
   calcItemBonues: CalcItemBonus[];
+  absorbedElmt?: Vision;
   resistReduct: ResistanceReduction;
-  record: TrackerDamageRecord;
+  record: TrackerCalcItemRecord;
 }
 
-export interface GetDamageArgs extends Pick<CalculateItemArgs, "totalAttr" | "attPattBonus" | "attElmtBonus"> {
-  calcItemBuffs: CalcItemBuff[];
-  char: CharInfo;
-  charData: AppCharacter;
-  selfBuffCtrls: ModifierCtrl[];
+export interface GetDamageArgs extends Omit<BuffModifierArgsWrapper, "infusedElement"> {
   selfDebuffCtrls: ModifierCtrl[];
   artDebuffCtrls: ArtifactDebuffCtrl[];
   party: Party;
-  partyData: PartyData;
   disabledNAs: boolean;
-  rxnBonus: ReactionBonus;
   customDebuffCtrls: CustomDebuffCtrl[];
   infusion: {
     element: AttackElement;

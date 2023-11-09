@@ -51,7 +51,7 @@ const Neuvillette: DefaultAppCharacter = {
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
       description: `For each {1%}#[gr] of Neuvillette's {HP}#[gr] over 30%, he will gain {0.6%}#[b,gr]
-      {Hydro DMG Bonus}#[gr], upto {30%}#[m].`,
+      {Hydro DMG Bonus}#[gr], upto {30%}#[r].`,
       inputConfigs: [
         {
           label: "Current HP%",

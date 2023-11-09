@@ -7,11 +7,11 @@ import { ARTIFACT_TYPES, EScreen, MAX_USER_ARTIFACTS, MAX_USER_SETUPS, MAX_USER_
 
 // Action
 import { initNewSession, updateAllArtifact, updateMessage } from "./calculatorSlice";
-import { updateImportInfo, updateUI } from "./uiSlice";
+import { updateSetupImportInfo, updateUI } from "./uiSlice";
 import { addUserArtifact, addUserWeapon, saveSetup, updateUserArtifact, updateUserWeapon } from "./userDatabaseSlice";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import {
   findById,
   calcItemToUserItem,
@@ -286,7 +286,7 @@ export const saveSetupThunk = (setupID: number, name: string): AppThunk => {
       dispatch(
         updateUI({
           atScreen: EScreen.MY_SETUPS,
-          highManagerWorking: false,
+          highManagerActive: false,
         })
       );
     });
@@ -357,7 +357,7 @@ export const makeTeammateSetup = ({ setup, mainWeapon, teammateIndex }: MakeTeam
       };
 
       dispatch(
-        updateImportInfo({
+        updateSetupImportInfo({
           ID: seedID++,
           name: "New setup",
           target: setup.target,

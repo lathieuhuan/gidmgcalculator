@@ -10,6 +10,7 @@ import { Guides } from "./Guides";
 import { Settings } from "./Settings";
 import { Download } from "./DownLoad";
 import { Upload } from "./Upload";
+import { Donate } from "./Donate";
 
 const LoadingMask = () => {
   const loading = useSelector((state) => state.ui.loading);
@@ -42,6 +43,7 @@ export const AppModals = () => {
       <Settings active={appModalType === "SETTINGS"} onClose={closeModal} />
       <Download active={appModalType === "DOWNLOAD"} onClose={closeModal} />
       <Upload active={appModalType === "UPLOAD"} onClose={closeModal} />
+      <Donate active={appModalType === "DONATE"} onClose={closeModal} />
       <LoadingMask />
     </>
   );

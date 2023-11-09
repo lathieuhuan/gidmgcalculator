@@ -1,4 +1,4 @@
-import type { ActualAttackElement } from "./character";
+import type { ActualAttackElement, CalcItemType } from "./character";
 import type {
   AttackElement,
   AttackPattern,
@@ -10,7 +10,6 @@ import type {
   AttributeStat,
   PartiallyRequired,
   NormalAttack,
-  ResonanceVision,
   Weapon,
   Artifact,
   TotalAttributeStat,
@@ -97,7 +96,7 @@ export type Party = (Teammate | null)[];
 // PARTY ends
 
 export type Resonance = {
-  vision: ResonanceVision;
+  vision: Vision;
   activated: boolean;
   inputs?: ModifierInput[];
 };
@@ -107,6 +106,7 @@ export type AttackReaction = null | "melt" | "vaporize" | "aggravate" | "spread"
 export type ElementModCtrl = {
   infuse_reaction: AttackReaction;
   reaction: AttackReaction;
+  absorption: Vision | null;
   superconduct: boolean;
   resonances: Resonance[];
 };
@@ -138,6 +138,7 @@ export type Target = {
 };
 
 export type SetupImportInfo = {
+  importRoute?: "url" | "highManager";
   ID?: number;
   name?: string;
   type?: "original" | "combined";
@@ -222,7 +223,8 @@ export type TrackerRecord = {
   value: number;
 };
 
-export type TrackerDamageRecord = {
+export type TrackerCalcItemRecord = {
+  itemType: CalcItemType;
   multFactors: Array<{
     desc?: string;
     value: number;
@@ -246,8 +248,8 @@ export type Tracker = {
   attElmtBonus: Record<`${AttackElement}.${AttackElementInfoKey}`, TrackerRecord[]>;
   rxnBonus: Record<`${Reaction}.${ReactionBonusInfoKey}`, TrackerRecord[]>;
   resistReduct: Record<ResistanceReductionKey, TrackerRecord[]>;
-  NAs: Record<string, TrackerDamageRecord>;
-  ES: Record<string, TrackerDamageRecord>;
-  EB: Record<string, TrackerDamageRecord>;
-  RXN: Record<string, TrackerDamageRecord>;
+  NAs: Record<string, TrackerCalcItemRecord>;
+  ES: Record<string, TrackerCalcItemRecord>;
+  EB: Record<string, TrackerCalcItemRecord>;
+  RXN: Record<string, TrackerCalcItemRecord>;
 };

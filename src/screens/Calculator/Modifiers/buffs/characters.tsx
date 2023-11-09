@@ -13,7 +13,7 @@ import {
 } from "@Store/calculatorSlice";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { findByIndex, parseCharacterDescription } from "@Src/utils";
 
 // Component

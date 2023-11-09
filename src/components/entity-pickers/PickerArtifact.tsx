@@ -4,11 +4,11 @@ import type { ArtifactType } from "@Src/types";
 import type { PickerItem } from "./types";
 import { EModAffect } from "@Src/constants";
 import { createArtifact } from "@Src/utils/creators";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { withModal } from "@Src/pure-components";
-import { PickerTemplate, type OnPickItemReturn } from "./PickerTemplate";
+import { PickerTemplate, type OnPickItemReturn } from "../entity-pickers/PickerTemplate";
 
 interface ArtifactPickerProps {
   type?: string;
@@ -41,7 +41,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
           [[], []]
         );
       default:
-        return artifacts.reduce(
+        return artifacts.reduce<PickerItem[][]>(
           (accumulator, set) => {
             const { code, beta, name } = set;
 
@@ -54,7 +54,7 @@ const ArtifactPicker = ({ artifactType, needMassAdd, forFeature, onPickArtifact,
 
             return accumulator;
           },
-          [[], []] as [PickerItem[], PickerItem[]]
+          [[], []]
         );
     }
   }, []);

@@ -5,10 +5,8 @@ import { SiTarget } from "react-icons/si";
 
 import type { CalcSetupManageInfo } from "@Src/types";
 import { MAX_CALC_SETUPS } from "@Src/constants";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { duplicateCalcSetup, removeCalcSetup, updateCalculator } from "@Store/calculatorSlice";
 
-// Selector
+// Store
 import {
   selectActiveId,
   selectComparedIds,
@@ -16,6 +14,8 @@ import {
   selectSetupManageInfos,
   selectTarget,
 } from "@Store/calculatorSlice/selectors";
+import { useDispatch, useSelector } from "@Store/hooks";
+import { duplicateCalcSetup, removeCalcSetup, updateCalculator } from "@Store/calculatorSlice";
 
 // Util
 import { findById } from "@Src/utils";

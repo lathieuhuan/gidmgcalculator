@@ -2,10 +2,9 @@ import clsx from "clsx";
 import { ChangeEvent, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-import type { Vision } from "@Src/types";
-import type { DataMonster } from "@Data/monsters/types";
-import monsters from "@Data/monsters";
+import type { Vision, AppMonster } from "@Src/types";
 import { toArray } from "@Src/utils";
+import { appData } from "@Src/data";
 
 interface ComboBoxProps {
   className: string;
@@ -13,12 +12,7 @@ interface ComboBoxProps {
   targetTitle: string;
   onSelectMonster: (args: { monsterCode: number; inputs: number[]; variantType?: Vision }) => void;
 }
-export const ComboBox = ({
-  className,
-  targetCode,
-  targetTitle,
-  onSelectMonster,
-}: ComboBoxProps) => {
+export const ComboBox = ({ className, targetCode, targetTitle, onSelectMonster }: ComboBoxProps) => {
   const [keyword, setKeyword] = useState("");
 
   const onFocusSearchInput = () => {
@@ -35,7 +29,7 @@ export const ComboBox = ({
     }
   };
 
-  const onClickMonster = (monster: DataMonster) => () => {
+  const onClickMonster = (monster: AppMonster) => () => {
     if (monster.code !== targetCode) {
       let newVariantType;
       let newInputs = monster.inputConfigs
@@ -79,7 +73,7 @@ export const ComboBox = ({
         className="absolute top-full z-10 mt-1 w-full text-black bg-default custom-scrollbar cursor-default hidden peer-focus-within:block"
         style={{ maxHeight: "50vh" }}
       >
-        {monsters.map((monster, i) => {
+        {appData.getAllMonsters().map((monster, i) => {
           if (
             keyword &&
             !monster.title.toLowerCase().includes(keyword) &&
@@ -94,18 +88,14 @@ export const ComboBox = ({
               id={`monster-${monster.code}`}
               className={clsx(
                 "px-2 py-1 flex flex-col font-semibold",
-                monster.code === targetCode
-                  ? "bg-lesser"
-                  : "hover:text-default hover:bg-darkblue-3 hover:font-bold"
+                monster.code === targetCode ? "bg-lesser" : "hover:text-default hover:bg-darkblue-3 hover:font-bold"
               )}
               onMouseDown={(e) => e.preventDefault()}
               onClick={onClickMonster(monster)}
             >
               <p>{monster.title}</p>
               {monster.subtitle && <p className="text-sm italic">* {monster.subtitle}</p>}
-              {monster.names?.length && (
-                <p className="text-sm italic">{monster.names.join(", ")}</p>
-              )}
+              {monster.names?.length && <p className="text-sm italic">{monster.names.join(", ")}</p>}
             </div>
           );
         })}

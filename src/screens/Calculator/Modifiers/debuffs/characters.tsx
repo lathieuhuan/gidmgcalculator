@@ -4,7 +4,7 @@ import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calcul
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
 import { findByIndex, parseCharacterDescription } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Action
 import {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { CharInfo, Party } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";

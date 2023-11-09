@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Fragment, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import type { CustomBuffCtrl, CustomBuffCtrlType } from "@Src/types";
 
@@ -109,7 +109,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
   };
 
   return (
-    <Fragment>
+    <>
       <div className="flex flex-col md1:flex-row">
         {Object.entries(CATEGORIES).map(([category, { label }], index) => {
           const chosen = config.category === category;
@@ -201,7 +201,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
           { text: "Confirm", onClick: onConfirm },
         ]}
       />
-    </Fragment>
+    </>
   );
 };
 

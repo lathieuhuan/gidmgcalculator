@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { updateImportInfo } from "@Store/uiSlice";
+import { updateSetupImportInfo } from "@Store/uiSlice";
 import { useDispatch } from "@Store/hooks";
 import { decodeSetup } from "./utils";
 
@@ -48,7 +48,7 @@ const SetupImporterCore = (props: { onClose: () => void }) => {
               try {
                 const result = decodeSetup(actualCode);
 
-                dispatch(updateImportInfo(result));
+                dispatch(updateSetupImportInfo(result));
                 props.onClose();
               } catch (error) {
                 setError("UNKNOWN");

@@ -11,7 +11,7 @@ import type {
 } from "@Src/types";
 import type { CalculatorState } from "@Store/calculatorSlice/types";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { getArtifactSetBonuses } from "./calculation";
 import { createArtDebuffCtrls, createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
 import { deepCopy, findByIndex } from "./pure-utils";

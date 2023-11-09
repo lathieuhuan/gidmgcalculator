@@ -12,7 +12,7 @@ import type { GetStatsArgs, UsedCode } from "../types";
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { applyPercent, findByIndex, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,

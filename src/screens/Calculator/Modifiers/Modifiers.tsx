@@ -1,5 +1,5 @@
 import { selectParty } from "@Store/calculatorSlice/selectors";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Hook
 import { useSelector } from "@Store/hooks";

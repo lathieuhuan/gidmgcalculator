@@ -6,7 +6,7 @@ import { EStatDamageKey } from "@Src/constants";
 import { useTranslation } from "@Src/hooks";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { finalTalentLv } from "@Src/utils/calculation";
 import { displayValue, getTableKeys } from "./utils";
 

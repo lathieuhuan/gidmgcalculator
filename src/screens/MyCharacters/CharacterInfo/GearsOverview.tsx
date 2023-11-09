@@ -9,7 +9,7 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Util
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { InfoSign } from "@Src/pure-components";

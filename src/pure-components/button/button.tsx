@@ -25,6 +25,10 @@ const buttonPadding = {
     small: "px-2 py-1",
     medium: "px-3 py-1.5",
   },
+  square: {
+    small: "px-3 py-1",
+    medium: "px-4 py-1.5",
+  },
 };
 const buttonSize = {
   small: "text-sm leading-4",
@@ -51,7 +55,7 @@ const iconButtonSize = {
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "positive" | "neutral" | "negative" | "default" | "custom";
-  shape?: "rounded" | "circular";
+  shape?: "rounded" | "circular" | "square";
   size?: "small" | "medium";
   boneOnly?: boolean;
   paddingCls?: string | null;

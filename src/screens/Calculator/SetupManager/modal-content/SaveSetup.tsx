@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { CalcSetupManageInfo } from "@Src/types";
 import { useDispatch, useSelector } from "@Store/hooks";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { findById } from "@Src/utils";
 
 // Store

@@ -1,6 +1,6 @@
 import type { ArtifactSubStat, AttributeStat, Level, UserArtifact, UserCharacter, UserWeapon } from "@Src/types";
 
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { ARTIFACT_TYPES, DEFAULT_WEAPON_CODE } from "@Src/constants";
 import { createWeapon } from "../creators";
 import { findByName } from "../pure-utils";

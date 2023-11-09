@@ -9,7 +9,6 @@ import {
   BASE_STAT_TYPES,
   ATTRIBUTE_STAT_TYPES,
   ATTACK_ELEMENTS,
-  RESONANCE_VISION_TYPES,
   TRANSFORMATIVE_REACTIONS,
   ATTACK_PATTERNS,
 } from "@Src/constants";
@@ -25,8 +24,6 @@ export type WeaponType = (typeof WEAPON_TYPES)[number];
 export type ArtifactType = (typeof ARTIFACT_TYPES)[number];
 
 export type Vision = (typeof VISION_TYPES)[number];
-
-export type ResonanceVision = (typeof RESONANCE_VISION_TYPES)[number];
 
 export type NormalAttack = (typeof NORMAL_ATTACKS)[number];
 

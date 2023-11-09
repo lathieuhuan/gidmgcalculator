@@ -13,7 +13,7 @@ import type {
   WeaponType,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, DEFAULT_MODIFIER_INITIAL_VALUES, DEFAULT_WEAPON_CODE, EModAffect } from "@Src/constants";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { appSettings } from "./utils";
 
 type PartialCharInfo = Omit<CharInfo, "name">;
@@ -196,6 +196,7 @@ export const createElmtModCtrls = (): ElementModCtrl => ({
   reaction: null,
   superconduct: false,
   resonances: [],
+  absorption: null
 });
 
 export function createTarget() {

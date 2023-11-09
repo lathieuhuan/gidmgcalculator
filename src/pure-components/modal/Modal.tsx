@@ -8,6 +8,7 @@ import { CloseButton, type CloseButtonProps } from "../button";
 
 export interface ModalControl {
   active?: boolean;
+  closable?: boolean;
   closeOnMaskClick?: boolean;
   state?: "open" | "close" | "hidden";
   onClose: () => void;
@@ -19,7 +20,14 @@ interface ModalProps extends ModalControl {
   withDefaultStyle?: boolean;
   children: ReactNode;
 }
-export const Modal = ({ active, closeOnMaskClick = true, state: stateProp, onClose, ...rest }: ModalProps) => {
+export const Modal = ({
+  active,
+  closable = true,
+  closeOnMaskClick = true,
+  state: stateProp,
+  onClose,
+  ...rest
+}: ModalProps) => {
   const [state, setState] = useState({
     active: false,
     animate: false,
@@ -28,12 +36,14 @@ export const Modal = ({ active, closeOnMaskClick = true, state: stateProp, onClo
   const modalState = stateProp || (active ? "open" : "close");
 
   const closeModal = () => {
-    setState((prev) => ({ ...prev, animate: false }));
+    if (closable) {
+      setState((prev) => ({ ...prev, animate: false }));
 
-    setTimeout(() => {
-      setState((prev) => ({ ...prev, active: false }));
-      onClose();
-    }, 150);
+      setTimeout(() => {
+        setState((prev) => ({ ...prev, active: false }));
+        onClose();
+      }, 150);
+    }
   };
 
   useEffect(() => {

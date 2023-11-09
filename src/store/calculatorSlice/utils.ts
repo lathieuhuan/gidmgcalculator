@@ -1,5 +1,5 @@
 import type { CalculatorState } from "./types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import calculateAll from "@Src/calculation";
 
 export const getCharDataFromState = (state: CalculatorState) => {

@@ -15,7 +15,7 @@ import { Green, Lesser, CollapseList } from "@Src/pure-components";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";
-import { DamageTracker } from "./DamageTracker";
+import { CalcItemTracker } from "./CalcItemTracker";
 
 export type TrackerState = "open" | "close" | "hidden";
 
@@ -34,6 +34,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
   const [infusion, setInfusion] = useState<Infusion>({
     element: "phys",
   });
+  const [xtraInfo, setXtraInfo] = useState<{ inHealB_?: number }>({});
 
   const { totalAttr, attPattBonus, attElmtBonus, rxnBonus } = result || {};
   const charLv = bareLv(activeSetup.char.level);
@@ -49,6 +50,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
         element: calcResult.infusedElement,
         range: calcResult.infusedAttacks,
       });
+      setXtraInfo({ inHealB_: calcResult.totalAttr.inHealB_ });
     }
   }, [trackerState]);
 
@@ -111,37 +113,40 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
           {
             heading: "Normal Attacks",
             body: (
-              <DamageTracker
+              <CalcItemTracker
                 records={result?.NAs}
                 calcDmgResult={dmgResult.NAs}
                 defMultDisplay={renderDefMultiplier("NA")}
                 infusion={infusion}
+                {...xtraInfo}
               />
             ),
           },
           {
             heading: "Elemental Skill",
             body: (
-              <DamageTracker
+              <CalcItemTracker
                 records={result?.ES}
                 calcDmgResult={dmgResult.ES}
                 defMultDisplay={renderDefMultiplier("ES")}
+                {...xtraInfo}
               />
             ),
           },
           {
             heading: "Elemental Burst",
             body: (
-              <DamageTracker
+              <CalcItemTracker
                 records={result?.EB}
                 calcDmgResult={dmgResult.EB}
                 defMultDisplay={renderDefMultiplier("EB")}
+                {...xtraInfo}
               />
             ),
           },
           {
             heading: "Reactions",
-            body: <DamageTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
+            body: <CalcItemTracker records={result?.RXN} calcDmgResult={dmgResult.RXN} />,
           },
         ]}
       />

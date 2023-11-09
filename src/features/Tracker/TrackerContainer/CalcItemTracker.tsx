@@ -1,23 +1,50 @@
 import { Fragment, ReactNode } from "react";
 
-import type { CalculatedDamageCluster, Infusion, TrackerDamageRecord } from "@Src/types";
+import type { CalculatedDamageCluster, Infusion, TrackerCalcItemRecord } from "@Src/types";
 import { useTranslation } from "@Src/hooks";
 
 // Util
 import { percentSign, round } from "@Src/utils";
-import { renderDmgComponent, renderDmgValue } from "./utils";
 
 // Component
 import { Green } from "@Src/pure-components";
 
-interface DamageTrackerProps {
-  records?: Record<string, TrackerDamageRecord>;
+interface RenderPartArgs {
+  label: ReactNode;
+  value?: number;
+  sign?: string;
+  nullValue?: number | null;
+  processor?: (value: number) => string | number;
+}
+
+interface CalcItemTrackerProps {
+  inHealB_?: number;
+  records?: Record<string, TrackerCalcItemRecord>;
   calcDmgResult: CalculatedDamageCluster;
   defMultDisplay?: ReactNode;
   infusion?: Infusion;
 }
-export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, infusion }: DamageTrackerProps) {
+export function CalcItemTracker({
+  inHealB_,
+  records = {},
+  calcDmgResult,
+  defMultDisplay,
+  infusion,
+}: CalcItemTrackerProps) {
   const { t } = useTranslation();
+
+  function renderPart({ label, value, sign = "*", nullValue = 0, processor }: RenderPartArgs) {
+    return value !== undefined && value !== nullValue ? (
+      <>
+        {" "}
+        <Green>{sign}</Green> {label} <Green>{processor ? processor(value) : value}</Green>
+      </>
+    ) : null;
+  }
+
+  function renderValue(value: number | number[], callback: (value: number) => string | number = Math.round) {
+    return Array.isArray(value) ? callback(value.reduce((total, num) => total + num, 0)) : callback(value);
+  }
 
   return (
     <div className="space-y-1">
@@ -39,12 +66,9 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
 
       {Object.entries(records).map(([attackName, record], i) => {
         const { nonCrit = 0, crit = 0, average = 0 } = calcDmgResult[attackName] || {};
+        if (!nonCrit) return null;
 
-        if (!nonCrit) {
-          return null;
-        }
-
-        const nonCritDmg = renderDmgValue(nonCrit);
+        const nonCritDmg = renderValue(nonCrit);
         const cDmg_ = record.cDmg_ ? round(record.cDmg_, 3) : 0;
 
         return (
@@ -81,44 +105,51 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
                         <>
                           {" "}
                           <Green>*</Green> Talent Mult.{" "}
-                          <Green>{renderDmgValue(factor.talentMult, (value) => round(value, 2) + "%")}</Green>
+                          <Green>{renderValue(factor.talentMult, (value) => `${round(value, 2)}%`)}</Green>
                         </>
                       ) : null}
                       {record.multFactors[i + 1] ? " + " : ""}
                     </Fragment>
                   );
                 })}
-                {renderDmgComponent({
-                  desc: "Flat Bonus",
+                {renderPart({
+                  label: "Flat Bonus",
                   value: record.totalFlat,
                   sign: "+",
                   processor: Math.round,
                 })}
                 )
-                {renderDmgComponent({
-                  desc: "Percent Mult.",
+                {renderPart({
+                  label: record.itemType === "healing" ? "Heal Mult." : "Percent Mult.",
                   value: record.normalMult,
-                  processor: (value) => round(value * 100, 2) + "%",
+                  processor: (value) => `${round(value * 100, 2)}%`,
                 })}
-                {renderDmgComponent({
-                  desc: "Special Mult.",
+                {record.itemType === "healing"
+                  ? renderPart({
+                      label: "Incoming Heal Mult.",
+                      value: inHealB_,
+                      processor: (value) => `${100 + round(value, 2)}%`,
+                    })
+                  : null}
+                {renderPart({
+                  label: "Special Mult.",
                   value: record.specialMult,
                   nullValue: 1,
                   processor: (value) => round(value, 3),
                 })}
-                {renderDmgComponent({
-                  desc: "Reaction Mult.",
+                {renderPart({
+                  label: "Reaction Mult.",
                   value: record.rxnMult,
                   nullValue: 1,
                   processor: (value) => round(value, 3),
                 })}
-                {renderDmgComponent({
-                  desc: "DEF Mult.",
+                {renderPart({
+                  label: "DEF Mult.",
                   value: record.defMult,
                   processor: (value) => round(value, 3),
                 })}
-                {renderDmgComponent({
-                  desc: "RES Mult.",
+                {renderPart({
+                  label: "RES Mult.",
                   value: record.resMult,
                 })}
                 {record.note}
@@ -126,17 +157,17 @@ export function DamageTracker({ records = {}, calcDmgResult, defMultDisplay, inf
 
               {cDmg_ ? (
                 <li>
-                  Crit <span className="text-orange font-semibold">{renderDmgValue(crit)}</span> = {nonCritDmg}{" "}
+                  Crit <span className="text-orange font-semibold">{renderValue(crit)}</span> = {nonCritDmg}{" "}
                   <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>)
                 </li>
               ) : null}
 
               {cDmg_ && record.cRate_ ? (
                 <li>
-                  Average <span className="text-orange font-semibold">{renderDmgValue(average)}</span> = {nonCritDmg}{" "}
+                  Average <span className="text-orange font-semibold">{renderValue(average)}</span> = {nonCritDmg}{" "}
                   <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>
-                  {renderDmgComponent({
-                    desc: "Crit Rate",
+                  {renderPart({
+                    label: "Crit Rate",
                     value: record.cRate_,
                     nullValue: null,
                     processor: (value) => round(value, 3),

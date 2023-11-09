@@ -9,7 +9,6 @@ import type {
   ModifierCtrl,
   Rarity,
   Resonance,
-  ResonanceVision,
   SetupImportInfo,
   Target,
   Teammate,
@@ -31,12 +30,13 @@ import {
   ATTACK_PATTERN_INFO_KEYS,
   ATTACK_PATTERNS,
   REACTIONS,
+  VISION_TYPES,
 } from "@Src/constants";
 
 // Util
 import { findByCode } from "@Src/utils";
 import { restoreCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 const DIVIDERS = ["*", "D1", "D2", "D3", "D4"];
 const DIVIDER_MC = "D8";
@@ -117,9 +117,12 @@ export const encodeSetup = (calcSetup: CalcSetup, target: Target) => {
       return "";
     });
 
-    const _elmtMCsCode = [elmtModCtrls.reaction, elmtModCtrls.infuse_reaction, +elmtModCtrls.superconduct].join(
-      DIVIDERS[1]
-    );
+    const _elmtMCsCode = [
+      elmtModCtrls.reaction,
+      elmtModCtrls.infuse_reaction,
+      +elmtModCtrls.superconduct,
+      elmtModCtrls.absorption ? VISION_TYPES.indexOf(elmtModCtrls.absorption) : "",
+    ].join(DIVIDERS[1]);
 
     const _resonancesCode = elmtModCtrls.resonances
       .map((rsn) => [rsn.vision, +rsn.activated, rsn.inputs ? rsn.inputs.join(DIVIDERS[3]) : ""].join(DIVIDERS[2]))
@@ -298,12 +301,13 @@ export const decodeSetup = (code: string): SetupImportInfo => {
     };
   };
 
-  const [reaction, infuse_reaction, superconduct] = split(_elmtMCsCode, 1);
+  const [reaction, infuse_reaction, superconduct, absorption] = split(_elmtMCsCode, 1);
+
   const resonances = _resonancesCode
     ? split(_resonancesCode, 1).map((rsn) => {
         const [vision, activated, inputs] = split(rsn, 2);
         const resonance: Resonance = {
-          vision: vision as ResonanceVision,
+          vision: vision as Vision,
           activated: activated === "1",
         };
         if (inputs) {
@@ -404,6 +408,7 @@ export const decodeSetup = (code: string): SetupImportInfo => {
         infuse_reaction: (infuse_reaction as AttackReaction) || null,
         resonances,
         superconduct: superconduct === "1",
+        absorption: absorption ? VISION_TYPES[+absorption] : null,
       },
       customInfusion: {
         element: _infuseElmtIndex ? ATTACK_ELEMENTS[+_infuseElmtIndex] : "phys",

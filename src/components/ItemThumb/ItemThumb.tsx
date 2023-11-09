@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import type { Level, Rarity } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Image } from "@Src/pure-components";

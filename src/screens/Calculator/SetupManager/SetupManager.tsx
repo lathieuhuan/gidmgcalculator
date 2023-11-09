@@ -5,7 +5,7 @@ import { IoDocumentText } from "react-icons/io5";
 import type { ArtifactType } from "@Src/types";
 import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 import { getImgSrc, userItemToCalcItem } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { updateUI } from "@Store/uiSlice";
@@ -18,9 +18,8 @@ import { useDispatch, useSelector } from "@Store/hooks";
 import { useElementSize } from "@Src/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
 import { Button, Modal } from "@Src/pure-components";
-import { TypeSelect, InventoryWeapon, InventoryArtifact } from "@Src/components";
+import { TypeSelect, InventoryWeapon, InventoryArtifact, PickerCharacter } from "@Src/components";
 import SectionParty from "./SectionParty";
 import SectionWeapon from "./SectionWeapon";
 import SectionArtifacts from "./SectionArtifacts";
@@ -70,7 +69,7 @@ export default function SetupManager() {
             className="mx-auto"
             variant="positive"
             icon={<IoDocumentText />}
-            onClick={() => dispatch(updateUI({ highManagerWorking: true }))}
+            onClick={() => dispatch(updateUI({ highManagerActive: true }))}
           />
         </div>
 

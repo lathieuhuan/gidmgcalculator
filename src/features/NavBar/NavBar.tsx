@@ -1,19 +1,30 @@
 import { useState, useRef } from "react";
-import { FaBars, FaCoffee, FaCog, FaDownload, FaInfoCircle, FaQuestionCircle, FaUpload } from "react-icons/fa";
+import {
+  FaBars,
+  FaDonate,
+  FaCog,
+  FaDownload,
+  FaInfoCircle,
+  FaQuestionCircle,
+  FaUpload,
+  FaSearch,
+} from "react-icons/fa";
 import type { UIState } from "@Store/uiSlice/types";
 
 // Hook
 import { useClickOutside } from "@Src/hooks";
-import { useDispatch } from "@Store/hooks";
+import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action
 import { updateUI } from "@Store/uiSlice";
 
 // Component
+import { Button } from "@Src/pure-components";
 import { ActionButton, NavTabs } from "./components";
 
 export function NavBar() {
   const dispatch = useDispatch();
+  const trackerState = useSelector((state) => state.ui.trackerState);
   const ref = useRef<HTMLDivElement>(null);
   const [menuDropped, setMenuDropped] = useState(false);
 
@@ -26,6 +37,10 @@ export function NavBar() {
   const openModal = (type: UIState["appModalType"]) => () => {
     dispatch(updateUI({ appModalType: type }));
     closeMenu();
+  };
+
+  const onClickTrackerIcon = () => {
+    dispatch(updateUI({ trackerState: "open" }));
   };
 
   return (
@@ -42,14 +57,15 @@ export function NavBar() {
         </div>
 
         <div className="flex">
-          <a
-            className="px-2 h-full flex-center font-bold text-black bg-lightgold space-x-2"
-            href="https://www.buymeacoffee.com/ronqueroc"
-            target="_blank"
-          >
-            <FaCoffee />
-            <span>Buy me a coffee</span>
-          </a>
+          <Button variant="positive" shape="square" icon={<FaDonate />} onClick={openModal("DONATE")}>
+            Donate
+          </Button>
+
+          {trackerState !== "close" ? (
+            <button className="w-8 h-8 flex-center text-xl text-black bg-green" onClick={onClickTrackerIcon}>
+              <FaSearch />
+            </button>
+          ) : null}
 
           <div ref={ref} className="relative text-default">
             <button className="w-8 h-8 flex-center bg-darkblue-3 text-xl" onClick={() => setMenuDropped(!menuDropped)}>

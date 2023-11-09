@@ -6,8 +6,8 @@ import { updateTarget } from "@Store/calculatorSlice";
 import { selectTarget } from "@Store/calculatorSlice/selectors";
 
 // Util
-import { findMonster } from "@Data/controllers";
 import { toArray } from "@Src/utils";
+import { appData } from "@Src/data";
 
 // Hook
 import { useTranslation } from "@Src/hooks";
@@ -26,14 +26,14 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
   const { t } = useTranslation();
 
   const target = useSelector(selectTarget);
-  const dataMonster = findMonster(target);
+  const monsData = appData.getMonsData(target);
 
-  if (!dataMonster) {
+  if (!monsData) {
     return null;
   }
 
-  const { variant } = dataMonster;
-  const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
+  const { variant } = monsData;
+  const inputConfigs = monsData.inputConfigs ? toArray(monsData.inputConfigs) : [];
 
   const onChangeElementVariant = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(updateTarget({ variantType: e.target.value as Vision }));
@@ -84,7 +84,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             <ComboBox
               className="mt-4"
               targetCode={target.code}
-              targetTitle={dataMonster.title}
+              targetTitle={monsData.title}
               onSelectMonster={({ monsterCode, inputs, variantType }) => {
                 dispatch(
                   updateTarget({

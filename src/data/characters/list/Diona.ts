@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { EModAffect } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons, genExclusiveBuff } from "../utils";
 
@@ -35,10 +35,20 @@ const Diona: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `When characters within Signature Mix's radius have more than 50% HP, their {Elemental Mastery}#[gr]
-      is increased by {200}#[b,gr].`,
+      description: `Buff characters within Signature Mix's radius. Increases {Elemental Mastery}#[gr] by {200}#[b,gr]
+      when they have more than 50% HP, otherwise increases their {Incoming Healing Bonus}#[gr] by {30%}#[b,gr].`,
       isGranted: checkCons[6],
-      applyBuff: makeModApplier("totalAttr", "em", 200),
+      inputConfigs: [
+        {
+          type: "check",
+          label: "Below or equal to 50% HP",
+        },
+      ],
+      applyBuff: (obj) => {
+        const isAboveHalfHP = !obj.inputs[0];
+        const buffValue = isAboveHalfHP ? 200 : 30;
+        applyModifier(obj.desc, obj.totalAttr, isAboveHalfHP ? "em" : "inHealB_", buffValue, obj.tracker);
+      },
     },
   ],
 };

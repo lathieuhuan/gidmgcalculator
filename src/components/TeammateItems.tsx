@@ -2,7 +2,7 @@ import { FaTimes } from "react-icons/fa";
 
 import type { Teammate } from "@Src/types";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button } from "@Src/pure-components";

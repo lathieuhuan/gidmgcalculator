@@ -1,6 +1,5 @@
-import { VISION_TYPES } from "@Src/constants";
 import type { ArtifactBonus, BuffModifierArgsWrapper } from "@Src/types";
-import { countVision } from "@Src/utils";
+import { VISION_TYPES } from "@Src/constants";
 import { applyModifier } from "@Src/utils/calculation";
 
 interface ApplyArtifactBuffArgs {
@@ -39,15 +38,21 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
         stacks = inputs?.[index] ?? 1;
         break;
       case "vision":
+        let sameCount = 0;
+        let diffCount = 0;
+
+        for (const teammate of modifierArgs.partyData) {
+          if (teammate) {
+            teammate.vision === modifierArgs.charData.vision ? sameCount++ : diffCount++;
+          }
+        }
         switch (buff.stacks.element) {
           case "same_excluded": {
-            const { [modifierArgs.charData.vision]: same = 0 } = countVision(modifierArgs.partyData);
-            stacks = same;
+            stacks = sameCount;
             break;
           }
           case "different": {
-            const { [modifierArgs.charData.vision]: same, ...others } = countVision(modifierArgs.partyData);
-            stacks = Object.keys(others).length;
+            stacks = diffCount;
             break;
           }
         }

@@ -29,12 +29,19 @@ import {
   initArtifactStatsFilter,
   type StatsFilter,
 } from "@Src/components/inventory/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
-import { PickerArtifact, PickerCharacter } from "@Src/features";
 import { ButtonGroup, WarehouseLayout, ConfirmModal } from "@Src/pure-components";
-import { OwnerLabel, ArtifactCard, TypeSelect, InventoryRack, ItemRemoveConfirm } from "@Src/components";
+import {
+  OwnerLabel,
+  ArtifactCard,
+  TypeSelect,
+  InventoryRack,
+  ItemRemoveConfirm,
+  PickerArtifact,
+  PickerCharacter,
+} from "@Src/components";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -78,6 +85,8 @@ export default function MyArtifacts() {
   );
   const chosenArtifact = findById(filteredArtifacts, chosenID);
 
+  const closeModal = () => setModalType("");
+
   const checkIfMaxArtifactsReached = () => {
     if (totalCount + 1 > MAX_USER_ARTIFACTS) {
       dispatch(
@@ -86,7 +95,6 @@ export default function MyArtifacts() {
           content: "Number of stored artifacts has reached its limit.",
         })
       );
-
       return true;
     }
   };
@@ -96,8 +104,6 @@ export default function MyArtifacts() {
       dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenID }));
     }
   };
-
-  const closeModal = () => setModalType("");
 
   const isFiltered =
     filteredTypes.length || codes.length || stats.main !== "All" || stats.subs.some((s) => s !== "All");

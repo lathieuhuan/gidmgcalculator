@@ -32,8 +32,7 @@ import type {
   InitNewSessionPayload,
 } from "./reducer-types";
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
-import { appData } from "@Data/index";
-import monsters from "@Data/monsters";
+import { appData } from "@Src/data";
 
 import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
@@ -224,15 +223,13 @@ export const calculatorSlice = createSlice({
       party[teammateIndex] = createTeammate({ name, weaponType });
 
       const newVisionCount = countVision(appData.getPartyData(party), charData);
-      // cannot use RESONANCE_VISION_TYPES.includes(oldVision/vision) - ts error
-      const resonanceVisionTypes = RESONANCE_VISION_TYPES.map((r) => r.toString());
 
       if (oldTeammate) {
         const { vision: oldVision } = appData.getCharData(oldTeammate.name) || {};
         // lose a resonance
         if (
           oldVision &&
-          resonanceVisionTypes.includes(oldVision) &&
+          RESONANCE_VISION_TYPES.includes(oldVision) &&
           oldVisionCount[oldVision] === 2 &&
           newVisionCount[oldVision] === 1
         ) {
@@ -242,7 +239,7 @@ export const calculatorSlice = createSlice({
         }
       }
       // new teammate form new resonance
-      if (resonanceVisionTypes.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
+      if (RESONANCE_VISION_TYPES.includes(vision) && oldVisionCount[vision] === 1 && newVisionCount[vision] === 2) {
         const newResonance = {
           vision,
           activated: ["pyro", "hydro", "dendro"].includes(vision),
@@ -509,14 +506,14 @@ export const calculatorSlice = createSlice({
       };
 
       const { target } = state;
-      const { code, variantType, inputs = [] } = target;
-      const dataMonster = findByCode(monsters, code);
+      const { variantType, inputs = [] } = target;
+      const monsData = appData.getMonsData(target);
 
       // not update target if monster code === 0 (custom target)
-      if (dataMonster?.code) {
-        const { resistance, variant } = dataMonster;
+      if (monsData?.code) {
+        const { resistance, variant } = monsData;
         const { base, ...otherResistances } = resistance;
-        const inputConfigs = dataMonster.inputConfigs ? toArray(dataMonster.inputConfigs) : [];
+        const inputConfigs = monsData.inputConfigs ? toArray(monsData.inputConfigs) : [];
 
         for (const atkElmt of ATTACK_ELEMENTS) {
           target.resistances[atkElmt] = base;

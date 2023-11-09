@@ -5,11 +5,13 @@ import { EScreen } from "@Src/constants";
 
 const initialState: UIState = {
   atScreen: EScreen.CALCULATOR,
-  appModalType: "",
-  highManagerWorking: false,
+  appModalType: "INTRO",
+  mySetupsModalType: "",
+  highManagerActive: false,
+  trackerState: "close",
   importInfo: {},
   loading: false,
-  mySetupsModalType: "",
+  ready: false,
 };
 
 export const uiSlice = createSlice({
@@ -22,12 +24,12 @@ export const uiSlice = createSlice({
         ...action.payload,
       };
     },
-    updateImportInfo: (state, action: PayloadAction<SetupImportInfo>) => {
+    updateSetupImportInfo: (state, action: PayloadAction<SetupImportInfo>) => {
       state.importInfo = action.payload;
     },
   },
 });
 
-export const { updateUI, updateImportInfo } = uiSlice.actions;
+export const { updateUI, updateSetupImportInfo } = uiSlice.actions;
 
 export default uiSlice.reducer;

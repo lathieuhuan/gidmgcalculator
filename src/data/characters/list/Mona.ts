@@ -4,7 +4,7 @@ import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkAscs, checkCons } from "../utils";
 
-const getEBBuffValue = ({
+const getEBBonus = ({
   fromSelf,
   char,
   partyData,
@@ -37,7 +37,7 @@ const Mona: DefaultAppCharacter = {
       src: EModSrc.A4,
       description: `Increases Mona's {Hydro DMG Bonus}#[gr] by {20%}#[b,gr] of her {Energy Recharge}#[gr].`,
       isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, desc, tracker }) => {
+      applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);
       },
     },
@@ -58,7 +58,7 @@ const Mona: DefaultAppCharacter = {
       ],
       applyBuff: ({ totalAttr, attPattBonus, rxnBonus, desc, tracker, ...rest }) => {
         const { fromSelf, inputs, char } = rest;
-        applyModifier(desc, attPattBonus, "all.pct_", getEBBuffValue(rest), tracker);
+        applyModifier(desc, attPattBonus, "all.pct_", getEBBonus(rest), tracker);
 
         if ((fromSelf && checkCons[1](char)) || (!fromSelf && inputs[1])) {
           applyModifier(desc, rxnBonus, ["electroCharged.pct_", "swirl.pct_", "vaporize.pct_"], 15, tracker);

@@ -22,7 +22,7 @@ import { useTranslation } from "@Src/hooks";
 // Util
 import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import {
@@ -49,8 +49,8 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
   const { resonances, reaction, infuse_reaction } = elmtModCtrls;
 
   for (const { vision } of resonances) {
-    const { name, desc } = resonanceRenderInfo[vision];
-    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={desc} />);
+    const { name, description } = resonanceRenderInfo[vision];
+    content.push(<ModifierTemplate key={vision} mutable={false} heading={name} description={description} />);
   }
 
   if (infusedElement !== "phys") {

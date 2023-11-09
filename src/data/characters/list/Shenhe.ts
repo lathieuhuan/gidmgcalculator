@@ -1,9 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { applyPercent, round } from "@Src/utils";
 import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, NCPA_PERCENTS } from "../constants";
 import { checkAscs, checkCons, getTalentMultiplier } from "../utils";
 
 const getEBPenalty = (args: DescriptionSeedGetterArgs) => {

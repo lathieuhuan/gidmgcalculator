@@ -4,14 +4,14 @@ import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
 import { useIntersectionObserver } from "@Src/hooks";
 import { getImgSrc } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Store
 import { chooseCharacter } from "@Store/userDatabaseSlice";
 import { useDispatch } from "@Store/hooks";
 
 // Component
-import { PickerCharacter } from "@Src/features";
+import { PickerCharacter } from "@Src/components";
 import { Button } from "@Src/pure-components";
 
 import styles from "./styles.module.scss";
@@ -27,7 +27,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
 
   const [gridviewOn, setGridviewOn] = useState(false);
 
-  const { ref, observedItemCN, itemsVisible } = useIntersectionObserver<HTMLDivElement>([characterNames]);
+  const { observedAreaRef, observedItemCls, itemsVisible } = useIntersectionObserver<HTMLDivElement>([characterNames]);
 
   const scrollList = (name: string) => {
     document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
@@ -37,16 +37,16 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
     const scrollHorizontally = (e: any) => {
       const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
 
-      if (ref.current) {
-        ref.current.scrollLeft -= delta * 50;
+      if (observedAreaRef.current) {
+        observedAreaRef.current.scrollLeft -= delta * 50;
       }
       e.preventDefault();
     };
 
-    ref.current?.addEventListener("wheel", scrollHorizontally);
+    observedAreaRef.current?.addEventListener("wheel", scrollHorizontally);
 
     return () => {
-      ref.current?.removeEventListener("wheel", scrollHorizontally);
+      observedAreaRef.current?.removeEventListener("wheel", scrollHorizontally);
     };
   }, []);
 
@@ -64,7 +64,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
           </div>
         ) : null}
 
-        <div ref={ref} className="mt-2 w-full hide-scrollbar">
+        <div ref={observedAreaRef} className="mt-2 w-full hide-scrollbar">
           <div className="flex">
             {characterNames.length ? (
               characterNames.map((name) => {
@@ -81,7 +81,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
                     id={`side-icon-${name}`}
                     data-id={name}
                     className={clsx(
-                      observedItemCN,
+                      observedItemCls,
                       "mx-1 border-b-3 border-transparent cursor-pointer",
                       name === chosenChar && styles["active-cell"]
                     )}

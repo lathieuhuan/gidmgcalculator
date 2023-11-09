@@ -1,9 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { NCPA_PERCENTS } from "@Data/constants";
 import { EModAffect } from "@Src/constants";
 import { applyPercent } from "@Src/utils";
 import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { EModSrc, NCPA_PERCENTS } from "../constants";
 import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Thoma: DefaultAppCharacter = {

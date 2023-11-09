@@ -21,7 +21,6 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@Data/*": ["src/data/*"],
       "@Store/*": ["src/store/*"],
       "@Screens/*": ["src/screens/*"],
       "@Src/*": ["src/*"]

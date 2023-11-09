@@ -14,6 +14,7 @@
   "em": "Elemental Mastery",
   "shieldS_": "Shield Strength",
   "healB_": "Healing Bonus",
+  "inHealB_": "Incoming Healing Bonus",
   "pyro": "Pyro DMG Bonus",
   "hydro": "Hydro DMG Bonus",
   "geo": "Geo DMG Bonus",

@@ -6,7 +6,7 @@ import { TALENT_TYPES } from "@Src/constants";
 import { NORMAL_ATTACK_ICONS } from "./constants";
 
 // Util
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { ascsFromLv } from "@Src/utils";
 import { totalXtraTalentLv } from "@Src/utils/calculation";
 

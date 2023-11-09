@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { CharInfo } from "@Src/types";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Conponent
 import { InfoSign, SharedSpace } from "@Src/pure-components";

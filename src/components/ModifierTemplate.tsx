@@ -25,10 +25,10 @@ const DENDROABLE_OPTIONS: ModSelectOption[] = [
   { label: "Electro", value: 2 },
 ];
 
-export const resonanceRenderInfo = {
+export const resonanceRenderInfo: Record<string, { name: string; description: JSX.Element }> = {
   pyro: {
     name: "Fervent Flames",
-    desc: (
+    description: (
       <>
         Increases <Green>ATK</Green> by <Green b>25%</Green>.
       </>
@@ -36,7 +36,7 @@ export const resonanceRenderInfo = {
   },
   cryo: {
     name: "Shattering Ice",
-    desc: (
+    description: (
       <>
         Increases <Green>CRIT Rate</Green> against enemies that are Frozen or affected by Cryo by <Green b>15%</Green>.
       </>
@@ -44,7 +44,7 @@ export const resonanceRenderInfo = {
   },
   geo: {
     name: "Enduring Rock",
-    desc: (
+    description: (
       <>
         Increases <Green>Shield Strength</Green> by <Green b>15%</Green>. Increases <Green>DMG</Green> dealt by
         characters that protected by a shield by <Green b>15%</Green>.
@@ -53,7 +53,7 @@ export const resonanceRenderInfo = {
   },
   hydro: {
     name: "Soothing Water",
-    desc: (
+    description: (
       <>
         Increases <Green>Max HP</Green> by <Green b>25%</Green>.
       </>
@@ -61,7 +61,7 @@ export const resonanceRenderInfo = {
   },
   dendro: {
     name: "Sprawling Greenery",
-    desc: (
+    description: (
       <>
         Increases <Green>Elemental Mastery</Green> by <Green b>50</Green>. After triggering Burning, Quicken, or Bloom
         reactions, all nearby party members gain <Green>30</Green> <Green>Elemental Mastery</Green> for 6s. After

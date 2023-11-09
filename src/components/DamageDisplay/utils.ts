@@ -1,4 +1,4 @@
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import { NORMAL_ATTACKS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 
 type AttackPatternKey = {

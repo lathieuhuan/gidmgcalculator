@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
 import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
@@ -37,7 +36,7 @@ export const ArtifactSubstatsControl = ({
   }
 
   return (
-    <Fragment>
+    <>
       {subStats.map(({ type, value }, i) => {
         const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
@@ -90,6 +89,6 @@ export const ArtifactSubstatsControl = ({
           </div>
         );
       })}
-    </Fragment>
+    </>
   );
 };

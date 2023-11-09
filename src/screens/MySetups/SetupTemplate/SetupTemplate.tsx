@@ -8,14 +8,14 @@ import { ARTIFACT_ICONS, ARTIFACT_TYPES } from "@Src/constants";
 
 // Store
 import { useDispatch } from "@Store/hooks";
-import { updateImportInfo } from "@Store/uiSlice";
+import { updateSetupImportInfo } from "@Store/uiSlice";
 import { makeTeammateSetup } from "@Store/thunks";
 import { chooseUserSetup, switchShownSetupInComplex, uncombineSetups } from "@Store/userDatabaseSlice";
 
 // Util
 import { finalTalentLv } from "@Src/utils/calculation";
 import { userSetupToCalcSetup } from "@Src/utils/setup";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 
 // Component
 import { Button, Image, Modal } from "@Src/pure-components";
@@ -203,7 +203,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               if (weapon) {
                 const { ID, name, type, target } = setup;
                 dispatch(
-                  updateImportInfo({
+                  updateSetupImportInfo({
                     ID,
                     name,
                     type,

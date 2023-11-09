@@ -2,12 +2,11 @@ import type {
   DamageResult,
   ResistanceReduction,
   DebuffModifierArgsWrapper,
-  TrackerDamageRecord,
+  TrackerCalcItemRecord,
   NormalAttack,
   CalcItemBonus,
-  AttackPatternInfoKey,
 } from "@Src/types";
-import type { CalculateItemArgs, GetDamageArgs } from "./types";
+import type { GetDamageArgs } from "../types";
 
 // Constant
 import {
@@ -18,130 +17,18 @@ import {
   VISION_TYPES,
 } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { TRANSFORMATIVE_REACTION_INFO } from "./constants";
+import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
-import { appData } from "@Data/index";
-import { applyToOneOrMany, bareLv, findByIndex, toMult, getTalentDefaultInfo, toArray } from "@Src/utils";
+import { appData } from "@Src/data";
+import { bareLv, findByIndex, getTalentDefaultInfo, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
-
-const getExclusiveBonus = (bonuses: CalcItemBonus[], key: AttackPatternInfoKey) => {
-  return bonuses.reduce((total, bonus) => total + (bonus[key]?.value || 0), 0);
-};
-
-function calculateItem({
-  stat,
-  attElmt,
-  attPatt,
-  base,
-  char,
-  target,
-  totalAttr,
-  attPattBonus,
-  attElmtBonus,
-  calcItemBonues,
-  rxnMult,
-  resistReduct,
-  record,
-}: CalculateItemArgs) {
-  const itemFlatBonus = getExclusiveBonus(calcItemBonues, "flat");
-  const itemPctBonus = getExclusiveBonus(calcItemBonues, "pct_");
-  const itemMultPlusBonus = getExclusiveBonus(calcItemBonues, "multPlus");
-
-  if (base !== 0 && !stat.type) {
-    const flat =
-      itemFlatBonus +
-      attPattBonus.all.flat +
-      (attPatt !== "none" ? attPattBonus[attPatt].flat : 0) +
-      (attElmt !== "various" ? attElmtBonus[attElmt].flat : 0);
-
-    // CALCULATE DAMAGE BONUS MULTIPLIERS
-    let normalMult = itemPctBonus + attPattBonus.all.pct_;
-    let specialMult = itemMultPlusBonus + attPattBonus.all.multPlus;
-
-    if (attPatt !== "none") {
-      normalMult += attPattBonus[attPatt].pct_;
-      specialMult += attPattBonus[attPatt].multPlus;
-    }
-    if (attElmt !== "various") {
-      normalMult += totalAttr[attElmt];
-    }
-    normalMult = toMult(normalMult);
-    specialMult = toMult(specialMult);
-
-    // CALCULATE DEFENSE MULTIPLIER
-    let defMult = 1;
-    const charPart = bareLv(char.level) + 100;
-    const defReduction = 1 - resistReduct.def / 100;
-
-    if (attPatt !== "none") {
-      defMult = 1 - (attPattBonus[attPatt].defIgn_ + attPattBonus.all.defIgn_) / 100;
-    }
-    defMult = charPart / (defReduction * defMult * (target.level + 100) + charPart);
-
-    // CALCULATE RESISTANCE MULTIPLIER
-    const resMult = attElmt === "various" ? 1 : resistReduct[attElmt];
-
-    // CALCULATE CRITS
-    const totalCrit = (type: "cRate_" | "cDmg_") => {
-      return (
-        totalAttr[type] +
-        getExclusiveBonus(calcItemBonues, type) +
-        attPattBonus.all[type] +
-        (attPatt !== "none" ? attPattBonus[attPatt][type] : 0) +
-        (attElmt !== "various" ? attElmtBonus[attElmt][type] : 0)
-      );
-    };
-    const cRate_ = Math.min(Math.max(totalCrit("cRate_"), 0), 100) / 100;
-    const cDmg_ = totalCrit("cDmg_") / 100;
-
-    base = applyToOneOrMany(base, (n) => (n + flat) * normalMult * specialMult * rxnMult * defMult * resMult);
-
-    record.totalFlat = flat;
-    record.normalMult = normalMult;
-    record.specialMult = specialMult;
-    record.rxnMult = rxnMult;
-    record.defMult = defMult;
-    record.resMult = resMult;
-    record.cRate_ = cRate_;
-    record.cDmg_ = cDmg_;
-
-    return {
-      nonCrit: base,
-      crit: applyToOneOrMany(base, (n) => n * (1 + cDmg_)),
-      average: applyToOneOrMany(base, (n) => n * (1 + cRate_ * cDmg_)),
-      attElmt,
-    };
-  } //
-  else if (!Array.isArray(base)) {
-    let flat = 0;
-    let normalMult = 1;
-
-    switch (stat.type) {
-      case "healing":
-        flat = itemFlatBonus;
-        normalMult += totalAttr.healB_ / 100;
-        break;
-      case "shield":
-        normalMult += itemPctBonus / 100;
-        break;
-    }
-    base += flat;
-    record.totalFlat = (record.totalFlat || 0) + flat;
-
-    if (normalMult !== 1) {
-      base *= normalMult;
-      record.normalMult = normalMult;
-    }
-    return { nonCrit: base, crit: 0, average: base };
-  }
-  return { nonCrit: 0, crit: 0, average: 0 };
-}
+import { getExclusiveBonus } from "./utils";
+import { calculateItem } from "./calculateItem";
 
 export default function getDamage({
   char,
   charData,
-  selfBuffCtrls,
   selfDebuffCtrls,
   artDebuffCtrls,
   party,
@@ -154,7 +41,7 @@ export default function getDamage({
   rxnBonus,
   customDebuffCtrls,
   infusion,
-  elmtModCtrls: { reaction, infuse_reaction, resonances, superconduct },
+  elmtModCtrls: { reaction, infuse_reaction, resonances, superconduct, absorption },
   target,
   tracker,
 }: GetDamageArgs) {
@@ -263,7 +150,9 @@ export default function getDamage({
     for (const stat of calcList[ATT_PATT]) {
       // DMG TYPES & AMPLIFYING REACTION MULTIPLIER
       const attPatt = stat.attPatt || ATT_PATT;
-      let attElmt = stat.subAttPatt === "FCA" ? vision : stat.attElmt || defaultInfo.attElmt;
+      let attElmt =
+        (stat.subAttPatt === "FCA" ? vision : stat.attElmt === "absorb" ? absorption : stat.attElmt) ??
+        defaultInfo.attElmt;
       let actualReaction = reaction;
       let rxnMult = 1;
 
@@ -282,12 +171,12 @@ export default function getDamage({
       }
 
       // deal elemental dmg and want amplify reaction
-      if (attElmt !== "various" && attElmt !== "phys" && (actualReaction === "melt" || actualReaction === "vaporize")) {
+      if (attElmt !== "phys" && (actualReaction === "melt" || actualReaction === "vaporize")) {
         rxnMult = getAmplifyingMultiplier(attElmt, rxnBonus)[actualReaction];
       }
 
       let bases = [];
-      const { id, flatFactor } = stat;
+      const { id, type = "attack", flatFactor } = stat;
       const calcItemBonues = id
         ? calcItemBuffs.reduce<CalcItemBonus[]>((bonuses, buff) => {
             if (Array.isArray(buff.ids) ? buff.ids.includes(id) : buff.ids === id) {
@@ -299,10 +188,11 @@ export default function getDamage({
       const itemBonusMult = getExclusiveBonus(calcItemBonues, "mult_");
 
       const record = {
+        itemType: type,
         multFactors: [],
         normalMult: 1,
         exclusives: calcItemBonues,
-      } as TrackerDamageRecord;
+      } as TrackerCalcItemRecord;
 
       // CALCULATE BASE DAMAGE
       for (const factor of toArray(stat.multFactors)) {
@@ -373,7 +263,7 @@ export default function getDamage({
   for (const rxn of TRANSFORMATIVE_REACTIONS) {
     const { mult, dmgType } = TRANSFORMATIVE_REACTION_INFO[rxn];
     const normalMult = 1 + rxnBonus[rxn].pct_ / 100;
-    const resMult = dmgType !== "various" ? resistReduct[dmgType] : 1;
+    const resMult = dmgType !== "absorb" ? resistReduct[dmgType] : 1;
     const baseValue = baseRxnDmg * mult;
     const nonCrit = baseValue * normalMult * resMult;
     const cDmg_ = rxnBonus[rxn].cDmg_ / 100;
@@ -388,6 +278,7 @@ export default function getDamage({
 
     if (tracker) {
       tracker.RXN[rxn] = {
+        itemType: "attack",
         multFactors: [{ value: Math.round(baseValue), desc: "Base DMG" }],
         normalMult,
         resMult,

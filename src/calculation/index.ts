@@ -1,8 +1,8 @@
 import type { CalcSetup, NormalAttack, Target, Tracker } from "@Src/types";
 import { findByIndex } from "@Src/utils";
-import { appData } from "@Data/index";
+import { appData } from "@Src/data";
 import getCalculationStats from "./getCalculationStats";
-import getDamage from "./damage";
+import getDamage from "./getDamage";
 
 export default function calculateAll(
   {
@@ -61,7 +61,7 @@ export default function calculateAll(
     infusedAttacks = ["NA"];
   }
 
-  const { totalAttr, artAttr, attPattBonus, attElmtBonus, calcItemBuffs, rxnBonus } = getCalculationStats({
+  const { artAttr, ...rest } = getCalculationStats({
     char,
     charData,
     selfBuffCtrls,
@@ -80,17 +80,11 @@ export default function calculateAll(
   const dmgResult = getDamage({
     char,
     charData,
-    selfBuffCtrls,
     selfDebuffCtrls,
     artDebuffCtrls,
     party,
     partyData,
     disabledNAs,
-    totalAttr,
-    attPattBonus,
-    attElmtBonus,
-    calcItemBuffs,
-    rxnBonus,
     customDebuffCtrls,
     infusion: {
       element: infusedElement,
@@ -100,13 +94,14 @@ export default function calculateAll(
     elmtModCtrls,
     target,
     tracker,
+    ...rest,
   });
   return {
     infusedElement,
     infusedAttacks,
-    totalAttr,
+    totalAttr: rest.totalAttr,
     artAttr,
-    rxnBonus,
+    rxnBonus: rest.rxnBonus,
     dmgResult,
   };
 }

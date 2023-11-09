@@ -106,7 +106,7 @@ export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
 export type ActualAttackPattern = AttackPattern | "none";
 
-export type ActualAttackElement = AttackElement | "various";
+export type ActualAttackElement = AttackElement | "absorb";
 
 type CalcItemMultFactor = {
   root: number;
@@ -116,10 +116,12 @@ type CalcItemMultFactor = {
   attributeType?: TalentAttributeType;
 };
 
+export type CalcItemType = "attack" | "healing" | "shield" | "other";
+
 export type CalcItem = {
   id?: string;
   name: string;
-  type?: "attack" | "healing" | "shield" | "other";
+  type?: CalcItemType;
   notOfficial?: boolean;
   attPatt?: ActualAttackPattern;
   attElmt?: ActualAttackElement;

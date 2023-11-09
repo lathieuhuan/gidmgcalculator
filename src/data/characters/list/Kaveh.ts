@@ -75,6 +75,15 @@ const Kaveh: DefaultAppCharacter = {
       },
     },
     {
+      index: 3,
+      src: EModSrc.C1,
+      affect: EModAffect.SELF,
+      isGranted: checkCons[1],
+      description: `Within 3s after using Artistic Ingenuity [ES], Kaveh's {Incoming Healing Bonus}#[gr] will be
+      increased by {25%}#[b,gr] respectively.`,
+      applyBuff: makeModApplier("totalAttr", "inHealB_", 25),
+    },
+    {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
