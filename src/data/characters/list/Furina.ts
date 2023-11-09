@@ -19,8 +19,8 @@ const getESBonus = (args: DescriptionSeedGetterArgs) => {
 const Furina: DefaultAppCharacter = {
   code: 78,
   name: "Furina",
-  icon: "https://images2.imgbox.com/c9/68/egMm7k7T_o.png",
-  sideIcon: "",
+  icon: "e/e6/Furina_Icon",
+  sideIcon: "0/0d/Furina_Side_Icon",
   rarity: 5,
   nation: "fontaine",
   vision: "hydro",
@@ -124,8 +124,8 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.SELF,
       description: `When using Salon Solitaire [ES] Furina gains "Center of Attention" for 10s. Grants a Hydro
-      Infusion and increases {Normal, Charged, and Plunging Attack DMG}#[gr] by {15%}#[b,gr] of Furina
-      {Max HP}#[gr]. At Pneuma alignment this bonus is increased further by {20%}#[b,gr] of her {Max HP}#[gr].`,
+      Infusion and increases {Normal, Charged, and Plunging Attack DMG}#[gr] by {18%}#[b,gr] of Furina
+      {Max HP}#[gr]. At Pneuma alignment this bonus is increased further by {25%}#[b,gr] of her {Max HP}#[gr].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {
@@ -134,7 +134,7 @@ const Furina: DefaultAppCharacter = {
         },
       ],
       applyFinalBuff: (obj) => {
-        const bonusValue = Math.round((obj.totalAttr.hp * (obj.inputs[0] ? 35 : 15)) / 100);
+        const bonusValue = Math.round((obj.totalAttr.hp * (obj.inputs[0] ? 43 : 18)) / 100);
         applyModifier(obj.desc, obj.attPattBonus, ["NA.flat", "CA.flat", "PA.flat"], bonusValue, obj.tracker);
       },
       infuseConfig: { overwritable: false },
