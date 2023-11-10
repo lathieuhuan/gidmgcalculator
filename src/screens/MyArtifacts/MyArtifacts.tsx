@@ -3,19 +3,12 @@ import { useState } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import { FaTimes } from "react-icons/fa";
 
-import type { ArtifactType, AttributeStat, UserArtifact } from "@Src/types";
+import type { ArtifactType, UserArtifact } from "@Src/types";
 import { ARTIFACT_ICONS, MAX_USER_ARTIFACTS } from "@Src/constants";
 import { useTypeFilter } from "@Src/components/inventory/hooks";
 
 // Action
-import {
-  addUserArtifact,
-  updateUserArtifactSubStat,
-  removeArtifact,
-  sortArtifacts,
-  swapArtifactOwner,
-  updateUserArtifact,
-} from "@Store/userDatabaseSlice";
+import { addUserArtifact, sortArtifacts } from "@Store/userDatabaseSlice";
 import { updateMessage } from "@Store/calculatorSlice";
 
 // Store
@@ -29,19 +22,11 @@ import {
   initArtifactStatsFilter,
   type StatsFilter,
 } from "@Src/components/inventory/utils";
-import { appData } from "@Src/data";
 
 // Component
-import { ButtonGroup, WarehouseLayout, ConfirmModal } from "@Src/pure-components";
-import {
-  OwnerLabel,
-  ArtifactCard,
-  TypeSelect,
-  InventoryRack,
-  ItemRemoveConfirm,
-  PickerArtifact,
-  PickerCharacter,
-} from "@Src/components";
+import { ButtonGroup, WarehouseLayout } from "@Src/pure-components";
+import { TypeSelect, InventoryRack, PickerArtifact } from "@Src/components";
+import { ChosenArtifactView } from "./ChosenArtifactView";
 import { Filter } from "./Filter";
 
 import styles from "../styles.module.scss";
@@ -60,8 +45,6 @@ const selectArtifactInventory = createSelector(
   }
 );
 
-type ModalType = "" | "PICK_ARTIFACT_TYPE" | "EQUIP_CHARACTER" | "REMOVE_ARTIFACT" | "FITLER";
-
 export default function MyArtifacts() {
   const dispatch = useDispatch();
 
@@ -69,12 +52,11 @@ export default function MyArtifacts() {
   const [codes, setCodes] = useState<number[]>([]);
   const [stats, setStats] = useState(initArtifactStatsFilter());
 
-  const [modalType, setModalType] = useState<ModalType>("");
+  const [modalType, setModalType] = useState<"PICK_ARTIFACT_TYPE" | "FITLER" | "">("");
   const [artifactPicker, setArtifactPicker] = useState<{ active: boolean; type: ArtifactType }>({
     active: false,
     type: "flower",
   });
-  const [newOwner, setNewOwner] = useState<string | null>(null);
 
   const { filteredTypes, setFilteredType, renderTypeFilter } = useTypeFilter({
     itemType: "artifact",
@@ -87,7 +69,7 @@ export default function MyArtifacts() {
 
   const closeModal = () => setModalType("");
 
-  const checkIfMaxArtifactsReached = () => {
+  const isMaxArtifactsReached = () => {
     if (totalCount + 1 > MAX_USER_ARTIFACTS) {
       dispatch(
         updateMessage({
@@ -99,9 +81,27 @@ export default function MyArtifacts() {
     }
   };
 
-  const swapOwner = (name: string) => {
-    if (chosenID) {
-      dispatch(swapArtifactOwner({ newOwner: name, artifactID: chosenID }));
+  const onClickAddArtifact = () => {
+    if (!isMaxArtifactsReached()) {
+      setModalType("PICK_ARTIFACT_TYPE");
+    }
+  };
+
+  const onClickSortArtifact = () => {
+    dispatch(sortArtifacts());
+  };
+
+  const onRemoveArtifact = () => {
+    const removedIndex = indexById(filteredArtifacts, chosenID);
+
+    if (removedIndex !== -1) {
+      if (filteredArtifacts.length > 1) {
+        const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
+
+        setChosenID(filteredArtifacts[removedIndex + move].ID);
+      } else {
+        setChosenID(0);
+      }
     }
   };
 
@@ -119,13 +119,12 @@ export default function MyArtifacts() {
               {
                 text: "Add",
                 variant: "positive",
-                onClick: () => {
-                  if (!checkIfMaxArtifactsReached()) {
-                    setModalType("PICK_ARTIFACT_TYPE");
-                  }
-                },
+                onClick: onClickAddArtifact,
               },
-              { text: "Sort", onClick: () => dispatch(sortArtifacts()) },
+              {
+                text: "Sort",
+                onClick: onClickSortArtifact,
+              },
             ]}
           />
 
@@ -166,70 +165,7 @@ export default function MyArtifacts() {
             items={filteredArtifacts}
             onClickItem={(item) => setChosenID(item.ID)}
           />
-
-          <div>
-            <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
-              <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
-                {chosenArtifact ? (
-                  <ArtifactCard
-                    artifact={chosenArtifact}
-                    mutable
-                    onEnhance={(level) => {
-                      dispatch(updateUserArtifact({ ID: chosenID, level }));
-                    }}
-                    onChangeMainStatType={(type) =>
-                      dispatch(
-                        updateUserArtifact({
-                          ID: chosenID,
-                          mainStatType: type as AttributeStat,
-                        })
-                      )
-                    }
-                    onChangeSubStat={(subStatIndex, changes) => {
-                      dispatch(
-                        updateUserArtifactSubStat({
-                          ID: chosenID,
-                          subStatIndex,
-                          ...changes,
-                        })
-                      );
-                    }}
-                  />
-                ) : null}
-              </div>
-
-              {chosenArtifact ? (
-                <ButtonGroup
-                  className="mt-4"
-                  buttons={[
-                    {
-                      text: "Remove",
-                      onClick: () => {
-                        if (chosenArtifact.setupIDs?.length) {
-                          dispatch(
-                            updateMessage({
-                              type: "info",
-                              content: "This artifact cannot be deleted. It is used by some Setups.",
-                            })
-                          );
-                        } else {
-                          setModalType("REMOVE_ARTIFACT");
-                        }
-                      },
-                    },
-                    { text: "Equip", onClick: () => setModalType("EQUIP_CHARACTER") },
-                  ]}
-                />
-              ) : null}
-            </div>
-
-            <OwnerLabel
-              key={chosenArtifact?.ID}
-              className="mt-4"
-              owner={chosenArtifact?.owner}
-              setupIDs={chosenArtifact?.setupIDs}
-            />
-          </div>
+          <ChosenArtifactView artifact={chosenArtifact} onRemoveArtifact={onRemoveArtifact} />
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
@@ -246,11 +182,11 @@ export default function MyArtifacts() {
 
       <TypeSelect
         active={modalType === "PICK_ARTIFACT_TYPE"}
-        choices={ARTIFACT_ICONS}
-        onClickChoice={(artType) => {
+        options={ARTIFACT_ICONS}
+        onSelect={(artifactType) => {
           setArtifactPicker({
             active: true,
-            type: artType as ArtifactType,
+            type: artifactType as ArtifactType,
           });
           closeModal();
         }}
@@ -262,13 +198,13 @@ export default function MyArtifacts() {
         needMassAdd
         artifactType={artifactPicker.type}
         onPickArtifact={(item) => {
-          if (checkIfMaxArtifactsReached()) {
+          if (isMaxArtifactsReached()) {
             return {
               isValid: false,
             };
           }
 
-          const newArtifact = {
+          const newArtifact: UserArtifact = {
             ID: Date.now(),
             ...item,
             owner: null,
@@ -279,59 +215,6 @@ export default function MyArtifacts() {
         }}
         onClose={() => setArtifactPicker((prev) => ({ ...prev, active: false }))}
       />
-
-      <PickerCharacter
-        active={modalType === "EQUIP_CHARACTER" && !!chosenArtifact}
-        sourceType="user"
-        filter={({ name }) => name !== chosenArtifact?.owner}
-        onPickCharacter={({ name }) => {
-          if (chosenArtifact?.owner) {
-            setNewOwner(name);
-          } else {
-            swapOwner(name);
-          }
-        }}
-        onClose={closeModal}
-      />
-
-      {chosenArtifact && (
-        <ItemRemoveConfirm
-          active={modalType === "REMOVE_ARTIFACT"}
-          item={chosenArtifact}
-          itemType="artifact"
-          onConfirm={() => {
-            dispatch(removeArtifact(chosenArtifact));
-
-            const removedIndex = indexById(filteredArtifacts, chosenArtifact.ID);
-
-            if (removedIndex !== -1) {
-              if (filteredArtifacts.length > 1) {
-                const move = removedIndex === filteredArtifacts.length - 1 ? -1 : 1;
-
-                setChosenID(filteredArtifacts[removedIndex + move].ID);
-              } else {
-                setChosenID(0);
-              }
-            }
-          }}
-          onClose={closeModal}
-        />
-      )}
-
-      {chosenArtifact && (
-        <ConfirmModal
-          active={!!newOwner}
-          message={
-            <>
-              <b>{chosenArtifact.owner}</b> is currently using "
-              <b>{appData.getArtifactData(chosenArtifact)?.name || "<name missing>"}</b>
-              ". Swap?
-            </>
-          }
-          buttons={[undefined, { onClick: () => swapOwner(newOwner!) }]}
-          onClose={() => setNewOwner(null)}
-        />
-      )}
     </WarehouseLayout.Wrapper>
   );
 }

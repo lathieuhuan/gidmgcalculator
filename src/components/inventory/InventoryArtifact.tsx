@@ -86,7 +86,7 @@ const ArtifactInventory = ({
             onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
           />
 
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col">
             <div className={clsx("p-4 rounded-lg bg-darkblue-1 flex flex-col relative", !chosenArtifact && "h-full")}>
               {currentArtifact ? (
                 <div
@@ -129,7 +129,7 @@ const ArtifactInventory = ({
               ) : null}
             </div>
 
-            <OwnerLabel owner={chosenArtifact?.owner} />
+            <OwnerLabel item={chosenArtifact} />
           </div>
         </div>
       </div>

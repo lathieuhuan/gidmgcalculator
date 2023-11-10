@@ -6,7 +6,7 @@ import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
-import { itemIsWeapon } from "@Src/utils";
+import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { ItemThumb } from "../ItemThumb";
@@ -160,7 +160,7 @@ export const InventoryRack = ({
                         )}
                         <div onClick={() => onClickItem?.(item)}>
                           <ItemThumb
-                            item={itemIsWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                            item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
                             chosen={item.ID === chosenID}
                           />
                         </div>

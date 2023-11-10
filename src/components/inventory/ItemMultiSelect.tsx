@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
 import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
-import { itemIsWeapon } from "@Src/utils";
+import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { Button, ModalHeader, withModal } from "@Src/pure-components";
@@ -85,7 +85,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
           <div className="p-4 rounded-lg bg-darkblue-1 grow" style={{ minHeight: "28rem" }}>
             <div className="w-68 h-full hide-scrollbar">
               {chosenItem ? (
-                itemIsWeapon(chosenItem) ? (
+                isUserWeapon(chosenItem) ? (
                   <WeaponCard weapon={chosenItem} />
                 ) : (
                   <ArtifactCard artifact={chosenItem} />
@@ -94,7 +94,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
             </div>
           </div>
 
-          <OwnerLabel owner={chosenItem?.owner} />
+          <OwnerLabel item={chosenItem} />
         </div>
       </div>
     </div>

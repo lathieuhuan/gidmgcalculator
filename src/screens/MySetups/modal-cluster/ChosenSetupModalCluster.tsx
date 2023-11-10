@@ -77,7 +77,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
           <div className="w-75 hide-scrollbar" style={{ height: "30rem" }}>
             {weapon && <WeaponCard weapon={weapon} />}
           </div>
-          <OwnerLabel owner={weapon?.owner} setupIDs={weapon?.setupIDs} />
+          <OwnerLabel item={weapon ?? undefined} />
         </div>
       </Modal>
 
@@ -91,7 +91,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
             return (
               <div key={i} className="px-1 shrink-0" style={{ width: "14.5rem" }}>
                 <ArtifactCard artifact={artifact} space="mx-2" />
-                <OwnerLabel owner={artifact?.owner} setupIDs={artifact?.setupIDs} />
+                <OwnerLabel item={artifact} />
               </div>
             );
           }

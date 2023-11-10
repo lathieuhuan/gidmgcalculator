@@ -90,8 +90,8 @@ export default function SetupManager() {
 
       <TypeSelect
         active={prePickerOn}
-        choices={ARTIFACT_ICONS}
-        onClickChoice={(artifactType) => {
+        options={ARTIFACT_ICONS}
+        onSelect={(artifactType) => {
           setModalType(artifactType as ArtifactType);
           setPrePickerOn(false);
         }}

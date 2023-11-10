@@ -149,15 +149,15 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel key={chosenID} owner={chosenWeapon?.owner} setupIDs={chosenWeapon?.setupIDs} />
+            <OwnerLabel key={chosenID} item={chosenWeapon} />
           </div>
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
       <TypeSelect
         active={modalType === "PICK_WEAPON_TYPE"}
-        choices={WEAPON_ICONS}
-        onClickChoice={(weaponType) => {
+        options={WEAPON_ICONS}
+        onSelect={(weaponType) => {
           setWeaponPicker({
             active: true,
             type: weaponType as WeaponType,
@@ -210,7 +210,6 @@ export default function MyWeapons() {
         <ItemRemoveConfirm
           active={modalType === "REMOVE_WEAPON"}
           item={chosenWeapon}
-          itemType="weapon"
           onConfirm={() => {
             dispatch(removeWeapon(chosenWeapon));
 

@@ -44,7 +44,7 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
           onClickItem={(item) => setChosenWeapon(item as UserWeapon)}
         />
 
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col">
           <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar" style={{ minHeight: "28rem" }}>
             <div className="w-68 grow hide-scrollbar">
               <WeaponCard weapon={chosenWeapon} />
@@ -65,7 +65,7 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
             ) : null}
           </div>
 
-          <OwnerLabel owner={chosenWeapon?.owner} />
+          <OwnerLabel item={chosenWeapon} />
         </div>
       </div>
     </div>

@@ -23,7 +23,7 @@ import { SetupControl } from "./SetupControl";
 
 import styles from "../../styles.module.scss";
 
-function HiddenManager() {
+function HighManagerCore() {
   const dispatch = useDispatch();
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
@@ -234,7 +234,7 @@ export default function HighManager({ height }: HighManagerProps) {
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}
     >
-      <HiddenManager />
+      <HighManagerCore />
     </CollapseAndMount>
   );
 }

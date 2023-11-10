@@ -1,29 +1,45 @@
-import type { UserArtifact, UserWeapon } from "@Src/types";
-import { appData } from "@Src/data";
-import { ConfirmModal, type ModalControl } from "@Src/pure-components";
+import { useEffect } from "react";
+import type { UserItem } from "@Src/types";
 
-interface WeaponRemoveConfirmProps {
-  itemType: "weapon";
-  item: UserWeapon;
+// Util & Hook
+import { useCheckContainerSetups } from "@Src/hooks/useCheckContainerSetups";
+import { appData } from "@Src/data";
+import { isUserWeapon } from "@Src/utils";
+
+// Store
+import { useDispatch } from "@Store/hooks";
+import { updateUserArtifact, updateUserWeapon } from "@Store/userDatabaseSlice";
+
+// Component
+import { ConfirmModalBody, withModal } from "@Src/pure-components";
+
+interface ItemRemoveCheckProps {
+  item: UserItem;
   onConfirm: () => void;
+  onClose: () => void;
 }
-interface ArtifactRemoveConfirmProps {
-  itemType: "artifact";
-  item: UserArtifact;
-  onConfirm: () => void;
-}
-export const ItemRemoveConfirm = ({
-  active,
-  item,
-  itemType,
-  onConfirm,
-  onClose,
-}: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) => {
-  const itemData = itemType === "weapon" ? appData.getWeaponData(item.code) : appData.getArtifactData(item);
+const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
+  const dispatch = useDispatch();
+  const result = useCheckContainerSetups(item);
+  const isWeapon = isUserWeapon(item);
+
+  const itemData = isWeapon ? appData.getWeaponData(item.code) : appData.getArtifactData(item);
+
+  const removeInvalidIds = () => {
+    if (result.invalidIds.length) {
+      const changes = {
+        ID: item.ID,
+        setupIDs: item.setupIDs?.filter((id) => !result.invalidIds.includes(id)),
+      };
+
+      isWeapon ? dispatch(updateUserWeapon(changes)) : dispatch(updateUserArtifact(changes));
+    }
+  };
+
+  useEffect(() => removeInvalidIds, []);
 
   return (
-    <ConfirmModal
-      active={active}
+    <ConfirmModalBody
       message={
         <>
           Remove "<b>{itemData?.name}</b>"?{" "}
@@ -39,3 +55,5 @@ export const ItemRemoveConfirm = ({
     />
   );
 };
+
+export const ItemRemoveConfirm = withModal(ItemRemoveCheck, { className: "small-modal" });
