@@ -42,7 +42,7 @@ export const About = () => {
           </li>
         ))}
       </ul>
-      <p className="ml-3 text-lesser">(yes the email address is real)</p>
+      <p className="ml-3 text-light-800">(yes the email address is real)</p>
     </div>
   );
 };

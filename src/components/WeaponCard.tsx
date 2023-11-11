@@ -12,7 +12,7 @@ import { appData } from "@Src/data";
 // Component
 import { BetaMark } from "@Src/pure-components";
 
-const groupStyles = "bg-darkblue-2 px-2";
+const groupStyles = "bg-dark-700 px-2";
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;

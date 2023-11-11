@@ -7,13 +7,13 @@ const bgColorByVariant: StringRecord = {
   positive: "bg-lightgold",
   neutral: "bg-green",
   negative: "bg-darkred",
-  default: "bg-default",
+  default: "bg-light-400",
 };
 const colorByVariant: StringRecord = {
   positive: "text-lightgold",
   neutral: "text-green",
   negative: "text-darkred",
-  default: "text-default",
+  default: "text-light-400",
 };
 
 const buttonPadding = {
@@ -80,7 +80,7 @@ export const Button = ({
       ? ""
       : boneOnly
       ? colorByVariant[variant]
-      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"],
+      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     rest.className,
   ];
@@ -128,7 +128,7 @@ export const ToggleButton = ({ active, variant = "default", ...rest }: ToggleBut
     <Button
       {...rest}
       variant="custom"
-      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"])}
+      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"])}
     />
   );
 };

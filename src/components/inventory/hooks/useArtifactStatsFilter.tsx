@@ -57,11 +57,11 @@ export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArti
     <div className="h-full flex flex-col">
       <p className="mt-2 text-lg text-orange font-bold">Main Stat</p>
       <div className="mt-1 flex justify-center">
-        <div className="w-52 px-4 bg-darkblue-1">
+        <div className="w-52 px-4 bg-dark-900">
           <select
             className={clsx(
               "w-full p-1 text-center text-last-center",
-              filter.main === "All" ? "text-default" : "text-green"
+              filter.main === "All" ? "text-light-400" : "text-green"
             )}
             value={filter.main}
             onChange={onChangeMainStat}
@@ -79,14 +79,14 @@ export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArti
       <div className="flex flex-col items-center">
         {[1, 2, 3, 4].map((n, i) => {
           return (
-            <div key={n} className="mt-2 px-4 w-52 h-8 bg-darkblue-1 flex items-center">
+            <div key={n} className="mt-2 px-4 w-52 h-8 bg-dark-900 flex items-center">
               <p className="mr-1 mt-1 text-orange">{n}</p>
 
               {(!i || filter.subs[i - 1] !== "All") && (
                 <select
                   className={clsx(
                     "w-full p-1 text-center text-last-center",
-                    filter.subs[i] === "All" ? "text-default" : "text-green"
+                    filter.subs[i] === "All" ? "text-light-400" : "text-green"
                   )}
                   value={filter.subs[i]}
                   onChange={(e) => onChangeSubStat(e.target.value, i)}
@@ -107,7 +107,7 @@ export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArti
   );
 
   const renderArtifactStatsFilter = () => (
-    <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-darkblue-2 relative">
+    <div className="mr-2 px-4 py-2 h-full w-72 rounded-lg bg-dark-700 relative">
       <Button
         className="absolute bottom-3 left-3"
         variant={atInfo ? "negative" : "default"}

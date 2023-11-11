@@ -17,7 +17,7 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
   const tabs = (
     <div
       className={clsx(
-        "w-full flex divide-x-2 rounded-full divide-darkblue-3 overflow-hidden",
+        "w-full flex divide-x-2 rounded-full divide-dark-500 overflow-hidden",
         className
       )}
     >

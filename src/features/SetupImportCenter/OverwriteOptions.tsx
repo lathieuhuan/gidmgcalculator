@@ -70,7 +70,7 @@ export function OverrideOptions({
   };
 
   return (
-    <div className="p-4 bg-darkblue-3 relative">
+    <div className="p-4 bg-dark-500 relative">
       <div className="py-2">
         <p className="text-xl text-center">
           We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
@@ -97,7 +97,7 @@ export function OverrideOptions({
                     <span
                       className={
                         "cursor-pointer ml-2 text-lg " +
-                        (expandedIndex === i ? "text-green " : "text-default hover:text-lightgold ")
+                        (expandedIndex === i ? "text-green " : "text-light-400 hover:text-lightgold ")
                       }
                       onClick={onClickSeeDetails(i)}
                     >

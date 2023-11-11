@@ -17,7 +17,7 @@ const makeSpan = (color: `text-${Vision | SpanExtraColor}`) => {
 export const Green = makeSpan("text-green");
 export const Red = makeSpan("text-lightred");
 export const Lightgold = makeSpan("text-lightgold");
-export const Lesser = makeSpan("text-lesser");
+export const Lesser = makeSpan("text-light-800");
 export const Rose = makeSpan("text-rose-500");
 // export const Pyro = makeSpan("text-pyro");
 // export const Hydro = makeSpan("text-hydro");

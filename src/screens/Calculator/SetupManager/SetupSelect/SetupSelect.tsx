@@ -123,7 +123,7 @@ export function SetupSelect() {
       <button
         key={index}
         className={clsx(
-          "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-lesser disabled:text-black",
+          "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-light-800 disabled:text-black",
           className
         )}
         {...rest}
@@ -143,19 +143,19 @@ export function SetupSelect() {
             renderActions: ({ closeSelect }) => {
               const rightButtons: Array<ButtonHTMLAttributes<HTMLButtonElement>> = [
                 {
-                  className: ID === standardId ? "bg-green" : "bg-default",
+                  className: ID === standardId ? "bg-green" : "bg-light-400",
                   children: <SiTarget className="text-1.5xl" />,
                   disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
                   onClick: onClickChooseStandard(ID),
                 },
                 {
-                  className: comparedIds.includes(ID) ? "bg-green" : "bg-default",
+                  className: comparedIds.includes(ID) ? "bg-green" : "bg-light-400",
                   children: <FaBalanceScaleLeft className="text-1.5xl" />,
                   disabled: setupManageInfos.length < 2,
                   onClick: onClickToggleCompared(ID),
                 },
                 {
-                  className: "hover:bg-lightgold" + (isAtMax ? " bg-lesser" : ""),
+                  className: "hover:bg-lightgold" + (isAtMax ? " bg-light-800" : ""),
                   children: <FaCopy />,
                   disabled: isAtMax,
                   onClick: onClickCopySetup(ID),
@@ -177,7 +177,7 @@ export function SetupSelect() {
                   },
                 },
                 {
-                  className: "hover:bg-darkred hover:text-default",
+                  className: "hover:bg-darkred hover:text-light-400",
                   children: <FaTrashAlt />,
                   disabled: setupManageInfos.length < 2,
                   onClick: () => {

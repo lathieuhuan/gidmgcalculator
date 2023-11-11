@@ -11,7 +11,7 @@ export const Message = () => {
   };
 
   const COLOR_BY_TYPE = {
-    info: "text-default",
+    info: "text-light-400",
     success: "text-green",
     error: "text-lightred",
   };
@@ -22,7 +22,7 @@ export const Message = () => {
       message={
         <span className={"text-xl " + (message.type ? COLOR_BY_TYPE[message.type] : "")}>{message.content}</span>
       }
-      bgColor="bg-darkblue-2"
+      bgColor="bg-dark-700"
       buttons={message.closable ? [undefined] : []}
       closeOnMaskClick={message.closable}
       onClose={onClose}

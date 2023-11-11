@@ -33,7 +33,7 @@ export const Tracker = () => {
       </div>
       <p className="flex items-center md1:justify-center">
         <span className="md1:text-xl md2:text-2xl text-orange font-bold">Tracking Results</span>{" "}
-        <span className="ml-2 text-lesser">({activeSetupName})</span>
+        <span className="ml-2 text-light-800">({activeSetupName})</span>
       </p>
 
       <TrackerContainer trackerState={trackerState} />

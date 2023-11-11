@@ -13,10 +13,10 @@ interface TypeSelectProps extends ModalControl {
 }
 export function TypeSelect({ active, options, onSelect, onClose, footer }: TypeSelectProps) {
   return (
-    <Modal active={active} className="p-4 shadow-white-glow rounded-2xl bg-darkblue-3" onClose={onClose}>
+    <Modal active={active} className="p-4 shadow-white-glow rounded-2xl bg-dark-500" onClose={onClose}>
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
 
-      <p className="mt-2 text-2xl text-center text-default font-medium">Choose a Type</p>
+      <p className="mt-2 text-2xl text-center text-light-400 font-medium">Choose a Type</p>
       <div className="mt-2 mb-1 flex">
         {Object.entries(options).map(([title, src], i) => (
           <button

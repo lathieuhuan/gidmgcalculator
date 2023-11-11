@@ -75,7 +75,7 @@ export function renderHeading(white: ReactNode, orange?: string | number) {
 export function renderRecord(calcFn?: (value: number) => string | number, extraDesc?: (value: number) => string) {
   return ({ desc, value }: TrackerRecord, index: number) =>
     value ? (
-      <li key={index} className="text-lesser text-sm">
+      <li key={index} className="text-light-800 text-sm">
         {desc?.[0]?.toUpperCase()}
         {desc.slice(1)} {extraDesc ? `${extraDesc(value)} ` : ""}
         <Green>{calcFn ? calcFn(value) : value}</Green>

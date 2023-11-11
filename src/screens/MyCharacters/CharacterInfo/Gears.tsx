@@ -60,7 +60,7 @@ export default function Gears(props: GearsProps) {
     <GearsDetails
       className={clsx(
         "h-full",
-        onSmallDevice ? "" : "px-3 py-4 border-l-2 border-darkblue-2 rounded-r-lg bg-darkblue-1"
+        onSmallDevice ? "" : "px-3 py-4 border-l-2 border-dark-700 rounded-r-lg bg-dark-900"
       )}
       style={{ width: onSmallDevice ? undefined : "20.25rem" }}
       activeDetails={activeDetails}
@@ -98,7 +98,7 @@ export default function Gears(props: GearsProps) {
   return (
     <>
       {onSmallDevice ? (
-        <div className="w-75 h-full px-4 shrink-0 rounded-lg bg-darkblue-1 box-content">
+        <div className="w-75 h-full px-4 shrink-0 rounded-lg bg-dark-900 box-content">
           <SharedSpace
             atLeft={!showingDetail}
             leftPart={overviewComponent}
@@ -114,7 +114,7 @@ export default function Gears(props: GearsProps) {
         </div>
       ) : (
         <div className="h-full flex">
-          <div className="w-75 px-4 rounded-lg bg-darkblue-1 box-content">{overviewComponent}</div>
+          <div className="w-75 px-4 rounded-lg bg-dark-900 box-content">{overviewComponent}</div>
           <div
             className="py-2 hide-scrollbar transition-size duration-200 ease-in-out"
             style={{ width: showingDetail ? "20.25rem" : 0 }}

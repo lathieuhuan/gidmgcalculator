@@ -32,7 +32,7 @@ export const CopySection = <TOption extends Option>({
   return (
     <div className={clsx("flex justify-end", className)}>
       <select
-        className="px-1 rounded-l bg-default font-bold text-black"
+        className="px-1 rounded-l bg-light-400 font-bold text-black"
         value={chosenLabel}
         onChange={(e) => setChosenLabel(e.target.value)}
       >

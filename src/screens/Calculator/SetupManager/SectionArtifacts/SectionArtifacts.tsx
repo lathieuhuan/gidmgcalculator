@@ -53,7 +53,7 @@ export default function SectionArtifacts() {
   };
 
   return (
-    <div id="calculator-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-darkblue-1">
+    <div id="calculator-artifacts" className="py-3 border-2 border-lesser rounded-xl bg-dark-900">
       {artifacts.length && artifacts.every((artifact) => artifact === null) ? <CopySelect /> : null}
 
       <div className="flex">

@@ -28,7 +28,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
   if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus && !em) {
     return (
-      <div className="h-16 flex-center text-lesser">
+      <div className="h-16 flex-center text-light-800">
         <p>No bonuses</p>
       </div>
     );

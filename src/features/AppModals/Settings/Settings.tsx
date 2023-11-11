@@ -165,7 +165,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 export const Settings = withModal(
   SettingsCore,
   {
-    className: "h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "h-large-modal rounded-lg bg-dark-700 shadow-white-glow",
   },
   {
     className: "absolute top-1 right-1",

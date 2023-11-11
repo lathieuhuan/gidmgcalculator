@@ -70,7 +70,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
 
       <Modal
         active={modalType === "WEAPON"}
-        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
+        className="p-4 flex overflow-auto bg-dark-900 rounded-lg shadow-white-glow"
         onClose={closeModal}
       >
         <div className="relative">
@@ -83,7 +83,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
 
       <Modal
         active={modalType === "ARTIFACTS"}
-        className="p-4 flex overflow-auto bg-darkblue-1 rounded-lg shadow-white-glow"
+        className="p-4 flex overflow-auto bg-dark-900 rounded-lg shadow-white-glow"
         onClose={closeModal}
       >
         {artifacts?.map((artifact, i) => {
@@ -101,12 +101,12 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
 
       <Modal
         active={modalType === "STATS"}
-        className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
+        className="h-large-modal hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"
         onClose={closeModal}
       >
         <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />
 
-        <div className="h-full flex divide-x-2 divide-darkblue-2">
+        <div className="h-full flex divide-x-2 divide-dark-700">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
             <p className="text-lg text-orange font-bold">Final Attributes</p>
             <div className="mt-1 hide-scrollbar">
@@ -132,7 +132,7 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
       {calcResult && weapon && (
         <Modal
           active={modalType === "MODIFIERS"}
-          className="h-large-modal hide-scrollbar bg-darkblue-1 rounded-lg shadow-white-glow"
+          className="h-large-modal hide-scrollbar bg-dark-900 rounded-lg shadow-white-glow"
           onClose={closeModal}
         >
           <CloseButton className="absolute top-1 right-1" boneOnly onClick={closeModal} />

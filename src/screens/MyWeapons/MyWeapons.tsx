@@ -96,7 +96,7 @@ export default function MyWeapons() {
               />
 
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
-                <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
+                <div className="px-4 py-6 shadow-common bg-dark-700">{renderTypeFilter()}</div>
               </CollapseSpace>
             </>
           )}
@@ -113,7 +113,7 @@ export default function MyWeapons() {
           />
 
           <div className="flex flex-col">
-            <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
+            <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
               <div className="w-75 grow hide-scrollbar">
                 {chosenWeapon ? (
                   <WeaponCard

@@ -54,7 +54,7 @@ const DownloadOptions = () => {
 export const Download = withModal(
   DownloadOptions,
   {
-    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
     style: {
       width: "28rem",
     },

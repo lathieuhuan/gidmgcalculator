@@ -35,7 +35,7 @@ export const ChosenArtifactView = ({ artifact, onRemoveArtifact }: ChosenArtifac
   return (
     <Fragment>
       <div>
-        <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col">
+        <div className="p-4 rounded-lg bg-dark-900 flex flex-col">
           <div className="w-75 hide-scrollbar" style={{ height: "26rem" }}>
             {artifact ? (
               <ArtifactCard

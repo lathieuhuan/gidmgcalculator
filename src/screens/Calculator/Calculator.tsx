@@ -17,26 +17,26 @@ const Calculator = () => {
   return (
     <div className={clsx("pb-1 flex items-center overflow-auto", styles.calculator)}>
       <div className="h-98/100 flex space-x-2">
-        <div className={clsx("px-6 py-4 bg-darkblue-1", styles.card)}>
+        <div className={clsx("px-6 py-4 bg-dark-900", styles.card)}>
           {/* // ========== PANEL 1 ========== */}
           <CharOverview touched={touched} />
         </div>
 
-        <div className={clsx("px-6 py-4 bg-darkblue-1", styles.card)}>
+        <div className={clsx("px-6 py-4 bg-dark-900", styles.card)}>
           {touched ? (
             // ========== PANEL 2 ==========
             <Modifiers />
           ) : null}
         </div>
 
-        <div className={clsx("p-4 relative bg-darkblue-3 overflow-hidden", styles.card)}>
+        <div className={clsx("p-4 relative bg-dark-500 overflow-hidden", styles.card)}>
           {touched ? (
             // ========== PANEL 3 ==========
             <SetupManager />
           ) : null}
         </div>
 
-        <div className={clsx("px-4 pt-2 pb-6 bg-darkblue-3 relative", styles.card)}>
+        <div className={clsx("px-4 pt-2 pb-6 bg-dark-500 relative", styles.card)}>
           {touched ? (
             // ========== PANEL 4 ==========
             <DamageResults />

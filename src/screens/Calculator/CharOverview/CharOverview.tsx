@@ -101,18 +101,18 @@ function CharOverview({ touched }: OverviewCharProps) {
               </select>
               <div
                 className={
-                  "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-darkblue-2 " +
+                  "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-dark-700 " +
                   `text-${vision} leading-none font-bold cursor-default relative group`
                 }
               >
                 <span>C{char.cons}</span>
                 <div className="absolute top-full z-50 pt-1 hidden group-hover:block">
-                  <ul className="bg-default text-black rounded overflow-hidden">
+                  <ul className="bg-light-400 text-black rounded overflow-hidden">
                     {[...Array(7)].map((_, i) => {
                       return (
                         <li
                           key={i}
-                          className={"px-3 pt-2 pb-1.5 " + (i === char.cons ? "bg-lesser" : "hover:bg-lightgold")}
+                          className={"px-3 pt-2 pb-1.5 " + (i === char.cons ? "bg-light-800" : "hover:bg-lightgold")}
                           onClick={() => onClickConsLevel(i)}
                         >
                           C{i}
@@ -154,6 +154,148 @@ function CharOverview({ touched }: OverviewCharProps) {
         </Button>
       </div>
     );
+
+    // body = (
+    //   <div className="w-full grid grid-cols-3 gap-2">
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Variant</p>
+    //       <Button variant="default" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="negative" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="neutral" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="custom" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Shape</p>
+    //       <Button variant="positive" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="small">
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Size</p>
+    //       <Button variant="positive" shape="circular" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="circular" size="medium">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="medium">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="small">
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="medium">
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     {/* With Icon */}
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Variant</p>
+    //       <Button variant="default" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="negative" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="neutral" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="custom" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Shape</p>
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Size</p>
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="circular" size="medium" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="square" size="medium" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //       <Button variant="positive" shape="rounded" size="medium" icon={<FaSyncAlt />}>
+    //         Click
+    //       </Button>
+    //     </div>
+
+    //     {/* Icon Only */}
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Variant</p>
+    //       <Button variant="default" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="negative" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="neutral" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="custom" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Shape</p>
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />} />
+    //     </div>
+
+    //     <div className="flex flex-col items-center gap-2">
+    //       <p>Size</p>
+    //       <Button variant="positive" shape="circular" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="circular" size="medium" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="square" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="square" size="medium" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="rounded" size="small" icon={<FaSyncAlt />} />
+    //       <Button variant="positive" shape="rounded" size="medium" icon={<FaSyncAlt />} />
+    //     </div>
+    //   </div>
+    // );
   }
 
   return (

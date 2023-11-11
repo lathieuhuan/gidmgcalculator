@@ -230,25 +230,25 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <div className="px-4 pt-4 pb-3 rounded-lg bg-darkblue-1 flex flex-col lg:flex-row">
+      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row">
         <div className="flex flex-col">
           {display.mainCharacter}
           {display.teammate}
         </div>
 
-        <div className="hidden lg:block w-0.5 mx-4 bg-darkblue-3" />
+        <div className="hidden lg:block w-0.5 mx-4 bg-dark-500" />
 
         <div className="mt-4 lg:mt-0 flex flex-col">
           <div className="flex justify-center space-x-4">
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
               disabled={!isFetched}
               onClick={openModal("STATS")}
             >
               Stats
             </button>
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
               disabled={!isFetched}
               onClick={openModal("MODIFIERS")}
             >

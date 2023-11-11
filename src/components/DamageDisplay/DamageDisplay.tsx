@@ -68,7 +68,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               </button>
 
               {talentLevel ? (
-                <button className="px-2 bg-black/60 text-default text-sm leading-none">
+                <button className="px-2 bg-black/60 text-light-400 text-sm leading-none">
                   {talentLevel}
                 </button>
               ) : null}
@@ -79,7 +79,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
             >
               <span className="text-lg leading-none">{t(key.main)}</span>
               {talentLevel ? (
-                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default text-sm leading-none">
+                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none">
                   {talentLevel}
                 </span>
               ) : null}
@@ -93,7 +93,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
             <CollapseSpace active={!closedItems[index]}>
               {key.subs.length === 0 ? (
                 <div className="pb-2">
-                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">This talent does not deal damage.</p>
+                  <p className="pt-2 pb-1 bg-dark-700 text-center text-light-800">This talent does not deal damage.</p>
                 </div>
               ) : (
                 <div className="custom-scrollbar">

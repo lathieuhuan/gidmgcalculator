@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex justify-center">
-          <div className="w-75 p-4 flex flex-col items-center bg-darkblue-1 rounded-lg">
+          <div className="w-75 p-4 flex flex-col items-center bg-dark-900 rounded-lg">
             <p className="text-center text-lightred">An error has occured and broken the App. Try undo last action?</p>
 
             <Button className="mt-4" variant="positive" onClick={this.props.onUndo}>

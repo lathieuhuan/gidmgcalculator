@@ -82,7 +82,7 @@ const ItemMultiSelectCore = (props: ItemMultiSelectProps) => {
         />
 
         <div className="flex flex-col justify-between">
-          <div className="p-4 rounded-lg bg-darkblue-1 grow" style={{ minHeight: "28rem" }}>
+          <div className="p-4 rounded-lg bg-dark-900 grow" style={{ minHeight: "28rem" }}>
             <div className="w-68 h-full hide-scrollbar">
               {chosenItem ? (
                 isUserWeapon(chosenItem) ? (

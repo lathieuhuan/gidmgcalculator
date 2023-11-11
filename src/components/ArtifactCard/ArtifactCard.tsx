@@ -99,7 +99,7 @@ export const ArtifactCard = ({
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-2" size="1.25rem" />
             <select
-              className="pl-8 text-lg text-default appearance-none relative z-10"
+              className="pl-8 text-lg text-light-400 appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => onChangeMainStatType?.(e.target.value)}
             >

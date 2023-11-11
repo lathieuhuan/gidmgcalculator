@@ -90,7 +90,7 @@ export default function MySetups() {
         <div key={key} id={`setup-${setup.ID}`} className="p-1">
           <div
             className={clsx(
-              "px-2 pt-3 pb-2 rounded-lg bg-darkblue-3",
+              "px-2 pt-3 pb-2 rounded-lg bg-dark-500",
               setup.ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
             )}
             onClick={() => dispatch(chooseUserSetup(setup.ID))}
@@ -157,7 +157,7 @@ export default function MySetups() {
             {setupList}
           </div>
 
-          <div className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-darkblue-3" style={{ width: "21.75rem" }}>
+          <div className="shrink-0 ml-2 px-4 pt-2 pb-4 rounded-lg bg-dark-500" style={{ width: "21.75rem" }}>
             {chosenSetupInfo}
           </div>
         </WarehouseLayout.Body>

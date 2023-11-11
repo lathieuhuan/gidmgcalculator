@@ -6,7 +6,7 @@ const colorCodeToCls: Record<string, string> = {
   gr: "text-green",
   r: "text-rose-500",
   g: "text-lightgold",
-  l: "text-lesser",
+  l: "text-light-800",
   anemo: "text-anemo",
   cryo: "text-cryo",
   dendro: "text-dendro",

@@ -45,7 +45,7 @@ const WeaponInventory = ({ weaponType, owner, buttonText, onClickButton, onClose
         />
 
         <div className="flex flex-col">
-          <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar" style={{ minHeight: "28rem" }}>
+          <div className="p-4 rounded-lg bg-dark-900 flex flex-col hide-scrollbar" style={{ minHeight: "28rem" }}>
             <div className="w-68 grow hide-scrollbar">
               <WeaponCard weapon={chosenWeapon} />
             </div>

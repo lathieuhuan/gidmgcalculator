@@ -43,7 +43,7 @@ export const SetBonusesDisplay = ({ setBonuses, noTitle }: SetBonusesDisplayProp
           );
         })
       ) : (
-        <p className="text-lesser font-medium">No set bonus</p>
+        <p className="text-light-800 font-medium">No set bonus</p>
       )}
     </div>
   );

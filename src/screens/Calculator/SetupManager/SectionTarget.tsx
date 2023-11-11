@@ -20,8 +20,8 @@ export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps
   const { title, names, variant, statuses } = appData.getTargetData(target);
 
   return (
-    <div className="px-4 py-3 rounded-xl bg-darkblue-1 cursor-default relative border-2 border-lesser">
-      <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-lesser space-y-1">
+    <div className="px-4 py-3 rounded-xl bg-dark-900 cursor-default relative border-2 border-lesser">
+      <div className="absolute top-2 bottom-0 right-2 flex flex-col text-xl text-light-800 space-y-1">
         <Button className="hover:text-lightgold" boneOnly icon={<FaMinus />} onClick={onMinimize} />
         <Button className="hover:text-lightgold" boneOnly icon={<FaEdit />} onClick={onEdit} />
       </div>

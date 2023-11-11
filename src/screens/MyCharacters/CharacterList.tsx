@@ -55,7 +55,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
   }, [chosenChar]);
 
   return (
-    <div className="w-full flex justify-center bg-darkblue-2">
+    <div className="w-full flex justify-center bg-dark-700">
       <div className={styles["side-icon-carousel"]}>
         {characterNames.length ? (
           <div className="absolute top-8 right-full flex">

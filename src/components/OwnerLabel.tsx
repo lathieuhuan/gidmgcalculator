@@ -28,7 +28,7 @@ const SetupList = ({ item, onClickOutside }: SetupListProps) => {
           })}
         </ul>
       ) : (
-        <p className="text-center text-lesser">[No valid setups found]</p>
+        <p className="text-center text-light-800">[No valid setups found]</p>
       )}
     </div>
   );

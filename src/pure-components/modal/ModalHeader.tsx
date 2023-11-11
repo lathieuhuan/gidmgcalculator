@@ -24,7 +24,7 @@ interface FilterButtonProps {
 ModalHeader.FilterButton = (props: FilterButtonProps) => {
   return (
     <Button
-      className={"shadow-common bg-black " + (props.active ? "text-green " : "text-default ") + (props.className || "")}
+      className={"shadow-common bg-black " + (props.active ? "text-green " : "text-light-400 ") + (props.className || "")}
       variant="custom"
       shape="rounded"
       size="small"

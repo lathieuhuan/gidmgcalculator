@@ -126,7 +126,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
               />
 
               <div className="absolute w-full top-full left-0 z-50">
-                <div className="rounded-b-lg bg-darkblue-3 shadow-common">
+                <div className="rounded-b-lg bg-dark-500 shadow-common">
                   <CollapseSpace active={filterOn}>
                     <CharacterFilter
                       {...filter}

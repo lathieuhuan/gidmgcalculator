@@ -11,7 +11,7 @@ const WarehouseLayout = ({ className, ...rest }: IProps) => {
 };
 
 WarehouseLayout.Wrapper = (props: IProps) => {
-  return <div className="py-4 md2:py-8 h-full flex-center bg-darkblue-2" {...props} />;
+  return <div className="py-4 md2:py-8 h-full flex-center bg-dark-700" {...props} />;
 };
 
 WarehouseLayout.ButtonBar = (props: IProps) => {

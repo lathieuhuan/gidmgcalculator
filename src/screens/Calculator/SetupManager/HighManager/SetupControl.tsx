@@ -27,7 +27,7 @@ export function SetupControl({
   onChooseStandard,
 }: SetupControlProps) {
   return (
-    <div className="px-2 py-3 rounded-lg bg-darkblue-1" onDoubleClick={() => console.log(setup)}>
+    <div className="px-2 py-3 rounded-lg bg-dark-900" onDoubleClick={() => console.log(setup)}>
       <Input
         placeholder="Enter Setup's name"
         className="w-full px-4 pt-1 text-lg text-center rounded-md font-medium"
@@ -45,7 +45,7 @@ export function SetupControl({
           <button
             className={clsx(
               "w-8 h-8 rounded-circle flex-center text-2xl",
-              isStandard ? "bg-green text-black" : choosableAsStandard ? "text-default" : "text-lesser"
+              isStandard ? "bg-green text-black" : choosableAsStandard ? "text-light-400" : "text-light-800"
             )}
             disabled={!choosableAsStandard}
             onClick={onChooseStandard}

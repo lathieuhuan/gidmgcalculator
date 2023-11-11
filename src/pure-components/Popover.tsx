@@ -29,7 +29,7 @@ export const Popover = ({
         "absolute transform duration-200 z-10 cursor-default",
         active ? "scale-100" : "scale-0",
         originClasses[origin],
-        withTooltipStyle && "bg-black text-default rounded-lg text-sm cursor-default",
+        withTooltipStyle && "bg-black text-light-400 rounded-lg text-sm cursor-default",
         className
       )}
     >

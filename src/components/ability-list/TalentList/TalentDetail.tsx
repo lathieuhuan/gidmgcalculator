@@ -69,7 +69,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
     return (
       <button
         className={
-          "absolute top-2 flex px-2 rounded border-2 border-darkblue-3 text-darkblue-3 text-1.5xl hover:border-green hover:text-green " +
+          "absolute top-2 flex px-2 rounded border-2 border-dark-500 text-dark-500 text-1.5xl hover:border-green hover:text-green " +
           (isLevelUp ? "right-10" : "left-10")
         }
         onMouseDown={() => onMouseDownLevelButton(isLevelUp)}
@@ -99,12 +99,12 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
         />
 
         <p className={`text-xl font-bold text-${vision} text-center`}>{talent.name}</p>
-        {/* <div className="my-2 py-1 flex-center bg-default rounded-2xl">
+        {/* <div className="my-2 py-1 flex-center bg-light-400 rounded-2xl">
           <p className="font-bold text-black cursor-default">Skill Attributes</p>
         </div> */}
 
         <div>
-          <div className={"py-2 flex-center bg-darkblue-1 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")}>
+          <div className={"py-2 flex-center bg-dark-900 sticky -top-1 " + (isStatic ? "pr-4" : "pl-4")}>
             {!isStatic && (
               <>
                 {renderLevelButton(true)}

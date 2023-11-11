@@ -74,7 +74,7 @@ export function CalcItemTracker({
         return (
           <div key={i}>
             <p className="font-medium">{t(attackName)}</p>
-            <ul className="pl-4 text-lesser text-sm leading-6 list-disc">
+            <ul className="pl-4 text-light-800 text-sm leading-6 list-disc">
               {record.exclusives?.length ? (
                 <li>
                   <p className="text-lightgold">Exclusive</p>

@@ -25,7 +25,7 @@ const Table = ({ className = "", colAttrs, children, ...rest }: TableProps) => (
 Table.Tr = ({ className = "", ...rest }: HTMLAttributes<HTMLTableRowElement>) => (
   <tr
     className={
-      "odd:bg-darkblue-1 even:bg-darkblue-2 hover:bg-darkerred first:hover:bg-darkblue-1 " +
+      "odd:bg-dark-900 even:bg-dark-700 hover:bg-darkerred first:hover:bg-dark-900 " +
       className
     }
     {...rest}
@@ -34,7 +34,7 @@ Table.Tr = ({ className = "", ...rest }: HTMLAttributes<HTMLTableRowElement>) =>
 
 Table.Th = ({ className = "", ...rest }: ThHTMLAttributes<HTMLTableCellElement>) => (
   <th
-    className={"px-2 py-1 text-sm border-x border-darkblue-1 cursor-default " + className}
+    className={"px-2 py-1 text-sm border-x border-dark-900 cursor-default " + className}
     {...rest}
   />
 );
@@ -42,7 +42,7 @@ Table.Th = ({ className = "", ...rest }: ThHTMLAttributes<HTMLTableCellElement>)
 Table.Td = ({ className = "", ...rest }: TdHTMLAttributes<HTMLTableCellElement>) => (
   <td
     className={
-      "px-2 py-1 text-sm border-x border-darkblue-1 cursor-default text-right first:text-left first:font-semibold " +
+      "px-2 py-1 text-sm border-x border-dark-900 cursor-default text-right first:text-left first:font-semibold " +
       className
     }
     {...rest}

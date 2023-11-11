@@ -238,7 +238,7 @@ export const ElementBuffs = () => {
           description={
             <>
               This infusion overwrites self infusion but does not overwrite elemental nature of attacks{" "}
-              <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
+              <span className="text-light-800">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
             </>
           }
           checked={isInfused}

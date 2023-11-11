@@ -121,7 +121,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
                 "px-4 py-1",
                 !index && "rounded-t-lg md1:rounded-tr-none md1:rounded-l-lg",
                 index === 3 && "rounded-b-lg md1:rounded-bl-none md1:rounded-r-lg",
-                chosen ? "bg-default" : "bg-darkblue-3"
+                chosen ? "bg-light-400" : "bg-dark-500"
               )}
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
@@ -140,7 +140,7 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
         <div className="mt-4 flex items-center relative">
           <FaChevronDown className="absolute -z-10" />
           <select
-            className="pl-6 pr-2 text-default appearance-none capitalize"
+            className="pl-6 pr-2 text-light-400 appearance-none capitalize"
             value={config.type}
             onChange={(e) => onChangeType(e.target.value)}
           >
@@ -160,12 +160,12 @@ const BuffCtrlCreator = ({ onClose }: BuffCtrlCreatorProps) => {
               <div className="flex items-center relative">
                 <FaChevronDown className="absolute -z-10" />
                 <select
-                  className="pl-6 pr-2 text-default appearance-none"
+                  className="pl-6 pr-2 text-light-400 appearance-none"
                   value={config.subType}
                   onChange={(e) => onChangeSubType(e.target.value)}
                 >
                   {subTypes.map((subType, i) => (
-                    <option key={i} className="disabled:bg-lesser" value={subType}>
+                    <option key={i} className="disabled:bg-light-800" value={subType}>
                       {t(subType)}
                     </option>
                   ))}

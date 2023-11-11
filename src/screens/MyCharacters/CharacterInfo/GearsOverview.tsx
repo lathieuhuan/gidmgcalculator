@@ -16,7 +16,7 @@ import { InfoSign } from "@Src/pure-components";
 import { ItemThumb } from "@Src/components";
 
 const bonusStyles = (active: boolean) => {
-  return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-darkblue-2"];
+  return ["p-2 flex justify-between items-center rounded-lg group", active && "bg-dark-700"];
 };
 
 interface GearsOverviewProps {
@@ -80,7 +80,7 @@ export function GearsOverview({
           ) : (
             <div key={i} className="p-1 w-1/3" style={{ minHeight: 124 }}>
               <button
-                className="p-4 w-full h-full flex-center rounded bg-darkblue-3 glow-on-hover"
+                className="p-4 w-full h-full flex-center rounded bg-dark-500 glow-on-hover"
                 onClick={() => onClickEmptyArtIcon(i)}
               >
                 <img className="w-full" src={getImgSrc(ARTIFACT_ICONS[ARTIFACT_TYPES[i]])} alt="" draggable={false} />
@@ -111,7 +111,7 @@ export function GearsOverview({
                 ) : null}
               </>
             ) : (
-              <p className="text-lesser font-semibold">No Set bonus</p>
+              <p className="text-light-800 font-semibold">No Set bonus</p>
             )}
           </div>
         </div>

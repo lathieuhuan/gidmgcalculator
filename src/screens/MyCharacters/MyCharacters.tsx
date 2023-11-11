@@ -25,9 +25,9 @@ export default function MyCharacters() {
   const [modalType, setModalType] = useState<ModalType>(null);
 
   return (
-    <div className="h-full flex flex-col bg-darkblue-3">
+    <div className="h-full flex flex-col bg-dark-500">
       {window.innerWidth <= 700 ? (
-        <div className="py-4 flex bg-darkblue-2">
+        <div className="py-4 flex bg-dark-700">
           {characterNames.length ? (
             <div className="w-full flex-center relative">
               <select

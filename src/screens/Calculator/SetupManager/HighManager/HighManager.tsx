@@ -185,7 +185,7 @@ function HighManagerCore() {
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-default"
+                className="w-full bg-blue-600 text-light-400"
                 icon={<FaPlus />}
                 onClick={addNewSetup}
               >
@@ -193,7 +193,7 @@ function HighManagerCore() {
               </Button>
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-default"
+                className="w-full bg-blue-600 text-light-400"
                 icon={<BiImport />}
                 onClick={() => setImportManageOn(true)}
               >
@@ -230,7 +230,7 @@ export default function HighManager({ height }: HighManagerProps) {
   return (
     <CollapseAndMount
       active={highManagerActive}
-      className={clsx("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
+      className={clsx("absolute bottom-0 left-0 bg-dark-500 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}
     >

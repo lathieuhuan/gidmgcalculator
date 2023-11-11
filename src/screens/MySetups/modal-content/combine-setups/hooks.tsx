@@ -36,7 +36,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
-            <p className="pr-2 text-lg text-lesser text-center">No Setups available for choosing...</p>
+            <p className="pr-2 text-lg text-light-800 text-center">No Setups available for choosing...</p>
           </div>
         )}
         {options.map((setup) => {
@@ -48,7 +48,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
             <div
               key={ID}
               className={clsx(
-                "mb-2 p-4 rounded-lg bg-darkblue-1 flex flex-col md1:flex-row md1:items-center",
+                "mb-2 p-4 rounded-lg bg-dark-900 flex flex-col md1:flex-row md1:items-center",
                 !picked && !notFull && "opacity-50",
                 picked && "shadow-green"
               )}

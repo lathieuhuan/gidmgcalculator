@@ -28,7 +28,7 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
 
           {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
         </div>
-        <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-default text-black font-bold text-center">
+        <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-light-400 text-black font-bold text-center">
           {item.name}
         </p>
       </div>

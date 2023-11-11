@@ -23,7 +23,7 @@ export const Menu = () => {
     {
       icon: FaSearch,
       text: "Tracker",
-      className: "flex hover:bg-lesser",
+      className: "flex hover:bg-light-800",
       onClick: () => {
         dispatch(updateUI({ trackerState: "open" }));
       },
@@ -31,7 +31,7 @@ export const Menu = () => {
     {
       icon: FaExpandArrowsAlt,
       text: "Expand",
-      className: "hover:bg-lesser hidden md1:flex",
+      className: "hover:bg-light-800 hidden md1:flex",
       onClick: () => setResultsEnlarged(true),
     },
   ];
@@ -47,7 +47,7 @@ export const Menu = () => {
 
       <div
         className={
-          "absolute right-0 z-10 mt-1 rounded bg-default text-black hide-scrollbar" + (menuDropped ? "" : " max-h-0")
+          "absolute right-0 z-10 mt-1 rounded bg-light-400 text-black hide-scrollbar" + (menuDropped ? "" : " max-h-0")
         }
       >
         <div className="py-1 flex flex-col">
@@ -71,7 +71,7 @@ export const Menu = () => {
 
       <Modal
         active={resultsEnlarged}
-        className="h-large-modal p-4 pt-2 rounded-lg shadow-white-glow bg-darkblue-3 custom-scrollbar"
+        className="h-large-modal p-4 pt-2 rounded-lg shadow-white-glow bg-dark-500 custom-scrollbar"
         onClose={() => setResultsEnlarged(false)}
       >
         <ResultsDisplay />

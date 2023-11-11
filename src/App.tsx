@@ -32,7 +32,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App h-screen pt-8 text-default bg-default">
+    <div className="App h-screen pt-8 text-light-400 bg-light-400">
       <NavBar />
 
       <div className="h-full flex-center relative">

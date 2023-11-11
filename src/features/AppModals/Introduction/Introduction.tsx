@@ -48,7 +48,7 @@ export const Introduction = (props: ModalControl) => {
     return (
       <h1 className={clsx("text-2xl text-orange text-center font-bold relative", className)}>
         {content}
-        <span className="absolute top-0 left-full ml-2 text-base text-lesser">
+        <span className="absolute top-0 left-full ml-2 text-base text-light-800">
           {isLoadingMetadata ? <Skeleton className="w-14 h-4 rounded" /> : patch ? <span>v{patch}</span> : null}
         </span>
       </h1>
@@ -88,7 +88,7 @@ export const Introduction = (props: ModalControl) => {
                   isLoadingMetadata ? (
                     <Skeleton className="w-28 h-4 rounded" />
                   ) : latestDate ? (
-                    <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-darkblue-1">{latestDate}</span>
+                    <span className="ml-2 px-1 py-px text-sm rounded text-orange bg-dark-900">{latestDate}</span>
                   ) : null
                 ) : null}
               </div>

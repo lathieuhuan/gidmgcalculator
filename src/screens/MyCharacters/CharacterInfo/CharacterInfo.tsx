@@ -50,7 +50,7 @@ const CharacterInfo = () => {
         style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
       >
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="p-4 rounded-lg bg-darkblue-1 shrink-0" style={{ width: 332 }}>
+          <div key={i} className="p-4 rounded-lg bg-dark-900 shrink-0" style={{ width: 332 }}>
             {error ? (
               <p className="text-center text-lightred">{error}</p>
             ) : (
@@ -82,7 +82,7 @@ const CharacterInfo = () => {
       className="py-4 flex h-98/100 space-x-2 overflow-auto"
       style={{ width: window.innerWidth <= 480 ? "calc(100% - 2rem)" : "88%" }}
     >
-      <div className="p-4 rounded-lg bg-darkblue-1 flex flex-col relative">
+      <div className="p-4 rounded-lg bg-dark-900 flex flex-col relative">
         <Button
           className="absolute top-4 right-4"
           variant="negative"
@@ -118,7 +118,7 @@ const CharacterInfo = () => {
 
       <Gears weapon={weapon} artifacts={artifacts} artAttr={artAttr} />
 
-      <div className="p-4 rounded-lg bg-darkblue-1">
+      <div className="p-4 rounded-lg bg-dark-900">
         <div className="h-full w-75">
           <ConsList
             char={char}
@@ -134,7 +134,7 @@ const CharacterInfo = () => {
         </div>
       </div>
 
-      <div className="p-4 rounded-lg bg-darkblue-1">
+      <div className="p-4 rounded-lg bg-dark-900">
         <div className="h-full w-75">
           <TalentList
             key={char.name}

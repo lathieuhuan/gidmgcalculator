@@ -26,8 +26,8 @@ export const DonateCore = () => {
           <span>$</span>
         </div>
 
-        <div className="mt-6 w-1/2 h-0.5 bg-darkblue-3 relative">
-          <span className="px-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-darkblue-2">Or</span>
+        <div className="mt-6 w-1/2 h-0.5 bg-dark-500 relative">
+          <span className="px-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-700">Or</span>
         </div>
 
         <a className="mt-6" href="https://www.buymeacoffee.com/ronqueroc" target="_blank">
@@ -41,7 +41,7 @@ export const DonateCore = () => {
 export const Donate = withModal(
   DonateCore,
   {
-    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
     style: {
       width: "20rem",
     },

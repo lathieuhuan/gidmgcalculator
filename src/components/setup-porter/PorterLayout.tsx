@@ -21,7 +21,7 @@ export const PorterLayout = ({
   onClose,
 }: PorterLayoutProps) => {
   return (
-    <div className="px-6 pt-4 pb-6 rounded-lg bg-darkblue-1 shadow-white-glow relative">
+    <div className="px-6 pt-4 pb-6 rounded-lg bg-dark-900 shadow-white-glow relative">
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
 
       <div className="w-75">
