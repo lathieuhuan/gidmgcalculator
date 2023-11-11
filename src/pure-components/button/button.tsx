@@ -1,7 +1,7 @@
 import clsx from "clsx";
-import type { ButtonHTMLAttributes, ReactElement } from "react";
+import { ButtonHTMLAttributes, ReactElement } from "react";
 import { FaInfoCircle, FaTimes } from "react-icons/fa";
-import type { StringRecord } from "@Src/types";
+import { StringRecord } from "@Src/types";
 
 const bgColorByVariant: StringRecord = {
   positive: "bg-lightgold",
