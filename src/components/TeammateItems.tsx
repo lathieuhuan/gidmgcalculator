@@ -75,18 +75,18 @@ export const TeammateItems = ({
       <div className="mt-2 flex space-x-2">
         <button className="w-14 h-14 shrink-0" disabled={!mutable} onClick={onClickArtifact}>
           {artifactSetIcon ? (
-            <img className="bg-darkblue-3 rounded" src={getImgSrc(artifactSetIcon)} alt="artifact" draggable={false} />
+            <img className="bg-dark-500 rounded" src={getImgSrc(artifactSetIcon)} alt="artifact" draggable={false} />
           ) : (
             <img className="p-1" src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           )}
         </button>
 
-        <p className={"mt-1 grow font-medium truncate " + (artifactSetName ? "text-default text-lg" : "text-lesser")}>
+        <p className={"mt-1 grow font-medium truncate " + (artifactSetName ? "text-light-400 text-lg" : "text-light-800")}>
           {artifactSetName || "No artifact buff / debuff"}
         </p>
         {artifactSetName && mutable && (
           <Button
-            className="mt-1 self-start hover:text-darkred"
+            className="mt-1 self-start hover:text-red-400"
             boneOnly
             icon={<FaTimes />}
             onClick={onClickRemoveArtifact}

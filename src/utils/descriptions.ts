@@ -3,10 +3,10 @@ import { round } from "./pure-utils";
 
 const colorCodeToCls: Record<string, string> = {
   b: "font-bold",
-  gr: "text-green",
+  gr: "text-green-300",
   r: "text-rose-500",
-  g: "text-lightgold",
-  l: "text-lesser",
+  g: "text-yellow-400",
+  l: "text-light-800",
   anemo: "text-anemo",
   cryo: "text-cryo",
   dendro: "text-dendro",
@@ -47,8 +47,8 @@ export const parseCharacterDescription = (
 };
 
 const typeToCls: Record<string, string> = {
-  k: "text-green",
-  v: "text-green font-bold",
+  k: "text-green-300",
+  v: "text-green-300 font-bold",
   m: "text-rose-500",
 };
 const wrapText = (text: string | number, type: string) => {

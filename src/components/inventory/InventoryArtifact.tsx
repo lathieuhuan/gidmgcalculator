@@ -60,7 +60,7 @@ const ArtifactInventory = ({
           <ModalHeader.RightEnd onClickClose={onClose} />
 
           <CollapseAndMount
-            className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-darkblue-3 flex justify-center"
+            className="absolute top-full left-0 z-20 w-full rounded-b-lg shadow-common bg-dark-500 flex justify-center"
             active={filterActive}
             activeHeight="28.35rem"
             duration={150}
@@ -86,18 +86,18 @@ const ArtifactInventory = ({
             onClickItem={(item) => setChosenArtifact(item as UserArtifact)}
           />
 
-          <div className="flex flex-col justify-between">
-            <div className={clsx("p-4 rounded-lg bg-darkblue-1 flex flex-col relative", !chosenArtifact && "h-full")}>
+          <div className="flex flex-col">
+            <div className={clsx("p-4 rounded-lg bg-dark-900 flex flex-col relative", !chosenArtifact && "h-full")}>
               {currentArtifact ? (
                 <div
                   className="absolute top-0 z-10 h-full hide-scrollbar transition-size duration-200"
                   style={{ width: showingCurrent ? "15.75rem" : 0, right: "calc(100% - 1rem)" }}
                 >
-                  <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-darkblue-1 rounded-l-lg">
+                  <div className="pl-4 pr-2 py-4 h-full flex flex-col w-64 bg-dark-900 rounded-l-lg">
                     <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
-                      <p className="text-orange text-center">Current equipment</p>
+                      <p className="text-orange-500 text-center">Current equipment</p>
                     </div>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ const ArtifactInventory = ({
               ) : null}
             </div>
 
-            <OwnerLabel owner={chosenArtifact?.owner} />
+            <OwnerLabel item={chosenArtifact} />
           </div>
         </div>
       </div>

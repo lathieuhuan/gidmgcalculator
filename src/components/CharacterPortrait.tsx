@@ -20,7 +20,7 @@ export const CharacterPortrait = ({ className, code, icon, onClickIcon }: CharFi
     <div
       className={clsx(
         "w-full h-full zoomin-on-hover overflow-hidden rounded-circle",
-        `${bgColorByCode[code] || "bg-darkblue-3"}`,
+        `${bgColorByCode[code] || "bg-dark-500"}`,
         className
       )}
       onClick={onClickIcon}

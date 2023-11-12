@@ -11,7 +11,7 @@ export const UserDataGuide = () => {
       <p>
         - You can save setups from the Calculator and view them in <Lightgold>My Setups</Lightgold>.
       </p>
-      <p className="text-lightred">
+      <p className="text-red-100">
         - Your data saved in the App is just temporary. If you wish it to be available in your next visit, you need to
         download your data and then upload it to the App again.
       </p>

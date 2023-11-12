@@ -18,7 +18,7 @@ interface ModifierWrapperProps {
 const ModifierWrapper = ({ className = "", title, children }: ModifierWrapperProps) => {
   return (
     <div className={"py-4 shrink-0 " + className}>
-      <p className="mb-2 text-lg text-center text-orange font-bold uppercase">{title}</p>
+      <p className="mb-2 text-lg text-center text-orange-500 font-bold uppercase">{title}</p>
       <div className="custom-scrollbar">{children}</div>
     </div>
   );
@@ -135,7 +135,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
 
           {Object.entries(target.resistances).map(([key, value], i) => (
             <p key={i} className="mt-1">
-              <span className={"mr-2 capitalize " + (key === "level" ? "text-lightgold" : `text-${key}`)}>
+              <span className={"mr-2 capitalize " + (key === "level" ? "text-yellow-400" : `text-${key}`)}>
                 {t(key, { ns: "resistance" })}:
               </span>
               <span className="font-medium">{value}</span>

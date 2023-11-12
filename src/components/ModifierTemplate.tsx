@@ -116,7 +116,7 @@ export const ModifierTemplate = ({
             />
           );
         }
-        return <p className="text-orange capitalize">{input}</p>;
+        return <p className="text-orange-500 capitalize">{input}</p>;
       case "check":
         return (
           <input
@@ -169,7 +169,7 @@ export const ModifierTemplate = ({
         }
         let { label } = options.find((option) => option.value === input) || {};
 
-        return <p className="text-orange capitalize">{label}</p>;
+        return <p className="text-orange-500 capitalize">{label}</p>;
     }
   };
 
@@ -178,7 +178,7 @@ export const ModifierTemplate = ({
       <div className="mb-1 flex">
         <label className="flex items-center">
           {mutable && <input type="checkbox" className="ml-1 mr-2 scale-150" checked={checked} onChange={onToggle} />}
-          <span className="pl-1 font-semibold text-lightgold">
+          <span className="pl-1 font-semibold text-yellow-400">
             {mutable ? "" : "+"} {heading}
           </span>
         </label>

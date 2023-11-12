@@ -50,8 +50,8 @@ export function NavBar() {
           {isLargeView ? (
             <NavTabs
               className="px-2 py-1"
-              activeClassName="bg-darkblue-1 text-orange"
-              idleClassName="bg-darkblue-3 hover:text-lightgold"
+              activeClassName="bg-dark-900 text-orange-500"
+              idleClassName="bg-dark-500 hover:text-yellow-400"
             />
           ) : null}
         </div>
@@ -62,13 +62,13 @@ export function NavBar() {
           </Button>
 
           {trackerState !== "close" ? (
-            <button className="w-8 h-8 flex-center text-xl text-black bg-green" onClick={onClickTrackerIcon}>
+            <button className="w-8 h-8 flex-center text-xl text-black bg-green-300" onClick={onClickTrackerIcon}>
               <FaSearch />
             </button>
           ) : null}
 
-          <div ref={ref} className="relative text-default">
-            <button className="w-8 h-8 flex-center bg-darkblue-3 text-xl" onClick={() => setMenuDropped(!menuDropped)}>
+          <div ref={ref} className="relative text-light-400">
+            <button className="w-8 h-8 flex-center bg-dark-500 text-xl" onClick={() => setMenuDropped(!menuDropped)}>
               <FaBars />
             </button>
 
@@ -78,7 +78,7 @@ export function NavBar() {
                 (menuDropped ? "scale-100" : "scale-0")
               }
             >
-              <div className="flex flex-col bg-default text-black rounded-md overflow-hidden shadow-common">
+              <div className="flex flex-col bg-light-400 text-black rounded-md overflow-hidden shadow-common">
                 <ActionButton
                   label="Introduction"
                   icon={<FaInfoCircle size="1.125rem" />}
@@ -88,7 +88,7 @@ export function NavBar() {
                 {isLargeView ? null : (
                   <NavTabs
                     className="px-4 py-2"
-                    activeClassName="border-l-4 border-darkred bg-darkblue-1 text-default"
+                    activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
                     onClickTab={closeMenu}
                   />
                 )}

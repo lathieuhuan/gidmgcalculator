@@ -40,7 +40,7 @@ function FilterInner({ types, codes, stats, setTypes, setCodes, setStats, onClos
   useEffect(() => setIsError(false), [stats]);
 
   return (
-    <div className="p-4 rounded-lg bg-darkblue-3 shadow-white-glow">
+    <div className="p-4 rounded-lg bg-dark-500 shadow-white-glow">
       <div className="pb-2 flex custom-scrollbar">
         <div className="flex flex-col">
           <div className="pt-2 pb-4 flex justify-center">{renderTypeFilter()}</div>

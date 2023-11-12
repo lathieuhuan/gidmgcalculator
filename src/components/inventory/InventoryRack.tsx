@@ -6,7 +6,7 @@ import type { BooleanRecord, UserArtifact, UserWeapon } from "@Src/types";
 import { INVENTORY_PAGE_SIZE } from "@Src/constants";
 
 // Util
-import { itemIsWeapon } from "@Src/utils";
+import { isUserWeapon } from "@Src/utils";
 
 // Component
 import { ItemThumb } from "../ItemThumb";
@@ -152,7 +152,7 @@ export const InventoryRack = ({
                       <>
                         {chosenIDs?.[item.ID] && (
                           <button
-                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-darkred rounded-md"
+                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-red-600 rounded-md"
                             onClick={() => onUnchooseItem?.(item)}
                           >
                             <FaMinus />
@@ -160,7 +160,7 @@ export const InventoryRack = ({
                         )}
                         <div onClick={() => onClickItem?.(item)}>
                           <ItemThumb
-                            item={itemIsWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
+                            item={isUserWeapon(item) ? getWeaponInfo(item) : getArtifactInfo(item)}
                             chosen={item.ID === chosenID}
                           />
                         </div>
@@ -172,7 +172,7 @@ export const InventoryRack = ({
             </div>
           ) : (
             <div className="w-full pt-8 flex-center">
-              <p className="text-xl font-bold text-lightred">No {itemType} to display</p>
+              <p className="text-xl font-bold text-red-100">No {itemType} to display</p>
             </div>
           )
         ) : null}
@@ -185,7 +185,7 @@ export const InventoryRack = ({
           </button>
 
           <p className="font-bold">
-            <span className="text-orange">{pageNo + 1}</span> / {deadEnd + 1}
+            <span className="text-orange-500">{pageNo + 1}</span> / {deadEnd + 1}
           </p>
 
           <button onClick={goNext}>

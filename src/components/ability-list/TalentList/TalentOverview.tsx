@@ -64,7 +64,7 @@ export const TalentOverview = ({ char, charData, party, onChangeLevel, onClickIn
                       ))}
                     </select>
                   )}
-                  {!!xtraLv && <p className="ml-2 font-bold text-green">+{xtraLv}</p>}
+                  {!!xtraLv && <p className="ml-2 font-bold text-green-300">+{xtraLv}</p>}
                 </div>
               </div>
               <div className="ml-auto" onClick={() => onClickInfoSign(TALENT_TYPES.indexOf(talentType))}>

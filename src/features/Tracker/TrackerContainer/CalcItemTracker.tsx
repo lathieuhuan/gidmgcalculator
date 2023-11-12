@@ -52,7 +52,7 @@ export function CalcItemTracker({
 
       {infusion && infusion.element !== "phys" && (
         <div>
-          <p className="text-lightgold">Infusion:</p>
+          <p className="text-yellow-400">Infusion:</p>
           <ul className="pl-4 list-disc">
             <li className="capitalize">
               Element: <span className={`text-${infusion.element}`}>{infusion.element}</span>
@@ -74,10 +74,10 @@ export function CalcItemTracker({
         return (
           <div key={i}>
             <p className="font-medium">{t(attackName)}</p>
-            <ul className="pl-4 text-lesser text-sm leading-6 list-disc">
+            <ul className="pl-4 text-light-800 text-sm leading-6 list-disc">
               {record.exclusives?.length ? (
                 <li>
-                  <p className="text-lightgold">Exclusive</p>
+                  <p className="text-yellow-400">Exclusive</p>
                   {record.exclusives.map((bonus, i) => {
                     return Object.entries(bonus).map(([key, record]) => {
                       return (
@@ -95,7 +95,7 @@ export function CalcItemTracker({
               ) : null}
 
               <li>
-                Non-crit <span className="text-orange font-semibold">{nonCritDmg}</span> = (
+                Non-crit <span className="text-orange-500 font-semibold">{nonCritDmg}</span> = (
                 {record.multFactors.map((factor, i) => {
                   return (
                     <Fragment key={i}>
@@ -157,14 +157,14 @@ export function CalcItemTracker({
 
               {cDmg_ ? (
                 <li>
-                  Crit <span className="text-orange font-semibold">{renderValue(crit)}</span> = {nonCritDmg}{" "}
+                  Crit <span className="text-orange-500 font-semibold">{renderValue(crit)}</span> = {nonCritDmg}{" "}
                   <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>)
                 </li>
               ) : null}
 
               {cDmg_ && record.cRate_ ? (
                 <li>
-                  Average <span className="text-orange font-semibold">{renderValue(average)}</span> = {nonCritDmg}{" "}
+                  Average <span className="text-orange-500 font-semibold">{renderValue(average)}</span> = {nonCritDmg}{" "}
                   <Green>*</Green> (<Green>1 +</Green> Crit DMG <Green>{cDmg_}</Green>
                   {renderPart({
                     label: "Crit Rate",

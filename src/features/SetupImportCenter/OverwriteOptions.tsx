@@ -70,7 +70,7 @@ export function OverrideOptions({
   };
 
   return (
-    <div className="p-4 bg-darkblue-3 relative">
+    <div className="p-4 bg-dark-500 relative">
       <div className="py-2">
         <p className="text-xl text-center">
           We detect difference(s) between the Calculator and this Setup. Choose what you want to overwrite.
@@ -97,7 +97,7 @@ export function OverrideOptions({
                     <span
                       className={
                         "cursor-pointer ml-2 text-lg " +
-                        (expandedIndex === i ? "text-green " : "text-default hover:text-lightgold ")
+                        (expandedIndex === i ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
                       }
                       onClick={onClickSeeDetails(i)}
                     >
@@ -112,8 +112,8 @@ export function OverrideOptions({
                           <tbody>
                             <Tr>
                               <Th />
-                              <Th className="text-lightgold">Old</Th>
-                              <Th className="text-lightgold">New</Th>
+                              <Th className="text-yellow-400">Old</Th>
+                              <Th className="text-yellow-400">New</Th>
                             </Tr>
 
                             {Object.keys(object1).map((type, k) => {
@@ -140,7 +140,7 @@ export function OverrideOptions({
                                 <Tr key={k}>
                                   <Td
                                     className={
-                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-lightred" : "")
+                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-red-100" : "")
                                     }
                                   >
                                     {t(type, { ns: i ? "resistance" : "common" })}

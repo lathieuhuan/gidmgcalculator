@@ -16,7 +16,7 @@ export const renderModifiers = (modifiers: (JSX.Element | null)[], type: "buffs"
 export const renderAmpReactionHeading = (element: Vision, reaction: AmplifyingReaction) => (
   <>
     <span className="capitalize">{reaction}</span>{" "}
-    <span className="text-lesser font-normal">
+    <span className="text-light-800 font-normal">
       (vs {element === "pyro" ? (reaction === "melt" ? "Cryo" : "Hydro") : "Pyro"})
     </span>
   </>
@@ -32,7 +32,7 @@ export const renderAmpReactionDesc = (element: Vision, mult: number) => (
 export const renderQuickenHeading = (element: Vision, reaction: QuickenReaction) => (
   <>
     <span className="capitalize">{reaction}</span>{" "}
-    <span className="text-lesser font-normal">({element === "electro" ? "Electro" : "Dendro"} on Quicken)</span>
+    <span className="text-light-800 font-normal">({element === "electro" ? "Electro" : "Dendro"} on Quicken)</span>
   </>
 );
 

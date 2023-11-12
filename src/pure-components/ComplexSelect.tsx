@@ -58,7 +58,7 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
     <div ref={ref} className="shrink-0 relative">
       <button
         id={`complex-select-${selectId}_select`}
-        className="w-full py-0.5 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
+        className="w-full py-0.5 bg-orange-500 text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
         onClick={() => toggleDropdown(!isDropped)}
       >
         <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
@@ -67,8 +67,8 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
 
       <div
         className={clsx(
-          "absolute top-full z-20 w-full rounded-b-md bg-default text-black overflow-hidden transition-size duration-100 ease-linear",
-          isDropped && "border border-white"
+          "absolute top-full z-20 w-full rounded-b-md bg-light-400 text-black overflow-hidden transition-size duration-100 ease-linear",
+          isDropped && "border border-light-100"
         )}
         style={{
           height: isDropped ? dropHeight : 0,
@@ -77,9 +77,9 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
         {options.map((option, i) => {
           return (
             <div key={i} className="group">
-              <div className="group-hover:bg-darkblue-3 group-hover:text-default">
+              <div className="group-hover:bg-dark-500 group-hover:text-light-400">
                 <button
-                  className="px-3 py-1 w-full text-lg text-left font-bold truncate cursor-default hover:bg-darkblue-1"
+                  className="px-3 py-1 w-full text-lg text-left font-bold truncate cursor-default hover:bg-dark-900"
                   onClick={onClickOption(option.value || option.label)}
                 >
                   {option.label}

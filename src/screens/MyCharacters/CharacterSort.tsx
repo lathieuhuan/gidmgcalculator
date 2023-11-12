@@ -30,12 +30,12 @@ interface LineProps extends HTMLAttributes<HTMLDivElement> {
 const Line = ({ char, marker, visiblePlot, ...rest }: LineProps) => {
   return (
     <div key={char.name} className="flex flex-col cursor-default select-none" {...rest}>
-      <div className="px-2 py-1 h-10 bg-darkblue-3" hidden={!visiblePlot}></div>
+      <div className="px-2 py-1 h-10 bg-dark-500" hidden={!visiblePlot}></div>
 
-      <div className="px-2 py-1 flex items-center hover:bg-darkblue-2">
-        <div className="w-8 h-8 mr-2 flex-center text-default pointer-events-none">{marker}</div>
+      <div className="px-2 py-1 flex items-center hover:bg-dark-700">
+        <div className="w-8 h-8 mr-2 flex-center text-light-400 pointer-events-none">{marker}</div>
 
-        <p className="pointer-events-none text-default">
+        <p className="pointer-events-none text-light-400">
           <span className={`text-rarity-${char.rarity} font-bold`}>{char.name}</span> (Lv. {char.level})
         </p>
       </div>
@@ -172,15 +172,15 @@ function SortInner({ onClose }: { onClose: () => void }) {
   ];
 
   return (
-    <div className="px-2 py-4 rounded-lg bg-darkblue-1">
+    <div className="px-2 py-4 rounded-lg bg-dark-900">
       <Button
-        className="absolute top-1 right-1 text-xl hover:text-darkred"
+        className="absolute top-1 right-1 text-xl hover:text-red-600"
         boneOnly
         icon={<FaTimes />}
         onClick={onClose}
       />
 
-      <p className="text-1.5xl text-orange text-center">Sort characters</p>
+      <p className="text-1.5xl text-orange-500 text-center">Sort characters</p>
 
       <div className="mt-1 h-8 flex justify-between">
         <div className="px-4 flex group relative cursor-default">
@@ -190,12 +190,12 @@ function SortInner({ onClose }: { onClose: () => void }) {
           </p>
           <Popover
             as="div"
-            className="px-1 py-2 top-full bg-darkblue-2 rounded group-hover:scale-100 space-y-2"
+            className="px-1 py-2 top-full bg-dark-700 rounded group-hover:scale-100 space-y-2"
             origin="top-left"
           >
             {quickSortOptions.map(({ label, onSelect }, i) => {
               return (
-                <p key={i} className="px-2 py-1 rounded-sm hover:bg-darkblue-3" onClick={onSelect}>
+                <p key={i} className="px-2 py-1 rounded-sm hover:bg-dark-500" onClick={onSelect}>
                   {label}
                 </p>
               );
@@ -207,7 +207,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
           <span>Mode</span>
           <div className="h-full px-2 select-none" style={{ width: 120 }}>
             <SharedSpace
-              className="text-center cursor-default bg-darkblue-2 rounded"
+              className="text-center cursor-default bg-dark-700 rounded"
               atLeft={!inMarkingMode}
               leftPart={
                 <p className="h-full flex-center" onClick={onToggleMarkingMode}>

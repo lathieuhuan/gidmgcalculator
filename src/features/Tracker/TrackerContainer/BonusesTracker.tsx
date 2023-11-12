@@ -28,7 +28,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
   if (!hasAttPattBonus && !hasAttElmtBonus && !hasRxnBonus && !em) {
     return (
-      <div className="h-16 flex-center text-lesser">
+      <div className="h-16 flex-center text-light-800">
         <p>No bonuses</p>
       </div>
     );
@@ -50,7 +50,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
             return (
               <div key={attPatt} className="break-inside-avoid">
-                <p className="text-orange capitalize">{t(attPatt)}</p>
+                <p className="text-orange-500 capitalize">{t(attPatt)}</p>
 
                 {ATTACK_PATTERN_INFO_KEYS.map((infoKey) => {
                   const records = attPattBonus[`${attPatt}.${infoKey}`];
@@ -83,7 +83,7 @@ export function BonusesTracker({ attPattBonus, attElmtBonus, rxnBonus, em }: Bon
 
             return (
               <div key={attElmt} className="break-inside-avoid">
-                <p className="text-orange capitalize">{attElmt} DMG</p>
+                <p className="text-orange-500 capitalize">{attElmt} DMG</p>
 
                 {ATTACK_ELEMENT_INFO_KEYS.map((infoKey) => {
                   const records = attElmtBonus[`${attElmt}.${infoKey}`];

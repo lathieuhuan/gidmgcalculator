@@ -53,7 +53,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
 
         return (
           <div key={key.main} className="flex flex-col">
-            {/* <div className={"h-6 mx-auto mb-2 flex rounded-2xl bg-orange overflow-hidden"}>
+            {/* <div className={"h-6 mx-auto mb-2 flex rounded-2xl bg-orange-500 overflow-hidden"}>
               <button
                 className={clsx(
                   "pt-1 pb-0.5 flex items-center space-x-2 text-black font-bold",
@@ -68,18 +68,18 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
               </button>
 
               {talentLevel ? (
-                <button className="px-2 bg-black/60 text-default text-sm leading-none">
+                <button className="px-2 bg-black/60 text-light-400 text-sm leading-none">
                   {talentLevel}
                 </button>
               ) : null}
             </div> */}
             <button
-              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange text-black font-bold"
+              className="mx-auto mb-2 pt-1 pb-0.5 px-4 flex items-center rounded-2xl bg-orange-500 text-black font-bold"
               onClick={toggleTable(index)}
             >
               <span className="text-lg leading-none">{t(key.main)}</span>
               {talentLevel ? (
-                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-default text-sm leading-none">
+                <span className="ml-2 mb-0.5 px-1 py-0.5 rounded-sm bg-black/60 text-light-400 text-sm leading-none">
                   {talentLevel}
                 </span>
               ) : null}
@@ -93,7 +93,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
             <CollapseSpace active={!closedItems[index]}>
               {key.subs.length === 0 ? (
                 <div className="pb-2">
-                  <p className="pt-2 pb-1 bg-darkblue-2 text-center text-lesser">This talent does not deal damage.</p>
+                  <p className="pt-2 pb-1 bg-dark-700 text-center text-light-800">This talent does not deal damage.</p>
                 </div>
               ) : (
                 <div className="custom-scrollbar">
@@ -117,7 +117,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                           <Th />
                           <Th>Non-crit</Th>
                           <Th>Crit</Th>
-                          <Th className="text-lightgold">Avg.</Th>
+                          <Th className="text-yellow-400">Avg.</Th>
                         </Tr>
 
                         {key.subs.map((subKey, i) => {
@@ -128,7 +128,7 @@ export const DamageDisplay = ({ char, party, damageResult, focus }: DamageDispla
                               <Td title={attElmt?.toUpperCase()}>{isReactionDmg ? t(subKey) : subKey}</Td>
                               <Td>{displayValue(nonCrit)}</Td>
                               <Td>{displayValue(crit)}</Td>
-                              <Td className="text-lightgold">{displayValue(average)}</Td>
+                              <Td className="text-yellow-400">{displayValue(average)}</Td>
                             </Tr>
                           );
                         })}

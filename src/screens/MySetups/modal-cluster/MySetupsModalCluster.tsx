@@ -23,7 +23,7 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
     <>
       <StandardModal
         active={modalType === "TIPS"}
-        title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
+        title={<p className="mb-2 text-1.5xl text-orange-500 font-bold">Tips</p>}
         onClose={closeModal}
       >
         <ul className="pl-4 pr-2 list-disc space-y-1 contains-inline-svg">

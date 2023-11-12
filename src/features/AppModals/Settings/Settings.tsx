@@ -80,7 +80,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 
   return (
     <div className="w-80 md1:w-96 h-full px-2 py-4 flex flex-col">
-      <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
+      <h3 className="text-2xl text-orange-500 text-center font-bold">SETTINGS</h3>
 
       <div className="grow hide-scrollbar">
         <Section title="Calculator">
@@ -119,7 +119,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
               {tempSettings.persistingUserData && (
                 <li>Your data is available on this browser only and will be lost if the local storage is cleared.</li>
               )}
-              <li className="text-lightred">
+              <li className="text-red-100">
                 Change of this setting can remove your current data and works on the App!
               </li>
             </ul>
@@ -165,7 +165,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 export const Settings = withModal(
   SettingsCore,
   {
-    className: "h-large-modal rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "h-large-modal rounded-lg bg-dark-700 shadow-white-glow",
   },
   {
     className: "absolute top-1 right-1",

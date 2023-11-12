@@ -26,7 +26,7 @@ export default function SectionWeapon() {
   const selectLevels = rarity < 3 ? LEVELS.slice(0, -4) : LEVELS;
 
   return (
-    <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-darkblue-1 flex items-start">
+    <div className="px-2 py-3 border-2 border-lesser rounded-xl bg-dark-900 flex items-start">
       <div
         className={`w-20 h-20 shrink-0 relative bg-gradient-${rarity} cursor-pointer rounded-md`}
         onClick={() => setPickerOn(true)}

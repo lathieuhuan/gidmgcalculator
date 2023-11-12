@@ -17,7 +17,7 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
   const tabs = (
     <div
       className={clsx(
-        "w-full flex divide-x-2 rounded-full divide-darkblue-3 overflow-hidden",
+        "w-full flex divide-x-2 rounded-full divide-dark-500 overflow-hidden",
         className
       )}
     >
@@ -30,9 +30,9 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
             "py-0.5 w-1/2 flex-center text-black font-bold",
             i === activeIndex
               ? level === 1
-                ? "bg-orange"
-                : "bg-lightorange"
-              : "bg-white opacity-80"
+                ? "bg-orange-500"
+                : "bg-blue-400"
+              : "bg-light-400 opacity-80"
           )}
           onClick={() => setActiveIndex(i)}
         >

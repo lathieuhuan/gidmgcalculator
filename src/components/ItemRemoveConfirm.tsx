@@ -1,32 +1,28 @@
-import type { UserArtifact, UserWeapon } from "@Src/types";
-import { appData } from "@Src/data";
-import { ConfirmModal, type ModalControl } from "@Src/pure-components";
+import type { UserItem } from "@Src/types";
 
-interface WeaponRemoveConfirmProps {
-  itemType: "weapon";
-  item: UserWeapon;
+// Util & Hook
+import { useCheckContainerSetups } from "@Src/hooks/useCheckContainerSetups";
+import { appData } from "@Src/data";
+
+// Component
+import { ConfirmModalBody, withModal } from "@Src/pure-components";
+
+interface ItemRemoveCheckProps {
+  item: UserItem;
   onConfirm: () => void;
+  onClose: () => void;
 }
-interface ArtifactRemoveConfirmProps {
-  itemType: "artifact";
-  item: UserArtifact;
-  onConfirm: () => void;
-}
-export const ItemRemoveConfirm = ({
-  active,
-  item,
-  itemType,
-  onConfirm,
-  onClose,
-}: (WeaponRemoveConfirmProps | ArtifactRemoveConfirmProps) & Omit<ModalControl, "state">) => {
-  const itemData = itemType === "weapon" ? appData.getWeaponData(item.code) : appData.getArtifactData(item);
+const ItemRemoveCheck = ({ item, onConfirm, onClose }: ItemRemoveCheckProps) => {
+  const result = useCheckContainerSetups(item, { correctOnUnmounted: false });
+  const itemName = result.isWeapon
+    ? appData.getWeaponData(item.code).name
+    : `${appData.getArtifactSetData(item.code)?.name} (${item.type})`;
 
   return (
-    <ConfirmModal
-      active={active}
+    <ConfirmModalBody
       message={
         <>
-          Remove "<b>{itemData?.name}</b>"?{" "}
+          Remove "<b>{itemName}</b>"?{" "}
           {item.owner ? (
             <>
               It is currently used by <b>{item.owner}</b>.
@@ -39,3 +35,5 @@ export const ItemRemoveConfirm = ({
     />
   );
 };
+
+export const ItemRemoveConfirm = withModal(ItemRemoveCheck, { className: "small-modal" });

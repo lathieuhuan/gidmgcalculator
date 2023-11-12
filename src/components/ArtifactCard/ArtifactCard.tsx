@@ -58,7 +58,7 @@ export const ArtifactCard = ({
             </div>
             <div className="mt-1 flex flex-col items-center">
               <Button
-                className="bg-black text-orange text-3.5xl"
+                className="bg-black text-orange-500 text-3.5xl"
                 variant="custom"
                 style={{ padding: 0 }}
                 icon={<FaArrowAltCircleUp />}
@@ -68,7 +68,7 @@ export const ArtifactCard = ({
               <Button
                 variant="custom"
                 shape="rounded"
-                className="mt-6 text-black bg-orange"
+                className="mt-6 text-black bg-orange-500"
                 style={{
                   paddingLeft: 6,
                   paddingRight: 6,
@@ -99,7 +99,7 @@ export const ArtifactCard = ({
           <div className="py-1 relative">
             <FaChevronDown className="absolute left-1 top-2" size="1.25rem" />
             <select
-              className="pl-8 text-lg text-default appearance-none relative z-10"
+              className="pl-8 text-lg text-light-400 appearance-none relative z-10"
               value={mainStatType}
               onChange={(e) => onChangeMainStatType?.(e.target.value)}
             >

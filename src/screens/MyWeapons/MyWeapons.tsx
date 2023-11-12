@@ -90,13 +90,13 @@ export default function MyWeapons() {
           ) : (
             <>
               <Button
-                className={clsx("ml-1", filterIsActive ? "bg-green" : "bg-white")}
+                className={clsx("ml-1", filterIsActive ? "bg-green-300" : "bg-light-400")}
                 icon={<FaEllipsisH />}
                 onClick={() => setFilterIsActive(!filterIsActive)}
               />
 
               <CollapseSpace className="w-full absolute top-full left-0 z-20" active={filterIsActive}>
-                <div className="px-4 py-6 shadow-common bg-darkblue-2">{renderTypeFilter()}</div>
+                <div className="px-4 py-6 shadow-common bg-dark-700">{renderTypeFilter()}</div>
               </CollapseSpace>
             </>
           )}
@@ -113,7 +113,7 @@ export default function MyWeapons() {
           />
 
           <div className="flex flex-col">
-            <div className="p-4 grow rounded-lg bg-darkblue-1 flex flex-col hide-scrollbar">
+            <div className="p-4 grow rounded-lg bg-dark-900 flex flex-col hide-scrollbar">
               <div className="w-75 grow hide-scrollbar">
                 {chosenWeapon ? (
                   <WeaponCard
@@ -149,15 +149,15 @@ export default function MyWeapons() {
               ) : null}
             </div>
 
-            <OwnerLabel key={chosenID} owner={chosenWeapon?.owner} setupIDs={chosenWeapon?.setupIDs} />
+            <OwnerLabel key={chosenID} item={chosenWeapon} />
           </div>
         </WarehouseLayout.Body>
       </WarehouseLayout>
 
       <TypeSelect
         active={modalType === "PICK_WEAPON_TYPE"}
-        choices={WEAPON_ICONS}
-        onClickChoice={(weaponType) => {
+        options={WEAPON_ICONS}
+        onSelect={(weaponType) => {
           setWeaponPicker({
             active: true,
             type: weaponType as WeaponType,
@@ -210,7 +210,6 @@ export default function MyWeapons() {
         <ItemRemoveConfirm
           active={modalType === "REMOVE_WEAPON"}
           item={chosenWeapon}
-          itemType="weapon"
           onConfirm={() => {
             dispatch(removeWeapon(chosenWeapon));
 

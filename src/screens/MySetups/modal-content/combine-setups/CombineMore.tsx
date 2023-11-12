@@ -83,8 +83,8 @@ export function CombineMore({ setupID, onClose }: CombineMoreProps) {
   };
 
   return (
-    <div className="h-full pl-6 pr-2 py-4 flex flex-col rounded-lg bg-darkblue-2 break-words shadow-white-glow">
-      <p className={"pr-4 text-center " + (isError ? "text-lightred" : "text-lightgold")}>
+    <div className="h-full pl-6 pr-2 py-4 flex flex-col rounded-lg bg-dark-700 break-words shadow-white-glow">
+      <p className={"pr-4 text-center " + (isError ? "text-red-100" : "text-yellow-400")}>
         {isError ? (
           "These 2 Setups feature the same Character."
         ) : (
