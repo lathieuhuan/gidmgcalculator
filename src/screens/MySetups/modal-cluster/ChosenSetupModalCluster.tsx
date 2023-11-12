@@ -108,14 +108,14 @@ export const ChosenSetupModalCluster = ({ chosenSetup, weapon, artifacts, calcRe
 
         <div className="h-full flex divide-x-2 divide-dark-700">
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col " style={{ minWidth: "20rem" }}>
-            <p className="text-lg text-orange font-bold">Final Attributes</p>
+            <p className="text-lg text-orange-500 font-bold">Final Attributes</p>
             <div className="mt-1 hide-scrollbar">
               {calcResult?.totalAttr && <AttributeTable attributes={calcResult.totalAttr} />}
             </div>
           </div>
 
           <div className="w-80 pt-2 px-4 pb-4 flex flex-col" style={{ minWidth: "20rem" }}>
-            <p className="text-lg text-orange font-bold">Artifact Stats</p>
+            <p className="text-lg text-orange-500 font-bold">Artifact Stats</p>
             <div className="mt-1 hide-scrollbar">
               {calcResult?.artAttr && <AttributeTable attributes={calcResult.artAttr} />}
             </div>

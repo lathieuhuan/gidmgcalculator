@@ -90,7 +90,7 @@ export default function MyWeapons() {
           ) : (
             <>
               <Button
-                className={clsx("ml-1", filterIsActive ? "bg-green" : "bg-white")}
+                className={clsx("ml-1", filterIsActive ? "bg-green-300" : "bg-light-400")}
                 icon={<FaEllipsisH />}
                 onClick={() => setFilterIsActive(!filterIsActive)}
               />

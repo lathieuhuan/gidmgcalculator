@@ -109,7 +109,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
               })
             ) : (
               <div className="w-full h-20 flex justify-end items-center">
-                <p className="text-2.5xl font-bold text-lightgold flex">
+                <p className="text-2.5xl font-bold text-yellow-400 flex">
                   <span className="mr-2">Add new characters</span> <FaArrowAltCircleUp className="rotate-90" />
                 </p>
               </div>
@@ -118,7 +118,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
         </div>
 
         <button
-          className="absolute top-4 left-full ml-6 rounded-circle hover:shadow-3px-3px hover:shadow-white"
+          className="absolute top-4 left-full ml-6 rounded-circle hover:shadow-3px-3px hover:shadow-light-100"
           style={{
             width: 60,
             height: 60,

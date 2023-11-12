@@ -81,7 +81,7 @@ export const ArtifactSubstatsControl = ({
             <p className={space}>•</p>
             <p>
               <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>{t(type)}</span>
-              <span className={isValid ? "text-green" : "text-red-200"}>
+              <span className={isValid ? "text-green-300" : "text-red-200"}>
                 +{value}
                 {percentSign(type)}
               </span>

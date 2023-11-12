@@ -123,7 +123,7 @@ export function SetupSelect() {
       <button
         key={index}
         className={clsx(
-          "h-9 w-9 border-l border-b border-white flex-center shrink-0 disabled:bg-light-800 disabled:text-black",
+          "h-9 w-9 border-l border-b border-light-100 flex-center shrink-0 disabled:bg-light-800 disabled:text-black",
           className
         )}
         {...rest}
@@ -143,25 +143,25 @@ export function SetupSelect() {
             renderActions: ({ closeSelect }) => {
               const rightButtons: Array<ButtonHTMLAttributes<HTMLButtonElement>> = [
                 {
-                  className: ID === standardId ? "bg-green" : "bg-light-400",
+                  className: ID === standardId ? "bg-green-300" : "bg-light-400",
                   children: <SiTarget className="text-1.5xl" />,
                   disabled: comparedIds.length < 2 || !comparedIds.includes(ID),
                   onClick: onClickChooseStandard(ID),
                 },
                 {
-                  className: comparedIds.includes(ID) ? "bg-green" : "bg-light-400",
+                  className: comparedIds.includes(ID) ? "bg-green-300" : "bg-light-400",
                   children: <FaBalanceScaleLeft className="text-1.5xl" />,
                   disabled: setupManageInfos.length < 2,
                   onClick: onClickToggleCompared(ID),
                 },
                 {
-                  className: "hover:bg-lightgold" + (isAtMax ? " bg-light-800" : ""),
+                  className: "hover:bg-yellow-400" + (isAtMax ? " bg-light-800" : ""),
                   children: <FaCopy />,
                   disabled: isAtMax,
                   onClick: onClickCopySetup(ID),
                 },
                 {
-                  className: "hover:bg-lightgold",
+                  className: "hover:bg-yellow-400",
                   children: <FaSave />,
                   onClick: () => {
                     onClickSaveSetup(i);
@@ -169,7 +169,7 @@ export function SetupSelect() {
                   },
                 },
                 {
-                  className: "hover:bg-lightgold",
+                  className: "hover:bg-yellow-400",
                   children: <FaShareAlt />,
                   onClick: () => {
                     onClickShareSetup(i);

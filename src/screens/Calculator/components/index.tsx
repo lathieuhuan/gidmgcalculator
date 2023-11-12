@@ -43,7 +43,7 @@ export const CopySection = <TOption extends Option>({
         ))}
       </select>
       <button
-        className="w-8 h-8 bg-lightgold text-black rounded-r flex-center glow-on-hover"
+        className="w-8 h-8 bg-yellow-400 text-black rounded-r flex-center glow-on-hover"
         onClick={onClick}
       >
         <FaCopy />

@@ -21,7 +21,7 @@ export function TypeSelect({ active, options, onSelect, onClose, footer }: TypeS
         {Object.entries(options).map(([title, src], i) => (
           <button
             key={i}
-            className="mx-1 p-1 w-14 h-14 rounded-full hover:bg-lightgold"
+            className="mx-1 p-1 w-14 h-14 rounded-full hover:bg-yellow-400"
             onClick={() => onSelect(title)}
           >
             <img className="w-full" src={getImgSrc(src)} alt={title} draggable={false} />

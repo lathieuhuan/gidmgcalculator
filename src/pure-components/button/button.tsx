@@ -4,14 +4,14 @@ import { FaInfoCircle, FaTimes } from "react-icons/fa";
 import { StringRecord } from "@Src/types";
 
 const bgColorByVariant: StringRecord = {
-  positive: "bg-lightgold",
-  neutral: "bg-green",
+  positive: "bg-yellow-400",
+  neutral: "bg-green-300",
   negative: "bg-red-600",
   default: "bg-light-400",
 };
 const colorByVariant: StringRecord = {
-  positive: "text-lightgold",
-  neutral: "text-green",
+  positive: "text-yellow-400",
+  neutral: "text-green-300",
   negative: "text-red-600",
   default: "text-light-400",
 };
@@ -179,7 +179,7 @@ export const InfoSign = (props: InfoSignProps) => {
   }
   return (
     <Button
-      className={clsx(props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold", props.className)}
+      className={clsx(props.selfHover ? "hover:text-yellow-400" : "group-hover:text-yellow-400", props.className)}
       boneOnly
       paddingCls={null}
       icon={<FaInfoCircle className="text-2xl" />}

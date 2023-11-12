@@ -97,7 +97,7 @@ const ArtifactInventory = ({
                     <ArtifactCard mutable={false} artifact={currentArtifact} space="mx-3" />
 
                     <div className="pt-4 grow flex-center">
-                      <p className="text-orange text-center">Current equipment</p>
+                      <p className="text-orange-500 text-center">Current equipment</p>
                     </div>
                   </div>
                 </div>

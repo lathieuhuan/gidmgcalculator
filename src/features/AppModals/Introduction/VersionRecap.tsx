@@ -4,7 +4,7 @@ export const VersionRecap = () => {
   return (
     <div className="space-y-2 contains-inline-svg">
       <div>
-        <h4 className="text-orange text-lg font-bold">General</h4>
+        <h4 className="text-orange-500 text-lg font-bold">General</h4>
         <ul className="mt-1 pl-4 space-y-1 list-disc">
           {/* <li></li> */}
           <li>Reduce options for artifact level to 0/4/8/12/16/20.</li>
@@ -17,7 +17,7 @@ export const VersionRecap = () => {
       </div>
 
       <div>
-        <h4 className="text-orange text-lg font-bold">Calculator</h4>
+        <h4 className="text-orange-500 text-lg font-bold">Calculator</h4>
         <ul className="mt-1 pl-4 space-y-1 list-disc">
           <li>Add a constellation control next to the character level control.</li>
           <li>Move target configuration place to Setups Manager column and give it a new design.</li>
@@ -46,7 +46,7 @@ export const VersionRecap = () => {
       </div>
 
       <div>
-        <h4 className="text-orange text-lg font-bold">User Data</h4>
+        <h4 className="text-orange-500 text-lg font-bold">User Data</h4>
         <ul className="mt-1 pl-4 space-y-1 list-disc">
           <li>Improve character sort in My Characters.</li>
           <li>

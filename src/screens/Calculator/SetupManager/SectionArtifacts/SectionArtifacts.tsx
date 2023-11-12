@@ -68,7 +68,7 @@ export default function SectionArtifacts() {
               key={index}
               className={clsx(
                 "w-1/5",
-                index === activeTabIndex ? "border-2 border-white" : "border border-transparent"
+                index === activeTabIndex ? "border-2 border-light-400" : "border border-transparent"
               )}
             >
               <div

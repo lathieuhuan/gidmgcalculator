@@ -12,7 +12,7 @@ export const Message = () => {
 
   const COLOR_BY_TYPE = {
     info: "text-light-400",
-    success: "text-green",
+    success: "text-green-300",
     error: "text-red-100",
   };
 

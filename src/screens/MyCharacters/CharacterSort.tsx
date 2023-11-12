@@ -180,7 +180,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
         onClick={onClose}
       />
 
-      <p className="text-1.5xl text-orange text-center">Sort characters</p>
+      <p className="text-1.5xl text-orange-500 text-center">Sort characters</p>
 
       <div className="mt-1 h-8 flex justify-between">
         <div className="px-4 flex group relative cursor-default">

@@ -119,7 +119,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               key={teammateIndex}
               className={
                 "w-18 h-18 cursor-pointer" +
-                (isCalculated ? " rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer" : "")
+                (isCalculated ? " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer" : "")
               }
             >
               <CharacterPortrait
@@ -191,7 +191,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           ) : (
             <Button variant="negative" boneOnly icon={<FaUnlink />} onClick={uncombine} />
           )}
-          <p className="px-1 text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
+          <p className="px-1 text-xl text-orange-500 font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">

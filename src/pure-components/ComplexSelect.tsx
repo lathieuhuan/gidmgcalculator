@@ -58,7 +58,7 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
     <div ref={ref} className="shrink-0 relative">
       <button
         id={`complex-select-${selectId}_select`}
-        className="w-full py-0.5 bg-orange text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
+        className="w-full py-0.5 bg-orange-500 text-black rounded-t-2.5xl rounded-b-2.5xl relative cursor-default"
         onClick={() => toggleDropdown(!isDropped)}
       >
         <span className="w-full text-lg font-bold text-center relative z-10">{label}</span>
@@ -68,7 +68,7 @@ export const ComplexSelect = ({ selectId, value, options = [], onChange, onToggl
       <div
         className={clsx(
           "absolute top-full z-20 w-full rounded-b-md bg-light-400 text-black overflow-hidden transition-size duration-100 ease-linear",
-          isDropped && "border border-white"
+          isDropped && "border border-light-100"
         )}
         style={{
           height: isDropped ? dropHeight : 0,

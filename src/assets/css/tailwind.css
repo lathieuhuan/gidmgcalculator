@@ -18,7 +18,7 @@
     background: transparent;
   }
   a {
-    @apply text-green;
+    @apply text-green-300;
   }
 }
 
@@ -32,9 +32,6 @@
   }
   .h-large-modal {
     @apply h-[90vh] lg:h-[85vh] max-h-[760px];
-  }
-  .small-tooltip {
-    @apply absolute transform duration-200 z-10 bg-black rounded-lg text-sm font-normal scale-0 cursor-default;
   }
   .load-option {
     @apply pt-2 pb-3 px-4 hover:bg-dark-900;

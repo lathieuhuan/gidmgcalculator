@@ -33,8 +33,9 @@ module.exports = {
       lg: "1025px",
     },
     colors: {
+      transparent: colors.transparent,
       light: {
-        // root: "#ffffff"
+        100: "#ffffff", // root
         400: "#e0e0e0",
         800: "#b8b8b8",
       },
@@ -43,6 +44,7 @@ module.exports = {
         700: "#151a40",
         900: "#050926",
       },
+      black: "#000000",
       red: {
         100: "#ff8d8c",
         200: "#ff7370",
@@ -54,17 +56,22 @@ module.exports = {
         800: "#7a0200",
         // 900: "#520100"
       },
-      black: colors.black,
-      white: colors.white,
-      blue: colors.blue,
-      transparent: colors.transparent,
-      // darkred: "#cd212a",
-      // darkerred: "#8a1200",
-      lightgold: "#edc73d",
-      lightorange: "#ffa629",
-      dullyellow: "#f5dc6e",
-      green: "#62f98e",
-      orange: "#fa8a12",
+      green: {
+        50: "#c4fdd4",
+        // 200: "#89fba9",
+        300: "#62f98e", // root
+      },
+      blue: {
+        400: "#60a5fa",
+      },
+      orange: {
+        500: "#fa8a12",
+      },
+      yellow: {
+        200: "#f5df8f",
+        300: "#f5dc6e", // modified from #f1d46a
+        400: "#edc73d", // root
+      },
       pyro: "#ff504a",
       hydro: "#2eaaff",
       dendro: "#49e03e",

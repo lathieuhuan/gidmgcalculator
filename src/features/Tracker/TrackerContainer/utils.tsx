@@ -67,7 +67,7 @@ export function getTotalRecordValue(list: TrackerRecord[]) {
 export function renderHeading(white: ReactNode, orange?: string | number) {
   return (
     <p className="font-medium">
-      {white} <span className="text-orange">{orange}</span>
+      {white} <span className="text-orange-500">{orange}</span>
     </p>
   );
 }

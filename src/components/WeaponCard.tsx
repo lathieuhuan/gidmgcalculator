@@ -106,7 +106,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
+        <p className="text-lg font-semibold text-orange-500">{wpData.passiveName}</p>
         <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>

@@ -25,13 +25,13 @@ export const PorterLayout = ({
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
 
       <div className="w-75">
-        <p className="mb-2 px-2 text-xl text-orange text-center font-bold">{heading}</p>
+        <p className="mb-2 px-2 text-xl text-orange-500 text-center font-bold">{heading}</p>
         <textarea className="w-full p-2 text-black rounded resize-none" rows={15} {...textareaAttrs} />
 
         {message ? (
           <p
             className={
-              "mt-2 text-center" + (message.type ? (message.type === "success" ? " text-green" : " text-red-100") : "")
+              "mt-2 text-center" + (message.type ? (message.type === "success" ? " text-green-300" : " text-red-100") : "")
             }
           >
             {message.text}

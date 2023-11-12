@@ -50,8 +50,8 @@ export function NavBar() {
           {isLargeView ? (
             <NavTabs
               className="px-2 py-1"
-              activeClassName="bg-dark-900 text-orange"
-              idleClassName="bg-dark-500 hover:text-lightgold"
+              activeClassName="bg-dark-900 text-orange-500"
+              idleClassName="bg-dark-500 hover:text-yellow-400"
             />
           ) : null}
         </div>
@@ -62,7 +62,7 @@ export function NavBar() {
           </Button>
 
           {trackerState !== "close" ? (
-            <button className="w-8 h-8 flex-center text-xl text-black bg-green" onClick={onClickTrackerIcon}>
+            <button className="w-8 h-8 flex-center text-xl text-black bg-green-300" onClick={onClickTrackerIcon}>
               <FaSearch />
             </button>
           ) : null}

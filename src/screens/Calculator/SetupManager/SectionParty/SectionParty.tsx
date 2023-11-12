@@ -131,7 +131,7 @@ export default function SectionParty() {
                   <FaUserSlash />
                 </button>
                 <button
-                  className={"w-10 h-10 text-lightgold glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
+                  className={"w-10 h-10 text-yellow-400 glow-on-hover " + (isExpanded ? "flex-center" : "hidden")}
                   onClick={onClickChangeTeammate(teammateIndex)}
                 >
                   <FaSyncAlt />

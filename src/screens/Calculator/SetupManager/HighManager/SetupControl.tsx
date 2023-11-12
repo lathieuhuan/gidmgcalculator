@@ -45,7 +45,7 @@ export function SetupControl({
           <button
             className={clsx(
               "w-8 h-8 rounded-circle flex-center text-2xl",
-              isStandard ? "bg-green text-black" : choosableAsStandard ? "text-light-400" : "text-light-800"
+              isStandard ? "bg-green-300 text-black" : choosableAsStandard ? "text-light-400" : "text-light-800"
             )}
             disabled={!choosableAsStandard}
             onClick={onChooseStandard}
@@ -53,7 +53,7 @@ export function SetupControl({
             <SiTarget />
           </button>
           <button
-            className={clsx("w-8 h-8 rounded-circle flex-center text-xl", setup.isCompared && "bg-green text-black")}
+            className={clsx("w-8 h-8 rounded-circle flex-center text-xl", setup.isCompared && "bg-green-300 text-black")}
             onClick={onToggleCompared}
           >
             <FaBalanceScaleLeft />

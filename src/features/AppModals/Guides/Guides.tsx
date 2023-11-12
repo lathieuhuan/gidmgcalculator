@@ -5,7 +5,7 @@ import { UserDataGuide } from "./UserDataGuide";
 
 export const Guides = (props: ModalControl) => {
   return (
-    <StandardModal title={<p className="px-6 mb-2 text-xl text-center text-orange font-bold">Guides</p>} {...props}>
+    <StandardModal title={<p className="px-6 mb-2 text-xl text-center text-orange-500 font-bold">Guides</p>} {...props}>
       <CollapseList
         list={[
           {

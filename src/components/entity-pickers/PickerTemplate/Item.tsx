@@ -39,7 +39,7 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
             (item.cons !== undefined ? " flex rounded-2xl pl-1.5" : "")
           }
         >
-          {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
+          {item.cons !== undefined && <p className="mr-0.5 text-green-300">C{item.cons}</p>}
           <Vision type={item.vision} />
         </div>
       )}

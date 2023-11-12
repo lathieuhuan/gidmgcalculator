@@ -91,7 +91,7 @@ export default function MySetups() {
           <div
             className={clsx(
               "px-2 pt-3 pb-2 rounded-lg bg-dark-500",
-              setup.ID === chosenSetupID ? "shadow-green shadow-5px-1px" : "shadow-common"
+              setup.ID === chosenSetupID ? "shadow-green-300 shadow-5px-1px" : "shadow-common"
             )}
             onClick={() => dispatch(chooseUserSetup(setup.ID))}
           >

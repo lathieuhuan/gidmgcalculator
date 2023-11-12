@@ -137,7 +137,7 @@ export const Input = forwardRef(
         {...props}
         type="text"
         className={
-          (noDefaultStyle ? "" : "leading-tight text-black rounded bg-light-400 focus:bg-blue-100 ") +
+          (noDefaultStyle ? "" : "leading-tight text-black rounded bg-light-400 focus:bg-green-50 ") +
           (className || "")
         }
         value={value}

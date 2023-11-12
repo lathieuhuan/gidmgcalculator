@@ -70,7 +70,7 @@ export function useArtifactSetFilter({ artifactType = "flower", artifacts, codes
                 <div
                   className={clsx(
                     "p-1 rounded-circle",
-                    set.chosen ? "shadow-3px-2px shadow-green bg-dark-900" : "bg-transparent"
+                    set.chosen ? "shadow-3px-2px shadow-green-300 bg-dark-900" : "bg-transparent"
                   )}
                 >
                   <img src={getImgSrc(set.icon)} alt="" width="100%" draggable={false} />

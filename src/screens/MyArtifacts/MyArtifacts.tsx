@@ -133,7 +133,7 @@ export default function MyArtifacts() {
           <div className="flex cursor-pointer">
             <button
               className={clsx(
-                "pl-4 py-1 bg-lightgold glow-on-hover",
+                "pl-4 py-1 bg-yellow-400 glow-on-hover",
                 isFiltered ? "pr-2 rounded-l-2xl" : "pr-4 rounded-2xl"
               )}
               onClick={() => setModalType("FITLER")}

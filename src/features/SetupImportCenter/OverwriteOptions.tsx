@@ -97,7 +97,7 @@ export function OverrideOptions({
                     <span
                       className={
                         "cursor-pointer ml-2 text-lg " +
-                        (expandedIndex === i ? "text-green " : "text-light-400 hover:text-lightgold ")
+                        (expandedIndex === i ? "text-green-300 " : "text-light-400 hover:text-yellow-400 ")
                       }
                       onClick={onClickSeeDetails(i)}
                     >
@@ -112,8 +112,8 @@ export function OverrideOptions({
                           <tbody>
                             <Tr>
                               <Th />
-                              <Th className="text-lightgold">Old</Th>
-                              <Th className="text-lightgold">New</Th>
+                              <Th className="text-yellow-400">Old</Th>
+                              <Th className="text-yellow-400">New</Th>
                             </Tr>
 
                             {Object.keys(object1).map((type, k) => {

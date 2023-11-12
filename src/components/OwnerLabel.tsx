@@ -20,7 +20,7 @@ const SetupList = ({ item, onClickOutside }: SetupListProps) => {
 
   return (
     <div ref={listRef} className="px-4 py-2 flex flex-col overflow-auto">
-      <p className="text-orange font-medium">This item is used on these setups:</p>
+      <p className="text-orange-500 font-medium">This item is used on these setups:</p>
       {result.foundSetups.length ? (
         <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
           {result.foundSetups.map((setup, i) => {
@@ -74,11 +74,8 @@ export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
 
   return (
     <div
-      className={"mt-4 pl-4 font-bold text-black flex justify-between relative " + (className || "")}
-      style={{
-        backgroundColor: "#FFE7BB",
-        ...style,
-      }}
+      className={"mt-4 pl-4 font-bold bg-yellow-200 text-black flex justify-between relative " + (className || "")}
+      style={style}
     >
       <p className="py-1">Equipped: {item?.owner || "None"}</p>
 

@@ -17,7 +17,7 @@ export const Notification = (props: NotificationProps) => {
       case "error":
         return <FaExclamationCircle className="text-red-600" />;
       case "warn":
-        return <FaExclamationTriangle className="text-orange" />;
+        return <FaExclamationTriangle className="text-orange-500" />;
     }
   };
 

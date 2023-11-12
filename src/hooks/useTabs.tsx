@@ -30,9 +30,9 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
             "py-0.5 w-1/2 flex-center text-black font-bold",
             i === activeIndex
               ? level === 1
-                ? "bg-orange"
-                : "bg-lightorange"
-              : "bg-white opacity-80"
+                ? "bg-orange-500"
+                : "bg-blue-400"
+              : "bg-light-400 opacity-80"
           )}
           onClick={() => setActiveIndex(i)}
         >

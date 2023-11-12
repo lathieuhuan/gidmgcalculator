@@ -80,7 +80,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
 
   return (
     <div className="w-80 md1:w-96 h-full px-2 py-4 flex flex-col">
-      <h3 className="text-2xl text-orange text-center font-bold">SETTINGS</h3>
+      <h3 className="text-2xl text-orange-500 text-center font-bold">SETTINGS</h3>
 
       <div className="grow hide-scrollbar">
         <Section title="Calculator">

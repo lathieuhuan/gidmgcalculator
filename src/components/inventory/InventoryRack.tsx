@@ -185,7 +185,7 @@ export const InventoryRack = ({
           </button>
 
           <p className="font-bold">
-            <span className="text-orange">{pageNo + 1}</span> / {deadEnd + 1}
+            <span className="text-orange-500">{pageNo + 1}</span> / {deadEnd + 1}
           </p>
 
           <button onClick={goNext}>

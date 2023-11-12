@@ -97,15 +97,15 @@ export function GearsOverview({
         }}
       >
         <div>
-          <p className="text-lg text-orange font-semibold">Set bonus</p>
+          <p className="text-lg text-orange-500 font-semibold">Set bonus</p>
           <div className="mt-1 pl-2">
             {setBonuses.length ? (
               <>
-                <p className="text-green font-medium">
+                <p className="text-green-300 font-medium">
                   {appData.getArtifactSetData(setBonuses[0].code)?.name} ({setBonuses[0].bonusLv * 2 + 2})
                 </p>
                 {setBonuses[1] ? (
-                  <p className="mt-1 text-green font-medium">
+                  <p className="mt-1 text-green-300 font-medium">
                     {appData.getArtifactSetData(setBonuses[1].code)?.name} (2)
                   </p>
                 ) : null}
@@ -122,7 +122,7 @@ export function GearsOverview({
         className={clsx("mt-2", bonusStyles(activeDetails === "statsBonus"))}
         onClick={() => toggleDetails("statsBonus")}
       >
-        <p className="text-lg text-orange font-semibold">Artifact details</p>
+        <p className="text-lg text-orange-500 font-semibold">Artifact details</p>
         <InfoSign active={activeDetails === "statsBonus"} />
       </div>
     </div>

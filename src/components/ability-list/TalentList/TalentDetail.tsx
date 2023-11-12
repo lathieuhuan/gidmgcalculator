@@ -16,7 +16,7 @@ import { SlideShow } from "../components";
 
 const styles = {
   row: "pb-1 text-sm",
-  leftCol: "pr-6 text-dullyellow",
+  leftCol: "pr-6 text-yellow-300",
   rightCol: "font-bold text-right",
 };
 
@@ -69,7 +69,7 @@ export const TalentDetail = ({ charData, detailIndex, onChangeDetailIndex, onClo
     return (
       <button
         className={
-          "absolute top-2 flex px-2 rounded border-2 border-dark-500 text-dark-500 text-1.5xl hover:border-green hover:text-green " +
+          "absolute top-2 flex px-2 rounded border-2 border-dark-500 text-dark-500 text-1.5xl hover:border-green-300 hover:text-green-300 " +
           (isLevelUp ? "right-10" : "left-10")
         }
         onMouseDown={() => onMouseDownLevelButton(isLevelUp)}

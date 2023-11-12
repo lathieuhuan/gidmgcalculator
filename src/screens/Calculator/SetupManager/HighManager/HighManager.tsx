@@ -155,7 +155,7 @@ function HighManagerCore() {
         <FaTimes />
       </button>
 
-      <p className="my-2 text-2xl text-center text-orange font-bold">MANAGE SETUPS</p>
+      <p className="my-2 text-2xl text-center text-orange-500 font-bold">MANAGE SETUPS</p>
 
       <div className="flex-grow hide-scrollbar">
         <div>
@@ -185,7 +185,7 @@ function HighManagerCore() {
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-light-400"
+                className="w-full bg-blue-400 text-black"
                 icon={<FaPlus />}
                 onClick={addNewSetup}
               >
@@ -193,8 +193,8 @@ function HighManagerCore() {
               </Button>
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-light-400"
-                icon={<BiImport />}
+                className="w-full bg-blue-400 text-black"
+                icon={<BiImport className="text-xl" />}
                 onClick={() => setImportManageOn(true)}
               >
                 Import

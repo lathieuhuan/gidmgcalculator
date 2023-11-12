@@ -27,7 +27,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
     return (
       <div
         className={clsx(
-          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
+          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-light-400 rounded-circle",
           styles["side-icon"],
           !sideIcon && "overflow-hidden"
         )}
@@ -60,7 +60,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
           <p
             className={
               "absolute top-1 left-1 rounded px-1 text-sm font-bold " +
-              (refi === 5 ? "bg-black text-orange" : "bg-black/60 text-light-400")
+              (refi === 5 ? "bg-black text-orange-500" : "bg-black/60 text-light-400")
             }
           >
             {refi}
