@@ -15,7 +15,7 @@ export const Notification = (props: NotificationProps) => {
       case "success":
         return <FaCheckCircle style={{ color: "#2fa80a" }} />;
       case "error":
-        return <FaExclamationCircle className="text-darkred" />;
+        return <FaExclamationCircle className="text-red-600" />;
       case "warn":
         return <FaExclamationTriangle className="text-orange" />;
     }

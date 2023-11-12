@@ -54,7 +54,7 @@ export default function MySetups() {
     if (!userSetups.length) {
       return (
         <div className="pt-8 flex-center" style={{ minWidth: 320 }}>
-          <p className="text-xl font-bold text-lightred">No setups to display</p>
+          <p className="text-xl font-bold text-red-100">No setups to display</p>
         </div>
       );
     }
@@ -105,7 +105,7 @@ export default function MySetups() {
   const chosenSetupInfo = (() => {
     if (chosenSetup) {
       if (error) {
-        return <p className="text-center text-lightred">{error}</p>;
+        return <p className="text-center text-red-100">{error}</p>;
       }
       if (isLoading) {
         return (

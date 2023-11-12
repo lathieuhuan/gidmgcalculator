@@ -178,7 +178,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
           {isOriginal ? null : window.innerWidth > 1025 ? (
             <Button
-              className="hover:text-darkred group"
+              className="hover:text-red-400 group"
               variant="custom"
               icon={
                 <>

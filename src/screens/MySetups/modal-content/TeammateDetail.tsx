@@ -34,7 +34,7 @@ export const TeammateDetail = ({
           <p className={`px-4 text-2xl text-${data.vision} font-bold`}>{teammate.name}</p>
         </div>
         <span className="ml-auto p-1">
-          <Button className="hover:text-darkred" boneOnly icon={<FaTimes />} onClick={onClose} />
+          <Button className="hover:text-red-600" boneOnly icon={<FaTimes />} onClick={onClose} />
         </span>
       </div>
 

@@ -149,7 +149,7 @@ function HighManagerCore() {
   return (
     <div className="p-4 h-full flex flex-col">
       <button
-        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-darkred"
+        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-red-400"
         onClick={() => dispatch(updateUI({ highManagerActive: false }))}
       >
         <FaTimes />
@@ -207,7 +207,7 @@ function HighManagerCore() {
       <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApplyNewSettings}>
         {errorCode === "NO_SETUPS" && (
           <Popover
-            className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-lightred group-hover:scale-100"
+            className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-red-100 group-hover:scale-100"
             withTooltipStyle
           >
             Please have atleast 1 setup

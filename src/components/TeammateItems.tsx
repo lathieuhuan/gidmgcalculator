@@ -86,7 +86,7 @@ export const TeammateItems = ({
         </p>
         {artifactSetName && mutable && (
           <Button
-            className="mt-1 self-start hover:text-darkred"
+            className="mt-1 self-start hover:text-red-400"
             boneOnly
             icon={<FaTimes />}
             onClick={onClickRemoveArtifact}

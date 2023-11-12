@@ -23,7 +23,7 @@ export const SettingsGuide = () => {
         next visits. It takes less than 500KB to store 200 weapons & 800 artifacts. Those are current limits of the user
         database.
       </p>
-      <p className="text-lightred">
+      <p className="text-red-100">
         - Change of "Auto save my database to browser's local storage" option can remove your current data and works on
         the App.
       </p>

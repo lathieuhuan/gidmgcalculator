@@ -140,7 +140,7 @@ export function OverrideOptions({
                                 <Tr key={k}>
                                   <Td
                                     className={
-                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-lightred" : "")
+                                      "capitalize" + (object1[type] !== object2?.[type] ? " text-red-100" : "")
                                     }
                                   >
                                     {t(type, { ns: i ? "resistance" : "common" })}

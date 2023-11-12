@@ -25,7 +25,7 @@ const Table = ({ className = "", colAttrs, children, ...rest }: TableProps) => (
 Table.Tr = ({ className = "", ...rest }: HTMLAttributes<HTMLTableRowElement>) => (
   <tr
     className={
-      "odd:bg-dark-900 even:bg-dark-700 hover:bg-darkerred first:hover:bg-dark-900 " +
+      "odd:bg-dark-900 even:bg-dark-700 hover:bg-red-800 first:hover:bg-dark-900 " +
       className
     }
     {...rest}

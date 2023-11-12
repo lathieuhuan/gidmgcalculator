@@ -88,7 +88,7 @@ export function NavBar() {
                 {isLargeView ? null : (
                   <NavTabs
                     className="px-4 py-2"
-                    activeClassName="border-l-4 border-darkred bg-dark-900 text-light-400"
+                    activeClassName="border-l-4 border-red-400 bg-dark-900 text-light-400"
                     onClickTab={closeMenu}
                   />
                 )}

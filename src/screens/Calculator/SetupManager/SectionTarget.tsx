@@ -25,7 +25,7 @@ export default function SectionTarget({ onMinimize, onEdit }: SectionTargetProps
         <Button className="hover:text-lightgold" boneOnly icon={<FaMinus />} onClick={onMinimize} />
         <Button className="hover:text-lightgold" boneOnly icon={<FaEdit />} onClick={onEdit} />
       </div>
-      <p className="text-sm text-lightred">Target</p>
+      <p className="text-sm text-red-100">Target</p>
 
       <div className="mt-2 pr-6 flex flex-col items-start">
         {names ? (

@@ -177,7 +177,7 @@ export function SetupSelect() {
                   },
                 },
                 {
-                  className: "hover:bg-darkred hover:text-light-400",
+                  className: "hover:bg-red-600 hover:text-light-400",
                   children: <FaTrashAlt />,
                   disabled: setupManageInfos.length < 2,
                   onClick: () => {

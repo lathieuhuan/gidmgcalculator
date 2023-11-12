@@ -21,7 +21,7 @@ const EmSection = ({ em }: EmSectionProps) => {
   return (
     <div>
       <StatsTable.Row
-        className="cursor-pointer !bg-transparent hover:!bg-darkerred"
+        className="cursor-pointer !bg-transparent hover:!bg-red-800"
         onClick={() => setDropped(!dropped)}
       >
         <div className="flex items-center">

@@ -31,7 +31,7 @@ export const Introduction = (props: ModalControl) => {
 
   const typeToCls: Record<string, string> = {
     e: "text-lightgold",
-    u: "text-lightred",
+    u: "text-red-100",
     f: "text-green",
   };
 
@@ -111,7 +111,7 @@ export const Introduction = (props: ModalControl) => {
                     </div>
                   ))
                 ) : (
-                  <div className="h-20 flex-center text-lightred">
+                  <div className="h-20 flex-center text-red-100">
                     <p>Failed to get updates</p>
                   </div>
                 )}
@@ -162,7 +162,7 @@ export const Introduction = (props: ModalControl) => {
             ))}
           </ul>
         ) : (
-          <div className="h-20 flex-center text-lightred">
+          <div className="h-20 flex-center text-red-100">
             <p>Failed to get supporters</p>
           </div>
         )}

@@ -31,7 +31,7 @@ export const PorterLayout = ({
         {message ? (
           <p
             className={
-              "mt-2 text-center" + (message.type ? (message.type === "success" ? " text-green" : " text-lightred") : "")
+              "mt-2 text-center" + (message.type ? (message.type === "success" ? " text-green" : " text-red-100") : "")
             }
           >
             {message.text}

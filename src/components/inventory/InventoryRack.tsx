@@ -152,7 +152,7 @@ export const InventoryRack = ({
                       <>
                         {chosenIDs?.[item.ID] && (
                           <button
-                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-darkred rounded-md"
+                            className="absolute z-10 top-1 left-1 w-8 h-8 flex-center bg-red-600 rounded-md"
                             onClick={() => onUnchooseItem?.(item)}
                           >
                             <FaMinus />
@@ -172,7 +172,7 @@ export const InventoryRack = ({
             </div>
           ) : (
             <div className="w-full pt-8 flex-center">
-              <p className="text-xl font-bold text-lightred">No {itemType} to display</p>
+              <p className="text-xl font-bold text-red-100">No {itemType} to display</p>
             </div>
           )
         ) : null}

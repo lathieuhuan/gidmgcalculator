@@ -44,7 +44,7 @@ const DownloadOptions = () => {
         Download
       </Button>
 
-      <p className="mt-4 text-center text-lightred">
+      <p className="mt-4 text-center text-red-100">
         Please DO NOT modify this file if you don't understand how it works.
       </p>
     </div>

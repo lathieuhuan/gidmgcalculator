@@ -174,7 +174,7 @@ function SortInner({ onClose }: { onClose: () => void }) {
   return (
     <div className="px-2 py-4 rounded-lg bg-dark-900">
       <Button
-        className="absolute top-1 right-1 text-xl hover:text-darkred"
+        className="absolute top-1 right-1 text-xl hover:text-red-600"
         boneOnly
         icon={<FaTimes />}
         onClick={onClose}

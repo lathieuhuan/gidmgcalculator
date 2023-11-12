@@ -119,7 +119,7 @@ const SettingsCore = ({ onClose }: SettingsProps) => {
               {tempSettings.persistingUserData && (
                 <li>Your data is available on this browser only and will be lost if the local storage is cleared.</li>
               )}
-              <li className="text-lightred">
+              <li className="text-red-100">
                 Change of this setting can remove your current data and works on the App!
               </li>
             </ul>

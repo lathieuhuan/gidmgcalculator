@@ -52,7 +52,7 @@ const CharacterInfo = () => {
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="p-4 rounded-lg bg-dark-900 shrink-0" style={{ width: 332 }}>
             {error ? (
-              <p className="text-center text-lightred">{error}</p>
+              <p className="text-center text-red-100">{error}</p>
             ) : (
               <div className="w-full h-full flex-center">
                 <LoadingIcon />

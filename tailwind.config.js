@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 const colors = require("tailwindcss/colors");
 
 module.exports = {
@@ -35,33 +34,32 @@ module.exports = {
     },
     colors: {
       light: {
-        // 100: "#ffffff"
+        // root: "#ffffff"
         400: "#e0e0e0",
         800: "#b8b8b8",
       },
-      // default: "#e6e6e6",
-      // lesser: "#b9b9b9",
       dark: {
-        500: "#0e196c",
-        700: "#091148",
+        500: "#2c315c",
+        700: "#151a40",
         900: "#050926",
       },
       red: {
-        400: colors.red[400],
-        500: colors.red[500],
+        100: "#ff8d8c",
+        200: "#ff7370",
+        // 300: "#ff4a47",
+        400: "#ff221f",
+        // 500: "#f50400",
+        600: "#cc0300",
+        700: "#a30300",
+        800: "#7a0200",
+        // 900: "#520100"
       },
       black: colors.black,
       white: colors.white,
       blue: colors.blue,
       transparent: colors.transparent,
-      // darkblue: {
-      //   1: "#050926",
-      //   2: "#151a40",
-      //   3: "#2c315c",
-      // },
-      darkred: "#cd212a",
-      darkerred: "#8a1200",
-      lightred: "#ff8d8c",
+      // darkred: "#cd212a",
+      // darkerred: "#8a1200",
       lightgold: "#edc73d",
       lightorange: "#ffa629",
       dullyellow: "#f5dc6e",

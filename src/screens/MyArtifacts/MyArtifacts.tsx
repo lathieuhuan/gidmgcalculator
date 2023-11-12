@@ -143,7 +143,7 @@ export default function MyArtifacts() {
 
             {isFiltered && (
               <div
-                className="pl-2 pr-3 rounded-r-2xl bg-darkred flex-center glow-on-hover"
+                className="pl-2 pr-3 rounded-r-2xl bg-red-600 flex-center glow-on-hover"
                 onClick={() => {
                   setFilteredType([]);
                   setCodes([]);

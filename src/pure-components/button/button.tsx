@@ -6,13 +6,13 @@ import { StringRecord } from "@Src/types";
 const bgColorByVariant: StringRecord = {
   positive: "bg-lightgold",
   neutral: "bg-green",
-  negative: "bg-darkred",
+  negative: "bg-red-600",
   default: "bg-light-400",
 };
 const colorByVariant: StringRecord = {
   positive: "text-lightgold",
   neutral: "text-green",
-  negative: "text-darkred",
+  negative: "text-red-600",
   default: "text-light-400",
 };
 
@@ -143,7 +143,7 @@ export const CloseButton = ({ hoverRed = true, ...rest }: CloseButtonProps) => {
         variant="default"
         icon={<FaTimes className="shrink-0" />}
         {...rest}
-        className={rest.className + (hoverRed ? " hover:text-darkred" : "")}
+        className={rest.className + (hoverRed ? " hover:text-red-600" : "")}
       />
     );
   }

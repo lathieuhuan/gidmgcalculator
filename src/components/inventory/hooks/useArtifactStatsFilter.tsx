@@ -102,7 +102,7 @@ export function useArtifactStatsFilter({ artifactType, stats, isError }: UseArti
           );
         })}
       </div>
-      {isError && <p className="mt-4 px-2 text-lightred text-right">Every stat must be unique!</p>}
+      {isError && <p className="mt-4 px-2 text-red-100 text-right">Every stat must be unique!</p>}
     </div>
   );
 
