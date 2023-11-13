@@ -210,6 +210,7 @@ export type DebuffModifierArgsWrapper = {
   char: CharInfo;
   resistReduct: ResistanceReduction;
   attPattBonus: AttackPatternBonus;
+  charData: AppCharacter;
   partyData: PartyData;
   tracker?: Tracker;
 };

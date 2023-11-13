@@ -64,12 +64,12 @@ const Wriothesley: DefaultAppCharacter = {
       description: `When Wriothesley's HP is less than 60%, his next {Charged Attack}#[gr] becomes
       <b>Rebuke: Vaulting Fist</b> dealing {50%}#[b,gr] increased {DMG}#[gr]. Effect cooldown: 5s.
       <br />• At {C1}#[g], this effect triggers when Wriothesley's HP is less than 50% or while he is in the Chilling
-      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {100%}#[b,gr] increased {DMG}#[gr].
+      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {200%}#[b,gr] increased {DMG}#[gr].
       Effect cooldown: 2.5s.
       <br/ >• At {C6}#[g], increases Rebuke: Vaulting Fist {CRIT Rate}#[gr] by {10%}#[b,gr] and {CRIT DMG}#[gr] by
       {80%}#[b,gr]`,
       applyBuff: (obj) => {
-        applyModifier(obj.desc, obj.attPattBonus, "CA.pct_", checkCons[1](obj.char) ? 100 : 50, obj.tracker);
+        applyModifier(obj.desc, obj.attPattBonus, "CA.pct_", checkCons[1](obj.char) ? 200 : 50, obj.tracker);
 
         if (checkCons[6](obj.char)) {
           applyModifier(EModSrc.C6, obj.attPattBonus, ["CA.cRate_", "CA.cDmg_"], [10, 80], obj.tracker);

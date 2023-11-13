@@ -64,9 +64,8 @@ const Nilou: DefaultAppCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
-        const { dendro, hydro, ...rest } = countVision(partyData, charData);
-
-        if (dendro && hydro && !Object.keys(rest).length) {
+        const { dendro, hydro, ...others } = countVision(partyData, charData);
+        if (dendro && hydro && !Object.keys(others).length) {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },

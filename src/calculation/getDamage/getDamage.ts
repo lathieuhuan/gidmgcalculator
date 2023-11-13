@@ -55,6 +55,7 @@ export default function getDamage({
     char,
     resistReduct,
     attPattBonus,
+    charData,
     partyData,
     tracker,
   };

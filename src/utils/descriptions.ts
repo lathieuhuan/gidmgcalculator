@@ -4,7 +4,7 @@ import { round } from "./pure-utils";
 const colorCodeToCls: Record<string, string> = {
   b: "font-bold",
   gr: "text-green-300",
-  r: "text-rose-500",
+  r: "text-red-rose",
   g: "text-yellow-400",
   l: "text-light-800",
   anemo: "text-anemo",
@@ -49,7 +49,7 @@ export const parseCharacterDescription = (
 const typeToCls: Record<string, string> = {
   k: "text-green-300",
   v: "text-green-300 font-bold",
-  m: "text-rose-500",
+  m: "text-red-rose",
 };
 const wrapText = (text: string | number, type: string) => {
   return `<span class="${typeToCls[type] || ""}">${text}</span>`;

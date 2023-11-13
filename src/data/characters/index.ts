@@ -11,6 +11,7 @@ import Beidou from "./list/Beidou";
 import Bennett from "./list/Bennett";
 import Candace from "./list/Candace";
 import Charlotte from "./list/Charlotte";
+import Chevreuse from "./list/Chevreuse";
 import Chongyun from "./list/Chongyun";
 import Collei from "./list/Collei";
 import Cyno from "./list/Cyno";
@@ -48,6 +49,7 @@ import Lyney from "./list/Lyney";
 import Mika from "./list/Mika";
 import Mona from "./list/Mona";
 import Nahida from "./list/Nahida";
+import Navia from "./list/Navia";
 import Neuvillette from "./list/Neuvillette";
 import Nilou from "./list/Nilou";
 import Ningguang from "./list/Ningguang";
@@ -92,6 +94,7 @@ const characters = [
   Bennett,
   Candace,
   Charlotte,
+  Chevreuse,
   Chongyun,
   Collei,
   Cyno,
@@ -130,6 +133,7 @@ const characters = [
   Mona,
   Neuvillette,
   Nahida,
+  Navia,
   Nilou,
   Ningguang,
   Noelle,
