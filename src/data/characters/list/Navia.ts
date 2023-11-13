@@ -43,7 +43,7 @@ const Navia: DefaultAppCharacter = {
       upto {24%}#[m].
       <br />• At {C6}#[ms], each charge consumed beyond 3 will increase Ceremonial Crystalshot's {CRIT DMG}#[k] by
       {35%}#[v].
-      <br>{If you leave "Rosula Shardshots hit" at 0, it will be set to max according to "Crystal Shrapnel consumed."}#[n]`,
+      <br>{-- If you leave "Rosula Shardshots hit" at 0, it will have maximum value based on "Crystal Shrapnel consumed." --}#[n]`,
       inputConfigs: [
         {
           type: "stacks",
@@ -59,8 +59,9 @@ const Navia: DefaultAppCharacter = {
         },
       ],
       applyBuff: (obj) => {
-        const charges = obj.inputs[0] ?? 0;
-        const shotsHit = obj.inputs[1] || ([5, 7, 9, 11][charges] ?? 11);
+        const [charges = 0, inputShots = 0] = obj.inputs;
+        const maxShots = [5, 7, 9, 11][charges];
+        const shotsHit = inputShots ? Math.min(inputShots, maxShots) : maxShots ?? 11;
         const multPlus = [0, 0, 5, 10, 15, 20, 36, 40, 60, 66.6, 90, 100][shotsHit] ?? 0;
         if (multPlus) {
           obj.calcItemBuffs.push(genExclusiveBuff(obj.desc, "ES.0", "multPlus", multPlus));
