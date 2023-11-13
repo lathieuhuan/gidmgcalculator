@@ -42,7 +42,8 @@ const Navia: DefaultAppCharacter = {
       <br />• At {C2}#[g], each charge consumed increases the Ceremonial Crystalshot's {CRIT Rate}#[gr] by {8%}#[b,gr],
       upto {24%}#[r].
       <br />• At {C6}#[g], each charge consumed beyond 3 will increase Ceremonial Crystalshot's {CRIT DMG}#[gr] by
-      {35%}#[b,gr].`,
+      {35%}#[b,gr].
+      <br>{If you leave "Rosula Shardshots hit" at 0, it will be set to max according to "Crystal Shrapnel consumed"}#[l]`,
       inputConfigs: [
         {
           type: "stacks",
