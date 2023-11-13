@@ -29,7 +29,7 @@ const Diluc: DefaultAppCharacter = {
         }
       },
       description: `After casting Dawn [EB], Diluc gains a {Pyro Infusion}#[pyro].
-      <br />• At {A4}#[g], Diluc gains {20%}#[b,gr] {Pyro DMG Bonus}#[gr] during this duration.`,
+      <br />• At {A4}#[ms], Diluc gains {20%}#[v] {Pyro DMG Bonus}#[k] during this duration.`,
       infuseConfig: {
         overwritable: true,
       },
@@ -38,7 +38,7 @@ const Diluc: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `Diluc deals {15%}#[b,gr] more {DMG}#[gr] to opponents whose HP is above 50%.`,
+      description: `Diluc deals {15%}#[v] more {DMG}#[k] to opponents whose HP is above 50%.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "all.pct_", 15),
     },
@@ -46,8 +46,8 @@ const Diluc: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Diluc takes DMG, his {ATK}#[gr] increases by {10%}#[b,gr] and {ATK SPD}#[gr] increases by
-      {5%}#[b,gr] for 10s, up to {3}#[r] times.`,
+      description: `When Diluc takes DMG, his {ATK}#[k] increases by {10%}#[v] and {ATK SPD}#[k] increases by
+      {5%}#[v] for 10s, up to {3}#[m] times.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -66,7 +66,7 @@ const Diluc: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       description: `Within 2s after casting Searing Onslaught [ES], casting the next Searing Onslaught in the combo deals
-      {40%}#[b,gr] {DMG Bonus}#[gr].`,
+      {40%}#[v] {DMG Bonus}#[k].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "ES.pct_", 40),
     },
@@ -74,8 +74,8 @@ const Diluc: DefaultAppCharacter = {
       index: 5,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `Within 6s after casting Searing Onslaught [ES], the next {2}#[r] {Normal Attacks}#[gr] will
-      have their {DMG and ATK SPD}#[b,gr] increased by {30%}#[b,gr].`,
+      description: `Within 6s after casting Searing Onslaught [ES], the next {2}#[m] {Normal Attacks}#[k] will
+      have their {DMG and ATK SPD}#[v] increased by {30%}#[v].`,
       isGranted: checkCons[6],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "NA.pct_", 30, tracker);

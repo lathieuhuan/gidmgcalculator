@@ -29,9 +29,9 @@ const Faruzan: DefaultAppCharacter = {
       index: 0,
       src: "Prayerful Wind's Benefit",
       affect: EModAffect.PARTY,
-      description: `Increases {Anemo DMG Bonus}#[gr] by {@0}#[b,gr] to all nearby characters.
-      <br />• At {A4}#[g], increases {Anemo DMG}#[anemo] based on {32%}#[b,gr] of Faruzan's {Base ATK}#[gr].
-      <br />• At {C6}#[g], increases {Anemo CRIT DMG}#[gr] by {40%}#[b,gr].`,
+      description: `Increases {Anemo DMG Bonus}#[k] by {@0}#[v] to all nearby characters.
+      <br />• At {A4}#[ms], increases {Anemo DMG}#[anemo] based on {32%}#[v] of Faruzan's {Base ATK}#[k].
+      <br />• At {C6}#[ms], increases {Anemo CRIT DMG}#[k] by {40%}#[v].`,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Ascension 4", type: "check", for: "teammate" },
@@ -64,7 +64,7 @@ const Faruzan: DefaultAppCharacter = {
     {
       index: 0,
       src: "Perfidious Wind's Bale",
-      description: `Decreases opponents' {Anemo RES}#[gr] by {30%}#[b,gr].`,
+      description: `Decreases opponents' {Anemo RES}#[k] by {30%}#[v].`,
       applyDebuff: makeModApplier("resistReduct", "anemo", 30),
     },
   ],

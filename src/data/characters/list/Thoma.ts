@@ -22,7 +22,7 @@ const Thoma: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `{Fiery Collapse DMG}#[gr] [~EB] is increased by {2.2%}#[b,gr] of Thoma's {Max HP}#[gr].`,
+      description: `{Fiery Collapse DMG}#[k] [~EB] is increased by {2.2%}#[v] of Thoma's {Max HP}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "EB.0", "flat", applyPercent(totalAttr.hp, 2.2)));
@@ -35,7 +35,7 @@ const Thoma: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
       description: `When your active character obtains or refreshes a Blazing Barrier, this character's
-      {Shield Strength}#[gr] will increase by {5%}#[b,gr] for 6s. Max {5}#[r] stacks.`,
+      {Shield Strength}#[k] will increase by {5%}#[v] for 6s. Max {5}#[m] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -52,7 +52,7 @@ const Thoma: DefaultAppCharacter = {
       src: EModSrc.C6,
       isGranted: checkCons[6],
       description: `When a Blazing Barrier is obtained or refreshed, all party members'
-      {Normal, Charged, and Plunging Attack DMG}#[gr] is increased by {15%}#[b,gr] for 6s.`,
+      {Normal, Charged, and Plunging Attack DMG}#[k] is increased by {15%}#[v] for 6s.`,
       affect: EModAffect.PARTY,
       applyBuff: makeModApplier("attPattBonus", [...NCPA_PERCENTS], 15),
     },

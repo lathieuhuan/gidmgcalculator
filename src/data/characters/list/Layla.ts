@@ -22,7 +22,7 @@ const Layla: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `{Shooting Star DMG}#[gr] [~ES] is increased by {1.5%}#[b,gr] of Layla's {Max HP}#[gr].`,
+      description: `{Shooting Star DMG}#[k] [~ES] is increased by {1.5%}#[v] of Layla's {Max HP}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "ES.0", "flat", applyPercent(totalAttr.hp, 1.5)));
@@ -30,7 +30,7 @@ const Layla: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C1,
-      description: `The {Shield Absorption}#[gr] of the Curtain of Slumber [~ES] is increased by {20%}#[b,gr].`,
+      description: `The {Shield Absorption}#[k] of the Curtain of Slumber [~ES] is increased by {20%}#[v].`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.1", "pct_", 20));
@@ -38,7 +38,7 @@ const Layla: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C6,
-      description: `Increases {Shooting Star DMG}#[gr] [~ES] and {Starlight Slug DMG}#[gr] [~EB] by {40%}#[b,gr].`,
+      description: `Increases {Shooting Star DMG}#[k] [~ES] and {Starlight Slug DMG}#[k] [~EB] by {40%}#[v].`,
       isGranted: checkCons[6],
       applyBuff: ({ attPattBonus, calcItemBuffs, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "EB.pct_", 40, tracker);
@@ -51,8 +51,8 @@ const Layla: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Each time the Curtain of Slumber [~ES] gains a Night Star, the {Shield Strength}#[gr] of the
-      character is increased by {6%}#[b,gr]. Max {4}#[r] stacks.`,
+      description: `Each time the Curtain of Slumber [~ES] gains a Night Star, the {Shield Strength}#[k] of the
+      character is increased by {6%}#[v]. Max {4}#[m] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -69,7 +69,7 @@ const Layla: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
       description: `When Nights of Formal Focus [ES] starts to fire off Shooting Stars, it will increases
-      {Normal and Charged Attack DMG}#[gr] of nearby party members based on {5%}#[b,gr] of Layla's {Max HP}#[gr].`,
+      {Normal and Charged Attack DMG}#[k] of nearby party members based on {5%}#[v] of Layla's {Max HP}#[k].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {

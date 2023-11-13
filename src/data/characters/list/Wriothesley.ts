@@ -29,11 +29,11 @@ const Wriothesley: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `In Chilling Penalty state, when Wriothesley's HP is above 50%, his {Normal Attack DMG}#[gr] will be
-      increased by {@0}#[b,gr] times and normal attacks will consume his HP on hit.
-      <br />• At {A4}#[g], when Wriothesley's current HP increases or decreases, this state gain 1 stack. Each stack
-      increase Wriothesley's {ATK}#[gr] by {6%}#[b,gr]. Max {5}#[r] stacks. At {C2}#[g], each stack also increases
-      Darkgold Wolfbite {[EB] DMG}#[gr] by {40%}#[b,gr].`,
+      description: `In Chilling Penalty state, when Wriothesley's HP is above 50%, his {Normal Attack DMG}#[k] will be
+      increased by {@0}#[v] times and normal attacks will consume his HP on hit.
+      <br />• At {A4}#[ms], when Wriothesley's current HP increases or decreases, this state gain 1 stack. Each stack
+      increase Wriothesley's {ATK}#[k] by {6%}#[v]. Max {5}#[m] stacks. At {C2}#[ms], each stack also increases
+      Darkgold Wolfbite {[EB] DMG}#[k] by {40%}#[v].`,
       inputConfigs: [
         {
           label: "Stacks (A4)",
@@ -61,13 +61,13 @@ const Wriothesley: DefaultAppCharacter = {
       src: "Gracious Rebuke [A1]",
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
-      description: `When Wriothesley's HP is less than 60%, his next {Charged Attack}#[gr] becomes
-      <b>Rebuke: Vaulting Fist</b> dealing {50%}#[b,gr] increased {DMG}#[gr]. Effect cooldown: 5s.
-      <br />• At {C1}#[g], this effect triggers when Wriothesley's HP is less than 50% or while he is in the Chilling
-      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {200%}#[b,gr] increased {DMG}#[gr].
+      description: `When Wriothesley's HP is less than 60%, his next {Charged Attack}#[k] becomes
+      <b>Rebuke: Vaulting Fist</b> dealing {50%}#[v] increased {DMG}#[k]. Effect cooldown: 5s.
+      <br />• At {C1}#[ms], this effect triggers when Wriothesley's HP is less than 50% or while he is in the Chilling
+      Penalty state, when the fifth normal attack hits. Rebuke: Vaulting Fist deals {200%}#[v] increased {DMG}#[k].
       Effect cooldown: 2.5s.
-      <br/ >• At {C6}#[g], increases Rebuke: Vaulting Fist {CRIT Rate}#[gr] by {10%}#[b,gr] and {CRIT DMG}#[gr] by
-      {80%}#[b,gr]`,
+      <br/ >• At {C6}#[ms], increases Rebuke: Vaulting Fist {CRIT Rate}#[k] by {10%}#[v] and {CRIT DMG}#[k] by
+      {80%}#[v]`,
       applyBuff: (obj) => {
         applyModifier(obj.desc, obj.attPattBonus, "CA.pct_", checkCons[1](obj.char) ? 200 : 50, obj.tracker);
 
@@ -81,8 +81,8 @@ const Wriothesley: DefaultAppCharacter = {
       src: EModSrc.C4,
       isGranted: checkCons[4],
       affect: EModAffect.PARTY,
-      description: `When Wriothesley is over healed, if he is on the field, his {ATK SPD}#[gr] will be increased by
-      {20%}#[b,gr] for 4s, otherwise all party members' {ATK SPD}#[gr] will be increased by {10%}#[b,gr] for 6s.`,
+      description: `When Wriothesley is over healed, if he is on the field, his {ATK SPD}#[k] will be increased by
+      {20%}#[v] for 4s, otherwise all party members' {ATK SPD}#[k] will be increased by {10%}#[v] for 6s.`,
       applyBuff: (obj) => {
         applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", obj.fromSelf ? 20 : 10, obj.tracker);
       },

@@ -21,7 +21,7 @@ const Tartaglia: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Tartaglia's {Normal and Charged Attacks}#[gr] are converted to {Hydro DMG}#[hydro] that cannot be
+      description: `Tartaglia's {Normal and Charged Attacks}#[k] are converted to {Hydro DMG}#[hydro] that cannot be
       overridden.`,
       infuseConfig: {
         overwritable: false,

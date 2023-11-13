@@ -77,8 +77,8 @@ const Raiden: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `Each 1% above 100% {Energy Recharge}#[gr] grants the Raiden Shogun {0.4%}#[b,gr]
-      {Electro DMG Bonus}#[gr].`,
+      description: `Each 1% above 100% {Energy Recharge}#[k] grants the Raiden Shogun {0.4%}#[v]
+      {Electro DMG Bonus}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const buffValue = getBuffValue.A4(totalAttr);
@@ -92,7 +92,7 @@ const Raiden: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
-      description: `Eye of Stormy Judgment increases {Elemental Burst DMG}#[gr] based on the {Energy Cost}#[gr] of
+      description: `Eye of Stormy Judgment increases {Elemental Burst DMG}#[k] based on the {Energy Cost}#[k] of
       the Elemental Burst.`,
       inputConfigs: [
         {
@@ -111,14 +111,14 @@ const Raiden: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Musou no Hitotachi and Musou Isshin's attacks {[EB] DMG}#[gr] will be increased based on the number
+      description: `Musou no Hitotachi and Musou Isshin's attacks {[EB] DMG}#[k] will be increased based on the number
       of Resolve consumed.
       <br />--- Total Resolve: {@0}#[b] ---
       <br />Grants an {Electro Infusion}#[electro] which cannot be overridden.
-      <br />• At {C1}#[g], increases {Resolve}#[gr] gained from Electro characters by {80%}#[b,gr], from characters of
-      other visions by {20%}#[b,gr].
+      <br />• At {C1}#[ms], increases {Resolve}#[k] gained from Electro characters by {80%}#[v], from characters of
+      other visions by {20%}#[v].
       <br />--- Extra Resolve: {@1}#[b] ---
-      <br />• At {C2}#[g], the Raiden Shogun's attacks ignore {60%}#[b,gr] of opponents' {DEF}#[gr].`,
+      <br />• At {C2}#[ms], the Raiden Shogun's attacks ignore {60%}#[v] of opponents' {DEF}#[k].`,
       inputConfigs: [
         { label: "Total Energy spent", type: "text", max: 999 },
         { label: "Energy spent by Electro characters (C1)", type: "text", max: 999 },
@@ -152,7 +152,7 @@ const Raiden: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.TEAMMATE,
       description: `When the Musou Isshin state expires, all nearby party members (excluding the Raiden Shogun) gain
-      {30%}#[b,gr] {ATK}#[gr] for 10s.`,
+      {30%}#[v] {ATK}#[k] for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "atk_", 30),
     },

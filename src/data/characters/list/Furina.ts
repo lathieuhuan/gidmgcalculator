@@ -35,8 +35,8 @@ const Furina: DefaultAppCharacter = {
     {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
-      description: `Every 1,000 points of Furina's Max HP will increase {Salon Member DMG}#[gr] by {0.7%}#[b,gr],
-      upto {28%}#[r].`,
+      description: `Every 1,000 points of Furina's Max HP will increase {Salon Member DMG}#[k] by {0.7%}#[v],
+      upto {28%}#[m].`,
       applyFinalBuff: (obj) => {
         let bonusValue = (obj.totalAttr.hp / 1000) * 0.7;
         bonusValue = bonusValue > 28 ? 28 : round(bonusValue, 2);
@@ -50,7 +50,7 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.ES,
       affect: EModAffect.SELF,
       description: `When 1/2/3/4 nearby characters with more than 50% HP get their HP consumed by Salon Members, the
-      members DMG will be increased by {1.1}#[b,gr]/{1.2}#[b,gr]/{1.3}#[b,gr]/{1.4}#[b,gr] times.`,
+      members DMG will be increased by {1.1}#[v]/{1.2}#[v]/{1.3}#[v]/{1.4}#[v] times.`,
       inputConfigs: [
         {
           type: "stacks",
@@ -67,8 +67,8 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
       description: `Every 1% of a party member's HP changed will grant Furina 1 Fanfare point. Each point increases
-      {@0}#[b,gr] {DMG}#[gr] of all party members. Max {300}#[r] points.
-      <br/>At {C1}#[g], gains {150}#[b,gr] points by default (auto added) and the limit is increased by 100.`,
+      {@0}#[v] {DMG}#[k] of all party members. Max {300}#[m] points.
+      <br/>At {C1}#[ms], gains {150}#[v] points by default (auto added) and the limit is increased by 100.`,
       inputConfigs: [
         {
           type: "text",
@@ -105,7 +105,7 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.C2,
       affect: EModAffect.SELF,
       description: `Fanfare gain (not by C1) is increased by 250%. Each Fanfare point above the limit (400) will
-      increase Furina's {Max HP}#[gr] by {0.35%}#[b,gr], upto {140%}#[r].`,
+      increase Furina's {Max HP}#[k] by {0.35%}#[v], upto {140%}#[m].`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -124,8 +124,8 @@ const Furina: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.SELF,
       description: `When using Salon Solitaire [ES] Furina gains "Center of Attention" for 10s. Grants a Hydro
-      Infusion and increases {Normal, Charged, and Plunging Attack DMG}#[gr] by {18%}#[b,gr] of Furina
-      {Max HP}#[gr]. At Pneuma alignment this bonus is increased further by {25%}#[b,gr] of her {Max HP}#[gr].`,
+      Infusion and increases {Normal, Charged, and Plunging Attack DMG}#[k] by {18%}#[v] of Furina
+      {Max HP}#[k]. At Pneuma alignment this bonus is increased further by {25%}#[v] of her {Max HP}#[k].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

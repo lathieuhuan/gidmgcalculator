@@ -29,10 +29,10 @@ const Yoimiya: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Yoimiya's {Normal Attack DMG}#[gr] will be increased by {@0}#[b,gr] times and converted to
+      description: `Yoimiya's {Normal Attack DMG}#[k] will be increased by {@0}#[v] times and converted to
       {Pyro DMG}#[pyro].
-      <br />• At {A1}#[g], Normal Attacks on hit will increase Yoimiya's {Pyro DMG Bonus}#[gr] by {2%}#[b,gr] for 3s.
-      Maximum {10}#[r] stacks.`,
+      <br />• At {A1}#[ms], Normal Attacks on hit will increase Yoimiya's {Pyro DMG Bonus}#[k] by {2%}#[v] for 3s.
+      Maximum {10}#[m] stacks.`,
       inputConfigs: [
         {
           label: "Stacks (A4)",
@@ -57,8 +57,8 @@ const Yoimiya: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
-      description: `Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a {10%}#[b,gr]
-      {ATK Bonus}#[gr] for 15s. A further {1%}#[b,gr] {ATK Bonus}#[gr] will be added for each "Tricks of the
+      description: `Using Ryuukin Saxifrage [EB] causes nearby party members (excluding Yoimiya) to gain a {10%}#[v]
+      {ATK Bonus}#[k] for 15s. A further {1%}#[v] {ATK Bonus}#[k] will be added for each "Tricks of the
       Trouble-Maker" [A1] stacks Yoimiya possesses when using Ryuukin Saxifrage.`,
       isGranted: checkAscs[4],
       inputConfigs: [
@@ -76,8 +76,8 @@ const Yoimiya: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's {ATK}#[gr]
-      is increased by {20%}#[b,gr] for 20s.`,
+      description: `When an opponent affected by Aurous Blaze [EB] is defeated within its duration, Yoimiya's {ATK}#[k]
+      is increased by {20%}#[v] for 20s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "atk_", 20),
     },
@@ -85,7 +85,7 @@ const Yoimiya: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Yoimiya's Pyro DMG scores a CRIT Hit, she will gain a {25%}#[b,gr] {Pyro DMG Bonus}#[gr] for
+      description: `When Yoimiya's Pyro DMG scores a CRIT Hit, she will gain a {25%}#[v] {Pyro DMG Bonus}#[k] for
       6s. Can work off-field.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "pyro", 25),

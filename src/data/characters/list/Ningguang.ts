@@ -23,7 +23,7 @@ const Ningguang: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      description: `A character that passes through the Jade Screen [~ES] will gain a {12%}#[b,gr] {Geo DMG Bonus}#[gr]
+      description: `A character that passes through the Jade Screen [~ES] will gain a {12%}#[v] {Geo DMG Bonus}#[k]
       for 10s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "geo", 12),

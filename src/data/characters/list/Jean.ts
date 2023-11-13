@@ -24,7 +24,7 @@ const Jean: DefaultAppCharacter = {
       src: EModSrc.C1,
       affect: EModAffect.SELF,
       description: `Increases the pulling speed of Gale Blade [ES] after holding for more than 1s, and increases the
-      {DMG}#[gr] dealt by {40%}#[b,gr].`,
+      {DMG}#[k] dealt by {40%}#[v].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "ES.pct_", 40),
     },
@@ -33,7 +33,7 @@ const Jean: DefaultAppCharacter = {
       src: EModSrc.C2,
       affect: EModAffect.PARTY,
       description: `When Jean picks up an Elemental Orb/Particle, all party members have their Movement SPD and
-      {ATK SPD}#[gr] increased by {15%}#[b,gr] for 15s.`,
+      {ATK SPD}#[k] increased by {15%}#[v] for 15s.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },
@@ -42,8 +42,8 @@ const Jean: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      description: `Within the field of Dandelion Breeze [EB], all opponents have their {Anemo RES}#[gr] decreased by
-      {40%}#[b,gr].`,
+      description: `Within the field of Dandelion Breeze [EB], all opponents have their {Anemo RES}#[k] decreased by
+      {40%}#[v].`,
       isGranted: checkCons[4],
       applyDebuff: makeModApplier("resistReduct", "anemo", 40),
     },

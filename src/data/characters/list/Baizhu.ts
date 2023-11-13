@@ -22,7 +22,7 @@ const Baizhu: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C6,
-      description: `Increases {Spiritveins DMG}#[gr] [~EB] by {8%}#[b,gr] of Baizhu's {Max HP}#[gr].`,
+      description: `Increases {Spiritveins DMG}#[k] [~EB] by {8%}#[v] of Baizhu's {Max HP}#[k].`,
       isGranted: checkCons[6],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         const desc = `${EModSrc.C6} / 8% of ${Math.round(totalAttr.hp)} HP`;
@@ -37,8 +37,8 @@ const Baizhu: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       isGranted: checkAscs[1],
       description: `Based on the current HP of your current active character:
-      <br />• When their HP is less than 50%, Baizhu gains {20%}#[b,gr] {Healing Bonus}#[gr].
-      <br />• When their HP is equal to or more than 50%, Baizhu gains {25%}#[b,gr] {Dendro DMG Bonus}#[gr].`,
+      <br />• When their HP is less than 50%, Baizhu gains {20%}#[v] {Healing Bonus}#[k].
+      <br />• When their HP is equal to or more than 50%, Baizhu gains {25%}#[v] {Dendro DMG Bonus}#[k].`,
       inputConfigs: [{ label: "HP less than 50%", type: "check" }],
       applyBuff: ({ totalAttr, inputs, desc, tracker }) => {
         applyModifier(desc, totalAttr, inputs[0] ? "healB_" : "dendro", inputs[0] ? 20 : 25, tracker);
@@ -50,8 +50,8 @@ const Baizhu: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       isGranted: checkAscs[4],
       description: `When characters healed by Holistic Revivification [EB], each 1,000 Max HP that Baizhu possesses
-      below 50,000 will increase their {Burning, Bloom, Hyperbloom, and Burgeon DMG}#[gr] by {2%}#[b,gr], while their
-      {Aggravate and Spread DMG}#[gr] will be increased by {0.8%}#[b,gr], for lasts 6s.`,
+      below 50,000 will increase their {Burning, Bloom, Hyperbloom, and Burgeon DMG}#[k] by {2%}#[v], while their
+      {Aggravate and Spread DMG}#[k] will be increased by {0.8%}#[v], for lasts 6s.`,
       inputConfigs: [{ label: "Max HP", type: "text", max: 99999, for: "teammate" }],
       applyFinalBuff: ({ fromSelf, totalAttr, rxnBonus, inputs, desc, tracker }) => {
         const hp = fromSelf ? totalAttr.hp : inputs[0] || 0;
@@ -68,7 +68,7 @@ const Baizhu: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       isGranted: checkCons[4],
       description: `For 15s after Holistic Revivification [EB] is used, Baizhu will increase all nearby party members'
-      {Elemental Mastery}#[gr] by {80}#[b,gr].`,
+      {Elemental Mastery}#[k] by {80}#[v].`,
       applyBuff: makeModApplier("totalAttr", "em", 80),
     },
   ],

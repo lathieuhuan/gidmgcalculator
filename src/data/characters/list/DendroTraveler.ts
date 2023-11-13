@@ -17,8 +17,8 @@ const DendroTraveler: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `Every point of the Traveler's Elemental Mastery increases Razorgrass Blade {[ES] DMG}#[gr] by
-      {0.15%}#[b,gr] and Surgent Manifestation {[EB] DMG}#[gr] by {0.1%}#[b,gr].`,
+      description: `Every point of the Traveler's Elemental Mastery increases Razorgrass Blade {[ES] DMG}#[k] by
+      {0.15%}#[v] and Surgent Manifestation {[EB] DMG}#[k] by {0.1%}#[v].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ desc, attPattBonus, totalAttr, tracker }) => {
         const buffValue1 = totalAttr.em * 0.15;
@@ -33,7 +33,7 @@ const DendroTraveler: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
       description: `Lea Lotus Lamp [~EB] will obtain 1 level of Overflowing Lotuslight every second, increasing the
-      {Elemental Mastery}#[gr] of active character(s) within its AoE by {6}#[b,gr]. Maximum {10}#[r] stacks.`,
+      {Elemental Mastery}#[k] of active character(s) within its AoE by {6}#[v]. Maximum {10}#[m] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -49,9 +49,9 @@ const DendroTraveler: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Overflowing Lotuslight effect [A1] increases {Dendro DMG Bonus}#[gr] by {12%}#[b,gr]. If the Lamp
-      has experienced a Lotuslight Transfiguration previously, the effect will also grant {12%}#[b,gr] {DMG Bonus}#[gr]
-      for the {corresponding element}#[gr].`,
+      description: `Overflowing Lotuslight effect [A1] increases {Dendro DMG Bonus}#[k] by {12%}#[v]. If the Lamp
+      has experienced a Lotuslight Transfiguration previously, the effect will also grant {12%}#[v] {DMG Bonus}#[k]
+      for the {corresponding element}#[k].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

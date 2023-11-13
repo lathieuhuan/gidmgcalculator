@@ -23,7 +23,7 @@ const Albedo: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `{Transient Blossoms}#[gr] deal {25%}#[b,gr] more {DMG}#[gr] to opponents whose HP is below 50%.`,
+      description: `{Transient Blossoms}#[k] deal {25%}#[v] more {DMG}#[k] to opponents whose HP is below 50%.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "ES.0", "pct_", 25));
@@ -33,8 +33,8 @@ const Albedo: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
-      description: `Using Rite of Progeniture: Tectonic Tide [EB] increases the {Elemental Mastery}#[gr] of nearby party
-      members by {125}#[b,gr] for 10s.`,
+      description: `Using Rite of Progeniture: Tectonic Tide [EB] increases the {Elemental Mastery}#[k] of nearby party
+      members by {125}#[v] for 10s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "em", 125),
     },
@@ -43,7 +43,7 @@ const Albedo: DefaultAppCharacter = {
       src: EModSrc.C2,
       affect: EModAffect.SELF,
       description: `Rite of Progeniture: Tectonic Tide [EB] consumes all stacks of Fatal Reckoning. Each stack increases
-      Albedo's {[EB] DMG}#[gr] by {30%}#[b,gr] of his {DEF}#[gr]. Max {4}#[r] stacks.`,
+      Albedo's {[EB] DMG}#[k] by {30%}#[v] of his {DEF}#[k]. Max {4}#[m] stacks.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -60,8 +60,8 @@ const Albedo: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Active party members within the Solar Isotoma [ES] field have their {Plunging Attack DMG}#[gr]
-      increased by {30%}#[b,gr].`,
+      description: `Active party members within the Solar Isotoma [ES] field have their {Plunging Attack DMG}#[k]
+      increased by {30%}#[v].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "PA.pct_", 30),
     },
@@ -70,7 +70,7 @@ const Albedo: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
       description: `Active party members within the Solar Isotoma [ES] field who are protected by a shield created by
-      Crystallize have their {DMG}#[gr] increased by {17%}#[b,gr].`,
+      Crystallize have their {DMG}#[k] increased by {17%}#[v].`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "all.pct_", 17),
     },

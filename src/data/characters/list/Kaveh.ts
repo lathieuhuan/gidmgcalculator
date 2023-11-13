@@ -30,9 +30,9 @@ const Kaveh: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `• Grants {Dendro Infusion}#[dendro].
-      <br />• Increases {Bloom DMG}#[gr] triggered by all party members by {@0}#[b,gr].
-      <br />• At {A4}#[g], after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his
-      {Elemental Mastery}#[gr] will increase by {25}#[b,gr]. Max {4}#[r] stacks.`,
+      <br />• Increases {Bloom DMG}#[k] triggered by all party members by {@0}#[v].
+      <br />• At {A4}#[ms], after Kaveh's Normal, Charged, and Plunging Attacks hit opponents, his
+      {Elemental Mastery}#[k] will increase by {25}#[v]. Max {4}#[m] stacks.`,
       inputConfigs: [
         {
           label: "A4 stacks",
@@ -62,7 +62,7 @@ const Kaveh: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.TEAMMATE,
-      description: `Increases {Bloom DMG}#[gr] triggered by all party members by {@0}#[b,gr].`,
+      description: `Increases {Bloom DMG}#[k] triggered by all party members by {@0}#[v].`,
       inputConfigs: [
         {
           label: "Elemental Burst level",
@@ -79,8 +79,8 @@ const Kaveh: DefaultAppCharacter = {
       src: EModSrc.C1,
       affect: EModAffect.SELF,
       isGranted: checkCons[1],
-      description: `Within 3s after using Artistic Ingenuity [ES], Kaveh's {Incoming Healing Bonus}#[gr] will be
-      increased by {25%}#[b,gr] respectively.`,
+      description: `Within 3s after using Artistic Ingenuity [ES], Kaveh's {Incoming Healing Bonus}#[k] will be
+      increased by {25%}#[v] respectively.`,
       applyBuff: makeModApplier("totalAttr", "inHealB_", 25),
     },
     {
@@ -88,7 +88,7 @@ const Kaveh: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       isGranted: checkCons[4],
-      description: `Dendro Cores created from {Bloom}#[gr] reactions Kaveh triggers will deal {60%}#[b,gr] more DMG when
+      description: `Dendro Cores created from {Bloom}#[k] reactions Kaveh triggers will deal {60%}#[v] more DMG when
       they burst.`,
       applyBuff: makeModApplier("rxnBonus", "bloom.pct_", 60),
     },

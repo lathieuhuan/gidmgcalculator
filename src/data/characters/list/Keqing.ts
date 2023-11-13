@@ -34,8 +34,8 @@ const Keqing: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      description: `After casting Starward Sword [EB], Keqing's {CRIT Rate}#[gr] and {Energy Recharge}#[gr] are
-      increased by {15%}#[b,gr] for 8s.`,
+      description: `After casting Starward Sword [EB], Keqing's {CRIT Rate}#[k] and {Energy Recharge}#[k] are
+      increased by {15%}#[v] for 8s.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", ["cRate_", "er_"], 15),
     },
@@ -43,8 +43,8 @@ const Keqing: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `For 10s after Keqing triggers an Electro-related Elemental Reaction, her {ATK}#[gr] is increased by
-      {25%}#[b,gr].`,
+      description: `For 10s after Keqing triggers an Electro-related Elemental Reaction, her {ATK}#[k] is increased by
+      {25%}#[v].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "atk_", 25),
     },
@@ -53,7 +53,7 @@ const Keqing: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.SELF,
       description: `When initiating a Normal Attack, a Charged Attack, Elemental Skill or Elemental Burst, Keqing
-      gains a {6%}#[b,gr] {Electro DMG Bonus}#[gr] for 8s. Effects triggered by different sources are considered
+      gains a {6%}#[v] {Electro DMG Bonus}#[k] for 8s. Effects triggered by different sources are considered
       independent entities.`,
       isGranted: checkCons[6],
       inputConfigs: [

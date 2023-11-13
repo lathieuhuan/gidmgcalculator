@@ -22,7 +22,7 @@ const HuTao: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      description: `Increases the Blood Blossom {[ES] DMG}#[gr] by {10%}#[b,gr] of Hu Tao's {Max HP}#[gr].`,
+      description: `Increases the Blood Blossom {[ES] DMG}#[k] by {10%}#[v] of Hu Tao's {Max HP}#[k].`,
       isGranted: checkCons[2],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, "ES.flat", Math.round(totalAttr.hp / 10), tracker);
@@ -34,7 +34,7 @@ const HuTao: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Increases Hu Tao's {ATK}#[gr] based on her {Max HP}#[gr] and grants her a {Pyro Infusion}#[pyro].`,
+      description: `Increases Hu Tao's {ATK}#[k] based on her {Max HP}#[k] and grants her a {Pyro Infusion}#[pyro].`,
       applyFinalBuff: (obj) => {
         const [level, mult] = getTalentMultiplier(
           { talentType: "ES", root: 3.84, scale: 5 },
@@ -60,7 +60,7 @@ const HuTao: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.TEAMMATE,
       description: `When a Paramita Papilio [ES] state ends, all allies in the party (excluding Hu Tao) will have their
-      {CRIT Rate}#[gr] increased by {12%}#[b,gr] for 8s.`,
+      {CRIT Rate}#[k] increased by {12%}#[v] for 8s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
@@ -68,7 +68,7 @@ const HuTao: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      description: `When Hu Tao's HP is equal to or less than 50%, her {Pyro DMG Bonus}#[gr] is increased by {33%}#[b,gr].`,
+      description: `When Hu Tao's HP is equal to or less than 50%, her {Pyro DMG Bonus}#[k] is increased by {33%}#[v].`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "pyro", 33),
     },
@@ -77,7 +77,7 @@ const HuTao: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.TEAMMATE,
       description: `Upon defeating an enemy affected by a Blood Blossom that Hu Tao applied herself, all nearby allies in the
-      party (excluding Hu Tao) will have their {CRIT Rate}#[gr] increased by {12%}#[b,gr] for 15s.`,
+      party (excluding Hu Tao) will have their {CRIT Rate}#[k] increased by {12%}#[v] for 15s.`,
       isGranted: checkCons[4],
       applyFinalBuff: makeModApplier("totalAttr", "cRate_", 12),
     },
@@ -85,8 +85,8 @@ const HuTao: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her {CRIT Rate}#[gr] is
-      increased by {100%}#[b,gr] for 10s.`,
+      description: `When Hu Tao's HP drops below 25%, or when she suffers a lethal strike, her {CRIT Rate}#[k] is
+      increased by {100%}#[v] for 10s.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "cRate_", 100),
     },

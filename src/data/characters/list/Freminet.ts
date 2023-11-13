@@ -21,7 +21,7 @@ const Freminet: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C1,
-      description: `The {CRIT Rate}#[gr] of {Shattering Pressure}#[gr] will be increased by {15%}#[b,gr].`,
+      description: `The {CRIT Rate}#[k] of {Shattering Pressure}#[k] will be increased by {15%}#[v].`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.1", "cRate_", 15));
@@ -33,7 +33,7 @@ const Freminet: DefaultAppCharacter = {
       index: 0,
       src: "Stalking mode [~EB]",
       affect: EModAffect.SELF,
-      description: `{Frost}#[gr] released by Freminet's Normal Attacks deal {200%}#[b,gr] of their original DMG.`,
+      description: `{Frost}#[k] released by Freminet's Normal Attacks deal {200%}#[v] of their original DMG.`,
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff("Stalking mode", "ES.0", "multPlus", 100));
       },
@@ -42,8 +42,8 @@ const Freminet: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.SELF,
-      description: `When Freminet triggers Shatter against opponents, {Shattering Pressure DMG}#[gr] [~ES] will be
-      increased by {40%}#[b,gr] for 5s.`,
+      description: `When Freminet triggers Shatter against opponents, {Shattering Pressure DMG}#[k] [~ES] will be
+      increased by {40%}#[v] for 5s.`,
       isGranted: checkAscs[4],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "ES.1", "pct_", 40));
@@ -53,8 +53,8 @@ const Freminet: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `When Freminet triggers Frozen, Shatter, or Superconduct against opponents, his {ATK}#[gr] will be
-      increased by {9%}#[b,gr] for 6s. Max {2}#[r] stacks.`,
+      description: `When Freminet triggers Frozen, Shatter, or Superconduct against opponents, his {ATK}#[k] will be
+      increased by {9%}#[v] for 6s. Max {2}#[m] stacks.`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -71,8 +71,8 @@ const Freminet: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `When Freminet triggers Frozen, Shatter, or Superconduct against opponents, his {CRIT DMG}#[gr] will
-      be increased by {12%}#[b,gr] for 6s. Max {3}#[r] stacks.`,
+      description: `When Freminet triggers Frozen, Shatter, or Superconduct against opponents, his {CRIT DMG}#[k] will
+      be increased by {12%}#[v] for 6s. Max {3}#[m] stacks.`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

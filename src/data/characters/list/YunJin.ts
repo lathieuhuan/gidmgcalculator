@@ -26,8 +26,8 @@ const YunJin: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `The {Normal Attack DMG Bonus}#[gr] granted by Flying Cloud Flag Formation [~EB] is further increased
-      by {2.5%}#[b,gr]/{5%}#[b,gr]/{7.5%}#[b,gr]/{11.5%}#[b,gr] of Yun Jin's {DEF}#[gr] when the party contains
+      description: `The {Normal Attack DMG Bonus}#[k] granted by Flying Cloud Flag Formation [~EB] is further increased
+      by {2.5%}#[v]/{5%}#[v]/{7.5%}#[v]/{11.5%}#[v] of Yun Jin's {DEF}#[k] when the party contains
       characters of 1/2/3/4 Elemental Types, respectively.`,
       isGranted: checkAscs[4],
     },
@@ -37,10 +37,10 @@ const YunJin: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      description: `Increases {Normal Attack DMG}#[gr] based on {@0}#[b,gr] of Yun Jin's {current DEF}#[gr].
-      <br />• At {A4}#[g], further increases the bonus based on how many element types in the party.
-      <br />• At {C2}#[g], increases {Normal Attack DMG}#[gr] by {15%}#[b,gr].
-      <br />• At {C6}#[g], increases {Normal ATK SPD}#[gr] by {12%}#[b,gr].`,
+      description: `Increases {Normal Attack DMG}#[k] based on {@0}#[v] of Yun Jin's {current DEF}#[k].
+      <br />• At {A4}#[ms], further increases the bonus based on how many element types in the party.
+      <br />• At {C2}#[ms], increases {Normal Attack DMG}#[k] by {15%}#[v].
+      <br />• At {C6}#[ms], increases {Normal ATK SPD}#[k] by {12%}#[v].`,
       affect: EModAffect.PARTY,
       inputConfigs: [
         { label: "Current DEF", type: "text", max: 9999, for: "teammate" },
@@ -81,7 +81,7 @@ const YunJin: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `When Yun Jin trigger the Crystallize Reaction, her {DEF}#[gr] is increased by {20%}#[b,gr] for 12s.`,
+      description: `When Yun Jin trigger the Crystallize Reaction, her {DEF}#[k] is increased by {20%}#[v] for 12s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "def_", 20),
     },

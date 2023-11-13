@@ -34,7 +34,7 @@ const Razor: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Increases Razor's {ATK SPD}#[gr] by {@0}#[b,gr].`,
+      description: `Increases Razor's {ATK SPD}#[k] by {@0}#[v].`,
       applyBuff: (obj) => {
         applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", getEBBonus(obj), obj.tracker);
       },
@@ -43,7 +43,7 @@ const Razor: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `Picking up an Elemental Orb or Particle increases Razor's {DMG}#[gr] by {10%}#[b,gr] for 8s.`,
+      description: `Picking up an Elemental Orb or Particle increases Razor's {DMG}#[k] by {10%}#[v] for 8s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("attPattBonus", "all.pct_", 10),
     },
@@ -51,7 +51,7 @@ const Razor: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `Increases {CRIT Rate}#[gr] against opponents with less than 30% HP by {10%}#[b,gr].`,
+      description: `Increases {CRIT Rate}#[k] against opponents with less than 30% HP by {10%}#[v].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "cRate_", 10),
     },
@@ -60,7 +60,7 @@ const Razor: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C4,
-      description: `Claw and Thunder [ES] (Press) decreases opponents' {DEF}#[gr] by {15%}#[b,gr] for 7s.`,
+      description: `Claw and Thunder [ES] (Press) decreases opponents' {DEF}#[k] by {15%}#[v] for 7s.`,
       isGranted: checkCons[4],
       applyDebuff: makeModApplier("resistReduct", "def", 15),
     },

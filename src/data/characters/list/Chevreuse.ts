@@ -25,8 +25,8 @@ const Chevreuse: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
       isGranted: checkAscs[4],
-      description: `After Chevreuse fires an Overcharged Ball [~ES], nearby Pyro and Electro characters' {ATK}#[gr] is
-      increased by {1%}#[b,gr] for every {1000 Max HP}#[gr] Chevreuse has for 30s. Max {40%}#[r].`,
+      description: `After Chevreuse fires an Overcharged Ball [~ES], nearby Pyro and Electro characters' {ATK}#[k] is
+      increased by {1%}#[v] for every {1000 Max HP}#[k] Chevreuse has for 30s. Max {40%}#[m].`,
       inputConfigs: [
         {
           type: "text",
@@ -48,8 +48,8 @@ const Chevreuse: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.ACTIVE_UNIT,
       isGranted: checkCons[6],
-      description: `After a party member is healed by Short-Range Rapid Interdiction Fire [ES], they gain a {20%}#[b,gr]
-      {Pyro DMG Bonus}#[gr] and {Electro DMG Bonus}#[gr] for 8s, up to {3}#[r] stacks.`,
+      description: `After a party member is healed by Short-Range Rapid Interdiction Fire [ES], they gain a {20%}#[v]
+      {Pyro DMG Bonus}#[k] and {Electro DMG Bonus}#[k] for 8s, up to {3}#[m] stacks.`,
       inputConfigs: [
         {
           type: "stacks",
@@ -69,8 +69,8 @@ const Chevreuse: DefaultAppCharacter = {
       affect: EModAffect.PARTY,
       isGranted: checkAscs[1],
       description: `When party only have Pyro and Electro characters, and at least 1 character for each of those
-      elements, every party member gets "Coordinated Tactics": their Overload reactions decrease opponents' {Pyro RES}#[gr]
-      and {Electro RES}#[gr] by {40%}#[b,gr] for 6s.`,
+      elements, every party member gets "Coordinated Tactics": their Overload reactions decrease opponents' {Pyro RES}#[k]
+      and {Electro RES}#[k] by {40%}#[v] for 6s.`,
       applyDebuff: (obj) => {
         const { pyro, electro, ...others } = countVision(obj.partyData, obj.charData);
         if (electro && !Object.keys(others).length) {

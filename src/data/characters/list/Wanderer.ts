@@ -42,10 +42,10 @@ const Wanderer: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.SELF,
-      description: `Increases {Normal Attack DMG}#[gr] by {@0}#[b,gr] times and {Charged Attack DMG}#[gr] by {@1}#[b,gr]
+      description: `Increases {Normal Attack DMG}#[k] by {@0}#[v] times and {Charged Attack DMG}#[k] by {@1}#[v]
       times.
-      <br />• At {C1}#[g], increases {Normal and Charged Attack SPD}#[gr] by {10%}#[b,gr], increases
-      {Wind Arrow DMG}#[gr] [~A4] by {25%}#[b,gr] of {ATK}#[gr].`,
+      <br />• At {C1}#[ms], increases {Normal and Charged Attack SPD}#[k] by {10%}#[v], increases
+      {Wind Arrow DMG}#[k] [~A4] by {25%}#[v] of {ATK}#[k].`,
       applyBuff: ({ totalAttr, attPattBonus, calcItemBuffs, char, partyData, desc, tracker }) => {
         const { NA, CA } = getESBonus(char, partyData);
         applyModifier(desc, attPattBonus, ["NA.multPlus", "CA.multPlus"], [NA, CA], tracker);
@@ -61,9 +61,9 @@ const Wanderer: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.SELF,
       description: `If Hanega: Song of the Wind [ES] comes into contact with:
-      <br />• Hydro: {Kuugoryoku Point cap}#[gr] increases by {20}#[b,gr].
-      <br />• Pyro: {ATK}#[gr] increases by {30%}#[b,gr].
-      <br />• Cryo: {CRIT Rate}#[gr] increases by {20%}#[b,gr].`,
+      <br />• Hydro: {Kuugoryoku Point cap}#[k] increases by {20}#[v].
+      <br />• Pyro: {ATK}#[k] increases by {30%}#[v].
+      <br />• Cryo: {CRIT Rate}#[k] increases by {20%}#[v].`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -98,9 +98,9 @@ const Wanderer: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When in the Windfavored State [~ES], Kyougen: Five Ceremonial Plays {[EB] DMG}#[gr] will be
-      increased by {4%}#[b,gr] per point of {difference between the max and the current amount of Kuugoryoku Points}#[gr]
-      when using this skill. Maximum {200%}#[r].`,
+      description: `When in the Windfavored State [~ES], Kyougen: Five Ceremonial Plays {[EB] DMG}#[k] will be
+      increased by {4%}#[v] per point of {difference between the max and the current amount of Kuugoryoku Points}#[k]
+      when using this skill. Maximum {200%}#[m].`,
       isGranted: checkCons[2],
       inputConfigs: [
         {

@@ -19,7 +19,7 @@ const Fischl: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      description: `Nightrider's {Summoning DMG}#[gr] is increased by {200%}#[b,gr] of {ATK}#[gr].`,
+      description: `Nightrider's {Summoning DMG}#[k] is increased by {200%}#[v] of {ATK}#[k].`,
       isGranted: checkCons[2],
       applyBuff: (obj) => {
         obj.calcItemBuffs.push(genExclusiveBuff(EModSrc.C2, "ES.0", "mult_", 200));

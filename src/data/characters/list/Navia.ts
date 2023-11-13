@@ -23,7 +23,7 @@ const Navia: DefaultAppCharacter = {
     {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
-      description: `Each Pyro/Electro/Cryo/Hydro party member increases Navia {ATK}#[gr] by {20%}#[b,gr], upto {2}#[r] times.`,
+      description: `Each Pyro/Electro/Cryo/Hydro party member increases Navia {ATK}#[k] by {20%}#[v], upto {2}#[m] times.`,
       applyBuff: (obj) => {
         const { pyro = 0, electro = 0, cryo = 0, hydro = 0 } = countVision(obj.partyData);
         const buffValue = Math.min((pyro + electro + cryo + hydro) * 20, 40);
@@ -38,12 +38,12 @@ const Navia: DefaultAppCharacter = {
       affect: EModAffect.SELF,
       description: `When 0/1/2/3 or more Crystal Shrapnel charges consumed, 5/7/9/11 Rosula Shardshots will be fired.
       The more shardshots that hit a single target, the greater the DMG dealt to them. Every charge consumed beyond 3
-      will increase {DMG}#[gr] by {15%}#[b,gr].
-      <br />• At {C2}#[g], each charge consumed increases the Ceremonial Crystalshot's {CRIT Rate}#[gr] by {8%}#[b,gr],
-      upto {24%}#[r].
-      <br />• At {C6}#[g], each charge consumed beyond 3 will increase Ceremonial Crystalshot's {CRIT DMG}#[gr] by
-      {35%}#[b,gr].
-      <br>{If you leave "Rosula Shardshots hit" at 0, it will be set to max according to "Crystal Shrapnel consumed"}#[l]`,
+      will increase {DMG}#[k] by {15%}#[v].
+      <br />• At {C2}#[ms], each charge consumed increases the Ceremonial Crystalshot's {CRIT Rate}#[k] by {8%}#[v],
+      upto {24%}#[m].
+      <br />• At {C6}#[ms], each charge consumed beyond 3 will increase Ceremonial Crystalshot's {CRIT DMG}#[k] by
+      {35%}#[v].
+      <br>{If you leave "Rosula Shardshots hit" at 0, it will be set to max according to "Crystal Shrapnel consumed."}#[n]`,
       inputConfigs: [
         {
           type: "stacks",
@@ -82,8 +82,8 @@ const Navia: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.SELF,
       isGranted: checkAscs[1],
-      description: `For 4s after using Ceremonial Crystalshot [ES], Navia gains {Geo Infusion}#[geo] and {40%}#[b,gr]
-      {Normal, Changed, and Plunging Attack DMG Bonus}#[gr].`,
+      description: `For 4s after using Ceremonial Crystalshot [ES], Navia gains {Geo Infusion}#[geo] and {40%}#[v]
+      {Normal, Changed, and Plunging Attack DMG Bonus}#[k].`,
       infuseConfig: {
         overwritable: false,
       },
@@ -95,7 +95,7 @@ const Navia: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       isGranted: checkCons[4],
-      description: `As the Sunlit Sky's Singing Salute [EB] attacks decrease opponent's {Geo RES}#[gr] by {20%}#[b,gr]
+      description: `As the Sunlit Sky's Singing Salute [EB] attacks decrease opponent's {Geo RES}#[k] by {20%}#[v]
       for 8s.`,
       applyDebuff: makeModApplier("resistReduct", "geo", 20),
     },

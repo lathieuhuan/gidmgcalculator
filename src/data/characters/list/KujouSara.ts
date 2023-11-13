@@ -24,9 +24,9 @@ const KujouSara: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Grants the active character within its AoE an {ATK Bonus}#[gr] based on Kujou Sara's
-      {Base ATK}#[gr].
-      <br />• At {C6}#[g], it also increases {Electro Crit DMG}#[gr] by {60%}#[b,gr].`,
+      description: `Grants the active character within its AoE an {ATK Bonus}#[k] based on Kujou Sara's
+      {Base ATK}#[k].
+      <br />• At {C6}#[ms], it also increases {Electro Crit DMG}#[k] by {60%}#[v].`,
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
