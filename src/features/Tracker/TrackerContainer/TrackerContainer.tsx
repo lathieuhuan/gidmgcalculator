@@ -11,7 +11,7 @@ import { bareLv } from "@Src/utils";
 import { initTracker, getTotalRecordValue } from "./utils";
 
 // Component
-import { Green, Lesser, CollapseList } from "@Src/pure-components";
+import { Green, Dim, CollapseList } from "@Src/pure-components";
 import { AttributesTracker } from "./AttributesTracker";
 import { BonusesTracker } from "./BonusesTracker";
 import { DebuffsTracker } from "./DebuffsTracker";
@@ -65,7 +65,7 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
 
         <div className="flex flex-col items-center">
           <p>
-            <Lesser>char. Lv.</Lesser> <Green>{charLv}</Green> + 100
+            <Dim>char. Lv.</Dim> <Green>{charLv}</Green> + 100
           </p>
 
           <div className="my-1 w-full h-px bg-rarity-1" />
@@ -73,15 +73,15 @@ export const TrackerContainer = ({ trackerState }: TrackerContainerProps) => {
           <p className="px-2 text-center">
             {totalDefReduct ? (
               <>
-                (1 - <Lesser>DEF reduction</Lesser> <Green>{totalDefReduct}</Green> / 100) *
+                (1 - <Dim>DEF reduction</Dim> <Green>{totalDefReduct}</Green> / 100) *
               </>
             ) : null}{" "}
             {totalDefIgnore ? (
               <>
-                (1 - <Lesser>DEF ignore</Lesser> <Green>{totalDefIgnore}</Green> / 100) *
+                (1 - <Dim>DEF ignore</Dim> <Green>{totalDefIgnore}</Green> / 100) *
               </>
             ) : null}{" "}
-            (<Lesser>target Lv.</Lesser> <Green>{target.level}</Green> + 100) + <Lesser>char. Lv.</Lesser>{" "}
+            (<Dim>target Lv.</Dim> <Green>{target.level}</Green> + 100) + <Dim>char. Lv.</Dim>{" "}
             <Green>{charLv}</Green> + 100
           </p>
         </div>

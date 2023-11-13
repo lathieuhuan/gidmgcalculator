@@ -2,8 +2,8 @@ import { CSSProperties, useRef, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
 import { UserItem } from "@Src/types";
-import { useClickOutside, ClickOutsideHandler } from "@Src/hooks";
-import { useCheckContainerSetups } from "@Src/hooks/useCheckContainerSetups";
+import { useClickOutside, ClickOutsideHandler } from "@Src/pure-hooks";
+import { useCheckContainerSetups } from "@Src/hooks";
 
 // Component
 import { Popover } from "@Src/pure-components";

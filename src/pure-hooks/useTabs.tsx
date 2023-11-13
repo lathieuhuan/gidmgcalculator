@@ -14,7 +14,7 @@ interface UseTabArgs {
 export function useTabs({ className, level = 1, defaultIndex = 0, configs }: UseTabArgs) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
-  const tabs = (
+  const tabsElmt = (
     <div
       className={clsx(
         "w-full flex divide-x-2 rounded-full divide-dark-500 overflow-hidden",
@@ -44,7 +44,7 @@ export function useTabs({ className, level = 1, defaultIndex = 0, configs }: Use
 
   return {
     activeIndex,
-    tabs,
+    tabsElmt,
     setActiveIndex,
   };
 }

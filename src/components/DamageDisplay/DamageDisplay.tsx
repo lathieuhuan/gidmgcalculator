@@ -3,7 +3,7 @@ import { FaChevronDown } from "react-icons/fa";
 
 import type { CharInfo, DamageResult, Party } from "@Src/types";
 import { EStatDamageKey } from "@Src/constants";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { appData } from "@Src/data";

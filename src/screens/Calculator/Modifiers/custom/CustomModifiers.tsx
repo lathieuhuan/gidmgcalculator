@@ -5,7 +5,7 @@ import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";

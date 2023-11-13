@@ -1,11 +1,11 @@
 import type { ArtifactSetBonus, UserSetup, UserWeapon } from "@Src/types";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { appData } from "@Src/data";
 
 // Component
-import { Lightgold, CollapseList } from "@Src/pure-components";
+import { Yellow, CollapseList } from "@Src/pure-components";
 import { ArtifactBuffs, CustomBuffs, ElementBuffs, PartyBuffs, SelfBuffs, WeaponBuffs } from "./buffs";
 import { ArtifactDebuffs, CustomDebuffs, ElementDebuffs, PartyDebuffs, SelfDebuffs } from "./debuffs";
 import { calculateChosenSetup } from "../../utils";
@@ -120,7 +120,7 @@ export const ChosenSetupModifiers = ({ chosenSetup, calcResult, weapon, setBonus
       <ModifierWrapper title="Target" className="w-68">
         <div className="h-full px-2">
           <p className="text-lg">
-            {title} - Level: <Lightgold>{target.level}</Lightgold>
+            {title} - Level: <Yellow>{target.level}</Yellow>
           </p>
 
           {variant && <p className="capitalize">{variant}</p>}

@@ -11,7 +11,7 @@ import { ARTIFACT_SUBSTAT_TYPES, ATTACK_ELEMENTS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
 
 // Hook
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { Green, Button } from "@Src/pure-components";

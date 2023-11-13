@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaSyncAlt } from "react-icons/fa";
 
-import type { AppCharacter, Level } from "@Src/types";
+import { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
 
 // Util
@@ -22,47 +22,15 @@ import { Button, StarLine, Image, BetaMark, ComplexSelect } from "@Src/pure-comp
 import { SetupImporter, PickerCharacter } from "@Src/components";
 import contentByTab from "./content";
 
-type ModalType = "CHARACTER_PICKER" | "IMPORT_SETUP" | "";
-
-interface HeaderProps extends Pick<AppCharacter, "name" | "icon" | "vision" | "rarity" | "beta"> {
-  extra?: React.ReactNode;
-  onClickCharImg?: () => void;
-}
-const Header = ({ beta, name, icon, vision, rarity, extra, onClickCharImg }: HeaderProps) => {
-  return (
-    <div className="mt-2 mb-1 pb-4 flex">
-      <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={onClickCharImg}>
-        <Button
-          className="absolute -top-2.5 -left-2.5 z-10"
-          variant="positive"
-          icon={<FaSyncAlt />}
-          disabled={!onClickCharImg}
-        />
-        {beta && <BetaMark className="absolute -top-2 -right-2 z-10" />}
-        <Image className="cursor-pointer" src={icon} imgType="character" />
-      </div>
-
-      <div className="min-w-0">
-        <div className="overflow-hidden">
-          <p className={`text-3xl truncate text-${vision} font-black`}>{name}</p>
-          <StarLine className="mt-1" rarity={rarity} />
-        </div>
-
-        {extra}
-      </div>
-    </div>
-  );
-};
-
 interface OverviewCharProps {
   touched: boolean;
 }
-function CharOverview({ touched }: OverviewCharProps) {
+export const CharOverview = ({ touched }: OverviewCharProps) => {
   const dispatch = useDispatch();
   const char = useSelector(selectChar)!;
 
   const [activeTab, setActiveTab] = useState("Attributes");
-  const [modalType, setModalType] = useState<ModalType>("");
+  const [modalType, setModalType] = useState<"CHARACTER_PICKER" | "IMPORT_SETUP" | "">("");
 
   const Content = contentByTab[activeTab];
 
@@ -77,19 +45,28 @@ function CharOverview({ touched }: OverviewCharProps) {
   let body;
 
   if (touched) {
-    const { beta, icon, vision, rarity } = appData.getCharData(char.name);
+    const charData = appData.getCharData(char.name);
+    const textVision = `text-${charData.vision}`;
 
     body = (
       <div className="h-full flex flex-col">
-        <Header
-          name={char.name}
-          {...{ beta, icon, vision, rarity }}
-          onClickCharImg={() => setModalType("CHARACTER_PICKER")}
-          extra={
+        <div className="mt-2 mb-1 pb-4 flex">
+          <div className="w-24 mr-4 relative aspect-square shrink-0" onClick={() => setModalType("CHARACTER_PICKER")}>
+            <Button className="absolute -top-2.5 -left-2.5 z-10" variant="positive" icon={<FaSyncAlt />} />
+            {charData.beta ? <BetaMark className="absolute -top-2 -right-2 z-10" /> : null}
+            <Image className="cursor-pointer" src={charData.icon} imgType="character" />
+          </div>
+
+          <div className="min-w-0">
+            <div className="overflow-hidden">
+              <p className={`text-3xl truncate ${textVision} font-black`}>{char.name}</p>
+              <StarLine className="mt-1" rarity={charData.rarity} />
+            </div>
+
             <div className="mt-1 flex items-center">
               <p className="mr-1 text-lg">Level</p>
               <select
-                className={`text-lg text-${vision} font-bold text-right text-last-right`}
+                className={`text-lg ${textVision} font-bold text-right text-last-right`}
                 value={char.level}
                 onChange={(e) => dispatch(updateCharacter({ level: e.target.value as Level }))}
               >
@@ -102,7 +79,7 @@ function CharOverview({ touched }: OverviewCharProps) {
               <div
                 className={
                   "ml-4 px-3 pt-2 pb-1.5 flex-center rounded-lg bg-dark-700 " +
-                  `text-${vision} leading-none font-bold cursor-default relative group`
+                  `${textVision} leading-none font-bold cursor-default relative group`
                 }
               >
                 <span>C{char.cons}</span>
@@ -123,8 +100,8 @@ function CharOverview({ touched }: OverviewCharProps) {
                 </div>
               </div>
             </div>
-          }
-        />
+          </div>
+        </div>
 
         <ComplexSelect
           selectId="character-overview-select"
@@ -335,8 +312,4 @@ function CharOverview({ touched }: OverviewCharProps) {
       <SetupImporter active={modalType === "IMPORT_SETUP"} onClose={closeModal} />
     </>
   );
-}
-
-CharOverview.Header = Header;
-
-export default CharOverview;
+};

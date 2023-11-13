@@ -6,7 +6,7 @@ import type { CalcArtifact } from "@Src/types";
 import type { ArtifactSubstatsControlProps } from "./ArtifactSubstatsControl";
 
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { percentSign, getImgSrc } from "@Src/utils";

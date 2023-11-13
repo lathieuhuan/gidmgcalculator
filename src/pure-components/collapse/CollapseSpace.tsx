@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { useElementSize } from "@Src/hooks";
+import { useElementSize } from "@Src/pure-hooks";
 
 interface CollapseSpaceProps {
   className?: string;

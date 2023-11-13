@@ -3,7 +3,7 @@ import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseWeaponDescription } from "@Src/utils";

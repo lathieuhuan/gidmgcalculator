@@ -5,7 +5,7 @@ import { IoDocumentText } from "react-icons/io5";
 import { BiImport } from "react-icons/bi";
 import type { ReactNode } from "react";
 
-import { Green, Lightgold } from "@Src/pure-components";
+import { Green, Yellow } from "@Src/pure-components";
 
 interface ListProps {
   children: ReactNode;
@@ -42,15 +42,15 @@ export const CalculatorGuide = () => {
           talents. Here you can:
           <ListDisc>
             <li>
-              Switch the <Lightgold>main character</Lightgold> to be calculated by pressing <FaSyncAlt /> or the
+              Switch the <Yellow>main character</Yellow> to be calculated by pressing <FaSyncAlt /> or the
               character's icon. Change the character level.
             </li>
             <li>
               Change weapon level and refinement via dropdown selects <FaChevronDown />
             </li>
             <li>
-              Change <Lightgold>talent levels</Lightgold> via dropdown selects <FaChevronDown />. Change{" "}
-              <Lightgold>constellation level</Lightgold> by pressing their icons.
+              Change <Yellow>talent levels</Yellow> via dropdown selects <FaChevronDown />. Change{" "}
+              <Yellow>constellation level</Yellow> by pressing their icons.
             </li>
           </ListDisc>
         </li>
@@ -58,7 +58,7 @@ export const CalculatorGuide = () => {
           <Green>Modifiers Manager</Green>.
           <ListDisc>
             <li>
-              Modifiers are <Lightgold>Buffs</Lightgold> applied to the character and <Lightgold>Debuffs</Lightgold>{" "}
+              Modifiers are <Yellow>Buffs</Yellow> applied to the character and <Yellow>Debuffs</Yellow>{" "}
               applied to the target coming from various sources such as teammates, weapons, artifacts...
             </li>
             <li>
@@ -80,8 +80,8 @@ export const CalculatorGuide = () => {
           <Green>Setups Manager</Green>. Here you can
           <ListDisc>
             <li>
-              Make changes to <Lightgold>Teammates</Lightgold>, <Lightgold>Weapon</Lightgold>,{" "}
-              <Lightgold>Artifacts</Lightgold>, and <Lightgold>Target</Lightgold>. Press the item / character icons to
+              Make changes to <Yellow>Teammates</Yellow>, <Yellow>Weapon</Yellow>,{" "}
+              <Yellow>Artifacts</Yellow>, and <Yellow>Target</Yellow>. Press the item / character icons to
               switch them. Press 2 icons at the bottom right corner to select items from your data{" "}
               <i>(see User Data guide section below)</i>.
             </li>
@@ -100,7 +100,7 @@ export const CalculatorGuide = () => {
               </ul>
             </li>
             <li>
-              You can <Lightgold>import a setup</Lightgold> in 2 ways: (1) Open the full manager, choose <BiImport />{" "}
+              You can <Yellow>import a setup</Yellow> in 2 ways: (1) Open the full manager, choose <BiImport />{" "}
               Import then paste the code, choose Proceed. (2) Follow the link which contains the code.
             </li>
           </ListDisc>
@@ -110,7 +110,7 @@ export const CalculatorGuide = () => {
           you can
           <ListDisc>
             <li>
-              Call the <Lightgold>Tracker</Lightgold> to inspect the calculation details: what buffs and debuffs are
+              Call the <Yellow>Tracker</Yellow> to inspect the calculation details: what buffs and debuffs are
               used, their values, sources...
             </li>
             <li>Expand the results for better view when comparing many setups (not available on small devices).</li>

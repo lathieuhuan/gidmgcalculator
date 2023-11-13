@@ -2,7 +2,6 @@ import clsx from "clsx";
 import ReactDOM from "react-dom";
 import { CSSProperties, ReactNode, useEffect, useState } from "react";
 
-import { useCloseWithEsc } from "@Src/hooks";
 import { ModalBody } from "./ModalBody";
 import { CloseButton, type CloseButtonProps } from "../button";
 
@@ -71,11 +70,15 @@ export const Modal = ({
     }
   }, [modalState]);
 
-  useCloseWithEsc(() => {
-    if (modalState === "open") {
-      closeModal();
-    }
-  });
+  useEffect(() => {
+    const handlePressEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && modalState === "open") {
+        closeModal();
+      }
+    };
+    document.addEventListener("keydown", handlePressEsc, true);
+    return () => document.removeEventListener("keydown", handlePressEsc, true);
+  }, [modalState]);
 
   return state.active
     ? ReactDOM.createPortal(

@@ -15,7 +15,7 @@ import { selectArtifacts, selectChar } from "@Store/calculatorSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useElementSize } from "@Src/hooks";
+import { useElementSize } from "@Src/pure-hooks";
 
 // Component
 import { Button, Modal } from "@Src/pure-components";

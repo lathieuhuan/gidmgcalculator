@@ -3,7 +3,7 @@ import { FaCaretDown } from "react-icons/fa";
 
 import type { TalentAttributeType, AppCharacter, Talent } from "@Src/types";
 import { getTalentDefaultInfo, round, toArray } from "@Src/utils";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Constant
 import { ATTACK_PATTERNS } from "@Src/constants";

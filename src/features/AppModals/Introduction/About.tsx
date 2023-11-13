@@ -1,6 +1,6 @@
 import { FaDiscord, FaRedditAlien } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Lightgold } from "@Src/pure-components";
+import { Yellow } from "@Src/pure-components";
 
 export const About = () => {
   const CONTACTS = [
@@ -24,7 +24,7 @@ export const About = () => {
   return (
     <div className="space-y-1">
       <p>
-        - Hello, I'm <Lightgold>Ronqueroc</Lightgold> the owner of this App. I lost my job at a hotel due to the
+        - Hello, I'm <Yellow>Ronqueroc</Yellow> the owner of this App. I lost my job at a hotel due to the
         pandemic and started to learn programming on July 2020.
       </p>
       <p>

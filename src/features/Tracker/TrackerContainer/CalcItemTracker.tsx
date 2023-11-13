@@ -1,7 +1,7 @@
 import { Fragment, ReactNode } from "react";
 
 import type { CalculatedDamageCluster, Infusion, TrackerCalcItemRecord } from "@Src/types";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { percentSign, round } from "@Src/utils";

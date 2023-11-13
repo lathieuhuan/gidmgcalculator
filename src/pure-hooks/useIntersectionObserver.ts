@@ -3,7 +3,7 @@ import { BooleanRecord } from "@Src/types";
 
 export const useIntersectionObserver = <T extends HTMLElement>(dependecies: DependencyList = []) => {
   const observedAreaRef = useRef<T>(null);
-  const [itemsVisible, setItemsVisible] = useState<BooleanRecord>({});
+  const [visibleItems, setVisibleItems] = useState<BooleanRecord>({});
 
   const observedItemCls = "observed-item";
 
@@ -13,7 +13,7 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
         const dataId = entry.target.getAttribute("data-id");
 
         if (entry.isIntersecting && dataId) {
-          setItemsVisible((prevItemsVisible) => {
+          setVisibleItems((prevItemsVisible) => {
             const newItemsVisible = { ...prevItemsVisible };
             newItemsVisible[dataId] = true;
             return newItemsVisible;
@@ -38,6 +38,6 @@ export const useIntersectionObserver = <T extends HTMLElement>(dependecies: Depe
   return {
     observedAreaRef,
     observedItemCls,
-    itemsVisible,
+    visibleItems,
   };
 };

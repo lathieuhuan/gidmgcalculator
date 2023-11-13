@@ -14,7 +14,7 @@ import {
 import { updateCharacter, updateWeapon } from "@Store/calculatorSlice";
 
 // Hook
-import { useTabs } from "@Src/hooks";
+import { useTabs } from "@Src/pure-hooks";
 
 // Component
 import { SharedSpace } from "@Src/pure-components";
@@ -49,14 +49,14 @@ const contentByTab: Record<string, () => JSX.Element> = {
 
     const artAttr = addArtifactAttributes({ artifacts, totalAttr: { ...totalAttr } });
 
-    const { activeIndex, tabs } = useTabs({
+    const { activeIndex, tabsElmt } = useTabs({
       level: 2,
       configs: [{ text: "Details" }, { text: "Set Bonus" }],
     });
 
     return (
       <div className="h-full flex flex-col">
-        <div className="mb-3">{tabs}</div>
+        <div className="mb-3">{tabsElmt}</div>
         <div className="grow">
           <SharedSpace
             atLeft={activeIndex === 0}

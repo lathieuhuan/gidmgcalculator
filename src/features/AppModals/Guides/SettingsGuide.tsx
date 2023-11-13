@@ -1,5 +1,5 @@
 import { FaBars, FaCog } from "react-icons/fa";
-import { Lightgold } from "@Src/pure-components";
+import { Yellow } from "@Src/pure-components";
 
 export const SettingsGuide = () => {
   return (
@@ -10,7 +10,7 @@ export const SettingsGuide = () => {
       </p>
       <p>
         - Be careful when the Calculator is under the effect of{" "}
-        <Lightgold>Separate main character's info on each setup</Lightgold> (level, constellation, talents) on each
+        <Yellow>Separate main character's info on each setup</Yellow> (level, constellation, talents) on each
         setup. It can make things complicated.
       </p>
       <p>
@@ -19,7 +19,7 @@ export const SettingsGuide = () => {
         when select new main character).
       </p>
       <p>
-        - <Lightgold>Auto save my database to browser's local storage</Lightgold> will help you store your data for the
+        - <Yellow>Auto save my database to browser's local storage</Yellow> will help you store your data for the
         next visits. It takes less than 500KB to store 200 weapons & 800 artifacts. Those are current limits of the user
         database.
       </p>
@@ -28,7 +28,7 @@ export const SettingsGuide = () => {
         the App.
       </p>
       <p>
-        - <Lightgold>Default values</Lightgold> will be used whenever a new character or item is created in your data or
+        - <Yellow>Default values</Yellow> will be used whenever a new character or item is created in your data or
         in the Calculator tab.
       </p>
     </div>

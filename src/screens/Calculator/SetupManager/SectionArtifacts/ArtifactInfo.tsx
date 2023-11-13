@@ -16,7 +16,7 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";

@@ -6,7 +6,7 @@ import { selectCalcSetupsById, selectActiveId, selectTarget } from "@Store/calcu
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { ButtonGroup, Table, CollapseSpace } from "@Src/pure-components";

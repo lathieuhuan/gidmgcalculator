@@ -1,7 +1,7 @@
 import { FaChevronDown } from "react-icons/fa";
 
 import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 import { percentSign } from "@Src/utils";
 
 // Constant

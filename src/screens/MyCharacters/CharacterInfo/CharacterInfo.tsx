@@ -4,7 +4,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Level } from "@Src/types";
 import { LEVELS } from "@Src/constants";
-import { useCharData } from "@Src/hooks/useCharData";
+import { useCharData } from "@Src/hooks";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";

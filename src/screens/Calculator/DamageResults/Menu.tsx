@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 import { FaExpandArrowsAlt, FaSearch } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
 
-import { useDispatch, useSelector } from "@Store/hooks";
+import { useDispatch } from "@Store/hooks";
 import { updateUI } from "@Store/uiSlice";
-import { useClickOutside } from "@Src/hooks";
+import { useClickOutside } from "@Src/pure-hooks";
 
 // Component
 import { Modal } from "@Src/pure-components";

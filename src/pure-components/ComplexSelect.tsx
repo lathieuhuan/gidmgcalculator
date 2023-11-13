@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import { useClickOutside } from "@Src/hooks";
+import { useClickOutside } from "@Src/pure-hooks";
 
 type RenderJXS = (args: { closeSelect: () => void }) => JSX.Element;
 

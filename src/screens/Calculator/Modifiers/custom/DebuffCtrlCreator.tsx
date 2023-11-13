@@ -6,7 +6,7 @@ import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { ButtonGroup, Input } from "@Src/pure-components";

@@ -11,7 +11,7 @@ import type {
 } from "@Src/types";
 
 // Hook
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { findByIndex, parseCharacterDescription } from "@Src/utils";

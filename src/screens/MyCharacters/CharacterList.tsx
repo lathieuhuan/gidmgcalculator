@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaSortAmountUpAlt, FaTh, FaArrowAltCircleUp } from "react-icons/fa";
 
-import { useIntersectionObserver } from "@Src/hooks";
+import { useIntersectionObserver } from "@Src/pure-hooks";
 import { getImgSrc } from "@Src/utils";
 import { appData } from "@Src/data";
 
@@ -27,7 +27,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
 
   const [gridviewOn, setGridviewOn] = useState(false);
 
-  const { observedAreaRef, observedItemCls, itemsVisible } = useIntersectionObserver<HTMLDivElement>([characterNames]);
+  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>([characterNames]);
 
   const scrollList = (name: string) => {
     document.querySelector(`#side-icon-${name}`)?.scrollIntoView();
@@ -73,7 +73,7 @@ export default function CharacterList({ characterNames, chosenChar, onCliceSort,
                   return null;
                 }
                 const { sideIcon, icon } = charData;
-                const visible = itemsVisible[name];
+                const visible = visibleItems[name];
 
                 return (
                   <div

@@ -1,5 +1,5 @@
 import type { Tracker } from "@Src/types";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Constant
 import {

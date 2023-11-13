@@ -16,7 +16,7 @@ import { findById } from "@Src/utils";
 import { isUserSetup } from "@Src/utils/setup";
 import { calculateChosenSetup } from "./utils";
 
-import { useCharData } from "@Src/hooks/useCharData";
+import { useCharData } from "@Src/hooks";
 import { useSetupItems } from "./hooks";
 
 // Component

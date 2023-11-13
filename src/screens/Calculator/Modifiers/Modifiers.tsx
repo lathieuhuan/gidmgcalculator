@@ -3,7 +3,7 @@ import { appData } from "@Src/data";
 
 // Hook
 import { useSelector } from "@Store/hooks";
-import { useTabs } from "@Src/hooks";
+import { useTabs } from "@Src/pure-hooks";
 
 // Component
 import { CollapseList } from "@Src/pure-components";
@@ -19,7 +19,7 @@ export default function Modifiers() {
   const party = useSelector(selectParty);
   const partyData = appData.getPartyData(party);
 
-  const { activeIndex, tabs } = useTabs({
+  const { activeIndex, tabsElmt } = useTabs({
     className: "text-lg shrink-0",
     defaultIndex: 1,
     configs: [{ text: "Debuffs" }, { text: "Buffs" }],
@@ -27,7 +27,7 @@ export default function Modifiers() {
 
   return (
     <div className="h-full flex flex-col">
-      {tabs}
+      {tabsElmt}
 
       <div className="mt-4 grow custom-scrollbar">
         {activeIndex ? (

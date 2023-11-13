@@ -1,7 +1,7 @@
 import type { UserItem } from "@Src/types";
 
 // Util & Hook
-import { useCheckContainerSetups } from "@Src/hooks/useCheckContainerSetups";
+import { useCheckContainerSetups } from "@Src/hooks";
 import { appData } from "@Src/data";
 
 // Component

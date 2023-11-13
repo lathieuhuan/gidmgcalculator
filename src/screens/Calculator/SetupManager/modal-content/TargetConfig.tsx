@@ -10,7 +10,7 @@ import { toArray } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Hook
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component

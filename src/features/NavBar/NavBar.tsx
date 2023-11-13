@@ -12,7 +12,7 @@ import {
 import type { UIState } from "@Store/uiSlice/types";
 
 // Hook
-import { useClickOutside } from "@Src/hooks";
+import { useClickOutside } from "@Src/pure-hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Action

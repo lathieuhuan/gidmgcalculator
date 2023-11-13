@@ -3,7 +3,7 @@ import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 
 import type { BooleanRecord } from "@Src/types";
 import type { DataType, Filter, PickerItem } from "../types";
-import { useIntersectionObserver } from "@Src/hooks";
+import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
 import { Input, CollapseSpace, ModalHeader } from "@Src/pure-components";
@@ -37,7 +37,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
   const [massAdd, setMassAdd] = useState(false);
   const [itemCounts, setItemCounts] = useState<number[]>([]);
 
-  const { observedAreaRef, observedItemCls, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useEffect(() => {
     const focus = (e: KeyboardEvent) => {
@@ -180,7 +180,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
                 >
                   <div onClick={() => onClickItem(item, i)}>
                     <MemoItem
-                      visible={itemsVisible[item.code]}
+                      visible={visibleItems[item.code]}
                       item={item}
                       itemType={dataType}
                       pickedAmount={itemCounts[i] || 0}
