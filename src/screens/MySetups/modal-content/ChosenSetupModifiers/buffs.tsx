@@ -28,12 +28,12 @@ import { appData } from "@Src/data";
 import {
   ModifierTemplate,
   resonanceRenderInfo,
-  renderAmpReactionDesc,
-  renderAmpReactionHeading,
+  renderVapMeltDescription,
+  renderVapMeltHeading,
   renderModifiers,
-  renderQuickenDesc,
+  renderQuickenDescription,
   renderQuickenHeading,
-  renderArtifactBuffs,
+  renderArtifactModifiers,
   renderWeaponModifiers,
 } from "@Src/components";
 
@@ -81,8 +81,8 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         <ModifierTemplate
           key={"amp-" + attReaction}
           mutable={false}
-          heading={renderAmpReactionHeading(element, reation)}
-          description={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
+          heading={renderVapMeltHeading(element, reation)}
+          description={renderVapMeltDescription(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
         />
       );
     } else if (reation === "spread" || reation === "aggravate") {
@@ -90,7 +90,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         key={"quicken-" + attReaction}
         mutable={false}
         heading={renderQuickenHeading(element, reation)}
-        description={renderQuickenDesc(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
+        description={renderQuickenDescription(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
       />;
     }
   };
@@ -249,7 +249,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
 
   if (mainCode) {
     content.push(
-      ...renderArtifactBuffs({
+      ...renderArtifactModifiers({
         fromSelf: true,
         keyPrefix: "main",
         mutable: false,
@@ -262,7 +262,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   party.forEach((teammate) => {
     if (teammate) {
       content.push(
-        ...renderArtifactBuffs({
+        ...renderArtifactModifiers({
           mutable: false,
           keyPrefix: teammate.name,
           code: teammate.artifact.code,

@@ -4,11 +4,11 @@ export const randomNumber = (max: number, min = 0, step = 1) => {
   return Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
 };
 
-export const randomString = (n: number) => {
-  return Math.random()
-    .toString(36)
-    .slice(2, 2 + n);
-};
+// export const randomString = (n: number) => {
+//   return Math.random()
+//     .toString(36)
+//     .slice(2, 2 + n);
+// };
 
 export function pickProps<M, T extends keyof M>(obj: M, keys: T[]) {
   const result = {} as Pick<M, T>;
@@ -63,8 +63,6 @@ export const findByCode = find("code");
 export const findByName = find("name");
 
 export const indexById = findIndex("ID");
-export const indexByIndex = findIndex("index");
-export const indexByCode = findIndex("code");
 export const indexByName = findIndex("name");
 
 export const round = (n: number, x: number) => {

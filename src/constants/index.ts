@@ -1,4 +1,4 @@
-export const MAX_USER_WEAPONS = 2;
+export const MAX_USER_WEAPONS = 200;
 export const MAX_USER_ARTIFACTS = 800;
 export const MAX_USER_SETUPS = 50;
 export const MAX_CALC_SETUPS = 4;

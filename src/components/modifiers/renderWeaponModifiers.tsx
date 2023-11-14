@@ -32,7 +32,7 @@ export const renderWeaponModifiers = ({
   getHanlders,
 }: RenderWeaponModifiersArgs) => {
   const data = appData.getWeaponData(weapon.code);
-  if (!data) return [null];
+  if (!data) return [];
   const { buffs = [], descriptions = [] } = data;
 
   return ctrls.map((ctrl, index) => {

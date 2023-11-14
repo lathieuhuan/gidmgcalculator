@@ -124,7 +124,7 @@ export const ModifierTemplate = ({
             className="mr-1 scale-150 lg:scale-180"
             checked={input === 1}
             readOnly={!mutable}
-            onChange={() => onToggleCheck && onToggleCheck(input, index)}
+            onChange={() => onToggleCheck?.(input, index)}
           />
         );
       default:
@@ -154,11 +154,7 @@ export const ModifierTemplate = ({
 
         if (mutable) {
           return (
-            <select
-              className="styled-select"
-              value={input}
-              onChange={(e) => onSelectOption && onSelectOption(+e.target.value, index)}
-            >
+            <select className="styled-select" value={input} onChange={(e) => onSelectOption?.(+e.target.value, index)}>
               {options.map((opt, i) => (
                 <option key={i} value={opt.value}>
                   {opt.label}

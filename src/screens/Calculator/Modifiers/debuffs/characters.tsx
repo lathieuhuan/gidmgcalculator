@@ -25,7 +25,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   );
 
   const charData = appData.getCharData(char.name) || {};
-  const content: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   selfDebuffCtrls.forEach((ctrl) => {
     const debuff = findByIndex(charData.debuffs || [], ctrl.index);
@@ -38,7 +38,11 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
       };
       const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      content.push(
+      const updateDebuffCtrlInput = (value: number, inputIndex: number) => {
+        dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));
+      };
+
+      modifierElmts.push(
         <ModifierTemplate
           key={ctrl.index}
           heading={debuff.src}
@@ -50,44 +54,30 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
-          onToggle={() => dispatch(toggleModCtrl(path))}
-          onChangeText={(value, i) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value,
-              })
-            );
+          onToggle={() => {
+            dispatch(toggleModCtrl(path));
           }}
           onToggleCheck={(currentInput, inputIndex) => {
-            dispatch(changeModCtrlInput({ ...path, inputIndex, value: currentInput === 1 ? 0 : 1 }));
+            updateDebuffCtrlInput(currentInput === 1 ? 0 : 1, inputIndex);
           }}
-          onSelectOption={(value, inputIndex) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex,
-                value: isNaN(+value) ? value : +value,
-              })
-            );
-          }}
+          onChangeText={updateDebuffCtrlInput}
+          onSelectOption={updateDebuffCtrlInput}
         />
       );
     }
   });
-  return renderModifiers(content, "debuffs", true);
+  return renderModifiers(modifierElmts, "debuffs", true);
 }
 
 export function PartyDebuffs({ partyData }: { partyData: PartyData }) {
   const party = useSelector(selectParty);
-  const content: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, teammateIndex) => {
     if (teammate && teammate.debuffCtrls.length)
-      content.push(<TeammateDebuffs key={teammateIndex} {...{ teammate, teammateIndex, partyData }} />);
+      modifierElmts.push(<TeammateDebuffs key={teammateIndex} {...{ teammate, teammateIndex, partyData }} />);
   });
-  return renderModifiers(content, "debuffs");
+  return renderModifiers(modifierElmts, "debuffs");
 }
 
 interface TeammateDebuffsProps {
@@ -102,7 +92,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
   const teammateData = appData.getCharData(teammate.name);
   if (!teammateData) return null;
 
-  const subContent: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   teammate.debuffCtrls.forEach((ctrl, ctrlIndex) => {
     const debuff = findByIndex(teammateData.debuffs || [], ctrl.index);
@@ -116,7 +106,11 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
     };
     const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "self");
 
-    subContent.push(
+    const updateDebuffCtrlInput = (value: number, inputIndex: number) => {
+      dispatch(changeTeammateModCtrlInput(Object.assign({ value, inputIndex }, path)));
+    };
+
+    modifierElmts.push(
       <ModifierTemplate
         key={ctrl.index}
         heading={debuff.src}
@@ -128,34 +122,22 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
         inputs={inputs}
         inputConfigs={inputConfigs}
         checked={ctrl.activated}
-        onToggle={() => dispatch(toggleTeammateModCtrl(path))}
-        onChangeText={(value, inputIndex) => {
-          dispatch(
-            changeTeammateModCtrlInput({
-              ...path,
-              inputIndex,
-              value,
-            })
-          );
+        onToggle={() => {
+          dispatch(toggleTeammateModCtrl(path));
         }}
         onToggleCheck={(currentInput, inputIndex) => {
-          dispatch(
-            changeTeammateModCtrlInput({
-              ...path,
-              inputIndex,
-              value: currentInput === 1 ? 0 : 1,
-            })
-          );
+          updateDebuffCtrlInput(currentInput === 1 ? 0 : 1, inputIndex);
         }}
-        onSelectOption={(value, inputIndex) => dispatch(changeTeammateModCtrlInput({ ...path, inputIndex, value }))}
+        onChangeText={updateDebuffCtrlInput}
+        onSelectOption={updateDebuffCtrlInput}
       />
     );
   });
 
   return (
-    <>
+    <div>
       <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
-      {subContent}
-    </>
+      {modifierElmts}
+    </div>
   );
 }

@@ -15,9 +15,12 @@ interface RenderArtifactBuffsArgs {
   mutable?: boolean;
   code: number;
   ctrls: ModifierCtrl[];
-  getHanlders?: (ctrl: ModifierCtrl, ctrlIndex: number) => Pick<ModifierTemplateProps, "onToggle" | "onSelectOption">;
+  getHanlders?: (
+    ctrl: ModifierCtrl,
+    ctrlIndex: number
+  ) => Pick<ModifierTemplateProps, "onToggle" | "onSelectOption" | "onToggleCheck">;
 }
-export const renderArtifactBuffs = ({
+export const renderArtifactModifiers = ({
   fromSelf,
   keyPrefix,
   mutable,

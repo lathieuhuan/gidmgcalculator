@@ -20,9 +20,9 @@ export const WeaponBuffs = () => {
   });
   const party = useSelector(selectParty);
 
-  const content: (JSX.Element | null)[] = [];
+  const modifierElmts: (JSX.Element | null)[] = [];
 
-  content.push(
+  modifierElmts.push(
     ...renderWeaponModifiers({
       fromSelf: true,
       keyPrefix: "main",
@@ -33,35 +33,18 @@ export const WeaponBuffs = () => {
           modCtrlName: "wpBuffCtrls",
           ctrlIndex,
         };
+        const updateBuffCtrlInput = (value: number, inputIndex: number) => {
+          dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));
+        };
         return {
-          onToggle: () => dispatch(toggleModCtrl(path)),
-          onChangeText: (value, inputIndex) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex,
-                value,
-              })
-            );
+          onToggle: () => {
+            dispatch(toggleModCtrl(path));
           },
           onToggleCheck: (currentInput, inputIndex) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex,
-                value: currentInput === 1 ? 0 : 1,
-              })
-            );
+            updateBuffCtrlInput(currentInput === 1 ? 0 : 1, inputIndex);
           },
-          onSelectOption: (value, inputIndex) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex,
-                value,
-              })
-            );
-          },
+          onChangeText: updateBuffCtrlInput,
+          onSelectOption: updateBuffCtrlInput,
         };
       },
     })
@@ -71,46 +54,38 @@ export const WeaponBuffs = () => {
     if (teammate) {
       const { buffCtrls } = teammate.weapon;
 
-      content.push(
+      modifierElmts.push(
         ...renderWeaponModifiers({
           keyPrefix: teammate.name,
           weapon: teammate.weapon,
           ctrls: teammate.weapon.buffCtrls,
           getHanlders: (ctrl) => {
-            const updateWeaponInputs = (value: ModifierInput, inputIndex: number) => {
+            const updateBuffCtrl = (value: ModifierInput | "toggle", inputIndex = 0) => {
               const newBuffCtrls = deepCopy(buffCtrls);
               const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);
+              if (!targetCtrl) return;
 
-              if (targetCtrl?.inputs) {
+              if (value === "toggle") {
+                targetCtrl.activated = !ctrl.activated;
+              } else if (targetCtrl?.inputs) {
                 targetCtrl.inputs[inputIndex] = value;
-                dispatch(
-                  updateTeammateWeapon({
-                    teammateIndex,
-                    buffCtrls: newBuffCtrls,
-                  })
-                );
+              } else {
+                return;
               }
+
+              dispatch(
+                updateTeammateWeapon({
+                  teammateIndex,
+                  buffCtrls: newBuffCtrls,
+                })
+              );
             };
-
             return {
-              checked: ctrl.activated,
               onToggle: () => {
-                const newBuffCtrls = deepCopy(buffCtrls);
-                const targetCtrl = findByIndex(newBuffCtrls, ctrl.index);
-
-                if (targetCtrl) {
-                  targetCtrl.activated = !ctrl.activated;
-
-                  dispatch(
-                    updateTeammateWeapon({
-                      teammateIndex,
-                      buffCtrls: newBuffCtrls,
-                    })
-                  );
-                }
+                updateBuffCtrl("toggle");
               },
-              onChangeText: updateWeaponInputs,
-              onSelectOption: updateWeaponInputs,
+              onChangeText: updateBuffCtrl,
+              onSelectOption: updateBuffCtrl,
             };
           },
         })
@@ -118,5 +93,5 @@ export const WeaponBuffs = () => {
     }
   });
 
-  return renderModifiers(content, "buffs", true);
+  return renderModifiers(modifierElmts, "buffs", true);
 };

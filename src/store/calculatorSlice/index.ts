@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   AppMessage,
   AttackElement,
@@ -34,7 +34,7 @@ import type {
 import { ATTACK_ELEMENTS, RESONANCE_VISION_TYPES } from "@Src/constants";
 import { appData } from "@Src/data";
 
-import { bareLv, deepCopy, findById, toArray, countVision, findByCode, getCopyName, appSettings } from "@Src/utils";
+import { bareLv, deepCopy, findById, toArray, countVision, getCopyName, appSettings } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
 import { getSetupManageInfo } from "@Src/utils/setup";
 import {
