@@ -12,17 +12,8 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
   let buffValue = buff.initialValue ?? 0;
 
   if (buff.checkInput !== undefined && inputs?.length) {
-    if (typeof buff.checkInput === "number") {
-      if (inputs[0] !== buff.checkInput) {
-        return;
-      }
-    } else {
-      const { value, index = 0 } = buff.checkInput;
-      const input = inputs[index] ?? 0;
-
-      if (input !== value) {
-        return;
-      }
+    if (inputs[0] !== buff.checkInput) {
+      return;
     }
   }
 

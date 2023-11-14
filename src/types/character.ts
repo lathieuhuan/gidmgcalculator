@@ -12,12 +12,8 @@ import type {
 } from "./global";
 import type {
   ModifierCtrl,
-  PartyData,
-  ResistanceReduction,
-  AttackPatternBonus,
   ModifierInput,
   BuffModifierArgsWrapper,
-  Tracker,
   Talent,
   DebuffModifierArgsWrapper,
 } from "./calculator";
@@ -166,6 +162,7 @@ export type InnateBuff = {
 };
 
 type AbilityModifier = {
+  /** This is id */
   index: number;
   src: string;
   isGranted?: (char: CharInfo) => boolean;

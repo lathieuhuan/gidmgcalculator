@@ -12,6 +12,7 @@ type ArtTypeData = {
  * Artifact in app data
  */
 export type AppArtifact = {
+  /** This is id */
   code: number;
   beta?: boolean;
   name: string;
@@ -57,17 +58,8 @@ type SetBonusCommon = {
   initialValue?: number;
   value: number | number[];
   stacks?: InputStack | AttributeStack | VisionStack;
-  /**
-   * For this buff to available, the input at the index must equal to compareValue.
-   * If number, it's compareValue, index default to 0.
-   */
-  checkInput?:
-    | number
-    | {
-        /** Default to 0 */
-        index?: number;
-        value: number;
-      };
+  /** For this buff to available, the input at index 0 must equal to checkInput */
+  checkInput?: number;
   max?: number;
 };
 
@@ -97,6 +89,7 @@ export type ArtifactModifier = {
 };
 
 type ArtifactBuff = ArtifactModifier & {
+  /** This is id */
   index: number;
   affect: EModAffect;
   artBonuses: ArtifactBonus | ArtifactBonus[];

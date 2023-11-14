@@ -11,6 +11,7 @@ import { EModAffect } from "@Src/constants";
  * Weapon in app data
  */
 export type AppWeapon = {
+  /** This is id */
   code: number;
   beta?: boolean;
   type: WeaponType;
@@ -74,11 +75,11 @@ type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
 export type WeaponAutoBuff = {
   base?: number;
-  /** Need "stacks", number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
+  /** Need [stacks], number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
   options?: number[];
   /** Only on Fading Twilight, also scale off refi, increment is 1/3 */
   initialBonus?: number;
-  /** Default to 1/3 base. Fixed type has increment = 0 */
+  /** Default to 1/3 [base]. Fixed buff type has increment = 0 */
   increment?: number;
   stacks?: WeaponStackConfig | WeaponStackConfig[];
   targetAttribute?: TargetAttribute;
@@ -91,15 +92,16 @@ export type WeaponAutoBuff = {
         increment: number;
       };
   /**
-   * For this buff to available, the input at the index must meet compareValue by compareType.
-   * If number, it's compareValue, index default to 0.
+   * For this buff to available, the input at the [index] must meet [compareValue] by [compareType].
+   * If number, it's [compareValue], [index] default to 0.
    */
   checkInput?:
     | number
     // Only on Ballad of the Fjords
     | {
+        /** Default to 0 */
         index?: number;
-        /** Only on Ballad of the Fjords. No index when there's source */
+        /** Only on Ballad of the Fjords. No [index] when there's [source] */
         source?: "various_vision";
         compareValue: number;
         /** Default to equal */
@@ -108,14 +110,15 @@ export type WeaponAutoBuff = {
 };
 
 export type WeaponBuff = WeaponAutoBuff & {
+  /** This is id */
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
   /**
-   * If number, it's the index of weapon's descriptions.
+   * If number, it's the index of weapon's descriptions (AppWeapon.descriptions).
    * Default to 0.
    */
   description?: number | string;
-  /** buffBonus use outside "base", "stacks" as default */
+  /** buffBonus use outside [base] (WeaponAutoBuff.base) and [stacks] (WeaponAutoBuff.stacks) as default */
   wpBonuses?: WeaponAutoBuff[];
 };
