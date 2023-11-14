@@ -60,8 +60,8 @@ const Navia: DefaultAppCharacter = {
       ],
       applyBuff: (obj) => {
         const [charges = 0, inputShots = 0] = obj.inputs;
-        const maxShots = [5, 7, 9, 11][charges];
-        const shotsHit = inputShots ? Math.min(inputShots, maxShots) : maxShots ?? 11;
+        const maxShots = [5, 7, 9, 11][charges] ?? 11;
+        const shotsHit = inputShots ? Math.min(inputShots, maxShots) : maxShots;
         const multPlus = [0, 0, 5, 10, 15, 20, 36, 40, 60, 66.6, 90, 100][shotsHit] ?? 0;
         if (multPlus) {
           obj.calcItemBuffs.push(genExclusiveBuff(obj.desc, "ES.0", "multPlus", multPlus));

@@ -58,7 +58,6 @@ module.exports = {
         rose: "#f43f5e",
       },
       green: {
-        50: "#c4fdd4",
         // 200: "#89fba9",
         300: "#62f98e", // root
       },

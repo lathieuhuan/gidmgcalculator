@@ -61,8 +61,10 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
       }
     }
     if (keyword) {
+      const lowerKw = keyword.toLowerCase();
+
       for (const name in visibleNames) {
-        if (!name.toLowerCase().includes(keyword)) {
+        if (!name.toLowerCase().includes(lowerKw)) {
           delete visibleNames[name];
         }
       }

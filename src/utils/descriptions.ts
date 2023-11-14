@@ -26,7 +26,7 @@ export const parseCharacterDescription = (
   dsGetters: DescriptionSeedGetter[] = []
 ) => {
   if (typeof description === "string") {
-    const pattern = /\{[\w \-/,%^"\.\[\]]+\}#\[\w*\]/g;
+    const pattern = /\{[\w \-/,%^"@\.\[\]]+\}#\[\w*\]/g;
 
     return description.replace(pattern, (match) => {
       let [body, type = ""] = match.split("#");
