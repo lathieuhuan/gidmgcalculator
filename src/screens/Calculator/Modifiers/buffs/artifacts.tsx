@@ -45,6 +45,7 @@ export const ArtifactBuffs = () => {
             onToggleCheck: (currentInput, inputIndex) => {
               updateBuffCtrlInput(currentInput === 1 ? 0 : 1, inputIndex);
             },
+            onChangeText: updateBuffCtrlInput,
             onSelectOption: updateBuffCtrlInput,
           };
         },

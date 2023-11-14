@@ -26,7 +26,13 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
     switch (buff.stacks?.type) {
       case "input":
         const { index = 0 } = buff.stacks;
-        stacks = inputs?.[index] ?? 1;
+
+        if (typeof index === "number") {
+          stacks = inputs?.[index] ?? 1;
+        } else {
+          const { value = 0, convertRate } = index;
+          stacks = (inputs?.[value] ?? 1) * convertRate;
+        }
         break;
       case "vision":
         let sameCount = 0;

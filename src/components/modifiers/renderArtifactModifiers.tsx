@@ -5,7 +5,9 @@ import { ModifierTemplate, type ModifierTemplateProps } from "../ModifierTemplat
 
 export const getArtifactDescription = (data: AppArtifact, modifier: ArtifactModifier) => {
   return parseArtifactDescription(
-    toArray(modifier.description).reduce((acc, index) => `${acc} ${data.descriptions[index] || ""}`, "")
+    toArray(modifier.description).reduce<string>((acc, description) => {
+      return `${acc} ${typeof description === "string" ? description : data.descriptions[description] || ""}`;
+    }, "")
   );
 };
 
@@ -18,7 +20,7 @@ interface RenderArtifactBuffsArgs {
   getHanlders?: (
     ctrl: ModifierCtrl,
     ctrlIndex: number
-  ) => Pick<ModifierTemplateProps, "onToggle" | "onSelectOption" | "onToggleCheck">;
+  ) => Pick<ModifierTemplateProps, "onToggle" | "onToggleCheck" | "onChangeText" | "onSelectOption">;
 }
 export const renderArtifactModifiers = ({
   fromSelf,

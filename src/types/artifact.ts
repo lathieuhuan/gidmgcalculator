@@ -36,10 +36,17 @@ type SetBonus = {
 
 type TargetAttribute = "input_element" | AttributeStat | AttributeStat[];
 
+/** Only on code 42 */
+type InputIndex = {
+  /** Default to 0 */
+  value?: number;
+  convertRate: number;
+};
+
 type InputStack = {
   type: "input";
-  /** Default to 0 */
-  index?: number;
+  /** If number, default to 0 */
+  index?: number | InputIndex;
 };
 
 type AttributeStack = {
@@ -85,7 +92,7 @@ export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBon
 
 export type ArtifactModifier = {
   inputConfigs?: ModInputConfig[];
-  description: number | number[];
+  description: string | number | number[];
 };
 
 type ArtifactBuff = ArtifactModifier & {
