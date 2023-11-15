@@ -21,7 +21,7 @@ import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
 import { appData } from "@Src/data";
-import { bareLv, findByIndex, getTalentDefaultInfo, toArray } from "@Src/utils";
+import { bareLv, findByIndex, getTalentDefaultInfo, realParty, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { getExclusiveBonus } from "./utils";
 import { calculateItem } from "./calculateItem";
@@ -80,20 +80,18 @@ export default function getDamage({
   }
 
   // APPLY PARTY DEBUFFS
-  for (const teammate of party) {
-    if (teammate) {
-      const { debuffs = [] } = appData.getCharData(teammate.name);
-      for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
-        const debuff = findByIndex(debuffs, index);
+  for (const teammate of realParty(party)) {
+    const { debuffs = [] } = appData.getCharData(teammate.name);
+    for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
+      const debuff = findByIndex(debuffs, index);
 
-        if (activated && debuff?.applyDebuff) {
-          debuff.applyDebuff({
-            desc: `${teammate.name} / ${debuff.src}`,
-            fromSelf: false,
-            inputs,
-            ...modifierArgs,
-          });
-        }
+      if (activated && debuff?.applyDebuff) {
+        debuff.applyDebuff({
+          desc: `${teammate.name} / ${debuff.src}`,
+          fromSelf: false,
+          inputs,
+          ...modifierArgs,
+        });
       }
     }
   }

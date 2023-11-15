@@ -144,19 +144,19 @@ export function applyModifier(
   rootValue: RootValue,
   tracker?: Tracker
 ) {
-  const keyOfTracker = (): keyof Tracker => {
-    if ("atk" in recipient) {
-      return "totalAttr";
-    } else if ("all" in recipient) {
-      return "attPattBonus";
-    } else if ("bloom" in recipient) {
-      return "rxnBonus";
-    } else if ("def" in recipient) {
-      return "resistReduct";
-    } else {
-      return "attElmtBonus";
-    }
-  };
+  let trackerKey: keyof Tracker;
+
+  if ("atk" in recipient) {
+    trackerKey = "totalAttr";
+  } else if ("all" in recipient) {
+    trackerKey = "attPattBonus";
+  } else if ("bloom" in recipient) {
+    trackerKey = "rxnBonus";
+  } else if ("def" in recipient) {
+    trackerKey = "resistReduct";
+  } else {
+    trackerKey = "attElmtBonus";
+  }
 
   toArray(keys).forEach((key, i) => {
     const [field, subField] = key.split(".");
@@ -169,12 +169,12 @@ export function applyModifier(
     if (subField === undefined) {
       (recipient as any)[field] += value;
       if (tracker) {
-        (tracker as any)[keyOfTracker()][field].push(node);
+        (tracker as any)[trackerKey][field].push(node);
       }
     } else {
       (recipient as any)[field][subField] += value;
       if (tracker) {
-        (tracker as any)[keyOfTracker()][key].push(node);
+        (tracker as any)[trackerKey][key].push(node);
       }
     }
   });

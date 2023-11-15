@@ -6,7 +6,7 @@ import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
 import { combineSetups } from "@Store/userDatabaseSlice";
 import { useDispatch, useSelector } from "@Store/hooks";
 
-import { findById } from "@Src/utils";
+import { findById, realParty } from "@Src/utils";
 import { useCombineManager } from "./hooks";
 
 // Component
@@ -58,8 +58,8 @@ export function FirstCombine({ onClose }: { onClose: () => void }) {
         }
       }
 
-      for (const teammate of party) {
-        if (teammate && !all.includes(teammate.name)) {
+      for (const teammate of realParty(party)) {
+        if (!all.includes(teammate.name)) {
           if (all.length === 4) {
             setIsError(true);
             return;
