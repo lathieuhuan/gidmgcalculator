@@ -91,13 +91,13 @@ type RxnBonusSetBonus = SetBonusCommon & {
 export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
 
 export type ArtifactModifier = {
+  /** This is id */
+  index: number;
   inputConfigs?: ModInputConfig[];
   description: string | number | number[];
 };
 
 type ArtifactBuff = ArtifactModifier & {
-  /** This is id */
-  index: number;
   affect: EModAffect;
   artBonuses: ArtifactBonus | ArtifactBonus[];
 };
@@ -110,6 +110,5 @@ type SetPenalty = {
 };
 
 type ArtifactDebuff = ArtifactModifier & {
-  index: number;
   penalties: SetPenalty;
 };

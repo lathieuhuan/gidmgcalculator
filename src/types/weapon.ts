@@ -25,7 +25,7 @@ export type AppWeapon = {
   };
   passiveName?: string;
   descriptions?: string[];
-  autoBuffs?: WeaponAutoBuff[];
+  autoBuffs?: WeaponBonus[];
   buffs?: WeaponBuff[];
 };
 
@@ -73,7 +73,7 @@ export type WeaponStackConfig = VisionStack | AttributeStack | InputStack | Ener
 
 type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
 
-export type WeaponAutoBuff = {
+export type WeaponBonus = {
   base?: number;
   /** Need [stacks], number of stacks - 1 = index of options. Each option scale off refi, increment is 1/3 */
   options?: number[];
@@ -109,7 +109,7 @@ export type WeaponAutoBuff = {
       };
 };
 
-export type WeaponBuff = WeaponAutoBuff & {
+export type WeaponBuff = WeaponBonus & {
   /** This is id */
   index: number;
   affect: EModAffect;
@@ -119,6 +119,6 @@ export type WeaponBuff = WeaponAutoBuff & {
    * Default to 0.
    */
   description?: number | string;
-  /** buffBonus use outside [base] (WeaponAutoBuff.base) and [stacks] (WeaponAutoBuff.stacks) as default */
-  wpBonuses?: WeaponAutoBuff[];
+  /** buffBonus use outside [base] (WeaponBonus.base) and [stacks] (WeaponBonus.stacks) as default */
+  wpBonuses?: WeaponBonus[];
 };
