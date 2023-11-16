@@ -1,8 +1,8 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+// import { EModAffect } from "@Src/constants";
+// import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+// import { EModSrc } from "../constants";
+// import { checkAscs, checkCons } from "../utils";
 
 const YaeMiko: DefaultAppCharacter = {
   code: 49,
@@ -18,36 +18,6 @@ const YaeMiko: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  innateBuffs: [
-    {
-      src: EModSrc.A4,
-      description: `Every point of Yae Miko's {Elemental Mastery}#[k] will increase Sesshou Sakura
-      {[ES] DMG}#[k] by {0.15%}#[v].`,
-      isGranted: checkAscs[4],
-      applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, "ES.pct_", (totalAttr.em * 15) / 100, tracker);
-      },
-    },
-  ],
-  buffs: [
-    {
-      index: 2,
-      src: EModSrc.C4,
-      affect: EModAffect.PARTY,
-      description: `When Sesshou Sakura thunderbolt [ES] hit opponents, the {Electro DMG Bonus}#[k] of all nearby party
-      members is increased by {20%}#[v] for 5s.`,
-      isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "electro", 20),
-    },
-    {
-      index: 3,
-      src: EModSrc.C6,
-      affect: EModAffect.SELF,
-      description: `Sesshou Sakura's attacks will ignore {60%}#[v] of the opponents' {DEF}#[k].`,
-      isGranted: checkCons[6],
-      applyBuff: makeModApplier("attPattBonus", "ES.defIgn_", 60),
-    },
-  ],
 };
 
 export default YaeMiko as AppCharacter;

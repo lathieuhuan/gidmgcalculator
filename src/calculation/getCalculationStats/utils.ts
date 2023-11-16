@@ -183,9 +183,11 @@ export const addArtifactAttributes = ({ artifacts, totalAttr, tracker }: AddArtA
 type Stack = {
   type: string;
 };
-export const checkFinal = (stacks?: Stack | Stack[]) => {
-  if (!stacks) {
+export const isFinalBonus = (bonusStacks?: Stack | Stack[]) => {
+  if (!bonusStacks) {
     return false;
   }
-  return Array.isArray(stacks) ? stacks.some((stack) => stack.type === "attribute") : stacks.type === "attribute";
+  return Array.isArray(bonusStacks)
+    ? bonusStacks.some((stack) => stack.type === "attribute")
+    : bonusStacks.type === "attribute";
 };

@@ -16,8 +16,10 @@ import type {
   BuffModifierArgsWrapper,
   Talent,
   DebuffModifierArgsWrapper,
+  AttackPatternInfoKey,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
+import { AttackPatternPath } from "@Src/utils/calculation";
 
 export type DefaultAppCharacter = Pick<
   AppCharacter,
@@ -79,8 +81,9 @@ export type AppCharacter = {
   constellation: Ability[];
   /** ds: description seed */
   dsGetters?: DescriptionSeedGetter[];
-  innateBuffs?: InnateBuff[];
-  buffs?: AbilityBuff[];
+  innateBuffs?: CharacterInnateBuff[];
+  // buffs?: AbilityBuff[];
+  buffs?: CharacterBuff[];
   debuffs?: AbilityDebuff[];
 };
 
@@ -153,13 +156,13 @@ type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
   desc: string;
 };
 
-export type InnateBuff = {
-  src: string;
-  isGranted: (char: CharInfo) => boolean;
-  description: number | string;
-  applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
-};
+// export type InnateBuff = {
+//   src: string;
+//   isGranted: (char: CharInfo) => boolean;
+//   description: number | string;
+//   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
+//   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
+// };
 
 type AbilityModifier = {
   /** This is id */
@@ -198,4 +201,69 @@ export type AbilityDebuff = AbilityModifier & {
   inputConfigs?: ModInputConfig[];
   description: number | string;
   applyDebuff?: (args: ApplyCharDebuffArgs) => void;
+};
+
+// ============ EXPERIMENTAL ============
+
+export type CharacterModifier = {
+  src: string;
+  grantedAt?: "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
+  description: string;
+};
+
+type CharacterInnateBuff = CharacterModifier & {
+  charBonuses: CharacterBonus | CharacterBonus[];
+};
+
+type InputStack = {
+  type: "input";
+  /** Default to 0 */
+  index?: number;
+  /** stacks = negativeMax - inputs */
+  negativeMax?: number;
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: "hp" | "base_atk" | "def" | "em" | "er_";
+  /** Default to 1 */
+  // convertRate?: number;
+};
+
+export type CharacterStackConfig = InputStack | AttributeStack;
+
+export type CharacterBonusTarget =
+  | {
+      type: "totalAttr";
+      path: AttributeStat | AttributeStat[];
+    }
+  | {
+      type: "attPattBonus";
+      path: AttackPatternPath | AttackPatternPath[];
+    }
+  | {
+      type: "calcItem";
+      id: string;
+      path: AttackPatternInfoKey;
+    };
+
+export type CharacterBonus = {
+  value: number;
+  stacks?: CharacterStackConfig | CharacterStackConfig[];
+  targets: CharacterBonusTarget | CharacterBonusTarget[];
+  max?: number;
+  /** Default to true */
+  fromSelf?: boolean;
+};
+
+type CharacterBuff = CharacterModifier & {
+  index: number;
+  affect: EModAffect;
+  inputConfigs?: ModInputConfig[];
+  infuseConfig?: {
+    overwritable: boolean;
+    range?: ("NA" | "CA" | "PA")[];
+    disabledNAs?: boolean;
+  };
+  charBonuses?: CharacterBonus | CharacterBonus[];
 };

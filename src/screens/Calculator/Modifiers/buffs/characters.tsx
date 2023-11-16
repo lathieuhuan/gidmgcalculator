@@ -14,7 +14,7 @@ import {
 
 // Util
 import { appData } from "@Src/data";
-import { findByIndex, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseCharacterDescription } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
@@ -32,7 +32,7 @@ export function SelfBuffs() {
   const modifierElmts: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
-    if (buff.isGranted(char)) {
+    if (isGranted(buff, char)) {
       modifierElmts.push(
         <ModifierTemplate
           key={`innate-${index}`}
@@ -51,7 +51,7 @@ export function SelfBuffs() {
   selfBuffCtrls.forEach((ctrl, ctrlIndex) => {
     const buff = findByIndex(buffs, ctrl.index);
 
-    if (buff && (!buff.isGranted || buff.isGranted(char))) {
+    if (buff && isGranted(buff, char)) {
       const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfBuffCtrls",

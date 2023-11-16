@@ -14,14 +14,15 @@ import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIV
 import { RESONANCE_STAT } from "../constants";
 
 import { appData } from "@Src/data";
-import { applyPercent, findByIndex, realParty, toArray, weaponSubStatValue } from "@Src/utils";
+import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
   getArtifactSetBonuses,
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
-import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, checkFinal, initiateBonuses } from "./utils";
+import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, isFinalBonus, initiateBonuses } from "./utils";
+import { applyCharacterBuff } from "./buffs-character";
 import { applyWeaponBuff } from "./buffs-weapon";
 import { applyArtifactBuff } from "./buffs-artifact";
 
@@ -81,36 +82,62 @@ export const getCalculationStats = ({
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
-      if (buff.isGranted(char)) {
-        const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-        applyFn?.({
-          desc: `Self / ${buff.src}`,
-          charBuffCtrls,
-          ...modifierArgs,
-        });
+      if (isGranted(buff, char)) {
+        for (const bonus of toArray(buff.charBonuses)) {
+          if (isFinal === isFinalBonus(bonus.stacks)) {
+            applyCharacterBuff({
+              description: `Self / ${buff.src}`,
+              bonus,
+              inputs: [],
+              modifierArgs,
+            });
+          }
+        }
       }
+
+      // if (buff.isGranted(char)) {
+      //   const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
+
+      //   applyFn?.({
+      //     desc: `Self / ${buff.src}`,
+      //     charBuffCtrls,
+      //     ...modifierArgs,
+      //   });
+      // }
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
-      if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
-        const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-        applyFn?.({
-          desc: `Self / ${buff.src}`,
-          fromSelf: true,
-          charBuffCtrls,
-          inputs: ctrl.inputs || [],
-          ...modifierArgs,
-        });
+      if (buff && ctrl.activated && isGranted(buff, char) && buff.charBonuses) {
+        for (const bonus of toArray(buff.charBonuses)) {
+          const { fromSelf = true } = bonus;
+          if (fromSelf && isFinal === isFinalBonus(bonus.stacks)) {
+            applyCharacterBuff({
+              description: `Self / ${buff.src}`,
+              bonus,
+              inputs: ctrl.inputs || [],
+              modifierArgs,
+            });
+          }
+        }
       }
+      // if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
+      //   const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
+
+      //   applyFn?.({
+      //     desc: `Self / ${buff.src}`,
+      //     fromSelf: true,
+      //     charBuffCtrls,
+      //     inputs: ctrl.inputs || [],
+      //     ...modifierArgs,
+      //   });
+      // }
     }
   };
 
   const APPLY_WEAPON_AUTO_BUFFS = (isFinal: boolean) => {
     for (const autoBuff of weaponData.autoBuffs || []) {
-      if (isFinal === checkFinal(autoBuff.stacks)) {
+      if (isFinal === isFinalBonus(autoBuff.stacks)) {
         applyWeaponBuff({
           description: `${weaponData.name} bonus`,
           buff: autoBuff,
@@ -131,7 +158,7 @@ export const getCalculationStats = ({
       const buff = findByIndex(weaponData.buffs, index);
       if (!activated || !buff) continue;
 
-      if (isFinal === checkFinal(buff.stacks)) {
+      if (isFinal === isFinalBonus(buff.stacks)) {
         applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
       }
       for (const buffBonus of buff.wpBonuses || []) {
@@ -141,7 +168,7 @@ export const getCalculationStats = ({
           stacks: buffBonus.stacks ?? buff.stacks,
         };
 
-        if (isFinal === checkFinal(bonus.stacks)) {
+        if (isFinal === isFinalBonus(bonus.stacks)) {
           applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
         }
       }
@@ -164,7 +191,7 @@ export const getCalculationStats = ({
           const description = `${data.name} / ${i * 2 + 2}-piece bonus`;
 
           for (const bonus of toArray(artBonuses)) {
-            if (isFinal === checkFinal(bonus.stacks)) {
+            if (isFinal === isFinalBonus(bonus.stacks)) {
               applyArtifactBuff({ description, buff: bonus, modifierArgs });
             }
           }
@@ -235,20 +262,20 @@ export const getCalculationStats = ({
           continue;
         }
 
-        buff.applyBuff?.({
-          desc: `${name} / ${buff.src}`,
-          fromSelf: false,
-          inputs,
-          charBuffCtrls: teammate.buffCtrls,
-          ...modifierArgs,
-        });
-        buff.applyFinalBuff?.({
-          desc: `${name} / ${buff.src}`,
-          fromSelf: false,
-          inputs,
-          charBuffCtrls: teammate.buffCtrls,
-          ...modifierArgs,
-        });
+        // buff.applyBuff?.({
+        //   desc: `${name} / ${buff.src}`,
+        //   fromSelf: false,
+        //   inputs,
+        //   charBuffCtrls: teammate.buffCtrls,
+        //   ...modifierArgs,
+        // });
+        // buff.applyFinalBuff?.({
+        //   desc: `${name} / ${buff.src}`,
+        //   fromSelf: false,
+        //   inputs,
+        //   charBuffCtrls: teammate.buffCtrls,
+        //   ...modifierArgs,
+        // });
       }
 
       // #to-check: should be applied before main weapon buffs?
@@ -315,7 +342,7 @@ export const getCalculationStats = ({
         const description = `${mainArtifactData.name} (self) / 4-piece activated`;
 
         for (const bonus of toArray(buff.artBonuses)) {
-          if (isFinal === checkFinal(bonus.stacks)) {
+          if (isFinal === isFinalBonus(bonus.stacks)) {
             applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
           }
         }
