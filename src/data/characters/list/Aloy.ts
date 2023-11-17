@@ -1,9 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { EModAffect } from "@Src/constants";
 import { round } from "@Src/utils";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs, getTalentMultiplier } from "../utils";
+import { getTalentMultiplier } from "../utils";
 
 const getCoilStackBuffValue = (args: DescriptionSeedGetterArgs) => {
   const [, mult] = getTalentMultiplier({ root: 5.846, talentType: "ES", scale: 5 }, Aloy as AppCharacter, args);
@@ -59,15 +56,6 @@ const Aloy: DefaultAppCharacter = {
   //     infuseConfig: {
   //       overwritable: false,
   //     },
-  //   },
-  //   {
-  //     index: 2,
-  //     src: EModSrc.A1,
-  //     affect: EModAffect.TEAMMATE,
-  //     description: `When Aloy receives the Coil effect, nearby party members' {ATK}#[k] is increased by {8%}#[v]
-  //     for 10s.`,
-  //     isGranted: checkAscs[1],
-  //     applyBuff: makeModApplier("totalAttr", "atk_", 8),
   //   },
   // ],
 };

@@ -214,11 +214,13 @@ export type CharacterModifier = {
 };
 
 type CharacterInnateBonus = {
+  /** Only on Ayato */
   initial?: number;
   value: number;
+  /** Only on Bennett */
   extra?: {
     value: number;
-    gratedAt: GrantedAt;
+    grantedAt: GrantedAt;
   };
   stacks?: CharacterStackConfig | CharacterStackConfig[];
   targets: CharacterBonusTarget | CharacterBonusTarget[];
@@ -233,7 +235,7 @@ type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number;
-  /** stacks = negativeMax - inputs */
+  /** stacks = negativeMax - inputs. Only on Alhaitham */
   negativeMax?: number;
 };
 
@@ -249,7 +251,13 @@ type LevelStack = {
   path: Talent;
 };
 
-export type CharacterStackConfig = InputStack | AttributeStack | LevelStack;
+/** Only on Charlotte */
+type NationStack = {
+  type: "nation";
+  nation: "same" | "different";
+};
+
+export type CharacterStackConfig = InputStack | AttributeStack | LevelStack | NationStack;
 
 export type CharacterBonusTarget =
   | {
@@ -268,6 +276,16 @@ export type CharacterBonusTarget =
       type: "ITEM";
       id: string | string[];
       path: AttackPatternInfoKey;
+    }
+  | {
+      /** Only on Candace */
+      type: "ELM_NA";
+      path?: string; // dummy, @to-do: remove
+    }
+  | {
+      /** Only on Dendro Traveler */
+      type: "IN_ELM";
+      path?: string; // dummy, @to-do: remove
     };
 
 export type CharacterBonus = CharacterInnateBonus & {
@@ -286,6 +304,8 @@ export type CharacterBonus = CharacterInnateBonus & {
     value: number;
     talent: Talent;
   };
+  /** Only on Chongyun */
+  weaponTypes?: WeaponType[];
   /** Default to true */
   fromSelf?: boolean;
 };

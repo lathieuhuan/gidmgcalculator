@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc, TRAVELER_INFO } from "../constants";
 import { checkCons } from "../utils";
 
@@ -14,14 +14,6 @@ const AnemoTraveler: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  innateBuffs: [
-    {
-      src: EModSrc.C2,
-      description: `Increases {Energy Recharge}#[k] by {16%}#[v].`,
-      isGranted: checkCons[2],
-      applyBuff: makeModApplier("totalAttr", "er_", 16),
-    },
-  ],
   debuffs: [
     {
       index: 0,

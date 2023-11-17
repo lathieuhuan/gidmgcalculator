@@ -1,8 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkCons } from "../utils";
 
 const Collei: DefaultAppCharacter = {
   code: 55,
@@ -18,25 +14,6 @@ const Collei: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.C1,
-      affect: EModAffect.SELF,
-      description: `When in the party and not on the field, Collei's {Energy Recharge}#[k] is increased by {20%}#[v].`,
-      isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "er_", 20),
-    },
-    {
-      index: 4,
-      src: EModSrc.C4,
-      affect: EModAffect.TEAMMATE,
-      description: `Using Trump-Card Kitty [EB] will increase all nearby characters' {Elemental Mastery}#[k] (excluding
-      Collei) by {60}#[v] for 12s.`,
-      isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "em", 60),
-    },
-  ],
 };
 
 export default Collei as AppCharacter;

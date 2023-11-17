@@ -1,8 +1,7 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkCons } from "../utils";
 
 const Beidou: DefaultAppCharacter = {
   code: 6,
@@ -18,20 +17,6 @@ const Beidou: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.A4,
-      affect: EModAffect.SELF,
-      description: `After unleashing Tidecaller [ES] with its maximum DMG Bonus, Beidou's
-      {Normal and Charged Attacks DMG}#[k] and {ATK SPD}#[k] are increased by {15%}#[v] for 10s.`,
-      isGranted: checkAscs[4],
-      applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
-        applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 15, tracker);
-        applyModifier(desc, totalAttr, ["naAtkSpd_", "caAtkSpd_"], 15, tracker);
-      },
-    },
-  ],
   debuffs: [
     {
       index: 0,

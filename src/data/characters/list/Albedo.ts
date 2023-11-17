@@ -1,8 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-// import { EModAffect } from "@Src/constants";
-// import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-// import { EModSrc } from "../constants";
-// import { checkAscs, checkCons, genExclusiveBuff } from "../utils";
 
 const Albedo: DefaultAppCharacter = {
   code: 29,
