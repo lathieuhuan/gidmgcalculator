@@ -19,7 +19,7 @@ import type {
   AttackPatternInfoKey,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
-import { AttackPatternPath } from "@Src/utils/calculation";
+import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
 
 export type DefaultAppCharacter = Pick<
   AppCharacter,
@@ -205,14 +205,28 @@ export type AbilityDebuff = AbilityModifier & {
 
 // ============ EXPERIMENTAL ============
 
+export type GrantedAt = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
+
 export type CharacterModifier = {
   src: string;
-  grantedAt?: "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
+  grantedAt?: GrantedAt;
   description: string;
 };
 
+type CharacterInnateBonus = {
+  initial?: number;
+  value: number;
+  extra?: {
+    value: number;
+    gratedAt: GrantedAt;
+  };
+  stacks?: CharacterStackConfig | CharacterStackConfig[];
+  targets: CharacterBonusTarget | CharacterBonusTarget[];
+  max?: number;
+};
+
 type CharacterInnateBuff = CharacterModifier & {
-  charBonuses: CharacterBonus | CharacterBonus[];
+  charBonuses: CharacterInnateBonus | CharacterInnateBonus[];
 };
 
 type InputStack = {
@@ -230,28 +244,48 @@ type AttributeStack = {
   // convertRate?: number;
 };
 
-export type CharacterStackConfig = InputStack | AttributeStack;
+type LevelStack = {
+  type: "level";
+  path: Talent;
+};
+
+export type CharacterStackConfig = InputStack | AttributeStack | LevelStack;
 
 export type CharacterBonusTarget =
   | {
-      type: "totalAttr";
+      type: "ATTR";
       path: AttributeStat | AttributeStat[];
     }
   | {
-      type: "attPattBonus";
+      type: "PATT";
       path: AttackPatternPath | AttackPatternPath[];
     }
   | {
-      type: "calcItem";
-      id: string;
+      type: "RXN";
+      path: ReactionBonusPath | ReactionBonusPath[];
+    }
+  | {
+      type: "ITEM";
+      id: string | string[];
       path: AttackPatternInfoKey;
     };
 
-export type CharacterBonus = {
-  value: number;
-  stacks?: CharacterStackConfig | CharacterStackConfig[];
-  targets: CharacterBonusTarget | CharacterBonusTarget[];
-  max?: number;
+export type CharacterBonus = CharacterInnateBonus & {
+  grantedAt?: GrantedAt;
+  /**  */
+  checkInput?:
+    | number
+    | {
+        value: number;
+        /** Default to 0 */
+        index?: number;
+        /** Default to 'equal' */
+        type?: "equal" | "min";
+      };
+  levelScale?: {
+    value: number;
+    talent: Talent;
+  };
   /** Default to true */
   fromSelf?: boolean;
 };

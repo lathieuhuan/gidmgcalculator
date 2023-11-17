@@ -16,6 +16,7 @@ import type {
   Party,
   CharacterModifier,
   CharInfo,
+  GrantedAt,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
@@ -42,9 +43,9 @@ export const ascsFromLv = (lv: Level) => {
 
 export const isUserWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
 
-export const isGranted = (charMod: CharacterModifier, char: CharInfo) => {
-  if (charMod.grantedAt) {
-    const [prefix, level] = charMod.grantedAt;
+export const isGranted = (obj: { grantedAt?: GrantedAt }, char: CharInfo) => {
+  if (obj.grantedAt) {
+    const [prefix, level] = obj.grantedAt;
     return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
   }
   return true;
