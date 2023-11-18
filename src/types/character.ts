@@ -19,7 +19,7 @@ import type {
   AttackPatternInfoKey,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
-import { AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
+import { AttackElementPath, AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
 
 export type DefaultAppCharacter = Pick<
   AppCharacter,
@@ -214,14 +214,13 @@ export type CharacterModifier = {
 };
 
 type CharacterInnateBonus = {
-  /** Only on Ayato */
-  initial?: number;
   value: number;
-  /** Only on Bennett */
-  extra?: {
-    value: number;
-    grantedAt: GrantedAt;
-  };
+  extra?:
+    | number
+    | {
+        value: number;
+        grantedAt: GrantedAt;
+      };
   stacks?: CharacterStackConfig | CharacterStackConfig[];
   targets: CharacterBonusTarget | CharacterBonusTarget[];
   max?: number;
@@ -251,13 +250,19 @@ type LevelStack = {
   path: Talent;
 };
 
+type LevelScaleStack = {
+  type: "level_scale";
+  path: Talent;
+  value: number;
+};
+
 /** Only on Charlotte */
 type NationStack = {
   type: "nation";
   nation: "same" | "different";
 };
 
-export type CharacterStackConfig = InputStack | AttributeStack | LevelStack | NationStack;
+export type CharacterStackConfig = InputStack | AttributeStack | LevelStack | LevelScaleStack | NationStack;
 
 export type CharacterBonusTarget =
   | {
@@ -267,6 +272,10 @@ export type CharacterBonusTarget =
   | {
       type: "PATT";
       path: AttackPatternPath | AttackPatternPath[];
+    }
+  | {
+      type: "ELMT";
+      path: AttackElementPath | AttackElementPath;
     }
   | {
       type: "RXN";
@@ -288,8 +297,15 @@ export type CharacterBonusTarget =
       path?: string; // dummy, @to-do: remove
     };
 
+/** For input when used for teammates */
+type TeammateInputCheck = {
+  value: number;
+  /** Default to 0 */
+  index?: number;
+};
+
 export type CharacterBonus = CharacterInnateBonus & {
-  grantedAt?: GrantedAt;
+  grantedAt?: GrantedAt | TeammateInputCheck;
   /**  */
   checkInput?:
     | number
@@ -298,12 +314,8 @@ export type CharacterBonus = CharacterInnateBonus & {
         /** Default to 0 */
         index?: number;
         /** Default to 'equal' */
-        type?: "equal" | "min";
+        type?: "equal" | "min" | "max";
       };
-  levelScale?: {
-    value: number;
-    talent: Talent;
-  };
   /** Only on Chongyun */
   weaponTypes?: WeaponType[];
   /** Default to true */

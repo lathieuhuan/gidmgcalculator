@@ -1,8 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkCons, genExclusiveBuff } from "../utils";
 
 const getESPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
@@ -31,28 +29,6 @@ const Eula: DefaultAppCharacter = {
     EB: 3,
   },
   dsGetters: [(args) => `${getESPenalty(args)[1]}%`],
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.C1,
-      affect: EModAffect.SELF,
-      description: `Every time Grimheart stacks [~ES] are consumed, Eula's {Physical DMG}#[k] is increased by
-      {30%}#[v] for 6s. Each stack consumed increases the duration by 6s.`,
-      isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "phys", 30),
-    },
-    {
-      index: 1,
-      src: EModSrc.C4,
-      affect: EModAffect.SELF,
-      description: `{Lightfall Swords DMG}#[k] [~EB] is increased by {25%}#[v] against opponents with less than 50%
-      HP.`,
-      isGranted: checkCons[4],
-      applyBuff: ({ calcItemBuffs }) => {
-        calcItemBuffs.push(genExclusiveBuff(EModSrc.C4, "EB.0", "pct_", 25));
-      },
-    },
-  ],
   debuffs: [
     {
       index: 0,

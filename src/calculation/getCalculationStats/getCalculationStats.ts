@@ -22,7 +22,7 @@ import {
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
 import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, isFinalBonus, initiateBonuses } from "./utils";
-import { applyCharacterBuff } from "./buffs-character";
+import { applyCharacterBonus } from "./buffs-character";
 import { applyWeaponBuff } from "./buffs-weapon";
 import { applyArtifactBuff } from "./buffs-artifact";
 
@@ -85,7 +85,7 @@ export const getCalculationStats = ({
       if (isGranted(buff, char)) {
         for (const bonus of toArray(buff.charBonuses)) {
           if (isFinal === isFinalBonus(bonus.stacks)) {
-            applyCharacterBuff({
+            applyCharacterBonus({
               description: `Self / ${buff.src}`,
               bonus,
               inputs: [],
@@ -94,16 +94,6 @@ export const getCalculationStats = ({
           }
         }
       }
-
-      // if (buff.isGranted(char)) {
-      //   const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-      //   applyFn?.({
-      //     desc: `Self / ${buff.src}`,
-      //     charBuffCtrls,
-      //     ...modifierArgs,
-      //   });
-      // }
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
@@ -112,7 +102,7 @@ export const getCalculationStats = ({
         for (const bonus of toArray(buff.charBonuses)) {
           const { fromSelf = true } = bonus;
           if (fromSelf && isFinal === isFinalBonus(bonus.stacks)) {
-            applyCharacterBuff({
+            applyCharacterBonus({
               description: `Self / ${buff.src}`,
               bonus,
               inputs: ctrl.inputs || [],
@@ -121,17 +111,6 @@ export const getCalculationStats = ({
           }
         }
       }
-      // if (buff && ctrl.activated && (!buff.isGranted || buff.isGranted(char))) {
-      //   const applyFn = isFinal ? buff.applyFinalBuff : buff.applyBuff;
-
-      //   applyFn?.({
-      //     desc: `Self / ${buff.src}`,
-      //     fromSelf: true,
-      //     charBuffCtrls,
-      //     inputs: ctrl.inputs || [],
-      //     ...modifierArgs,
-      //   });
-      // }
     }
   };
 

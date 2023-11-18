@@ -17,6 +17,8 @@ import type {
   CharacterModifier,
   CharInfo,
   GrantedAt,
+  CharacterBonus,
+  ModifierInput,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
@@ -43,10 +45,19 @@ export const ascsFromLv = (lv: Level) => {
 
 export const isUserWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
 
-export const isGranted = (obj: { grantedAt?: GrantedAt }, char: CharInfo) => {
-  if (obj.grantedAt) {
-    const [prefix, level] = obj.grantedAt;
-    return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
+export const isGranted = (
+  { grantedAt }: { grantedAt?: CharacterBonus["grantedAt"] },
+  char: CharInfo,
+  inputs: ModifierInput[] = []
+) => {
+  if (grantedAt) {
+    if (typeof grantedAt === "string") {
+      const [prefix, level] = grantedAt;
+      return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
+    } else if (inputs.length) {
+      const { value, index = 0 } = grantedAt;
+      return inputs[index] === value;
+    }
   }
   return true;
 };
