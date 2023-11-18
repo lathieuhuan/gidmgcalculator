@@ -1,9 +1,11 @@
-import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
+import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
 import { makeModApplier } from "@Src/utils/calculation";
+import { getTalentMultiplier } from "../utils";
+import { round } from "@Src/utils";
 
-// const getWindGiftBonus = (args: DescriptionSeedGetterArgs) => {
-//   return getTalentMultiplier({ talentType: "EB", root: 18 }, Faruzan as AppCharacter, args);
-// };
+const getWindGiftBonus = (args: DescriptionSeedGetterArgs) => {
+  return getTalentMultiplier({ talentType: "EB", root: 18 }, Faruzan as AppCharacter, args);
+};
 
 const Faruzan: DefaultAppCharacter = {
   code: 64,
@@ -19,7 +21,7 @@ const Faruzan: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  // dsGetters: [(args) => `${round(getWindGiftBonus(args)[1], 2)}%`],
+  dsGetters: [(args) => `${round(getWindGiftBonus(args)[1], 2)}%`],
   // buffs: [
   //   {
   //     index: 0,

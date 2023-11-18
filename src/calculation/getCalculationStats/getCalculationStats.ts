@@ -90,6 +90,7 @@ export const getCalculationStats = ({
               bonus,
               inputs: [],
               modifierArgs,
+              fromSelf: true
             });
           }
         }
@@ -100,13 +101,15 @@ export const getCalculationStats = ({
 
       if (buff && ctrl.activated && isGranted(buff, char) && buff.charBonuses) {
         for (const bonus of toArray(buff.charBonuses)) {
-          const { fromSelf = true } = bonus;
-          if (fromSelf && isFinal === isFinalBonus(bonus.stacks)) {
+          if ((bonus.fromSelf ?? true) && isFinal === isFinalBonus(bonus.stacks)) {
+            const description = `Self / ${buff.src}`;
+
             applyCharacterBonus({
-              description: `Self / ${buff.src}`,
+              description,
               bonus,
               inputs: ctrl.inputs || [],
               modifierArgs,
+              fromSelf: true
             });
           }
         }
@@ -236,9 +239,18 @@ export const getCalculationStats = ({
         if (!activated) continue;
         const buff = findByIndex(buffs, index);
 
-        if (!buff) {
+        if (!buff || !buff.charBonuses) {
           console.log(`buff #${index} of teammate ${name} not found`);
           continue;
+        }
+        for (const bonus of toArray(buff.charBonuses)) {
+          applyCharacterBonus({
+            description: `${name} / ${buff.src}`,
+            bonus,
+            inputs,
+            modifierArgs,
+            fromSelf: false
+          });
         }
 
         // buff.applyBuff?.({

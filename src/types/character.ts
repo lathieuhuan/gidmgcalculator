@@ -207,6 +207,9 @@ export type AbilityDebuff = AbilityModifier & {
 
 export type GrantedAt = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
 
+/** Index of the input to use in place of the current object's value if the bonus comes from teammate */
+type TeammateInputIndex = number;
+
 export type CharacterModifier = {
   src: string;
   grantedAt?: GrantedAt;
@@ -215,12 +218,12 @@ export type CharacterModifier = {
 
 type CharacterInnateBonus = {
   value: number;
-  extra?:
-    | number
-    | {
-        value: number;
-        grantedAt: GrantedAt;
-      };
+  // extra?:
+  //   | number
+  //   | {
+  //       value: number;
+  //       grantedAt: GrantedAt;
+  //     };
   stacks?: CharacterStackConfig | CharacterStackConfig[];
   targets: CharacterBonusTarget | CharacterBonusTarget[];
   max?: number;
@@ -234,26 +237,15 @@ type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number;
-  /** stacks = negativeMax - inputs. Only on Alhaitham */
+  /** stacks = negativeMax - input. Only on Alhaitham */
   negativeMax?: number;
 };
 
 type AttributeStack = {
   type: "attribute";
   field: "hp" | "base_atk" | "def" | "em" | "er_";
-  /** Default to 1 */
-  // convertRate?: number;
-};
-
-type LevelStack = {
-  type: "level";
-  path: Talent;
-};
-
-type LevelScaleStack = {
-  type: "level_scale";
-  path: Talent;
-  value: number;
+  /** When this bonus from teammate, this is input index to get value. Default to 0 */
+  tmInputIndex?: TeammateInputIndex;
 };
 
 /** Only on Charlotte */
@@ -262,7 +254,16 @@ type NationStack = {
   nation: "same" | "different";
 };
 
-export type CharacterStackConfig = InputStack | AttributeStack | LevelStack | LevelScaleStack | NationStack;
+/** Only on Aloy */
+type OptionStack = {
+  type: "option";
+  /** stack = options[input - 1] */
+  options: number[];
+  /** Default to 0 */
+  index?: number;
+};
+
+export type CharacterStackConfig = InputStack | OptionStack | AttributeStack | NationStack;
 
 export type CharacterBonusTarget =
   | {
@@ -298,14 +299,18 @@ export type CharacterBonusTarget =
     };
 
 /** For input when used for teammates */
-type TeammateInputCheck = {
-  value: number;
-  /** Default to 0 */
-  index?: number;
-};
+// type TeammateInputCheck =
+//   | TeammateInputIndex
+//   | {
+//       value: number;
+//       /** Default to 0 */
+//       index?: number;
+//     };
 
 export type CharacterBonus = CharacterInnateBonus & {
-  grantedAt?: GrantedAt | TeammateInputCheck;
+  grantedAt?: GrantedAt;
+  /** When this bonus from teammate, this is input index to check granted. */
+  tmInputIndex?: number;
   /**  */
   checkInput?:
     | number
@@ -318,8 +323,25 @@ export type CharacterBonus = CharacterInnateBonus & {
       };
   /** Only on Chongyun */
   weaponTypes?: WeaponType[];
+  levelScale?: {
+    talent: Talent;
+    /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level] */
+    value: number;
+    /** Added after the above [value] */
+    extra?:
+      | number
+      // @to-do: only on Bennett, consider to remove
+      | {
+          value: number;
+          grantedAt: GrantedAt;
+          /** When this bonus from teammate, this is input index to check granted */
+          tmInputIndex: number;
+        };
+    /** When this bonus from teammate, this is input index to get level. Default to 0 */
+    tmInputIndex?: number;
+  };
   /** Default to true */
-  fromSelf?: boolean;
+  fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
 };
 
 type CharacterBuff = CharacterModifier & {

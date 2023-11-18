@@ -5,7 +5,12 @@ import { BuffModifierArgsWrapper, CharacterBonus, CharacterBonusTarget, Characte
 import { isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 
-const getStackValue = (stack: CharacterStackConfig, inputs: number[], obj: BuffModifierArgsWrapper): number => {
+const getStackValue = (
+  stack: CharacterStackConfig,
+  inputs: number[],
+  obj: BuffModifierArgsWrapper,
+  fromSelf: boolean
+): number => {
   switch (stack.type) {
     case "input": {
       const { index = 0, negativeMax } = stack;
@@ -13,28 +18,14 @@ const getStackValue = (stack: CharacterStackConfig, inputs: number[], obj: BuffM
       if (negativeMax) input = negativeMax - input;
       return input;
     }
+    case "option": {
+      const optionIndex = inputs[stack.index ?? 0] - 1;
+      return stack.options[optionIndex] ?? 1;
+    }
     case "attribute": {
-      const { field } = stack;
-      const stackValue = obj.totalAttr[field];
+      const { field, tmInputIndex = 0 } = stack;
+      const stackValue = fromSelf ? obj.totalAttr[field] : inputs[tmInputIndex] ?? 1;
       return stackValue;
-    }
-    case "level_scale": {
-      const level = finalTalentLv({
-        talentType: stack.path,
-        char: obj.char,
-        charData: obj.charData,
-        partyData: obj.partyData,
-      });
-      return TALENT_LV_MULTIPLIERS[stack.value][level];
-    }
-    case "level": {
-      const level = finalTalentLv({
-        talentType: stack.path,
-        char: obj.char,
-        charData: obj.charData,
-        partyData: obj.partyData,
-      });
-      return level;
     }
     case "nation": {
       let count = obj.partyData.reduce((total, teammate) => {
@@ -63,6 +54,8 @@ const applyBuffValue = (
       return applyModifier(description, obj.totalAttr, path, buffValue, obj.tracker);
     case "PATT":
       return applyModifier(description, obj.attPattBonus, path, buffValue, obj.tracker);
+    case "ELMT":
+      return applyModifier(description, obj.attElmtBonus, path, buffValue, obj.tracker);
     case "RXN":
       return applyModifier(description, obj.rxnBonus, path, buffValue, obj.tracker);
     case "ITEM":
@@ -82,9 +75,18 @@ interface ApplyCharacterBuffArgs {
   bonus: CharacterBonus;
   inputs: number[];
   modifierArgs: BuffModifierArgsWrapper;
+  fromSelf: boolean;
 }
-export const applyCharacterBonus = ({ description, bonus, inputs, modifierArgs }: ApplyCharacterBuffArgs) => {
-  if (!isGranted(bonus, modifierArgs.char, inputs)) {
+export const applyCharacterBonus = ({
+  description,
+  bonus,
+  inputs,
+  modifierArgs: obj,
+  fromSelf,
+}: ApplyCharacterBuffArgs) => {
+  if (fromSelf) {
+    if (!isGranted(bonus, obj.char)) return;
+  } else if (bonus.tmInputIndex !== undefined && !inputs[bonus.tmInputIndex]) {
     return;
   }
   if (bonus.checkInput !== undefined) {
@@ -93,34 +95,53 @@ export const applyCharacterBonus = ({ description, bonus, inputs, modifierArgs }
     const input = inputs[index] ?? 0;
     switch (type) {
       case "equal":
-        if (value !== input) return;
+        if (input !== value) return;
+        else break;
       case "min":
-        if (value < input) return;
+        if (input < value) return;
+        else break;
     }
   }
   if (bonus.weaponTypes) {
-    if (!bonus.weaponTypes.includes(modifierArgs.charData.weaponType)) return;
+    if (!bonus.weaponTypes.includes(obj.charData.weaponType)) return;
   }
   let buffValue = bonus.value;
 
+  if (bonus.levelScale) {
+    const { talent, value, extra, tmInputIndex = 0 } = bonus.levelScale;
+
+    const level = fromSelf
+      ? finalTalentLv({
+          talentType: talent,
+          char: obj.char,
+          charData: obj.charData,
+          partyData: obj.partyData,
+        })
+      : inputs[tmInputIndex] ?? 0;
+
+    buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+
+    if (typeof extra === "number") buffValue += extra;
+
+    // @to-do
+    // if (extra) {
+    //   if (typeof extra === "number") {
+    //     buffValue += extra;
+    //   } else if (isGranted(extra, obj.char)) {
+    //     buffValue += extra.value;
+    //   }
+    // }
+  }
   if (bonus.stacks) {
     for (const stack of toArray(bonus.stacks)) {
-      buffValue *= getStackValue(stack, inputs, modifierArgs);
-    }
-  }
-  if (bonus.extra) {
-    const { extra } = bonus;
-    if (typeof extra === "number") {
-      buffValue += extra;
-    } else if (isGranted(extra, modifierArgs.char)) {
-      buffValue += extra.value;
+      buffValue *= getStackValue(stack, inputs, obj, fromSelf);
     }
   }
   if (buffValue) {
     if (bonus.max) buffValue = Math.min(buffValue, bonus.max);
 
     for (const target of toArray(bonus.targets)) {
-      applyBuffValue(description, target, buffValue, modifierArgs, inputs[0]);
+      applyBuffValue(description, target, buffValue, obj, inputs[0]);
     }
   }
 };

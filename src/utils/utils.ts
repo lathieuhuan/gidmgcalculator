@@ -14,10 +14,8 @@ import type {
   WeaponType,
   Teammate,
   Party,
-  CharacterModifier,
   CharInfo,
   GrantedAt,
-  CharacterBonus,
   ModifierInput,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
@@ -45,19 +43,10 @@ export const ascsFromLv = (lv: Level) => {
 
 export const isUserWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
 
-export const isGranted = (
-  { grantedAt }: { grantedAt?: CharacterBonus["grantedAt"] },
-  char: CharInfo,
-  inputs: ModifierInput[] = []
-) => {
+export const isGranted = ({ grantedAt }: { grantedAt?: GrantedAt }, char: CharInfo) => {
   if (grantedAt) {
-    if (typeof grantedAt === "string") {
-      const [prefix, level] = grantedAt;
-      return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
-    } else if (inputs.length) {
-      const { value, index = 0 } = grantedAt;
-      return inputs[index] === value;
-    }
+    const [prefix, level] = grantedAt;
+    return (prefix === "A" ? ascsFromLv(char.level) : char.cons) >= +level;
   }
   return true;
 };
