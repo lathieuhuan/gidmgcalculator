@@ -1,8 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc, TRAVELER_INFO } from "../constants";
-import { checkCons } from "../utils";
+import { TRAVELER_INFO } from "../constants";
 
 const GeoTraveler: DefaultAppCharacter = {
   code: 12,
@@ -14,17 +11,6 @@ const GeoTraveler: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.C1,
-      affect: EModAffect.PARTY,
-      description: `Active characters within the Wake of Earth's radius have their {CRIT Rate}#[k] increased by
-      {10%}#[v].`,
-      isGranted: checkCons[1],
-      applyBuff: makeModApplier("totalAttr", "cRate_", 10),
-    },
-  ],
 };
 
 export default GeoTraveler as AppCharacter;

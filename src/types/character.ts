@@ -233,12 +233,24 @@ type CharacterInnateBuff = CharacterModifier & {
   charBonuses: CharacterInnateBonus | CharacterInnateBonus[];
 };
 
+export type ActiveCondition = {
+  grantedAt?: GrantedAt;
+  /** When this bonus from teammate, this is input index to check granted. */
+  tmInputIndex?: number;
+};
+
 type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number;
   /** stacks = negativeMax - input. Only on Alhaitham */
   negativeMax?: number;
+  /** Only on Furina */
+  extra?: ActiveCondition & {
+    value: number;
+  };
+  /** Only on Furina */
+  max?: number;
 };
 
 type AttributeStack = {
@@ -254,6 +266,12 @@ type NationStack = {
   nation: "same" | "different";
 };
 
+/** Only on Gorou */
+type VisionStack = {
+  type: "element";
+  options: number[];
+};
+
 /** Only on Aloy */
 type OptionStack = {
   type: "option";
@@ -263,12 +281,14 @@ type OptionStack = {
   index?: number;
 };
 
-export type CharacterStackConfig = InputStack | OptionStack | AttributeStack | NationStack;
+export type CharacterStackConfig = InputStack | OptionStack | AttributeStack | NationStack | VisionStack;
 
 export type CharacterBonusTarget =
   | {
       type: "ATTR";
       path: AttributeStat | AttributeStat[];
+      /** Only on Hu Tao */
+      maxMult?: number;
     }
   | {
       type: "PATT";
@@ -298,51 +318,44 @@ export type CharacterBonusTarget =
       path?: string; // dummy, @to-do: remove
     };
 
-/** For input when used for teammates */
-// type TeammateInputCheck =
-//   | TeammateInputIndex
-//   | {
-//       value: number;
-//       /** Default to 0 */
-//       index?: number;
-//     };
-
-export type CharacterBonus = CharacterInnateBonus & {
-  grantedAt?: GrantedAt;
-  /** When this bonus from teammate, this is input index to check granted. */
-  tmInputIndex?: number;
-  /**  */
-  checkInput?:
-    | number
-    | {
-        value: number;
-        /** Default to 0 */
-        index?: number;
-        /** Default to 'equal' */
-        type?: "equal" | "min" | "max";
-      };
-  /** Only on Chongyun */
-  weaponTypes?: WeaponType[];
-  levelScale?: {
-    talent: Talent;
-    /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level] */
-    value: number;
-    /** Added after the above [value] */
-    extra?:
+export type CharacterBonus = CharacterInnateBonus &
+  ActiveCondition & {
+    /**  */
+    checkInput?:
       | number
-      // @to-do: only on Bennett, consider to remove
       | {
           value: number;
-          grantedAt: GrantedAt;
-          /** When this bonus from teammate, this is input index to check granted */
-          tmInputIndex: number;
+          /** Default to 0 */
+          index?: number;
+          /** Default to 'equal' */
+          type?: "equal" | "min" | "max";
         };
-    /** When this bonus from teammate, this is input index to get level. Default to 0 */
-    tmInputIndex?: number;
+    /** Only on Chongyun */
+    weaponTypes?: WeaponType[];
+    /** Only on Gorou, Chevreuse */
+    visionCount?: Partial<Record<Vision, number>>;
+    /** Only on Nilou, Chevreuse */
+    onlyVisions?: Vision[];
+    levelScale?: {
+      talent: Talent;
+      /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level] */
+      value: number;
+      /** Added after the above [value] */
+      extra?:
+        | number
+        // @to-do: only on Bennett, consider to remove
+        | {
+            value: number;
+            grantedAt: GrantedAt;
+            /** When this bonus from teammate, this is input index to check granted */
+            tmInputIndex: number;
+          };
+      /** When this bonus from teammate, this is input index to get level. Default to 0 */
+      tmInputIndex?: number;
+    };
+    /** Default to true */
+    fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
   };
-  /** Default to true */
-  fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
-};
 
 type CharacterBuff = CharacterModifier & {
   index: number;

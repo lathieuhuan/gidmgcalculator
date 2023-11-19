@@ -1,9 +1,27 @@
 import { VISION_TYPES } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { genExclusiveBuff } from "@Src/data/characters/utils";
-import { BuffModifierArgsWrapper, CharacterBonus, CharacterBonusTarget, CharacterStackConfig } from "@Src/types";
-import { isGranted, toArray } from "@Src/utils";
+import {
+  ActiveCondition,
+  BuffModifierArgsWrapper,
+  CharInfo,
+  CharacterBonus,
+  CharacterBonusTarget,
+  CharacterStackConfig,
+  ModifierInput,
+  Vision,
+} from "@Src/types";
+import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+
+const isAvailable = (fromSelf: boolean, condition: ActiveCondition, char: CharInfo, inputs: ModifierInput[]) => {
+  if (fromSelf) {
+    if (!isGranted(condition, char)) return false;
+  } else if (condition.tmInputIndex !== undefined && !inputs[condition.tmInputIndex]) {
+    return false;
+  }
+  return true;
+};
 
 const getStackValue = (
   stack: CharacterStackConfig,
@@ -13,9 +31,12 @@ const getStackValue = (
 ): number => {
   switch (stack.type) {
     case "input": {
-      const { index = 0, negativeMax } = stack;
+      const { index = 0, extra, negativeMax, max } = stack;
       let input = inputs[index] ?? 0;
+
+      if (extra && isAvailable(fromSelf, extra, obj.char, inputs)) input += extra.value;
       if (negativeMax) input = negativeMax - input;
+      if (max && input > max) input = max;
       return input;
     }
     case "option": {
@@ -36,6 +57,9 @@ const getStackValue = (
       }
       return count;
     }
+    case "element":
+      const { geo = 0 } = countVision(obj.partyData, obj.charData);
+      return stack.options[geo - 1] ?? 1;
   }
   return 1;
 };
@@ -51,6 +75,10 @@ const applyBuffValue = (
 
   switch (type) {
     case "ATTR":
+      if (target.maxMult) {
+        const max = obj.totalAttr.base_atk * target.maxMult;
+        if (buffValue > max) buffValue = max;
+      }
       return applyModifier(description, obj.totalAttr, path, buffValue, obj.tracker);
     case "PATT":
       return applyModifier(description, obj.attPattBonus, path, buffValue, obj.tracker);
@@ -84,9 +112,7 @@ export const applyCharacterBonus = ({
   modifierArgs: obj,
   fromSelf,
 }: ApplyCharacterBuffArgs) => {
-  if (fromSelf) {
-    if (!isGranted(bonus, obj.char)) return;
-  } else if (bonus.tmInputIndex !== undefined && !inputs[bonus.tmInputIndex]) {
+  if (!isAvailable(fromSelf, bonus, obj.char, inputs)) {
     return;
   }
   if (bonus.checkInput !== undefined) {
@@ -104,6 +130,14 @@ export const applyCharacterBonus = ({
   }
   if (bonus.weaponTypes) {
     if (!bonus.weaponTypes.includes(obj.charData.weaponType)) return;
+  }
+  if (bonus.visionCount) {
+    const visionCount = countVision(obj.partyData, obj.charData);
+    for (const key in bonus.visionCount) {
+      const currentCount = visionCount[key as Vision] ?? 0;
+      const requiredCount = bonus.visionCount[key as Vision] ?? 0;
+      if (currentCount < requiredCount) return;
+    }
   }
   let buffValue = bonus.value;
 
@@ -137,6 +171,7 @@ export const applyCharacterBonus = ({
       buffValue *= getStackValue(stack, inputs, obj, fromSelf);
     }
   }
+
   if (buffValue) {
     if (bonus.max) buffValue = Math.min(buffValue, bonus.max);
 
