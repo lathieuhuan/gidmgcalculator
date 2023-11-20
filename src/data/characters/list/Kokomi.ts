@@ -1,10 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { applyPercent } from "@Src/utils";
-import { applyModifier, finalTalentLv, makeModApplier, type AttackPatternPath } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
 
 const Kokomi: DefaultAppCharacter = {
   code: 42,
@@ -20,45 +14,6 @@ const Kokomi: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.EB,
-      affect: EModAffect.SELF,
-      description: `Kokomi's {Normal Attack, Charged Attack and Bake-Kurage DMG}#[k] are increased based on her
-      {Max HP}#[k].
-      <br />• At {A4}#[ms], {Normal and Charged Attack DMG Bonus}#[k] is further increasd based on {15%}#[v] of her
-      {Healing Bonus}#[k].
-      <br />• At {C4}#[ms], Kokomi's {Normal Attack SPD}#[k] is increased by {10%}#[v].`,
-      applyFinalBuff: (obj) => {
-        const { char } = obj;
-        const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
-        const level = finalTalentLv({ ...obj, charData: Kokomi as AppCharacter, talentType: "EB" });
-
-        const buffValues = [4.84, 6.78, 7.1].map((mult, i) => {
-          let finalMult = mult * TALENT_LV_MULTIPLIERS[2][level];
-          if (i !== 2 && checkAscs[4](char)) {
-            finalMult += obj.totalAttr.healB_ * 0.15;
-          }
-          return applyPercent(obj.totalAttr.hp, finalMult);
-        });
-        applyModifier(obj.desc, obj.attPattBonus, fields, buffValues, obj.tracker);
-
-        if (checkCons[4](char)) {
-          applyModifier(`Self / ${EModSrc.C4}`, obj.totalAttr, "naAtkSpd_", 10, obj.tracker);
-        }
-      },
-    },
-    {
-      index: 3,
-      src: EModSrc.C6,
-      affect: EModAffect.SELF,
-      description: `During Nereid's Ascension, Kokomi gains a {40%}#[v] {Hydro DMG Bonus}#[k] for 4s after her
-      Normal and Charged Attacks heal, or would heal, any party member with 80% or more HP.`,
-      isGranted: checkCons[6],
-      applyBuff: makeModApplier("totalAttr", "hydro", 40),
-    },
-  ],
 };
 
 export default Kokomi as AppCharacter;

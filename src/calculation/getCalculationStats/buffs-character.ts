@@ -57,9 +57,12 @@ const getStackValue = (
       }
       return count;
     }
-    case "element":
-      const { geo = 0 } = countVision(obj.partyData, obj.charData);
-      return stack.options[geo - 1] ?? 1;
+    case "vision": {
+      const { visionType } = stack;
+      const visionCount = countVision(obj.partyData, obj.charData);
+      const input = visionType === "various" ? Object.keys(visionCount).length : visionCount[visionType] ?? 0;
+      return stack.options[input - 1] ?? 1;
+    }
   }
   return 1;
 };

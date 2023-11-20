@@ -1,8 +1,7 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
 import { makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkCons } from "../utils";
 
 const Klee: DefaultAppCharacter = {
   code: 23,
@@ -18,25 +17,6 @@ const Klee: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.A1,
-      affect: EModAffect.SELF,
-      description: `Explosive Spark increases the next {Charged Attack DMG}#[k] by {50%}#[v].`,
-      isGranted: checkAscs[1],
-      applyBuff: makeModApplier("attPattBonus", "CA.pct_", 50),
-    },
-    {
-      index: 1,
-      src: EModSrc.C6,
-      affect: EModAffect.PARTY,
-      description: `When Sparks 'n' Splash [EB] is used, all party members will gain a {10%}#[v]
-      {Pyro DMG Bonus}#[k] for 25s.`,
-      isGranted: checkCons[6],
-      applyBuff: makeModApplier("totalAttr", "pyro", 10),
-    },
-  ],
   debuffs: [
     {
       index: 0,

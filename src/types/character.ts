@@ -255,7 +255,7 @@ type InputStack = {
 
 type AttributeStack = {
   type: "attribute";
-  field: "hp" | "base_atk" | "def" | "em" | "er_";
+  field: "hp" | "base_atk" | "def" | "em" | "er_" | "healB_";
   /** When this bonus from teammate, this is input index to get value. Default to 0 */
   tmInputIndex?: TeammateInputIndex;
 };
@@ -266,9 +266,10 @@ type NationStack = {
   nation: "same" | "different";
 };
 
-/** Only on Gorou */
+/** On Gorou, Lynette */
 type VisionStack = {
-  type: "element";
+  type: "vision";
+  visionType: "various" | Vision;
   options: number[];
 };
 
@@ -313,7 +314,7 @@ export type CharacterBonusTarget =
       path?: string; // dummy, @to-do: remove
     }
   | {
-      /** Only on Dendro Traveler */
+      /** Only on Dendro Traveler, Kazuha */
       type: "IN_ELM";
       path?: string; // dummy, @to-do: remove
     };
