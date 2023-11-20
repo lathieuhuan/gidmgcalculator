@@ -1,6 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { EModSrc } from "../constants";
 
 const Tartaglia: DefaultAppCharacter = {
   code: 26,
@@ -16,19 +14,6 @@ const Tartaglia: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.ES,
-      affect: EModAffect.SELF,
-      description: `Tartaglia's {Normal and Charged Attacks}#[k] are converted to {Hydro DMG}#[hydro] that cannot be
-      overridden.`,
-      infuseConfig: {
-        overwritable: false,
-        disabledNAs: true,
-      },
-    },
-  ],
 };
 
 export default Tartaglia as AppCharacter;

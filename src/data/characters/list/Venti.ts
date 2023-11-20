@@ -1,6 +1,6 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { EModAffect, VISION_TYPES } from "@Src/constants";
-import { applyModifier, makeModApplier } from "@Src/utils/calculation";
+import { VISION_TYPES } from "@Src/constants";
+import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
@@ -18,17 +18,6 @@ const Venti: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.C4,
-      affect: EModAffect.SELF,
-      description: `When Venti picks up an Elemental Orb or Particle, he receives a {25%}#[v] {Anemo DMG Bonus}#[k]
-      for 10s.`,
-      isGranted: checkCons[4],
-      applyBuff: makeModApplier("totalAttr", "anemo", 25),
-    },
-  ],
   debuffs: [
     {
       index: 0,
