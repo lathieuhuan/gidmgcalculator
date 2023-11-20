@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { EModAffect } from "@Src/constants";
-import { applyModifier, finalTalentLv, makeModApplier } from "@Src/utils/calculation";
+import { finalTalentLv, makeModApplier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
 import { checkCons } from "../utils";
 
@@ -29,33 +28,6 @@ const Razor: DefaultAppCharacter = {
     EB: 3,
   },
   dsGetters: [(args) => `${getEBBonus(args)}%`],
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.EB,
-      affect: EModAffect.SELF,
-      description: `Increases Razor's {ATK SPD}#[k] by {@0}#[v].`,
-      applyBuff: (obj) => {
-        applyModifier(obj.desc, obj.totalAttr, "naAtkSpd_", getEBBonus(obj), obj.tracker);
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.C1,
-      affect: EModAffect.SELF,
-      description: `Picking up an Elemental Orb or Particle increases Razor's {DMG}#[k] by {10%}#[v] for 8s.`,
-      isGranted: checkCons[1],
-      applyBuff: makeModApplier("attPattBonus", "all.pct_", 10),
-    },
-    {
-      index: 2,
-      src: EModSrc.C2,
-      affect: EModAffect.SELF,
-      description: `Increases {CRIT Rate}#[k] against opponents with less than 30% HP by {10%}#[v].`,
-      isGranted: checkCons[2],
-      applyBuff: makeModApplier("totalAttr", "cRate_", 10),
-    },
-  ],
   debuffs: [
     {
       index: 0,

@@ -230,7 +230,7 @@ type CharacterInnateBonus = {
 };
 
 type CharacterInnateBuff = CharacterModifier & {
-  charBonuses: CharacterInnateBonus | CharacterInnateBonus[];
+  bonusModels: CharacterInnateBonus | CharacterInnateBonus[];
 };
 
 export type ActiveCondition = {
@@ -243,21 +243,26 @@ type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number;
+  tmInputIndex?: number;
   /** stacks = negativeMax - input. Only on Alhaitham */
   negativeMax?: number;
   /** Only on Furina */
   extra?: ActiveCondition & {
     value: number;
   };
+  /** Only on Neuvillette */
+  requiredBase?: number;
   /** Only on Furina */
   max?: number;
 };
 
 type AttributeStack = {
   type: "attribute";
-  field: "hp" | "base_atk" | "def" | "em" | "er_" | "healB_";
+  field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_" | "healB_";
   /** When this bonus from teammate, this is input index to get value. Default to 0 */
   tmInputIndex?: TeammateInputIndex;
+  /** stack = attribute - required base. On Nahida */
+  requiredBase?: number;
 };
 
 /** Only on Charlotte */
@@ -273,7 +278,6 @@ type VisionStack = {
   options: number[];
 };
 
-/** Only on Aloy */
 type OptionStack = {
   type: "option";
   /** stack = options[input - 1] */
@@ -339,8 +343,11 @@ export type CharacterBonus = CharacterInnateBonus &
     onlyVisions?: Vision[];
     levelScale?: {
       talent: Talent;
-      /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level] */
-      value: number;
+      /**
+       * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
+       * number[] as options. Only on Razor.
+       */
+      value: number | number[];
       /** Added after the above [value] */
       extra?:
         | number
@@ -367,5 +374,5 @@ type CharacterBuff = CharacterModifier & {
     range?: ("NA" | "CA" | "PA")[];
     disabledNAs?: boolean;
   };
-  charBonuses?: CharacterBonus | CharacterBonus[];
+  bonusModels?: CharacterBonus | CharacterBonus[];
 };

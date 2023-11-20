@@ -83,14 +83,14 @@ export const getCalculationStats = ({
 
     for (const buff of innateBuffs) {
       if (isGranted(buff, char)) {
-        for (const bonus of toArray(buff.charBonuses)) {
+        for (const bonus of toArray(buff.bonusModels)) {
           if (isFinal === isFinalBonus(bonus.stacks)) {
             applyCharacterBonus({
               description: `Self / ${buff.src}`,
               bonus,
               inputs: [],
               modifierArgs,
-              fromSelf: true
+              fromSelf: true,
             });
           }
         }
@@ -99,8 +99,8 @@ export const getCalculationStats = ({
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
-      if (buff && ctrl.activated && isGranted(buff, char) && buff.charBonuses) {
-        for (const bonus of toArray(buff.charBonuses)) {
+      if (buff && ctrl.activated && isGranted(buff, char) && buff.bonusModels) {
+        for (const bonus of toArray(buff.bonusModels)) {
           if ((bonus.fromSelf ?? true) && isFinal === isFinalBonus(bonus.stacks)) {
             const description = `Self / ${buff.src}`;
 
@@ -109,7 +109,7 @@ export const getCalculationStats = ({
               bonus,
               inputs: ctrl.inputs || [],
               modifierArgs,
-              fromSelf: true
+              fromSelf: true,
             });
           }
         }
@@ -239,17 +239,17 @@ export const getCalculationStats = ({
         if (!activated) continue;
         const buff = findByIndex(buffs, index);
 
-        if (!buff || !buff.charBonuses) {
+        if (!buff || !buff.bonusModels) {
           console.log(`buff #${index} of teammate ${name} not found`);
           continue;
         }
-        for (const bonus of toArray(buff.charBonuses)) {
+        for (const bonus of toArray(buff.bonusModels)) {
           applyCharacterBonus({
             description: `${name} / ${buff.src}`,
             bonus,
             inputs,
             modifierArgs,
-            fromSelf: false
+            fromSelf: false,
           });
         }
 

@@ -31,9 +31,11 @@ const getStackValue = (
 ): number => {
   switch (stack.type) {
     case "input": {
-      const { index = 0, extra, negativeMax, max } = stack;
-      let input = inputs[index] ?? 0;
+      const { index = 0, tmInputIndex, extra, requiredBase, negativeMax, max } = stack;
+      const finalIndex = tmInputIndex !== undefined && !fromSelf ? tmInputIndex : index;
+      let input = inputs[finalIndex] ?? 0;
 
+      if (requiredBase) input = Math.max(input - requiredBase, 0);
       if (extra && isAvailable(fromSelf, extra, obj.char, inputs)) input += extra.value;
       if (negativeMax) input = negativeMax - input;
       if (max && input > max) input = max;
@@ -44,8 +46,10 @@ const getStackValue = (
       return stack.options[optionIndex] ?? 1;
     }
     case "attribute": {
-      const { field, tmInputIndex = 0 } = stack;
-      const stackValue = fromSelf ? obj.totalAttr[field] : inputs[tmInputIndex] ?? 1;
+      const { field, tmInputIndex = 0, requiredBase } = stack;
+      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[tmInputIndex] ?? 1;
+
+      if (requiredBase) stackValue = Math.max(stackValue - requiredBase, 0);
       return stackValue;
     }
     case "nation": {
@@ -134,14 +138,22 @@ export const applyCharacterBonus = ({
   if (bonus.weaponTypes) {
     if (!bonus.weaponTypes.includes(obj.charData.weaponType)) return;
   }
+
+  const visionCount = countVision(obj.partyData, obj.charData);
+
   if (bonus.visionCount) {
-    const visionCount = countVision(obj.partyData, obj.charData);
     for (const key in bonus.visionCount) {
       const currentCount = visionCount[key as Vision] ?? 0;
       const requiredCount = bonus.visionCount[key as Vision] ?? 0;
       if (currentCount < requiredCount) return;
     }
   }
+  if (bonus.onlyVisions) {
+    for (const vision in visionCount) {
+      if (!bonus.onlyVisions.includes(vision as Vision)) return;
+    }
+  }
+
   let buffValue = bonus.value;
 
   if (bonus.levelScale) {
@@ -156,8 +168,11 @@ export const applyCharacterBonus = ({
         })
       : inputs[tmInputIndex] ?? 0;
 
-    buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
-
+    if (typeof value === "number") {
+      buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+    } else {
+      buffValue *= value[level - 1] ?? 1;
+    }
     if (typeof extra === "number") buffValue += extra;
 
     // @to-do
