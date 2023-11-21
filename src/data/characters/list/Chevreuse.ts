@@ -3,7 +3,7 @@ import { AppCharacter, DefaultAppCharacter } from "@Src/types";
 import { countVision } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 import { EModSrc } from "../constants";
-import { checkAscs, checkCons } from "../utils";
+import { checkAscs } from "../utils";
 
 const Chevreuse: DefaultAppCharacter = {
   code: 81,
@@ -19,49 +19,6 @@ const Chevreuse: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  buffs: [
-    {
-      index: 0,
-      src: EModSrc.A4,
-      affect: EModAffect.PARTY,
-      isGranted: checkAscs[4],
-      description: `After Chevreuse fires an Overcharged Ball [~ES], nearby Pyro and Electro characters' {ATK}#[k] is
-      increased by {1%}#[v] for every {1000 Max HP}#[k] Chevreuse has for 30s. Max {40%}#[m].`,
-      inputConfigs: [
-        {
-          type: "text",
-          label: "Chevreuse's Max HP",
-          max: 99999,
-          for: "teammate",
-        },
-      ],
-      applyFinalBuff: (obj) => {
-        if (["pyro", "electro"].includes(obj.charData.vision)) {
-          const hp = obj.fromSelf ? obj.totalAttr.hp : obj.inputs[0];
-          const buffValue = Math.min(hp / 1000, 40);
-          applyModifier(obj.desc, obj.totalAttr, "atk_", buffValue, obj.tracker);
-        }
-      },
-    },
-    {
-      index: 1,
-      src: EModSrc.C6,
-      affect: EModAffect.ACTIVE_UNIT,
-      isGranted: checkCons[6],
-      description: `After a party member is healed by Short-Range Rapid Interdiction Fire [ES], they gain a {20%}#[v]
-      {Pyro DMG Bonus}#[k] and {Electro DMG Bonus}#[k] for 8s, up to {3}#[m] stacks.`,
-      inputConfigs: [
-        {
-          type: "stacks",
-          max: 3,
-        },
-      ],
-      applyBuff: (obj) => {
-        const stacks = obj.inputs[0] ?? 0;
-        applyModifier(obj.desc, obj.totalAttr, ["pyro", "electro"], stacks * 20, obj.tracker);
-      },
-    },
-  ],
   debuffs: [
     {
       index: 0,

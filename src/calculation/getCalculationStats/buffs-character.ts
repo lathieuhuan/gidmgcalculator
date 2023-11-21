@@ -2,7 +2,6 @@ import { VISION_TYPES } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { genExclusiveBuff } from "@Src/data/characters/utils";
 import {
-  ActiveCondition,
   BuffModifierArgsWrapper,
   CharInfo,
   CharacterBonus,
@@ -10,14 +9,20 @@ import {
   CharacterStackConfig,
   ModifierInput,
   Vision,
+  GrantedAt,
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 
-const isAvailable = (fromSelf: boolean, condition: ActiveCondition, char: CharInfo, inputs: ModifierInput[]) => {
+const isAvailable = (
+  fromSelf: boolean,
+  condition: { grantedAt?: GrantedAt; alterIndex?: number },
+  char: CharInfo,
+  inputs: ModifierInput[]
+) => {
   if (fromSelf) {
     if (!isGranted(condition, char)) return false;
-  } else if (condition.tmInputIndex !== undefined && !inputs[condition.tmInputIndex]) {
+  } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
     return false;
   }
   return true;
@@ -31,8 +36,8 @@ const getStackValue = (
 ): number => {
   switch (stack.type) {
     case "input": {
-      const { index = 0, tmInputIndex, extra, requiredBase, negativeMax, max } = stack;
-      const finalIndex = tmInputIndex !== undefined && !fromSelf ? tmInputIndex : index;
+      const { index = 0, alterIndex, extra, requiredBase, negativeMax, max } = stack;
+      const finalIndex = alterIndex !== undefined && !fromSelf ? alterIndex : index;
       let input = inputs[finalIndex] ?? 0;
 
       if (requiredBase) input = Math.max(input - requiredBase, 0);
@@ -46,8 +51,8 @@ const getStackValue = (
       return stack.options[optionIndex] ?? 1;
     }
     case "attribute": {
-      const { field, tmInputIndex = 0, requiredBase } = stack;
-      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[tmInputIndex] ?? 1;
+      const { field, alterIndex = 0, requiredBase } = stack;
+      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
 
       if (requiredBase) stackValue = Math.max(stackValue - requiredBase, 0);
       return stackValue;
@@ -122,8 +127,9 @@ export const applyCharacterBonus = ({
   if (!isAvailable(fromSelf, bonus, obj.char, inputs)) {
     return;
   }
-  if (bonus.checkInput !== undefined) {
-    const { checkInput } = bonus;
+  const { checkInput, partyElmtCount, partyOnlyElmts, preExtra } = bonus;
+
+  if (checkInput !== undefined) {
     const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
     const input = inputs[index] ?? 0;
     switch (type) {
@@ -135,29 +141,32 @@ export const applyCharacterBonus = ({
         else break;
     }
   }
-  if (bonus.weaponTypes) {
-    if (!bonus.weaponTypes.includes(obj.charData.weaponType)) return;
+  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
+    return;
+  }
+  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
+    return;
   }
 
-  const visionCount = countVision(obj.partyData, obj.charData);
+  const visions = countVision(obj.partyData, obj.charData);
 
-  if (bonus.visionCount) {
-    for (const key in bonus.visionCount) {
-      const currentCount = visionCount[key as Vision] ?? 0;
-      const requiredCount = bonus.visionCount[key as Vision] ?? 0;
+  if (partyElmtCount) {
+    for (const key in partyElmtCount) {
+      const currentCount = visions[key as Vision] ?? 0;
+      const requiredCount = partyElmtCount[key as Vision] ?? 0;
       if (currentCount < requiredCount) return;
     }
   }
-  if (bonus.onlyVisions) {
-    for (const vision in visionCount) {
-      if (!bonus.onlyVisions.includes(vision as Vision)) return;
+  if (partyOnlyElmts) {
+    for (const vision in visions) {
+      if (!partyOnlyElmts.includes(vision as Vision)) return;
     }
   }
 
   let buffValue = bonus.value;
 
-  if (bonus.levelScale) {
-    const { talent, value, extra, tmInputIndex = 0 } = bonus.levelScale;
+  if (bonus.scale) {
+    const { talent, value, alterIndex = 0 } = bonus.scale;
 
     const level = fromSelf
       ? finalTalentLv({
@@ -166,23 +175,20 @@ export const applyCharacterBonus = ({
           charData: obj.charData,
           partyData: obj.partyData,
         })
-      : inputs[tmInputIndex] ?? 0;
+      : inputs[alterIndex] ?? 0;
 
     if (typeof value === "number") {
       buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
     } else {
       buffValue *= value[level - 1] ?? 1;
     }
-    if (typeof extra === "number") buffValue += extra;
-
-    // @to-do
-    // if (extra) {
-    //   if (typeof extra === "number") {
-    //     buffValue += extra;
-    //   } else if (isGranted(extra, obj.char)) {
-    //     buffValue += extra.value;
-    //   }
-    // }
+  }
+  if (preExtra) {
+    if (typeof preExtra === "number") {
+      buffValue += preExtra;
+    } else if (isAvailable(fromSelf, preExtra, obj.char, inputs)) {
+      buffValue += preExtra.value;
+    }
   }
   if (bonus.stacks) {
     for (const stack of toArray(bonus.stacks)) {

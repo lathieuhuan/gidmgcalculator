@@ -207,9 +207,6 @@ export type AbilityDebuff = AbilityModifier & {
 
 export type GrantedAt = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
 
-/** Index of the input to use in place of the current object's value if the bonus comes from teammate */
-type TeammateInputIndex = number;
-
 export type CharacterModifier = {
   src: string;
   grantedAt?: GrantedAt;
@@ -218,11 +215,23 @@ export type CharacterModifier = {
 
 type CharacterInnateBonus = {
   value: number;
+  /** Added before stacks, after scale */
+  preExtra?:
+    | number
+    // On Bennett
+    | {
+        value: number;
+        grantedAt: GrantedAt;
+        /** When this bonus is from teammate, this is input's index to check granted. */
+        alterIndex?: number;
+      };
   // extra?:
   //   | number
   //   | {
   //       value: number;
   //       grantedAt: GrantedAt;
+  //       /** When this bonus is from teammate, this is input's index to check granted. */
+  //       alterIndex?: number;
   //     };
   stacks?: CharacterStackConfig | CharacterStackConfig[];
   targets: CharacterBonusTarget | CharacterBonusTarget[];
@@ -230,49 +239,47 @@ type CharacterInnateBonus = {
 };
 
 type CharacterInnateBuff = CharacterModifier & {
-  bonusModels: CharacterInnateBonus | CharacterInnateBonus[];
-};
-
-export type ActiveCondition = {
-  grantedAt?: GrantedAt;
-  /** When this bonus from teammate, this is input index to check granted. */
-  tmInputIndex?: number;
+  bonusModels?: CharacterInnateBonus | CharacterInnateBonus[];
 };
 
 type InputStack = {
   type: "input";
   /** Default to 0 */
   index?: number;
-  tmInputIndex?: number;
+  /** When this bonus is from teammate, this is input's index to get stacks. */
+  alterIndex?: number;
   /** stacks = negativeMax - input. Only on Alhaitham */
   negativeMax?: number;
-  /** Only on Furina */
-  extra?: ActiveCondition & {
+  /** On Furina */
+  extra?: {
     value: number;
+    grantedAt?: GrantedAt;
+    /** When this bonus is from teammate, this is input's index to check granted. */
+    alterIndex?: number;
   };
-  /** Only on Neuvillette */
+  /** On Neuvillette */
   requiredBase?: number;
-  /** Only on Furina */
+  /** On Furina */
   max?: number;
 };
 
 type AttributeStack = {
   type: "attribute";
   field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_" | "healB_";
-  /** When this bonus from teammate, this is input index to get value. Default to 0 */
-  tmInputIndex?: TeammateInputIndex;
+  /** When this bonus is from teammate, this is input's index to get value. Default to 0 */
+  alterIndex?: number;
   /** stack = attribute - required base. On Nahida */
   requiredBase?: number;
 };
 
-/** Only on Charlotte */
 type NationStack = {
+  /** On Charlotte */
   type: "nation";
   nation: "same" | "different";
 };
 
-/** On Gorou, Lynette */
 type VisionStack = {
+  /** On Gorou, Lynette */
   type: "vision";
   visionType: "various" | Vision;
   options: number[];
@@ -292,7 +299,7 @@ export type CharacterBonusTarget =
   | {
       type: "ATTR";
       path: AttributeStat | AttributeStat[];
-      /** Only on Hu Tao */
+      /** On Hu Tao */
       maxMult?: number;
     }
   | {
@@ -313,57 +320,62 @@ export type CharacterBonusTarget =
       path: AttackPatternInfoKey;
     }
   | {
-      /** Only on Candace */
+      /** On Candace */
       type: "ELM_NA";
       path?: string; // dummy, @to-do: remove
     }
   | {
-      /** Only on Dendro Traveler, Kazuha */
+      /** On Dendro Traveler, Kazuha, Sucrose */
       type: "IN_ELM";
       path?: string; // dummy, @to-do: remove
     };
 
-export type CharacterBonus = CharacterInnateBonus &
-  ActiveCondition & {
-    /**  */
-    checkInput?:
-      | number
-      | {
-          value: number;
-          /** Default to 0 */
-          index?: number;
-          /** Default to 'equal' */
-          type?: "equal" | "min" | "max";
-        };
-    /** Only on Chongyun */
-    weaponTypes?: WeaponType[];
-    /** Only on Gorou, Chevreuse */
-    visionCount?: Partial<Record<Vision, number>>;
-    /** Only on Nilou, Chevreuse */
-    onlyVisions?: Vision[];
-    levelScale?: {
-      talent: Talent;
-      /**
-       * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
-       * number[] as options. Only on Razor.
-       */
-      value: number | number[];
-      /** Added after the above [value] */
-      extra?:
-        | number
-        // @to-do: only on Bennett, consider to remove
-        | {
-            value: number;
-            grantedAt: GrantedAt;
-            /** When this bonus from teammate, this is input index to check granted */
-            tmInputIndex: number;
-          };
-      /** When this bonus from teammate, this is input index to get level. Default to 0 */
-      tmInputIndex?: number;
-    };
-    /** Default to true */
-    fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
+export type CharacterBonus = CharacterInnateBonus & {
+  grantedAt?: GrantedAt;
+  /** When this bonus is from teammate, this is input's index to check granted. */
+  alterIndex?: number;
+  /**  */
+  checkInput?:
+    | number
+    | {
+        value: number;
+        /** Default to 0 */
+        index?: number;
+        /** Default to 'equal' */
+        type?: "equal" | "min" | "max";
+      };
+  /** On Chongyun */
+  forWeapons?: WeaponType[];
+  /** On Chevreuse */
+  forElmts?: Vision[];
+  /** On Gorou, Nilou, Chevreuse */
+  partyElmtCount?: Partial<Record<Vision, number>>;
+  /** On Nilou, Chevreuse */
+  partyOnlyElmts?: Vision[];
+  /** Multiplier based on talent level */
+  scale?: {
+    talent: Talent;
+    /**
+     * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
+     * number[] as options. Only on Razor.
+     */
+    value: number | number[];
+    /** Added after [value] is scaled */
+    // extra?:
+    //   | number
+    //   // On Bennett
+    //   | {
+    //       value: number;
+    //       grantedAt: GrantedAt;
+    //       /** When this bonus is from teammate, this is input's index to check granted */
+    //       alterIndex: number;
+    //     };
+    /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
+    alterIndex?: number;
   };
+  /** Default to true */
+  fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
+};
 
 type CharacterBuff = CharacterModifier & {
   index: number;
