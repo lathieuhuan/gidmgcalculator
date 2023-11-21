@@ -15,10 +15,10 @@ import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 
 const isAvailable = (
-  fromSelf: boolean,
   condition: { grantedAt?: GrantedAt; alterIndex?: number },
   char: CharInfo,
-  inputs: ModifierInput[]
+  inputs: ModifierInput[],
+  fromSelf: boolean
 ) => {
   if (fromSelf) {
     if (!isGranted(condition, char)) return false;
@@ -28,34 +28,77 @@ const isAvailable = (
   return true;
 };
 
-const getStackValue = (
+const isApplicable = (bonus: CharacterBonus, inputs: number[], obj: BuffModifierArgsWrapper) => {
+  const { checkInput, partyElmtCount, partyOnlyElmts } = bonus;
+
+  if (checkInput !== undefined) {
+    const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
+    const input = inputs[index] ?? 0;
+    switch (type) {
+      case "equal":
+        if (input !== value) return false;
+        else break;
+      case "min":
+        if (input < value) return false;
+        else break;
+      case "max":
+        if (input > value) return false;
+    }
+  }
+  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
+    return false;
+  }
+  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
+    return false;
+  }
+
+  const visions = countVision(obj.partyData, obj.charData);
+
+  if (partyElmtCount) {
+    for (const key in partyElmtCount) {
+      const currentCount = visions[key as Vision] ?? 0;
+      const requiredCount = partyElmtCount[key as Vision] ?? 0;
+      if (currentCount < requiredCount) return false;
+    }
+  }
+  if (partyOnlyElmts) {
+    for (const vision in visions) {
+      if (!partyOnlyElmts.includes(vision as Vision)) return false;
+    }
+  }
+  return true;
+};
+
+export const getStackValue = (
   stack: CharacterStackConfig,
   inputs: number[],
   obj: BuffModifierArgsWrapper,
   fromSelf: boolean
 ): number => {
+  let result = 1;
+
   switch (stack.type) {
     case "input": {
-      const { index = 0, alterIndex, extra, requiredBase, negativeMax, max } = stack;
+      const { index = 0, alterIndex, requiredBase } = stack;
       const finalIndex = alterIndex !== undefined && !fromSelf ? alterIndex : index;
       let input = inputs[finalIndex] ?? 0;
 
       if (requiredBase) input = Math.max(input - requiredBase, 0);
-      if (extra && isAvailable(fromSelf, extra, obj.char, inputs)) input += extra.value;
-      if (negativeMax) input = negativeMax - input;
-      if (max && input > max) input = max;
-      return input;
+      result = input;
+      break;
     }
     case "option": {
       const optionIndex = inputs[stack.index ?? 0] - 1;
-      return stack.options[optionIndex] ?? 1;
+      result = stack.options[optionIndex] ?? 1;
+      break;
     }
     case "attribute": {
       const { field, alterIndex = 0, requiredBase } = stack;
       let stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
 
       if (requiredBase) stackValue = Math.max(stackValue - requiredBase, 0);
-      return stackValue;
+      result = stackValue;
+      break;
     }
     case "nation": {
       let count = obj.partyData.reduce((total, teammate) => {
@@ -64,16 +107,80 @@ const getStackValue = (
       if (stack.nation === "different") {
         count = obj.partyData.filter(Boolean).length - count;
       }
-      return count;
+      result = count;
+      break;
     }
     case "vision": {
       const { visionType } = stack;
       const visionCount = countVision(obj.partyData, obj.charData);
       const input = visionType === "various" ? Object.keys(visionCount).length : visionCount[visionType] ?? 0;
-      return stack.options[input - 1] ?? 1;
+      result = stack.options[input - 1] ?? 1;
+      break;
     }
   }
-  return 1;
+  const { extraStack, maxStack } = stack;
+
+  if (extraStack && isAvailable(extraStack, obj.char, inputs, fromSelf)) {
+    result += extraStack.value;
+  }
+  if (maxStack && result > maxStack) {
+    result = maxStack;
+  }
+
+  return result;
+};
+
+const getBuffValue = (
+  bonus: Omit<CharacterBonus, "targets">,
+  inputs: number[],
+  preCalcStack: number[],
+  obj: BuffModifierArgsWrapper,
+  fromSelf: boolean
+) => {
+  const { preExtra } = bonus;
+  let buffValue = bonus.value;
+
+  if (bonus.scale) {
+    const { talent, value, alterIndex = 0 } = bonus.scale;
+
+    const level = fromSelf
+      ? finalTalentLv({
+          talentType: talent,
+          char: obj.char,
+          charData: obj.charData,
+          partyData: obj.partyData,
+        })
+      : inputs[alterIndex] ?? 0;
+
+    if (typeof value === "number") {
+      buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
+    } else {
+      buffValue *= value[level - 1] ?? 1;
+    }
+  }
+  if (preExtra) {
+    if (typeof preExtra === "number") {
+      buffValue += preExtra;
+    } else if (isAvailable(preExtra, obj.char, inputs, fromSelf)) {
+      buffValue += getBuffValue(preExtra, inputs, preCalcStack, obj, fromSelf);
+    }
+  }
+
+  console.log("preCalcStack", preCalcStack);
+
+  if (bonus.stackIndex !== undefined) {
+    buffValue *= preCalcStack[bonus.stackIndex] ?? 1;
+  }
+  if (bonus.stacks) {
+    for (const stack of toArray(bonus.stacks)) {
+      buffValue *= getStackValue(stack, inputs, obj, fromSelf);
+    }
+  }
+  if (bonus.max) {
+    buffValue = Math.min(buffValue, bonus.max);
+  }
+
+  return buffValue;
 };
 
 const applyBuffValue = (
@@ -114,6 +221,7 @@ interface ApplyCharacterBuffArgs {
   description: string;
   bonus: CharacterBonus;
   inputs: number[];
+  preCalcStack: number[];
   modifierArgs: BuffModifierArgsWrapper;
   fromSelf: boolean;
 }
@@ -121,84 +229,16 @@ export const applyCharacterBonus = ({
   description,
   bonus,
   inputs,
+  preCalcStack,
   modifierArgs: obj,
   fromSelf,
 }: ApplyCharacterBuffArgs) => {
-  if (!isAvailable(fromSelf, bonus, obj.char, inputs)) {
+  if (!isAvailable(bonus, obj.char, inputs, fromSelf) || !isApplicable(bonus, inputs, obj)) {
     return;
   }
-  const { checkInput, partyElmtCount, partyOnlyElmts, preExtra } = bonus;
-
-  if (checkInput !== undefined) {
-    const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
-    const input = inputs[index] ?? 0;
-    switch (type) {
-      case "equal":
-        if (input !== value) return;
-        else break;
-      case "min":
-        if (input < value) return;
-        else break;
-    }
-  }
-  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
-    return;
-  }
-  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
-    return;
-  }
-
-  const visions = countVision(obj.partyData, obj.charData);
-
-  if (partyElmtCount) {
-    for (const key in partyElmtCount) {
-      const currentCount = visions[key as Vision] ?? 0;
-      const requiredCount = partyElmtCount[key as Vision] ?? 0;
-      if (currentCount < requiredCount) return;
-    }
-  }
-  if (partyOnlyElmts) {
-    for (const vision in visions) {
-      if (!partyOnlyElmts.includes(vision as Vision)) return;
-    }
-  }
-
-  let buffValue = bonus.value;
-
-  if (bonus.scale) {
-    const { talent, value, alterIndex = 0 } = bonus.scale;
-
-    const level = fromSelf
-      ? finalTalentLv({
-          talentType: talent,
-          char: obj.char,
-          charData: obj.charData,
-          partyData: obj.partyData,
-        })
-      : inputs[alterIndex] ?? 0;
-
-    if (typeof value === "number") {
-      buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
-    } else {
-      buffValue *= value[level - 1] ?? 1;
-    }
-  }
-  if (preExtra) {
-    if (typeof preExtra === "number") {
-      buffValue += preExtra;
-    } else if (isAvailable(fromSelf, preExtra, obj.char, inputs)) {
-      buffValue += preExtra.value;
-    }
-  }
-  if (bonus.stacks) {
-    for (const stack of toArray(bonus.stacks)) {
-      buffValue *= getStackValue(stack, inputs, obj, fromSelf);
-    }
-  }
+  const buffValue = getBuffValue(bonus, inputs, preCalcStack, obj, fromSelf);
 
   if (buffValue) {
-    if (bonus.max) buffValue = Math.min(buffValue, bonus.max);
-
     for (const target of toArray(bonus.targets)) {
       applyBuffValue(description, target, buffValue, obj, inputs[0]);
     }

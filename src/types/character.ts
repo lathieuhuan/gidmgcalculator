@@ -211,28 +211,12 @@ export type CharacterModifier = {
   src: string;
   grantedAt?: GrantedAt;
   description: string;
+  /** Pre-calculated stack */
+  stackModels?: CharacterStackConfig;
 };
 
 type CharacterInnateBonus = {
   value: number;
-  /** Added before stacks, after scale */
-  preExtra?:
-    | number
-    // On Bennett
-    | {
-        value: number;
-        grantedAt: GrantedAt;
-        /** When this bonus is from teammate, this is input's index to check granted. */
-        alterIndex?: number;
-      };
-  // extra?:
-  //   | number
-  //   | {
-  //       value: number;
-  //       grantedAt: GrantedAt;
-  //       /** When this bonus is from teammate, this is input's index to check granted. */
-  //       alterIndex?: number;
-  //     };
   stacks?: CharacterStackConfig | CharacterStackConfig[];
   targets: CharacterBonusTarget | CharacterBonusTarget[];
   max?: number;
@@ -248,19 +232,17 @@ type InputStack = {
   index?: number;
   /** When this bonus is from teammate, this is input's index to get stacks. */
   alterIndex?: number;
-  /** stacks = negativeMax - input. Only on Alhaitham */
-  negativeMax?: number;
   /** On Furina */
-  extra?: {
-    value: number;
-    grantedAt?: GrantedAt;
-    /** When this bonus is from teammate, this is input's index to check granted. */
-    alterIndex?: number;
-  };
+  // extra?: {
+  //   value: number;
+  //   grantedAt?: GrantedAt;
+  //   /** When this bonus is from teammate, this is input's index to check granted. */
+  //   alterIndex?: number;
+  // };
   /** On Neuvillette */
   requiredBase?: number;
-  /** On Furina */
-  max?: number;
+  // /** On Furina */
+  // max?: number;
 };
 
 type AttributeStack = {
@@ -293,7 +275,16 @@ type OptionStack = {
   index?: number;
 };
 
-export type CharacterStackConfig = InputStack | OptionStack | AttributeStack | NationStack | VisionStack;
+export type CharacterStackConfig = (InputStack | OptionStack | AttributeStack | NationStack | VisionStack) & {
+  /** On Furina */
+  extraStack?: {
+    value: number;
+    grantedAt?: GrantedAt;
+    /** When this bonus is from teammate, this is input's index to check granted. */
+    alterIndex?: number;
+  };
+  maxStack?: number;
+};
 
 export type CharacterBonusTarget =
   | {
@@ -360,19 +351,22 @@ export type CharacterBonus = CharacterInnateBonus & {
      * number[] as options. Only on Razor.
      */
     value: number | number[];
-    /** Added after [value] is scaled */
-    // extra?:
-    //   | number
-    //   // On Bennett
-    //   | {
-    //       value: number;
-    //       grantedAt: GrantedAt;
-    //       /** When this bonus is from teammate, this is input's index to check granted */
-    //       alterIndex: number;
-    //     };
     /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
     alterIndex?: number;
   };
+  /** Added before stacks, after scale */
+  preExtra?:
+    | number
+    // On Bennett
+    // | {
+    //     value: number;
+    //     grantedAt: GrantedAt;
+    //     /** When this bonus is from teammate, this is input's index to check granted. */
+    //     alterIndex?: number;
+    //   };
+    | Omit<CharacterBonus, "targets">;
+  /** Index of pre-calculated stack */
+  stackIndex?: number;
   /** Default to true */
   fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
 };

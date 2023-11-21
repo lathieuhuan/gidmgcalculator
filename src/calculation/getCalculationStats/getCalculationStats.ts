@@ -22,7 +22,7 @@ import {
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
 import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, isFinalBonus, initiateBonuses } from "./utils";
-import { applyCharacterBonus } from "./buffs-character";
+import { applyCharacterBonus, getStackValue } from "./buffs-character";
 import { applyWeaponBuff } from "./buffs-weapon";
 import { applyArtifactBuff } from "./buffs-artifact";
 
@@ -82,13 +82,18 @@ export const getCalculationStats = ({
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
-      if (isGranted(buff, char)) {
+      if (isGranted(buff, char) && buff.bonusModels) {
+        const preCalcStack = buff.stackModels
+          ? toArray(buff.stackModels).map((model) => getStackValue(model, [], modifierArgs, true))
+          : [];
+
         for (const bonus of toArray(buff.bonusModels)) {
           if (isFinal === isFinalBonus(bonus.stacks)) {
             applyCharacterBonus({
               description: `Self / ${buff.src}`,
               bonus,
               inputs: [],
+              preCalcStack,
               modifierArgs,
               fromSelf: true,
             });
@@ -101,13 +106,21 @@ export const getCalculationStats = ({
 
       if (buff && ctrl.activated && isGranted(buff, char) && buff.bonusModels) {
         for (const bonus of toArray(buff.bonusModels)) {
-          if ((bonus.fromSelf ?? true) && isFinal === isFinalBonus(bonus.stacks)) {
+          const isTrulyFinal =
+            isFinalBonus(bonus.stacks) || (typeof bonus.preExtra === "object" && isFinalBonus(bonus.preExtra.stacks));
+
+          if ((bonus.fromSelf ?? true) && isFinal === isTrulyFinal) {
             const description = `Self / ${buff.src}`;
+            const inputs = ctrl.inputs || [];
+            const preCalcStack = buff.stackModels
+              ? toArray(buff.stackModels).map((model) => getStackValue(model, inputs, modifierArgs, true))
+              : [];
 
             applyCharacterBonus({
               description,
               bonus,
-              inputs: ctrl.inputs || [],
+              inputs,
+              preCalcStack,
               modifierArgs,
               fromSelf: true,
             });
@@ -243,11 +256,16 @@ export const getCalculationStats = ({
           console.log(`buff #${index} of teammate ${name} not found`);
           continue;
         }
+        const preCalcStack = buff.stackModels
+          ? toArray(buff.stackModels).map((model) => getStackValue(model, [], modifierArgs, false))
+          : [];
+
         for (const bonus of toArray(buff.bonusModels)) {
           applyCharacterBonus({
             description: `${name} / ${buff.src}`,
             bonus,
             inputs,
+            preCalcStack,
             modifierArgs,
             fromSelf: false,
           });
