@@ -22,7 +22,7 @@ import {
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
 import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, isFinalBonus, initiateBonuses } from "./utils";
-import { applyCharacterBonus, getStackValue } from "./buffs-character";
+import { applyCharacterBonuses } from "./buffs-character/buffs-character";
 import { applyWeaponBuff } from "./buffs-weapon";
 import { applyArtifactBuff } from "./buffs-artifact";
 
@@ -83,49 +83,31 @@ export const getCalculationStats = ({
 
     for (const buff of innateBuffs) {
       if (isGranted(buff, char) && buff.bonusModels) {
-        const preCalcStack = buff.stackModels
-          ? toArray(buff.stackModels).map((model) => getStackValue(model, [], modifierArgs, true))
-          : [];
-
-        for (const bonus of toArray(buff.bonusModels)) {
-          if (isFinal === isFinalBonus(bonus.stacks)) {
-            applyCharacterBonus({
-              description: `Self / ${buff.src}`,
-              bonus,
-              inputs: [],
-              preCalcStack,
-              modifierArgs,
-              fromSelf: true,
-            });
-          }
-        }
+        applyCharacterBonuses({
+          description: `Self / ${buff.src}`,
+          bonuses: buff.bonusModels,
+          inputs: [],
+          modifierArgs,
+          isFinal,
+          fromSelf: true,
+        });
       }
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
       if (buff && ctrl.activated && isGranted(buff, char) && buff.bonusModels) {
-        for (const bonus of toArray(buff.bonusModels)) {
-          const isTrulyFinal =
-            isFinalBonus(bonus.stacks) || (typeof bonus.preExtra === "object" && isFinalBonus(bonus.preExtra.stacks));
+        const description = `Self / ${buff.src}`;
+        const inputs = ctrl.inputs || [];
 
-          if ((bonus.fromSelf ?? true) && isFinal === isTrulyFinal) {
-            const description = `Self / ${buff.src}`;
-            const inputs = ctrl.inputs || [];
-            const preCalcStack = buff.stackModels
-              ? toArray(buff.stackModels).map((model) => getStackValue(model, inputs, modifierArgs, true))
-              : [];
-
-            applyCharacterBonus({
-              description,
-              bonus,
-              inputs,
-              preCalcStack,
-              modifierArgs,
-              fromSelf: true,
-            });
-          }
-        }
+        applyCharacterBonuses({
+          description,
+          bonuses: buff.bonusModels,
+          inputs,
+          modifierArgs,
+          isFinal,
+          fromSelf: true,
+        });
       }
     }
   };
@@ -256,35 +238,15 @@ export const getCalculationStats = ({
           console.log(`buff #${index} of teammate ${name} not found`);
           continue;
         }
-        const preCalcStack = buff.stackModels
-          ? toArray(buff.stackModels).map((model) => getStackValue(model, [], modifierArgs, false))
-          : [];
 
-        for (const bonus of toArray(buff.bonusModels)) {
-          applyCharacterBonus({
-            description: `${name} / ${buff.src}`,
-            bonus,
-            inputs,
-            preCalcStack,
-            modifierArgs,
-            fromSelf: false,
-          });
-        }
-
-        // buff.applyBuff?.({
-        //   desc: `${name} / ${buff.src}`,
-        //   fromSelf: false,
-        //   inputs,
-        //   charBuffCtrls: teammate.buffCtrls,
-        //   ...modifierArgs,
-        // });
-        // buff.applyFinalBuff?.({
-        //   desc: `${name} / ${buff.src}`,
-        //   fromSelf: false,
-        //   inputs,
-        //   charBuffCtrls: teammate.buffCtrls,
-        //   ...modifierArgs,
-        // });
+        applyCharacterBonuses({
+          description: `${name} / ${buff.src}`,
+          bonuses: buff.bonusModels,
+          inputs,
+          modifierArgs,
+          isFinal: false,
+          fromSelf: false,
+        });
       }
 
       // #to-check: should be applied before main weapon buffs?

@@ -3,74 +3,19 @@ import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { genExclusiveBuff } from "@Src/data/characters/utils";
 import {
   BuffModifierArgsWrapper,
-  CharInfo,
   CharacterBonus,
+  CharacterBonusModel,
+  CharacterBonusStack,
   CharacterBonusTarget,
-  CharacterStackConfig,
   ModifierInput,
-  Vision,
-  GrantedAt,
 } from "@Src/types";
-import { countVision, isGranted, toArray } from "@Src/utils";
+import { countVision, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-
-const isAvailable = (
-  condition: { grantedAt?: GrantedAt; alterIndex?: number },
-  char: CharInfo,
-  inputs: ModifierInput[],
-  fromSelf: boolean
-) => {
-  if (fromSelf) {
-    if (!isGranted(condition, char)) return false;
-  } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
-    return false;
-  }
-  return true;
-};
-
-const isApplicable = (bonus: CharacterBonus, inputs: number[], obj: BuffModifierArgsWrapper) => {
-  const { checkInput, partyElmtCount, partyOnlyElmts } = bonus;
-
-  if (checkInput !== undefined) {
-    const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
-    const input = inputs[index] ?? 0;
-    switch (type) {
-      case "equal":
-        if (input !== value) return false;
-        else break;
-      case "min":
-        if (input < value) return false;
-        else break;
-      case "max":
-        if (input > value) return false;
-    }
-  }
-  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
-    return false;
-  }
-  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
-    return false;
-  }
-
-  const visions = countVision(obj.partyData, obj.charData);
-
-  if (partyElmtCount) {
-    for (const key in partyElmtCount) {
-      const currentCount = visions[key as Vision] ?? 0;
-      const requiredCount = partyElmtCount[key as Vision] ?? 0;
-      if (currentCount < requiredCount) return false;
-    }
-  }
-  if (partyOnlyElmts) {
-    for (const vision in visions) {
-      if (!partyOnlyElmts.includes(vision as Vision)) return false;
-    }
-  }
-  return true;
-};
+import { isFinalBonus } from "../utils";
+import { isApplicable, isAvailable, isCharacterBonus } from "./utils";
 
 export const getStackValue = (
-  stack: CharacterStackConfig,
+  stack: CharacterBonusStack,
   inputs: number[],
   obj: BuffModifierArgsWrapper,
   fromSelf: boolean
@@ -118,13 +63,13 @@ export const getStackValue = (
       break;
     }
   }
-  const { extraStack, maxStack } = stack;
+  const { extra, max } = stack;
 
-  if (extraStack && isAvailable(extraStack, obj.char, inputs, fromSelf)) {
-    result += extraStack.value;
+  if (extra && isAvailable(extra, obj.char, inputs, fromSelf)) {
+    result += extra.value;
   }
-  if (maxStack && result > maxStack) {
-    result = maxStack;
+  if (max && result > max) {
+    result = max;
   }
 
   return result;
@@ -142,7 +87,6 @@ const getBuffValue = (
 
   if (bonus.scale) {
     const { talent, value, alterIndex = 0 } = bonus.scale;
-
     const level = fromSelf
       ? finalTalentLv({
           talentType: talent,
@@ -161,12 +105,10 @@ const getBuffValue = (
   if (preExtra) {
     if (typeof preExtra === "number") {
       buffValue += preExtra;
-    } else if (isAvailable(preExtra, obj.char, inputs, fromSelf)) {
+    } else if (isAvailable(preExtra, obj.char, inputs, fromSelf) && isApplicable(preExtra, obj, inputs)) {
       buffValue += getBuffValue(preExtra, inputs, preCalcStack, obj, fromSelf);
     }
   }
-
-  console.log("preCalcStack", preCalcStack);
 
   if (bonus.stackIndex !== undefined) {
     buffValue *= preCalcStack[bonus.stackIndex] ?? 1;
@@ -177,7 +119,15 @@ const getBuffValue = (
     }
   }
   if (bonus.max) {
-    buffValue = Math.min(buffValue, bonus.max);
+    let max = 0;
+
+    if (typeof bonus.max === "number") {
+      max = bonus.max;
+    } else {
+      const stack = getStackValue(bonus.max.stacks, inputs, obj, fromSelf);
+      max = bonus.max.value * stack;
+    }
+    buffValue = Math.min(buffValue, max);
   }
 
   return buffValue;
@@ -194,10 +144,6 @@ const applyBuffValue = (
 
   switch (type) {
     case "ATTR":
-      if (target.maxMult) {
-        const max = obj.totalAttr.base_atk * target.maxMult;
-        if (buffValue > max) buffValue = max;
-      }
       return applyModifier(description, obj.totalAttr, path, buffValue, obj.tracker);
     case "PATT":
       return applyModifier(description, obj.attPattBonus, path, buffValue, obj.tracker);
@@ -221,19 +167,19 @@ interface ApplyCharacterBuffArgs {
   description: string;
   bonus: CharacterBonus;
   inputs: number[];
-  preCalcStack: number[];
+  preCalcStack?: number[];
   modifierArgs: BuffModifierArgsWrapper;
   fromSelf: boolean;
 }
-export const applyCharacterBonus = ({
+const applyCharacterBonus = ({
   description,
   bonus,
   inputs,
-  preCalcStack,
+  preCalcStack = [],
   modifierArgs: obj,
   fromSelf,
 }: ApplyCharacterBuffArgs) => {
-  if (!isAvailable(bonus, obj.char, inputs, fromSelf) || !isApplicable(bonus, inputs, obj)) {
+  if (!isAvailable(bonus, obj.char, inputs, fromSelf) || !isApplicable(bonus, obj, inputs)) {
     return;
   }
   const buffValue = getBuffValue(bonus, inputs, preCalcStack, obj, fromSelf);
@@ -241,6 +187,39 @@ export const applyCharacterBonus = ({
   if (buffValue) {
     for (const target of toArray(bonus.targets)) {
       applyBuffValue(description, target, buffValue, obj, inputs[0]);
+    }
+  }
+};
+
+interface ApplyCharacterBonusesArgs extends Omit<ApplyCharacterBuffArgs, "bonus" | "preCalcStack"> {
+  bonuses: CharacterBonusModel | CharacterBonusModel[];
+  inputs: ModifierInput[];
+  isFinal: boolean;
+}
+export const applyCharacterBonuses = ({ bonuses, isFinal, ...others }: ApplyCharacterBonusesArgs) => {
+  for (const bonus of toArray(bonuses)) {
+    if (isCharacterBonus(bonus)) {
+      const isTrulyFinalBonus =
+        isFinalBonus(bonus.stacks) || (typeof bonus.preExtra === "object" && isFinalBonus(bonus.preExtra.stacks));
+
+      if (isFinal === isTrulyFinalBonus) {
+        applyCharacterBonus({
+          bonus,
+          ...others,
+        });
+      }
+    } else if (isFinal === isFinalBonus(bonus.stacks)) {
+      const preCalcStack = toArray(bonus.stacks).map((stack) =>
+        getStackValue(stack, others.inputs, others.modifierArgs, others.fromSelf)
+      );
+
+      for (const subBonus of bonus.children) {
+        applyCharacterBonus({
+          bonus: subBonus,
+          preCalcStack,
+          ...others,
+        });
+      }
     }
   }
 };

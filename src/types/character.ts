@@ -207,23 +207,91 @@ export type AbilityDebuff = AbilityModifier & {
 
 export type GrantedAt = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
 
-export type CharacterModifier = {
+type CharacterModifier = {
   src: string;
   grantedAt?: GrantedAt;
   description: string;
-  /** Pre-calculated stack */
-  stackModels?: CharacterStackConfig;
+  /** Common stack */
+  // stacks?: CharacterBonusStack;
 };
 
-type CharacterInnateBonus = {
-  value: number;
-  stacks?: CharacterStackConfig | CharacterStackConfig[];
-  targets: CharacterBonusTarget | CharacterBonusTarget[];
-  max?: number;
+export type CharacterBonusAvailableCondition = {
+  grantedAt?: GrantedAt;
+  /** When this bonus is from teammate, this is input's index to check granted. */
+  alterIndex?: number;
 };
+
+export type CharacterBonusApplyCondition = {
+  /**  */
+  checkInput?:
+    | number
+    | {
+        value: number;
+        /** Default to 0 */
+        index?: number;
+        /** Default to 'equal' */
+        type?: "equal" | "min" | "max";
+      };
+  /** On Chongyun */
+  forWeapons?: WeaponType[];
+  /** On Chevreuse */
+  forElmts?: Vision[];
+  /** On Gorou, Nilou, Chevreuse */
+  partyElmtCount?: Partial<Record<Vision, number>>;
+  /** On Nilou, Chevreuse */
+  partyOnlyElmts?: Vision[];
+};
+
+export interface CharacterBonus extends CharacterBonusAvailableCondition, CharacterBonusApplyCondition {
+  value: number;
+  /** Multiplier based on talent level */
+  scale?: {
+    talent: Talent;
+    /**
+     * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
+     * number[] as options. Only on Razor.
+     */
+    value: number | number[];
+    /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
+    alterIndex?: number;
+  };
+  /** Added before stacks, after scale */
+  preExtra?: number | Omit<CharacterBonus, "targets">;
+  /** Index of pre-calculated stack */
+  stacks?: CharacterBonusStack | CharacterBonusStack[];
+  stackIndex?: number;
+  /** Default to true */
+  // fromSelf?: boolean;
+  targets: CharacterBonusTarget | CharacterBonusTarget[];
+  max?:
+    | number
+    | {
+        /** On Hu Tao */
+        value: number;
+        stacks: CharacterBonusStack;
+      };
+}
+
+type CharacterParentBonus = {
+  stacks: CharacterBonusStack | CharacterBonusStack[];
+  children: CharacterBonus[];
+};
+
+export type CharacterBonusModel = CharacterParentBonus | CharacterBonus;
 
 type CharacterInnateBuff = CharacterModifier & {
-  bonusModels?: CharacterInnateBonus | CharacterInnateBonus[];
+  bonusModels?: CharacterBonusModel | CharacterBonusModel[];
+};
+
+type CharacterBuff = CharacterInnateBuff & {
+  index: number;
+  affect: EModAffect;
+  inputConfigs?: ModInputConfig[];
+  infuseConfig?: {
+    overwritable: boolean;
+    range?: ("NA" | "CA" | "PA")[];
+    disabledNAs?: boolean;
+  };
 };
 
 type InputStack = {
@@ -232,17 +300,8 @@ type InputStack = {
   index?: number;
   /** When this bonus is from teammate, this is input's index to get stacks. */
   alterIndex?: number;
-  /** On Furina */
-  // extra?: {
-  //   value: number;
-  //   grantedAt?: GrantedAt;
-  //   /** When this bonus is from teammate, this is input's index to check granted. */
-  //   alterIndex?: number;
-  // };
   /** On Neuvillette */
   requiredBase?: number;
-  // /** On Furina */
-  // max?: number;
 };
 
 type AttributeStack = {
@@ -275,23 +334,21 @@ type OptionStack = {
   index?: number;
 };
 
-export type CharacterStackConfig = (InputStack | OptionStack | AttributeStack | NationStack | VisionStack) & {
+export type CharacterBonusStack = (InputStack | OptionStack | AttributeStack | NationStack | VisionStack) & {
   /** On Furina */
-  extraStack?: {
+  extra?: {
     value: number;
     grantedAt?: GrantedAt;
     /** When this bonus is from teammate, this is input's index to check granted. */
     alterIndex?: number;
   };
-  maxStack?: number;
+  max?: number;
 };
 
 export type CharacterBonusTarget =
   | {
       type: "ATTR";
       path: AttributeStat | AttributeStat[];
-      /** On Hu Tao */
-      maxMult?: number;
     }
   | {
       type: "PATT";
@@ -320,65 +377,3 @@ export type CharacterBonusTarget =
       type: "IN_ELM";
       path?: string; // dummy, @to-do: remove
     };
-
-export type CharacterBonus = CharacterInnateBonus & {
-  grantedAt?: GrantedAt;
-  /** When this bonus is from teammate, this is input's index to check granted. */
-  alterIndex?: number;
-  /**  */
-  checkInput?:
-    | number
-    | {
-        value: number;
-        /** Default to 0 */
-        index?: number;
-        /** Default to 'equal' */
-        type?: "equal" | "min" | "max";
-      };
-  /** On Chongyun */
-  forWeapons?: WeaponType[];
-  /** On Chevreuse */
-  forElmts?: Vision[];
-  /** On Gorou, Nilou, Chevreuse */
-  partyElmtCount?: Partial<Record<Vision, number>>;
-  /** On Nilou, Chevreuse */
-  partyOnlyElmts?: Vision[];
-  /** Multiplier based on talent level */
-  scale?: {
-    talent: Talent;
-    /**
-     * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
-     * number[] as options. Only on Razor.
-     */
-    value: number | number[];
-    /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
-    alterIndex?: number;
-  };
-  /** Added before stacks, after scale */
-  preExtra?:
-    | number
-    // On Bennett
-    // | {
-    //     value: number;
-    //     grantedAt: GrantedAt;
-    //     /** When this bonus is from teammate, this is input's index to check granted. */
-    //     alterIndex?: number;
-    //   };
-    | Omit<CharacterBonus, "targets">;
-  /** Index of pre-calculated stack */
-  stackIndex?: number;
-  /** Default to true */
-  fromSelf?: boolean; // @to-do: only on Alhaitham, consider to remove
-};
-
-type CharacterBuff = CharacterModifier & {
-  index: number;
-  affect: EModAffect;
-  inputConfigs?: ModInputConfig[];
-  infuseConfig?: {
-    overwritable: boolean;
-    range?: ("NA" | "CA" | "PA")[];
-    disabledNAs?: boolean;
-  };
-  bonusModels?: CharacterBonus | CharacterBonus[];
-};
