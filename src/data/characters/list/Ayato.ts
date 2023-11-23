@@ -28,25 +28,6 @@ const Ayato: DefaultAppCharacter = {
     EB: 5,
   },
   dsGetters: [(args) => `${getEBBonus(args)[1]}%`],
-  // buffs: [
-  //   {
-  //     index: 1,
-  //     src: EModSrc.EB,
-  //     affect: EModAffect.ACTIVE_UNIT,
-  //     description: `Increases the {Normal Attack DMG}#[k] of characters within its AoE by {@0}#[v].`,
-  //     inputConfigs: [
-  //       {
-  //         label: "Elemental Burst Level",
-  //         type: "level",
-  //         for: "teammate",
-  //       },
-  //     ],
-  //     applyBuff: (obj) => {
-  //       const [level, buffValue] = getEBBonus(obj);
-  //       applyModifier(obj.desc + ` Lv.${level}`, obj.attPattBonus, "NA.pct_", buffValue, obj.tracker);
-  //     },
-  //   },
-  // ],
 };
 
 export default Ayato as AppCharacter;

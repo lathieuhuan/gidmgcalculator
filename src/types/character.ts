@@ -205,18 +205,18 @@ export type AbilityDebuff = AbilityModifier & {
 
 // ============ EXPERIMENTAL ============
 
-export type GrantedAt = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
+export type CharacterMilestone = "A1" | "A4" | "C1" | "C2" | "C4" | "C6";
 
 type CharacterModifier = {
   src: string;
-  grantedAt?: GrantedAt;
+  grantedAt?: CharacterMilestone;
   description: string;
   /** Common stack */
   // stacks?: CharacterBonusStack;
 };
 
 export type CharacterBonusAvailableCondition = {
-  grantedAt?: GrantedAt;
+  grantedAt?: CharacterMilestone;
   /** When this bonus is from teammate, this is input's index to check granted. */
   alterIndex?: number;
 };
@@ -242,6 +242,8 @@ export type CharacterBonusApplyCondition = {
   partyOnlyElmts?: Vision[];
 };
 
+type ExtraValue = number | Omit<CharacterBonus, "targets">;
+
 export interface CharacterBonus extends CharacterBonusAvailableCondition, CharacterBonusApplyCondition {
   value: number;
   /** Multiplier based on talent level */
@@ -256,7 +258,7 @@ export interface CharacterBonus extends CharacterBonusAvailableCondition, Charac
     alterIndex?: number;
   };
   /** Added before stacks, after scale */
-  preExtra?: number | Omit<CharacterBonus, "targets">;
+  preExtra?: ExtraValue;
   /** Index of pre-calculated stack */
   stacks?: CharacterBonusStack | CharacterBonusStack[];
   stackIndex?: number;
@@ -338,11 +340,17 @@ export type CharacterBonusStack = (InputStack | OptionStack | AttributeStack | N
   /** On Furina */
   extra?: {
     value: number;
-    grantedAt?: GrantedAt;
+    grantedAt?: CharacterMilestone;
     /** When this bonus is from teammate, this is input's index to check granted. */
     alterIndex?: number;
   };
-  max?: number;
+  max?:
+    | number
+    | {
+        /** On Mika */
+        value: number;
+        extraAt: CharacterMilestone[];
+      };
 };
 
 export type CharacterBonusTarget =
@@ -368,12 +376,12 @@ export type CharacterBonusTarget =
       path: AttackPatternInfoKey;
     }
   | {
-      /** On Candace */
-      type: "ELM_NA";
-      path?: string; // dummy, @to-do: remove
+      /** On Dendro Traveler, Kazuha, Sucrose */
+      type: "IN_ELMT";
+      /** Input's index to get element's index */
+      index?: number;
     }
   | {
-      /** On Dendro Traveler, Kazuha, Sucrose */
-      type: "IN_ELM";
-      path?: string; // dummy, @to-do: remove
+      /** On Candace */
+      type: "ELM_NA";
     };

@@ -244,7 +244,6 @@ export const getCalculationStats = ({
           bonuses: buff.bonusModels,
           inputs,
           modifierArgs,
-          isFinal: false,
           fromSelf: false,
         });
       }
