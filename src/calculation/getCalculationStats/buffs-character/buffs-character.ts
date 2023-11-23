@@ -21,6 +21,11 @@ const getStackValue = (
   fromSelf: boolean
 ): number => {
   let result = 1;
+  let extra = 0;
+
+  if (stack.extra && isAvailable(stack.extra, obj.char, inputs, fromSelf)) {
+    extra = stack.extra.value;
+  }
 
   switch (stack.type) {
     case "input": {
@@ -56,18 +61,18 @@ const getStackValue = (
       break;
     }
     case "vision": {
-      const { visionType } = stack;
       const visionCount = countVision(obj.partyData, obj.charData);
-      const input = visionType === "various" ? Object.keys(visionCount).length : visionCount[visionType] ?? 0;
-      result = stack.options[input - 1] ?? 1;
+      const input =
+        stack.visionType === "various" ? Object.keys(visionCount).length : visionCount[stack.visionType] ?? 0;
+      const optionIndex = input + extra - 1;
+
+      extra = 0;
+      result = stack.options[optionIndex] ?? 0;
       break;
     }
   }
-  const { extra } = stack;
 
-  if (extra && isAvailable(extra, obj.char, inputs, fromSelf)) {
-    result += extra.value;
-  }
+  if (extra) result += extra;
 
   let max = 0;
   if (typeof stack.max === "number") {
