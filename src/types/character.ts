@@ -82,7 +82,6 @@ export type AppCharacter = {
   /** ds: description seed */
   dsGetters?: DescriptionSeedGetter[];
   innateBuffs?: CharacterInnateBuff[];
-  // buffs?: AbilityBuff[];
   buffs?: CharacterBuff[];
   debuffs?: AbilityDebuff[];
 };
@@ -138,7 +137,8 @@ export type CalcItem = {
     | number
     | {
         root: number;
-        /** Calc default to getTalentDefaultInfo's return.flatFactorScale.
+        /**
+         * Calc default to getTalentDefaultInfo's return.flatFactorScale.
          * When 0 not scale off talent level.
          */
         scale?: number;
@@ -156,14 +156,6 @@ type ApplyCharInnateBuffArgs = BuffModifierArgsWrapper & {
   desc: string;
 };
 
-// export type InnateBuff = {
-//   src: string;
-//   isGranted: (char: CharInfo) => boolean;
-//   description: number | string;
-//   applyBuff?: (args: ApplyCharInnateBuffArgs) => void;
-//   applyFinalBuff?: (args: ApplyCharInnateBuffArgs) => void;
-// };
-
 type AbilityModifier = {
   /** This is id */
   index: number;
@@ -174,19 +166,6 @@ type AbilityModifier = {
 export type ApplyCharBuffArgs = ApplyCharInnateBuffArgs & {
   inputs: ModifierInput[];
   fromSelf: boolean;
-};
-
-export type AbilityBuff = AbilityModifier & {
-  affect: EModAffect;
-  inputConfigs?: ModInputConfig[];
-  infuseConfig?: {
-    overwritable: boolean;
-    range?: NormalAttack[];
-    disabledNAs?: boolean;
-  };
-  description: number | string;
-  applyBuff?: (args: ApplyCharBuffArgs) => void;
-  applyFinalBuff?: (args: ApplyCharBuffArgs) => void;
 };
 
 // ============ DEBUFFS ============
@@ -259,8 +238,6 @@ export interface CharacterBonus extends CharacterBonusAvailableCondition, Charac
   /** Index of pre-calculated stack */
   stacks?: CharacterBonusStack | CharacterBonusStack[];
   stackIndex?: number;
-  /** Default to true */
-  // fromSelf?: boolean;
   targets: CharacterBonusTarget | CharacterBonusTarget[];
   max?:
     | number
@@ -278,11 +255,11 @@ type CharacterParentBonus = {
 
 export type CharacterBonusModel = CharacterParentBonus | CharacterBonus;
 
-type CharacterInnateBuff = CharacterModifier & {
+export type CharacterInnateBuff = CharacterModifier & {
   bonusModels?: CharacterBonusModel | CharacterBonusModel[];
 };
 
-type CharacterBuff = CharacterInnateBuff & {
+export type CharacterBuff = CharacterInnateBuff & {
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];

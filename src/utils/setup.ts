@@ -15,7 +15,7 @@ import { appData } from "@Src/data";
 import { getArtifactSetBonuses } from "./calculation";
 import { createArtDebuffCtrls, createArtifactBuffCtrls, createCharModCtrls, createWeaponBuffCtrls } from "./creators";
 import { deepCopy, findByIndex } from "./pure-utils";
-import { userItemToCalcItem } from "./utils";
+import { isGranted, userItemToCalcItem } from "./utils";
 
 export function isUserSetup(setup: UserSetup | UserComplexSetup): setup is UserSetup {
   return ["original", "combined"].includes(setup.type);
@@ -91,7 +91,7 @@ export function cleanupCalcSetup(
     artifactIDs: options?.artifactIDs || artifacts.map((artifact) => artifact?.ID ?? null),
     selfBuffCtrls: data.selfBuffCtrls.filter((ctrl) => {
       const buff = findByIndex(buffs, ctrl.index);
-      return buff ? ctrl.activated && (!buff.isGranted || buff.isGranted(char)) : false;
+      return buff ? ctrl.activated && isGranted(buff, char) : false;
     }),
     selfDebuffCtrls: data.selfDebuffCtrls.filter((ctrl) => {
       const debuff = findByIndex(debuffs, ctrl.index);
