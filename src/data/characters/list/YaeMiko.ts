@@ -1,8 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-// import { EModAffect } from "@Src/constants";
-// import { applyModifier, makeModApplier } from "@Src/utils/calculation";
-// import { EModSrc } from "../constants";
-// import { checkAscs, checkCons } from "../utils";
 
 const YaeMiko: DefaultAppCharacter = {
   code: 49,

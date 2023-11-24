@@ -211,8 +211,6 @@ type CharacterModifier = {
   src: string;
   grantedAt?: CharacterMilestone;
   description: string;
-  /** Common stack */
-  // stacks?: CharacterBonusStack;
 };
 
 export type CharacterBonusAvailableCondition = {
@@ -222,7 +220,6 @@ export type CharacterBonusAvailableCondition = {
 };
 
 export type CharacterBonusApplyCondition = {
-  /**  */
   checkInput?:
     | number
     | {
@@ -230,15 +227,15 @@ export type CharacterBonusApplyCondition = {
         /** Default to 0 */
         index?: number;
         /** Default to 'equal' */
-        type?: "equal" | "min" | "max";
+        type?: "equal" | "min" | "max" | "included";
       };
   /** On Chongyun */
   forWeapons?: WeaponType[];
   /** On Chevreuse */
   forElmts?: Vision[];
-  /** On Gorou, Nilou, Chevreuse */
+  /** On Gorou, Nilou */
   partyElmtCount?: Partial<Record<Vision, number>>;
-  /** On Nilou, Chevreuse */
+  /** On Nilou */
   partyOnlyElmts?: Vision[];
 };
 
@@ -302,8 +299,6 @@ type InputStack = {
   index?: number;
   /** When this bonus is from teammate, this is input's index to get stacks. */
   alterIndex?: number;
-  /** On Neuvillette */
-  requiredBase?: number;
 };
 
 type AttributeStack = {
@@ -311,8 +306,21 @@ type AttributeStack = {
   field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_" | "healB_";
   /** When this bonus is from teammate, this is input's index to get value. Default to 0 */
   alterIndex?: number;
-  /** stack = attribute - required base. On Nahida */
-  requiredBase?: number;
+};
+
+type VisionStack = {
+  type: "vision";
+  visionType: "various" | Vision;
+  options: number[];
+};
+
+type OptionStack = {
+  /** On Aloy, Nahida, Neuvillette */
+  type: "option";
+  /** stack = options[input - 1] */
+  options: number[];
+  /** Default to 0 */
+  index?: number;
 };
 
 type NationStack = {
@@ -321,22 +329,27 @@ type NationStack = {
   nation: "same" | "different";
 };
 
-type VisionStack = {
-  /** On Gorou, Lynette */
-  type: "vision";
-  visionType: "various" | Vision;
-  options: number[];
+/** On Raiden Shogun */
+type EnergyStack = {
+  type: "energy";
 };
 
-type OptionStack = {
-  type: "option";
-  /** stack = options[input - 1] */
-  options: number[];
-  /** Default to 0 */
-  index?: number;
+/** On Raiden Shogun */
+type ResolveStack = {
+  type: "resolve";
 };
 
-export type CharacterBonusStack = (InputStack | OptionStack | AttributeStack | NationStack | VisionStack) & {
+export type CharacterBonusStack = (
+  | InputStack
+  | AttributeStack
+  | VisionStack
+  | OptionStack
+  | NationStack
+  | EnergyStack
+  | ResolveStack
+) & {
+  /** Final stack = stack - required base. On Nahida, Neuvillette, Raiden Shogun */
+  requiredBase?: number;
   /** On Furina */
   extra?: {
     value: number;

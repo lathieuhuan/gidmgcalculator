@@ -14,6 +14,10 @@ import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { isFinalBonus } from "../utils";
 import { isApplicable, isAvailable, isCharacterBonus } from "./utils";
 
+const getOptionByIndex = (options: number[], index: number) => {
+  return options[index] ?? (index > 0 ? options[options.length - 1] : 1);
+};
+
 const getStackValue = (
   stack: CharacterBonusStack,
   inputs: number[],
@@ -29,25 +33,29 @@ const getStackValue = (
 
   switch (stack.type) {
     case "input": {
-      const { index = 0, alterIndex, requiredBase } = stack;
+      const { index = 0, alterIndex } = stack;
       const finalIndex = alterIndex !== undefined && !fromSelf ? alterIndex : index;
       let input = inputs[finalIndex] ?? 0;
-
-      if (requiredBase) input = Math.max(input - requiredBase, 0);
       result = input;
       break;
     }
-    case "option": {
-      const optionIndex = inputs[stack.index ?? 0] - 1;
-      result = stack.options[optionIndex] ?? 1;
+    case "attribute": {
+      const { field, alterIndex = 0 } = stack;
+      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
+      result = stackValue;
       break;
     }
-    case "attribute": {
-      const { field, alterIndex = 0, requiredBase } = stack;
-      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
+    case "vision": {
+      const visionCount = countVision(obj.partyData, obj.charData);
+      const input =
+        stack.visionType === "various" ? Object.keys(visionCount).length : visionCount[stack.visionType] ?? 0;
 
-      if (requiredBase) stackValue = Math.max(stackValue - requiredBase, 0);
-      result = stackValue;
+      extra = 0;
+      result = getOptionByIndex(stack.options, input + extra - 1);
+      break;
+    }
+    case "option": {
+      result = getOptionByIndex(stack.options, inputs[stack.index ?? 0] - 1);
       break;
     }
     case "nation": {
@@ -60,18 +68,34 @@ const getStackValue = (
       result = count;
       break;
     }
-    case "vision": {
-      const visionCount = countVision(obj.partyData, obj.charData);
-      const input =
-        stack.visionType === "various" ? Object.keys(visionCount).length : visionCount[stack.visionType] ?? 0;
-      const optionIndex = input + extra - 1;
+    case "energy": {
+      result = obj.charData.EBcost;
+      break;
+    }
+    case "resolve": {
+      const [totalEnergy = 0, electroEnergy = 0] = inputs;
+      const level = finalTalentLv({
+        talentType: "EB",
+        char: obj.char,
+        charData: obj.charData,
+        partyData: obj.partyData,
+      });
+      let extraEnergy = 0;
 
-      extra = 0;
-      result = stack.options[optionIndex] ?? 0;
+      if (obj.char.cons >= 1 && electroEnergy <= totalEnergy) {
+        extraEnergy += electroEnergy * 0.8 + (totalEnergy - electroEnergy) * 0.2;
+      }
+
+      const stackPerEnergy = Math.min(Math.ceil(14.5 + level * 0.5), 20);
+      const countResolve = (energyCost: number) => Math.round(energyCost * stackPerEnergy) / 100;
+      const stacks = countResolve(totalEnergy + extraEnergy);
+
+      result = Math.min(stacks, 60);
       break;
     }
   }
 
+  if (stack.requiredBase) result -= stack.requiredBase;
   if (extra) result += extra;
 
   let max = 0;
@@ -82,11 +106,9 @@ const getStackValue = (
       stack.max.value +
       stack.max.extraAt.reduce((total, at) => total + (isGranted({ grantedAt: at }, obj.char) ? 1 : 0), 0);
   }
-  if (max && result > max) {
-    result = max;
-  }
+  if (max && result > max) result = max;
 
-  return result;
+  return Math.max(result, 0);
 };
 
 const getBuffValue = (
@@ -113,7 +135,7 @@ const getBuffValue = (
     if (typeof value === "number") {
       buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
     } else {
-      buffValue *= value[level - 1] ?? 1;
+      buffValue *= getOptionByIndex(value, level - 1);
     }
   }
   if (typeof preExtra === "number") {

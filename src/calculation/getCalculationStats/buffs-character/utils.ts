@@ -39,6 +39,8 @@ export const isApplicable = (bonus: CharacterBonusApplyCondition, obj: BuffModif
         else break;
       case "max":
         if (input > value) return false;
+      case "included":
+        if (!inputs.includes(value)) return false;
     }
   }
   if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
