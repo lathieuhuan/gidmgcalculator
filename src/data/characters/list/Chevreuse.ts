@@ -1,9 +1,4 @@
-import { EModAffect } from "@Src/constants";
 import { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { countVision } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs } from "../utils";
 
 const Chevreuse: DefaultAppCharacter = {
   code: 81,

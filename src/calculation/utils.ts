@@ -34,11 +34,11 @@ interface IsApplicableEffectArgs {
   partyData: PartyData;
 }
 export const isApplicableEffect = (
-  bonus: AbilityEffectApplyCondition,
+  condition: AbilityEffectApplyCondition,
   obj: IsApplicableEffectArgs,
   inputs: number[]
 ) => {
-  const { checkInput, partyElmtCount, partyOnlyElmts } = bonus;
+  const { checkInput, partyElmtCount, partyOnlyElmts } = condition;
 
   if (checkInput !== undefined) {
     const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
@@ -56,10 +56,10 @@ export const isApplicableEffect = (
         if (!inputs.includes(value)) return false;
     }
   }
-  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
+  if (condition.forWeapons && !condition.forWeapons.includes(obj.charData.weaponType)) {
     return false;
   }
-  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
+  if (condition.forElmts && !condition.forElmts.includes(obj.charData.vision)) {
     return false;
   }
   const visions = countVision(obj.partyData, obj.charData);

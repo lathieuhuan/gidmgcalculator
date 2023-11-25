@@ -7,20 +7,10 @@ import type {
   Talent,
 } from "@Src/types";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
-import { ascsFromLv } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
-
-const makeAscsChecker = (value: number) => (char: CharInfo) => {
-  return ascsFromLv(char.level) >= value;
-};
 
 const makeConsChecker = (value: number) => (char: CharInfo) => {
   return char.cons >= value;
-};
-
-export const checkAscs = {
-  1: makeAscsChecker(1),
-  4: makeAscsChecker(4),
 };
 
 export const checkCons = {

@@ -34,23 +34,28 @@ const getStackValue = (
     case "input": {
       const { index = 0, alterIndex } = stack;
       const finalIndex = alterIndex !== undefined && !fromSelf ? alterIndex : index;
-      let input = inputs[finalIndex] ?? 0;
+      const input = inputs[finalIndex] ?? 0;
       result = input;
       break;
     }
     case "attribute": {
       const { field, alterIndex = 0 } = stack;
-      let stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
+      const stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
       result = stackValue;
       break;
     }
     case "vision": {
+      const { visionType } = stack;
       const visionCount = countVision(obj.partyData, obj.charData);
       const input =
-        stack.visionType === "various" ? Object.keys(visionCount).length : visionCount[stack.visionType] ?? 0;
+        visionType === "various"
+          ? Object.keys(visionCount).length
+          : typeof visionType === "string"
+          ? visionCount[visionType] ?? 0
+          : visionType.reduce((total, type) => total + (visionCount[type] ?? 0), 0);
 
+      result = stack.options ? getOptionByIndex(stack.options, input + extra - 1) : input;
       extra = 0;
-      result = getOptionByIndex(stack.options, input + extra - 1);
       break;
     }
     case "option": {

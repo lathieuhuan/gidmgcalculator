@@ -2,7 +2,7 @@ import { VISION_TYPES } from "@Src/constants";
 import { AbilityPenaltyModel, DebuffModifierArgsWrapper } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { isAvailableEffect, getLevelScale } from "../utils";
+import { isAvailableEffect, getLevelScale, isApplicableEffect } from "../utils";
 
 const getPenaltyValue = (
   penalty: AbilityPenaltyModel,
@@ -38,7 +38,7 @@ const applyAbilityDebuff = ({
   fromSelf,
 }: ApplyAbilityDebuffArgs) => {
   for (const penalty of toArray(penalties)) {
-    if (!isAvailableEffect(penalty, obj.char, inputs, fromSelf)) {
+    if (!isAvailableEffect(penalty, obj.char, inputs, fromSelf) || !isApplicableEffect(penalty, obj, inputs)) {
       continue;
     }
     const penaltyValue = getPenaltyValue(penalty, inputs, obj, fromSelf);
