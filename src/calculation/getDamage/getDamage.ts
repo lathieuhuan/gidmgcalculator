@@ -21,10 +21,11 @@ import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 
 // Util
 import { appData } from "@Src/data";
-import { bareLv, findByIndex, getTalentDefaultInfo, realParty, toArray } from "@Src/utils";
+import { bareLv, findByIndex, getTalentDefaultInfo, isGranted, realParty, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { getExclusiveBonus } from "./utils";
 import { calculateItem } from "./calculateItem";
+import { applyCharacterPenalties } from "./applyCharacterPenalties";
 
 export default function getDamage({
   char,
@@ -69,14 +70,23 @@ export default function getDamage({
   for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
-    if (activated && debuff && (!debuff.isGranted || debuff.isGranted(char)) && debuff.applyDebuff) {
-      debuff.applyDebuff({
-        desc: `Self / ${debuff.src}`,
-        fromSelf: true,
+    if (activated && debuff?.penaltyModels && isGranted(debuff, char)) {
+      applyCharacterPenalties({
+        description: `Self / ${debuff.src}`,
+        penalties: debuff.penaltyModels,
         inputs,
-        ...modifierArgs,
+        modifierArgs,
+        fromSelf: true,
       });
     }
+    // if (activated && debuff && (!debuff.isGranted || debuff.isGranted(char)) && debuff.applyDebuff) {
+    //   debuff.applyDebuff({
+    //     desc: `Self / ${debuff.src}`,
+    //     fromSelf: true,
+    //     inputs,
+    //     ...modifierArgs,
+    //   });
+    // }
   }
 
   // APPLY PARTY DEBUFFS
@@ -85,13 +95,20 @@ export default function getDamage({
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
 
-      if (activated && debuff?.applyDebuff) {
-        debuff.applyDebuff({
-          desc: `${teammate.name} / ${debuff.src}`,
-          fromSelf: false,
+      if (activated && debuff?.penaltyModels) {
+        applyCharacterPenalties({
+          description: `Self / ${debuff.src}`,
+          penalties: debuff.penaltyModels,
           inputs,
-          ...modifierArgs,
+          modifierArgs,
+          fromSelf: false,
         });
+        // debuff.applyDebuff({
+        //   desc: `${teammate.name} / ${debuff.src}`,
+        //   fromSelf: false,
+        //   inputs,
+        //   ...modifierArgs,
+        // });
       }
     }
   }

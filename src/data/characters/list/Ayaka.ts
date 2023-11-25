@@ -1,7 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkCons } from "../utils";
 
 const Ayaka: DefaultAppCharacter = {
   code: 37,
@@ -17,16 +14,6 @@ const Ayaka: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.C4,
-      description: `Opponents damaged by Frostflake Seki no To [~EB] will have their {DEF}#[k] decreased by
-      {30%}#[v] for 6s.`,
-      isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resistReduct", "def", 30),
-    },
-  ],
 };
 
 export default Ayaka as AppCharacter;

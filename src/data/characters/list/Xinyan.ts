@@ -1,7 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkCons } from "../utils";
 
 const Xinyan: DefaultAppCharacter = {
   code: 27,
@@ -17,15 +14,6 @@ const Xinyan: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.C4,
-      description: `Sweeping Fervor's swing DMG decreases opponent's {Physical RES}#[k] by {15%}#[v] for 12s.`,
-      isGranted: checkCons[4],
-      applyDebuff: makeModApplier("resistReduct", "phys", 15),
-    },
-  ],
 };
 
 export default Xinyan as AppCharacter;

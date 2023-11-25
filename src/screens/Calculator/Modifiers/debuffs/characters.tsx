@@ -3,7 +3,7 @@ import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calcul
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
-import { findByIndex, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseCharacterDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Action
@@ -30,7 +30,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
   selfDebuffCtrls.forEach((ctrl) => {
     const debuff = findByIndex(charData.debuffs || [], ctrl.index);
 
-    if (debuff && (!debuff.isGranted || debuff.isGranted(char))) {
+    if (debuff && isGranted(debuff, char)) {
       const { inputs = [] } = ctrl;
       const path: ToggleModCtrlPath = {
         modCtrlName: "selfDebuffCtrls",
@@ -137,7 +137,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
   return (
     <div>
       <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
-      {modifierElmts}
+      <div className="mt-1 space-y-3">{modifierElmts}</div>
     </div>
   );
 }

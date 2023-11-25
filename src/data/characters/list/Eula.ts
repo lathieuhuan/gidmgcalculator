@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { finalTalentLv } from "@Src/utils/calculation";
 
 const getESPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
@@ -29,25 +28,6 @@ const Eula: DefaultAppCharacter = {
     EB: 3,
   },
   dsGetters: [(args) => `${getESPenalty(args)[1]}%`],
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.ES,
-      description: `If Grimheart stacks are consumed, surrounding opponents will have their {Physical RES}#[k] and
-      {Cryo RES}#[k] decreased by {@0}#[v].`,
-      inputConfigs: [
-        {
-          label: "Elemental Skill Level",
-          type: "level",
-          for: "teammate",
-        },
-      ],
-      applyDebuff: (obj) => {
-        const [level, penalty] = getESPenalty(obj);
-        applyModifier(obj.desc + ` Lv.${level}`, obj.resistReduct, ["phys", "cryo"], penalty, obj.tracker);
-      },
-    },
-  ],
 };
 
 export default Eula as AppCharacter;

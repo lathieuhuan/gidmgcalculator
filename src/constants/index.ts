@@ -1,3 +1,5 @@
+export * from "./character-stats";
+
 export const MAX_USER_WEAPONS = 200;
 export const MAX_USER_ARTIFACTS = 800;
 export const MAX_USER_SETUPS = 50;

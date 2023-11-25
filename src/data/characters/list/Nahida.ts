@@ -1,8 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { EModAffect } from "@Src/constants";
 import { countVision } from "@Src/utils";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
 import { checkCons, getTalentMultiplier } from "../utils";
 
 function getEBBonus(args: DescriptionSeedGetterArgs) {
@@ -35,17 +32,6 @@ const Nahida: DefaultAppCharacter = {
     EB: 5,
   },
   dsGetters: [(args) => `${getEBBonus(args).value}%`, (args) => `${getEBBonus(args).pyroCount}`],
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.C2,
-      affect: EModAffect.PARTY,
-      description: `When opponents marked by Seeds of Skandha [~ES] are affected by Quicken, Aggravate, Spread,
-      their {DEF}#[k] is decreased by {30%}#[v] for 8s.`,
-      isGranted: checkCons[2],
-      applyDebuff: makeModApplier("resistReduct", "def", 30),
-    },
-  ],
 };
 
 export default Nahida as AppCharacter;

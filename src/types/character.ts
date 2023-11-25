@@ -17,6 +17,7 @@ import type {
   Talent,
   DebuffModifierArgsWrapper,
   AttackPatternInfoKey,
+  ResistanceReductionKey,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 import { AttackElementPath, AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
@@ -83,7 +84,7 @@ export type AppCharacter = {
   dsGetters?: DescriptionSeedGetter[];
   innateBuffs?: CharacterInnateBuff[];
   buffs?: CharacterBuff[];
-  debuffs?: AbilityDebuff[];
+  debuffs?: CharacterDebuff[];
 };
 
 export type DescriptionSeedGetterArgs = Pick<ApplyCharBuffArgs, "fromSelf" | "char" | "partyData" | "inputs">;
@@ -218,23 +219,23 @@ export type CharacterBonusApplyCondition = {
   partyOnlyElmts?: Vision[];
 };
 
-type ExtraValue = number | Omit<CharacterBonus, "targets">;
+export type CharacterEffectLevelScale = {
+  talent: Talent;
+  /**
+   * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
+   * number[] as options. Only on Razor.
+   */
+  value: number | number[];
+  /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
+  alterIndex?: number;
+};
 
 export interface CharacterBonus extends CharacterBonusAvailableCondition, CharacterBonusApplyCondition {
   value: number;
   /** Multiplier based on talent level */
-  scale?: {
-    talent: Talent;
-    /**
-     * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
-     * number[] as options. Only on Razor.
-     */
-    value: number | number[];
-    /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
-    alterIndex?: number;
-  };
+  scale?: CharacterEffectLevelScale;
   /** Added before stacks, after scale */
-  preExtra?: ExtraValue;
+  preExtra?: number | Omit<CharacterBonus, "targets">;
   /** Index of pre-calculated stack */
   stacks?: CharacterBonusStack | CharacterBonusStack[];
   stackIndex?: number;
@@ -255,11 +256,37 @@ type CharacterParentBonus = {
 
 export type CharacterBonusModel = CharacterParentBonus | CharacterBonus;
 
+type PenaltyPath =
+  | ResistanceReductionKey
+  | {
+      type: "in_elmt";
+      /** Input's index to get Vision index. Default to 0 */
+      index?: number;
+    };
+
+export type CharacterPenaltyModel = CharacterBonusAvailableCondition & {
+  value: number;
+  scale?: CharacterEffectLevelScale;
+  /** Added before stacks, after scale */
+  preExtra?:
+    | number
+    | {
+        /** index is 0 */
+        checkInput: number;
+        /** On Venti */
+        value: number;
+      };
+  targets: PenaltyPath | PenaltyPath[];
+  index?: number;
+  max?: number;
+};
+
 export type CharacterInnateBuff = CharacterModifier & {
   bonusModels?: CharacterBonusModel | CharacterBonusModel[];
 };
 
 export type CharacterBuff = CharacterInnateBuff & {
+  /** This is id */
   index: number;
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
@@ -268,6 +295,14 @@ export type CharacterBuff = CharacterInnateBuff & {
     range?: ("NA" | "CA" | "PA")[];
     disabledNAs?: boolean;
   };
+};
+
+export type CharacterDebuff = CharacterModifier & {
+  /** This is id */
+  index: number;
+  affect?: EModAffect;
+  inputConfigs?: ModInputConfig[];
+  penaltyModels?: CharacterPenaltyModel;
 };
 
 type InputStack = {
@@ -345,22 +380,27 @@ export type CharacterBonusStack = (
 
 export type CharacterBonusTarget =
   | {
+      /** totalAttr */
       type: "ATTR";
       path: AttributeStat | AttributeStat[];
     }
   | {
+      /** attPattBonus */
       type: "PATT";
       path: AttackPatternPath | AttackPatternPath[];
     }
   | {
+      /** attElmtBonus */
       type: "ELMT";
-      path: AttackElementPath | AttackElementPath;
+      path: AttackElementPath | AttackElementPath[];
     }
   | {
+      /** rxnBonus */
       type: "RXN";
       path: ReactionBonusPath | ReactionBonusPath[];
     }
   | {
+      /** calcItem */
       type: "ITEM";
       id: string | string[];
       path: AttackPatternInfoKey;
@@ -368,7 +408,7 @@ export type CharacterBonusTarget =
   | {
       /** On Dendro Traveler, Kazuha, Sucrose */
       type: "IN_ELMT";
-      /** Input's index to get element's index */
+      /** Input's index to get element's index. Default to 0 */
       index?: number;
     }
   | {

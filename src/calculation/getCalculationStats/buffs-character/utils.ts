@@ -1,28 +1,11 @@
 import {
-  CharacterBonusApplyCondition,
-  CharacterBonusAvailableCondition,
   BuffModifierArgsWrapper,
-  CharInfo,
   CharacterBonus,
+  CharacterBonusApplyCondition,
   CharacterBonusModel,
-  ModifierInput,
   Vision,
 } from "@Src/types";
-import { countVision, isGranted } from "@Src/utils";
-
-export const isAvailable = (
-  condition: CharacterBonusAvailableCondition,
-  char: CharInfo,
-  inputs: ModifierInput[],
-  fromSelf: boolean
-) => {
-  if (fromSelf) {
-    if (!isGranted(condition, char)) return false;
-  } else if (condition.alterIndex !== undefined && !inputs[condition.alterIndex]) {
-    return false;
-  }
-  return true;
-};
+import { countVision } from "@Src/utils";
 
 export const isApplicable = (bonus: CharacterBonusApplyCondition, obj: BuffModifierArgsWrapper, inputs: number[]) => {
   const { checkInput, partyElmtCount, partyOnlyElmts } = bonus;

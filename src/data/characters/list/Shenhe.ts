@@ -1,6 +1,5 @@
 import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
+import { finalTalentLv } from "@Src/utils/calculation";
 
 const getEBPenalty = (args: DescriptionSeedGetterArgs) => {
   const level = args.fromSelf
@@ -29,24 +28,6 @@ const Shenhe: DefaultAppCharacter = {
     EB: 5,
   },
   dsGetters: [(args) => `${getEBPenalty(args)[1]}%`],
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.EB,
-      description: `The field decreases opponents' {Cryo RES}#[k] and {Physical RES}#[k] by {@0}#[v].`,
-      inputConfigs: [
-        {
-          label: "Elemental Burst Level",
-          type: "level",
-          for: "teammate",
-        },
-      ],
-      applyDebuff: (obj) => {
-        const [level, penalty] = getEBPenalty(obj);
-        applyModifier(obj.desc + ` Lv.${level}`, obj.resistReduct, ["phys", "cryo"], penalty, obj.tracker);
-      },
-    },
-  ],
 };
 
 export default Shenhe as AppCharacter;

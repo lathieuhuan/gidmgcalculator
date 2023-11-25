@@ -1,7 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkCons } from "../utils";
 
 const Beidou: DefaultAppCharacter = {
   code: 6,
@@ -17,16 +14,6 @@ const Beidou: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.C6,
-      description: `During the duration of Stormbreaker [EB], the {Electro RES}#[k] of surrounding opponents is
-      decreased by {15%}#[v].`,
-      isGranted: checkCons[6],
-      applyDebuff: makeModApplier("resistReduct", "electro", 15),
-    },
-  ],
 };
 
 export default Beidou as AppCharacter;

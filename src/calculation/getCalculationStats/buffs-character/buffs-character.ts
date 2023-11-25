@@ -11,12 +11,9 @@ import {
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
+import { getLevelScale, getOptionByIndex, isAvailable } from "../../utils";
 import { isFinalBonus } from "../utils";
-import { isApplicable, isAvailable, isCharacterBonus } from "./utils";
-
-const getOptionByIndex = (options: number[], index: number) => {
-  return options[index] ?? (index > 0 ? options[options.length - 1] : 1);
-};
+import { isApplicable, isCharacterBonus } from "./utils";
 
 const getStackValue = (
   stack: CharacterBonusStack,
@@ -111,7 +108,7 @@ const getStackValue = (
   return Math.max(result, 0);
 };
 
-const getBuffValue = (
+const getBonusValue = (
   bonus: Omit<CharacterBonus, "targets">,
   inputs: number[],
   preCalcStacks: number[],
@@ -119,72 +116,55 @@ const getBuffValue = (
   fromSelf: boolean
 ) => {
   const { preExtra } = bonus;
-  let buffValue = bonus.value;
+  let bonusValue = bonus.value * getLevelScale(bonus.scale, inputs, obj, fromSelf);
 
-  if (bonus.scale) {
-    const { talent, value, alterIndex = 0 } = bonus.scale;
-    const level = fromSelf
-      ? finalTalentLv({
-          talentType: talent,
-          char: obj.char,
-          charData: obj.charData,
-          partyData: obj.partyData,
-        })
-      : inputs[alterIndex] ?? 0;
-
-    if (typeof value === "number") {
-      buffValue *= value ? TALENT_LV_MULTIPLIERS[value][level] : level;
-    } else {
-      buffValue *= getOptionByIndex(value, level - 1);
-    }
-  }
   if (typeof preExtra === "number") {
-    buffValue += preExtra;
+    bonusValue += preExtra;
   } else if (preExtra && isAvailable(preExtra, obj.char, inputs, fromSelf) && isApplicable(preExtra, obj, inputs)) {
-    buffValue += getBuffValue(preExtra, inputs, preCalcStacks, obj, fromSelf);
+    bonusValue += getBonusValue(preExtra, inputs, preCalcStacks, obj, fromSelf);
   }
 
   if (bonus.stackIndex !== undefined) {
-    buffValue *= preCalcStacks[bonus.stackIndex] ?? 1;
+    bonusValue *= preCalcStacks[bonus.stackIndex] ?? 1;
   }
   if (bonus.stacks) {
     for (const stack of toArray(bonus.stacks)) {
-      buffValue *= getStackValue(stack, inputs, obj, fromSelf);
+      bonusValue *= getStackValue(stack, inputs, obj, fromSelf);
     }
   }
   if (typeof bonus.max === "number") {
-    buffValue = Math.min(buffValue, bonus.max);
+    bonusValue = Math.min(bonusValue, bonus.max);
   } else if (bonus.max) {
-    buffValue = Math.min(buffValue, bonus.max.value * getStackValue(bonus.max.stacks, inputs, obj, fromSelf));
+    bonusValue = Math.min(bonusValue, bonus.max.value * getStackValue(bonus.max.stacks, inputs, obj, fromSelf));
   }
 
-  return buffValue;
+  return bonusValue;
 };
 
-const applyBuffValue = (
+const applyBonusValue = (
   description: string,
   target: CharacterBonusTarget,
-  buffValue: number,
+  bonusValue: number,
   obj: BuffModifierArgsWrapper,
   inputs: number[]
 ) => {
   switch (target.type) {
     case "ATTR":
-      return applyModifier(description, obj.totalAttr, target.path, buffValue, obj.tracker);
+      return applyModifier(description, obj.totalAttr, target.path, bonusValue, obj.tracker);
     case "PATT":
-      return applyModifier(description, obj.attPattBonus, target.path, buffValue, obj.tracker);
+      return applyModifier(description, obj.attPattBonus, target.path, bonusValue, obj.tracker);
     case "ELMT":
-      return applyModifier(description, obj.attElmtBonus, target.path, buffValue, obj.tracker);
+      return applyModifier(description, obj.attElmtBonus, target.path, bonusValue, obj.tracker);
     case "RXN":
-      return applyModifier(description, obj.rxnBonus, target.path, buffValue, obj.tracker);
+      return applyModifier(description, obj.rxnBonus, target.path, bonusValue, obj.tracker);
     case "ITEM":
-      return obj.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, buffValue));
+      return obj.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, bonusValue));
     case "IN_ELMT":
       const visionIndex = inputs[target.index || 0];
-      return applyModifier(description, obj.totalAttr, VISION_TYPES[visionIndex], buffValue, obj.tracker);
+      return applyModifier(description, obj.totalAttr, VISION_TYPES[visionIndex], bonusValue, obj.tracker);
     case "ELM_NA":
       if (obj.charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
-        applyModifier(description, obj.attPattBonus, "NA.pct_", buffValue, obj.tracker);
+        applyModifier(description, obj.attPattBonus, "NA.pct_", bonusValue, obj.tracker);
       }
       return;
   }
@@ -209,11 +189,11 @@ const applyCharacterBonus = ({
   if (!isAvailable(bonus, obj.char, inputs, fromSelf) || !isApplicable(bonus, obj, inputs)) {
     return;
   }
-  const buffValue = getBuffValue(bonus, inputs, preCalcStacks, obj, fromSelf);
+  const bonusValue = getBonusValue(bonus, inputs, preCalcStacks, obj, fromSelf);
 
-  if (buffValue) {
+  if (bonusValue) {
     for (const target of toArray(bonus.targets)) {
-      applyBuffValue(description, target, buffValue, obj, inputs);
+      applyBonusValue(description, target, bonusValue, obj, inputs);
     }
   }
 };

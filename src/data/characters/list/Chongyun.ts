@@ -1,7 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs } from "../utils";
 
 const Chongyun: DefaultAppCharacter = {
   code: 4,
@@ -17,16 +14,6 @@ const Chongyun: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.A4,
-      description: `When the field created by Spirit Blade: Chonghua's Layered Frost [ES] disappears, another spirit
-      blade will be summoned to strike nearby opponents and decrease their {Cryo RES}#[k] by {10%}#[v] for 8s.`,
-      isGranted: checkAscs[4],
-      applyDebuff: makeModApplier("resistReduct", "cryo", 10),
-    },
-  ],
 };
 
 export default Chongyun as AppCharacter;

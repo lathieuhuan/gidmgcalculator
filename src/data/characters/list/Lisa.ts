@@ -1,7 +1,4 @@
 import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
-import { makeModApplier } from "@Src/utils/calculation";
-import { EModSrc } from "../constants";
-import { checkAscs } from "../utils";
 
 const Lisa: DefaultAppCharacter = {
   code: 10,
@@ -17,15 +14,6 @@ const Lisa: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  debuffs: [
-    {
-      index: 0,
-      src: EModSrc.A4,
-      description: `Opponents hit by Lightning Rose [EB] have their {DEF}#[k] decreased by {15%}#[v] for 10s.`,
-      isGranted: checkAscs[4],
-      applyDebuff: makeModApplier("resistReduct", "def", 15),
-    },
-  ],
 };
 
 export default Lisa as AppCharacter;
