@@ -1,5 +1,5 @@
 import type {
-  CharacterBuff,
+  AbilityBuff,
   ArtifactSetBonus,
   CalcWeapon,
   CharInfo,
@@ -10,7 +10,7 @@ import type {
   PartyData,
   ReactionBonus,
   Vision,
-  CharacterInnateBuff,
+  AbilityInnateBuff,
   Level,
   AttackElement,
   AppCharacter,
@@ -104,10 +104,10 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
 interface SelfBuffsProps {
   char: CharInfo;
   charData: AppCharacter;
-  buffs: CharacterBuff[];
+  buffs: AbilityBuff[];
   selfBuffCtrls: ModifierCtrl[];
   partyData: PartyData;
-  innateBuffs: CharacterInnateBuff[];
+  innateBuffs: AbilityInnateBuff[];
 }
 export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, innateBuffs }: SelfBuffsProps) {
   const content: JSX.Element[] = [];

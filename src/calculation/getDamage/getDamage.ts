@@ -24,8 +24,8 @@ import { appData } from "@Src/data";
 import { bareLv, findByIndex, getTalentDefaultInfo, isGranted, realParty, toArray } from "@Src/utils";
 import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
 import { getExclusiveBonus } from "./utils";
-import { calculateItem } from "./calculateItem";
-import { applyCharacterPenalties } from "./applyCharacterPenalties";
+import calculateItem from "./calculateItem";
+import applyAbilityDebuff from "./applyAbilityDebuff";
 
 export default function getDamage({
   char,
@@ -71,7 +71,7 @@ export default function getDamage({
     const debuff = findByIndex(debuffs || [], index);
 
     if (activated && debuff?.penaltyModels && isGranted(debuff, char)) {
-      applyCharacterPenalties({
+      applyAbilityDebuff({
         description: `Self / ${debuff.src}`,
         penalties: debuff.penaltyModels,
         inputs,
@@ -79,14 +79,6 @@ export default function getDamage({
         fromSelf: true,
       });
     }
-    // if (activated && debuff && (!debuff.isGranted || debuff.isGranted(char)) && debuff.applyDebuff) {
-    //   debuff.applyDebuff({
-    //     desc: `Self / ${debuff.src}`,
-    //     fromSelf: true,
-    //     inputs,
-    //     ...modifierArgs,
-    //   });
-    // }
   }
 
   // APPLY PARTY DEBUFFS
@@ -96,19 +88,13 @@ export default function getDamage({
       const debuff = findByIndex(debuffs, index);
 
       if (activated && debuff?.penaltyModels) {
-        applyCharacterPenalties({
+        applyAbilityDebuff({
           description: `Self / ${debuff.src}`,
           penalties: debuff.penaltyModels,
           inputs,
           modifierArgs,
           fromSelf: false,
         });
-        // debuff.applyDebuff({
-        //   desc: `${teammate.name} / ${debuff.src}`,
-        //   fromSelf: false,
-        //   inputs,
-        //   ...modifierArgs,
-        // });
       }
     }
   }

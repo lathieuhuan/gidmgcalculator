@@ -1,11 +1,11 @@
 import { VISION_TYPES } from "@Src/constants";
-import { CharacterPenaltyModel, DebuffModifierArgsWrapper } from "@Src/types";
+import { AbilityPenaltyModel, DebuffModifierArgsWrapper } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { isAvailable, getLevelScale } from "../utils";
+import { isAvailableEffect, getLevelScale } from "../utils";
 
 const getPenaltyValue = (
-  penalty: CharacterPenaltyModel,
+  penalty: AbilityPenaltyModel,
   inputs: number[],
   obj: DebuffModifierArgsWrapper,
   fromSelf: boolean
@@ -23,22 +23,22 @@ const getPenaltyValue = (
   return Math.max(result, 0);
 };
 
-interface ApplyCharacterPenaltiesArgs {
+interface ApplyAbilityDebuffArgs {
   description: string;
-  penalties: CharacterPenaltyModel | CharacterPenaltyModel[];
+  penalties: AbilityPenaltyModel | AbilityPenaltyModel[];
   inputs: number[];
   modifierArgs: DebuffModifierArgsWrapper;
   fromSelf: boolean;
 }
-export const applyCharacterPenalties = ({
+const applyAbilityDebuff = ({
   description,
   penalties,
   modifierArgs: obj,
   inputs,
   fromSelf,
-}: ApplyCharacterPenaltiesArgs) => {
+}: ApplyAbilityDebuffArgs) => {
   for (const penalty of toArray(penalties)) {
-    if (!isAvailable(penalty, obj.char, inputs, fromSelf)) {
+    if (!isAvailableEffect(penalty, obj.char, inputs, fromSelf)) {
       continue;
     }
     const penaltyValue = getPenaltyValue(penalty, inputs, obj, fromSelf);
@@ -53,3 +53,5 @@ export const applyCharacterPenalties = ({
     }
   }
 };
+
+export default applyAbilityDebuff;

@@ -1,20 +1,22 @@
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants";
 import {
+  AbilityEffectApplyCondition,
+  AbilityEffectAvailableCondition,
+  AbilityEffectLevelScale,
   AppCharacter,
-  CharacterBonusAvailableCondition,
-  CharacterEffectLevelScale,
   CharInfo,
   PartyData,
+  Vision,
 } from "@Src/types";
-import { isGranted } from "@Src/utils";
+import { countVision, isGranted } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 
 export const getOptionByIndex = (options: number[], index: number) => {
   return options[index] ?? (index > 0 ? options[options.length - 1] : 1);
 };
 
-export const isAvailable = (
-  condition: CharacterBonusAvailableCondition,
+export const isAvailableEffect = (
+  condition: AbilityEffectAvailableCondition,
   char: CharInfo,
   inputs: number[],
   fromSelf: boolean
@@ -27,13 +29,63 @@ export const isAvailable = (
   return true;
 };
 
+interface IsApplicableEffectArgs {
+  charData: AppCharacter;
+  partyData: PartyData;
+}
+export const isApplicableEffect = (
+  bonus: AbilityEffectApplyCondition,
+  obj: IsApplicableEffectArgs,
+  inputs: number[]
+) => {
+  const { checkInput, partyElmtCount, partyOnlyElmts } = bonus;
+
+  if (checkInput !== undefined) {
+    const { value, index = 0, type = "equal" } = typeof checkInput === "number" ? { value: checkInput } : checkInput;
+    const input = inputs[index] ?? 0;
+    switch (type) {
+      case "equal":
+        if (input !== value) return false;
+        else break;
+      case "min":
+        if (input < value) return false;
+        else break;
+      case "max":
+        if (input > value) return false;
+      case "included":
+        if (!inputs.includes(value)) return false;
+    }
+  }
+  if (bonus.forWeapons && !bonus.forWeapons.includes(obj.charData.weaponType)) {
+    return false;
+  }
+  if (bonus.forElmts && !bonus.forElmts.includes(obj.charData.vision)) {
+    return false;
+  }
+  const visions = countVision(obj.partyData, obj.charData);
+
+  if (partyElmtCount) {
+    for (const key in partyElmtCount) {
+      const currentCount = visions[key as Vision] ?? 0;
+      const requiredCount = partyElmtCount[key as Vision] ?? 0;
+      if (currentCount < requiredCount) return false;
+    }
+  }
+  if (partyOnlyElmts) {
+    for (const vision in visions) {
+      if (!partyOnlyElmts.includes(vision as Vision)) return false;
+    }
+  }
+  return true;
+};
+
 type Obj = {
   char: CharInfo;
   charData: AppCharacter;
   partyData: PartyData;
 };
 export const getLevelScale = (
-  scale: CharacterEffectLevelScale | undefined,
+  scale: AbilityEffectLevelScale | undefined,
   inputs: number[],
   obj: Obj,
   fromSelf: boolean

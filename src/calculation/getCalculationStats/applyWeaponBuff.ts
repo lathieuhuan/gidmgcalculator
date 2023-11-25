@@ -92,7 +92,7 @@ interface ApplyWeaponBuffArgs {
   inputs: number[];
   modifierArgs: BuffModifierArgsWrapper;
 }
-export const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs }: ApplyWeaponBuffArgs) => {
+const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs }: ApplyWeaponBuffArgs) => {
   const scaleRefi = (base: number, increment = base / 3) => base + increment * refi;
 
   if (buff.options && buff.stacks && !Array.isArray(buff.stacks)) {
@@ -159,3 +159,5 @@ export const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs 
   }
   applyBuffValue(buffValue, description, buff, modifierArgs);
 };
+
+export default applyWeaponBuff;

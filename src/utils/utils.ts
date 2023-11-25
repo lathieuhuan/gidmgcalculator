@@ -16,7 +16,6 @@ import type {
   Party,
   CharInfo,
   CharacterMilestone,
-  ModifierInput,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";

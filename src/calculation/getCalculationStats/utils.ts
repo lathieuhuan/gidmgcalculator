@@ -9,7 +9,7 @@ import type {
   CalcArtifacts,
   CalcItemBuff,
   CalcWeapon,
-  CharacterBonus,
+  AbilityBonus,
   CharInfo,
   CoreStat,
   ReactionBonus,

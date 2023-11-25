@@ -1,22 +1,24 @@
 import { VISION_TYPES } from "@Src/constants";
-import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
 import { genExclusiveBuff } from "@Src/data/characters/utils";
 import {
+  AbilityBonus,
+  AbilityBonusModel,
+  AbilityBonusStack,
+  AbilityBonusTarget,
   BuffModifierArgsWrapper,
-  CharacterBonus,
-  CharacterBonusModel,
-  CharacterBonusStack,
-  CharacterBonusTarget,
   ModifierInput,
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { getLevelScale, getOptionByIndex, isAvailable } from "../../utils";
-import { isFinalBonus } from "../utils";
-import { isApplicable, isCharacterBonus } from "./utils";
+import { getLevelScale, getOptionByIndex, isApplicableEffect, isAvailableEffect } from "../utils";
+import { isFinalBonus } from "./utils";
+
+const isCharacterBonus = (bonusModel: AbilityBonusModel): bonusModel is AbilityBonus => {
+  return "value" in bonusModel;
+};
 
 const getStackValue = (
-  stack: CharacterBonusStack,
+  stack: AbilityBonusStack,
   inputs: number[],
   obj: BuffModifierArgsWrapper,
   fromSelf: boolean
@@ -24,7 +26,7 @@ const getStackValue = (
   let result = 1;
   let extra = 0;
 
-  if (stack.extra && isAvailable(stack.extra, obj.char, inputs, fromSelf)) {
+  if (stack.extra && isAvailableEffect(stack.extra, obj.char, inputs, fromSelf)) {
     extra = stack.extra.value;
   }
 
@@ -109,7 +111,7 @@ const getStackValue = (
 };
 
 const getBonusValue = (
-  bonus: Omit<CharacterBonus, "targets">,
+  bonus: Omit<AbilityBonus, "targets">,
   inputs: number[],
   preCalcStacks: number[],
   obj: BuffModifierArgsWrapper,
@@ -120,7 +122,11 @@ const getBonusValue = (
 
   if (typeof preExtra === "number") {
     bonusValue += preExtra;
-  } else if (preExtra && isAvailable(preExtra, obj.char, inputs, fromSelf) && isApplicable(preExtra, obj, inputs)) {
+  } else if (
+    preExtra &&
+    isAvailableEffect(preExtra, obj.char, inputs, fromSelf) &&
+    isApplicableEffect(preExtra, obj, inputs)
+  ) {
     bonusValue += getBonusValue(preExtra, inputs, preCalcStacks, obj, fromSelf);
   }
 
@@ -143,7 +149,7 @@ const getBonusValue = (
 
 const applyBonusValue = (
   description: string,
-  target: CharacterBonusTarget,
+  target: AbilityBonusTarget,
   bonusValue: number,
   obj: BuffModifierArgsWrapper,
   inputs: number[]
@@ -172,13 +178,13 @@ const applyBonusValue = (
 
 interface ApplyCharacterBuffArgs {
   description: string;
-  bonus: CharacterBonus;
+  bonus: AbilityBonus;
   inputs: number[];
   preCalcStacks?: number[];
   modifierArgs: BuffModifierArgsWrapper;
   fromSelf: boolean;
 }
-const applyCharacterBonus = ({
+const applyAbilityBonus = ({
   description,
   bonus,
   inputs,
@@ -186,7 +192,7 @@ const applyCharacterBonus = ({
   modifierArgs: obj,
   fromSelf,
 }: ApplyCharacterBuffArgs) => {
-  if (!isAvailable(bonus, obj.char, inputs, fromSelf) || !isApplicable(bonus, obj, inputs)) {
+  if (!isAvailableEffect(bonus, obj.char, inputs, fromSelf) || !isApplicableEffect(bonus, obj, inputs)) {
     return;
   }
   const bonusValue = getBonusValue(bonus, inputs, preCalcStacks, obj, fromSelf);
@@ -199,11 +205,11 @@ const applyCharacterBonus = ({
 };
 
 interface ApplyCharacterBonusesArgs extends Omit<ApplyCharacterBuffArgs, "bonus" | "preCalcStacks"> {
-  bonuses: CharacterBonusModel | CharacterBonusModel[];
+  bonuses: AbilityBonusModel | AbilityBonusModel[];
   inputs: ModifierInput[];
   isFinal?: boolean;
 }
-export const applyCharacterBonuses = ({ bonuses, isFinal, ...others }: ApplyCharacterBonusesArgs) => {
+const applyAbilityBuff = ({ bonuses, isFinal, ...others }: ApplyCharacterBonusesArgs) => {
   const noIsFinal = isFinal === undefined;
 
   for (const bonus of toArray(bonuses)) {
@@ -212,7 +218,7 @@ export const applyCharacterBonuses = ({ bonuses, isFinal, ...others }: ApplyChar
         isFinalBonus(bonus.stacks) || (typeof bonus.preExtra === "object" && isFinalBonus(bonus.preExtra.stacks));
 
       if (noIsFinal || isFinal === isTrulyFinalBonus) {
-        applyCharacterBonus({
+        applyAbilityBonus({
           bonus,
           ...others,
         });
@@ -223,7 +229,7 @@ export const applyCharacterBonuses = ({ bonuses, isFinal, ...others }: ApplyChar
       );
 
       for (const subBonus of bonus.children) {
-        applyCharacterBonus({
+        applyAbilityBonus({
           bonus: subBonus,
           preCalcStacks,
           ...others,
@@ -232,3 +238,5 @@ export const applyCharacterBonuses = ({ bonuses, isFinal, ...others }: ApplyChar
     }
   }
 };
+
+export default applyAbilityBuff;

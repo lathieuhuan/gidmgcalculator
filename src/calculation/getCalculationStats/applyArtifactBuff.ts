@@ -8,7 +8,7 @@ interface ApplyArtifactBuffArgs {
   modifierArgs: BuffModifierArgsWrapper;
   inputs?: number[];
 }
-export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArtifactBuffArgs) => {
+const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArtifactBuffArgs) => {
   let buffValue = buff.initialValue ?? 0;
 
   if (buff.checkInput !== undefined && inputs?.length) {
@@ -85,3 +85,5 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
       break;
   }
 };
+
+export default applyArtifactBuff;

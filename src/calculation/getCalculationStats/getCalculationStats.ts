@@ -8,11 +8,12 @@ import type {
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetStatsArgs, UsedMod } from "../types";
+import type { GetStatsArgs } from "../types";
 
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
 
+// Util
 import { appData } from "@Src/data";
 import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
 import {
@@ -21,10 +22,10 @@ import {
   getQuickenBuffDamage,
   getRxnBonusesFromEM,
 } from "@Src/utils/calculation";
-import { addArtifactAttributes, addTrackerRecord, initiateTotalAttr, isFinalBonus, initiateBonuses } from "./utils";
-import { applyCharacterBonuses } from "./buffs-character/buffs-character";
-import { applyWeaponBuff } from "./buffs-weapon";
-import { applyArtifactBuff } from "./buffs-artifact";
+import { addArtifactAttributes, addTrackerRecord, initiateBonuses, initiateTotalAttr, isFinalBonus } from "./utils";
+import applyAbilityBuff from "./applyAbilityBuff";
+import applyArtifactBuff from "./applyArtifactBuff";
+import applyWeaponBuff from "./applyWeaponBuff";
 
 export const getCalculationStats = ({
   char,
@@ -83,7 +84,7 @@ export const getCalculationStats = ({
 
     for (const buff of innateBuffs) {
       if (isGranted(buff, char) && buff.bonusModels) {
-        applyCharacterBonuses({
+        applyAbilityBuff({
           description: `Self / ${buff.src}`,
           bonuses: buff.bonusModels,
           inputs: [],
@@ -100,7 +101,7 @@ export const getCalculationStats = ({
         const description = `Self / ${buff.src}`;
         const inputs = ctrl.inputs || [];
 
-        applyCharacterBonuses({
+        applyAbilityBuff({
           description,
           bonuses: buff.bonusModels,
           inputs,
@@ -239,7 +240,7 @@ export const getCalculationStats = ({
           continue;
         }
 
-        applyCharacterBonuses({
+        applyAbilityBuff({
           description: `${name} / ${buff.src}`,
           bonuses: buff.bonusModels,
           inputs,
