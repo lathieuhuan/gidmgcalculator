@@ -155,16 +155,16 @@ export type AbilityEffectAvailableCondition = {
   alterIndex?: number;
 };
 
+type InputCheck = {
+  value: number;
+  /** Default to 0 */
+  index?: number;
+  /** Default to 'equal' */
+  type?: "equal" | "min" | "max" | "included";
+};
+
 export type AbilityEffectApplyCondition = {
-  checkInput?:
-    | number
-    | {
-        value: number;
-        /** Default to 0 */
-        index?: number;
-        /** Default to 'equal' */
-        type?: "equal" | "min" | "max" | "included";
-      };
+  checkInput?: number | InputCheck;
   /** On Chongyun */
   forWeapons?: WeaponType[];
   /** On Chevreuse */
@@ -212,10 +212,12 @@ type VisionStack = {
 type OptionStack = {
   /** On Aloy, Nahida, Neuvillette */
   type: "option";
-  /** stack = options[input - 1] */
-  options: number[];
-  /** Default to 0 */
+  /** Index to get input. Default to 0 */
   index?: number;
+  /** stack = options[input - shift] */
+  options: number[];
+  /** Default to 1 */
+  shift?: number;
 };
 
 type NationStack = {
@@ -255,9 +257,13 @@ export type AbilityBonusStack = (
   max?:
     | number
     | {
-        /** On Mika */
+        /** On Mika, Navia */
         value: number;
-        extraAt: CharacterMilestone[];
+        extras: Array<{
+          grantedAt?: CharacterMilestone;
+          checkInput?: InputCheck;
+          value: number;
+        }>;
       };
 };
 

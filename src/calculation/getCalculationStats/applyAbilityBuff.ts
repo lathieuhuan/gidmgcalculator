@@ -8,7 +8,7 @@ import {
   BuffModifierArgsWrapper,
   ModifierInput,
 } from "@Src/types";
-import { countVision, isGranted, toArray } from "@Src/utils";
+import { countVision, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { getLevelScale, getOptionByIndex, isApplicableEffect, isAvailableEffect } from "../utils";
 import { isFinalBonus } from "./utils";
@@ -25,9 +25,22 @@ const getStackValue = (
 ): number => {
   let result = 1;
   let extra = 0;
+  let max = 0;
 
   if (stack.extra && isAvailableEffect(stack.extra, obj.char, inputs, fromSelf)) {
     extra = stack.extra.value;
+  }
+
+  if (typeof stack.max === "number") {
+    max = stack.max;
+  } else if (stack.max) {
+    max = stack.max.value;
+
+    for (const extra of stack.max.extras) {
+      if (isAvailableEffect(extra, obj.char, inputs, fromSelf) && isApplicableEffect(extra, obj, inputs)) {
+        max += extra.value ?? 1;
+      }
+    }
   }
 
   switch (stack.type) {
@@ -59,7 +72,14 @@ const getStackValue = (
       break;
     }
     case "option": {
-      result = getOptionByIndex(stack.options, inputs[stack.index ?? 0] - 1);
+      const { shift = 1 } = stack;
+      let input = inputs[stack.index ?? 0] - shift;
+
+      if (max && input > max) {
+        input = max;
+      }
+      max = 0;
+      result = getOptionByIndex(stack.options, input);
       break;
     }
     case "nation": {
@@ -102,14 +122,6 @@ const getStackValue = (
   if (stack.requiredBase) result -= stack.requiredBase;
   if (extra) result += extra;
 
-  let max = 0;
-  if (typeof stack.max === "number") {
-    max = stack.max;
-  } else if (stack.max) {
-    max =
-      stack.max.value +
-      stack.max.extraAt.reduce((total, at) => total + (isGranted({ grantedAt: at }, obj.char) ? 1 : 0), 0);
-  }
   if (max && result > max) result = max;
 
   return Math.max(result, 0);

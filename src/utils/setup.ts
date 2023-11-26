@@ -95,7 +95,7 @@ export function cleanupCalcSetup(
     }),
     selfDebuffCtrls: data.selfDebuffCtrls.filter((ctrl) => {
       const debuff = findByIndex(debuffs, ctrl.index);
-      return debuff ? ctrl.activated && (!debuff.isGranted || debuff.isGranted(char)) : false;
+      return debuff ? ctrl.activated && isGranted(debuff, char) : false;
     }),
     wpBuffCtrls: data.wpBuffCtrls.filter((ctrl) => ctrl.activated),
     party,

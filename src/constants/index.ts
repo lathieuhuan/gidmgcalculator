@@ -1,3 +1,5 @@
+import { ModInputType } from "@Src/types";
+
 export * from "./character-stats";
 
 export const MAX_USER_WEAPONS = 200;
@@ -185,7 +187,7 @@ export const DEFAULT_WEAPON_CODE = {
   sword: 108,
 };
 
-export const DEFAULT_MODIFIER_INITIAL_VALUES: Record<string, number> = {
+export const DEFAULT_MODIFIER_INITIAL_VALUES: Record<ModInputType, number> = {
   check: 0,
   level: 1,
   text: 0,

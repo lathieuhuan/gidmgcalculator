@@ -119,7 +119,7 @@ interface RefModifier {
   affect: EModAffect;
   inputConfigs?: ModInputConfig[];
 }
-export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
+function createBuffCtrls(forSelf: boolean, buffs: RefModifier[]) {
   const buffCtrls: ModifierCtrl[] = [];
 
   for (const buff of buffs) {
@@ -148,7 +148,7 @@ export function createModCtrls(forSelf: boolean, buffs: RefModifier[]) {
 
 export function createWeaponBuffCtrls(forSelf: boolean, weapon: { type: WeaponType; code: number }) {
   const { buffs = [] } = appData.getWeaponData(weapon.code) || {};
-  return createModCtrls(forSelf, buffs);
+  return createBuffCtrls(forSelf, buffs);
 }
 
 export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: number }) {
@@ -156,7 +156,7 @@ export function createArtifactBuffCtrls(forSelf: boolean, hasCode?: { code?: num
     return [];
   }
   const { buffs = [] } = appData.getArtifactSetData(hasCode.code) || {};
-  return createModCtrls(forSelf, buffs);
+  return createBuffCtrls(forSelf, buffs);
 }
 
 export function createArtDebuffCtrls(): ArtifactDebuffCtrl[] {
