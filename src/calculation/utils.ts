@@ -11,10 +11,6 @@ import {
 import { countVision, isGranted } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
 
-export const getOptionByIndex = (options: number[], index: number) => {
-  return options[index] ?? (index > 0 ? options[options.length - 1] : 1);
-};
-
 export const isAvailableEffect = (
   condition: AbilityEffectAvailableCondition,
   char: CharInfo,
@@ -29,13 +25,12 @@ export const isAvailableEffect = (
   return true;
 };
 
-interface IsApplicableEffectArgs {
-  charData: AppCharacter;
-  partyData: PartyData;
-}
 export const isApplicableEffect = (
   condition: AbilityEffectApplyCondition,
-  obj: IsApplicableEffectArgs,
+  obj: {
+    charData: AppCharacter;
+    partyData: PartyData;
+  },
   inputs: number[]
 ) => {
   const { checkInput, partyElmtCount, partyOnlyElmts } = condition;
@@ -52,8 +47,10 @@ export const isApplicableEffect = (
         else break;
       case "max":
         if (input > value) return false;
+        else break;
       case "included":
         if (!inputs.includes(value)) return false;
+        else break;
     }
   }
   if (condition.forWeapons && !condition.forWeapons.includes(obj.charData.weaponType)) {
@@ -79,15 +76,27 @@ export const isApplicableEffect = (
   return true;
 };
 
-type Obj = {
-  char: CharInfo;
-  charData: AppCharacter;
-  partyData: PartyData;
+export const isUsableEffect = (
+  condition: AbilityEffectAvailableCondition & AbilityEffectApplyCondition,
+  obj: {
+    char: CharInfo;
+    charData: AppCharacter;
+    partyData: PartyData;
+  },
+  inputs: number[],
+  fromSelf: boolean
+) => {
+  return isAvailableEffect(condition, obj.char, inputs, fromSelf) && isApplicableEffect(condition, obj, inputs);
 };
+
 export const getLevelScale = (
   scale: AbilityEffectLevelScale | undefined,
   inputs: number[],
-  obj: Obj,
+  obj: {
+    char: CharInfo;
+    charData: AppCharacter;
+    partyData: PartyData;
+  },
   fromSelf: boolean
 ) => {
   if (scale) {
@@ -101,11 +110,7 @@ export const getLevelScale = (
         })
       : inputs[alterIndex] ?? 0;
 
-    if (typeof value === "number") {
-      return value ? TALENT_LV_MULTIPLIERS[value][level] : level;
-    } else {
-      return getOptionByIndex(value, level - 1);
-    }
+    return value ? TALENT_LV_MULTIPLIERS[value][level] : level;
   }
   return 1;
 };

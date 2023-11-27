@@ -169,24 +169,30 @@ export type AbilityEffectApplyCondition = {
   forWeapons?: WeaponType[];
   /** On Chevreuse */
   forElmts?: Vision[];
-  /** On Gorou, Nilou */
+  /** On Gorou, Nilou, Chevreuse */
   partyElmtCount?: Partial<Record<Vision, number>>;
-  /** On Nilou */
+  /** On Nilou, Chevreuse */
   partyOnlyElmts?: Vision[];
 };
 
 export type AbilityEffectLevelScale = {
   talent: Talent;
-  /**
-   * If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level].
-   * number[] as options. Only on Razor.
-   */
-  value: number | number[];
+  /** If [value] = 0: buff value * level. Otherwise buff value * TALENT_LV_MULTIPLIERS[value][level]. */
+  value: number;
   /** When this bonus is from teammate, this is input's index to get level. Default to 0 */
   alterIndex?: number;
 };
 
 // ============ BUFFS ============
+
+export type DynamicMax = {
+  value: number;
+  extras: Array<{
+    grantedAt?: CharacterMilestone;
+    checkInput?: InputCheck;
+    value: number;
+  }>;
+};
 
 type InputStack = {
   type: "input";
@@ -201,23 +207,6 @@ type AttributeStack = {
   field: "base_atk" | "hp" | "atk" | "def" | "em" | "er_" | "healB_";
   /** When this bonus is from teammate, this is input's index to get value. Default to 0 */
   alterIndex?: number;
-};
-
-type VisionStack = {
-  type: "vision";
-  visionType: "various" | Vision | Vision[];
-  options?: number[];
-};
-
-type OptionStack = {
-  /** On Aloy, Nahida, Neuvillette */
-  type: "option";
-  /** Index to get input. Default to 0 */
-  index?: number;
-  /** stack = options[input - shift] */
-  options: number[];
-  /** Default to 1 */
-  shift?: number;
 };
 
 type NationStack = {
@@ -236,35 +225,15 @@ type ResolveStack = {
   type: "resolve";
 };
 
-export type AbilityBonusStack = (
-  | InputStack
-  | AttributeStack
-  | VisionStack
-  | OptionStack
-  | NationStack
-  | EnergyStack
-  | ResolveStack
-) & {
-  /** Final stack = stack - required base. On Nahida, Neuvillette, Raiden Shogun */
+export type AbilityBonusStack = (InputStack | AttributeStack | NationStack | EnergyStack | ResolveStack) & {
+  /** Final stack = stack - required base */
   requiredBase?: number;
   /** On Furina */
-  extra?: {
+  extra?: AbilityEffectAvailableCondition & {
     value: number;
-    grantedAt?: CharacterMilestone;
-    /** When this bonus is from teammate, this is input's index to check granted. */
-    alterIndex?: number;
   };
-  max?:
-    | number
-    | {
-        /** On Mika, Navia */
-        value: number;
-        extras: Array<{
-          grantedAt?: CharacterMilestone;
-          checkInput?: InputCheck;
-          value: number;
-        }>;
-      };
+  /** Dynamic on Mika */
+  max?: number | DynamicMax;
 };
 
 export type AbilityBonusTarget =
@@ -305,15 +274,42 @@ export type AbilityBonusTarget =
       type: "ELM_NA";
     };
 
+type ValueOption = {
+  /** On Navia */
+  preOptions?: number[];
+  options: number[];
+  indexSrc:
+    | {
+        type: "vision";
+        visionType: "various" | Vision | Vision[];
+      }
+    | {
+        /** On Neuvillette */
+        type: "input";
+        index?: number;
+      }
+    | {
+        /** On Razor */
+        type: "level";
+        talent: Talent;
+      };
+  /** Add to indexSrc. On Nahida */
+  extra?: AbilityEffectAvailableCondition & {
+    value: number;
+  };
+  /** Max index. Dynamic on Navia */
+  max?: number | DynamicMax;
+};
+
 export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
-  value: number;
+  value: number | ValueOption;
   /** Multiplier based on talent level */
   scale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
   preExtra?: number | Omit<AbilityBonus, "targets">;
   /** Index of pre-calculated stack */
-  stacks?: AbilityBonusStack | AbilityBonusStack[];
   stackIndex?: number;
+  stacks?: AbilityBonusStack | AbilityBonusStack[];
   targets: AbilityBonusTarget | AbilityBonusTarget[];
   max?:
     | number

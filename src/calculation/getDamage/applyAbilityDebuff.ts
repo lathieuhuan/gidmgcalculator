@@ -2,7 +2,7 @@ import { VISION_TYPES } from "@Src/constants";
 import { AbilityPenaltyModel, DebuffModifierArgsWrapper } from "@Src/types";
 import { toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
-import { isAvailableEffect, getLevelScale, isApplicableEffect } from "../utils";
+import { getLevelScale, isUsableEffect } from "../utils";
 
 const getPenaltyValue = (
   penalty: AbilityPenaltyModel,
@@ -38,17 +38,16 @@ const applyAbilityDebuff = ({
   fromSelf,
 }: ApplyAbilityDebuffArgs) => {
   for (const penalty of toArray(penalties)) {
-    if (!isAvailableEffect(penalty, obj.char, inputs, fromSelf) || !isApplicableEffect(penalty, obj, inputs)) {
-      continue;
-    }
-    const penaltyValue = getPenaltyValue(penalty, inputs, obj, fromSelf);
+    if (isUsableEffect(penalty, obj, inputs, fromSelf)) {
+      const penaltyValue = getPenaltyValue(penalty, inputs, obj, fromSelf);
 
-    for (const target of toArray(penalty.targets)) {
-      if (typeof target === "string") {
-        applyModifier(description, obj.resistReduct, target, penaltyValue, obj.tracker);
-      } else {
-        const visionIndex = inputs[target.index ?? 0];
-        applyModifier(description, obj.resistReduct, VISION_TYPES[visionIndex], penaltyValue, obj.tracker);
+      for (const target of toArray(penalty.targets)) {
+        if (typeof target === "string") {
+          applyModifier(description, obj.resistReduct, target, penaltyValue, obj.tracker);
+        } else {
+          const visionIndex = inputs[target.index ?? 0];
+          applyModifier(description, obj.resistReduct, VISION_TYPES[visionIndex], penaltyValue, obj.tracker);
+        }
       }
     }
   }
