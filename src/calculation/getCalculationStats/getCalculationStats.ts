@@ -8,7 +8,7 @@ import type {
   ReactionBonusInfoKey,
   Teammate,
 } from "@Src/types";
-import type { GetStatsArgs } from "../types";
+import type { GetCalculationStatsArgs } from "../types";
 
 import { AMPLIFYING_REACTIONS, CORE_STAT_TYPES, QUICKEN_REACTIONS, TRANSFORMATIVE_REACTIONS } from "@Src/constants";
 import { RESONANCE_STAT } from "../constants";
@@ -41,7 +41,7 @@ export const getCalculationStats = ({
   customBuffCtrls,
   infusedElement,
   tracker,
-}: GetStatsArgs) => {
+}: GetCalculationStatsArgs) => {
   const { resonances = [], reaction, infuse_reaction } = elmtModCtrls || {};
   const { refi } = weapon;
   const setBonuses = getArtifactSetBonuses(artifacts);

@@ -14,7 +14,7 @@ import {
 
 // Util
 import { appData } from "@Src/data";
-import { findByIndex, isGranted, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseAbilityDescription, parseCharacterDescription } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
@@ -22,11 +22,11 @@ import { ModifierTemplate, renderModifiers } from "@Src/components";
 export function SelfBuffs() {
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
-  const charData = appData.getCharData(char.name);
-  const partyData = appData.getPartyData(useSelector(selectParty));
   const selfBuffCtrls = useSelector((state) => {
     return state.calculator.setupsById[state.calculator.activeId].selfBuffCtrls;
   });
+  const charData = appData.getCharData(char.name);
+  const partyData = appData.getPartyData(useSelector(selectParty));
 
   const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
   const modifierElmts: JSX.Element[] = [];
@@ -72,6 +72,11 @@ export function SelfBuffs() {
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
           )}
+          // description={parseAbilityDescription(
+          //   buff.description,
+          //   { char, charData, partyData, inputs: [], fromSelf: true },
+          //   buff.bonusModels
+          // )}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}

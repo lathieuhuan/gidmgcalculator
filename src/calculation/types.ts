@@ -28,7 +28,7 @@ export type UsedMod = {
   modIndex: number;
 };
 
-export type GetStatsArgs = {
+export type GetCalculationStatsArgs = {
   char: CharInfo;
   charData: AppCharacter;
   weapon: CalcWeapon;

@@ -304,7 +304,7 @@ type ValueOption = {
 export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
   value: number | ValueOption;
   /** Multiplier based on talent level */
-  scale?: AbilityEffectLevelScale;
+  lvScale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
   preExtra?: number | Omit<AbilityBonus, "targets">;
   /** Index of pre-calculated stack */
@@ -355,7 +355,7 @@ type PenaltyTarget =
 
 export interface AbilityPenaltyModel extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
   value: number;
-  scale?: AbilityEffectLevelScale;
+  lvScale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
   preExtra?:
     | number

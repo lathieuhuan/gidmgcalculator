@@ -11,7 +11,7 @@ const getPenaltyValue = (
   fromSelf: boolean
 ) => {
   const { preExtra } = penalty;
-  let result = penalty.value * getLevelScale(penalty.scale, inputs, obj, fromSelf);
+  let result = penalty.value * getLevelScale(penalty.lvScale, inputs, obj, fromSelf);
 
   if (typeof preExtra === "number") {
     result += preExtra;

@@ -162,7 +162,7 @@ const getBonusValue = (
   }
 
   // ========== APPLY LEVEL SCALE ==========
-  bonusValue *= getLevelScale(bonus.scale, inputs, obj, fromSelf);
+  bonusValue *= getLevelScale(bonus.lvScale, inputs, obj, fromSelf);
 
   // ========== ADD PRE-EXTRA ==========
   if (typeof preExtra === "number") {

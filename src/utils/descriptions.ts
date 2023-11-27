@@ -1,5 +1,13 @@
-import { DescriptionSeedGetter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "./pure-utils";
+import { getLevelScale } from "@Src/calculation";
+import {
+  AbilityBonusModel,
+  AppCharacter,
+  CharInfo,
+  DescriptionSeedGetter,
+  DescriptionSeedGetterArgs,
+  PartyData,
+} from "@Src/types";
+import { round, toArray } from "./pure-utils";
 
 const typeToCls: Record<string, string> = {
   k: "text-green-300", // key
@@ -42,6 +50,48 @@ export const parseCharacterDescription = (
           body = "?";
         }
       }
+      return wrapText(body, type);
+    });
+  }
+  return "";
+};
+
+export const parseAbilityDescription = (
+  description: string | number,
+  obj: {
+    char: CharInfo;
+    charData: AppCharacter;
+    partyData: PartyData;
+  },
+  inputs: number[],
+  fromSelf: boolean,
+  bonuses?: AbilityBonusModel | AbilityBonusModel[]
+) => {
+  if (typeof description === "string") {
+    const pattern = /\{[\w \-/,%^"@\.\[\]]+\}#\[\w*\]/g;
+
+    return description.replace(pattern, (match) => {
+      let [body, type = ""] = match.split("#");
+      body = body.slice(1, -1);
+      type = type.slice(1, -1);
+
+      if (body.includes("@")) {
+        body = body.slice(1);
+
+        if (!isNaN(+body) && bonuses) {
+          const bonus = toArray(bonuses)[+body];
+
+          if ("value" in bonus) {
+            const result =
+              typeof bonus.value === "number"
+                ? bonus.value * getLevelScale(bonus.lvScale, obj.inputs, obj, obj.fromSelf)
+                : 0;
+            return wrapText(result + "%", type);
+          }
+        }
+      }
+
+      body.length === 1 && (body = "?");
       return wrapText(body, type);
     });
   }

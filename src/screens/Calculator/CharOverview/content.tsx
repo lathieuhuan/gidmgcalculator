@@ -1,5 +1,5 @@
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
-import { addArtifactAttributes } from "@Src/calculation/getCalculationStats";
+import { addArtifactAttributes } from "@Src/calculation";
 
 // Store
 import { useDispatch, useSelector } from "@Store/hooks";
