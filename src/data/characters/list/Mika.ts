@@ -1,12 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { finalTalentLv } from "@Src/utils/calculation";
-
-const getESBonus = ({ fromSelf, char, partyData, inputs }: DescriptionSeedGetterArgs) => {
-  const level = fromSelf
-    ? finalTalentLv({ talentType: "ES", char: char, charData: Mika as AppCharacter, partyData })
-    : inputs[0] || 0;
-  return level ? Math.min(12 + level, 25) : 0;
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Mika: DefaultAppCharacter = {
   code: 67,
@@ -22,7 +14,6 @@ const Mika: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${getESBonus(args)}%`],
 };
 
 export default Mika as AppCharacter;

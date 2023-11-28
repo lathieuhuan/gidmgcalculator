@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getWindGiftBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 18 }, Faruzan as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Faruzan: DefaultAppCharacter = {
   code: 64,
@@ -20,7 +14,6 @@ const Faruzan: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(getWindGiftBonus(args)[1], 2)}%`],
 };
 
 export default Faruzan as AppCharacter;

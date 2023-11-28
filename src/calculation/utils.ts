@@ -10,6 +10,7 @@ import {
 } from "@Src/types";
 import { countVision, isGranted } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
+import { CalcUltilObj } from "./types";
 
 export const isAvailableEffect = (
   condition: AbilityEffectAvailableCondition,
@@ -78,11 +79,7 @@ export const isApplicableEffect = (
 
 export const isUsableEffect = (
   condition: AbilityEffectAvailableCondition & AbilityEffectApplyCondition,
-  obj: {
-    char: CharInfo;
-    charData: AppCharacter;
-    partyData: PartyData;
-  },
+  obj: CalcUltilObj,
   inputs: number[],
   fromSelf: boolean
 ) => {
@@ -91,12 +88,8 @@ export const isUsableEffect = (
 
 export const getLevelScale = (
   scale: AbilityEffectLevelScale | undefined,
+  obj: CalcUltilObj,
   inputs: number[],
-  obj: {
-    char: CharInfo;
-    charData: AppCharacter;
-    partyData: PartyData;
-  },
   fromSelf: boolean
 ) => {
   if (scale) {

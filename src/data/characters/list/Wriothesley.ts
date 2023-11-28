@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round, toMult } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getESBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "ES", root: 43.2, scale: 5 }, Wriothesley as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Wriothesley: DefaultAppCharacter = {
   code: 76,
@@ -20,7 +14,6 @@ const Wriothesley: DefaultAppCharacter = {
     NAs: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(toMult(getESBonus(args)[1]), 3)}`],
 };
 
 export default Wriothesley as AppCharacter;

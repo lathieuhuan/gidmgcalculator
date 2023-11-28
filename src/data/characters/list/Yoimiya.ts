@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round, toMult } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getESBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "ES", root: 37.91, scale: 5 }, Yoimiya as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Yoimiya: DefaultAppCharacter = {
   code: 38,
@@ -20,7 +14,6 @@ const Yoimiya: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(toMult(getESBonus(args)[1]), 3)}`],
 };
 
 export default Yoimiya as AppCharacter;

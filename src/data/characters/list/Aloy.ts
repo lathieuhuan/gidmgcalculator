@@ -1,13 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getCoilStackBuffValue = (args: DescriptionSeedGetterArgs) => {
-  const [, mult] = getTalentMultiplier({ root: 5.846, talentType: "ES", scale: 5 }, Aloy as AppCharacter, args);
-  let stacks = args.inputs[0] || 0;
-  stacks = stacks === 4 ? 5 : stacks;
-  return mult * stacks;
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Aloy: DefaultAppCharacter = {
   code: 39,
@@ -19,7 +10,6 @@ const Aloy: DefaultAppCharacter = {
   vision: "cryo",
   weaponType: "bow",
   EBcost: 40,
-  dsGetters: [(args) => `${round(getCoilStackBuffValue(args), 3)}%`],
 };
 
 export default Aloy as AppCharacter;

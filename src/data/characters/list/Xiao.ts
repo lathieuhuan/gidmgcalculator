@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 58.45 }, Xiao as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Xiao: DefaultAppCharacter = {
   code: 30,
@@ -20,7 +14,6 @@ const Xiao: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
 };
 
 export default Xiao as AppCharacter;

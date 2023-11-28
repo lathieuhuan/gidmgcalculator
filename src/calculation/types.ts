@@ -28,6 +28,12 @@ export type UsedMod = {
   modIndex: number;
 };
 
+export type CalcUltilObj = {
+  char: CharInfo;
+  charData: AppCharacter;
+  partyData: PartyData;
+};
+
 export type GetCalculationStatsArgs = {
   char: CharInfo;
   charData: AppCharacter;

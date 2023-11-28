@@ -4,7 +4,7 @@ import { appData } from "@Src/data";
 import getCalculationStats from "./getCalculationStats";
 import getDamage from "./getDamage";
 
-export { addArtifactAttributes } from "./getCalculationStats";
+export * from "./getCalculationStats";
 export { getLevelScale } from "./utils";
 
 export default function calculateAll(

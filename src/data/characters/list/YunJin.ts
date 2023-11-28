@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 32.16, inputIndex: 1 }, YunJin as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const YunJin: DefaultAppCharacter = {
   code: 48,
@@ -20,7 +14,6 @@ const YunJin: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
 };
 
 export default YunJin as AppCharacter;

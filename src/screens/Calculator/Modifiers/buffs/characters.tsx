@@ -14,7 +14,7 @@ import {
 
 // Util
 import { appData } from "@Src/data";
-import { findByIndex, isGranted, parseAbilityDescription, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
 
 // Component
 import { ModifierTemplate, renderModifiers } from "@Src/components";
@@ -38,11 +38,7 @@ export function SelfBuffs() {
           key={`innate-${index}`}
           mutable={false}
           heading={buff.src}
-          description={parseCharacterDescription(
-            buff.description,
-            { fromSelf: true, char, partyData, inputs: [] },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(buff, { char, charData, partyData }, [], true)}
         />
       );
     }
@@ -67,16 +63,7 @@ export function SelfBuffs() {
         <ModifierTemplate
           key={`self-${ctrl.index}`}
           heading={buff.src}
-          description={parseCharacterDescription(
-            buff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
-          // description={parseAbilityDescription(
-          //   buff.description,
-          //   { char, charData, partyData, inputs: [], fromSelf: true },
-          //   buff.bonusModels
-          // )}
+          description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
@@ -141,11 +128,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         key={ctrl.index}
         checked={ctrl.activated}
         heading={buff.src}
-        description={parseCharacterDescription(
-          buff.description,
-          { fromSelf: false, char, partyData, inputs },
-          teammateData.dsGetters
-        )}
+        description={parseAbilityDescription(buff, { char, charData: teammateData, partyData }, inputs, false)}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
         onToggle={() => {

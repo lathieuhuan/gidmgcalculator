@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "EB", root: 33.4 }, Yanfei as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Yanfei: DefaultAppCharacter = {
   code: 34,
@@ -20,7 +14,6 @@ const Yanfei: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(getEBBonus(args)[1], 2)}%`],
 };
 
 export default Yanfei as AppCharacter;

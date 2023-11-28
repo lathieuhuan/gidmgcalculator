@@ -3,7 +3,7 @@ import type { ToggleModCtrlPath, ToggleTeammateModCtrlPath } from "@Store/calcul
 
 import { useDispatch, useSelector } from "@Store/hooks";
 import { selectChar, selectParty } from "@Store/calculatorSlice/selectors";
-import { findByIndex, isGranted, parseCharacterDescription } from "@Src/utils";
+import { findByIndex, isGranted, parseAbilityDescription } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Action
@@ -46,11 +46,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         <ModifierTemplate
           key={ctrl.index}
           heading={debuff.src}
-          description={parseCharacterDescription(
-            debuff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={inputConfigs}
           checked={ctrl.activated}
@@ -114,11 +110,7 @@ function TeammateDebuffs({ teammate, teammateIndex, partyData }: TeammateDebuffs
       <ModifierTemplate
         key={ctrl.index}
         heading={debuff.src}
-        description={parseCharacterDescription(
-          debuff.description,
-          { fromSelf: false, char, partyData, inputs },
-          teammateData.dsGetters
-        )}
+        description={parseAbilityDescription(debuff, { char, charData: teammateData, partyData }, inputs, false)}
         inputs={inputs}
         inputConfigs={inputConfigs}
         checked={ctrl.activated}

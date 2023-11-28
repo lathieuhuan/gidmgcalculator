@@ -1,16 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { finalTalentLv } from "@Src/utils/calculation";
-
-const getEBBonus = (args: DescriptionSeedGetterArgs) => {
-  const level = args.fromSelf
-    ? finalTalentLv({ ...args, charData: Furina as AppCharacter, talentType: "EB" })
-    : args.inputs[1];
-  return {
-    level,
-    dmgBonusPerS: (5 + level * 2) / 100,
-    inHealBonusPerS: level / 100,
-  };
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Furina: DefaultAppCharacter = {
   code: 78,
@@ -26,8 +14,6 @@ const Furina: DefaultAppCharacter = {
     ES: 5,
     EB: 3,
   },
-  dsGetters: [(args) => `${getEBBonus(args).dmgBonusPerS}%`],
-  
 };
 
 export default Furina as AppCharacter;

@@ -70,10 +70,10 @@ export default function getDamage({
   for (const { activated, inputs = [], index } of selfDebuffCtrls) {
     const debuff = findByIndex(debuffs || [], index);
 
-    if (activated && debuff?.penaltyModels && isGranted(debuff, char)) {
+    if (activated && debuff?.effects && isGranted(debuff, char)) {
       applyAbilityDebuff({
         description: `Self / ${debuff.src}`,
-        penalties: debuff.penaltyModels,
+        penalties: debuff.effects,
         inputs,
         modifierArgs,
         fromSelf: true,
@@ -84,13 +84,14 @@ export default function getDamage({
   // APPLY PARTY DEBUFFS
   for (const teammate of realParty(party)) {
     const { debuffs = [] } = appData.getCharData(teammate.name);
+
     for (const { activated, inputs = [], index } of teammate.debuffCtrls) {
       const debuff = findByIndex(debuffs, index);
 
-      if (activated && debuff?.penaltyModels) {
+      if (activated && debuff?.effects) {
         applyAbilityDebuff({
           description: `Self / ${debuff.src}`,
-          penalties: debuff.penaltyModels,
+          penalties: debuff.effects,
           inputs,
           modifierArgs,
           fromSelf: false,

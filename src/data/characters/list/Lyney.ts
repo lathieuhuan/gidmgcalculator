@@ -1,10 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { round } from "@Src/utils";
-import { getTalentMultiplier } from "../utils";
-
-const getPropSurplusValue = (args: DescriptionSeedGetterArgs) => {
-  return getTalentMultiplier({ talentType: "ES", root: 53.2 }, Lyney as AppCharacter, args);
-};
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Lyney: DefaultAppCharacter = {
   code: 73,
@@ -20,7 +14,6 @@ const Lyney: DefaultAppCharacter = {
     NAs: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${round(getPropSurplusValue(args)[1], 2)}%`],
 };
 
 export default Lyney as AppCharacter;

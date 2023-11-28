@@ -1,11 +1,10 @@
 import { EModAffect } from "@Src/constants";
 import type { AttackElementPath, AttackPatternPath, ReactionBonusPath } from "@Src/utils/calculation";
-import type { AttackPatternInfoKey, ModifierInput, PartyData, ResistanceReductionKey, Talent } from "./calculator";
+import type { AttackPatternInfoKey, ResistanceReductionKey, Talent } from "./calculator";
 import type {
   AttackElement,
   AttackPattern,
   AttributeStat,
-  CharInfo,
   ModInputConfig,
   Nation,
   Rarity,
@@ -25,7 +24,6 @@ export type DefaultAppCharacter = Pick<
   | "weaponType"
   | "EBcost"
   | "talentLvBonusAtCons"
-  | "dsGetters"
 >;
 
 export type AppCharacter = {
@@ -68,21 +66,10 @@ export type AppCharacter = {
   };
   passiveTalents: Ability[];
   constellation: Ability[];
-  /** ds: description seed */
-  dsGetters?: DescriptionSeedGetter[];
   innateBuffs?: AbilityInnateBuff[];
   buffs?: AbilityBuff[];
   debuffs?: AbilityDebuff[];
 };
-
-export type DescriptionSeedGetterArgs = {
-  char: CharInfo;
-  partyData: PartyData;
-  inputs: ModifierInput[];
-  fromSelf: boolean;
-};
-
-export type DescriptionSeedGetter = (args: DescriptionSeedGetterArgs) => string;
 
 export type TalentAttributeType = "base_atk" | "atk" | "def" | "hp" | "em";
 
@@ -274,7 +261,7 @@ export type AbilityBonusTarget =
       type: "ELM_NA";
     };
 
-type ValueOption = {
+export type EffectValueOption = {
   /** On Navia */
   preOptions?: number[];
   options: number[];
@@ -302,7 +289,7 @@ type ValueOption = {
 };
 
 export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
-  value: number | ValueOption;
+  value: number | EffectValueOption;
   /** Multiplier based on talent level */
   lvScale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
@@ -320,15 +307,9 @@ export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEf
       };
 }
 
-type AbilityParentBonus = {
-  stacks: AbilityBonusStack | AbilityBonusStack[];
-  children: AbilityBonus[];
-};
-
-export type AbilityBonusModel = AbilityParentBonus | AbilityBonus;
-
 export type AbilityInnateBuff = AbilityModifier & {
-  bonusModels?: AbilityBonusModel | AbilityBonusModel[];
+  cmnStacks?: AbilityBonusStack | AbilityBonusStack[];
+  effects?: AbilityBonus | AbilityBonus[];
 };
 
 export type AbilityBuff = AbilityInnateBuff & {
@@ -353,18 +334,11 @@ type PenaltyTarget =
       index?: number;
     };
 
-export interface AbilityPenaltyModel extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
+export interface AbilityPenalty extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
   value: number;
   lvScale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
-  preExtra?:
-    | number
-    | {
-        /** index is 0 */
-        checkInput: number;
-        /** On Venti */
-        value: number;
-      };
+  preExtra?: number | Omit<AbilityPenalty, "targets">;
   targets: PenaltyTarget | PenaltyTarget[];
   index?: number;
   max?: number;
@@ -375,5 +349,5 @@ export type AbilityDebuff = AbilityModifier & {
   index: number;
   affect?: EModAffect;
   inputConfigs?: ModInputConfig[];
-  penaltyModels?: AbilityPenaltyModel;
+  effects?: AbilityPenalty;
 };

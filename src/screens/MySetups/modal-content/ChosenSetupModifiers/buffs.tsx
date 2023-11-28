@@ -20,7 +20,7 @@ import type {
 import { useTranslation } from "@Src/pure-hooks";
 
 // Util
-import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
+import { findByIndex, parseAbilityDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
 import { appData } from "@Src/data";
 
@@ -118,11 +118,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
         key={"innate-" + index}
         mutable={false}
         heading={buff.src}
-        description={parseCharacterDescription(
-          buff.description,
-          { fromSelf: true, char, partyData, inputs: [] },
-          charData.dsGetters
-        )}
+        description={parseAbilityDescription(buff, { char, charData, partyData }, [], true)}
       />
     );
   });
@@ -138,11 +134,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
           key={ctrl.index}
           mutable={false}
           heading={buff.src}
-          description={parseCharacterDescription(
-            buff.description,
-            { fromSelf: true, char, partyData, inputs },
-            charData.dsGetters
-          )}
+          description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
           inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "teammate")}
         />
@@ -188,11 +180,7 @@ export function PartyBuffs({ char, party, partyData }: PartyBuffsProps) {
             key={`${name}-${ctrl.index}`}
             mutable={false}
             heading={buff.src}
-            description={parseCharacterDescription(
-              buff.description,
-              { fromSelf: false, char, partyData, inputs },
-              teammateData.dsGetters
-            )}
+            description={parseAbilityDescription(buff, { char, charData: teammateData, partyData }, inputs, false)}
             inputs={inputs}
             inputConfigs={buff.inputConfigs}
           />

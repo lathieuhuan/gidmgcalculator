@@ -15,7 +15,7 @@ import { RESONANCE_STAT } from "../constants";
 
 // Util
 import { appData } from "@Src/data";
-import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
+import { applyPercent, findByIndex, realParty, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
   getArtifactSetBonuses,
@@ -83,28 +83,23 @@ export const getCalculationStats = ({
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
-      if (isGranted(buff, char) && buff.bonusModels) {
-        applyAbilityBuff({
-          description: `Self / ${buff.src}`,
-          bonuses: buff.bonusModels,
-          inputs: [],
-          modifierArgs,
-          isFinal,
-          fromSelf: true,
-        });
-      }
+      applyAbilityBuff({
+        description: `Self / ${buff.src}`,
+        buff,
+        inputs: [],
+        modifierArgs,
+        isFinal,
+        fromSelf: true,
+      });
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
-      if (buff && ctrl.activated && isGranted(buff, char) && buff.bonusModels) {
-        const description = `Self / ${buff.src}`;
-        const inputs = ctrl.inputs || [];
-
+      if (ctrl.activated && buff) {
         applyAbilityBuff({
-          description,
-          bonuses: buff.bonusModels,
-          inputs,
+          description: `Self / ${buff.src}`,
+          buff,
+          inputs: ctrl.inputs || [],
           modifierArgs,
           isFinal,
           fromSelf: true,
@@ -131,7 +126,6 @@ export const getCalculationStats = ({
     if (!weaponData.buffs || !wpBuffCtrls?.length) return;
     const description = `${weaponData.name} activated`;
 
-    // #to-do: check if buff exist
     for (const { activated, index, inputs = [] } of wpBuffCtrls) {
       const buff = findByIndex(weaponData.buffs, index);
       if (!activated || !buff) continue;
@@ -232,17 +226,12 @@ export const getCalculationStats = ({
       const { name, buffs = [] } = appData.getCharData(teammate.name);
 
       for (const { index, activated, inputs = [] } of teammate.buffCtrls) {
-        if (!activated) continue;
         const buff = findByIndex(buffs, index);
-
-        if (!buff || !buff.bonusModels) {
-          console.log(`buff #${index} of teammate ${name} not found`);
-          continue;
-        }
+        if (!activated || !buff) continue;
 
         applyAbilityBuff({
           description: `${name} / ${buff.src}`,
-          bonuses: buff.bonusModels,
+          buff,
           inputs,
           modifierArgs,
           fromSelf: false,
@@ -255,13 +244,8 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = appData.getWeaponData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.weapon.buffCtrls) {
-          if (!activated) continue;
           const buff = findByIndex(buffs, index);
-
-          if (!buff) {
-            console.log(`buff #${index} of weapon #${code} not found`);
-            continue;
-          }
+          if (!activated || !buff) continue;
 
           applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
 
@@ -281,13 +265,8 @@ export const getCalculationStats = ({
         const { name, buffs = [] } = appData.getArtifactSetData(code) || {};
 
         for (const { index, activated, inputs = [] } of teammate.artifact.buffCtrls) {
-          if (!activated) continue;
           const buff = findByIndex(buffs, index);
-
-          if (!buff) {
-            console.log(`buff #${index} of artifact #${code} not found`);
-            continue;
-          }
+          if (!activated || !buff) continue;
 
           if (buff.artBonuses) {
             const description = `${name} / 4-Piece activated`;
@@ -306,16 +285,14 @@ export const getCalculationStats = ({
     if (!mainArtifactData) return;
 
     for (const ctrl of artBuffCtrls || []) {
-      if (!ctrl.activated) continue;
       const buff = mainArtifactData.buffs?.[ctrl.index];
+      if (!ctrl.activated || !buff) continue;
 
-      if (buff) {
-        const description = `${mainArtifactData.name} (self) / 4-piece activated`;
+      const description = `${mainArtifactData.name} (self) / 4-piece activated`;
 
-        for (const bonus of toArray(buff.artBonuses)) {
-          if (isFinal === isFinalBonus(bonus.stacks)) {
-            applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
-          }
+      for (const bonus of toArray(buff.artBonuses)) {
+        if (isFinal === isFinalBonus(bonus.stacks)) {
+          applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
         }
       }
     }

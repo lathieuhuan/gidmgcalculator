@@ -1,21 +1,4 @@
-import type { AppCharacter, DefaultAppCharacter, DescriptionSeedGetterArgs } from "@Src/types";
-import { countVision } from "@Src/utils";
-import { checkCons, getTalentMultiplier } from "../utils";
-
-function getEBBonus(args: DescriptionSeedGetterArgs) {
-  let { pyro = 0 } = countVision(args.partyData);
-  if (checkCons[1](args.char)) pyro++;
-  const [level, mult] = getTalentMultiplier(
-    { talentType: "EB", root: pyro === 1 ? 14.88 : pyro >= 2 ? 22.32 : 0 },
-    Nahida as AppCharacter,
-    args
-  );
-  return {
-    level: level,
-    value: mult,
-    pyroCount: pyro,
-  };
-}
+import type { AppCharacter, DefaultAppCharacter } from "@Src/types";
 
 const Nahida: DefaultAppCharacter = {
   code: 62,
@@ -31,7 +14,6 @@ const Nahida: DefaultAppCharacter = {
     ES: 3,
     EB: 5,
   },
-  dsGetters: [(args) => `${getEBBonus(args).value}%`, (args) => `${getEBBonus(args).pyroCount}`],
 };
 
 export default Nahida as AppCharacter;
