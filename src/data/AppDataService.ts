@@ -12,7 +12,6 @@ import type {
 import { BACKEND_URL_PATH, GENSHIN_DEV_URL_PATH } from "@Src/constants";
 import { findByCode, pickProps, toArray } from "@Src/utils";
 import { CharacterSubscriber, DataControl, Metadata, Response, Update } from "./types";
-import characters from "./characters";
 
 export class AppDataService {
   private isFetchedMetadata = false;
@@ -27,10 +26,10 @@ export class AppDataService {
   public supporters: string[] = [];
 
   constructor() {
-    this.characters = characters.map((character) => ({
-      status: "fetched",
-      data: character,
-    }));
+    // this.characters = characters.map((character) => ({
+    //   status: "fetched",
+    //   data: character,
+    // }));
   }
 
   private getCharacterControl(name: string) {
@@ -64,13 +63,18 @@ export class AppDataService {
     if (response.data) {
       this.isFetchedMetadata = true;
 
-      response.data.characters.forEach((dataCharacter) => {
-        const control = this.getCharacterControl(dataCharacter.name);
+      // response.data.characters.forEach((dataCharacter) => {
+      //   const control = this.getCharacterControl(dataCharacter.name);
 
-        if (control) {
-          Object.assign(control.data, dataCharacter);
-        }
-      });
+      //   if (control) {
+      //     Object.assign(control.data, dataCharacter);
+      //   }
+      // });
+
+      this.characters = response.data.characters.map((dataCharacter) => ({
+        status: "fetched",
+        data: dataCharacter,
+      }));
 
       this.weapons = response.data.weapons.map((dataWeapon) => ({
         status: "fetched",
@@ -199,8 +203,8 @@ export class AppDataService {
     };
   }
 
-  getAllCharacters() {
-    return characters;
+  getAllCharacters(): AppCharacter[] {
+    return this.characters.map((control) => control.data);
   }
 
   getCharStatus(name: string) {

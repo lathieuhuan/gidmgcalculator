@@ -2,22 +2,24 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 
 import { EScreen } from "@Src/constants";
-import { useDispatch, useSelector } from "@Store/hooks";
-import { updateUI } from "@Store/uiSlice";
-import { selectAtScreen } from "@Store/uiSlice/selectors";
+import { useSelector } from "@Store/hooks";
 
 interface ActionButtonProps {
   className?: string;
   icon: ReactNode;
   label: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
-export const ActionButton = ({ className = "", icon, label, onClick }: ActionButtonProps) => {
+export const ActionButton = ({ className = "", icon, label, disabled, onClick }: ActionButtonProps) => {
   return (
     <button
-      className={
-        "px-4 py-2 flex items-center font-bold hover:text-light-400 hover:bg-dark-900 cursor-default " + className
-      }
+      className={clsx(
+        "px-4 py-2 flex items-center font-bold cursor-default",
+        disabled ? "text-light-800" : "hover:text-light-400 hover:bg-dark-900",
+        className
+      )}
+      disabled={disabled}
       onClick={onClick}
     >
       {icon}
@@ -27,14 +29,14 @@ export const ActionButton = ({ className = "", icon, label, onClick }: ActionBut
 };
 
 interface NavTabsProps {
+  ready?: boolean;
   className?: string;
   activeClassName?: string;
   idleClassName?: string;
-  onClickTab?: () => void;
+  onClickTab?: (tab: EScreen) => void;
 }
-export function NavTabs({ className = "", activeClassName, idleClassName, onClickTab }: NavTabsProps) {
-  const atScreen = useSelector(selectAtScreen);
-  const dispatch = useDispatch();
+export function NavTabs({ ready, className = "", activeClassName, idleClassName, onClickTab }: NavTabsProps) {
+  const atScreen = useSelector((state) => state.ui.atScreen);
 
   return (
     <>
@@ -44,13 +46,11 @@ export function NavTabs({ className = "", activeClassName, idleClassName, onClic
             key={i}
             className={clsx(
               "flex items-center font-bold ",
-              tab === atScreen ? activeClassName : idleClassName,
+              tab === atScreen ? activeClassName : ready ? idleClassName : "text-light-800",
               className
             )}
-            onClick={() => {
-              dispatch(updateUI({ atScreen: tab }));
-              onClickTab?.();
-            }}
+            disabled={!ready}
+            onClick={() => onClickTab?.(tab)}
           >
             {tab}
           </button>

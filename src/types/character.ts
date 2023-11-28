@@ -12,19 +12,19 @@ import type {
   WeaponType,
 } from "./global";
 
-export type DefaultAppCharacter = Pick<
-  AppCharacter,
-  | "code"
-  | "name"
-  | "icon"
-  | "sideIcon"
-  | "rarity"
-  | "nation"
-  | "vision"
-  | "weaponType"
-  | "EBcost"
-  | "talentLvBonusAtCons"
->;
+// export type DefaultAppCharacter = Pick<
+//   AppCharacter,
+//   | "code"
+//   | "name"
+//   | "icon"
+//   | "sideIcon"
+//   | "rarity"
+//   | "nation"
+//   | "vision"
+//   | "weaponType"
+//   | "EBcost"
+//   | "talentLvBonusAtCons"
+// >;
 
 export type AppCharacter = {
   code: number;

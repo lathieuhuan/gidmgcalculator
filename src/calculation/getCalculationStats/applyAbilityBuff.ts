@@ -1,18 +1,33 @@
 import { VISION_TYPES } from "@Src/constants";
-import { genExclusiveBuff } from "@Src/data/characters/utils";
 import {
   AbilityBonus,
   AbilityBonusStack,
   AbilityInnateBuff,
+  AttackPatternInfoKey,
   BuffModifierArgsWrapper,
+  CalcItemBuff,
   DynamicMax,
-  EffectValueOption,
+  EffectValueOption
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
 import { CalcUltilObj } from "../types";
 import { getLevelScale, isAvailableEffect, isUsableEffect } from "../utils";
 import { isFinalBonus } from "./utils";
+
+const genExclusiveBuff = (
+  desc: string,
+  ids: string | string[],
+  key: AttackPatternInfoKey,
+  buffValue: number
+): CalcItemBuff => {
+  return {
+    ids,
+    bonus: {
+      [key]: { desc, value: buffValue },
+    },
+  };
+};
 
 const getMax = (max: number | DynamicMax, inputs: number[], obj: CalcUltilObj, fromSelf: boolean) => {
   if (typeof max === "number") return max;
