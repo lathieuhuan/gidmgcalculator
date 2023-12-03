@@ -7,7 +7,6 @@ import type {
   AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfoKey,
-  AttributeStat,
   CalcArtifacts,
   CharInfo,
   AppCharacter,
@@ -181,49 +180,6 @@ export function applyModifier(
 }
 
 export type RecipientName = "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus" | "resistReduct";
-
-interface ModApplierArgs {
-  totalAttr: TotalAttribute;
-  attPattBonus: AttackPatternBonus;
-  rxnBonus: ReactionBonus;
-  desc: string;
-  tracker: Tracker;
-}
-
-export function makeModApplier(
-  recipientName: "totalAttr",
-  keys: AttributeStat | AttributeStat[],
-  rootValue: RootValue
-): (args: any) => void;
-export function makeModApplier(
-  recipientName: "attPattBonus",
-  keys: AttackPatternPath | AttackPatternPath[],
-  rootValue: RootValue
-): (args: any) => void;
-export function makeModApplier(
-  recipientName: "attElmtBonus",
-  keys: AttackElementPath | AttackElementPath[],
-  rootValue: RootValue
-): (args: any) => void;
-export function makeModApplier(
-  recipientName: "rxnBonus",
-  keys: ReactionBonusPath | ReactionBonusPath[],
-  rootValue: RootValue
-): (args: any) => void;
-export function makeModApplier(
-  recipientName: "resistReduct",
-  keys: ResistanceReductionKey | ResistanceReductionKey[],
-  rootValue: RootValue
-): (args: any) => void;
-
-export function makeModApplier(recipientName: RecipientName, keys: ModRecipientKey, rootValue: RootValue) {
-  return (args: ModApplierArgs) => {
-    const recipient = (args as any)[recipientName];
-    if (recipient) {
-      applyModifier(args.desc, recipient, keys as any, rootValue, args.tracker);
-    }
-  };
-}
 
 export function getRxnBonusesFromEM(EM = 0) {
   return {

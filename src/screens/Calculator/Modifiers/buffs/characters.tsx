@@ -53,7 +53,7 @@ export function SelfBuffs() {
         modCtrlName: "selfBuffCtrls",
         ctrlIndex,
       };
-      const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
+      const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "team");
 
       const updateBuffCtrlInput = (value: number, inputIndex: number) => {
         dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));

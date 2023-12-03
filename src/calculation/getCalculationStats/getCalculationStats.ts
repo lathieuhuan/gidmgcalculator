@@ -15,7 +15,7 @@ import { RESONANCE_STAT } from "../constants";
 
 // Util
 import { appData } from "@Src/data";
-import { applyPercent, findByIndex, realParty, toArray, weaponSubStatValue } from "@Src/utils";
+import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
 import {
   applyModifier,
   getArtifactSetBonuses,
@@ -83,19 +83,21 @@ export const getCalculationStats = ({
     const { innateBuffs = [], buffs = [] } = charData;
 
     for (const buff of innateBuffs) {
-      applyAbilityBuff({
-        description: `Self / ${buff.src}`,
-        buff,
-        inputs: [],
-        modifierArgs,
-        isFinal,
-        fromSelf: true,
-      });
+      if (isGranted(buff, char)) {
+        applyAbilityBuff({
+          description: `Self / ${buff.src}`,
+          buff,
+          inputs: [],
+          modifierArgs,
+          isFinal,
+          fromSelf: true,
+        });
+      }
     }
     for (const ctrl of charBuffCtrls) {
       const buff = findByIndex(buffs, ctrl.index);
 
-      if (ctrl.activated && buff) {
+      if (ctrl.activated && buff && isGranted(buff, char)) {
         applyAbilityBuff({
           description: `Self / ${buff.src}`,
           buff,
@@ -152,12 +154,8 @@ export const getCalculationStats = ({
       //
       for (let i = 0; i <= bonusLv; i++) {
         const data = appData.getArtifactSetData(code);
-
-        if (!data) {
-          console.log(`artifact #${code} not found`);
-          continue;
-        }
-        const { artBonuses } = data.setBonuses?.[i] || {};
+        if (!data?.setBonuses) continue;
+        const { artBonuses } = data.setBonuses[i] || {};
 
         if (artBonuses) {
           const description = `${data.name} / ${i * 2 + 2}-piece bonus`;

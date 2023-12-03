@@ -61,7 +61,7 @@ export type ModInputType = "level" | "text" | "check" | "stacks" | "select" | "a
 export type ModInputConfig = {
   label?: string;
   type: ModInputType;
-  for?: "self" | "teammate";
+  for?: "self" | "team";
   /** See DEFAULT_MODIFIER_INITIAL_VALUES */
   initialValue?: number;
   max?: number;

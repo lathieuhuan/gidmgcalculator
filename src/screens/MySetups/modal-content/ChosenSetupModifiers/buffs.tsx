@@ -136,7 +136,7 @@ export function SelfBuffs({ char, charData, buffs, selfBuffCtrls, partyData, inn
           heading={buff.src}
           description={parseAbilityDescription(buff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
-          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "teammate")}
+          inputConfigs={buff.inputConfigs?.filter((config) => config.for !== "team")}
         />
       );
     }

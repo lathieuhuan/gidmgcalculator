@@ -54,10 +54,9 @@ export default function getDamage({
   const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
   const modifierArgs: DebuffModifierArgsWrapper = {
     char,
-    resistReduct,
-    attPattBonus,
     charData,
     partyData,
+    resistReduct,
     tracker,
   };
 
@@ -201,8 +200,8 @@ export default function getDamage({
       for (const factor of toArray(stat.multFactors)) {
         const {
           root,
-          attributeType = multAttributeType,
           scale = multScale,
+          attributeType = multAttributeType,
         } = typeof factor === "number" ? { root: factor } : factor;
 
         const finalMult =

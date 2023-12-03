@@ -73,7 +73,7 @@ export function SelfDebuffs({ char, selfDebuffCtrls, charData, partyData, debuff
           heading={debuff.src}
           description={parseAbilityDescription(debuff, { char, charData, partyData }, inputs, true)}
           inputs={inputs}
-          inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "teammate")}
+          inputConfigs={debuff.inputConfigs?.filter((config) => config.for !== "team")}
         />
       );
     }

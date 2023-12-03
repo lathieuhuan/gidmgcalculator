@@ -36,7 +36,7 @@ export function SelfDebuffs({ partyData }: { partyData: PartyData }) {
         modCtrlName: "selfDebuffCtrls",
         ctrlIndex: ctrl.index,
       };
-      const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "teammate");
+      const inputConfigs = debuff.inputConfigs?.filter((config) => config.for !== "team");
 
       const updateDebuffCtrlInput = (value: number, inputIndex: number) => {
         dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));

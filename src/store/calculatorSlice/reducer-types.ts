@@ -2,9 +2,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type {
   CalcArtifact,
   ArtifactSubStat,
-  UserCharacter,
-  UserArtifact,
-  UserWeapon,
   Vision,
   WeaponType,
   CalcSetupManageInfo,

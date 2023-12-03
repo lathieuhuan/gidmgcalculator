@@ -179,7 +179,7 @@ export type Infusion = {
 
 export type Talent = (typeof TALENT_TYPES)[number];
 
-export type CalculatedDamage = {
+type CalculatedDamage = {
   nonCrit: number | number[];
   crit: number | number[];
   average: number | number[];
@@ -210,7 +210,6 @@ export type BuffModifierArgsWrapper = {
 export type DebuffModifierArgsWrapper = {
   char: CharInfo;
   resistReduct: ResistanceReduction;
-  attPattBonus: AttackPatternBonus;
   charData: AppCharacter;
   partyData: PartyData;
   tracker?: Tracker;

@@ -7,7 +7,7 @@ import {
   BuffModifierArgsWrapper,
   CalcItemBuff,
   DynamicMax,
-  EffectValueOption
+  EffectValueOption,
 } from "@Src/types";
 import { countVision, isGranted, toArray } from "@Src/utils";
 import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
@@ -226,7 +226,7 @@ const applyAbilityBuff = ({
   modifierArgs: obj,
   fromSelf,
 }: ApplyAbilityBuffArgs) => {
-  if (isGranted(buff, obj.char) && buff.effects) {
+  if (buff.effects) {
     const cmnStacks = buff.cmnStacks ? toArray(buff.cmnStacks) : [];
     const commonStacks = cmnStacks.map((cmnStack) => getStackValue(cmnStack, inputs, obj, fromSelf));
     const noIsFinal = isFinal === undefined;
