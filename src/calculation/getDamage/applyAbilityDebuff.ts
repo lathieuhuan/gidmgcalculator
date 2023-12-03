@@ -1,13 +1,12 @@
 import { VISION_TYPES } from "@Src/constants";
-import { AbilityPenalty, DebuffModifierArgsWrapper } from "@Src/types";
+import { AbilityPenalty, DebuffInfoWrap } from "@Src/types";
 import { toArray } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
-import { CalcUltilObj } from "../types";
-import { getLevelScale, isUsableEffect } from "../utils";
+import { CalcUltilInfo } from "../types";
+import { getLevelScale, isUsableEffect, applyModifier } from "../utils";
 
 const getPenaltyValue = (
   penalty: Omit<AbilityPenalty, "targets">,
-  obj: CalcUltilObj,
+  obj: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
@@ -28,7 +27,7 @@ interface ApplyAbilityDebuffArgs {
   description: string;
   penalties: AbilityPenalty | AbilityPenalty[];
   inputs: number[];
-  modifierArgs: DebuffModifierArgsWrapper;
+  modifierArgs: DebuffInfoWrap;
   fromSelf: boolean;
 }
 const applyAbilityDebuff = ({

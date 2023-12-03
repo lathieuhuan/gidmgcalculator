@@ -1,11 +1,11 @@
-import type { WeaponBonus, BuffModifierArgsWrapper, WeaponStackConfig } from "@Src/types";
+import type { WeaponBonus, BuffInfoWrap, WeaponStackConfig } from "@Src/types";
 import { countVision, toArray } from "@Src/utils";
-import { applyModifier } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
 
 const getStackValue = (
   stack: WeaponStackConfig,
   inputs: number[],
-  { charData, partyData, totalAttr }: BuffModifierArgsWrapper
+  { charData, partyData, totalAttr }: BuffInfoWrap
 ) => {
   switch (stack.type) {
     case "input": {
@@ -68,12 +68,7 @@ const getStackValue = (
   }
 };
 
-const applyBuffValue = (
-  buffValue: number,
-  description: string,
-  buff: WeaponBonus,
-  modifierArgs: BuffModifierArgsWrapper
-) => {
+const applyBuffValue = (buffValue: number, description: string, buff: WeaponBonus, modifierArgs: BuffInfoWrap) => {
   if (buffValue) {
     if (buff.targetAttribute) {
       const attributeKey = buff.targetAttribute === "own_element" ? modifierArgs.charData.vision : buff.targetAttribute;
@@ -90,20 +85,20 @@ interface ApplyWeaponBuffArgs {
   buff: WeaponBonus;
   refi: number;
   inputs: number[];
-  modifierArgs: BuffModifierArgsWrapper;
+  infoWrap: BuffInfoWrap;
 }
-const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs }: ApplyWeaponBuffArgs) => {
+const applyWeaponBuff = ({ description, buff, refi, inputs, infoWrap }: ApplyWeaponBuffArgs) => {
   const scaleRefi = (base: number, increment = base / 3) => base + increment * refi;
 
   if (buff.options && buff.stacks && !Array.isArray(buff.stacks)) {
-    let buffValue = buff.options[getStackValue(buff.stacks, inputs, modifierArgs) - 1];
+    let buffValue = buff.options[getStackValue(buff.stacks, inputs, infoWrap) - 1];
     buffValue = buffValue ? scaleRefi(buffValue) : buffValue;
-    return applyBuffValue(buffValue, description, buff, modifierArgs);
+    return applyBuffValue(buffValue, description, buff, infoWrap);
   }
   if (!buff.base) {
     return;
   }
-  const { charData, partyData } = modifierArgs;
+  const { charData, partyData } = infoWrap;
 
   if (buff.checkInput !== undefined) {
     if (typeof buff.checkInput === "number") {
@@ -149,7 +144,7 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs }: Appl
       if (["vision", "energy", "nation"].includes(stack.type) && !partyData.length) {
         return;
       }
-      buffValue *= getStackValue(stack, inputs, modifierArgs);
+      buffValue *= getStackValue(stack, inputs, infoWrap);
     }
   }
   buffValue += initialValue;
@@ -157,7 +152,7 @@ const applyWeaponBuff = ({ description, buff, refi, inputs, modifierArgs }: Appl
   if (maxValue && buffValue > maxValue) {
     buffValue = maxValue;
   }
-  applyBuffValue(buffValue, description, buff, modifierArgs);
+  applyBuffValue(buffValue, description, buff, infoWrap);
 };
 
 export default applyWeaponBuff;

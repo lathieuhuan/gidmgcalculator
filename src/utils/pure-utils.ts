@@ -35,9 +35,9 @@ export const toArray = <T>(subject: T | T[]): T[] => {
   return Array.isArray(subject) ? subject : [subject];
 };
 
-export const pickOne = <T>(subject: T | T[], index: number): T => {
-  return Array.isArray(subject) ? subject[index] : subject;
-};
+// export const pickOne = <T>(subject: T | T[], index: number): T => {
+//   return Array.isArray(subject) ? subject[index] : subject;
+// };
 
 export const applyToOneOrMany = <T>(base: T | T[], callback: (base: T, index?: number) => T) => {
   return Array.isArray(base) ? base.map(callback) : callback(base);

@@ -4,15 +4,15 @@ import {
   AbilityBonusStack,
   AbilityInnateBuff,
   AttackPatternInfoKey,
-  BuffModifierArgsWrapper,
+  BuffInfoWrap,
   CalcItemBuff,
   DynamicMax,
   EffectValueOption,
 } from "@Src/types";
-import { countVision, isGranted, toArray } from "@Src/utils";
-import { applyModifier, finalTalentLv } from "@Src/utils/calculation";
-import { CalcUltilObj } from "../types";
-import { getLevelScale, isAvailableEffect, isUsableEffect } from "../utils";
+import { countVision, toArray } from "@Src/utils";
+import { finalTalentLv } from "@Src/utils/calculation";
+import { CalcUltilInfo } from "../types";
+import { getLevelScale, isAvailableEffect, isUsableEffect, applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
 const genExclusiveBuff = (
@@ -29,24 +29,19 @@ const genExclusiveBuff = (
   };
 };
 
-const getMax = (max: number | DynamicMax, inputs: number[], obj: CalcUltilObj, fromSelf: boolean) => {
+const getMax = (max: number | DynamicMax, info: CalcUltilInfo, inputs: number[], fromSelf: boolean) => {
   if (typeof max === "number") return max;
   let result = max.value;
 
   for (const extra of max.extras) {
-    if (isUsableEffect(extra, obj, inputs, fromSelf)) {
+    if (isUsableEffect(extra, info, inputs, fromSelf)) {
       result += extra.value;
     }
   }
   return result;
 };
 
-const getStackValue = (
-  stack: AbilityBonusStack,
-  inputs: number[],
-  obj: BuffModifierArgsWrapper,
-  fromSelf: boolean
-): number => {
+const getStackValue = (stack: AbilityBonusStack, info: BuffInfoWrap, inputs: number[], fromSelf: boolean): number => {
   let result = 1;
 
   switch (stack.type) {
@@ -59,34 +54,34 @@ const getStackValue = (
     }
     case "attribute": {
       const { field, alterIndex = 0 } = stack;
-      const stackValue = fromSelf ? obj.totalAttr[field] : inputs[alterIndex] ?? 1;
+      const stackValue = fromSelf ? info.totalAttr[field] : inputs[alterIndex] ?? 1;
       result = stackValue;
       break;
     }
     case "nation": {
-      let count = obj.partyData.reduce((total, teammate) => {
-        return total + (teammate?.nation === obj.charData.nation ? 1 : 0);
+      let count = info.partyData.reduce((total, teammate) => {
+        return total + (teammate?.nation === info.charData.nation ? 1 : 0);
       }, 0);
       if (stack.nation === "different") {
-        count = obj.partyData.filter(Boolean).length - count;
+        count = info.partyData.filter(Boolean).length - count;
       }
       result = count;
       break;
     }
     case "energy": {
-      result = obj.charData.EBcost;
+      result = info.charData.EBcost;
       break;
     }
     case "resolve": {
       let [totalEnergy = 0, electroEnergy = 0] = inputs;
-      if (obj.char.cons >= 1 && electroEnergy <= totalEnergy) {
+      if (info.char.cons >= 1 && electroEnergy <= totalEnergy) {
         totalEnergy += electroEnergy * 0.8 + (totalEnergy - electroEnergy) * 0.2;
       }
       const level = finalTalentLv({
         talentType: "EB",
-        char: obj.char,
-        charData: obj.charData,
-        partyData: obj.partyData,
+        char: info.char,
+        charData: info.charData,
+        partyData: info.partyData,
       });
       const stackPerEnergy = Math.min(Math.ceil(14.5 + level * 0.5), 20);
       const stacks = Math.round(totalEnergy * stackPerEnergy) / 100;
@@ -99,12 +94,12 @@ const getStackValue = (
 
   if (stack.requiredBase) result -= stack.requiredBase;
 
-  if (stack.extra && isAvailableEffect(stack.extra, obj.char, inputs, fromSelf)) {
+  if (stack.extra && isAvailableEffect(stack.extra, info.char, inputs, fromSelf)) {
     result += stack.extra.value;
   }
 
   if (stack.max) {
-    const max = getMax(stack.max, inputs, obj, fromSelf);
+    const max = getMax(stack.max, info, inputs, fromSelf);
     if (result > max) result = max;
   }
 
@@ -113,7 +108,7 @@ const getStackValue = (
 
 export const getIntialBonusValue = (
   value: EffectValueOption,
-  obj: CalcUltilObj,
+  info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
@@ -129,7 +124,7 @@ export const getIntialBonusValue = (
   switch (indexSrc.type) {
     case "vision":
       const { visionType } = indexSrc;
-      const visionCount = countVision(obj.partyData, obj.charData);
+      const visionCount = countVision(info.partyData, info.charData);
       const input =
         visionType === "various"
           ? Object.keys(visionCount).length
@@ -145,18 +140,18 @@ export const getIntialBonusValue = (
     case "level":
       index += finalTalentLv({
         talentType: indexSrc.talent,
-        char: obj.char,
-        charData: obj.charData,
-        partyData: obj.partyData,
+        char: info.char,
+        charData: info.charData,
+        partyData: info.partyData,
       });
       break;
   }
 
-  if (value.extra && isAvailableEffect(value.extra, obj.char, inputs, fromSelf)) {
+  if (value.extra && isAvailableEffect(value.extra, info.char, inputs, fromSelf)) {
     index += value.extra.value;
   }
   if (value.max) {
-    const max = getMax(value.max, inputs, obj, fromSelf);
+    const max = getMax(value.max, info, inputs, fromSelf);
     if (index > max) index = max;
   }
 
@@ -165,22 +160,22 @@ export const getIntialBonusValue = (
 
 function getBonusValue(
   bonus: Omit<AbilityBonus, "targets">,
-  obj: BuffModifierArgsWrapper,
+  info: BuffInfoWrap,
   inputs: number[],
   fromSelf: boolean,
   preCalcStacks: number[]
 ) {
   const { value, preExtra } = bonus;
-  let bonusValue = typeof value === "number" ? value : getIntialBonusValue(value, obj, inputs, fromSelf);
+  let bonusValue = typeof value === "number" ? value : getIntialBonusValue(value, info, inputs, fromSelf);
 
   // ========== APPLY LEVEL SCALE ==========
-  bonusValue *= getLevelScale(bonus.lvScale, obj, inputs, fromSelf);
+  bonusValue *= getLevelScale(bonus.lvScale, info, inputs, fromSelf);
 
   // ========== ADD PRE-EXTRA ==========
   if (typeof preExtra === "number") {
     bonusValue += preExtra;
-  } else if (preExtra && isUsableEffect(preExtra, obj, inputs, fromSelf)) {
-    bonusValue += getBonusValue(preExtra, obj, inputs, fromSelf, preCalcStacks);
+  } else if (preExtra && isUsableEffect(preExtra, info, inputs, fromSelf)) {
+    bonusValue += getBonusValue(preExtra, info, inputs, fromSelf, preCalcStacks);
   }
 
   // ========== APPLY STACKS ==========
@@ -189,14 +184,14 @@ function getBonusValue(
   }
   if (bonus.stacks) {
     for (const stack of toArray(bonus.stacks)) {
-      bonusValue *= getStackValue(stack, inputs, obj, fromSelf);
+      bonusValue *= getStackValue(stack, info, inputs, fromSelf);
     }
   }
   // ========== APPLY MAX ==========
   if (typeof bonus.max === "number") {
     bonusValue = Math.min(bonusValue, bonus.max);
   } else if (bonus.max) {
-    bonusValue = Math.min(bonusValue, bonus.max.value * getStackValue(bonus.max.stacks, inputs, obj, fromSelf));
+    bonusValue = Math.min(bonusValue, bonus.max.value * getStackValue(bonus.max.stacks, info, inputs, fromSelf));
   }
 
   return bonusValue;
@@ -213,56 +208,49 @@ const isTrulyFinalBonus = (bonus: AbilityBonus, cmnStacks: AbilityBonusStack[]) 
 interface ApplyAbilityBuffArgs {
   description: string;
   buff: AbilityInnateBuff;
+  infoWrap: BuffInfoWrap;
   inputs: number[];
-  modifierArgs: BuffModifierArgsWrapper;
-  isFinal?: boolean;
   fromSelf: boolean;
+  isFinal?: boolean;
 }
-const applyAbilityBuff = ({
-  description,
-  buff,
-  isFinal,
-  inputs,
-  modifierArgs: obj,
-  fromSelf,
-}: ApplyAbilityBuffArgs) => {
+const applyAbilityBuff = ({ description, buff, infoWrap: info, inputs, fromSelf, isFinal }: ApplyAbilityBuffArgs) => {
   if (buff.effects) {
     const cmnStacks = buff.cmnStacks ? toArray(buff.cmnStacks) : [];
-    const commonStacks = cmnStacks.map((cmnStack) => getStackValue(cmnStack, inputs, obj, fromSelf));
+    const commonStacks = cmnStacks.map((cmnStack) => getStackValue(cmnStack, info, inputs, fromSelf));
     const noIsFinal = isFinal === undefined;
 
     for (const bonus of toArray(buff.effects)) {
       if (
         (noIsFinal || isFinal === isTrulyFinalBonus(bonus, cmnStacks)) &&
-        isUsableEffect(bonus, obj, inputs, fromSelf)
+        isUsableEffect(bonus, info, inputs, fromSelf)
       ) {
-        const bonusValue = getBonusValue(bonus, obj, inputs, fromSelf, commonStacks);
+        const bonusValue = getBonusValue(bonus, info, inputs, fromSelf, commonStacks);
 
         if (bonusValue) {
           for (const target of toArray(bonus.targets)) {
             switch (target.type) {
               case "ATTR":
-                applyModifier(description, obj.totalAttr, target.path, bonusValue, obj.tracker);
+                applyModifier(description, info.totalAttr, target.path, bonusValue, info.tracker);
                 break;
               case "PATT":
-                applyModifier(description, obj.attPattBonus, target.path, bonusValue, obj.tracker);
+                applyModifier(description, info.attPattBonus, target.path, bonusValue, info.tracker);
                 break;
               case "ELMT":
-                applyModifier(description, obj.attElmtBonus, target.path, bonusValue, obj.tracker);
+                applyModifier(description, info.attElmtBonus, target.path, bonusValue, info.tracker);
                 break;
               case "RXN":
-                applyModifier(description, obj.rxnBonus, target.path, bonusValue, obj.tracker);
+                applyModifier(description, info.rxnBonus, target.path, bonusValue, info.tracker);
                 break;
               case "ITEM":
-                obj.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, bonusValue));
+                info.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, bonusValue));
                 break;
               case "IN_ELMT":
                 const visionIndex = inputs[target.index || 0];
-                applyModifier(description, obj.totalAttr, VISION_TYPES[visionIndex], bonusValue, obj.tracker);
+                applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
                 break;
               case "ELM_NA":
-                if (obj.charData.weaponType === "catalyst" || obj.infusedElement !== "phys") {
-                  applyModifier(description, obj.attPattBonus, "NA.pct_", bonusValue, obj.tracker);
+                if (info.charData.weaponType === "catalyst" || info.infusedElement !== "phys") {
+                  applyModifier(description, info.attPattBonus, "NA.pct_", bonusValue, info.tracker);
                 }
                 break;
             }

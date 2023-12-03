@@ -26,6 +26,7 @@ export default function calculateAll(
   target: Target,
   tracker?: Tracker
 ) {
+  // console.time();
   const charData = appData.getCharData(char.name);
   const partyData = appData.getPartyData(party);
   let infusedElement = customInfusion.element;
@@ -79,7 +80,6 @@ export default function calculateAll(
     infusedElement,
     tracker,
   });
-
   const dmgResult = getDamage({
     char,
     charData,
@@ -99,6 +99,7 @@ export default function calculateAll(
     tracker,
     ...rest,
   });
+  // console.timeEnd();
   return {
     infusedElement,
     infusedAttacks,

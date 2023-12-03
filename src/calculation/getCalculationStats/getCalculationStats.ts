@@ -3,7 +3,7 @@ import type {
   AttackElementInfoKey,
   AttackPatternBonusKey,
   AttributeStat,
-  BuffModifierArgsWrapper,
+  BuffInfoWrap,
   Reaction,
   ReactionBonusInfoKey,
   Teammate,
@@ -16,12 +16,8 @@ import { RESONANCE_STAT } from "../constants";
 // Util
 import { appData } from "@Src/data";
 import { applyPercent, findByIndex, isGranted, realParty, toArray, weaponSubStatValue } from "@Src/utils";
-import {
-  applyModifier,
-  getArtifactSetBonuses,
-  getQuickenBuffDamage,
-  getRxnBonusesFromEM,
-} from "@Src/utils/calculation";
+import { getArtifactSetBonuses, getQuickenBuffDamage, getRxnBonusesFromEM } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
 import { addArtifactAttributes, addTrackerRecord, initiateBonuses, initiateTotalAttr, isFinalBonus } from "./utils";
 import applyAbilityBuff from "./applyAbilityBuff";
 import applyArtifactBuff from "./applyArtifactBuff";
@@ -65,7 +61,7 @@ export const getCalculationStats = ({
   //   return false;
   // };
 
-  const modifierArgs: BuffModifierArgsWrapper = {
+  const infoWrap: BuffInfoWrap = {
     char,
     charData,
     partyData,
@@ -87,10 +83,10 @@ export const getCalculationStats = ({
         applyAbilityBuff({
           description: `Self / ${buff.src}`,
           buff,
+          infoWrap,
           inputs: [],
-          modifierArgs,
-          isFinal,
           fromSelf: true,
+          isFinal,
         });
       }
     }
@@ -101,10 +97,10 @@ export const getCalculationStats = ({
         applyAbilityBuff({
           description: `Self / ${buff.src}`,
           buff,
+          infoWrap,
           inputs: ctrl.inputs || [],
-          modifierArgs,
-          isFinal,
           fromSelf: true,
+          isFinal,
         });
       }
     }
@@ -118,7 +114,7 @@ export const getCalculationStats = ({
           buff: autoBuff,
           refi,
           inputs: [],
-          modifierArgs,
+          infoWrap,
         });
       }
     }
@@ -133,7 +129,7 @@ export const getCalculationStats = ({
       if (!activated || !buff) continue;
 
       if (isFinal === isFinalBonus(buff.stacks)) {
-        applyWeaponBuff({ description, buff, refi, inputs, modifierArgs });
+        applyWeaponBuff({ description, buff, refi, inputs, infoWrap });
       }
       for (const buffBonus of buff.wpBonuses || []) {
         const bonus = {
@@ -143,7 +139,7 @@ export const getCalculationStats = ({
         };
 
         if (isFinal === isFinalBonus(bonus.stacks)) {
-          applyWeaponBuff({ description, buff: bonus, refi, inputs, modifierArgs });
+          applyWeaponBuff({ description, buff: bonus, refi, inputs, infoWrap });
         }
       }
     }
@@ -162,7 +158,7 @@ export const getCalculationStats = ({
 
           for (const bonus of toArray(artBonuses)) {
             if (isFinal === isFinalBonus(bonus.stacks)) {
-              applyArtifactBuff({ description, buff: bonus, modifierArgs });
+              applyArtifactBuff({ description, buff: bonus, infoWrap });
             }
           }
         }
@@ -172,7 +168,7 @@ export const getCalculationStats = ({
 
   const APPLY_CUSTOM_BUFFS = () => {
     if (!customBuffCtrls?.length) return;
-    const { totalAttr, attElmtBonus, attPattBonus, rxnBonus } = modifierArgs;
+    const { totalAttr, attElmtBonus, attPattBonus, rxnBonus } = infoWrap;
 
     const applyToTotalAttr = (type: string, value: number) => {
       const key = type as AttributeStat;
@@ -229,9 +225,9 @@ export const getCalculationStats = ({
 
         applyAbilityBuff({
           description: `${name} / ${buff.src}`,
+          infoWrap,
           buff,
           inputs,
-          modifierArgs,
           fromSelf: false,
         });
       }
@@ -245,7 +241,7 @@ export const getCalculationStats = ({
           const buff = findByIndex(buffs, index);
           if (!activated || !buff) continue;
 
-          applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, modifierArgs });
+          applyWeaponBuff({ description: `${name} activated`, buff, inputs, refi, infoWrap });
 
           for (const buffBonus of buff.wpBonuses || []) {
             const bonus = {
@@ -253,7 +249,7 @@ export const getCalculationStats = ({
               base: buffBonus.base ?? buff.base,
               stacks: buffBonus.stacks ?? buff.stacks,
             };
-            applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, modifierArgs });
+            applyWeaponBuff({ description: `${name} activated`, buff: bonus, inputs, refi, infoWrap });
           }
         }
       })();
@@ -270,7 +266,7 @@ export const getCalculationStats = ({
             const description = `${name} / 4-Piece activated`;
 
             for (const bonus of toArray(buff.artBonuses)) {
-              applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs });
+              applyArtifactBuff({ description, buff: bonus, infoWrap, inputs });
             }
           }
         }
@@ -290,7 +286,7 @@ export const getCalculationStats = ({
 
       for (const bonus of toArray(buff.artBonuses)) {
         if (isFinal === isFinalBonus(bonus.stacks)) {
-          applyArtifactBuff({ description, buff: bonus, modifierArgs, inputs: ctrl.inputs });
+          applyArtifactBuff({ description, buff: bonus, infoWrap, inputs: ctrl.inputs });
         }
       }
     }
@@ -305,13 +301,12 @@ export const getCalculationStats = ({
 
   APPLY_SELF_BUFFS(false);
 
-  const artAttr = addArtifactAttributes({ artifacts, totalAttr, tracker });
+  const artAttr = addArtifactAttributes(artifacts, totalAttr, tracker);
 
   // ========== ADD WEAPON SUBSTAT ==========
   if (weaponData.subStat) {
     const { type, scale } = weaponData.subStat;
     const value = weaponSubStatValue(scale, weapon.level);
-
     applyModifier(`${weaponData.name} sub-stat`, totalAttr, type, value, tracker);
   }
 

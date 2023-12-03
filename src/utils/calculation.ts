@@ -1,28 +1,21 @@
 import { BASE_REACTION_DAMAGE } from "@Src/constants";
 import type {
+  AppCharacter,
   ArtifactSetBonus,
   AttackElement,
-  AttackElementBonus,
   AttackElementInfoKey,
-  AttackPatternBonus,
   AttackPatternBonusKey,
   AttackPatternInfoKey,
   CalcArtifacts,
   CharInfo,
-  AppCharacter,
   Level,
   PartyData,
   Reaction,
   ReactionBonus,
   ReactionBonusInfoKey,
-  ResistanceReduction,
-  ResistanceReductionKey,
-  Talent,
-  TotalAttribute,
-  Tracker,
-  TotalAttributeStat,
+  Talent
 } from "@Src/types";
-import { findByName, pickOne, toArray } from "./pure-utils";
+import { findByName } from "./pure-utils";
 import { bareLv } from "./utils";
 
 export const getArtifactSetBonuses = (artifacts: CalcArtifacts = []): ArtifactSetBonus[] => {
@@ -78,108 +71,6 @@ export type AttackPatternPath = `${AttackPatternBonusKey}.${AttackPatternInfoKey
 export type AttackElementPath = `${AttackElement}.${AttackElementInfoKey}`;
 
 export type ReactionBonusPath = `${Reaction}.${ReactionBonusInfoKey}`;
-
-export type ModRecipient =
-  | TotalAttribute
-  | ReactionBonus
-  | AttackPatternBonus
-  | AttackElementBonus
-  | ResistanceReduction;
-
-export type ModRecipientKey =
-  | TotalAttributeStat
-  | TotalAttributeStat[]
-  | ReactionBonusPath
-  | ReactionBonusPath[]
-  | AttackPatternPath
-  | AttackPatternPath[]
-  | AttackElementPath
-  | AttackElementPath[]
-  | ResistanceReductionKey
-  | ResistanceReductionKey[];
-
-type RootValue = number | number[];
-
-export function applyModifier(
-  desc: string | undefined,
-  recipient: TotalAttribute,
-  keys: TotalAttributeStat | TotalAttributeStat[],
-  rootValue: RootValue,
-  tracker?: Tracker
-): void;
-export function applyModifier(
-  desc: string | undefined,
-  recipient: AttackPatternBonus,
-  keys: AttackPatternPath | AttackPatternPath[],
-  rootValue: RootValue,
-  tracker?: Tracker
-): void;
-export function applyModifier(
-  desc: string | undefined,
-  recipient: AttackElementBonus,
-  keys: AttackElementPath | AttackElementPath[],
-  rootValue: RootValue,
-  tracker?: Tracker
-): void;
-export function applyModifier(
-  desc: string | undefined,
-  recipient: ReactionBonus,
-  keys: ReactionBonusPath | ReactionBonusPath[],
-  rootValue: RootValue,
-  tracker?: Tracker
-): void;
-export function applyModifier(
-  desc: string | undefined,
-  recipient: ResistanceReduction,
-  keys: ResistanceReductionKey | ResistanceReductionKey[],
-  rootValue: RootValue,
-  tracker?: Tracker
-): void;
-
-export function applyModifier(
-  desc: string | undefined = "",
-  recipient: ModRecipient,
-  keys: ModRecipientKey,
-  rootValue: RootValue,
-  tracker?: Tracker
-) {
-  let trackerKey: keyof Tracker;
-
-  if ("atk" in recipient) {
-    trackerKey = "totalAttr";
-  } else if ("all" in recipient) {
-    trackerKey = "attPattBonus";
-  } else if ("bloom" in recipient) {
-    trackerKey = "rxnBonus";
-  } else if ("def" in recipient) {
-    trackerKey = "resistReduct";
-  } else {
-    trackerKey = "attElmtBonus";
-  }
-
-  toArray(keys).forEach((key, i) => {
-    const [field, subField] = key.split(".");
-    const value = pickOne(rootValue, i);
-    const node = {
-      desc,
-      value,
-    };
-    // recipient: TotalAttribute, ReactionBonus, ResistanceReduction
-    if (subField === undefined) {
-      (recipient as any)[field] += value;
-      if (tracker) {
-        (tracker as any)[trackerKey][field].push(node);
-      }
-    } else {
-      (recipient as any)[field][subField] += value;
-      if (tracker) {
-        (tracker as any)[trackerKey][key].push(node);
-      }
-    }
-  });
-}
-
-export type RecipientName = "totalAttr" | "attPattBonus" | "attElmtBonus" | "rxnBonus" | "resistReduct";
 
 export function getRxnBonusesFromEM(EM = 0) {
   return {

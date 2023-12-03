@@ -1,10 +1,10 @@
 import type {
-  DamageResult,
-  ResistanceReduction,
-  DebuffModifierArgsWrapper,
-  TrackerCalcItemRecord,
-  NormalAttack,
   CalcItemBonus,
+  DamageResult,
+  DebuffInfoWrap,
+  NormalAttack,
+  ResistanceReduction,
+  TrackerCalcItemRecord,
 } from "@Src/types";
 import type { GetDamageArgs } from "../types";
 
@@ -12,8 +12,8 @@ import type { GetDamageArgs } from "../types";
 import {
   ATTACK_ELEMENTS,
   ATTACK_PATTERNS,
-  TRANSFORMATIVE_REACTIONS,
   BASE_REACTION_DAMAGE,
+  TRANSFORMATIVE_REACTIONS,
   VISION_TYPES,
 } from "@Src/constants";
 import { TALENT_LV_MULTIPLIERS } from "@Src/constants/character-stats";
@@ -22,10 +22,11 @@ import { TRANSFORMATIVE_REACTION_INFO } from "../constants";
 // Util
 import { appData } from "@Src/data";
 import { bareLv, findByIndex, getTalentDefaultInfo, isGranted, realParty, toArray } from "@Src/utils";
-import { finalTalentLv, applyModifier, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { finalTalentLv, getAmplifyingMultiplier } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
 import { getExclusiveBonus } from "./utils";
-import calculateItem from "./calculateItem";
 import applyAbilityDebuff from "./applyAbilityDebuff";
+import calculateItem from "./calculateItem";
 
 export default function getDamage({
   char,
@@ -52,7 +53,7 @@ export default function getDamage({
     resistReduct[key] = 0;
   }
   const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
-  const modifierArgs: DebuffModifierArgsWrapper = {
+  const modifierArgs: DebuffInfoWrap = {
     char,
     charData,
     partyData,

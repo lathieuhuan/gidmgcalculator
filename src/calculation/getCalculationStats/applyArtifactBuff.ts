@@ -1,14 +1,14 @@
-import type { ArtifactBonus, BuffModifierArgsWrapper } from "@Src/types";
+import type { ArtifactBonus, BuffInfoWrap } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
-import { applyModifier } from "@Src/utils/calculation";
+import { applyModifier } from "../utils";
 
 interface ApplyArtifactBuffArgs {
   description: string;
   buff: ArtifactBonus;
-  modifierArgs: BuffModifierArgsWrapper;
+  infoWrap: BuffInfoWrap;
   inputs?: number[];
 }
-const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArtifactBuffArgs) => {
+const applyArtifactBuff = ({ description, buff, infoWrap, inputs }: ApplyArtifactBuffArgs) => {
   let buffValue = buff.initialValue ?? 0;
 
   if (buff.checkInput !== undefined && inputs?.length) {
@@ -38,9 +38,9 @@ const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArt
         let sameCount = 0;
         let diffCount = 0;
 
-        for (const teammate of modifierArgs.partyData) {
+        for (const teammate of infoWrap.partyData) {
           if (teammate) {
-            teammate.vision === modifierArgs.charData.vision ? sameCount++ : diffCount++;
+            teammate.vision === infoWrap.charData.vision ? sameCount++ : diffCount++;
           }
         }
         switch (buff.stacks.element) {
@@ -55,7 +55,7 @@ const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArt
         }
         break;
       case "attribute":
-        stacks = modifierArgs.totalAttr[buff.stacks.field];
+        stacks = infoWrap.totalAttr[buff.stacks.field];
         break;
     }
     buffValue += buff.value * stacks;
@@ -67,21 +67,21 @@ const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: ApplyArt
   switch (buff.target) {
     case "totalAttr":
       if (buff.path !== "input_element") {
-        applyModifier(description, modifierArgs.totalAttr, buff.path, buffValue, modifierArgs.tracker);
+        applyModifier(description, infoWrap.totalAttr, buff.path, buffValue, infoWrap.tracker);
       } else {
         const { inputIndex = 0 } = buff;
         const path = VISION_TYPES[inputs?.[inputIndex] ?? 0];
-        applyModifier(description, modifierArgs.totalAttr, path, buffValue, modifierArgs.tracker);
+        applyModifier(description, infoWrap.totalAttr, path, buffValue, infoWrap.tracker);
       }
       break;
     case "attPattBonus":
-      if (buff.weaponTypes && !buff.weaponTypes.includes(modifierArgs.charData.weaponType)) {
+      if (buff.weaponTypes && !buff.weaponTypes.includes(infoWrap.charData.weaponType)) {
         return;
       }
-      applyModifier(description, modifierArgs.attPattBonus, buff.path, buffValue, modifierArgs.tracker);
+      applyModifier(description, infoWrap.attPattBonus, buff.path, buffValue, infoWrap.tracker);
       break;
     case "rxnBonus":
-      applyModifier(description, modifierArgs.rxnBonus, buff.path, buffValue, modifierArgs.tracker);
+      applyModifier(description, infoWrap.rxnBonus, buff.path, buffValue, infoWrap.tracker);
       break;
   }
 };

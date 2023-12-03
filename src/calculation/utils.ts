@@ -4,13 +4,21 @@ import {
   AbilityEffectAvailableCondition,
   AbilityEffectLevelScale,
   AppCharacter,
+  AttackElementBonus,
+  AttackPatternBonus,
   CharInfo,
   PartyData,
+  ReactionBonus,
+  ResistanceReduction,
+  ResistanceReductionKey,
+  TotalAttribute,
+  TotalAttributeStat,
+  Tracker,
   Vision,
 } from "@Src/types";
-import { countVision, isGranted } from "@Src/utils";
-import { finalTalentLv } from "@Src/utils/calculation";
-import { CalcUltilObj } from "./types";
+import { countVision, isGranted, toArray } from "@Src/utils";
+import { AttackElementPath, AttackPatternPath, ReactionBonusPath, finalTalentLv } from "@Src/utils/calculation";
+import { CalcUltilInfo } from "./types";
 
 export const isAvailableEffect = (
   condition: AbilityEffectAvailableCondition,
@@ -28,7 +36,7 @@ export const isAvailableEffect = (
 
 export const isApplicableEffect = (
   condition: AbilityEffectApplyCondition,
-  obj: {
+  info: {
     charData: AppCharacter;
     partyData: PartyData;
   },
@@ -54,13 +62,13 @@ export const isApplicableEffect = (
         else break;
     }
   }
-  if (condition.forWeapons && !condition.forWeapons.includes(obj.charData.weaponType)) {
+  if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
     return false;
   }
-  if (condition.forElmts && !condition.forElmts.includes(obj.charData.vision)) {
+  if (condition.forElmts && !condition.forElmts.includes(info.charData.vision)) {
     return false;
   }
-  const visions = countVision(obj.partyData, obj.charData);
+  const visions = countVision(info.partyData, info.charData);
 
   if (partyElmtCount) {
     for (const key in partyElmtCount) {
@@ -79,16 +87,16 @@ export const isApplicableEffect = (
 
 export const isUsableEffect = (
   condition: AbilityEffectAvailableCondition & AbilityEffectApplyCondition,
-  obj: CalcUltilObj,
+  info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
-  return isAvailableEffect(condition, obj.char, inputs, fromSelf) && isApplicableEffect(condition, obj, inputs);
+  return isAvailableEffect(condition, info.char, inputs, fromSelf) && isApplicableEffect(condition, info, inputs);
 };
 
 export const getLevelScale = (
   scale: AbilityEffectLevelScale | undefined,
-  obj: CalcUltilObj,
+  info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
 ) => {
@@ -97,9 +105,9 @@ export const getLevelScale = (
     const level = fromSelf
       ? finalTalentLv({
           talentType: talent,
-          char: obj.char,
-          charData: obj.charData,
-          partyData: obj.partyData,
+          char: info.char,
+          charData: info.charData,
+          partyData: info.partyData,
         })
       : inputs[alterIndex] ?? 0;
 
@@ -107,3 +115,98 @@ export const getLevelScale = (
   }
   return 1;
 };
+
+type ModRecipient = TotalAttribute | ReactionBonus | AttackPatternBonus | AttackElementBonus | ResistanceReduction;
+
+type ModRecipientKey =
+  | TotalAttributeStat
+  | TotalAttributeStat[]
+  | ReactionBonusPath
+  | ReactionBonusPath[]
+  | AttackPatternPath
+  | AttackPatternPath[]
+  | AttackElementPath
+  | AttackElementPath[]
+  | ResistanceReductionKey
+  | ResistanceReductionKey[];
+
+type RootValue = number | number[];
+
+export function applyModifier(
+  desc: string | undefined,
+  recipient: TotalAttribute,
+  keys: TotalAttributeStat | TotalAttributeStat[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: AttackPatternBonus,
+  keys: AttackPatternPath | AttackPatternPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: AttackElementBonus,
+  keys: AttackElementPath | AttackElementPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: ReactionBonus,
+  keys: ReactionBonusPath | ReactionBonusPath[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+export function applyModifier(
+  desc: string | undefined,
+  recipient: ResistanceReduction,
+  keys: ResistanceReductionKey | ResistanceReductionKey[],
+  rootValue: RootValue,
+  tracker?: Tracker
+): void;
+
+export function applyModifier(
+  desc: string | undefined = "",
+  recipient: ModRecipient,
+  keys: ModRecipientKey,
+  rootValue: RootValue,
+  tracker?: Tracker
+) {
+  let trackerKey: keyof Tracker;
+
+  if ("atk" in recipient) {
+    trackerKey = "totalAttr";
+  } else if ("all" in recipient) {
+    trackerKey = "attPattBonus";
+  } else if ("bloom" in recipient) {
+    trackerKey = "rxnBonus";
+  } else if ("def" in recipient) {
+    trackerKey = "resistReduct";
+  } else {
+    trackerKey = "attElmtBonus";
+  }
+
+  toArray(keys).forEach((key, i) => {
+    const [field, subField] = key.split(".");
+    const value = Array.isArray(rootValue) ? rootValue[i] : rootValue;
+    const node = {
+      desc,
+      value,
+    };
+    // recipient: TotalAttribute, ReactionBonus, ResistanceReduction
+    if (subField === undefined) {
+      (recipient as any)[field] += value;
+      if (tracker) {
+        (tracker as any)[trackerKey][field].push(node);
+      }
+    } else {
+      (recipient as any)[field][subField] += value;
+      if (tracker) {
+        (tracker as any)[trackerKey][key].push(node);
+      }
+    }
+  });
+}

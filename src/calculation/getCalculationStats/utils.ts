@@ -144,12 +144,11 @@ export const initiateBonuses = () => {
   };
 };
 
-interface AddArtAttrArgs {
-  artifacts: CalcArtifacts;
-  totalAttr: TotalAttribute;
-  tracker?: Tracker;
-}
-export const addArtifactAttributes = ({ artifacts, totalAttr, tracker }: AddArtAttrArgs): ArtifactAttribute => {
+export const addArtifactAttributes = (
+  artifacts: CalcArtifacts,
+  totalAttr: TotalAttribute,
+  tracker?: Tracker
+): ArtifactAttribute => {
   const artAttr = { hp: 0, atk: 0, def: 0 } as ArtifactAttribute;
 
   for (const artifact of artifacts) {
