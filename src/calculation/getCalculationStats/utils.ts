@@ -72,7 +72,7 @@ export const initiateTotalAttr = ({ char, charData, weapon, weaponData, tracker 
   const scaleIndex = Math.max(ascsFromLv(char.level) - 1, 0);
   const bonusScale = [0, 1, 2, 2, 3, 4][scaleIndex];
 
-  addOrInit(innerStats, charData.bonusStat.type, charData.bonusStat.value * bonusScale);
+  addOrInit(innerStats, charData.statBonus.type, charData.statBonus.value * bonusScale);
   addOrInit(innerStats, "cRate_", 5);
   addOrInit(innerStats, "cDmg_", 50);
   addOrInit(innerStats, "er_", 100);

@@ -52,7 +52,7 @@ export const totalXtraTalentLv = ({ char, charData, talentType, partyData }: Tot
     }
   }
   if (talentType !== "altSprint") {
-    const consLv = charData.talentLvBonusAtCons?.[talentType];
+    const consLv = charData.talentLvBonus?.[talentType];
 
     if (consLv && char.cons >= consLv) {
       result += 3;

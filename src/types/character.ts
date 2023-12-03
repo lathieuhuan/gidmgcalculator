@@ -23,7 +23,7 @@ import type {
 //   | "vision"
 //   | "weaponType"
 //   | "EBcost"
-//   | "talentLvBonusAtCons"
+//   | "talentLvBonus"
 // >;
 
 export type AppCharacter = {
@@ -38,9 +38,9 @@ export type AppCharacter = {
   vision: Vision;
   weaponType: WeaponType;
   EBcost: number;
-  talentLvBonusAtCons?: Partial<Record<Talent, number>>;
+  talentLvBonus?: Partial<Record<Talent, number>>;
   stats: number[][];
-  bonusStat: {
+  statBonus: {
     type: AttributeStat;
     value: number;
   };
