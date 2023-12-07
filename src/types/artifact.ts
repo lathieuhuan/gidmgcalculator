@@ -22,7 +22,6 @@ export type AppArtifact = {
   sands: ArtTypeData;
   goblet: ArtTypeData;
   circlet: ArtTypeData;
-
   descriptions: string[];
   setBonuses?: SetBonus[];
   buffs?: ArtifactBuff[];
@@ -34,7 +33,7 @@ type SetBonus = {
   artBonuses?: ArtifactBonus | ArtifactBonus[];
 };
 
-type TargetAttribute = "input_element" | AttributeStat | AttributeStat[];
+type TargetAttribute = "inp_elmt" | AttributeStat | AttributeStat[];
 
 /** Only on code 42 */
 type InputIndex = {
@@ -60,7 +59,28 @@ type VisionStack = {
   max?: number;
 };
 
-type SetBonusCommon = {
+type AttributeSetBonus = {
+  // totalAttr
+  target: "ATTR";
+  path: TargetAttribute;
+  /** Only when path = "inp_elmt". Default to 0 */
+  inputIndex?: number;
+};
+
+type AttPattSetBonus = {
+  // attPattBonus
+  target: "PATT";
+  path: AttackPatternPath | AttackPatternPath[];
+  weaponTypes?: WeaponType[];
+};
+
+type RxnBonusSetBonus = {
+  // rxnBonus
+  target: "RXN";
+  path: ReactionBonusPath | ReactionBonusPath[];
+};
+
+export type ArtifactBonus = (AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus) & {
   /** Only on Vermillion Hereafter */
   initialValue?: number;
   value: number | number[];
@@ -69,26 +89,6 @@ type SetBonusCommon = {
   checkInput?: number;
   max?: number;
 };
-
-type AttributeSetBonus = SetBonusCommon & {
-  target: "totalAttr";
-  path: TargetAttribute;
-  /** Only when path = "input_element". Default to 0 */
-  inputIndex?: number;
-};
-
-type AttPattSetBonus = SetBonusCommon & {
-  target: "attPattBonus";
-  path: AttackPatternPath | AttackPatternPath[];
-  weaponTypes?: WeaponType[];
-};
-
-type RxnBonusSetBonus = SetBonusCommon & {
-  target: "rxnBonus";
-  path: ReactionBonusPath | ReactionBonusPath[];
-};
-
-export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
 
 export type ArtifactModifier = {
   /** This is id */
@@ -104,11 +104,11 @@ type ArtifactBuff = ArtifactModifier & {
 
 type SetPenalty = {
   value: number;
-  path: "input_element" | ResistanceReductionKey;
-  /** Only when path = "input_element". Default to 0 */
+  path: "inp_elmt" | ResistanceReductionKey;
+  /** Only when path = "inp_elmt". Default to 0 */
   inputIndex?: number;
 };
 
 type ArtifactDebuff = ArtifactModifier & {
-  penalties: SetPenalty;
+  effects: SetPenalty;
 };

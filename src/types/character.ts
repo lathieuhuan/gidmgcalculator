@@ -252,7 +252,7 @@ export type AbilityBonusTarget =
     }
   | {
       /** On Dendro Traveler, Kazuha, Sucrose */
-      type: "IN_ELMT";
+      type: "INP_ELMT";
       /** Input's index to get element's index. Default to 0 */
       index?: number;
     }
@@ -329,7 +329,7 @@ export type AbilityBuff = AbilityInnateBuff & {
 type PenaltyTarget =
   | ResistanceReductionKey
   | {
-      type: "in_elmt";
+      type: "inp_elmt";
       /** Input's index to get Vision index. Default to 0 */
       index?: number;
     };

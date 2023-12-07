@@ -244,7 +244,7 @@ const applyAbilityBuff = ({ description, buff, infoWrap: info, inputs, fromSelf,
               case "ITEM":
                 info.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, bonusValue));
                 break;
-              case "IN_ELMT":
+              case "INP_ELMT":
                 const visionIndex = inputs[target.index || 0];
                 applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
                 break;

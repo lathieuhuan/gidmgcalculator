@@ -53,7 +53,7 @@ export default function getDamage({
     resistReduct[key] = 0;
   }
   const { calcListConfig, calcList, weaponType, vision, debuffs } = charData;
-  const modifierArgs: DebuffInfoWrap = {
+  const infoWrap: DebuffInfoWrap = {
     char,
     charData,
     partyData,
@@ -73,9 +73,9 @@ export default function getDamage({
     if (activated && debuff?.effects && isGranted(debuff, char)) {
       applyAbilityDebuff({
         description: `Self / ${debuff.src}`,
-        penalties: debuff.effects,
+        effects: debuff.effects,
         inputs,
-        modifierArgs,
+        infoWrap,
         fromSelf: true,
       });
     }
@@ -91,9 +91,9 @@ export default function getDamage({
       if (activated && debuff?.effects) {
         applyAbilityDebuff({
           description: `Self / ${debuff.src}`,
-          penalties: debuff.effects,
+          effects: debuff.effects,
           inputs,
-          modifierArgs,
+          infoWrap,
           fromSelf: false,
         });
       }
@@ -106,9 +106,9 @@ export default function getDamage({
       const { name, debuffs = [] } = appData.getArtifactSetData(code) || {};
 
       if (debuffs[index]) {
-        const { value, path, inputIndex = 0 } = debuffs[index].penalties;
+        const { value, path, inputIndex = 0 } = debuffs[index].effects;
         const elementIndex = inputs?.[inputIndex] ?? 0;
-        const finalPath = path === "input_element" ? VISION_TYPES[elementIndex] : path;
+        const finalPath = path === "inp_elmt" ? VISION_TYPES[elementIndex] : path;
         applyModifier(`${name} / 4-piece activated`, resistReduct, finalPath, value, tracker);
       }
     }

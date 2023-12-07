@@ -71,7 +71,7 @@ const getStackValue = (
 const applyBuffValue = (buffValue: number, description: string, buff: WeaponBonus, modifierArgs: BuffInfoWrap) => {
   if (buffValue) {
     if (buff.targetAttribute) {
-      const attributeKey = buff.targetAttribute === "own_element" ? modifierArgs.charData.vision : buff.targetAttribute;
+      const attributeKey = buff.targetAttribute === "own_elmt" ? modifierArgs.charData.vision : buff.targetAttribute;
       applyModifier(description, modifierArgs.totalAttr, attributeKey, buffValue, modifierArgs.tracker);
     }
     if (buff.targetAttPatt) {

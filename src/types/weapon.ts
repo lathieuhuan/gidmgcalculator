@@ -71,7 +71,7 @@ type NationStack = {
 
 export type WeaponStackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
-type TargetAttribute = "own_element" | AttributeStat | AttributeStat[];
+type TargetAttribute = "own_elmt" | AttributeStat | AttributeStat[];
 
 export type WeaponBonus = {
   base?: number;

@@ -65,8 +65,8 @@ const applyArtifactBuff = ({ description, buff, infoWrap, inputs }: ApplyArtifac
   }
 
   switch (buff.target) {
-    case "totalAttr":
-      if (buff.path !== "input_element") {
+    case "ATTR":
+      if (buff.path !== "inp_elmt") {
         applyModifier(description, infoWrap.totalAttr, buff.path, buffValue, infoWrap.tracker);
       } else {
         const { inputIndex = 0 } = buff;
@@ -74,13 +74,13 @@ const applyArtifactBuff = ({ description, buff, infoWrap, inputs }: ApplyArtifac
         applyModifier(description, infoWrap.totalAttr, path, buffValue, infoWrap.tracker);
       }
       break;
-    case "attPattBonus":
+    case "PATT":
       if (buff.weaponTypes && !buff.weaponTypes.includes(infoWrap.charData.weaponType)) {
         return;
       }
       applyModifier(description, infoWrap.attPattBonus, buff.path, buffValue, infoWrap.tracker);
       break;
-    case "rxnBonus":
+    case "RXN":
       applyModifier(description, infoWrap.rxnBonus, buff.path, buffValue, infoWrap.tracker);
       break;
   }
