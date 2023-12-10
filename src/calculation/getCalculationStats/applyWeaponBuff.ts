@@ -41,55 +41,37 @@ const getStackValue = (
 ) => {
   switch (stack.type) {
     case "input": {
-      const { index = 0, doubledAtInput } = stack;
+      const { index = 0, doubledAt } = stack;
 
       if (typeof index === "number") {
-        let input = inputs[index] || 0;
+        let stackValue = inputs[index] ?? 0;
 
-        if (doubledAtInput && inputs[doubledAtInput]) {
-          input *= 2;
+        if (doubledAt !== undefined && inputs[doubledAt]) {
+          stackValue *= 2;
         }
-        return input;
-      } else {
-        const input = index.reduce(
-          (total, { value, convertRate = 1 }) => total + (inputs[value] || 0) * convertRate,
-          0
-        );
-        return input;
+        return stackValue;
       }
+      return index.reduce((total, { value, ratio = 1 }) => total + (inputs[value] ?? 0) * ratio, 0);
     }
     case "attribute": {
-      const { field, convertRate = 1, minus = 0 } = stack;
-      const stackValue = (totalAttr[field] - minus) * convertRate;
-      return stackValue;
+      const { field, requiredBase = 0 } = stack;
+      return totalAttr[field] - requiredBase;
     }
     case "vision": {
       const { element, max } = stack;
-      let input = 0;
+      const { [charData.vision]: sameCount = 0, ...others } = countVision(partyData);
+      let stackValue = 0;
 
-      switch (element) {
-        case "same_included":
-        case "same_excluded":
-          let { [charData.vision]: sameCount = 0 } = countVision(partyData);
-          if (element === "same_included") {
-            sameCount++;
-          }
-          input = sameCount;
-          break;
-        case "different": {
-          const { [charData.vision]: sameCount, ...others } = countVision(partyData);
-          input = Object.values(others).reduce<number>((total, count) => total + (count as number) || 0, 0);
-          break;
-        }
-      }
-      if (max && input > max) {
-        input = max;
+      if (element === "different") {
+        stackValue = Object.values(others as Record<string, number>).reduce((total, count) => total + count, 0);
+      } else {
+        stackValue = sameCount + (element === "same_included" ? 1 : 0);
       }
 
-      return input;
+      return max ? Math.min(stackValue, max) : stackValue;
     }
     case "energy": {
-      return partyData.reduce((result, data) => result + (data?.EBcost || 0), charData.EBcost);
+      return partyData.reduce((result, data) => result + (data?.EBcost ?? 0), charData.EBcost);
     }
     case "nation": {
       return partyData.reduce(
@@ -140,7 +122,7 @@ const getBonusValue = (
   // ========== APPLY MAX ==========
   let max = 0;
   if (typeof bonus.max === "number") {
-    max = scaleRefi(max);
+    max = scaleRefi(bonus.max);
   } else if (bonus.max) {
     max = scaleRefi(bonus.max.value, bonus.max.incre);
   }

@@ -227,25 +227,27 @@ const applyAbilityBuff = ({ description, buff, infoWrap: info, inputs, fromSelf,
         const bonusValue = getBonusValue(bonus, info, inputs, fromSelf, commonStacks);
 
         if (bonusValue) {
-          for (const target of toArray(bonus.targets)) {
-            switch (target.type) {
+          for (const [key, value] of Object.entries(bonus.targets)) {
+            const mixed = value as any;
+
+            switch (key) {
               case "ATTR":
-                applyModifier(description, info.totalAttr, target.path, bonusValue, info.tracker);
+                applyModifier(description, info.totalAttr, mixed, bonusValue, info.tracker);
                 break;
               case "PATT":
-                applyModifier(description, info.attPattBonus, target.path, bonusValue, info.tracker);
+                applyModifier(description, info.attPattBonus, mixed, bonusValue, info.tracker);
                 break;
               case "ELMT":
-                applyModifier(description, info.attElmtBonus, target.path, bonusValue, info.tracker);
+                applyModifier(description, info.attElmtBonus, mixed, bonusValue, info.tracker);
                 break;
               case "RXN":
-                applyModifier(description, info.rxnBonus, target.path, bonusValue, info.tracker);
+                applyModifier(description, info.rxnBonus, mixed, bonusValue, info.tracker);
                 break;
               case "ITEM":
-                info.calcItemBuffs.push(genExclusiveBuff(description, target.id, target.path, bonusValue));
+                info.calcItemBuffs.push(genExclusiveBuff(description, mixed.id, mixed.path, bonusValue));
                 break;
               case "INP_ELMT":
-                const visionIndex = inputs[target.index || 0];
+                const visionIndex = inputs[mixed ?? 0];
                 applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
                 break;
               case "ELM_NA":

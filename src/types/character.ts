@@ -223,44 +223,6 @@ export type AbilityBonusStack = (InputStack | AttributeStack | NationStack | Ene
   max?: number | DynamicMax;
 };
 
-export type AbilityBonusTarget =
-  | {
-      /** totalAttr */
-      type: "ATTR";
-      path: AttributeStat | AttributeStat[];
-    }
-  | {
-      /** attPattBonus */
-      type: "PATT";
-      path: AttackPatternPath | AttackPatternPath[];
-    }
-  | {
-      /** attElmtBonus */
-      type: "ELMT";
-      path: AttackElementPath | AttackElementPath[];
-    }
-  | {
-      /** rxnBonus */
-      type: "RXN";
-      path: ReactionBonusPath | ReactionBonusPath[];
-    }
-  | {
-      /** calcItem */
-      type: "ITEM";
-      id: string | string[];
-      path: AttackPatternInfoKey;
-    }
-  | {
-      /** On Dendro Traveler, Kazuha, Sucrose */
-      type: "INP_ELMT";
-      /** Input's index to get element's index. Default to 0 */
-      index?: number;
-    }
-  | {
-      /** On Candace */
-      type: "ELM_NA";
-    };
-
 export type AbilityEffectValueOption = {
   /** On Navia */
   preOptions?: number[];
@@ -297,7 +259,25 @@ export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEf
   /** Index of pre-calculated stack */
   stackIndex?: number;
   stacks?: AbilityBonusStack | AbilityBonusStack[];
-  targets: AbilityBonusTarget | AbilityBonusTarget[];
+  targets: {
+    /** totalAttr */
+    ATTR?: AttributeStat | AttributeStat[];
+    /** attPattBonus */
+    PATT?: AttackPatternPath | AttackPatternPath[];
+    /** attElmtBonus */
+    ELMT?: AttackElementPath | AttackElementPath[];
+    /** rxnBonus */
+    RXN?: ReactionBonusPath | ReactionBonusPath[];
+    /** calcItem */
+    ITEM?: {
+      id: string | string[];
+      path: AttackPatternInfoKey;
+    };
+    /** Input's index to get element's index. */
+    INP_ELMT?: number; // On Dendro Traveler, Kazuha, Sucrose
+    /** On Candace */
+    ELM_NA?: 1;
+  };
   max?:
     | number
     | {

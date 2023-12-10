@@ -29,23 +29,10 @@ export type AppWeapon = {
   buffs?: WeaponBuff[];
 };
 
-type VisionStack = {
-  type: "vision";
-  element: "same_included" | "same_excluded" | "different";
-  max?: number;
-};
-
-type AttributeStack = {
-  type: "attribute";
-  field: "hp" | "base_atk" | "def" | "em" | "er_";
-  convertRate?: number;
-  minus?: number;
-};
-
 type InputIndex = {
   /** Only on Tulaytullah's Remembrance */
   value: number;
-  convertRate?: number;
+  ratio?: number;
 };
 
 type InputStack = {
@@ -56,7 +43,19 @@ type InputStack = {
    * Input's index when activated (equal to 1), value is doubled.
    * Only on Liyue Series.
    */
-  doubledAtInput?: number;
+  doubledAt?: number;
+};
+
+type AttributeStack = {
+  type: "attribute";
+  field: "hp" | "base_atk" | "def" | "em" | "er_";
+  requiredBase?: number;
+};
+
+type VisionStack = {
+  type: "vision";
+  element: "same_included" | "same_excluded" | "different";
+  max?: number;
 };
 
 /** Only on Watatsumi series */
@@ -113,7 +112,7 @@ export type WeaponBonus = {
          */
         source?: number | "various_vision";
         /** Default to [equal] */
-        type?: "equal" | "min" | "max" | "included";
+        type?: "equal" | "min" | "max";
       };
 };
 
