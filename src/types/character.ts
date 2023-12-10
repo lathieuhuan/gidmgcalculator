@@ -202,13 +202,13 @@ type NationStack = {
   nation: "same" | "different";
 };
 
-/** On Raiden Shogun */
 type EnergyStack = {
+  /** On Raiden Shogun */
   type: "energy";
 };
 
-/** On Raiden Shogun */
 type ResolveStack = {
+  /** On Raiden Shogun */
   type: "resolve";
 };
 
@@ -261,7 +261,7 @@ export type AbilityBonusTarget =
       type: "ELM_NA";
     };
 
-export type EffectValueOption = {
+export type AbilityEffectValueOption = {
   /** On Navia */
   preOptions?: number[];
   options: number[];
@@ -289,7 +289,7 @@ export type EffectValueOption = {
 };
 
 export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEffectApplyCondition {
-  value: number | EffectValueOption;
+  value: number | AbilityEffectValueOption;
   /** Multiplier based on talent level */
   lvScale?: AbilityEffectLevelScale;
   /** Added before stacks, after scale */
@@ -308,7 +308,7 @@ export interface AbilityBonus extends AbilityEffectAvailableCondition, AbilityEf
 }
 
 export type AbilityInnateBuff = AbilityModifier & {
-  cmnStacks?: AbilityBonusStack | AbilityBonusStack[];
+  cmnStacks?: AbilityBonus["stacks"];
   effects?: AbilityBonus | AbilityBonus[];
 };
 

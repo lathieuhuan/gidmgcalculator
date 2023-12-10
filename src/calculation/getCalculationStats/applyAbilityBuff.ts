@@ -7,7 +7,7 @@ import {
   BuffInfoWrap,
   CalcItemBuff,
   DynamicMax,
-  EffectValueOption,
+  AbilityEffectValueOption,
 } from "@Src/types";
 import { countVision, toArray } from "@Src/utils";
 import { finalTalentLv } from "@Src/utils/calculation";
@@ -107,7 +107,7 @@ const getStackValue = (stack: AbilityBonusStack, info: BuffInfoWrap, inputs: num
 };
 
 export const getIntialBonusValue = (
-  value: EffectValueOption,
+  value: AbilityEffectValueOption,
   info: CalcUltilInfo,
   inputs: number[],
   fromSelf: boolean
