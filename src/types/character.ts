@@ -187,6 +187,15 @@ type InputStack = {
   index?: number;
   /** When this bonus is from teammate, this is input's index to get stacks. */
   alterIndex?: number;
+  /** On Wanderer */
+  capacity?: {
+    value: number;
+    extra: {
+      grantedAt: CharacterMilestone;
+      checkInput: InputCheck;
+      value: number;
+    };
+  };
 };
 
 type AttributeStack = {

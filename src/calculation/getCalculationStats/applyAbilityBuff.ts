@@ -48,7 +48,14 @@ const getStackValue = (stack: AbilityBonusStack, info: BuffInfoWrap, inputs: num
     case "input": {
       const { index = 0, alterIndex } = stack;
       const finalIndex = alterIndex !== undefined && !fromSelf ? alterIndex : index;
-      const input = inputs[finalIndex] ?? 0;
+      let input = inputs[finalIndex] ?? 0;
+
+      if (stack.capacity) {
+        const { value, extra } = stack.capacity;
+        input = value - input;
+        if (isUsableEffect(extra, info, inputs, fromSelf))input += extra.value;
+        input = Math.max(input, 0);
+      }
       result = input;
       break;
     }
