@@ -1,88 +1,92 @@
 import type { ArtifactBonus, BuffInfoWrap } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
 import { applyModifier } from "../utils";
+import { countVision, toArray } from "@Src/utils";
+import { isFinalBonus } from "./utils";
+
+const isUsableBonus = (bonus: ArtifactBonus, infoWrap: BuffInfoWrap, inputs: number[]) => {
+  if (bonus.checkInput !== undefined && inputs[0] !== bonus.checkInput) {
+    return false;
+  }
+  if (bonus.forWeapons && !bonus.forWeapons.includes(infoWrap.charData.weaponType)) {
+    return false;
+  }
+  return true;
+};
+
+const getStackValue = (stack: NonNullable<ArtifactBonus["stacks"]>, info: BuffInfoWrap, inputs: number[]) => {
+  switch (stack.type) {
+    case "input":
+      return inputs[stack.index ?? 0];
+    case "attribute":
+      return info.totalAttr[stack.field];
+    case "vision":
+      const { [info.charData.vision]: sameCount = 0, ...others } = countVision(info.partyData);
+
+      switch (stack.element) {
+        case "same_excluded":
+          return sameCount;
+        case "different":
+          return Object.values(others as ReturnType<typeof countVision>).reduce((total, item) => total + item, 0);
+      }
+  }
+};
+
+const getBonusValue = (bonus: ArtifactBonus, info: BuffInfoWrap, inputs: number[]) => {
+  let bonusValue = 0;
+
+  if (typeof bonus.value === "number") {
+    bonusValue += bonus.value;
+
+    if (bonus.stacks) {
+      if (!info.partyData.length && bonus.stacks.type === "vision") {
+        return 0;
+      }
+      bonusValue *= getStackValue(bonus.stacks, info, inputs);
+    }
+  }
+  if (bonus.sufExtra) bonusValue += bonus.sufExtra;
+  if (bonus.max && bonusValue > bonus.max) bonusValue = bonus.max;
+
+  return Math.max(bonusValue, 0);
+};
 
 interface ApplyArtifactBuffArgs {
   description: string;
-  buff: ArtifactBonus;
+  buff: { effects: ArtifactBonus | ArtifactBonus[] };
   infoWrap: BuffInfoWrap;
-  inputs?: number[];
+  inputs: number[];
+  isFinal?: boolean;
 }
-const applyArtifactBuff = ({ description, buff, infoWrap, inputs }: ApplyArtifactBuffArgs) => {
-  let buffValue = buff.initialValue ?? 0;
+const applyArtifactBuff = ({ description, buff, infoWrap: info, inputs, isFinal }: ApplyArtifactBuffArgs) => {
+  const noIsFinal = isFinal === undefined;
 
-  if (buff.checkInput !== undefined && inputs?.length) {
-    if (inputs[0] !== buff.checkInput) {
-      return;
-    }
-  }
+  for (const bonus of toArray(buff.effects)) {
+    if ((noIsFinal || isFinal === isFinalBonus(bonus.stacks)) && isUsableBonus(bonus, info, inputs)) {
+      const bonusValue = getBonusValue(bonus, info, inputs);
 
-  if (Array.isArray(buff.value)) {
-    const index = (inputs?.[0] ?? 1) - 1;
-    buffValue = buff.value[index];
-  } else {
-    let stacks = 1;
+      if (bonusValue) {
+        for (const [key, value] of Object.entries(bonus.targets)) {
+          const mixed = value as any;
 
-    switch (buff.stacks?.type) {
-      case "input":
-        const { index = 0 } = buff.stacks;
-
-        if (typeof index === "number") {
-          stacks = inputs?.[index] ?? 1;
-        } else {
-          const { value = 0, convertRate } = index;
-          stacks = (inputs?.[value] ?? 1) * convertRate;
-        }
-        break;
-      case "vision":
-        let sameCount = 0;
-        let diffCount = 0;
-
-        for (const teammate of infoWrap.partyData) {
-          if (teammate) {
-            teammate.vision === infoWrap.charData.vision ? sameCount++ : diffCount++;
+          switch (key) {
+            case "ATTR":
+              applyModifier(description, info.totalAttr, mixed, bonusValue, info.tracker);
+              break;
+            case "PATT":
+              applyModifier(description, info.attPattBonus, mixed, bonusValue, info.tracker);
+              break;
+            case "RXN":
+              applyModifier(description, info.rxnBonus, mixed, bonusValue, info.tracker);
+              break;
+            case "INP_ELMT":
+              const visionIndex = inputs[mixed ?? 0];
+              applyModifier(description, info.totalAttr, VISION_TYPES[visionIndex], bonusValue, info.tracker);
+              break;
           }
         }
-        switch (buff.stacks.element) {
-          case "same_excluded": {
-            stacks = sameCount;
-            break;
-          }
-          case "different": {
-            stacks = diffCount;
-            break;
-          }
-        }
-        break;
-      case "attribute":
-        stacks = infoWrap.totalAttr[buff.stacks.field];
-        break;
-    }
-    buffValue += buff.value * stacks;
-  }
-  if (buff.max && buffValue > buff.max) {
-    buffValue = buff.max;
-  }
-
-  switch (buff.target) {
-    case "ATTR":
-      if (buff.path !== "inp_elmt") {
-        applyModifier(description, infoWrap.totalAttr, buff.path, buffValue, infoWrap.tracker);
-      } else {
-        const { inputIndex = 0 } = buff;
-        const path = VISION_TYPES[inputs?.[inputIndex] ?? 0];
-        applyModifier(description, infoWrap.totalAttr, path, buffValue, infoWrap.tracker);
       }
-      break;
-    case "PATT":
-      if (buff.weaponTypes && !buff.weaponTypes.includes(infoWrap.charData.weaponType)) {
-        return;
-      }
-      applyModifier(description, infoWrap.attPattBonus, buff.path, buffValue, infoWrap.tracker);
-      break;
-    case "RXN":
-      applyModifier(description, infoWrap.rxnBonus, buff.path, buffValue, infoWrap.tracker);
-      break;
+    }
   }
 };
 

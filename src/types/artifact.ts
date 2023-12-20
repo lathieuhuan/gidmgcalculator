@@ -8,9 +8,6 @@ type ArtTypeData = {
   icon: string;
 };
 
-/**
- * Artifact in app data
- */
 export type AppArtifact = {
   /** This is id */
   code: number;
@@ -30,22 +27,13 @@ export type AppArtifact = {
 
 type SetBonus = {
   description?: number[];
-  artBonuses?: ArtifactBonus | ArtifactBonus[];
-};
-
-type TargetAttribute = "inp_elmt" | AttributeStat | AttributeStat[];
-
-/** Only on code 42 */
-type InputIndex = {
-  /** Default to 0 */
-  value?: number;
-  convertRate: number;
+  effects?: ArtifactBonus | ArtifactBonus[];
 };
 
 type InputStack = {
   type: "input";
   /** If number, default to 0 */
-  index?: number | InputIndex;
+  index?: number;
 };
 
 type AttributeStack = {
@@ -56,37 +44,32 @@ type AttributeStack = {
 type VisionStack = {
   type: "vision";
   element: "same_excluded" | "different";
-  max?: number;
 };
 
-type AttributeSetBonus = {
-  // totalAttr
-  target: "ATTR";
-  path: TargetAttribute;
-  /** Only when path = "inp_elmt". Default to 0 */
-  inputIndex?: number;
+type ArtifactEffectValueOption = {
+  options: number[];
+  /** Input's index for options. Default to 0 */
+  inpIndex?: number;
 };
 
-type AttPattSetBonus = {
-  // attPattBonus
-  target: "PATT";
-  path: AttackPatternPath | AttackPatternPath[];
-  weaponTypes?: WeaponType[];
-};
-
-type RxnBonusSetBonus = {
-  // rxnBonus
-  target: "RXN";
-  path: ReactionBonusPath | ReactionBonusPath[];
-};
-
-export type ArtifactBonus = (AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus) & {
-  /** Only on Vermillion Hereafter */
-  initialValue?: number;
-  value: number | number[];
-  stacks?: InputStack | AttributeStack | VisionStack;
+export type ArtifactBonus = {
+  forWeapons?: WeaponType[];
   /** For this buff to available, the input at index 0 must equal to checkInput */
   checkInput?: number;
+  value: number | ArtifactEffectValueOption;
+  stacks?: InputStack | AttributeStack | VisionStack;
+  /** Apply after stacks. On Vermillion Hereafter */
+  sufExtra?: number;
+  targets: {
+    /** totalAttr */
+    ATTR?: AttributeStat | AttributeStat[];
+    /** Input's index to get element's index. */
+    INP_ELMT?: number;
+    /** attPattBonus */
+    PATT?: AttackPatternPath | AttackPatternPath[];
+    /** rxnBonus */
+    RXN?: ReactionBonusPath | ReactionBonusPath[];
+  };
   max?: number;
 };
 
@@ -99,16 +82,16 @@ export type ArtifactModifier = {
 
 type ArtifactBuff = ArtifactModifier & {
   affect: EModAffect;
-  artBonuses: ArtifactBonus | ArtifactBonus[];
+  effects: ArtifactBonus | ArtifactBonus[];
 };
 
-type SetPenalty = {
+type ArtifactPenalty = {
   value: number;
   path: "inp_elmt" | ResistanceReductionKey;
   /** Only when path = "inp_elmt". Default to 0 */
-  inputIndex?: number;
+  inpIndex?: number;
 };
 
 type ArtifactDebuff = ArtifactModifier & {
-  effects: SetPenalty;
+  effects: ArtifactPenalty;
 };

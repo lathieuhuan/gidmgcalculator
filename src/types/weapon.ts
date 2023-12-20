@@ -7,9 +7,6 @@ import { EModAffect } from "@Src/constants";
 //   "code" | "beta" | "name" | "rarity" | "icon" | "buffs"
 // >;
 
-/**
- * Weapon in app data
- */
 export type AppWeapon = {
   /** This is id */
   code: number;
@@ -68,7 +65,7 @@ type NationStack = {
   type: "nation";
 };
 
-export type WeaponStackConfig = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
+export type WeaponBonusStack = VisionStack | AttributeStack | InputStack | EnergyStack | NationStack;
 
 type WeaponEffectValueOption = {
   options: number[];
@@ -83,11 +80,13 @@ export type WeaponBonus = {
    * Default to 1/3 of [value]. Fixed buff type has increment = 0
    */
   incre?: number;
-  stacks?: WeaponStackConfig | WeaponStackConfig[];
+  stacks?: WeaponBonusStack | WeaponBonusStack[];
   /** Apply after stacks */
   sufExtra?: number;
   targets: {
+    /** totalAttr */
     ATTR?: "own_elmt" | AttributeStat | AttributeStat[];
+    /** attPattBonus */
     PATT?: AttackPatternPath | AttackPatternPath[];
   };
   max?:

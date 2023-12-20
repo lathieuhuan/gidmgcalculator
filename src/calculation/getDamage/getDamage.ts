@@ -106,8 +106,8 @@ export default function getDamage({
       const { name, debuffs = [] } = appData.getArtifactSetData(code) || {};
 
       if (debuffs[index]) {
-        const { value, path, inputIndex = 0 } = debuffs[index].effects;
-        const elementIndex = inputs?.[inputIndex] ?? 0;
+        const { value, path, inpIndex = 0 } = debuffs[index].effects;
+        const elementIndex = inputs?.[inpIndex] ?? 0;
         const finalPath = path === "inp_elmt" ? VISION_TYPES[elementIndex] : path;
         applyModifier(`${name} / 4-piece activated`, resistReduct, finalPath, value, tracker);
       }

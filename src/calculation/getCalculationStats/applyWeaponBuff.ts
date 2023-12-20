@@ -1,4 +1,4 @@
-import type { WeaponBonus, BuffInfoWrap, WeaponStackConfig, WeaponBuff } from "@Src/types";
+import type { WeaponBonus, BuffInfoWrap, WeaponBonusStack, WeaponBuff } from "@Src/types";
 import { countVision, toArray } from "@Src/utils";
 import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
@@ -34,11 +34,7 @@ const isUsableBonus = (bonus: WeaponBonus, info: BuffInfoWrap, inputs: number[])
   return true;
 };
 
-const getStackValue = (
-  stack: WeaponStackConfig,
-  { charData, partyData, totalAttr }: BuffInfoWrap,
-  inputs: number[]
-) => {
+const getStackValue = (stack: WeaponBonusStack, { charData, partyData, totalAttr }: BuffInfoWrap, inputs: number[]) => {
   switch (stack.type) {
     case "input": {
       const { index = 0, doubledAt } = stack;
@@ -101,7 +97,7 @@ const getBonusValue = (
     }
     if (bonus.stacks) {
       for (const stack of toArray(bonus.stacks)) {
-        if (["vision", "energy", "nation"].includes(stack.type) && !info.partyData.length) {
+        if (!info.partyData.length && ["vision", "energy", "nation"].includes(stack.type)) {
           return 0;
         }
         bonusValue *= getStackValue(stack, info, inputs);
