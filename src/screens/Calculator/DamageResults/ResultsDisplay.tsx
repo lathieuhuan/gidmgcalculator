@@ -39,7 +39,7 @@ export function ResultsDisplay() {
       {comparing ? (
         <div className="mb-4 flex">
           <p className="mr-2">Choose a focus</p>
-          <select className="text-lightgold" value={focus} onChange={(e) => setFocus(e.target.value as EStatDamageKey)}>
+          <select className="text-yellow-400" value={focus} onChange={(e) => setFocus(e.target.value as EStatDamageKey)}>
             {Object.values(EStatDamageKey).map((opt) => (
               <option key={opt} value={opt}>
                 {FOCUS_LABELS[opt]}

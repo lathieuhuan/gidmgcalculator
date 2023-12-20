@@ -25,8 +25,8 @@ const Candace: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
       description: `Prayer of the Crimson Crown [~EB] grants:
-      <br />• Characters deal {20%}#[b,gr] increased {Elemental Normal Attack DMG}#[gr].
-      <br />• At {A4}#[g], increases the above bonus by {0.5%}#[b,gr] for every 1,000 points of Candace's {Max HP}#[gr].`,
+      <br />• Characters deal {20%}#[v] increased {Elemental Normal Attack DMG}#[k].
+      <br />• At {A4}#[ms], increases the above bonus by {0.5%}#[v] for every 1,000 points of Candace's {Max HP}#[k].`,
       inputConfigs: [
         {
           label: "Max HP (A4)",
@@ -50,8 +50,8 @@ const Candace: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's {Max HP}#[gr] will be increased by
-      {20%}#[b,gr] for 15s.`,
+      description: `When Sacred Rite: Heron's Guard [ES] hits opponents, Candace's {Max HP}#[k] will be increased by
+      {20%}#[v] for 15s.`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "hp_", 20),
     },

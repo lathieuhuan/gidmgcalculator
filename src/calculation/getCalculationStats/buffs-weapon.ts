@@ -1,4 +1,4 @@
-import type { WeaponAutoBuff, BuffModifierArgsWrapper, WeaponStackConfig } from "@Src/types";
+import type { WeaponBonus, BuffModifierArgsWrapper, WeaponStackConfig } from "@Src/types";
 import { countVision, toArray } from "@Src/utils";
 import { applyModifier } from "@Src/utils/calculation";
 
@@ -71,7 +71,7 @@ const getStackValue = (
 const applyBuffValue = (
   buffValue: number,
   description: string,
-  buff: WeaponAutoBuff,
+  buff: WeaponBonus,
   modifierArgs: BuffModifierArgsWrapper
 ) => {
   if (buffValue) {
@@ -87,7 +87,7 @@ const applyBuffValue = (
 
 interface ApplyWeaponBuffArgs {
   description: string;
-  buff: WeaponAutoBuff;
+  buff: WeaponBonus;
   refi: number;
   inputs: number[];
   modifierArgs: BuffModifierArgsWrapper;

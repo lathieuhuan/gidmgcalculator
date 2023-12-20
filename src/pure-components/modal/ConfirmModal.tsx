@@ -12,12 +12,12 @@ export interface ConfirmModalBodyProps {
 }
 export const ConfirmModalBody = ({
   message,
-  bgColor = "bg-darkblue-3",
+  bgColor = "bg-dark-500",
   buttons,
   closeOnClickButton = true,
   onClose,
 }: ConfirmModalBodyProps) => {
-  const messageRef = useRef(cloneElement(<p className="py-2 text-center text-1.5xl text-default">{message}</p>));
+  const messageRef = useRef(cloneElement(<p className="py-2 text-center text-1.5xl text-light-400">{message}</p>));
 
   const renderedButtons = buttons.map<ButtonGroupItem>((button, index) => {
     const { text, variant, onClick } = button || {};

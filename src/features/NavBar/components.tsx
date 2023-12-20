@@ -16,7 +16,7 @@ export const ActionButton = ({ className = "", icon, label, onClick }: ActionBut
   return (
     <button
       className={
-        "px-4 py-2 flex items-center font-bold hover:text-default hover:bg-darkblue-1 cursor-default " + className
+        "px-4 py-2 flex items-center font-bold hover:text-light-400 hover:bg-dark-900 cursor-default " + className
       }
       onClick={onClick}
     >

@@ -23,8 +23,8 @@ const Ganyu: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `After firing a Frostflake Arrow, the {CRIT Rate}#[gr] of subsequent {Frostflake Arrows}#[gr] and
-      their resulting {bloom effects}#[gr] is increased by {20%}#[b,gr] for 5s.`,
+      description: `After firing a Frostflake Arrow, the {CRIT Rate}#[k] of subsequent {Frostflake Arrows}#[k] and
+      their resulting {bloom effects}#[k] is increased by {20%}#[v] for 5s.`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "CA.0", "cRate_", 20));
@@ -34,7 +34,7 @@ const Ganyu: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Celestial Shower [EB] grants a {20%}#[b,gr] {Cryo DMG Bonus}#[gr] to active members in the AoE.`,
+      description: `Celestial Shower [EB] grants a {20%}#[v] {Cryo DMG Bonus}#[k] to active members in the AoE.`,
       isGranted: checkAscs[4],
       applyBuff: makeModApplier("totalAttr", "cryo", 20),
     },
@@ -42,8 +42,8 @@ const Ganyu: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      description: `Opponents within Celestial Shower [EB] take increased DMG which begins at {5%}#[b,gr] and increases
-      by {5%}#[b,gr] every 3s. Maximum {25%}#[r].`,
+      description: `Opponents within Celestial Shower [EB] take increased DMG which begins at {5%}#[v] and increases
+      by {5%}#[v] every 3s. Maximum {25%}#[m].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -60,8 +60,8 @@ const Ganyu: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C1,
-      description: `Charge Level 2 Frostflake Arrows or Frostflake Arrow Blooms decrease opponents' {Cryo RES}#[gr] by
-      {15%}#[b,gr] for 6s upon hit.`,
+      description: `Charge Level 2 Frostflake Arrows or Frostflake Arrow Blooms decrease opponents' {Cryo RES}#[k] by
+      {15%}#[v] for 6s upon hit.`,
       isGranted: checkCons[1],
       applyDebuff: makeModApplier("resistReduct", "cryo", 15),
     },

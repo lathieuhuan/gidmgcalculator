@@ -36,7 +36,7 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
       <div>
         {!options.length && (
           <div className="h-40 flex-center">
-            <p className="pr-2 text-lg text-lesser text-center">No Setups available for choosing...</p>
+            <p className="pr-2 text-lg text-light-800 text-center">No Setups available for choosing...</p>
           </div>
         )}
         {options.map((setup) => {
@@ -48,18 +48,18 @@ export function useCombineManager({ options, limit }: UseCombineManagerArgs) {
             <div
               key={ID}
               className={clsx(
-                "mb-2 p-4 rounded-lg bg-darkblue-1 flex flex-col md1:flex-row md1:items-center",
+                "mb-2 p-4 rounded-lg bg-dark-900 flex flex-col md1:flex-row md1:items-center",
                 !picked && !notFull && "opacity-50",
-                picked && "shadow-green"
+                picked && "shadow-green-300"
               )}
               style={{ boxShadow: picked ? "0 0 5px 1px var(--tw-shadow-color) inset" : undefined }}
               onClick={() => onClickOption(ID, picked)}
             >
               <div className="md1:w-40 md1:mr-4">
-                <p className="text-lg font-bold text-orange cursor-default">{setup.name}</p>
+                <p className="text-lg font-bold text-orange-500 cursor-default">{setup.name}</p>
               </div>
               <div className="mt-2 md1:mt-0 flex space-x-4">
-                <div className="w-16 rounded-circle shadow-3px-2px shadow-orange">
+                <div className="w-16 rounded-circle shadow-3px-2px shadow-orange-500">
                   <CharacterPortrait {...{ code, icon }} />
                 </div>
                 {setup.party.map((teammate, j) => {

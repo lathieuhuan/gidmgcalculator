@@ -24,7 +24,7 @@ const Sucrose: DefaultAppCharacter = {
       src: EModSrc.A1,
       affect: EModAffect.TEAMMATE,
       description: `When Sucrose triggers a Swirl, all characters in the party with the matching element (excluding Sucrose) have
-      their {Elemental Mastery}#[gr] increased by {50}#[b,gr] for 8s.`,
+      their {Elemental Mastery}#[k] increased by {50}#[v] for 8s.`,
       applyBuff: makeModApplier("totalAttr", "em", 50),
     },
     {
@@ -32,8 +32,8 @@ const Sucrose: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.TEAMMATE,
       description: `When Astable Anemohypostasis Creation - 6308 [ES] or Forbidden Creation - Isomer 75 / Type II [EB]
-      hits an opponent, increases all party members' (excluding Sucrose) {Elemental Mastery}#[gr] based on {20%}#[b,gr]
-      of Sucrose's {Elemental Mastery}#[gr] for 8s.`,
+      hits an opponent, increases all party members' (excluding Sucrose) {Elemental Mastery}#[k] based on {20%}#[v]
+      of Sucrose's {Elemental Mastery}#[k] for 8s.`,
       inputConfigs: [
         {
           label: "Elemental Mastery",
@@ -50,7 +50,7 @@ const Sucrose: DefaultAppCharacter = {
       src: EModSrc.C6,
       affect: EModAffect.PARTY,
       description: `If Forbidden Creation - Isomer 75 / Type II [EB] triggers an Elemental Absorption, all party
-      members gain a {20%}#[b,gr] {Elemental DMG Bonus}#[gr] for the corresponding {absorbed element}#[gr] during its
+      members gain a {20%}#[v] {Elemental DMG Bonus}#[k] for the corresponding {absorbed element}#[k] during its
       duration.`,
       isGranted: checkCons[6],
       inputConfigs: [

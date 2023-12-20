@@ -12,6 +12,8 @@ import type {
   UserWeapon,
   Vision,
   WeaponType,
+  Teammate,
+  Party,
 } from "@Src/types";
 import { ATTACK_ELEMENTS, LEVELS } from "@Src/constants";
 import { ARTIFACT_MAIN_STATS } from "@Src/constants/artifact-stats";
@@ -36,7 +38,7 @@ export const ascsFromLv = (lv: Level) => {
   return maxLv === 20 ? 0 : maxLv / 10 - 3;
 };
 
-export const itemIsWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
+export const isUserWeapon = (item: UserWeapon | UserArtifact): item is UserWeapon => "refi" in item;
 
 export function countVision(partyData: PartyData, charData?: AppCharacter) {
   const result: Partial<Record<Vision, number>> = {};
@@ -116,6 +118,8 @@ export const weaponSubStatValue = (scale: string, lv: Level) => {
 export const toCustomBuffLabel = (category: string, type: string, t: (origin: string) => string) => {
   return category === "attElmtBonus" ? (type === "phys" ? "physical" : type) : t(type);
 };
+
+export const realParty = (party?: Party) => (party?.filter(Boolean) as Teammate[]) ?? [];
 
 const getAppSettings = (): AppSettings => {
   let savedSettings = localStorage.getItem("settings");

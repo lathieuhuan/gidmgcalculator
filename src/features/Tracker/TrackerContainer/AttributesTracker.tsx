@@ -1,6 +1,6 @@
 import type { Tracker } from "@Src/types";
 import { ATTRIBUTE_STAT_TYPES, CORE_STAT_TYPES } from "@Src/constants";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { applyPercent, percentSign, round } from "@Src/utils";

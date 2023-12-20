@@ -10,7 +10,7 @@ import { toArray } from "@Src/utils";
 import { appData } from "@Src/data";
 
 // Hook
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 import { useDispatch, useSelector } from "@Store/hooks";
 
 // Component
@@ -58,9 +58,9 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
   };
 
   return (
-    <div className="pl-5 pr-2 pt-4 pb-2 h-full bg-darkblue-1 flex flex-col rounded-lg shadow-white-glow overflow-auto">
+    <div className="pl-5 pr-2 pt-4 pb-2 h-full bg-dark-900 flex flex-col rounded-lg shadow-white-glow overflow-auto">
       <CloseButton className="absolute top-1 right-1" boneOnly onClick={onClose} />
-      <p className="text-1.5xl text-orange font-bold" onDoubleClick={() => console.log(target)}>
+      <p className="text-1.5xl text-orange-500 font-bold" onDoubleClick={() => console.log(target)}>
         Target Config
       </p>
 
@@ -69,7 +69,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
           <div className="grow overflow-auto flex flex-col">
             <div className="flex">
               <label className="ml-auto flex items-center">
-                <span className="mr-4 text-lg text-lightgold">Level</span>
+                <span className="mr-4 text-lg text-yellow-400">Level</span>
                 <Input
                   type="number"
                   className="w-16 p-2 text-right font-bold"
@@ -98,7 +98,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
 
             {variant?.types.length && target.variantType ? (
               <div className="mt-4 flex justify-end items-center">
-                <p className="mr-4 text-default">Variant</p>
+                <p className="mr-4 text-light-400">Variant</p>
 
                 <select
                   className="styled-select capitalize"
@@ -177,12 +177,12 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             {ATTACK_ELEMENTS.map((attElmt) => {
               return (
                 <div key={attElmt} className="flex justify-between items-center">
-                  <p className={"text-lg " + (attElmt === "phys" ? "text-default" : `text-${attElmt}`)}>
+                  <p className={"text-lg " + (attElmt === "phys" ? "text-light-400" : `text-${attElmt}`)}>
                     {t(attElmt, { ns: "resistance" })}
                   </p>
                   <Input
                     type="number"
-                    className="w-20 p-2 text-right font-bold disabled:bg-lesser"
+                    className="w-20 p-2 text-right font-bold disabled:bg-light-800"
                     disabled={target.code !== 0}
                     value={target.resistances[attElmt]}
                     maxDecimalDigits={0}
@@ -195,7 +195,7 @@ export function TargetConfig({ button, onClose }: TargetConfigProps) {
             })}
           </div>
 
-          <p className="mt-4 pr-1 text-default">
+          <p className="mt-4 pr-1 text-light-400">
             You can search for your target's Resistances on{" "}
             <a
               href="https://genshin-impact.fandom.com/wiki/Resistance#Base_Enemy_Resistances"

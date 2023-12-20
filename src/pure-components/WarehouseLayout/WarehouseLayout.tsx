@@ -1,30 +1,25 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
 import styles from "./styles.module.scss";
 
 type IProps = {
   className?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 const WarehouseLayout = ({ className, ...rest }: IProps) => {
   return <div className={clsx("relative h-full pt-12 md2:pt-14", styles.warehouse, className)} {...rest} />;
 };
 
-const Wrapper = (props: IProps) => {
-  return <div className="py-4 md2:py-8 h-full flex-center bg-darkblue-2" {...props} />;
+WarehouseLayout.Wrapper = (props: IProps) => {
+  return <div className="py-4 md2:py-8 h-full flex-center bg-dark-700" {...props} />;
 };
 
-const ButtonBar = (props: IProps) => {
+WarehouseLayout.ButtonBar = (props: IProps) => {
   return <div className="absolute top-0 left-0 pl-2 w-full h-10 flex items-center" {...props} />;
 };
 
-const Body = ({ className = "", ...rest }: IProps) => {
+WarehouseLayout.Body = ({ className = "", ...rest }: IProps) => {
   return <div className={"h-full flex " + className} {...rest} />;
 };
-
-WarehouseLayout.Wrapper = Wrapper;
-WarehouseLayout.ButtonBar = ButtonBar;
-WarehouseLayout.Body = Body;
 
 export { WarehouseLayout };

@@ -28,12 +28,12 @@ const Aloy: DefaultAppCharacter = {
       index: 0,
       src: "Coil stacks",
       affect: EModAffect.SELF,
-      description: `Increases Aloy's {Normal Attack DMG}#[gr] {@0}#[b,gr]. When she has 4 stacks, all stacks are cleared, Aloy
-      then enters the Rushing Ice state, which further increases her {Normal Attack DMG}#[gr] and converts it to
+      description: `Increases Aloy's {Normal Attack DMG}#[k] {@0}#[v]. When she has 4 stacks, all stacks are cleared, Aloy
+      then enters the Rushing Ice state, which further increases her {Normal Attack DMG}#[k] and converts it to
       {Cryo DMG}#[cryo].
-      <br />• At {A1}#[g] when Aloy receives Coil effect, her {ATK}#[gr] is increased by {16%}#[b,gr] for 10s.
-      <br />• At {A4}#[g] when Aloy is in Rushing Ice state, her {Cryo DMG Bonus}#[gr] increases by {3.5%}#[b,gr]
-      every 1s, up to {35%}#[r].`,
+      <br />• At {A1}#[ms] when Aloy receives Coil effect, her {ATK}#[k] is increased by {16%}#[v] for 10s.
+      <br />• At {A4}#[ms] when Aloy is in Rushing Ice state, her {Cryo DMG Bonus}#[k] increases by {3.5%}#[v]
+      every 1s, up to {35%}#[m].`,
       inputConfigs: [
         {
           type: "stacks",
@@ -64,7 +64,7 @@ const Aloy: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.A1,
       affect: EModAffect.TEAMMATE,
-      description: `When Aloy receives the Coil effect, nearby party members' {ATK}#[gr] is increased by {8%}#[b,gr]
+      description: `When Aloy receives the Coil effect, nearby party members' {ATK}#[k] is increased by {8%}#[v]
       for 10s.`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "atk_", 8),

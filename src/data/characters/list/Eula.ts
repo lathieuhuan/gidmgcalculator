@@ -36,8 +36,8 @@ const Eula: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `Every time Grimheart stacks [~ES] are consumed, Eula's {Physical DMG}#[gr] is increased by
-      {30%}#[b,gr] for 6s. Each stack consumed increases the duration by 6s.`,
+      description: `Every time Grimheart stacks [~ES] are consumed, Eula's {Physical DMG}#[k] is increased by
+      {30%}#[v] for 6s. Each stack consumed increases the duration by 6s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "phys", 30),
     },
@@ -45,7 +45,7 @@ const Eula: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `{Lightfall Swords DMG}#[gr] [~EB] is increased by {25%}#[b,gr] against opponents with less than 50%
+      description: `{Lightfall Swords DMG}#[k] [~EB] is increased by {25%}#[v] against opponents with less than 50%
       HP.`,
       isGranted: checkCons[4],
       applyBuff: ({ calcItemBuffs }) => {
@@ -57,8 +57,8 @@ const Eula: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.ES,
-      description: `If Grimheart stacks are consumed, surrounding opponents will have their {Physical RES}#[gr] and
-      {Cryo RES}#[gr] decreased by {@0}#[b,gr].`,
+      description: `If Grimheart stacks are consumed, surrounding opponents will have their {Physical RES}#[k] and
+      {Cryo RES}#[k] decreased by {@0}#[v].`,
       inputConfigs: [
         {
           label: "Elemental Skill Level",

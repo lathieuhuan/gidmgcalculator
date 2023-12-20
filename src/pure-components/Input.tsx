@@ -16,10 +16,7 @@ interface InputTextProps
   onChange?: (value: string) => void;
 }
 interface InputNumberProps
-  extends Omit<
-      InputHTMLAttributes<HTMLInputElement>,
-      "type" | "value" | "max" | "min" | "onChange"
-    >,
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "max" | "min" | "onChange">,
     InputCommonProps {
   type: "number";
   value?: number;
@@ -30,13 +27,7 @@ interface InputNumberProps
 
 export const Input = forwardRef(
   (
-    {
-      className,
-      maxDecimalDigits = 1,
-      debounceTime = 0,
-      noDefaultStyle,
-      ...props
-    }: InputTextProps | InputNumberProps,
+    { className, maxDecimalDigits = 1, debounceTime = 0, noDefaultStyle, ...props }: InputTextProps | InputNumberProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [value, setValue] = useState(
@@ -137,7 +128,7 @@ export const Input = forwardRef(
         {...props}
         type="text"
         className={
-          (noDefaultStyle ? "" : "leading-tight text-black rounded bg-default focus:bg-blue-100 ") +
+          (noDefaultStyle ? "" : "rounded leading-tight bg-light-400 focus:bg-light-100 text-black ") +
           (className || "")
         }
         value={value}

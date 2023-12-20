@@ -12,13 +12,10 @@ import type {
 } from "./global";
 import type {
   ModifierCtrl,
-  PartyData,
-  ResistanceReduction,
-  AttackPatternBonus,
   ModifierInput,
   BuffModifierArgsWrapper,
-  Tracker,
   Talent,
+  DebuffModifierArgsWrapper,
 } from "./calculator";
 import { EModAffect } from "@Src/constants";
 
@@ -165,6 +162,7 @@ export type InnateBuff = {
 };
 
 type AbilityModifier = {
+  /** This is id */
   index: number;
   src: string;
   isGranted?: (char: CharInfo) => boolean;
@@ -189,15 +187,10 @@ export type AbilityBuff = AbilityModifier & {
 };
 
 // ============ DEBUFFS ============
-type ApplyCharDebuffArgs = {
-  resistReduct: ResistanceReduction;
-  attPattBonus: AttackPatternBonus;
-  char: CharInfo;
+type ApplyCharDebuffArgs = DebuffModifierArgsWrapper & {
   inputs: ModifierInput[];
-  partyData: PartyData;
   fromSelf: boolean;
   desc: string;
-  tracker?: Tracker;
 };
 
 export type AbilityDebuff = AbilityModifier & {

@@ -12,17 +12,8 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
   let buffValue = buff.initialValue ?? 0;
 
   if (buff.checkInput !== undefined && inputs?.length) {
-    if (typeof buff.checkInput === "number") {
-      if (inputs[0] !== buff.checkInput) {
-        return;
-      }
-    } else {
-      const { value, index = 0 } = buff.checkInput;
-      const input = inputs[index] ?? 0;
-
-      if (input !== value) {
-        return;
-      }
+    if (inputs[0] !== buff.checkInput) {
+      return;
     }
   }
 
@@ -35,7 +26,13 @@ export const applyArtifactBuff = ({ description, buff, modifierArgs, inputs }: A
     switch (buff.stacks?.type) {
       case "input":
         const { index = 0 } = buff.stacks;
-        stacks = inputs?.[index] ?? 1;
+
+        if (typeof index === "number") {
+          stacks = inputs?.[index] ?? 1;
+        } else {
+          const { value = 0, convertRate } = index;
+          stacks = (inputs?.[value] ?? 1) * convertRate;
+        }
         break;
       case "vision":
         let sameCount = 0;

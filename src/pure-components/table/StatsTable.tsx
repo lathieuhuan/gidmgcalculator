@@ -16,7 +16,7 @@ StatsTable.Row = ({ className = "", children, onClick }: RowProps) => {
   return (
     <div
       className={
-        "flex justify-between pt-1 px-2 font-semibold odd:bg-darkblue-2 hover:bg-darkerred " +
+        "flex justify-between pt-1 px-2 font-semibold odd:bg-dark-700 hover:bg-red-800 " +
         className
       }
       onClick={onClick}

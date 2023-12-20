@@ -38,7 +38,7 @@ const Shenhe: DefaultAppCharacter = {
       src: EModSrc.ES,
       affect: EModAffect.PARTY,
       description: `When Normal, Charged and Plunging Attacks, Elemental Skills, and Elemental Bursts deal {Cryo}#[cryo]
-      DMG the {DMG}#[gr] dealt is increased based on Shenhe's {current ATK}#[gr].`,
+      DMG the {DMG}#[k] dealt is increased based on Shenhe's {current ATK}#[k].`,
       inputConfigs: [
         { label: "Current ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
@@ -59,8 +59,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `An active character within Divine Maiden's Deliverance [EB] field gain {15%}#[b,gr]
-      {Cryo DMG Bonus}#[gr].`,
+      description: `An active character within Divine Maiden's Deliverance [EB] field gain {15%}#[v]
+      {Cryo DMG Bonus}#[k].`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("totalAttr", "cryo", 15),
     },
@@ -69,8 +69,8 @@ const Shenhe: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.PARTY,
       description: `After Shenhe uses Spring Spirit Summoning [ES], she will grant all nearby party members:
-      <br />• Press: {15%}#[b,gr] {Elemental Skill and Elemental Burst DMG}#[gr] for 10s.
-      <br />• Hold: {15%}#[b,gr] {Normal, Charged and Plunging Attack DMG}#[gr] for 15s.`,
+      <br />• Press: {15%}#[v] {Elemental Skill and Elemental Burst DMG}#[k] for 10s.
+      <br />• Hold: {15%}#[v] {Normal, Charged and Plunging Attack DMG}#[k] for 15s.`,
       isGranted: checkAscs[4],
       inputConfigs: [
         { label: "Press", type: "check", initialValue: 1 },
@@ -89,8 +89,8 @@ const Shenhe: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Active characters within Divine Maiden's Deliverance's field deal {15%}#[b,gr] increased
-      {Cryo CRIT DMG}#[gr].`,
+      description: `Active characters within Divine Maiden's Deliverance's field deal {15%}#[v] increased
+      {Cryo CRIT DMG}#[k].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attElmtBonus", "cryo.cDmg_", 15),
     },
@@ -99,7 +99,7 @@ const Shenhe: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       description: `Every time a character triggers Icy Quill's DMG Bonus, Shenhe will gain a Skyfrost Mantra stack for
-      60s. Each stack increases her next Spring Spirit Summoning {[ES] DMG}#[gr] by {5%}#[b,gr]. Maximum {50}#[r] stacks.`,
+      60s. Each stack increases her next Spring Spirit Summoning {[ES] DMG}#[k] by {5%}#[v]. Maximum {50}#[m] stacks.`,
       isGranted: checkCons[4],
       inputConfigs: [
         {
@@ -117,7 +117,7 @@ const Shenhe: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.EB,
-      description: `The field decreases opponents' {Cryo RES}#[gr] and {Physical RES}#[gr] by {@0}#[b,gr].`,
+      description: `The field decreases opponents' {Cryo RES}#[k] and {Physical RES}#[k] by {@0}#[v].`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",

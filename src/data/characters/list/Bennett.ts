@@ -24,9 +24,9 @@ const Bennett: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Increases {ATK}#[gr] of the characters within its AoE based on Bennett's {Base ATK}#[gr].
-      <br />• At {C1}#[g], the {ATK Bonus}#[gr] is further increased by {20%}#[b,gr] of his Base ATK.
-      <br />• At {C6}#[g], the characters also gain a {15%}#[b,gr] {Pyro DMG Bonus}#[gr].`,
+      description: `Increases {ATK}#[k] of the characters within its AoE based on Bennett's {Base ATK}#[k].
+      <br />• At {C1}#[ms], the {ATK Bonus}#[k] is further increased by {20%}#[v] of his Base ATK.
+      <br />• At {C6}#[ms], the characters also gain a {15%}#[v] {Pyro DMG Bonus}#[k].`,
       inputConfigs: [
         { label: "Base ATK", type: "text", max: 9999, for: "teammate" },
         { label: "Elemental Burst Level", type: "level", for: "teammate" },
@@ -67,7 +67,7 @@ const Bennett: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Bennett's HP falls below 70%, his {Energy Recharge}#[gr] is increased by {30%}#[b,gr].`,
+      description: `When Bennett's HP falls below 70%, his {Energy Recharge}#[k] is increased by {30%}#[v].`,
       applyBuff: makeModApplier("totalAttr", "er_", 30),
     },
   ],

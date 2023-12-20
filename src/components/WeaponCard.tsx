@@ -3,7 +3,7 @@ import type { CalcWeapon, Level } from "@Src/types";
 
 // Constant
 import { LEVELS } from "@Src/constants";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { percentSign, getImgSrc, weaponMainStatValue, weaponSubStatValue, parseWeaponDescription } from "@Src/utils";
@@ -12,7 +12,7 @@ import { appData } from "@Src/data";
 // Component
 import { BetaMark } from "@Src/pure-components";
 
-const groupStyles = "bg-darkblue-2 px-2";
+const groupStyles = "bg-dark-700 px-2";
 
 interface WeaponCardProps {
   weapon?: CalcWeapon;
@@ -106,7 +106,7 @@ export const WeaponCard = ({ weapon, mutable, upgrade, refine }: WeaponCardProps
         </div>
       </div>
       <div className="mt-2">
-        <p className="text-lg font-semibold text-orange">{wpData.passiveName}</p>
+        <p className="text-lg font-semibold text-orange-500">{wpData.passiveName}</p>
         <p className="indent-4" dangerouslySetInnerHTML={{ __html: passiveDescription }} />
       </div>
     </div>

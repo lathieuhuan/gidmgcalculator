@@ -20,7 +20,7 @@ const HydroTraveler: DefaultAppCharacter = {
       src: "Suffusion [~ES]",
       affect: EModAffect.SELF,
       description: `When the Traveler's HP is higher than 50%, they will continuously lose HP and cause
-      {Dewdrop DMG}#[gr] to increase based on their {HP}#[gr].`,
+      {Dewdrop DMG}#[k] to increase based on their {HP}#[k].`,
       applyFinalBuff: (obj) => {
         const [level, mult] = getTalentMultiplier({ talentType: "ES", root: 2 }, HydroTraveler as AppCharacter, obj);
         const buffValue = applyPercent(obj.totalAttr.hp, mult);
@@ -33,9 +33,9 @@ const HydroTraveler: DefaultAppCharacter = {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
-      description: `If HP has been consumed via Suffusion [~ES], increases the {Torrent Surge DMG}#[gr] by {45%}#[b,gr]
-      of the {total HP consumed}#[gr]. The maximum DMG Bonus that can be gained this way is {5,000}#[r].
-      <br />{HP comsumed will be calculated based on "Suffusion time". "HP consumed" can be manually input and should be used when Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".}#[l]`,
+      description: `If HP has been consumed via Suffusion [~ES], increases the {Torrent Surge DMG}#[k] by {45%}#[v]
+      of the {total HP consumed}#[k]. The maximum DMG Bonus that can be gained this way is {5,000}#[m].
+      <br />{HP comsumed will be calculated based on "Suffusion time". "HP consumed" can be manually input and should be used when Max HP changes while holding. Set "Suffusion time" to 0 to use "HP consumed".}#[n]`,
       inputConfigs: [
         {
           type: "stacks",

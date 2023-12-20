@@ -19,8 +19,8 @@ const ElectroTraveler: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ONE_UNIT,
-      description: `Increases {Energy Recharge}#[gr] during the Abundance Amulet's [~ES] duration.
-      <br />• At {A4}#[g], increases the bonus by {10%}#[b,gr] of the Traveler's {Energy Recharge}#[gr].`,
+      description: `Increases {Energy Recharge}#[k] during the Abundance Amulet's [~ES] duration.
+      <br />• At {A4}#[ms], increases the bonus by {10%}#[v] of the Traveler's {Energy Recharge}#[k].`,
       inputConfigs: [
         { label: "A4 Passive", type: "check", for: "teammate" },
         { label: "Energy Recharge", type: "text", initialValue: 100, max: 999, for: "teammate" },
@@ -41,8 +41,8 @@ const ElectroTraveler: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      description: `When Falling Thunder [~EB] hits an opponent, it will decrease their {Electro RES}#[gr] by
-      {15%}#[b,gr] for 8s.`,
+      description: `When Falling Thunder [~EB] hits an opponent, it will decrease their {Electro RES}#[k] by
+      {15%}#[v] for 8s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "electro", 15),
     },

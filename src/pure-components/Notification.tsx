@@ -11,19 +11,19 @@ export const Notification = (props: NotificationProps) => {
   const renderIcon = () => {
     switch (props.type) {
       case "info":
-        return <FaInfoCircle className="text-darkblue-3" />;
+        return <FaInfoCircle className="text-dark-500" />;
       case "success":
         return <FaCheckCircle style={{ color: "#2fa80a" }} />;
       case "error":
-        return <FaExclamationCircle className="text-darkred" />;
+        return <FaExclamationCircle className="text-red-600" />;
       case "warn":
-        return <FaExclamationTriangle className="text-orange" />;
+        return <FaExclamationTriangle className="text-orange-500" />;
     }
   };
 
   return (
     <div
-      className="w-full p-1 bg-default rounded-lg flex items-start"
+      className="w-full p-1 bg-light-400 rounded-lg flex items-start"
       style={{ boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px" }}
     >
       <span className="p-2 text-xl shrink-0">{renderIcon()}</span>

@@ -22,11 +22,11 @@ const Zhongli: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `• {Normal Attack, Charged Attack, and Plunging Attack DMG}#[gr] increased by {1.39%}#[b,gr] of
-      {Max HP}#[gr].
-      <br />• Dominus Lapidis Stone Stele, resonance, and hold {[ES] DMG}#[gr] increased by {1.9%}#[b,gr] of
-      {Max HP}#[gr].
-      <br />• Planet Befall {[EB] DMG}#[gr] increased by {33%}#[b,gr] of {Max HP}#[gr].`,
+      description: `• {Normal Attack, Charged Attack, and Plunging Attack DMG}#[k] increased by {1.39%}#[v] of
+      {Max HP}#[k].
+      <br />• Dominus Lapidis Stone Stele, resonance, and hold {[ES] DMG}#[k] increased by {1.9%}#[v] of
+      {Max HP}#[k].
+      <br />• Planet Befall {[EB] DMG}#[k] increased by {33%}#[v] of {Max HP}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "PA.flat", "ES.flat", "EB.flat"];
@@ -40,8 +40,8 @@ const Zhongli: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `When Jade Shield takes DMG, the characters have their {Shield Strength}#[gr] increased by
-      {5%}#[b,gr] until the Jade Shield disappears. Max {5}#[r] stacks.`,
+      description: `When Jade Shield takes DMG, the characters have their {Shield Strength}#[k] increased by
+      {5%}#[v] until the Jade Shield disappears. Max {5}#[m] stacks.`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -58,8 +58,8 @@ const Zhongli: DefaultAppCharacter = {
     {
       index: 0,
       src: "Jade Shield",
-      description: `Jade Shield decreases {Elemental RES}#[gr] and {Physical RES}#[gr] of opponents in a small AoE
-      by {20%}#[b,gr]. Cannot be stacked.`,
+      description: `Jade Shield decreases {Elemental RES}#[k] and {Physical RES}#[k] of opponents in a small AoE
+      by {20%}#[v]. Cannot be stacked.`,
       applyDebuff: ({ resistReduct, desc, tracker }) => {
         applyModifier(desc, resistReduct, [...ATTACK_ELEMENTS], 20, tracker);
       },

@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import type { AmplifyingReaction, AttackElement, CalcItem, ModInputConfig, Vision } from "@Src/types";
+import type { AmplifyingReaction, CalcItem, ModInputConfig, Vision } from "@Src/types";
 
 import { VISION_TYPES } from "@Src/constants";
 import { getAmplifyingMultiplier, getQuickenBuffDamage } from "@Src/utils/calculation";
@@ -14,9 +14,9 @@ import { updateCalcSetup, updateResonance } from "@Store/calculatorSlice";
 import {
   ModifierTemplate,
   resonanceRenderInfo,
-  renderAmpReactionDesc,
-  renderAmpReactionHeading,
-  renderQuickenDesc,
+  renderVapMeltDescription,
+  renderVapMeltHeading,
+  renderQuickenDescription,
   renderQuickenHeading,
 } from "@Src/components";
 
@@ -42,7 +42,7 @@ export const ElementBuffs = () => {
   const [infusedValue, setInfusedValue] = useState(infusedElement === "phys" ? "pyro" : infusedElement);
   const [absorbedValue, setAbsorbedValue] = useState(elmtModCtrls.absorption ?? "pyro");
 
-  const content: JSX.Element[] = [];
+  const renderedElmts: JSX.Element[] = [];
 
   // ===== Reaction renderers =====
   const renderMeltVaporize = (element: Vision, field: "reaction" | "infuse_reaction", reaction: AmplifyingReaction) => {
@@ -62,8 +62,8 @@ export const ElementBuffs = () => {
             })
           );
         }}
-        heading={renderAmpReactionHeading(element, reaction)}
-        description={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
+        heading={renderVapMeltHeading(element, reaction)}
+        description={renderVapMeltDescription(element, getAmplifyingMultiplier(element, rxnBonus)[reaction])}
       />
     );
   };
@@ -90,7 +90,7 @@ export const ElementBuffs = () => {
           );
         }}
         heading={renderQuickenHeading(element, reaction)}
-        description={renderQuickenDesc(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
+        description={renderQuickenDescription(element, getQuickenBuffDamage(char.level, rxnBonus)[reaction])}
       />
     );
   };
@@ -122,7 +122,7 @@ export const ElementBuffs = () => {
 
   // ========== RESONANCE ==========
   if (elmtModCtrls.resonances.length) {
-    content.push(
+    renderedElmts.push(
       <div>
         {elmtModCtrls.resonances.map((resonance) => {
           const { name, description } = resonanceRenderInfo[resonance.vision];
@@ -167,7 +167,7 @@ export const ElementBuffs = () => {
 
   // ========== ANEMO ABSORPTION ==========
   if (hasAbsorbingAttack) {
-    content.push(
+    renderedElmts.push(
       <div key="absorption">
         <ModifierTemplate
           heading="Anemo Absorption"
@@ -219,26 +219,26 @@ export const ElementBuffs = () => {
   const absorbingAttackReaction = renderAttackReaction("reaction", elmtModCtrls.absorption);
 
   if (hasAbsorbingAttack && absorbingAttackReaction) {
-    content.push(absorbingAttackReaction);
+    renderedElmts.push(absorbingAttackReaction);
   }
 
   // ========== ATTACK REACTION ==========
   const attackReaction = renderAttackReaction("reaction");
 
   if (attackReaction) {
-    content.push(attackReaction);
+    renderedElmts.push(attackReaction);
   }
 
   // ========== CUSTOM INFUSION & ITS ATTACK REACTION ==========
   if (weaponType !== "catalyst") {
-    content.push(
+    renderedElmts.push(
       <div>
         <ModifierTemplate
           heading="Custom Infusion"
           description={
             <>
               This infusion overwrites self infusion but does not overwrite elemental nature of attacks{" "}
-              <span className="text-lesser">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
+              <span className="text-light-800">(Catalyst's attacks, Bow's fully-charge aim shot)</span>.
             </>
           }
           checked={isInfused}
@@ -297,7 +297,7 @@ export const ElementBuffs = () => {
 
   return (
     <div className="pt-2">
-      {content.map((item, i) => {
+      {renderedElmts.map((item, i) => {
         return (
           <Fragment key={i}>
             {i ? <div className="mx-auto my-3 w-1/2 h-px bg-rarity-1" /> : null}

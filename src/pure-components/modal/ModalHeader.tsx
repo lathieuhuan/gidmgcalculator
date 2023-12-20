@@ -4,7 +4,7 @@ import { Button } from "../button";
 
 const ModalHeader = ({ className = "", ...rest }: InsHTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={"h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange " + className} {...rest} />
+    <div className={"h-11 relative grid grid-cols-2 md2:grid-cols-3 rounded-t-lg bg-orange-500 " + className} {...rest} />
   );
 };
 
@@ -24,7 +24,7 @@ interface FilterButtonProps {
 ModalHeader.FilterButton = (props: FilterButtonProps) => {
   return (
     <Button
-      className={"shadow-common bg-black " + (props.active ? "text-green " : "text-default ") + (props.className || "")}
+      className={"shadow-common bg-black " + (props.active ? "text-green-300 " : "text-light-400 ") + (props.className || "")}
       variant="custom"
       shape="rounded"
       size="small"

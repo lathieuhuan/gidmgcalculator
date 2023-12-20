@@ -28,15 +28,15 @@ const Nilou: DefaultAppCharacter = {
     {
       src: EModSrc.C1,
       isGranted: checkCons[1],
-      description: `{Watery moon DMG}#[gr] is increased by {65%}#[b,gr].`,
+      description: `{Watery moon DMG}#[k] is increased by {65%}#[v].`,
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, "ES.0", "pct_", 65));
       },
     },
     {
       src: EModSrc.C6,
-      description: `For every 1,000 points of Max HP, Nilou's {CRIT Rate}#[gr] is increased by {0.6%}#[b,gr] (max
-      {30%}#[r]) and her {CRIT DMG}#[gr] is increase by {1.2%}#[b,gr] (max {60%}#[r]).`,
+      description: `For every 1,000 points of Max HP, Nilou's {CRIT Rate}#[k] is increased by {0.6%}#[v] (max
+      {30%}#[m]) and her {CRIT DMG}#[k] is increase by {1.2%}#[v] (max {60%}#[m]).`,
       isGranted: checkCons[6],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         const baseValue = round(Math.min((totalAttr.hp / 1000) * 0.6, 30), 1);
@@ -50,10 +50,10 @@ const Nilou: DefaultAppCharacter = {
       index: 0,
       src: "Golden Chalice's Bounty",
       affect: EModAffect.PARTY,
-      description: `Increases characters' {Elemental Mastery}#[gr] by {100}#[b,gr] for 10s whenever they are hit
+      description: `Increases characters' {Elemental Mastery}#[k] by {100}#[v] for 10s whenever they are hit
       by Dendro attacks. Also, triggering Bloom reaction will create Bountiful Cores instead of Dendro Cores.
-      <br />• At {A4}#[g], each 1,000 points of Nilou {Max HP}#[gr] above 30,000 will cause
-      {Bountiful Cores DMG}#[gr] to increase by {9%}#[b,gr]. Maximum {400%}#[r].`,
+      <br />• At {A4}#[ms], each 1,000 points of Nilou {Max HP}#[k] above 30,000 will cause
+      {Bountiful Cores DMG}#[k] to increase by {9%}#[v]. Maximum {400%}#[m].`,
       isGranted: checkAscs[1],
       inputConfigs: [
         {
@@ -64,9 +64,8 @@ const Nilou: DefaultAppCharacter = {
         },
       ],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
-        const { dendro, hydro, ...rest } = countVision(partyData, charData);
-
-        if (dendro && hydro && !Object.keys(rest).length) {
+        const { dendro, hydro, ...others } = countVision(partyData, charData);
+        if (dendro && hydro && !Object.keys(others).length) {
           applyModifier(desc, totalAttr, "em", 100, tracker);
         }
       },
@@ -82,7 +81,7 @@ const Nilou: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       description: `After the third dance step of Pirouette state [~ES] hits opponents, Dance of the Lotus: Distant Dreams,
-      Listening Spring {[EB] DMG}#[gr] will be increased by {50%}#[b,gr] for 8s.`,
+      Listening Spring {[EB] DMG}#[k] will be increased by {50%}#[v] for 8s.`,
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 50),
     },
   ],
@@ -91,15 +90,15 @@ const Nilou: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C2,
       description: `After characters affected by the Golden Chalice's Bounty deal Hydro DMG to opponents, that opponent's
-      {Hydro RES}#[gr] will be decreased by {35%}#[b,gr] for 10s.`,
+      {Hydro RES}#[k] will be decreased by {35%}#[v] for 10s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "hydro", 35),
     },
     {
       index: 1,
       src: EModSrc.C2,
-      description: `After a triggered Bloom reaction deals DMG to opponents, their {Dendro RES}#[gr] will be decreased by
-      {35%}#[b,gr] for 10s.`,
+      description: `After a triggered Bloom reaction deals DMG to opponents, their {Dendro RES}#[k] will be decreased by
+      {35%}#[v] for 10s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "dendro", 35),
     },

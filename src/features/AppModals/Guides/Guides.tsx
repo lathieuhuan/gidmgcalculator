@@ -1,11 +1,11 @@
-import { Lightgold, CollapseList, StandardModal, type ModalControl } from "@Src/pure-components";
+import { Yellow, CollapseList, StandardModal, type ModalControl } from "@Src/pure-components";
 import { CalculatorGuide } from "./CalculatorGuide";
 import { SettingsGuide } from "./SettingsGuide";
 import { UserDataGuide } from "./UserDataGuide";
 
 export const Guides = (props: ModalControl) => {
   return (
-    <StandardModal title={<p className="px-6 mb-2 text-xl text-center text-orange font-bold">Guides</p>} {...props}>
+    <StandardModal title={<p className="px-6 mb-2 text-xl text-center text-orange-500 font-bold">Guides</p>} {...props}>
       <CollapseList
         list={[
           {
@@ -16,19 +16,19 @@ export const Guides = (props: ModalControl) => {
                   <p>- Acronyms used in the App:</p>
                   <ul className="pl-8 mt-1 list-disc space-y-1">
                     <li>
-                      <Lightgold>NA</Lightgold>: Normal Attacks
+                      <Yellow>NA</Yellow>: Normal Attacks
                     </li>
                     <li>
-                      <Lightgold>ES</Lightgold>: Elemental Skill
+                      <Yellow>ES</Yellow>: Elemental Skill
                     </li>
                     <li>
-                      <Lightgold>EB</Lightgold>: Elemental Burst
+                      <Yellow>EB</Yellow>: Elemental Burst
                     </li>
                     <li>
-                      <Lightgold>A</Lightgold>: Ascension, e.g. A4 is talent unlocked at Acsension 4
+                      <Yellow>A</Yellow>: Ascension, e.g. A4 is talent unlocked at Acsension 4
                     </li>
                     <li>
-                      <Lightgold>C</Lightgold>: Constellation, e.g. C1 is skill unlocked at Constellation 1
+                      <Yellow>C</Yellow>: Constellation, e.g. C1 is skill unlocked at Constellation 1
                     </li>
                   </ul>
                 </div>

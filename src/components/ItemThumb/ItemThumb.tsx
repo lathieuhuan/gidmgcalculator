@@ -27,7 +27,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
     return (
       <div
         className={clsx(
-          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-white rounded-circle",
+          "absolute top-1.5 right-1.5 z-10 w-7 h-7 bg-black/60 border-2 border-light-400 rounded-circle",
           styles["side-icon"],
           !sideIcon && "overflow-hidden"
         )}
@@ -51,7 +51,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
 
       <div
         className={clsx(
-          "bg-default rounded flex flex-col cursor-pointer relative",
+          "bg-light-400 rounded flex flex-col cursor-pointer relative",
           styles["hover-shadow-white"],
           chosen ? "glowing" : "shadow-common"
         )}
@@ -60,7 +60,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
           <p
             className={
               "absolute top-1 left-1 rounded px-1 text-sm font-bold " +
-              (refi === 5 ? "bg-black text-orange" : "bg-black/60 text-default")
+              (refi === 5 ? "bg-black text-orange-500" : "bg-black/60 text-light-400")
             }
           >
             {refi}
@@ -71,7 +71,7 @@ export const ItemThumb = ({ item: { beta, icon, rarity, level, refi, owner }, ch
           <Image src={icon} imgType={refi ? "weapon" : "artifact"} />
         </div>
 
-        <div className="flex-center bg-default rounded-b">
+        <div className="flex-center bg-light-400 rounded-b">
           <p className="font-bold text-black">Lv. {typeof level === "string" ? level.split("/")[0] : level}</p>
         </div>
       </div>

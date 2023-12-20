@@ -22,7 +22,7 @@ const Itto: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `{Arataki Kesagiri DMG}#[gr] is increased by {35%}#[b,gr] of Itto's {DEF}#[gr].`,
+      description: `{Arataki Kesagiri DMG}#[k] is increased by {35%}#[v] of Itto's {DEF}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A4, "CA.0", "flat", applyPercent(totalAttr.def, 35)));
@@ -30,7 +30,7 @@ const Itto: DefaultAppCharacter = {
     },
     {
       src: EModSrc.C6,
-      description: `Itto's {Charged Attacks}#[gr] deal +{70%}#[b,gr] {CRIT DMG}#[gr].`,
+      description: `Itto's {Charged Attacks}#[k] deal +{70%}#[v] {CRIT DMG}#[k].`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("attPattBonus", "CA.cDmg_", 70),
     },
@@ -41,8 +41,8 @@ const Itto: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `• Grants Itto a {Geo Infusion}#[geo] that cannot be overridden.
-      <br />• Increases Itto's {Normal Attack SPD}#[gr] by {10%}#[b,gr]. Also increases his {ATK}#[gr] based on his
-      {DEF}#[gr].`,
+      <br />• Increases Itto's {Normal Attack SPD}#[k] by {10%}#[v]. Also increases his {ATK}#[k] based on his
+      {DEF}#[k].`,
       applyFinalBuff: (obj) => {
         const [level, mult] = getTalentMultiplier({ talentType: "EB", root: 57.6 }, Itto as AppCharacter, obj);
         const description = obj.desc + ` Lv.${level} / ${round(mult, 2)}% of DEF`;
@@ -57,8 +57,8 @@ const Itto: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      description: `When the Raging Oni King state [EB] ends, all nearby party members gain {20%}#[b,gr] {DEF}#[gr] and
-      {20%}#[b,gr] {ATK}#[gr] for 10s.`,
+      description: `When the Raging Oni King state [EB] ends, all nearby party members gain {20%}#[v] {DEF}#[k] and
+      {20%}#[v] {ATK}#[k] for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", ["def_", "atk_"], 20),
     },

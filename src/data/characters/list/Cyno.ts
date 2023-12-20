@@ -21,9 +21,9 @@ const Cyno: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `• Pactsworn Pathclearer's [EB] {Normal Attack DMG}#[gr] is increased by {150%}#[b,gr] of Cyno's
-      {Elemental Mastery}#[gr].
-      <br />• {Duststalker Bolt DMG}#[gr] [A1] is increased by {250%}#[b,gr] of Cyno's {Elemental Mastery}#[gr].`,
+      description: `• Pactsworn Pathclearer's [EB] {Normal Attack DMG}#[k] is increased by {150%}#[v] of Cyno's
+      {Elemental Mastery}#[k].
+      <br />• {Duststalker Bolt DMG}#[k] [A1] is increased by {250%}#[v] of Cyno's {Elemental Mastery}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ calcItemBuffs, totalAttr }) => {
         calcItemBuffs.push(
@@ -39,7 +39,7 @@ const Cyno: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `Under Pactsworn Pathclearer state:
-      <br />• Cyno's {Elemental Mastery}#[gr] is increased by {100}#[b,gr].
+      <br />• Cyno's {Elemental Mastery}#[k] is increased by {100}#[v].
       <br />• Cyno gains an {Electro Infusion}#[electro] that cannot be overriden.`,
       applyBuff: makeModApplier("totalAttr", "em", 100),
       infuseConfig: {
@@ -51,8 +51,8 @@ const Cyno: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `If Cyno activates Secret Rite: Chasmic Soulfarer {[ES]}#[gr] while in Endseer stance [~EB], its
-      {DMG}#[gr] will be increased by {35%}#[b,gr].`,
+      description: `If Cyno activates Secret Rite: Chasmic Soulfarer {[ES]}#[k] while in Endseer stance [~EB], its
+      {DMG}#[k] will be increased by {35%}#[v].`,
       isGranted: checkAscs[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.A1, "ES.0", "pct_", 35));
@@ -62,8 +62,8 @@ const Cyno: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `After using Sacred Rite: Wolf's Swiftness, Cyno's {Normal Attack SPD}#[gr] will be increased by
-      {20%}#[b,gr] for 10s.`,
+      description: `After using Sacred Rite: Wolf's Swiftness, Cyno's {Normal Attack SPD}#[k] will be increased by
+      {20%}#[v] for 10s.`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 20),
     },
@@ -71,8 +71,8 @@ const Cyno: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C2,
       affect: EModAffect.SELF,
-      description: `When Cyno's Normal Attacks hit opponents, his {Electro DMG Bonus}#[gr] will increase by {10%}#[b,gr]
-      for 4s. Max {5}#[r] stacks.`,
+      description: `When Cyno's Normal Attacks hit opponents, his {Electro DMG Bonus}#[k] will increase by {10%}#[v]
+      for 4s. Max {5}#[m] stacks.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {

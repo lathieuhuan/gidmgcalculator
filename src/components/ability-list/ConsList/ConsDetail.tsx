@@ -4,7 +4,7 @@ import type { AppCharacter, Talent } from "@Src/types";
 import { appData } from "@Src/data";
 
 // Conponent
-import { CloseButton, Green, Lesser, LoadingIcon } from "@Src/pure-components";
+import { CloseButton, Green, Dim, LoadingIcon } from "@Src/pure-components";
 import { SlideShow } from "../components";
 
 const useConsDescriptions = (name: string, options?: { auto: boolean }) => {
@@ -100,7 +100,7 @@ export const ConsDetail = ({ charData, consLv, onChangeConsLv, onClose }: ConsDe
       ) : (
         <p className={"mt-4" + (isLoading ? " py-4 flex justify-center" : "")}>
           <LoadingIcon active={isLoading} />
-          {isError && <Lesser>Error. Rebooting...</Lesser>}
+          {isError && <Dim>Error. Rebooting...</Dim>}
           {descriptions?.[consLv - 1]}
         </p>
       )}

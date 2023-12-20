@@ -22,7 +22,7 @@ const Noelle: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.C2,
-      description: `Increases her {Charged Attack DMG}#[gr] by {15%}#[b,gr].`,
+      description: `Increases her {Charged Attack DMG}#[k] by {15%}#[v].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("attPattBonus", "CA.pct_", 15),
     },
@@ -33,8 +33,8 @@ const Noelle: DefaultAppCharacter = {
       src: EModSrc.EB,
       affect: EModAffect.SELF,
       description: `• Grants Noelle a {Geo Infusion}#[geo] that cannot be overridden.
-      <br />• Increases Noelle's {ATK}#[gr] based on her {DEF}#[gr]. At {C6}#[g], the multipler bonus is increased by
-      {50%}#[b,gr].`,
+      <br />• Increases Noelle's {ATK}#[k] based on her {DEF}#[k]. At {C6}#[ms], the multipler bonus is increased by
+      {50%}#[v].`,
       applyFinalBuff: (obj) => {
         let [level, mult] = getTalentMultiplier({ talentType: "EB", root: 40 }, Noelle as AppCharacter, obj);
         let description = obj.desc + ` Lv.${level}`;

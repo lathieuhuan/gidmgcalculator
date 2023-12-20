@@ -3,7 +3,7 @@ import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 
 import type { BooleanRecord } from "@Src/types";
 import type { DataType, Filter, PickerItem } from "../types";
-import { useIntersectionObserver } from "@Src/hooks";
+import { useIntersectionObserver } from "@Src/pure-hooks";
 
 // Component
 import { Input, CollapseSpace, ModalHeader } from "@Src/pure-components";
@@ -37,7 +37,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
   const [massAdd, setMassAdd] = useState(false);
   const [itemCounts, setItemCounts] = useState<number[]>([]);
 
-  const { observedAreaRef, observedItemCls, itemsVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { observedAreaRef, observedItemCls, visibleItems } = useIntersectionObserver<HTMLDivElement>();
 
   useEffect(() => {
     const focus = (e: KeyboardEvent) => {
@@ -61,8 +61,10 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
       }
     }
     if (keyword) {
+      const lowerKw = keyword.toLowerCase();
+
       for (const name in visibleNames) {
-        if (!name.toLowerCase().includes(keyword)) {
+        if (!name.toLowerCase().includes(lowerKw)) {
           delete visibleNames[name];
         }
       }
@@ -126,7 +128,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
               />
 
               <div className="absolute w-full top-full left-0 z-50">
-                <div className="rounded-b-lg bg-darkblue-3 shadow-common">
+                <div className="rounded-b-lg bg-dark-500 shadow-common">
                   <CollapseSpace active={filterOn}>
                     <CharacterFilter
                       {...filter}
@@ -180,7 +182,7 @@ export const PickerTemplate = ({ data, dataType, needMassAdd, onPickItem, onClos
                 >
                   <div onClick={() => onClickItem(item, i)}>
                     <MemoItem
-                      visible={itemsVisible[item.code]}
+                      visible={visibleItems[item.code]}
                       item={item}
                       itemType={dataType}
                       pickedAmount={itemCounts[i] || 0}

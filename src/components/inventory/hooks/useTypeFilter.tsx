@@ -37,7 +37,7 @@ export function useTypeFilter({ itemType, initialTypes = [] }: UseTypeFilterArgs
             className={clsx(
               "mr-4 w-10 h-10 glow-on-hover rounded-circle transition duration-150",
               itemType === "artifact" && "p-1",
-              active && (itemType === "weapon" ? "shadow-3px-3px shadow-green" : "bg-green")
+              active && (itemType === "weapon" ? "shadow-3px-3px shadow-green-300" : "bg-green-300")
             )}
             onClick={() => onClickIcon(active, index, type)}
           >

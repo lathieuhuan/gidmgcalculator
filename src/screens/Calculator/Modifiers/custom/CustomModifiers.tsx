@@ -5,7 +5,7 @@ import type { CustomBuffCtrl, CustomDebuffCtrl } from "@Src/types";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 import { selectActiveId, selectSetupManageInfos, selectCalcSetupsById } from "@Store/calculatorSlice/selectors";
 import { updateCustomBuffCtrls, updateCustomDebuffCtrls, removeCustomModCtrl } from "@Store/calculatorSlice";
@@ -149,7 +149,7 @@ export const CustomModifiers = ({ isBuffs }: CustomModifiersProps) => {
 
       <Modal
         active={modalOn}
-        className="p-4 rounded-lg flex flex-col bg-darkblue-1 shadow-white-glow"
+        className="p-4 rounded-lg flex flex-col bg-dark-900 shadow-white-glow"
         style={{ minWidth: isBuffs ? 302 : "auto" }}
         onClose={closeModal}
       >

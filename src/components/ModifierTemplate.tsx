@@ -116,7 +116,7 @@ export const ModifierTemplate = ({
             />
           );
         }
-        return <p className="text-orange capitalize">{input}</p>;
+        return <p className="text-orange-500 capitalize">{input}</p>;
       case "check":
         return (
           <input
@@ -124,7 +124,7 @@ export const ModifierTemplate = ({
             className="mr-1 scale-150 lg:scale-180"
             checked={input === 1}
             readOnly={!mutable}
-            onChange={() => onToggleCheck && onToggleCheck(input, index)}
+            onChange={() => onToggleCheck?.(input, index)}
           />
         );
       default:
@@ -154,11 +154,7 @@ export const ModifierTemplate = ({
 
         if (mutable) {
           return (
-            <select
-              className="styled-select"
-              value={input}
-              onChange={(e) => onSelectOption && onSelectOption(+e.target.value, index)}
-            >
+            <select className="styled-select" value={input} onChange={(e) => onSelectOption?.(+e.target.value, index)}>
               {options.map((opt, i) => (
                 <option key={i} value={opt.value}>
                   {opt.label}
@@ -169,7 +165,7 @@ export const ModifierTemplate = ({
         }
         let { label } = options.find((option) => option.value === input) || {};
 
-        return <p className="text-orange capitalize">{label}</p>;
+        return <p className="text-orange-500 capitalize">{label}</p>;
     }
   };
 
@@ -178,7 +174,7 @@ export const ModifierTemplate = ({
       <div className="mb-1 flex">
         <label className="flex items-center">
           {mutable && <input type="checkbox" className="ml-1 mr-2 scale-150" checked={checked} onChange={onToggle} />}
-          <span className="pl-1 font-semibold text-lightgold">
+          <span className="pl-1 font-semibold text-yellow-400">
             {mutable ? "" : "+"} {heading}
           </span>
         </label>

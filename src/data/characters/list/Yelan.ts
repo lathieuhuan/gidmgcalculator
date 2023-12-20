@@ -22,8 +22,8 @@ const Yelan: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A1,
-      description: `When the party has 1/2/3/4 Elemental Types, Yelan's {Max HP}#[gr] is increased by
-      {6%}#[b,gr]/{12%}#[b,gr]/{18%}#[b,gr]/{30%}#[b,gr]`,
+      description: `When the party has 1/2/3/4 Elemental Types, Yelan's {Max HP}#[k] is increased by
+      {6%}#[v]/{12%}#[v]/{18%}#[v]/{30%}#[v]`,
       isGranted: checkAscs[1],
       applyBuff: ({ totalAttr, charData, partyData, desc, tracker }) => {
         const visionCount = countVision(partyData, charData);
@@ -37,8 +37,8 @@ const Yelan: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.A4,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `During Depth-Clarion Dice [EB], your own active character gains {1%}#[b,gr] {DMG Bonus}#[gr] which
-      will increase by a further {3.5%}#[b,gr] every second. Maximum {50%}#[r].`,
+      description: `During Depth-Clarion Dice [EB], your own active character gains {1%}#[v] {DMG Bonus}#[k] which
+      will increase by a further {3.5%}#[v] every second. Maximum {50%}#[m].`,
       isGranted: checkAscs[4],
       inputConfigs: [
         {
@@ -55,8 +55,8 @@ const Yelan: DefaultAppCharacter = {
       index: 2,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      description: `Increases all party members' {Max HP}#[gr] by {10%}#[b,gr] for 25s for every opponent marked by
-      Lifeline [~ES] when the Lifeline explodes. Maximum {40%}#[r].`,
+      description: `Increases all party members' {Max HP}#[k] by {10%}#[v] for 25s for every opponent marked by
+      Lifeline [~ES] when the Lifeline explodes. Maximum {40%}#[m].`,
       isGranted: checkCons[4],
       inputConfigs: [
         {

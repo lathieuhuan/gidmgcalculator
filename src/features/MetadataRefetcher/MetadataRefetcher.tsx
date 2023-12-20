@@ -55,7 +55,7 @@ export const MetadataRefetcher = ({
   if (isError) {
     return (
       <div className={"flex flex-col items-center " + className}>
-        <p className="text-lightred">
+        <p className="text-red-100">
           Failed to fetch App Data. <span>{time ? `Try again in ${time}s.` : "Please try again."}</span>
         </p>
         <Button

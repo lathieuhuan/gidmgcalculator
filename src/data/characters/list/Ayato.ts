@@ -39,9 +39,9 @@ const Ayato: DefaultAppCharacter = {
       src: EModSrc.ES,
       affect: EModAffect.SELF,
       description: `• Converts his Normal Attack DMG into AoE {Hydro DMG}#[hydro] (Shunsuiken) that cannot be overridden.
-      <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase {Shunsuiken DMG}#[gr] based on his
-      {Max HP}#[gr].
-      <br />• At {C2}#[g], Ayato's {Max HP}#[gr] is increased by {50%}#[b,gr] when he has at least 3 Namisen stacks.`,
+      <br />• On hit, Shunsuikens grant Ayato Namisen stacks which increase {Shunsuiken DMG}#[k] based on his
+      {Max HP}#[k].
+      <br />• At {C2}#[ms], Ayato's {Max HP}#[k] is increased by {50%}#[v] when he has at least 3 Namisen stacks.`,
       inputConfigs: [
         {
           label: "Namisen stacks",
@@ -74,7 +74,7 @@ const Ayato: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.EB,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Increases the {Normal Attack DMG}#[gr] of characters within its AoE by {@0}#[b,gr].`,
+      description: `Increases the {Normal Attack DMG}#[k] of characters within its AoE by {@0}#[v].`,
       inputConfigs: [
         {
           label: "Elemental Burst Level",
@@ -91,7 +91,7 @@ const Ayato: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `{Shunsuiken DMG}#[gr] is increased by {40%}#[b,gr] against opponents with 50% HP or less.`,
+      description: `{Shunsuiken DMG}#[k] is increased by {40%}#[v] against opponents with 50% HP or less.`,
       isGranted: checkCons[1],
       applyBuff: ({ calcItemBuffs }) => {
         calcItemBuffs.push(genExclusiveBuff(EModSrc.C1, ["ES.0", "ES.1"], "pct_", 40));
@@ -101,8 +101,8 @@ const Ayato: DefaultAppCharacter = {
       index: 5,
       src: EModSrc.C4,
       affect: EModAffect.PARTY,
-      description: `After using Kamisato Art: Suiyuu [EB], all nearby party members will have {15%}#[b,gr] increased
-      {Normal Attack SPD}#[gr] for 15s.`,
+      description: `After using Kamisato Art: Suiyuu [EB], all nearby party members will have {15%}#[v] increased
+      {Normal Attack SPD}#[k] for 15s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "naAtkSpd_", 15),
     },

@@ -25,11 +25,11 @@ const Kokomi: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.SELF,
-      description: `Kokomi's {Normal Attack, Charged Attack and Bake-Kurage DMG}#[gr] are increased based on her
-      {Max HP}#[gr].
-      <br />• At {A4}#[g], {Normal and Charged Attack DMG Bonus}#[gr] is further increasd based on {15%}#[b,gr] of her
-      {Healing Bonus}#[gr].
-      <br />• At {C4}#[g], Kokomi's {Normal Attack SPD}#[gr] is increased by {10%}#[b,gr].`,
+      description: `Kokomi's {Normal Attack, Charged Attack and Bake-Kurage DMG}#[k] are increased based on her
+      {Max HP}#[k].
+      <br />• At {A4}#[ms], {Normal and Charged Attack DMG Bonus}#[k] is further increasd based on {15%}#[v] of her
+      {Healing Bonus}#[k].
+      <br />• At {C4}#[ms], Kokomi's {Normal Attack SPD}#[k] is increased by {10%}#[v].`,
       applyFinalBuff: (obj) => {
         const { char } = obj;
         const fields: AttackPatternPath[] = ["NA.flat", "CA.flat", "ES.flat"];
@@ -53,7 +53,7 @@ const Kokomi: DefaultAppCharacter = {
       index: 3,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `During Nereid's Ascension, Kokomi gains a {40%}#[b,gr] {Hydro DMG Bonus}#[gr] for 4s after her
+      description: `During Nereid's Ascension, Kokomi gains a {40%}#[v] {Hydro DMG Bonus}#[k] for 4s after her
       Normal and Charged Attacks heal, or would heal, any party member with 80% or more HP.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "hydro", 40),

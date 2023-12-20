@@ -1,19 +1,19 @@
 import clsx from "clsx";
-import type { ButtonHTMLAttributes, ReactElement } from "react";
+import { ButtonHTMLAttributes, ReactElement } from "react";
 import { FaInfoCircle, FaTimes } from "react-icons/fa";
-import type { StringRecord } from "@Src/types";
+import { StringRecord } from "@Src/types";
 
 const bgColorByVariant: StringRecord = {
-  positive: "bg-lightgold",
-  neutral: "bg-green",
-  negative: "bg-darkred",
-  default: "bg-default",
+  positive: "bg-yellow-400",
+  neutral: "bg-green-300",
+  negative: "bg-red-600",
+  default: "bg-light-400",
 };
 const colorByVariant: StringRecord = {
-  positive: "text-lightgold",
-  neutral: "text-green",
-  negative: "text-darkred",
-  default: "text-default",
+  positive: "text-yellow-400",
+  neutral: "text-green-300",
+  negative: "text-red-600",
+  default: "text-light-400",
 };
 
 const buttonPadding = {
@@ -80,7 +80,7 @@ export const Button = ({
       ? ""
       : boneOnly
       ? colorByVariant[variant]
-      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"],
+      : ["shadow-common", bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"],
     rest.disabled ? "opacity-50" : "glow-on-hover",
     rest.className,
   ];
@@ -128,7 +128,7 @@ export const ToggleButton = ({ active, variant = "default", ...rest }: ToggleBut
     <Button
       {...rest}
       variant="custom"
-      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-default" : "text-black"])}
+      className={clsx(active && [bgColorByVariant[variant], variant === "negative" ? "text-light-400" : "text-black"])}
     />
   );
 };
@@ -143,7 +143,7 @@ export const CloseButton = ({ hoverRed = true, ...rest }: CloseButtonProps) => {
         variant="default"
         icon={<FaTimes className="shrink-0" />}
         {...rest}
-        className={rest.className + (hoverRed ? " hover:text-darkred" : "")}
+        className={rest.className + (hoverRed ? " hover:text-red-600" : "")}
       />
     );
   }
@@ -179,7 +179,7 @@ export const InfoSign = (props: InfoSignProps) => {
   }
   return (
     <Button
-      className={clsx(props.selfHover ? "hover:text-lightgold" : "group-hover:text-lightgold", props.className)}
+      className={clsx(props.selfHover ? "hover:text-yellow-400" : "group-hover:text-yellow-400", props.className)}
       boneOnly
       paddingCls={null}
       icon={<FaInfoCircle className="text-2xl" />}

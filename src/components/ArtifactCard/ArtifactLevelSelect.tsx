@@ -18,7 +18,7 @@ export const ArtifactLevelSelect = ({
 }: ArtifactLevelSelectProps) => {
   if (mutable) {
     return (
-      <div className={"rounded-circle bg-darkblue-3 " + className}>
+      <div className={"rounded-circle bg-dark-500 " + className}>
         <select
           className={`px-2 pt-2 pb-1 text-lg text-rarity-${rarity} font-bold appearance-none cursor-pointer`}
           value={level}
@@ -34,7 +34,7 @@ export const ArtifactLevelSelect = ({
     );
   }
   return (
-    <div className={"px-2 pt-2 pb-1 w-12 bg-darkblue-3 rounded-circle cursor-default " + className}>
+    <div className={"px-2 pt-2 pb-1 w-12 bg-dark-500 rounded-circle cursor-default " + className}>
       <p className={`text-lg text-rarity-${rarity} font-bold`}>{"+" + level}</p>
     </div>
   );

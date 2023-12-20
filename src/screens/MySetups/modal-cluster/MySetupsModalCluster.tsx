@@ -5,7 +5,7 @@ import { updateUI } from "@Store/uiSlice";
 import { selectMySetupModalType } from "@Store/uiSlice/selectors";
 
 // Component
-import { Lightgold, Modal, Red, StandardModal } from "@Src/pure-components";
+import { Yellow, Modal, Red, StandardModal } from "@Src/pure-components";
 import { CombineMore, FirstCombine } from "../modal-content";
 
 interface MySetupsModalClusterProps {
@@ -23,22 +23,22 @@ export const MySetupsModalCluster = (props: MySetupsModalClusterProps) => {
     <>
       <StandardModal
         active={modalType === "TIPS"}
-        title={<p className="mb-2 text-1.5xl text-orange font-bold">Tips</p>}
+        title={<p className="mb-2 text-1.5xl text-orange-500 font-bold">Tips</p>}
         onClose={closeModal}
       >
         <ul className="pl-4 pr-2 list-disc space-y-1 contains-inline-svg">
           <li>
-            <Lightgold>Update setups</Lightgold>: When you press <FaWrench /> on a saved setup, you're pushing a{" "}
+            <Yellow>Update setups</Yellow>: When you press <FaWrench /> on a saved setup, you're pushing a{" "}
             <Red>copy</Red> of it to the Calculator, so don't forget to save the modified copy if you want to apply the
             changes to that setup.
           </li>
           <li>
-            <Lightgold>Teammate details</Lightgold> on a setup can be viewed when you press a teammate icon. Here you
+            <Yellow>Teammate details</Yellow> on a setup can be viewed when you press a teammate icon. Here you
             can build a setup for that teammate based on the main setup. Party members and Target will be the same. Some
             modifiers will remain activated and keep their inputs.
           </li>
           <li>
-            <Lightgold>Complex Setup</Lightgold> is the result of combining setups of the same 4 party members. You can
+            <Yellow>Complex Setup</Yellow> is the result of combining setups of the same 4 party members. You can
             break this complex into individual setups again by pressing the <FaUnlink /> before its name. Now at
             teammate details you can switch to that setup.
           </li>

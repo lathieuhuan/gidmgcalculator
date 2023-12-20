@@ -23,7 +23,7 @@ import type {
   Vision,
 } from "@Src/types";
 
-export type UsedCode = {
+export type UsedMod = {
   itemCode: number;
   modIndex: number;
 };

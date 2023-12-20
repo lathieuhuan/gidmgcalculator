@@ -23,7 +23,7 @@ const Venti: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `When Venti picks up an Elemental Orb or Particle, he receives a {25%}#[b,gr] {Anemo DMG Bonus}#[gr]
+      description: `When Venti picks up an Elemental Orb or Particle, he receives a {25%}#[v] {Anemo DMG Bonus}#[k]
       for 10s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "anemo", 25),
@@ -33,9 +33,9 @@ const Venti: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      description: `Skyward Sonnet [ES] decreases opponents' {Anemo RES}#[gr] and {Physical RES}#[gr] by {12%}#[b,gr]
-      for 10s. Opponents launched by Skyward Sonnet suffer an additional {12%}#[b,gr] {Anemo RES}#[gr] and
-      {Physical RES}#[gr] decrease while airborne.`,
+      description: `Skyward Sonnet [ES] decreases opponents' {Anemo RES}#[k] and {Physical RES}#[k] by {12%}#[v]
+      for 10s. Opponents launched by Skyward Sonnet suffer an additional {12%}#[v] {Anemo RES}#[k] and
+      {Physical RES}#[k] decrease while airborne.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -51,8 +51,8 @@ const Venti: DefaultAppCharacter = {
     {
       index: 2,
       src: EModSrc.C6,
-      description: `Wind's Grand Ode decreases opponents' {Anemo RES}#[gr] and {RES}#[gr] towards the
-      {Element absorbed}#[gr] by {20%}#[b,gr].`,
+      description: `Wind's Grand Ode decreases opponents' {Anemo RES}#[k] and {RES}#[k] towards the
+      {Element absorbed}#[k] by {20%}#[v].`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

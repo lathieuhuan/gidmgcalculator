@@ -25,9 +25,9 @@ const Neuvillette: DefaultAppCharacter = {
       isGranted: checkAscs[1],
       affect: EModAffect.SELF,
       description: `When a party member triggers a hydro-related reaction, Neuvillette obtains 1 stack of Past Draconic
-      Glories for 30s. Max 3 stacks. The effect increases Charged Attack: {Equitable Judgment DMG}#[gr] by
-      {1.1}#[b,gr]/{1.25}#[b,gr]/{1.6}#[b,gr] times.
-      <br/>• At {C2}#[g], each stack also increases {Equitable Judgment CRIT DMG}#[gr] by {14%}#[b,gr].`,
+      Glories for 30s. Max 3 stacks. The effect increases Charged Attack: {Equitable Judgment DMG}#[k] by
+      {1.1}#[v]/{1.25}#[v]/{1.6}#[v] times.
+      <br/>• At {C2}#[ms], each stack also increases {Equitable Judgment CRIT DMG}#[k] by {14%}#[v].`,
       inputConfigs: [
         {
           type: "stacks",
@@ -50,8 +50,8 @@ const Neuvillette: DefaultAppCharacter = {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
       affect: EModAffect.SELF,
-      description: `For each {1%}#[gr] of Neuvillette's {HP}#[gr] over 30%, he will gain {0.6%}#[b,gr]
-      {Hydro DMG Bonus}#[gr], upto {30%}#[r].`,
+      description: `For each {1%}#[k] of Neuvillette's {HP}#[k] over 30%, he will gain {0.6%}#[v]
+      {Hydro DMG Bonus}#[k], upto {30%}#[m].`,
       inputConfigs: [
         {
           label: "Current HP%",

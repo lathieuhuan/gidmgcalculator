@@ -23,7 +23,7 @@ const Klee: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.A1,
       affect: EModAffect.SELF,
-      description: `Explosive Spark increases the next {Charged Attack DMG}#[gr] by {50%}#[b,gr].`,
+      description: `Explosive Spark increases the next {Charged Attack DMG}#[k] by {50%}#[v].`,
       isGranted: checkAscs[1],
       applyBuff: makeModApplier("attPattBonus", "CA.pct_", 50),
     },
@@ -31,8 +31,8 @@ const Klee: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C6,
       affect: EModAffect.PARTY,
-      description: `When Sparks 'n' Splash [EB] is used, all party members will gain a {10%}#[b,gr]
-      {Pyro DMG Bonus}#[gr] for 25s.`,
+      description: `When Sparks 'n' Splash [EB] is used, all party members will gain a {10%}#[v]
+      {Pyro DMG Bonus}#[k] for 25s.`,
       isGranted: checkCons[6],
       applyBuff: makeModApplier("totalAttr", "pyro", 10),
     },
@@ -41,7 +41,7 @@ const Klee: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      description: `On hit, Jumpy Dumpty's [ES] mines decreases opponents' {DEF}#[gr] by {23%}#[b,gr] for 10s.`,
+      description: `On hit, Jumpy Dumpty's [ES] mines decreases opponents' {DEF}#[k] by {23%}#[v] for 10s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "def", 23),
     },

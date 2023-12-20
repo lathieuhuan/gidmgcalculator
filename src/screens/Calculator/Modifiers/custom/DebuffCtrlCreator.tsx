@@ -6,7 +6,7 @@ import { updateCustomDebuffCtrls } from "@Store/calculatorSlice";
 
 // Hook
 import { useDispatch } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { ButtonGroup, Input } from "@Src/pure-components";
@@ -43,7 +43,7 @@ export default function DebuffCtrlCreator({ onClose }: DebuffCtrlCreatorProps) {
     <>
       <div className="mx-auto mt-4 px-2 flex items-center">
         <select
-          className="pr-2 text-default text-right text-last-right"
+          className="pr-2 text-light-400 text-right text-last-right"
           value={config.type}
           onChange={(e) => onChangeType(e.target.value)}
         >

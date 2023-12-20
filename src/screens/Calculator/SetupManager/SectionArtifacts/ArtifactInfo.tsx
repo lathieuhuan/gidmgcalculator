@@ -16,7 +16,7 @@ import { selectUserArts } from "@Store/userDatabaseSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Component
 import { Modal, ConfirmModalBody, Button } from "@Src/pure-components";
@@ -59,7 +59,7 @@ export function ArtifactInfo({ artifact, pieceIndex, onClickRemovePiece, onClick
             <div className="py-1 relative">
               <FaChevronDown className="absolute top-2 left-1 scale-110" />
               <select
-                className="pl-8 text-lg text-default appearance-none"
+                className="pl-8 text-lg text-light-400 appearance-none"
                 value={mainStatType}
                 onChange={(e) =>
                   dispatch(

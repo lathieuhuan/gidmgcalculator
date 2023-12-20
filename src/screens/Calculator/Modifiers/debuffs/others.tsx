@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from "@Store/hooks";
 // Util
 import { findByIndex } from "@Src/utils";
 import { getArtifactSetBonuses } from "@Src/utils/calculation";
+import { appData } from "@Src/data";
 
 // Component
 import { Green } from "@Src/pure-components";
 import { getArtifactDescription, ModifierTemplate, renderModifiers } from "@Src/components";
-import { appData } from "@Src/data";
 
 export function ElementDebuffs() {
   const dispatch = useDispatch();
@@ -44,7 +44,6 @@ export function ElementDebuffs() {
       />
       {geoResonance && (
         <ModifierTemplate
-          key="rock"
           checked={geoResonance.activated}
           onToggle={() => {
             dispatch(updateResonance({ ...geoResonance, activated: !geoResonance.activated }));
@@ -94,7 +93,7 @@ export function ArtifactDebuffs() {
     });
   }, [JSON.stringify(usedArtCodes)]);
 
-  const content: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   artDebuffCtrls.forEach((ctrl, ctrlIndex) => {
     if (!usedArtCodes.includes(ctrl.code)) return;
@@ -109,7 +108,7 @@ export function ArtifactDebuffs() {
         modCtrlName: "artDebuffCtrls",
         ctrlIndex,
       };
-      content.push(
+      modifierElmts.push(
         <ModifierTemplate
           key={ctrlIndex}
           heading={data.name}
@@ -117,7 +116,9 @@ export function ArtifactDebuffs() {
           inputs={ctrl.inputs}
           inputConfigs={debuff.inputConfigs}
           checked={ctrl.activated}
-          onToggle={() => dispatch(toggleModCtrl(path))}
+          onToggle={() => {
+            dispatch(toggleModCtrl(path));
+          }}
           onSelectOption={(value, inputIndex) => {
             dispatch(
               changeModCtrlInput({
@@ -131,5 +132,6 @@ export function ArtifactDebuffs() {
       );
     }
   });
-  return renderModifiers(content, "debuffs", true);
+
+  return renderModifiers(modifierElmts, "debuffs", true);
 }

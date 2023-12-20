@@ -24,7 +24,7 @@ const Beidou: DefaultAppCharacter = {
       src: EModSrc.A4,
       affect: EModAffect.SELF,
       description: `After unleashing Tidecaller [ES] with its maximum DMG Bonus, Beidou's
-      {Normal and Charged Attacks DMG}#[gr] and {ATK SPD}#[gr] are increased by {15%}#[b,gr] for 10s.`,
+      {Normal and Charged Attacks DMG}#[k] and {ATK SPD}#[k] are increased by {15%}#[v] for 10s.`,
       isGranted: checkAscs[4],
       applyBuff: ({ totalAttr, attPattBonus, desc, tracker }) => {
         applyModifier(desc, attPattBonus, ["NA.pct_", "CA.pct_"], 15, tracker);
@@ -36,8 +36,8 @@ const Beidou: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C6,
-      description: `During the duration of Stormbreaker [EB], the {Electro RES}#[gr] of surrounding opponents is
-      decreased by {15%}#[b,gr].`,
+      description: `During the duration of Stormbreaker [EB], the {Electro RES}#[k] of surrounding opponents is
+      decreased by {15%}#[v].`,
       isGranted: checkCons[6],
       applyDebuff: makeModApplier("resistReduct", "electro", 15),
     },

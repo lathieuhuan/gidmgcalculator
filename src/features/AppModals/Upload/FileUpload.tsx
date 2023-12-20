@@ -60,7 +60,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
 
   return (
     <div className="flex flex-col">
-      <p className="mt-4 px-8 text-center text-default">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
+      <p className="mt-4 px-8 text-center text-light-400">Upload a .TXT file of GIDC or a .JSON file in GOOD format</p>
 
       <input
         ref={inputRef}
@@ -86,7 +86,7 @@ const FileUploadCore = ({ onSuccessUploadFile }: FileUploadProps) => {
 export const FileUpload = withModal(
   FileUploadCore,
   {
-    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
     style: {
       width: "28rem",
     },

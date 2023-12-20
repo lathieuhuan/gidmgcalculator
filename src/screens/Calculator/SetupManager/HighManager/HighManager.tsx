@@ -23,7 +23,7 @@ import { SetupControl } from "./SetupControl";
 
 import styles from "../../styles.module.scss";
 
-function HiddenManager() {
+function HighManagerCore() {
   const dispatch = useDispatch();
 
   const setupManageInfos = useSelector(selectSetupManageInfos);
@@ -149,13 +149,13 @@ function HiddenManager() {
   return (
     <div className="p-4 h-full flex flex-col">
       <button
-        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-darkred"
+        className="absolute top-3 right-3 w-7 h-7 text-xl flex-center hover:text-red-400"
         onClick={() => dispatch(updateUI({ highManagerActive: false }))}
       >
         <FaTimes />
       </button>
 
-      <p className="my-2 text-2xl text-center text-orange font-bold">MANAGE SETUPS</p>
+      <p className="my-2 text-2xl text-center text-orange-500 font-bold">MANAGE SETUPS</p>
 
       <div className="flex-grow hide-scrollbar">
         <div>
@@ -185,7 +185,7 @@ function HiddenManager() {
             <div className="mt-4 space-y-4">
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-default"
+                className="w-full bg-blue-400 text-black"
                 icon={<FaPlus />}
                 onClick={addNewSetup}
               >
@@ -193,8 +193,8 @@ function HiddenManager() {
               </Button>
               <Button
                 variant="custom"
-                className="w-full bg-blue-600 text-default"
-                icon={<BiImport />}
+                className="w-full bg-blue-400 text-black"
+                icon={<BiImport className="text-xl" />}
                 onClick={() => setImportManageOn(true)}
               >
                 Import
@@ -207,7 +207,7 @@ function HiddenManager() {
       <Button className="mt-4 mx-auto group relative" variant="positive" onClick={tryApplyNewSettings}>
         {errorCode === "NO_SETUPS" && (
           <Popover
-            className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-lightred group-hover:scale-100"
+            className="w-56 mb-2 px-2 py-1 left-1/2 -translate-x-1/2 bottom-full text-center text-red-100 group-hover:scale-100"
             withTooltipStyle
           >
             Please have atleast 1 setup
@@ -230,11 +230,11 @@ export default function HighManager({ height }: HighManagerProps) {
   return (
     <CollapseAndMount
       active={highManagerActive}
-      className={clsx("absolute bottom-0 left-0 bg-darkblue-3 z-30", styles.card)}
+      className={clsx("absolute bottom-0 left-0 bg-dark-500 z-30", styles.card)}
       activeHeight={height / 16 + 2 + "rem"}
       duration={200}
     >
-      <HiddenManager />
+      <HighManagerCore />
     </CollapseAndMount>
   );
 }

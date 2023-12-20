@@ -22,7 +22,7 @@ const Xingqiu: DefaultAppCharacter = {
     {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
-      description: `Xingqiu gains a {20%}#[b,gr] {Hydro DMG Bonus}#[gr].`,
+      description: `Xingqiu gains a {20%}#[v] {Hydro DMG Bonus}#[k].`,
       applyBuff: makeModApplier("totalAttr", "hydro", 20),
     },
   ],
@@ -31,8 +31,8 @@ const Xingqiu: DefaultAppCharacter = {
       index: 1,
       src: EModSrc.C4,
       affect: EModAffect.SELF,
-      description: `During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen {[ES] DMG}#[gr] is increased by
-      {50%}#[b,gr].`,
+      description: `During Guhua Sword: Raincutter [EB], Guhua Sword: Fatal Rainscreen {[ES] DMG}#[k] is increased by
+      {50%}#[v].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "ES.multPlus", 50),
     },
@@ -41,7 +41,7 @@ const Xingqiu: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.C2,
-      description: `Decreases the {Hydro RES}#[gr] of opponents hit by sword rain attacks by {15%}#[b,gr] for 4s.`,
+      description: `Decreases the {Hydro RES}#[k] of opponents hit by sword rain attacks by {15%}#[v] for 4s.`,
       isGranted: checkCons[2],
       applyDebuff: makeModApplier("resistReduct", "hydro", 15),
     },

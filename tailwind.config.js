@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("tailwindcss/colors");
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   safelist: [
@@ -30,6 +32,61 @@ module.exports = {
       md2: "769px",
       lg: "1025px",
     },
+    colors: {
+      transparent: colors.transparent,
+      light: {
+        100: "#ffffff", // root
+        400: "#e0e0e0",
+        800: "#b8b8b8",
+      },
+      dark: {
+        500: "#2c315c",
+        700: "#151a40",
+        900: "#050926",
+      },
+      black: "#000000",
+      red: {
+        100: "#ff8d8c",
+        200: "#ff7370",
+        // 300: "#ff4a47",
+        400: "#ff221f",
+        // 500: "#f50400",
+        600: "#cc0300", // root
+        700: "#a30300",
+        800: "#7a0200",
+        // 900: "#520100"
+        rose: "#f43f5e",
+      },
+      green: {
+        // 200: "#89fba9",
+        300: "#62f98e", // root
+      },
+      blue: {
+        400: "#60a5fa",
+      },
+      orange: {
+        500: "#fa8a12",
+      },
+      yellow: {
+        200: "#f5df8f",
+        300: "#f5dc6e", // modified from #f1d46a
+        400: "#edc73d", // root
+      },
+      pyro: "#ff504a",
+      hydro: "#2eaaff",
+      dendro: "#49e03e",
+      electro: "#cd77ff",
+      anemo: "#48ffce",
+      cryo: "#75faff",
+      geo: "#ffc558",
+      rarity: {
+        1: "#808080",
+        2: "#49e03e",
+        3: "#8bb6ff",
+        4: "#e32eff",
+        5: "#ffd700",
+      },
+    },
     extend: {
       spacing: {
         13: "3.25rem",
@@ -42,8 +99,7 @@ module.exports = {
         "2.5xl": "1.25rem",
       },
       boxShadow: {
-        common:
-          "rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px",
+        common: "rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px",
         "white-glow": "0 0 3px white",
       },
       fontSize: {
@@ -58,37 +114,6 @@ module.exports = {
       },
       lineHeight: {
         base: 1.35,
-      },
-      colors: {
-        default: "#e6e6e6",
-        lesser: "#b9b9b9",
-        darkblue: {
-          1: "#050926",
-          2: "#151a40",
-          3: "#2c315c",
-        },
-        darkred: "#cd212a",
-        darkerred: "#8a1200",
-        lightred: "#ff8d8c",
-        lightgold: "#edc73d", // #ffdc4e
-        lightorange: "#ffa629",
-        dullyellow: "#f5dc6e",
-        green: "#62f98e",
-        orange: "#fa8a12",
-        pyro: "#ff504a",
-        hydro: "#2eaaff",
-        dendro: "#49e03e",
-        electro: "#cd77ff",
-        anemo: "#48ffce",
-        cryo: "#75faff",
-        geo: "#ffc558",
-        rarity: {
-          1: "#808080",
-          2: "#49e03e",
-          3: "#8bb6ff",
-          4: "#e32eff",
-          5: "#ffd700",
-        },
       },
       width: {
         18: "4.5rem",

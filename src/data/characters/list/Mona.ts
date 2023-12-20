@@ -35,7 +35,7 @@ const Mona: DefaultAppCharacter = {
   innateBuffs: [
     {
       src: EModSrc.A4,
-      description: `Increases Mona's {Hydro DMG Bonus}#[gr] by {20%}#[b,gr] of her {Energy Recharge}#[gr].`,
+      description: `Increases Mona's {Hydro DMG Bonus}#[k] by {20%}#[v] of her {Energy Recharge}#[k].`,
       isGranted: checkAscs[4],
       applyFinalBuff: ({ totalAttr, desc, tracker }) => {
         applyModifier(desc, totalAttr, "hydro", getA4BuffValue(totalAttr), tracker);
@@ -47,10 +47,10 @@ const Mona: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.EB,
       affect: EModAffect.PARTY,
-      description: `Omen increases {DMG}#[gr] taken by opponents.
-      <br />• At {C1}#[g], increases {Electro-Charged DMG}#[gr], {Vaporize DMG}#[gr], and {Hydro Swirl DMG}#[gr] by
-      {15%}#[b,gr] for 8s.
-      <br />• At {C4}#[g], increases {CRIT Rate}#[gr] by {15%}#[b,gr].`,
+      description: `Omen increases {DMG}#[k] taken by opponents.
+      <br />• At {C1}#[ms], increases {Electro-Charged DMG}#[k], {Vaporize DMG}#[k], and {Hydro Swirl DMG}#[k] by
+      {15%}#[v] for 8s.
+      <br />• At {C4}#[ms], increases {CRIT Rate}#[k] by {15%}#[v].`,
       inputConfigs: [
         { label: "Elemental Burst Level", type: "level", for: "teammate" },
         { label: "Constellation 1", type: "check", for: "teammate" },
@@ -72,8 +72,8 @@ const Mona: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C6,
       affect: EModAffect.SELF,
-      description: `Upon entering Illusory Torrent, Mona gains a {60%}#[b,gr] {DMG bonus}#[gr] of her next
-      {Charged Attack}#[gr] per second of movement (up to {180%}#[r]) for 8s.`,
+      description: `Upon entering Illusory Torrent, Mona gains a {60%}#[v] {DMG bonus}#[k] of her next
+      {Charged Attack}#[k] per second of movement (up to {180%}#[m]) for 8s.`,
       isGranted: checkCons[6],
       inputConfigs: [
         {

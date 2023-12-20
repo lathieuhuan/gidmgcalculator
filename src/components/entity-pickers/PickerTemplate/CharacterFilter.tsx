@@ -23,7 +23,7 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
                 key={i}
                 className={clsx("cursor-pointer rounded-full w-8 h-8 lg:w-10 lg:h-10 shrink-0 flex-center", {
                   "ml-6": i,
-                  "border-3 border-white": chosen,
+                  "border-3 border-light-400": chosen,
                 })}
                 onClick={() => {
                   onClickOption(chosen, { type: "vision", value: vision });
@@ -43,7 +43,7 @@ export const CharacterFilter = (props: CharacterFilterProps) => {
                 key={i}
                 className={clsx("cursor-pointer rounded-full w-9 h-9 mt-6 md2:mt-0 lg:w-11 lg:h-11 shrink-0", {
                   "ml-6": i,
-                  "border-3 border-white": chosen,
+                  "border-3 border-light-400": chosen,
                 })}
                 src={getImgSrc(src)}
                 alt={wpType}

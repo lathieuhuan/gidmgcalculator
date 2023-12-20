@@ -119,7 +119,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
               key={teammateIndex}
               className={
                 "w-18 h-18 cursor-pointer" +
-                (isCalculated ? " rounded-circle shadow-3px-3px shadow-lightgold cursor-pointer" : "")
+                (isCalculated ? " rounded-circle shadow-3px-3px shadow-yellow-400 cursor-pointer" : "")
               }
             >
               <CharacterPortrait
@@ -178,7 +178,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         <div className="flex items-center" style={{ maxWidth: "22.5rem" }}>
           {isOriginal ? null : window.innerWidth > 1025 ? (
             <Button
-              className="hover:text-darkred group"
+              className="hover:text-red-400 group"
               variant="custom"
               icon={
                 <>
@@ -191,7 +191,7 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
           ) : (
             <Button variant="negative" boneOnly icon={<FaUnlink />} onClick={uncombine} />
           )}
-          <p className="px-1 text-xl text-orange font-semibold truncate">{setupName || setup.name}</p>
+          <p className="px-1 text-xl text-orange-500 font-semibold truncate">{setupName || setup.name}</p>
         </div>
 
         <div className="mt-2 lg:mt-0 pb-2 flex space-x-4 justify-end">
@@ -230,25 +230,25 @@ export function SetupTemplate({ ID, setup, setupName, weapon, artifacts = [], al
         </div>
       </div>
 
-      <div className="px-4 pt-4 pb-3 rounded-lg bg-darkblue-1 flex flex-col lg:flex-row">
+      <div className="px-4 pt-4 pb-3 rounded-lg bg-dark-900 flex flex-col lg:flex-row">
         <div className="flex flex-col">
           {display.mainCharacter}
           {display.teammate}
         </div>
 
-        <div className="hidden lg:block w-0.5 mx-4 bg-darkblue-3" />
+        <div className="hidden lg:block w-0.5 mx-4 bg-dark-500" />
 
         <div className="mt-4 lg:mt-0 flex flex-col">
           <div className="flex justify-center space-x-4">
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
               disabled={!isFetched}
               onClick={openModal("STATS")}
             >
               Stats
             </button>
             <button
-              className="px-4 py-1 bg-darkblue-3 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
+              className="px-4 py-1 bg-dark-500 font-semibold glow-on-hover leading-base rounded-2xl disabled:opacity-60"
               disabled={!isFetched}
               onClick={openModal("MODIFIERS")}
             >

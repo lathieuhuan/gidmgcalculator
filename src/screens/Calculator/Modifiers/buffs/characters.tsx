@@ -29,11 +29,11 @@ export function SelfBuffs() {
   });
 
   const { innateBuffs = [], buffs = [] } = appData.getCharData(char.name) || {};
-  const content: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   innateBuffs.forEach((buff, index) => {
     if (buff.isGranted(char)) {
-      content.push(
+      modifierElmts.push(
         <ModifierTemplate
           key={`innate-${index}`}
           mutable={false}
@@ -59,7 +59,11 @@ export function SelfBuffs() {
       };
       const inputConfigs = buff.inputConfigs?.filter((config) => config.for !== "teammate");
 
-      content.push(
+      const updateBuffCtrlInput = (value: number, inputIndex: number) => {
+        dispatch(changeModCtrlInput(Object.assign({ value, inputIndex }, path)));
+      };
+
+      modifierElmts.push(
         <ModifierTemplate
           key={`self-${ctrl.index}`}
           heading={buff.src}
@@ -68,50 +72,36 @@ export function SelfBuffs() {
             { fromSelf: true, char, partyData, inputs },
             charData.dsGetters
           )}
-          checked={ctrl.activated}
-          onToggle={() => dispatch(toggleModCtrl(path))}
           inputs={inputs}
           inputConfigs={inputConfigs}
-          onChangeText={(value, i) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value,
-              })
-            );
+          checked={ctrl.activated}
+          onToggle={() => {
+            dispatch(toggleModCtrl(path));
           }}
-          onToggleCheck={(currentinput, i) => {
-            const newInput = currentinput === 1 ? 0 : 1;
-            dispatch(changeModCtrlInput({ ...path, inputIndex: i, value: newInput }));
+          onToggleCheck={(currentinput, inputIndex) => {
+            updateBuffCtrlInput(currentinput === 1 ? 0 : 1, inputIndex);
           }}
-          onSelectOption={(value, i) => {
-            dispatch(
-              changeModCtrlInput({
-                ...path,
-                inputIndex: i,
-                value: isNaN(+value) ? value : +value,
-              })
-            );
-          }}
+          onChangeText={updateBuffCtrlInput}
+          onSelectOption={updateBuffCtrlInput}
         />
       );
     }
   });
-  return renderModifiers(content, "buffs", true);
+
+  return renderModifiers(modifierElmts, "buffs", true);
 }
 
 export function PartyBuffs() {
   const party = useSelector(selectParty);
   const partyData = appData.getPartyData(useSelector(selectParty));
-  const content: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
 
   party.forEach((teammate, index) => {
     if (teammate && teammate.buffCtrls.length) {
-      content.push(<TeammateBuffs key={index} teammate={teammate} teammateIndex={index} partyData={partyData} />);
+      modifierElmts.push(<TeammateBuffs key={index} teammate={teammate} teammateIndex={index} partyData={partyData} />);
     }
   });
-  return renderModifiers(content, "buffs");
+  return renderModifiers(modifierElmts, "buffs");
 }
 
 interface TeammateBuffsProps {
@@ -123,7 +113,7 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
   const dispatch = useDispatch();
   const char = useSelector(selectChar);
 
-  const subContent: JSX.Element[] = [];
+  const modifierElmts: JSX.Element[] = [];
   const teammateData = appData.getCharData(teammate.name);
 
   teammate.buffCtrls.forEach((ctrl, ctrlIndex) => {
@@ -137,11 +127,14 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
       ctrlIndex,
     };
 
-    subContent.push(
+    const updateBuffCtrlInput = (value: number, inputIndex: number) => {
+      dispatch(changeTeammateModCtrlInput(Object.assign({ value, inputIndex }, path)));
+    };
+
+    modifierElmts.push(
       <ModifierTemplate
         key={ctrl.index}
         checked={ctrl.activated}
-        onToggle={() => dispatch(toggleTeammateModCtrl(path))}
         heading={buff.src}
         description={parseCharacterDescription(
           buff.description,
@@ -150,40 +143,22 @@ function TeammateBuffs({ teammate, teammateIndex, partyData }: TeammateBuffsProp
         )}
         inputs={inputs}
         inputConfigs={buff.inputConfigs}
-        onChangeText={(value, i) => {
-          dispatch(
-            changeTeammateModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value,
-            })
-          );
+        onToggle={() => {
+          dispatch(toggleTeammateModCtrl(path));
         }}
-        onToggleCheck={(currentInput, i) => {
-          dispatch(
-            changeTeammateModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value: currentInput === 1 ? 0 : 1,
-            })
-          );
+        onToggleCheck={(currentInput, inputIndex) => {
+          updateBuffCtrlInput(currentInput === 1 ? 0 : 1, inputIndex);
         }}
-        onSelectOption={(value, i) => {
-          dispatch(
-            changeTeammateModCtrlInput({
-              ...path,
-              inputIndex: i,
-              value: +value,
-            })
-          );
-        }}
+        onChangeText={updateBuffCtrlInput}
+        onSelectOption={updateBuffCtrlInput}
       />
     );
   });
+
   return (
     <div>
       <p className={`text-lg text-${teammateData.vision} font-bold text-center uppercase`}>{teammate.name}</p>
-      <div className="mt-1 space-y-3">{subContent}</div>
+      <div className="mt-1 space-y-3">{modifierElmts}</div>
     </div>
   );
 }

@@ -23,7 +23,7 @@ const Collei: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.SELF,
-      description: `When in the party and not on the field, Collei's {Energy Recharge}#[gr] is increased by {20%}#[b,gr].`,
+      description: `When in the party and not on the field, Collei's {Energy Recharge}#[k] is increased by {20%}#[v].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "er_", 20),
     },
@@ -31,8 +31,8 @@ const Collei: DefaultAppCharacter = {
       index: 4,
       src: EModSrc.C4,
       affect: EModAffect.TEAMMATE,
-      description: `Using Trump-Card Kitty [EB] will increase all nearby characters' {Elemental Mastery}#[gr] (excluding
-      Collei) by {60}#[b,gr] for 12s.`,
+      description: `Using Trump-Card Kitty [EB] will increase all nearby characters' {Elemental Mastery}#[k] (excluding
+      Collei) by {60}#[v] for 12s.`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("totalAttr", "em", 60),
     },

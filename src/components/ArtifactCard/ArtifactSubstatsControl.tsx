@@ -1,7 +1,7 @@
 import { FaChevronDown } from "react-icons/fa";
 
 import type { AttributeStat, ArtifactSubStat, Rarity } from "@Src/types";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 import { percentSign } from "@Src/utils";
 
 // Constant
@@ -41,13 +41,13 @@ export const ArtifactSubstatsControl = ({
         const isValid = value === 0 || VALID_SUBSTAT_VALUES[type][rarity].includes(value);
 
         return mutable ? (
-          <div key={i} className="mt-2 flex items-center bg-darkblue-2 relative">
+          <div key={i} className="mt-2 h-9 flex items-center bg-dark-700 relative">
             <FaChevronDown className="absolute left-3 top-2.5" />
 
             <select
               className={
                 "pt-2 pb-1 pr-2 pl-10 leading-base relative z-10 appearance-none " +
-                (statTypeCount[type] === 1 ? "text-default" : "text-red-500")
+                (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")
               }
               value={type}
               onChange={(e) => {
@@ -68,7 +68,7 @@ export const ArtifactSubstatsControl = ({
               noDefaultStyle
               className={
                 "relative ml-1 pt-2 pb-1 pr-2 w-[3.25rem] bg-transparent text-base leading-none text-right " +
-                (isValid ? "text-default" : "text-red-500")
+                (isValid ? "text-light-400" : "text-red-200")
               }
               style={{ fontSize: "1.0625rem" }}
               value={value}
@@ -77,11 +77,11 @@ export const ArtifactSubstatsControl = ({
             <span className="pt-2 pb-1">{percentSign(type)}</span>
           </div>
         ) : (
-          <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-darkblue-2`}>
+          <div key={i} className={`mt-2 pt-2 pb-1 flex items-center bg-dark-700`}>
             <p className={space}>•</p>
             <p>
-              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-default" : "text-red-500")}>{t(type)}</span>
-              <span className={isValid ? "text-green" : "text-red-500"}>
+              <span className={"mr-1 " + (statTypeCount[type] === 1 ? "text-light-400" : "text-red-200")}>{t(type)}</span>
+              <span className={isValid ? "text-green-300" : "text-red-200"}>
                 +{value}
                 {percentSign(type)}
               </span>

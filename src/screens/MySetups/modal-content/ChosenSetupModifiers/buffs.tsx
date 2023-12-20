@@ -17,7 +17,7 @@ import type {
 } from "@Src/types";
 
 // Hook
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 
 // Util
 import { findByIndex, parseCharacterDescription, percentSign, toCustomBuffLabel } from "@Src/utils";
@@ -28,12 +28,12 @@ import { appData } from "@Src/data";
 import {
   ModifierTemplate,
   resonanceRenderInfo,
-  renderAmpReactionDesc,
-  renderAmpReactionHeading,
+  renderVapMeltDescription,
+  renderVapMeltHeading,
   renderModifiers,
-  renderQuickenDesc,
+  renderQuickenDescription,
   renderQuickenHeading,
-  renderArtifactBuffs,
+  renderArtifactModifiers,
   renderWeaponModifiers,
 } from "@Src/components";
 
@@ -81,8 +81,8 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         <ModifierTemplate
           key={"amp-" + attReaction}
           mutable={false}
-          heading={renderAmpReactionHeading(element, reation)}
-          description={renderAmpReactionDesc(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
+          heading={renderVapMeltHeading(element, reation)}
+          description={renderVapMeltDescription(element, getAmplifyingMultiplier(element, rxnBonus)[reation])}
         />
       );
     } else if (reation === "spread" || reation === "aggravate") {
@@ -90,7 +90,7 @@ export function ElementBuffs({ charLv, elmtModCtrls, infusedElement, rxnBonus, v
         key={"quicken-" + attReaction}
         mutable={false}
         heading={renderQuickenHeading(element, reation)}
-        description={renderQuickenDesc(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
+        description={renderQuickenDescription(element, getQuickenBuffDamage(charLv, rxnBonus)[reation])}
       />;
     }
   };
@@ -249,7 +249,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
 
   if (mainCode) {
     content.push(
-      ...renderArtifactBuffs({
+      ...renderArtifactModifiers({
         fromSelf: true,
         keyPrefix: "main",
         mutable: false,
@@ -262,7 +262,7 @@ export function ArtifactBuffs({ setBonuses, artBuffCtrls, party }: ArtifactBuffs
   party.forEach((teammate) => {
     if (teammate) {
       content.push(
-        ...renderArtifactBuffs({
+        ...renderArtifactModifiers({
           mutable: false,
           keyPrefix: teammate.name,
           code: teammate.artifact.code,
@@ -284,7 +284,7 @@ export function CustomBuffs({ customBuffCtrls }: CustomBuffsProps) {
   const content = customBuffCtrls.map(({ category, type, subType, value }, i) => (
     <div key={i} className="flex justify-end">
       <p className="mr-4">{toCustomBuffLabel(category, type, t)}</p>
-      <p className="w-12 shrink-0 text-orange text-right">
+      <p className="w-12 shrink-0 text-orange-500 text-right">
         {value}
         {percentSign(subType || type)}
       </p>

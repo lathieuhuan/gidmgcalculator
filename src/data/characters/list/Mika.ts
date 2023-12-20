@@ -31,12 +31,12 @@ const Mika: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.ES,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Grants nearby active characters Soulwind, increasing their {ATK SPD}#[gr] by {@0}#[b,gr].
-      <br />• At {A1}#[g], Soulwind can grant characters the Detector effect, increasing their {Physical DMG}#[gr] by
-      {10%}#[b,gr] each stack. Max {3}#[r] stacks.
-      <br />• At {A4}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr].
-      <br />• At {C6}#[g], the maximum number of {stacks}#[gr] is increased by {1}#[b,gr]. Grants {60%}#[b,gr]
-      {Physical CRIT DMG}#[gr] bonus.`,
+      description: `Grants nearby active characters Soulwind, increasing their {ATK SPD}#[k] by {@0}#[v].
+      <br />• At {A1}#[ms], Soulwind can grant characters the Detector effect, increasing their {Physical DMG}#[k] by
+      {10%}#[v] each stack. Max {3}#[m] stacks.
+      <br />• At {A4}#[ms], the maximum number of {stacks}#[k] is increased by {1}#[v].
+      <br />• At {C6}#[ms], the maximum number of {stacks}#[k] is increased by {1}#[v]. Grants {60%}#[v]
+      {Physical CRIT DMG}#[k] bonus.`,
       inputConfigs: [
         { label: "Elemental Skill Level", type: "level", for: "teammate" },
         { label: "Detector stacks (A1)", type: "select", initialValue: 0, max: 5 },

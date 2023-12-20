@@ -12,6 +12,7 @@ type ArtTypeData = {
  * Artifact in app data
  */
 export type AppArtifact = {
+  /** This is id */
   code: number;
   beta?: boolean;
   name: string;
@@ -35,10 +36,17 @@ type SetBonus = {
 
 type TargetAttribute = "input_element" | AttributeStat | AttributeStat[];
 
+/** Only on code 42 */
+type InputIndex = {
+  /** Default to 0 */
+  value?: number;
+  convertRate: number;
+};
+
 type InputStack = {
   type: "input";
-  /** Default to 0 */
-  index?: number;
+  /** If number, default to 0 */
+  index?: number | InputIndex;
 };
 
 type AttributeStack = {
@@ -57,17 +65,8 @@ type SetBonusCommon = {
   initialValue?: number;
   value: number | number[];
   stacks?: InputStack | AttributeStack | VisionStack;
-  /**
-   * For this buff to available, the input at the index must equal to compareValue.
-   * If number, it's compareValue, index default to 0.
-   */
-  checkInput?:
-    | number
-    | {
-        /** Default to 0 */
-        index?: number;
-        value: number;
-      };
+  /** For this buff to available, the input at index 0 must equal to checkInput */
+  checkInput?: number;
   max?: number;
 };
 
@@ -92,12 +91,13 @@ type RxnBonusSetBonus = SetBonusCommon & {
 export type ArtifactBonus = AttributeSetBonus | AttPattSetBonus | RxnBonusSetBonus;
 
 export type ArtifactModifier = {
+  /** This is id */
+  index: number;
   inputConfigs?: ModInputConfig[];
-  description: number | number[];
+  description: string | number | number[];
 };
 
 type ArtifactBuff = ArtifactModifier & {
-  index: number;
   affect: EModAffect;
   artBonuses: ArtifactBonus | ArtifactBonus[];
 };
@@ -110,6 +110,5 @@ type SetPenalty = {
 };
 
 type ArtifactDebuff = ArtifactModifier & {
-  index: number;
   penalties: SetPenalty;
 };

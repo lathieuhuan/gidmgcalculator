@@ -25,6 +25,8 @@ export type UserArtifact = CalcArtifact & {
   setupIDs?: number[];
 };
 
+export type UserItem = UserWeapon | UserArtifact;
+
 export type UserArtifacts = (UserArtifact | null)[];
 
 export type UserSetupCalcInfo = Omit<CalcSetup, "weapon" | "artifacts"> & {

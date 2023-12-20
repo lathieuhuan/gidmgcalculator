@@ -23,8 +23,8 @@ const Barbara: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C2,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `During Let the Show Begin's [ES] duration, your active character gains a {15%}#[b,gr]
-      {Hydro DMG Bonus}#[gr].`,
+      description: `During Let the Show Begin's [ES] duration, your active character gains a {15%}#[v]
+      {Hydro DMG Bonus}#[k].`,
       isGranted: checkCons[2],
       applyBuff: makeModApplier("totalAttr", "hydro", 15),
     },

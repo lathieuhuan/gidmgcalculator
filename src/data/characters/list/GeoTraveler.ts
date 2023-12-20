@@ -19,8 +19,8 @@ const GeoTraveler: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C1,
       affect: EModAffect.PARTY,
-      description: `Active characters within the Wake of Earth's radius have their {CRIT Rate}#[gr] increased by
-      {10%}#[b,gr].`,
+      description: `Active characters within the Wake of Earth's radius have their {CRIT Rate}#[k] increased by
+      {10%}#[v].`,
       isGranted: checkCons[1],
       applyBuff: makeModApplier("totalAttr", "cRate_", 10),
     },

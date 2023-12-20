@@ -15,7 +15,7 @@ import { selectArtifacts, selectChar } from "@Store/calculatorSlice/selectors";
 
 // Hook
 import { useDispatch, useSelector } from "@Store/hooks";
-import { useElementSize } from "@Src/hooks";
+import { useElementSize } from "@Src/pure-hooks";
 
 // Component
 import { Button, Modal } from "@Src/pure-components";
@@ -75,12 +75,12 @@ export default function SetupManager() {
 
         <div className="flex justify-end space-x-1">
           <button
-            className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold"
+            className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400"
             onClick={() => setModalType("WEAPONS_PICKER")}
           >
             <img src={getImgSrc("7/7b/Icon_Inventory_Weapons")} alt="weapon" draggable={false} />
           </button>
-          <button className="w-10 h-10 p-1 rounded-circle hover:bg-lightgold" onClick={() => setPrePickerOn(true)}>
+          <button className="w-10 h-10 p-1 rounded-circle hover:bg-yellow-400" onClick={() => setPrePickerOn(true)}>
             <img src={getImgSrc("6/6a/Icon_Inventory_Artifacts")} alt="artifact" draggable={false} />
           </button>
         </div>
@@ -90,8 +90,8 @@ export default function SetupManager() {
 
       <TypeSelect
         active={prePickerOn}
-        choices={ARTIFACT_ICONS}
-        onClickChoice={(artifactType) => {
+        options={ARTIFACT_ICONS}
+        onSelect={(artifactType) => {
           setModalType(artifactType as ArtifactType);
           setPrePickerOn(false);
         }}

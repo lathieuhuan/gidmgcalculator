@@ -28,7 +28,7 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
 
           {pickedAmount ? <p className="absolute bottom-0 right-1 text-black font-bold">{pickedAmount}</p> : null}
         </div>
-        <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-default text-black font-bold text-center">
+        <p className="px-2 pt-1 rounded-b-lg text-sm truncate bg-light-400 text-black font-bold text-center">
           {item.name}
         </p>
       </div>
@@ -39,7 +39,7 @@ const Item = ({ visible, item, itemType, pickedAmount }: ItemProps) => {
             (item.cons !== undefined ? " flex rounded-2xl pl-1.5" : "")
           }
         >
-          {item.cons !== undefined && <p className="mr-0.5 text-green">C{item.cons}</p>}
+          {item.cons !== undefined && <p className="mr-0.5 text-green-300">C{item.cons}</p>}
           <Vision type={item.vision} />
         </div>
       )}

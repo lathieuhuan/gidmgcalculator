@@ -44,7 +44,7 @@ const DownloadOptions = () => {
         Download
       </Button>
 
-      <p className="mt-4 text-center text-lightred">
+      <p className="mt-4 text-center text-red-100">
         Please DO NOT modify this file if you don't understand how it works.
       </p>
     </div>
@@ -54,7 +54,7 @@ const DownloadOptions = () => {
 export const Download = withModal(
   DownloadOptions,
   {
-    className: "p-4 rounded-lg bg-darkblue-2 shadow-white-glow",
+    className: "p-4 rounded-lg bg-dark-700 shadow-white-glow",
     style: {
       width: "28rem",
     },

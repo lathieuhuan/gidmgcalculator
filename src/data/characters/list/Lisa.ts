@@ -21,7 +21,7 @@ const Lisa: DefaultAppCharacter = {
     {
       index: 0,
       src: EModSrc.A4,
-      description: `Opponents hit by Lightning Rose [EB] have their {DEF}#[gr] decreased by {15%}#[b,gr] for 10s.`,
+      description: `Opponents hit by Lightning Rose [EB] have their {DEF}#[k] decreased by {15%}#[v] for 10s.`,
       isGranted: checkAscs[4],
       applyDebuff: makeModApplier("resistReduct", "def", 15),
     },

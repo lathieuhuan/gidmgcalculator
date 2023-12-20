@@ -43,7 +43,7 @@ export function useArtifactSetFilter({ artifactType = "flower", artifacts, codes
   }, []);
 
   const renderArtifactSetFilter = () => (
-    <div className="w-72 flex flex-col rounded-lg bg-darkblue-2" style={{ minWidth: "18rem" }}>
+    <div className="w-72 flex flex-col rounded-lg bg-dark-700" style={{ minWidth: "18rem" }}>
       <Button
         className="mt-2 mx-auto"
         variant="negative"
@@ -70,7 +70,7 @@ export function useArtifactSetFilter({ artifactType = "flower", artifacts, codes
                 <div
                   className={clsx(
                     "p-1 rounded-circle",
-                    set.chosen ? "shadow-3px-2px shadow-green bg-darkblue-1" : "bg-transparent"
+                    set.chosen ? "shadow-3px-2px shadow-green-300 bg-dark-900" : "bg-transparent"
                   )}
                 >
                   <img src={getImgSrc(set.icon)} alt="" width="100%" draggable={false} />

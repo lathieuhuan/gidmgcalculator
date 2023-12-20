@@ -22,8 +22,8 @@ const Charlotte: DefaultAppCharacter = {
     {
       src: EModSrc.A4,
       isGranted: checkAscs[4],
-      description: `For each Fontainian party member other than herself, Charlotte gains a {5%}#[b,gr]
-      {Healing Bonus}#[gr]. For each non-Fontainian party member, Charlotte gains a {5%}#[b,gr] {Cryo DMG Bonus}#[gr].`,
+      description: `For each Fontainian party member other than herself, Charlotte gains a {5%}#[v]
+      {Healing Bonus}#[k]. For each non-Fontainian party member, Charlotte gains a {5%}#[v] {Cryo DMG Bonus}#[k].`,
       applyFinalBuff: (obj) => {
         const numOfFontainians = obj.partyData.reduce((total, teammate) => {
           return total + (teammate?.nation === "fontaine" ? 1 : 0);
@@ -39,7 +39,7 @@ const Charlotte: DefaultAppCharacter = {
       src: EModSrc.C2,
       affect: EModAffect.SELF,
       description: `When using Framing: Freezing Point Composition [ES], when Monsieur Verite hits 1/2/3 (or more)
-      opponents, Charlotte's {ATK}#[gr] will be increased by {10%}#[b,gr]/{20%}#[b,gr]/{30%}#[b,gr] for 12s.`,
+      opponents, Charlotte's {ATK}#[k] will be increased by {10%}#[v]/{20%}#[v]/{30%}#[v] for 12s.`,
       isGranted: checkCons[2],
       inputConfigs: [
         {
@@ -58,7 +58,7 @@ const Charlotte: DefaultAppCharacter = {
       src: EModSrc.C4,
       affect: EModAffect.SELF,
       description: `When Still Photo: Comprehensive Confirmation [EB] hits an opponent marked by Speedy Silhouette or
-      Focused Impression [~ES], it will deal {10%}#[b,gr] {more DMG}#[gr].`,
+      Focused Impression [~ES], it will deal {10%}#[v] {more DMG}#[k].`,
       isGranted: checkCons[4],
       applyBuff: makeModApplier("attPattBonus", "EB.pct_", 10),
     },

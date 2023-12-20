@@ -1,6 +1,6 @@
 import type { ResistanceReduction, Tracker } from "@Src/types";
 import { ATTACK_ELEMENTS } from "@Src/constants";
-import { useTranslation } from "@Src/hooks";
+import { useTranslation } from "@Src/pure-hooks";
 import { getTotalRecordValue, recordListStyles, renderHeading, renderRecord } from "./utils";
 
 function getResMultEquation(value: number) {
@@ -35,7 +35,7 @@ export function DebuffsTracker({ resistReduct }: Partial<Pick<Tracker, "resistRe
         </div>
       )}
       <div>
-        <p className={"text-lg text-orange" + (hasRecord ? " pt-3" : "")}>Resistance Multipliers</p>
+        <p className={"text-lg text-orange-500" + (hasRecord ? " pt-3" : "")}>Resistance Multipliers</p>
         <div className={recordListStyles}>
           {ATTACK_ELEMENTS.map((attElmt) => {
             const actualResistance = 10 - totalResistReduct[attElmt];

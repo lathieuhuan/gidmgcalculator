@@ -1,25 +1,35 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import { FaPuzzlePiece } from "react-icons/fa";
 
-import { selectUserSetups } from "@Store/userDatabaseSlice/selectors";
-import { useSelector } from "@Store/hooks";
-import { findById } from "@Src/utils";
+import { UserItem } from "@Src/types";
+import { useClickOutside, ClickOutsideHandler } from "@Src/pure-hooks";
+import { useCheckContainerSetups } from "@Src/hooks";
 
 // Component
 import { Popover } from "@Src/pure-components";
 
-const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
-  const userSetups = useSelector(selectUserSetups);
+interface SetupListProps {
+  item: UserItem;
+  onClickOutside: ClickOutsideHandler;
+}
+const SetupList = ({ item, onClickOutside }: SetupListProps) => {
+  const result = useCheckContainerSetups(item);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(listRef, onClickOutside);
 
   return (
-    <div className="flex flex-col overflow-auto">
-      <p className="text-orange font-medium">This item is used on these setups:</p>
-      <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
-        {setupIDs?.map((ID, i) => {
-          const { name } = findById(userSetups, ID) || {};
-          return name ? <li key={i}>{name}</li> : null;
-        })}
-      </ul>
+    <div ref={listRef} className="px-4 py-2 flex flex-col overflow-auto">
+      <p className="text-orange-500 font-medium">This item is used on these setups:</p>
+      {result.foundSetups.length ? (
+        <ul className="mt-1 pl-4 list-disc overflow-auto custom-scrollbar">
+          {result.foundSetups.map((setup, i) => {
+            return <li key={i}>{setup.name}</li>;
+          })}
+        </ul>
+      ) : (
+        <p className="text-center text-light-800">[No valid setups found]</p>
+      )}
     </div>
   );
 };
@@ -27,10 +37,10 @@ const SetupList = ({ setupIDs }: { setupIDs?: number[] }) => {
 interface OwnerLabelProps {
   className?: string;
   style?: CSSProperties;
-  owner?: string | null;
-  setupIDs?: number[];
+  item?: UserItem;
 }
-export const OwnerLabel = ({ className, style, owner, setupIDs }: OwnerLabelProps) => {
+export const OwnerLabel = ({ className, style, item }: OwnerLabelProps) => {
+  const puzzleBtnRef = useRef<HTMLButtonElement>(null);
   const [list, setList] = useState({
     isVisible: false,
     isMounted: false,
@@ -56,30 +66,36 @@ export const OwnerLabel = ({ className, style, owner, setupIDs }: OwnerLabelProp
     }, 200);
   };
 
-  return owner === undefined ? null : (
-    <div
-      className={"mt-4 pl-4 font-bold text-black flex justify-between relative " + (className || "")}
-      style={{
-        backgroundColor: "#FFE7BB",
-        ...style,
-      }}
-    >
-      <p className="py-1">Equipped: {owner || "None"}</p>
-      {setupIDs?.length ? (
-        <button className="w-8 h-8 flex-center" onClick={onClickPuzzlePiece}>
-          <FaPuzzlePiece className="w-5 h-5" />
-        </button>
-      ) : null}
+  const onClickOutsideList: ClickOutsideHandler = (target) => {
+    if (puzzleBtnRef.current && !puzzleBtnRef.current.contains(target)) {
+      onClickPuzzlePiece();
+    }
+  };
 
-      <Popover
-        as="div"
-        className="bottom-full right-2 mb-2 px-4 py-2 shadow-white-glow"
-        active={list.isVisible}
-        withTooltipStyle
-        origin="bottom-right"
-      >
-        {list.isMounted && <SetupList setupIDs={setupIDs} />}
-      </Popover>
+  return (
+    <div
+      className={"mt-4 pl-4 font-bold bg-yellow-200 text-black flex justify-between relative " + (className || "")}
+      style={style}
+    >
+      <p className="py-1">Equipped: {item?.owner || "None"}</p>
+
+      {item?.setupIDs?.length ? (
+        <>
+          <button ref={puzzleBtnRef} className="w-8 h-8 flex-center" onClick={onClickPuzzlePiece}>
+            <FaPuzzlePiece className="w-5 h-5" />
+          </button>
+
+          <Popover
+            as="div"
+            className="bottom-full right-2 mb-2 shadow-white-glow"
+            active={list.isVisible}
+            withTooltipStyle
+            origin="bottom-right"
+          >
+            {list.isMounted && <SetupList item={item} onClickOutside={onClickOutsideList} />}
+          </Popover>
+        </>
+      ) : null}
     </div>
   );
 };

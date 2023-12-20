@@ -23,8 +23,8 @@ const Dori: DefaultAppCharacter = {
       index: 0,
       src: EModSrc.C4,
       affect: EModAffect.ACTIVE_UNIT,
-      description: `Buff the character connected to the Jinni. When their HP < 50%, they gain {50%}#[b,gr]
-      {Incoming Healing Bonus}#[gr]. When their Energy < 50%, they gain {30%}#[b,gr] {Energy Recharge}#[gr].`,
+      description: `Buff the character connected to the Jinni. When their HP < 50%, they gain {50%}#[v]
+      {Incoming Healing Bonus}#[k]. When their Energy < 50%, they gain {30%}#[v] {Energy Recharge}#[k].`,
       isGranted: checkCons[4],
       inputConfigs: [
         { type: "check", label: "HP < 50%" },
