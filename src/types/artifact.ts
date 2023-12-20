@@ -58,8 +58,8 @@ export type ArtifactBonus = {
   checkInput?: number;
   value: number | ArtifactEffectValueOption;
   stacks?: InputStack | AttributeStack | VisionStack;
-  /** Apply after stacks. On Vermillion Hereafter */
-  sufExtra?: number;
+  /** Apply after stacks */
+  sufExtra?: number | Omit<ArtifactBonus, "targets">;
   targets: {
     /** totalAttr */
     ATTR?: AttributeStat | AttributeStat[];

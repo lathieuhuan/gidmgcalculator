@@ -1,14 +1,18 @@
 import type { ArtifactBonus, BuffInfoWrap } from "@Src/types";
 import { VISION_TYPES } from "@Src/constants";
-import { applyModifier } from "../utils";
 import { countVision, toArray } from "@Src/utils";
+import { applyModifier } from "../utils";
 import { isFinalBonus } from "./utils";
 
-const isUsableBonus = (bonus: ArtifactBonus, infoWrap: BuffInfoWrap, inputs: number[]) => {
-  if (bonus.checkInput !== undefined && inputs[0] !== bonus.checkInput) {
+const isUsableBonus = (
+  condition: Pick<ArtifactBonus, "checkInput" | "forWeapons">,
+  info: BuffInfoWrap,
+  inputs: number[]
+) => {
+  if (condition.checkInput !== undefined && inputs[0] !== condition.checkInput) {
     return false;
   }
-  if (bonus.forWeapons && !bonus.forWeapons.includes(infoWrap.charData.weaponType)) {
+  if (condition.forWeapons && !condition.forWeapons.includes(info.charData.weaponType)) {
     return false;
   }
   return true;
@@ -32,7 +36,7 @@ const getStackValue = (stack: NonNullable<ArtifactBonus["stacks"]>, info: BuffIn
   }
 };
 
-const getBonusValue = (bonus: ArtifactBonus, info: BuffInfoWrap, inputs: number[]) => {
+const getBonusValue = (bonus: Omit<ArtifactBonus, "targets">, info: BuffInfoWrap, inputs: number[]) => {
   let bonusValue = 0;
 
   if (typeof bonus.value === "number") {
@@ -45,7 +49,12 @@ const getBonusValue = (bonus: ArtifactBonus, info: BuffInfoWrap, inputs: number[
       bonusValue *= getStackValue(bonus.stacks, info, inputs);
     }
   }
-  if (bonus.sufExtra) bonusValue += bonus.sufExtra;
+  if (typeof bonus.sufExtra === "number") {
+    bonusValue += bonus.sufExtra;
+  } else if (bonus.sufExtra && isUsableBonus(bonus.sufExtra, info, inputs)) {
+    bonusValue += getBonusValue(bonus.sufExtra, info, inputs);
+  }
+
   if (bonus.max && bonusValue > bonus.max) bonusValue = bonus.max;
 
   return Math.max(bonusValue, 0);

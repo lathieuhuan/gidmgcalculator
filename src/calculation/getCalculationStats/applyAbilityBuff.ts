@@ -53,7 +53,7 @@ const getStackValue = (stack: AbilityBonusStack, info: BuffInfoWrap, inputs: num
       if (stack.capacity) {
         const { value, extra } = stack.capacity;
         input = value - input;
-        if (isUsableEffect(extra, info, inputs, fromSelf))input += extra.value;
+        if (isUsableEffect(extra, info, inputs, fromSelf)) input += extra.value;
         input = Math.max(input, 0);
       }
       result = input;
@@ -131,7 +131,7 @@ export const getIntialBonusValue = (
   switch (indexSrc.type) {
     case "vision":
       const { visionType } = indexSrc;
-      const visionCount = countVision(info.partyData, info.charData);
+      const visionCount = info.partyData.length ? countVision(info.partyData, info.charData) : {};
       const input =
         visionType === "various"
           ? Object.keys(visionCount).length
@@ -191,6 +191,9 @@ function getBonusValue(
   }
   if (bonus.stacks) {
     for (const stack of toArray(bonus.stacks)) {
+      if (!info.partyData.length && ["nation", "resolve"].includes(stack.type)) {
+        return 0;
+      }
       bonusValue *= getStackValue(stack, info, inputs, fromSelf);
     }
   }
